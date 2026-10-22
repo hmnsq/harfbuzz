@@ -28,9 +28,9 @@
 #ifndef HB_AAT_LAYOUT_KERX_TABLE_HH
 #define HB_AAT_LAYOUT_KERX_TABLE_HH
 
-#include "hb-kern.hh"
-#include "hb-aat-layout-ankr-table.hh"
-#include "hb-set-digest.hh"
+#അന്തര്ഭാവ "hb-kern.hh"
+#അന്തര്ഭാവ "hb-aat-layout-ankr-table.hh"
+#അന്തര്ഭാവ "hb-set-digest.hh"
 
 /*
  * kerx -- Extended Kerning
@@ -39,167 +39,167 @@
 #define HB_AAT_TAG_kerx HB_TAG('k','e','r','x')
 
 
-namespace AAT {
+നാമാകാശ AAT {
 
-using namespace OT;
+using നാമാകാശ OT;
 
 
-static inline int
-kerxTupleKern (int value,
-	       unsigned int tupleCount,
-	       const void *base,
+സ്ഥിതം വരിയിൽ പൂർണ്ണസംഖ്യ
+kerxTupleKern (പൂർണ്ണസംഖ്യ value,
+	       unsigned പൂർണ്ണസംഖ്യ tuple_എണ്ണം,
+	       സ്ഥിരം ശൂന്യം *base,
 	       hb_aat_apply_context_t *c)
 {
-  if (likely (!tupleCount || !c)) return value;
+  എങ്കിൽ (likely (!tuple_എണ്ണം || !c)) തിരികെ value;
 
-  unsigned int offset = value;
-  const FWORD *pv = &StructAtOffset<FWORD> (base, offset);
-  if (unlikely (!c->sanitizer.check_array (pv, tupleCount))) return 0;
+  unsigned പൂർണ്ണസംഖ്യ offset = value;
+  സ്ഥിരം FWORD *pv = &StructAtOffset<FWORD> (base, offset);
+  എങ്കിൽ (unlikely (!c->sanitizer.check_array (pv, tuple_എണ്ണം))) തിരികെ 0;
   hb_barrier ();
-  return *pv;
+  തിരികെ *pv;
 }
 
 
-struct hb_glyph_pair_t
+ഘടന hb_glyph_pair_t
 {
   hb_codepoint_t left;
-  hb_codepoint_t right;
+  hb_codepoint_t വലത്;
 };
 
-struct KernPair
+ഘടന KernPair
 {
-  int get_kerning () const { return value; }
+  പൂർണ്ണസംഖ്യ get_kerning () സ്ഥിരം { തിരികെ value; }
 
-  int cmp (const hb_glyph_pair_t &o) const
+  പൂർണ്ണസംഖ്യ cmp (സ്ഥിരം hb_glyph_pair_t &o) സ്ഥിരം
   {
-    int ret = left.cmp (o.left);
-    if (ret) return ret;
-    return right.cmp (o.right);
+    പൂർണ്ണസംഖ്യ ret = left.cmp (o.left);
+    എങ്കിൽ (ret) തിരികെ ret;
+    തിരികെ വലത്.cmp (o.വലത്);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
-  public:
+  പൊതു:
   HBGlyphID16	left;
-  HBGlyphID16	right;
+  HBGlyphID16	വലത്;
   FWORD		value;
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (6);
 };
 
 template <typename KernSubTableHeader>
-struct KerxSubTableFormat0
+ഘടന KerxSubTableFormat0
 {
-  int get_kerning (hb_codepoint_t left, hb_codepoint_t right,
-		   hb_aat_apply_context_t *c = nullptr) const
+  പൂർണ്ണസംഖ്യ get_kerning (hb_codepoint_t left, hb_codepoint_t വലത്,
+		   hb_aat_apply_context_t *c = nullptr) സ്ഥിരം
   {
-    hb_glyph_pair_t pair = {left, right};
-    int v = pairs.bsearch (pair).get_kerning ();
-    return kerxTupleKern (v, header.tuple_count (), this, c);
+    hb_glyph_pair_t pair = {left, വലത്};
+    പൂർണ്ണസംഖ്യ v = pairs.bsearch (pair).get_kerning ();
+    തിരികെ kerxTupleKern (v, header.tuple_എണ്ണം_2 (), ഇത്, c);
   }
 
-  bool apply (hb_aat_apply_context_t *c) const
+  തർക്കം apply (hb_aat_apply_context_t *c) സ്ഥിരം
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (ഇത്);
 
-    if (!c->plan->requested_kerning)
-      return_trace (false);
+    എങ്കിൽ (!c->plan->requested_kerning)
+      return_trace (അസത്യം);
 
-    if (header.coverage & header.Backwards)
-      return_trace (false);
+    എങ്കിൽ (header.coverage & header.Backwards)
+      return_trace (അസത്യം);
 
-    accelerator_t accel (*this, c);
+    accelerator_t accel (*ഇത്, c);
     hb_kern_machine_t<accelerator_t> machine (accel, header.coverage & header.CrossStream);
     machine.kern (c->font, c->buffer, c->plan->kern_mask);
 
-    return_trace (true);
+    return_trace (സത്യം);
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &first_set, set_t &second_set, unsigned num_glyphs) const
+  ശൂന്യം collect_glyphs (set_t &first_set, set_t &second_set, unsigned അക്കം_glyphs) സ്ഥിരം
   {
-    for (const KernPair& pair : pairs)
+    വേണ്ടി (സ്ഥിരം KernPair& pair : pairs)
     {
       first_set.add (pair.left);
-      second_set.add (pair.right);
+      second_set.add (pair.വലത്);
     }
   }
 
-  struct accelerator_t
+  ഘടന accelerator_t
   {
-    const KerxSubTableFormat0 &table;
+    സ്ഥിരം KerxSubTableFormat0 &table;
     hb_aat_apply_context_t *c;
 
-    accelerator_t (const KerxSubTableFormat0 &table_,
+    accelerator_t (സ്ഥിരം KerxSubTableFormat0 &table_,
 		   hb_aat_apply_context_t *c_) :
 		     table (table_), c (c_) {}
 
-    int get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+    പൂർണ്ണസംഖ്യ get_kerning (hb_codepoint_t left, hb_codepoint_t വലത്) സ്ഥിരം
     {
-      if (!(*c->first_set)[left] || !(*c->second_set)[right]) return 0;
-      return table.get_kerning (left, right, c);
+      എങ്കിൽ (!(*c->first_set)[left] || !(*c->second_set)[വലത്]) തിരികെ 0;
+      തിരികെ table.get_kerning (left, വലത്, c);
     }
   };
 
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ഇത്);
     return_trace (likely (pairs.sanitize (c)));
   }
 
-  protected:
+  സംരക്ഷിത:
   KernSubTableHeader	header;
-  BinSearchArrayOf<KernPair, typename KernSubTableHeader::Types::HBUINT>
+  Bin_തിരയൽ_Array_Of<KernPair, typename KernSubTableHeader::Types::HBUINT>
 			pairs;	/* Sorted kern records. */
-  public:
+  പൊതു:
   DEFINE_SIZE_ARRAY (KernSubTableHeader::static_size + 16, pairs);
 };
 
 
-template <bool extended>
-struct Format1Entry;
+template <തർക്കം extended>
+ഘടന Format1Entry;
 
 template <>
-struct Format1Entry<true>
+ഘടന Format1Entry<സത്യം>
 {
-  enum Flags
+  എണ്ണൽ Flags
   {
-    Push		= 0x8000,	/* If set, push this glyph on the kerning stack. */
+    തള്ളുക		= 0x8000,	/* If set, push this glyph on the kerning stack. */
     DontAdvance		= 0x4000,	/* If set, don't advance to the next glyph
 					 * before going to the new state. */
     Reset		= 0x2000,	/* If set, reset the kerning data (clear the stack) */
     Reserved		= 0x1FFF,	/* Not used; set to 0. */
   };
 
-  struct EntryData
+  ഘടന EntryData
   {
     HBUINT16	kernActionIndex;/* Index into the kerning value array. If
 				 * this index is 0xFFFF, then no kerning
 				 * is to be performed. */
-    public:
+    പൊതു:
     DEFINE_SIZE_STATIC (2);
   };
 
-  static bool initiateAction (const Entry<EntryData> &entry)
-  { return entry.flags & Push; }
+  സ്ഥിതം തർക്കം initiateAction (സ്ഥിരം Entry<EntryData> &entry)
+  { തിരികെ entry.flags & തള്ളുക; }
 
-  static bool performAction (const Entry<EntryData> &entry)
-  { return entry.data.kernActionIndex != 0xFFFF; }
+  സ്ഥിതം തർക്കം performAction (സ്ഥിരം Entry<EntryData> &entry)
+  { തിരികെ entry.data.kernActionIndex != 0xFFFF; }
 
-  static unsigned int kernActionIndex (const Entry<EntryData> &entry)
-  { return entry.data.kernActionIndex; }
+  സ്ഥിതം unsigned പൂർണ്ണസംഖ്യ kernActionIndex (സ്ഥിരം Entry<EntryData> &entry)
+  { തിരികെ entry.data.kernActionIndex; }
 };
 template <>
-struct Format1Entry<false>
+ഘടന Format1Entry<അസത്യം>
 {
-  enum Flags
+  എണ്ണൽ Flags
   {
-    Push		= 0x8000,	/* If set, push this glyph on the kerning stack. */
+    തള്ളുക		= 0x8000,	/* If set, push this glyph on the kerning stack. */
     DontAdvance		= 0x4000,	/* If set, don't advance to the next glyph
 					 * before going to the new state. */
     Offset		= 0x3FFF,	/* Byte offset from beginning of subtable to the
@@ -208,46 +208,46 @@ struct Format1Entry<false>
     Reset		= 0x0000,	/* Not supported? */
   };
 
-  typedef void EntryData;
+  തരനിർവചനം ശൂന്യം EntryData;
 
-  static bool initiateAction (const Entry<EntryData> &entry)
-  { return entry.flags & Push; }
+  സ്ഥിതം തർക്കം initiateAction (സ്ഥിരം Entry<EntryData> &entry)
+  { തിരികെ entry.flags & തള്ളുക; }
 
-  static bool performAction (const Entry<EntryData> &entry)
-  { return entry.flags & Offset; }
+  സ്ഥിതം തർക്കം performAction (സ്ഥിരം Entry<EntryData> &entry)
+  { തിരികെ entry.flags & Offset; }
 
-  static unsigned int kernActionIndex (const Entry<EntryData> &entry)
-  { return entry.flags & Offset; }
+  സ്ഥിതം unsigned പൂർണ്ണസംഖ്യ kernActionIndex (സ്ഥിരം Entry<EntryData> &entry)
+  { തിരികെ entry.flags & Offset; }
 };
 
 template <typename KernSubTableHeader>
-struct KerxSubTableFormat1
+ഘടന KerxSubTableFormat1
 {
-  typedef typename KernSubTableHeader::Types Types;
-  typedef typename Types::HBUINT HBUINT;
+  തരനിർവചനം typename KernSubTableHeader::Types Types;
+  തരനിർവചനം typename Types::HBUINT HBUINT;
 
-  typedef Format1Entry<Types::extended> Format1EntryT;
-  typedef typename Format1EntryT::EntryData EntryData;
+  തരനിർവചനം Format1Entry<Types::extended> Format1EntryT;
+  തരനിർവചനം typename Format1EntryT::EntryData EntryData;
 
-  enum Flags
+  എണ്ണൽ Flags
   {
     DontAdvance	= Format1EntryT::DontAdvance,
   };
 
-  bool is_action_initiable (const Entry<EntryData> &entry) const
+  തർക്കം is_action_initiable (സ്ഥിരം Entry<EntryData> &entry) സ്ഥിരം
   {
-    return Format1EntryT::initiateAction (entry);
+    തിരികെ Format1EntryT::initiateAction (entry);
   }
-  bool is_actionable (const Entry<EntryData> &entry) const
+  തർക്കം is_actionable (സ്ഥിരം Entry<EntryData> &entry) സ്ഥിരം
   {
-    return Format1EntryT::performAction (entry);
+    തിരികെ Format1EntryT::performAction (entry);
   }
 
-  struct driver_context_t
+  ഘടന driver_context_t
   {
-    static constexpr bool in_place = true;
+    സ്ഥിതം constexpr തർക്കം in_place = സത്യം;
 
-    driver_context_t (const KerxSubTableFormat1 *table_,
+    driver_context_t (സ്ഥിരം KerxSubTableFormat1 *table_,
 		      hb_aat_apply_context_t *c_) :
 	c (c_),
 	table (table_),
@@ -259,34 +259,34 @@ struct KerxSubTableFormat1
 	crossStream (table->header.coverage & table->header.CrossStream) {}
 
     HB_AAT_TRANSITION_INLINE
-    void transition (hb_buffer_t *buffer,
+    ശൂന്യം transition (hb_buffer_t *buffer,
 		     StateTableDriver<Types, EntryData, Flags> *driver,
-		     const Entry<EntryData> &entry)
+		     സ്ഥിരം Entry<EntryData> &entry)
     {
-      unsigned int flags = entry.flags;
+      unsigned പൂർണ്ണസംഖ്യ flags = entry.flags;
 
-      if (flags & Format1EntryT::Reset)
+      എങ്കിൽ (flags & Format1EntryT::Reset)
 	depth = 0;
 
-      if (flags & Format1EntryT::Push)
+      എങ്കിൽ (flags & Format1EntryT::തള്ളുക)
       {
-	if (likely (depth < ARRAY_LENGTH (stack)))
-	  stack[depth++] = buffer->idx;
-	else
+	എങ്കിൽ (likely (depth < ARRAY_LENGTH (അട്ടി)))
+	  അട്ടി[depth++] = buffer->idx;
+	അല്ലെങ്കിൽ
 	  depth = 0; /* Probably not what CoreText does, but better? */
       }
 
-      if (Format1EntryT::performAction (entry) && depth)
+      എങ്കിൽ (Format1EntryT::performAction (entry) && depth)
       {
-	unsigned int tuple_count = hb_max (1u, table->header.tuple_count ());
+	unsigned പൂർണ്ണസംഖ്യ tuple_എണ്ണം_2 = hb_max (1u, table->header.tuple_എണ്ണം_2 ());
 
-	unsigned int kern_idx = Format1EntryT::kernActionIndex (entry);
+	unsigned പൂർണ്ണസംഖ്യ kern_idx = Format1EntryT::kernActionIndex (entry);
 	kern_idx = Types::byteOffsetToIndex (kern_idx, &table->machine, kernAction.arrayZ);
-	const FWORD *actions = &kernAction[kern_idx];
-	if (!c->sanitizer.check_array (actions, depth, tuple_count))
+	സ്ഥിരം FWORD *actions = &kernAction[kern_idx];
+	എങ്കിൽ (!c->sanitizer.check_array (actions, depth, tuple_എണ്ണം_2))
 	{
 	  depth = 0;
-	  return;
+	  തിരികെ;
 	}
 	hb_barrier ();
 
@@ -295,13 +295,13 @@ struct KerxSubTableFormat1
 	/* From Apple 'kern' spec:
 	 * "Each pops one glyph from the kerning stack and applies the kerning value to it.
 	 * The end of the list is marked by an odd value... */
-	bool last = false;
-	while (!last && depth)
+	തർക്കം last = അസത്യം;
+	ആകുമ്പോൾ (!last && depth)
 	{
-	  unsigned int idx = stack[--depth];
-	  int v = *actions;
-	  actions += tuple_count;
-	  if (idx >= buffer->len) continue;
+	  unsigned പൂർണ്ണസംഖ്യ idx = അട്ടി[--depth];
+	  പൂർണ്ണസംഖ്യ v = *actions;
+	  actions += tuple_എണ്ണം_2;
+	  എങ്കിൽ (idx >= buffer->len) തുടരുക;
 
 	  /* "The end of the list is marked by an odd value..." */
 	  last = v & 1;
@@ -309,49 +309,49 @@ struct KerxSubTableFormat1
 
 	  hb_glyph_position_t &o = buffer->pos[idx];
 
-	  if (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
+	  എങ്കിൽ (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
 	  {
-	    if (crossStream)
+	    എങ്കിൽ (crossStream)
 	    {
 	      /* The following flag is undocumented in the spec, but described
 	       * in the 'kern' table example. */
-	      if (v == -0x8000)
+	      എങ്കിൽ (v == -0x8000)
 	      {
 		o.attach_type() = OT::Layout::GPOS_impl::ATTACH_TYPE_NONE;
 		o.attach_chain() = 0;
 		o.y_offset = 0;
 	      }
-	      else if (o.attach_type())
+	      അല്ലെങ്കിൽ എങ്കിൽ (o.attach_type())
 	      {
 		o.y_offset = hb_saturate_add (o.y_offset, c->font->em_scale_y (v));
 		buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
 	      }
 	    }
-	    else if (buffer->info[idx].mask & kern_mask)
+	    അല്ലെങ്കിൽ എങ്കിൽ (buffer->info[idx].mask & kern_mask)
 	    {
 	      auto scaled = c->font->em_scale_x (v);
 	      o.x_advance = hb_saturate_add (o.x_advance, scaled);
 	      o.x_offset = hb_saturate_add (o.x_offset, scaled);
 	    }
 	  }
-	  else
+	  അല്ലെങ്കിൽ
 	  {
-	    if (crossStream)
+	    എങ്കിൽ (crossStream)
 	    {
 	      /* CoreText doesn't do crossStream kerning in vertical.  We do. */
-	      if (v == -0x8000)
+	      എങ്കിൽ (v == -0x8000)
 	      {
 		o.attach_type() = OT::Layout::GPOS_impl::ATTACH_TYPE_NONE;
 		o.attach_chain() = 0;
 		o.x_offset = 0;
 	      }
-	      else if (o.attach_type())
+	      അല്ലെങ്കിൽ എങ്കിൽ (o.attach_type())
 	      {
 		o.x_offset = hb_saturate_add (o.x_offset, c->font->em_scale_x (v));
 		buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
 	      }
 	    }
-	    else if (buffer->info[idx].mask & kern_mask)
+	    അല്ലെങ്കിൽ എങ്കിൽ (buffer->info[idx].mask & kern_mask)
 	    {
 	      auto scaled = c->font->em_scale_y (v);
 	      o.y_advance = hb_saturate_add (o.y_advance, scaled);
@@ -362,159 +362,159 @@ struct KerxSubTableFormat1
       }
     }
 
-    public:
+    പൊതു:
     hb_aat_apply_context_t *c;
-    const KerxSubTableFormat1 *table;
-    private:
-    const UnsizedArrayOf<FWORD> &kernAction;
-    unsigned int stack[8];
-    unsigned int depth;
-    bool crossStream;
+    സ്ഥിരം KerxSubTableFormat1 *table;
+    സ്വകാര്യ:
+    സ്ഥിരം UnsizedArrayOf<FWORD> &kernAction;
+    unsigned പൂർണ്ണസംഖ്യ അട്ടി[8];
+    unsigned പൂർണ്ണസംഖ്യ depth;
+    തർക്കം crossStream;
   };
 
-  bool apply (hb_aat_apply_context_t *c) const
+  തർക്കം apply (hb_aat_apply_context_t *c) സ്ഥിരം
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (ഇത്);
 
-    if (!c->plan->requested_kerning &&
+    എങ്കിൽ (!c->plan->requested_kerning &&
 	!(header.coverage & header.CrossStream))
-      return false;
+      തിരികെ അസത്യം;
 
-    driver_context_t dc (this, c);
+    driver_context_t dc (ഇത്, c);
 
     StateTableDriver<Types, EntryData, Flags> driver (machine, c->font->face);
 
     driver.drive (&dc, c);
 
-    return_trace (true);
+    return_trace (സത്യം);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ഇത്);
     /* The rest of array sanitizations are done at run-time. */
-    return_trace (likely (c->check_struct (this) &&
+    return_trace (likely (c->check_struct (ഇത്) &&
 			  machine.sanitize (c)));
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &first_set, set_t &second_set, unsigned num_glyphs) const
+  ശൂന്യം collect_glyphs (set_t &first_set, set_t &second_set, unsigned അക്കം_glyphs) സ്ഥിരം
   {
-    machine.collect_initial_glyphs (first_set, num_glyphs, *this);
+    machine.collect_initial_glyphs (first_set, അക്കം_glyphs, *ഇത്);
     //machine.collect_glyphs (second_set, num_glyphs); // second_set is unused for machine kerning
   }
 
-  protected:
+  സംരക്ഷിത:
   KernSubTableHeader				header;
   StateTable<Types, EntryData>			machine;
   NNOffsetTo<UnsizedArrayOf<FWORD>, HBUINT>	kernAction;
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (KernSubTableHeader::static_size + (StateTable<Types, EntryData>::static_size + HBUINT::static_size));
 };
 
 template <typename KernSubTableHeader>
-struct KerxSubTableFormat2
+ഘടന KerxSubTableFormat2
 {
-  typedef typename KernSubTableHeader::Types Types;
-  typedef typename Types::HBUINT HBUINT;
+  തരനിർവചനം typename KernSubTableHeader::Types Types;
+  തരനിർവചനം typename Types::HBUINT HBUINT;
 
-  int get_kerning (hb_codepoint_t left, hb_codepoint_t right,
-		   hb_aat_apply_context_t *c) const
+  പൂർണ്ണസംഖ്യ get_kerning (hb_codepoint_t left, hb_codepoint_t വലത്,
+		   hb_aat_apply_context_t *c) സ്ഥിരം
   {
-    unsigned int num_glyphs = c->sanitizer.get_num_glyphs ();
-    unsigned int l = (this+leftClassTable).get_class (left, num_glyphs, 0);
-    unsigned int r = (this+rightClassTable).get_class (right, num_glyphs, 0);
+    unsigned പൂർണ്ണസംഖ്യ അക്കം_glyphs = c->sanitizer.get_അക്കം_glyphs ();
+    unsigned പൂർണ്ണസംഖ്യ l = (ഇത്+ഇടത്_Class_Table).get_class (left, അക്കം_glyphs, 0);
+    unsigned പൂർണ്ണസംഖ്യ r = (ഇത്+വലത്_Class_Table).get_class (വലത്, അക്കം_glyphs, 0);
 
-    const UnsizedArrayOf<FWORD> &arrayZ = this+array;
-    unsigned int kern_idx = l + r;
-    kern_idx = Types::offsetToIndex (kern_idx, this, arrayZ.arrayZ);
-    const FWORD *v = &arrayZ[kern_idx];
-    if (unlikely (!v->sanitize (&c->sanitizer))) return 0;
+    സ്ഥിരം UnsizedArrayOf<FWORD> &arrayZ = ഇത്+array;
+    unsigned പൂർണ്ണസംഖ്യ kern_idx = l + r;
+    kern_idx = Types::offsetToIndex (kern_idx, ഇത്, arrayZ.arrayZ);
+    സ്ഥിരം FWORD *v = &arrayZ[kern_idx];
+    എങ്കിൽ (unlikely (!v->sanitize (&c->sanitizer))) തിരികെ 0;
     hb_barrier ();
 
-    return kerxTupleKern (*v, header.tuple_count (), this, c);
+    തിരികെ kerxTupleKern (*v, header.tuple_എണ്ണം_2 (), ഇത്, c);
   }
 
-  bool apply (hb_aat_apply_context_t *c) const
+  തർക്കം apply (hb_aat_apply_context_t *c) സ്ഥിരം
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (ഇത്);
 
-    if (!c->plan->requested_kerning)
-      return_trace (false);
+    എങ്കിൽ (!c->plan->requested_kerning)
+      return_trace (അസത്യം);
 
-    if (header.coverage & header.Backwards)
-      return_trace (false);
+    എങ്കിൽ (header.coverage & header.Backwards)
+      return_trace (അസത്യം);
 
-    accelerator_t accel (*this, c);
+    accelerator_t accel (*ഇത്, c);
     hb_kern_machine_t<accelerator_t> machine (accel, header.coverage & header.CrossStream);
     machine.kern (c->font, c->buffer, c->plan->kern_mask);
 
-    return_trace (true);
+    return_trace (സത്യം);
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &first_set, set_t &second_set, unsigned num_glyphs) const
+  ശൂന്യം collect_glyphs (set_t &first_set, set_t &second_set, unsigned അക്കം_glyphs) സ്ഥിരം
   {
-    (this+leftClassTable).collect_glyphs (first_set, num_glyphs);
-    (this+rightClassTable).collect_glyphs (second_set, num_glyphs);
+    (ഇത്+ഇടത്_Class_Table).collect_glyphs (first_set, അക്കം_glyphs);
+    (ഇത്+വലത്_Class_Table).collect_glyphs (second_set, അക്കം_glyphs);
   }
 
-  struct accelerator_t
+  ഘടന accelerator_t
   {
-    const KerxSubTableFormat2 &table;
+    സ്ഥിരം KerxSubTableFormat2 &table;
     hb_aat_apply_context_t *c;
 
-    accelerator_t (const KerxSubTableFormat2 &table_,
+    accelerator_t (സ്ഥിരം KerxSubTableFormat2 &table_,
 		   hb_aat_apply_context_t *c_) :
 		     table (table_), c (c_) {}
 
-    int get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+    പൂർണ്ണസംഖ്യ get_kerning (hb_codepoint_t left, hb_codepoint_t വലത്) സ്ഥിരം
     {
-      if (!(*c->first_set)[left] || !(*c->second_set)[right]) return 0;
-      return table.get_kerning (left, right, c);
+      എങ്കിൽ (!(*c->first_set)[left] || !(*c->second_set)[വലത്]) തിരികെ 0;
+      തിരികെ table.get_kerning (left, വലത്, c);
     }
   };
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  leftClassTable.sanitize (c, this) &&
-			  rightClassTable.sanitize (c, this) &&
+    TRACE_SANITIZE (ഇത്);
+    return_trace (likely (c->check_struct (ഇത്) &&
+			  ഇടത്_Class_Table.sanitize (c, ഇത്) &&
+			  വലത്_Class_Table.sanitize (c, ഇത്) &&
 			  hb_barrier () &&
-			  c->check_range (this, array)));
+			  c->check_range (ഇത്, array)));
   }
 
-  protected:
+  സംരക്ഷിത:
   KernSubTableHeader	header;
   HBUINT		rowWidth;	/* The width, in bytes, of a row in the table. */
   NNOffsetTo<typename Types::ClassTypeWide, HBUINT>
-			leftClassTable;	/* Offset from beginning of this subtable to
+			ഇടത്_Class_Table;	/* Offset from beginning of this subtable to
 					 * left-hand class table. */
   NNOffsetTo<typename Types::ClassTypeWide, HBUINT>
-			rightClassTable;/* Offset from beginning of this subtable to
+			വലത്_Class_Table;/* Offset from beginning of this subtable to
 					 * right-hand class table. */
   NNOffsetTo<UnsizedArrayOf<FWORD>, HBUINT>
 			 array;		/* Offset from beginning of this subtable to
 					 * the start of the kerning array. */
-  public:
-  DEFINE_SIZE_STATIC (KernSubTableHeader::static_size + 4 * sizeof (HBUINT));
+  പൊതു:
+  DEFINE_SIZE_STATIC (KernSubTableHeader::static_size + 4 * വലുപ്പം (HBUINT));
 };
 
 template <typename KernSubTableHeader>
-struct KerxSubTableFormat4
+ഘടന KerxSubTableFormat4
 {
-  typedef ExtendedTypes Types;
+  തരനിർവചനം ExtendedTypes Types;
 
-  struct EntryData
+  ഘടന EntryData
   {
     HBUINT16	ankrActionIndex;/* Either 0xFFFF (for no action) or the index of
 				 * the action to perform. */
-    public:
+    പൊതു:
     DEFINE_SIZE_STATIC (2);
   };
 
-  enum Flags
+  എണ്ണൽ Flags
   {
     Mark		= 0x8000,	/* If set, remember this glyph as the marked glyph. */
     DontAdvance		= 0x4000,	/* If set, don't advance to the next glyph before
@@ -522,19 +522,19 @@ struct KerxSubTableFormat4
     Reserved		= 0x3FFF,	/* Not used; set to 0. */
   };
 
-  bool is_action_initiable (const Entry<EntryData> &entry) const
+  തർക്കം is_action_initiable (സ്ഥിരം Entry<EntryData> &entry) സ്ഥിരം
   {
-    return (entry.flags & Mark);
+    തിരികെ (entry.flags & Mark);
   }
-  bool is_actionable (const Entry<EntryData> &entry) const
+  തർക്കം is_actionable (സ്ഥിരം Entry<EntryData> &entry) സ്ഥിരം
   {
-    return entry.data.ankrActionIndex != 0xFFFF;
+    തിരികെ entry.data.ankrActionIndex != 0xFFFF;
   }
 
-  struct driver_context_t
+  ഘടന driver_context_t
   {
-    static constexpr bool in_place = true;
-    enum SubTableFlags
+    സ്ഥിതം constexpr തർക്കം in_place = സത്യം;
+    എണ്ണൽ SubTableFlags
     {
       ActionType	= 0xC0000000,	/* A two-bit field containing the action type. */
       Unused		= 0x3F000000,	/* Unused - must be zero. */
@@ -543,40 +543,40 @@ struct KerxSubTableFormat4
 					 * point table. */
     };
 
-    driver_context_t (const KerxSubTableFormat4 *table_,
+    driver_context_t (സ്ഥിരം KerxSubTableFormat4 *table_,
 		      hb_aat_apply_context_t *c_) :
 	c (c_),
 	table (table_),
 	action_type ((table->flags & ActionType) >> 30),
-	ankrData ((HBUINT16 *) ((const char *) &table->machine + (table->flags & Offset))),
-	mark_set (false),
+	ankrData ((HBUINT16 *) ((സ്ഥിരം അക്ഷരം *) &table->machine + (table->flags & Offset))),
+	mark_set (അസത്യം),
 	mark (0) {}
 
     HB_AAT_TRANSITION_INLINE
-    void transition (hb_buffer_t *buffer,
+    ശൂന്യം transition (hb_buffer_t *buffer,
 		     StateTableDriver<Types, EntryData, Flags> *driver,
-		     const Entry<EntryData> &entry)
+		     സ്ഥിരം Entry<EntryData> &entry)
     {
-      if (mark_set && entry.data.ankrActionIndex != 0xFFFF && buffer->idx < buffer->len)
+      എങ്കിൽ (mark_set && entry.data.ankrActionIndex != 0xFFFF && buffer->idx < buffer->len)
       {
 	hb_glyph_position_t &o = buffer->cur_pos();
-	switch (action_type)
+	തിരഞ്ഞെടുപ്പ് (action_type)
 	{
-	  case 0: /* Control Point Actions.*/
+	  അവസ്ഥ 0: /* Control Point Actions.*/
 	  {
 	    /* Indexed into glyph outline. */
 	    /* Each action (record in ankrData) contains two 16-bit fields, so we must
 	       double the ankrActionIndex to get the correct offset here. */
-	    const HBUINT16 *data = &ankrData[entry.data.ankrActionIndex * 2];
-	    if (!c->sanitizer.check_array (data, 2)) return;
+	    സ്ഥിരം HBUINT16 *data = &ankrData[entry.data.ankrActionIndex * 2];
+	    എങ്കിൽ (!c->sanitizer.check_array (data, 2)) തിരികെ;
 	    hb_barrier ();
-	    unsigned int markControlPoint = *data++;
-	    unsigned int currControlPoint = *data++;
+	    unsigned പൂർണ്ണസംഖ്യ markControlPoint = *data++;
+	    unsigned പൂർണ്ണസംഖ്യ currControlPoint = *data++;
 	    hb_position_t markX = 0;
 	    hb_position_t markY = 0;
 	    hb_position_t currX = 0;
 	    hb_position_t currY = 0;
-	    if (!c->font->get_glyph_contour_point_for_origin (c->buffer->info[mark].codepoint,
+	    എങ്കിൽ (!c->font->get_glyph_contour_point_for_origin (c->buffer->info[mark].codepoint,
 							      markControlPoint,
 							      HB_DIRECTION_LTR /*XXX*/,
 							      &markX, &markY) ||
@@ -584,237 +584,237 @@ struct KerxSubTableFormat4
 							      currControlPoint,
 							      HB_DIRECTION_LTR /*XXX*/,
 							      &currX, &currY))
-	      return;
+	      തിരികെ;
 
 	    o.x_offset = hb_saturate_sub (markX, currX);
 	    o.y_offset = hb_saturate_sub (markY, currY);
 	  }
-	  break;
+	  നിർത്തുക;
 
-	  case 1: /* Anchor Point Actions. */
+	  അവസ്ഥ 1: /* Anchor Point Actions. */
 	  {
 	    /* Indexed into 'ankr' table. */
 	    /* Each action (record in ankrData) contains two 16-bit fields, so we must
 	       double the ankrActionIndex to get the correct offset here. */
-	    const HBUINT16 *data = &ankrData[entry.data.ankrActionIndex * 2];
-	    if (!c->sanitizer.check_array (data, 2)) return;
+	    സ്ഥിരം HBUINT16 *data = &ankrData[entry.data.ankrActionIndex * 2];
+	    എങ്കിൽ (!c->sanitizer.check_array (data, 2)) തിരികെ;
 	    hb_barrier ();
-	    unsigned int markAnchorPoint = *data++;
-	    unsigned int currAnchorPoint = *data++;
-	    const Anchor &markAnchor = c->ankr_table->get_anchor (c->buffer->info[mark].codepoint,
+	    unsigned പൂർണ്ണസംഖ്യ markAnchorPoint = *data++;
+	    unsigned പൂർണ്ണസംഖ്യ currAnchorPoint = *data++;
+	    സ്ഥിരം Anchor &markAnchor = c->ankr_table->get_anchor (c->buffer->info[mark].codepoint,
 								  markAnchorPoint,
-								  c->sanitizer.get_num_glyphs ());
-	    const Anchor &currAnchor = c->ankr_table->get_anchor (c->buffer->cur ().codepoint,
+								  c->sanitizer.get_അക്കം_glyphs ());
+	    സ്ഥിരം Anchor &currAnchor = c->ankr_table->get_anchor (c->buffer->cur ().codepoint,
 								  currAnchorPoint,
-								  c->sanitizer.get_num_glyphs ());
+								  c->sanitizer.get_അക്കം_glyphs ());
 
 	    o.x_offset = hb_saturate_sub (c->font->em_scale_x (markAnchor.xCoordinate),
 					  c->font->em_scale_x (currAnchor.xCoordinate));
 	    o.y_offset = hb_saturate_sub (c->font->em_scale_y (markAnchor.yCoordinate),
 					  c->font->em_scale_y (currAnchor.yCoordinate));
 	  }
-	  break;
+	  നിർത്തുക;
 
-	  case 2: /* Control Point Coordinate Actions. */
+	  അവസ്ഥ 2: /* Control Point Coordinate Actions. */
 	  {
 	    /* Each action contains four 16-bit fields, so we multiply the ankrActionIndex
 	       by 4 to get the correct offset for the given action. */
-	    const FWORD *data = (const FWORD *) &ankrData[entry.data.ankrActionIndex * 4];
-	    if (!c->sanitizer.check_array (data, 4)) return;
+	    സ്ഥിരം FWORD *data = (സ്ഥിരം FWORD *) &ankrData[entry.data.ankrActionIndex * 4];
+	    എങ്കിൽ (!c->sanitizer.check_array (data, 4)) തിരികെ;
 	    hb_barrier ();
-	    int markX = *data++;
-	    int markY = *data++;
-	    int currX = *data++;
-	    int currY = *data++;
+	    പൂർണ്ണസംഖ്യ markX = *data++;
+	    പൂർണ്ണസംഖ്യ markY = *data++;
+	    പൂർണ്ണസംഖ്യ currX = *data++;
+	    പൂർണ്ണസംഖ്യ currY = *data++;
 
 	    o.x_offset = hb_saturate_sub (c->font->em_scale_x (markX), c->font->em_scale_x (currX));
 	    o.y_offset = hb_saturate_sub (c->font->em_scale_y (markY), c->font->em_scale_y (currY));
 	  }
-	  break;
+	  നിർത്തുക;
 	}
 	o.attach_type() = OT::Layout::GPOS_impl::ATTACH_TYPE_MARK;
-	o.attach_chain() = (int) mark - (int) buffer->idx;
-	if (c->buffer_is_reversed)
+	o.attach_chain() = (പൂർണ്ണസംഖ്യ) mark - (പൂർണ്ണസംഖ്യ) buffer->idx;
+	എങ്കിൽ (c->buffer_is_reversed)
 	  o.attach_chain() = -o.attach_chain();
 	buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
       }
 
-      if (entry.flags & Mark)
+      എങ്കിൽ (entry.flags & Mark)
       {
-	mark_set = true;
+	mark_set = സത്യം;
 	mark = buffer->idx;
       }
     }
 
-    public:
+    പൊതു:
     hb_aat_apply_context_t *c;
-    const KerxSubTableFormat4 *table;
-    private:
-    unsigned int action_type;
-    const HBUINT16 *ankrData;
-    bool mark_set;
-    unsigned int mark;
+    സ്ഥിരം KerxSubTableFormat4 *table;
+    സ്വകാര്യ:
+    unsigned പൂർണ്ണസംഖ്യ action_type;
+    സ്ഥിരം HBUINT16 *ankrData;
+    തർക്കം mark_set;
+    unsigned പൂർണ്ണസംഖ്യ mark;
   };
 
-  bool apply (hb_aat_apply_context_t *c) const
+  തർക്കം apply (hb_aat_apply_context_t *c) സ്ഥിരം
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (ഇത്);
 
-    driver_context_t dc (this, c);
+    driver_context_t dc (ഇത്, c);
 
     StateTableDriver<Types, EntryData, Flags> driver (machine, c->font->face);
 
     driver.drive (&dc, c);
 
-    return_trace (true);
+    return_trace (സത്യം);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ഇത്);
     /* The rest of array sanitizations are done at run-time. */
-    return_trace (likely (c->check_struct (this) &&
+    return_trace (likely (c->check_struct (ഇത്) &&
 			  machine.sanitize (c)));
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &first_set, set_t &second_set, unsigned num_glyphs) const
+  ശൂന്യം collect_glyphs (set_t &first_set, set_t &second_set, unsigned അക്കം_glyphs) സ്ഥിരം
   {
-    machine.collect_initial_glyphs (first_set, num_glyphs, *this);
+    machine.collect_initial_glyphs (first_set, അക്കം_glyphs, *ഇത്);
     //machine.collect_glyphs (second_set, num_glyphs); // second_set is unused for machine kerning
   }
 
-  protected:
+  സംരക്ഷിത:
   KernSubTableHeader		header;
   StateTable<Types, EntryData>	machine;
   HBUINT32			flags;
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (KernSubTableHeader::static_size + (StateTable<Types, EntryData>::static_size + HBUINT32::static_size));
 };
 
 template <typename KernSubTableHeader>
-struct KerxSubTableFormat6
+ഘടന KerxSubTableFormat6
 {
-  enum Flags
+  എണ്ണൽ Flags
   {
-    ValuesAreLong	= 0x00000001,
+    മൂല്യങ്ങൾ_Are_Long	= 0x00000001,
   };
 
-  bool is_long () const { return flags & ValuesAreLong; }
+  തർക്കം is_long () സ്ഥിരം { തിരികെ flags & മൂല്യങ്ങൾ_Are_Long; }
 
-  int get_kerning (hb_codepoint_t left, hb_codepoint_t right,
-		   hb_aat_apply_context_t *c) const
+  പൂർണ്ണസംഖ്യ get_kerning (hb_codepoint_t left, hb_codepoint_t വലത്,
+		   hb_aat_apply_context_t *c) സ്ഥിരം
   {
-    unsigned int num_glyphs = c->sanitizer.get_num_glyphs ();
-    if (is_long ())
+    unsigned പൂർണ്ണസംഖ്യ അക്കം_glyphs = c->sanitizer.get_അക്കം_glyphs ();
+    എങ്കിൽ (is_long ())
     {
-      const auto &t = u.l;
-      unsigned int l = (this+t.rowIndexTable).get_value_or_null (left, num_glyphs);
-      unsigned int r = (this+t.columnIndexTable).get_value_or_null (right, num_glyphs);
-      unsigned int offset = l + r;
-      if (unlikely (offset < l)) return 0; /* Addition overflow. */
-      if (unlikely (hb_unsigned_mul_overflows (offset, sizeof (FWORD32)))) return 0;
-      const FWORD32 *v = &StructAtOffset<FWORD32> (&(this+t.array), offset * sizeof (FWORD32));
-      if (unlikely (!v->sanitize (&c->sanitizer))) return 0;
+      സ്ഥിരം auto &t = u.l;
+      unsigned പൂർണ്ണസംഖ്യ l = (ഇത്+t.rowIndexTable).get_മൂല്യം_or_null (left, അക്കം_glyphs);
+      unsigned പൂർണ്ണസംഖ്യ r = (ഇത്+t.columnIndexTable).get_മൂല്യം_or_null (വലത്, അക്കം_glyphs);
+      unsigned പൂർണ്ണസംഖ്യ offset = l + r;
+      എങ്കിൽ (unlikely (offset < l)) തിരികെ 0; /* Addition overflow. */
+      എങ്കിൽ (unlikely (hb_unsigned_mul_overflows (offset, വലുപ്പം (FWORD32)))) തിരികെ 0;
+      സ്ഥിരം FWORD32 *v = &StructAtOffset<FWORD32> (&(ഇത്+t.array), offset * വലുപ്പം (FWORD32));
+      എങ്കിൽ (unlikely (!v->sanitize (&c->sanitizer))) തിരികെ 0;
       hb_barrier ();
-      return kerxTupleKern (*v, header.tuple_count (), &(this+vector), c);
+      തിരികെ kerxTupleKern (*v, header.tuple_എണ്ണം_2 (), &(ഇത്+vector), c);
     }
-    else
+    അല്ലെങ്കിൽ
     {
-      const auto &t = u.s;
-      unsigned int l = (this+t.rowIndexTable).get_value_or_null (left, num_glyphs);
-      unsigned int r = (this+t.columnIndexTable).get_value_or_null (right, num_glyphs);
-      unsigned int offset = l + r;
-      const FWORD *v = &StructAtOffset<FWORD> (&(this+t.array), offset * sizeof (FWORD));
-      if (unlikely (!v->sanitize (&c->sanitizer))) return 0;
+      സ്ഥിരം auto &t = u.s;
+      unsigned പൂർണ്ണസംഖ്യ l = (ഇത്+t.rowIndexTable).get_മൂല്യം_or_null (left, അക്കം_glyphs);
+      unsigned പൂർണ്ണസംഖ്യ r = (ഇത്+t.columnIndexTable).get_മൂല്യം_or_null (വലത്, അക്കം_glyphs);
+      unsigned പൂർണ്ണസംഖ്യ offset = l + r;
+      സ്ഥിരം FWORD *v = &StructAtOffset<FWORD> (&(ഇത്+t.array), offset * വലുപ്പം (FWORD));
+      എങ്കിൽ (unlikely (!v->sanitize (&c->sanitizer))) തിരികെ 0;
       hb_barrier ();
-      return kerxTupleKern (*v, header.tuple_count (), &(this+vector), c);
+      തിരികെ kerxTupleKern (*v, header.tuple_എണ്ണം_2 (), &(ഇത്+vector), c);
     }
   }
 
-  bool apply (hb_aat_apply_context_t *c) const
+  തർക്കം apply (hb_aat_apply_context_t *c) സ്ഥിരം
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (ഇത്);
 
-    if (!c->plan->requested_kerning)
-      return_trace (false);
+    എങ്കിൽ (!c->plan->requested_kerning)
+      return_trace (അസത്യം);
 
-    if (header.coverage & header.Backwards)
-      return_trace (false);
+    എങ്കിൽ (header.coverage & header.Backwards)
+      return_trace (അസത്യം);
 
-    accelerator_t accel (*this, c);
+    accelerator_t accel (*ഇത്, c);
     hb_kern_machine_t<accelerator_t> machine (accel, header.coverage & header.CrossStream);
     machine.kern (c->font, c->buffer, c->plan->kern_mask);
 
-    return_trace (true);
+    return_trace (സത്യം);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (ഇത്);
+    return_trace (likely (c->check_struct (ഇത്) &&
 			  hb_barrier () &&
 			  (is_long () ?
 			   (
-			     u.l.rowIndexTable.sanitize (c, this) &&
-			     u.l.columnIndexTable.sanitize (c, this) &&
-			     c->check_range (this, u.l.array)
+			     u.l.rowIndexTable.sanitize (c, ഇത്) &&
+			     u.l.columnIndexTable.sanitize (c, ഇത്) &&
+			     c->check_range (ഇത്, u.l.array)
 			   ) : (
-			     u.s.rowIndexTable.sanitize (c, this) &&
-			     u.s.columnIndexTable.sanitize (c, this) &&
-			     c->check_range (this, u.s.array)
+			     u.s.rowIndexTable.sanitize (c, ഇത്) &&
+			     u.s.columnIndexTable.sanitize (c, ഇത്) &&
+			     c->check_range (ഇത്, u.s.array)
 			   )) &&
-			  (header.tuple_count () == 0 ||
-			   c->check_range (this, vector))));
+			  (header.tuple_എണ്ണം_2 () == 0 ||
+			   c->check_range (ഇത്, vector))));
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &first_set, set_t &second_set, unsigned num_glyphs) const
+  ശൂന്യം collect_glyphs (set_t &first_set, set_t &second_set, unsigned അക്കം_glyphs) സ്ഥിരം
   {
-    if (is_long ())
+    എങ്കിൽ (is_long ())
     {
-      const auto &t = u.l;
-      (this+t.rowIndexTable).collect_glyphs (first_set, num_glyphs);
-      (this+t.columnIndexTable).collect_glyphs (second_set, num_glyphs);
+      സ്ഥിരം auto &t = u.l;
+      (ഇത്+t.rowIndexTable).collect_glyphs (first_set, അക്കം_glyphs);
+      (ഇത്+t.columnIndexTable).collect_glyphs (second_set, അക്കം_glyphs);
     }
-    else
+    അല്ലെങ്കിൽ
     {
-      const auto &t = u.s;
-      (this+t.rowIndexTable).collect_glyphs (first_set, num_glyphs);
-      (this+t.columnIndexTable).collect_glyphs (second_set, num_glyphs);
+      സ്ഥിരം auto &t = u.s;
+      (ഇത്+t.rowIndexTable).collect_glyphs (first_set, അക്കം_glyphs);
+      (ഇത്+t.columnIndexTable).collect_glyphs (second_set, അക്കം_glyphs);
     }
   }
 
-  struct accelerator_t
+  ഘടന accelerator_t
   {
-    const KerxSubTableFormat6 &table;
+    സ്ഥിരം KerxSubTableFormat6 &table;
     hb_aat_apply_context_t *c;
 
-    accelerator_t (const KerxSubTableFormat6 &table_,
+    accelerator_t (സ്ഥിരം KerxSubTableFormat6 &table_,
 		   hb_aat_apply_context_t *c_) :
 		     table (table_), c (c_) {}
 
-    int get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+    പൂർണ്ണസംഖ്യ get_kerning (hb_codepoint_t left, hb_codepoint_t വലത്) സ്ഥിരം
     {
-      if (!(*c->first_set)[left] || !(*c->second_set)[right]) return 0;
-      return table.get_kerning (left, right, c);
+      എങ്കിൽ (!(*c->first_set)[left] || !(*c->second_set)[വലത്]) തിരികെ 0;
+      തിരികെ table.get_kerning (left, വലത്, c);
     }
   };
 
-  protected:
+  സംരക്ഷിത:
   KernSubTableHeader		header;
   HBUINT32			flags;
-  HBUINT16			rowCount;
-  HBUINT16			columnCount;
-  union U
+  HBUINT16			row_എണ്ണം;
+  HBUINT16			column_എണ്ണം;
+  സംഘം U
   {
-    struct Long
+    ഘടന Long
     {
       NNOffset32To<Lookup<HBUINT32>>		rowIndexTable;
       NNOffset32To<Lookup<HBUINT32>>		columnIndexTable;
       NNOffset32To<UnsizedArrayOf<FWORD32>>	array;
     } l;
-    struct Short
+    ഘടന Short
     {
       NNOffset32To<Lookup<HBUINT16>>		rowIndexTable;
       NNOffset32To<Lookup<HBUINT16>>		columnIndexTable;
@@ -822,19 +822,19 @@ struct KerxSubTableFormat6
     } s;
   } u;
   NNOffset32To<UnsizedArrayOf<FWORD>>	vector;
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (KernSubTableHeader::static_size + 24);
 };
 
 
-struct KerxSubTableHeader
+ഘടന KerxSubTableHeader
 {
-  typedef ExtendedTypes Types;
+  തരനിർവചനം ExtendedTypes Types;
 
-  unsigned   tuple_count () const { return tupleCount; }
-  bool     is_horizontal () const { return !(coverage & Vertical); }
+  unsigned   tuple_എണ്ണം_2 () സ്ഥിരം { തിരികെ tuple_എണ്ണം; }
+  തർക്കം     is_horizontal () സ്ഥിരം { തിരികെ !(coverage & Vertical); }
 
-  enum Coverage
+  എണ്ണൽ Coverage
   {
     Vertical	= 0x80000000u,	/* Set if table has vertical kerning values. */
     CrossStream	= 0x40000000u,	/* Set if table has cross-stream kerning values. */
@@ -848,70 +848,70 @@ struct KerxSubTableHeader
     SubtableType= 0x000000FFu,	/* Subtable type. */
   };
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
-  public:
+  പൊതു:
   HBUINT32	length;
   HBUINT32	coverage;
-  HBUINT32	tupleCount;
-  public:
+  HBUINT32	tuple_എണ്ണം;
+  പൊതു:
   DEFINE_SIZE_STATIC (12);
 };
 
-struct KerxSubTable
+ഘടന KerxSubTable
 {
-  friend struct kerx;
+  friend ഘടന kerx;
 
-  size_t get_size () const { return u.header.length; }
-  unsigned int get_type () const { return u.header.coverage & u.header.SubtableType; }
+  size_t get_size () സ്ഥിരം { തിരികെ u.header.length; }
+  unsigned പൂർണ്ണസംഖ്യ get_type () സ്ഥിരം { തിരികെ u.header.coverage & u.header.SubtableType; }
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) സ്ഥിരം
   {
-    unsigned int subtable_type = get_type ();
-    TRACE_DISPATCH (this, subtable_type);
-    switch (subtable_type) {
-    case 0:	hb_barrier (); return_trace (c->dispatch (u.format0, std::forward<Ts> (ds)...));
-    case 1:	hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-    case 2:	hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-    case 4:	hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
-    case 6:	hb_barrier (); return_trace (c->dispatch (u.format6, std::forward<Ts> (ds)...));
-    default:	return_trace (c->default_return_value ());
+    unsigned പൂർണ്ണസംഖ്യ subtable_type = get_type ();
+    TRACE_DISPATCH (ഇത്, subtable_type);
+    തിരഞ്ഞെടുപ്പ് (subtable_type) {
+    അവസ്ഥ 0:	hb_barrier (); return_trace (c->dispatch (u.format0, std::forward<Ts> (ds)...));
+    അവസ്ഥ 1:	hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    അവസ്ഥ 2:	hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    അവസ്ഥ 4:	hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
+    അവസ്ഥ 6:	hb_barrier (); return_trace (c->dispatch (u.format6, std::forward<Ts> (ds)...));
+    സ്ഥിരസ്ഥിതി:	return_trace (c->default_return_മൂല്യം ());
     }
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &first_set, set_t &second_set, unsigned num_glyphs) const
+  ശൂന്യം collect_glyphs (set_t &first_set, set_t &second_set, unsigned അക്കം_glyphs) സ്ഥിരം
   {
-    unsigned int subtable_type = get_type ();
-    switch (subtable_type) {
-    case 0:	hb_barrier (); u.format0.collect_glyphs (first_set, second_set, num_glyphs); return;
-    case 1:	hb_barrier (); u.format1.collect_glyphs (first_set, second_set, num_glyphs); return;
-    case 2:	hb_barrier (); u.format2.collect_glyphs (first_set, second_set, num_glyphs); return;
-    case 4:	hb_barrier (); u.format4.collect_glyphs (first_set, second_set, num_glyphs); return;
-    case 6:	hb_barrier (); u.format6.collect_glyphs (first_set, second_set, num_glyphs); return;
-    default:	return;
+    unsigned പൂർണ്ണസംഖ്യ subtable_type = get_type ();
+    തിരഞ്ഞെടുപ്പ് (subtable_type) {
+    അവസ്ഥ 0:	hb_barrier (); u.format0.collect_glyphs (first_set, second_set, അക്കം_glyphs); തിരികെ;
+    അവസ്ഥ 1:	hb_barrier (); u.format1.collect_glyphs (first_set, second_set, അക്കം_glyphs); തിരികെ;
+    അവസ്ഥ 2:	hb_barrier (); u.format2.collect_glyphs (first_set, second_set, അക്കം_glyphs); തിരികെ;
+    അവസ്ഥ 4:	hb_barrier (); u.format4.collect_glyphs (first_set, second_set, അക്കം_glyphs); തിരികെ;
+    അവസ്ഥ 6:	hb_barrier (); u.format6.collect_glyphs (first_set, second_set, അക്കം_glyphs); തിരികെ;
+    സ്ഥിരസ്ഥിതി:	തിരികെ;
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    if (!(u.header.sanitize (c) &&
+    TRACE_SANITIZE (ഇത്);
+    എങ്കിൽ (!(u.header.sanitize (c) &&
 	  hb_barrier () &&
 	  u.header.length >= u.header.static_size &&
-	  c->check_range (this, u.header.length)))
-      return_trace (false);
+	  c->check_range (ഇത്, u.header.length)))
+      return_trace (അസത്യം);
 
     return_trace (dispatch (c));
   }
 
-  public:
-  union {
+  പൊതു:
+  സംഘം {
   KerxSubTableHeader				header;
   KerxSubTableFormat0<KerxSubTableHeader>	format0;
   KerxSubTableFormat1<KerxSubTableHeader>	format1;
@@ -919,7 +919,7 @@ struct KerxSubTable
   KerxSubTableFormat4<KerxSubTableHeader>	format4;
   KerxSubTableFormat6<KerxSubTableHeader>	format6;
   } u;
-  public:
+  പൊതു:
   DEFINE_SIZE_MIN (12);
 };
 
@@ -928,126 +928,126 @@ struct KerxSubTable
  * The 'kerx' Table
  */
 
-struct kern_subtable_accelerator_data_t
+ഘടന kern_subtable_accelerator_data_t
 {
   hb_bit_set_t first_set;
   hb_bit_set_t second_set;
   mutable hb_aat_class_cache_t class_cache;
 };
 
-struct kern_accelerator_data_t
+ഘടന kern_accelerator_data_t
 {
   hb_vector_t<kern_subtable_accelerator_data_t> subtable_accels;
   hb_aat_scratch_t scratch;
 };
 
 template <typename T>
-struct KerxTable
+ഘടന KerxTable
 {
   /* https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern */
-  const T* thiz () const { return static_cast<const T *> (this); }
+  സ്ഥിരം T* thiz () സ്ഥിരം { തിരികെ static_cast<സ്ഥിരം T *> (ഇത്); }
 
-  bool has_state_machine () const
+  തർക്കം has_state_machine () സ്ഥിരം
   {
-    typedef typename T::SubTable SubTable;
+    തരനിർവചനം typename T::SubTable SubTable;
 
-    const SubTable *st = &thiz()->firstSubTable;
-    unsigned int count = thiz()->tableCount;
-    for (unsigned int i = 0; i < count; i++)
+    സ്ഥിരം SubTable *st = &thiz()->firstSubTable;
+    unsigned പൂർണ്ണസംഖ്യ എണ്ണം = thiz()->table_എണ്ണം;
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
     {
-      if (st->get_type () == 1)
-	return true;
+      എങ്കിൽ (st->get_type () == 1)
+	തിരികെ സത്യം;
 
       // TODO: What about format 4? What's this API used for anyway?
 
       st = &StructAfter<SubTable> (*st);
     }
-    return false;
+    തിരികെ അസത്യം;
   }
 
-  bool has_cross_stream () const
+  തർക്കം has_cross_stream () സ്ഥിരം
   {
-    typedef typename T::SubTable SubTable;
+    തരനിർവചനം typename T::SubTable SubTable;
 
-    const SubTable *st = &thiz()->firstSubTable;
-    unsigned int count = thiz()->tableCount;
-    for (unsigned int i = 0; i < count; i++)
+    സ്ഥിരം SubTable *st = &thiz()->firstSubTable;
+    unsigned പൂർണ്ണസംഖ്യ എണ്ണം = thiz()->table_എണ്ണം;
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
     {
-      if (st->u.header.coverage & st->u.header.CrossStream)
-	return true;
+      എങ്കിൽ (st->u.header.coverage & st->u.header.CrossStream)
+	തിരികെ സത്യം;
       st = &StructAfter<SubTable> (*st);
     }
-    return false;
+    തിരികെ അസത്യം;
   }
 
-  int get_h_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+  പൂർണ്ണസംഖ്യ get_h_kerning (hb_codepoint_t left, hb_codepoint_t വലത്) സ്ഥിരം
   {
-    typedef typename T::SubTable SubTable;
+    തരനിർവചനം typename T::SubTable SubTable;
 
-    int v = 0;
-    const SubTable *st = &thiz()->firstSubTable;
-    unsigned int count = thiz()->tableCount;
-    for (unsigned int i = 0; i < count; i++)
+    പൂർണ്ണസംഖ്യ v = 0;
+    സ്ഥിരം SubTable *st = &thiz()->firstSubTable;
+    unsigned പൂർണ്ണസംഖ്യ എണ്ണം = thiz()->table_എണ്ണം;
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
     {
-      if ((st->u.header.coverage & (st->u.header.Variation | st->u.header.CrossStream)) ||
+      എങ്കിൽ ((st->u.header.coverage & (st->u.header.Variation | st->u.header.CrossStream)) ||
 	  !st->u.header.is_horizontal ())
-	continue;
-      v += st->get_kerning (left, right);
+	തുടരുക;
+      v += st->get_kerning (left, വലത്);
       st = &StructAfter<SubTable> (*st);
     }
-    return v;
+    തിരികെ v;
   }
 
-  bool apply (AAT::hb_aat_apply_context_t *c,
-	      const kern_accelerator_data_t &accel_data) const
+  തർക്കം apply (AAT::hb_aat_apply_context_t *c,
+	      സ്ഥിരം kern_accelerator_data_t &accel_data) സ്ഥിരം
   {
     c->buffer->unsafe_to_concat ();
 
     c->setup_buffer_glyph_set ();
 
-    typedef typename T::SubTable SubTable;
+    തരനിർവചനം typename T::SubTable SubTable;
 
-    bool ret = false;
-    bool seenCrossStream = false;
+    തർക്കം ret = അസത്യം;
+    തർക്കം seenCrossStream = അസത്യം;
     c->set_lookup_index (0);
-    const SubTable *st = &thiz()->firstSubTable;
-    unsigned int count = thiz()->tableCount;
-    for (unsigned int i = 0; i < count; i++)
+    സ്ഥിരം SubTable *st = &thiz()->firstSubTable;
+    unsigned പൂർണ്ണസംഖ്യ എണ്ണം = thiz()->table_എണ്ണം;
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
     {
-      bool reverse;
+      തർക്കം reverse;
 
       auto &subtable_accel = accel_data.subtable_accels[i];
 
-      if (!T::Types::extended && (st->u.header.coverage & st->u.header.Variation))
-	goto skip;
+      എങ്കിൽ (!T::Types::extended && (st->u.header.coverage & st->u.header.Variation))
+	പോകുക skip;
 
-      if (HB_DIRECTION_IS_HORIZONTAL (c->buffer->props.direction) != st->u.header.is_horizontal ())
-	goto skip;
+      എങ്കിൽ (HB_DIRECTION_IS_HORIZONTAL (c->buffer->props.direction) != st->u.header.is_horizontal ())
+	പോകുക skip;
 
       c->first_set = &subtable_accel.first_set;
       c->second_set = &subtable_accel.second_set;
       c->machine_class_cache = &subtable_accel.class_cache;
 
-      if (!c->buffer_intersects_machine ())
+      എങ്കിൽ (!c->buffer_intersects_machine ())
       {
-	(void) c->buffer->message (c->font, "skipped subtable %u because no glyph matches", c->lookup_index);
-	goto skip;
+	(ശൂന്യം) c->buffer->message (c->font, "skipped subtable %u because no glyph matches", c->lookup_index);
+	പോകുക skip;
       }
 
-      reverse = bool (st->u.header.coverage & st->u.header.Backwards) !=
+      reverse = തർക്കം (st->u.header.coverage & st->u.header.Backwards) !=
 		HB_DIRECTION_IS_BACKWARD (c->buffer->props.direction);
 
-      if (!c->buffer->message (c->font, "start subtable %u", c->lookup_index))
-	goto skip;
+      എങ്കിൽ (!c->buffer->message (c->font, "start subtable %u", c->lookup_index))
+	പോകുക skip;
 
-      if (!seenCrossStream &&
+      എങ്കിൽ (!seenCrossStream &&
 	  (st->u.header.coverage & st->u.header.CrossStream))
       {
 	/* Attach all glyphs into a chain. */
-	seenCrossStream = true;
+	seenCrossStream = സത്യം;
 	hb_glyph_position_t *pos = c->buffer->pos;
-	unsigned int count = c->buffer->len;
-	for (unsigned int i = 0; i < count; i++)
+	unsigned പൂർണ്ണസംഖ്യ എണ്ണം = c->buffer->len;
+	വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
 	{
 	  pos[i].attach_type() = OT::Layout::GPOS_impl::ATTACH_TYPE_CURSIVE;
 	  pos[i].attach_chain() = HB_DIRECTION_IS_FORWARD (c->buffer->props.direction) ? -1 : +1;
@@ -1057,44 +1057,44 @@ struct KerxTable
 	}
       }
 
-      if (reverse != c->buffer_is_reversed)
+      എങ്കിൽ (reverse != c->buffer_is_reversed)
         c->reverse_buffer ();
 
       {
 	/* See comment in sanitize() for conditional here. */
-	hb_sanitize_with_object_t with (&c->sanitizer, i < count - 1 ? st : (const SubTable *) nullptr);
+	hb_sanitize_with_object_t with (&c->sanitizer, i < എണ്ണം - 1 ? st : (സ്ഥിരം SubTable *) nullptr);
 	ret |= st->dispatch (c);
       }
 
-      (void) c->buffer->message (c->font, "end subtable %u", c->lookup_index);
+      (ശൂന്യം) c->buffer->message (c->font, "end subtable %u", c->lookup_index);
 
     skip:
       st = &StructAfter<SubTable> (*st);
       c->set_lookup_index (c->lookup_index + 1);
     }
-    if (c->buffer_is_reversed)
+    എങ്കിൽ (c->buffer_is_reversed)
       c->reverse_buffer ();
 
-    return ret;
+    തിരികെ ret;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!(thiz()->version.sanitize (c) &&
+    TRACE_SANITIZE (ഇത്);
+    എങ്കിൽ (unlikely (!(thiz()->version.sanitize (c) &&
 		    hb_barrier () &&
 		    (unsigned) thiz()->version >= (unsigned) T::minVersion &&
-		    thiz()->tableCount.sanitize (c))))
-      return_trace (false);
+		    thiz()->table_എണ്ണം.sanitize (c))))
+      return_trace (അസത്യം);
 
-    typedef typename T::SubTable SubTable;
+    തരനിർവചനം typename T::SubTable SubTable;
 
-    const SubTable *st = &thiz()->firstSubTable;
-    unsigned int count = thiz()->tableCount;
-    for (unsigned int i = 0; i < count; i++)
+    സ്ഥിരം SubTable *st = &thiz()->firstSubTable;
+    unsigned പൂർണ്ണസംഖ്യ എണ്ണം = thiz()->table_എണ്ണം;
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
     {
-      if (unlikely (!st->u.header.sanitize (c)))
-	return_trace (false);
+      എങ്കിൽ (unlikely (!st->u.header.sanitize (c)))
+	return_trace (അസത്യം);
       hb_barrier ();
       /* OpenType kern table has 2-byte subtable lengths.  That's limiting.
        * MS implementation also only supports one subtable, of format 0,
@@ -1103,68 +1103,68 @@ struct KerxTable
        * is simply ignored.  Which makes sense.  It's only needed if you
        * have multiple subtables.  To handle such fonts, we just ignore
        * the length for the last subtable. */
-      hb_sanitize_with_object_t with (c, i < count - 1 ? st : (const SubTable *) nullptr);
+      hb_sanitize_with_object_t with (c, i < എണ്ണം - 1 ? st : (സ്ഥിരം SubTable *) nullptr);
 
-      if (unlikely (!st->sanitize (c)))
-	return_trace (false);
+      എങ്കിൽ (unlikely (!st->sanitize (c)))
+	return_trace (അസത്യം);
 
       st = &StructAfter<SubTable> (*st);
     }
 
     unsigned majorVersion = thiz()->version;
-    if (sizeof (thiz()->version) == 4)
+    എങ്കിൽ (വലുപ്പം (thiz()->version) == 4)
       majorVersion = majorVersion >> 16;
-    if (majorVersion >= 3)
+    എങ്കിൽ (majorVersion >= 3)
     {
-      const SubtableGlyphCoverage *coverage = (const SubtableGlyphCoverage *) st;
-      if (!coverage->sanitize (c, count))
-        return_trace (false);
+      സ്ഥിരം SubtableGlyphCoverage *coverage = (സ്ഥിരം SubtableGlyphCoverage *) st;
+      എങ്കിൽ (!coverage->sanitize (c, എണ്ണം))
+        return_trace (അസത്യം);
     }
 
-    return_trace (true);
+    return_trace (സത്യം);
   }
 
-  kern_accelerator_data_t create_accelerator_data (unsigned num_glyphs) const
+  kern_accelerator_data_t create_accelerator_data (unsigned അക്കം_glyphs) സ്ഥിരം
   {
     kern_accelerator_data_t accel_data;
 
-    typedef typename T::SubTable SubTable;
+    തരനിർവചനം typename T::SubTable SubTable;
 
-    const SubTable *st = &thiz()->firstSubTable;
-    unsigned int count = thiz()->tableCount;
-    for (unsigned int i = 0; i < count; i++)
+    സ്ഥിരം SubTable *st = &thiz()->firstSubTable;
+    unsigned പൂർണ്ണസംഖ്യ എണ്ണം = thiz()->table_എണ്ണം;
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
     {
       auto &subtable_accel = *accel_data.subtable_accels.push ();
-      if (unlikely (accel_data.subtable_accels.in_error ()))
-	  return accel_data;
+      എങ്കിൽ (unlikely (accel_data.subtable_accels.in_error ()))
+	  തിരികെ accel_data;
 
-      st->collect_glyphs (subtable_accel.first_set, subtable_accel.second_set, num_glyphs);
+      st->collect_glyphs (subtable_accel.first_set, subtable_accel.second_set, അക്കം_glyphs);
       subtable_accel.class_cache.clear ();
 
       st = &StructAfter<SubTable> (*st);
     }
 
-    return accel_data;
+    തിരികെ accel_data;
   }
 
-  struct accelerator_t
+  ഘടന accelerator_t
   {
     accelerator_t (hb_face_t *face)
     {
       hb_sanitize_context_t sc;
-      this->table = sc.reference_table<T> (face);
-      this->accel_data = this->table->create_accelerator_data (face->get_num_glyphs ());
+      ഇത്->table = sc.reference_table<T> (face);
+      ഇത്->accel_data = ഇത്->table->create_accelerator_data (face->get_അക്കം_glyphs ());
     }
     ~accelerator_t ()
     {
-      this->table.destroy ();
+      ഇത്->table.destroy ();
     }
 
-    hb_blob_t *get_blob () const { return table.get_blob (); }
+    hb_blob_t *get_blob () സ്ഥിരം { തിരികെ table.get_blob (); }
 
-    bool apply (AAT::hb_aat_apply_context_t *c) const
+    തർക്കം apply (AAT::hb_aat_apply_context_t *c) സ്ഥിരം
     {
-      return table->apply (c, accel_data);
+      തിരികെ table->apply (c, accel_data);
     }
 
     hb_blob_ptr_t<T> table;
@@ -1173,33 +1173,33 @@ struct KerxTable
   };
 };
 
-struct kerx : KerxTable<kerx>
+ഘടന kerx : KerxTable<kerx>
 {
-  friend struct KerxTable<kerx>;
+  friend ഘടന KerxTable<kerx>;
 
-  static constexpr hb_tag_t tableTag = HB_AAT_TAG_kerx;
-  static constexpr unsigned minVersion = 2u;
+  സ്ഥിതം constexpr hb_tag_t tableTag = HB_AAT_TAG_kerx;
+  സ്ഥിതം constexpr unsigned minVersion = 2u;
 
-  typedef KerxSubTableHeader SubTableHeader;
-  typedef SubTableHeader::Types Types;
-  typedef KerxSubTable SubTable;
+  തരനിർവചനം KerxSubTableHeader SubTableHeader;
+  തരനിർവചനം SubTableHeader::Types Types;
+  തരനിർവചനം KerxSubTable SubTable;
 
-  bool has_data () const { return version; }
+  തർക്കം has_data () സ്ഥിരം { തിരികെ version; }
 
-  protected:
+  സംരക്ഷിത:
   HBUINT16	version;	/* The version number of the extended kerning table
 				 * (currently 2, 3, or 4). */
   HBUINT16	unused;		/* Set to 0. */
-  HBUINT32	tableCount;	/* The number of subtables included in the extended kerning
+  HBUINT32	table_എണ്ണം;	/* The number of subtables included in the extended kerning
 				 * table. */
   SubTable	firstSubTable;	/* Subtables. */
 /*subtableGlyphCoverageArray*/	/* Only if version >= 3. We don't use. */
 
-  public:
+  പൊതു:
   DEFINE_SIZE_MIN (8);
 };
 
-struct kerx_accelerator_t : kerx::accelerator_t {
+ഘടന kerx_accelerator_t : kerx::accelerator_t {
   kerx_accelerator_t (hb_face_t *face) : kerx::accelerator_t (face) {}
 };
 

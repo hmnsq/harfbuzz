@@ -29,294 +29,294 @@
 #ifndef HB_OT_LAYOUT_GSUBGPOS_HH
 #define HB_OT_LAYOUT_GSUBGPOS_HH
 
-#include "hb.hh"
-#include "hb-buffer.hh"
-#include "hb-map.hh"
-#include "hb-set.hh"
-#include "hb-ot-map.hh"
-#include "hb-ot-layout-common.hh"
-#include "hb-ot-layout-gdef-table.hh"
-#include "hb-depend-data.hh"
+#അന്തര്ഭാവ "hb.hh"
+#അന്തര്ഭാവ "hb-buffer.hh"
+#അന്തര്ഭാവ "hb-map.hh"
+#അന്തര്ഭാവ "hb-set.hh"
+#അന്തര്ഭാവ "hb-ot-map.hh"
+#അന്തര്ഭാവ "hb-ot-layout-common.hh"
+#അന്തര്ഭാവ "hb-ot-layout-gdef-table.hh"
+#അന്തര്ഭാവ "hb-depend-data.hh"
 
 
-namespace OT {
+നാമാകാശ OT {
 
 
-struct hb_intersects_context_t :
-       hb_dispatch_context_t<hb_intersects_context_t, bool>
+ഘടന hb_intersects_context_t :
+       hb_dispatch_context_t<hb_intersects_context_t, തർക്കം>
 {
   template <typename T>
-  return_t dispatch (const T &obj) { return obj.intersects (this->glyphs); }
-  static return_t default_return_value () { return false; }
-  bool stop_sublookup_iteration (return_t r) const { return r; }
+  return_t dispatch (സ്ഥിരം T &obj) { തിരികെ obj.intersects (ഇത്->glyphs); }
+  സ്ഥിതം return_t default_return_മൂല്യം () { തിരികെ അസത്യം; }
+  തർക്കം stop_sublookup_iteration (return_t r) സ്ഥിരം { തിരികെ r; }
 
-  const hb_set_t *glyphs;
+  സ്ഥിരം hb_set_t *glyphs;
 
-  hb_intersects_context_t (const hb_set_t *glyphs_) :
+  hb_intersects_context_t (സ്ഥിരം hb_set_t *glyphs_) :
                             glyphs (glyphs_) {}
 };
 
-struct hb_have_non_1to1_context_t :
-       hb_dispatch_context_t<hb_have_non_1to1_context_t, bool>
+ഘടന hb_have_non_1to1_context_t :
+       hb_dispatch_context_t<hb_have_non_1to1_context_t, തർക്കം>
 {
   template <typename T>
-  return_t dispatch (const T &obj) { return obj.may_have_non_1to1 (); }
-  static return_t default_return_value () { return false; }
-  bool stop_sublookup_iteration (return_t r) const { return r; }
+  return_t dispatch (സ്ഥിരം T &obj) { തിരികെ obj.may_have_non_1to1 (); }
+  സ്ഥിതം return_t default_return_മൂല്യം () { തിരികെ അസത്യം; }
+  തർക്കം stop_sublookup_iteration (return_t r) സ്ഥിരം { തിരികെ r; }
 };
 
-struct hb_closure_context_t :
+ഘടന hb_closure_context_t :
        hb_dispatch_context_t<hb_closure_context_t>
 {
-  typedef return_t (*recurse_func_t) (hb_closure_context_t *c, unsigned lookup_index, hb_set_t *covered_seq_indicies, unsigned seq_index, unsigned end_index);
+  തരനിർവചനം return_t (*recurse_func_t) (hb_closure_context_t *c, unsigned lookup_index, hb_set_t *covered_seq_indicies, unsigned seq_index, unsigned end_index);
   template <typename T>
-  return_t dispatch (const T &obj) { obj.closure (this); return hb_empty_t (); }
-  static return_t default_return_value () { return hb_empty_t (); }
-  void recurse (unsigned lookup_index, hb_set_t *covered_seq_indicies, unsigned seq_index, unsigned end_index)
+  return_t dispatch (സ്ഥിരം T &obj) { obj.closure (ഇത്); തിരികെ hb_empty_t (); }
+  സ്ഥിതം return_t default_return_മൂല്യം () { തിരികെ hb_empty_t (); }
+  ശൂന്യം recurse (unsigned lookup_index, hb_set_t *covered_seq_indicies, unsigned seq_index, unsigned end_index)
   {
-    if (unlikely (nesting_level_left == 0 || !recurse_func))
-      return;
+    എങ്കിൽ (unlikely (nesting_level_ഇടത് == 0 || !recurse_func))
+      തിരികെ;
 
-    nesting_level_left--;
-    recurse_func (this, lookup_index, covered_seq_indicies, seq_index, end_index);
-    nesting_level_left++;
+    nesting_level_ഇടത്--;
+    recurse_func (ഇത്, lookup_index, covered_seq_indicies, seq_index, end_index);
+    nesting_level_ഇടത്++;
   }
 
-  void reset_lookup_visit_count ()
-  { lookup_count = 0; }
+  ശൂന്യം reset_lookup_visit_എണ്ണം ()
+  { lookup_എണ്ണം = 0; }
 
-  bool lookup_limit_exceeded ()
-  { return lookup_count > HB_MAX_LOOKUP_VISIT_COUNT; }
+  തർക്കം lookup_limit_exceeded ()
+  { തിരികെ lookup_എണ്ണം > HB_MAX_LOOKUP_VISIT_എണ്ണം; }
 
-  bool should_visit_lookup (unsigned int lookup_index)
+  തർക്കം should_visit_lookup (unsigned പൂർണ്ണസംഖ്യ lookup_index)
   {
-    if (lookup_count++ > HB_MAX_LOOKUP_VISIT_COUNT)
-      return false;
+    എങ്കിൽ (lookup_എണ്ണം++ > HB_MAX_LOOKUP_VISIT_എണ്ണം)
+      തിരികെ അസത്യം;
 
-    if (is_lookup_done (lookup_index))
-      return false;
+    എങ്കിൽ (is_lookup_done (lookup_index))
+      തിരികെ അസത്യം;
 
-    return true;
+    തിരികെ സത്യം;
   }
 
-  bool is_lookup_done (unsigned int lookup_index)
+  തർക്കം is_lookup_done (unsigned പൂർണ്ണസംഖ്യ lookup_index)
   {
-    if (unlikely (done_lookups_glyph_count->in_error () ||
+    എങ്കിൽ (unlikely (done_lookups_glyph_എണ്ണം->in_error () ||
 		  done_lookups_glyph_set->in_error ()))
-      return true;
+      തിരികെ സത്യം;
 
     /* Have we visited this lookup with the current set of glyphs? */
-    unsigned pop = glyphs->get_population ();
-    if (unlikely (pop == HB_MAP_VALUE_INVALID)) // Avoid sentinel interference.
-      pop--;
-    if (done_lookups_glyph_count->get (lookup_index) != pop)
+    unsigned എടുക്കുക = glyphs->get_population ();
+    എങ്കിൽ (unlikely (എടുക്കുക == HB_MAP_മൂല്യം_INVALID)) // Avoid sentinel interference.
+      എടുക്കുക--;
+    എങ്കിൽ (done_lookups_glyph_എണ്ണം->get (lookup_index) != എടുക്കുക)
     {
-      done_lookups_glyph_count->set (lookup_index, pop);
+      done_lookups_glyph_എണ്ണം->set (lookup_index, എടുക്കുക);
 
-      if (!done_lookups_glyph_set->has (lookup_index))
+      എങ്കിൽ (!done_lookups_glyph_set->has (lookup_index))
       {
-	if (unlikely (!done_lookups_glyph_set->set (lookup_index, hb::unique_ptr<hb_set_t> {hb_set_create ()})))
-	  return true;
+	എങ്കിൽ (unlikely (!done_lookups_glyph_set->set (lookup_index, hb::unique_ptr<hb_set_t> {hb_set_create ()})))
+	  തിരികെ സത്യം;
       }
 
       done_lookups_glyph_set->get (lookup_index)->clear ();
     }
 
     hb_set_t *covered_glyph_set = done_lookups_glyph_set->get (lookup_index);
-    if (unlikely (covered_glyph_set->in_error ()))
-      return true;
-    if (parent_active_glyphs ().is_subset (*covered_glyph_set))
-      return true;
+    എങ്കിൽ (unlikely (covered_glyph_set->in_error ()))
+      തിരികെ സത്യം;
+    എങ്കിൽ (parent_active_glyphs ().is_subset (*covered_glyph_set))
+      തിരികെ സത്യം;
 
     covered_glyph_set->union_ (parent_active_glyphs ());
-    return false;
+    തിരികെ അസത്യം;
   }
 
-  const hb_set_t& previous_parent_active_glyphs () {
-    if (active_glyphs_stack.length <= 1)
-      return *glyphs;
+  സ്ഥിരം hb_set_t& previous_parent_active_glyphs () {
+    എങ്കിൽ (active_glyphs_അട്ടി.length <= 1)
+      തിരികെ *glyphs;
 
-    return active_glyphs_stack[active_glyphs_stack.length - 2];
+    തിരികെ active_glyphs_അട്ടി[active_glyphs_അട്ടി.length - 2];
   }
 
-  const hb_set_t& parent_active_glyphs ()
+  സ്ഥിരം hb_set_t& parent_active_glyphs ()
   {
-    if (!active_glyphs_stack)
-      return *glyphs;
+    എങ്കിൽ (!active_glyphs_അട്ടി)
+      തിരികെ *glyphs;
 
-    return active_glyphs_stack.tail ();
+    തിരികെ active_glyphs_അട്ടി.tail ();
   }
 
-  hb_set_t* push_cur_active_glyphs ()
+  hb_set_t* തള്ളുക_cur_active_glyphs ()
   {
-    hb_set_t *s = active_glyphs_stack.push ();
-    if (unlikely (active_glyphs_stack.in_error ()))
-      return nullptr;
-    return s;
+    hb_set_t *s = active_glyphs_അട്ടി.push ();
+    എങ്കിൽ (unlikely (active_glyphs_അട്ടി.in_error ()))
+      തിരികെ nullptr;
+    തിരികെ s;
   }
 
-  bool pop_cur_done_glyphs ()
+  തർക്കം എടുക്കുക_cur_done_glyphs ()
   {
-    if (!active_glyphs_stack)
-      return false;
+    എങ്കിൽ (!active_glyphs_അട്ടി)
+      തിരികെ അസത്യം;
 
-    active_glyphs_stack.pop ();
-    return true;
+    active_glyphs_അട്ടി.എടുക്കുക ();
+    തിരികെ സത്യം;
   }
 
   hb_face_t *face;
   hb_set_t *glyphs;
   hb_set_t output[1];
-  hb_vector_t<hb_set_t> active_glyphs_stack;
+  hb_vector_t<hb_set_t> active_glyphs_അട്ടി;
   recurse_func_t recurse_func = nullptr;
-  unsigned int nesting_level_left;
+  unsigned പൂർണ്ണസംഖ്യ nesting_level_ഇടത്;
 
   hb_closure_context_t (hb_face_t *face_,
 			hb_set_t *glyphs_,
-			hb_map_t *done_lookups_glyph_count_,
+			hb_map_t *done_lookups_glyph_എണ്ണം_2,
 			hb_hashmap_t<unsigned, hb::unique_ptr<hb_set_t>> *done_lookups_glyph_set_,
-			unsigned int nesting_level_left_ = HB_MAX_NESTING_LEVEL) :
+			unsigned പൂർണ്ണസംഖ്യ nesting_level_ഇടത്_2 = HB_MAX_NESTING_LEVEL) :
 			  face (face_),
 			  glyphs (glyphs_),
-			  nesting_level_left (nesting_level_left_),
-			  done_lookups_glyph_count (done_lookups_glyph_count_),
+			  nesting_level_ഇടത് (nesting_level_ഇടത്_2),
+			  done_lookups_glyph_എണ്ണം (done_lookups_glyph_എണ്ണം_2),
 			  done_lookups_glyph_set (done_lookups_glyph_set_)
   {}
 
   ~hb_closure_context_t () { flush (); }
 
-  void set_recurse_func (recurse_func_t func) { recurse_func = func; }
+  ശൂന്യം set_recurse_func (recurse_func_t func) { recurse_func = func; }
 
-  void flush ()
+  ശൂന്യം flush ()
   {
-    output->del_range (face->get_num_glyphs (), HB_SET_VALUE_INVALID);	/* Remove invalid glyphs. */
+    output->del_range (face->get_അക്കം_glyphs (), HB_SET_മൂല്യം_INVALID);	/* Remove invalid glyphs. */
     glyphs->union_ (*output);
     output->clear ();
-    active_glyphs_stack.pop ();
-    active_glyphs_stack.reset ();
+    active_glyphs_അട്ടി.എടുക്കുക ();
+    active_glyphs_അട്ടി.reset ();
   }
 
-  private:
-  hb_map_t *done_lookups_glyph_count;
+  സ്വകാര്യ:
+  hb_map_t *done_lookups_glyph_എണ്ണം;
   hb_hashmap_t<unsigned, hb::unique_ptr<hb_set_t>> *done_lookups_glyph_set;
-  unsigned int lookup_count = 0;
+  unsigned പൂർണ്ണസംഖ്യ lookup_എണ്ണം = 0;
 };
 
 
 
-struct hb_closure_lookups_context_t :
+ഘടന hb_closure_lookups_context_t :
        hb_dispatch_context_t<hb_closure_lookups_context_t>
 {
-  typedef return_t (*recurse_func_t) (hb_closure_lookups_context_t *c, unsigned lookup_index);
+  തരനിർവചനം return_t (*recurse_func_t) (hb_closure_lookups_context_t *c, unsigned lookup_index);
   template <typename T>
-  return_t dispatch (const T &obj) { obj.closure_lookups (this); return hb_empty_t (); }
-  static return_t default_return_value () { return hb_empty_t (); }
-  void recurse (unsigned lookup_index)
+  return_t dispatch (സ്ഥിരം T &obj) { obj.closure_lookups (ഇത്); തിരികെ hb_empty_t (); }
+  സ്ഥിതം return_t default_return_മൂല്യം () { തിരികെ hb_empty_t (); }
+  ശൂന്യം recurse (unsigned lookup_index)
   {
-    if (unlikely (nesting_level_left == 0 || !recurse_func))
-      return;
+    എങ്കിൽ (unlikely (nesting_level_ഇടത് == 0 || !recurse_func))
+      തിരികെ;
 
     /* Return if new lookup was recursed to before. */
-    if (lookup_limit_exceeded ()
+    എങ്കിൽ (lookup_limit_exceeded ()
         || visited_lookups->in_error ()
         || visited_lookups->has (lookup_index))
       // Don't increment lookup count here, that will be done in the call to closure_lookups()
       // made by recurse_func.
-      return;
+      തിരികെ;
 
-    nesting_level_left--;
-    recurse_func (this, lookup_index);
-    nesting_level_left++;
+    nesting_level_ഇടത്--;
+    recurse_func (ഇത്, lookup_index);
+    nesting_level_ഇടത്++;
   }
 
-  void set_lookup_visited (unsigned lookup_index)
+  ശൂന്യം set_lookup_visited (unsigned lookup_index)
   { visited_lookups->add (lookup_index); }
 
-  void set_lookup_inactive (unsigned lookup_index)
+  ശൂന്യം set_lookup_inactive (unsigned lookup_index)
   { inactive_lookups->add (lookup_index); }
 
-  bool lookup_limit_exceeded ()
+  തർക്കം lookup_limit_exceeded ()
   {
-    bool ret = lookup_count > HB_MAX_LOOKUP_VISIT_COUNT;
-    if (ret)
-      DEBUG_MSG (SUBSET, nullptr, "lookup visit count limit exceeded in lookup closure!");
-    return ret; }
+    തർക്കം ret = lookup_എണ്ണം > HB_MAX_LOOKUP_VISIT_എണ്ണം;
+    എങ്കിൽ (ret)
+      DEBUG_സന്ദേശം (SUBSET, nullptr, "lookup visit count limit exceeded in lookup closure!");
+    തിരികെ ret; }
 
-  bool is_lookup_visited (unsigned lookup_index)
+  തർക്കം is_lookup_visited (unsigned lookup_index)
   {
-    if (unlikely (lookup_count++ > HB_MAX_LOOKUP_VISIT_COUNT))
+    എങ്കിൽ (unlikely (lookup_എണ്ണം++ > HB_MAX_LOOKUP_VISIT_എണ്ണം))
     {
-      DEBUG_MSG (SUBSET, nullptr, "total visited lookup count %u exceeds max limit, lookup %u is dropped.",
-                 lookup_count, lookup_index);
-      return true;
+      DEBUG_സന്ദേശം (SUBSET, nullptr, "total visited lookup count %u exceeds max limit, lookup %u is dropped.",
+                 lookup_എണ്ണം, lookup_index);
+      തിരികെ സത്യം;
     }
 
-    if (unlikely (visited_lookups->in_error ()))
-      return true;
+    എങ്കിൽ (unlikely (visited_lookups->in_error ()))
+      തിരികെ സത്യം;
 
-    return visited_lookups->has (lookup_index);
+    തിരികെ visited_lookups->has (lookup_index);
   }
 
   hb_face_t *face;
-  const hb_set_t *glyphs;
+  സ്ഥിരം hb_set_t *glyphs;
   recurse_func_t recurse_func;
-  unsigned int nesting_level_left;
+  unsigned പൂർണ്ണസംഖ്യ nesting_level_ഇടത്;
 
   hb_closure_lookups_context_t (hb_face_t *face_,
-				const hb_set_t *glyphs_,
+				സ്ഥിരം hb_set_t *glyphs_,
 				hb_set_t *visited_lookups_,
 				hb_set_t *inactive_lookups_,
-				unsigned nesting_level_left_ = HB_MAX_NESTING_LEVEL) :
+				unsigned nesting_level_ഇടത്_2 = HB_MAX_NESTING_LEVEL) :
 				face (face_),
 				glyphs (glyphs_),
 				recurse_func (nullptr),
-				nesting_level_left (nesting_level_left_),
+				nesting_level_ഇടത് (nesting_level_ഇടത്_2),
 				visited_lookups (visited_lookups_),
 				inactive_lookups (inactive_lookups_),
-				lookup_count (0) {}
+				lookup_എണ്ണം (0) {}
 
-  void set_recurse_func (recurse_func_t func) { recurse_func = func; }
+  ശൂന്യം set_recurse_func (recurse_func_t func) { recurse_func = func; }
 
-  private:
+  സ്വകാര്യ:
   hb_set_t *visited_lookups;
   hb_set_t *inactive_lookups;
-  unsigned int lookup_count;
+  unsigned പൂർണ്ണസംഖ്യ lookup_എണ്ണം;
 };
 
-struct hb_would_apply_context_t :
-       hb_dispatch_context_t<hb_would_apply_context_t, bool>
+ഘടന hb_would_apply_context_t :
+       hb_dispatch_context_t<hb_would_apply_context_t, തർക്കം>
 {
   template <typename T>
-  return_t dispatch (const T &obj) { return obj.would_apply (this); }
-  static return_t default_return_value () { return false; }
-  bool stop_sublookup_iteration (return_t r) const { return r; }
+  return_t dispatch (സ്ഥിരം T &obj) { തിരികെ obj.would_apply (ഇത്); }
+  സ്ഥിതം return_t default_return_മൂല്യം () { തിരികെ അസത്യം; }
+  തർക്കം stop_sublookup_iteration (return_t r) സ്ഥിരം { തിരികെ r; }
 
   hb_face_t *face;
-  const hb_codepoint_t *glyphs;
-  unsigned int len;
-  bool zero_context;
+  സ്ഥിരം hb_codepoint_t *glyphs;
+  unsigned പൂർണ്ണസംഖ്യ len;
+  തർക്കം zero_context;
 
   hb_would_apply_context_t (hb_face_t *face_,
-			    const hb_codepoint_t *glyphs_,
-			    unsigned int len_,
-			    bool zero_context_) :
+			    സ്ഥിരം hb_codepoint_t *glyphs_,
+			    unsigned പൂർണ്ണസംഖ്യ len_,
+			    തർക്കം zero_context_) :
 			      face (face_),
 			      glyphs (glyphs_),
 			      len (len_),
 			      zero_context (zero_context_) {}
 };
 
-struct hb_collect_glyphs_context_t :
+ഘടന hb_collect_glyphs_context_t :
        hb_dispatch_context_t<hb_collect_glyphs_context_t>
 {
-  typedef return_t (*recurse_func_t) (hb_collect_glyphs_context_t *c, unsigned int lookup_index);
+  തരനിർവചനം return_t (*recurse_func_t) (hb_collect_glyphs_context_t *c, unsigned പൂർണ്ണസംഖ്യ lookup_index);
   template <typename T>
-  return_t dispatch (const T &obj) { obj.collect_glyphs (this); return hb_empty_t (); }
-  static return_t default_return_value () { return hb_empty_t (); }
-  void recurse (unsigned int lookup_index)
+  return_t dispatch (സ്ഥിരം T &obj) { obj.collect_glyphs (ഇത്); തിരികെ hb_empty_t (); }
+  സ്ഥിതം return_t default_return_മൂല്യം () { തിരികെ hb_empty_t (); }
+  ശൂന്യം recurse (unsigned പൂർണ്ണസംഖ്യ lookup_index)
   {
-    if (unlikely (nesting_level_left == 0 || !recurse_func))
-      return;
+    എങ്കിൽ (unlikely (nesting_level_ഇടത് == 0 || !recurse_func))
+      തിരികെ;
 
     /* Note that GPOS sets recurse_func to nullptr already, so it doesn't get
      * past the previous check.  For GSUB, we only want to collect the output
@@ -328,24 +328,24 @@ struct hb_collect_glyphs_context_t :
      * with all sets here if it proves to be an issue.
      */
 
-    if (output == hb_set_get_empty ())
-      return;
+    എങ്കിൽ (output == hb_set_get_empty ())
+      തിരികെ;
 
     /* Return if new lookup was recursed to before. */
-    if (recursed_lookups->has (lookup_index))
-      return;
+    എങ്കിൽ (recursed_lookups->has (lookup_index))
+      തിരികെ;
 
     hb_set_t *old_before = before;
-    hb_set_t *old_input  = input;
+    hb_set_t *old_നിവേശം  = നിവേശം;
     hb_set_t *old_after  = after;
-    before = input = after = hb_set_get_empty ();
+    before = നിവേശം = after = hb_set_get_empty ();
 
-    nesting_level_left--;
-    recurse_func (this, lookup_index);
-    nesting_level_left++;
+    nesting_level_ഇടത്--;
+    recurse_func (ഇത്, lookup_index);
+    nesting_level_ഇടത്++;
 
     before = old_before;
-    input  = old_input;
+    നിവേശം  = old_നിവേശം;
     after  = old_after;
 
     recursed_lookups->add (lookup_index);
@@ -353,80 +353,80 @@ struct hb_collect_glyphs_context_t :
 
   hb_face_t *face;
   hb_set_t *before;
-  hb_set_t *input;
+  hb_set_t *നിവേശം;
   hb_set_t *after;
   hb_set_t *output;
   recurse_func_t recurse_func;
   hb_set_t *recursed_lookups;
-  unsigned int nesting_level_left;
+  unsigned പൂർണ്ണസംഖ്യ nesting_level_ഇടത്;
 
   hb_collect_glyphs_context_t (hb_face_t *face_,
 			       hb_set_t  *glyphs_before, /* OUT.  May be NULL */
-			       hb_set_t  *glyphs_input,  /* OUT.  May be NULL */
+			       hb_set_t  *glyphs_നിവേശം,  /* OUT.  May be NULL */
 			       hb_set_t  *glyphs_after,  /* OUT.  May be NULL */
 			       hb_set_t  *glyphs_output, /* OUT.  May be NULL */
-			       unsigned int nesting_level_left_ = HB_MAX_NESTING_LEVEL) :
+			       unsigned പൂർണ്ണസംഖ്യ nesting_level_ഇടത്_2 = HB_MAX_NESTING_LEVEL) :
 			      face (face_),
 			      before (glyphs_before ? glyphs_before : hb_set_get_empty ()),
-			      input  (glyphs_input  ? glyphs_input  : hb_set_get_empty ()),
+			      നിവേശം  (glyphs_നിവേശം  ? glyphs_നിവേശം  : hb_set_get_empty ()),
 			      after  (glyphs_after  ? glyphs_after  : hb_set_get_empty ()),
 			      output (glyphs_output ? glyphs_output : hb_set_get_empty ()),
 			      recurse_func (nullptr),
 			      recursed_lookups (hb_set_create ()),
-			      nesting_level_left (nesting_level_left_) {}
+			      nesting_level_ഇടത് (nesting_level_ഇടത്_2) {}
   ~hb_collect_glyphs_context_t () { hb_set_destroy (recursed_lookups); }
 
-  void set_recurse_func (recurse_func_t func) { recurse_func = func; }
+  ശൂന്യം set_recurse_func (recurse_func_t func) { recurse_func = func; }
 };
 
-struct hb_depend_context_t :
+ഘടന hb_depend_context_t :
        hb_dispatch_context_t<hb_depend_context_t>
 {
-  enum glyph_set_type_t
+  എണ്ണൽ glyph_set_type_t
   {
     GLYPH_SET_CLASS,
     GLYPH_SET_COVERAGE,
     GLYPH_SET_SINGLE
   };
 
-  static constexpr hb_codepoint_t SINGLE_GLYPH_ACTIVE_FLAG = 0x80000000u;
+  സ്ഥിതം constexpr hb_codepoint_t SINGLE_GLYPH_ACTIVE_FLAG = 0x80000000u;
 
-  struct glyph_set_cache_key_t
+  ഘടന glyph_set_cache_താക്കോൽ_t
   {
-    glyph_set_cache_key_t () = default;
-    glyph_set_cache_key_t (const void *data_, unsigned value_, glyph_set_type_t type_)
-      : data (data_), value (value_), type (type_) {}
+    glyph_set_cache_താക്കോൽ_t () = സ്ഥിരസ്ഥിതി;
+    glyph_set_cache_താക്കോൽ_t (സ്ഥിരം ശൂന്യം *data_, unsigned മൂല്യം_3, glyph_set_type_t type_)
+      : data (data_), value (മൂല്യം_3), type (type_) {}
 
-    bool operator == (const glyph_set_cache_key_t &o) const
-    { return data == o.data && value == o.value && type == o.type; }
+    തർക്കം operator == (സ്ഥിരം glyph_set_cache_താക്കോൽ_t &o) സ്ഥിരം
+    { തിരികെ data == o.data && value == o.value && type == o.type; }
 
-    uint32_t hash () const
+    uint32_t hash () സ്ഥിരം
     {
       uint32_t current = hb_hash ((uintptr_t) data);
       current = current * 31 + hb_hash (value);
-      return current * 31 + hb_hash ((unsigned) type);
+      തിരികെ current * 31 + hb_hash ((unsigned) type);
     }
 
-    const void *data = nullptr;
+    സ്ഥിരം ശൂന്യം *data = nullptr;
     unsigned value = 0;
     glyph_set_type_t type = GLYPH_SET_CLASS;
   };
 
-  struct context_set_cache_key_t
+  ഘടന context_set_cache_താക്കോൽ_t
   {
-    context_set_cache_key_t () = default;
-    context_set_cache_key_t (const void *rule_,
-			     const void *record_,
-			     const void *data_,
+    context_set_cache_താക്കോൽ_t () = സ്ഥിരസ്ഥിതി;
+    context_set_cache_താക്കോൽ_t (സ്ഥിരം ശൂന്യം *rule_,
+			     സ്ഥിരം ശൂന്യം *record_,
+			     സ്ഥിരം ശൂന്യം *data_,
 			     hb_codepoint_t active_glyphs_,
-			     unsigned value_,
+			     unsigned മൂല്യം_3,
 			     unsigned format_)
       : rule (rule_), record (record_), data (data_), active_glyphs (active_glyphs_),
-	value (value_), format (format_) {}
+	value (മൂല്യം_3), format (format_) {}
 
-    bool operator == (const context_set_cache_key_t &o) const
+    തർക്കം operator == (സ്ഥിരം context_set_cache_താക്കോൽ_t &o) സ്ഥിരം
     {
-      return rule == o.rule &&
+      തിരികെ rule == o.rule &&
 	     record == o.record &&
 	     data == o.data &&
 	     active_glyphs == o.active_glyphs &&
@@ -434,28 +434,28 @@ struct hb_depend_context_t :
 	     format == o.format;
     }
 
-    uint32_t hash () const
+    uint32_t hash () സ്ഥിരം
     {
       uint32_t current = hb_hash ((uintptr_t) rule);
       current = current * 31 + hb_hash ((uintptr_t) record);
       current = current * 31 + hb_hash ((uintptr_t) data);
       current = current * 31 + hb_hash (active_glyphs);
       current = current * 31 + hb_hash (value);
-      return current * 31 + hb_hash (format);
+      തിരികെ current * 31 + hb_hash (format);
     }
 
-    const void *rule = nullptr;
-    const void *record = nullptr;
-    const void *data = nullptr;
+    സ്ഥിരം ശൂന്യം *rule = nullptr;
+    സ്ഥിരം ശൂന്യം *record = nullptr;
+    സ്ഥിരം ശൂന്യം *data = nullptr;
     hb_codepoint_t active_glyphs = HB_CODEPOINT_INVALID;
     unsigned value = 0;
     unsigned format = 0;
   };
 
-  struct recurse_key_t
+  ഘടന recurse_താക്കോൽ_t
   {
-    recurse_key_t () = default;
-    recurse_key_t (unsigned lookup_index_,
+    recurse_താക്കോൽ_t () = സ്ഥിരസ്ഥിതി;
+    recurse_താക്കോൽ_t (unsigned lookup_index_,
                    hb_codepoint_t active_glyphs_,
                    hb_codepoint_t recurse_path_,
                    hb_codepoint_t context_set_)
@@ -464,22 +464,22 @@ struct hb_depend_context_t :
         recurse_path (recurse_path_),
         context_set (context_set_) {}
 
-    bool operator == (const recurse_key_t &o) const
+    തർക്കം operator == (സ്ഥിരം recurse_താക്കോൽ_t &o) സ്ഥിരം
     {
-      return lookup_index == o.lookup_index &&
+      തിരികെ lookup_index == o.lookup_index &&
              active_glyphs == o.active_glyphs &&
              recurse_path == o.recurse_path &&
              context_set == o.context_set;
     }
 
-    uint32_t hash () const
+    uint32_t hash () സ്ഥിരം
     {
       uint32_t current = 0x84222325;
       current = (current ^ hb_hash (lookup_index)) * 16777619;
       current = (current ^ hb_hash (active_glyphs)) * 16777619;
       current = (current ^ hb_hash (recurse_path)) * 16777619;
       current = (current ^ hb_hash (context_set)) * 16777619;
-      return current;
+      തിരികെ current;
     }
 
     unsigned lookup_index = 0;
@@ -488,13 +488,13 @@ struct hb_depend_context_t :
     hb_codepoint_t context_set = HB_CODEPOINT_INVALID;
   };
 
-  typedef return_t (*recurse_func_t) (hb_depend_context_t *c, unsigned lookup_index, hb_bit_page_t *covered_seq_indices, unsigned seq_index, unsigned end_index);
+  തരനിർവചനം return_t (*recurse_func_t) (hb_depend_context_t *c, unsigned lookup_index, hb_bit_page_t *covered_seq_indices, unsigned seq_index, unsigned end_index);
   /* return_t is hb_empty_t — dispatch is purely for side-effects, like hb_closure_context_t. */
   template <typename T>
-  return_t dispatch (const T &obj) { obj.depend (this); return hb_empty_t (); }
-  static return_t default_return_value () { return hb_empty_t (); }
+  return_t dispatch (സ്ഥിരം T &obj) { obj.depend (ഇത്); തിരികെ hb_empty_t (); }
+  സ്ഥിതം return_t default_return_മൂല്യം () { തിരികെ hb_empty_t (); }
 
-  void recurse (unsigned lookup_idx, hb_bit_page_t *covered_seq_indices, unsigned seq_index, unsigned end_index)
+  ശൂന്യം recurse (unsigned lookup_idx, hb_bit_page_t *covered_seq_indices, unsigned seq_index, unsigned end_index)
   {
     /* Cycle detection using call-stack semantics: block re-entry of a
      * lookup that is currently on the execution stack, but allow it again
@@ -513,122 +513,122 @@ struct hb_depend_context_t :
      * lookups_seen is pre-seeded with the top-level lookup index in
      * GSUB_accelerator_t::depend before the direct depend() call, so
      * that indirect cycles of the form A→B→A are also caught here. */
-    if (lookups_seen.has (lookup_idx)) return;
+    എങ്കിൽ (lookups_seen.has (lookup_idx)) തിരികെ;
     lookups_seen.add (lookup_idx);
 
     /* Intern the ordered recursion path instead of copying and interning the
      * lookups_seen set.  Path identity is more specific than set identity but
      * never merges states with different cycle-detection behavior. */
     hb_codepoint_t parent_path = recurse_path;
-    uint64_t path_key = (uint64_t) parent_path << 32 | lookup_idx;
+    uint64_t path_താക്കോൽ = (uint64_t) parent_path << 32 | lookup_idx;
     hb_codepoint_t *path = nullptr;
     hb_codepoint_t path_index;
-    if (!recurse_path_to_index.has (path_key, &path))
+    എങ്കിൽ (!recurse_path_to_index.has (path_താക്കോൽ, &path))
     {
       path_index = recurse_path_to_index.get_population () + 1;
-      if (unlikely (!recurse_path_to_index.set (path_key, path_index)))
+      എങ്കിൽ (unlikely (!recurse_path_to_index.set (path_താക്കോൽ, path_index)))
       {
 	depend_data->fail ();
 	lookups_seen.del (lookup_idx);
-	return;
+	തിരികെ;
       }
     }
-    else
+    അല്ലെങ്കിൽ
       path_index = *path;
     recurse_path = path_index;
-    recurse_func (this, lookup_idx, covered_seq_indices, seq_index, end_index);
+    recurse_func (ഇത്, lookup_idx, covered_seq_indices, seq_index, end_index);
     recurse_path = parent_path;
     lookups_seen.del (lookup_idx);
   }
 
-  struct active_glyphs_frame_t
+  ഘടന active_glyphs_frame_t
   {
     hb_set_t glyphs;
     hb_codepoint_t active_idx = HB_CODEPOINT_INVALID;
-    bool use_root = false;
+    തർക്കം use_വേര് = അസത്യം;
   };
 
-  const hb_set_t& parent_active_glyphs ()
+  സ്ഥിരം hb_set_t& parent_active_glyphs ()
   {
-    if (!active_glyphs_stack_depth)
-      return *glyphs;
+    എങ്കിൽ (!active_glyphs_അട്ടി_depth)
+      തിരികെ *glyphs;
 
-    const active_glyphs_frame_t &frame = active_glyphs_stack[active_glyphs_stack_depth - 1];
-    return frame.use_root ? *glyphs : frame.glyphs;
+    സ്ഥിരം active_glyphs_frame_t &frame = active_glyphs_അട്ടി[active_glyphs_അട്ടി_depth - 1];
+    തിരികെ frame.use_വേര് ? *glyphs : frame.glyphs;
   }
 
-  hb_set_t* push_cur_active_glyphs (hb_codepoint_t active_idx = HB_CODEPOINT_INVALID)
+  hb_set_t* തള്ളുക_cur_active_glyphs (hb_codepoint_t active_idx = HB_CODEPOINT_INVALID)
   {
-    if (active_glyphs_stack_depth == active_glyphs_stack.length &&
-	unlikely (!active_glyphs_stack.push_or_fail ()))
-      return nullptr;
+    എങ്കിൽ (active_glyphs_അട്ടി_depth == active_glyphs_അട്ടി.length &&
+	unlikely (!active_glyphs_അട്ടി.തള്ളുക_or_fail ()))
+      തിരികെ nullptr;
 
-    active_glyphs_frame_t &frame = active_glyphs_stack[active_glyphs_stack_depth++];
+    active_glyphs_frame_t &frame = active_glyphs_അട്ടി[active_glyphs_അട്ടി_depth++];
     frame.glyphs.clear ();
     frame.active_idx = active_idx;
-    frame.use_root = false;
-    return &frame.glyphs;
+    frame.use_വേര് = അസത്യം;
+    തിരികെ &frame.glyphs;
   }
 
-  bool push_root_active_glyphs ()
+  തർക്കം തള്ളുക_വേര്_active_glyphs ()
   {
-    if (active_glyphs_stack_depth == active_glyphs_stack.length &&
-	unlikely (!active_glyphs_stack.push_or_fail ()))
-      return false;
+    എങ്കിൽ (active_glyphs_അട്ടി_depth == active_glyphs_അട്ടി.length &&
+	unlikely (!active_glyphs_അട്ടി.തള്ളുക_or_fail ()))
+      തിരികെ അസത്യം;
 
-    active_glyphs_stack[active_glyphs_stack_depth++].use_root = true;
-    return true;
+    active_glyphs_അട്ടി[active_glyphs_അട്ടി_depth++].use_വേര് = സത്യം;
+    തിരികെ സത്യം;
   }
 
-  bool pop_cur_done_glyphs ()
+  തർക്കം എടുക്കുക_cur_done_glyphs ()
   {
-    if (!active_glyphs_stack_depth)
-      return false;
+    എങ്കിൽ (!active_glyphs_അട്ടി_depth)
+      തിരികെ അസത്യം;
 
-    active_glyphs_stack_depth--;
-    return true;
+    active_glyphs_അട്ടി_depth--;
+    തിരികെ സത്യം;
   }
 
-  bool get_parent_active_glyphs_index (hb_codepoint_t *active_idx)
+  തർക്കം get_parent_active_glyphs_index (hb_codepoint_t *active_idx)
   {
-    if (!active_glyphs_stack_depth ||
-	active_glyphs_stack[active_glyphs_stack_depth - 1].use_root)
+    എങ്കിൽ (!active_glyphs_അട്ടി_depth ||
+	active_glyphs_അട്ടി[active_glyphs_അട്ടി_depth - 1].use_വേര്)
     {
       *active_idx = HB_CODEPOINT_INVALID;
-      return true;
+      തിരികെ സത്യം;
     }
 
-    active_glyphs_frame_t &frame = active_glyphs_stack[active_glyphs_stack_depth - 1];
+    active_glyphs_frame_t &frame = active_glyphs_അട്ടി[active_glyphs_അട്ടി_depth - 1];
     *active_idx = frame.active_idx;
-    if (*active_idx != HB_CODEPOINT_INVALID)
-      return true;
+    എങ്കിൽ (*active_idx != HB_CODEPOINT_INVALID)
+      തിരികെ സത്യം;
 
     hb_codepoint_t glyph;
-    if (frame.glyphs.get_singleton (&glyph) &&
+    എങ്കിൽ (frame.glyphs.get_singleton (&glyph) &&
 	likely (glyph < SINGLE_GLYPH_ACTIVE_FLAG))
       *active_idx = glyph | SINGLE_GLYPH_ACTIVE_FLAG;
-    else if (!find_or_create_recurse_set (frame.glyphs, active_idx))
-      return false;
+    അല്ലെങ്കിൽ എങ്കിൽ (!find_or_create_recurse_set (frame.glyphs, active_idx))
+      തിരികെ അസത്യം;
 
     frame.active_idx = *active_idx;
-    return true;
+    തിരികെ സത്യം;
   }
 
-  bool get_context_set_cache_key (const void *rule,
-				  const void *record,
-				  const void *data,
+  തർക്കം get_context_set_cache_താക്കോൽ (സ്ഥിരം ശൂന്യം *rule,
+				  സ്ഥിരം ശൂന്യം *record,
+				  സ്ഥിരം ശൂന്യം *data,
 				  unsigned value,
 				  unsigned format,
-				  context_set_cache_key_t *key)
+				  context_set_cache_താക്കോൽ_t *key)
   {
     hb_codepoint_t active_idx;
-    if (!get_parent_active_glyphs_index (&active_idx))
-      return false;
-    *key = context_set_cache_key_t (rule, record, data, active_idx, value, format);
-    return true;
+    എങ്കിൽ (!get_parent_active_glyphs_index (&active_idx))
+      തിരികെ അസത്യം;
+    *key = context_set_cache_താക്കോൽ_t (rule, record, data, active_idx, value, format);
+    തിരികെ സത്യം;
   }
 
-  bool get_recurse_key (unsigned lookup_idx, recurse_key_t *key)
+  തർക്കം get_recurse_താക്കോൽ (unsigned lookup_idx, recurse_താക്കോൽ_t *key)
   {
     /* The active glyphs and in-progress lookup set are part of the state.
      * Omitting the latter would make memoization incorrect for cyclic lookup
@@ -637,66 +637,66 @@ struct hb_depend_context_t :
      * edge identity, so revisiting with different flags can only find edges
      * that the deduplication table already contains. */
     hb_codepoint_t active_idx;
-    if (!get_parent_active_glyphs_index (&active_idx))
-      return false;
+    എങ്കിൽ (!get_parent_active_glyphs_index (&active_idx))
+      തിരികെ അസത്യം;
 
-    *key = recurse_key_t (lookup_idx,
+    *key = recurse_താക്കോൽ_t (lookup_idx,
                           active_idx,
                           recurse_path,
                           depend_data->current_context_set_index);
-    return !completed_recursions.has (*key);
+    തിരികെ !completed_recursions.has (*key);
   }
 
-  void finish_recurse (const recurse_key_t &key)
-  { depend_data->check_success (completed_recursions.set (key, true)); }
+  ശൂന്യം finish_recurse (സ്ഥിരം recurse_താക്കോൽ_t &key)
+  { depend_data->check_success (completed_recursions.set (key, സത്യം)); }
 
-  void reset_recurse_cache ()
+  ശൂന്യം reset_recurse_cache ()
   {
     completed_recursions.clear ();
     recurse_path_to_index.clear ();
     recurse_path = 0;
   }
 
-  bool find_or_create_recurse_set (const hb_set_t &set, hb_codepoint_t *index)
+  തർക്കം find_or_create_recurse_set (സ്ഥിരം hb_set_t &set, hb_codepoint_t *index)
   {
     hb_codepoint_t *existing = nullptr;
-    if (recurse_set_to_index.has (&set, &existing))
+    എങ്കിൽ (recurse_set_to_index.has (&set, &existing))
     {
       *index = *existing;
-      return true;
+      തിരികെ സത്യം;
     }
 
     hb_set_t *copy = hb_object_create<hb_set_t> ();
-    if (unlikely (!copy))
-      return depend_data->fail ();
+    എങ്കിൽ (unlikely (!copy))
+      തിരികെ depend_data->fail ();
     copy->set (set);
-    if (unlikely (copy->in_error ()))
+    എങ്കിൽ (unlikely (copy->in_error ()))
     {
       hb_set_destroy (copy);
-      return depend_data->fail ();
+      തിരികെ depend_data->fail ();
     }
 
     *index = recurse_sets.length;
-    if (unlikely (*index & SINGLE_GLYPH_ACTIVE_FLAG))
+    എങ്കിൽ (unlikely (*index & SINGLE_GLYPH_ACTIVE_FLAG))
     {
       hb_set_destroy (copy);
-      return depend_data->fail ();
+      തിരികെ depend_data->fail ();
     }
-    if (unlikely (!recurse_sets.push_or_fail (hb::unique_ptr<hb_set_t> {copy})))
-      return depend_data->fail ();
-    if (unlikely (!recurse_set_to_index.set (recurse_sets[*index].get (), *index)))
-      return depend_data->fail ();
-    return true;
+    എങ്കിൽ (unlikely (!recurse_sets.തള്ളുക_or_fail (hb::unique_ptr<hb_set_t> {copy})))
+      തിരികെ depend_data->fail ();
+    എങ്കിൽ (unlikely (!recurse_set_to_index.set (recurse_sets[*index].get (), *index)))
+      തിരികെ depend_data->fail ();
+    തിരികെ സത്യം;
   }
 
-  const hb_set_t *find_or_create_glyph_set (const void *data,
+  സ്ഥിരം hb_set_t *find_or_create_glyph_set (സ്ഥിരം ശൂന്യം *data,
                                              unsigned value,
                                              glyph_set_type_t type);
-  hb_codepoint_t find_or_create_cached_context_set (const hb_set_t *set);
+  hb_codepoint_t find_or_create_cached_context_set (സ്ഥിരം hb_set_t *set);
 
-  struct depend_scratch_t
+  ഘടന depend_scratch_t
   {
-    void clear ()
+    ശൂന്യം clear ()
     {
       preliminary_context.clear ();
       position_scratch.clear ();
@@ -706,7 +706,7 @@ struct hb_depend_context_t :
       filtered_disjunctive_indices.clear ();
       backtrack_sets.clear ();
       lookahead_sets.clear ();
-      input_position_glyphs.clear ();
+      നിവേശം_position_glyphs.clear ();
       cached_context_sets.clear ();
       compact_workspace.clear ();
     }
@@ -717,9 +717,9 @@ struct hb_depend_context_t :
     hb_set_t position_context;
     hb_set_t disjunctive_indices;
     hb_set_t filtered_disjunctive_indices;
-    hb_vector_t<const hb_set_t *> backtrack_sets;
-    hb_vector_t<const hb_set_t *> lookahead_sets;
-    hb_vector_t<const hb_set_t *> input_position_glyphs;
+    hb_vector_t<സ്ഥിരം hb_set_t *> backtrack_sets;
+    hb_vector_t<സ്ഥിരം hb_set_t *> lookahead_sets;
+    hb_vector_t<സ്ഥിരം hb_set_t *> നിവേശം_position_glyphs;
     hb_vector_t<hb_codepoint_t> cached_context_sets;
     hb_vector_t<unsigned> compact_workspace;
     depend_scratch_t *next = nullptr;
@@ -728,25 +728,25 @@ struct hb_depend_context_t :
   depend_scratch_t *acquire_depend_scratch ()
   {
     depend_scratch_t *scratch = depend_scratch_pool;
-    if (scratch)
+    എങ്കിൽ (scratch)
       depend_scratch_pool = scratch->next;
-    else
+    അല്ലെങ്കിൽ
     {
-      scratch = (depend_scratch_t *) hb_malloc (sizeof (depend_scratch_t));
-      if (unlikely (!scratch))
+      scratch = (depend_scratch_t *) hb_malloc (വലുപ്പം (depend_scratch_t));
+      എങ്കിൽ (unlikely (!scratch))
       {
         depend_data->fail ();
-        return nullptr;
+        തിരികെ nullptr;
       }
-      new (scratch) depend_scratch_t ();
+      പുതിയ (scratch) depend_scratch_t ();
     }
 
     scratch->next = nullptr;
     scratch->clear ();
-    return scratch;
+    തിരികെ scratch;
   }
 
-  void release_depend_scratch (depend_scratch_t *scratch)
+  ശൂന്യം release_depend_scratch (depend_scratch_t *scratch)
   {
     scratch->next = depend_scratch_pool;
     depend_scratch_pool = scratch;
@@ -755,20 +755,20 @@ struct hb_depend_context_t :
   hb_depend_data_builder_t *depend_data;
   hb_face_t *face;
   hb_set_t *glyphs;
-  hb_vector_t<active_glyphs_frame_t> active_glyphs_stack;
-  unsigned active_glyphs_stack_depth = 0;
+  hb_vector_t<active_glyphs_frame_t> active_glyphs_അട്ടി;
+  unsigned active_glyphs_അട്ടി_depth = 0;
   recurse_func_t recurse_func;
   hb_codepoint_t lookup_index = HB_CODEPOINT_INVALID;
   hb_bit_set_t lookups_seen;
   hb_vector_t<hb::unique_ptr<hb_set_t>> recurse_sets;
-  hb_hashmap_t<const hb_set_t *, hb_codepoint_t> recurse_set_to_index;
+  hb_hashmap_t<സ്ഥിരം hb_set_t *, hb_codepoint_t> recurse_set_to_index;
   hb_hashmap_t<uint64_t, hb_codepoint_t> recurse_path_to_index;
   hb_codepoint_t recurse_path = 0;
-  hb_hashmap_t<recurse_key_t, bool> completed_recursions;
+  hb_hashmap_t<recurse_താക്കോൽ_t, തർക്കം> completed_recursions;
   hb_vector_t<hb::unique_ptr<hb_set_t>> glyph_sets;
-  hb_hashmap_t<glyph_set_cache_key_t, hb_codepoint_t> glyph_set_to_index;
+  hb_hashmap_t<glyph_set_cache_താക്കോൽ_t, hb_codepoint_t> glyph_set_to_index;
   hb_hashmap_t<uintptr_t, hb_codepoint_t> cached_context_set_indices;
-  hb_hashmap_t<context_set_cache_key_t, hb_codepoint_t> context_set_cache;
+  hb_hashmap_t<context_set_cache_താക്കോൽ_t, hb_codepoint_t> context_set_cache;
   depend_scratch_t *depend_scratch_pool = nullptr;
 
   hb_depend_context_t (hb_depend_data_builder_t *depend_data_,
@@ -780,7 +780,7 @@ struct hb_depend_context_t :
                         recurse_func (nullptr) {}
   ~hb_depend_context_t ()
   {
-    while (depend_scratch_pool)
+    ആകുമ്പോൾ (depend_scratch_pool)
     {
       depend_scratch_t *scratch = depend_scratch_pool;
       depend_scratch_pool = scratch->next;
@@ -788,21 +788,21 @@ struct hb_depend_context_t :
       hb_free (scratch);
     }
   }
-  void set_recurse_func (recurse_func_t func) { recurse_func = func; }
+  ശൂന്യം set_recurse_func (recurse_func_t func) { recurse_func = func; }
 };
 
 template <typename set_t>
-struct hb_collect_coverage_context_t :
-       hb_dispatch_context_t<hb_collect_coverage_context_t<set_t>, const Coverage &>
+ഘടന hb_collect_coverage_context_t :
+       hb_dispatch_context_t<hb_collect_coverage_context_t<set_t>, സ്ഥിരം Coverage &>
 {
-  typedef const Coverage &return_t; // Stoopid that we have to dupe this here.
+  തരനിർവചനം സ്ഥിരം Coverage &return_t; // Stoopid that we have to dupe this here.
   template <typename T>
-  return_t dispatch (const T &obj) { return obj.get_coverage (); }
-  static return_t default_return_value () { return Null (Coverage); }
-  bool stop_sublookup_iteration (return_t r) const
+  return_t dispatch (സ്ഥിരം T &obj) { തിരികെ obj.get_coverage (); }
+  സ്ഥിതം return_t default_return_മൂല്യം () { തിരികെ Null (Coverage); }
+  തർക്കം stop_sublookup_iteration (return_t r) സ്ഥിരം
   {
     r.collect_coverage (set);
-    return false;
+    തിരികെ അസത്യം;
   }
 
   hb_collect_coverage_context_t (set_t *set_) :
@@ -811,12 +811,12 @@ struct hb_collect_coverage_context_t :
   set_t *set;
 };
 
-struct matcher_t
+ഘടന matcher_t
 {
-  typedef bool (*match_func_t) (hb_glyph_info_t &info, unsigned value, const void *data);
+  തരനിർവചനം തർക്കം (*match_func_t) (hb_glyph_info_t &info, unsigned value, സ്ഥിരം ശൂന്യം *data);
 
   template <typename context_t>
-  void init (const context_t *c, bool context_match = false)
+  ശൂന്യം init (സ്ഥിരം context_t *c, തർക്കം context_match = അസത്യം)
   {
     set_match_func (nullptr, nullptr);
     lookup_props = c->lookup_props;
@@ -832,11 +832,11 @@ struct matcher_t
     syllable = 0;
   }
 
-  void set_match_func (match_func_t match_func_,
-		       const void *match_data_)
+  ശൂന്യം set_match_func (match_func_t match_func_,
+		       സ്ഥിരം ശൂന്യം *match_data_)
   { match_func = match_func_; match_data = match_data_; }
 
-  enum may_match_t {
+  എണ്ണൽ may_match_t {
     MATCH_NO,
     MATCH_YES,
     MATCH_MAYBE
@@ -846,19 +846,19 @@ struct matcher_t
   HB_ALWAYS_INLINE
 #endif
   may_match_t may_match (hb_glyph_info_t &info,
-			 hb_codepoint_t glyph_data) const
+			 hb_codepoint_t glyph_data) സ്ഥിരം
   {
-    if (!(info.mask & mask) ||
+    എങ്കിൽ (!(info.mask & mask) ||
 	(per_syllable && syllable && syllable != info.syllable ()))
-      return MATCH_NO;
+      തിരികെ MATCH_NO;
 
-    if (match_func)
-      return match_func (info, glyph_data, match_data) ? MATCH_YES : MATCH_NO;
+    എങ്കിൽ (match_func)
+      തിരികെ match_func (info, glyph_data, match_data) ? MATCH_YES : MATCH_NO;
 
-    return MATCH_MAYBE;
+    തിരികെ MATCH_MAYBE;
   }
 
-  enum may_skip_t {
+  എണ്ണൽ may_skip_t {
     SKIP_NO,
     SKIP_YES,
     SKIP_MAYBE
@@ -868,64 +868,64 @@ struct matcher_t
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  may_skip_t may_skip (const context_t *c,
-		       const hb_glyph_info_t &info) const
+  may_skip_t may_skip (സ്ഥിരം context_t *c,
+		       സ്ഥിരം hb_glyph_info_t &info) സ്ഥിരം
   {
-    if (!c->check_glyph_property (&info, lookup_props))
-      return SKIP_YES;
+    എങ്കിൽ (!c->check_glyph_property (&info, lookup_props))
+      തിരികെ SKIP_YES;
 
-    if (unlikely (_hb_glyph_info_is_default_ignorable (&info) &&
+    എങ്കിൽ (unlikely (_hb_glyph_info_is_default_ignorable (&info) &&
 		  (ignore_zwnj || !_hb_glyph_info_is_zwnj (&info)) &&
 		  (ignore_zwj || !_hb_glyph_info_is_zwj (&info)) &&
 		  (ignore_hidden || !_hb_glyph_info_is_hidden (&info))))
-      return SKIP_MAYBE;
+      തിരികെ SKIP_MAYBE;
 
-    return SKIP_NO;
+    തിരികെ SKIP_NO;
   }
 
-  public:
-  unsigned int lookup_props = 0;
+  പൊതു:
+  unsigned പൂർണ്ണസംഖ്യ lookup_props = 0;
   hb_mask_t mask = -1;
-  bool ignore_zwnj = false;
-  bool ignore_zwj = false;
-  bool ignore_hidden = false;
-  bool per_syllable = false;
+  തർക്കം ignore_zwnj = അസത്യം;
+  തർക്കം ignore_zwj = അസത്യം;
+  തർക്കം ignore_hidden = അസത്യം;
+  തർക്കം per_syllable = അസത്യം;
   uint8_t syllable = 0;
   match_func_t match_func = nullptr;
-  const void *match_data = nullptr;
+  സ്ഥിരം ശൂന്യം *match_data = nullptr;
 };
 
 /* A view of 16- or 24-bit glyph IDs or coverage offsets. */
-struct glyph_data_t
+ഘടന glyph_data_t
 {
   template <typename T>
-  glyph_data_t (const T *data_) : data (data_)
+  glyph_data_t (സ്ഥിരം T *data_) : data (data_)
 #ifndef HB_NO_BEYOND_64K
-                              , wide (sizeof (T) == 3)
+                              , wide (വലുപ്പം (T) == 3)
 #endif
   {
-    static_assert (sizeof (T) == 2 || sizeof (T) == 3, "invalid glyph data size");
+    static_assert (വലുപ്പം (T) == 2 || വലുപ്പം (T) == 3, "invalid glyph data size");
   }
 
-  unsigned operator [] (unsigned i) const
+  unsigned operator [] (unsigned i) സ്ഥിരം
   {
 #ifndef HB_NO_BEYOND_64K
-    if (wide)
-      return ((const HBUINT24 *) data)[i];
+    എങ്കിൽ (wide)
+      തിരികെ ((സ്ഥിരം HBUINT24 *) data)[i];
 #endif
-    return ((const HBUINT16 *) data)[i];
+    തിരികെ ((സ്ഥിരം HBUINT16 *) data)[i];
   }
 
-  const void *data;
+  സ്ഥിരം ശൂന്യം *data;
 #ifndef HB_NO_BEYOND_64K
-  bool wide;
+  തർക്കം wide;
 #endif
 };
 
 template <typename context_t>
-struct skipping_iterator_t
+ഘടന skipping_iterator_t
 {
-  void init (context_t *c_, bool context_match = false)
+  ശൂന്യം init (context_t *c_, തർക്കം context_match = അസത്യം)
   {
     c = c_;
     end = c->buffer->len;
@@ -935,36 +935,36 @@ struct skipping_iterator_t
 #endif
     matcher.init (c, context_match);
   }
-  void set_lookup_props (unsigned int lookup_props)
+  ശൂന്യം set_lookup_props (unsigned പൂർണ്ണസംഖ്യ lookup_props)
   {
     matcher.lookup_props = lookup_props;
   }
-  void set_match_func (matcher_t::match_func_t match_func_,
-		       const void *match_data_)
+  ശൂന്യം set_match_func (matcher_t::match_func_t match_func_,
+		       സ്ഥിരം ശൂന്യം *match_data_)
   {
     matcher.set_match_func (match_func_, match_data_);
   }
-  void set_glyph_data (glyph_data_t glyph_data)
+  ശൂന്യം set_glyph_data (glyph_data_t glyph_data)
   {
 #ifndef HB_NO_BEYOND_64K
-    match_glyph_data16 = glyph_data.wide ? nullptr : (const HBUINT16 *) glyph_data.data;
-    match_glyph_data24 = glyph_data.wide ? (const HBUINT24 *) glyph_data.data : nullptr;
-#else
-    match_glyph_data16 = (const HBUINT16 *) glyph_data.data;
+    match_glyph_data16 = glyph_data.wide ? nullptr : (സ്ഥിരം HBUINT16 *) glyph_data.data;
+    match_glyph_data24 = glyph_data.wide ? (സ്ഥിരം HBUINT24 *) glyph_data.data : nullptr;
+#അല്ലെങ്കിൽ
+    match_glyph_data16 = (സ്ഥിരം HBUINT16 *) glyph_data.data;
 #endif
   }
 
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  void reset (unsigned int start_index_)
+  ശൂന്യം reset (unsigned പൂർണ്ണസംഖ്യ start_index_)
   {
     // For GSUB forward iterator
     idx = start_index_;
     end = c->buffer->len;
     matcher.syllable = c->buffer->cur().syllable();
   }
-  void reset_back (unsigned int start_index_, bool from_out_buffer = false)
+  ശൂന്യം reset_back (unsigned പൂർണ്ണസംഖ്യ start_index_, തർക്കം from_out_buffer = അസത്യം)
   {
     // For GSUB backward iterator
     idx = start_index_;
@@ -974,7 +974,7 @@ struct skipping_iterator_t
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  void reset_fast (unsigned int start_index_)
+  ശൂന്യം reset_fast (unsigned പൂർണ്ണസംഖ്യ start_index_)
   {
     // Doesn't set end or syllable. Used by GPOS which doesn't care / change.
     idx = start_index_;
@@ -983,10 +983,10 @@ struct skipping_iterator_t
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  matcher_t::may_skip_t may_skip (const hb_glyph_info_t &info) const
-  { return matcher.may_skip (c, info); }
+  matcher_t::may_skip_t may_skip (സ്ഥിരം hb_glyph_info_t &info) സ്ഥിരം
+  { തിരികെ matcher.may_skip (c, info); }
 
-  enum match_t {
+  എണ്ണൽ match_t {
     MATCH,
     NOT_MATCH,
     SKIP
@@ -998,186 +998,186 @@ struct skipping_iterator_t
   match_t match (hb_glyph_info_t &info)
   {
     matcher_t::may_skip_t skip = matcher.may_skip (c, info);
-    if (unlikely (skip == matcher_t::SKIP_YES))
-      return SKIP;
+    എങ്കിൽ (unlikely (skip == matcher_t::SKIP_YES))
+      തിരികെ SKIP;
 
     matcher_t::may_match_t match = matcher.may_match (info, get_glyph_data ());
-    if (match == matcher_t::MATCH_YES ||
+    എങ്കിൽ (match == matcher_t::MATCH_YES ||
 	(match == matcher_t::MATCH_MAYBE &&
 	 skip == matcher_t::SKIP_NO))
-      return MATCH;
+      തിരികെ MATCH;
 
-    if (skip == matcher_t::SKIP_NO)
-      return NOT_MATCH;
+    എങ്കിൽ (skip == matcher_t::SKIP_NO)
+      തിരികെ NOT_MATCH;
 
-    return SKIP;
+    തിരികെ SKIP;
   }
 
-  bool next (unsigned *unsafe_to = nullptr)
+  തർക്കം next (unsigned *unsafe_to = nullptr)
   {
     auto *info = c->buffer->info;
-    const signed stop = (signed) end - 1;
-    while ((signed) idx < stop)
+    സ്ഥിരം signed stop = (signed) end - 1;
+    ആകുമ്പോൾ ((signed) idx < stop)
     {
       idx++;
-      switch (match (info[idx]))
+      തിരഞ്ഞെടുപ്പ് (match (info[idx]))
       {
-	case MATCH:
+	അവസ്ഥ MATCH:
 	{
 	  advance_glyph_data ();
-	  return true;
+	  തിരികെ സത്യം;
 	}
-	case NOT_MATCH:
+	അവസ്ഥ NOT_MATCH:
 	{
-	  if (unsafe_to)
+	  എങ്കിൽ (unsafe_to)
 	    *unsafe_to = idx + 1;
-	  return false;
+	  തിരികെ അസത്യം;
 	}
-	case SKIP:
-	  continue;
+	അവസ്ഥ SKIP:
+	  തുടരുക;
       }
     }
-    if (unsafe_to)
+    എങ്കിൽ (unsafe_to)
       *unsafe_to = end;
-    return false;
+    തിരികെ അസത്യം;
   }
-  bool prev (unsigned *unsafe_from = nullptr)
+  തർക്കം prev (unsigned *unsafe_from = nullptr)
   {
     auto *out_info = c->buffer->out_info;
-    const unsigned stop = 0;
-    while (idx > stop)
+    സ്ഥിരം unsigned stop = 0;
+    ആകുമ്പോൾ (idx > stop)
     {
       idx--;
-      switch (match (out_info[idx]))
+      തിരഞ്ഞെടുപ്പ് (match (out_info[idx]))
       {
-	case MATCH:
+	അവസ്ഥ MATCH:
 	{
 	  advance_glyph_data ();
-	  return true;
+	  തിരികെ സത്യം;
 	}
-	case NOT_MATCH:
+	അവസ്ഥ NOT_MATCH:
 	{
-	  if (unsafe_from)
+	  എങ്കിൽ (unsafe_from)
 	    *unsafe_from = hb_max (1u, idx) - 1u;
-	  return false;
+	  തിരികെ അസത്യം;
 	}
-	case SKIP:
-	  continue;
+	അവസ്ഥ SKIP:
+	  തുടരുക;
       }
     }
-    if (unsafe_from)
+    എങ്കിൽ (unsafe_from)
       *unsafe_from = 0;
-    return false;
+    തിരികെ അസത്യം;
   }
 
   HB_ALWAYS_INLINE
   hb_codepoint_t
   get_glyph_data ()
   {
-    if (match_glyph_data16) return *match_glyph_data16;
+    എങ്കിൽ (match_glyph_data16) തിരികെ *match_glyph_data16;
 #ifndef HB_NO_BEYOND_64K
-    else
-    if (match_glyph_data24) return *match_glyph_data24;
+    അല്ലെങ്കിൽ
+    എങ്കിൽ (match_glyph_data24) തിരികെ *match_glyph_data24;
 #endif
-    return 0;
+    തിരികെ 0;
   }
   HB_ALWAYS_INLINE
-  void
+  ശൂന്യം
   advance_glyph_data ()
   {
-    if (match_glyph_data16) match_glyph_data16++;
+    എങ്കിൽ (match_glyph_data16) match_glyph_data16++;
 #ifndef HB_NO_BEYOND_64K
-    else
-    if (match_glyph_data24) match_glyph_data24++;
+    അല്ലെങ്കിൽ
+    എങ്കിൽ (match_glyph_data24) match_glyph_data24++;
 #endif
   }
 
-  unsigned int idx;
-  protected:
+  unsigned പൂർണ്ണസംഖ്യ idx;
+  സംരക്ഷിത:
   context_t *c;
   matcher_t matcher;
-  const HBUINT16 *match_glyph_data16;
+  സ്ഥിരം HBUINT16 *match_glyph_data16;
 #ifndef HB_NO_BEYOND_64K
-  const HBUINT24 *match_glyph_data24;
+  സ്ഥിരം HBUINT24 *match_glyph_data24;
 #endif
 
-  unsigned int end;
+  unsigned പൂർണ്ണസംഖ്യ end;
 };
 
-struct hb_ot_apply_context_t :
-       hb_dispatch_context_t<hb_ot_apply_context_t, bool, HB_DEBUG_APPLY>
+ഘടന hb_ot_apply_context_t :
+       hb_dispatch_context_t<hb_ot_apply_context_t, തർക്കം, HB_DEBUG_APPLY>
 {
-  const char *get_name () { return "APPLY"; }
-  typedef return_t (*recurse_func_t) (hb_ot_apply_context_t *c, unsigned int lookup_index);
+  സ്ഥിരം അക്ഷരം *get_name () { തിരികെ "APPLY"; }
+  തരനിർവചനം return_t (*recurse_func_t) (hb_ot_apply_context_t *c, unsigned പൂർണ്ണസംഖ്യ lookup_index);
 
   template <typename T>
-  static inline auto apply_ (const T &obj, hb_ot_apply_context_t *c, hb_priority<1>) HB_RETURN (return_t, obj.apply (c, nullptr) )
+  സ്ഥിതം വരിയിൽ auto apply_ (സ്ഥിരം T &obj, hb_ot_apply_context_t *c, hb_priority<1>) HB_RETURN (return_t, obj.apply (c, nullptr) )
   template <typename T>
-  static inline auto apply_ (const T &obj, hb_ot_apply_context_t *c, hb_priority<0>) HB_RETURN (return_t, obj.apply (c) )
+  സ്ഥിതം വരിയിൽ auto apply_ (സ്ഥിരം T &obj, hb_ot_apply_context_t *c, hb_priority<0>) HB_RETURN (return_t, obj.apply (c) )
   template <typename T>
-  return_t dispatch (const T &obj) { return apply_(obj, this, hb_prioritize); }
+  return_t dispatch (സ്ഥിരം T &obj) { തിരികെ apply_(obj, ഇത്, hb_prioritize); }
 
-  static return_t default_return_value () { return false; }
-  bool stop_sublookup_iteration (return_t r) const { return r; }
-  return_t recurse (unsigned int sub_lookup_index)
+  സ്ഥിതം return_t default_return_മൂല്യം () { തിരികെ അസത്യം; }
+  തർക്കം stop_sublookup_iteration (return_t r) സ്ഥിരം { തിരികെ r; }
+  return_t recurse (unsigned പൂർണ്ണസംഖ്യ sub_lookup_index)
   {
-    assert (recurse_func);
-    if (unlikely (nesting_level_left == 0))
+    പ്രതിജ്ഞാ (recurse_func);
+    എങ്കിൽ (unlikely (nesting_level_ഇടത് == 0))
     {
-      buffer->successful = false;
-      return default_return_value ();
+      buffer->successful = അസത്യം;
+      തിരികെ default_return_മൂല്യം ();
     }
 
     buffer->max_ops--;
-    if (unlikely (buffer->max_ops < 0))
+    എങ്കിൽ (unlikely (buffer->max_ops < 0))
     {
-      buffer->successful = false;
-      return default_return_value ();
+      buffer->successful = അസത്യം;
+      തിരികെ default_return_മൂല്യം ();
     }
 
-    nesting_level_left--;
-    bool ret = recurse_func (this, sub_lookup_index);
-    nesting_level_left++;
-    return ret;
+    nesting_level_ഇടത്--;
+    തർക്കം ret = recurse_func (ഇത്, sub_lookup_index);
+    nesting_level_ഇടത്++;
+    തിരികെ ret;
   }
 
-  skipping_iterator_t<hb_ot_apply_context_t> iter_input, iter_context;
+  skipping_iterator_t<hb_ot_apply_context_t> iter_നിവേശം, iter_context;
 
-  unsigned int table_index; /* GSUB/GPOS */
+  unsigned പൂർണ്ണസംഖ്യ table_index; /* GSUB/GPOS */
   hb_font_t *font;
   hb_face_t *face;
   hb_buffer_t *buffer;
   hb_sanitize_context_t sanitizer;
   recurse_func_t recurse_func = nullptr;
-  const GDEF &gdef;
-  const GDEF::accelerator_t &gdef_accel;
-  const ItemVariationStore &var_store;
+  സ്ഥിരം GDEF &gdef;
+  സ്ഥിരം GDEF::accelerator_t &gdef_accel;
+  സ്ഥിരം ItemVariationStore &var_store;
   hb_scalar_cache_t *var_store_cache;
 
   hb_direction_t direction;
   hb_mask_t lookup_mask = 1;
-  unsigned int lookup_index = (unsigned) -1;
-  unsigned int lookup_props = 0;
-  unsigned int nesting_level_left = HB_MAX_NESTING_LEVEL;
+  unsigned പൂർണ്ണസംഖ്യ lookup_index = (unsigned) -1;
+  unsigned പൂർണ്ണസംഖ്യ lookup_props = 0;
+  unsigned പൂർണ്ണസംഖ്യ nesting_level_ഇടത് = HB_MAX_NESTING_LEVEL;
 
-  bool has_glyph_classes;
-  bool auto_zwnj = true;
-  bool auto_zwj = true;
-  bool per_syllable = false;
-  bool random = false;
+  തർക്കം has_glyph_classes;
+  തർക്കം auto_zwnj = സത്യം;
+  തർക്കം auto_zwj = സത്യം;
+  തർക്കം per_syllable = അസത്യം;
+  തർക്കം random = അസത്യം;
   unsigned new_syllables = (unsigned) -1;
 
   signed last_base = -1; // GPOS uses
   unsigned last_base_until = 0; // GPOS uses
 
   hb_vector_t<uint32_t> match_positions;
-  uint32_t stack_match_positions[8];
+  uint32_t അട്ടി_match_positions[8];
 #ifndef HB_NO_BUFFER_MESSAGE
   hb_buffer_t::changed_func_t orig_changed_func = nullptr;
-  void *orig_changed_data = nullptr;
+  ശൂന്യം *orig_changed_data = nullptr;
 #endif
 
-  hb_ot_apply_context_t (unsigned int table_index_,
+  hb_ot_apply_context_t (unsigned പൂർണ്ണസംഖ്യ table_index_,
 			 hb_font_t *font_,
 			 hb_buffer_t *buffer_,
 			 hb_blob_t *table_blob_,
@@ -1188,14 +1188,14 @@ struct hb_ot_apply_context_t :
 			gdef (
 #ifndef HB_NO_OT_LAYOUT
 			      *face->table.GDEF->table
-#else
+#അല്ലെങ്കിൽ
 			      Null (GDEF)
 #endif
 			     ),
 			gdef_accel (
 #ifndef HB_NO_OT_LAYOUT
 			      *face->table.GDEF
-#else
+#അല്ലെങ്കിൽ
 			      Null (GDEF::accelerator_t)
 #endif
 			     ),
@@ -1205,129 +1205,129 @@ struct hb_ot_apply_context_t :
 			has_glyph_classes (gdef.has_glyph_classes ())
   {
     init_iters ();
-    match_positions.set_storage (stack_match_positions);
+    match_positions.set_storage (അട്ടി_match_positions);
 
 #ifndef HB_NO_BUFFER_MESSAGE
-    if (buffer->messaging ())
+    എങ്കിൽ (buffer->messaging ())
     {
-      assert (buffer->changed_func == nullptr ||
+      പ്രതിജ്ഞാ (buffer->changed_func == nullptr ||
 	      buffer->changed_func == buffer_changed_trampoline);
       orig_changed_func = buffer->changed_func;
       orig_changed_data = buffer->changed_data;
       buffer->changed_func = buffer_changed_trampoline;
-      buffer->changed_data = this;
+      buffer->changed_data = ഇത്;
     }
 #endif
   }
   ~hb_ot_apply_context_t ()
   {
 #ifndef HB_NO_BUFFER_MESSAGE
-    if (buffer->messaging ())
+    എങ്കിൽ (buffer->messaging ())
     {
-      assert (buffer->changed_func == buffer_changed_trampoline);
-      assert (buffer->changed_data == this);
+      പ്രതിജ്ഞാ (buffer->changed_func == buffer_changed_trampoline);
+      പ്രതിജ്ഞാ (buffer->changed_data == ഇത്);
       buffer->changed_func = orig_changed_func;
       buffer->changed_data = orig_changed_data;
     }
 #endif
   }
 
-  void init_iters ()
+  ശൂന്യം init_iters ()
   {
-    iter_input.init (this, false);
-    iter_context.init (this, true);
+    iter_നിവേശം.init (ഇത്, അസത്യം);
+    iter_context.init (ഇത്, സത്യം);
   }
 
-  void set_lookup_mask (hb_mask_t mask, bool init = true) { lookup_mask = mask; last_base = -1; last_base_until = 0; if (init) init_iters (); }
-  void set_auto_zwj (bool auto_zwj_, bool init = true) { auto_zwj = auto_zwj_; if (init) init_iters (); }
-  void set_auto_zwnj (bool auto_zwnj_, bool init = true) { auto_zwnj = auto_zwnj_; if (init) init_iters (); }
-  void set_per_syllable (bool per_syllable_, bool init = true) { per_syllable = per_syllable_; if (init) init_iters (); }
-  void set_random (bool random_) { random = random_; }
-  void set_recurse_func (recurse_func_t func) { recurse_func = func; }
-  void set_lookup_index (unsigned int lookup_index_) { lookup_index = lookup_index_; }
-  void set_lookup_props (unsigned int lookup_props_)
+  ശൂന്യം set_lookup_mask (hb_mask_t mask, തർക്കം init = സത്യം) { lookup_mask = mask; last_base = -1; last_base_until = 0; എങ്കിൽ (init) init_iters (); }
+  ശൂന്യം set_auto_zwj (തർക്കം auto_zwj_, തർക്കം init = സത്യം) { auto_zwj = auto_zwj_; എങ്കിൽ (init) init_iters (); }
+  ശൂന്യം set_auto_zwnj (തർക്കം auto_zwnj_, തർക്കം init = സത്യം) { auto_zwnj = auto_zwnj_; എങ്കിൽ (init) init_iters (); }
+  ശൂന്യം set_per_syllable (തർക്കം per_syllable_, തർക്കം init = സത്യം) { per_syllable = per_syllable_; എങ്കിൽ (init) init_iters (); }
+  ശൂന്യം set_random (തർക്കം random_) { random = random_; }
+  ശൂന്യം set_recurse_func (recurse_func_t func) { recurse_func = func; }
+  ശൂന്യം set_lookup_index (unsigned പൂർണ്ണസംഖ്യ lookup_index_) { lookup_index = lookup_index_; }
+  ശൂന്യം set_lookup_props (unsigned പൂർണ്ണസംഖ്യ lookup_props_)
   {
     lookup_props = gdef_accel.sanitize_lookup_props (lookup_props_);
     init_iters ();
   }
 
-  uint32_t random_number ()
+  uint32_t random_സംഖ്യ ()
   {
     /* http://www.cplusplus.com/reference/random/minstd_rand/ */
     buffer->random_state = buffer->random_state * 48271 % 2147483647;
-    return buffer->random_state;
+    തിരികെ buffer->random_state;
   }
 
-  static void buffer_changed_trampoline (hb_buffer_t *buffer HB_UNUSED, void *user_data)
+  സ്ഥിതം ശൂന്യം buffer_changed_trampoline (hb_buffer_t *buffer HB_UNUSED, ശൂന്യം *user_data)
   {
     ((hb_ot_apply_context_t *) user_data)->buffer_changed ();
   }
-  void buffer_changed ()
+  ശൂന്യം buffer_changed ()
   {
     buffer->update_digest ();
-    if (likely (has_glyph_classes))
-      for (unsigned i = 0; i < buffer->len; i++)
+    എങ്കിൽ (likely (has_glyph_classes))
+      വേണ്ടി (unsigned i = 0; i < buffer->len; i++)
 	_set_glyph_class_props (buffer->info[i]);
   }
 
   HB_ALWAYS_INLINE
   HB_HOT
-  bool match_properties_mark (const hb_glyph_info_t *info,
-			      unsigned int    glyph_props,
-			      unsigned int    match_props) const
+  തർക്കം match_properties_mark (സ്ഥിരം hb_glyph_info_t *info,
+			      unsigned പൂർണ്ണസംഖ്യ    glyph_props,
+			      unsigned പൂർണ്ണസംഖ്യ    match_props) സ്ഥിരം
   {
     /* If using mark filtering sets, the high short of
      * match_props has the set index.
      */
-    if (match_props & LookupFlag::UseMarkFilteringSet)
+    എങ്കിൽ (match_props & LookupFlag::UseMarkFilteringSet)
     {
       unsigned set_index = match_props >> 16;
-      return gdef_accel.mark_set_covers (set_index, info->codepoint);
+      തിരികെ gdef_accel.mark_set_covers (set_index, info->codepoint);
     }
 
     /* The second byte of match_props has the meaning
      * "ignore marks of attachment type different than
      * the attachment type specified."
      */
-    if (match_props & LookupFlag::MarkAttachmentType)
-      return (match_props & LookupFlag::MarkAttachmentType) == (glyph_props & LookupFlag::MarkAttachmentType);
+    എങ്കിൽ (match_props & LookupFlag::MarkAttachmentType)
+      തിരികെ (match_props & LookupFlag::MarkAttachmentType) == (glyph_props & LookupFlag::MarkAttachmentType);
 
-    return true;
+    തിരികെ സത്യം;
   }
 
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  bool check_glyph_property (const hb_glyph_info_t *info,
-			     unsigned match_props) const
+  തർക്കം check_glyph_property (സ്ഥിരം hb_glyph_info_t *info,
+			     unsigned match_props) സ്ഥിരം
   {
-    unsigned int glyph_props = _hb_glyph_info_get_glyph_props (info);
+    unsigned പൂർണ്ണസംഖ്യ glyph_props = _hb_glyph_info_get_glyph_props (info);
 
     /* Not covered, if, for example, glyph class is ligature and
      * match_props includes LookupFlags::IgnoreLigatures
      */
-    if (glyph_props & match_props & LookupFlag::IgnoreFlags)
-      return false;
+    എങ്കിൽ (glyph_props & match_props & LookupFlag::IgnoreFlags)
+      തിരികെ അസത്യം;
 
-    if (glyph_props & HB_OT_LAYOUT_GLYPH_PROPS_MARK)
-      return match_properties_mark (info, glyph_props, match_props);
+    എങ്കിൽ (glyph_props & HB_OT_LAYOUT_GLYPH_PROPS_MARK)
+      തിരികെ match_properties_mark (info, glyph_props, match_props);
 
-    return true;
+    തിരികെ സത്യം;
   }
 
-  void _set_glyph_class (hb_codepoint_t glyph_index,
-			  unsigned int class_guess = 0,
-			  bool ligature = false,
-			  bool component = false)
+  ശൂന്യം _set_glyph_class (hb_codepoint_t glyph_index,
+			  unsigned പൂർണ്ണസംഖ്യ class_guess = 0,
+			  തർക്കം ligature = അസത്യം,
+			  തർക്കം component = അസത്യം)
   {
     buffer->digest.add (glyph_index);
 
-    if (new_syllables != (unsigned) -1)
+    എങ്കിൽ (new_syllables != (unsigned) -1)
       buffer->cur().syllable() = new_syllables;
 
-    unsigned int props = _hb_glyph_info_get_glyph_props (&buffer->cur());
+    unsigned പൂർണ്ണസംഖ്യ props = _hb_glyph_info_get_glyph_props (&buffer->cur());
     props |= HB_OT_LAYOUT_GLYPH_PROPS_SUBSTITUTED;
-    if (ligature)
+    എങ്കിൽ (ligature)
     {
       props |= HB_OT_LAYOUT_GLYPH_PROPS_LIGATED;
       /* In the only place that the MULTIPLIED bit is used, Uniscribe
@@ -1338,133 +1338,133 @@ struct hb_ot_apply_context_t :
        */
       props &= ~HB_OT_LAYOUT_GLYPH_PROPS_MULTIPLIED;
     }
-    if (component)
+    എങ്കിൽ (component)
       props |= HB_OT_LAYOUT_GLYPH_PROPS_MULTIPLIED;
-    if (likely (has_glyph_classes))
+    എങ്കിൽ (likely (has_glyph_classes))
     {
       _set_glyph_class_props (buffer->cur(), props, glyph_index);
     }
-    else if (class_guess)
+    അല്ലെങ്കിൽ എങ്കിൽ (class_guess)
     {
       props &= HB_OT_LAYOUT_GLYPH_PROPS_PRESERVE;
       _hb_glyph_info_set_glyph_props (&buffer->cur(), props | class_guess);
     }
-    else
+    അല്ലെങ്കിൽ
       _hb_glyph_info_set_glyph_props (&buffer->cur(), props);
   }
-  void _set_glyph_class_props (hb_glyph_info_t &info,
-			       unsigned int props,
+  ശൂന്യം _set_glyph_class_props (hb_glyph_info_t &info,
+			       unsigned പൂർണ്ണസംഖ്യ props,
 			       hb_codepoint_t glyph_index)
   {
     props &= HB_OT_LAYOUT_GLYPH_PROPS_PRESERVE;
     _hb_glyph_info_set_glyph_props (&info, props | gdef_accel.get_glyph_props (glyph_index));
   }
-  void _set_glyph_class_props (hb_glyph_info_t &info)
+  ശൂന്യം _set_glyph_class_props (hb_glyph_info_t &info)
   {
     _set_glyph_class_props (info,
 			    _hb_glyph_info_get_glyph_props (&info),
 			    info.codepoint);
   }
 
-  void replace_glyph (hb_codepoint_t glyph_index)
+  ശൂന്യം replace_glyph (hb_codepoint_t glyph_index)
   {
     _set_glyph_class (glyph_index);
-    (void) buffer->replace_glyph (glyph_index);
+    (ശൂന്യം) buffer->replace_glyph (glyph_index);
   }
-  void replace_glyph_inplace (hb_codepoint_t glyph_index)
+  ശൂന്യം replace_glyph_inplace (hb_codepoint_t glyph_index)
   {
     _set_glyph_class (glyph_index);
     buffer->cur().codepoint = glyph_index;
   }
-  void replace_glyph_with_ligature (hb_codepoint_t glyph_index,
-				    unsigned int class_guess)
+  ശൂന്യം replace_glyph_with_ligature (hb_codepoint_t glyph_index,
+				    unsigned പൂർണ്ണസംഖ്യ class_guess)
   {
-    _set_glyph_class (glyph_index, class_guess, true);
-    (void) buffer->replace_glyph (glyph_index);
+    _set_glyph_class (glyph_index, class_guess, സത്യം);
+    (ശൂന്യം) buffer->replace_glyph (glyph_index);
   }
-  void output_glyph_for_component (hb_codepoint_t glyph_index,
-				   unsigned int class_guess)
+  ശൂന്യം output_glyph_for_component (hb_codepoint_t glyph_index,
+				   unsigned പൂർണ്ണസംഖ്യ class_guess)
   {
-    _set_glyph_class (glyph_index, class_guess, false, true);
-    (void) buffer->output_glyph (glyph_index);
+    _set_glyph_class (glyph_index, class_guess, അസത്യം, സത്യം);
+    (ശൂന്യം) buffer->output_glyph (glyph_index);
   }
 };
 
-enum class hb_ot_subtable_cache_op_t
+എണ്ണൽ വർഗ്ഗം hb_ot_subtable_cache_op_t
 {
   ENTER,
   LEAVE,
 };
 
-struct hb_accelerate_subtables_context_t :
+ഘടന hb_accelerate_subtables_context_t :
        hb_dispatch_context_t<hb_accelerate_subtables_context_t>
 {
   template <typename T>
-  static inline auto collect_second_glyphs_ (const T &obj,
+  സ്ഥിതം വരിയിൽ auto collect_second_glyphs_ (സ്ഥിരം T &obj,
 					     hb_set_digest_t *digest,
-					     hb_priority<1>) HB_RETURN (void, obj.collect_second_glyphs (digest) )
+					     hb_priority<1>) HB_RETURN (ശൂന്യം, obj.collect_second_glyphs (digest) )
   template <typename T>
-  static inline void collect_second_glyphs_ (const T &obj HB_UNUSED,
+  സ്ഥിതം വരിയിൽ ശൂന്യം collect_second_glyphs_ (സ്ഥിരം T &obj HB_UNUSED,
 					     hb_set_digest_t *digest,
 					     hb_priority<0>)
   { *digest = hb_set_digest_t::full (); }
 
   template <typename T>
-  static inline auto apply_ (const T *obj, hb_ot_apply_context_t *c, void *external_cache, hb_priority<1>) HB_RETURN (bool, obj->apply (c, external_cache) )
+  സ്ഥിതം വരിയിൽ auto apply_ (സ്ഥിരം T *obj, hb_ot_apply_context_t *c, ശൂന്യം *external_cache, hb_priority<1>) HB_RETURN (തർക്കം, obj->apply (c, external_cache) )
   template <typename T>
-  static inline auto apply_ (const T *obj, hb_ot_apply_context_t *c, void *external_cache, hb_priority<0>) HB_RETURN (bool, obj->apply (c) )
+  സ്ഥിതം വരിയിൽ auto apply_ (സ്ഥിരം T *obj, hb_ot_apply_context_t *c, ശൂന്യം *external_cache, hb_priority<0>) HB_RETURN (തർക്കം, obj->apply (c) )
   template <typename T>
-  static inline bool apply_to (const void *obj, hb_ot_apply_context_t *c, void *external_cache)
+  സ്ഥിതം വരിയിൽ തർക്കം apply_to (സ്ഥിരം ശൂന്യം *obj, hb_ot_apply_context_t *c, ശൂന്യം *external_cache)
   {
-    const T *typed_obj = (const T *) obj;
-    return apply_ (typed_obj, c, external_cache, hb_prioritize);
+    സ്ഥിരം T *typed_obj = (സ്ഥിരം T *) obj;
+    തിരികെ apply_ (typed_obj, c, external_cache, hb_prioritize);
   }
 
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
   template <typename T>
-  static inline auto apply_cached_ (const T *obj, hb_ot_apply_context_t *c, void *external_cache, hb_priority<2>) HB_RETURN (bool, obj->apply_cached (c, external_cache) )
+  സ്ഥിതം വരിയിൽ auto apply_cached_ (സ്ഥിരം T *obj, hb_ot_apply_context_t *c, ശൂന്യം *external_cache, hb_priority<2>) HB_RETURN (തർക്കം, obj->apply_cached (c, external_cache) )
   template <typename T>
-  static inline auto apply_cached_ (const T *obj, hb_ot_apply_context_t *c, void *external_cache, hb_priority<1>) HB_RETURN (bool, obj->apply (c, external_cache) )
+  സ്ഥിതം വരിയിൽ auto apply_cached_ (സ്ഥിരം T *obj, hb_ot_apply_context_t *c, ശൂന്യം *external_cache, hb_priority<1>) HB_RETURN (തർക്കം, obj->apply (c, external_cache) )
   template <typename T>
-  static inline auto apply_cached_ (const T *obj, hb_ot_apply_context_t *c, void *external_cache, hb_priority<0>) HB_RETURN (bool, obj->apply (c) )
+  സ്ഥിതം വരിയിൽ auto apply_cached_ (സ്ഥിരം T *obj, hb_ot_apply_context_t *c, ശൂന്യം *external_cache, hb_priority<0>) HB_RETURN (തർക്കം, obj->apply (c) )
   template <typename T>
-  static inline bool apply_cached_to (const void *obj, hb_ot_apply_context_t *c, void *external_cache)
+  സ്ഥിതം വരിയിൽ തർക്കം apply_cached_to (സ്ഥിരം ശൂന്യം *obj, hb_ot_apply_context_t *c, ശൂന്യം *external_cache)
   {
-    const T *typed_obj = (const T *) obj;
-    return apply_cached_ (typed_obj, c, external_cache, hb_prioritize);
+    സ്ഥിരം T *typed_obj = (സ്ഥിരം T *) obj;
+    തിരികെ apply_cached_ (typed_obj, c, external_cache, hb_prioritize);
   }
 
   template <typename T>
-  static inline auto cache_func_ (hb_ot_apply_context_t *c,
+  സ്ഥിതം വരിയിൽ auto cache_func_ (hb_ot_apply_context_t *c,
 				  hb_ot_subtable_cache_op_t op,
-				  hb_priority<1>) HB_RETURN (bool, T::cache_func (c, op) )
-  template <typename T=void>
-  static inline bool cache_func_ (hb_ot_apply_context_t *c,
+				  hb_priority<1>) HB_RETURN (തർക്കം, T::cache_func (c, op) )
+  template <typename T=ശൂന്യം>
+  സ്ഥിതം വരിയിൽ തർക്കം cache_func_ (hb_ot_apply_context_t *c,
 				  hb_ot_subtable_cache_op_t op HB_UNUSED,
-				  hb_priority<0>) { return false; }
+				  hb_priority<0>) { തിരികെ അസത്യം; }
   template <typename Type>
-  static inline bool cache_func_to (hb_ot_apply_context_t *c,
+  സ്ഥിതം വരിയിൽ തർക്കം cache_func_to (hb_ot_apply_context_t *c,
 				    hb_ot_subtable_cache_op_t op)
   {
-    return cache_func_<Type> (c, op, hb_prioritize);
+    തിരികെ cache_func_<Type> (c, op, hb_prioritize);
   }
 #endif
 
-  typedef bool (*hb_apply_func_t) (const void *obj, hb_ot_apply_context_t *c, void *external_cache);
-  typedef bool (*hb_cache_func_t) (hb_ot_apply_context_t *c, hb_ot_subtable_cache_op_t op);
+  തരനിർവചനം തർക്കം (*hb_apply_func_t) (സ്ഥിരം ശൂന്യം *obj, hb_ot_apply_context_t *c, ശൂന്യം *external_cache);
+  തരനിർവചനം തർക്കം (*hb_cache_func_t) (hb_ot_apply_context_t *c, hb_ot_subtable_cache_op_t op);
 
-  struct hb_applicable_t
+  ഘടന hb_applicable_t
   {
-    friend struct hb_accelerate_subtables_context_t;
-    friend struct hb_ot_layout_lookup_accelerator_t;
+    friend ഘടന hb_accelerate_subtables_context_t;
+    friend ഘടന hb_ot_layout_lookup_accelerator_t;
 
     template <typename T>
-    void init (const T &obj_,
+    ശൂന്യം init (സ്ഥിരം T &obj_,
 	       hb_apply_func_t apply_func_
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
 	       , hb_apply_func_t apply_cached_func_
 	       , hb_cache_func_t cache_func_
-	       , void *external_cache_
+	       , ശൂന്യം *external_cache_
 #endif
 		)
     {
@@ -1480,74 +1480,74 @@ struct hb_accelerate_subtables_context_t :
     }
 
 #ifdef HB_NO_OT_LAYOUT_LOOKUP_CACHE
-    bool apply (hb_ot_apply_context_t *c) const
+    തർക്കം apply (hb_ot_apply_context_t *c) സ്ഥിരം
     {
-      return digest.may_have (c->buffer->cur().codepoint) && apply_func (obj, c, nullptr);
+      തിരികെ digest.may_have (c->buffer->cur().codepoint) && apply_func (obj, c, nullptr);
     }
-    bool apply_no_digest (hb_ot_apply_context_t *c) const
+    തർക്കം apply_no_digest (hb_ot_apply_context_t *c) സ്ഥിരം
     {
-      return apply_func (obj, c, nullptr);
+      തിരികെ apply_func (obj, c, nullptr);
     }
-#else
-    bool apply (hb_ot_apply_context_t *c) const
+#അല്ലെങ്കിൽ
+    തർക്കം apply (hb_ot_apply_context_t *c) സ്ഥിരം
     {
-      return digest.may_have (c->buffer->cur().codepoint) && apply_func (obj, c, external_cache);
+      തിരികെ digest.may_have (c->buffer->cur().codepoint) && apply_func (obj, c, external_cache);
     }
-    bool apply_cached (hb_ot_apply_context_t *c) const
+    തർക്കം apply_cached (hb_ot_apply_context_t *c) സ്ഥിരം
     {
-      return digest.may_have (c->buffer->cur().codepoint) &&  apply_cached_func (obj, c, external_cache);
+      തിരികെ digest.may_have (c->buffer->cur().codepoint) &&  apply_cached_func (obj, c, external_cache);
     }
-    bool apply_no_digest (hb_ot_apply_context_t *c) const
+    തർക്കം apply_no_digest (hb_ot_apply_context_t *c) സ്ഥിരം
     {
-      return apply_func (obj, c, external_cache);
+      തിരികെ apply_func (obj, c, external_cache);
     }
-    bool apply_cached_no_digest (hb_ot_apply_context_t *c) const
+    തർക്കം apply_cached_no_digest (hb_ot_apply_context_t *c) സ്ഥിരം
     {
-      return apply_cached_func (obj, c, external_cache);
+      തിരികെ apply_cached_func (obj, c, external_cache);
     }
 
-    bool cache_enter (hb_ot_apply_context_t *c) const
+    തർക്കം cache_enter (hb_ot_apply_context_t *c) സ്ഥിരം
     {
-      return cache_func (c, hb_ot_subtable_cache_op_t::ENTER);
+      തിരികെ cache_func (c, hb_ot_subtable_cache_op_t::ENTER);
     }
-    void cache_leave (hb_ot_apply_context_t *c) const
+    ശൂന്യം cache_leave (hb_ot_apply_context_t *c) സ്ഥിരം
     {
       cache_func (c, hb_ot_subtable_cache_op_t::LEAVE);
     }
 #endif
 
-    private:
-    const void *obj;
+    സ്വകാര്യ:
+    സ്ഥിരം ശൂന്യം *obj;
     hb_apply_func_t apply_func;
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
     hb_apply_func_t apply_cached_func;
     hb_cache_func_t cache_func;
-    void *external_cache;
+    ശൂന്യം *external_cache;
 #endif
     hb_set_digest_t digest;
   };
 
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
   template <typename T>
-  auto cache_cost (const T &obj, hb_priority<1>) HB_AUTO_RETURN ( obj.cache_cost () )
+  auto cache_cost (സ്ഥിരം T &obj, hb_priority<1>) HB_AUTO_RETURN ( obj.cache_cost () )
   template <typename T>
-  auto cache_cost (const T &obj, hb_priority<0>) HB_AUTO_RETURN ( 0u )
+  auto cache_cost (സ്ഥിരം T &obj, hb_priority<0>) HB_AUTO_RETURN ( 0u )
 
   template <typename T>
-  auto external_cache_create (const T &obj, hb_priority<1>) HB_AUTO_RETURN ( obj.external_cache_create () )
+  auto external_cache_create (സ്ഥിരം T &obj, hb_priority<1>) HB_AUTO_RETURN ( obj.external_cache_create () )
   template <typename T>
-  auto external_cache_create (const T &obj, hb_priority<0>) HB_AUTO_RETURN ( nullptr )
+  auto external_cache_create (സ്ഥിരം T &obj, hb_priority<0>) HB_AUTO_RETURN ( nullptr )
 #endif
 
   /* Dispatch interface. */
   template <typename T>
-  return_t dispatch (const T &obj)
+  return_t dispatch (സ്ഥിരം T &obj)
   {
     collect_second_glyphs_ (obj, &digest_second, hb_prioritize);
 
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
-    void *external_cache = nullptr;
-    if (i < 8)
+    ശൂന്യം *external_cache = nullptr;
+    എങ്കിൽ (i < 8)
       external_cache = external_cache_create (obj, hb_prioritize);
 #endif
 
@@ -1572,16 +1572,16 @@ struct hb_accelerate_subtables_context_t :
      * and we allocate the cache opportunity to the costliest subtable.
      */
     unsigned cost = cache_cost (obj, hb_prioritize);
-    if (cost > subtable_cache_user_cost)
+    എങ്കിൽ (cost > subtable_cache_user_cost)
     {
       subtable_cache_user_idx = i - 1;
       subtable_cache_user_cost = cost;
     }
 #endif
 
-    return hb_empty_t ();
+    തിരികെ hb_empty_t ();
   }
-  static return_t default_return_value () { return hb_empty_t (); }
+  സ്ഥിതം return_t default_return_മൂല്യം () { തിരികെ hb_empty_t (); }
 
   hb_accelerate_subtables_context_t (hb_applicable_t *array_) :
 				     array (array_) {}
@@ -1597,88 +1597,88 @@ struct hb_accelerate_subtables_context_t :
 };
 
 
-typedef bool (*intersects_func_t) (const hb_set_t *glyphs, unsigned value, const void *data, void *cache);
-typedef void (*intersected_glyphs_func_t) (const hb_set_t *glyphs, const void *data, unsigned value, hb_set_t *intersected_glyphs, void *cache);
-typedef void (*collect_glyphs_func_t) (hb_set_t *glyphs, unsigned value, const void *data);
-typedef bool (*match_func_t) (hb_glyph_info_t &info, unsigned value, const void *data);
-typedef unsigned (*get_value_func_t) (hb_glyph_info_t &info, const void *data);
+തരനിർവചനം തർക്കം (*intersects_func_t) (സ്ഥിരം hb_set_t *glyphs, unsigned value, സ്ഥിരം ശൂന്യം *data, ശൂന്യം *cache);
+തരനിർവചനം ശൂന്യം (*intersected_glyphs_func_t) (സ്ഥിരം hb_set_t *glyphs, സ്ഥിരം ശൂന്യം *data, unsigned value, hb_set_t *intersected_glyphs, ശൂന്യം *cache);
+തരനിർവചനം ശൂന്യം (*collect_glyphs_func_t) (hb_set_t *glyphs, unsigned value, സ്ഥിരം ശൂന്യം *data);
+തരനിർവചനം തർക്കം (*match_func_t) (hb_glyph_info_t &info, unsigned value, സ്ഥിരം ശൂന്യം *data);
+തരനിർവചനം unsigned (*get_മൂല്യം_func_t) (hb_glyph_info_t &info, സ്ഥിരം ശൂന്യം *data);
 
 /* One word per RuleSet, summarizing the classes accepted at the first
  * input position after the current glyph.  Collisions only cause extra work. */
-struct hb_ot_layout_ruleset_digest_t
+ഘടന hb_ot_layout_ruleset_digest_t
 {
-  void init () { mask = 0; }
-  void set_full () { mask = (uint64_t) -1; }
-  void add (unsigned value) { mask |= (uint64_t) 1 << (value & 63); }
-  bool may_have (unsigned value) const { return mask & ((uint64_t) 1 << (value & 63)); }
+  ശൂന്യം init () { mask = 0; }
+  ശൂന്യം set_full () { mask = (uint64_t) -1; }
+  ശൂന്യം add (unsigned value) { mask |= (uint64_t) 1 << (value & 63); }
+  തർക്കം may_have (unsigned value) സ്ഥിരം { തിരികെ mask & ((uint64_t) 1 << (value & 63)); }
 
   uint64_t mask;
 };
 
-struct ContextClosureFuncs
+ഘടന ContextClosureFuncs
 {
   intersects_func_t intersects;
   intersected_glyphs_func_t intersected_glyphs;
 };
-struct ContextCollectGlyphsFuncs
+ഘടന ContextCollectGlyphsFuncs
 {
   collect_glyphs_func_t collect;
 };
-struct ContextApplyFuncs
+ഘടന ContextApplyFuncs
 {
   match_func_t match;
 };
-struct ChainContextApplyFuncs
+ഘടന ChainContextApplyFuncs
 {
   match_func_t match[3];
 };
 
 
-static inline bool intersects_glyph (const hb_set_t *glyphs, unsigned value, const void *data HB_UNUSED, void *cache HB_UNUSED)
+സ്ഥിതം വരിയിൽ തർക്കം intersects_glyph (സ്ഥിരം hb_set_t *glyphs, unsigned value, സ്ഥിരം ശൂന്യം *data HB_UNUSED, ശൂന്യം *cache HB_UNUSED)
 {
-  return glyphs->has (value);
+  തിരികെ glyphs->has (value);
 }
-static inline bool intersects_class (const hb_set_t *glyphs, unsigned value, const void *data, void *cache)
+സ്ഥിതം വരിയിൽ തർക്കം intersects_class (സ്ഥിരം hb_set_t *glyphs, unsigned value, സ്ഥിരം ശൂന്യം *data, ശൂന്യം *cache)
 {
-  const ClassDef &class_def = *reinterpret_cast<const ClassDef *>(data);
+  സ്ഥിരം ClassDef &class_def = *reinterpret_cast<സ്ഥിരം ClassDef *>(data);
   hb_map_t *map = (hb_map_t *) cache;
 
   hb_codepoint_t *cached_v;
-  if (map->has (value, &cached_v))
-    return *cached_v;
+  എങ്കിൽ (map->has (value, &cached_v))
+    തിരികെ *cached_v;
 
-  bool v = class_def.intersects_class (glyphs, value);
+  തർക്കം v = class_def.intersects_class (glyphs, value);
   map->set (value, v);
 
-  return v;
+  തിരികെ v;
 }
-static inline bool intersects_coverage (const hb_set_t *glyphs, unsigned value, const void *data, void *cache HB_UNUSED)
+സ്ഥിതം വരിയിൽ തർക്കം intersects_coverage (സ്ഥിരം hb_set_t *glyphs, unsigned value, സ്ഥിരം ശൂന്യം *data, ശൂന്യം *cache HB_UNUSED)
 {
   Offset32To<Coverage> coverage;
   coverage = value;
-  return (data+coverage).intersects (glyphs);
+  തിരികെ (data+coverage).intersects (glyphs);
 }
 
 
-static inline void intersected_glyph (const hb_set_t *glyphs HB_UNUSED, const void *data, unsigned value, hb_set_t *intersected_glyphs, HB_UNUSED void *cache)
+സ്ഥിതം വരിയിൽ ശൂന്യം intersected_glyph (സ്ഥിരം hb_set_t *glyphs HB_UNUSED, സ്ഥിരം ശൂന്യം *data, unsigned value, hb_set_t *intersected_glyphs, HB_UNUSED ശൂന്യം *cache)
 {
-  unsigned g = reinterpret_cast<const HBUINT16 *>(data)[value];
+  unsigned g = reinterpret_cast<സ്ഥിരം HBUINT16 *>(data)[value];
   intersected_glyphs->add (g);
 }
 
 using intersected_class_cache_t = hb_hashmap_t<unsigned, hb_set_t>;
 
-static inline void intersected_class_glyphs (const hb_set_t *glyphs, const void *data, unsigned value, hb_set_t *intersected_glyphs, void *cache)
+സ്ഥിതം വരിയിൽ ശൂന്യം intersected_class_glyphs (സ്ഥിരം hb_set_t *glyphs, സ്ഥിരം ശൂന്യം *data, unsigned value, hb_set_t *intersected_glyphs, ശൂന്യം *cache)
 {
-  const ClassDef &class_def = *reinterpret_cast<const ClassDef *>(data);
+  സ്ഥിരം ClassDef &class_def = *reinterpret_cast<സ്ഥിരം ClassDef *>(data);
 
   intersected_class_cache_t *map = (intersected_class_cache_t *) cache;
 
   hb_set_t *cached_v;
-  if (map->has (value, &cached_v))
+  എങ്കിൽ (map->has (value, &cached_v))
   {
     intersected_glyphs->union_ (*cached_v);
-    return;
+    തിരികെ;
   }
 
   hb_set_t v;
@@ -1689,7 +1689,7 @@ static inline void intersected_class_glyphs (const hb_set_t *glyphs, const void 
   map->set (value, std::move (v));
 }
 
-static inline void intersected_coverage_glyphs (const hb_set_t *glyphs, const void *data, unsigned value, hb_set_t *intersected_glyphs, HB_UNUSED void *cache)
+സ്ഥിതം വരിയിൽ ശൂന്യം intersected_coverage_glyphs (സ്ഥിരം hb_set_t *glyphs, സ്ഥിരം ശൂന്യം *data, unsigned value, hb_set_t *intersected_glyphs, HB_UNUSED ശൂന്യം *cache)
 {
   Offset32To<Coverage> coverage;
   coverage = value;
@@ -1697,255 +1697,255 @@ static inline void intersected_coverage_glyphs (const hb_set_t *glyphs, const vo
 }
 
 
-static inline bool array_is_subset_of (const hb_set_t *glyphs,
-				       unsigned int count,
+സ്ഥിതം വരിയിൽ തർക്കം array_is_subset_of (സ്ഥിരം hb_set_t *glyphs,
+				       unsigned പൂർണ്ണസംഖ്യ എണ്ണം,
 				       glyph_data_t values,
 				       intersects_func_t intersects_func,
-				       const void *intersects_data,
-				       void *cache)
+				       സ്ഥിരം ശൂന്യം *intersects_data,
+				       ശൂന്യം *cache)
 {
-  for (unsigned i = 0; i < count; i++)
-    if (!intersects_func (glyphs, values[i], intersects_data, cache)) return false;
-  return true;
+  വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++)
+    എങ്കിൽ (!intersects_func (glyphs, values[i], intersects_data, cache)) തിരികെ അസത്യം;
+  തിരികെ സത്യം;
 }
 
 
-static inline void collect_glyph (hb_set_t *glyphs, unsigned value, const void *data HB_UNUSED)
+സ്ഥിതം വരിയിൽ ശൂന്യം collect_glyph (hb_set_t *glyphs, unsigned value, സ്ഥിരം ശൂന്യം *data HB_UNUSED)
 {
   glyphs->add (value);
 }
-static inline void collect_class (hb_set_t *glyphs, unsigned value, const void *data)
+സ്ഥിതം വരിയിൽ ശൂന്യം collect_class (hb_set_t *glyphs, unsigned value, സ്ഥിരം ശൂന്യം *data)
 {
-  const ClassDef &class_def = *reinterpret_cast<const ClassDef *>(data);
+  സ്ഥിരം ClassDef &class_def = *reinterpret_cast<സ്ഥിരം ClassDef *>(data);
   class_def.collect_class (glyphs, value);
 }
-static inline void collect_coverage (hb_set_t *glyphs, unsigned value, const void *data)
+സ്ഥിതം വരിയിൽ ശൂന്യം collect_coverage (hb_set_t *glyphs, unsigned value, സ്ഥിരം ശൂന്യം *data)
 {
   Offset32To<Coverage> coverage;
   coverage = value;
   (data+coverage).collect_coverage (glyphs);
 }
 
-inline const hb_set_t *
-hb_depend_context_t::find_or_create_glyph_set (const void *data,
+വരിയിൽ സ്ഥിരം hb_set_t *
+hb_depend_context_t::find_or_create_glyph_set (സ്ഥിരം ശൂന്യം *data,
                                                 unsigned value,
                                                 glyph_set_type_t type)
 {
   /* Class definitions and coverages are immutable for the lifetime of the
    * context, so their expanded glyph sets can be shared across traversals. */
-  glyph_set_cache_key_t key (data, value, type);
+  glyph_set_cache_താക്കോൽ_t key (data, value, type);
   hb_codepoint_t *existing = nullptr;
-  if (glyph_set_to_index.has (key, &existing))
-    return glyph_sets[*existing].get ();
+  എങ്കിൽ (glyph_set_to_index.has (key, &existing))
+    തിരികെ glyph_sets[*existing].get ();
 
   hb_set_t *set = hb_object_create<hb_set_t> ();
-  if (unlikely (!set))
+  എങ്കിൽ (unlikely (!set))
   {
     depend_data->fail ();
-    return nullptr;
+    തിരികെ nullptr;
   }
 
-  if (type == GLYPH_SET_COVERAGE)
+  എങ്കിൽ (type == GLYPH_SET_COVERAGE)
     collect_coverage (set, value, data);
-  else if (type == GLYPH_SET_CLASS)
+  അല്ലെങ്കിൽ എങ്കിൽ (type == GLYPH_SET_CLASS)
     collect_class (set, value, data);
-  else
+  അല്ലെങ്കിൽ
     set->add (value);
-  if (unlikely (set->in_error ()))
+  എങ്കിൽ (unlikely (set->in_error ()))
   {
     hb_set_destroy (set);
     depend_data->fail ();
-    return nullptr;
+    തിരികെ nullptr;
   }
 
   hb_codepoint_t index = glyph_sets.length;
-  if (unlikely (!glyph_sets.push_or_fail (hb::unique_ptr<hb_set_t> {set})))
+  എങ്കിൽ (unlikely (!glyph_sets.തള്ളുക_or_fail (hb::unique_ptr<hb_set_t> {set})))
   {
     depend_data->fail ();
-    return nullptr;
+    തിരികെ nullptr;
   }
-  if (unlikely (!glyph_set_to_index.set (key, index)))
+  എങ്കിൽ (unlikely (!glyph_set_to_index.set (key, index)))
   {
     depend_data->fail ();
-    return nullptr;
+    തിരികെ nullptr;
   }
-  return glyph_sets[index].get ();
+  തിരികെ glyph_sets[index].get ();
 }
 
-inline hb_codepoint_t
-hb_depend_context_t::find_or_create_cached_context_set (const hb_set_t *set)
+വരിയിൽ hb_codepoint_t
+hb_depend_context_t::find_or_create_cached_context_set (സ്ഥിരം hb_set_t *set)
 {
   uintptr_t key = (uintptr_t) set;
   hb_codepoint_t *existing = nullptr;
-  if (cached_context_set_indices.has (key, &existing))
-    return *existing;
+  എങ്കിൽ (cached_context_set_indices.has (key, &existing))
+    തിരികെ *existing;
 
   hb_codepoint_t index = depend_data->find_or_create_context_set (*set);
-  if (unlikely (index == HB_CODEPOINT_INVALID))
-    return HB_CODEPOINT_INVALID;
-  if (unlikely (!cached_context_set_indices.set (key, index)))
-    return depend_data->fail_invalid ();
-  return index;
+  എങ്കിൽ (unlikely (index == HB_CODEPOINT_INVALID))
+    തിരികെ HB_CODEPOINT_INVALID;
+  എങ്കിൽ (unlikely (!cached_context_set_indices.set (key, index)))
+    തിരികെ depend_data->fail_invalid ();
+  തിരികെ index;
 }
 
-static inline void collect_array (hb_collect_glyphs_context_t *c HB_UNUSED,
+സ്ഥിതം വരിയിൽ ശൂന്യം collect_array (hb_collect_glyphs_context_t *c HB_UNUSED,
 				  hb_set_t *glyphs,
-				  unsigned int count,
+				  unsigned പൂർണ്ണസംഖ്യ എണ്ണം,
 				  glyph_data_t values,
 				  collect_glyphs_func_t collect_func,
-				  const void *collect_data)
+				  സ്ഥിരം ശൂന്യം *collect_data)
 {
-  for (unsigned i = 0; i < count; i++)
+  വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++)
     collect_func (glyphs, values[i], collect_data);
 }
 
 
-static inline bool match_always (hb_glyph_info_t &info HB_UNUSED, unsigned value HB_UNUSED, const void *data HB_UNUSED)
+സ്ഥിതം വരിയിൽ തർക്കം match_always (hb_glyph_info_t &info HB_UNUSED, unsigned value HB_UNUSED, സ്ഥിരം ശൂന്യം *data HB_UNUSED)
 {
-  return true;
+  തിരികെ സത്യം;
 }
-static inline bool match_glyph (hb_glyph_info_t &info, unsigned value, const void *data HB_UNUSED)
+സ്ഥിതം വരിയിൽ തർക്കം match_glyph (hb_glyph_info_t &info, unsigned value, സ്ഥിരം ശൂന്യം *data HB_UNUSED)
 {
-  return info.codepoint == value;
+  തിരികെ info.codepoint == value;
 }
-static inline bool match_class (hb_glyph_info_t &info, unsigned value, const void *data)
+സ്ഥിതം വരിയിൽ തർക്കം match_class (hb_glyph_info_t &info, unsigned value, സ്ഥിരം ശൂന്യം *data)
 {
-  const ClassDef &class_def = *reinterpret_cast<const ClassDef *>(data);
-  return class_def.get_class (info.codepoint) == value;
+  സ്ഥിരം ClassDef &class_def = *reinterpret_cast<സ്ഥിരം ClassDef *>(data);
+  തിരികെ class_def.get_class (info.codepoint) == value;
 }
-static inline unsigned get_class_value (hb_glyph_info_t &info, const void *data)
+സ്ഥിതം വരിയിൽ unsigned get_class_മൂല്യം (hb_glyph_info_t &info, സ്ഥിരം ശൂന്യം *data)
 {
-  const ClassDef &class_def = *reinterpret_cast<const ClassDef *> (data);
-  return class_def.get_class (info.codepoint);
+  സ്ഥിരം ClassDef &class_def = *reinterpret_cast<സ്ഥിരം ClassDef *> (data);
+  തിരികെ class_def.get_class (info.codepoint);
 }
-struct match_class_cache_data_t
+ഘടന match_class_cache_data_t
 {
-  const ClassDef *class_def;
+  സ്ഥിരം ClassDef *class_def;
   hb_ot_layout_mapping_cache_t *cache;
 };
-static inline bool match_class_cache (hb_glyph_info_t &info, unsigned value, const void *data)
+സ്ഥിതം വരിയിൽ തർക്കം match_class_cache (hb_glyph_info_t &info, unsigned value, സ്ഥിരം ശൂന്യം *data)
 {
-  const auto &cache_data = *reinterpret_cast<const match_class_cache_data_t *> (data);
-  return cache_data.class_def->get_class (info.codepoint, cache_data.cache) == value;
+  സ്ഥിരം auto &cache_data = *reinterpret_cast<സ്ഥിരം match_class_cache_data_t *> (data);
+  തിരികെ cache_data.class_def->get_class (info.codepoint, cache_data.cache) == value;
 }
-static inline unsigned get_class_cache_value (hb_glyph_info_t &info, const void *data)
+സ്ഥിതം വരിയിൽ unsigned get_class_cache_മൂല്യം (hb_glyph_info_t &info, സ്ഥിരം ശൂന്യം *data)
 {
-  const auto &cache_data = *reinterpret_cast<const match_class_cache_data_t *> (data);
-  return cache_data.class_def->get_class (info.codepoint, cache_data.cache);
+  സ്ഥിരം auto &cache_data = *reinterpret_cast<സ്ഥിരം match_class_cache_data_t *> (data);
+  തിരികെ cache_data.class_def->get_class (info.codepoint, cache_data.cache);
 }
-static inline unsigned get_class_cached (const ClassDef &class_def, hb_glyph_info_t &info)
+സ്ഥിതം വരിയിൽ unsigned get_class_cached (സ്ഥിരം ClassDef &class_def, hb_glyph_info_t &info)
 {
   unsigned klass = info.syllable();
-  if (klass < 255)
-    return klass;
+  എങ്കിൽ (klass < 255)
+    തിരികെ klass;
   klass = class_def.get_class (info.codepoint);
-  if (likely (klass < 255))
+  എങ്കിൽ (likely (klass < 255))
     info.syllable() = klass;
-  return klass;
+  തിരികെ klass;
 }
-static inline bool match_class_cached (hb_glyph_info_t &info, unsigned value, const void *data)
+സ്ഥിതം വരിയിൽ തർക്കം match_class_cached (hb_glyph_info_t &info, unsigned value, സ്ഥിരം ശൂന്യം *data)
 {
-  const ClassDef &class_def = *reinterpret_cast<const ClassDef *>(data);
-  return get_class_cached (class_def, info) == value;
+  സ്ഥിരം ClassDef &class_def = *reinterpret_cast<സ്ഥിരം ClassDef *>(data);
+  തിരികെ get_class_cached (class_def, info) == value;
 }
-static inline unsigned get_class_cached_value (hb_glyph_info_t &info, const void *data)
+സ്ഥിതം വരിയിൽ unsigned get_class_cached_മൂല്യം (hb_glyph_info_t &info, സ്ഥിരം ശൂന്യം *data)
 {
-  const ClassDef &class_def = *reinterpret_cast<const ClassDef *> (data);
-  return get_class_cached (class_def, info);
+  സ്ഥിരം ClassDef &class_def = *reinterpret_cast<സ്ഥിരം ClassDef *> (data);
+  തിരികെ get_class_cached (class_def, info);
 }
-static inline unsigned get_class_cached1 (const ClassDef &class_def, hb_glyph_info_t &info)
+സ്ഥിതം വരിയിൽ unsigned get_class_cached1 (സ്ഥിരം ClassDef &class_def, hb_glyph_info_t &info)
 {
   unsigned klass = info.syllable() & 0x0F;
-  if (klass < 15)
-    return klass;
+  എങ്കിൽ (klass < 15)
+    തിരികെ klass;
   klass = class_def.get_class (info.codepoint);
-  if (likely (klass < 15))
+  എങ്കിൽ (likely (klass < 15))
     info.syllable() = (info.syllable() & 0xF0) | klass;
-  return klass;
+  തിരികെ klass;
 }
-static inline bool match_class_cached1 (hb_glyph_info_t &info, unsigned value, const void *data)
+സ്ഥിതം വരിയിൽ തർക്കം match_class_cached1 (hb_glyph_info_t &info, unsigned value, സ്ഥിരം ശൂന്യം *data)
 {
-  const ClassDef &class_def = *reinterpret_cast<const ClassDef *>(data);
-  return get_class_cached1 (class_def, info) == value;
+  സ്ഥിരം ClassDef &class_def = *reinterpret_cast<സ്ഥിരം ClassDef *>(data);
+  തിരികെ get_class_cached1 (class_def, info) == value;
 }
-static inline unsigned get_class_cached2 (const ClassDef &class_def, hb_glyph_info_t &info)
+സ്ഥിതം വരിയിൽ unsigned get_class_cached2 (സ്ഥിരം ClassDef &class_def, hb_glyph_info_t &info)
 {
   unsigned klass = (info.syllable() & 0xF0) >> 4;
-  if (klass < 15)
-    return klass;
+  എങ്കിൽ (klass < 15)
+    തിരികെ klass;
   klass = class_def.get_class (info.codepoint);
-  if (likely (klass < 15))
+  എങ്കിൽ (likely (klass < 15))
     info.syllable() = (info.syllable() & 0x0F) | (klass << 4);
-  return klass;
+  തിരികെ klass;
 }
-static inline bool match_class_cached2 (hb_glyph_info_t &info, unsigned value, const void *data)
+സ്ഥിതം വരിയിൽ തർക്കം match_class_cached2 (hb_glyph_info_t &info, unsigned value, സ്ഥിരം ശൂന്യം *data)
 {
-  const ClassDef &class_def = *reinterpret_cast<const ClassDef *>(data);
-  return get_class_cached2 (class_def, info) == value;
+  സ്ഥിരം ClassDef &class_def = *reinterpret_cast<സ്ഥിരം ClassDef *>(data);
+  തിരികെ get_class_cached2 (class_def, info) == value;
 }
-static inline unsigned get_class_cached2_value (hb_glyph_info_t &info, const void *data)
+സ്ഥിതം വരിയിൽ unsigned get_class_cached2_മൂല്യം (hb_glyph_info_t &info, സ്ഥിരം ശൂന്യം *data)
 {
-  const ClassDef &class_def = *reinterpret_cast<const ClassDef *> (data);
-  return get_class_cached2 (class_def, info);
+  സ്ഥിരം ClassDef &class_def = *reinterpret_cast<സ്ഥിരം ClassDef *> (data);
+  തിരികെ get_class_cached2 (class_def, info);
 }
-static inline bool match_coverage (hb_glyph_info_t &info, unsigned value, const void *data)
+സ്ഥിതം വരിയിൽ തർക്കം match_coverage (hb_glyph_info_t &info, unsigned value, സ്ഥിരം ശൂന്യം *data)
 {
   Offset32To<Coverage> coverage;
   coverage = value;
-  return (data+coverage).get_coverage (info.codepoint) != NOT_COVERED;
+  തിരികെ (data+coverage).get_coverage (info.codepoint) != NOT_COVERED;
 }
 
-static inline bool would_match_input (hb_would_apply_context_t *c,
-				      unsigned int count, /* Including the first glyph (not matched) */
-				      glyph_data_t input, /* Array of input values--start with second glyph */
+സ്ഥിതം വരിയിൽ തർക്കം would_match_നിവേശം (hb_would_apply_context_t *c,
+				      unsigned പൂർണ്ണസംഖ്യ എണ്ണം, /* Including the first glyph (not matched) */
+				      glyph_data_t നിവേശം, /* Array of input values--start with second glyph */
 				      match_func_t match_func,
-				      const void *match_data)
+				      സ്ഥിരം ശൂന്യം *match_data)
 {
-  if (count != c->len)
-    return false;
+  എങ്കിൽ (എണ്ണം != c->len)
+    തിരികെ അസത്യം;
 
-  for (unsigned int i = 1; i < count; i++)
+  വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 1; i < എണ്ണം; i++)
   {
     hb_glyph_info_t info;
     info.codepoint = c->glyphs[i];
-    if (likely (!match_func (info, input[i - 1], match_data)))
-      return false;
+    എങ്കിൽ (likely (!match_func (info, നിവേശം[i - 1], match_data)))
+      തിരികെ അസത്യം;
   }
 
-  return true;
+  തിരികെ സത്യം;
 }
 #ifndef HB_OPTIMIZE_SIZE
 HB_ALWAYS_INLINE
-#else
-inline
+#അല്ലെങ്കിൽ
+വരിയിൽ
 #endif
-static bool match_input (hb_ot_apply_context_t *c,
-			 unsigned int count, /* Including the first glyph (not matched) */
-			 glyph_data_t input, /* Array of input values--start with second glyph */
+സ്ഥിതം തർക്കം match_നിവേശം (hb_ot_apply_context_t *c,
+			 unsigned പൂർണ്ണസംഖ്യ എണ്ണം, /* Including the first glyph (not matched) */
+			 glyph_data_t നിവേശം, /* Array of input values--start with second glyph */
 			 match_func_t match_func,
-			 const void *match_data,
-			 unsigned int *end_position,
-			 unsigned int *p_total_component_count = nullptr)
+			 സ്ഥിരം ശൂന്യം *match_data,
+			 unsigned പൂർണ്ണസംഖ്യ *end_position,
+			 unsigned പൂർണ്ണസംഖ്യ *p_total_component_എണ്ണം = nullptr)
 {
   TRACE_APPLY (nullptr);
 
   hb_buffer_t *buffer = c->buffer;
 
-  if (count == 1)
+  എങ്കിൽ (എണ്ണം == 1)
   {
     *end_position = buffer->idx + 1;
     c->match_positions[0] = buffer->idx;
-    if (p_total_component_count)
-      *p_total_component_count = _hb_glyph_info_get_lig_num_comps (&buffer->cur());
-    return_trace (true);
+    എങ്കിൽ (p_total_component_എണ്ണം)
+      *p_total_component_എണ്ണം = hb_glyph_info_get_lig_അക്കം_comps (&buffer->cur());
+    return_trace (സത്യം);
   }
 
-  if (unlikely (count > HB_MAX_CONTEXT_LENGTH)) return_trace (false);
+  എങ്കിൽ (unlikely (എണ്ണം > HB_MAX_CONTEXT_LENGTH)) return_trace (അസത്യം);
 
-  auto &skippy_iter = c->iter_input;
+  auto &skippy_iter = c->iter_നിവേശം;
   skippy_iter.reset (buffer->idx);
   skippy_iter.set_match_func (match_func, match_data);
-  skippy_iter.set_glyph_data (input);
+  skippy_iter.set_glyph_data (നിവേശം);
 
   /*
    * This is perhaps the trickiest part of OpenType...  Remarks:
@@ -1971,98 +1971,98 @@ static bool match_input (hb_ot_apply_context_t *c,
    *     https://github.com/harfbuzz/harfbuzz/issues/545
    */
 
-  unsigned int total_component_count = 0;
+  unsigned പൂർണ്ണസംഖ്യ total_component_എണ്ണം = 0;
 
-  unsigned int first_lig_id = _hb_glyph_info_get_lig_id (&buffer->cur());
-  unsigned int first_lig_comp = _hb_glyph_info_get_lig_comp (&buffer->cur());
+  unsigned പൂർണ്ണസംഖ്യ first_lig_id = _hb_glyph_info_get_lig_id (&buffer->cur());
+  unsigned പൂർണ്ണസംഖ്യ first_lig_comp = _hb_glyph_info_get_lig_comp (&buffer->cur());
 
-  enum {
+  എണ്ണൽ {
     LIGBASE_NOT_CHECKED,
     LIGBASE_MAY_NOT_SKIP,
     LIGBASE_MAY_SKIP
   } ligbase = LIGBASE_NOT_CHECKED;
 
-  for (unsigned int i = 1; i < count; i++)
+  വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 1; i < എണ്ണം; i++)
   {
     unsigned unsafe_to;
-    if (!skippy_iter.next (&unsafe_to))
+    എങ്കിൽ (!skippy_iter.next (&unsafe_to))
     {
       *end_position = unsafe_to;
-      return_trace (false);
+      return_trace (അസത്യം);
     }
 
-    if (unlikely (i + 1 > c->match_positions.length &&
+    എങ്കിൽ (unlikely (i + 1 > c->match_positions.length &&
 		  !c->match_positions.resize_dirty  (i + 1)))
-      return_trace (false);
+      return_trace (അസത്യം);
     c->match_positions.arrayZ[i] = skippy_iter.idx;
 
-    unsigned int this_lig_id = _hb_glyph_info_get_lig_id (&buffer->info[skippy_iter.idx]);
-    unsigned int this_lig_comp = _hb_glyph_info_get_lig_comp (&buffer->info[skippy_iter.idx]);
+    unsigned പൂർണ്ണസംഖ്യ this_lig_id = _hb_glyph_info_get_lig_id (&buffer->info[skippy_iter.idx]);
+    unsigned പൂർണ്ണസംഖ്യ this_lig_comp = _hb_glyph_info_get_lig_comp (&buffer->info[skippy_iter.idx]);
 
-    if (first_lig_id && first_lig_comp)
+    എങ്കിൽ (first_lig_id && first_lig_comp)
     {
       /* If first component was attached to a previous ligature component,
        * all subsequent components should be attached to the same ligature
        * component, otherwise we shouldn't ligate them... */
-      if (first_lig_id != this_lig_id || first_lig_comp != this_lig_comp)
+      എങ്കിൽ (first_lig_id != this_lig_id || first_lig_comp != this_lig_comp)
       {
 	/* ...unless, we are attached to a base ligature and that base
 	 * ligature is ignorable. */
-	if (ligbase == LIGBASE_NOT_CHECKED)
+	എങ്കിൽ (ligbase == LIGBASE_NOT_CHECKED)
 	{
-	  bool found = false;
-	  const auto *out = buffer->out_info;
-	  unsigned int j = buffer->out_len;
-	  while (j && _hb_glyph_info_get_lig_id (&out[j - 1]) == first_lig_id)
+	  തർക്കം found = അസത്യം;
+	  സ്ഥിരം auto *out = buffer->out_info;
+	  unsigned പൂർണ്ണസംഖ്യ j = buffer->out_len;
+	  ആകുമ്പോൾ (j && _hb_glyph_info_get_lig_id (&out[j - 1]) == first_lig_id)
 	  {
-	    if (_hb_glyph_info_get_lig_comp (&out[j - 1]) == 0)
+	    എങ്കിൽ (_hb_glyph_info_get_lig_comp (&out[j - 1]) == 0)
 	    {
 	      j--;
-	      found = true;
-	      break;
+	      found = സത്യം;
+	      നിർത്തുക;
 	    }
 	    j--;
 	  }
 
-	  if (found && skippy_iter.may_skip (out[j]) == matcher_t::SKIP_YES)
+	  എങ്കിൽ (found && skippy_iter.may_skip (out[j]) == matcher_t::SKIP_YES)
 	    ligbase = LIGBASE_MAY_SKIP;
-	  else
+	  അല്ലെങ്കിൽ
 	    ligbase = LIGBASE_MAY_NOT_SKIP;
 	}
 
-	if (ligbase == LIGBASE_MAY_NOT_SKIP)
-	  return_trace (false);
+	എങ്കിൽ (ligbase == LIGBASE_MAY_NOT_SKIP)
+	  return_trace (അസത്യം);
       }
     }
-    else
+    അല്ലെങ്കിൽ
     {
       /* If first component was NOT attached to a previous ligature component,
        * all subsequent components should also NOT be attached to any ligature
        * component, unless they are attached to the first component itself! */
-      if (this_lig_id && this_lig_comp && (this_lig_id != first_lig_id))
-	return_trace (false);
+      എങ്കിൽ (this_lig_id && this_lig_comp && (this_lig_id != first_lig_id))
+	return_trace (അസത്യം);
     }
 
-    total_component_count += _hb_glyph_info_get_lig_num_comps_in_ligation (&buffer->info[skippy_iter.idx]);
+    total_component_എണ്ണം += hb_glyph_info_get_lig_അക്കം_comps_in_ligation (&buffer->info[skippy_iter.idx]);
   }
 
   *end_position = skippy_iter.idx + 1;
 
-  if (p_total_component_count)
+  എങ്കിൽ (p_total_component_എണ്ണം)
   {
-    total_component_count += _hb_glyph_info_get_lig_num_comps (&buffer->cur());
-    *p_total_component_count = total_component_count;
+    total_component_എണ്ണം += hb_glyph_info_get_lig_അക്കം_comps (&buffer->cur());
+    *p_total_component_എണ്ണം = total_component_എണ്ണം;
   }
 
   c->match_positions.arrayZ[0] = buffer->idx;
 
-  return_trace (true);
+  return_trace (സത്യം);
 }
-static inline bool ligate_input (hb_ot_apply_context_t *c,
-				 unsigned int count, /* Including the first glyph */
-				 unsigned int match_end,
+സ്ഥിതം വരിയിൽ തർക്കം ligate_നിവേശം (hb_ot_apply_context_t *c,
+				 unsigned പൂർണ്ണസംഖ്യ എണ്ണം, /* Including the first glyph */
+				 unsigned പൂർണ്ണസംഖ്യ match_end,
 				 hb_codepoint_t lig_glyph,
-				 unsigned int total_component_count)
+				 unsigned പൂർണ്ണസംഖ്യ total_component_എണ്ണം)
 {
   TRACE_APPLY (nullptr);
 
@@ -2102,95 +2102,95 @@ static inline bool ligate_input (hb_ot_apply_context_t *c,
    *   https://bugzilla.gnome.org/show_bug.cgi?id=437633
    */
 
-  bool is_base_ligature = _hb_glyph_info_is_base_glyph (&buffer->info[c->match_positions.arrayZ[0]]);
-  bool is_mark_ligature = _hb_glyph_info_is_mark (&buffer->info[c->match_positions.arrayZ[0]]);
-  for (unsigned int i = 1; i < count; i++)
-    if (!_hb_glyph_info_is_mark (&buffer->info[c->match_positions.arrayZ[i]]))
+  തർക്കം is_base_ligature = _hb_glyph_info_is_base_glyph (&buffer->info[c->match_positions.arrayZ[0]]);
+  തർക്കം is_mark_ligature = _hb_glyph_info_is_mark (&buffer->info[c->match_positions.arrayZ[0]]);
+  വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 1; i < എണ്ണം; i++)
+    എങ്കിൽ (!_hb_glyph_info_is_mark (&buffer->info[c->match_positions.arrayZ[i]]))
     {
-      is_base_ligature = false;
-      is_mark_ligature = false;
-      break;
+      is_base_ligature = അസത്യം;
+      is_mark_ligature = അസത്യം;
+      നിർത്തുക;
     }
-  bool is_ligature = !is_base_ligature && !is_mark_ligature;
+  തർക്കം is_ligature = !is_base_ligature && !is_mark_ligature;
 
-  unsigned int klass = is_ligature ? HB_OT_LAYOUT_GLYPH_PROPS_LIGATURE : 0;
-  unsigned int lig_id = is_ligature ? _hb_allocate_lig_id (buffer) : 0;
-  unsigned int last_lig_id = _hb_glyph_info_get_lig_id (&buffer->cur());
-  unsigned int last_num_components = _hb_glyph_info_get_lig_num_comps (&buffer->cur());
-  unsigned int components_so_far = last_num_components;
+  unsigned പൂർണ്ണസംഖ്യ klass = is_ligature ? HB_OT_LAYOUT_GLYPH_PROPS_LIGATURE : 0;
+  unsigned പൂർണ്ണസംഖ്യ lig_id = is_ligature ? _hb_allocate_lig_id (buffer) : 0;
+  unsigned പൂർണ്ണസംഖ്യ last_lig_id = _hb_glyph_info_get_lig_id (&buffer->cur());
+  unsigned പൂർണ്ണസംഖ്യ last_അക്കം_components = hb_glyph_info_get_lig_അക്കം_comps (&buffer->cur());
+  unsigned പൂർണ്ണസംഖ്യ components_so_far = last_അക്കം_components;
 
-  if (is_ligature)
+  എങ്കിൽ (is_ligature)
   {
-    _hb_glyph_info_set_lig_props_for_ligature (&buffer->cur(), lig_id, total_component_count);
-    if (_hb_glyph_info_get_general_category (&buffer->cur()) == HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK)
+    _hb_glyph_info_set_lig_props_for_ligature (&buffer->cur(), lig_id, total_component_എണ്ണം);
+    എങ്കിൽ (_hb_glyph_info_get_general_category (&buffer->cur()) == HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK)
     {
       _hb_glyph_info_set_general_category (&buffer->cur(), HB_UNICODE_GENERAL_CATEGORY_OTHER_LETTER);
     }
   }
   c->replace_glyph_with_ligature (lig_glyph, klass);
 
-  for (unsigned int i = 1; i < count; i++)
+  വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 1; i < എണ്ണം; i++)
   {
-    while (buffer->idx < c->match_positions.arrayZ[i] && buffer->successful)
+    ആകുമ്പോൾ (buffer->idx < c->match_positions.arrayZ[i] && buffer->successful)
     {
-      if (is_ligature)
+      എങ്കിൽ (is_ligature)
       {
-	unsigned int this_comp = _hb_glyph_info_get_lig_comp (&buffer->cur());
-	if (this_comp == 0)
-	  this_comp = last_num_components;
-	assert (components_so_far >= last_num_components);
-	unsigned int new_lig_comp = components_so_far - last_num_components +
-				    hb_min (this_comp, last_num_components);
+	unsigned പൂർണ്ണസംഖ്യ this_comp = _hb_glyph_info_get_lig_comp (&buffer->cur());
+	എങ്കിൽ (this_comp == 0)
+	  this_comp = last_അക്കം_components;
+	പ്രതിജ്ഞാ (components_so_far >= last_അക്കം_components);
+	unsigned പൂർണ്ണസംഖ്യ new_lig_comp = components_so_far - last_അക്കം_components +
+				    hb_min (this_comp, last_അക്കം_components);
 	  _hb_glyph_info_set_lig_props_for_mark (&buffer->cur(), lig_id, new_lig_comp);
       }
-      (void) buffer->next_glyph ();
+      (ശൂന്യം) buffer->next_glyph ();
     }
 
     last_lig_id = _hb_glyph_info_get_lig_id (&buffer->cur());
-    last_num_components = _hb_glyph_info_get_lig_num_comps_in_ligation (&buffer->cur());
-    components_so_far += last_num_components;
+    last_അക്കം_components = hb_glyph_info_get_lig_അക്കം_comps_in_ligation (&buffer->cur());
+    components_so_far += last_അക്കം_components;
 
     /* Skip the base glyph */
     buffer->idx++;
   }
 
-  if (!is_mark_ligature && last_lig_id)
+  എങ്കിൽ (!is_mark_ligature && last_lig_id)
   {
     /* Re-adjust components for any marks following. */
-    for (unsigned i = buffer->idx; i < buffer->len; ++i)
+    വേണ്ടി (unsigned i = buffer->idx; i < buffer->len; ++i)
     {
-      if (last_lig_id != _hb_glyph_info_get_lig_id (&buffer->info[i])) break;
+      എങ്കിൽ (last_lig_id != _hb_glyph_info_get_lig_id (&buffer->info[i])) നിർത്തുക;
 
       unsigned this_comp = _hb_glyph_info_get_lig_comp (&buffer->info[i]);
-      if (!this_comp) break;
+      എങ്കിൽ (!this_comp) നിർത്തുക;
 
-      assert (components_so_far >= last_num_components);
-      unsigned new_lig_comp = components_so_far - last_num_components +
-			      hb_min (this_comp, last_num_components);
+      പ്രതിജ്ഞാ (components_so_far >= last_അക്കം_components);
+      unsigned new_lig_comp = components_so_far - last_അക്കം_components +
+			      hb_min (this_comp, last_അക്കം_components);
       _hb_glyph_info_set_lig_props_for_mark (&buffer->info[i], lig_id, new_lig_comp);
     }
   }
-  return_trace (true);
+  return_trace (സത്യം);
 }
 
 #ifndef HB_OPTIMIZE_SIZE
 HB_ALWAYS_INLINE
-#else
-inline
+#അല്ലെങ്കിൽ
+വരിയിൽ
 #endif
-static bool match_backtrack (hb_ot_apply_context_t *c,
-			     unsigned int count,
+സ്ഥിതം തർക്കം match_backtrack (hb_ot_apply_context_t *c,
+			     unsigned പൂർണ്ണസംഖ്യ എണ്ണം,
 			     glyph_data_t backtrack,
 			     match_func_t match_func,
-			     const void *match_data,
-			     unsigned int *match_start)
+			     സ്ഥിരം ശൂന്യം *match_data,
+			     unsigned പൂർണ്ണസംഖ്യ *match_start)
 {
   TRACE_APPLY (nullptr);
 
-  if (!count)
+  എങ്കിൽ (!എണ്ണം)
   {
     *match_start = c->buffer->backtrack_len ();
-    return_trace (true);
+    return_trace (സത്യം);
   }
 
   auto &skippy_iter = c->iter_context;
@@ -2198,270 +2198,270 @@ static bool match_backtrack (hb_ot_apply_context_t *c,
   skippy_iter.set_match_func (match_func, match_data);
   skippy_iter.set_glyph_data (backtrack);
 
-  for (unsigned int i = 0; i < count; i++)
+  വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
   {
     unsigned unsafe_from;
-    if (!skippy_iter.prev (&unsafe_from))
+    എങ്കിൽ (!skippy_iter.prev (&unsafe_from))
     {
       *match_start = unsafe_from;
-      return_trace (false);
+      return_trace (അസത്യം);
     }
   }
 
   *match_start = skippy_iter.idx;
-  return_trace (true);
+  return_trace (സത്യം);
 }
 
 #ifndef HB_OPTIMIZE_SIZE
 HB_ALWAYS_INLINE
-#else
-inline
+#അല്ലെങ്കിൽ
+വരിയിൽ
 #endif
-static bool match_lookahead (hb_ot_apply_context_t *c,
-			     unsigned int count,
+സ്ഥിതം തർക്കം match_lookahead (hb_ot_apply_context_t *c,
+			     unsigned പൂർണ്ണസംഖ്യ എണ്ണം,
 			     glyph_data_t lookahead,
 			     match_func_t match_func,
-			     const void *match_data,
-			     unsigned int start_index,
-			     unsigned int *end_index)
+			     സ്ഥിരം ശൂന്യം *match_data,
+			     unsigned പൂർണ്ണസംഖ്യ start_index,
+			     unsigned പൂർണ്ണസംഖ്യ *end_index)
 {
   TRACE_APPLY (nullptr);
 
-  if (!count)
+  എങ്കിൽ (!എണ്ണം)
   {
     *end_index = start_index;
-    return_trace (true);
+    return_trace (സത്യം);
   }
 
   auto &skippy_iter = c->iter_context;
-  assert (start_index >= 1);
+  പ്രതിജ്ഞാ (start_index >= 1);
   skippy_iter.reset (start_index - 1);
   skippy_iter.set_match_func (match_func, match_data);
   skippy_iter.set_glyph_data (lookahead);
 
-  for (unsigned int i = 0; i < count; i++)
+  വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
   {
     unsigned unsafe_to;
-    if (!skippy_iter.next (&unsafe_to))
+    എങ്കിൽ (!skippy_iter.next (&unsafe_to))
     {
       *end_index = unsafe_to;
-      return_trace (false);
+      return_trace (അസത്യം);
     }
   }
 
   *end_index = skippy_iter.idx + 1;
-  return_trace (true);
+  return_trace (സത്യം);
 }
 
 
 
-struct LookupRecord
+ഘടന LookupRecord
 {
-  bool serialize (hb_serialize_context_t *c,
-		  const hb_map_t         *lookup_map) const
+  തർക്കം serialize (hb_serialize_context_t *c,
+		  സ്ഥിരം hb_map_t         *lookup_map) സ്ഥിരം
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SERIALIZE (ഇത്);
+    auto *out = c->embed (*ഇത്);
+    എങ്കിൽ (unlikely (!out)) return_trace (അസത്യം);
 
     return_trace (c->check_assign (out->lookupListIndex, lookup_map->get (lookupListIndex), HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
   HBUINT16	sequenceIndex;		/* Index into current glyph
 					 * sequence--first glyph = 0 */
   HBUINT16	lookupListIndex;	/* Lookup to apply to that
 					 * position--zero--based */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (4);
 };
 
-static inline unsigned serialize_lookuprecord_array (hb_serialize_context_t *c,
-						     const hb_array_t<const LookupRecord> lookupRecords,
-						     const hb_map_t *lookup_map)
+സ്ഥിതം വരിയിൽ unsigned serialize_lookuprecord_array (hb_serialize_context_t *c,
+						     സ്ഥിരം hb_array_t<സ്ഥിരം LookupRecord> lookupRecords,
+						     സ്ഥിരം hb_map_t *lookup_map)
 {
-  unsigned count = 0;
-  for (const LookupRecord& r : lookupRecords)
+  unsigned എണ്ണം = 0;
+  വേണ്ടി (സ്ഥിരം LookupRecord& r : lookupRecords)
   {
-    if (!lookup_map->has (r.lookupListIndex))
-      continue;
+    എങ്കിൽ (!lookup_map->has (r.lookupListIndex))
+      തുടരുക;
 
-    if (!r.serialize (c, lookup_map))
-      return 0;
+    എങ്കിൽ (!r.serialize (c, lookup_map))
+      തിരികെ 0;
 
-    count++;
+    എണ്ണം++;
   }
-  return count;
+  തിരികെ എണ്ണം;
 }
 
-enum ContextFormat { SimpleContext = 1, ClassBasedContext = 2, CoverageBasedContext = 3 };
+എണ്ണൽ ContextFormat { SimpleContext = 1, ClassBasedContext = 2, CoverageBasedContext = 3 };
 
-static inline const hb_set_t *
+സ്ഥിതം വരിയിൽ സ്ഥിരം hb_set_t *
 depend_position_glyphs (hb_depend_context_t *c,
 			ContextFormat context_format,
-			const void *data,
+			സ്ഥിരം ശൂന്യം *data,
 			unsigned value,
-			bool filter_class_by_parent,
+			തർക്കം filter_class_by_parent,
 			hb_set_t *scratch,
 			hb_vector_t<unsigned> *compact_workspace = nullptr)
 {
-  switch (context_format)
+  തിരഞ്ഞെടുപ്പ് (context_format)
   {
-    case ContextFormat::SimpleContext:
-      return c->find_or_create_glyph_set (nullptr, value,
+    അവസ്ഥ ContextFormat::SimpleContext:
+      തിരികെ c->find_or_create_glyph_set (nullptr, value,
                                            hb_depend_context_t::GLYPH_SET_SINGLE);
-    case ContextFormat::ClassBasedContext:
+    അവസ്ഥ ContextFormat::ClassBasedContext:
     {
-      const hb_set_t *class_set = c->find_or_create_glyph_set (
+      സ്ഥിരം hb_set_t *class_set = c->find_or_create_glyph_set (
         data, value, hb_depend_context_t::GLYPH_SET_CLASS);
-      if (unlikely (!class_set))
-	return nullptr;
-      if (!filter_class_by_parent)
-	return class_set;
+      എങ്കിൽ (unlikely (!class_set))
+	തിരികെ nullptr;
+      എങ്കിൽ (!filter_class_by_parent)
+	തിരികെ class_set;
       scratch->set (*class_set);
       scratch->intersect (c->parent_active_glyphs (), compact_workspace);
-      break;
+      നിർത്തുക;
     }
-    case ContextFormat::CoverageBasedContext:
-      return c->find_or_create_glyph_set (
+    അവസ്ഥ ContextFormat::CoverageBasedContext:
+      തിരികെ c->find_or_create_glyph_set (
         data, value, hb_depend_context_t::GLYPH_SET_COVERAGE);
   }
 
-  if (unlikely (scratch->in_error ()))
+  എങ്കിൽ (unlikely (scratch->in_error ()))
   {
     c->depend_data->fail ();
-    return nullptr;
+    തിരികെ nullptr;
   }
-  return scratch;
+  തിരികെ scratch;
 }
 
-static inline void context_closure_recurse_lookups (hb_closure_context_t *c,
-					     unsigned inputCount, glyph_data_t input,
-					     unsigned lookupCount,
-					     const LookupRecord lookupRecord[] /* Array of LookupRecords--in design order */,
+സ്ഥിതം വരിയിൽ ശൂന്യം context_closure_recurse_lookups (hb_closure_context_t *c,
+					     unsigned നിവേശം_എണ്ണം, glyph_data_t നിവേശം,
+					     unsigned lookup_എണ്ണം_2,
+					     സ്ഥിരം LookupRecord lookupRecord[] /* Array of LookupRecords--in design order */,
 					     unsigned value,
 					     ContextFormat context_format,
-					     const void *data,
+					     സ്ഥിരം ശൂന്യം *data,
 					     intersected_glyphs_func_t intersected_glyphs_func,
-					     void *cache)
+					     ശൂന്യം *cache)
 {
   hb_set_t covered_seq_indicies;
   hb_set_t pos_glyphs;
-  for (unsigned int i = 0; i < lookupCount; i++)
+  വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < lookup_എണ്ണം_2; i++)
   {
     unsigned seqIndex = lookupRecord[i].sequenceIndex;
-    if (seqIndex >= inputCount) continue;
+    എങ്കിൽ (seqIndex >= നിവേശം_എണ്ണം) തുടരുക;
 
-    bool has_pos_glyphs = false;
+    തർക്കം has_pos_glyphs = അസത്യം;
 
-    if (!covered_seq_indicies.has (seqIndex))
+    എങ്കിൽ (!covered_seq_indicies.has (seqIndex))
     {
-      has_pos_glyphs = true;
+      has_pos_glyphs = സത്യം;
       pos_glyphs.clear ();
-      if (seqIndex == 0)
+      എങ്കിൽ (seqIndex == 0)
       {
-        switch (context_format) {
-        case ContextFormat::SimpleContext:
+        തിരഞ്ഞെടുപ്പ് (context_format) {
+        അവസ്ഥ ContextFormat::SimpleContext:
           pos_glyphs.add (value);
-          break;
-        case ContextFormat::ClassBasedContext:
+          നിർത്തുക;
+        അവസ്ഥ ContextFormat::ClassBasedContext:
           intersected_glyphs_func (&c->parent_active_glyphs (), data, value, &pos_glyphs, cache);
-          break;
-        case ContextFormat::CoverageBasedContext:
+          നിർത്തുക;
+        അവസ്ഥ ContextFormat::CoverageBasedContext:
           pos_glyphs.set (c->parent_active_glyphs ());
-          break;
+          നിർത്തുക;
         }
       }
-      else
+      അല്ലെങ്കിൽ
       {
-        const void *input_data = input.data;
-        unsigned input_value = seqIndex - 1;
-        if (context_format != ContextFormat::SimpleContext)
+        സ്ഥിരം ശൂന്യം *നിവേശം_data = നിവേശം.data;
+        unsigned നിവേശം_മൂല്യം = seqIndex - 1;
+        എങ്കിൽ (context_format != ContextFormat::SimpleContext)
         {
-          input_data = data;
-          input_value = input[seqIndex - 1];
+          നിവേശം_data = data;
+          നിവേശം_മൂല്യം = നിവേശം[seqIndex - 1];
         }
 
-        intersected_glyphs_func (c->glyphs, input_data, input_value, &pos_glyphs, cache);
+        intersected_glyphs_func (c->glyphs, നിവേശം_data, നിവേശം_മൂല്യം, &pos_glyphs, cache);
       }
     }
 
     covered_seq_indicies.add (seqIndex);
-    hb_set_t *cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs))
-      return;
-    if (has_pos_glyphs) {
+    hb_set_t *cur_active_glyphs = c->തള്ളുക_cur_active_glyphs ();
+    എങ്കിൽ (unlikely (!cur_active_glyphs))
+      തിരികെ;
+    എങ്കിൽ (has_pos_glyphs) {
       *cur_active_glyphs = std::move (pos_glyphs);
-    } else {
+    } അല്ലെങ്കിൽ {
       *cur_active_glyphs = *c->glyphs;
     }
 
-    unsigned endIndex = inputCount;
-    if (context_format == ContextFormat::CoverageBasedContext)
+    unsigned endIndex = നിവേശം_എണ്ണം;
+    എങ്കിൽ (context_format == ContextFormat::CoverageBasedContext)
       endIndex += 1;
 
     c->recurse (lookupRecord[i].lookupListIndex, &covered_seq_indicies, seqIndex, endIndex);
 
-    c->pop_cur_done_glyphs ();
+    c->എടുക്കുക_cur_done_glyphs ();
   }
 }
 
-static bool
+സ്ഥിതം തർക്കം
 context_depend_sets_are_cached (hb_depend_context_t *c,
-				unsigned input_count,
-				unsigned lookup_count,
-				const LookupRecord lookup_records[],
-				const void *rule,
+				unsigned നിവേശം_എണ്ണം_2,
+				unsigned lookup_എണ്ണം,
+				സ്ഥിരം LookupRecord lookup_records[],
+				സ്ഥിരം ശൂന്യം *rule,
 				unsigned value,
 				ContextFormat context_format,
-				const void *data,
+				സ്ഥിരം ശൂന്യം *data,
 				hb_vector_t<hb_codepoint_t> *cached_context_sets)
 {
   hb_codepoint_t active_idx = HB_CODEPOINT_INVALID;
-  bool have_active_idx = false;
-  for (unsigned i = 0; i < lookup_count; i++)
+  തർക്കം have_active_idx = അസത്യം;
+  വേണ്ടി (unsigned i = 0; i < lookup_എണ്ണം; i++)
   {
-    if (lookup_records[i].sequenceIndex >= input_count)
-      continue;
+    എങ്കിൽ (lookup_records[i].sequenceIndex >= നിവേശം_എണ്ണം_2)
+      തുടരുക;
 
-    if (!have_active_idx)
+    എങ്കിൽ (!have_active_idx)
     {
-      if (unlikely (!c->get_parent_active_glyphs_index (&active_idx)))
-	return false;
-      have_active_idx = true;
+      എങ്കിൽ (unlikely (!c->get_parent_active_glyphs_index (&active_idx)))
+	തിരികെ അസത്യം;
+      have_active_idx = സത്യം;
     }
 
-    hb_depend_context_t::context_set_cache_key_t key (
+    hb_depend_context_t::context_set_cache_താക്കോൽ_t key (
       rule, &lookup_records[i], data, active_idx, value, context_format);
     hb_codepoint_t *cached_context_set = nullptr;
-    if (!c->context_set_cache.has (key, &cached_context_set))
-      return false;
-    if (unlikely (!cached_context_sets->push_or_fail (*cached_context_set)))
-      return c->depend_data->fail ();
+    എങ്കിൽ (!c->context_set_cache.has (key, &cached_context_set))
+      തിരികെ അസത്യം;
+    എങ്കിൽ (unlikely (!cached_context_sets->തള്ളുക_or_fail (*cached_context_set)))
+      തിരികെ c->depend_data->fail ();
   }
   /* A rule with no valid records has no cache entries, and its preparation
    * can still allocate dependency sets in an observable order. */
-  return have_active_idx;
+  തിരികെ have_active_idx;
 }
 
-static inline void context_depend_recurse_lookups (hb_depend_context_t *c,
-					     unsigned inputCount, glyph_data_t input,
-					     unsigned lookupCount,
-					     const LookupRecord lookupRecord[] /* Array of LookupRecords--in design order */,
-					     const void *rule,
+സ്ഥിതം വരിയിൽ ശൂന്യം context_depend_recurse_lookups (hb_depend_context_t *c,
+					     unsigned നിവേശം_എണ്ണം, glyph_data_t നിവേശം,
+					     unsigned lookup_എണ്ണം_2,
+					     സ്ഥിരം LookupRecord lookupRecord[] /* Array of LookupRecords--in design order */,
+					     സ്ഥിരം ശൂന്യം *rule,
 					     unsigned value,
 					     ContextFormat context_format,
-					     const void *data,
+					     സ്ഥിരം ശൂന്യം *data,
 					     intersected_glyphs_func_t intersected_glyphs_func,
-					     void *cache,
-					     const hb_set_t &preliminary_context,
-					     const hb_vector_t<const hb_set_t *> *input_position_glyphs,
-					     const hb_vector_t<hb_codepoint_t> *cached_context_sets,
+					     ശൂന്യം *cache,
+					     സ്ഥിരം hb_set_t &preliminary_context,
+					     സ്ഥിരം hb_vector_t<സ്ഥിരം hb_set_t *> *നിവേശം_position_glyphs,
+					     സ്ഥിരം hb_vector_t<hb_codepoint_t> *cached_context_sets,
 					     hb_depend_context_t::depend_scratch_t *scratch)
 {
   /* For depend graph extraction, we filter active glyphs by InputCoverage constraints
@@ -2476,8 +2476,8 @@ static inline void context_depend_recurse_lookups (hb_depend_context_t *c,
    * A rule longer than HB_MAX_CONTEXT_LENGTH never applies during shaping
    * (the apply path rejects it), so skip it here instead of running past
    * the fixed page in add_range(). */
-  if (unlikely (inputCount > HB_MAX_CONTEXT_LENGTH))
-    return;
+  എങ്കിൽ (unlikely (നിവേശം_എണ്ണം > HB_MAX_CONTEXT_LENGTH))
+    തിരികെ;
 
   hb_bit_page_t covered_seq_indices;
   hb_set_t &pos_glyphs = scratch->pos_glyphs;
@@ -2485,29 +2485,29 @@ static inline void context_depend_recurse_lookups (hb_depend_context_t *c,
   hb_set_t &disjunctive_indices = scratch->disjunctive_indices;
   hb_set_t &filtered_disjunctive_indices = scratch->filtered_disjunctive_indices;
   unsigned cached_context_index = 0;
-  for (unsigned int i = 0; i < lookupCount; i++)
+  വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < lookup_എണ്ണം_2; i++)
   {
     unsigned seqIndex = lookupRecord[i].sequenceIndex;
-    if (seqIndex >= inputCount)
-      continue;
+    എങ്കിൽ (seqIndex >= നിവേശം_എണ്ണം)
+      തുടരുക;
 
-    hb_depend_context_t::context_set_cache_key_t context_cache_key;
-    if (unlikely (!c->get_context_set_cache_key (rule, &lookupRecord[i], data, value,
-						 context_format, &context_cache_key)))
-      return;
+    hb_depend_context_t::context_set_cache_താക്കോൽ_t context_cache_താക്കോൽ;
+    എങ്കിൽ (unlikely (!c->get_context_set_cache_താക്കോൽ (rule, &lookupRecord[i], data, value,
+						 context_format, &context_cache_താക്കോൽ)))
+      തിരികെ;
 
     hb_codepoint_t context_set_idx;
     hb_codepoint_t *cached_context_set_idx;
-    if (cached_context_sets)
+    എങ്കിൽ (cached_context_sets)
       context_set_idx = (*cached_context_sets)[cached_context_index++];
-    else if (c->context_set_cache.has (context_cache_key, &cached_context_set_idx))
+    അല്ലെങ്കിൽ എങ്കിൽ (c->context_set_cache.has (context_cache_താക്കോൽ, &cached_context_set_idx))
       context_set_idx = *cached_context_set_idx;
-    else
+    അല്ലെങ്കിൽ
     {
-      if (unlikely (!input_position_glyphs))
+      എങ്കിൽ (unlikely (!നിവേശം_position_glyphs))
       {
 	c->depend_data->fail ();
-	return;
+	തിരികെ;
       }
 
       /* Build position-specific context_set for this lookup. */
@@ -2516,34 +2516,34 @@ static inline void context_depend_recurse_lookups (hb_depend_context_t *c,
       filtered_disjunctive_indices.clear ();
 
       /* Process preliminary_context in one pass. */
-      hb_codepoint_t elem = HB_SET_VALUE_INVALID;
-      while (preliminary_context.next (&elem)) {
-	if (!(elem & HB_DEPEND_CONTEXT_SET_FLAG)) {
+      hb_codepoint_t elem = HB_SET_മൂല്യം_INVALID;
+      ആകുമ്പോൾ (preliminary_context.next (&elem)) {
+	എങ്കിൽ (!(elem & HB_DEPEND_CONTEXT_SET_FLAG)) {
 	  /* Direct glyph */
 	  position_context.add (elem);
-	} else {
+	} അല്ലെങ്കിൽ {
 	  /* Encoded set reference - defer processing until we have all direct requirements */
 	  disjunctive_indices.add (elem);
 	}
       }
 
       /* Add singleton glyphs from OTHER input positions. */
-      for (unsigned j = 0; j < input_position_glyphs->length; j++) {
-	if (j != seqIndex && (*input_position_glyphs)[j]->get_population () == 1) {
-	  position_context.add ((*input_position_glyphs)[j]->get_min ());
+      വേണ്ടി (unsigned j = 0; j < നിവേശം_position_glyphs->length; j++) {
+	എങ്കിൽ (j != seqIndex && (*നിവേശം_position_glyphs)[j]->get_population () == 1) {
+	  position_context.add ((*നിവേശം_position_glyphs)[j]->get_min ());
 	}
       }
 
       /* Now position_context has all direct requirements.
        * Process deferred encoded sets and filter them. */
-      elem = HB_SET_VALUE_INVALID;
-      while (disjunctive_indices.next (&elem)) {
+      elem = HB_SET_മൂല്യം_INVALID;
+      ആകുമ്പോൾ (disjunctive_indices.next (&elem)) {
 	hb_codepoint_t set_idx = elem & 0x7FFFFFFF;
-	const hb_set_t *original_set = c->depend_data->get_set_from_index (set_idx);
-	if (unlikely (!original_set)) continue;
+	സ്ഥിരം hb_set_t *original_set = c->depend_data->get_set_from_index (set_idx);
+	എങ്കിൽ (unlikely (!original_set)) തുടരുക;
 
 	/* Dependency context sets are never inverted. */
-	if (!original_set->intersects (position_context)) {
+	എങ്കിൽ (!original_set->intersects (position_context)) {
 	  /* No overlap with position_context - add full requirement */
 	  filtered_disjunctive_indices.add (elem);
 	}
@@ -2554,18 +2554,18 @@ static inline void context_depend_recurse_lookups (hb_depend_context_t *c,
       }
 
       /* Process non-singleton input positions. */
-      for (unsigned j = 0; j < input_position_glyphs->length; j++) {
-	if (j != seqIndex && (*input_position_glyphs)[j]->get_population () > 1) {
+      വേണ്ടി (unsigned j = 0; j < നിവേശം_position_glyphs->length; j++) {
+	എങ്കിൽ (j != seqIndex && (*നിവേശം_position_glyphs)[j]->get_population () > 1) {
 	  /* Input-position sets are also never inverted. */
-	  if (!(*input_position_glyphs)[j]->intersects (position_context)) {
+	  എങ്കിൽ (!(*നിവേശം_position_glyphs)[j]->intersects (position_context)) {
 	    /* No overlap with position_context - add full requirement */
-	    bool cached_set = context_format == ContextFormat::CoverageBasedContext ||
+	    തർക്കം cached_set = context_format == ContextFormat::CoverageBasedContext ||
 			      (context_format == ContextFormat::ClassBasedContext && j != 0);
 	    hb_codepoint_t idx = cached_set
-	      ? c->find_or_create_cached_context_set ((*input_position_glyphs)[j])
-	      : c->depend_data->find_or_create_context_set (*(*input_position_glyphs)[j]);
-	    if (unlikely (idx == HB_CODEPOINT_INVALID))
-	      return;
+	      ? c->find_or_create_cached_context_set ((*നിവേശം_position_glyphs)[j])
+	      : c->depend_data->find_or_create_context_set (*(*നിവേശം_position_glyphs)[j]);
+	    എങ്കിൽ (unlikely (idx == HB_CODEPOINT_INVALID))
+	      തിരികെ;
 	    filtered_disjunctive_indices.add (HB_DEPEND_CONTEXT_SET_FLAG | idx);
 	  }
 	  /* Otherwise: position_context intersects, requirement satisfied */
@@ -2574,24 +2574,24 @@ static inline void context_depend_recurse_lookups (hb_depend_context_t *c,
 
       /* Combine direct + disjunctive. */
       position_context.union_ (filtered_disjunctive_indices);
-      if (unlikely (position_context.in_error () ||
+      എങ്കിൽ (unlikely (position_context.in_error () ||
 		    filtered_disjunctive_indices.in_error ()))
       {
 	c->depend_data->fail ();
-	return;
+	തിരികെ;
       }
 
       context_set_idx = position_context.is_empty ()
 	? HB_CODEPOINT_INVALID
 	: c->depend_data->find_or_create_context_set (position_context);
-      if (unlikely (!position_context.is_empty () &&
+      എങ്കിൽ (unlikely (!position_context.is_empty () &&
 		    context_set_idx == HB_CODEPOINT_INVALID))
-	return;
+	തിരികെ;
 
-      if (unlikely (!c->context_set_cache.set (context_cache_key, context_set_idx)))
+      എങ്കിൽ (unlikely (!c->context_set_cache.set (context_cache_താക്കോൽ, context_set_idx)))
       {
 	c->depend_data->fail ();
-	return;
+	തിരികെ;
       }
     }
 
@@ -2604,7 +2604,7 @@ static inline void context_depend_recurse_lookups (hb_depend_context_t *c,
     /* Detect nested contextual: if we already have a context set, we're inside
      * an outer contextual rule that called this one. The outer context will be
      * lost, so edges created here may over-approximate. */
-    bool nested_contextual = (saved_context_set_index != HB_CODEPOINT_INVALID);
+    തർക്കം nested_contextual = (saved_context_set_index != HB_CODEPOINT_INVALID);
 
     /* Set for this position's edges */
     c->depend_data->current_context_set_index = context_set_idx;
@@ -2618,79 +2618,79 @@ static inline void context_depend_recurse_lookups (hb_depend_context_t *c,
      * immediately consumes it as an "intermediate"). So a glyph matching the
      * coverage might not persist at that position when closure traverses. */
     c->depend_data->current_edge_flags = HB_SUBSET_DEPEND_EDGE_FLAG_NONE;
-    if (inputCount > 1) {
+    എങ്കിൽ (നിവേശം_എണ്ണം > 1) {
       c->depend_data->current_edge_flags |= HB_SUBSET_DEPEND_EDGE_FLAG_FROM_CONTEXT_POSITION;
     }
-    if (nested_contextual) {
+    എങ്കിൽ (nested_contextual) {
       c->depend_data->current_edge_flags |= HB_SUBSET_DEPEND_EDGE_FLAG_FROM_NESTED_CONTEXT;
     }
 
-    bool has_pos_glyphs = false;
+    തർക്കം has_pos_glyphs = അസത്യം;
 
-    if (!covered_seq_indices.has (seqIndex))
+    എങ്കിൽ (!covered_seq_indices.has (seqIndex))
     {
-      has_pos_glyphs = true;
+      has_pos_glyphs = സത്യം;
       pos_glyphs.clear ();
-      if (seqIndex == 0)
+      എങ്കിൽ (seqIndex == 0)
       {
-        switch (context_format) {
-        case ContextFormat::SimpleContext:
+        തിരഞ്ഞെടുപ്പ് (context_format) {
+        അവസ്ഥ ContextFormat::SimpleContext:
           pos_glyphs.add (value);
-          break;
-        case ContextFormat::ClassBasedContext:
+          നിർത്തുക;
+        അവസ്ഥ ContextFormat::ClassBasedContext:
           intersected_glyphs_func (&c->parent_active_glyphs (), data, value, &pos_glyphs, cache);
-          break;
-        case ContextFormat::CoverageBasedContext:
+          നിർത്തുക;
+        അവസ്ഥ ContextFormat::CoverageBasedContext:
           pos_glyphs.set (c->parent_active_glyphs ());
-          break;
+          നിർത്തുക;
         }
       }
-      else
+      അല്ലെങ്കിൽ
       {
-        const void *input_data = input.data;
-        unsigned input_value = seqIndex - 1;
-        if (context_format != ContextFormat::SimpleContext)
+        സ്ഥിരം ശൂന്യം *നിവേശം_data = നിവേശം.data;
+        unsigned നിവേശം_മൂല്യം = seqIndex - 1;
+        എങ്കിൽ (context_format != ContextFormat::SimpleContext)
         {
-          input_data = data;
-          input_value = input[seqIndex - 1];
+          നിവേശം_data = data;
+          നിവേശം_മൂല്യം = നിവേശം[seqIndex - 1];
         }
 
-        intersected_glyphs_func (c->glyphs, input_data, input_value, &pos_glyphs, cache);
+        intersected_glyphs_func (c->glyphs, നിവേശം_data, നിവേശം_മൂല്യം, &pos_glyphs, cache);
       }
     }
 
     covered_seq_indices.add (seqIndex);
-    if (has_pos_glyphs)
+    എങ്കിൽ (has_pos_glyphs)
     {
       hb_codepoint_t active_idx = HB_CODEPOINT_INVALID;
-      if (context_format == ContextFormat::SimpleContext)
+      എങ്കിൽ (context_format == ContextFormat::SimpleContext)
       {
 	hb_codepoint_t glyph = seqIndex ? pos_glyphs.get_min () : value;
-	if (likely (glyph < hb_depend_context_t::SINGLE_GLYPH_ACTIVE_FLAG))
+	എങ്കിൽ (likely (glyph < hb_depend_context_t::SINGLE_GLYPH_ACTIVE_FLAG))
 	  active_idx = glyph | hb_depend_context_t::SINGLE_GLYPH_ACTIVE_FLAG;
       }
-      hb_set_t *cur_active_glyphs = c->push_cur_active_glyphs (active_idx);
-      if (unlikely (!cur_active_glyphs))
+      hb_set_t *cur_active_glyphs = c->തള്ളുക_cur_active_glyphs (active_idx);
+      എങ്കിൽ (unlikely (!cur_active_glyphs))
       {
 	c->depend_data->current_context_set_index = saved_context_set_index;
 	c->depend_data->current_edge_flags = saved_edge_flags;
-	return;
+	തിരികെ;
       }
       *cur_active_glyphs = std::move (pos_glyphs);
     }
-    else if (unlikely (!c->push_root_active_glyphs ()))
+    അല്ലെങ്കിൽ എങ്കിൽ (unlikely (!c->തള്ളുക_വേര്_active_glyphs ()))
     {
       c->depend_data->current_context_set_index = saved_context_set_index;
       c->depend_data->current_edge_flags = saved_edge_flags;
-      return;
+      തിരികെ;
     }
 
-    unsigned endIndex = inputCount;
-    if (context_format == ContextFormat::CoverageBasedContext)
+    unsigned endIndex = നിവേശം_എണ്ണം;
+    എങ്കിൽ (context_format == ContextFormat::CoverageBasedContext)
       endIndex += 1;
 
     c->recurse (lookupRecord[i].lookupListIndex, &covered_seq_indices, seqIndex, endIndex);
-    c->pop_cur_done_glyphs ();
+    c->എടുക്കുക_cur_done_glyphs ();
 
     /* Restore outer context after this lookup, so subsequent lookups in this
      * rule see the original context rather than this lookup's context. */
@@ -2700,56 +2700,56 @@ static inline void context_depend_recurse_lookups (hb_depend_context_t *c,
 }
 
 template <typename context_t>
-static inline void recurse_lookups (context_t *c,
-                                    unsigned int lookupCount,
-                                    const LookupRecord lookupRecord[] /* Array of LookupRecords--in design order */)
+സ്ഥിതം വരിയിൽ ശൂന്യം recurse_lookups (context_t *c,
+                                    unsigned പൂർണ്ണസംഖ്യ lookup_എണ്ണം_2,
+                                    സ്ഥിരം LookupRecord lookupRecord[] /* Array of LookupRecords--in design order */)
 {
-  for (unsigned int i = 0; i < lookupCount; i++)
+  വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < lookup_എണ്ണം_2; i++)
     c->recurse (lookupRecord[i].lookupListIndex);
 }
 
-static inline void apply_lookup (hb_ot_apply_context_t *c,
-				 unsigned int count, /* Including the first glyph */
-				 unsigned int lookupCount,
-				 const LookupRecord lookupRecord[], /* Array of LookupRecords--in design order */
-				 unsigned int match_end)
+സ്ഥിതം വരിയിൽ ശൂന്യം apply_lookup (hb_ot_apply_context_t *c,
+				 unsigned പൂർണ്ണസംഖ്യ എണ്ണം, /* Including the first glyph */
+				 unsigned പൂർണ്ണസംഖ്യ lookup_എണ്ണം_2,
+				 സ്ഥിരം LookupRecord lookupRecord[], /* Array of LookupRecords--in design order */
+				 unsigned പൂർണ്ണസംഖ്യ match_end)
 {
   hb_buffer_t *buffer = c->buffer;
-  int end;
+  പൂർണ്ണസംഖ്യ end;
 
   /* All positions are distance from beginning of *output* buffer.
    * Adjust. */
   {
-    unsigned int bl = buffer->backtrack_len ();
+    unsigned പൂർണ്ണസംഖ്യ bl = buffer->backtrack_len ();
     end = bl + match_end - buffer->idx;
 
-    int delta = bl - buffer->idx;
+    പൂർണ്ണസംഖ്യ delta = bl - buffer->idx;
     /* Convert positions to new indexing. */
-    for (unsigned int j = 0; j < count; j++)
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ j = 0; j < എണ്ണം; j++)
       c->match_positions.arrayZ[j] += delta;
   }
 
-  for (unsigned int i = 0; i < lookupCount && buffer->successful; i++)
+  വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < lookup_എണ്ണം_2 && buffer->successful; i++)
   {
-    unsigned int idx = lookupRecord[i].sequenceIndex;
-    if (idx >= count)
-      continue;
+    unsigned പൂർണ്ണസംഖ്യ idx = lookupRecord[i].sequenceIndex;
+    എങ്കിൽ (idx >= എണ്ണം)
+      തുടരുക;
 
-    unsigned int orig_len = buffer->backtrack_len () + buffer->lookahead_len ();
+    unsigned പൂർണ്ണസംഖ്യ orig_len = buffer->backtrack_len () + buffer->lookahead_len ();
 
     /* This can happen if earlier recursed lookups deleted many entries. */
-    if (unlikely (c->match_positions.arrayZ[idx] >= orig_len))
-      continue;
+    എങ്കിൽ (unlikely (c->match_positions.arrayZ[idx] >= orig_len))
+      തുടരുക;
 
-    if (unlikely (!buffer->move_to (c->match_positions.arrayZ[idx])))
-      break;
+    എങ്കിൽ (unlikely (!buffer->move_to (c->match_positions.arrayZ[idx])))
+      നിർത്തുക;
 
-    if (unlikely (buffer->max_ops <= 0))
-      break;
+    എങ്കിൽ (unlikely (buffer->max_ops <= 0))
+      നിർത്തുക;
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    എങ്കിൽ (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
-      if (buffer->have_output)
+      എങ്കിൽ (buffer->have_output)
         c->buffer->sync_so_far ();
       c->buffer->message (c->font,
 			  "start recursing to lookup %u at %u",
@@ -2757,25 +2757,25 @@ static inline void apply_lookup (hb_ot_apply_context_t *c,
 			  buffer->idx);
     }
 
-    bool ret = c->recurse (lookupRecord[i].lookupListIndex);
+    തർക്കം ret = c->recurse (lookupRecord[i].lookupListIndex);
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    എങ്കിൽ (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
-      if (buffer->have_output)
+      എങ്കിൽ (buffer->have_output)
         c->buffer->sync_so_far ();
       c->buffer->message (c->font,
 			  "end recursing to lookup %u",
 			  (unsigned) lookupRecord[i].lookupListIndex);
     }
 
-    if (!ret)
-      continue;
+    എങ്കിൽ (!ret)
+      തുടരുക;
 
-    unsigned int new_len = buffer->backtrack_len () + buffer->lookahead_len ();
-    int delta = new_len - orig_len;
+    unsigned പൂർണ്ണസംഖ്യ new_len = buffer->backtrack_len () + buffer->lookahead_len ();
+    പൂർണ്ണസംഖ്യ delta = new_len - orig_len;
 
-    if (!delta)
-      continue;
+    എങ്കിൽ (!delta)
+      തുടരുക;
 
     /* Recursed lookup changed buffer len.  Adjust.
      *
@@ -2802,7 +2802,7 @@ static inline void apply_lookup (hb_ot_apply_context_t *c,
      */
 
     end += delta;
-    if (end < int (c->match_positions.arrayZ[idx]))
+    എങ്കിൽ (end < പൂർണ്ണസംഖ്യ (c->match_positions.arrayZ[idx]))
     {
       /* End might end up being smaller than match_positions.arrayZ[idx] if the recursed
        * lookup ended up removing many items.
@@ -2816,96 +2816,96 @@ static inline void apply_lookup (hb_ot_apply_context_t *c,
       end = c->match_positions.arrayZ[idx];
     }
 
-    unsigned int next = idx + 1; /* next now is the position after the recursed lookup. */
+    unsigned പൂർണ്ണസംഖ്യ next = idx + 1; /* next now is the position after the recursed lookup. */
 
-    if (delta > 0)
+    എങ്കിൽ (delta > 0)
     {
-      if (unlikely (delta + count > HB_MAX_CONTEXT_LENGTH))
-	break;
-      if (unlikely (count + delta > c->match_positions.length &&
-		    !c->match_positions.resize_dirty  (count + delta)))
-        return;
+      എങ്കിൽ (unlikely (delta + എണ്ണം > HB_MAX_CONTEXT_LENGTH))
+	നിർത്തുക;
+      എങ്കിൽ (unlikely (എണ്ണം + delta > c->match_positions.length &&
+		    !c->match_positions.resize_dirty  (എണ്ണം + delta)))
+        തിരികെ;
     }
-    else
+    അല്ലെങ്കിൽ
     {
       /* NOTE: delta is non-positive. */
-      delta = hb_max (delta, (int) next - (int) count);
+      delta = hb_max (delta, (പൂർണ്ണസംഖ്യ) next - (പൂർണ്ണസംഖ്യ) എണ്ണം);
       next -= delta;
     }
 
     /* Shift! */
     memmove (c->match_positions + next + delta, c->match_positions + next,
-	     (count - next) * sizeof (c->match_positions.arrayZ[0]));
+	     (എണ്ണം - next) * വലുപ്പം (c->match_positions.arrayZ[0]));
     next += delta;
-    count += delta;
+    എണ്ണം += delta;
 
     /* Fill in new entries. */
-    for (unsigned int j = idx + 1; j < next; j++)
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ j = idx + 1; j < next; j++)
       c->match_positions.arrayZ[j] = c->match_positions.arrayZ[j - 1] + 1;
 
     /* And fixup the rest. */
-    for (; next < count; next++)
+    വേണ്ടി (; next < എണ്ണം; next++)
       c->match_positions.arrayZ[next] += delta;
   }
 
-  assert (end >= 0);
-  (void) buffer->move_to (end);
+  പ്രതിജ്ഞാ (end >= 0);
+  (ശൂന്യം) buffer->move_to (end);
 }
 
 
 
 /* Contextual lookups */
 
-struct ContextClosureLookupContext
+ഘടന ContextClosureLookupContext
 {
   ContextClosureFuncs funcs;
   ContextFormat context_format;
-  const void *intersects_data;
-  void *intersects_cache;
-  void *intersected_glyphs_cache;
+  സ്ഥിരം ശൂന്യം *intersects_data;
+  ശൂന്യം *intersects_cache;
+  ശൂന്യം *intersected_glyphs_cache;
 };
 
-typedef ContextClosureLookupContext ContextDependLookupContext;
+തരനിർവചനം ContextClosureLookupContext ContextDependLookupContext;
 
-struct ContextCollectGlyphsLookupContext
+ഘടന ContextCollectGlyphsLookupContext
 {
   ContextCollectGlyphsFuncs funcs;
-  const void *collect_data;
+  സ്ഥിരം ശൂന്യം *collect_data;
 };
 
-struct ContextApplyLookupContext
+ഘടന ContextApplyLookupContext
 {
   ContextApplyFuncs funcs;
-  const void *match_data;
-  get_value_func_t get_value;
+  സ്ഥിരം ശൂന്യം *match_data;
+  get_മൂല്യം_func_t get_മൂല്യം;
 };
 
-static inline bool context_intersects (const hb_set_t *glyphs,
-				       unsigned int inputCount, /* Including the first glyph (not matched) */
-				       glyph_data_t input, /* Array of input values--start with second glyph */
+സ്ഥിതം വരിയിൽ തർക്കം context_intersects (സ്ഥിരം hb_set_t *glyphs,
+				       unsigned പൂർണ്ണസംഖ്യ നിവേശം_എണ്ണം, /* Including the first glyph (not matched) */
+				       glyph_data_t നിവേശം, /* Array of input values--start with second glyph */
 				       ContextClosureLookupContext &lookup_context)
 {
-  return array_is_subset_of (glyphs,
-			     inputCount ? inputCount - 1 : 0, input,
+  തിരികെ array_is_subset_of (glyphs,
+			     നിവേശം_എണ്ണം ? നിവേശം_എണ്ണം - 1 : 0, നിവേശം,
 			     lookup_context.funcs.intersects,
 			     lookup_context.intersects_data,
 			     lookup_context.intersects_cache);
 }
 
-static inline void context_closure_lookup (hb_closure_context_t *c,
-					   unsigned int inputCount, /* Including the first glyph (not matched) */
-					   glyph_data_t input, /* Array of input values--start with second glyph */
-					   unsigned int lookupCount,
-					   const LookupRecord lookupRecord[],
+സ്ഥിതം വരിയിൽ ശൂന്യം context_closure_lookup (hb_closure_context_t *c,
+					   unsigned പൂർണ്ണസംഖ്യ നിവേശം_എണ്ണം, /* Including the first glyph (not matched) */
+					   glyph_data_t നിവേശം, /* Array of input values--start with second glyph */
+					   unsigned പൂർണ്ണസംഖ്യ lookup_എണ്ണം_2,
+					   സ്ഥിരം LookupRecord lookupRecord[],
 					   unsigned value, /* Index of first glyph in Coverage or Class value in ClassDef table */
 					   ContextClosureLookupContext &lookup_context)
 {
-  if (context_intersects (c->glyphs,
-			  inputCount, input,
+  എങ്കിൽ (context_intersects (c->glyphs,
+			  നിവേശം_എണ്ണം, നിവേശം,
 			  lookup_context))
     context_closure_recurse_lookups (c,
-				     inputCount, input,
-				     lookupCount, lookupRecord,
+				     നിവേശം_എണ്ണം, നിവേശം,
+				     lookup_എണ്ണം_2, lookupRecord,
 				     value,
 				     lookup_context.context_format,
 				     lookup_context.intersects_data,
@@ -2913,73 +2913,73 @@ static inline void context_closure_lookup (hb_closure_context_t *c,
 				     lookup_context.intersected_glyphs_cache);
 }
 
-static inline void context_depend_lookup (hb_depend_context_t *c,
-					  unsigned int inputCount, /* Including the first glyph (not matched) */
-					  glyph_data_t input, /* Array of input values--start with second glyph */
-					  unsigned int lookupCount,
-					  const LookupRecord lookupRecord[],
-					  const void *rule,
+സ്ഥിതം വരിയിൽ ശൂന്യം context_depend_lookup (hb_depend_context_t *c,
+					  unsigned പൂർണ്ണസംഖ്യ നിവേശം_എണ്ണം, /* Including the first glyph (not matched) */
+					  glyph_data_t നിവേശം, /* Array of input values--start with second glyph */
+					  unsigned പൂർണ്ണസംഖ്യ lookup_എണ്ണം_2,
+					  സ്ഥിരം LookupRecord lookupRecord[],
+					  സ്ഥിരം ശൂന്യം *rule,
 					  unsigned value, /* Index of first glyph in Coverage or Class value in ClassDef table */
 					  ContextDependLookupContext &lookup_context)
 {
-  if (!context_intersects (c->glyphs,
-			   inputCount, input,
+  എങ്കിൽ (!context_intersects (c->glyphs,
+			   നിവേശം_എണ്ണം, നിവേശം,
 			   lookup_context))
-    return;
+    തിരികെ;
 
   hb_depend_context_t::depend_scratch_t *scratch = c->acquire_depend_scratch ();
-  if (unlikely (!scratch))
-    return;
+  എങ്കിൽ (unlikely (!scratch))
+    തിരികെ;
   HB_SCOPE_GUARD (c->release_depend_scratch (scratch));
 
-  bool context_sets_cached = context_depend_sets_are_cached (
-    c, inputCount, lookupCount, lookupRecord, rule, value,
+  തർക്കം context_sets_cached = context_depend_sets_are_cached (
+    c, നിവേശം_എണ്ണം, lookup_എണ്ണം_2, lookupRecord, rule, value,
     lookup_context.context_format, lookup_context.intersects_data,
     &scratch->cached_context_sets);
-  if (unlikely (!c->depend_data->successful))
-    return;
+  എങ്കിൽ (unlikely (!c->depend_data->successful))
+    തിരികെ;
 
   /* Build preliminary_context (empty for ContextSubst - no backtrack/lookahead) */
   hb_set_t &preliminary_context = scratch->preliminary_context;
 
   /* Build glyph sets for ALL input positions */
   hb_set_t &position_scratch = scratch->position_scratch;
-  hb_vector_t<const hb_set_t *> &input_position_glyphs = scratch->input_position_glyphs;
+  hb_vector_t<സ്ഥിരം hb_set_t *> &നിവേശം_position_glyphs = scratch->നിവേശം_position_glyphs;
 
   /* Cached labels no longer need the expanded input-position sets. */
-  if (!context_sets_cached)
+  എങ്കിൽ (!context_sets_cached)
   {
     /* Position 0 (Coverage glyph) — must be in both the class AND the
      * coverage, so intersect with parent_active_glyphs (= coverage ∩ glyphs
      * set by the ContextFormat2/3 caller). */
-    const hb_set_t *pos0_glyphs = depend_position_glyphs (
+    സ്ഥിരം hb_set_t *pos0_glyphs = depend_position_glyphs (
       c, lookup_context.context_format, lookup_context.intersects_data, value,
-      true, &position_scratch, &scratch->compact_workspace);
-    if (unlikely (!pos0_glyphs ||
-		  !input_position_glyphs.push_or_fail (pos0_glyphs)))
+      സത്യം, &position_scratch, &scratch->compact_workspace);
+    എങ്കിൽ (unlikely (!pos0_glyphs ||
+		  !നിവേശം_position_glyphs.തള്ളുക_or_fail (pos0_glyphs)))
     {
       c->depend_data->fail ();
-      return;
+      തിരികെ;
     }
 
     /* Positions 1+ (Input array) */
-    for (unsigned i = 0; i + 1 < inputCount; i++)
+    വേണ്ടി (unsigned i = 0; i + 1 < നിവേശം_എണ്ണം; i++)
     {
-      const hb_set_t *pos_glyphs = depend_position_glyphs (
+      സ്ഥിരം hb_set_t *pos_glyphs = depend_position_glyphs (
 	c, lookup_context.context_format, lookup_context.intersects_data,
-	input[i], false, &position_scratch);
-      if (unlikely (!pos_glyphs ||
-		    !input_position_glyphs.push_or_fail (pos_glyphs)))
+	നിവേശം[i], അസത്യം, &position_scratch);
+      എങ്കിൽ (unlikely (!pos_glyphs ||
+		    !നിവേശം_position_glyphs.തള്ളുക_or_fail (pos_glyphs)))
       {
 	c->depend_data->fail ();
-	return;
+	തിരികെ;
       }
     }
   }
 
   context_depend_recurse_lookups (c,
-				  inputCount, input,
-				  lookupCount, lookupRecord,
+				  നിവേശം_എണ്ണം, നിവേശം,
+				  lookup_എണ്ണം_2, lookupRecord,
 				  rule,
 				  value,
 				  lookup_context.context_format,
@@ -2987,359 +2987,359 @@ static inline void context_depend_lookup (hb_depend_context_t *c,
 				  lookup_context.funcs.intersected_glyphs,
 				  lookup_context.intersected_glyphs_cache,
 				  preliminary_context,
-				  context_sets_cached ? nullptr : &input_position_glyphs,
+				  context_sets_cached ? nullptr : &നിവേശം_position_glyphs,
 				  context_sets_cached ? &scratch->cached_context_sets : nullptr,
 				  scratch);
 }
 
-static inline void context_collect_glyphs_lookup (hb_collect_glyphs_context_t *c,
-						  unsigned int inputCount, /* Including the first glyph (not matched) */
-						  glyph_data_t input, /* Array of input values--start with second glyph */
-						  unsigned int lookupCount,
-						  const LookupRecord lookupRecord[],
+സ്ഥിതം വരിയിൽ ശൂന്യം context_collect_glyphs_lookup (hb_collect_glyphs_context_t *c,
+						  unsigned പൂർണ്ണസംഖ്യ നിവേശം_എണ്ണം, /* Including the first glyph (not matched) */
+						  glyph_data_t നിവേശം, /* Array of input values--start with second glyph */
+						  unsigned പൂർണ്ണസംഖ്യ lookup_എണ്ണം_2,
+						  സ്ഥിരം LookupRecord lookupRecord[],
 						  ContextCollectGlyphsLookupContext &lookup_context)
 {
-  collect_array (c, c->input,
-		 inputCount ? inputCount - 1 : 0, input,
+  collect_array (c, c->നിവേശം,
+		 നിവേശം_എണ്ണം ? നിവേശം_എണ്ണം - 1 : 0, നിവേശം,
 		 lookup_context.funcs.collect, lookup_context.collect_data);
   recurse_lookups (c,
-		   lookupCount, lookupRecord);
+		   lookup_എണ്ണം_2, lookupRecord);
 }
 
-static inline bool context_would_apply_lookup (hb_would_apply_context_t *c,
-					       unsigned int inputCount, /* Including the first glyph (not matched) */
-					       glyph_data_t input, /* Array of input values--start with second glyph */
-					       unsigned int lookupCount HB_UNUSED,
-					       const LookupRecord lookupRecord[] HB_UNUSED,
-					       const ContextApplyLookupContext &lookup_context)
+സ്ഥിതം വരിയിൽ തർക്കം context_would_apply_lookup (hb_would_apply_context_t *c,
+					       unsigned പൂർണ്ണസംഖ്യ നിവേശം_എണ്ണം, /* Including the first glyph (not matched) */
+					       glyph_data_t നിവേശം, /* Array of input values--start with second glyph */
+					       unsigned പൂർണ്ണസംഖ്യ lookup_എണ്ണം_2 HB_UNUSED,
+					       സ്ഥിരം LookupRecord lookupRecord[] HB_UNUSED,
+					       സ്ഥിരം ContextApplyLookupContext &lookup_context)
 {
-  return would_match_input (c,
-			    inputCount, input,
+  തിരികെ would_match_നിവേശം (c,
+			    നിവേശം_എണ്ണം, നിവേശം,
 			    lookup_context.funcs.match, lookup_context.match_data);
 }
 
-static inline bool context_apply_lookup (hb_ot_apply_context_t *c,
-					 unsigned int inputCount, /* Including the first glyph (not matched) */
-					 glyph_data_t input, /* Array of input values--start with second glyph */
-					 unsigned int lookupCount,
-					 const LookupRecord lookupRecord[],
-					 const ContextApplyLookupContext &lookup_context)
+സ്ഥിതം വരിയിൽ തർക്കം context_apply_lookup (hb_ot_apply_context_t *c,
+					 unsigned പൂർണ്ണസംഖ്യ നിവേശം_എണ്ണം, /* Including the first glyph (not matched) */
+					 glyph_data_t നിവേശം, /* Array of input values--start with second glyph */
+					 unsigned പൂർണ്ണസംഖ്യ lookup_എണ്ണം_2,
+					 സ്ഥിരം LookupRecord lookupRecord[],
+					 സ്ഥിരം ContextApplyLookupContext &lookup_context)
 {
-  if (unlikely (inputCount > HB_MAX_CONTEXT_LENGTH)) return false;
+  എങ്കിൽ (unlikely (നിവേശം_എണ്ണം > HB_MAX_CONTEXT_LENGTH)) തിരികെ അസത്യം;
 
   unsigned match_end = 0;
-  bool ret = false;
-  if (match_input (c,
-		   inputCount, input,
+  തർക്കം ret = അസത്യം;
+  എങ്കിൽ (match_നിവേശം (c,
+		   നിവേശം_എണ്ണം, നിവേശം,
 		   lookup_context.funcs.match, lookup_context.match_data,
 		   &match_end))
   {
     c->buffer->unsafe_to_break (c->buffer->idx, match_end);
     apply_lookup (c,
-		  inputCount,
-		  lookupCount, lookupRecord,
+		  നിവേശം_എണ്ണം,
+		  lookup_എണ്ണം_2, lookupRecord,
 		  match_end);
-    ret = true;
+    ret = സത്യം;
   }
-  else
+  അല്ലെങ്കിൽ
   {
     c->buffer->unsafe_to_concat (c->buffer->idx, match_end);
-    ret = false;
+    ret = അസത്യം;
   }
 
-  return ret;
+  തിരികെ ret;
 }
 
-static inline bool context_cache_func (hb_ot_apply_context_t *c, hb_ot_subtable_cache_op_t op)
+സ്ഥിതം വരിയിൽ തർക്കം context_cache_func (hb_ot_apply_context_t *c, hb_ot_subtable_cache_op_t op)
 {
-  switch (op)
+  തിരഞ്ഞെടുപ്പ് (op)
   {
-    case hb_ot_subtable_cache_op_t::ENTER:
+    അവസ്ഥ hb_ot_subtable_cache_op_t::ENTER:
     {
-      if (!HB_BUFFER_TRY_ALLOCATE_VAR (c->buffer, syllable))
-	return false;
+      എങ്കിൽ (!HB_BUFFER_TRY_ALLOCATE_VAR (c->buffer, syllable))
+	തിരികെ അസത്യം;
       auto &info = c->buffer->info;
-      unsigned count = c->buffer->len;
-      for (unsigned i = 0; i < count; i++)
+      unsigned എണ്ണം = c->buffer->len;
+      വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++)
 	info[i].syllable() = 255;
       c->new_syllables = 255;
-      return true;
+      തിരികെ സത്യം;
     }
-    case hb_ot_subtable_cache_op_t::LEAVE:
+    അവസ്ഥ hb_ot_subtable_cache_op_t::LEAVE:
     {
       c->new_syllables = (unsigned) -1;
       HB_BUFFER_DEALLOCATE_VAR (c->buffer, syllable);
-      break;
+      നിർത്തുക;
     }
   }
-  return false;
+  തിരികെ അസത്യം;
 }
 
 template <typename Types>
-struct Rule
+ഘടന Rule
 {
   template <typename SetTypes, typename RuleType>
-  friend struct RuleSetOf;
+  friend ഘടന RuleSetOf;
 
-  bool intersects (const hb_set_t *glyphs, ContextClosureLookupContext &lookup_context) const
+  തർക്കം intersects (സ്ഥിരം hb_set_t *glyphs, ContextClosureLookupContext &lookup_context) സ്ഥിരം
   {
-    return context_intersects (glyphs,
-			       inputCount, inputZ.arrayZ,
+    തിരികെ context_intersects (glyphs,
+			       നിവേശം_എണ്ണം, നിവേശം_Z.arrayZ,
 			       lookup_context);
   }
 
-  void depend (hb_depend_context_t *c, unsigned value, ContextDependLookupContext &lookup_context) const
+  ശൂന്യം depend (hb_depend_context_t *c, unsigned value, ContextDependLookupContext &lookup_context) സ്ഥിരം
   {
-    const auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
-					   (inputZ.as_array ((inputCount ? inputCount - 1 : 0)));
+    സ്ഥിരം auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
+					   (നിവേശം_Z.as_array ((നിവേശം_എണ്ണം ? നിവേശം_എണ്ണം - 1 : 0)));
     context_depend_lookup (c,
-			   inputCount, inputZ.arrayZ,
-			   lookupCount, lookupRecord.arrayZ,
-			   this,
+			   നിവേശം_എണ്ണം, നിവേശം_Z.arrayZ,
+			   lookup_എണ്ണം_2, lookupRecord.arrayZ,
+			   ഇത്,
 			   value, lookup_context);
   }
 
-  void closure (hb_closure_context_t *c, unsigned value, ContextClosureLookupContext &lookup_context) const
+  ശൂന്യം closure (hb_closure_context_t *c, unsigned value, ContextClosureLookupContext &lookup_context) സ്ഥിരം
   {
-    if (unlikely (c->lookup_limit_exceeded ())) return;
+    എങ്കിൽ (unlikely (c->lookup_limit_exceeded ())) തിരികെ;
 
-    const auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
-					   (inputZ.as_array ((inputCount ? inputCount - 1 : 0)));
+    സ്ഥിരം auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
+					   (നിവേശം_Z.as_array ((നിവേശം_എണ്ണം ? നിവേശം_എണ്ണം - 1 : 0)));
     context_closure_lookup (c,
-			    inputCount, inputZ.arrayZ,
-			    lookupCount, lookupRecord.arrayZ,
+			    നിവേശം_എണ്ണം, നിവേശം_Z.arrayZ,
+			    lookup_എണ്ണം_2, lookupRecord.arrayZ,
 			    value, lookup_context);
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c,
-                        ContextClosureLookupContext &lookup_context) const
+  ശൂന്യം closure_lookups (hb_closure_lookups_context_t *c,
+                        ContextClosureLookupContext &lookup_context) സ്ഥിരം
   {
-    if (unlikely (c->lookup_limit_exceeded ())) return;
-    if (!intersects (c->glyphs, lookup_context)) return;
+    എങ്കിൽ (unlikely (c->lookup_limit_exceeded ())) തിരികെ;
+    എങ്കിൽ (!intersects (c->glyphs, lookup_context)) തിരികെ;
 
-    const auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
-					   (inputZ.as_array (inputCount ? inputCount - 1 : 0));
-    recurse_lookups (c, lookupCount, lookupRecord.arrayZ);
+    സ്ഥിരം auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
+					   (നിവേശം_Z.as_array (നിവേശം_എണ്ണം ? നിവേശം_എണ്ണം - 1 : 0));
+    recurse_lookups (c, lookup_എണ്ണം_2, lookupRecord.arrayZ);
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c,
-		       ContextCollectGlyphsLookupContext &lookup_context) const
+  ശൂന്യം collect_glyphs (hb_collect_glyphs_context_t *c,
+		       ContextCollectGlyphsLookupContext &lookup_context) സ്ഥിരം
   {
-    const auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
-					   (inputZ.as_array (inputCount ? inputCount - 1 : 0));
+    സ്ഥിരം auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
+					   (നിവേശം_Z.as_array (നിവേശം_എണ്ണം ? നിവേശം_എണ്ണം - 1 : 0));
     context_collect_glyphs_lookup (c,
-				   inputCount, inputZ.arrayZ,
-				   lookupCount, lookupRecord.arrayZ,
+				   നിവേശം_എണ്ണം, നിവേശം_Z.arrayZ,
+				   lookup_എണ്ണം_2, lookupRecord.arrayZ,
 				   lookup_context);
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest,
-			      const ClassDef *class_def = nullptr) const
+  ശൂന്യം collect_second_glyphs (hb_set_digest_t *digest,
+			      സ്ഥിരം ClassDef *class_def = nullptr) സ്ഥിരം
   {
-    if (inputCount <= 1)
+    എങ്കിൽ (നിവേശം_എണ്ണം <= 1)
     {
       *digest = hb_set_digest_t::full ();
-      return;
+      തിരികെ;
     }
 
-    unsigned second = inputZ.arrayZ[0];
-    if (!class_def)
+    unsigned second = നിവേശം_Z.arrayZ[0];
+    എങ്കിൽ (!class_def)
       digest->add (second);
-    else if (!second)
+    അല്ലെങ്കിൽ എങ്കിൽ (!second)
       *digest = hb_set_digest_t::full ();
-    else
+    അല്ലെങ്കിൽ
       class_def->collect_class (digest, second);
   }
 
-  bool would_apply (hb_would_apply_context_t *c,
-		    const ContextApplyLookupContext &lookup_context) const
+  തർക്കം would_apply (hb_would_apply_context_t *c,
+		    സ്ഥിരം ContextApplyLookupContext &lookup_context) സ്ഥിരം
   {
-    const auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
-					   (inputZ.as_array (inputCount ? inputCount - 1 : 0));
-    return context_would_apply_lookup (c,
-				       inputCount, inputZ.arrayZ,
-				       lookupCount, lookupRecord.arrayZ,
+    സ്ഥിരം auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
+					   (നിവേശം_Z.as_array (നിവേശം_എണ്ണം ? നിവേശം_എണ്ണം - 1 : 0));
+    തിരികെ context_would_apply_lookup (c,
+				       നിവേശം_എണ്ണം, നിവേശം_Z.arrayZ,
+				       lookup_എണ്ണം_2, lookupRecord.arrayZ,
 				       lookup_context);
   }
 
-  bool apply (hb_ot_apply_context_t *c,
-	      const ContextApplyLookupContext &lookup_context) const
+  തർക്കം apply (hb_ot_apply_context_t *c,
+	      സ്ഥിരം ContextApplyLookupContext &lookup_context) സ്ഥിരം
   {
-    TRACE_APPLY (this);
-    const auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
-					   (inputZ.as_array (inputCount ? inputCount - 1 : 0));
-    return_trace (context_apply_lookup (c, inputCount, inputZ.arrayZ, lookupCount, lookupRecord.arrayZ, lookup_context));
+    TRACE_APPLY (ഇത്);
+    സ്ഥിരം auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
+					   (നിവേശം_Z.as_array (നിവേശം_എണ്ണം ? നിവേശം_എണ്ണം - 1 : 0));
+    return_trace (context_apply_lookup (c, നിവേശം_എണ്ണം, നിവേശം_Z.arrayZ, lookup_എണ്ണം_2, lookupRecord.arrayZ, lookup_context));
   }
 
-  bool serialize (hb_serialize_context_t *c,
-		  const hb_map_t *input_mapping, /* old->new glyphid or class mapping */
-		  const hb_map_t *lookup_map) const
+  തർക്കം serialize (hb_serialize_context_t *c,
+		  സ്ഥിരം hb_map_t *നിവേശം_mapping, /* old->new glyphid or class mapping */
+		  സ്ഥിരം hb_map_t *lookup_map) സ്ഥിരം
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->start_embed (this);
-    if (unlikely (!c->extend_min (out))) return_trace (false);
+    TRACE_SERIALIZE (ഇത്);
+    auto *out = c->start_embed (ഇത്);
+    എങ്കിൽ (unlikely (!c->extend_min (out))) return_trace (അസത്യം);
 
-    out->inputCount = inputCount;
-    const auto input = inputZ.as_array (inputCount - 1);
-    for (const auto org : input)
+    out->നിവേശം_എണ്ണം = നിവേശം_എണ്ണം;
+    സ്ഥിരം auto നിവേശം = നിവേശം_Z.as_array (നിവേശം_എണ്ണം - 1);
+    വേണ്ടി (സ്ഥിരം auto org : നിവേശം)
     {
       typename Types::HBUINT d;
-      d = input_mapping->get (org);
+      d = നിവേശം_mapping->get (org);
       c->copy (d);
     }
 
-    const auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
-					   (inputZ.as_array ((inputCount ? inputCount - 1 : 0)));
+    സ്ഥിരം auto &lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>>
+					   (നിവേശം_Z.as_array ((നിവേശം_എണ്ണം ? നിവേശം_എണ്ണം - 1 : 0)));
 
-    unsigned count = serialize_lookuprecord_array (c, lookupRecord.as_array (lookupCount), lookup_map);
-    return_trace (c->check_assign (out->lookupCount, count, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    unsigned എണ്ണം = serialize_lookuprecord_array (c, lookupRecord.as_array (lookup_എണ്ണം_2), lookup_map);
+    return_trace (c->check_assign (out->lookup_എണ്ണം_2, എണ്ണം, HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool subset (hb_subset_context_t *c,
-	       const hb_map_t *lookup_map,
-	       const hb_map_t *klass_map = nullptr) const
+  തർക്കം subset (hb_subset_context_t *c,
+	       സ്ഥിരം hb_map_t *lookup_map,
+	       സ്ഥിരം hb_map_t *klass_map = nullptr) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    if (unlikely (!inputCount)) return_trace (false);
-    const auto input = inputZ.as_array (inputCount - 1);
+    TRACE_SUBSET (ഇത്);
+    എങ്കിൽ (unlikely (!നിവേശം_എണ്ണം)) return_trace (അസത്യം);
+    സ്ഥിരം auto നിവേശം = നിവേശം_Z.as_array (നിവേശം_എണ്ണം - 1);
 
-    const hb_map_t *mapping = klass_map == nullptr ? c->plan->glyph_map : klass_map;
-    if (!hb_all (input, mapping)) return_trace (false);
+    സ്ഥിരം hb_map_t *mapping = klass_map == nullptr ? c->plan->glyph_map : klass_map;
+    എങ്കിൽ (!hb_all (നിവേശം, mapping)) return_trace (അസത്യം);
     return_trace (serialize (c->serializer, mapping, lookup_map));
   }
 
-  public:
-  bool sanitize (hb_sanitize_context_t *c) const
+  പൊതു:
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) &&
 		  hb_barrier () &&
-		  c->check_range (inputZ.arrayZ,
-				  inputZ.item_size * (inputCount ? inputCount - 1 : 0) +
-				  LookupRecord::static_size * lookupCount));
+		  c->check_range (നിവേശം_Z.arrayZ,
+				  നിവേശം_Z.item_size * (നിവേശം_എണ്ണം ? നിവേശം_എണ്ണം - 1 : 0) +
+				  LookupRecord::static_size * lookup_എണ്ണം_2));
   }
 
-  protected:
-  HBUINT16	inputCount;		/* Total number of glyphs in input
+  സംരക്ഷിത:
+  HBUINT16	നിവേശം_എണ്ണം;		/* Total number of glyphs in input
 					 * glyph sequence--includes the first
 					 * glyph */
-  HBUINT16	lookupCount;		/* Number of LookupRecords */
+  HBUINT16	lookup_എണ്ണം_2;		/* Number of LookupRecords */
   UnsizedArrayOf<typename Types::HBUINT>
-		inputZ;			/* Array of match inputs--start with
+		നിവേശം_Z;			/* Array of match inputs--start with
 					 * second glyph */
 /*UnsizedArrayOf<LookupRecord>
 		lookupRecordX;*/	/* Array of LookupRecords--in
 					 * design order */
-  public:
-  DEFINE_SIZE_ARRAY (4, inputZ);
+  പൊതു:
+  DEFINE_SIZE_ARRAY (4, നിവേശം_Z);
 };
 
 template <typename Types, typename RuleType>
-struct RuleSetOf
+ഘടന RuleSetOf
 {
-  bool intersects (const hb_set_t *glyphs,
-		   ContextClosureLookupContext &lookup_context) const
+  തർക്കം intersects (സ്ഥിരം hb_set_t *glyphs,
+		   ContextClosureLookupContext &lookup_context) സ്ഥിരം
   {
-    return
+    തിരികെ
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_map ([&] (const RuleType &_) { return _.intersects (glyphs, lookup_context); })
+    | hb_map (hb_add (ഇത്))
+    | hb_map ([&] (സ്ഥിരം RuleType &_) { തിരികെ _.intersects (glyphs, lookup_context); })
     | hb_any
     ;
   }
 
-  void collect_first_input_classes (hb_ot_layout_ruleset_digest_t *digest) const
+  ശൂന്യം collect_first_നിവേശം_classes (hb_ot_layout_ruleset_digest_t *digest) സ്ഥിരം
   {
     digest->init ();
-    for (unsigned i = 0; i < rule.len; i++)
+    വേണ്ടി (unsigned i = 0; i < rule.len; i++)
     {
-      const RuleType &r = this+rule.arrayZ[i];
-      if (r.inputCount <= 1)
+      സ്ഥിരം RuleType &r = ഇത്+rule.arrayZ[i];
+      എങ്കിൽ (r.നിവേശം_എണ്ണം <= 1)
       {
 	digest->set_full ();
-	return;
+	തിരികെ;
       }
-      digest->add (r.inputZ.arrayZ[0]);
+      digest->add (r.നിവേശം_Z.arrayZ[0]);
     }
   }
 
-  void depend (hb_depend_context_t *c, unsigned value, ContextDependLookupContext &lookup_context) const
+  ശൂന്യം depend (hb_depend_context_t *c, unsigned value, ContextDependLookupContext &lookup_context) സ്ഥിരം
   {
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const RuleType &_) { _.depend (c, value, lookup_context); })
+    | hb_map (hb_add (ഇത്))
+    | hb_apply ([&] (സ്ഥിരം RuleType &_) { _.depend (c, value, lookup_context); })
     ;
   }
 
-  void closure (hb_closure_context_t *c, unsigned value,
-		ContextClosureLookupContext &lookup_context) const
+  ശൂന്യം closure (hb_closure_context_t *c, unsigned value,
+		ContextClosureLookupContext &lookup_context) സ്ഥിരം
   {
-    if (unlikely (c->lookup_limit_exceeded ())) return;
+    എങ്കിൽ (unlikely (c->lookup_limit_exceeded ())) തിരികെ;
 
-    return
+    തിരികെ
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const RuleType &_) { _.closure (c, value, lookup_context); })
+    | hb_map (hb_add (ഇത്))
+    | hb_apply ([&] (സ്ഥിരം RuleType &_) { _.closure (c, value, lookup_context); })
     ;
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c,
-                        ContextClosureLookupContext &lookup_context) const
+  ശൂന്യം closure_lookups (hb_closure_lookups_context_t *c,
+                        ContextClosureLookupContext &lookup_context) സ്ഥിരം
   {
-    if (unlikely (c->lookup_limit_exceeded ())) return;
+    എങ്കിൽ (unlikely (c->lookup_limit_exceeded ())) തിരികെ;
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const RuleType &_) { _.closure_lookups (c, lookup_context); })
+    | hb_map (hb_add (ഇത്))
+    | hb_apply ([&] (സ്ഥിരം RuleType &_) { _.closure_lookups (c, lookup_context); })
     ;
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c,
-		       ContextCollectGlyphsLookupContext &lookup_context) const
+  ശൂന്യം collect_glyphs (hb_collect_glyphs_context_t *c,
+		       ContextCollectGlyphsLookupContext &lookup_context) സ്ഥിരം
   {
-    return
+    തിരികെ
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const RuleType &_) { _.collect_glyphs (c, lookup_context); })
+    | hb_map (hb_add (ഇത്))
+    | hb_apply ([&] (സ്ഥിരം RuleType &_) { _.collect_glyphs (c, lookup_context); })
     ;
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest,
-			      const ClassDef *class_def = nullptr) const
+  ശൂന്യം collect_second_glyphs (hb_set_digest_t *digest,
+			      സ്ഥിരം ClassDef *class_def = nullptr) സ്ഥിരം
   {
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_apply ([=] (const RuleType &_) { _.collect_second_glyphs (digest, class_def); })
+    | hb_map (hb_add (ഇത്))
+    | hb_apply ([=] (സ്ഥിരം RuleType &_) { _.collect_second_glyphs (digest, class_def); })
     ;
   }
 
-  bool would_apply (hb_would_apply_context_t *c,
-		    const ContextApplyLookupContext &lookup_context) const
+  തർക്കം would_apply (hb_would_apply_context_t *c,
+		    സ്ഥിരം ContextApplyLookupContext &lookup_context) സ്ഥിരം
   {
-    return
+    തിരികെ
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_map ([&] (const RuleType &_) { return _.would_apply (c, lookup_context); })
+    | hb_map (hb_add (ഇത്))
+    | hb_map ([&] (സ്ഥിരം RuleType &_) { തിരികെ _.would_apply (c, lookup_context); })
     | hb_any
     ;
   }
 
-  bool apply (hb_ot_apply_context_t *c,
-	      const ContextApplyLookupContext &lookup_context,
-	      const hb_ot_layout_ruleset_digest_t *digest = nullptr) const
+  തർക്കം apply (hb_ot_apply_context_t *c,
+	      സ്ഥിരം ContextApplyLookupContext &lookup_context,
+	      സ്ഥിരം hb_ot_layout_ruleset_digest_t *digest = nullptr) സ്ഥിരം
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (ഇത്);
 
-    unsigned num_rules = rule.len;
+    unsigned അക്കം_rules = rule.len;
 
 #ifndef HB_NO_OT_RULESETS_FAST_PATH
-    if (HB_OPTIMIZE_SIZE_VAL || num_rules <= 4)
+    എങ്കിൽ (HB_OPTIMIZE_SIZE_VAL || അക്കം_rules <= 4)
 #endif
     {
     slow:
       return_trace (
       + hb_iter (rule)
-      | hb_map (hb_add (this))
-      | hb_map ([&] (const RuleType &_) { return _.apply (c, lookup_context); })
+      | hb_map (hb_add (ഇത്))
+      | hb_map ([&] (സ്ഥിരം RuleType &_) { തിരികെ _.apply (c, lookup_context); })
       | hb_any
       )
       ;
@@ -3361,189 +3361,189 @@ struct RuleSetOf
     skippy_iter.set_glyph_data ((HBUINT16 *) nullptr);
     unsigned unsafe_to = (unsigned) -1, unsafe_to1, unsafe_to2 = 0;
     hb_glyph_info_t *first = nullptr, *second = nullptr;
-    bool matched = skippy_iter.next (&unsafe_to1);
-    if (likely (matched))
+    തർക്കം matched = skippy_iter.next (&unsafe_to1);
+    എങ്കിൽ (likely (matched))
     {
-      if (skippy_iter.may_skip (c->buffer->info[skippy_iter.idx]))
+      എങ്കിൽ (skippy_iter.may_skip (c->buffer->info[skippy_iter.idx]))
       {
 	/* Can't use the fast path if eg. the next char is a default-ignorable
 	 * or other skippable. */
-        goto slow;
+        പോകുക slow;
       }
 
       first = &c->buffer->info[skippy_iter.idx];
       unsafe_to1 = skippy_iter.idx + 1;
 
-      if (digest && lookup_context.get_value &&
-	  !digest->may_have (lookup_context.get_value (*first, lookup_context.match_data)))
+      എങ്കിൽ (digest && lookup_context.get_മൂല്യം &&
+	  !digest->may_have (lookup_context.get_മൂല്യം (*first, lookup_context.match_data)))
 	{
 	  c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to1);
-	  return_trace (false);
+	  return_trace (അസത്യം);
 	}
     }
-    else
+    അല്ലെങ്കിൽ
     {
-      bool unsafe_to_concat = false;
-      bool ret =
+      തർക്കം unsafe_to_concat = അസത്യം;
+      തർക്കം ret =
       + hb_iter (rule)
-      | hb_map (hb_add (this))
-      | hb_filter ([&] (const RuleType &_)
+      | hb_map (hb_add (ഇത്))
+      | hb_filter ([&] (സ്ഥിരം RuleType &_)
 		   {
-		     if (_.inputCount <= 1) return true;
-		     unsafe_to_concat = true;
-		     return false;
+		     എങ്കിൽ (_.നിവേശം_എണ്ണം <= 1) തിരികെ സത്യം;
+		     unsafe_to_concat = സത്യം;
+		     തിരികെ അസത്യം;
 		   })
-      | hb_map ([&] (const RuleType &_) { return _.apply (c, lookup_context); })
+      | hb_map ([&] (സ്ഥിരം RuleType &_) { തിരികെ _.apply (c, lookup_context); })
       | hb_any
       ;
-      if (unsafe_to_concat)
+      എങ്കിൽ (unsafe_to_concat)
 	c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to1);
       return_trace (ret);
     }
     matched = skippy_iter.next ();
-    if (likely (matched))
+    എങ്കിൽ (likely (matched))
     {
-      if (skippy_iter.may_skip (c->buffer->info[skippy_iter.idx]))
+      എങ്കിൽ (skippy_iter.may_skip (c->buffer->info[skippy_iter.idx]))
       {
 	/* Can't use the fast path if eg. the next char is a default-ignorable
 	 * or other skippable. */
-        goto slow;
+        പോകുക slow;
       }
 
       second = &c->buffer->info[skippy_iter.idx];
       unsafe_to2 = skippy_iter.idx + 1;
     }
 
-    auto match_input = lookup_context.funcs.match;
-    auto *input_data = lookup_context.match_data;
-    for (unsigned int i = 0; i < num_rules; i++)
+    auto match_നിവേശം = lookup_context.funcs.match;
+    auto *നിവേശം_data = lookup_context.match_data;
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < അക്കം_rules; i++)
     {
-      const auto &r = this+rule.arrayZ[i];
+      സ്ഥിരം auto &r = ഇത്+rule.arrayZ[i];
 
-      const auto &input = r.inputZ;
+      സ്ഥിരം auto &നിവേശം = r.നിവേശം_Z;
 
-      if (r.inputCount <= 1 ||
-	  (!match_input ||
-	   match_input (*first, input.arrayZ[0], input_data)))
+      എങ്കിൽ (r.നിവേശം_എണ്ണം <= 1 ||
+	  (!match_നിവേശം ||
+	   match_നിവേശം (*first, നിവേശം.arrayZ[0], നിവേശം_data)))
       {
-        if (!second ||
-	    (r.inputCount <= 2 ||
-	     (!match_input ||
-	      match_input (*second, input.arrayZ[1], input_data)))
+        എങ്കിൽ (!second ||
+	    (r.നിവേശം_എണ്ണം <= 2 ||
+	     (!match_നിവേശം ||
+	      match_നിവേശം (*second, നിവേശം.arrayZ[1], നിവേശം_data)))
 	   )
 	{
-	  if (r.apply (c, lookup_context))
+	  എങ്കിൽ (r.apply (c, lookup_context))
 	  {
-	    if (unsafe_to != (unsigned) -1)
+	    എങ്കിൽ (unsafe_to != (unsigned) -1)
 	      c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to);
-	    return_trace (true);
+	    return_trace (സത്യം);
 	  }
 	}
-	else
+	അല്ലെങ്കിൽ
 	  unsafe_to = unsafe_to2;
       }
-      else
+      അല്ലെങ്കിൽ
       {
-	if (unsafe_to == (unsigned) -1)
+	എങ്കിൽ (unsafe_to == (unsigned) -1)
 	  unsafe_to = unsafe_to1;
 
 	// Skip ahead to next possible first glyph match.
-	for (; i + 1 < num_rules; i++)
+	വേണ്ടി (; i + 1 < അക്കം_rules; i++)
 	{
-	  const auto &r2 = this+rule.arrayZ[i + 1];
-	  const auto &input2 = r2.inputZ;
-	  if (r2.inputCount <= 1 || input2.arrayZ[0] != input.arrayZ[0])
-	    break;
+	  സ്ഥിരം auto &r2 = ഇത്+rule.arrayZ[i + 1];
+	  സ്ഥിരം auto &input2 = r2.നിവേശം_Z;
+	  എങ്കിൽ (r2.നിവേശം_എണ്ണം <= 1 || input2.arrayZ[0] != നിവേശം.arrayZ[0])
+	    നിർത്തുക;
 	}
       }
     }
-    if (likely (unsafe_to != (unsigned) -1))
+    എങ്കിൽ (likely (unsafe_to != (unsigned) -1))
       c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to);
 
-    return_trace (false);
+    return_trace (അസത്യം);
   }
 
-  bool subset (hb_subset_context_t *c,
-	       const hb_map_t *lookup_map,
-	       const hb_map_t *klass_map = nullptr) const
+  തർക്കം subset (hb_subset_context_t *c,
+	       സ്ഥിരം hb_map_t *lookup_map,
+	       സ്ഥിരം hb_map_t *klass_map = nullptr) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (ഇത്);
 
     auto snap = c->serializer->snapshot ();
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (*ഇത്);
+    എങ്കിൽ (unlikely (!c->serializer->extend_min (out))) return_trace (അസത്യം);
 
-    for (const auto& _ : rule)
+    വേണ്ടി (സ്ഥിരം auto& _ : rule)
     {
-      if (!_) continue;
+      എങ്കിൽ (!_) തുടരുക;
       auto o_snap = c->serializer->snapshot ();
       auto *o = out->rule.serialize_append (c->serializer);
-      if (unlikely (!o)) continue;
+      എങ്കിൽ (unlikely (!o)) തുടരുക;
 
-      if (!o->serialize_subset (c, _, this, lookup_map, klass_map))
+      എങ്കിൽ (!o->serialize_subset (c, _, ഇത്, lookup_map, klass_map))
       {
-	out->rule.pop ();
+	out->rule.എടുക്കുക ();
 	c->serializer->revert (o_snap);
       }
     }
 
-    bool ret = bool (out->rule);
-    if (!ret) c->serializer->revert (snap);
+    തർക്കം ret = തർക്കം (out->rule);
+    എങ്കിൽ (!ret) c->serializer->revert (snap);
 
     return_trace (ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (rule.sanitize (c, this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (rule.sanitize (c, ഇത്));
   }
 
-  protected:
+  സംരക്ഷിത:
   Array16Of<typename Types::template OffsetTo<RuleType>>
 		rule;			/* Array of Rule tables
 					 * ordered by preference */
-  public:
+  പൊതു:
   DEFINE_SIZE_ARRAY (2, rule);
 };
 
 template <typename Types>
-struct RuleSet : RuleSetOf<SmallTypes, Rule<Types>> {};
+ഘടന RuleSet : RuleSetOf<SmallTypes, Rule<Types>> {};
 
 template <typename Types>
-struct ClassRuleSet : RuleSetOf<Types, Rule<SmallTypes>> {};
+ഘടന ClassRuleSet : RuleSetOf<Types, Rule<SmallTypes>> {};
 
 
 template <typename Types>
-struct ContextFormat1_4
+ഘടന ContextFormat1_4
 {
   using RuleSet = OT::RuleSet<Types>;
 
-  bool intersects (const hb_set_t *glyphs) const
+  തർക്കം intersects (സ്ഥിരം hb_set_t *glyphs) സ്ഥിരം
   {
-    struct ContextClosureLookupContext lookup_context = {
+    ഘടന ContextClosureLookupContext lookup_context = {
       {intersects_glyph, intersected_glyph},
       ContextFormat::SimpleContext,
       nullptr
     };
 
-    return
-    + hb_zip (this+coverage, ruleSet)
+    തിരികെ
+    + hb_zip (ഇത്+coverage, ruleSet)
     | hb_filter (*glyphs, hb_first)
     | hb_map (hb_second)
-    | hb_map (hb_add (this))
-    | hb_map ([&] (const RuleSet &_) { return _.intersects (glyphs, lookup_context); })
+    | hb_map (hb_add (ഇത്))
+    | hb_map ([&] (സ്ഥിരം RuleSet &_) { തിരികെ _.intersects (glyphs, lookup_context); })
     | hb_any
     ;
   }
 
-  bool may_have_non_1to1 () const
-  { return true; }
+  തർക്കം may_have_non_1to1 () സ്ഥിരം
+  { തിരികെ സത്യം; }
 
-  void depend (hb_depend_context_t *c) const
+  ശൂന്യം depend (hb_depend_context_t *c) സ്ഥിരം
   {
-    hb_set_t* cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs)) return;
+    hb_set_t* cur_active_glyphs = c->തള്ളുക_cur_active_glyphs ();
+    എങ്കിൽ (unlikely (!cur_active_glyphs)) തിരികെ;
     get_coverage ().intersect_set (*c->glyphs, *cur_active_glyphs);
 
     ContextDependLookupContext lookup_context = {
@@ -3554,139 +3554,139 @@ struct ContextFormat1_4
       nullptr   /* intersected_glyphs_cache */
     };
 
-    + hb_zip (this+coverage, hb_range ((unsigned) ruleSet.len))
+    + hb_zip (ഇത്+coverage, hb_range ((unsigned) ruleSet.len))
     | hb_filter ([&] (hb_codepoint_t _) {
-      return c->parent_active_glyphs ().has (_);
+      തിരികെ c->parent_active_glyphs ().has (_);
     }, hb_first)
-    | hb_map ([&](const hb_pair_t<hb_codepoint_t, unsigned> _) { return hb_pair_t<unsigned, const RuleSet&> (_.first, this+ruleSet[_.second]); })
-    | hb_apply ([&] (const hb_pair_t<unsigned, const RuleSet&>& _) { _.second.depend (c, _.first, lookup_context); })
+    | hb_map ([&](സ്ഥിരം hb_pair_t<hb_codepoint_t, unsigned> _) { തിരികെ hb_pair_t<unsigned, സ്ഥിരം RuleSet&> (_.first, ഇത്+ruleSet[_.second]); })
+    | hb_apply ([&] (സ്ഥിരം hb_pair_t<unsigned, സ്ഥിരം RuleSet&>& _) { _.second.depend (c, _.first, lookup_context); })
     ;
 
-    c->pop_cur_done_glyphs ();
+    c->എടുക്കുക_cur_done_glyphs ();
   }
 
-  void closure (hb_closure_context_t *c) const
+  ശൂന്യം closure (hb_closure_context_t *c) സ്ഥിരം
   {
-    hb_set_t* cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs)) return;
+    hb_set_t* cur_active_glyphs = c->തള്ളുക_cur_active_glyphs ();
+    എങ്കിൽ (unlikely (!cur_active_glyphs)) തിരികെ;
     get_coverage ().intersect_set (c->previous_parent_active_glyphs (), *cur_active_glyphs);
 
-    struct ContextClosureLookupContext lookup_context = {
+    ഘടന ContextClosureLookupContext lookup_context = {
       {intersects_glyph, intersected_glyph},
       ContextFormat::SimpleContext,
       nullptr
     };
 
-    + hb_zip (this+coverage, hb_range ((unsigned) ruleSet.len))
+    + hb_zip (ഇത്+coverage, hb_range ((unsigned) ruleSet.len))
     | hb_filter ([&] (hb_codepoint_t _) {
-      return c->previous_parent_active_glyphs ().has (_);
+      തിരികെ c->previous_parent_active_glyphs ().has (_);
     }, hb_first)
-    | hb_map ([&](const hb_pair_t<hb_codepoint_t, unsigned> _) { return hb_pair_t<unsigned, const RuleSet&> (_.first, this+ruleSet[_.second]); })
-    | hb_apply ([&] (const hb_pair_t<unsigned, const RuleSet&>& _) { _.second.closure (c, _.first, lookup_context); })
+    | hb_map ([&](സ്ഥിരം hb_pair_t<hb_codepoint_t, unsigned> _) { തിരികെ hb_pair_t<unsigned, സ്ഥിരം RuleSet&> (_.first, ഇത്+ruleSet[_.second]); })
+    | hb_apply ([&] (സ്ഥിരം hb_pair_t<unsigned, സ്ഥിരം RuleSet&>& _) { _.second.closure (c, _.first, lookup_context); })
     ;
 
-    c->pop_cur_done_glyphs ();
+    c->എടുക്കുക_cur_done_glyphs ();
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const
+  ശൂന്യം closure_lookups (hb_closure_lookups_context_t *c) സ്ഥിരം
   {
-    struct ContextClosureLookupContext lookup_context = {
+    ഘടന ContextClosureLookupContext lookup_context = {
       {intersects_glyph, nullptr},
       ContextFormat::SimpleContext,
       nullptr
     };
 
-    + hb_zip (this+coverage, ruleSet)
+    + hb_zip (ഇത്+coverage, ruleSet)
     | hb_filter (*c->glyphs, hb_first)
     | hb_map (hb_second)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const RuleSet &_) { _.closure_lookups (c, lookup_context); })
+    | hb_map (hb_add (ഇത്))
+    | hb_apply ([&] (സ്ഥിരം RuleSet &_) { _.closure_lookups (c, lookup_context); })
     ;
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const {}
+  ശൂന്യം collect_variation_indices (hb_collect_variation_indices_context_t *c) സ്ഥിരം {}
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  ശൂന്യം collect_glyphs (hb_collect_glyphs_context_t *c) സ്ഥിരം
   {
-    (this+coverage).collect_coverage (c->input);
+    (ഇത്+coverage).collect_coverage (c->നിവേശം);
 
-    struct ContextCollectGlyphsLookupContext lookup_context = {
+    ഘടന ContextCollectGlyphsLookupContext lookup_context = {
       {collect_glyph},
       nullptr
     };
 
     + hb_iter (ruleSet)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const RuleSet &_) { _.collect_glyphs (c, lookup_context); })
+    | hb_map (hb_add (ഇത്))
+    | hb_apply ([&] (സ്ഥിരം RuleSet &_) { _.collect_glyphs (c, lookup_context); })
     ;
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest) const
+  ശൂന്യം collect_second_glyphs (hb_set_digest_t *digest) സ്ഥിരം
   {
     + hb_iter (ruleSet)
-    | hb_map (hb_add (this))
-    | hb_apply ([digest] (const RuleSet &_) { _.collect_second_glyphs (digest); })
+    | hb_map (hb_add (ഇത്))
+    | hb_apply ([digest] (സ്ഥിരം RuleSet &_) { _.collect_second_glyphs (digest); })
     ;
   }
 
-  bool would_apply (hb_would_apply_context_t *c) const
+  തർക്കം would_apply (hb_would_apply_context_t *c) സ്ഥിരം
   {
-    const RuleSet &rule_set = this+ruleSet[(this+coverage).get_coverage (c->glyphs[0])];
-    struct ContextApplyLookupContext lookup_context = {
+    സ്ഥിരം RuleSet &rule_set = ഇത്+ruleSet[(ഇത്+coverage).get_coverage (c->glyphs[0])];
+    ഘടന ContextApplyLookupContext lookup_context = {
       {match_glyph},
       nullptr
     };
-    return rule_set.would_apply (c, lookup_context);
+    തിരികെ rule_set.would_apply (c, lookup_context);
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  സ്ഥിരം Coverage &get_coverage () സ്ഥിരം { തിരികെ ഇത്+coverage; }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  തർക്കം apply (hb_ot_apply_context_t *c) സ്ഥിരം
   {
-    TRACE_APPLY (this);
-    unsigned int index = (this+coverage).get_coverage (c->buffer->cur().codepoint);
-    if (likely (index == NOT_COVERED))
-      return_trace (false);
+    TRACE_APPLY (ഇത്);
+    unsigned പൂർണ്ണസംഖ്യ index = (ഇത്+coverage).get_coverage (c->buffer->cur().codepoint);
+    എങ്കിൽ (likely (index == NOT_COVERED))
+      return_trace (അസത്യം);
 
-    const RuleSet &rule_set = this+ruleSet[index];
-    struct ContextApplyLookupContext lookup_context = {
+    സ്ഥിരം RuleSet &rule_set = ഇത്+ruleSet[index];
+    ഘടന ContextApplyLookupContext lookup_context = {
       {match_glyph},
       nullptr
     };
     return_trace (rule_set.apply (c, lookup_context));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  തർക്കം subset (hb_subset_context_t *c) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (ഇത്);
+    സ്ഥിരം hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+    സ്ഥിരം hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (*ഇത്);
+    എങ്കിൽ (unlikely (!c->serializer->extend_min (out))) return_trace (അസത്യം);
     out->format = format;
 
-    const hb_map_t *lookup_map = c->table_tag == HB_OT_TAG_GSUB ? &c->plan->gsub_lookups : &c->plan->gpos_lookups;
+    സ്ഥിരം hb_map_t *lookup_map = c->table_tag == HB_OT_TAG_GSUB ? &c->plan->gsub_lookups : &c->plan->gpos_lookups;
     hb_sorted_vector_t<hb_codepoint_t> new_coverage;
-    + hb_zip (this+coverage, ruleSet)
+    + hb_zip (ഇത്+coverage, ruleSet)
     | hb_filter (glyphset, hb_first)
-    | hb_filter (subset_offset_array (c, out->ruleSet, this, lookup_map), hb_second)
+    | hb_filter (subset_offset_array (c, out->ruleSet, ഇത്, lookup_map), hb_second)
     | hb_map (hb_first)
     | hb_map (glyph_map)
     | hb_sink (new_coverage)
     ;
 
     out->coverage.serialize_serialize (c->serializer, new_coverage.iter ());
-    return_trace (bool (new_coverage));
+    return_trace (തർക്കം (new_coverage));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (coverage.sanitize (c, this) && ruleSet.sanitize (c, this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (coverage.sanitize (c, ഇത്) && ruleSet.sanitize (c, ഇത്));
   }
 
-  protected:
+  സംരക്ഷിത:
   HBUINT16	format;			/* Format identifier--format = 1 */
   typename Types::template LOffsetTo<Coverage>
 		coverage;		/* Offset to Coverage table--from
@@ -3694,25 +3694,25 @@ struct ContextFormat1_4
   typename Types::template ArrayOf<typename Types::template OffsetTo<RuleSet>>
 		ruleSet;		/* Array of RuleSet tables
 					 * ordered by Coverage Index */
-  public:
+  പൊതു:
   DEFINE_SIZE_ARRAY (2 + Types::LOffset::static_size + Types::HBUINT::static_size, ruleSet);
 };
 
 
 template <typename Types>
-struct ContextFormat2_5
+ഘടന ContextFormat2_5
 {
   using RuleSet = OT::ClassRuleSet<Types>;
 
-  bool intersects (const hb_set_t *glyphs) const
+  തർക്കം intersects (സ്ഥിരം hb_set_t *glyphs) സ്ഥിരം
   {
-    if (!(this+coverage).intersects (glyphs))
-      return false;
+    എങ്കിൽ (!(ഇത്+coverage).intersects (glyphs))
+      തിരികെ അസത്യം;
 
-    const ClassDef &class_def = this+classDef;
+    സ്ഥിരം ClassDef &class_def = ഇത്+classDef;
 
     hb_map_t cache;
-    struct ContextClosureLookupContext lookup_context = {
+    ഘടന ContextClosureLookupContext lookup_context = {
       {intersects_class, nullptr},
       ContextFormat::ClassBasedContext,
       &class_def,
@@ -3720,37 +3720,37 @@ struct ContextFormat2_5
     };
 
     hb_set_t retained_coverage_glyphs;
-    (this+coverage).intersect_set (*glyphs, retained_coverage_glyphs);
+    (ഇത്+coverage).intersect_set (*glyphs, retained_coverage_glyphs);
 
     hb_set_t coverage_glyph_classes;
     class_def.intersected_classes (&retained_coverage_glyphs, &coverage_glyph_classes);
 
 
-    return
+    തിരികെ
     + hb_iter (ruleSet)
-    | hb_map (hb_add (this))
+    | hb_map (hb_add (ഇത്))
     | hb_enumerate
-    | hb_map ([&] (const hb_pair_t<unsigned, const RuleSet &> p)
-	      { return class_def.intersects_class (glyphs, p.first) &&
+    | hb_map ([&] (സ്ഥിരം hb_pair_t<unsigned, സ്ഥിരം RuleSet &> p)
+	      { തിരികെ class_def.intersects_class (glyphs, p.first) &&
 		       coverage_glyph_classes.has (p.first) &&
 		       p.second.intersects (glyphs, lookup_context); })
     | hb_any
     ;
   }
 
-  bool may_have_non_1to1 () const
-  { return true; }
+  തർക്കം may_have_non_1to1 () സ്ഥിരം
+  { തിരികെ സത്യം; }
 
-  void depend (hb_depend_context_t *c) const
+  ശൂന്യം depend (hb_depend_context_t *c) സ്ഥിരം
   {
-    if (!(this+coverage).intersects (c->glyphs))
-      return;
+    എങ്കിൽ (!(ഇത്+coverage).intersects (c->glyphs))
+      തിരികെ;
 
-    hb_set_t* cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs)) return;
+    hb_set_t* cur_active_glyphs = c->തള്ളുക_cur_active_glyphs ();
+    എങ്കിൽ (unlikely (!cur_active_glyphs)) തിരികെ;
     get_coverage ().intersect_set (*c->glyphs, *cur_active_glyphs);
 
-    const ClassDef &class_def = this+classDef;
+    സ്ഥിരം ClassDef &class_def = ഇത്+classDef;
 
     hb_map_t cache;
     intersected_class_cache_t intersected_cache;
@@ -3764,33 +3764,33 @@ struct ContextFormat2_5
 
     + hb_enumerate (ruleSet)
     | hb_filter ([&] (unsigned _)
-    { return class_def.intersects_class (&c->parent_active_glyphs (), _); },
+    { തിരികെ class_def.intersects_class (&c->parent_active_glyphs (), _); },
 		 hb_first)
-    | hb_apply ([&] (const hb_pair_t<unsigned, const typename Types::template OffsetTo<RuleSet>&> _)
+    | hb_apply ([&] (സ്ഥിരം hb_pair_t<unsigned, സ്ഥിരം typename Types::template OffsetTo<RuleSet>&> _)
                 {
-                  const RuleSet& rule_set = this+_.second;
+                  സ്ഥിരം RuleSet& rule_set = ഇത്+_.second;
                   rule_set.depend (c, _.first, lookup_context);
                 })
     ;
 
-    c->pop_cur_done_glyphs ();
+    c->എടുക്കുക_cur_done_glyphs ();
   }
 
-  void closure (hb_closure_context_t *c) const
+  ശൂന്യം closure (hb_closure_context_t *c) സ്ഥിരം
   {
-    if (!(this+coverage).intersects (c->glyphs))
-      return;
+    എങ്കിൽ (!(ഇത്+coverage).intersects (c->glyphs))
+      തിരികെ;
 
-    hb_set_t* cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs)) return;
+    hb_set_t* cur_active_glyphs = c->തള്ളുക_cur_active_glyphs ();
+    എങ്കിൽ (unlikely (!cur_active_glyphs)) തിരികെ;
     get_coverage ().intersect_set (c->previous_parent_active_glyphs (),
 				   *cur_active_glyphs);
 
-    const ClassDef &class_def = this+classDef;
+    സ്ഥിരം ClassDef &class_def = ഇത്+classDef;
 
     hb_map_t cache;
     intersected_class_cache_t intersected_cache;
-    struct ContextClosureLookupContext lookup_context = {
+    ഘടന ContextClosureLookupContext lookup_context = {
       {intersects_class, intersected_class_glyphs},
       ContextFormat::ClassBasedContext,
       &class_def,
@@ -3800,27 +3800,27 @@ struct ContextFormat2_5
 
     + hb_enumerate (ruleSet)
     | hb_filter ([&] (unsigned _)
-    { return class_def.intersects_class (&c->parent_active_glyphs (), _); },
+    { തിരികെ class_def.intersects_class (&c->parent_active_glyphs (), _); },
 		 hb_first)
-    | hb_apply ([&] (const hb_pair_t<unsigned, const typename Types::template OffsetTo<RuleSet>&> _)
+    | hb_apply ([&] (സ്ഥിരം hb_pair_t<unsigned, സ്ഥിരം typename Types::template OffsetTo<RuleSet>&> _)
                 {
-                  const RuleSet& rule_set = this+_.second;
+                  സ്ഥിരം RuleSet& rule_set = ഇത്+_.second;
                   rule_set.closure (c, _.first, lookup_context);
                 })
     ;
 
-    c->pop_cur_done_glyphs ();
+    c->എടുക്കുക_cur_done_glyphs ();
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const
+  ശൂന്യം closure_lookups (hb_closure_lookups_context_t *c) സ്ഥിരം
   {
-    if (!(this+coverage).intersects (c->glyphs))
-      return;
+    എങ്കിൽ (!(ഇത്+coverage).intersects (c->glyphs))
+      തിരികെ;
 
-    const ClassDef &class_def = this+classDef;
+    സ്ഥിരം ClassDef &class_def = ഇത്+classDef;
 
     hb_map_t cache;
-    struct ContextClosureLookupContext lookup_context = {
+    ഘടന ContextClosureLookupContext lookup_context = {
       {intersects_class, nullptr},
       ContextFormat::ClassBasedContext,
       &class_def,
@@ -3828,151 +3828,151 @@ struct ContextFormat2_5
     };
 
     + hb_iter (ruleSet)
-    | hb_map (hb_add (this))
+    | hb_map (hb_add (ഇത്))
     | hb_enumerate
-    | hb_filter ([&] (const hb_pair_t<unsigned, const RuleSet &> p)
-    { return class_def.intersects_class (c->glyphs, p.first); })
+    | hb_filter ([&] (സ്ഥിരം hb_pair_t<unsigned, സ്ഥിരം RuleSet &> p)
+    { തിരികെ class_def.intersects_class (c->glyphs, p.first); })
     | hb_map (hb_second)
-    | hb_apply ([&] (const RuleSet & _)
+    | hb_apply ([&] (സ്ഥിരം RuleSet & _)
     { _.closure_lookups (c, lookup_context); });
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const {}
+  ശൂന്യം collect_variation_indices (hb_collect_variation_indices_context_t *c) സ്ഥിരം {}
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  ശൂന്യം collect_glyphs (hb_collect_glyphs_context_t *c) സ്ഥിരം
   {
-    (this+coverage).collect_coverage (c->input);
+    (ഇത്+coverage).collect_coverage (c->നിവേശം);
 
-    const ClassDef &class_def = this+classDef;
-    struct ContextCollectGlyphsLookupContext lookup_context = {
+    സ്ഥിരം ClassDef &class_def = ഇത്+classDef;
+    ഘടന ContextCollectGlyphsLookupContext lookup_context = {
       {collect_class},
       &class_def
     };
 
     + hb_iter (ruleSet)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const RuleSet &_) { _.collect_glyphs (c, lookup_context); })
+    | hb_map (hb_add (ഇത്))
+    | hb_apply ([&] (സ്ഥിരം RuleSet &_) { _.collect_glyphs (c, lookup_context); })
     ;
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest) const
+  ശൂന്യം collect_second_glyphs (hb_set_digest_t *digest) സ്ഥിരം
   {
-    const ClassDef &class_def = this+classDef;
+    സ്ഥിരം ClassDef &class_def = ഇത്+classDef;
     + hb_iter (ruleSet)
-    | hb_map (hb_add (this))
-    | hb_apply ([=, &class_def] (const RuleSet &_) { _.collect_second_glyphs (digest, &class_def); })
+    | hb_map (hb_add (ഇത്))
+    | hb_apply ([=, &class_def] (സ്ഥിരം RuleSet &_) { _.collect_second_glyphs (digest, &class_def); })
     ;
   }
 
-  bool would_apply (hb_would_apply_context_t *c) const
+  തർക്കം would_apply (hb_would_apply_context_t *c) സ്ഥിരം
   {
-    const ClassDef &class_def = this+classDef;
-    unsigned int index = class_def.get_class (c->glyphs[0]);
-    const RuleSet &rule_set = this+ruleSet[index];
-    struct ContextApplyLookupContext lookup_context = {
+    സ്ഥിരം ClassDef &class_def = ഇത്+classDef;
+    unsigned പൂർണ്ണസംഖ്യ index = class_def.get_class (c->glyphs[0]);
+    സ്ഥിരം RuleSet &rule_set = ഇത്+ruleSet[index];
+    ഘടന ContextApplyLookupContext lookup_context = {
       {match_class},
       &class_def
     };
-    return rule_set.would_apply (c, lookup_context);
+    തിരികെ rule_set.would_apply (c, lookup_context);
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  സ്ഥിരം Coverage &get_coverage () സ്ഥിരം { തിരികെ ഇത്+coverage; }
 
-  unsigned cache_cost () const
+  unsigned cache_cost () സ്ഥിരം
   {
-    return (this+classDef).cost ();
+    തിരികെ (ഇത്+classDef).cost ();
   }
-  static bool cache_func (hb_ot_apply_context_t *c, hb_ot_subtable_cache_op_t op)
+  സ്ഥിതം തർക്കം cache_func (hb_ot_apply_context_t *c, hb_ot_subtable_cache_op_t op)
   {
-    return context_cache_func (c, op);
+    തിരികെ context_cache_func (c, op);
   }
 
-  struct external_cache_t
+  ഘടന external_cache_t
   {
-    hb_ot_layout_binary_cache_t coverage;
+    hb_ot_layout_ദ്വിമാന_cache_t coverage;
     hb_ot_layout_ruleset_digest_t rule_sets[HB_VAR_ARRAY];
   };
-  void *external_cache_create () const
+  ശൂന്യം *external_cache_create () സ്ഥിരം
   {
-    unsigned count = ruleSet.len;
-    unsigned size = sizeof (external_cache_t) -
-		    HB_VAR_ARRAY * sizeof (hb_ot_layout_ruleset_digest_t) +
-		    count * sizeof (hb_ot_layout_ruleset_digest_t);
+    unsigned എണ്ണം = ruleSet.len;
+    unsigned size = വലുപ്പം (external_cache_t) -
+		    HB_VAR_ARRAY * വലുപ്പം (hb_ot_layout_ruleset_digest_t) +
+		    എണ്ണം * വലുപ്പം (hb_ot_layout_ruleset_digest_t);
     external_cache_t *cache = (external_cache_t *) hb_malloc (size);
-    if (likely (cache))
+    എങ്കിൽ (likely (cache))
     {
       cache->coverage.clear ();
-      for (unsigned i = 0; i < count; i++)
-	(this+ruleSet[i]).collect_first_input_classes (&cache->rule_sets[i]);
+      വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++)
+	(ഇത്+ruleSet[i]).collect_first_നിവേശം_classes (&cache->rule_sets[i]);
     }
-    return cache;
+    തിരികെ cache;
   }
-  bool apply_cached (hb_ot_apply_context_t *c, void *external_cache) const { return _apply (c, true, external_cache); }
-  bool apply (hb_ot_apply_context_t *c, void *external_cache) const { return _apply (c, false, external_cache); }
-  bool _apply (hb_ot_apply_context_t *c, bool cached, void *external_cache) const
+  തർക്കം apply_cached (hb_ot_apply_context_t *c, ശൂന്യം *external_cache) സ്ഥിരം { തിരികെ _apply (c, സത്യം, external_cache); }
+  തർക്കം apply (hb_ot_apply_context_t *c, ശൂന്യം *external_cache) സ്ഥിരം { തിരികെ _apply (c, അസത്യം, external_cache); }
+  തർക്കം _apply (hb_ot_apply_context_t *c, തർക്കം cached, ശൂന്യം *external_cache) സ്ഥിരം
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (ഇത്);
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
     external_cache_t *cache = (external_cache_t *) external_cache;
-    unsigned int index = (this+coverage).get_coverage_binary (c->buffer->cur().codepoint, cache ? &cache->coverage : nullptr);
-#else
-    unsigned int index = (this+coverage).get_coverage (c->buffer->cur().codepoint);
+    unsigned പൂർണ്ണസംഖ്യ index = (ഇത്+coverage).get_coverage_ദ്വിമാന (c->buffer->cur().codepoint, cache ? &cache->coverage : nullptr);
+#അല്ലെങ്കിൽ
+    unsigned പൂർണ്ണസംഖ്യ index = (ഇത്+coverage).get_coverage (c->buffer->cur().codepoint);
 #endif
-    if (index == NOT_COVERED) return_trace (false);
+    എങ്കിൽ (index == NOT_COVERED) return_trace (അസത്യം);
 
-    const ClassDef &class_def = this+classDef;
+    സ്ഥിരം ClassDef &class_def = ഇത്+classDef;
 
-    struct ContextApplyLookupContext lookup_context = {
+    ഘടന ContextApplyLookupContext lookup_context = {
       {cached ? match_class_cached : match_class},
       &class_def,
-      cached ? get_class_cached_value : get_class_value
+      cached ? get_class_cached_മൂല്യം : get_class_മൂല്യം
     };
 
     index = cached ? get_class_cached (class_def, c->buffer->cur()) : class_def.get_class (c->buffer->cur().codepoint);
-    const RuleSet &rule_set = this+ruleSet[index];
+    സ്ഥിരം RuleSet &rule_set = ഇത്+ruleSet[index];
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
-    const hb_ot_layout_ruleset_digest_t *digest = cache && index < ruleSet.len ? &cache->rule_sets[index] : nullptr;
-#else
-    const hb_ot_layout_ruleset_digest_t *digest = nullptr;
+    സ്ഥിരം hb_ot_layout_ruleset_digest_t *digest = cache && index < ruleSet.len ? &cache->rule_sets[index] : nullptr;
+#അല്ലെങ്കിൽ
+    സ്ഥിരം hb_ot_layout_ruleset_digest_t *digest = nullptr;
 #endif
     return_trace (rule_set.apply (c, lookup_context, digest));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  തർക്കം subset (hb_subset_context_t *c) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (ഇത്);
+    auto *out = c->serializer->start_embed (*ഇത്);
+    എങ്കിൽ (unlikely (!c->serializer->extend_min (out))) return_trace (അസത്യം);
     out->format = format;
-    if (unlikely (!out->coverage.serialize_subset (c, coverage, this)))
-      return_trace (false);
+    എങ്കിൽ (unlikely (!out->coverage.serialize_subset (c, coverage, ഇത്)))
+      return_trace (അസത്യം);
 
     hb_map_t klass_map;
-    out->classDef.serialize_subset (c, classDef, this, &klass_map);
+    out->classDef.serialize_subset (c, classDef, ഇത്, &klass_map);
 
-    const hb_set_t* glyphset = c->plan->glyphset_gsub ();
+    സ്ഥിരം hb_set_t* glyphset = c->plan->glyphset_gsub ();
     hb_set_t retained_coverage_glyphs;
-    (this+coverage).intersect_set (*glyphset, retained_coverage_glyphs);
+    (ഇത്+coverage).intersect_set (*glyphset, retained_coverage_glyphs);
 
     hb_set_t coverage_glyph_classes;
-    (this+classDef).intersected_classes (&retained_coverage_glyphs, &coverage_glyph_classes);
+    (ഇത്+classDef).intersected_classes (&retained_coverage_glyphs, &coverage_glyph_classes);
 
-    const hb_map_t *lookup_map = c->table_tag == HB_OT_TAG_GSUB ? &c->plan->gsub_lookups : &c->plan->gpos_lookups;
-    bool ret = true;
-    int non_zero_index = -1, index = 0;
+    സ്ഥിരം hb_map_t *lookup_map = c->table_tag == HB_OT_TAG_GSUB ? &c->plan->gsub_lookups : &c->plan->gpos_lookups;
+    തർക്കം ret = സത്യം;
+    പൂർണ്ണസംഖ്യ non_zero_index = -1, index = 0;
     auto snapshot = c->serializer->snapshot();
-    for (const auto& _ : + hb_enumerate (ruleSet)
+    വേണ്ടി (സ്ഥിരം auto& _ : + hb_enumerate (ruleSet)
 			 | hb_filter (klass_map, hb_first))
     {
       auto *o = out->ruleSet.serialize_append (c->serializer);
-      if (unlikely (!o))
+      എങ്കിൽ (unlikely (!o))
       {
-	ret = false;
-	break;
+	ret = അസത്യം;
+	നിർത്തുക;
       }
 
-      if (coverage_glyph_classes.has (_.first) &&
-	  o->serialize_subset (c, _.second, this, lookup_map, &klass_map)) {
+      എങ്കിൽ (coverage_glyph_classes.has (_.first) &&
+	  o->serialize_subset (c, _.second, ഇത്, lookup_map, &klass_map)) {
 	non_zero_index = index;
         snapshot = c->serializer->snapshot();
       }
@@ -3980,27 +3980,27 @@ struct ContextFormat2_5
       index++;
     }
 
-    if (!ret || non_zero_index == -1) return_trace (false);
+    എങ്കിൽ (!ret || non_zero_index == -1) return_trace (അസത്യം);
 
     //prune empty trailing ruleSets
     --index;
-    while (index > non_zero_index)
+    ആകുമ്പോൾ (index > non_zero_index)
     {
-      out->ruleSet.pop ();
+      out->ruleSet.എടുക്കുക ();
       index--;
     }
     c->serializer->revert (snapshot);
 
-    return_trace (bool (out->ruleSet));
+    return_trace (തർക്കം (out->ruleSet));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (coverage.sanitize (c, this) && classDef.sanitize (c, this) && ruleSet.sanitize (c, this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (coverage.sanitize (c, ഇത്) && classDef.sanitize (c, ഇത്) && ruleSet.sanitize (c, ഇത്));
   }
 
-  protected:
+  സംരക്ഷിത:
   HBUINT16	format;			/* Format identifier--format = 2 */
   typename Types::template LOffsetTo<Coverage>
 		coverage;		/* Offset to Coverage table--from
@@ -4011,230 +4011,230 @@ struct ContextFormat2_5
   typename Types::template ArrayOf<typename Types::template OffsetTo<RuleSet>>
 		ruleSet;		/* Array of RuleSet tables
 					 * ordered by class */
-  public:
+  പൊതു:
   DEFINE_SIZE_ARRAY (2 + 2 * Types::LOffset::static_size + Types::HBUINT::static_size, ruleSet);
 };
 
 
 template <typename Types>
-struct ContextFormat3_6
+ഘടന ContextFormat3_6
 {
   using RuleSet = OT::RuleSet<SmallTypes>;
 
-  bool intersects (const hb_set_t *glyphs) const
+  തർക്കം intersects (സ്ഥിരം hb_set_t *glyphs) സ്ഥിരം
   {
-    if (!(this+coverageZ[0]).intersects (glyphs))
-      return false;
+    എങ്കിൽ (!(ഇത്+coverageZ[0]).intersects (glyphs))
+      തിരികെ അസത്യം;
 
-    struct ContextClosureLookupContext lookup_context = {
+    ഘടന ContextClosureLookupContext lookup_context = {
       {intersects_coverage, nullptr},
       ContextFormat::CoverageBasedContext,
-      this
+      ഇത്
     };
-    return context_intersects (glyphs,
-			       glyphCount, coverageZ.arrayZ + 1,
+    തിരികെ context_intersects (glyphs,
+			       glyph_എണ്ണം_2, coverageZ.arrayZ + 1,
 			       lookup_context);
   }
 
-  bool may_have_non_1to1 () const
-  { return true; }
+  തർക്കം may_have_non_1to1 () സ്ഥിരം
+  { തിരികെ സത്യം; }
 
-  void depend (hb_depend_context_t *c) const
+  ശൂന്യം depend (hb_depend_context_t *c) സ്ഥിരം
   {
-    if (!(this+coverageZ[0]).intersects (c->glyphs))
-      return;
+    എങ്കിൽ (!(ഇത്+coverageZ[0]).intersects (c->glyphs))
+      തിരികെ;
 
-    hb_set_t* cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs)) return;
+    hb_set_t* cur_active_glyphs = c->തള്ളുക_cur_active_glyphs ();
+    എങ്കിൽ (unlikely (!cur_active_glyphs)) തിരികെ;
     get_coverage ().intersect_set (*c->glyphs, *cur_active_glyphs);
 
-    const LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyphCount));
+    സ്ഥിരം LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyph_എണ്ണം_2));
     ContextDependLookupContext lookup_context = {
       {intersects_coverage, intersected_coverage_glyphs},
       ContextFormat::CoverageBasedContext,
-      this,
+      ഇത്,
       nullptr,  /* intersects_cache */
       nullptr   /* intersected_glyphs_cache */
     };
     context_depend_lookup (c,
-			   glyphCount, (const HBUINT16 *) (coverageZ.arrayZ + 1),
-			   lookupCount, lookupRecord,
-			   this,
+			   glyph_എണ്ണം_2, (സ്ഥിരം HBUINT16 *) (coverageZ.arrayZ + 1),
+			   lookup_എണ്ണം_2, lookupRecord,
+			   ഇത്,
 			   coverageZ[0], lookup_context);
 
-    c->pop_cur_done_glyphs ();
+    c->എടുക്കുക_cur_done_glyphs ();
   }
 
-  void closure (hb_closure_context_t *c) const
+  ശൂന്യം closure (hb_closure_context_t *c) സ്ഥിരം
   {
-    if (!(this+coverageZ[0]).intersects (c->glyphs))
-      return;
+    എങ്കിൽ (!(ഇത്+coverageZ[0]).intersects (c->glyphs))
+      തിരികെ;
 
-    hb_set_t* cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs)) return;
+    hb_set_t* cur_active_glyphs = c->തള്ളുക_cur_active_glyphs ();
+    എങ്കിൽ (unlikely (!cur_active_glyphs)) തിരികെ;
     get_coverage ().intersect_set (c->previous_parent_active_glyphs (),
 				   *cur_active_glyphs);
 
-    const LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyphCount));
-    struct ContextClosureLookupContext lookup_context = {
+    സ്ഥിരം LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyph_എണ്ണം_2));
+    ഘടന ContextClosureLookupContext lookup_context = {
       {intersects_coverage, intersected_coverage_glyphs},
       ContextFormat::CoverageBasedContext,
-      this
+      ഇത്
     };
     context_closure_lookup (c,
-			    glyphCount, coverageZ.arrayZ + 1,
-			    lookupCount, lookupRecord,
+			    glyph_എണ്ണം_2, coverageZ.arrayZ + 1,
+			    lookup_എണ്ണം_2, lookupRecord,
 			    0, lookup_context);
 
-    c->pop_cur_done_glyphs ();
+    c->എടുക്കുക_cur_done_glyphs ();
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const
+  ശൂന്യം closure_lookups (hb_closure_lookups_context_t *c) സ്ഥിരം
   {
-    if (!intersects (c->glyphs))
-      return;
-    const LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyphCount));
-    recurse_lookups (c, lookupCount, lookupRecord);
+    എങ്കിൽ (!intersects (c->glyphs))
+      തിരികെ;
+    സ്ഥിരം LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyph_എണ്ണം_2));
+    recurse_lookups (c, lookup_എണ്ണം_2, lookupRecord);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const {}
+  ശൂന്യം collect_variation_indices (hb_collect_variation_indices_context_t *c) സ്ഥിരം {}
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  ശൂന്യം collect_glyphs (hb_collect_glyphs_context_t *c) സ്ഥിരം
   {
-    (this+coverageZ[0]).collect_coverage (c->input);
+    (ഇത്+coverageZ[0]).collect_coverage (c->നിവേശം);
 
-    const LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyphCount));
-    struct ContextCollectGlyphsLookupContext lookup_context = {
+    സ്ഥിരം LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyph_എണ്ണം_2));
+    ഘടന ContextCollectGlyphsLookupContext lookup_context = {
       {collect_coverage},
-      this
+      ഇത്
     };
 
     context_collect_glyphs_lookup (c,
-				   glyphCount, coverageZ.arrayZ + 1,
-				   lookupCount, lookupRecord,
+				   glyph_എണ്ണം_2, coverageZ.arrayZ + 1,
+				   lookup_എണ്ണം_2, lookupRecord,
 				   lookup_context);
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest) const
+  ശൂന്യം collect_second_glyphs (hb_set_digest_t *digest) സ്ഥിരം
   {
-    if (glyphCount <= 1)
+    എങ്കിൽ (glyph_എണ്ണം_2 <= 1)
       *digest = hb_set_digest_t::full ();
-    else
-      (this+coverageZ[1]).collect_coverage (digest);
+    അല്ലെങ്കിൽ
+      (ഇത്+coverageZ[1]).collect_coverage (digest);
   }
 
-  bool would_apply (hb_would_apply_context_t *c) const
+  തർക്കം would_apply (hb_would_apply_context_t *c) സ്ഥിരം
   {
-    const LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyphCount));
-    struct ContextApplyLookupContext lookup_context = {
+    സ്ഥിരം LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyph_എണ്ണം_2));
+    ഘടന ContextApplyLookupContext lookup_context = {
       {match_coverage},
-      this
+      ഇത്
     };
-    return context_would_apply_lookup (c,
-				       glyphCount, coverageZ.arrayZ + 1,
-				       lookupCount, lookupRecord,
+    തിരികെ context_would_apply_lookup (c,
+				       glyph_എണ്ണം_2, coverageZ.arrayZ + 1,
+				       lookup_എണ്ണം_2, lookupRecord,
 				       lookup_context);
   }
 
-  const Coverage &get_coverage () const { return this+coverageZ[0]; }
+  സ്ഥിരം Coverage &get_coverage () സ്ഥിരം { തിരികെ ഇത്+coverageZ[0]; }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  തർക്കം apply (hb_ot_apply_context_t *c) സ്ഥിരം
   {
-    TRACE_APPLY (this);
-    unsigned int index = (this+coverageZ[0]).get_coverage (c->buffer->cur().codepoint);
-    if (index == NOT_COVERED) return_trace (false);
+    TRACE_APPLY (ഇത്);
+    unsigned പൂർണ്ണസംഖ്യ index = (ഇത്+coverageZ[0]).get_coverage (c->buffer->cur().codepoint);
+    എങ്കിൽ (index == NOT_COVERED) return_trace (അസത്യം);
 
-    const LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyphCount));
-    struct ContextApplyLookupContext lookup_context = {
+    സ്ഥിരം LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyph_എണ്ണം_2));
+    ഘടന ContextApplyLookupContext lookup_context = {
       {match_coverage},
-      this
+      ഇത്
     };
     return_trace (context_apply_lookup (c,
-					glyphCount,
+					glyph_എണ്ണം_2,
 					coverageZ.arrayZ + 1,
-					lookupCount, lookupRecord,
+					lookup_എണ്ണം_2, lookupRecord,
 					lookup_context));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  തർക്കം subset (hb_subset_context_t *c) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (ഇത്);
+    auto *out = c->serializer->start_embed (ഇത്);
+    എങ്കിൽ (unlikely (!c->serializer->extend_min (out))) return_trace (അസത്യം);
 
     out->format = format;
-    out->glyphCount = glyphCount;
+    out->glyph_എണ്ണം_2 = glyph_എണ്ണം_2;
 
-    auto coverages = coverageZ.as_array (glyphCount);
+    auto coverages = coverageZ.as_array (glyph_എണ്ണം_2);
 
-    for (const auto& offset : coverages)
+    വേണ്ടി (സ്ഥിരം auto& offset : coverages)
     {
       /* TODO(subset) This looks like should not be necessary to write this way. */
       auto *o = c->serializer->allocate_size<typename Types::template OffsetTo<Coverage>> (Types::Offset::static_size);
-      if (unlikely (!o)) return_trace (false);
-      if (!o->serialize_subset (c, offset, this)) return_trace (false);
+      എങ്കിൽ (unlikely (!o)) return_trace (അസത്യം);
+      എങ്കിൽ (!o->serialize_subset (c, offset, ഇത്)) return_trace (അസത്യം);
     }
 
-    const auto& lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>> (coverageZ.as_array (glyphCount));
-    const hb_map_t *lookup_map = c->table_tag == HB_OT_TAG_GSUB ? &c->plan->gsub_lookups : &c->plan->gpos_lookups;
+    സ്ഥിരം auto& lookupRecord = StructAfter<UnsizedArrayOf<LookupRecord>> (coverageZ.as_array (glyph_എണ്ണം_2));
+    സ്ഥിരം hb_map_t *lookup_map = c->table_tag == HB_OT_TAG_GSUB ? &c->plan->gsub_lookups : &c->plan->gpos_lookups;
 
 
-    unsigned count = serialize_lookuprecord_array (c->serializer, lookupRecord.as_array (lookupCount), lookup_map);
-    return_trace (c->serializer->check_assign (out->lookupCount, count, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    unsigned എണ്ണം = serialize_lookuprecord_array (c->serializer, lookupRecord.as_array (lookup_എണ്ണം_2), lookup_map);
+    return_trace (c->serializer->check_assign (out->lookup_എണ്ണം_2, എണ്ണം, HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this))) return_trace (false);
+    TRACE_SANITIZE (ഇത്);
+    എങ്കിൽ (unlikely (!c->check_struct (ഇത്))) return_trace (അസത്യം);
     hb_barrier ();
-    unsigned int count = glyphCount;
-    if (unlikely (!count)) return_trace (false); /* We want to access coverageZ[0] freely. */
-    if (unlikely (!c->check_array (coverageZ.arrayZ, count))) return_trace (false);
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!coverageZ[i].sanitize (c, this))) return_trace (false);
-    const LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyphCount));
-    return_trace (likely (c->check_array (lookupRecord, lookupCount)));
+    unsigned പൂർണ്ണസംഖ്യ എണ്ണം = glyph_എണ്ണം_2;
+    എങ്കിൽ (unlikely (!എണ്ണം)) return_trace (അസത്യം); /* We want to access coverageZ[0] freely. */
+    എങ്കിൽ (unlikely (!c->check_array (coverageZ.arrayZ, എണ്ണം))) return_trace (അസത്യം);
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
+      എങ്കിൽ (unlikely (!coverageZ[i].sanitize (c, ഇത്))) return_trace (അസത്യം);
+    സ്ഥിരം LookupRecord *lookupRecord = &StructAfter<LookupRecord> (coverageZ.as_array (glyph_എണ്ണം_2));
+    return_trace (likely (c->check_array (lookupRecord, lookup_എണ്ണം_2)));
   }
 
-  protected:
+  സംരക്ഷിത:
   HBUINT16	format;			/* Format identifier--format = 3 */
-  HBUINT16	glyphCount;		/* Number of glyphs in the input glyph
+  HBUINT16	glyph_എണ്ണം_2;		/* Number of glyphs in the input glyph
 					 * sequence */
-  HBUINT16	lookupCount;		/* Number of LookupRecords */
+  HBUINT16	lookup_എണ്ണം_2;		/* Number of LookupRecords */
   UnsizedArrayOf<typename Types::template OffsetTo<Coverage>>
 		coverageZ;		/* Array of offsets to Coverage
 					 * table in glyph sequence order */
 /*UnsizedArrayOf<LookupRecord>
 		lookupRecordX;*/	/* Array of LookupRecords--in
 					 * design order */
-  public:
+  പൊതു:
   DEFINE_SIZE_ARRAY (6, coverageZ);
 };
 
-struct Context
+ഘടന Context
 {
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) സ്ഥിരം
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-    case 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
+    എങ്കിൽ (unlikely (!c->may_dispatch (ഇത്, &u.format.v))) തിരികെ c->no_dispatch_return_മൂല്യം ();
+    TRACE_DISPATCH (ഇത്, u.format.v);
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    അവസ്ഥ 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    അവസ്ഥ 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
 #ifndef HB_NO_BEYOND_64K
-    case 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
-    case 5: hb_barrier (); return_trace (c->dispatch (u.format5, std::forward<Ts> (ds)...));
-    case 6: hb_barrier (); return_trace (c->dispatch (u.format6, std::forward<Ts> (ds)...));
+    അവസ്ഥ 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
+    അവസ്ഥ 5: hb_barrier (); return_trace (c->dispatch (u.format5, std::forward<Ts> (ds)...));
+    അവസ്ഥ 6: hb_barrier (); return_trace (c->dispatch (u.format6, std::forward<Ts> (ds)...));
 #endif
-    default:return_trace (c->default_return_value ());
+    സ്ഥിരസ്ഥിതി:return_trace (c->default_return_മൂല്യം ());
     }
   }
 
-  protected:
-  union {
-  struct { HBUINT16 v; }	format;		/* Format identifier */
+  സംരക്ഷിത:
+  സംഘം {
+  ഘടന { HBUINT16 v; }	format;		/* Format identifier */
   ContextFormat1_4<SmallTypes>	format1;
   ContextFormat2_5<SmallTypes>	format2;
   ContextFormat3_6<SmallTypes>	format3;
@@ -4249,78 +4249,78 @@ struct Context
 
 /* Chaining Contextual lookups */
 
-struct ChainContextClosureLookupContext
+ഘടന ChainContextClosureLookupContext
 {
   ContextClosureFuncs funcs;
   ContextFormat context_format;
-  const void *intersects_data[3];
-  void *intersects_cache[3];
-  void *intersected_glyphs_cache;
+  സ്ഥിരം ശൂന്യം *intersects_data[3];
+  ശൂന്യം *intersects_cache[3];
+  ശൂന്യം *intersected_glyphs_cache;
 };
 
-typedef ChainContextClosureLookupContext ChainContextDependLookupContext;
+തരനിർവചനം ChainContextClosureLookupContext ChainContextDependLookupContext;
 
-struct ChainContextCollectGlyphsLookupContext
+ഘടന ChainContextCollectGlyphsLookupContext
 {
   ContextCollectGlyphsFuncs funcs;
-  const void *collect_data[3];
+  സ്ഥിരം ശൂന്യം *collect_data[3];
 };
 
-struct ChainContextApplyLookupContext
+ഘടന ChainContextApplyLookupContext
 {
   ChainContextApplyFuncs funcs;
-  const void *match_data[3];
-  get_value_func_t get_input_value;
+  സ്ഥിരം ശൂന്യം *match_data[3];
+  get_മൂല്യം_func_t get_നിവേശം_മൂല്യം;
 };
 
-static inline bool chain_context_intersects (const hb_set_t *glyphs,
-					     unsigned int backtrackCount,
+സ്ഥിതം വരിയിൽ തർക്കം chain_context_intersects (സ്ഥിരം hb_set_t *glyphs,
+					     unsigned പൂർണ്ണസംഖ്യ backtrack_എണ്ണം,
 					     glyph_data_t backtrack,
-					     unsigned int inputCount, /* Including the first glyph (not matched) */
-					     glyph_data_t input, /* Array of input values--start with second glyph */
-					     unsigned int lookaheadCount,
+					     unsigned പൂർണ്ണസംഖ്യ നിവേശം_എണ്ണം, /* Including the first glyph (not matched) */
+					     glyph_data_t നിവേശം, /* Array of input values--start with second glyph */
+					     unsigned പൂർണ്ണസംഖ്യ lookahead_എണ്ണം,
 					     glyph_data_t lookahead,
 					     ChainContextClosureLookupContext &lookup_context)
 {
-  bool bt_ok = array_is_subset_of (glyphs,
-			     backtrackCount, backtrack,
+  തർക്കം bt_ok = array_is_subset_of (glyphs,
+			     backtrack_എണ്ണം, backtrack,
 			     lookup_context.funcs.intersects,
 			     lookup_context.intersects_data[0],
 			     lookup_context.intersects_cache[0]);
-  bool in_ok = array_is_subset_of (glyphs,
-			     inputCount ? inputCount - 1 : 0, input,
+  തർക്കം in_ok = array_is_subset_of (glyphs,
+			     നിവേശം_എണ്ണം ? നിവേശം_എണ്ണം - 1 : 0, നിവേശം,
 			     lookup_context.funcs.intersects,
 			     lookup_context.intersects_data[1],
 			     lookup_context.intersects_cache[1]);
-  bool la_ok = array_is_subset_of (glyphs,
-			     lookaheadCount, lookahead,
+  തർക്കം la_ok = array_is_subset_of (glyphs,
+			     lookahead_എണ്ണം, lookahead,
 			     lookup_context.funcs.intersects,
 			     lookup_context.intersects_data[2],
 			     lookup_context.intersects_cache[2]);
 
-  return bt_ok && in_ok && la_ok;
+  തിരികെ bt_ok && in_ok && la_ok;
 }
 
-static inline void chain_context_closure_lookup (hb_closure_context_t *c,
-						 unsigned int backtrackCount,
+സ്ഥിതം വരിയിൽ ശൂന്യം chain_context_closure_lookup (hb_closure_context_t *c,
+						 unsigned പൂർണ്ണസംഖ്യ backtrack_എണ്ണം,
 						 glyph_data_t backtrack,
-						 unsigned int inputCount, /* Including the first glyph (not matched) */
-						 glyph_data_t input, /* Array of input values--start with second glyph */
-						 unsigned int lookaheadCount,
+						 unsigned പൂർണ്ണസംഖ്യ നിവേശം_എണ്ണം, /* Including the first glyph (not matched) */
+						 glyph_data_t നിവേശം, /* Array of input values--start with second glyph */
+						 unsigned പൂർണ്ണസംഖ്യ lookahead_എണ്ണം,
 						 glyph_data_t lookahead,
-						 unsigned int lookupCount,
-						 const LookupRecord lookupRecord[],
+						 unsigned പൂർണ്ണസംഖ്യ lookup_എണ്ണം_2,
+						 സ്ഥിരം LookupRecord lookupRecord[],
 						 unsigned value,
 						 ChainContextClosureLookupContext &lookup_context)
 {
-  if (chain_context_intersects (c->glyphs,
-				backtrackCount, backtrack,
-				inputCount, input,
-				lookaheadCount, lookahead,
+  എങ്കിൽ (chain_context_intersects (c->glyphs,
+				backtrack_എണ്ണം, backtrack,
+				നിവേശം_എണ്ണം, നിവേശം,
+				lookahead_എണ്ണം, lookahead,
 				lookup_context))
     context_closure_recurse_lookups (c,
-		     inputCount, input,
-		     lookupCount, lookupRecord,
+		     നിവേശം_എണ്ണം, നിവേശം,
+		     lookup_എണ്ണം_2, lookupRecord,
 		     value,
 		     lookup_context.context_format,
 		     lookup_context.intersects_data[1],
@@ -4328,42 +4328,42 @@ static inline void chain_context_closure_lookup (hb_closure_context_t *c,
 		     lookup_context.intersected_glyphs_cache);
 }
 
-static inline void chain_context_depend_lookup (hb_depend_context_t *c,
-						unsigned int backtrackCount,
+സ്ഥിതം വരിയിൽ ശൂന്യം chain_context_depend_lookup (hb_depend_context_t *c,
+						unsigned പൂർണ്ണസംഖ്യ backtrack_എണ്ണം,
 						glyph_data_t backtrack,
-						unsigned int inputCount, /* Including the first glyph (not matched) */
-						glyph_data_t input, /* Array of input values--start with second glyph */
-						unsigned int lookaheadCount,
+						unsigned പൂർണ്ണസംഖ്യ നിവേശം_എണ്ണം, /* Including the first glyph (not matched) */
+						glyph_data_t നിവേശം, /* Array of input values--start with second glyph */
+						unsigned പൂർണ്ണസംഖ്യ lookahead_എണ്ണം,
 						glyph_data_t lookahead,
-						unsigned int lookupCount,
-						const LookupRecord lookupRecord[],
-						const void *rule,
+						unsigned പൂർണ്ണസംഖ്യ lookup_എണ്ണം_2,
+						സ്ഥിരം LookupRecord lookupRecord[],
+						സ്ഥിരം ശൂന്യം *rule,
 						unsigned value,
 						ChainContextDependLookupContext &lookup_context)
 {
-  if (!chain_context_intersects (c->glyphs,
-				 backtrackCount, backtrack,
-				 inputCount, input,
-				 lookaheadCount, lookahead,
+  എങ്കിൽ (!chain_context_intersects (c->glyphs,
+				 backtrack_എണ്ണം, backtrack,
+				 നിവേശം_എണ്ണം, നിവേശം,
+				 lookahead_എണ്ണം, lookahead,
 				 lookup_context))
-    return;
+    തിരികെ;
 
   hb_depend_context_t::depend_scratch_t *scratch = c->acquire_depend_scratch ();
-  if (unlikely (!scratch))
-    return;
+  എങ്കിൽ (unlikely (!scratch))
+    തിരികെ;
   HB_SCOPE_GUARD (c->release_depend_scratch (scratch));
 
-  bool context_sets_cached = context_depend_sets_are_cached (
-    c, inputCount, lookupCount, lookupRecord, rule, value,
+  തർക്കം context_sets_cached = context_depend_sets_are_cached (
+    c, നിവേശം_എണ്ണം, lookup_എണ്ണം_2, lookupRecord, rule, value,
     lookup_context.context_format, lookup_context.intersects_data[1],
     &scratch->cached_context_sets);
-  if (unlikely (!c->depend_data->successful))
-    return;
-  if (context_sets_cached)
+  എങ്കിൽ (unlikely (!c->depend_data->successful))
+    തിരികെ;
+  എങ്കിൽ (context_sets_cached)
   {
     context_depend_recurse_lookups (c,
-				    inputCount, input,
-				    lookupCount, lookupRecord,
+				    നിവേശം_എണ്ണം, നിവേശം,
+				    lookup_എണ്ണം_2, lookupRecord,
 				    rule,
 				    value,
 				    lookup_context.context_format,
@@ -4374,120 +4374,120 @@ static inline void chain_context_depend_lookup (hb_depend_context_t *c,
 				    nullptr,
 				    &scratch->cached_context_sets,
 				    scratch);
-    return;
+    തിരികെ;
   }
 
   /* Cache misses and rules without valid records still perform the original
    * dependency-set interning in its observable order. */
   hb_set_t &position_scratch = scratch->position_scratch;
-  hb_vector_t<const hb_set_t *> &backtrack_sets = scratch->backtrack_sets;
-  hb_vector_t<const hb_set_t *> &lookahead_sets = scratch->lookahead_sets;
+  hb_vector_t<സ്ഥിരം hb_set_t *> &backtrack_sets = scratch->backtrack_sets;
+  hb_vector_t<സ്ഥിരം hb_set_t *> &lookahead_sets = scratch->lookahead_sets;
 
   /* Extract backtrack glyphs */
-  for (unsigned i = 0; i < backtrackCount; i++)
+  വേണ്ടി (unsigned i = 0; i < backtrack_എണ്ണം; i++)
   {
-    const hb_set_t *pos_glyphs = depend_position_glyphs (
+    സ്ഥിരം hb_set_t *pos_glyphs = depend_position_glyphs (
       c, lookup_context.context_format, lookup_context.intersects_data[0],
-      backtrack[i], false, &position_scratch);
-    if (unlikely (!pos_glyphs))
-      return;
-    if (!pos_glyphs->is_empty ())
+      backtrack[i], അസത്യം, &position_scratch);
+    എങ്കിൽ (unlikely (!pos_glyphs))
+      തിരികെ;
+    എങ്കിൽ (!pos_glyphs->is_empty ())
     {
-      if (unlikely (!backtrack_sets.push_or_fail (pos_glyphs)))
+      എങ്കിൽ (unlikely (!backtrack_sets.തള്ളുക_or_fail (pos_glyphs)))
       {
         c->depend_data->fail ();
-        return;
+        തിരികെ;
       }
     }
   }
 
   /* Extract lookahead glyphs */
-  for (unsigned i = 0; i < lookaheadCount; i++)
+  വേണ്ടി (unsigned i = 0; i < lookahead_എണ്ണം; i++)
   {
-    const hb_set_t *pos_glyphs = depend_position_glyphs (
+    സ്ഥിരം hb_set_t *pos_glyphs = depend_position_glyphs (
       c, lookup_context.context_format, lookup_context.intersects_data[2],
-      lookahead[i], false, &position_scratch);
-    if (unlikely (!pos_glyphs))
-      return;
-    if (!pos_glyphs->is_empty ())
+      lookahead[i], അസത്യം, &position_scratch);
+    എങ്കിൽ (unlikely (!pos_glyphs))
+      തിരികെ;
+    എങ്കിൽ (!pos_glyphs->is_empty ())
     {
-      if (unlikely (!lookahead_sets.push_or_fail (pos_glyphs)))
+      എങ്കിൽ (unlikely (!lookahead_sets.തള്ളുക_or_fail (pos_glyphs)))
       {
         c->depend_data->fail ();
-        return;
+        തിരികെ;
       }
     }
   }
 
   /* Build preliminary_context with backtrack + lookahead encoded */
   hb_set_t &preliminary_context = scratch->preliminary_context;
-  for (const hb_set_t *back_set : backtrack_sets)
+  വേണ്ടി (സ്ഥിരം hb_set_t *back_set : backtrack_sets)
   {
-    if (back_set->get_population () == 1) {
+    എങ്കിൽ (back_set->get_population () == 1) {
       preliminary_context.add (back_set->get_min ());  // Direct glyph
-    } else if (back_set->get_population () > 1) {
+    } അല്ലെങ്കിൽ എങ്കിൽ (back_set->get_population () > 1) {
       hb_codepoint_t set_idx = lookup_context.context_format == ContextFormat::SimpleContext
         ? c->depend_data->find_or_create_context_set (*back_set)
         : c->find_or_create_cached_context_set (back_set);
-      if (unlikely (set_idx == HB_CODEPOINT_INVALID))
-        return;
+      എങ്കിൽ (unlikely (set_idx == HB_CODEPOINT_INVALID))
+        തിരികെ;
       preliminary_context.add (HB_DEPEND_CONTEXT_SET_FLAG | set_idx);  // Encoded set reference
     }
   }
-  for (const hb_set_t *look_set : lookahead_sets)
+  വേണ്ടി (സ്ഥിരം hb_set_t *look_set : lookahead_sets)
   {
-    if (look_set->get_population () == 1) {
+    എങ്കിൽ (look_set->get_population () == 1) {
       preliminary_context.add (look_set->get_min ());  // Direct glyph
-    } else if (look_set->get_population () > 1) {
+    } അല്ലെങ്കിൽ എങ്കിൽ (look_set->get_population () > 1) {
       hb_codepoint_t set_idx = lookup_context.context_format == ContextFormat::SimpleContext
         ? c->depend_data->find_or_create_context_set (*look_set)
         : c->find_or_create_cached_context_set (look_set);
-      if (unlikely (set_idx == HB_CODEPOINT_INVALID))
-        return;
+      എങ്കിൽ (unlikely (set_idx == HB_CODEPOINT_INVALID))
+        തിരികെ;
       preliminary_context.add (HB_DEPEND_CONTEXT_SET_FLAG | set_idx);  // Encoded set reference
     }
   }
-  if (unlikely (preliminary_context.in_error ()))
+  എങ്കിൽ (unlikely (preliminary_context.in_error ()))
   {
     c->depend_data->fail ();
-    return;
+    തിരികെ;
   }
 
   /* Build glyph sets for ALL input positions */
-  hb_vector_t<const hb_set_t *> &input_position_glyphs = scratch->input_position_glyphs;
+  hb_vector_t<സ്ഥിരം hb_set_t *> &നിവേശം_position_glyphs = scratch->നിവേശം_position_glyphs;
 
-  if (!context_sets_cached)
+  എങ്കിൽ (!context_sets_cached)
   {
     /* Position 0 (first input coverage/class/glyph) — must be in both the
      * class AND the coverage, so intersect with parent_active_glyphs. */
-    const hb_set_t *pos0_glyphs = depend_position_glyphs (
+    സ്ഥിരം hb_set_t *pos0_glyphs = depend_position_glyphs (
       c, lookup_context.context_format, lookup_context.intersects_data[1], value,
-      true, &position_scratch, &scratch->compact_workspace);
-    if (unlikely (!pos0_glyphs ||
-		  !input_position_glyphs.push_or_fail (pos0_glyphs)))
+      സത്യം, &position_scratch, &scratch->compact_workspace);
+    എങ്കിൽ (unlikely (!pos0_glyphs ||
+		  !നിവേശം_position_glyphs.തള്ളുക_or_fail (pos0_glyphs)))
     {
       c->depend_data->fail ();
-      return;
+      തിരികെ;
     }
 
     /* Positions 1+ (Input array) */
-    for (unsigned i = 0; i + 1 < inputCount; i++)
+    വേണ്ടി (unsigned i = 0; i + 1 < നിവേശം_എണ്ണം; i++)
     {
-      const hb_set_t *pos_glyphs = depend_position_glyphs (
+      സ്ഥിരം hb_set_t *pos_glyphs = depend_position_glyphs (
 	c, lookup_context.context_format, lookup_context.intersects_data[1],
-	input[i], false, &position_scratch);
-      if (unlikely (!pos_glyphs ||
-		    !input_position_glyphs.push_or_fail (pos_glyphs)))
+	നിവേശം[i], അസത്യം, &position_scratch);
+      എങ്കിൽ (unlikely (!pos_glyphs ||
+		    !നിവേശം_position_glyphs.തള്ളുക_or_fail (pos_glyphs)))
       {
 	c->depend_data->fail ();
-	return;
+	തിരികെ;
       }
     }
   }
 
   context_depend_recurse_lookups (c,
-				  inputCount, input,
-				  lookupCount, lookupRecord,
+				  നിവേശം_എണ്ണം, നിവേശം,
+				  lookup_എണ്ണം_2, lookupRecord,
 				  rule,
 				  value,
 				  lookup_context.context_format,
@@ -4495,243 +4495,243 @@ static inline void chain_context_depend_lookup (hb_depend_context_t *c,
 				  lookup_context.funcs.intersected_glyphs,
 				  lookup_context.intersected_glyphs_cache,
 				  preliminary_context,
-				  context_sets_cached ? nullptr : &input_position_glyphs,
+				  context_sets_cached ? nullptr : &നിവേശം_position_glyphs,
 				  context_sets_cached ? &scratch->cached_context_sets : nullptr,
 				  scratch);
 }
 
-static inline void chain_context_collect_glyphs_lookup (hb_collect_glyphs_context_t *c,
-							unsigned int backtrackCount,
+സ്ഥിതം വരിയിൽ ശൂന്യം chain_context_collect_glyphs_lookup (hb_collect_glyphs_context_t *c,
+							unsigned പൂർണ്ണസംഖ്യ backtrack_എണ്ണം,
 							glyph_data_t backtrack,
-							unsigned int inputCount, /* Including the first glyph (not matched) */
-							glyph_data_t input, /* Array of input values--start with second glyph */
-							unsigned int lookaheadCount,
+							unsigned പൂർണ്ണസംഖ്യ നിവേശം_എണ്ണം, /* Including the first glyph (not matched) */
+							glyph_data_t നിവേശം, /* Array of input values--start with second glyph */
+							unsigned പൂർണ്ണസംഖ്യ lookahead_എണ്ണം,
 							glyph_data_t lookahead,
-							unsigned int lookupCount,
-							const LookupRecord lookupRecord[],
+							unsigned പൂർണ്ണസംഖ്യ lookup_എണ്ണം_2,
+							സ്ഥിരം LookupRecord lookupRecord[],
 							ChainContextCollectGlyphsLookupContext &lookup_context)
 {
   collect_array (c, c->before,
-		 backtrackCount, backtrack,
+		 backtrack_എണ്ണം, backtrack,
 		 lookup_context.funcs.collect, lookup_context.collect_data[0]);
-  collect_array (c, c->input,
-		 inputCount ? inputCount - 1 : 0, input,
+  collect_array (c, c->നിവേശം,
+		 നിവേശം_എണ്ണം ? നിവേശം_എണ്ണം - 1 : 0, നിവേശം,
 		 lookup_context.funcs.collect, lookup_context.collect_data[1]);
   collect_array (c, c->after,
-		 lookaheadCount, lookahead,
+		 lookahead_എണ്ണം, lookahead,
 		 lookup_context.funcs.collect, lookup_context.collect_data[2]);
   recurse_lookups (c,
-		   lookupCount, lookupRecord);
+		   lookup_എണ്ണം_2, lookupRecord);
 }
 
-static inline bool chain_context_would_apply_lookup (hb_would_apply_context_t *c,
-						     unsigned int backtrackCount,
+സ്ഥിതം വരിയിൽ തർക്കം chain_context_would_apply_lookup (hb_would_apply_context_t *c,
+						     unsigned പൂർണ്ണസംഖ്യ backtrack_എണ്ണം,
 						     glyph_data_t backtrack HB_UNUSED,
-						     unsigned int inputCount, /* Including the first glyph (not matched) */
-						     glyph_data_t input, /* Array of input values--start with second glyph */
-						     unsigned int lookaheadCount,
+						     unsigned പൂർണ്ണസംഖ്യ നിവേശം_എണ്ണം, /* Including the first glyph (not matched) */
+						     glyph_data_t നിവേശം, /* Array of input values--start with second glyph */
+						     unsigned പൂർണ്ണസംഖ്യ lookahead_എണ്ണം,
 						     glyph_data_t lookahead HB_UNUSED,
-						     unsigned int lookupCount HB_UNUSED,
-						     const LookupRecord lookupRecord[] HB_UNUSED,
-						     const ChainContextApplyLookupContext &lookup_context)
+						     unsigned പൂർണ്ണസംഖ്യ lookup_എണ്ണം_2 HB_UNUSED,
+						     സ്ഥിരം LookupRecord lookupRecord[] HB_UNUSED,
+						     സ്ഥിരം ChainContextApplyLookupContext &lookup_context)
 {
-  return (c->zero_context ? !backtrackCount && !lookaheadCount : true)
-      && would_match_input (c,
-			    inputCount, input,
+  തിരികെ (c->zero_context ? !backtrack_എണ്ണം && !lookahead_എണ്ണം : സത്യം)
+      && would_match_നിവേശം (c,
+			    നിവേശം_എണ്ണം, നിവേശം,
 			    lookup_context.funcs.match[1], lookup_context.match_data[1]);
 }
 
-static inline bool chain_context_apply_lookup (hb_ot_apply_context_t *c,
-					       unsigned int backtrackCount,
+സ്ഥിതം വരിയിൽ തർക്കം chain_context_apply_lookup (hb_ot_apply_context_t *c,
+					       unsigned പൂർണ്ണസംഖ്യ backtrack_എണ്ണം,
 					       glyph_data_t backtrack,
-					       unsigned int inputCount, /* Including the first glyph (not matched) */
-					       glyph_data_t input, /* Array of input values--start with second glyph */
-					       unsigned int lookaheadCount,
+					       unsigned പൂർണ്ണസംഖ്യ നിവേശം_എണ്ണം, /* Including the first glyph (not matched) */
+					       glyph_data_t നിവേശം, /* Array of input values--start with second glyph */
+					       unsigned പൂർണ്ണസംഖ്യ lookahead_എണ്ണം,
 					       glyph_data_t lookahead,
-					       unsigned int lookupCount,
-					       const LookupRecord lookupRecord[],
-					       const ChainContextApplyLookupContext &lookup_context)
+					       unsigned പൂർണ്ണസംഖ്യ lookup_എണ്ണം_2,
+					       സ്ഥിരം LookupRecord lookupRecord[],
+					       സ്ഥിരം ChainContextApplyLookupContext &lookup_context)
 {
-  if (unlikely (inputCount > HB_MAX_CONTEXT_LENGTH)) return false;
+  എങ്കിൽ (unlikely (നിവേശം_എണ്ണം > HB_MAX_CONTEXT_LENGTH)) തിരികെ അസത്യം;
 
   unsigned start_index = c->buffer->out_len;
   unsigned end_index = c->buffer->idx;
   unsigned match_end = 0;
-  bool ret = true;
-  if (!(match_input (c,
-		     inputCount, input,
+  തർക്കം ret = സത്യം;
+  എങ്കിൽ (!(match_നിവേശം (c,
+		     നിവേശം_എണ്ണം, നിവേശം,
 		     lookup_context.funcs.match[1], lookup_context.match_data[1],
 		     &match_end) && (end_index = match_end)
        && match_lookahead (c,
-			   lookaheadCount, lookahead,
+			   lookahead_എണ്ണം, lookahead,
 			   lookup_context.funcs.match[2], lookup_context.match_data[2],
 			   match_end, &end_index)))
   {
     c->buffer->unsafe_to_concat (c->buffer->idx, end_index);
-    return false;
+    തിരികെ അസത്യം;
   }
 
-  if (!match_backtrack (c,
-			backtrackCount, backtrack,
+  എങ്കിൽ (!match_backtrack (c,
+			backtrack_എണ്ണം, backtrack,
 			lookup_context.funcs.match[0], lookup_context.match_data[0],
 			&start_index))
   {
     c->buffer->unsafe_to_concat_from_outbuffer (start_index, end_index);
-    return false;
+    തിരികെ അസത്യം;
   }
 
   c->buffer->unsafe_to_break_from_outbuffer (start_index, end_index);
   apply_lookup (c,
-		inputCount,
-		lookupCount, lookupRecord,
+		നിവേശം_എണ്ണം,
+		lookup_എണ്ണം_2, lookupRecord,
 		match_end);
 
-  return ret;
+  തിരികെ ret;
 }
 
 template <typename Types>
-struct ChainRule
+ഘടന ChainRule
 {
   template <typename SetTypes, typename ChainRuleType>
-  friend struct ChainRuleSetOf;
+  friend ഘടന ChainRuleSetOf;
 
-  bool intersects (const hb_set_t *glyphs, ChainContextClosureLookupContext &lookup_context) const
+  തർക്കം intersects (സ്ഥിരം hb_set_t *glyphs, ChainContextClosureLookupContext &lookup_context) സ്ഥിരം
   {
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    return chain_context_intersects (glyphs,
+    സ്ഥിരം auto &നിവേശം = StructAfter<decltype (നിവേശം_X)> (backtrack);
+    സ്ഥിരം auto &lookahead = StructAfter<decltype (lookaheadX)> (നിവേശം);
+    തിരികെ chain_context_intersects (glyphs,
 				     backtrack.len, backtrack.arrayZ,
-				     input.lenP1, input.arrayZ,
+				     നിവേശം.lenP1, നിവേശം.arrayZ,
 				     lookahead.len, lookahead.arrayZ,
 				     lookup_context);
   }
 
-  void depend (hb_depend_context_t *c, unsigned value, ChainContextDependLookupContext &lookup_context) const
+  ശൂന്യം depend (hb_depend_context_t *c, unsigned value, ChainContextDependLookupContext &lookup_context) സ്ഥിരം
   {
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    സ്ഥിരം auto &നിവേശം = StructAfter<decltype (നിവേശം_X)> (backtrack);
+    സ്ഥിരം auto &lookahead = StructAfter<decltype (lookaheadX)> (നിവേശം);
+    സ്ഥിരം auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
     chain_context_depend_lookup (c,
 				 backtrack.len, backtrack.arrayZ,
-				 input.lenP1, input.arrayZ,
+				 നിവേശം.lenP1, നിവേശം.arrayZ,
 				 lookahead.len, lookahead.arrayZ,
 				 lookup.len, lookup.arrayZ,
-				 this,
+				 ഇത്,
 				 value,
 				 lookup_context);
   }
 
-  void closure (hb_closure_context_t *c, unsigned value,
-		ChainContextClosureLookupContext &lookup_context) const
+  ശൂന്യം closure (hb_closure_context_t *c, unsigned value,
+		ChainContextClosureLookupContext &lookup_context) സ്ഥിരം
   {
-    if (unlikely (c->lookup_limit_exceeded ())) return;
+    എങ്കിൽ (unlikely (c->lookup_limit_exceeded ())) തിരികെ;
 
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    സ്ഥിരം auto &നിവേശം = StructAfter<decltype (നിവേശം_X)> (backtrack);
+    സ്ഥിരം auto &lookahead = StructAfter<decltype (lookaheadX)> (നിവേശം);
+    സ്ഥിരം auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
     chain_context_closure_lookup (c,
 				  backtrack.len, backtrack.arrayZ,
-				  input.lenP1, input.arrayZ,
+				  നിവേശം.lenP1, നിവേശം.arrayZ,
 				  lookahead.len, lookahead.arrayZ,
 				  lookup.len, lookup.arrayZ,
 				  value,
 				  lookup_context);
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c,
-                        ChainContextClosureLookupContext &lookup_context) const
+  ശൂന്യം closure_lookups (hb_closure_lookups_context_t *c,
+                        ChainContextClosureLookupContext &lookup_context) സ്ഥിരം
   {
-    if (unlikely (c->lookup_limit_exceeded ())) return;
-    if (!intersects (c->glyphs, lookup_context)) return;
+    എങ്കിൽ (unlikely (c->lookup_limit_exceeded ())) തിരികെ;
+    എങ്കിൽ (!intersects (c->glyphs, lookup_context)) തിരികെ;
 
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    സ്ഥിരം auto &നിവേശം = StructAfter<decltype (നിവേശം_X)> (backtrack);
+    സ്ഥിരം auto &lookahead = StructAfter<decltype (lookaheadX)> (നിവേശം);
+    സ്ഥിരം auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
     recurse_lookups (c, lookup.len, lookup.arrayZ);
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c,
-		       ChainContextCollectGlyphsLookupContext &lookup_context) const
+  ശൂന്യം collect_glyphs (hb_collect_glyphs_context_t *c,
+		       ChainContextCollectGlyphsLookupContext &lookup_context) സ്ഥിരം
   {
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    സ്ഥിരം auto &നിവേശം = StructAfter<decltype (നിവേശം_X)> (backtrack);
+    സ്ഥിരം auto &lookahead = StructAfter<decltype (lookaheadX)> (നിവേശം);
+    സ്ഥിരം auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
     chain_context_collect_glyphs_lookup (c,
 					 backtrack.len, backtrack.arrayZ,
-					 input.lenP1, input.arrayZ,
+					 നിവേശം.lenP1, നിവേശം.arrayZ,
 					 lookahead.len, lookahead.arrayZ,
 					 lookup.len, lookup.arrayZ,
 					 lookup_context);
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest,
-			      const ClassDef *input_class_def = nullptr,
-			      const ClassDef *lookahead_class_def = nullptr) const
+  ശൂന്യം collect_second_glyphs (hb_set_digest_t *digest,
+			      സ്ഥിരം ClassDef *നിവേശം_class_def = nullptr,
+			      സ്ഥിരം ClassDef *lookahead_class_def = nullptr) സ്ഥിരം
   {
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
+    സ്ഥിരം auto &നിവേശം = StructAfter<decltype (നിവേശം_X)> (backtrack);
+    സ്ഥിരം auto &lookahead = StructAfter<decltype (lookaheadX)> (നിവേശം);
 
     unsigned second;
-    const ClassDef *class_def;
-    if (input.lenP1 > 1)
+    സ്ഥിരം ClassDef *class_def;
+    എങ്കിൽ (നിവേശം.lenP1 > 1)
     {
-      second = input.arrayZ[0];
-      class_def = input_class_def;
+      second = നിവേശം.arrayZ[0];
+      class_def = നിവേശം_class_def;
     }
-    else if (lookahead.len)
+    അല്ലെങ്കിൽ എങ്കിൽ (lookahead.len)
     {
       second = lookahead.arrayZ[0];
       class_def = lookahead_class_def;
     }
-    else
+    അല്ലെങ്കിൽ
     {
       *digest = hb_set_digest_t::full ();
-      return;
+      തിരികെ;
     }
 
-    if (!class_def)
+    എങ്കിൽ (!class_def)
       digest->add (second);
-    else if (!second)
+    അല്ലെങ്കിൽ എങ്കിൽ (!second)
       *digest = hb_set_digest_t::full ();
-    else
+    അല്ലെങ്കിൽ
       class_def->collect_class (digest, second);
   }
 
-  bool would_apply (hb_would_apply_context_t *c,
-		    const ChainContextApplyLookupContext &lookup_context) const
+  തർക്കം would_apply (hb_would_apply_context_t *c,
+		    സ്ഥിരം ChainContextApplyLookupContext &lookup_context) സ്ഥിരം
   {
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
-    return chain_context_would_apply_lookup (c,
+    സ്ഥിരം auto &നിവേശം = StructAfter<decltype (നിവേശം_X)> (backtrack);
+    സ്ഥിരം auto &lookahead = StructAfter<decltype (lookaheadX)> (നിവേശം);
+    സ്ഥിരം auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    തിരികെ chain_context_would_apply_lookup (c,
 					     backtrack.len, backtrack.arrayZ,
-					     input.lenP1, input.arrayZ,
+					     നിവേശം.lenP1, നിവേശം.arrayZ,
 					     lookahead.len, lookahead.arrayZ, lookup.len,
 					     lookup.arrayZ, lookup_context);
   }
 
-  bool apply (hb_ot_apply_context_t *c,
-	      const ChainContextApplyLookupContext &lookup_context) const
+  തർക്കം apply (hb_ot_apply_context_t *c,
+	      സ്ഥിരം ChainContextApplyLookupContext &lookup_context) സ്ഥിരം
   {
-    TRACE_APPLY (this);
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    TRACE_APPLY (ഇത്);
+    സ്ഥിരം auto &നിവേശം = StructAfter<decltype (നിവേശം_X)> (backtrack);
+    സ്ഥിരം auto &lookahead = StructAfter<decltype (lookaheadX)> (നിവേശം);
+    സ്ഥിരം auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
     return_trace (chain_context_apply_lookup (c,
 					      backtrack.len, backtrack.arrayZ,
-					      input.lenP1, input.arrayZ,
+					      നിവേശം.lenP1, നിവേശം.arrayZ,
 					      lookahead.len, lookahead.arrayZ, lookup.len,
 					      lookup.arrayZ, lookup_context));
   }
 
   template<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  void serialize_array (hb_serialize_context_t *c,
+  ശൂന്യം serialize_array (hb_serialize_context_t *c,
 			HBUINT16 len,
-			Iterator it) const
+			Iterator it) സ്ഥിരം
   {
     c->copy (len);
-    for (const auto g : it)
+    വേണ്ടി (സ്ഥിരം auto g : it)
     {
       typename Types::HBUINT d;
       d = g;
@@ -4739,94 +4739,94 @@ struct ChainRule
     }
   }
 
-  bool serialize (hb_serialize_context_t *c,
-		  const hb_map_t *lookup_map,
-		  const hb_map_t *backtrack_map,
-		  const hb_map_t *input_map = nullptr,
-		  const hb_map_t *lookahead_map = nullptr) const
+  തർക്കം serialize (hb_serialize_context_t *c,
+		  സ്ഥിരം hb_map_t *lookup_map,
+		  സ്ഥിരം hb_map_t *backtrack_map,
+		  സ്ഥിരം hb_map_t *നിവേശം_map = nullptr,
+		  സ്ഥിരം hb_map_t *lookahead_map = nullptr) സ്ഥിരം
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ഇത്);
 
-    const hb_map_t *mapping = backtrack_map;
+    സ്ഥിരം hb_map_t *mapping = backtrack_map;
     serialize_array (c, backtrack.len, + backtrack.iter ()
 				       | hb_map (mapping));
 
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    if (input_map) mapping = input_map;
-    serialize_array (c, input.lenP1, + input.iter ()
+    സ്ഥിരം auto &നിവേശം = StructAfter<decltype (നിവേശം_X)> (backtrack);
+    എങ്കിൽ (നിവേശം_map) mapping = നിവേശം_map;
+    serialize_array (c, നിവേശം.lenP1, + നിവേശം.iter ()
 				     | hb_map (mapping));
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    if (lookahead_map) mapping = lookahead_map;
+    സ്ഥിരം auto &lookahead = StructAfter<decltype (lookaheadX)> (നിവേശം);
+    എങ്കിൽ (lookahead_map) mapping = lookahead_map;
     serialize_array (c, lookahead.len, + lookahead.iter ()
 				       | hb_map (mapping));
 
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    സ്ഥിരം auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
 
-    HBUINT16* lookupCount = c->embed (&(lookup.len));
-    if (!lookupCount) return_trace (false);
+    HBUINT16* lookup_എണ്ണം_2 = c->embed (&(lookup.len));
+    എങ്കിൽ (!lookup_എണ്ണം_2) return_trace (അസത്യം);
 
-    unsigned count = serialize_lookuprecord_array (c, lookup.as_array (), lookup_map);
-    return_trace (c->check_assign (*lookupCount, count, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    unsigned എണ്ണം = serialize_lookuprecord_array (c, lookup.as_array (), lookup_map);
+    return_trace (c->check_assign (*lookup_എണ്ണം_2, എണ്ണം, HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool subset (hb_subset_context_t *c,
-	       const hb_map_t *lookup_map,
-	       const hb_map_t *backtrack_map = nullptr,
-	       const hb_map_t *input_map = nullptr,
-	       const hb_map_t *lookahead_map = nullptr) const
+  തർക്കം subset (hb_subset_context_t *c,
+	       സ്ഥിരം hb_map_t *lookup_map,
+	       സ്ഥിരം hb_map_t *backtrack_map = nullptr,
+	       സ്ഥിരം hb_map_t *നിവേശം_map = nullptr,
+	       സ്ഥിരം hb_map_t *lookahead_map = nullptr) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (ഇത്);
 
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
+    സ്ഥിരം auto &നിവേശം = StructAfter<decltype (നിവേശം_X)> (backtrack);
+    സ്ഥിരം auto &lookahead = StructAfter<decltype (lookaheadX)> (നിവേശം);
 
-    if (!backtrack_map)
+    എങ്കിൽ (!backtrack_map)
     {
-      const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-      if (!hb_all (backtrack, glyphset) ||
-	  !hb_all (input, glyphset) ||
+      സ്ഥിരം hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+      എങ്കിൽ (!hb_all (backtrack, glyphset) ||
+	  !hb_all (നിവേശം, glyphset) ||
 	  !hb_all (lookahead, glyphset))
-	return_trace (false);
+	return_trace (അസത്യം);
 
       serialize (c->serializer, lookup_map, c->plan->glyph_map);
     }
-    else
+    അല്ലെങ്കിൽ
     {
-      if (!hb_all (backtrack, backtrack_map) ||
-	  !hb_all (input, input_map) ||
+      എങ്കിൽ (!hb_all (backtrack, backtrack_map) ||
+	  !hb_all (നിവേശം, നിവേശം_map) ||
 	  !hb_all (lookahead, lookahead_map))
-	return_trace (false);
+	return_trace (അസത്യം);
 
-      serialize (c->serializer, lookup_map, backtrack_map, input_map, lookahead_map);
+      serialize (c->serializer, lookup_map, backtrack_map, നിവേശം_map, lookahead_map);
     }
 
-    return_trace (true);
+    return_trace (സത്യം);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ഇത്);
     /* Hyper-optimized sanitized because this is really hot. */
-    if (unlikely (!backtrack.len.sanitize (c))) return_trace (false);
+    എങ്കിൽ (unlikely (!backtrack.len.sanitize (c))) return_trace (അസത്യം);
     hb_barrier ();
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    if (unlikely (!input.lenP1.sanitize (c))) return_trace (false);
+    സ്ഥിരം auto &നിവേശം = StructAfter<decltype (നിവേശം_X)> (backtrack);
+    എങ്കിൽ (unlikely (!നിവേശം.lenP1.sanitize (c))) return_trace (അസത്യം);
     hb_barrier ();
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    if (unlikely (!lookahead.len.sanitize (c))) return_trace (false);
+    സ്ഥിരം auto &lookahead = StructAfter<decltype (lookaheadX)> (നിവേശം);
+    എങ്കിൽ (unlikely (!lookahead.len.sanitize (c))) return_trace (അസത്യം);
     hb_barrier ();
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    സ്ഥിരം auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
     return_trace (likely (lookup.sanitize (c)));
   }
 
-  protected:
+  സംരക്ഷിത:
   Array16Of<typename Types::HBUINT>
 		backtrack;		/* Array of backtracking values
 					 * (to be matched before the input
 					 * sequence) */
   HeadlessArray16Of<typename Types::HBUINT>
-		inputX;			/* Array of input values (start with
+		നിവേശം_X;			/* Array of input values (start with
 					 * second glyph) */
   Array16Of<typename Types::HBUINT>
 		lookaheadX;		/* Array of lookahead values's (to be
@@ -4834,115 +4834,115 @@ struct ChainRule
   Array16Of<LookupRecord>
 		lookupX;		/* Array of LookupRecords--in
 					 * design order) */
-  public:
+  പൊതു:
   DEFINE_SIZE_MIN (8);
 };
 
 template <typename Types, typename ChainRuleType>
-struct ChainRuleSetOf
+ഘടന ChainRuleSetOf
 {
-  bool intersects (const hb_set_t *glyphs, ChainContextClosureLookupContext &lookup_context) const
+  തർക്കം intersects (സ്ഥിരം hb_set_t *glyphs, ChainContextClosureLookupContext &lookup_context) സ്ഥിരം
   {
-    return
+    തിരികെ
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_map ([&] (const ChainRuleType &_) { return _.intersects (glyphs, lookup_context); })
+    | hb_map (hb_add (ഇത്))
+    | hb_map ([&] (സ്ഥിരം ChainRuleType &_) { തിരികെ _.intersects (glyphs, lookup_context); })
     | hb_any
     ;
   }
 
-  void collect_first_input_classes (hb_ot_layout_ruleset_digest_t *digest) const
+  ശൂന്യം collect_first_നിവേശം_classes (hb_ot_layout_ruleset_digest_t *digest) സ്ഥിരം
   {
     digest->init ();
-    for (unsigned i = 0; i < rule.len; i++)
+    വേണ്ടി (unsigned i = 0; i < rule.len; i++)
     {
-      const ChainRuleType &r = this+rule.arrayZ[i];
-      const auto &input = StructAfter<decltype (r.inputX)> (r.backtrack);
-      if (input.lenP1 <= 1)
+      സ്ഥിരം ChainRuleType &r = ഇത്+rule.arrayZ[i];
+      സ്ഥിരം auto &നിവേശം = StructAfter<decltype (r.നിവേശം_X)> (r.backtrack);
+      എങ്കിൽ (നിവേശം.lenP1 <= 1)
       {
 	digest->set_full ();
-	return;
+	തിരികെ;
       }
-      digest->add (input.arrayZ[0]);
+      digest->add (നിവേശം.arrayZ[0]);
     }
   }
-  void depend (hb_depend_context_t *c, unsigned value, ChainContextDependLookupContext &lookup_context) const
+  ശൂന്യം depend (hb_depend_context_t *c, unsigned value, ChainContextDependLookupContext &lookup_context) സ്ഥിരം
   {
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const ChainRuleType &_) { _.depend (c, value, lookup_context); })
+    | hb_map (hb_add (ഇത്))
+    | hb_apply ([&] (സ്ഥിരം ChainRuleType &_) { _.depend (c, value, lookup_context); })
     ;
   }
-  void closure (hb_closure_context_t *c, unsigned value, ChainContextClosureLookupContext &lookup_context) const
+  ശൂന്യം closure (hb_closure_context_t *c, unsigned value, ChainContextClosureLookupContext &lookup_context) സ്ഥിരം
   {
-    if (unlikely (c->lookup_limit_exceeded ())) return;
+    എങ്കിൽ (unlikely (c->lookup_limit_exceeded ())) തിരികെ;
 
-    return
+    തിരികെ
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const ChainRuleType &_) { _.closure (c, value, lookup_context); })
-    ;
-  }
-
-  void closure_lookups (hb_closure_lookups_context_t *c,
-                        ChainContextClosureLookupContext &lookup_context) const
-  {
-    if (unlikely (c->lookup_limit_exceeded ())) return;
-
-    + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const ChainRuleType &_) { _.closure_lookups (c, lookup_context); })
+    | hb_map (hb_add (ഇത്))
+    | hb_apply ([&] (സ്ഥിരം ChainRuleType &_) { _.closure (c, value, lookup_context); })
     ;
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c, ChainContextCollectGlyphsLookupContext &lookup_context) const
+  ശൂന്യം closure_lookups (hb_closure_lookups_context_t *c,
+                        ChainContextClosureLookupContext &lookup_context) സ്ഥിരം
   {
-    return
+    എങ്കിൽ (unlikely (c->lookup_limit_exceeded ())) തിരികെ;
+
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const ChainRuleType &_) { _.collect_glyphs (c, lookup_context); })
+    | hb_map (hb_add (ഇത്))
+    | hb_apply ([&] (സ്ഥിരം ChainRuleType &_) { _.closure_lookups (c, lookup_context); })
     ;
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest,
-			      const ClassDef *input_class_def = nullptr,
-			      const ClassDef *lookahead_class_def = nullptr) const
+  ശൂന്യം collect_glyphs (hb_collect_glyphs_context_t *c, ChainContextCollectGlyphsLookupContext &lookup_context) സ്ഥിരം
   {
+    തിരികെ
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_apply ([=] (const ChainRuleType &_)
-		{ _.collect_second_glyphs (digest, input_class_def, lookahead_class_def); })
+    | hb_map (hb_add (ഇത്))
+    | hb_apply ([&] (സ്ഥിരം ChainRuleType &_) { _.collect_glyphs (c, lookup_context); })
     ;
   }
 
-  bool would_apply (hb_would_apply_context_t *c,
-		    const ChainContextApplyLookupContext &lookup_context) const
+  ശൂന്യം collect_second_glyphs (hb_set_digest_t *digest,
+			      സ്ഥിരം ClassDef *നിവേശം_class_def = nullptr,
+			      സ്ഥിരം ClassDef *lookahead_class_def = nullptr) സ്ഥിരം
   {
-    return
     + hb_iter (rule)
-    | hb_map (hb_add (this))
-    | hb_map ([&] (const ChainRuleType &_) { return _.would_apply (c, lookup_context); })
+    | hb_map (hb_add (ഇത്))
+    | hb_apply ([=] (സ്ഥിരം ChainRuleType &_)
+		{ _.collect_second_glyphs (digest, നിവേശം_class_def, lookahead_class_def); })
+    ;
+  }
+
+  തർക്കം would_apply (hb_would_apply_context_t *c,
+		    സ്ഥിരം ChainContextApplyLookupContext &lookup_context) സ്ഥിരം
+  {
+    തിരികെ
+    + hb_iter (rule)
+    | hb_map (hb_add (ഇത്))
+    | hb_map ([&] (സ്ഥിരം ChainRuleType &_) { തിരികെ _.would_apply (c, lookup_context); })
     | hb_any
     ;
   }
 
-  bool apply (hb_ot_apply_context_t *c,
-	      const ChainContextApplyLookupContext &lookup_context,
-	      const hb_ot_layout_ruleset_digest_t *digest = nullptr) const
+  തർക്കം apply (hb_ot_apply_context_t *c,
+	      സ്ഥിരം ChainContextApplyLookupContext &lookup_context,
+	      സ്ഥിരം hb_ot_layout_ruleset_digest_t *digest = nullptr) സ്ഥിരം
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (ഇത്);
 
-    unsigned num_rules = rule.len;
+    unsigned അക്കം_rules = rule.len;
 
 #ifndef HB_NO_OT_RULESETS_FAST_PATH
-    if (HB_OPTIMIZE_SIZE_VAL || num_rules <= 4)
+    എങ്കിൽ (HB_OPTIMIZE_SIZE_VAL || അക്കം_rules <= 4)
 #endif
     {
     slow:
       return_trace (
       + hb_iter (rule)
-      | hb_map (hb_add (this))
-      | hb_map ([&] (const ChainRuleType &_) { return _.apply (c, lookup_context); })
+      | hb_map (hb_add (ഇത്))
+      | hb_map ([&] (സ്ഥിരം ChainRuleType &_) { തിരികെ _.apply (c, lookup_context); })
       | hb_any
       )
       ;
@@ -4964,212 +4964,212 @@ struct ChainRuleSetOf
     skippy_iter.set_glyph_data ((HBUINT16 *) nullptr);
     unsigned unsafe_to = (unsigned) -1, unsafe_to1, unsafe_to2 = 0;
     hb_glyph_info_t *first = nullptr, *second = nullptr;
-    bool matched = skippy_iter.next (&unsafe_to1);
-    if (likely (matched))
+    തർക്കം matched = skippy_iter.next (&unsafe_to1);
+    എങ്കിൽ (likely (matched))
     {
-      if (skippy_iter.may_skip (c->buffer->info[skippy_iter.idx]))
+      എങ്കിൽ (skippy_iter.may_skip (c->buffer->info[skippy_iter.idx]))
       {
 	/* Can't use the fast path if eg. the next char is a default-ignorable
 	 * or other skippable. */
-        goto slow;
+        പോകുക slow;
       }
 
       first = &c->buffer->info[skippy_iter.idx];
       unsafe_to1 = skippy_iter.idx + 1;
 
-      if (digest && lookup_context.get_input_value &&
-	  !digest->may_have (lookup_context.get_input_value (*first, lookup_context.match_data[1])))
+      എങ്കിൽ (digest && lookup_context.get_നിവേശം_മൂല്യം &&
+	  !digest->may_have (lookup_context.get_നിവേശം_മൂല്യം (*first, lookup_context.match_data[1])))
 	{
 	  c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to1);
-	  return_trace (false);
+	  return_trace (അസത്യം);
 	}
     }
-    else
+    അല്ലെങ്കിൽ
     {
-      bool unsafe_to_concat = false;
-      bool ret =
+      തർക്കം unsafe_to_concat = അസത്യം;
+      തർക്കം ret =
       + hb_iter (rule)
-      | hb_map (hb_add (this))
-      | hb_filter ([&] (const ChainRuleType &_)
+      | hb_map (hb_add (ഇത്))
+      | hb_filter ([&] (സ്ഥിരം ChainRuleType &_)
 		   {
-		     const auto &input = StructAfter<decltype (_.inputX)> (_.backtrack);
-		     const auto &lookahead = StructAfter<decltype (_.lookaheadX)> (input);
-		     if (input.lenP1 <= 1 && lookahead.len == 0) return true;
-		     unsafe_to_concat = true;
-		     return false;
+		     സ്ഥിരം auto &നിവേശം = StructAfter<decltype (_.നിവേശം_X)> (_.backtrack);
+		     സ്ഥിരം auto &lookahead = StructAfter<decltype (_.lookaheadX)> (നിവേശം);
+		     എങ്കിൽ (നിവേശം.lenP1 <= 1 && lookahead.len == 0) തിരികെ സത്യം;
+		     unsafe_to_concat = സത്യം;
+		     തിരികെ അസത്യം;
 		   })
-      | hb_map ([&] (const ChainRuleType &_) { return _.apply (c, lookup_context); })
+      | hb_map ([&] (സ്ഥിരം ChainRuleType &_) { തിരികെ _.apply (c, lookup_context); })
       | hb_any
       ;
-      if (unsafe_to_concat)
+      എങ്കിൽ (unsafe_to_concat)
 	c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to1);
       return_trace (ret);
     }
     matched = skippy_iter.next ();
-    if (likely (matched))
+    എങ്കിൽ (likely (matched))
     {
-      if (skippy_iter.may_skip (c->buffer->info[skippy_iter.idx]))
+      എങ്കിൽ (skippy_iter.may_skip (c->buffer->info[skippy_iter.idx]))
       {
 	/* Can't use the fast path if eg. the next char is a default-ignorable
 	 * or other skippable. */
-        goto slow;
+        പോകുക slow;
       }
 
       second = &c->buffer->info[skippy_iter.idx];
       unsafe_to2 = skippy_iter.idx + 1;
     }
 
-    auto match_input = lookup_context.funcs.match[1];
+    auto match_നിവേശം = lookup_context.funcs.match[1];
     auto match_lookahead = lookup_context.funcs.match[2];
-    auto *input_data = lookup_context.match_data[1];
+    auto *നിവേശം_data = lookup_context.match_data[1];
     auto *lookahead_data = lookup_context.match_data[2];
-    for (unsigned int i = 0; i < num_rules; i++)
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < അക്കം_rules; i++)
     {
-      const auto &r = this+rule.arrayZ[i];
+      സ്ഥിരം auto &r = ഇത്+rule.arrayZ[i];
 
-      const auto &input = StructAfter<decltype (r.inputX)> (r.backtrack);
-      const auto &lookahead = StructAfter<decltype (r.lookaheadX)> (input);
+      സ്ഥിരം auto &നിവേശം = StructAfter<decltype (r.നിവേശം_X)> (r.backtrack);
+      സ്ഥിരം auto &lookahead = StructAfter<decltype (r.lookaheadX)> (നിവേശം);
 
-      unsigned lenP1 = input.lenP1;
-      if (lenP1 > 1 ?
-	   (!match_input ||
-	    match_input (*first, input.arrayZ[0], input_data))
+      unsigned lenP1 = നിവേശം.lenP1;
+      എങ്കിൽ (lenP1 > 1 ?
+	   (!match_നിവേശം ||
+	    match_നിവേശം (*first, നിവേശം.arrayZ[0], നിവേശം_data))
 	  :
 	   (!lookahead.len || !match_lookahead ||
 	    match_lookahead (*first, lookahead.arrayZ[0], lookahead_data)))
       {
 	lenP1 = hb_max (lenP1, 1u);
-        if (!second ||
+        എങ്കിൽ (!second ||
 	    (lenP1 > 2 ?
-	     (!match_input ||
-	      match_input (*second, input.arrayZ[1], input_data))
+	     (!match_നിവേശം ||
+	      match_നിവേശം (*second, നിവേശം.arrayZ[1], നിവേശം_data))
 	     :
 	     (lookahead.len <= 2 - lenP1 || !match_lookahead ||
 	      match_lookahead (*second, lookahead.arrayZ[2 - lenP1], lookahead_data))))
 	{
-	  if (r.apply (c, lookup_context))
+	  എങ്കിൽ (r.apply (c, lookup_context))
 	  {
-	    if (unsafe_to != (unsigned) -1)
+	    എങ്കിൽ (unsafe_to != (unsigned) -1)
 	      c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to);
-	    return_trace (true);
+	    return_trace (സത്യം);
 	  }
 	}
-	else
+	അല്ലെങ്കിൽ
 	  unsafe_to = unsafe_to2;
       }
-      else
+      അല്ലെങ്കിൽ
       {
-	if (unsafe_to == (unsigned) -1)
+	എങ്കിൽ (unsafe_to == (unsigned) -1)
 	  unsafe_to = unsafe_to1;
 
-	if (lenP1 > 1)
+	എങ്കിൽ (lenP1 > 1)
 	{
 	  // Skip ahead to next possible first glyph match.
-	  for (; i + 1 < num_rules; i++)
+	  വേണ്ടി (; i + 1 < അക്കം_rules; i++)
 	  {
-	    const auto &r2 = this+rule.arrayZ[i + 1];
-	    const auto &input2 = StructAfter<decltype (r2.inputX)> (r2.backtrack);
-	    if (input2.lenP1 <= 1 || input2.arrayZ[0] != input.arrayZ[0])
-	      break;
+	    സ്ഥിരം auto &r2 = ഇത്+rule.arrayZ[i + 1];
+	    സ്ഥിരം auto &input2 = StructAfter<decltype (r2.നിവേശം_X)> (r2.backtrack);
+	    എങ്കിൽ (input2.lenP1 <= 1 || input2.arrayZ[0] != നിവേശം.arrayZ[0])
+	      നിർത്തുക;
 	  }
 	}
       }
     }
-    if (likely (unsafe_to != (unsigned) -1))
+    എങ്കിൽ (likely (unsafe_to != (unsigned) -1))
       c->buffer->unsafe_to_concat (c->buffer->idx, unsafe_to);
 
-    return_trace (false);
+    return_trace (അസത്യം);
   }
 
-  bool subset (hb_subset_context_t *c,
-	       const hb_map_t *lookup_map,
-	       const hb_map_t *backtrack_klass_map = nullptr,
-	       const hb_map_t *input_klass_map = nullptr,
-	       const hb_map_t *lookahead_klass_map = nullptr) const
+  തർക്കം subset (hb_subset_context_t *c,
+	       സ്ഥിരം hb_map_t *lookup_map,
+	       സ്ഥിരം hb_map_t *backtrack_klass_map = nullptr,
+	       സ്ഥിരം hb_map_t *നിവേശം_klass_map = nullptr,
+	       സ്ഥിരം hb_map_t *lookahead_klass_map = nullptr) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (ഇത്);
 
     auto snap = c->serializer->snapshot ();
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (*ഇത്);
+    എങ്കിൽ (unlikely (!c->serializer->extend_min (out))) return_trace (അസത്യം);
 
-    for (const auto& _ : rule)
+    വേണ്ടി (സ്ഥിരം auto& _ : rule)
     {
-      if (!_) continue;
+      എങ്കിൽ (!_) തുടരുക;
       auto o_snap = c->serializer->snapshot ();
       auto *o = out->rule.serialize_append (c->serializer);
-      if (unlikely (!o)) continue;
+      എങ്കിൽ (unlikely (!o)) തുടരുക;
 
-      if (!o->serialize_subset (c, _, this,
+      എങ്കിൽ (!o->serialize_subset (c, _, ഇത്,
 				lookup_map,
 				backtrack_klass_map,
-				input_klass_map,
+				നിവേശം_klass_map,
 				lookahead_klass_map))
       {
-	out->rule.pop ();
+	out->rule.എടുക്കുക ();
 	c->serializer->revert (o_snap);
       }
     }
 
-    bool ret = bool (out->rule);
-    if (!ret) c->serializer->revert (snap);
+    തർക്കം ret = തർക്കം (out->rule);
+    എങ്കിൽ (!ret) c->serializer->revert (snap);
 
     return_trace (ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (rule.sanitize (c, this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (rule.sanitize (c, ഇത്));
   }
 
-  protected:
+  സംരക്ഷിത:
   Array16Of<typename Types::template OffsetTo<ChainRuleType>>
 		rule;			/* Array of ChainRule tables
 					 * ordered by preference */
-  public:
+  പൊതു:
   DEFINE_SIZE_ARRAY (2, rule);
 };
 
 template <typename Types>
-struct ChainRuleSet : ChainRuleSetOf<Types, ChainRule<Types>> {};
+ഘടന ChainRuleSet : ChainRuleSetOf<Types, ChainRule<Types>> {};
 
-static_assert (sizeof (ChainRuleSet<MediumTypes>) ==
+static_assert (വലുപ്പം (ChainRuleSet<MediumTypes>) ==
 	       HBUINT16::static_size + Offset24::static_size, "");
 
 template <typename Types>
-struct ChainClassRuleSet : ChainRuleSetOf<Types, ChainRule<SmallTypes>> {};
+ഘടന ChainClassRuleSet : ChainRuleSetOf<Types, ChainRule<SmallTypes>> {};
 
 template <typename Types>
-struct ChainContextFormat1_4
+ഘടന ChainContextFormat1_4
 {
   using ChainRuleSet = OT::ChainRuleSet<Types>;
 
-  bool intersects (const hb_set_t *glyphs) const
+  തർക്കം intersects (സ്ഥിരം hb_set_t *glyphs) സ്ഥിരം
   {
-    struct ChainContextClosureLookupContext lookup_context = {
+    ഘടന ChainContextClosureLookupContext lookup_context = {
       {intersects_glyph, intersected_glyph},
       ContextFormat::SimpleContext,
       {nullptr, nullptr, nullptr}
     };
 
-    return
-    + hb_zip (this+coverage, ruleSet)
+    തിരികെ
+    + hb_zip (ഇത്+coverage, ruleSet)
     | hb_filter (*glyphs, hb_first)
     | hb_map (hb_second)
-    | hb_map (hb_add (this))
-    | hb_map ([&] (const ChainRuleSet &_) { return _.intersects (glyphs, lookup_context); })
+    | hb_map (hb_add (ഇത്))
+    | hb_map ([&] (സ്ഥിരം ChainRuleSet &_) { തിരികെ _.intersects (glyphs, lookup_context); })
     | hb_any
     ;
   }
 
-  bool may_have_non_1to1 () const
-  { return true; }
+  തർക്കം may_have_non_1to1 () സ്ഥിരം
+  { തിരികെ സത്യം; }
 
-  void depend (hb_depend_context_t *c) const
+  ശൂന്യം depend (hb_depend_context_t *c) സ്ഥിരം
   {
-    hb_set_t* cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs)) return;
+    hb_set_t* cur_active_glyphs = c->തള്ളുക_cur_active_glyphs ();
+    എങ്കിൽ (unlikely (!cur_active_glyphs)) തിരികെ;
     get_coverage ().intersect_set (*c->glyphs, *cur_active_glyphs);
 
     ChainContextDependLookupContext lookup_context = {
@@ -5180,139 +5180,139 @@ struct ChainContextFormat1_4
       nullptr                        /* intersected_glyphs_cache */
     };
 
-    + hb_zip (this+coverage, hb_range ((unsigned) ruleSet.len))
+    + hb_zip (ഇത്+coverage, hb_range ((unsigned) ruleSet.len))
     | hb_filter ([&] (hb_codepoint_t _) {
-      return c->parent_active_glyphs ().has (_);
+      തിരികെ c->parent_active_glyphs ().has (_);
     }, hb_first)
-    | hb_map ([&](const hb_pair_t<hb_codepoint_t, unsigned> _) { return hb_pair_t<unsigned, const ChainRuleSet&> (_.first, this+ruleSet[_.second]); })
-    | hb_apply ([&] (const hb_pair_t<unsigned, const ChainRuleSet&>& _) { _.second.depend (c, _.first, lookup_context); })
+    | hb_map ([&](സ്ഥിരം hb_pair_t<hb_codepoint_t, unsigned> _) { തിരികെ hb_pair_t<unsigned, സ്ഥിരം ChainRuleSet&> (_.first, ഇത്+ruleSet[_.second]); })
+    | hb_apply ([&] (സ്ഥിരം hb_pair_t<unsigned, സ്ഥിരം ChainRuleSet&>& _) { _.second.depend (c, _.first, lookup_context); })
     ;
 
-    c->pop_cur_done_glyphs ();
+    c->എടുക്കുക_cur_done_glyphs ();
   }
 
-  void closure (hb_closure_context_t *c) const
+  ശൂന്യം closure (hb_closure_context_t *c) സ്ഥിരം
   {
-    hb_set_t* cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs)) return;
+    hb_set_t* cur_active_glyphs = c->തള്ളുക_cur_active_glyphs ();
+    എങ്കിൽ (unlikely (!cur_active_glyphs)) തിരികെ;
     get_coverage ().intersect_set (c->previous_parent_active_glyphs (),
 				   *cur_active_glyphs);
 
-    struct ChainContextClosureLookupContext lookup_context = {
+    ഘടന ChainContextClosureLookupContext lookup_context = {
       {intersects_glyph, intersected_glyph},
       ContextFormat::SimpleContext,
       {nullptr, nullptr, nullptr}
     };
 
-    + hb_zip (this+coverage, hb_range ((unsigned) ruleSet.len))
+    + hb_zip (ഇത്+coverage, hb_range ((unsigned) ruleSet.len))
     | hb_filter ([&] (hb_codepoint_t _) {
-      return c->previous_parent_active_glyphs ().has (_);
+      തിരികെ c->previous_parent_active_glyphs ().has (_);
     }, hb_first)
-    | hb_map ([&](const hb_pair_t<hb_codepoint_t, unsigned> _) { return hb_pair_t<unsigned, const ChainRuleSet&> (_.first, this+ruleSet[_.second]); })
-    | hb_apply ([&] (const hb_pair_t<unsigned, const ChainRuleSet&>& _) { _.second.closure (c, _.first, lookup_context); })
+    | hb_map ([&](സ്ഥിരം hb_pair_t<hb_codepoint_t, unsigned> _) { തിരികെ hb_pair_t<unsigned, സ്ഥിരം ChainRuleSet&> (_.first, ഇത്+ruleSet[_.second]); })
+    | hb_apply ([&] (സ്ഥിരം hb_pair_t<unsigned, സ്ഥിരം ChainRuleSet&>& _) { _.second.closure (c, _.first, lookup_context); })
     ;
 
-    c->pop_cur_done_glyphs ();
+    c->എടുക്കുക_cur_done_glyphs ();
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const
+  ശൂന്യം closure_lookups (hb_closure_lookups_context_t *c) സ്ഥിരം
   {
-    struct ChainContextClosureLookupContext lookup_context = {
+    ഘടന ChainContextClosureLookupContext lookup_context = {
       {intersects_glyph, nullptr},
       ContextFormat::SimpleContext,
       {nullptr, nullptr, nullptr}
     };
 
-    + hb_zip (this+coverage, ruleSet)
+    + hb_zip (ഇത്+coverage, ruleSet)
     | hb_filter (*c->glyphs, hb_first)
     | hb_map (hb_second)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const ChainRuleSet &_) { _.closure_lookups (c, lookup_context); })
+    | hb_map (hb_add (ഇത്))
+    | hb_apply ([&] (സ്ഥിരം ChainRuleSet &_) { _.closure_lookups (c, lookup_context); })
     ;
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const {}
+  ശൂന്യം collect_variation_indices (hb_collect_variation_indices_context_t *c) സ്ഥിരം {}
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  ശൂന്യം collect_glyphs (hb_collect_glyphs_context_t *c) സ്ഥിരം
   {
-    (this+coverage).collect_coverage (c->input);
+    (ഇത്+coverage).collect_coverage (c->നിവേശം);
 
-    struct ChainContextCollectGlyphsLookupContext lookup_context = {
+    ഘടന ChainContextCollectGlyphsLookupContext lookup_context = {
       {collect_glyph},
       {nullptr, nullptr, nullptr}
     };
 
     + hb_iter (ruleSet)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const ChainRuleSet &_) { _.collect_glyphs (c, lookup_context); })
+    | hb_map (hb_add (ഇത്))
+    | hb_apply ([&] (സ്ഥിരം ChainRuleSet &_) { _.collect_glyphs (c, lookup_context); })
     ;
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest) const
+  ശൂന്യം collect_second_glyphs (hb_set_digest_t *digest) സ്ഥിരം
   {
     + hb_iter (ruleSet)
-    | hb_map (hb_add (this))
-    | hb_apply ([digest] (const ChainRuleSet &_) { _.collect_second_glyphs (digest); })
+    | hb_map (hb_add (ഇത്))
+    | hb_apply ([digest] (സ്ഥിരം ChainRuleSet &_) { _.collect_second_glyphs (digest); })
     ;
   }
 
-  bool would_apply (hb_would_apply_context_t *c) const
+  തർക്കം would_apply (hb_would_apply_context_t *c) സ്ഥിരം
   {
-    const ChainRuleSet &rule_set = this+ruleSet[(this+coverage).get_coverage (c->glyphs[0])];
-    struct ChainContextApplyLookupContext lookup_context = {
+    സ്ഥിരം ChainRuleSet &rule_set = ഇത്+ruleSet[(ഇത്+coverage).get_coverage (c->glyphs[0])];
+    ഘടന ChainContextApplyLookupContext lookup_context = {
       {{match_glyph, match_glyph, match_glyph}},
       {nullptr, nullptr, nullptr}
     };
-    return rule_set.would_apply (c, lookup_context);
+    തിരികെ rule_set.would_apply (c, lookup_context);
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  സ്ഥിരം Coverage &get_coverage () സ്ഥിരം { തിരികെ ഇത്+coverage; }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  തർക്കം apply (hb_ot_apply_context_t *c) സ്ഥിരം
   {
-    TRACE_APPLY (this);
-    unsigned int index = (this+coverage).get_coverage (c->buffer->cur().codepoint);
-    if (index == NOT_COVERED) return_trace (false);
+    TRACE_APPLY (ഇത്);
+    unsigned പൂർണ്ണസംഖ്യ index = (ഇത്+coverage).get_coverage (c->buffer->cur().codepoint);
+    എങ്കിൽ (index == NOT_COVERED) return_trace (അസത്യം);
 
-    const ChainRuleSet &rule_set = this+ruleSet[index];
-    struct ChainContextApplyLookupContext lookup_context = {
+    സ്ഥിരം ChainRuleSet &rule_set = ഇത്+ruleSet[index];
+    ഘടന ChainContextApplyLookupContext lookup_context = {
       {{match_glyph, match_glyph, match_glyph}},
       {nullptr, nullptr, nullptr}
     };
     return_trace (rule_set.apply (c, lookup_context));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  തർക്കം subset (hb_subset_context_t *c) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (ഇത്);
+    സ്ഥിരം hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+    സ്ഥിരം hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (*ഇത്);
+    എങ്കിൽ (unlikely (!c->serializer->extend_min (out))) return_trace (അസത്യം);
     out->format = format;
 
-    const hb_map_t *lookup_map = c->table_tag == HB_OT_TAG_GSUB ? &c->plan->gsub_lookups : &c->plan->gpos_lookups;
+    സ്ഥിരം hb_map_t *lookup_map = c->table_tag == HB_OT_TAG_GSUB ? &c->plan->gsub_lookups : &c->plan->gpos_lookups;
     hb_sorted_vector_t<hb_codepoint_t> new_coverage;
-    + hb_zip (this+coverage, ruleSet)
+    + hb_zip (ഇത്+coverage, ruleSet)
     | hb_filter (glyphset, hb_first)
-    | hb_filter (subset_offset_array (c, out->ruleSet, this, lookup_map), hb_second)
+    | hb_filter (subset_offset_array (c, out->ruleSet, ഇത്, lookup_map), hb_second)
     | hb_map (hb_first)
     | hb_map (glyph_map)
     | hb_sink (new_coverage)
     ;
 
     out->coverage.serialize_serialize (c->serializer, new_coverage.iter ());
-    return_trace (bool (new_coverage));
+    return_trace (തർക്കം (new_coverage));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (coverage.sanitize (c, this) && ruleSet.sanitize (c, this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (coverage.sanitize (c, ഇത്) && ruleSet.sanitize (c, ഇത്));
   }
 
-  protected:
+  സംരക്ഷിത:
   HBUINT16	format;			/* Format identifier--format = 1 */
   typename Types::template LOffsetTo<Coverage>
 		coverage;		/* Offset to Coverage table--from
@@ -5320,67 +5320,67 @@ struct ChainContextFormat1_4
   typename Types::template ArrayOf<typename Types::template OffsetTo<ChainRuleSet>>
 		ruleSet;		/* Array of ChainRuleSet tables
 					 * ordered by Coverage Index */
-  public:
+  പൊതു:
   DEFINE_SIZE_ARRAY (2 + Types::LOffset::static_size + Types::HBUINT::static_size, ruleSet);
 };
 
 template <typename Types>
-struct ChainContextFormat2_5
+ഘടന ChainContextFormat2_5
 {
   using ChainRuleSet = OT::ChainClassRuleSet<Types>;
 
-  bool intersects (const hb_set_t *glyphs) const
+  തർക്കം intersects (സ്ഥിരം hb_set_t *glyphs) സ്ഥിരം
   {
-    if (!(this+coverage).intersects (glyphs))
-      return false;
+    എങ്കിൽ (!(ഇത്+coverage).intersects (glyphs))
+      തിരികെ അസത്യം;
 
-    const ClassDef &backtrack_class_def = this+backtrackClassDef;
-    const ClassDef &input_class_def = this+inputClassDef;
-    const ClassDef &lookahead_class_def = this+lookaheadClassDef;
+    സ്ഥിരം ClassDef &backtrack_class_def = ഇത്+backtrackClassDef;
+    സ്ഥിരം ClassDef &നിവേശം_class_def = ഇത്+നിവേശം_Class_Def;
+    സ്ഥിരം ClassDef &lookahead_class_def = ഇത്+lookaheadClassDef;
 
     hb_map_t caches[3] = {};
-    struct ChainContextClosureLookupContext lookup_context = {
+    ഘടന ChainContextClosureLookupContext lookup_context = {
       {intersects_class, nullptr},
       ContextFormat::ClassBasedContext,
       {&backtrack_class_def,
-       &input_class_def,
+       &നിവേശം_class_def,
        &lookahead_class_def},
       {&caches[0], &caches[1], &caches[2]}
     };
 
     hb_set_t retained_coverage_glyphs;
-    (this+coverage).intersect_set (*glyphs, retained_coverage_glyphs);
+    (ഇത്+coverage).intersect_set (*glyphs, retained_coverage_glyphs);
 
     hb_set_t coverage_glyph_classes;
-    input_class_def.intersected_classes (&retained_coverage_glyphs, &coverage_glyph_classes);
+    നിവേശം_class_def.intersected_classes (&retained_coverage_glyphs, &coverage_glyph_classes);
 
-    return
+    തിരികെ
     + hb_iter (ruleSet)
-    | hb_map (hb_add (this))
+    | hb_map (hb_add (ഇത്))
     | hb_enumerate
-    | hb_map ([&] (const hb_pair_t<unsigned, const ChainRuleSet &> p)
-	      { return input_class_def.intersects_class (glyphs, p.first) &&
+    | hb_map ([&] (സ്ഥിരം hb_pair_t<unsigned, സ്ഥിരം ChainRuleSet &> p)
+	      { തിരികെ നിവേശം_class_def.intersects_class (glyphs, p.first) &&
 		       coverage_glyph_classes.has (p.first) &&
 		       p.second.intersects (glyphs, lookup_context); })
     | hb_any
     ;
   }
 
-  bool may_have_non_1to1 () const
-  { return true; }
+  തർക്കം may_have_non_1to1 () സ്ഥിരം
+  { തിരികെ സത്യം; }
 
-  void depend (hb_depend_context_t *c) const
+  ശൂന്യം depend (hb_depend_context_t *c) സ്ഥിരം
   {
-    if (!(this+coverage).intersects (c->glyphs))
-      return;
+    എങ്കിൽ (!(ഇത്+coverage).intersects (c->glyphs))
+      തിരികെ;
 
-    hb_set_t* cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs)) return;
+    hb_set_t* cur_active_glyphs = c->തള്ളുക_cur_active_glyphs ();
+    എങ്കിൽ (unlikely (!cur_active_glyphs)) തിരികെ;
     get_coverage ().intersect_set (*c->glyphs, *cur_active_glyphs);
 
-    const ClassDef &backtrack_class_def = this+backtrackClassDef;
-    const ClassDef &input_class_def = this+inputClassDef;
-    const ClassDef &lookahead_class_def = this+lookaheadClassDef;
+    സ്ഥിരം ClassDef &backtrack_class_def = ഇത്+backtrackClassDef;
+    സ്ഥിരം ClassDef &നിവേശം_class_def = ഇത്+നിവേശം_Class_Def;
+    സ്ഥിരം ClassDef &lookahead_class_def = ഇത്+lookaheadClassDef;
 
     hb_map_t caches[3] = {};
     intersected_class_cache_t intersected_cache;
@@ -5388,7 +5388,7 @@ struct ChainContextFormat2_5
       {intersects_class, intersected_class_glyphs},
       ContextFormat::ClassBasedContext,
       {&backtrack_class_def,
-       &input_class_def,
+       &നിവേശം_class_def,
        &lookahead_class_def},
       {&caches[0], &caches[1], &caches[2]},
       &intersected_cache
@@ -5396,39 +5396,39 @@ struct ChainContextFormat2_5
 
     + hb_enumerate (ruleSet)
     | hb_filter ([&] (unsigned _)
-    { return input_class_def.intersects_class (&c->parent_active_glyphs (), _); },
+    { തിരികെ നിവേശം_class_def.intersects_class (&c->parent_active_glyphs (), _); },
 		 hb_first)
-    | hb_apply ([&] (const hb_pair_t<unsigned, const typename Types::template OffsetTo<ChainRuleSet>&> _)
+    | hb_apply ([&] (സ്ഥിരം hb_pair_t<unsigned, സ്ഥിരം typename Types::template OffsetTo<ChainRuleSet>&> _)
                 {
-                  const ChainRuleSet& chainrule_set = this+_.second;
+                  സ്ഥിരം ChainRuleSet& chainrule_set = ഇത്+_.second;
                   chainrule_set.depend (c, _.first, lookup_context);
                 })
     ;
 
-    c->pop_cur_done_glyphs ();
+    c->എടുക്കുക_cur_done_glyphs ();
   }
 
-  void closure (hb_closure_context_t *c) const
+  ശൂന്യം closure (hb_closure_context_t *c) സ്ഥിരം
   {
-    if (!(this+coverage).intersects (c->glyphs))
-      return;
+    എങ്കിൽ (!(ഇത്+coverage).intersects (c->glyphs))
+      തിരികെ;
 
-    hb_set_t* cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs)) return;
+    hb_set_t* cur_active_glyphs = c->തള്ളുക_cur_active_glyphs ();
+    എങ്കിൽ (unlikely (!cur_active_glyphs)) തിരികെ;
     get_coverage ().intersect_set (c->previous_parent_active_glyphs (),
 				   *cur_active_glyphs);
 
-    const ClassDef &backtrack_class_def = this+backtrackClassDef;
-    const ClassDef &input_class_def = this+inputClassDef;
-    const ClassDef &lookahead_class_def = this+lookaheadClassDef;
+    സ്ഥിരം ClassDef &backtrack_class_def = ഇത്+backtrackClassDef;
+    സ്ഥിരം ClassDef &നിവേശം_class_def = ഇത്+നിവേശം_Class_Def;
+    സ്ഥിരം ClassDef &lookahead_class_def = ഇത്+lookaheadClassDef;
 
     hb_map_t caches[3] = {};
     intersected_class_cache_t intersected_cache;
-    struct ChainContextClosureLookupContext lookup_context = {
+    ഘടന ChainContextClosureLookupContext lookup_context = {
       {intersects_class, intersected_class_glyphs},
       ContextFormat::ClassBasedContext,
       {&backtrack_class_def,
-       &input_class_def,
+       &നിവേശം_class_def,
        &lookahead_class_def},
       {&caches[0], &caches[1], &caches[2]},
       &intersected_cache
@@ -5436,261 +5436,261 @@ struct ChainContextFormat2_5
 
     + hb_enumerate (ruleSet)
     | hb_filter ([&] (unsigned _)
-    { return input_class_def.intersects_class (&c->parent_active_glyphs (), _); },
+    { തിരികെ നിവേശം_class_def.intersects_class (&c->parent_active_glyphs (), _); },
 		 hb_first)
-    | hb_apply ([&] (const hb_pair_t<unsigned, const typename Types::template OffsetTo<ChainRuleSet>&> _)
+    | hb_apply ([&] (സ്ഥിരം hb_pair_t<unsigned, സ്ഥിരം typename Types::template OffsetTo<ChainRuleSet>&> _)
                 {
-                  const ChainRuleSet& chainrule_set = this+_.second;
+                  സ്ഥിരം ChainRuleSet& chainrule_set = ഇത്+_.second;
                   chainrule_set.closure (c, _.first, lookup_context);
                 })
     ;
 
-    c->pop_cur_done_glyphs ();
+    c->എടുക്കുക_cur_done_glyphs ();
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const
+  ശൂന്യം closure_lookups (hb_closure_lookups_context_t *c) സ്ഥിരം
   {
-    if (!(this+coverage).intersects (c->glyphs))
-      return;
+    എങ്കിൽ (!(ഇത്+coverage).intersects (c->glyphs))
+      തിരികെ;
 
-    const ClassDef &backtrack_class_def = this+backtrackClassDef;
-    const ClassDef &input_class_def = this+inputClassDef;
-    const ClassDef &lookahead_class_def = this+lookaheadClassDef;
+    സ്ഥിരം ClassDef &backtrack_class_def = ഇത്+backtrackClassDef;
+    സ്ഥിരം ClassDef &നിവേശം_class_def = ഇത്+നിവേശം_Class_Def;
+    സ്ഥിരം ClassDef &lookahead_class_def = ഇത്+lookaheadClassDef;
 
     hb_map_t caches[3] = {};
-    struct ChainContextClosureLookupContext lookup_context = {
+    ഘടന ChainContextClosureLookupContext lookup_context = {
       {intersects_class, nullptr},
       ContextFormat::ClassBasedContext,
       {&backtrack_class_def,
-       &input_class_def,
+       &നിവേശം_class_def,
        &lookahead_class_def},
       {&caches[0], &caches[1], &caches[2]}
     };
 
     + hb_iter (ruleSet)
-    | hb_map (hb_add (this))
+    | hb_map (hb_add (ഇത്))
     | hb_enumerate
     | hb_filter([&] (unsigned klass)
-    { return input_class_def.intersects_class (c->glyphs, klass); }, hb_first)
+    { തിരികെ നിവേശം_class_def.intersects_class (c->glyphs, klass); }, hb_first)
     | hb_map (hb_second)
-    | hb_apply ([&] (const ChainRuleSet &_)
+    | hb_apply ([&] (സ്ഥിരം ChainRuleSet &_)
     { _.closure_lookups (c, lookup_context); })
     ;
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const {}
+  ശൂന്യം collect_variation_indices (hb_collect_variation_indices_context_t *c) സ്ഥിരം {}
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  ശൂന്യം collect_glyphs (hb_collect_glyphs_context_t *c) സ്ഥിരം
   {
-    (this+coverage).collect_coverage (c->input);
+    (ഇത്+coverage).collect_coverage (c->നിവേശം);
 
-    const ClassDef &backtrack_class_def = this+backtrackClassDef;
-    const ClassDef &input_class_def = this+inputClassDef;
-    const ClassDef &lookahead_class_def = this+lookaheadClassDef;
+    സ്ഥിരം ClassDef &backtrack_class_def = ഇത്+backtrackClassDef;
+    സ്ഥിരം ClassDef &നിവേശം_class_def = ഇത്+നിവേശം_Class_Def;
+    സ്ഥിരം ClassDef &lookahead_class_def = ഇത്+lookaheadClassDef;
 
-    struct ChainContextCollectGlyphsLookupContext lookup_context = {
+    ഘടന ChainContextCollectGlyphsLookupContext lookup_context = {
       {collect_class},
       {&backtrack_class_def,
-       &input_class_def,
+       &നിവേശം_class_def,
        &lookahead_class_def}
     };
 
     + hb_iter (ruleSet)
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const ChainRuleSet &_) { _.collect_glyphs (c, lookup_context); })
+    | hb_map (hb_add (ഇത്))
+    | hb_apply ([&] (സ്ഥിരം ChainRuleSet &_) { _.collect_glyphs (c, lookup_context); })
     ;
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest) const
+  ശൂന്യം collect_second_glyphs (hb_set_digest_t *digest) സ്ഥിരം
   {
-    const ClassDef &input_class_def = this+inputClassDef;
-    const ClassDef &lookahead_class_def = this+lookaheadClassDef;
+    സ്ഥിരം ClassDef &നിവേശം_class_def = ഇത്+നിവേശം_Class_Def;
+    സ്ഥിരം ClassDef &lookahead_class_def = ഇത്+lookaheadClassDef;
     + hb_iter (ruleSet)
-    | hb_map (hb_add (this))
-    | hb_apply ([digest, &input_class_def, &lookahead_class_def] (const ChainRuleSet &_)
-		{ _.collect_second_glyphs (digest, &input_class_def, &lookahead_class_def); })
+    | hb_map (hb_add (ഇത്))
+    | hb_apply ([digest, &നിവേശം_class_def, &lookahead_class_def] (സ്ഥിരം ChainRuleSet &_)
+		{ _.collect_second_glyphs (digest, &നിവേശം_class_def, &lookahead_class_def); })
     ;
   }
 
-  bool would_apply (hb_would_apply_context_t *c) const
+  തർക്കം would_apply (hb_would_apply_context_t *c) സ്ഥിരം
   {
-    const ClassDef &backtrack_class_def = this+backtrackClassDef;
-    const ClassDef &input_class_def = this+inputClassDef;
-    const ClassDef &lookahead_class_def = this+lookaheadClassDef;
+    സ്ഥിരം ClassDef &backtrack_class_def = ഇത്+backtrackClassDef;
+    സ്ഥിരം ClassDef &നിവേശം_class_def = ഇത്+നിവേശം_Class_Def;
+    സ്ഥിരം ClassDef &lookahead_class_def = ഇത്+lookaheadClassDef;
 
-    unsigned int index = input_class_def.get_class (c->glyphs[0]);
-    const ChainRuleSet &rule_set = this+ruleSet[index];
-    struct ChainContextApplyLookupContext lookup_context = {
+    unsigned പൂർണ്ണസംഖ്യ index = നിവേശം_class_def.get_class (c->glyphs[0]);
+    സ്ഥിരം ChainRuleSet &rule_set = ഇത്+ruleSet[index];
+    ഘടന ChainContextApplyLookupContext lookup_context = {
       {{match_class, match_class, match_class}},
       {&backtrack_class_def,
-       &input_class_def,
+       &നിവേശം_class_def,
        &lookahead_class_def}
     };
-    return rule_set.would_apply (c, lookup_context);
+    തിരികെ rule_set.would_apply (c, lookup_context);
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  സ്ഥിരം Coverage &get_coverage () സ്ഥിരം { തിരികെ ഇത്+coverage; }
 
-  unsigned cache_cost () const
+  unsigned cache_cost () സ്ഥിരം
   {
-    return (this+inputClassDef).cost () + (this+lookaheadClassDef).cost ();
+    തിരികെ (ഇത്+നിവേശം_Class_Def).cost () + (ഇത്+lookaheadClassDef).cost ();
   }
-  static bool cache_func (hb_ot_apply_context_t *c, hb_ot_subtable_cache_op_t op)
+  സ്ഥിതം തർക്കം cache_func (hb_ot_apply_context_t *c, hb_ot_subtable_cache_op_t op)
   {
-    return context_cache_func (c, op);
+    തിരികെ context_cache_func (c, op);
   }
 
-  struct external_cache_t
+  ഘടന external_cache_t
   {
-    hb_ot_layout_binary_cache_t coverage;
-    hb_ot_layout_mapping_cache_t input_class;
+    hb_ot_layout_ദ്വിമാന_cache_t coverage;
+    hb_ot_layout_mapping_cache_t നിവേശം_class;
     hb_ot_layout_mapping_cache_t lookahead_class;
     hb_ot_layout_ruleset_digest_t rule_sets[HB_VAR_ARRAY];
   };
-  void *external_cache_create () const
+  ശൂന്യം *external_cache_create () സ്ഥിരം
   {
-    unsigned count = ruleSet.len;
-    unsigned size = sizeof (external_cache_t) -
-		    HB_VAR_ARRAY * sizeof (hb_ot_layout_ruleset_digest_t) +
-		    count * sizeof (hb_ot_layout_ruleset_digest_t);
+    unsigned എണ്ണം = ruleSet.len;
+    unsigned size = വലുപ്പം (external_cache_t) -
+		    HB_VAR_ARRAY * വലുപ്പം (hb_ot_layout_ruleset_digest_t) +
+		    എണ്ണം * വലുപ്പം (hb_ot_layout_ruleset_digest_t);
     external_cache_t *cache = (external_cache_t *) hb_malloc (size);
-    if (likely (cache))
+    എങ്കിൽ (likely (cache))
     {
       cache->coverage.clear ();
-      cache->input_class.clear ();
+      cache->നിവേശം_class.clear ();
       cache->lookahead_class.clear ();
-      for (unsigned i = 0; i < count; i++)
-	(this+ruleSet[i]).collect_first_input_classes (&cache->rule_sets[i]);
+      വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++)
+	(ഇത്+ruleSet[i]).collect_first_നിവേശം_classes (&cache->rule_sets[i]);
     }
-    return cache;
+    തിരികെ cache;
   }
-  bool apply_cached (hb_ot_apply_context_t *c, void *external_cache) const { return _apply (c, true, external_cache); }
-  bool apply (hb_ot_apply_context_t *c, void *external_cache) const { return _apply (c, false, external_cache); }
-  bool _apply (hb_ot_apply_context_t *c, bool cached, void *external_cache) const
+  തർക്കം apply_cached (hb_ot_apply_context_t *c, ശൂന്യം *external_cache) സ്ഥിരം { തിരികെ _apply (c, സത്യം, external_cache); }
+  തർക്കം apply (hb_ot_apply_context_t *c, ശൂന്യം *external_cache) സ്ഥിരം { തിരികെ _apply (c, അസത്യം, external_cache); }
+  തർക്കം _apply (hb_ot_apply_context_t *c, തർക്കം cached, ശൂന്യം *external_cache) സ്ഥിരം
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (ഇത്);
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
     external_cache_t *cache = (external_cache_t *) external_cache;
-    unsigned int index = (this+coverage).get_coverage_binary (c->buffer->cur().codepoint, cache ? &cache->coverage : nullptr);
-#else
-    unsigned int index = (this+coverage).get_coverage (c->buffer->cur().codepoint);
+    unsigned പൂർണ്ണസംഖ്യ index = (ഇത്+coverage).get_coverage_ദ്വിമാന (c->buffer->cur().codepoint, cache ? &cache->coverage : nullptr);
+#അല്ലെങ്കിൽ
+    unsigned പൂർണ്ണസംഖ്യ index = (ഇത്+coverage).get_coverage (c->buffer->cur().codepoint);
 #endif
-    if (index == NOT_COVERED) return_trace (false);
+    എങ്കിൽ (index == NOT_COVERED) return_trace (അസത്യം);
 
-    const ClassDef &backtrack_class_def = this+backtrackClassDef;
-    const ClassDef &input_class_def = this+inputClassDef;
-    const ClassDef &lookahead_class_def = this+lookaheadClassDef;
+    സ്ഥിരം ClassDef &backtrack_class_def = ഇത്+backtrackClassDef;
+    സ്ഥിരം ClassDef &നിവേശം_class_def = ഇത്+നിവേശം_Class_Def;
+    സ്ഥിരം ClassDef &lookahead_class_def = ഇത്+lookaheadClassDef;
 
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
-    match_class_cache_data_t input_cache_data = {
-      &input_class_def,
-      cache ? &cache->input_class : nullptr
+    match_class_cache_data_t നിവേശം_cache_data = {
+      &നിവേശം_class_def,
+      cache ? &cache->നിവേശം_class : nullptr
     };
     match_class_cache_data_t lookahead_cache_data = {
       &lookahead_class_def,
       cache ? &cache->lookahead_class : nullptr
     };
-    const void *input_match_data = cached
-      ? static_cast<const void *> (&input_class_def)
-      : static_cast<const void *> (&input_cache_data);
-    const void *lookahead_match_data = cached
-      ? static_cast<const void *> (&lookahead_class_def)
-      : static_cast<const void *> (&lookahead_cache_data);
-    bool backtrack_uses_lookahead_cache =
+    സ്ഥിരം ശൂന്യം *നിവേശം_match_data = cached
+      ? static_cast<സ്ഥിരം ശൂന്യം *> (&നിവേശം_class_def)
+      : static_cast<സ്ഥിരം ശൂന്യം *> (&നിവേശം_cache_data);
+    സ്ഥിരം ശൂന്യം *lookahead_match_data = cached
+      ? static_cast<സ്ഥിരം ശൂന്യം *> (&lookahead_class_def)
+      : static_cast<സ്ഥിരം ശൂന്യം *> (&lookahead_cache_data);
+    തർക്കം backtrack_uses_lookahead_cache =
       !cached && &backtrack_class_def == &lookahead_class_def;
-    const void *backtrack_match_data = backtrack_uses_lookahead_cache
-      ? static_cast<const void *> (&lookahead_cache_data)
-      : static_cast<const void *> (&backtrack_class_def);
+    സ്ഥിരം ശൂന്യം *backtrack_match_data = backtrack_uses_lookahead_cache
+      ? static_cast<സ്ഥിരം ശൂന്യം *> (&lookahead_cache_data)
+      : static_cast<സ്ഥിരം ശൂന്യം *> (&backtrack_class_def);
 #endif
 
     /* match_class_caches1 is slightly faster. Use it for lookahead,
      * which is typically longer. */
-    struct ChainContextApplyLookupContext lookup_context = {
+    ഘടന ChainContextApplyLookupContext lookup_context = {
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
       {{cached && &backtrack_class_def == &lookahead_class_def ? match_class_cached1 :
         backtrack_uses_lookahead_cache ? match_class_cache : match_class,
         cached ? match_class_cached2 : match_class_cache,
         cached ? match_class_cached1 : match_class_cache}},
       {backtrack_match_data,
-       input_match_data,
+       നിവേശം_match_data,
        lookahead_match_data},
-      cached ? get_class_cached2_value : get_class_cache_value
-#else
+      cached ? get_class_cached2_മൂല്യം : get_class_cache_മൂല്യം
+#അല്ലെങ്കിൽ
       {{cached && &backtrack_class_def == &lookahead_class_def ? match_class_cached1 : match_class,
         cached ? match_class_cached2 : match_class,
         cached ? match_class_cached1 : match_class}},
       {&backtrack_class_def,
-       &input_class_def,
+       &നിവേശം_class_def,
        &lookahead_class_def},
-      cached ? get_class_cached2_value : get_class_value
+      cached ? get_class_cached2_മൂല്യം : get_class_മൂല്യം
 #endif
     };
 
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
     index = cached
-         ? get_class_cached2 (input_class_def, c->buffer->cur())
-         : input_class_def.get_class (c->buffer->cur().codepoint, input_cache_data.cache);
-#else
+         ? get_class_cached2 (നിവേശം_class_def, c->buffer->cur())
+         : നിവേശം_class_def.get_class (c->buffer->cur().codepoint, നിവേശം_cache_data.cache);
+#അല്ലെങ്കിൽ
     index = cached
-         ? get_class_cached2 (input_class_def, c->buffer->cur())
-          : input_class_def.get_class (c->buffer->cur().codepoint);
+         ? get_class_cached2 (നിവേശം_class_def, c->buffer->cur())
+          : നിവേശം_class_def.get_class (c->buffer->cur().codepoint);
 #endif
-    const ChainRuleSet &rule_set = this+ruleSet[index];
+    സ്ഥിരം ChainRuleSet &rule_set = ഇത്+ruleSet[index];
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
-    const hb_ot_layout_ruleset_digest_t *digest = cache && index < ruleSet.len ? &cache->rule_sets[index] : nullptr;
-#else
-    const hb_ot_layout_ruleset_digest_t *digest = nullptr;
+    സ്ഥിരം hb_ot_layout_ruleset_digest_t *digest = cache && index < ruleSet.len ? &cache->rule_sets[index] : nullptr;
+#അല്ലെങ്കിൽ
+    സ്ഥിരം hb_ot_layout_ruleset_digest_t *digest = nullptr;
 #endif
     return_trace (rule_set.apply (c, lookup_context, digest));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  തർക്കം subset (hb_subset_context_t *c) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (ഇത്);
+    auto *out = c->serializer->start_embed (*ഇത്);
+    എങ്കിൽ (unlikely (!c->serializer->extend_min (out))) return_trace (അസത്യം);
     out->format = format;
-    out->coverage.serialize_subset (c, coverage, this);
+    out->coverage.serialize_subset (c, coverage, ഇത്);
 
     hb_map_t backtrack_klass_map;
-    hb_map_t input_klass_map;
+    hb_map_t നിവേശം_klass_map;
     hb_map_t lookahead_klass_map;
 
-    out->backtrackClassDef.serialize_subset (c, backtrackClassDef, this, &backtrack_klass_map);
+    out->backtrackClassDef.serialize_subset (c, backtrackClassDef, ഇത്, &backtrack_klass_map);
     // TODO: subset inputClassDef based on glyphs survived in Coverage subsetting
-    out->inputClassDef.serialize_subset (c, inputClassDef, this, &input_klass_map);
-    out->lookaheadClassDef.serialize_subset (c, lookaheadClassDef, this, &lookahead_klass_map);
+    out->നിവേശം_Class_Def.serialize_subset (c, നിവേശം_Class_Def, ഇത്, &നിവേശം_klass_map);
+    out->lookaheadClassDef.serialize_subset (c, lookaheadClassDef, ഇത്, &lookahead_klass_map);
 
-    if (unlikely (!c->serializer->propagate_error (backtrack_klass_map,
-						   input_klass_map,
+    എങ്കിൽ (unlikely (!c->serializer->propagate_error (backtrack_klass_map,
+						   നിവേശം_klass_map,
 						   lookahead_klass_map)))
-      return_trace (false);
+      return_trace (അസത്യം);
 
-    const hb_set_t* glyphset = c->plan->glyphset_gsub ();
+    സ്ഥിരം hb_set_t* glyphset = c->plan->glyphset_gsub ();
     hb_set_t retained_coverage_glyphs;
-    (this+coverage).intersect_set (*glyphset, retained_coverage_glyphs);
+    (ഇത്+coverage).intersect_set (*glyphset, retained_coverage_glyphs);
 
     hb_set_t coverage_glyph_classes;
-    (this+inputClassDef).intersected_classes (&retained_coverage_glyphs, &coverage_glyph_classes);
+    (ഇത്+നിവേശം_Class_Def).intersected_classes (&retained_coverage_glyphs, &coverage_glyph_classes);
 
-    int non_zero_index = -1, index = 0;
-    bool ret = true;
-    const hb_map_t *lookup_map = c->table_tag == HB_OT_TAG_GSUB ? &c->plan->gsub_lookups : &c->plan->gpos_lookups;
+    പൂർണ്ണസംഖ്യ non_zero_index = -1, index = 0;
+    തർക്കം ret = സത്യം;
+    സ്ഥിരം hb_map_t *lookup_map = c->table_tag == HB_OT_TAG_GSUB ? &c->plan->gsub_lookups : &c->plan->gpos_lookups;
     auto last_non_zero = c->serializer->snapshot ();
-    for (const auto& _ : + hb_enumerate (ruleSet)
-			 | hb_filter (input_klass_map, hb_first))
+    വേണ്ടി (സ്ഥിരം auto& _ : + hb_enumerate (ruleSet)
+			 | hb_filter (നിവേശം_klass_map, hb_first))
     {
       auto *o = out->ruleSet.serialize_append (c->serializer);
-      if (unlikely (!o))
+      എങ്കിൽ (unlikely (!o))
       {
-	ret = false;
-	break;
+	ret = അസത്യം;
+	നിർത്തുക;
       }
-      if (coverage_glyph_classes.has (_.first) &&
-          o->serialize_subset (c, _.second, this,
+      എങ്കിൽ (coverage_glyph_classes.has (_.first) &&
+          o->serialize_subset (c, _.second, ഇത്,
 			       lookup_map,
 			       &backtrack_klass_map,
-			       &input_klass_map,
+			       &നിവേശം_klass_map,
 			       &lookahead_klass_map))
       {
         last_non_zero = c->serializer->snapshot ();
@@ -5700,28 +5700,28 @@ struct ChainContextFormat2_5
       index++;
     }
 
-    if (!ret || non_zero_index == -1) return_trace (false);
+    എങ്കിൽ (!ret || non_zero_index == -1) return_trace (അസത്യം);
 
     // prune empty trailing ruleSets
-    if (index > non_zero_index) {
+    എങ്കിൽ (index > non_zero_index) {
       c->serializer->revert (last_non_zero);
       out->ruleSet.len = non_zero_index + 1;
     }
 
-    return_trace (bool (out->ruleSet));
+    return_trace (തർക്കം (out->ruleSet));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (coverage.sanitize (c, this) &&
-		  backtrackClassDef.sanitize (c, this) &&
-		  inputClassDef.sanitize (c, this) &&
-		  lookaheadClassDef.sanitize (c, this) &&
-		  ruleSet.sanitize (c, this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (coverage.sanitize (c, ഇത്) &&
+		  backtrackClassDef.sanitize (c, ഇത്) &&
+		  നിവേശം_Class_Def.sanitize (c, ഇത്) &&
+		  lookaheadClassDef.sanitize (c, ഇത്) &&
+		  ruleSet.sanitize (c, ഇത്));
   }
 
-  protected:
+  സംരക്ഷിത:
   HBUINT16	format;			/* Format identifier--format = 2 */
   typename Types::template LOffsetTo<Coverage>
 		coverage;		/* Offset to Coverage table--from
@@ -5731,7 +5731,7 @@ struct ChainContextFormat2_5
 					 * containing backtrack sequence
 					 * data--from beginning of table */
   typename Types::template LOffsetTo<ClassDef>
-		inputClassDef;		/* Offset to glyph ClassDef
+		നിവേശം_Class_Def;		/* Offset to glyph ClassDef
 					 * table containing input sequence
 					 * data--from beginning of table */
   typename Types::template LOffsetTo<ClassDef>
@@ -5741,257 +5741,257 @@ struct ChainContextFormat2_5
   Array16Of<typename Types::template OffsetTo<ChainRuleSet>>
 		ruleSet;		/* Array of ChainRuleSet tables
 					 * ordered by class */
-  public:
+  പൊതു:
   DEFINE_SIZE_ARRAY (4 + 4 * Types::LOffset::static_size, ruleSet);
 };
 
 template <typename Types>
-struct ChainContextFormat3
+ഘടന ChainContextFormat3
 {
   using RuleSet = OT::RuleSet<SmallTypes>;
 
-  bool intersects (const hb_set_t *glyphs) const
+  തർക്കം intersects (സ്ഥിരം hb_set_t *glyphs) സ്ഥിരം
   {
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
+    സ്ഥിരം auto &നിവേശം = StructAfter<decltype (നിവേശം_X)> (backtrack);
 
-    if (!(this+input[0]).intersects (glyphs))
-      return false;
+    എങ്കിൽ (!(ഇത്+നിവേശം[0]).intersects (glyphs))
+      തിരികെ അസത്യം;
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    struct ChainContextClosureLookupContext lookup_context = {
+    സ്ഥിരം auto &lookahead = StructAfter<decltype (lookaheadX)> (നിവേശം);
+    ഘടന ChainContextClosureLookupContext lookup_context = {
       {intersects_coverage, nullptr},
       ContextFormat::CoverageBasedContext,
-      {this, this, this}
+      {ഇത്, ഇത്, ഇത്}
     };
-    return chain_context_intersects (glyphs,
+    തിരികെ chain_context_intersects (glyphs,
 				     backtrack.len, backtrack.arrayZ,
-				     input.len, input.arrayZ + 1,
+				     നിവേശം.len, നിവേശം.arrayZ + 1,
 				     lookahead.len, lookahead.arrayZ,
 				     lookup_context);
   }
 
-  bool may_have_non_1to1 () const
-  { return true; }
+  തർക്കം may_have_non_1to1 () സ്ഥിരം
+  { തിരികെ സത്യം; }
 
-  void depend (hb_depend_context_t *c) const
+  ശൂന്യം depend (hb_depend_context_t *c) സ്ഥിരം
   {
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
+    സ്ഥിരം auto &നിവേശം = StructAfter<decltype (നിവേശം_X)> (backtrack);
 
-    if (!(this+input[0]).intersects (c->glyphs))
-      return;
+    എങ്കിൽ (!(ഇത്+നിവേശം[0]).intersects (c->glyphs))
+      തിരികെ;
 
-    hb_set_t* cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs))
-      return;
+    hb_set_t* cur_active_glyphs = c->തള്ളുക_cur_active_glyphs ();
+    എങ്കിൽ (unlikely (!cur_active_glyphs))
+      തിരികെ;
     get_coverage ().intersect_set (*c->glyphs, *cur_active_glyphs);
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    സ്ഥിരം auto &lookahead = StructAfter<decltype (lookaheadX)> (നിവേശം);
+    സ്ഥിരം auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
     ChainContextDependLookupContext lookup_context = {
       {intersects_coverage, intersected_coverage_glyphs},
       ContextFormat::CoverageBasedContext,
-      {this, this, this},
+      {ഇത്, ഇത്, ഇത്},
       {nullptr, nullptr, nullptr},  /* intersects_cache */
       nullptr                        /* intersected_glyphs_cache */
     };
     chain_context_depend_lookup (c,
-				 backtrack.len, (const HBUINT16 *) backtrack.arrayZ,
-				 input.len, (const HBUINT16 *) input.arrayZ + 1,
-				 lookahead.len, (const HBUINT16 *) lookahead.arrayZ,
+				 backtrack.len, (സ്ഥിരം HBUINT16 *) backtrack.arrayZ,
+				 നിവേശം.len, (സ്ഥിരം HBUINT16 *) നിവേശം.arrayZ + 1,
+				 lookahead.len, (സ്ഥിരം HBUINT16 *) lookahead.arrayZ,
 				 lookup.len, lookup.arrayZ,
-				 this,
-				 input[0], lookup_context);
+				 ഇത്,
+				 നിവേശം[0], lookup_context);
 
-    c->pop_cur_done_glyphs ();
+    c->എടുക്കുക_cur_done_glyphs ();
   }
 
-  void closure (hb_closure_context_t *c) const
+  ശൂന്യം closure (hb_closure_context_t *c) സ്ഥിരം
   {
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
+    സ്ഥിരം auto &നിവേശം = StructAfter<decltype (നിവേശം_X)> (backtrack);
 
-    if (!(this+input[0]).intersects (c->glyphs))
-      return;
+    എങ്കിൽ (!(ഇത്+നിവേശം[0]).intersects (c->glyphs))
+      തിരികെ;
 
-    hb_set_t* cur_active_glyphs = c->push_cur_active_glyphs ();
-    if (unlikely (!cur_active_glyphs))
-      return;
+    hb_set_t* cur_active_glyphs = c->തള്ളുക_cur_active_glyphs ();
+    എങ്കിൽ (unlikely (!cur_active_glyphs))
+      തിരികെ;
     get_coverage ().intersect_set (c->previous_parent_active_glyphs (),
 				   *cur_active_glyphs);
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
-    struct ChainContextClosureLookupContext lookup_context = {
+    സ്ഥിരം auto &lookahead = StructAfter<decltype (lookaheadX)> (നിവേശം);
+    സ്ഥിരം auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    ഘടന ChainContextClosureLookupContext lookup_context = {
       {intersects_coverage, intersected_coverage_glyphs},
       ContextFormat::CoverageBasedContext,
-      {this, this, this}
+      {ഇത്, ഇത്, ഇത്}
     };
     chain_context_closure_lookup (c,
 				  backtrack.len, backtrack.arrayZ,
-				  input.len, input.arrayZ + 1,
+				  നിവേശം.len, നിവേശം.arrayZ + 1,
 				  lookahead.len, lookahead.arrayZ,
 				  lookup.len, lookup.arrayZ,
 				  0, lookup_context);
 
-    c->pop_cur_done_glyphs ();
+    c->എടുക്കുക_cur_done_glyphs ();
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const
+  ശൂന്യം closure_lookups (hb_closure_lookups_context_t *c) സ്ഥിരം
   {
-    if (!intersects (c->glyphs))
-      return;
+    എങ്കിൽ (!intersects (c->glyphs))
+      തിരികെ;
 
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    സ്ഥിരം auto &നിവേശം = StructAfter<decltype (നിവേശം_X)> (backtrack);
+    സ്ഥിരം auto &lookahead = StructAfter<decltype (lookaheadX)> (നിവേശം);
+    സ്ഥിരം auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
     recurse_lookups (c, lookup.len, lookup.arrayZ);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const {}
+  ശൂന്യം collect_variation_indices (hb_collect_variation_indices_context_t *c) സ്ഥിരം {}
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  ശൂന്യം collect_glyphs (hb_collect_glyphs_context_t *c) സ്ഥിരം
   {
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
+    സ്ഥിരം auto &നിവേശം = StructAfter<decltype (നിവേശം_X)> (backtrack);
 
-    (this+input[0]).collect_coverage (c->input);
+    (ഇത്+നിവേശം[0]).collect_coverage (c->നിവേശം);
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    സ്ഥിരം auto &lookahead = StructAfter<decltype (lookaheadX)> (നിവേശം);
+    സ്ഥിരം auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
 
-    struct ChainContextCollectGlyphsLookupContext lookup_context = {
+    ഘടന ChainContextCollectGlyphsLookupContext lookup_context = {
       {collect_coverage},
-      {this, this, this}
+      {ഇത്, ഇത്, ഇത്}
     };
     chain_context_collect_glyphs_lookup (c,
 					 backtrack.len, backtrack.arrayZ,
-					 input.len, input.arrayZ + 1,
+					 നിവേശം.len, നിവേശം.arrayZ + 1,
 					 lookahead.len, lookahead.arrayZ,
 					 lookup.len, lookup.arrayZ,
 					 lookup_context);
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest) const
+  ശൂന്യം collect_second_glyphs (hb_set_digest_t *digest) സ്ഥിരം
   {
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    if (input.len > 1)
-      (this+input[1]).collect_coverage (digest);
-    else if (lookahead.len)
-      (this+lookahead[0]).collect_coverage (digest);
-    else
+    സ്ഥിരം auto &നിവേശം = StructAfter<decltype (നിവേശം_X)> (backtrack);
+    സ്ഥിരം auto &lookahead = StructAfter<decltype (lookaheadX)> (നിവേശം);
+    എങ്കിൽ (നിവേശം.len > 1)
+      (ഇത്+നിവേശം[1]).collect_coverage (digest);
+    അല്ലെങ്കിൽ എങ്കിൽ (lookahead.len)
+      (ഇത്+lookahead[0]).collect_coverage (digest);
+    അല്ലെങ്കിൽ
       *digest = hb_set_digest_t::full ();
   }
 
-  bool would_apply (hb_would_apply_context_t *c) const
+  തർക്കം would_apply (hb_would_apply_context_t *c) സ്ഥിരം
   {
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
-    struct ChainContextApplyLookupContext lookup_context = {
+    സ്ഥിരം auto &നിവേശം = StructAfter<decltype (നിവേശം_X)> (backtrack);
+    സ്ഥിരം auto &lookahead = StructAfter<decltype (lookaheadX)> (നിവേശം);
+    സ്ഥിരം auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    ഘടന ChainContextApplyLookupContext lookup_context = {
       {{match_coverage, match_coverage, match_coverage}},
-      {this, this, this}
+      {ഇത്, ഇത്, ഇത്}
     };
-    return chain_context_would_apply_lookup (c,
+    തിരികെ chain_context_would_apply_lookup (c,
 					     backtrack.len, backtrack.arrayZ,
-					     input.len, input.arrayZ + 1,
+					     നിവേശം.len, നിവേശം.arrayZ + 1,
 					     lookahead.len, lookahead.arrayZ,
 					     lookup.len, lookup.arrayZ, lookup_context);
   }
 
-  const Coverage &get_coverage () const
+  സ്ഥിരം Coverage &get_coverage () സ്ഥിരം
   {
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    return this+input[0];
+    സ്ഥിരം auto &നിവേശം = StructAfter<decltype (നിവേശം_X)> (backtrack);
+    തിരികെ ഇത്+നിവേശം[0];
   }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  തർക്കം apply (hb_ot_apply_context_t *c) സ്ഥിരം
   {
-    TRACE_APPLY (this);
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
+    TRACE_APPLY (ഇത്);
+    സ്ഥിരം auto &നിവേശം = StructAfter<decltype (നിവേശം_X)> (backtrack);
 
-    unsigned int index = (this+input[0]).get_coverage (c->buffer->cur().codepoint);
-    if (index == NOT_COVERED) return_trace (false);
+    unsigned പൂർണ്ണസംഖ്യ index = (ഇത്+നിവേശം[0]).get_coverage (c->buffer->cur().codepoint);
+    എങ്കിൽ (index == NOT_COVERED) return_trace (അസത്യം);
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
-    struct ChainContextApplyLookupContext lookup_context = {
+    സ്ഥിരം auto &lookahead = StructAfter<decltype (lookaheadX)> (നിവേശം);
+    സ്ഥിരം auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    ഘടന ChainContextApplyLookupContext lookup_context = {
       {{match_coverage, match_coverage, match_coverage}},
-      {this, this, this}
+      {ഇത്, ഇത്, ഇത്}
     };
     return_trace (chain_context_apply_lookup (c,
 					      backtrack.len, backtrack.arrayZ,
-					      input.len, input.arrayZ + 1,
+					      നിവേശം.len, നിവേശം.arrayZ + 1,
 					      lookahead.len, lookahead.arrayZ,
 					      lookup.len, lookup.arrayZ, lookup_context));
   }
 
   template<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  bool serialize_coverage_offsets (hb_subset_context_t *c, Iterator it, const void* base) const
+  തർക്കം serialize_coverage_offsets (hb_subset_context_t *c, Iterator it, സ്ഥിരം ശൂന്യം* base) സ്ഥിരം
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ഇത്);
     auto *out = c->serializer->start_embed<Array16Of<typename Types::template OffsetTo<Coverage>>> ();
-    if (unlikely (!out->serialize (c->serializer, 0u))) return_trace (false);
+    എങ്കിൽ (unlikely (!out->serialize (c->serializer, 0u))) return_trace (അസത്യം);
 
-    for (auto& offset : it) {
+    വേണ്ടി (auto& offset : it) {
       auto *o = out->serialize_append (c->serializer);
-      if (unlikely (!o) || !o->serialize_subset (c, offset, base))
-        return_trace (false);
+      എങ്കിൽ (unlikely (!o) || !o->serialize_subset (c, offset, base))
+        return_trace (അസത്യം);
     }
 
-    return_trace (true);
+    return_trace (സത്യം);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  തർക്കം subset (hb_subset_context_t *c) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (ഇത്);
 
-    if (unlikely (!c->serializer->embed (this->format))) return_trace (false);
+    എങ്കിൽ (unlikely (!c->serializer->embed (ഇത്->format))) return_trace (അസത്യം);
 
-    if (!serialize_coverage_offsets (c, backtrack.iter (), this))
-      return_trace (false);
+    എങ്കിൽ (!serialize_coverage_offsets (c, backtrack.iter (), ഇത്))
+      return_trace (അസത്യം);
 
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    if (!serialize_coverage_offsets (c, input.iter (), this))
-      return_trace (false);
+    സ്ഥിരം auto &നിവേശം = StructAfter<decltype (നിവേശം_X)> (backtrack);
+    എങ്കിൽ (!serialize_coverage_offsets (c, നിവേശം.iter (), ഇത്))
+      return_trace (അസത്യം);
 
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    if (!serialize_coverage_offsets (c, lookahead.iter (), this))
-      return_trace (false);
+    സ്ഥിരം auto &lookahead = StructAfter<decltype (lookaheadX)> (നിവേശം);
+    എങ്കിൽ (!serialize_coverage_offsets (c, lookahead.iter (), ഇത്))
+      return_trace (അസത്യം);
 
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
-    const hb_map_t *lookup_map = c->table_tag == HB_OT_TAG_GSUB ? &c->plan->gsub_lookups : &c->plan->gpos_lookups;
+    സ്ഥിരം auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    സ്ഥിരം hb_map_t *lookup_map = c->table_tag == HB_OT_TAG_GSUB ? &c->plan->gsub_lookups : &c->plan->gpos_lookups;
 
-    HBUINT16 *lookupCount = c->serializer->copy<HBUINT16> (lookup.len);
-    if (!lookupCount) return_trace (false);
+    HBUINT16 *lookup_എണ്ണം_2 = c->serializer->copy<HBUINT16> (lookup.len);
+    എങ്കിൽ (!lookup_എണ്ണം_2) return_trace (അസത്യം);
 
-    unsigned count = serialize_lookuprecord_array (c->serializer, lookup.as_array (), lookup_map);
-    return_trace (c->serializer->check_assign (*lookupCount, count, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    unsigned എണ്ണം = serialize_lookuprecord_array (c->serializer, lookup.as_array (), lookup_map);
+    return_trace (c->serializer->check_assign (*lookup_എണ്ണം_2, എണ്ണം, HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!backtrack.sanitize (c, this))) return_trace (false);
+    TRACE_SANITIZE (ഇത്);
+    എങ്കിൽ (unlikely (!backtrack.sanitize (c, ഇത്))) return_trace (അസത്യം);
     hb_barrier ();
-    const auto &input = StructAfter<decltype (inputX)> (backtrack);
-    if (unlikely (!input.sanitize (c, this))) return_trace (false);
+    സ്ഥിരം auto &നിവേശം = StructAfter<decltype (നിവേശം_X)> (backtrack);
+    എങ്കിൽ (unlikely (!നിവേശം.sanitize (c, ഇത്))) return_trace (അസത്യം);
     hb_barrier ();
-    if (unlikely (!input.len)) return_trace (false); /* To be consistent with Context. */
-    const auto &lookahead = StructAfter<decltype (lookaheadX)> (input);
-    if (unlikely (!lookahead.sanitize (c, this))) return_trace (false);
+    എങ്കിൽ (unlikely (!നിവേശം.len)) return_trace (അസത്യം); /* To be consistent with Context. */
+    സ്ഥിരം auto &lookahead = StructAfter<decltype (lookaheadX)> (നിവേശം);
+    എങ്കിൽ (unlikely (!lookahead.sanitize (c, ഇത്))) return_trace (അസത്യം);
     hb_barrier ();
-    const auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
+    സ്ഥിരം auto &lookup = StructAfter<decltype (lookupX)> (lookahead);
     return_trace (likely (lookup.sanitize (c)));
   }
 
-  protected:
+  സംരക്ഷിത:
   HBUINT16	format;			/* Format identifier--format = 3 */
   Array16Of<typename Types::template OffsetTo<Coverage>>
 		backtrack;		/* Array of coverage tables
 					 * in backtracking sequence, in  glyph
 					 * sequence order */
   Array16Of<typename Types::template OffsetTo<Coverage>>
-		inputX		;	/* Array of coverage
+		നിവേശം_X		;	/* Array of coverage
 					 * tables in input sequence, in glyph
 					 * sequence order */
   Array16Of<typename Types::template OffsetTo<Coverage>>
@@ -6001,32 +6001,32 @@ struct ChainContextFormat3
   Array16Of<LookupRecord>
 		lookupX;		/* Array of LookupRecords--in
 					 * design order) */
-  public:
+  പൊതു:
   DEFINE_SIZE_MIN (10);
 };
 
-struct ChainContext
+ഘടന ChainContext
 {
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) സ്ഥിരം
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-    case 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
+    എങ്കിൽ (unlikely (!c->may_dispatch (ഇത്, &u.format.v))) തിരികെ c->no_dispatch_return_മൂല്യം ();
+    TRACE_DISPATCH (ഇത്, u.format.v);
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    അവസ്ഥ 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    അവസ്ഥ 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
 #ifndef HB_NO_BEYOND_64K
-    case 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
-    case 5: hb_barrier (); return_trace (c->dispatch (u.format5, std::forward<Ts> (ds)...));
+    അവസ്ഥ 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
+    അവസ്ഥ 5: hb_barrier (); return_trace (c->dispatch (u.format5, std::forward<Ts> (ds)...));
 #endif
-    default:return_trace (c->default_return_value ());
+    സ്ഥിരസ്ഥിതി:return_trace (c->default_return_മൂല്യം ());
     }
   }
 
-  protected:
-  union {
-  struct { HBUINT16 v; }		format;	/* Format identifier */
+  സംരക്ഷിത:
+  സംഘം {
+  ഘടന { HBUINT16 v; }		format;	/* Format identifier */
   ChainContextFormat1_4<SmallTypes>	format1;
   ChainContextFormat2_5<SmallTypes>	format2;
   ChainContextFormat3<SmallTypes>	format3;
@@ -6041,79 +6041,79 @@ struct ChainContext
 
 
 template <typename T>
-struct ExtensionFormat1
+ഘടന ExtensionFormat1
 {
-  unsigned int get_type () const { return extensionLookupType; }
+  unsigned പൂർണ്ണസംഖ്യ get_type () സ്ഥിരം { തിരികെ extensionLookupType; }
 
   template <typename X>
-  const X& get_subtable () const
-  { return this + reinterpret_cast<const Offset32To<typename T::SubTable> &> (extensionOffset); }
+  സ്ഥിരം X& get_subtable () സ്ഥിരം
+  { തിരികെ ഇത് + reinterpret_cast<സ്ഥിരം Offset32To<typename T::SubTable> &> (extensionOffset); }
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) സ്ഥിരം
   {
-    if (unlikely (!c->may_dispatch (this, this))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, format);
+    എങ്കിൽ (unlikely (!c->may_dispatch (ഇത്, ഇത്))) തിരികെ c->no_dispatch_return_മൂല്യം ();
+    TRACE_DISPATCH (ഇത്, format);
     return_trace (get_subtable<typename T::SubTable> ().dispatch (c, get_type (), std::forward<Ts> (ds)...));
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  ശൂന്യം collect_variation_indices (hb_collect_variation_indices_context_t *c) സ്ഥിരം
   { dispatch (c); }
 
   /* This is called from may_dispatch() above with hb_sanitize_context_t. */
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) &&
 		  hb_barrier () &&
 		  extensionLookupType != T::SubTable::Extension);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  തർക്കം subset (hb_subset_context_t *c) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (ഇത്);
 
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (ഇത്);
+    എങ്കിൽ (unlikely (!c->serializer->extend_min (out))) return_trace (അസത്യം);
 
     out->format = format;
     out->extensionLookupType = extensionLookupType;
 
-    const auto& src_offset =
-        reinterpret_cast<const Offset32To<typename T::SubTable> &> (extensionOffset);
+    സ്ഥിരം auto& src_offset =
+        reinterpret_cast<സ്ഥിരം Offset32To<typename T::SubTable> &> (extensionOffset);
     auto& dest_offset =
         reinterpret_cast<Offset32To<typename T::SubTable> &> (out->extensionOffset);
 
-    return_trace (dest_offset.serialize_subset (c, src_offset, this, get_type ()));
+    return_trace (dest_offset.serialize_subset (c, src_offset, ഇത്, get_type ()));
   }
 
-  protected:
+  സംരക്ഷിത:
   HBUINT16	format;			/* Format identifier. Set to 1. */
   HBUINT16	extensionLookupType;	/* Lookup type of subtable referenced
 					 * by ExtensionOffset (i.e. the
 					 * extension subtable). */
   Offset32	extensionOffset;	/* Offset to the extension subtable,
 					 * of lookup type subtable. */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (8);
 };
 
 template <typename T>
-struct Extension
+ഘടന Extension
 {
-  unsigned int get_type () const
+  unsigned പൂർണ്ണസംഖ്യ get_type () സ്ഥിരം
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.get_type ();
-    default:return 0;
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 1: hb_barrier (); തിരികെ u.format1.get_type ();
+    സ്ഥിരസ്ഥിതി:തിരികെ 0;
     }
   }
   template <typename X>
-  const X& get_subtable () const
+  സ്ഥിരം X& get_subtable () സ്ഥിരം
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.template get_subtable<typename T::SubTable> ();
-    default:return Null (typename T::SubTable);
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 1: hb_barrier (); തിരികെ u.format1.template get_subtable<typename T::SubTable> ();
+    സ്ഥിരസ്ഥിതി:തിരികെ Null (typename T::SubTable);
     }
   }
 
@@ -6121,28 +6121,28 @@ struct Extension
   // dispatches to the sub table this points too, but for subset
   // we need to run subset on this subtable too.
   template <typename ...Ts>
-  typename hb_subset_context_t::return_t dispatch (hb_subset_context_t *c, Ts&&... ds) const
+  typename hb_subset_context_t::return_t dispatch (hb_subset_context_t *c, Ts&&... ds) സ്ഥിരം
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.subset (c);
-    default: return c->default_return_value ();
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 1: hb_barrier (); തിരികെ u.format1.subset (c);
+    സ്ഥിരസ്ഥിതി: തിരികെ c->default_return_മൂല്യം ();
     }
   }
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) സ്ഥിരം
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.dispatch (c, std::forward<Ts> (ds)...));
-    default:return_trace (c->default_return_value ());
+    എങ്കിൽ (unlikely (!c->may_dispatch (ഇത്, &u.format.v))) തിരികെ c->no_dispatch_return_മൂല്യം ();
+    TRACE_DISPATCH (ഇത്, u.format.v);
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 1: hb_barrier (); return_trace (u.format1.dispatch (c, std::forward<Ts> (ds)...));
+    സ്ഥിരസ്ഥിതി:return_trace (c->default_return_മൂല്യം ());
     }
   }
 
-  protected:
-  union {
-  struct { HBUINT16 v; }	format;		/* Format identifier */
+  സംരക്ഷിത:
+  സംഘം {
+  ഘടന { HBUINT16 v; }	format;		/* Format identifier */
   ExtensionFormat1<T>	format1;
   } u;
 };
@@ -6152,16 +6152,16 @@ struct Extension
  * GSUB/GPOS Common
  */
 
-struct hb_ot_layout_lookup_accelerator_t
+ഘടന hb_ot_layout_lookup_accelerator_t
 {
   template <typename TLookup>
-  static hb_ot_layout_lookup_accelerator_t *create (const TLookup &lookup)
+  സ്ഥിതം hb_ot_layout_lookup_accelerator_t *create (സ്ഥിരം TLookup &lookup)
   {
-    unsigned count = lookup.get_subtable_count ();
+    unsigned എണ്ണം = lookup.get_subtable_എണ്ണം ();
 
-    unsigned size = sizeof (hb_ot_layout_lookup_accelerator_t) -
-		    HB_VAR_ARRAY * sizeof (hb_accelerate_subtables_context_t::hb_applicable_t) +
-		    count * sizeof (hb_accelerate_subtables_context_t::hb_applicable_t);
+    unsigned size = വലുപ്പം (hb_ot_layout_lookup_accelerator_t) -
+		    HB_VAR_ARRAY * വലുപ്പം (hb_accelerate_subtables_context_t::hb_applicable_t) +
+		    എണ്ണം * വലുപ്പം (hb_accelerate_subtables_context_t::hb_applicable_t);
 
     /* The following is a calloc because when we are collecting subtables,
      * some of them might be invalid and hence not collect; as a result,
@@ -6169,8 +6169,8 @@ struct hb_ot_layout_lookup_accelerator_t
      * Zeroing it allows the set digest to gatekeep it without having to
      * initialize it further. */
     auto *thiz = (hb_ot_layout_lookup_accelerator_t *) hb_calloc (1, size);
-    if (unlikely (!thiz))
-      return nullptr;
+    എങ്കിൽ (unlikely (!thiz))
+      തിരികെ nullptr;
 
     hb_accelerate_subtables_context_t c_accelerate_subtables (thiz->subtables);
     lookup.dispatch (&c_accelerate_subtables);
@@ -6178,44 +6178,44 @@ struct hb_ot_layout_lookup_accelerator_t
     /* Invalid subtables do not collect and leave zeroed tail entries
      * (see the calloc note above); trim them so the apply paths never
      * see a null apply func. */
-    while (count && !thiz->subtables[count - 1].apply_func)
-      count--;
+    ആകുമ്പോൾ (എണ്ണം && !thiz->subtables[എണ്ണം - 1].apply_func)
+      എണ്ണം--;
 
     thiz->digest.init ();
-    for (auto& subtable : hb_iter (thiz->subtables, count))
+    വേണ്ടി (auto& subtable : hb_iter (thiz->subtables, എണ്ണം))
       thiz->digest.union_ (subtable.digest);
     thiz->digest_second = c_accelerate_subtables.digest_second;
 
-    thiz->count = count;
+    thiz->എണ്ണം = എണ്ണം;
 
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
     thiz->subtable_cache_user_idx = c_accelerate_subtables.subtable_cache_user_idx;
 
-    for (unsigned i = 0; i < count; i++)
-      if (i != thiz->subtable_cache_user_idx)
+    വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++)
+      എങ്കിൽ (i != thiz->subtable_cache_user_idx)
        thiz->subtables[i].apply_cached_func = thiz->subtables[i].apply_func;
 #endif
 
-    return thiz;
+    തിരികെ thiz;
   }
 
-  void fini ()
+  ശൂന്യം fini ()
   {
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
-    for (unsigned i = 0; i < count; i++)
+    വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++)
       hb_free (subtables[i].external_cache);
 #endif
   }
 
-  bool may_have (hb_codepoint_t g) const
-  { return digest.may_have (g); }
+  തർക്കം may_have (hb_codepoint_t g) സ്ഥിരം
+  { തിരികെ digest.may_have (g); }
 
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  bool apply (hb_ot_apply_context_t *c, bool use_cache) const
+  തർക്കം apply (hb_ot_apply_context_t *c, തർക്കം use_cache) സ്ഥിരം
   {
-    if (count == 1)
+    എങ്കിൽ (എണ്ണം == 1)
     {
       /* The accelerator digest is the union of the subtable digests, so
        * for a single subtable it equals that subtable's digest, which the
@@ -6223,42 +6223,42 @@ struct hb_ot_layout_lookup_accelerator_t
        * invalid entries were trimmed at create time, so the subtable is
        * always valid here. */
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
-      if (use_cache)
-	return subtables[0].apply_cached_no_digest (c);
+      എങ്കിൽ (use_cache)
+	തിരികെ subtables[0].apply_cached_no_digest (c);
 #endif
-      return subtables[0].apply_no_digest (c);
+      തിരികെ subtables[0].apply_no_digest (c);
     }
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
-    if (use_cache)
+    എങ്കിൽ (use_cache)
     {
-      return
-      + hb_iter (hb_iter (subtables, count))
-      | hb_map ([&c] (const hb_accelerate_subtables_context_t::hb_applicable_t &_) { return _.apply_cached (c); })
+      തിരികെ
+      + hb_iter (hb_iter (subtables, എണ്ണം))
+      | hb_map ([&c] (സ്ഥിരം hb_accelerate_subtables_context_t::hb_applicable_t &_) { തിരികെ _.apply_cached (c); })
       | hb_any
       ;
     }
-    else
+    അല്ലെങ്കിൽ
 #endif
     {
-      return
-      + hb_iter (hb_iter (subtables, count))
-      | hb_map ([&c] (const hb_accelerate_subtables_context_t::hb_applicable_t &_) { return _.apply (c); })
+      തിരികെ
+      + hb_iter (hb_iter (subtables, എണ്ണം))
+      | hb_map ([&c] (സ്ഥിരം hb_accelerate_subtables_context_t::hb_applicable_t &_) { തിരികെ _.apply (c); })
       | hb_any
       ;
     }
-    return false;
+    തിരികെ അസത്യം;
   }
 
-  bool cache_enter (hb_ot_apply_context_t *c) const
+  തർക്കം cache_enter (hb_ot_apply_context_t *c) സ്ഥിരം
   {
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
-    return subtable_cache_user_idx != (unsigned) -1 &&
+    തിരികെ subtable_cache_user_idx != (unsigned) -1 &&
 	   subtables[subtable_cache_user_idx].cache_enter (c);
-#else
-    return false;
+#അല്ലെങ്കിൽ
+    തിരികെ അസത്യം;
 #endif
   }
-  void cache_leave (hb_ot_apply_context_t *c) const
+  ശൂന്യം cache_leave (hb_ot_apply_context_t *c) സ്ഥിരം
   {
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
     subtables[subtable_cache_user_idx].cache_leave (c);
@@ -6268,15 +6268,15 @@ struct hb_ot_layout_lookup_accelerator_t
 
   hb_set_digest_t digest;
   hb_set_digest_t digest_second;
-  private:
-  unsigned count = 0; /* Number of subtables in the array. */
+  സ്വകാര്യ:
+  unsigned എണ്ണം = 0; /* Number of subtables in the array. */
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
   unsigned subtable_cache_user_idx = (unsigned) -1;
 #endif
   hb_accelerate_subtables_context_t::hb_applicable_t subtables[HB_VAR_ARRAY];
 };
 
-struct GSUBGPOS
+ഘടന GSUBGPOS
 {
   using LookupListT = LookupList<SmallTypes>;
   using LookupList2T = LookupList<MediumTypes>;
@@ -6289,149 +6289,149 @@ struct GSUBGPOS
   template <typename TLookup>
   using TLookupOffsetList2 = LookupOffsetList<TLookup, typename MediumTypes::HBLUINT>;
 
-  size_t get_size () const
+  size_t get_size () സ്ഥിരം
   {
-    if (version.major != 1) return version.static_size;
+    എങ്കിൽ (version.major != 1) തിരികെ version.static_size;
 
-    return min_size +
+    തിരികെ min_size +
 	   (version.to_int () >= 0x00010001u ? featureVars.static_size : 0) +
 #ifndef HB_NO_BEYOND_64K
 	   (version.to_int () >= 0x00010002u ? 3 * Offset32::static_size : 0)
-#else
+#അല്ലെങ്കിൽ
 	   0
 #endif
 	   ;
   }
 
-  const ScriptList &get_script_list () const
+  സ്ഥിരം ScriptList &get_script_list () സ്ഥിരം
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010002u && scriptList2) return this + scriptList2;
+    എങ്കിൽ (version.to_int () >= 0x00010002u && scriptList2) തിരികെ ഇത് + scriptList2;
 #endif
-    return this + scriptList;
+    തിരികെ ഇത് + scriptList;
   }
-  const FeatureList &get_feature_list () const
+  സ്ഥിരം FeatureList &get_feature_list () സ്ഥിരം
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010002u && featureList2) return this + featureList2;
+    എങ്കിൽ (version.to_int () >= 0x00010002u && featureList2) തിരികെ ഇത് + featureList2;
 #endif
-    return this + featureList;
+    തിരികെ ഇത് + featureList;
   }
   template <typename TLookup>
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!version.sanitize (c) ||
+    TRACE_SANITIZE (ഇത്);
+    എങ്കിൽ (unlikely (!version.sanitize (c) ||
 		  version.major != 1 ||
-		  !c->check_range (this, get_size ())))
-      return_trace (false);
+		  !c->check_range (ഇത്, get_size ())))
+      return_trace (അസത്യം);
     hb_barrier ();
 
-    bool script_list_ok = scriptList.sanitize (c, this);
-    bool feature_list_ok = featureList.sanitize (c, this);
-    bool lookup_list_ok = typed_lookup_list_offset<TLookup> ().sanitize (c, this);
+    തർക്കം script_list_ok = scriptList.sanitize (c, ഇത്);
+    തർക്കം feature_list_ok = featureList.sanitize (c, ഇത്);
+    തർക്കം lookup_list_ok = typed_lookup_list_offset<TLookup> ().sanitize (c, ഇത്);
 
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010002u)
+    എങ്കിൽ (version.to_int () >= 0x00010002u)
     {
-      if (scriptList2) script_list_ok = scriptList2.sanitize (c, this);
-      if (featureList2) feature_list_ok = featureList2.sanitize (c, this);
-      if (lookupList2) lookup_list_ok = typed_lookup_list2_offset<TLookup> ().sanitize (c, this);
+      എങ്കിൽ (scriptList2) script_list_ok = scriptList2.sanitize (c, ഇത്);
+      എങ്കിൽ (featureList2) feature_list_ok = featureList2.sanitize (c, ഇത്);
+      എങ്കിൽ (lookupList2) lookup_list_ok = typed_lookup_list2_offset<TLookup> ().sanitize (c, ഇത്);
     }
 #endif
 
-    if (unlikely (!(script_list_ok && feature_list_ok && lookup_list_ok)))
-      return_trace (false);
+    എങ്കിൽ (unlikely (!(script_list_ok && feature_list_ok && lookup_list_ok)))
+      return_trace (അസത്യം);
 
 #ifndef HB_NO_VAR
-    if (unlikely (!(version.to_int () < 0x00010001u ||
-		    featureVars.sanitize (c, this, &get_feature_list ()))))
-      return_trace (false);
+    എങ്കിൽ (unlikely (!(version.to_int () < 0x00010001u ||
+		    featureVars.sanitize (c, ഇത്, &get_feature_list ()))))
+      return_trace (അസത്യം);
 #endif
 
-    return_trace (true);
+    return_trace (സത്യം);
   }
 
   template <typename TLookup>
-  bool subset (hb_subset_layout_context_t *c) const
+  തർക്കം subset (hb_subset_layout_context_t *c) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    if (version.major != 1) return_trace (false);
+    TRACE_SUBSET (ഇത്);
+    എങ്കിൽ (version.major != 1) return_trace (അസത്യം);
 
-    auto *out = c->subset_context->serializer->start_embed (this);
-    if (unlikely (!c->subset_context->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->subset_context->serializer->start_embed (ഇത്);
+    എങ്കിൽ (unlikely (!c->subset_context->serializer->extend_min (out))) return_trace (അസത്യം);
 
     out->version = version;
 
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010002u)
+    എങ്കിൽ (version.to_int () >= 0x00010002u)
     {
-      if (unlikely (!c->subset_context->serializer->extend_size (out, get_size ())))
-        return_trace (false);
+      എങ്കിൽ (unlikely (!c->subset_context->serializer->extend_size (out, get_size ())))
+        return_trace (അസത്യം);
 
       out->scriptList = 0;
       out->featureList = 0;
       out->lookupList = 0;
 
-      if (lookupList2)
+      എങ്കിൽ (lookupList2)
 	serialize_subset_offset (c->subset_context, out->lookupList2,
 				 subset_lookup_list2_offset<TLookup> (),
-				 this, c);
-      else
+				 ഇത്, c);
+      അല്ലെങ്കിൽ
 	serialize_subset_offset (c->subset_context, out->lookupList2,
 				 subset_lookup_list_offset<TLookup> (),
-				 this, c);
+				 ഇത്, c);
 
-      if (featureList2)
+      എങ്കിൽ (featureList2)
 	serialize_subset_offset (c->subset_context, out->featureList2,
 				 subset_feature_list2_offset (),
-				 this, c);
-      else
+				 ഇത്, c);
+      അല്ലെങ്കിൽ
 	serialize_subset_offset (c->subset_context, out->featureList2,
 				 subset_feature_list_offset (),
-				 this, c);
+				 ഇത്, c);
 
-      if (scriptList2)
-	serialize_subset_offset (c->subset_context, out->scriptList2, scriptList2, this, c);
-      else
-	serialize_subset_offset (c->subset_context, out->scriptList2, scriptList, this, c);
+      എങ്കിൽ (scriptList2)
+	serialize_subset_offset (c->subset_context, out->scriptList2, scriptList2, ഇത്, c);
+      അല്ലെങ്കിൽ
+	serialize_subset_offset (c->subset_context, out->scriptList2, scriptList, ഇത്, c);
     }
-    else
+    അല്ലെങ്കിൽ
 #endif
     {
       out->subset_lookup_list_offset<TLookup> ()
 	  .serialize_subset (c->subset_context,
 			     subset_lookup_list_offset<TLookup> (),
-			     this,
+			     ഇത്,
 			     c);
 
       out->subset_feature_list_offset ()
 	  .serialize_subset (c->subset_context,
 			     subset_feature_list_offset (),
-			     this,
+			     ഇത്,
 			     c);
 
       out->scriptList.serialize_subset (c->subset_context,
 					scriptList,
-					this,
+					ഇത്,
 					c);
     }
 
 #ifndef HB_NO_VAR
-    if (version.to_int () >= 0x00010001u)
+    എങ്കിൽ (version.to_int () >= 0x00010001u)
     {
       auto snapshot = c->subset_context->serializer->snapshot ();
-      if (version.to_int () < 0x00010002u &&
+      എങ്കിൽ (version.to_int () < 0x00010002u &&
 	  !c->subset_context->serializer->extend_min (&out->featureVars))
-        return_trace (false);
+        return_trace (അസത്യം);
 
       // if all axes are pinned all feature vars are dropped.
-      bool ret = !c->subset_context->plan->all_axes_pinned
-                 && out->featureVars.serialize_subset (c->subset_context, featureVars, this, c);
-      if (!ret)
+      തർക്കം ret = !c->subset_context->plan->all_axes_pinned
+                 && out->featureVars.serialize_subset (c->subset_context, featureVars, ഇത്, c);
+      എങ്കിൽ (!ret)
       {
         out->featureVars = 0;
-	if (version.to_int () < 0x00010002u)
+	എങ്കിൽ (version.to_int () < 0x00010002u)
 	{
 	  c->subset_context->serializer->revert (snapshot);
 	  out->version.major = 1;
@@ -6441,125 +6441,125 @@ struct GSUBGPOS
     }
 #endif
 
-    return_trace (true);
+    return_trace (സത്യം);
   }
 
-  unsigned int get_lookup_count () const
+  unsigned പൂർണ്ണസംഖ്യ get_lookup_എണ്ണം () സ്ഥിരം
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010002u && lookupList2)
-      return (this + lookupList2).len;
+    എങ്കിൽ (version.to_int () >= 0x00010002u && lookupList2)
+      തിരികെ (ഇത് + lookupList2).len;
 #endif
-    return (this + lookupList).len;
+    തിരികെ (ഇത് + lookupList).len;
   }
-  const Lookup& get_lookup (unsigned int i) const
+  സ്ഥിരം Lookup& get_lookup (unsigned പൂർണ്ണസംഖ്യ i) സ്ഥിരം
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010002u && lookupList2)
-      return (this + lookupList2)[i];
+    എങ്കിൽ (version.to_int () >= 0x00010002u && lookupList2)
+      തിരികെ (ഇത് + lookupList2)[i];
 #endif
-    return (this + lookupList)[i];
+    തിരികെ (ഇത് + lookupList)[i];
   }
-  const FeatureVariations &get_feature_variations () const
+  സ്ഥിരം FeatureVariations &get_feature_variations () സ്ഥിരം
   {
-    return (version.to_int () >= 0x00010001u && hb_barrier ()) ? this+featureVars : Null (FeatureVariations);
+    തിരികെ (version.to_int () >= 0x00010001u && hb_barrier ()) ? ഇത്+featureVars : Null (FeatureVariations);
   }
 
-  bool has_data () const { return version.to_int (); }
-  unsigned int get_script_count () const
-  { return get_script_list ().len; }
-  const Tag& get_script_tag (unsigned int i) const
-  { return get_script_list ().get_tag (i); }
-  unsigned int get_script_tags (unsigned int start_offset,
-				unsigned int *script_count /* IN/OUT */,
-				hb_tag_t     *script_tags /* OUT */) const
-  { return get_script_list ().get_tags (start_offset, script_count, script_tags); }
-  const Script& get_script (unsigned int i) const
-  { return get_script_list ()[i]; }
-  bool find_script_index (hb_tag_t tag, unsigned int *index) const
-  { return get_script_list ().find_index (tag, index); }
+  തർക്കം has_data () സ്ഥിരം { തിരികെ version.to_int (); }
+  unsigned പൂർണ്ണസംഖ്യ get_script_എണ്ണം () സ്ഥിരം
+  { തിരികെ get_script_list ().len; }
+  സ്ഥിരം Tag& get_script_tag (unsigned പൂർണ്ണസംഖ്യ i) സ്ഥിരം
+  { തിരികെ get_script_list ().get_tag (i); }
+  unsigned പൂർണ്ണസംഖ്യ get_script_tags (unsigned പൂർണ്ണസംഖ്യ start_offset,
+				unsigned പൂർണ്ണസംഖ്യ *script_എണ്ണം /* IN/OUT */,
+				hb_tag_t     *script_tags /* OUT */) സ്ഥിരം
+  { തിരികെ get_script_list ().get_tags (start_offset, script_എണ്ണം, script_tags); }
+  സ്ഥിരം Script& get_script (unsigned പൂർണ്ണസംഖ്യ i) സ്ഥിരം
+  { തിരികെ get_script_list ()[i]; }
+  തർക്കം find_script_index (hb_tag_t tag, unsigned പൂർണ്ണസംഖ്യ *index) സ്ഥിരം
+  { തിരികെ get_script_list ().find_index (tag, index); }
 
-  unsigned int get_feature_count () const
-  { return get_feature_list ().len; }
-  hb_tag_t get_feature_tag (unsigned int i) const
-  { return i == Index::NOT_FOUND_INDEX ? HB_TAG_NONE : get_feature_list ().get_tag (i); }
-  unsigned int get_feature_tags (unsigned int start_offset,
-				 unsigned int *feature_count /* IN/OUT */,
-				 hb_tag_t     *feature_tags /* OUT */) const
-  { return get_feature_list ().get_tags (start_offset, feature_count, feature_tags); }
-  const Feature& get_feature (unsigned int i) const
-  { return get_feature_list ()[i]; }
-  bool find_feature_index (hb_tag_t tag, unsigned int *index) const
-  { return get_feature_list ().find_index (tag, index); }
+  unsigned പൂർണ്ണസംഖ്യ get_feature_എണ്ണം () സ്ഥിരം
+  { തിരികെ get_feature_list ().len; }
+  hb_tag_t get_feature_tag (unsigned പൂർണ്ണസംഖ്യ i) സ്ഥിരം
+  { തിരികെ i == Index::NOT_FOUND_INDEX ? HB_TAG_NONE : get_feature_list ().get_tag (i); }
+  unsigned പൂർണ്ണസംഖ്യ get_feature_tags (unsigned പൂർണ്ണസംഖ്യ start_offset,
+				 unsigned പൂർണ്ണസംഖ്യ *feature_എണ്ണം_2 /* IN/OUT */,
+				 hb_tag_t     *feature_tags /* OUT */) സ്ഥിരം
+  { തിരികെ get_feature_list ().get_tags (start_offset, feature_എണ്ണം_2, feature_tags); }
+  സ്ഥിരം Feature& get_feature (unsigned പൂർണ്ണസംഖ്യ i) സ്ഥിരം
+  { തിരികെ get_feature_list ()[i]; }
+  തർക്കം find_feature_index (hb_tag_t tag, unsigned പൂർണ്ണസംഖ്യ *index) സ്ഥിരം
+  { തിരികെ get_feature_list ().find_index (tag, index); }
 
-  bool find_variations_index (const int *coords, unsigned int num_coords,
-			      unsigned int *index,
-			      ItemVarStoreInstancer *instancer) const
+  തർക്കം find_variations_index (സ്ഥിരം പൂർണ്ണസംഖ്യ *coords, unsigned പൂർണ്ണസംഖ്യ അക്കം_coords,
+			      unsigned പൂർണ്ണസംഖ്യ *index,
+			      ItemVarStoreInstancer *instancer) സ്ഥിരം
   {
 #ifdef HB_NO_VAR
     *index = FeatureVariations::NOT_FOUND_INDEX;
-    return false;
+    തിരികെ അസത്യം;
 #endif
-    return get_feature_variations ().find_index (coords, num_coords, index, instancer);
+    തിരികെ get_feature_variations ().find_index (coords, അക്കം_coords, index, instancer);
   }
-  bool get_feature_variations_state (const int *coords,
-				     unsigned int num_coords,
-				     unsigned int *index,
+  തർക്കം get_feature_variations_state (സ്ഥിരം പൂർണ്ണസംഖ്യ *coords,
+				     unsigned പൂർണ്ണസംഖ്യ അക്കം_coords,
+				     unsigned പൂർണ്ണസംഖ്യ *index,
 				     ItemVarStoreInstancer *instancer,
-				     hb_vector_t<unsigned> *lookup_conditions) const
+				     hb_vector_t<unsigned> *lookup_conditions) സ്ഥിരം
   {
     lookup_conditions->reset ();
 #ifdef HB_NO_VAR
     *index = FeatureVariations::NOT_FOUND_INDEX;
-    return true;
-#else
-    find_variations_index (coords, num_coords, index, instancer);
-    return get_feature_variations ().collect_lookup_conditions (
+    തിരികെ സത്യം;
+#അല്ലെങ്കിൽ
+    find_variations_index (coords, അക്കം_coords, index, instancer);
+    തിരികെ get_feature_variations ().collect_lookup_conditions (
 	coords,
-	num_coords,
+	അക്കം_coords,
 	instancer,
 	lookup_conditions);
 #endif
   }
-  bool get_lookup_variations (unsigned feature_index,
+  തർക്കം get_lookup_variations (unsigned feature_index,
                               unsigned variations_index,
-                              hb_sorted_array_t<const unsigned> conditions,
-                              hb_set_t *lookup_indexes) const
+                              hb_sorted_array_t<സ്ഥിരം unsigned> conditions,
+                              hb_set_t *lookup_indexes) സ്ഥിരം
   {
 #ifdef HB_NO_VAR
-    return false;
-#else
-    return get_feature_variations ().get_lookup_variations (
+    തിരികെ അസത്യം;
+#അല്ലെങ്കിൽ
+    തിരികെ get_feature_variations ().get_lookup_variations (
 	feature_index, get_feature_variation (feature_index, variations_index),
 	conditions, lookup_indexes);
 #endif
   }
-  const Feature& get_feature_variation (unsigned int feature_index,
-					unsigned int variations_index) const
+  സ്ഥിരം Feature& get_feature_variation (unsigned പൂർണ്ണസംഖ്യ feature_index,
+					unsigned പൂർണ്ണസംഖ്യ variations_index) സ്ഥിരം
   {
 #ifndef HB_NO_VAR
-    if (FeatureVariations::NOT_FOUND_INDEX != variations_index &&
+    എങ്കിൽ (FeatureVariations::NOT_FOUND_INDEX != variations_index &&
 	version.to_int () >= 0x00010001u)
     {
-      const Feature *feature = get_feature_variations ().find_substitute (variations_index,
+      സ്ഥിരം Feature *feature = get_feature_variations ().find_substitute (variations_index,
 									  feature_index);
-      if (feature)
-	return *feature;
+      എങ്കിൽ (feature)
+	തിരികെ *feature;
     }
 #endif
-    return get_feature (feature_index);
+    തിരികെ get_feature (feature_index);
   }
 
-  void feature_variation_collect_lookups (const hb_set_t *feature_indexes,
-					  const hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map,
-					  hb_set_t       *lookup_indexes /* OUT */) const
+  ശൂന്യം feature_variation_collect_lookups (സ്ഥിരം hb_set_t *feature_indexes,
+					  സ്ഥിരം hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map,
+					  hb_set_t       *lookup_indexes /* OUT */) സ്ഥിരം
   {
 #ifndef HB_NO_VAR
     get_feature_variations ().collect_lookups (feature_indexes, feature_record_cond_idx_map, lookup_indexes);
 #endif
   }
 
-  void collect_feature_variation_indices (hb_collect_variation_indices_context_t *c) const
+  ശൂന്യം collect_feature_variation_indices (hb_collect_variation_indices_context_t *c) സ്ഥിരം
   {
 #ifndef HB_NO_VAR
     get_feature_variations ().collect_variation_indices (c);
@@ -6567,48 +6567,48 @@ struct GSUBGPOS
   }
 
 #ifndef HB_NO_VAR
-  void collect_feature_substitutes_with_variations (hb_collect_feature_substitutes_with_var_context_t *c) const
+  ശൂന്യം collect_feature_substitutes_with_variations (hb_collect_feature_substitutes_with_var_context_t *c) സ്ഥിരം
   { get_feature_variations ().collect_feature_substitutes_with_variations (c); }
 #endif
 
   template <typename TLookup>
-  void closure_lookups (hb_face_t      *face,
-			const hb_set_t *glyphs,
-			hb_set_t       *lookup_indexes /* IN/OUT */) const
+  ശൂന്യം closure_lookups (hb_face_t      *face,
+			സ്ഥിരം hb_set_t *glyphs,
+			hb_set_t       *lookup_indexes /* IN/OUT */) സ്ഥിരം
   {
     hb_set_t visited_lookups, inactive_lookups;
     hb_closure_lookups_context_t c (face, glyphs, &visited_lookups, &inactive_lookups);
 
     c.set_recurse_func (TLookup::template dispatch_recurse_func<hb_closure_lookups_context_t>);
 
-    for (unsigned lookup_index : *lookup_indexes)
-      reinterpret_cast<const TLookup &> (get_lookup (lookup_index)).closure_lookups (&c, lookup_index);
+    വേണ്ടി (unsigned lookup_index : *lookup_indexes)
+      reinterpret_cast<സ്ഥിരം TLookup &> (get_lookup (lookup_index)).closure_lookups (&c, lookup_index);
 
     hb_set_union (lookup_indexes, &visited_lookups);
     hb_set_subtract (lookup_indexes, &inactive_lookups);
   }
 
-  void prune_langsys (const hb_map_t *duplicate_feature_map,
-                      const hb_set_t *layout_scripts,
+  ശൂന്യം prune_langsys (സ്ഥിരം hb_map_t *duplicate_feature_map,
+                      സ്ഥിരം hb_set_t *layout_scripts,
                       hb_hashmap_t<unsigned, hb::unique_ptr<hb_set_t>> *script_langsys_map,
-                      hb_set_t       *new_feature_indexes /* OUT */) const
+                      hb_set_t       *new_feature_indexes /* OUT */) സ്ഥിരം
   {
-    hb_prune_langsys_context_t c (this, script_langsys_map, duplicate_feature_map, new_feature_indexes);
+    hb_prune_langsys_context_t c (ഇത്, script_langsys_map, duplicate_feature_map, new_feature_indexes);
 
-    unsigned count = get_script_count ();
-    for (unsigned script_index = 0; script_index < count; script_index++)
+    unsigned എണ്ണം = get_script_എണ്ണം ();
+    വേണ്ടി (unsigned script_index = 0; script_index < എണ്ണം; script_index++)
     {
-      const Tag& tag = get_script_tag (script_index);
-      if (!layout_scripts->has (tag)) continue;
-      const Script& s = get_script (script_index);
+      സ്ഥിരം Tag& tag = get_script_tag (script_index);
+      എങ്കിൽ (!layout_scripts->has (tag)) തുടരുക;
+      സ്ഥിരം Script& s = get_script (script_index);
       s.prune_langsys (&c, script_index);
     }
   }
 
-  void prune_features (const hb_map_t *lookup_indices, /* IN */
-		       const hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map, /* IN */
-		       const hb_hashmap_t<unsigned, const Feature*> *feature_substitutes_map, /* IN */
-		       hb_set_t       *feature_indices /* IN/OUT */) const
+  ശൂന്യം prune_features (സ്ഥിരം hb_map_t *lookup_indices, /* IN */
+		       സ്ഥിരം hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map, /* IN */
+		       സ്ഥിരം hb_hashmap_t<unsigned, സ്ഥിരം Feature*> *feature_substitutes_map, /* IN */
+		       hb_set_t       *feature_indices /* IN/OUT */) സ്ഥിരം
   {
 #ifndef HB_NO_VAR
     // This is the set of feature indices which have alternate versions defined
@@ -6616,34 +6616,34 @@ struct GSUBGPOS
     // set of lookup indices.
     hb_set_t alternate_feature_indices;
     get_feature_variations ().closure_features (lookup_indices, feature_record_cond_idx_map, &alternate_feature_indices);
-    if (unlikely (alternate_feature_indices.in_error()))
+    എങ്കിൽ (unlikely (alternate_feature_indices.in_error()))
     {
       feature_indices->err ();
-      return;
+      തിരികെ;
     }
 #endif
 
-    for (unsigned i : hb_iter (feature_indices))
+    വേണ്ടി (unsigned i : hb_iter (feature_indices))
     {
       hb_tag_t tag =  get_feature_tag (i);
-      if (tag == HB_TAG ('p', 'r', 'e', 'f'))
+      എങ്കിൽ (tag == HB_TAG ('p', 'r', 'e', 'f'))
         // Note: Never ever drop feature 'pref', even if it's empty.
         // HarfBuzz chooses shaper for Khmer based on presence of this
         // feature.	See thread at:
 	// http://lists.freedesktop.org/archives/harfbuzz/2012-November/002660.html
-        continue;
+        തുടരുക;
 
 
-      const Feature *f = &(get_feature (i));
-      const Feature** p = nullptr;
-      if (feature_substitutes_map->has (i, &p))
+      സ്ഥിരം Feature *f = &(get_feature (i));
+      സ്ഥിരം Feature** p = nullptr;
+      എങ്കിൽ (feature_substitutes_map->has (i, &p))
         f = *p;
 
-      if (!f->featureParams.is_null () &&
+      എങ്കിൽ (!f->featureParams.is_null () &&
           tag == HB_TAG ('s', 'i', 'z', 'e'))
-        continue;
+        തുടരുക;
 
-      if (!f->intersects_lookup_indexes (lookup_indices)
+      എങ്കിൽ (!f->intersects_lookup_indexes (lookup_indices)
 #ifndef HB_NO_VAR
           && !alternate_feature_indices.has (i)
 #endif
@@ -6652,162 +6652,162 @@ struct GSUBGPOS
     }
   }
 
-  void collect_name_ids (const hb_map_t *feature_index_map,
+  ശൂന്യം collect_name_ids (സ്ഥിരം hb_map_t *feature_index_map,
                          hb_set_t *nameids_to_retain, /* OUT */
-                         const hb_hashmap_t<unsigned, const Feature*> *feature_substitutes_map,
-                         const hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map HB_UNUSED,
-                         const hb_set_t *catch_all_features,
-                         bool all_axes_pinned HB_UNUSED) const
+                         സ്ഥിരം hb_hashmap_t<unsigned, സ്ഥിരം Feature*> *feature_substitutes_map,
+                         സ്ഥിരം hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map HB_UNUSED,
+                         സ്ഥിരം hb_set_t *catch_all_features,
+                         തർക്കം all_axes_pinned HB_UNUSED) സ്ഥിരം
   {
-    unsigned count = get_feature_count ();
-    for (unsigned i = 0 ; i < count; i++)
+    unsigned എണ്ണം = get_feature_എണ്ണം ();
+    വേണ്ടി (unsigned i = 0 ; i < എണ്ണം; i++)
     {
-      if (!feature_index_map->has (i)) continue;
+      എങ്കിൽ (!feature_index_map->has (i)) തുടരുക;
       hb_tag_t tag = get_feature_tag (i);
-      const Feature *feature = &get_feature (i);
-      const Feature **substitute;
-      if (feature_substitutes_map->has (i, &substitute))
+      സ്ഥിരം Feature *feature = &get_feature (i);
+      സ്ഥിരം Feature **substitute;
+      എങ്കിൽ (feature_substitutes_map->has (i, &substitute))
       {
         feature = *substitute;
-        if (catch_all_features->has (i))
+        എങ്കിൽ (catch_all_features->has (i))
           get_feature (i).collect_name_ids (tag, nameids_to_retain);
       }
       feature->collect_name_ids (tag, nameids_to_retain);
     }
 #ifndef HB_NO_VAR
-    if (!all_axes_pinned)
+    എങ്കിൽ (!all_axes_pinned)
       get_feature_variations ().collect_name_ids (feature_index_map, feature_record_cond_idx_map,
-                                                  [this] (unsigned i) { return get_feature_tag (i); },
+                                                  [ഇത്] (unsigned i) { തിരികെ get_feature_tag (i); },
                                                   nameids_to_retain);
 #endif
   }
 
   template <typename T>
-  struct accelerator_t
+  ഘടന accelerator_t
   {
     accelerator_t (hb_face_t *face)
     {
       hb_sanitize_context_t sc;
-      sc.lazy_some_gpos = true;
-      this->table = sc.reference_table<T> (face);
+      sc.lazy_some_gpos = സത്യം;
+      ഇത്->table = sc.reference_table<T> (face);
 
-      if (unlikely (this->table->is_blocklisted (this->table.get_blob (), face)))
+      എങ്കിൽ (unlikely (ഇത്->table->is_blocklisted (ഇത്->table.get_blob (), face)))
       {
-	hb_blob_destroy (this->table.get_blob ());
-	this->table = hb_blob_get_empty ();
+	hb_blob_destroy (ഇത്->table.get_blob ());
+	ഇത്->table = hb_blob_get_empty ();
       }
 
-      this->lookup_count = table->get_lookup_count ();
+      ഇത്->lookup_എണ്ണം = table->get_lookup_എണ്ണം ();
 
-      this->accels = (hb_atomic_t<hb_ot_layout_lookup_accelerator_t *> *) hb_calloc (this->lookup_count, sizeof (*accels));
-      if (unlikely (!this->accels))
+      ഇത്->accels = (hb_atomic_t<hb_ot_layout_lookup_accelerator_t *> *) hb_calloc (ഇത്->lookup_എണ്ണം, വലുപ്പം (*accels));
+      എങ്കിൽ (unlikely (!ഇത്->accels))
       {
-	this->lookup_count = 0;
-	this->table.destroy ();
-	this->table = hb_blob_get_empty ();
+	ഇത്->lookup_എണ്ണം = 0;
+	ഇത്->table.destroy ();
+	ഇത്->table = hb_blob_get_empty ();
       }
     }
     ~accelerator_t ()
     {
-      for (unsigned int i = 0; i < this->lookup_count; i++)
+      വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < ഇത്->lookup_എണ്ണം; i++)
       {
-	auto *accel = this->accels[i].get_relaxed ();
-	if (accel)
+	auto *accel = ഇത്->accels[i].get_relaxed ();
+	എങ്കിൽ (accel)
 	  accel->fini ();
 	hb_free (accel);
       }
-      hb_free (this->accels);
-      this->table.destroy ();
+      hb_free (ഇത്->accels);
+      ഇത്->table.destroy ();
     }
 
-    hb_blob_t *get_blob () const { return table.get_blob (); }
+    hb_blob_t *get_blob () സ്ഥിരം { തിരികെ table.get_blob (); }
 
-    hb_ot_layout_lookup_accelerator_t *get_accel (unsigned lookup_index) const
+    hb_ot_layout_lookup_accelerator_t *get_accel (unsigned lookup_index) സ്ഥിരം
     {
-      if (unlikely (lookup_index >= lookup_count)) return nullptr;
+      എങ്കിൽ (unlikely (lookup_index >= lookup_എണ്ണം)) തിരികെ nullptr;
 
     retry:
       auto *accel = accels[lookup_index].get_acquire ();
-      if (unlikely (!accel))
+      എങ്കിൽ (unlikely (!accel))
       {
 	accel = hb_ot_layout_lookup_accelerator_t::create (table->get_lookup (lookup_index));
-	if (unlikely (!accel))
-	  return nullptr;
+	എങ്കിൽ (unlikely (!accel))
+	  തിരികെ nullptr;
 
-	if (unlikely (!accels[lookup_index].cmpexch (nullptr, accel)))
+	എങ്കിൽ (unlikely (!accels[lookup_index].cmpexch (nullptr, accel)))
 	{
 	  accel->fini ();
 	  hb_free (accel);
-	  goto retry;
+	  പോകുക retry;
 	}
       }
 
-      return accel;
+      തിരികെ accel;
     }
 
     hb_blob_ptr_t<T> table;
-    unsigned int lookup_count;
+    unsigned പൂർണ്ണസംഖ്യ lookup_എണ്ണം;
     hb_atomic_t<hb_ot_layout_lookup_accelerator_t *> *accels;
   };
 
-  protected:
+  സംരക്ഷിത:
   template <typename TLookup>
-  const Offset16To<TLookupList<TLookup>>& typed_lookup_list_offset () const
-  { return reinterpret_cast<const Offset16To<TLookupList<TLookup>>&> (lookupList); }
+  സ്ഥിരം Offset16To<TLookupList<TLookup>>& typed_lookup_list_offset () സ്ഥിരം
+  { തിരികെ reinterpret_cast<സ്ഥിരം Offset16To<TLookupList<TLookup>>&> (lookupList); }
 
 #ifndef HB_NO_BEYOND_64K
   template <typename TLookup>
-  const Offset32To<TLookupList2<TLookup>>& typed_lookup_list2_offset () const
-  { return reinterpret_cast<const Offset32To<TLookupList2<TLookup>>&> (lookupList2); }
+  സ്ഥിരം Offset32To<TLookupList2<TLookup>>& typed_lookup_list2_offset () സ്ഥിരം
+  { തിരികെ reinterpret_cast<സ്ഥിരം Offset32To<TLookupList2<TLookup>>&> (lookupList2); }
 #endif
 
   template <typename TLookup>
-  const Offset16To<TLookupOffsetList<TLookup>>& subset_lookup_list_offset () const
-  { return reinterpret_cast<const Offset16To<TLookupOffsetList<TLookup>>&> (lookupList); }
+  സ്ഥിരം Offset16To<TLookupOffsetList<TLookup>>& subset_lookup_list_offset () സ്ഥിരം
+  { തിരികെ reinterpret_cast<സ്ഥിരം Offset16To<TLookupOffsetList<TLookup>>&> (lookupList); }
   template <typename TLookup>
   Offset16To<TLookupOffsetList<TLookup>>& subset_lookup_list_offset ()
-  { return reinterpret_cast<Offset16To<TLookupOffsetList<TLookup>>&> (lookupList); }
+  { തിരികെ reinterpret_cast<Offset16To<TLookupOffsetList<TLookup>>&> (lookupList); }
 
 #ifndef HB_NO_BEYOND_64K
   template <typename TLookup>
-  const Offset32To<TLookupOffsetList2<TLookup>>& subset_lookup_list2_offset () const
-  { return reinterpret_cast<const Offset32To<TLookupOffsetList2<TLookup>>&> (lookupList2); }
+  സ്ഥിരം Offset32To<TLookupOffsetList2<TLookup>>& subset_lookup_list2_offset () സ്ഥിരം
+  { തിരികെ reinterpret_cast<സ്ഥിരം Offset32To<TLookupOffsetList2<TLookup>>&> (lookupList2); }
 #endif
 
-  const Offset16To<RecordListOfFeature>& subset_feature_list_offset () const
-  { return reinterpret_cast<const Offset16To<RecordListOfFeature>&> (featureList); }
+  സ്ഥിരം Offset16To<RecordListOfFeature>& subset_feature_list_offset () സ്ഥിരം
+  { തിരികെ reinterpret_cast<സ്ഥിരം Offset16To<RecordListOfFeature>&> (featureList); }
   Offset16To<RecordListOfFeature>& subset_feature_list_offset ()
-  { return reinterpret_cast<Offset16To<RecordListOfFeature>&> (featureList); }
+  { തിരികെ reinterpret_cast<Offset16To<RecordListOfFeature>&> (featureList); }
 
 #ifndef HB_NO_BEYOND_64K
-  const Offset32To<RecordListOfFeature>& subset_feature_list2_offset () const
-  { return reinterpret_cast<const Offset32To<RecordListOfFeature>&> (featureList2); }
+  സ്ഥിരം Offset32To<RecordListOfFeature>& subset_feature_list2_offset () സ്ഥിരം
+  { തിരികെ reinterpret_cast<സ്ഥിരം Offset32To<RecordListOfFeature>&> (featureList2); }
 #endif
 
-  const void* get_lookup_list_field_offset () const
+  സ്ഥിരം ശൂന്യം* get_lookup_list_field_offset () സ്ഥിരം
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010002u && lookupList2) return &lookupList2;
+    എങ്കിൽ (version.to_int () >= 0x00010002u && lookupList2) തിരികെ &lookupList2;
 #endif
-    return &lookupList;
+    തിരികെ &lookupList;
   }
 
   template <typename OffsetOut, typename OffsetIn, typename Base, typename ...Ts>
-  static bool serialize_subset_offset (hb_subset_context_t *c,
+  സ്ഥിതം തർക്കം serialize_subset_offset (hb_subset_context_t *c,
 				       OffsetOut& out,
-				       const OffsetIn& in,
-				       const Base *base,
+				       സ്ഥിരം OffsetIn& in,
+				       സ്ഥിരം Base *base,
 				       Ts&&... ds)
   {
     out = 0;
-    if (in.is_null ()) return false;
+    എങ്കിൽ (in.is_null ()) തിരികെ അസത്യം;
 
     auto *s = c->serializer;
     s->push ();
-    bool ret = c->dispatch (base+in, std::forward<Ts> (ds)...);
-    if (ret) s->add_link (out, s->pop_pack ());
-    else s->pop_discard ();
-    return ret;
+    തർക്കം ret = c->dispatch (base+in, std::forward<Ts> (ds)...);
+    എങ്കിൽ (ret) s->add_link (out, s->എടുക്കുക_pack ());
+    അല്ലെങ്കിൽ s->എടുക്കുക_discard ();
+    തിരികെ ret;
   }
 
   FixedVersion<>version;	/* Version of the GSUB/GPOS table--initially set
@@ -6833,7 +6833,7 @@ struct GSUBGPOS
 		lookupList2;	/* 32-bit offset to LookupList2 table.
 				 * Introduced in version 0x00010002. */
 #endif
-  public:
+  പൊതു:
   DEFINE_SIZE_MIN (10);
 };
 

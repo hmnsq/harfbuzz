@@ -29,11 +29,11 @@
 #ifndef HB_BUFFER_DESERIALIZE_TEXT_GLYPHS_HH
 #define HB_BUFFER_DESERIALIZE_TEXT_GLYPHS_HH
 
-#include "hb.hh"
+#അന്തര്ഭാവ "hb.hh"
 
 
 #line 33 "hb-buffer-deserialize-text-glyphs.hh"
-static const unsigned char _deserialize_text_glyphs_trans_keys[] = {
+സ്ഥിതം സ്ഥിരം unsigned അക്ഷരം deserialize_text_glyphs_trans_താക്കോലുകൾ[] = {
 	0u, 0u, 35u, 124u, 48u, 57u, 60u, 124u, 45u, 57u, 48u, 57u, 44u, 44u, 45u, 57u, 
 	48u, 57u, 44u, 44u, 45u, 57u, 48u, 57u, 44u, 44u, 45u, 57u, 48u, 57u, 62u, 62u, 
 	93u, 124u, 45u, 57u, 48u, 57u, 35u, 124u, 45u, 57u, 48u, 57u, 35u, 124u, 35u, 124u, 
@@ -43,7 +43,7 @@ static const unsigned char _deserialize_text_glyphs_trans_keys[] = {
 	35u, 124u, 0
 };
 
-static const char _deserialize_text_glyphs_key_spans[] = {
+സ്ഥിതം സ്ഥിരം അക്ഷരം deserialize_text_glyphs_താക്കോൽ_spans[] = {
 	0, 90, 10, 65, 13, 10, 1, 13, 
 	10, 1, 13, 10, 1, 13, 10, 1, 
 	32, 13, 10, 90, 13, 10, 90, 90, 
@@ -53,7 +53,7 @@ static const char _deserialize_text_glyphs_key_spans[] = {
 	90
 };
 
-static const short _deserialize_text_glyphs_index_offsets[] = {
+സ്ഥിതം സ്ഥിരം short _deserialize_text_glyphs_index_offsets[] = {
 	0, 0, 91, 102, 168, 182, 193, 195, 
 	209, 220, 222, 236, 247, 249, 263, 274, 
 	276, 309, 323, 334, 425, 439, 450, 541, 
@@ -63,7 +63,7 @@ static const short _deserialize_text_glyphs_index_offsets[] = {
 	1933
 };
 
-static const char _deserialize_text_glyphs_indicies[] = {
+സ്ഥിതം സ്ഥിരം അക്ഷരം _deserialize_text_glyphs_indicies[] = {
 	1, 0, 0, 0, 0, 0, 0, 
 	0, 2, 3, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
@@ -320,7 +320,7 @@ static const char _deserialize_text_glyphs_indicies[] = {
 	74, 0
 };
 
-static const char _deserialize_text_glyphs_trans_targs[] = {
+സ്ഥിതം സ്ഥിരം അക്ഷരം _deserialize_text_glyphs_trans_targs[] = {
 	1, 2, 17, 0, 25, 28, 30, 39, 
 	47, 3, 45, 4, 47, 5, 6, 44, 
 	7, 8, 9, 43, 10, 11, 12, 42, 
@@ -336,7 +336,7 @@ static const char _deserialize_text_glyphs_trans_targs[] = {
 	47
 };
 
-static const char _deserialize_text_glyphs_trans_actions[] = {
+സ്ഥിതം സ്ഥിരം അക്ഷരം _deserialize_text_glyphs_trans_actions[] = {
 	0, 1, 1, 0, 1, 1, 1, 0, 
 	1, 2, 2, 3, 3, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
@@ -352,7 +352,7 @@ static const char _deserialize_text_glyphs_trans_actions[] = {
 	14
 };
 
-static const char _deserialize_text_glyphs_eof_actions[] = {
+സ്ഥിതം സ്ഥിരം അക്ഷരം _deserialize_text_glyphs_eof_actions[] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
@@ -362,30 +362,30 @@ static const char _deserialize_text_glyphs_eof_actions[] = {
 	0
 };
 
-static const int deserialize_text_glyphs_start = 46;
-static const int deserialize_text_glyphs_first_final = 46;
-static const int deserialize_text_glyphs_error = 0;
+സ്ഥിതം സ്ഥിരം പൂർണ്ണസംഖ്യ deserialize_text_glyphs_start = 46;
+സ്ഥിതം സ്ഥിരം പൂർണ്ണസംഖ്യ deserialize_text_glyphs_first_final = 46;
+സ്ഥിതം സ്ഥിരം പൂർണ്ണസംഖ്യ deserialize_text_glyphs_error = 0;
 
-static const int deserialize_text_glyphs_en_main = 46;
+സ്ഥിതം സ്ഥിരം പൂർണ്ണസംഖ്യ deserialize_text_glyphs_en_main = 46;
 
 
 #line 101 "hb-buffer-deserialize-text-glyphs.rl"
 
 
-static hb_bool_t
+സ്ഥിതം hb_bool_t
 _hb_buffer_deserialize_text_glyphs (hb_buffer_t *buffer,
-				    const char *buf,
-				    unsigned int buf_len,
-				    const char **end_ptr,
+				    സ്ഥിരം അക്ഷരം *buf,
+				    unsigned പൂർണ്ണസംഖ്യ buf_len,
+				    സ്ഥിരം അക്ഷരം **end_ptr,
 				    hb_font_t *font)
 {
-  const char *p = buf, *pe = buf + buf_len, *eof = pe;
+  സ്ഥിരം അക്ഷരം *p = buf, *pe = buf + buf_len, *eof = pe;
 
   /* Ensure we have positions. */
-  (void) hb_buffer_get_glyph_positions (buffer, nullptr);
+  (ശൂന്യം) hb_buffer_get_glyph_positions (buffer, nullptr);
 
-  const char *tok = nullptr;
-  int cs;
+  സ്ഥിരം അക്ഷരം *tok = nullptr;
+  പൂർണ്ണസംഖ്യ cs;
   hb_glyph_info_t info = {0};
   hb_glyph_position_t pos = {0};
   
@@ -396,85 +396,85 @@ _hb_buffer_deserialize_text_glyphs (hb_buffer_t *buffer,
 
 #line 389 "hb-buffer-deserialize-text-glyphs.hh"
 	{
-	int _slen;
-	int _trans;
-	const unsigned char *_keys;
-	const char *_inds;
-	if ( p == pe )
-		goto _test_eof;
-	if ( cs == 0 )
-		goto _out;
+	പൂർണ്ണസംഖ്യ _slen;
+	പൂർണ്ണസംഖ്യ _trans;
+	സ്ഥിരം unsigned അക്ഷരം *താക്കോലുകൾ_2;
+	സ്ഥിരം അക്ഷരം *_inds;
+	എങ്കിൽ ( p == pe )
+		പോകുക _test_eof;
+	എങ്കിൽ ( cs == 0 )
+		പോകുക _out;
 _resume:
-	_keys = _deserialize_text_glyphs_trans_keys + (cs<<1);
+	താക്കോലുകൾ_2 = deserialize_text_glyphs_trans_താക്കോലുകൾ + (cs<<1);
 	_inds = _deserialize_text_glyphs_indicies + _deserialize_text_glyphs_index_offsets[cs];
 
-	_slen = _deserialize_text_glyphs_key_spans[cs];
-	_trans = _inds[ _slen > 0 && _keys[0] <=(*p) &&
-		(*p) <= _keys[1] ?
-		(*p) - _keys[0] : _slen ];
+	_slen = deserialize_text_glyphs_താക്കോൽ_spans[cs];
+	_trans = _inds[ _slen > 0 && താക്കോലുകൾ_2[0] <=(*p) &&
+		(*p) <= താക്കോലുകൾ_2[1] ?
+		(*p) - താക്കോലുകൾ_2[0] : _slen ];
 
 	cs = _deserialize_text_glyphs_trans_targs[_trans];
 
-	if ( _deserialize_text_glyphs_trans_actions[_trans] == 0 )
-		goto _again;
+	എങ്കിൽ ( _deserialize_text_glyphs_trans_actions[_trans] == 0 )
+		പോകുക _again;
 
-	switch ( _deserialize_text_glyphs_trans_actions[_trans] ) {
-	case 2:
+	തിരഞ്ഞെടുപ്പ് ( _deserialize_text_glyphs_trans_actions[_trans] ) {
+	അവസ്ഥ 2:
 #line 50 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	tok = p;
 }
-	break;
-	case 1:
+	നിർത്തുക;
+	അവസ്ഥ 1:
 #line 54 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	/* TODO Unescape delimiters. */
-	if (!hb_font_glyph_from_string (font,
+	എങ്കിൽ (!hb_font_glyph_from_string (font,
 					tok, p - tok,
 					&info.codepoint))
-	  return false;
+	  തിരികെ അസത്യം;
 }
-	break;
-	case 6:
+	നിർത്തുക;
+	അവസ്ഥ 6:
 #line 62 "hb-buffer-deserialize-text-glyphs.rl"
-	{ if (!parse_uint (tok, p, &info.cluster )) return false; }
-	break;
-	case 7:
+	{ എങ്കിൽ (!parse_uint (tok, p, &info.cluster )) തിരികെ അസത്യം; }
+	നിർത്തുക;
+	അവസ്ഥ 7:
 #line 63 "hb-buffer-deserialize-text-glyphs.rl"
-	{ if (!parse_int  (tok, p, &pos.x_offset )) return false; }
-	break;
-	case 8:
+	{ എങ്കിൽ (!parse_int  (tok, p, &pos.x_offset )) തിരികെ അസത്യം; }
+	നിർത്തുക;
+	അവസ്ഥ 8:
 #line 64 "hb-buffer-deserialize-text-glyphs.rl"
-	{ if (!parse_int  (tok, p, &pos.y_offset )) return false; }
-	break;
-	case 4:
+	{ എങ്കിൽ (!parse_int  (tok, p, &pos.y_offset )) തിരികെ അസത്യം; }
+	നിർത്തുക;
+	അവസ്ഥ 4:
 #line 65 "hb-buffer-deserialize-text-glyphs.rl"
-	{ if (!parse_int  (tok, p, &pos.x_advance)) return false; }
-	break;
-	case 5:
+	{ എങ്കിൽ (!parse_int  (tok, p, &pos.x_advance)) തിരികെ അസത്യം; }
+	നിർത്തുക;
+	അവസ്ഥ 5:
 #line 66 "hb-buffer-deserialize-text-glyphs.rl"
-	{ if (!parse_int  (tok, p, &pos.y_advance)) return false; }
-	break;
-	case 3:
+	{ എങ്കിൽ (!parse_int  (tok, p, &pos.y_advance)) തിരികെ അസത്യം; }
+	നിർത്തുക;
+	അവസ്ഥ 3:
 #line 67 "hb-buffer-deserialize-text-glyphs.rl"
-	{ if (!parse_uint (tok, p, &info.mask    )) return false; }
-	break;
-	case 9:
+	{ എങ്കിൽ (!parse_uint (tok, p, &info.mask    )) തിരികെ അസത്യം; }
+	നിർത്തുക;
+	അവസ്ഥ 9:
 #line 38 "hb-buffer-deserialize-text-glyphs.rl"
 	{
-	hb_memset (&info, 0, sizeof (info));
-	hb_memset (&pos , 0, sizeof (pos ));
+	hb_memset (&info, 0, വലുപ്പം (info));
+	hb_memset (&pos , 0, വലുപ്പം (pos ));
 }
 #line 50 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	tok = p;
 }
-	break;
-	case 10:
+	നിർത്തുക;
+	അവസ്ഥ 10:
 #line 38 "hb-buffer-deserialize-text-glyphs.rl"
 	{
-	hb_memset (&info, 0, sizeof (info));
-	hb_memset (&pos , 0, sizeof (pos ));
+	hb_memset (&info, 0, വലുപ്പം (info));
+	hb_memset (&pos , 0, വലുപ്പം (pos ));
 }
 #line 50 "hb-buffer-deserialize-text-glyphs.rl"
 	{
@@ -483,61 +483,61 @@ _resume:
 #line 54 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	/* TODO Unescape delimiters. */
-	if (!hb_font_glyph_from_string (font,
+	എങ്കിൽ (!hb_font_glyph_from_string (font,
 					tok, p - tok,
 					&info.codepoint))
-	  return false;
+	  തിരികെ അസത്യം;
 }
-	break;
-	case 12:
+	നിർത്തുക;
+	അവസ്ഥ 12:
 #line 43 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	buffer->add_info_and_pos (info, pos);
-	if (unlikely (!buffer->successful))
-	  return false;
+	എങ്കിൽ (unlikely (!buffer->successful))
+	  തിരികെ അസത്യം;
 	*end_ptr = p;
 }
 #line 38 "hb-buffer-deserialize-text-glyphs.rl"
 	{
-	hb_memset (&info, 0, sizeof (info));
-	hb_memset (&pos , 0, sizeof (pos ));
+	hb_memset (&info, 0, വലുപ്പം (info));
+	hb_memset (&pos , 0, വലുപ്പം (pos ));
 }
 #line 50 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	tok = p;
 }
-	break;
-	case 14:
+	നിർത്തുക;
+	അവസ്ഥ 14:
 #line 54 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	/* TODO Unescape delimiters. */
-	if (!hb_font_glyph_from_string (font,
+	എങ്കിൽ (!hb_font_glyph_from_string (font,
 					tok, p - tok,
 					&info.codepoint))
-	  return false;
+	  തിരികെ അസത്യം;
 }
 #line 38 "hb-buffer-deserialize-text-glyphs.rl"
 	{
-	hb_memset (&info, 0, sizeof (info));
-	hb_memset (&pos , 0, sizeof (pos ));
+	hb_memset (&info, 0, വലുപ്പം (info));
+	hb_memset (&pos , 0, വലുപ്പം (pos ));
 }
 #line 50 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	tok = p;
 }
-	break;
-	case 13:
+	നിർത്തുക;
+	അവസ്ഥ 13:
 #line 43 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	buffer->add_info_and_pos (info, pos);
-	if (unlikely (!buffer->successful))
-	  return false;
+	എങ്കിൽ (unlikely (!buffer->successful))
+	  തിരികെ അസത്യം;
 	*end_ptr = p;
 }
 #line 38 "hb-buffer-deserialize-text-glyphs.rl"
 	{
-	hb_memset (&info, 0, sizeof (info));
-	hb_memset (&pos , 0, sizeof (pos ));
+	hb_memset (&info, 0, വലുപ്പം (info));
+	hb_memset (&pos , 0, വലുപ്പം (pos ));
 }
 #line 50 "hb-buffer-deserialize-text-glyphs.rl"
 	{
@@ -546,33 +546,33 @@ _resume:
 #line 54 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	/* TODO Unescape delimiters. */
-	if (!hb_font_glyph_from_string (font,
+	എങ്കിൽ (!hb_font_glyph_from_string (font,
 					tok, p - tok,
 					&info.codepoint))
-	  return false;
+	  തിരികെ അസത്യം;
 }
-	break;
+	നിർത്തുക;
 #line 523 "hb-buffer-deserialize-text-glyphs.hh"
 	}
 
 _again:
-	if ( cs == 0 )
-		goto _out;
-	if ( ++p != pe )
-		goto _resume;
+	എങ്കിൽ ( cs == 0 )
+		പോകുക _out;
+	എങ്കിൽ ( ++p != pe )
+		പോകുക _resume;
 	_test_eof: {}
-	if ( p == eof )
+	എങ്കിൽ ( p == eof )
 	{
-	switch ( _deserialize_text_glyphs_eof_actions[cs] ) {
-	case 11:
+	തിരഞ്ഞെടുപ്പ് ( _deserialize_text_glyphs_eof_actions[cs] ) {
+	അവസ്ഥ 11:
 #line 43 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	buffer->add_info_and_pos (info, pos);
-	if (unlikely (!buffer->successful))
-	  return false;
+	എങ്കിൽ (unlikely (!buffer->successful))
+	  തിരികെ അസത്യം;
 	*end_ptr = p;
 }
-	break;
+	നിർത്തുക;
 #line 542 "hb-buffer-deserialize-text-glyphs.hh"
 	}
 	}
@@ -585,7 +585,7 @@ _again:
 
   *end_ptr = p;
 
-  return p == pe;
+  തിരികെ p == pe;
 }
 
 #endif /* HB_BUFFER_DESERIALIZE_TEXT_GLYPHS_HH */

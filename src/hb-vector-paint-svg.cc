@@ -24,36 +24,36 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#അന്തര്ഭാവ "hb.hh"
 
-#include "hb-vector-paint.hh"
-#include "hb-paint.hh"
-#include "hb-vector-path.hh"
+#അന്തര്ഭാവ "hb-vector-paint.hh"
+#അന്തര്ഭാവ "hb-paint.hh"
+#അന്തര്ഭാവ "hb-vector-path.hh"
 
-#include <math.h>
+#അന്തര്ഭാവ <math.h>
 
-static const char *
+സ്ഥിതം സ്ഥിരം അക്ഷരം *
 hb_vector_svg_extend_mode_str (hb_paint_extend_t ext)
 {
-  switch (ext)
+  തിരഞ്ഞെടുപ്പ് (ext)
   {
-    case HB_PAINT_EXTEND_PAD: return "pad";
-    case HB_PAINT_EXTEND_REPEAT: return "repeat";
-    case HB_PAINT_EXTEND_REFLECT: return "reflect";
-    default: return "pad";
+    അവസ്ഥ HB_PAINT_EXTEND_PAD: തിരികെ "pad";
+    അവസ്ഥ HB_PAINT_EXTEND_REPEAT: തിരികെ "repeat";
+    അവസ്ഥ HB_PAINT_EXTEND_REFLECT: തിരികെ "reflect";
+    സ്ഥിരസ്ഥിതി: തിരികെ "pad";
   }
 }
 
-static void
+സ്ഥിതം ശൂന്യം
 hb_vector_svg_emit_color_stops (hb_vector_paint_t *paint,
 				hb_vector_buf_t *buf,
 				hb_vector_t<hb_color_stop_t> *stops)
 {
-  for (unsigned i = 0; i < stops->length; i++)
+  വേണ്ടി (unsigned i = 0; i < stops->length; i++)
   {
     hb_color_t c = stops->arrayZ[i].color;
     buf->append_str ("<stop offset=\"");
-    buf->append_num (stops->arrayZ[i].offset, 4);
+    buf->append_അക്കം (stops->arrayZ[i].offset, 4);
     buf->append_str ("\" stop-color=\"rgb(");
     buf->append_unsigned (hb_color_get_red (c));
     buf->append_c (',');
@@ -61,134 +61,134 @@ hb_vector_svg_emit_color_stops (hb_vector_paint_t *paint,
     buf->append_c (',');
     buf->append_unsigned (hb_color_get_blue (c));
     buf->append_str (")\"");
-    if (hb_color_get_alpha (c) != 255)
+    എങ്കിൽ (hb_color_get_alpha (c) != 255)
     {
       buf->append_str (" stop-opacity=\"");
-      buf->append_num (hb_color_get_alpha (c) / 255.f, 4);
+      buf->append_അക്കം (hb_color_get_alpha (c) / 255.f, 4);
       buf->append_c ('"');
     }
     buf->append_str ("/>\n");
   }
 }
 
-static const char *
+സ്ഥിതം സ്ഥിരം അക്ഷരം *
 hb_vector_svg_composite_mode_str (hb_paint_composite_mode_t mode)
 {
-  switch (mode)
+  തിരഞ്ഞെടുപ്പ് (mode)
   {
     /* Porter-Duff modes have no SVG mix-blend-mode equivalent;
      * approximate the two that have a plausible color-blend analog,
      * and let the rest fall through to normal (SRC_OVER). */
-    case HB_PAINT_COMPOSITE_MODE_PLUS: return "screen";
-    case HB_PAINT_COMPOSITE_MODE_XOR: return "difference";
-    case HB_PAINT_COMPOSITE_MODE_CLEAR:
-    case HB_PAINT_COMPOSITE_MODE_SRC:
-    case HB_PAINT_COMPOSITE_MODE_DEST:
-    case HB_PAINT_COMPOSITE_MODE_DEST_OVER:
-    case HB_PAINT_COMPOSITE_MODE_SRC_IN:
-    case HB_PAINT_COMPOSITE_MODE_DEST_IN:
-    case HB_PAINT_COMPOSITE_MODE_SRC_OUT:
-    case HB_PAINT_COMPOSITE_MODE_DEST_OUT:
-    case HB_PAINT_COMPOSITE_MODE_SRC_ATOP:
-    case HB_PAINT_COMPOSITE_MODE_DEST_ATOP:
-      return nullptr;
-    case HB_PAINT_COMPOSITE_MODE_SRC_OVER: return "normal";
-    case HB_PAINT_COMPOSITE_MODE_SCREEN: return "screen";
-    case HB_PAINT_COMPOSITE_MODE_OVERLAY: return "overlay";
-    case HB_PAINT_COMPOSITE_MODE_DARKEN: return "darken";
-    case HB_PAINT_COMPOSITE_MODE_LIGHTEN: return "lighten";
-    case HB_PAINT_COMPOSITE_MODE_COLOR_DODGE: return "color-dodge";
-    case HB_PAINT_COMPOSITE_MODE_COLOR_BURN: return "color-burn";
-    case HB_PAINT_COMPOSITE_MODE_HARD_LIGHT: return "hard-light";
-    case HB_PAINT_COMPOSITE_MODE_SOFT_LIGHT: return "soft-light";
-    case HB_PAINT_COMPOSITE_MODE_DIFFERENCE: return "difference";
-    case HB_PAINT_COMPOSITE_MODE_EXCLUSION: return "exclusion";
-    case HB_PAINT_COMPOSITE_MODE_MULTIPLY: return "multiply";
-    case HB_PAINT_COMPOSITE_MODE_HSL_HUE: return "hue";
-    case HB_PAINT_COMPOSITE_MODE_HSL_SATURATION: return "saturation";
-    case HB_PAINT_COMPOSITE_MODE_HSL_COLOR: return "color";
-    case HB_PAINT_COMPOSITE_MODE_HSL_LUMINOSITY: return "luminosity";
-    default: return nullptr;
+    അവസ്ഥ HB_PAINT_COMPOSITE_MODE_PLUS: തിരികെ "screen";
+    അവസ്ഥ HB_PAINT_COMPOSITE_MODE_XOR: തിരികെ "difference";
+    അവസ്ഥ HB_PAINT_COMPOSITE_MODE_CLEAR:
+    അവസ്ഥ HB_PAINT_COMPOSITE_MODE_SRC:
+    അവസ്ഥ HB_PAINT_COMPOSITE_MODE_DEST:
+    അവസ്ഥ HB_PAINT_COMPOSITE_MODE_DEST_OVER:
+    അവസ്ഥ HB_PAINT_COMPOSITE_MODE_SRC_IN:
+    അവസ്ഥ HB_PAINT_COMPOSITE_MODE_DEST_IN:
+    അവസ്ഥ HB_PAINT_COMPOSITE_MODE_SRC_OUT:
+    അവസ്ഥ HB_PAINT_COMPOSITE_MODE_DEST_OUT:
+    അവസ്ഥ HB_PAINT_COMPOSITE_MODE_SRC_ATOP:
+    അവസ്ഥ HB_PAINT_COMPOSITE_MODE_DEST_ATOP:
+      തിരികെ nullptr;
+    അവസ്ഥ HB_PAINT_COMPOSITE_MODE_SRC_OVER: തിരികെ "normal";
+    അവസ്ഥ HB_PAINT_COMPOSITE_MODE_SCREEN: തിരികെ "screen";
+    അവസ്ഥ HB_PAINT_COMPOSITE_MODE_OVERLAY: തിരികെ "overlay";
+    അവസ്ഥ HB_PAINT_COMPOSITE_MODE_DARKEN: തിരികെ "darken";
+    അവസ്ഥ HB_PAINT_COMPOSITE_MODE_LIGHTEN: തിരികെ "lighten";
+    അവസ്ഥ HB_PAINT_COMPOSITE_MODE_COLOR_DODGE: തിരികെ "color-dodge";
+    അവസ്ഥ HB_PAINT_COMPOSITE_MODE_COLOR_BURN: തിരികെ "color-burn";
+    അവസ്ഥ HB_PAINT_COMPOSITE_MODE_HARD_LIGHT: തിരികെ "hard-light";
+    അവസ്ഥ HB_PAINT_COMPOSITE_MODE_SOFT_LIGHT: തിരികെ "soft-light";
+    അവസ്ഥ HB_PAINT_COMPOSITE_MODE_DIFFERENCE: തിരികെ "difference";
+    അവസ്ഥ HB_PAINT_COMPOSITE_MODE_EXCLUSION: തിരികെ "exclusion";
+    അവസ്ഥ HB_PAINT_COMPOSITE_MODE_MULTIPLY: തിരികെ "multiply";
+    അവസ്ഥ HB_PAINT_COMPOSITE_MODE_HSL_HUE: തിരികെ "hue";
+    അവസ്ഥ HB_PAINT_COMPOSITE_MODE_HSL_SATURATION: തിരികെ "saturation";
+    അവസ്ഥ HB_PAINT_COMPOSITE_MODE_HSL_COLOR: തിരികെ "color";
+    അവസ്ഥ HB_PAINT_COMPOSITE_MODE_HSL_LUMINOSITY: തിരികെ "luminosity";
+    സ്ഥിരസ്ഥിതി: തിരികെ nullptr;
   }
 }
 
-struct hb_vector_svg_point_t { float x, y; };
-struct hb_vector_svg_rgba_t { float r, g, b, a; };
+ഘടന hb_vector_svg_point_t { ദശാംശം x, y; };
+ഘടന hb_vector_svg_rgba_t { ദശാംശം r, g, b, a; };
 
-static inline float
-hb_vector_svg_lerp (float a, float b, float t)
-{ return a + (b - a) * t; }
+സ്ഥിതം വരിയിൽ ദശാംശം
+hb_vector_svg_lerp (ദശാംശം a, ദശാംശം b, ദശാംശം t)
+{ തിരികെ a + (b - a) * t; }
 
-static inline float
-hb_vector_svg_clamp01 (float v)
+സ്ഥിതം വരിയിൽ ദശാംശം
+hb_vector_svg_clamp01 (ദശാംശം v)
 {
-  if (v < 0.f) return 0.f;
-  if (v > 1.f) return 1.f;
-  return v;
+  എങ്കിൽ (v < 0.f) തിരികെ 0.f;
+  എങ്കിൽ (v > 1.f) തിരികെ 1.f;
+  തിരികെ v;
 }
 
-static inline hb_vector_svg_rgba_t
+സ്ഥിതം വരിയിൽ hb_vector_svg_rgba_t
 hb_vector_svg_rgba_from_hb_color (hb_color_t c)
 {
-  return {(float) hb_color_get_red (c) / 255.f,
-          (float) hb_color_get_green (c) / 255.f,
-          (float) hb_color_get_blue (c) / 255.f,
-          (float) hb_color_get_alpha (c) / 255.f};
+  തിരികെ {(ദശാംശം) hb_color_get_red (c) / 255.f,
+          (ദശാംശം) hb_color_get_green (c) / 255.f,
+          (ദശാംശം) hb_color_get_blue (c) / 255.f,
+          (ദശാംശം) hb_color_get_alpha (c) / 255.f};
 }
 
-static inline hb_color_t
-hb_vector_svg_hb_color_from_rgba (const hb_vector_svg_rgba_t &c)
+സ്ഥിതം വരിയിൽ hb_color_t
+hb_vector_svg_hb_color_from_rgba (സ്ഥിരം hb_vector_svg_rgba_t &c)
 {
   unsigned r = (unsigned) roundf (hb_vector_svg_clamp01 (c.r) * 255.f);
   unsigned g = (unsigned) roundf (hb_vector_svg_clamp01 (c.g) * 255.f);
   unsigned b = (unsigned) roundf (hb_vector_svg_clamp01 (c.b) * 255.f);
   unsigned a = (unsigned) roundf (hb_vector_svg_clamp01 (c.a) * 255.f);
-  return HB_COLOR (b, g, r, a);
+  തിരികെ HB_COLOR (b, g, r, a);
 }
 
-static inline hb_vector_svg_rgba_t
-hb_vector_svg_lerp_rgba (const hb_vector_svg_rgba_t &c0,
-			 const hb_vector_svg_rgba_t &c1,
-			 float t)
+സ്ഥിതം വരിയിൽ hb_vector_svg_rgba_t
+hb_vector_svg_lerp_rgba (സ്ഥിരം hb_vector_svg_rgba_t &c0,
+			 സ്ഥിരം hb_vector_svg_rgba_t &c1,
+			 ദശാംശം t)
 {
-  return {hb_vector_svg_lerp (c0.r, c1.r, t),
+  തിരികെ {hb_vector_svg_lerp (c0.r, c1.r, t),
           hb_vector_svg_lerp (c0.g, c1.g, t),
           hb_vector_svg_lerp (c0.b, c1.b, t),
           hb_vector_svg_lerp (c0.a, c1.a, t)};
 }
 
-static inline float hb_vector_svg_dot (const hb_vector_svg_point_t &p, const hb_vector_svg_point_t &q) { return p.x * q.x + p.y * q.y; }
-static inline hb_vector_svg_point_t hb_vector_svg_add (const hb_vector_svg_point_t &p, const hb_vector_svg_point_t &q) { return {p.x + q.x, p.y + q.y}; }
-static inline hb_vector_svg_point_t hb_vector_svg_sub (const hb_vector_svg_point_t &p, const hb_vector_svg_point_t &q) { return {p.x - q.x, p.y - q.y}; }
-static inline hb_vector_svg_point_t hb_vector_svg_scale (const hb_vector_svg_point_t &p, float f) { return {p.x * f, p.y * f}; }
+സ്ഥിതം വരിയിൽ ദശാംശം hb_vector_svg_dot (സ്ഥിരം hb_vector_svg_point_t &p, സ്ഥിരം hb_vector_svg_point_t &q) { തിരികെ p.x * q.x + p.y * q.y; }
+സ്ഥിതം വരിയിൽ hb_vector_svg_point_t hb_vector_svg_add (സ്ഥിരം hb_vector_svg_point_t &p, സ്ഥിരം hb_vector_svg_point_t &q) { തിരികെ {p.x + q.x, p.y + q.y}; }
+സ്ഥിതം വരിയിൽ hb_vector_svg_point_t hb_vector_svg_sub (സ്ഥിരം hb_vector_svg_point_t &p, സ്ഥിരം hb_vector_svg_point_t &q) { തിരികെ {p.x - q.x, p.y - q.y}; }
+സ്ഥിതം വരിയിൽ hb_vector_svg_point_t hb_vector_svg_scale (സ്ഥിരം hb_vector_svg_point_t &p, ദശാംശം f) { തിരികെ {p.x * f, p.y * f}; }
 
-static inline hb_vector_svg_point_t
-hb_vector_svg_normalize (const hb_vector_svg_point_t &p)
+സ്ഥിതം വരിയിൽ hb_vector_svg_point_t
+hb_vector_svg_normalize (സ്ഥിരം hb_vector_svg_point_t &p)
 {
-  float len = sqrtf (hb_vector_svg_dot (p, p));
-  if (len == 0.f) return {0.f, 0.f};
-  return hb_vector_svg_scale (p, 1.f / len);
+  ദശാംശം len = sqrtf (hb_vector_svg_dot (p, p));
+  എങ്കിൽ (len == 0.f) തിരികെ {0.f, 0.f};
+  തിരികെ hb_vector_svg_scale (p, 1.f / len);
 }
 
-static void
+സ്ഥിതം ശൂന്യം
 hb_vector_svg_add_sweep_patch (hb_vector_buf_t *body,
 			       unsigned precision,
-			       float cx, float cy, float radius,
-			       float a0, const hb_vector_svg_rgba_t &c0_in,
-			       float a1, const hb_vector_svg_rgba_t &c1_in)
+			       ദശാംശം cx, ദശാംശം cy, ദശാംശം radius,
+			       ദശാംശം a0, സ്ഥിരം hb_vector_svg_rgba_t &c0_in,
+			       ദശാംശം a1, സ്ഥിരം hb_vector_svg_rgba_t &c1_in)
 {
-  static const float max_angle = HB_PI / 16.f;
+  സ്ഥിതം സ്ഥിരം ദശാംശം max_angle = HB_PI / 16.f;
   hb_vector_svg_point_t center = {cx, cy};
-  int num_splits = (int) ceilf (fabsf (a1 - a0) / max_angle);
-  if (num_splits < 1) num_splits = 1;
+  പൂർണ്ണസംഖ്യ അക്കം_splits = (പൂർണ്ണസംഖ്യ) ceilf (fabsf (a1 - a0) / max_angle);
+  എങ്കിൽ (അക്കം_splits < 1) അക്കം_splits = 1;
 
   hb_vector_svg_point_t p0 = {cosf (a0), sinf (a0)};
   hb_vector_svg_rgba_t color0 = c0_in;
 
-  for (int a = 0; a < num_splits; a++)
+  വേണ്ടി (പൂർണ്ണസംഖ്യ a = 0; a < അക്കം_splits; a++)
   {
-    float k = (a + 1.f) / num_splits;
-    float angle1 = hb_vector_svg_lerp (a0, a1, k);
+    ദശാംശം k = (a + 1.f) / അക്കം_splits;
+    ദശാംശം angle1 = hb_vector_svg_lerp (a0, a1, k);
     hb_vector_svg_rgba_t color1 = hb_vector_svg_lerp_rgba (c0_in, c1_in, k);
 
     hb_vector_svg_point_t p1 = {cosf (angle1), sinf (angle1)};
@@ -197,13 +197,13 @@ hb_vector_svg_add_sweep_patch (hb_vector_buf_t *body,
 
     hb_vector_svg_point_t A = hb_vector_svg_normalize (hb_vector_svg_add (p0, p1));
     hb_vector_svg_point_t U = {-A.y, A.x};
-    float up0 = hb_vector_svg_dot (U, p0);
-    float up1 = hb_vector_svg_dot (U, p1);
-    if (fabsf (up0) < 1e-6f || fabsf (up1) < 1e-6f)
+    ദശാംശം up0 = hb_vector_svg_dot (U, p0);
+    ദശാംശം up1 = hb_vector_svg_dot (U, p1);
+    എങ്കിൽ (fabsf (up0) < 1e-6f || fabsf (up1) < 1e-6f)
     {
       p0 = p1;
       color0 = color1;
-      continue;
+      തുടരുക;
     }
     hb_vector_svg_point_t C0 = hb_vector_svg_add (A, hb_vector_svg_scale (U, hb_vector_svg_dot (hb_vector_svg_sub (p0, A), p0) / up0));
     hb_vector_svg_point_t C1 = hb_vector_svg_add (A, hb_vector_svg_scale (U, hb_vector_svg_dot (hb_vector_svg_sub (p1, A), p1) / up1));
@@ -215,27 +215,27 @@ hb_vector_svg_add_sweep_patch (hb_vector_buf_t *body,
     hb_color_t mid = hb_vector_svg_hb_color_from_rgba (mid_color);
 
     body->append_str ("<path d=\"M");
-    body->append_num (center.x, precision);
+    body->append_അക്കം (center.x, precision);
     body->append_c (',');
-    body->append_num (center.y, precision);
+    body->append_അക്കം (center.y, precision);
     body->append_str ("L");
-    body->append_num (sp0.x, precision);
+    body->append_അക്കം (sp0.x, precision);
     body->append_c (',');
-    body->append_num (sp0.y, precision);
+    body->append_അക്കം (sp0.y, precision);
     body->append_str ("C");
-    body->append_num (sc0.x, precision);
+    body->append_അക്കം (sc0.x, precision);
     body->append_c (',');
-    body->append_num (sc0.y, precision);
+    body->append_അക്കം (sc0.y, precision);
     body->append_c (' ');
-    body->append_num (sc1.x, precision);
+    body->append_അക്കം (sc1.x, precision);
     body->append_c (',');
-    body->append_num (sc1.y, precision);
+    body->append_അക്കം (sc1.y, precision);
     body->append_c (' ');
-    body->append_num (sp1.x, precision);
+    body->append_അക്കം (sp1.x, precision);
     body->append_c (',');
-    body->append_num (sp1.y, precision);
+    body->append_അക്കം (sp1.y, precision);
     body->append_str ("Z\" fill=\"");
-    body->append_svg_color (mid, true);
+    body->append_svg_color (mid, സത്യം);
     body->append_str ("\"/>\n");
 
     p0 = p1;
@@ -244,25 +244,25 @@ hb_vector_svg_add_sweep_patch (hb_vector_buf_t *body,
 }
 
 /* Callback context + trampoline for hb_paint_sweep_gradient_tiles. */
-struct hb_vector_svg_sweep_ctx_t
+ഘടന hb_vector_svg_sweep_ctx_t
 {
   hb_vector_buf_t *body;
   unsigned precision;
-  float cx, cy, radius;
+  ദശാംശം cx, cy, radius;
 };
 
-static void
-hb_vector_svg_sweep_emit_patch (float a0, hb_color_t c0,
-				float a1, hb_color_t c1,
-				void *user_data)
+സ്ഥിതം ശൂന്യം
+hb_vector_svg_sweep_emit_patch (ദശാംശം a0, hb_color_t c0,
+				ദശാംശം a1, hb_color_t c1,
+				ശൂന്യം *user_data)
 {
   auto *ctx = (hb_vector_svg_sweep_ctx_t *) user_data;
   /* Sweep-gradient meshes are not outline-derived, so they are bounded by
    * the output document-size cap, not the outline work budget: stop once
    * the buffer trips its cap so per-gradient patch counts cannot multiply
    * with the paint-graph traversal limits of the font tables driving us. */
-  if (unlikely (ctx->body->in_error ()))
-    return;
+  എങ്കിൽ (unlikely (ctx->body->in_error ()))
+    തിരികെ;
   hb_vector_svg_add_sweep_patch (ctx->body, ctx->precision,
 				 ctx->cx, ctx->cy, ctx->radius,
 				 a0, hb_vector_svg_rgba_from_hb_color (c0),
@@ -270,64 +270,64 @@ hb_vector_svg_sweep_emit_patch (float a0, hb_color_t c0,
 }
 
 
-static void hb_vector_paint_push_transform (hb_paint_funcs_t *, void *,
-                                            float, float, float, float, float, float,
-                                            void *);
-static void hb_vector_paint_pop_transform (hb_paint_funcs_t *, void *, void *);
-static void hb_vector_paint_fill_glyph (hb_paint_funcs_t *, void *, hb_codepoint_t, hb_font_t *, hb_bool_t, hb_color_t, void *);
-static void hb_vector_paint_push_clip_glyph (hb_paint_funcs_t *, void *, hb_codepoint_t, hb_font_t *, void *);
-static void hb_vector_paint_push_clip_rectangle (hb_paint_funcs_t *, void *, float, float, float, float, void *);
-static hb_draw_funcs_t * hb_vector_paint_push_clip_path_start (hb_paint_funcs_t *, void *, void **, void *);
-static void hb_vector_paint_push_clip_path_end (hb_paint_funcs_t *, void *, void *);
-static void hb_vector_paint_pop_clip (hb_paint_funcs_t *, void *, void *);
-static void hb_vector_paint_color (hb_paint_funcs_t *, void *, hb_bool_t, hb_color_t, void *);
-static hb_bool_t hb_vector_paint_image (hb_paint_funcs_t *, void *, hb_blob_t *, unsigned, unsigned, hb_tag_t, float, hb_glyph_extents_t *, void *);
-static void hb_vector_paint_linear_gradient (hb_paint_funcs_t *, void *, hb_color_line_t *, float, float, float, float, float, float, void *);
-static void hb_vector_paint_radial_gradient (hb_paint_funcs_t *, void *, hb_color_line_t *, float, float, float, float, float, float, void *);
-static void hb_vector_paint_sweep_gradient (hb_paint_funcs_t *, void *, hb_color_line_t *, float, float, float, float, void *);
-static void hb_vector_paint_push_group (hb_paint_funcs_t *, void *, void *);
-static void hb_vector_paint_pop_group (hb_paint_funcs_t *, void *, hb_paint_composite_mode_t, void *);
-static hb_bool_t hb_vector_paint_color_glyph (hb_paint_funcs_t *, void *, hb_codepoint_t, hb_font_t *, void *);
-static hb_bool_t
+സ്ഥിതം ശൂന്യം hb_vector_paint_തള്ളുക_transform (hb_paint_funcs_t *, ശൂന്യം *,
+                                            ദശാംശം, ദശാംശം, ദശാംശം, ദശാംശം, ദശാംശം, ദശാംശം,
+                                            ശൂന്യം *);
+സ്ഥിതം ശൂന്യം hb_vector_paint_എടുക്കുക_transform (hb_paint_funcs_t *, ശൂന്യം *, ശൂന്യം *);
+സ്ഥിതം ശൂന്യം hb_vector_paint_fill_glyph (hb_paint_funcs_t *, ശൂന്യം *, hb_codepoint_t, hb_font_t *, hb_bool_t, hb_color_t, ശൂന്യം *);
+സ്ഥിതം ശൂന്യം hb_vector_paint_തള്ളുക_clip_glyph (hb_paint_funcs_t *, ശൂന്യം *, hb_codepoint_t, hb_font_t *, ശൂന്യം *);
+സ്ഥിതം ശൂന്യം hb_vector_paint_തള്ളുക_clip_rectangle (hb_paint_funcs_t *, ശൂന്യം *, ദശാംശം, ദശാംശം, ദശാംശം, ദശാംശം, ശൂന്യം *);
+സ്ഥിതം hb_draw_funcs_t * hb_vector_paint_തള്ളുക_clip_path_start (hb_paint_funcs_t *, ശൂന്യം *, ശൂന്യം **, ശൂന്യം *);
+സ്ഥിതം ശൂന്യം hb_vector_paint_തള്ളുക_clip_path_end (hb_paint_funcs_t *, ശൂന്യം *, ശൂന്യം *);
+സ്ഥിതം ശൂന്യം hb_vector_paint_എടുക്കുക_clip (hb_paint_funcs_t *, ശൂന്യം *, ശൂന്യം *);
+സ്ഥിതം ശൂന്യം hb_vector_paint_color (hb_paint_funcs_t *, ശൂന്യം *, hb_bool_t, hb_color_t, ശൂന്യം *);
+സ്ഥിതം hb_bool_t hb_vector_paint_image (hb_paint_funcs_t *, ശൂന്യം *, hb_blob_t *, unsigned, unsigned, hb_tag_t, ദശാംശം, hb_glyph_extents_t *, ശൂന്യം *);
+സ്ഥിതം ശൂന്യം hb_vector_paint_linear_gradient (hb_paint_funcs_t *, ശൂന്യം *, hb_color_വരി_t *, ദശാംശം, ദശാംശം, ദശാംശം, ദശാംശം, ദശാംശം, ദശാംശം, ശൂന്യം *);
+സ്ഥിതം ശൂന്യം hb_vector_paint_radial_gradient (hb_paint_funcs_t *, ശൂന്യം *, hb_color_വരി_t *, ദശാംശം, ദശാംശം, ദശാംശം, ദശാംശം, ദശാംശം, ദശാംശം, ശൂന്യം *);
+സ്ഥിതം ശൂന്യം hb_vector_paint_sweep_gradient (hb_paint_funcs_t *, ശൂന്യം *, hb_color_വരി_t *, ദശാംശം, ദശാംശം, ദശാംശം, ദശാംശം, ശൂന്യം *);
+സ്ഥിതം ശൂന്യം hb_vector_paint_തള്ളുക_group (hb_paint_funcs_t *, ശൂന്യം *, ശൂന്യം *);
+സ്ഥിതം ശൂന്യം hb_vector_paint_എടുക്കുക_group (hb_paint_funcs_t *, ശൂന്യം *, hb_paint_composite_mode_t, ശൂന്യം *);
+സ്ഥിതം hb_bool_t hb_vector_paint_color_glyph (hb_paint_funcs_t *, ശൂന്യം *, hb_codepoint_t, hb_font_t *, ശൂന്യം *);
+സ്ഥിതം hb_bool_t
 hb_vector_paint_custom_palette_color (hb_paint_funcs_t *pfuncs HB_UNUSED,
-				      void *paint_data,
+				      ശൂന്യം *paint_data,
 				      unsigned color_index,
 				      hb_color_t *color,
-				      void *user_data HB_UNUSED)
+				      ശൂന്യം *user_data HB_UNUSED)
 {
   hb_vector_paint_t *paint = (hb_vector_paint_t *) paint_data;
-  if (!color)
-    return false;
+  എങ്കിൽ (!color)
+    തിരികെ അസത്യം;
 
   hb_color_t *value = nullptr;
-  if (!paint->custom_palette_colors.has (color_index, &value) || !value)
-    return false;
+  എങ്കിൽ (!paint->custom_palette_colors.has (color_index, &value) || !value)
+    തിരികെ അസത്യം;
   *color = *value;
-  return true;
+  തിരികെ സത്യം;
 }
 
-static inline void free_static_vector_paint_funcs ();
-static struct hb_vector_paint_funcs_lazy_loader_t
+സ്ഥിതം വരിയിൽ ശൂന്യം free_static_vector_paint_funcs ();
+സ്ഥിതം ഘടന hb_vector_paint_funcs_lazy_loader_t
   : hb_paint_funcs_lazy_loader_t<hb_vector_paint_funcs_lazy_loader_t>
 {
-  static hb_paint_funcs_t *create ()
+  സ്ഥിതം hb_paint_funcs_t *create ()
   {
     hb_paint_funcs_t *funcs = hb_paint_funcs_create ();
-    hb_paint_funcs_set_push_transform_func (funcs, (hb_paint_push_transform_func_t) hb_vector_paint_push_transform, nullptr, nullptr);
-    hb_paint_funcs_set_pop_transform_func (funcs, (hb_paint_pop_transform_func_t) hb_vector_paint_pop_transform, nullptr, nullptr);
+    hb_paint_funcs_set_തള്ളുക_transform_func (funcs, (hb_paint_തള്ളുക_transform_func_t) hb_vector_paint_തള്ളുക_transform, nullptr, nullptr);
+    hb_paint_funcs_set_എടുക്കുക_transform_func (funcs, (hb_paint_എടുക്കുക_transform_func_t) hb_vector_paint_എടുക്കുക_transform, nullptr, nullptr);
     hb_paint_funcs_set_fill_glyph_func (funcs, (hb_paint_fill_glyph_func_t) hb_vector_paint_fill_glyph, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_glyph_func (funcs, (hb_paint_push_clip_glyph_func_t) hb_vector_paint_push_clip_glyph, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_rectangle_func (funcs, (hb_paint_push_clip_rectangle_func_t) hb_vector_paint_push_clip_rectangle, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_path_start_func (funcs, (hb_paint_push_clip_path_start_func_t) hb_vector_paint_push_clip_path_start, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_path_end_func (funcs, (hb_paint_push_clip_path_end_func_t) hb_vector_paint_push_clip_path_end, nullptr, nullptr);
-    hb_paint_funcs_set_pop_clip_func (funcs, (hb_paint_pop_clip_func_t) hb_vector_paint_pop_clip, nullptr, nullptr);
+    hb_paint_funcs_set_തള്ളുക_clip_glyph_func (funcs, (hb_paint_തള്ളുക_clip_glyph_func_t) hb_vector_paint_തള്ളുക_clip_glyph, nullptr, nullptr);
+    hb_paint_funcs_set_തള്ളുക_clip_rectangle_func (funcs, (hb_paint_തള്ളുക_clip_rectangle_func_t) hb_vector_paint_തള്ളുക_clip_rectangle, nullptr, nullptr);
+    hb_paint_funcs_set_തള്ളുക_clip_path_start_func (funcs, (hb_paint_തള്ളുക_clip_path_start_func_t) hb_vector_paint_തള്ളുക_clip_path_start, nullptr, nullptr);
+    hb_paint_funcs_set_തള്ളുക_clip_path_end_func (funcs, (hb_paint_തള്ളുക_clip_path_end_func_t) hb_vector_paint_തള്ളുക_clip_path_end, nullptr, nullptr);
+    hb_paint_funcs_set_എടുക്കുക_clip_func (funcs, (hb_paint_എടുക്കുക_clip_func_t) hb_vector_paint_എടുക്കുക_clip, nullptr, nullptr);
     hb_paint_funcs_set_color_func (funcs, (hb_paint_color_func_t) hb_vector_paint_color, nullptr, nullptr);
     hb_paint_funcs_set_image_func (funcs, (hb_paint_image_func_t) hb_vector_paint_image, nullptr, nullptr);
     hb_paint_funcs_set_linear_gradient_func (funcs, (hb_paint_linear_gradient_func_t) hb_vector_paint_linear_gradient, nullptr, nullptr);
     hb_paint_funcs_set_radial_gradient_func (funcs, (hb_paint_radial_gradient_func_t) hb_vector_paint_radial_gradient, nullptr, nullptr);
     hb_paint_funcs_set_sweep_gradient_func (funcs, (hb_paint_sweep_gradient_func_t) hb_vector_paint_sweep_gradient, nullptr, nullptr);
-    hb_paint_funcs_set_push_group_func (funcs, (hb_paint_push_group_func_t) hb_vector_paint_push_group, nullptr, nullptr);
-    hb_paint_funcs_set_pop_group_func (funcs, (hb_paint_pop_group_func_t) hb_vector_paint_pop_group, nullptr, nullptr);
+    hb_paint_funcs_set_തള്ളുക_group_func (funcs, (hb_paint_തള്ളുക_group_func_t) hb_vector_paint_തള്ളുക_group, nullptr, nullptr);
+    hb_paint_funcs_set_എടുക്കുക_group_func (funcs, (hb_paint_എടുക്കുക_group_func_t) hb_vector_paint_എടുക്കുക_group, nullptr, nullptr);
     hb_paint_funcs_set_color_glyph_func (funcs, (hb_paint_color_glyph_func_t) hb_vector_paint_color_glyph, nullptr, nullptr);
     hb_paint_funcs_set_custom_palette_color_func (funcs, (hb_paint_custom_palette_color_func_t) hb_vector_paint_custom_palette_color, nullptr, nullptr);
     hb_paint_funcs_set_set_budget_func (funcs, hb_vector_paint_set_budget_callback, nullptr, nullptr);
@@ -335,11 +335,11 @@ static struct hb_vector_paint_funcs_lazy_loader_t
     hb_paint_funcs_set_get_budget_remaining_func (funcs, hb_vector_paint_get_budget_remaining_callback, nullptr, nullptr);
     hb_paint_funcs_make_immutable (funcs);
     hb_atexit (free_static_vector_paint_funcs);
-    return funcs;
+    തിരികെ funcs;
   }
 } static_vector_paint_funcs;
 
-static inline void
+സ്ഥിതം വരിയിൽ ശൂന്യം
 free_static_vector_paint_funcs ()
 {
   static_vector_paint_funcs.free_instance ();
@@ -348,31 +348,31 @@ free_static_vector_paint_funcs ()
 hb_paint_funcs_t *
 hb_vector_paint_svg_funcs_get ()
 {
-  return static_vector_paint_funcs.get_unconst ();
+  തിരികെ static_vector_paint_funcs.get_unconst ();
 }
 
 
-static void
-hb_vector_paint_push_transform (hb_paint_funcs_t *,
-                                void *paint_data,
-                                float xx, float yx,
-                                float xy, float yy,
-                                float dx, float dy,
-                                void *)
+സ്ഥിതം ശൂന്യം
+hb_vector_paint_തള്ളുക_transform (hb_paint_funcs_t *,
+                                ശൂന്യം *paint_data,
+                                ദശാംശം xx, ദശാംശം yx,
+                                ദശാംശം xy, ദശാംശം yy,
+                                ദശാംശം dx, ദശാംശം dy,
+                                ശൂന്യം *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  എങ്കിൽ (unlikely (!paint->ensure_initialized ()))
+    തിരികെ;
 
-  if (unlikely (paint->transform_group_overflow_depth))
+  എങ്കിൽ (unlikely (paint->transform_group_overflow_depth))
   {
     paint->transform_group_overflow_depth++;
-    return;
+    തിരികെ;
   }
-  if (unlikely (paint->transform_group_depth >= 64))
+  എങ്കിൽ (unlikely (paint->transform_group_depth >= 64))
   {
     paint->transform_group_overflow_depth = 1;
-    return;
+    തിരികെ;
   }
 
   hb_bool_t opened =
@@ -382,65 +382,65 @@ hb_vector_paint_push_transform (hb_paint_funcs_t *,
   paint->transform_group_open_mask = (paint->transform_group_open_mask << 1) | (opened ? 1ull : 0ull);
   paint->transform_group_depth++;
 
-  if (!opened)
-    return;
+  എങ്കിൽ (!opened)
+    തിരികെ;
 
   auto &body = paint->current_body ();
   unsigned sprec = paint->defs.scale_precision ();
   body.append_str ("<g transform=\"matrix(");
-  body.append_num (xx, sprec);
+  body.append_അക്കം (xx, sprec);
   body.append_c (',');
-  body.append_num (yx, sprec);
+  body.append_അക്കം (yx, sprec);
   body.append_c (',');
-  body.append_num (xy, sprec);
+  body.append_അക്കം (xy, sprec);
   body.append_c (',');
-  body.append_num (yy, sprec);
+  body.append_അക്കം (yy, sprec);
   body.append_c (',');
-  body.append_num (paint->sx (dx));
+  body.append_അക്കം (paint->sx (dx));
   body.append_c (',');
-  body.append_num (paint->sy (dy));
+  body.append_അക്കം (paint->sy (dy));
   body.append_str (")\">\n");
 }
 
-static void
-hb_vector_paint_pop_transform (hb_paint_funcs_t *,
-                               void *paint_data,
-                               void *)
+സ്ഥിതം ശൂന്യം
+hb_vector_paint_എടുക്കുക_transform (hb_paint_funcs_t *,
+                               ശൂന്യം *paint_data,
+                               ശൂന്യം *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
-  if (unlikely (paint->transform_group_overflow_depth))
+  എങ്കിൽ (unlikely (!paint->ensure_initialized ()))
+    തിരികെ;
+  എങ്കിൽ (unlikely (paint->transform_group_overflow_depth))
   {
     paint->transform_group_overflow_depth--;
-    return;
+    തിരികെ;
   }
-  if (!paint->transform_group_depth)
-    return;
+  എങ്കിൽ (!paint->transform_group_depth)
+    തിരികെ;
   paint->transform_group_depth--;
   hb_bool_t opened = !!(paint->transform_group_open_mask & 1ull);
   paint->transform_group_open_mask >>= 1;
-  if (opened)
+  എങ്കിൽ (opened)
     paint->current_body ().append_str ("</g>\n");
 }
 
-static void
+സ്ഥിതം ശൂന്യം
 hb_vector_paint_fill_glyph (hb_paint_funcs_t *,
-                            void *paint_data,
+                            ശൂന്യം *paint_data,
                             hb_codepoint_t glyph,
                             hb_font_t *font,
                             hb_bool_t,
                             hb_color_t color,
-                            void *)
+                            ശൂന്യം *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  എങ്കിൽ (unlikely (!paint->ensure_initialized ()))
+    തിരികെ;
 
   paint->path.clear ();
   /* Skip the outline extraction when the session work budget is
    * spent; an empty path keeps the document structure intact. */
-  if (likely (paint->budget_remaining >= 0))
+  എങ്കിൽ (likely (paint->budget_remaining >= 0))
   {
     hb_vector_path_sink_t sink = {&paint->path, paint->get_precision (),
 				 paint->x_scale_factor, paint->y_scale_factor,
@@ -452,28 +452,28 @@ hb_vector_paint_fill_glyph (hb_paint_funcs_t *,
   body.append_str ("<path d=\"");
   body.append_len (paint->path.arrayZ, paint->path.length);
   body.append_str ("\" fill=\"");
-  body.append_svg_color (color, true);
+  body.append_svg_color (color, സത്യം);
   body.append_str ("\"/>\n");
 }
 
-static void
-hb_vector_paint_push_clip_glyph (hb_paint_funcs_t *,
-                                 void *paint_data,
+സ്ഥിതം ശൂന്യം
+hb_vector_paint_തള്ളുക_clip_glyph (hb_paint_funcs_t *,
+                                 ശൂന്യം *paint_data,
                                  hb_codepoint_t glyph,
                                  hb_font_t *font,
-                                 void *)
+                                 ശൂന്യം *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  എങ്കിൽ (unlikely (!paint->ensure_initialized ()))
+    തിരികെ;
 
-  const char *pfx = paint->id_prefix;
+  സ്ഥിരം അക്ഷരം *pfx = paint->id_prefix;
   unsigned pfx_len = paint->id_prefix_length;
 
   paint->path.clear ();
   /* Skip the outline extraction when the session work budget is
    * spent; an empty clip path clips everything out. */
-  if (likely (paint->budget_remaining >= 0))
+  എങ്കിൽ (likely (paint->budget_remaining >= 0))
   {
     hb_vector_path_sink_t sink = {&paint->path, paint->get_precision (),
 				 paint->x_scale_factor, paint->y_scale_factor,
@@ -481,7 +481,7 @@ hb_vector_paint_push_clip_glyph (hb_paint_funcs_t *,
     hb_font_draw_glyph (font, glyph, hb_vector_svg_path_draw_funcs_get (), &sink);
   }
 
-  unsigned def_id = paint->path_def_count++;
+  unsigned def_id = paint->path_def_എണ്ണം++;
   paint->defs.append_str ("<path id=\"");
   paint->defs.append_len (pfx, pfx_len);
   paint->defs.append_c ('p');
@@ -506,18 +506,18 @@ hb_vector_paint_push_clip_glyph (hb_paint_funcs_t *,
   paint->current_body ().append_str (")\">\n");
 }
 
-static void
-hb_vector_paint_push_clip_rectangle (hb_paint_funcs_t *,
-                                     void *paint_data,
-                                     float xmin, float ymin,
-                                     float xmax, float ymax,
-                                     void *)
+സ്ഥിതം ശൂന്യം
+hb_vector_paint_തള്ളുക_clip_rectangle (hb_paint_funcs_t *,
+                                     ശൂന്യം *paint_data,
+                                     ദശാംശം xmin, ദശാംശം ymin,
+                                     ദശാംശം xmax, ദശാംശം ymax,
+                                     ശൂന്യം *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  എങ്കിൽ (unlikely (!paint->ensure_initialized ()))
+    തിരികെ;
 
-  const char *pfx = paint->id_prefix;
+  സ്ഥിരം അക്ഷരം *pfx = paint->id_prefix;
   unsigned pfx_len = paint->id_prefix_length;
   unsigned clip_id = paint->clip_rect_counter++;
   paint->defs.append_str ("<clipPath id=\"");
@@ -525,13 +525,13 @@ hb_vector_paint_push_clip_rectangle (hb_paint_funcs_t *,
   paint->defs.append_c ('c');
   paint->defs.append_unsigned (clip_id);
   paint->defs.append_str ("\"><rect x=\"");
-  paint->defs.append_num (paint->sx (xmin));
+  paint->defs.append_അക്കം (paint->sx (xmin));
   paint->defs.append_str ("\" y=\"");
-  paint->defs.append_num (paint->sy (ymin));
+  paint->defs.append_അക്കം (paint->sy (ymin));
   paint->defs.append_str ("\" width=\"");
-  paint->defs.append_num (paint->sx (xmax - xmin));
+  paint->defs.append_അക്കം (paint->sx (xmax - xmin));
   paint->defs.append_str ("\" height=\"");
-  paint->defs.append_num (paint->sy (ymax - ymin));
+  paint->defs.append_അക്കം (paint->sy (ymax - ymin));
   paint->defs.append_str ("\"/></clipPath>\n");
 
   paint->current_body ().append_str ("<g clip-path=\"url(#");
@@ -541,17 +541,17 @@ hb_vector_paint_push_clip_rectangle (hb_paint_funcs_t *,
   paint->current_body ().append_str (")\">\n");
 }
 
-static hb_draw_funcs_t *
-hb_vector_paint_push_clip_path_start (hb_paint_funcs_t *,
-                                      void *paint_data,
-                                      void **draw_data,
-                                      void *)
+സ്ഥിതം hb_draw_funcs_t *
+hb_vector_paint_തള്ളുക_clip_path_start (hb_paint_funcs_t *,
+                                      ശൂന്യം *paint_data,
+                                      ശൂന്യം **draw_data,
+                                      ശൂന്യം *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
+  എങ്കിൽ (unlikely (!paint->ensure_initialized ()))
   {
     *draw_data = nullptr;
-    return nullptr;
+    തിരികെ nullptr;
   }
 
   paint->path.clear ();
@@ -560,19 +560,19 @@ hb_vector_paint_push_clip_path_start (hb_paint_funcs_t *,
 			   paint->y_scale_factor,
 			   &paint->budget_remaining};
   *draw_data = &paint->clip_path_sink;
-  return hb_vector_svg_path_draw_funcs_get ();
+  തിരികെ hb_vector_svg_path_draw_funcs_get ();
 }
 
-static void
-hb_vector_paint_push_clip_path_end (hb_paint_funcs_t *,
-                                    void *paint_data,
-                                    void *)
+സ്ഥിതം ശൂന്യം
+hb_vector_paint_തള്ളുക_clip_path_end (hb_paint_funcs_t *,
+                                    ശൂന്യം *paint_data,
+                                    ശൂന്യം *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  എങ്കിൽ (unlikely (!paint->ensure_initialized ()))
+    തിരികെ;
 
-  const char *pfx = paint->id_prefix;
+  സ്ഥിരം അക്ഷരം *pfx = paint->id_prefix;
   unsigned pfx_len = paint->id_prefix_length;
   unsigned clip_id = paint->clip_path_counter++;
 
@@ -597,136 +597,136 @@ hb_vector_paint_push_clip_path_end (hb_paint_funcs_t *,
   paint->current_body ().append_str (")\">\n");
 }
 
-static void
-hb_vector_paint_pop_clip (hb_paint_funcs_t *,
-                          void *paint_data,
-                          void *)
+സ്ഥിതം ശൂന്യം
+hb_vector_paint_എടുക്കുക_clip (hb_paint_funcs_t *,
+                          ശൂന്യം *paint_data,
+                          ശൂന്യം *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  എങ്കിൽ (unlikely (!paint->ensure_initialized ()))
+    തിരികെ;
   paint->current_body ().append_str ("</g>\n");
 }
 
-static void
+സ്ഥിതം ശൂന്യം
 hb_vector_paint_color (hb_paint_funcs_t *,
-                       void *paint_data,
+                       ശൂന്യം *paint_data,
                        hb_bool_t,
                        hb_color_t color,
-                       void *)
+                       ശൂന്യം *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  എങ്കിൽ (unlikely (!paint->ensure_initialized ()))
+    തിരികെ;
 
   auto &body = paint->current_body ();
   body.append_str ("<rect x=\"-32767\" y=\"-32767\" width=\"65534\" height=\"65534\" fill=\"");
-  body.append_svg_color (color, true);
+  body.append_svg_color (color, സത്യം);
   body.append_str ("\"/>\n");
 }
 
-static hb_bool_t
+സ്ഥിതം hb_bool_t
 hb_vector_paint_image (hb_paint_funcs_t *,
-                       void *paint_data,
+                       ശൂന്യം *paint_data,
                        hb_blob_t *image,
                        unsigned width,
                        unsigned height,
                        hb_tag_t format,
-                       float slant HB_UNUSED,
+                       ദശാംശം slant HB_UNUSED,
                        hb_glyph_extents_t *extents,
-                       void *)
+                       ശൂന്യം *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return false;
+  എങ്കിൽ (unlikely (!paint->ensure_initialized ()))
+    തിരികെ അസത്യം;
 
   auto &body = paint->current_body ();
-  if (format == HB_TAG ('p','n','g',' '))
+  എങ്കിൽ (format == HB_TAG ('p','n','g',' '))
   {
-    if (!extents || !width || !height)
-      return false;
+    എങ്കിൽ (!extents || !width || !height)
+      തിരികെ അസത്യം;
 
     unsigned len = 0;
-    const char *png_data = hb_blob_get_data (image, &len);
-    if (!png_data || !len)
-      return false;
+    സ്ഥിരം അക്ഷരം *png_data = hb_blob_get_data (image, &len);
+    എങ്കിൽ (!png_data || !len)
+      തിരികെ അസത്യം;
 
     body.append_str ("<g transform=\"translate(");
-    body.append_num (paint->sx ((float) extents->x_bearing));
+    body.append_അക്കം (paint->sx ((ദശാംശം) extents->x_bearing));
     body.append_c (',');
-    body.append_num (paint->sy ((float) extents->y_bearing));
+    body.append_അക്കം (paint->sy ((ദശാംശം) extents->y_bearing));
     body.append_str (") scale(");
-    body.append_num (paint->sx ((float) extents->width) / width);
+    body.append_അക്കം (paint->sx ((ദശാംശം) extents->width) / width);
     body.append_c (',');
-    body.append_num (paint->sy ((float) extents->height) / height);
+    body.append_അക്കം (paint->sy ((ദശാംശം) extents->height) / height);
     body.append_str (")\">\n");
 
     body.append_str ("<image href=\"data:image/png;base64,");
-    body.append_base64 ((const uint8_t *) png_data, len);
+    body.append_base64 ((സ്ഥിരം uint8_t *) png_data, len);
     body.append_str ("\" width=\"");
-    body.append_num ((float) width);
+    body.append_അക്കം ((ദശാംശം) width);
     body.append_str ("\" height=\"");
-    body.append_num ((float) height);
+    body.append_അക്കം ((ദശാംശം) height);
     body.append_str ("\"/>\n</g>\n");
 
-    return true;
+    തിരികെ സത്യം;
   }
 
-  return false;
+  തിരികെ അസത്യം;
 }
 
-static void
+സ്ഥിതം ശൂന്യം
 hb_vector_paint_linear_gradient (hb_paint_funcs_t *,
-                                 void *paint_data,
-                                 hb_color_line_t *color_line,
-                                 float x0, float y0,
-                                 float x1, float y1,
-                                 float x2, float y2,
-                                 void *)
+                                 ശൂന്യം *paint_data,
+                                 hb_color_വരി_t *color_വരി,
+                                 ദശാംശം x0, ദശാംശം y0,
+                                 ദശാംശം x1, ദശാംശം y1,
+                                 ദശാംശം x2, ദശാംശം y2,
+                                 ശൂന്യം *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  എങ്കിൽ (unlikely (!paint->ensure_initialized ()))
+    തിരികെ;
 
-  if (!paint->fetch_color_stops (color_line))
-    return;
+  എങ്കിൽ (!paint->fetch_color_stops (color_വരി))
+    തിരികെ;
   hb_vector_t<hb_color_stop_t> &stops = paint->color_stops_scratch;
 
   /* Sort + rescale stops to [0, 1]; shift the gradient axis
    * by the original (mn, mx) so the visible gradient stays
    * put.  SVG <stop offset="..."> requires offsets in [0,1];
    * out-of-range stops would otherwise be silently clamped. */
-  float mn, mx;
-  hb_paint_normalize_color_line (stops.arrayZ, stops.length, &mn, &mx);
+  ദശാംശം mn, mx;
+  hb_paint_normalize_color_വരി (stops.arrayZ, stops.length, &mn, &mx);
 
-  const char *pfx = paint->id_prefix;
+  സ്ഥിരം അക്ഷരം *pfx = paint->id_prefix;
   unsigned pfx_len = paint->id_prefix_length;
   unsigned grad_id = paint->gradient_counter++;
 
   /* Reduce COLR's 3-anchor (P0, P1, P2) to SVG's 2-point
    * (start, end) gradient. */
-  float lx0, ly0, lx1, ly1;
+  ദശാംശം lx0, ly0, lx1, ly1;
   hb_paint_reduce_linear_anchors (x0, y0, x1, y1, x2, y2,
 				  &lx0, &ly0, &lx1, &ly1);
-  float gx0 = lx0 + mn * (lx1 - lx0);
-  float gy0 = ly0 + mn * (ly1 - ly0);
-  float gx1 = lx0 + mx * (lx1 - lx0);
-  float gy1 = ly0 + mx * (ly1 - ly0);
+  ദശാംശം gx0 = lx0 + mn * (lx1 - lx0);
+  ദശാംശം gy0 = ly0 + mn * (ly1 - ly0);
+  ദശാംശം gx1 = lx0 + mx * (lx1 - lx0);
+  ദശാംശം gy1 = ly0 + mx * (ly1 - ly0);
 
   paint->defs.append_str ("<linearGradient id=\"");
   paint->defs.append_len (pfx, pfx_len);
   paint->defs.append_str ("gr");
   paint->defs.append_unsigned (grad_id);
   paint->defs.append_str ("\" gradientUnits=\"userSpaceOnUse\" x1=\"");
-  paint->defs.append_num (paint->sx (gx0));
+  paint->defs.append_അക്കം (paint->sx (gx0));
   paint->defs.append_str ("\" y1=\"");
-  paint->defs.append_num (paint->sy (gy0));
+  paint->defs.append_അക്കം (paint->sy (gy0));
   paint->defs.append_str ("\" x2=\"");
-  paint->defs.append_num (paint->sx (gx1));
+  paint->defs.append_അക്കം (paint->sx (gx1));
   paint->defs.append_str ("\" y2=\"");
-  paint->defs.append_num (paint->sy (gy1));
+  paint->defs.append_അക്കം (paint->sy (gy1));
   paint->defs.append_str ("\" spreadMethod=\"");
-  paint->defs.append_str (hb_vector_svg_extend_mode_str (hb_color_line_get_extend (color_line)));
+  paint->defs.append_str (hb_vector_svg_extend_mode_str (hb_color_വരി_get_extend (color_വരി)));
   paint->defs.append_str ("\">\n");
   hb_vector_svg_emit_color_stops (paint, &paint->defs, &stops);
   paint->defs.append_str ("</linearGradient>\n");
@@ -739,35 +739,35 @@ hb_vector_paint_linear_gradient (hb_paint_funcs_t *,
   paint->current_body ().append_str (")\"/>\n");
 }
 
-static void
+സ്ഥിതം ശൂന്യം
 hb_vector_paint_radial_gradient (hb_paint_funcs_t *,
-                                 void *paint_data,
-                                 hb_color_line_t *color_line,
-                                 float x0, float y0, float r0,
-                                 float x1, float y1, float r1,
-                                 void *)
+                                 ശൂന്യം *paint_data,
+                                 hb_color_വരി_t *color_വരി,
+                                 ദശാംശം x0, ദശാംശം y0, ദശാംശം r0,
+                                 ദശാംശം x1, ദശാംശം y1, ദശാംശം r1,
+                                 ശൂന്യം *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  എങ്കിൽ (unlikely (!paint->ensure_initialized ()))
+    തിരികെ;
 
-  if (!paint->fetch_color_stops (color_line))
-    return;
+  എങ്കിൽ (!paint->fetch_color_stops (color_വരി))
+    തിരികെ;
   hb_vector_t<hb_color_stop_t> &stops = paint->color_stops_scratch;
 
-  float mn, mx;
-  hb_paint_normalize_color_line (stops.arrayZ, stops.length, &mn, &mx);
+  ദശാംശം mn, mx;
+  hb_paint_normalize_color_വരി (stops.arrayZ, stops.length, &mn, &mx);
 
   /* Shift centers + radii by (mn, mx) along the gradient axis
    * to compensate for rescaling stops to [0, 1]. */
-  float gx0 = x0 + mn * (x1 - x0);
-  float gy0 = y0 + mn * (y1 - y0);
-  float gr0 = r0 + mn * (r1 - r0);
-  float gx1 = x0 + mx * (x1 - x0);
-  float gy1 = y0 + mx * (y1 - y0);
-  float gr1 = r0 + mx * (r1 - r0);
+  ദശാംശം gx0 = x0 + mn * (x1 - x0);
+  ദശാംശം gy0 = y0 + mn * (y1 - y0);
+  ദശാംശം gr0 = r0 + mn * (r1 - r0);
+  ദശാംശം gx1 = x0 + mx * (x1 - x0);
+  ദശാംശം gy1 = y0 + mx * (y1 - y0);
+  ദശാംശം gr1 = r0 + mx * (r1 - r0);
 
-  const char *pfx = paint->id_prefix;
+  സ്ഥിരം അക്ഷരം *pfx = paint->id_prefix;
   unsigned pfx_len = paint->id_prefix_length;
   unsigned grad_id = paint->gradient_counter++;
 
@@ -776,22 +776,22 @@ hb_vector_paint_radial_gradient (hb_paint_funcs_t *,
   paint->defs.append_str ("gr");
   paint->defs.append_unsigned (grad_id);
   paint->defs.append_str ("\" gradientUnits=\"userSpaceOnUse\" cx=\"");
-  paint->defs.append_num (paint->sx (gx1));
+  paint->defs.append_അക്കം (paint->sx (gx1));
   paint->defs.append_str ("\" cy=\"");
-  paint->defs.append_num (paint->sy (gy1));
+  paint->defs.append_അക്കം (paint->sy (gy1));
   paint->defs.append_str ("\" r=\"");
-  paint->defs.append_num (paint->sx (gr1));
+  paint->defs.append_അക്കം (paint->sx (gr1));
   paint->defs.append_str ("\" fx=\"");
-  paint->defs.append_num (paint->sx (gx0));
+  paint->defs.append_അക്കം (paint->sx (gx0));
   paint->defs.append_str ("\" fy=\"");
-  paint->defs.append_num (paint->sy (gy0));
-  if (gr0 > 0)
+  paint->defs.append_അക്കം (paint->sy (gy0));
+  എങ്കിൽ (gr0 > 0)
   {
     paint->defs.append_str ("\" fr=\"");
-    paint->defs.append_num (paint->sx (gr0));
+    paint->defs.append_അക്കം (paint->sx (gr0));
   }
   paint->defs.append_str ("\" spreadMethod=\"");
-  paint->defs.append_str (hb_vector_svg_extend_mode_str (hb_color_line_get_extend (color_line)));
+  paint->defs.append_str (hb_vector_svg_extend_mode_str (hb_color_വരി_get_extend (color_വരി)));
   paint->defs.append_str ("\">\n");
   hb_vector_svg_emit_color_stops (paint, &paint->defs, &stops);
   paint->defs.append_str ("</radialGradient>\n");
@@ -804,69 +804,69 @@ hb_vector_paint_radial_gradient (hb_paint_funcs_t *,
   paint->current_body ().append_str (")\"/>\n");
 }
 
-static void
+സ്ഥിതം ശൂന്യം
 hb_vector_paint_sweep_gradient (hb_paint_funcs_t *,
-                                void *paint_data,
-                                hb_color_line_t *color_line,
-                                float cx, float cy,
-                                float start_angle, float end_angle,
-                                void *)
+                                ശൂന്യം *paint_data,
+                                hb_color_വരി_t *color_വരി,
+                                ദശാംശം cx, ദശാംശം cy,
+                                ദശാംശം start_angle, ദശാംശം end_angle,
+                                ശൂന്യം *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
+  എങ്കിൽ (unlikely (!paint->ensure_initialized ()))
+    തിരികെ;
 
-  if (!paint->fetch_color_stops (color_line))
-    return;
+  എങ്കിൽ (!paint->fetch_color_stops (color_വരി))
+    തിരികെ;
   hb_vector_t<hb_color_stop_t> &stops = paint->color_stops_scratch;
 
-  float mn, mx;
-  hb_paint_normalize_color_line (stops.arrayZ, stops.length, &mn, &mx);
+  ദശാംശം mn, mx;
+  hb_paint_normalize_color_വരി (stops.arrayZ, stops.length, &mn, &mx);
 
   /* Shift the angle range to compensate for rescaling stops
    * to [0, 1]. */
-  float ga0 = start_angle + mn * (end_angle - start_angle);
-  float ga1 = start_angle + mx * (end_angle - start_angle);
+  ദശാംശം ga0 = start_angle + mn * (end_angle - start_angle);
+  ദശാംശം ga1 = start_angle + mx * (end_angle - start_angle);
 
   hb_vector_svg_sweep_ctx_t ctx {
     &paint->current_body (), paint->get_precision (), paint->sx (cx), paint->sy (cy), 32767.f
   };
   hb_paint_sweep_gradient_tiles (stops.arrayZ, stops.length,
-				 hb_color_line_get_extend (color_line),
+				 hb_color_വരി_get_extend (color_വരി),
 				 ga0, ga1,
 				 hb_vector_svg_sweep_emit_patch,
 				 &ctx);
 }
 
-static void
-hb_vector_paint_push_group (hb_paint_funcs_t *,
-                            void *paint_data,
-                            void *)
+സ്ഥിതം ശൂന്യം
+hb_vector_paint_തള്ളുക_group (hb_paint_funcs_t *,
+                            ശൂന്യം *paint_data,
+                            ശൂന്യം *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
-  if (unlikely (!paint->group_stack.push_or_fail (hb_vector_buf_t {})))
-    return;
+  എങ്കിൽ (unlikely (!paint->ensure_initialized ()))
+    തിരികെ;
+  എങ്കിൽ (unlikely (!paint->group_അട്ടി.തള്ളുക_or_fail (hb_vector_buf_t {})))
+    തിരികെ;
 }
 
-static void
-hb_vector_paint_pop_group (hb_paint_funcs_t *,
-                           void *paint_data,
+സ്ഥിതം ശൂന്യം
+hb_vector_paint_എടുക്കുക_group (hb_paint_funcs_t *,
+                           ശൂന്യം *paint_data,
                            hb_paint_composite_mode_t mode,
-                           void *)
+                           ശൂന്യം *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return;
-  if (paint->group_stack.length < 2)
-    return;
+  എങ്കിൽ (unlikely (!paint->ensure_initialized ()))
+    തിരികെ;
+  എങ്കിൽ (paint->group_അട്ടി.length < 2)
+    തിരികെ;
 
-  hb_vector_buf_t group = paint->group_stack.pop ();
+  hb_vector_buf_t group = paint->group_അട്ടി.എടുക്കുക ();
   auto &body = paint->current_body ();
 
-  const char *blend = hb_vector_svg_composite_mode_str (mode);
-  if (blend)
+  സ്ഥിരം അക്ഷരം *blend = hb_vector_svg_composite_mode_str (mode);
+  എങ്കിൽ (blend)
   {
     body.append_str ("<g style=\"mix-blend-mode:");
     body.append_str (blend);
@@ -874,24 +874,24 @@ hb_vector_paint_pop_group (hb_paint_funcs_t *,
     body.append_len (group.arrayZ, group.length);
     body.append_str ("</g>\n");
   }
-  else
+  അല്ലെങ്കിൽ
     body.append_len (group.arrayZ, group.length);
 }
 
-static hb_bool_t
+സ്ഥിതം hb_bool_t
 hb_vector_paint_color_glyph (hb_paint_funcs_t *,
-                             void *paint_data,
+                             ശൂന്യം *paint_data,
                              hb_codepoint_t glyph,
                              hb_font_t *font,
-                             void *)
+                             ശൂന്യം *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
-  if (unlikely (!paint->ensure_initialized ()))
-    return false;
-  if (unlikely (paint->color_glyph_depth >= HB_MAX_NESTING_LEVEL))
-    return false;
-  if (unlikely (hb_set_has (paint->active_color_glyphs, glyph)))
-    return false;
+  എങ്കിൽ (unlikely (!paint->ensure_initialized ()))
+    തിരികെ അസത്യം;
+  എങ്കിൽ (unlikely (paint->color_glyph_depth >= HB_MAX_NESTING_LEVEL))
+    തിരികെ അസത്യം;
+  എങ്കിൽ (unlikely (hb_set_has (paint->active_color_glyphs, glyph)))
+    തിരികെ അസത്യം;
 
   paint->color_glyph_depth++;
   hb_set_add (paint->active_color_glyphs, glyph);
@@ -903,7 +903,7 @@ hb_vector_paint_color_glyph (hb_paint_funcs_t *,
 		       paint->foreground);
   hb_set_del (paint->active_color_glyphs, glyph);
   paint->color_glyph_depth--;
-  return true;
+  തിരികെ സത്യം;
 }
 
 
@@ -912,53 +912,53 @@ hb_vector_paint_color_glyph (hb_paint_funcs_t *,
 hb_blob_t *
 hb_vector_paint_render_svg (hb_vector_paint_t *paint)
 {
-  if (!paint->has_extents)
-    return nullptr;
+  എങ്കിൽ (!paint->has_extents)
+    തിരികെ nullptr;
 
-  if (unlikely (!paint->ensure_initialized ()))
-    return nullptr;
+  എങ്കിൽ (unlikely (!paint->ensure_initialized ()))
+    തിരികെ nullptr;
 
   hb_vector_buf_t out;
   hb_buf_recover_recycled (paint->recycled_blob, &out);
   unsigned estimated = paint->defs.length +
-		       paint->group_stack.arrayZ[0].length +
+		       paint->group_അട്ടി.arrayZ[0].length +
 		       320;
   out.alloc (estimated);
-  float vb_x = paint->extents.x;
-  float vb_y = -(paint->extents.y + paint->extents.height);
-  float vb_w = paint->extents.width;
-  float vb_h = paint->extents.height;
+  ദശാംശം vb_x = paint->extents.x;
+  ദശാംശം vb_y = -(paint->extents.y + paint->extents.height);
+  ദശാംശം vb_w = paint->extents.width;
+  ദശാംശം vb_h = paint->extents.height;
   out.append_str ("<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"");
-  out.append_num (vb_x);
+  out.append_അക്കം (vb_x);
   out.append_c (' ');
-  out.append_num (vb_y);
+  out.append_അക്കം (vb_y);
   out.append_c (' ');
-  out.append_num (vb_w);
+  out.append_അക്കം (vb_w);
   out.append_c (' ');
-  out.append_num (vb_h);
+  out.append_അക്കം (vb_h);
   out.append_str ("\" width=\"");
-  out.append_num (vb_w);
+  out.append_അക്കം (vb_w);
   out.append_str ("\" height=\"");
-  out.append_num (vb_h);
+  out.append_അക്കം (vb_h);
   out.append_str ("\">\n");
 
-  if (paint->defs.length)
+  എങ്കിൽ (paint->defs.length)
   {
     out.append_str ("<defs>\n");
     out.append_len (paint->defs.arrayZ, paint->defs.length);
     out.append_str ("</defs>\n");
   }
 
-  if (hb_color_get_alpha (paint->background))
+  എങ്കിൽ (hb_color_get_alpha (paint->background))
   {
     out.append_str ("<rect x=\"");
-    out.append_num (vb_x);
+    out.append_അക്കം (vb_x);
     out.append_str ("\" y=\"");
-    out.append_num (vb_y);
+    out.append_അക്കം (vb_y);
     out.append_str ("\" width=\"");
-    out.append_num (vb_w);
+    out.append_അക്കം (vb_w);
     out.append_str ("\" height=\"");
-    out.append_num (vb_h);
+    out.append_അക്കം (vb_h);
     out.append_str ("\" fill=\"rgb(");
     out.append_unsigned (hb_color_get_red (paint->background));
     out.append_c (',');
@@ -966,22 +966,22 @@ hb_vector_paint_render_svg (hb_vector_paint_t *paint)
     out.append_c (',');
     out.append_unsigned (hb_color_get_blue (paint->background));
     out.append_str (")\"");
-    if (hb_color_get_alpha (paint->background) < 255)
+    എങ്കിൽ (hb_color_get_alpha (paint->background) < 255)
     {
       out.append_str (" fill-opacity=\"");
-      out.append_num (hb_color_get_alpha (paint->background) / 255.f, 4);
+      out.append_അക്കം (hb_color_get_alpha (paint->background) / 255.f, 4);
       out.append_c ('"');
     }
     out.append_str ("/>\n");
   }
 
   out.append_str ("<g transform=\"scale(1,-1)\">\n");
-  out.append_len (paint->group_stack.arrayZ[0].arrayZ, paint->group_stack.arrayZ[0].length);
+  out.append_len (paint->group_അട്ടി.arrayZ[0].arrayZ, paint->group_അട്ടി.arrayZ[0].length);
   out.append_str ("</g>\n");
 
   out.append_str ("</svg>\n");
 
   hb_blob_t *blob = hb_buf_blob_from (&paint->recycled_blob, &out);
 
-  return blob;
+  തിരികെ blob;
 }

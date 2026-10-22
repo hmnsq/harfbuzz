@@ -22,15 +22,15 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#അന്തര്ഭാവ "hb.hh"
 
 #ifndef HB_NO_OT_FETCH
 
-#include "hb-ot.h"
+#അന്തര്ഭാവ "hb-ot.h"
 
-#include "hb-ot-head-table.hh"
-#include "hb-ot-os2-table.hh"
-#include "hb-ot-post-table.hh"
+#അന്തര്ഭാവ "hb-ot-head-table.hh"
+#അന്തര്ഭാവ "hb-ot-os2-table.hh"
+#അന്തര്ഭാവ "hb-ot-post-table.hh"
 
 /**
  * SECTION:hb-ot-fetch
@@ -61,19 +61,19 @@ uint32_t
 hb_ot_fetch_bits (hb_face_t        *face,
 		hb_ot_bits_tag_t  tag)
 {
-  switch ((unsigned) tag)
+  തിരഞ്ഞെടുപ്പ് ((unsigned) tag)
   {
-  case HB_OT_BITS_TAG_FS_TYPE:		 return face->table.OS2->fsType;
-  case HB_OT_BITS_TAG_FS_SELECTION:	 return face->table.OS2->fsSelection;
-  case HB_OT_BITS_TAG_MAC_STYLE:	 return face->table.head->get_mac_style ();
-  case HB_OT_BITS_TAG_IS_FIXED_PITCH:	 return face->table.post->table->isFixedPitch;
-  case HB_OT_BITS_TAG_UNICODE_RANGE_1:	 return face->table.OS2->ulUnicodeRange[0];
-  case HB_OT_BITS_TAG_UNICODE_RANGE_2:	 return face->table.OS2->ulUnicodeRange[1];
-  case HB_OT_BITS_TAG_UNICODE_RANGE_3:	 return face->table.OS2->ulUnicodeRange[2];
-  case HB_OT_BITS_TAG_UNICODE_RANGE_4:	 return face->table.OS2->ulUnicodeRange[3];
-  case HB_OT_BITS_TAG_CODE_PAGE_RANGE_1: return face->table.OS2->v1 ().ulCodePageRange1;
-  case HB_OT_BITS_TAG_CODE_PAGE_RANGE_2: return face->table.OS2->v1 ().ulCodePageRange2;
-  default:				 return 0;
+  അവസ്ഥ HB_OT_BITS_TAG_FS_TYPE:		 തിരികെ face->table.OS2->fsType;
+  അവസ്ഥ HB_OT_BITS_TAG_FS_SELECTION:	 തിരികെ face->table.OS2->fsSelection;
+  അവസ്ഥ HB_OT_BITS_TAG_MAC_STYLE:	 തിരികെ face->table.head->get_mac_style ();
+  അവസ്ഥ HB_OT_BITS_TAG_IS_FIXED_PITCH:	 തിരികെ face->table.post->table->isFixedPitch;
+  അവസ്ഥ HB_OT_BITS_TAG_UNICODE_RANGE_1:	 തിരികെ face->table.OS2->ulUnicodeRange[0];
+  അവസ്ഥ HB_OT_BITS_TAG_UNICODE_RANGE_2:	 തിരികെ face->table.OS2->ulUnicodeRange[1];
+  അവസ്ഥ HB_OT_BITS_TAG_UNICODE_RANGE_3:	 തിരികെ face->table.OS2->ulUnicodeRange[2];
+  അവസ്ഥ HB_OT_BITS_TAG_UNICODE_RANGE_4:	 തിരികെ face->table.OS2->ulUnicodeRange[3];
+  അവസ്ഥ HB_OT_BITS_TAG_CODE_PAGE_RANGE_1: തിരികെ face->table.OS2->v1 ().ulCodePageRange1;
+  അവസ്ഥ HB_OT_BITS_TAG_CODE_PAGE_RANGE_2: തിരികെ face->table.OS2->v1 ().ulCodePageRange2;
+  സ്ഥിരസ്ഥിതി:				 തിരികെ 0;
   }
 }
 
@@ -89,16 +89,16 @@ hb_ot_fetch_bits (hb_face_t        *face,
  * Since: 14.3.0
  **/
 int32_t
-hb_ot_fetch_number (hb_face_t          *face,
-		  hb_ot_number_tag_t  tag)
+hb_ot_fetch_സംഖ്യ (hb_face_t          *face,
+		  hb_ot_സംഖ്യ_tag_t  tag)
 {
-  switch ((unsigned) tag)
+  തിരഞ്ഞെടുപ്പ് ((unsigned) tag)
   {
-  case HB_OT_NUMBER_TAG_FONT_X_MIN: return face->table.head->xMin;
-  case HB_OT_NUMBER_TAG_FONT_Y_MIN: return face->table.head->yMin;
-  case HB_OT_NUMBER_TAG_FONT_X_MAX: return face->table.head->xMax;
-  case HB_OT_NUMBER_TAG_FONT_Y_MAX: return face->table.head->yMax;
-  default:		       return 0;
+  അവസ്ഥ HB_OT_സംഖ്യ_TAG_FONT_X_MIN: തിരികെ face->table.head->xMin;
+  അവസ്ഥ HB_OT_സംഖ്യ_TAG_FONT_Y_MIN: തിരികെ face->table.head->yMin;
+  അവസ്ഥ HB_OT_സംഖ്യ_TAG_FONT_X_MAX: തിരികെ face->table.head->xMax;
+  അവസ്ഥ HB_OT_സംഖ്യ_TAG_FONT_Y_MAX: തിരികെ face->table.head->yMax;
+  സ്ഥിരസ്ഥിതി:		       തിരികെ 0;
   }
 }
 

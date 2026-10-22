@@ -1,120 +1,120 @@
 #ifndef OT_LAYOUT_GSUB_LIGATURE_HH
 #define OT_LAYOUT_GSUB_LIGATURE_HH
 
-#include "Common.hh"
+#അന്തര്ഭാവ "Common.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+നാമാകാശ OT {
+നാമാകാശ Layout {
+നാമാകാശ GSUB_impl {
 
 template <typename Types>
-struct Ligature
+ഘടന Ligature
 {
-  public:
+  പൊതു:
   typename Types::HBGlyphID
 		ligGlyph;               /* GlyphID of ligature to substitute */
   HeadlessArray16Of<typename Types::HBGlyphID>
 		component;              /* Array of component GlyphIDs--start
                                          * with the second  component--ordered
                                          * in writing direction */
-  public:
+  പൊതു:
   DEFINE_SIZE_ARRAY (Types::size + 2, component);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ഇത്);
     return_trace (ligGlyph.sanitize (c) && component.sanitize (c));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
-  { return hb_all (component, glyphs); }
+  തർക്കം intersects (സ്ഥിരം hb_set_t *glyphs) സ്ഥിരം
+  { തിരികെ hb_all (component, glyphs); }
 
-  bool intersects_lig_glyph (const hb_set_t *glyphs) const
-  { return glyphs->has(ligGlyph); }
+  തർക്കം intersects_lig_glyph (സ്ഥിരം hb_set_t *glyphs) സ്ഥിരം
+  { തിരികെ glyphs->has(ligGlyph); }
 
-  void closure (hb_closure_context_t *c) const
+  ശൂന്യം closure (hb_closure_context_t *c) സ്ഥിരം
   {
-    if (!intersects (c->glyphs)) return;
+    എങ്കിൽ (!intersects (c->glyphs)) തിരികെ;
     c->output->add (ligGlyph);
   }
 
-  void depend (hb_depend_context_t *c, hb_codepoint_t first) const
+  ശൂന്യം depend (hb_depend_context_t *c, hb_codepoint_t first) സ്ഥിരം
   {
     // Build the complete ligature set upfront before adding any edges
     hb_set_t complete_ligset;
     complete_ligset.add (first);
     + hb_iter (component) | hb_sink (complete_ligset);
-    if (unlikely (complete_ligset.in_error ()))
+    എങ്കിൽ (unlikely (complete_ligset.in_error ()))
     {
       c->depend_data->fail ();
-      return;
+      തിരികെ;
     }
 
-    bool ligset_created;
+    തർക്കം ligset_created;
     hb_codepoint_t ligset_idx = c->depend_data->find_or_create_set (complete_ligset,
                                                                     &ligset_created);
-    if (unlikely (ligset_idx == HB_CODEPOINT_INVALID))
-      return;
+    എങ്കിൽ (unlikely (ligset_idx == HB_CODEPOINT_INVALID))
+      തിരികെ;
 
     // Track whether any edge using this ligset_idx was actually added
-    bool any_added = false;
+    തർക്കം any_added = അസത്യം;
 
     // Now add one edge for each glyph in the complete, immutable set
     + hb_iter (complete_ligset)
     | hb_apply ([&] (hb_codepoint_t gid) {
-        if (c->depend_data->add_gsub_lookup (gid, c->lookup_index, ligGlyph, ligset_idx))
-          any_added = true;
+        എങ്കിൽ (c->depend_data->add_gsub_lookup (gid, c->lookup_index, ligGlyph, ligset_idx))
+          any_added = സത്യം;
       })
     ;
 
     // If no edges were added, a newly allocated set is unused - free it for reuse
-    if (!any_added && ligset_created)
+    എങ്കിൽ (!any_added && ligset_created)
       c->depend_data->discard_set (ligset_idx);
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  ശൂന്യം collect_glyphs (hb_collect_glyphs_context_t *c) സ്ഥിരം
   {
-    c->input->add_array (component.arrayZ, component.get_length ());
+    c->നിവേശം->add_array (component.arrayZ, component.get_length ());
     c->output->add (ligGlyph);
   }
 
   template <typename set_t>
-  void collect_second (set_t &s) const
+  ശൂന്യം collect_second (set_t &s) സ്ഥിരം
   {
-    if (unlikely (!component.get_length ()))
+    എങ്കിൽ (unlikely (!component.get_length ()))
     {
       // A ligature without any components. Anything matches.
       s = set_t::full ();
-      return;
+      തിരികെ;
     }
     s.add (component.arrayZ[0]);
   }
 
-  bool would_apply (hb_would_apply_context_t *c) const
+  തർക്കം would_apply (hb_would_apply_context_t *c) സ്ഥിരം
   {
-    if (c->len != component.lenP1)
-      return false;
+    എങ്കിൽ (c->len != component.lenP1)
+      തിരികെ അസത്യം;
 
-    for (unsigned int i = 1; i < c->len; i++)
-      if (likely (c->glyphs[i] != component[i]))
-        return false;
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 1; i < c->len; i++)
+      എങ്കിൽ (likely (c->glyphs[i] != component[i]))
+        തിരികെ അസത്യം;
 
-    return true;
+    തിരികെ സത്യം;
   }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  തർക്കം apply (hb_ot_apply_context_t *c) സ്ഥിരം
   {
-    TRACE_APPLY (this);
-    unsigned int count = component.lenP1;
+    TRACE_APPLY (ഇത്);
+    unsigned പൂർണ്ണസംഖ്യ എണ്ണം = component.lenP1;
 
-    if (unlikely (!count)) return_trace (false);
+    എങ്കിൽ (unlikely (!എണ്ണം)) return_trace (അസത്യം);
 
     /* Special-case to make it in-place and not consider this
      * as a "ligated" substitution. */
-    if (unlikely (count == 1))
+    എങ്കിൽ (unlikely (എണ്ണം == 1))
     {
 
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      എങ്കിൽ (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
       {
 	c->buffer->sync_so_far ();
 	c->buffer->message (c->font,
@@ -124,49 +124,49 @@ struct Ligature
 
       c->replace_glyph (ligGlyph);
 
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      എങ്കിൽ (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
       {
 	c->buffer->message (c->font,
 			    "replaced glyph at %u (ligature substitution)",
 			    c->buffer->idx - 1u);
       }
 
-      return_trace (true);
+      return_trace (സത്യം);
     }
 
-    unsigned int total_component_count = 0;
+    unsigned പൂർണ്ണസംഖ്യ total_component_എണ്ണം = 0;
 
-    if (unlikely (count > HB_MAX_CONTEXT_LENGTH)) return false;
-    unsigned int match_end = 0;
+    എങ്കിൽ (unlikely (എണ്ണം > HB_MAX_CONTEXT_LENGTH)) തിരികെ അസത്യം;
+    unsigned പൂർണ്ണസംഖ്യ match_end = 0;
 
-    if (likely (!match_input (c, count,
+    എങ്കിൽ (likely (!match_നിവേശം (c, എണ്ണം,
                               &component[1],
                               match_glyph,
                               nullptr,
                               &match_end,
-                              &total_component_count)))
+                              &total_component_എണ്ണം)))
     {
       c->buffer->unsafe_to_concat (c->buffer->idx, match_end);
-      return_trace (false);
+      return_trace (അസത്യം);
     }
 
     unsigned pos = 0;
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    എങ്കിൽ (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
       unsigned delta = c->buffer->sync_so_far ();
 
       pos = c->buffer->idx;
 
-      char buf[HB_MAX_CONTEXT_LENGTH * 16] = {0};
-      char *p = buf;
+      അക്ഷരം buf[HB_MAX_CONTEXT_LENGTH * 16] = {0};
+      അക്ഷരം *p = buf;
 
       match_end += delta;
-      for (unsigned i = 0; i < count; i++)
+      വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++)
       {
 	c->match_positions[i] += delta;
-	if (i)
+	എങ്കിൽ (i)
 	  *p++ = ',';
-	snprintf (p, sizeof(buf) - (p - buf), "%u", c->match_positions[i]);
+	snprintf (p, വലുപ്പം(buf) - (p - buf), "%u", c->match_positions[i]);
 	p += strlen(p);
       }
 
@@ -175,13 +175,13 @@ struct Ligature
 			  buf);
     }
 
-    ligate_input (c,
-                  count,
+    ligate_നിവേശം (c,
+                  എണ്ണം,
                   match_end,
                   ligGlyph,
-                  total_component_count);
+                  total_component_എണ്ണം);
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    എങ്കിൽ (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
       c->buffer->sync_so_far ();
       c->buffer->message (c->font,
@@ -189,29 +189,29 @@ struct Ligature
 			  pos);
     }
 
-    return_trace (true);
+    return_trace (സത്യം);
   }
 
   template <typename Iterator,
             hb_requires (hb_is_source_of (Iterator, hb_codepoint_t))>
-  bool serialize (hb_serialize_context_t *c,
+  തർക്കം serialize (hb_serialize_context_t *c,
                   hb_codepoint_t ligature,
                   Iterator components /* Starting from second */)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (ഇത്);
+    എങ്കിൽ (unlikely (!c->extend_min (ഇത്))) return_trace (അസത്യം);
     ligGlyph = ligature;
-    if (unlikely (!component.serialize (c, components))) return_trace (false);
-    return_trace (true);
+    എങ്കിൽ (unlikely (!component.serialize (c, components))) return_trace (അസത്യം);
+    return_trace (സത്യം);
   }
 
-  bool subset (hb_subset_context_t *c, unsigned coverage_idx) const
+  തർക്കം subset (hb_subset_context_t *c, unsigned coverage_idx) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (ഇത്);
+    സ്ഥിരം hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+    സ്ഥിരം hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    if (!intersects (&glyphset) || !glyphset.has (ligGlyph)) return_trace (false);
+    എങ്കിൽ (!intersects (&glyphset) || !glyphset.has (ligGlyph)) return_trace (അസത്യം);
     // Ensure Coverage table is always packed after this.
     c->serializer->add_virtual_link (coverage_idx);
 
@@ -220,7 +220,7 @@ struct Ligature
       | hb_map (glyph_map)
       ;
 
-    auto *out = c->serializer->start_embed (*this);
+    auto *out = c->serializer->start_embed (*ഇത്);
     return_trace (out->serialize (c->serializer,
                                   glyph_map[ligGlyph],
                                   it));  }

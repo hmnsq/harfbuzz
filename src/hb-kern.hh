@@ -27,76 +27,76 @@
 #ifndef HB_KERN_HH
 #define HB_KERN_HH
 
-#include "hb-open-type.hh"
-#include "hb-aat-layout-common.hh"
-#include "hb-ot-layout-gpos-table.hh"
+#അന്തര്ഭാവ "hb-open-type.hh"
+#അന്തര്ഭാവ "hb-aat-layout-common.hh"
+#അന്തര്ഭാവ "hb-ot-layout-gpos-table.hh"
 
 
-namespace OT {
+നാമാകാശ OT {
 
 
 template <typename Driver>
-struct hb_kern_machine_t
+ഘടന hb_kern_machine_t
 {
-  hb_kern_machine_t (const Driver &driver_,
-		     bool crossStream_ = false) :
+  hb_kern_machine_t (സ്ഥിരം Driver &driver_,
+		     തർക്കം crossStream_ = അസത്യം) :
 		       driver (driver_),
 		       crossStream (crossStream_) {}
 
-  void kern (hb_font_t   *font,
+  ശൂന്യം kern (hb_font_t   *font,
 	     hb_buffer_t *buffer,
 	     hb_mask_t    kern_mask,
-	     bool         scale = true) const
+	     തർക്കം         scale = സത്യം) സ്ഥിരം
   {
-    if (!buffer->message (font, "start kern"))
-      return;
+    എങ്കിൽ (!buffer->message (font, "start kern"))
+      തിരികെ;
 
     buffer->unsafe_to_concat ();
     OT::hb_ot_apply_context_t c (1, font, buffer, hb_blob_get_empty ());
     c.set_lookup_mask (kern_mask);
     c.set_lookup_props (OT::LookupFlag::IgnoreMarks);
-    auto &skippy_iter = c.iter_input;
+    auto &skippy_iter = c.iter_നിവേശം;
 
-    bool horizontal = HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction);
-    unsigned int count = buffer->len;
+    തർക്കം horizontal = HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction);
+    unsigned പൂർണ്ണസംഖ്യ എണ്ണം = buffer->len;
     hb_glyph_info_t *info = buffer->info;
     hb_glyph_position_t *pos = buffer->pos;
-    for (unsigned int idx = 0; idx < count;)
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ idx = 0; idx < എണ്ണം;)
     {
-      if (!(info[idx].mask & kern_mask))
+      എങ്കിൽ (!(info[idx].mask & kern_mask))
       {
 	idx++;
-	continue;
+	തുടരുക;
       }
 
       skippy_iter.reset_fast (idx);
       unsigned unsafe_to;
-      if (unlikely (!skippy_iter.next (&unsafe_to)))
+      എങ്കിൽ (unlikely (!skippy_iter.next (&unsafe_to)))
       {
 	idx = unsafe_to;
-	continue;
+	തുടരുക;
       }
 
-      unsigned int i = idx;
-      unsigned int j = skippy_iter.idx;
+      unsigned പൂർണ്ണസംഖ്യ i = idx;
+      unsigned പൂർണ്ണസംഖ്യ j = skippy_iter.idx;
 
       hb_position_t kern = driver.get_kerning (info[i].codepoint,
 					       info[j].codepoint);
 
 
-      if (likely (!kern))
-	goto skip;
+      എങ്കിൽ (likely (!kern))
+	പോകുക skip;
 
-      if (horizontal)
+      എങ്കിൽ (horizontal)
       {
-	if (scale)
+	എങ്കിൽ (scale)
 	  kern = font->em_scale_x (kern);
-	if (crossStream)
+	എങ്കിൽ (crossStream)
 	{
 	  pos[j].y_offset = kern;
 	  buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
 	}
-	else
+	അല്ലെങ്കിൽ
 	{
 	  hb_position_t kern1 = kern >> 1;
 	  hb_position_t kern2 = kern - kern1;
@@ -105,16 +105,16 @@ struct hb_kern_machine_t
 	  pos[j].x_offset = hb_saturate_add (pos[j].x_offset, kern2);
 	}
       }
-      else
+      അല്ലെങ്കിൽ
       {
-	if (scale)
+	എങ്കിൽ (scale)
 	  kern = font->em_scale_y (kern);
-	if (crossStream)
+	എങ്കിൽ (crossStream)
 	{
 	  pos[j].x_offset = kern;
 	  buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
 	}
-	else
+	അല്ലെങ്കിൽ
 	{
 	  hb_position_t kern1 = kern >> 1;
 	  hb_position_t kern2 = kern - kern1;
@@ -130,11 +130,11 @@ struct hb_kern_machine_t
       idx = skippy_iter.idx;
     }
 
-    (void) buffer->message (font, "end kern");
+    (ശൂന്യം) buffer->message (font, "end kern");
   }
 
-  const Driver &driver;
-  bool crossStream;
+  സ്ഥിരം Driver &driver;
+  തർക്കം crossStream;
 };
 
 

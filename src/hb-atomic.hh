@@ -32,12 +32,12 @@
 #ifndef HB_ATOMIC_HH
 #define HB_ATOMIC_HH
 
-#include "hb.hh"
-#include "hb-meta.hh"
+#അന്തര്ഭാവ "hb.hh"
+#അന്തര്ഭാവ "hb-meta.hh"
 
 
 #ifndef HB_NO_MT
-#include <atomic>
+#അന്തര്ഭാവ <atomic>
 #endif
 
 
@@ -47,13 +47,13 @@
  * https://github.com/harfbuzz/harfbuzz/pull/4119
  */
 #ifndef _hb_compiler_memory_r_barrier
-#if defined(__ATOMIC_ACQUIRE) // gcc-like
-static inline void _hb_compiler_memory_r_barrier () { asm volatile("": : :"memory"); }
-#elif !defined(_MSC_VER)
-#include <atomic>
+#എങ്കിൽ defined(__ATOMIC_ACQUIRE) // gcc-like
+സ്ഥിതം വരിയിൽ ശൂന്യം _hb_compiler_memory_r_barrier () { asm അസ്ഥിര("": : :"memory"); }
+#അല്ലെങ്കിലെങ്കിൽ !defined(_MSC_VER)
+#അന്തര്ഭാവ <atomic>
 #define _hb_compiler_memory_r_barrier() std::atomic_signal_fence (std::memory_order_acquire)
-#else
-static inline void _hb_compiler_memory_r_barrier () {}
+#അല്ലെങ്കിൽ
+സ്ഥിതം വരിയിൽ ശൂന്യം _hb_compiler_memory_r_barrier () {}
 #endif
 #endif
 
@@ -61,33 +61,33 @@ static inline void _hb_compiler_memory_r_barrier () {}
 #ifndef HB_NO_MT
 
 template <typename T>
-struct hb_atomic_t
+ഘടന hb_atomic_t
 {
-  hb_atomic_t () = default;
+  hb_atomic_t () = സ്ഥിരസ്ഥിതി;
   constexpr hb_atomic_t (T v) : v (v) {}
-  constexpr hb_atomic_t (const hb_atomic_t& o) : v (o.get_relaxed ()) {}
+  constexpr hb_atomic_t (സ്ഥിരം hb_atomic_t& o) : v (o.get_relaxed ()) {}
   hb_atomic_t (hb_atomic_t&& o) : v (o.get_relaxed ()) { o.set_relaxed ({}); }
 
-  hb_atomic_t &operator= (const hb_atomic_t& o) { set_relaxed (o.get_relaxed ()); return *this; }
-  hb_atomic_t &operator= (hb_atomic_t&& o){ set_relaxed (o.get_relaxed ()); o.set_relaxed ({}); return *this; }
+  hb_atomic_t &operator= (സ്ഥിരം hb_atomic_t& o) { set_relaxed (o.get_relaxed ()); തിരികെ *ഇത്; }
+  hb_atomic_t &operator= (hb_atomic_t&& o){ set_relaxed (o.get_relaxed ()); o.set_relaxed ({}); തിരികെ *ഇത്; }
   hb_atomic_t &operator= (T v_)
   {
     set_relaxed (v_);
-    return *this;
+    തിരികെ *ഇത്;
   }
-  operator T () const { return get_relaxed (); }
+  operator T () സ്ഥിരം { തിരികെ get_relaxed (); }
 
-  void set_relaxed (T v_) { v.store (v_, std::memory_order_relaxed); }
-  void set_release (T v_) { v.store (v_, std::memory_order_release); }
-  T get_relaxed () const { return v.load (std::memory_order_relaxed); }
-  T get_acquire () const { return v.load (std::memory_order_acquire); }
-  T inc () { return v.fetch_add (1, std::memory_order_acq_rel); }
-  T dec () { return v.fetch_add (-1, std::memory_order_acq_rel); }
+  ശൂന്യം set_relaxed (T v_) { v.store (v_, std::memory_order_relaxed); }
+  ശൂന്യം set_release (T v_) { v.store (v_, std::memory_order_release); }
+  T get_relaxed () സ്ഥിരം { തിരികെ v.load (std::memory_order_relaxed); }
+  T get_acquire () സ്ഥിരം { തിരികെ v.load (std::memory_order_acquire); }
+  T inc () { തിരികെ v.fetch_add (1, std::memory_order_acq_rel); }
+  T dec () { തിരികെ v.fetch_add (-1, std::memory_order_acq_rel); }
 
-  int operator++ (int) { return inc (); }
-  int operator-- (int) { return dec (); }
+  പൂർണ്ണസംഖ്യ operator++ (പൂർണ്ണസംഖ്യ) { തിരികെ inc (); }
+  പൂർണ്ണസംഖ്യ operator-- (പൂർണ്ണസംഖ്യ) { തിരികെ dec (); }
 
-  friend void swap (hb_atomic_t &a, hb_atomic_t &b) noexcept
+  friend ശൂന്യം swap (hb_atomic_t &a, hb_atomic_t &b) noexcept
   {
     T v = a.get_acquire ();
     a.set_relaxed (b.get_acquire ());
@@ -98,30 +98,30 @@ struct hb_atomic_t
 };
 
 template <typename T>
-struct hb_atomic_t<T *>
+ഘടന hb_atomic_t<T *>
 {
-  hb_atomic_t () = default;
+  hb_atomic_t () = സ്ഥിരസ്ഥിതി;
   constexpr hb_atomic_t (T *v) : v (v) {}
-  hb_atomic_t (const hb_atomic_t &other) = delete;
+  hb_atomic_t (സ്ഥിരം hb_atomic_t &other) = delete;
 
-  void init (T *v_ = nullptr) { set_relaxed (v_); }
-  void set_relaxed (T *v_) { v.store (v_, std::memory_order_relaxed); }
-  T *get_relaxed () const { return v.load (std::memory_order_relaxed); }
-  T *get_acquire () const { return v.load (std::memory_order_acquire); }
-  bool cmpexch (T *old, T *new_) { return v.compare_exchange_weak (old, new_, std::memory_order_acq_rel, std::memory_order_relaxed); }
+  ശൂന്യം init (T *v_ = nullptr) { set_relaxed (v_); }
+  ശൂന്യം set_relaxed (T *v_) { v.store (v_, std::memory_order_relaxed); }
+  T *get_relaxed () സ്ഥിരം { തിരികെ v.load (std::memory_order_relaxed); }
+  T *get_acquire () സ്ഥിരം { തിരികെ v.load (std::memory_order_acquire); }
+  തർക്കം cmpexch (T *old, T *new_) { തിരികെ v.compare_exchange_weak (old, new_, std::memory_order_acq_rel, std::memory_order_relaxed); }
 
-  hb_atomic_t &operator= (const hb_atomic_t& o) { set_relaxed (o.get_relaxed ()); return *this; }
-  hb_atomic_t &operator= (hb_atomic_t&& o){ set_relaxed (o.get_relaxed ()); o.set_relaxed ({}); return *this; }
+  hb_atomic_t &operator= (സ്ഥിരം hb_atomic_t& o) { set_relaxed (o.get_relaxed ()); തിരികെ *ഇത്; }
+  hb_atomic_t &operator= (hb_atomic_t&& o){ set_relaxed (o.get_relaxed ()); o.set_relaxed ({}); തിരികെ *ഇത്; }
 
-  operator bool () const { return get_acquire () != nullptr; }
-  T *operator->() const { return get_acquire (); }
+  operator തർക്കം () സ്ഥിരം { തിരികെ get_acquire () != nullptr; }
+  T *operator->() സ്ഥിരം { തിരികെ get_acquire (); }
   template <typename C>
-  operator C * () const
+  operator C * () സ്ഥിരം
   {
-    return get_acquire ();
+    തിരികെ get_acquire ();
   }
 
-  friend void swap (hb_atomic_t &a, hb_atomic_t &b) noexcept
+  friend ശൂന്യം swap (hb_atomic_t &a, hb_atomic_t &b) noexcept
   {
     T *p = a.get_acquire ();
     a.set_relaxed (b.get_acquire ());
@@ -131,51 +131,51 @@ struct hb_atomic_t<T *>
   std::atomic<T *> v {nullptr};
 };
 
-#else /* defined(HB_NO_MT) */
+#അല്ലെങ്കിൽ /* defined(HB_NO_MT) */
 
 template <typename T>
-struct hb_atomic_t
+ഘടന hb_atomic_t
 {
-  hb_atomic_t () = default;
+  hb_atomic_t () = സ്ഥിരസ്ഥിതി;
   constexpr hb_atomic_t (T v) : v (v) {}
 
-  hb_atomic_t& operator = (T v_) { set_relaxed (v_); return *this; }
-  operator T () const { return get_relaxed (); }
+  hb_atomic_t& operator = (T v_) { set_relaxed (v_); തിരികെ *ഇത്; }
+  operator T () സ്ഥിരം { തിരികെ get_relaxed (); }
 
-  void set_relaxed (T v_) { v = v_; }
-  void set_release (T v_) { v = v_; }
-  T get_relaxed () const { return v; }
-  T get_acquire () const { return v; }
-  T inc () { return v++; }
-  T dec () { return v--; }
+  ശൂന്യം set_relaxed (T v_) { v = v_; }
+  ശൂന്യം set_release (T v_) { v = v_; }
+  T get_relaxed () സ്ഥിരം { തിരികെ v; }
+  T get_acquire () സ്ഥിരം { തിരികെ v; }
+  T inc () { തിരികെ v++; }
+  T dec () { തിരികെ v--; }
 
-  int operator ++ (int) { return inc (); }
-  int operator -- (int) { return dec (); }
+  പൂർണ്ണസംഖ്യ operator ++ (പൂർണ്ണസംഖ്യ) { തിരികെ inc (); }
+  പൂർണ്ണസംഖ്യ operator -- (പൂർണ്ണസംഖ്യ) { തിരികെ dec (); }
 
   T v = 0;
 };
 
 template <typename T>
-struct hb_atomic_t<T*>
+ഘടന hb_atomic_t<T*>
 {
-  hb_atomic_t () = default;
+  hb_atomic_t () = സ്ഥിരസ്ഥിതി;
   constexpr hb_atomic_t (T* v) : v (v) {}
-  hb_atomic_t (const hb_atomic_t &other) = delete;
+  hb_atomic_t (സ്ഥിരം hb_atomic_t &other) = delete;
 
-  void init (T* v_ = nullptr) { set_relaxed (v_); }
-  void set_relaxed (T* v_) { v = v_; }
-  T *get_relaxed () const { return v; }
-  T *get_acquire () const { return v; }
-  bool cmpexch (T *old, T *new_)
+  ശൂന്യം init (T* v_ = nullptr) { set_relaxed (v_); }
+  ശൂന്യം set_relaxed (T* v_) { v = v_; }
+  T *get_relaxed () സ്ഥിരം { തിരികെ v; }
+  T *get_acquire () സ്ഥിരം { തിരികെ v; }
+  തർക്കം cmpexch (T *old, T *new_)
   {
-    if (v != old) return false;
+    എങ്കിൽ (v != old) തിരികെ അസത്യം;
     v = new_;
-    return true;
+    തിരികെ സത്യം;
   }
 
-  operator bool () const { return get_acquire () != nullptr; }
-  T * operator -> () const                    { return get_acquire (); }
-  template <typename C> operator C * () const { return get_acquire (); }
+  operator തർക്കം () സ്ഥിരം { തിരികെ get_acquire () != nullptr; }
+  T * operator -> () സ്ഥിരം                    { തിരികെ get_acquire (); }
+  template <typename C> operator C * () സ്ഥിരം { തിരികെ get_acquire (); }
 
   T *v = nullptr;
 };
@@ -183,10 +183,10 @@ struct hb_atomic_t<T*>
 #endif
 
 
-static inline bool hb_barrier ()
+സ്ഥിതം വരിയിൽ തർക്കം hb_barrier ()
 {
   _hb_compiler_memory_r_barrier ();
-  return true;
+  തിരികെ സത്യം;
 }
 
 

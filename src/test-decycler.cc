@@ -24,78 +24,78 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
-#include "hb-decycler.hh"
+#അന്തര്ഭാവ "hb.hh"
+#അന്തര്ഭാവ "hb-decycler.hh"
 
-static void
-tree_recurse_binary (unsigned value,
-		     unsigned max_value,
+സ്ഥിതം ശൂന്യം
+വൃക്ഷം_recurse_ദ്വിമാന (unsigned value,
+		     unsigned max_മൂല്യം,
 		     hb_decycler_t &decycler)
 {
-  if (value >= max_value)
-		return;
+  എങ്കിൽ (value >= max_മൂല്യം)
+		തിരികെ;
 
-  hb_decycler_node_t node (decycler);
+  hb_decycler_കണ്ണി_t node (decycler);
 
-  bool ret = node.visit (value);
+  തർക്കം ret = node.visit (value);
   hb_always_assert (ret);
 
-  tree_recurse_binary (value * 2 + 1, max_value, decycler);
-  tree_recurse_binary (value * 2 + 2, max_value, decycler);
+  വൃക്ഷം_recurse_ദ്വിമാന (value * 2 + 1, max_മൂല്യം, decycler);
+  വൃക്ഷം_recurse_ദ്വിമാന (value * 2 + 2, max_മൂല്യം, decycler);
 }
 
-static void
-tree_recurse_tertiary (unsigned value,
-		       unsigned max_value,
+സ്ഥിതം ശൂന്യം
+വൃക്ഷം_recurse_tertiary (unsigned value,
+		       unsigned max_മൂല്യം,
 		       hb_decycler_t &decycler)
 {
   /* This function implements an alternative way to use the
    * decycler. It checks for each node before visiting it.
    * It demonstrates reusing a node for multiple visits. */
 
-  if (value >= max_value)
-    return;
+  എങ്കിൽ (value >= max_മൂല്യം)
+    തിരികെ;
 
-  hb_decycler_node_t node (decycler);
+  hb_decycler_കണ്ണി_t node (decycler);
 
   value *= 3;
 
-  for (unsigned i = 1; i <= 3; i++)
+  വേണ്ടി (unsigned i = 1; i <= 3; i++)
   {
-    bool ret = node.visit (value + i);
+    തർക്കം ret = node.visit (value + i);
     hb_always_assert (ret);
 
-    tree_recurse_tertiary (value + i, max_value, decycler);
+    വൃക്ഷം_recurse_tertiary (value + i, max_മൂല്യം, decycler);
   }
 }
 
-static void
-test_tree ()
+സ്ഥിതം ശൂന്യം
+test_വൃക്ഷം ()
 {
   hb_decycler_t decycler;
-  tree_recurse_binary (0, 64, decycler);
-  tree_recurse_tertiary (0, 1000, decycler);
+  വൃക്ഷം_recurse_ദ്വിമാന (0, 64, decycler);
+  വൃക്ഷം_recurse_tertiary (0, 1000, decycler);
 }
 
-static void
+സ്ഥിതം ശൂന്യം
 cycle_recurse (signed value,
 	       signed cycle_length,
 	       hb_decycler_t &decycler)
 {
   hb_always_assert (cycle_length > 0);
 
-  hb_decycler_node_t node (decycler);
+  hb_decycler_കണ്ണി_t node (decycler);
 
-  if (!node.visit (value))
-    return;
+  എങ്കിൽ (!node.visit (value))
+    തിരികെ;
 
-  if (value >= cycle_length)
+  എങ്കിൽ (value >= cycle_length)
     value = value % cycle_length;
 
   cycle_recurse (value + 1, cycle_length, decycler);
 }
 
-static void
+സ്ഥിതം ശൂന്യം
 test_cycle ()
 {
   hb_decycler_t decycler;
@@ -105,12 +105,12 @@ test_cycle ()
   cycle_recurse (-20, 8, decycler);
 }
 
-int
-main (int argc, char **argv)
+പൂർണ്ണസംഖ്യ
+പ്രധാന (പൂർണ്ണസംഖ്യ argc, അക്ഷരം **argv)
 {
-  test_tree ();
+  test_വൃക്ഷം ();
   test_cycle ();
 
-  return 0;
+  തിരികെ 0;
 }
 

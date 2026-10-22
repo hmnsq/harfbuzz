@@ -26,58 +26,58 @@
 #ifndef HB_CFF2_INTERP_CS_HH
 #define HB_CFF2_INTERP_CS_HH
 
-#include "hb.hh"
-#include "hb-cff-interp-cs-common.hh"
+#അന്തര്ഭാവ "hb.hh"
+#അന്തര്ഭാവ "hb-cff-interp-cs-common.hh"
 
-namespace CFF {
+നാമാകാശ CFF {
 
-using namespace OT;
+using നാമാകാശ OT;
 
-struct blend_arg_t : number_t
+ഘടന blend_arg_t : സംഖ്യ_t
 {
-  void set_int (int v) { reset_blends (); number_t::set_int (v); }
-  void set_fixed (int32_t v) { reset_blends (); number_t::set_fixed (v); }
-  void set_real (double v) { reset_blends (); number_t::set_real (v); }
+  ശൂന്യം set_int (പൂർണ്ണസംഖ്യ v) { reset_blends (); സംഖ്യ_t::set_int (v); }
+  ശൂന്യം set_fixed (int32_t v) { reset_blends (); സംഖ്യ_t::set_fixed (v); }
+  ശൂന്യം set_real (ഇരട്ട v) { reset_blends (); സംഖ്യ_t::set_real (v); }
 
-  void set_blends (unsigned int numValues_, unsigned int valueIndex_,
-		   hb_array_t<const blend_arg_t> blends_)
+  ശൂന്യം set_blends (unsigned പൂർണ്ണസംഖ്യ അക്കം_മൂല്യങ്ങൾ, unsigned പൂർണ്ണസംഖ്യ മൂല്യം_Index,
+		   hb_array_t<സ്ഥിരം blend_arg_t> blends_)
   {
-    numValues = numValues_;
-    valueIndex = valueIndex_;
-    unsigned numBlends = blends_.length;
-    if (unlikely (!deltas.resize_exact (numBlends)))
-      return;
-    for (unsigned int i = 0; i < numBlends; i++)
+    അക്കം_മൂല്യങ്ങൾ_2 = അക്കം_മൂല്യങ്ങൾ;
+    മൂല്യം_Index_2 = മൂല്യം_Index;
+    unsigned അക്കം_Blends = blends_.length;
+    എങ്കിൽ (unlikely (!deltas.resize_exact (അക്കം_Blends)))
+      തിരികെ;
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < അക്കം_Blends; i++)
       deltas.arrayZ[i] = blends_.arrayZ[i];
   }
 
-  bool blending () const { return deltas.length > 0; }
-  void reset_blends ()
+  തർക്കം blending () സ്ഥിരം { തിരികെ deltas.length > 0; }
+  ശൂന്യം reset_blends ()
   {
-    numValues = valueIndex = 0;
+    അക്കം_മൂല്യങ്ങൾ_2 = മൂല്യം_Index_2 = 0;
     deltas.clear ();
   }
 
-  unsigned int numValues;
-  unsigned int valueIndex;
-  hb_vector_t<number_t> deltas;
+  unsigned പൂർണ്ണസംഖ്യ അക്കം_മൂല്യങ്ങൾ_2;
+  unsigned പൂർണ്ണസംഖ്യ മൂല്യം_Index_2;
+  hb_vector_t<സംഖ്യ_t> deltas;
 };
 
-typedef biased_subrs_t<CFF2Subrs>   cff2_biased_subrs_t;
+തരനിർവചനം biased_subrs_t<CFF2Subrs>   cff2_biased_subrs_t;
 
 template <typename ELEM>
-struct cff2_cs_interp_env_t : cs_interp_env_t<ELEM, CFF2Subrs>
+ഘടന cff2_cs_interp_env_t : cs_interp_env_t<ELEM, CFF2Subrs>
 {
   template <typename ACC>
-  cff2_cs_interp_env_t (const hb_ubytes_t &str, ACC &acc, unsigned int fd,
-			const int *coords_=nullptr, unsigned int num_coords_=0)
+  cff2_cs_interp_env_t (സ്ഥിരം hb_ubytes_t &str, ACC &acc, unsigned പൂർണ്ണസംഖ്യ fd,
+			സ്ഥിരം പൂർണ്ണസംഖ്യ *coords_=nullptr, unsigned പൂർണ്ണസംഖ്യ അക്കം_coords_2=0)
     : SUPER (str, acc.globalSubrs, acc.privateDicts[fd].localSubrs),
-      region_count (0), cached_scalars_vector (&acc.cached_scalars_vector)
+      region_എണ്ണം_2 (0), cached_scalars_vector (&acc.cached_scalars_vector)
   {
     coords = coords_;
-    num_coords = num_coords_;
+    അക്കം_coords = അക്കം_coords_2;
     varStore = acc.varStore;
-    do_blend = num_coords && varStore->size;
+    do_blend = അക്കം_coords && varStore->size;
     orig_ivs = acc.privateDicts[fd].ivs;
     set_ivs (orig_ivs);
   }
@@ -87,29 +87,29 @@ struct cff2_cs_interp_env_t : cs_interp_env_t<ELEM, CFF2Subrs>
     release_scalars_vector (scalars);
   }
 
-  hb_vector_t<float> *acquire_scalars_vector () const
+  hb_vector_t<ദശാംശം> *acquire_scalars_vector () സ്ഥിരം
   {
-    hb_vector_t<float> *scalars = cached_scalars_vector->get_acquire ();
+    hb_vector_t<ദശാംശം> *scalars = cached_scalars_vector->get_acquire ();
 
-    if (!scalars || !cached_scalars_vector->cmpexch (scalars, nullptr))
+    എങ്കിൽ (!scalars || !cached_scalars_vector->cmpexch (scalars, nullptr))
     {
-      scalars = (hb_vector_t<float> *) hb_calloc (1, sizeof (hb_vector_t<float>));
-      if (unlikely (!scalars))
-	return nullptr;
+      scalars = (hb_vector_t<ദശാംശം> *) hb_calloc (1, വലുപ്പം (hb_vector_t<ദശാംശം>));
+      എങ്കിൽ (unlikely (!scalars))
+	തിരികെ nullptr;
       scalars->init ();
     }
 
-    return scalars;
+    തിരികെ scalars;
   }
 
-  void release_scalars_vector (hb_vector_t<float> *scalars) const
+  ശൂന്യം release_scalars_vector (hb_vector_t<ദശാംശം> *scalars) സ്ഥിരം
   {
-    if (!scalars)
-      return;
+    എങ്കിൽ (!scalars)
+      തിരികെ;
 
     scalars->clear ();
 
-    if (!cached_scalars_vector->cmpexch (nullptr, scalars))
+    എങ്കിൽ (!cached_scalars_vector->cmpexch (nullptr, scalars))
     {
       scalars->fini ();
       hb_free (scalars);
@@ -119,216 +119,216 @@ struct cff2_cs_interp_env_t : cs_interp_env_t<ELEM, CFF2Subrs>
 
   op_code_t fetch_op ()
   {
-    if (this->str_ref.avail ())
-      return SUPER::fetch_op ();
+    എങ്കിൽ (ഇത്->str_ref.avail ())
+      തിരികെ SUPER::fetch_op ();
 
     /* make up return or endchar op */
-    if (this->callStack.is_empty ())
-      return OpCode_endchar;
-    else
-      return OpCode_return;
+    എങ്കിൽ (ഇത്->call_അട്ടി.is_empty ())
+      തിരികെ OpCode_endchar;
+    അല്ലെങ്കിൽ
+      തിരികെ OpCode_return;
   }
 
-  const ELEM& eval_arg (unsigned int i)
+  സ്ഥിരം ELEM& eval_arg (unsigned പൂർണ്ണസംഖ്യ i)
   {
-    return SUPER::argStack[i];
+    തിരികെ SUPER::arg_അട്ടി[i];
   }
 
-  const ELEM& pop_arg ()
+  സ്ഥിരം ELEM& എടുക്കുക_arg ()
   {
-    return SUPER::argStack.pop ();
+    തിരികെ SUPER::arg_അട്ടി.എടുക്കുക ();
   }
 
-  void process_blend ()
+  ശൂന്യം process_blend ()
   {
-    if (!seen_blend)
+    എങ്കിൽ (!seen_blend)
     {
       scalars = acquire_scalars_vector ();
-      if (unlikely (!scalars))
+      എങ്കിൽ (unlikely (!scalars))
 	SUPER::set_error ();
-      else
+      അല്ലെങ്കിൽ
       {
-	region_count = varStore->varStore.get_region_index_count (get_ivs ());
-	if (do_blend)
+	region_എണ്ണം_2 = varStore->varStore.get_region_index_എണ്ണം (get_ivs ());
+	എങ്കിൽ (do_blend)
 	{
-	  if (unlikely (!scalars->resize_exact (region_count)))
+	  എങ്കിൽ (unlikely (!scalars->resize_exact (region_എണ്ണം_2)))
 	    SUPER::set_error ();
-	  else
-	    varStore->varStore.get_region_scalars (get_ivs (), coords, num_coords,
-						   &(*scalars)[0], region_count);
+	  അല്ലെങ്കിൽ
+	    varStore->varStore.get_region_scalars (get_ivs (), coords, അക്കം_coords,
+						   &(*scalars)[0], region_എണ്ണം_2);
 	}
       }
-      seen_blend = true;
+      seen_blend = സത്യം;
     }
   }
 
-  void process_vsindex ()
+  ശൂന്യം process_vsindex ()
   {
-    unsigned int  index = SUPER::argStack.pop_uint ();
-    if (unlikely (seen_vsindex () || seen_blend))
+    unsigned പൂർണ്ണസംഖ്യ  index = SUPER::arg_അട്ടി.എടുക്കുക_uint ();
+    എങ്കിൽ (unlikely (seen_vsindex () || seen_blend))
     {
      SUPER::set_error ();
     }
-    else
+    അല്ലെങ്കിൽ
     {
       set_ivs (index);
     }
-    seen_vsindex_ = true;
+    seen_vsindex_ = സത്യം;
   }
 
-  unsigned int get_region_count () const { return region_count; }
-  void	 set_region_count (unsigned int region_count_) { region_count = region_count_; }
-  unsigned int get_ivs () const { return ivs; }
-  void	 set_ivs (unsigned int ivs_) { ivs = ivs_; }
+  unsigned പൂർണ്ണസംഖ്യ get_region_എണ്ണം () സ്ഥിരം { തിരികെ region_എണ്ണം_2; }
+  ശൂന്യം	 set_region_എണ്ണം (unsigned പൂർണ്ണസംഖ്യ region_എണ്ണം_3) { region_എണ്ണം_2 = region_എണ്ണം_3; }
+  unsigned പൂർണ്ണസംഖ്യ get_ivs () സ്ഥിരം { തിരികെ ivs; }
+  ശൂന്യം	 set_ivs (unsigned പൂർണ്ണസംഖ്യ ivs_) { ivs = ivs_; }
   /* The FD's private-dict ivs, before any vsindex op in the charstring. */
-  unsigned int get_orig_ivs () const { return orig_ivs; }
-  bool	 seen_vsindex () const { return seen_vsindex_; }
+  unsigned പൂർണ്ണസംഖ്യ get_orig_ivs () സ്ഥിരം { തിരികെ orig_ivs; }
+  തർക്കം	 seen_vsindex () സ്ഥിരം { തിരികെ seen_vsindex_; }
 
-  double blend_deltas (hb_array_t<const ELEM> deltas) const
+  ഇരട്ട blend_deltas (hb_array_t<സ്ഥിരം ELEM> deltas) സ്ഥിരം
   {
-    double v = 0;
-    if (do_blend)
+    ഇരട്ട v = 0;
+    എങ്കിൽ (do_blend)
     {
-      if (likely (scalars && scalars->length == deltas.length))
+      എങ്കിൽ (likely (scalars && scalars->length == deltas.length))
       {
-        unsigned count = scalars->length;
-	for (unsigned i = 0; i < count; i++)
-	  v += (double) scalars->arrayZ[i] * deltas.arrayZ[i].to_real ();
+        unsigned എണ്ണം = scalars->length;
+	വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++)
+	  v += (ഇരട്ട) scalars->arrayZ[i] * deltas.arrayZ[i].to_real ();
       }
     }
-    return v;
+    തിരികെ v;
   }
 
-  bool have_coords () const { return num_coords; }
+  തർക്കം have_coords () സ്ഥിരം { തിരികെ അക്കം_coords; }
 
-  protected:
-  const int     *coords;
-  unsigned int  num_coords;
-  const	 CFF2ItemVariationStore *varStore;
-  unsigned int  region_count;
-  unsigned int  ivs;
-  unsigned int  orig_ivs;
-  hb_vector_t<float>  *scalars = nullptr;
-  hb_atomic_t<hb_vector_t<float> *> *cached_scalars_vector = nullptr;
-  bool	  do_blend;
-  bool	  seen_vsindex_ = false;
-  bool	  seen_blend = false;
+  സംരക്ഷിത:
+  സ്ഥിരം പൂർണ്ണസംഖ്യ     *coords;
+  unsigned പൂർണ്ണസംഖ്യ  അക്കം_coords;
+  സ്ഥിരം	 CFF2ItemVariationStore *varStore;
+  unsigned പൂർണ്ണസംഖ്യ  region_എണ്ണം_2;
+  unsigned പൂർണ്ണസംഖ്യ  ivs;
+  unsigned പൂർണ്ണസംഖ്യ  orig_ivs;
+  hb_vector_t<ദശാംശം>  *scalars = nullptr;
+  hb_atomic_t<hb_vector_t<ദശാംശം> *> *cached_scalars_vector = nullptr;
+  തർക്കം	  do_blend;
+  തർക്കം	  seen_vsindex_ = അസത്യം;
+  തർക്കം	  seen_blend = അസത്യം;
 
-  typedef cs_interp_env_t<ELEM, CFF2Subrs> SUPER;
+  തരനിർവചനം cs_interp_env_t<ELEM, CFF2Subrs> SUPER;
 };
 template <typename OPSET, typename PARAM, typename ELEM, typename PATH=path_procs_null_t<cff2_cs_interp_env_t<ELEM>, PARAM>>
-struct cff2_cs_opset_t : cs_opset_t<ELEM, OPSET, cff2_cs_interp_env_t<ELEM>, PARAM, PATH>
+ഘടന cff2_cs_opset_t : cs_opset_t<ELEM, OPSET, cff2_cs_interp_env_t<ELEM>, PARAM, PATH>
 {
-  static void process_op (op_code_t op, cff2_cs_interp_env_t<ELEM> &env, PARAM& param)
+  സ്ഥിതം ശൂന്യം process_op (op_code_t op, cff2_cs_interp_env_t<ELEM> &env, PARAM& param)
   {
-    switch (op) {
-      case OpCode_callsubr:
-      case OpCode_callgsubr:
+    തിരഞ്ഞെടുപ്പ് (op) {
+      അവസ്ഥ OpCode_callsubr:
+      അവസ്ഥ OpCode_callgsubr:
 	/* a subroutine number shouldn't be a blended value */
-#if 0
-	if (unlikely (env.argStack.peek ().blending ()))
+#എങ്കിൽ 0
+	എങ്കിൽ (unlikely (env.arg_അട്ടി.peek ().blending ()))
 	{
 	  env.set_error ();
-	  break;
+	  നിർത്തുക;
 	}
 #endif
 	SUPER::process_op (op, env, param);
-	break;
+	നിർത്തുക;
 
-      case OpCode_blendcs:
+      അവസ്ഥ OpCode_blendcs:
 	OPSET::process_blend (env, param);
-	break;
+	നിർത്തുക;
 
-      case OpCode_vsindexcs:
-#if 0
-	if (unlikely (env.argStack.peek ().blending ()))
+      അവസ്ഥ OpCode_vsindexcs:
+#എങ്കിൽ 0
+	എങ്കിൽ (unlikely (env.arg_അട്ടി.peek ().blending ()))
 	{
 	  env.set_error ();
-	  break;
+	  നിർത്തുക;
 	}
 #endif
 	OPSET::process_vsindex (env, param);
-	break;
+	നിർത്തുക;
 
-      default:
+      സ്ഥിരസ്ഥിതി:
 	SUPER::process_op (op, env, param);
     }
   }
 
   template <typename T = ELEM,
 	    hb_enable_if (hb_is_same (T, blend_arg_t))>
-  static void process_arg_blend (cff2_cs_interp_env_t<ELEM> &env,
+  സ്ഥിതം ശൂന്യം process_arg_blend (cff2_cs_interp_env_t<ELEM> &env,
 				 ELEM &arg,
-				 const hb_array_t<const ELEM> blends,
+				 സ്ഥിരം hb_array_t<സ്ഥിരം ELEM> blends,
 				 unsigned n, unsigned i)
   {
-    if (env.have_coords ())
+    എങ്കിൽ (env.have_coords ())
       arg.set_int (round (arg.to_real () + env.blend_deltas (blends)));
-    else if (unlikely (arg.blending ()))
+    അല്ലെങ്കിൽ എങ്കിൽ (unlikely (arg.blending ()))
     {
       /* A blend result used as an operand of a later blend: the value is
        * default + inner deltas + outer deltas, so accumulate the deltas. */
-      hb_vector_t<number_t> inner = std::move (arg.deltas);
+      hb_vector_t<സംഖ്യ_t> inner = std::move (arg.deltas);
       arg.set_blends (n, i, blends);
-      if (likely (inner.length == arg.deltas.length))
-	for (unsigned j = 0; j < inner.length; j++)
+      എങ്കിൽ (likely (inner.length == arg.deltas.length))
+	വേണ്ടി (unsigned j = 0; j < inner.length; j++)
 	  arg.deltas.arrayZ[j].set_real (arg.deltas.arrayZ[j].to_real () +
 					 inner.arrayZ[j].to_real ());
-      else
+      അല്ലെങ്കിൽ
 	env.set_error ();
     }
-    else
+    അല്ലെങ്കിൽ
       arg.set_blends (n, i, blends);
   }
   template <typename T = ELEM,
 	    hb_enable_if (!hb_is_same (T, blend_arg_t))>
-  static void process_arg_blend (cff2_cs_interp_env_t<ELEM> &env,
+  സ്ഥിതം ശൂന്യം process_arg_blend (cff2_cs_interp_env_t<ELEM> &env,
 				 ELEM &arg,
-				 const hb_array_t<const ELEM> blends,
+				 സ്ഥിരം hb_array_t<സ്ഥിരം ELEM> blends,
 				 unsigned n, unsigned i)
   {
     arg.set_real (arg.to_real () + env.blend_deltas (blends));
   }
 
-  static void process_blend (cff2_cs_interp_env_t<ELEM> &env, PARAM& param)
+  സ്ഥിതം ശൂന്യം process_blend (cff2_cs_interp_env_t<ELEM> &env, PARAM& param)
   {
-    unsigned int n, k;
+    unsigned പൂർണ്ണസംഖ്യ n, k;
 
     env.process_blend ();
-    k = env.get_region_count ();
-    n = env.argStack.pop_uint ();
+    k = env.get_region_എണ്ണം ();
+    n = env.arg_അട്ടി.എടുക്കുക_uint ();
     /* copy the blend values into blend array of the default values */
-    unsigned int count = env.argStack.get_count ();
-    unsigned int total;
-    if (unlikely (hb_unsigned_mul_overflows (k + 1, n, &total) || total > count))
+    unsigned പൂർണ്ണസംഖ്യ എണ്ണം = env.arg_അട്ടി.get_എണ്ണം ();
+    unsigned പൂർണ്ണസംഖ്യ total;
+    എങ്കിൽ (unlikely (hb_unsigned_mul_overflows (k + 1, n, &total) || total > എണ്ണം))
     {
       env.set_error ();
-      return;
+      തിരികെ;
     }
-    if (unlikely (!env.spend_budget (HB_BUDGET_1, total - n)))
+    എങ്കിൽ (unlikely (!env.spend_budget (HB_BUDGET_1, total - n)))
     {
       env.set_error ();
-      return;
+      തിരികെ;
     }
-    unsigned int start = count - total;
-    for (unsigned int i = 0; i < n; i++)
+    unsigned പൂർണ്ണസംഖ്യ start = എണ്ണം - total;
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < n; i++)
     {
-      const hb_array_t<const ELEM> blends = env.argStack.sub_array (start + n + (i * k), k);
-      process_arg_blend (env, env.argStack.arrayZ[start + i], blends, n, i);
+      സ്ഥിരം hb_array_t<സ്ഥിരം ELEM> blends = env.arg_അട്ടി.sub_array (start + n + (i * k), k);
+      process_arg_blend (env, env.arg_അട്ടി.arrayZ[start + i], blends, n, i);
     }
 
     /* pop off blend values leaving default values now adorned with blend values */
-    env.argStack.pop (k * n);
+    env.arg_അട്ടി.എടുക്കുക (k * n);
   }
 
-  static void process_vsindex (cff2_cs_interp_env_t<ELEM> &env, PARAM& param)
+  സ്ഥിതം ശൂന്യം process_vsindex (cff2_cs_interp_env_t<ELEM> &env, PARAM& param)
   {
     env.process_vsindex ();
     env.clear_args ();
   }
 
-  private:
-  typedef cs_opset_t<ELEM, OPSET, cff2_cs_interp_env_t<ELEM>, PARAM, PATH>  SUPER;
+  സ്വകാര്യ:
+  തരനിർവചനം cs_opset_t<ELEM, OPSET, cff2_cs_interp_env_t<ELEM>, PARAM, PATH>  SUPER;
 };
 
 template <typename OPSET, typename PARAM, typename ELEM>

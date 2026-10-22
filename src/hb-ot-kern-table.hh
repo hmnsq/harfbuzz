@@ -27,8 +27,8 @@
 #ifndef HB_OT_KERN_TABLE_HH
 #define HB_OT_KERN_TABLE_HH
 
-#include "hb-aat-layout-common.hh"
-#include "hb-aat-layout-kerx-table.hh"
+#അന്തര്ഭാവ "hb-aat-layout-common.hh"
+#അന്തര്ഭാവ "hb-aat-layout-kerx-table.hh"
 
 
 /*
@@ -39,153 +39,153 @@
 #define HB_OT_TAG_kern HB_TAG('k','e','r','n')
 
 
-namespace OT {
+നാമാകാശ OT {
 
 
 template <typename KernSubTableHeader>
-struct KernSubTableFormat3
+ഘടന KernSubTableFormat3
 {
-  int get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+  പൂർണ്ണസംഖ്യ get_kerning (hb_codepoint_t left, hb_codepoint_t വലത്) സ്ഥിരം
   {
-    hb_array_t<const FWORD> kernValue = kernValueZ.as_array (kernValueCount);
-    hb_array_t<const HBUINT8> leftClass = StructAfter<const UnsizedArrayOf<HBUINT8>> (kernValue).as_array (glyphCount);
-    hb_array_t<const HBUINT8> rightClass = StructAfter<const UnsizedArrayOf<HBUINT8>> (leftClass).as_array (glyphCount);
-    hb_array_t<const HBUINT8> kernIndex = StructAfter<const UnsizedArrayOf<HBUINT8>> (rightClass).as_array (leftClassCount * rightClassCount);
+    hb_array_t<സ്ഥിരം FWORD> kern_മൂല്യം = kern_മൂല്യം_Z.as_array (kern_മൂല്യം_എണ്ണം);
+    hb_array_t<സ്ഥിരം HBUINT8> ഇടത്_Class = StructAfter<സ്ഥിരം UnsizedArrayOf<HBUINT8>> (kern_മൂല്യം).as_array (glyph_എണ്ണം_2);
+    hb_array_t<സ്ഥിരം HBUINT8> വലത്_Class = StructAfter<സ്ഥിരം UnsizedArrayOf<HBUINT8>> (ഇടത്_Class).as_array (glyph_എണ്ണം_2);
+    hb_array_t<സ്ഥിരം HBUINT8> kernIndex = StructAfter<സ്ഥിരം UnsizedArrayOf<HBUINT8>> (വലത്_Class).as_array (ഇടത്_Class_എണ്ണം * വലത്_Class_എണ്ണം);
 
-    unsigned int leftC = leftClass[left];
-    unsigned int rightC = rightClass[right];
-    if (unlikely (leftC >= leftClassCount || rightC >= rightClassCount))
-      return 0;
-    unsigned int i = leftC * rightClassCount + rightC;
-    return kernValue[kernIndex[i]];
+    unsigned പൂർണ്ണസംഖ്യ ഇടത്_C = ഇടത്_Class[left];
+    unsigned പൂർണ്ണസംഖ്യ വലത്_C = വലത്_Class[വലത്];
+    എങ്കിൽ (unlikely (ഇടത്_C >= ഇടത്_Class_എണ്ണം || വലത്_C >= വലത്_Class_എണ്ണം))
+      തിരികെ 0;
+    unsigned പൂർണ്ണസംഖ്യ i = ഇടത്_C * വലത്_Class_എണ്ണം + വലത്_C;
+    തിരികെ kern_മൂല്യം[kernIndex[i]];
   }
 
-  bool apply (AAT::hb_aat_apply_context_t *c) const
+  തർക്കം apply (AAT::hb_aat_apply_context_t *c) സ്ഥിരം
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (ഇത്);
 
-    if (!c->plan->requested_kerning)
-      return false;
+    എങ്കിൽ (!c->plan->requested_kerning)
+      തിരികെ അസത്യം;
 
-    if (header.coverage & header.Backwards)
-      return false;
+    എങ്കിൽ (header.coverage & header.Backwards)
+      തിരികെ അസത്യം;
 
-    hb_kern_machine_t<KernSubTableFormat3> machine (*this, header.coverage & header.CrossStream);
+    hb_kern_machine_t<KernSubTableFormat3> machine (*ഇത്, header.coverage & header.CrossStream);
     machine.kern (c->font, c->buffer, c->plan->kern_mask);
 
-    return_trace (true);
+    return_trace (സത്യം);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) &&
 		  hb_barrier () &&
-		  c->check_range (kernValueZ,
-				  kernValueCount * sizeof (FWORD) +
-				  glyphCount * 2 +
-				  leftClassCount * rightClassCount));
+		  c->check_range (kern_മൂല്യം_Z,
+				  kern_മൂല്യം_എണ്ണം * വലുപ്പം (FWORD) +
+				  glyph_എണ്ണം_2 * 2 +
+				  ഇടത്_Class_എണ്ണം * വലത്_Class_എണ്ണം));
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &left_set, set_t &right_set, unsigned num_glyphs) const
+  ശൂന്യം collect_glyphs (set_t &ഇടത്_set, set_t &വലത്_set, unsigned അക്കം_glyphs) സ്ഥിരം
   {
-    if (likely (glyphCount))
+    എങ്കിൽ (likely (glyph_എണ്ണം_2))
     {
-      left_set.add_range (0, num_glyphs - 1);
-      right_set.add_range (0, num_glyphs - 1);
+      ഇടത്_set.add_range (0, അക്കം_glyphs - 1);
+      വലത്_set.add_range (0, അക്കം_glyphs - 1);
     }
   }
 
-  protected:
+  സംരക്ഷിത:
   KernSubTableHeader
 		header;
-  HBUINT16	glyphCount;	/* The number of glyphs in this font. */
-  HBUINT8	kernValueCount;	/* The number of kerning values. */
-  HBUINT8	leftClassCount;	/* The number of left-hand classes. */
-  HBUINT8	rightClassCount;/* The number of right-hand classes. */
+  HBUINT16	glyph_എണ്ണം_2;	/* The number of glyphs in this font. */
+  HBUINT8	kern_മൂല്യം_എണ്ണം;	/* The number of kerning values. */
+  HBUINT8	ഇടത്_Class_എണ്ണം;	/* The number of left-hand classes. */
+  HBUINT8	വലത്_Class_എണ്ണം;/* The number of right-hand classes. */
   HBUINT8	flags;		/* Set to zero (reserved for future use). */
   UnsizedArrayOf<FWORD>
-		kernValueZ;	/* The kerning values.
+		kern_മൂല്യം_Z;	/* The kerning values.
 				 * Length kernValueCount. */
-#if 0
+#എങ്കിൽ 0
   UnsizedArrayOf<HBUINT8>
-		leftClass;	/* The left-hand classes.
+		ഇടത്_Class;	/* The left-hand classes.
 				 * Length glyphCount. */
   UnsizedArrayOf<HBUINT8>
-		rightClass;	/* The right-hand classes.
+		വലത്_Class;	/* The right-hand classes.
 				 * Length glyphCount. */
   UnsizedArrayOf<HBUINT8>kernIndex;
 				/* The indices into the kernValue array.
 				 * Length leftClassCount * rightClassCount */
 #endif
-  public:
-  DEFINE_SIZE_ARRAY (KernSubTableHeader::static_size + 6, kernValueZ);
+  പൊതു:
+  DEFINE_SIZE_ARRAY (KernSubTableHeader::static_size + 6, kern_മൂല്യം_Z);
 };
 
 template <typename KernSubTableHeader>
-struct KernSubTable
+ഘടന KernSubTable
 {
-  size_t get_size () const { return u.header.length; }
-  unsigned int get_type () const { return u.header.format; }
+  size_t get_size () സ്ഥിരം { തിരികെ u.header.length; }
+  unsigned പൂർണ്ണസംഖ്യ get_type () സ്ഥിരം { തിരികെ u.header.format; }
 
-  int get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+  പൂർണ്ണസംഖ്യ get_kerning (hb_codepoint_t left, hb_codepoint_t വലത്) സ്ഥിരം
   {
-    switch (get_type ()) {
+    തിരഞ്ഞെടുപ്പ് (get_type ()) {
     /* This method hooks up to hb_font_t's get_h_kerning.  Only support Format0. */
-    case 0: hb_barrier (); return u.format0.get_kerning (left, right);
-    default:return 0;
+    അവസ്ഥ 0: hb_barrier (); തിരികെ u.format0.get_kerning (left, വലത്);
+    സ്ഥിരസ്ഥിതി:തിരികെ 0;
     }
   }
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) സ്ഥിരം
   {
-    unsigned int subtable_type = get_type ();
-    TRACE_DISPATCH (this, subtable_type);
-    switch (subtable_type) {
-    case 0:	hb_barrier (); return_trace (c->dispatch (u.format0));
+    unsigned പൂർണ്ണസംഖ്യ subtable_type = get_type ();
+    TRACE_DISPATCH (ഇത്, subtable_type);
+    തിരഞ്ഞെടുപ്പ് (subtable_type) {
+    അവസ്ഥ 0:	hb_barrier (); return_trace (c->dispatch (u.format0));
 #ifndef HB_NO_AAT_SHAPE
-    case 1:	hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    അവസ്ഥ 1:	hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
 #endif
-    case 2:	hb_barrier (); return_trace (c->dispatch (u.format2));
+    അവസ്ഥ 2:	hb_barrier (); return_trace (c->dispatch (u.format2));
 #ifndef HB_NO_AAT_SHAPE
-    case 3:	hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
+    അവസ്ഥ 3:	hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
 #endif
-    default:	return_trace (c->default_return_value ());
+    സ്ഥിരസ്ഥിതി:	return_trace (c->default_return_മൂല്യം ());
     }
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &left_set, set_t &right_set, unsigned num_glyphs) const
+  ശൂന്യം collect_glyphs (set_t &ഇടത്_set, set_t &വലത്_set, unsigned അക്കം_glyphs) സ്ഥിരം
   {
-    unsigned int subtable_type = get_type ();
-    switch (subtable_type) {
-    case 0:	hb_barrier (); u.format0.collect_glyphs (left_set, right_set, num_glyphs); return;
+    unsigned പൂർണ്ണസംഖ്യ subtable_type = get_type ();
+    തിരഞ്ഞെടുപ്പ് (subtable_type) {
+    അവസ്ഥ 0:	hb_barrier (); u.format0.collect_glyphs (ഇടത്_set, വലത്_set, അക്കം_glyphs); തിരികെ;
 #ifndef HB_NO_AAT_SHAPE
-    case 1:	hb_barrier (); u.format1.collect_glyphs (left_set, right_set, num_glyphs); return;
+    അവസ്ഥ 1:	hb_barrier (); u.format1.collect_glyphs (ഇടത്_set, വലത്_set, അക്കം_glyphs); തിരികെ;
 #endif
-    case 2:	hb_barrier (); u.format2.collect_glyphs (left_set, right_set, num_glyphs); return;
+    അവസ്ഥ 2:	hb_barrier (); u.format2.collect_glyphs (ഇടത്_set, വലത്_set, അക്കം_glyphs); തിരികെ;
 #ifndef HB_NO_AAT_SHAPE
-    case 3:	hb_barrier (); u.format3.collect_glyphs (left_set, right_set, num_glyphs); return;
+    അവസ്ഥ 3:	hb_barrier (); u.format3.collect_glyphs (ഇടത്_set, വലത്_set, അക്കം_glyphs); തിരികെ;
 #endif
-    default:	return;
+    സ്ഥിരസ്ഥിതി:	തിരികെ;
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!(u.header.sanitize (c) &&
+    TRACE_SANITIZE (ഇത്);
+    എങ്കിൽ (unlikely (!(u.header.sanitize (c) &&
 		    hb_barrier () &&
 		    u.header.length >= u.header.min_size &&
-		    c->check_range (this, u.header.length)))) return_trace (false);
+		    c->check_range (ഇത്, u.header.length)))) return_trace (അസത്യം);
 
     return_trace (dispatch (c));
   }
 
-  public:
-  union {
+  പൊതു:
+  സംഘം {
   KernSubTableHeader				header;
   AAT::KerxSubTableFormat0<KernSubTableHeader>	format0;
 #ifndef HB_NO_AAT_SHAPE
@@ -196,20 +196,20 @@ struct KernSubTable
   KernSubTableFormat3<KernSubTableHeader>	format3;
 #endif
   } u;
-  public:
+  പൊതു:
   DEFINE_SIZE_MIN (KernSubTableHeader::static_size);
 };
 
 
-struct KernOTSubTableHeader
+ഘടന KernOTSubTableHeader
 {
-  static constexpr bool apple = false;
-  typedef AAT::ObsoleteTypes Types;
+  സ്ഥിതം constexpr തർക്കം apple = അസത്യം;
+  തരനിർവചനം AAT::ObsoleteTypes Types;
 
-  unsigned   tuple_count () const { return 0; }
-  bool     is_horizontal () const { return (coverage & Horizontal); }
+  unsigned   tuple_എണ്ണം_2 () സ്ഥിരം { തിരികെ 0; }
+  തർക്കം     is_horizontal () സ്ഥിരം { തിരികെ (coverage & Horizontal); }
 
-  enum Coverage
+  എണ്ണൽ Coverage
   {
     Horizontal	= 0x01u,
     Minimum	= 0x02u,
@@ -221,50 +221,50 @@ struct KernOTSubTableHeader
     Variation	= 0x00u,
   };
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
-  public:
+  പൊതു:
   HBUINT16	versionZ;	/* Unused. */
   HBUINT16	length;		/* Length of the subtable (including this header). */
   HBUINT8	format;		/* Subtable format. */
   HBUINT8	coverage;	/* Coverage bits. */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (6);
 };
 
-struct KernOT : AAT::KerxTable<KernOT>
+ഘടന KernOT : AAT::KerxTable<KernOT>
 {
-  friend struct AAT::KerxTable<KernOT>;
+  friend ഘടന AAT::KerxTable<KernOT>;
 
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_kern;
-  static constexpr unsigned minVersion = 0u;
+  സ്ഥിതം constexpr hb_tag_t tableTag = HB_OT_TAG_kern;
+  സ്ഥിതം constexpr unsigned minVersion = 0u;
 
-  typedef KernOTSubTableHeader SubTableHeader;
-  typedef SubTableHeader::Types Types;
-  typedef KernSubTable<SubTableHeader> SubTable;
+  തരനിർവചനം KernOTSubTableHeader SubTableHeader;
+  തരനിർവചനം SubTableHeader::Types Types;
+  തരനിർവചനം KernSubTable<SubTableHeader> SubTable;
 
-  protected:
+  സംരക്ഷിത:
   HBUINT16	version;	/* Version--0x0000u */
-  HBUINT16	tableCount;	/* Number of subtables in the kerning table. */
+  HBUINT16	table_എണ്ണം;	/* Number of subtables in the kerning table. */
   SubTable	firstSubTable;	/* Subtables. */
-  public:
+  പൊതു:
   DEFINE_SIZE_MIN (4);
 };
 
 
-struct KernAATSubTableHeader
+ഘടന KernAATSubTableHeader
 {
-  static constexpr bool apple = true;
-  typedef AAT::ObsoleteTypes Types;
+  സ്ഥിതം constexpr തർക്കം apple = സത്യം;
+  തരനിർവചനം AAT::ObsoleteTypes Types;
 
-  unsigned   tuple_count () const { return 0; }
-  bool     is_horizontal () const { return !(coverage & Vertical); }
+  unsigned   tuple_എണ്ണം_2 () സ്ഥിരം { തിരികെ 0; }
+  തർക്കം     is_horizontal () സ്ഥിരം { തിരികെ !(coverage & Vertical); }
 
-  enum Coverage
+  എണ്ണൽ Coverage
   {
     Vertical	= 0x80u,
     CrossStream	= 0x40u,
@@ -274,137 +274,137 @@ struct KernAATSubTableHeader
     Backwards	= 0x00u,
   };
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
-  public:
+  പൊതു:
   HBUINT32	length;		/* Length of the subtable (including this header). */
   HBUINT8	coverage;	/* Coverage bits. */
   HBUINT8	format;		/* Subtable format. */
   HBUINT16	tupleIndex;	/* The tuple index (used for variations fonts).
 				 * This value specifies which tuple this subtable covers.
 				 * Note: We don't implement. */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (8);
 };
 
-struct KernAAT : AAT::KerxTable<KernAAT>
+ഘടന KernAAT : AAT::KerxTable<KernAAT>
 {
-  friend struct AAT::KerxTable<KernAAT>;
+  friend ഘടന AAT::KerxTable<KernAAT>;
 
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_kern;
-  static constexpr unsigned minVersion = 0x00010000u;
+  സ്ഥിതം constexpr hb_tag_t tableTag = HB_OT_TAG_kern;
+  സ്ഥിതം constexpr unsigned minVersion = 0x00010000u;
 
-  typedef KernAATSubTableHeader SubTableHeader;
-  typedef SubTableHeader::Types Types;
-  typedef KernSubTable<SubTableHeader> SubTable;
+  തരനിർവചനം KernAATSubTableHeader SubTableHeader;
+  തരനിർവചനം SubTableHeader::Types Types;
+  തരനിർവചനം KernSubTable<SubTableHeader> SubTable;
 
-  protected:
+  സംരക്ഷിത:
   HBUINT32	version;	/* Version--0x00010000u */
-  HBUINT32	tableCount;	/* Number of subtables in the kerning table. */
+  HBUINT32	table_എണ്ണം;	/* Number of subtables in the kerning table. */
   SubTable	firstSubTable;	/* Subtables. */
-  public:
+  പൊതു:
   DEFINE_SIZE_MIN (8);
 };
 
-struct kern
+ഘടന kern
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_kern;
+  സ്ഥിതം constexpr hb_tag_t tableTag = HB_OT_TAG_kern;
 
-  bool     has_data () const { return u.version32.v; }
-  unsigned get_type () const { return u.major.v; }
+  തർക്കം     has_data () സ്ഥിരം { തിരികെ u.version32.v; }
+  unsigned get_type () സ്ഥിരം { തിരികെ u.major.v; }
 
-  bool has_state_machine () const
+  തർക്കം has_state_machine () സ്ഥിരം
   {
-    switch (get_type ()) {
-    case 0: hb_barrier (); return u.ot.has_state_machine ();
+    തിരഞ്ഞെടുപ്പ് (get_type ()) {
+    അവസ്ഥ 0: hb_barrier (); തിരികെ u.ot.has_state_machine ();
 #ifndef HB_NO_AAT_SHAPE
-    case 1: hb_barrier (); return u.aat.has_state_machine ();
+    അവസ്ഥ 1: hb_barrier (); തിരികെ u.aat.has_state_machine ();
 #endif
-    default:return false;
+    സ്ഥിരസ്ഥിതി:തിരികെ അസത്യം;
     }
   }
 
-  bool has_cross_stream () const
+  തർക്കം has_cross_stream () സ്ഥിരം
   {
-    switch (get_type ()) {
-    case 0: hb_barrier (); return u.ot.has_cross_stream ();
+    തിരഞ്ഞെടുപ്പ് (get_type ()) {
+    അവസ്ഥ 0: hb_barrier (); തിരികെ u.ot.has_cross_stream ();
 #ifndef HB_NO_AAT_SHAPE
-    case 1: hb_barrier (); return u.aat.has_cross_stream ();
+    അവസ്ഥ 1: hb_barrier (); തിരികെ u.aat.has_cross_stream ();
 #endif
-    default:return false;
+    സ്ഥിരസ്ഥിതി:തിരികെ അസത്യം;
     }
   }
 
-  int get_h_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+  പൂർണ്ണസംഖ്യ get_h_kerning (hb_codepoint_t left, hb_codepoint_t വലത്) സ്ഥിരം
   {
-    switch (get_type ()) {
-    case 0: hb_barrier (); return u.ot.get_h_kerning (left, right);
+    തിരഞ്ഞെടുപ്പ് (get_type ()) {
+    അവസ്ഥ 0: hb_barrier (); തിരികെ u.ot.get_h_kerning (left, വലത്);
 #ifndef HB_NO_AAT_SHAPE
-    case 1: hb_barrier (); return u.aat.get_h_kerning (left, right);
+    അവസ്ഥ 1: hb_barrier (); തിരികെ u.aat.get_h_kerning (left, വലത്);
 #endif
-    default:return 0;
+    സ്ഥിരസ്ഥിതി:തിരികെ 0;
     }
   }
 
-  bool apply (AAT::hb_aat_apply_context_t *c,
-	      const AAT::kern_accelerator_data_t &accel_data) const
-  { return dispatch (c, accel_data); }
+  തർക്കം apply (AAT::hb_aat_apply_context_t *c,
+	      സ്ഥിരം AAT::kern_accelerator_data_t &accel_data) സ്ഥിരം
+  { തിരികെ dispatch (c, accel_data); }
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) സ്ഥിരം
   {
-    unsigned int subtable_type = get_type ();
-    TRACE_DISPATCH (this, subtable_type);
-    switch (subtable_type) {
-    case 0:	hb_barrier (); return_trace (c->dispatch (u.ot, std::forward<Ts> (ds)...));
+    unsigned പൂർണ്ണസംഖ്യ subtable_type = get_type ();
+    TRACE_DISPATCH (ഇത്, subtable_type);
+    തിരഞ്ഞെടുപ്പ് (subtable_type) {
+    അവസ്ഥ 0:	hb_barrier (); return_trace (c->dispatch (u.ot, std::forward<Ts> (ds)...));
 #ifndef HB_NO_AAT_SHAPE
-    case 1:	hb_barrier (); return_trace (c->dispatch (u.aat, std::forward<Ts> (ds)...));
+    അവസ്ഥ 1:	hb_barrier (); return_trace (c->dispatch (u.aat, std::forward<Ts> (ds)...));
 #endif
-    default:	return_trace (c->default_return_value ());
+    സ്ഥിരസ്ഥിതി:	return_trace (c->default_return_മൂല്യം ());
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    if (!u.version32.v.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (ഇത്);
+    എങ്കിൽ (!u.version32.v.sanitize (c)) return_trace (അസത്യം);
     hb_barrier ();
     return_trace (dispatch (c));
   }
 
-  AAT::kern_accelerator_data_t create_accelerator_data (unsigned num_glyphs) const
+  AAT::kern_accelerator_data_t create_accelerator_data (unsigned അക്കം_glyphs) സ്ഥിരം
   {
-    switch (get_type ()) {
-    case 0: hb_barrier (); return u.ot.create_accelerator_data (num_glyphs);
+    തിരഞ്ഞെടുപ്പ് (get_type ()) {
+    അവസ്ഥ 0: hb_barrier (); തിരികെ u.ot.create_accelerator_data (അക്കം_glyphs);
 #ifndef HB_NO_AAT_SHAPE
-    case 1: hb_barrier (); return u.aat.create_accelerator_data (num_glyphs);
+    അവസ്ഥ 1: hb_barrier (); തിരികെ u.aat.create_accelerator_data (അക്കം_glyphs);
 #endif
-    default:return AAT::kern_accelerator_data_t ();
+    സ്ഥിരസ്ഥിതി:തിരികെ AAT::kern_accelerator_data_t ();
     }
   }
 
-  struct accelerator_t
+  ഘടന accelerator_t
   {
     accelerator_t (hb_face_t *face)
     {
       hb_sanitize_context_t sc;
-      this->table = sc.reference_table<kern> (face);
-      this->accel_data = this->table->create_accelerator_data (face->get_num_glyphs ());
+      ഇത്->table = sc.reference_table<kern> (face);
+      ഇത്->accel_data = ഇത്->table->create_accelerator_data (face->get_അക്കം_glyphs ());
     }
     ~accelerator_t ()
     {
-      this->table.destroy ();
+      ഇത്->table.destroy ();
     }
 
-    hb_blob_t *get_blob () const { return table.get_blob (); }
+    hb_blob_t *get_blob () സ്ഥിരം { തിരികെ table.get_blob (); }
 
-    bool apply (AAT::hb_aat_apply_context_t *c) const
+    തർക്കം apply (AAT::hb_aat_apply_context_t *c) സ്ഥിരം
     {
-      return table->apply (c, accel_data);
+      തിരികെ table->apply (c, accel_data);
     }
 
     hb_blob_ptr_t<kern> table;
@@ -412,20 +412,20 @@ struct kern
     AAT::hb_aat_scratch_t scratch;
   };
 
-  protected:
-  union {
-  struct { HBUINT32 v; }	version32;
-  struct { HBUINT16 v; }	major;
+  സംരക്ഷിത:
+  സംഘം {
+  ഘടന { HBUINT32 v; }	version32;
+  ഘടന { HBUINT16 v; }	major;
   KernOT		ot;
 #ifndef HB_NO_AAT_SHAPE
   KernAAT		aat;
 #endif
   } u;
-  public:
+  പൊതു:
   DEFINE_SIZE_UNION (4, version32.v);
 };
 
-struct kern_accelerator_t : kern::accelerator_t {
+ഘടന kern_accelerator_t : kern::accelerator_t {
   kern_accelerator_t (hb_face_t *face) : kern::accelerator_t (face) {}
 };
 

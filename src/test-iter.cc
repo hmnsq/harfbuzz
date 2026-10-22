@@ -24,61 +24,61 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
-#include "hb-iter.hh"
+#അന്തര്ഭാവ "hb.hh"
+#അന്തര്ഭാവ "hb-iter.hh"
 
-#include "hb-array.hh"
-#include "hb-set.hh"
-#include "hb-ot-layout-common.hh"
+#അന്തര്ഭാവ "hb-array.hh"
+#അന്തര്ഭാവ "hb-set.hh"
+#അന്തര്ഭാവ "hb-ot-layout-common.hh"
 
 template <typename T>
-struct array_iter_t : hb_iter_with_fallback_t<array_iter_t<T>, T&>
+ഘടന array_iter_t : hb_iter_with_fallback_t<array_iter_t<T>, T&>
 {
   array_iter_t (hb_array_t<T> arr_) : arr (arr_) {}
 
-  typedef T& __item_t__;
-  static constexpr bool is_random_access_iterator = true;
-  T& __item_at__ (unsigned i) const { return arr[i]; }
-  void __forward__ (unsigned n) { arr += n; }
-  void __rewind__ (unsigned n) { arr -= n; }
-  unsigned __len__ () const { return arr.length; }
-  bool operator != (const array_iter_t& o) { return arr != o.arr; }
+  തരനിർവചനം T& __item_t__;
+  സ്ഥിതം constexpr തർക്കം is_random_access_iterator = സത്യം;
+  T& __item_at__ (unsigned i) സ്ഥിരം { തിരികെ arr[i]; }
+  ശൂന്യം __forward__ (unsigned n) { arr += n; }
+  ശൂന്യം __rewind__ (unsigned n) { arr -= n; }
+  unsigned __len__ () സ്ഥിരം { തിരികെ arr.length; }
+  തർക്കം operator != (സ്ഥിരം array_iter_t& o) { തിരികെ arr != o.arr; }
 
-  private:
+  സ്വകാര്യ:
   hb_array_t<T> arr;
 };
 
 template <typename T>
-struct some_array_t
+ഘടന some_array_t
 {
   some_array_t (hb_array_t<T> arr_) : arr (arr_) {}
 
-  typedef array_iter_t<T> iter_t;
-  array_iter_t<T> iter () { return array_iter_t<T> (arr); }
-  operator array_iter_t<T> () { return iter (); }
-  operator hb_iter_t<array_iter_t<T>> () { return iter (); }
+  തരനിർവചനം array_iter_t<T> iter_t;
+  array_iter_t<T> iter () { തിരികെ array_iter_t<T> (arr); }
+  operator array_iter_t<T> () { തിരികെ iter (); }
+  operator hb_iter_t<array_iter_t<T>> () { തിരികെ iter (); }
 
-  private:
+  സ്വകാര്യ:
   hb_array_t<T> arr;
 };
 
 
 template <typename Iter,
 	  hb_requires (hb_is_iterator (Iter))>
-static void
+സ്ഥിതം ശൂന്യം
 test_iterator_non_default_constructable (Iter it)
 {
   /* Iterate over a copy of it. */
-  for (auto c = it.iter (); c; c++)
+  വേണ്ടി (auto c = it.iter (); c; c++)
     *c;
 
   /* Same. */
-  for (auto c = +it; c; c++)
+  വേണ്ടി (auto c = +it; c; c++)
     *c;
 
   /* Range-based for over a copy. */
-  for (auto _ : +it)
-    (void) _;
+  വേണ്ടി (auto _ : +it)
+    (ശൂന്യം) _;
 
   it += it.len ();
   it = it + 10;
@@ -86,13 +86,13 @@ test_iterator_non_default_constructable (Iter it)
 
   hb_always_assert (*it == it[0]);
 
-  static_assert (true || it.is_random_access_iterator, "");
-  static_assert (true || it.is_sorted_iterator, "");
+  static_assert (സത്യം || it.is_random_access_iterator, "");
+  static_assert (സത്യം || it.is_sorted_iterator, "");
 }
 
 template <typename Iter,
 	  hb_requires (hb_is_iterator (Iter))>
-static void
+സ്ഥിതം ശൂന്യം
 test_iterator (Iter it)
 {
   Iter default_constructed;
@@ -103,32 +103,32 @@ test_iterator (Iter it)
 
 template <typename Iterable,
 	  hb_requires (hb_is_iterable (Iterable))>
-static void
-test_iterable (const Iterable &lst = Null (Iterable))
+സ്ഥിതം ശൂന്യം
+test_iterable (സ്ഥിരം Iterable &lst = Null (Iterable))
 {
-  for (auto _ : lst)
-    (void) _;
+  വേണ്ടി (auto _ : lst)
+    (ശൂന്യം) _;
 
   // Test that can take iterator from.
   test_iterator (lst.iter ());
 }
 
 template <typename It>
-static void check_sequential (It it)
+സ്ഥിതം ശൂന്യം check_sequential (It it)
 {
-  int i = 1;
-  for (int v : +it) {
+  പൂർണ്ണസംഖ്യ i = 1;
+  വേണ്ടി (പൂർണ്ണസംഖ്യ v : +it) {
     hb_always_assert (v == i++);
   }
 }
 
-static void test_concat ()
+സ്ഥിതം ശൂന്യം test_concat ()
 {
-  hb_vector_t<int> a = {1, 2, 3};
-  hb_vector_t<int> b = {4, 5};
+  hb_vector_t<പൂർണ്ണസംഖ്യ> a = {1, 2, 3};
+  hb_vector_t<പൂർണ്ണസംഖ്യ> b = {4, 5};
 
-  hb_vector_t<int> c = {};
-  hb_vector_t<int> d = {1, 2, 3, 4, 5};
+  hb_vector_t<പൂർണ്ണസംഖ്യ> c = {};
+  hb_vector_t<പൂർണ്ണസംഖ്യ> d = {1, 2, 3, 4, 5};
 
   auto it1 = hb_concat (a, b);
   hb_always_assert (it1.len () == 5);
@@ -137,7 +137,7 @@ static void test_concat ()
   hb_always_assert (it2.len () == 5);
   auto it3 = hb_concat (d, c);
   hb_always_assert (it3.len () == 5);
-  for (int i = 0; i < 5; i++) {
+  വേണ്ടി (പൂർണ്ണസംഖ്യ i = 0; i < 5; i++) {
     hb_always_assert(it1[i] == i + 1);
     hb_always_assert(it2[i] == i + 1);
     hb_always_assert(it3[i] == i + 1);
@@ -185,11 +185,11 @@ static void test_concat ()
   hb_always_assert (it6.len () == 2);
 }
 
-static void
+സ്ഥിതം ശൂന്യം
 test_backward_filter ()
 {
-  hb_vector_t<int> V = {2, 4, 5, 7, 8, 9, 10};
-  auto it = hb_iter (V) | hb_filter ([] (int x) { return x % 2 != 0; });
+  hb_vector_t<പൂർണ്ണസംഖ്യ> V = {2, 4, 5, 7, 8, 9, 10};
+  auto it = hb_iter (V) | hb_filter ([] (പൂർണ്ണസംഖ്യ x) { തിരികെ x % 2 != 0; });
   it += 2;
   hb_always_assert (*it == 9);
   --it;
@@ -200,20 +200,20 @@ test_backward_filter ()
   hb_always_assert (*it == 5);
 }
 
-int
-main (int argc, char **argv)
+പൂർണ്ണസംഖ്യ
+പ്രധാന (പൂർണ്ണസംഖ്യ argc, അക്ഷരം **argv)
 {
-  const int src[10] = {};
-  int dst[20];
-  hb_vector_t<int> v;
+  സ്ഥിരം പൂർണ്ണസംഖ്യ src[10] = {};
+  പൂർണ്ണസംഖ്യ dst[20];
+  hb_vector_t<പൂർണ്ണസംഖ്യ> v;
 
-  array_iter_t<const int> s (src); /* Implicit conversion from static array. */
-  array_iter_t<const int> s2 (v); /* Implicit conversion from vector. */
-  array_iter_t<int> t (dst);
+  array_iter_t<സ്ഥിരം പൂർണ്ണസംഖ്യ> s (src); /* Implicit conversion from static array. */
+  array_iter_t<സ്ഥിരം പൂർണ്ണസംഖ്യ> s2 (v); /* Implicit conversion from vector. */
+  array_iter_t<പൂർണ്ണസംഖ്യ> t (dst);
 
-  static_assert (array_iter_t<int>::is_random_access_iterator, "");
+  static_assert (array_iter_t<പൂർണ്ണസംഖ്യ>::is_random_access_iterator, "");
 
-  some_array_t<const int> a (src);
+  some_array_t<സ്ഥിരം പൂർണ്ണസംഖ്യ> a (src);
 
   s2 = s;
 
@@ -228,17 +228,17 @@ main (int argc, char **argv)
   hb_set_t st;
   st << 1 << 15 << 43;
   test_iterable (st);
-  hb_sorted_array_t<int> sa;
-  (void) static_cast<hb_iter_t<hb_sorted_array_t<int>, hb_sorted_array_t<int>::item_t>&> (sa);
-  (void) static_cast<hb_iter_t<hb_sorted_array_t<int>, hb_sorted_array_t<int>::__item_t__>&> (sa);
-  (void) static_cast<hb_iter_t<hb_sorted_array_t<int>, int&>&>(sa);
-  (void) static_cast<hb_iter_t<hb_sorted_array_t<int>>&>(sa);
-  (void) static_cast<hb_iter_t<hb_array_t<int>, int&>&> (sa);
+  hb_sorted_array_t<പൂർണ്ണസംഖ്യ> sa;
+  (ശൂന്യം) static_cast<hb_iter_t<hb_sorted_array_t<പൂർണ്ണസംഖ്യ>, hb_sorted_array_t<പൂർണ്ണസംഖ്യ>::item_t>&> (sa);
+  (ശൂന്യം) static_cast<hb_iter_t<hb_sorted_array_t<പൂർണ്ണസംഖ്യ>, hb_sorted_array_t<പൂർണ്ണസംഖ്യ>::__item_t__>&> (sa);
+  (ശൂന്യം) static_cast<hb_iter_t<hb_sorted_array_t<പൂർണ്ണസംഖ്യ>, പൂർണ്ണസംഖ്യ&>&>(sa);
+  (ശൂന്യം) static_cast<hb_iter_t<hb_sorted_array_t<പൂർണ്ണസംഖ്യ>>&>(sa);
+  (ശൂന്യം) static_cast<hb_iter_t<hb_array_t<പൂർണ്ണസംഖ്യ>, പൂർണ്ണസംഖ്യ&>&> (sa);
   test_iterable (sa);
 
-  test_iterable<hb_array_t<int>> ();
-  test_iterable<hb_sorted_array_t<const int>> ();
-  test_iterable<hb_vector_t<float>> ();
+  test_iterable<hb_array_t<പൂർണ്ണസംഖ്യ>> ();
+  test_iterable<hb_sorted_array_t<സ്ഥിരം പൂർണ്ണസംഖ്യ>> ();
+  test_iterable<hb_vector_t<ദശാംശം>> ();
   test_iterable<hb_set_t> ();
   test_iterable<OT::Array16Of<OT::HBUINT16>> ();
 
@@ -250,18 +250,18 @@ main (int argc, char **argv)
   test_iterator_non_default_constructable (hb_iter (st) | hb_filter ());
   test_iterator_non_default_constructable (hb_iter (st) | hb_map (hb_lidentity));
 
-  hb_always_assert (true == hb_all (st));
-  hb_always_assert (false == hb_all (st, 42u));
-  hb_always_assert (true == hb_any (st));
-  hb_always_assert (false == hb_any (st, 14u));
-  hb_always_assert (true == hb_any (st, 14u, [] (unsigned _) { return _ - 1u; }));
-  hb_always_assert (true == hb_any (st, [] (unsigned _) { return _ == 15u; }));
-  hb_always_assert (true == hb_any (st, 15u));
-  hb_always_assert (false == hb_none (st));
-  hb_always_assert (false == hb_none (st, 15u));
-  hb_always_assert (true == hb_none (st, 17u));
+  hb_always_assert (സത്യം == hb_all (st));
+  hb_always_assert (അസത്യം == hb_all (st, 42u));
+  hb_always_assert (സത്യം == hb_any (st));
+  hb_always_assert (അസത്യം == hb_any (st, 14u));
+  hb_always_assert (സത്യം == hb_any (st, 14u, [] (unsigned _) { തിരികെ _ - 1u; }));
+  hb_always_assert (സത്യം == hb_any (st, [] (unsigned _) { തിരികെ _ == 15u; }));
+  hb_always_assert (സത്യം == hb_any (st, 15u));
+  hb_always_assert (അസത്യം == hb_none (st));
+  hb_always_assert (അസത്യം == hb_none (st, 15u));
+  hb_always_assert (സത്യം == hb_none (st, 17u));
 
-  hb_array_t<hb_vector_t<int>> pa;
+  hb_array_t<hb_vector_t<പൂർണ്ണസംഖ്യ>> pa;
   pa->as_array ();
 
   hb_map_t m;
@@ -289,47 +289,47 @@ main (int argc, char **argv)
   ;
 
   + hb_iter (src)
-  | hb_map ([] (int i) { return 1; })
-  | hb_reduce ([=] (int acc, int value) { return acc; }, 2)
+  | hb_map ([] (പൂർണ്ണസംഖ്യ i) { തിരികെ 1; })
+  | hb_reduce ([=] (പൂർണ്ണസംഖ്യ acc, പൂർണ്ണസംഖ്യ value) { തിരികെ acc; }, 2)
   ;
 
   using map_pair_t = hb_item_type<hb_map_t>;
   + hb_iter (m)
-  | hb_map ([] (map_pair_t p) { return p.first * p.second; })
+  | hb_map ([] (map_pair_t p) { തിരികെ p.first * p.second; })
   ;
 
-  m.keys ();
-  using map_key_t = decltype (*m.keys());
-  + hb_iter (m.keys ())
-  | hb_filter ([] (map_key_t k) { return k < 42; })
+  m.താക്കോലുകൾ ();
+  using map_താക്കോൽ_t = decltype (*m.താക്കോലുകൾ());
+  + hb_iter (m.താക്കോലുകൾ ())
+  | hb_filter ([] (map_താക്കോൽ_t k) { തിരികെ k < 42; })
   | hb_drain
   ;
 
   m.values ();
-  using map_value_t = decltype (*m.values());
+  using map_മൂല്യം_t = decltype (*m.values());
   + hb_iter (m.values ())
-  | hb_filter ([] (map_value_t k) { return k < 42; })
+  | hb_filter ([] (map_മൂല്യം_t k) { തിരികെ k < 42; })
   | hb_drain
   ;
 
-  unsigned int temp1 = 10;
-  unsigned int temp2 = 0;
+  unsigned പൂർണ്ണസംഖ്യ temp1 = 10;
+  unsigned പൂർണ്ണസംഖ്യ temp2 = 0;
   hb_map_t *result =
   + hb_iter (src)
-  | hb_map ([&] (int i) -> hb_set_t *
+  | hb_map ([&] (പൂർണ്ണസംഖ്യ i) -> hb_set_t *
 	    {
 	      hb_set_t *set = hb_set_create ();
-	      for (unsigned int i = 0; i < temp1; ++i)
+	      വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < temp1; ++i)
 		hb_set_add (set, i);
 	      temp1++;
-	      return set;
+	      തിരികെ set;
 	    })
   | hb_reduce ([&] (hb_map_t *acc, hb_set_t *value) -> hb_map_t *
 	       {
 		 hb_map_set (acc, temp2++, hb_set_get_population (value));
 		 /* This is not a memory managed language, take care! */
 		 hb_set_destroy (value);
-		 return acc;
+		 തിരികെ acc;
 	       }, hb_map_create ())
   ;
   /* The result should be something like 0->10, 1->11, ..., 9->19 */
@@ -341,28 +341,28 @@ main (int argc, char **argv)
   temp2 = 0;
   result =
   + hb_iter (src)
-  | hb_map ([&] (int i) -> hb_set_t
+  | hb_map ([&] (പൂർണ്ണസംഖ്യ i) -> hb_set_t
 	    {
 	      hb_set_t set;
-	      for (unsigned int i = 0; i < temp1; ++i)
+	      വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < temp1; ++i)
 		hb_set_add (&set, i);
 	      temp1++;
-	      return set;
+	      തിരികെ set;
 	    })
   | hb_reduce ([&] (hb_map_t *acc, hb_set_t value) -> hb_map_t *
 	       {
 		 hb_map_set (acc, temp2++, hb_set_get_population (&value));
-		 return acc;
+		 തിരികെ acc;
 	       }, hb_map_create ())
   ;
   /* The result should be something like 0->10, 1->11, ..., 9->19 */
   hb_always_assert (hb_map_get (result, 9) == 19);
   hb_map_destroy (result);
 
-  unsigned int temp3 = 0;
+  unsigned പൂർണ്ണസംഖ്യ temp3 = 0;
   + hb_iter(src)
-  | hb_map([&] (int i) { return ++temp3; })
-  | hb_reduce([&] (float acc, int value) { return acc + value; }, 0)
+  | hb_map([&] (പൂർണ്ണസംഖ്യ i) { തിരികെ ++temp3; })
+  | hb_reduce([&] (ദശാംശം acc, പൂർണ്ണസംഖ്യ value) { തിരികെ acc + value; }, 0)
   ;
 
   + hb_iter (src)
@@ -394,5 +394,5 @@ main (int argc, char **argv)
   test_concat ();
   test_backward_filter ();
 
-  return 0;
+  തിരികെ 0;
 }

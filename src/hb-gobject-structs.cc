@@ -24,7 +24,7 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#അന്തര്ഭാവ "hb.hh"
 
 #ifdef HAVE_GOBJECT
 
@@ -50,36 +50,36 @@
 
 
 /* g++ didn't like older gtype.h gcc-only code path. */
-#include <glib.h>
+#അന്തര്ഭാവ <glib.h>
 
-#include "hb-gobject.h"
+#അന്തര്ഭാവ "hb-gobject.h"
 
 #define HB_DEFINE_BOXED_TYPE(name,copy_func,free_func) \
 GType \
 hb_gobject_##name##_get_type () \
 { \
-   static gsize type_id = 0; \
-   if (g_once_init_enter (&type_id)) { \
+   സ്ഥിതം gsize type_id = 0; \
+   എങ്കിൽ (g_once_init_enter (&type_id)) { \
       GType id = g_boxed_type_register_static (g_intern_static_string ("hb_" #name "_t"), \
 					       (GBoxedCopyFunc) copy_func, \
 					       (GBoxedFreeFunc) free_func); \
       g_once_init_leave (&type_id, id); \
    } \
-   return type_id; \
+   തിരികെ type_id; \
 }
 
 #define HB_DEFINE_OBJECT_TYPE(name) \
 	HB_DEFINE_BOXED_TYPE (name, hb_##name##_reference, hb_##name##_destroy)
 
-#define HB_DEFINE_VALUE_TYPE(name) \
-	static hb_##name##_t *_hb_##name##_reference (const hb_##name##_t *l) \
+#define HB_DEFINE_മൂല്യം_TYPE(name) \
+	സ്ഥിതം hb_##name##_t *_hb_##name##_reference (സ്ഥിരം hb_##name##_t *l) \
 	{ \
-	  hb_##name##_t *c = (hb_##name##_t *) hb_calloc (1, sizeof (hb_##name##_t)); \
-	  if (unlikely (!c)) return nullptr; \
+	  hb_##name##_t *c = (hb_##name##_t *) hb_calloc (1, വലുപ്പം (hb_##name##_t)); \
+	  എങ്കിൽ (unlikely (!c)) തിരികെ nullptr; \
 	  *c = *l; \
-	  return c; \
+	  തിരികെ c; \
 	} \
-	static void _hb_##name##_destroy (hb_##name##_t *l) { hb_free (l); } \
+	സ്ഥിതം ശൂന്യം _hb_##name##_destroy (hb_##name##_t *l) { hb_free (l); } \
 	HB_DEFINE_BOXED_TYPE (name, _hb_##name##_reference, _hb_##name##_destroy)
 
 HB_DEFINE_OBJECT_TYPE (buffer)
@@ -93,18 +93,18 @@ HB_DEFINE_OBJECT_TYPE (set)
 HB_DEFINE_OBJECT_TYPE (map)
 HB_DEFINE_OBJECT_TYPE (shape_plan)
 HB_DEFINE_OBJECT_TYPE (unicode_funcs)
-HB_DEFINE_VALUE_TYPE (feature)
-HB_DEFINE_VALUE_TYPE (glyph_info)
-HB_DEFINE_VALUE_TYPE (glyph_position)
-HB_DEFINE_VALUE_TYPE (segment_properties)
-HB_DEFINE_VALUE_TYPE (draw_state)
-HB_DEFINE_VALUE_TYPE (color_stop)
-HB_DEFINE_VALUE_TYPE (color_line)
-HB_DEFINE_VALUE_TYPE (user_data_key)
+HB_DEFINE_മൂല്യം_TYPE (feature)
+HB_DEFINE_മൂല്യം_TYPE (glyph_info)
+HB_DEFINE_മൂല്യം_TYPE (glyph_position)
+HB_DEFINE_മൂല്യം_TYPE (segment_properties)
+HB_DEFINE_മൂല്യം_TYPE (draw_state)
+HB_DEFINE_മൂല്യം_TYPE (color_stop)
+HB_DEFINE_മൂല്യം_TYPE (color_വരി)
+HB_DEFINE_മൂല്യം_TYPE (user_data_താക്കോൽ)
 
-HB_DEFINE_VALUE_TYPE (ot_var_axis_info)
-HB_DEFINE_VALUE_TYPE (ot_math_glyph_variant)
-HB_DEFINE_VALUE_TYPE (ot_math_glyph_part)
+HB_DEFINE_മൂല്യം_TYPE (ot_var_axis_info)
+HB_DEFINE_മൂല്യം_TYPE (ot_math_glyph_variant)
+HB_DEFINE_മൂല്യം_TYPE (ot_math_glyph_part)
 
 
 #endif

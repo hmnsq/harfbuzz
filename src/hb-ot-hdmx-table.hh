@@ -27,7 +27,7 @@
 #ifndef HB_OT_HDMX_TABLE_HH
 #define HB_OT_HDMX_TABLE_HH
 
-#include "hb-open-type.hh"
+#അന്തര്ഭാവ "hb-open-type.hh"
 
 /*
  * hdmx -- Horizontal Device Metrics
@@ -36,138 +36,138 @@
 #define HB_OT_TAG_hdmx HB_TAG('h','d','m','x')
 
 
-namespace OT {
+നാമാകാശ OT {
 
 
-struct DeviceRecord
+ഘടന DeviceRecord
 {
-  static size_t get_size (unsigned count)
-  { return hb_ceil_to_4 (hb_unsigned_mul_add_saturate (count, HBUINT8::static_size, min_size)); }
+  സ്ഥിതം size_t get_size (unsigned എണ്ണം)
+  { തിരികെ hb_ceil_to_4 (hb_unsigned_mul_add_saturate (എണ്ണം, HBUINT8::static_size, min_size)); }
 
   template<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  bool serialize (hb_serialize_context_t *c,
+  തർക്കം serialize (hb_serialize_context_t *c,
 		  unsigned pixelSize,
 		  Iterator it,
-		  const hb_vector_t<hb_codepoint_pair_t> new_to_old_gid_list,
-		  unsigned num_glyphs)
+		  സ്ഥിരം hb_vector_t<hb_codepoint_pair_t> new_to_old_gid_list,
+		  unsigned അക്കം_glyphs)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ഇത്);
 
-    if (unlikely (!c->extend (this, num_glyphs)))  return_trace (false);
+    എങ്കിൽ (unlikely (!c->extend (ഇത്, അക്കം_glyphs)))  return_trace (അസത്യം);
 
-    this->pixelSize = pixelSize;
-    this->maxWidth =
+    ഇത്->pixelSize = pixelSize;
+    ഇത്->maxWidth =
     + it
     | hb_reduce (hb_max, 0u);
 
-    for (auto &_ : new_to_old_gid_list)
+    വേണ്ടി (auto &_ : new_to_old_gid_list)
       widthsZ[_.first] = *it++;
 
-    return_trace (true);
+    return_trace (സത്യം);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned sizeDeviceRecord) const
+  തർക്കം sanitize (hb_sanitize_context_t *c, unsigned sizeDeviceRecord) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (ഇത്);
+    return_trace (likely (c->check_struct (ഇത്) &&
 			  hb_barrier () &&
-			  c->check_range (this, sizeDeviceRecord)));
+			  c->check_range (ഇത്, sizeDeviceRecord)));
   }
 
   HBUINT8			pixelSize;	/* Pixel size for following widths (as ppem). */
   HBUINT8			maxWidth;	/* Maximum width. */
   UnsizedArrayOf<HBUINT8>	widthsZ;	/* Array of widths (numGlyphs is from the 'maxp' table). */
-  public:
+  പൊതു:
   DEFINE_SIZE_UNBOUNDED (2);
 };
 
 
-struct hdmx
+ഘടന hdmx
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_hdmx;
+  സ്ഥിതം constexpr hb_tag_t tableTag = HB_OT_TAG_hdmx;
 
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (numRecords, sizeDeviceRecord, min_size); }
+  size_t get_size () സ്ഥിരം
+  { തിരികെ hb_unsigned_mul_add_saturate (അക്കം_Records, sizeDeviceRecord, min_size); }
 
   template<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  bool serialize (hb_serialize_context_t *c,
+  തർക്കം serialize (hb_serialize_context_t *c,
 		  unsigned version,
 		  Iterator it,
-		  hb_array_t<const hb_codepoint_pair_t> new_to_old_gid_list,
-		  unsigned num_glyphs)
+		  hb_array_t<സ്ഥിരം hb_codepoint_pair_t> new_to_old_gid_list,
+		  unsigned അക്കം_glyphs)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ഇത്);
 
-    if (unlikely (!c->extend_min ((*this))))  return_trace (false);
+    എങ്കിൽ (unlikely (!c->extend_min ((*ഇത്))))  return_trace (അസത്യം);
 
-    this->version = version;
-    this->numRecords = it.len ();
-    this->sizeDeviceRecord = DeviceRecord::get_size (num_glyphs);
+    ഇത്->version = version;
+    ഇത്->അക്കം_Records = it.len ();
+    ഇത്->sizeDeviceRecord = DeviceRecord::get_size (അക്കം_glyphs);
 
-    for (const hb_item_type<Iterator>& _ : +it)
-      c->start_embed<DeviceRecord> ()->serialize (c, _.first, _.second, new_to_old_gid_list, num_glyphs);
+    വേണ്ടി (സ്ഥിരം hb_item_type<Iterator>& _ : +it)
+      c->start_embed<DeviceRecord> ()->serialize (c, _.first, _.second, new_to_old_gid_list, അക്കം_glyphs);
 
     return_trace (c->successful ());
   }
 
 
-  bool subset (hb_subset_context_t *c) const
+  തർക്കം subset (hb_subset_context_t *c) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (ഇത്);
 
-    auto *hdmx_prime = c->serializer->start_embed <hdmx> ();
+    auto *hdmx_അഭാജ്യം = c->serializer->start_embed <hdmx> ();
 
-    unsigned num_input_glyphs = get_num_glyphs ();
+    unsigned അക്കം_നിവേശം_glyphs = get_അക്കം_glyphs ();
     auto it =
-    + hb_range ((unsigned) numRecords)
-    | hb_map ([c, num_input_glyphs, this] (unsigned _)
+    + hb_range ((unsigned) അക്കം_Records)
+    | hb_map ([c, അക്കം_നിവേശം_glyphs, ഇത്] (unsigned _)
 	{
-	  const DeviceRecord *device_record =
+	  സ്ഥിരം DeviceRecord *device_record =
 	    &StructAtOffset<DeviceRecord> (&firstDeviceRecord,
 					   _ * sizeDeviceRecord);
 	  auto row =
 	    + hb_iter (c->plan->new_to_old_gid_list)
-	    | hb_map ([num_input_glyphs, device_record] (hb_codepoint_pair_t _)
+	    | hb_map ([അക്കം_നിവേശം_glyphs, device_record] (hb_codepoint_pair_t _)
 		      {
-			return device_record->widthsZ.as_array (num_input_glyphs) [_.second];
+			തിരികെ device_record->widthsZ.as_array (അക്കം_നിവേശം_glyphs) [_.second];
 		      })
 	    ;
-	  return hb_pair ((unsigned) device_record->pixelSize, +row);
+	  തിരികെ hb_pair ((unsigned) device_record->pixelSize, +row);
 	})
     ;
 
-    hdmx_prime->serialize (c->serializer, version, it,
+    hdmx_അഭാജ്യം->serialize (c->serializer, version, it,
 			   c->plan->new_to_old_gid_list,
-			   c->plan->num_output_glyphs ());
-    return_trace (true);
+			   c->plan->അക്കം_output_glyphs ());
+    return_trace (സത്യം);
   }
 
-  unsigned get_num_glyphs () const
+  unsigned get_അക്കം_glyphs () സ്ഥിരം
   {
-    return sizeDeviceRecord - DeviceRecord::min_size;
+    തിരികെ sizeDeviceRecord - DeviceRecord::min_size;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) &&
 		  hb_barrier () &&
-		  !hb_unsigned_mul_overflows (numRecords, sizeDeviceRecord) &&
-                  min_size + numRecords * sizeDeviceRecord > numRecords * sizeDeviceRecord &&
+		  !hb_unsigned_mul_overflows (അക്കം_Records, sizeDeviceRecord) &&
+                  min_size + അക്കം_Records * sizeDeviceRecord > അക്കം_Records * sizeDeviceRecord &&
 		  sizeDeviceRecord >= DeviceRecord::min_size &&
-		  c->check_range (this, get_size ()));
+		  c->check_range (ഇത്, get_size ()));
   }
 
-  protected:
+  സംരക്ഷിത:
   HBUINT16	version;	/* Table version number (0) */
-  HBUINT16	numRecords;	/* Number of device records. */
+  HBUINT16	അക്കം_Records;	/* Number of device records. */
   HBUINT32	sizeDeviceRecord;
 				/* Size of a device record, 32-bit aligned. */
   DeviceRecord	firstDeviceRecord;
 				/* Array of device records. */
-  public:
+  പൊതു:
   DEFINE_SIZE_MIN (8);
 };
 

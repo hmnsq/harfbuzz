@@ -2,21 +2,21 @@
 
 "usage: gen-def.py harfbuzz.def hb.h [hb-blob.h hb-buffer.h ...]"
 
-import os, re, sys
+ഇറക്കുമതി os, re, sys
 
-if len (sys.argv) < 3:
+എങ്കിൽ len (sys.argv) < 3:
 	sys.exit(__doc__)
 
 output_file = sys.argv[1]
 header_paths = sys.argv[2:]
 
 headers_content = []
-for h in header_paths:
-	if h.endswith (".h"):
-		with open (h, encoding='utf-8') as f: headers_content.append (f.read ())
+വേണ്ടി h ഇൽ header_paths:
+	എങ്കിൽ h.endswith (".h"):
+		with open (h, encoding='utf-8') ഇവ f: headers_content.append (f.പഠ ())
 
 symbols = sorted (re.findall (r"^hb_\w+(?= \()", "\n".join (headers_content), re.M))
-if '--experimental-api' not in sys.argv:
+എങ്കിൽ '--experimental-api' അല്ല ഇൽ sys.argv:
 	# Move these to harfbuzz-sections.txt when got stable
 	experimental_symbols = \
 """hb_shape_justify
@@ -31,11 +31,11 @@ hb_subset_depend_lookup_glyph
 hb_subset_depend_lookup_set
 hb_subset_depend_destroy
 """.splitlines ()
-	symbols = [x for x in symbols if x not in experimental_symbols]
+	symbols = [x വേണ്ടി x ഇൽ symbols എങ്കിൽ x അല്ല ഇൽ experimental_symbols]
 symbols = "\n".join (symbols)
 
-result = symbols if os.getenv ('PLAIN_LIST', '') else """EXPORTS
+result = symbols എങ്കിൽ os.getenv ('PLAIN_LIST', '') അല്ലെങ്കിൽ """EXPORTS
 %s
 LIBRARY lib%s-0.dll""" % (symbols, output_file.replace ('src/', '').replace ('.def', ''))
 
-with open (output_file, "w") as f: f.write (result)
+with open (output_file, "w") ഇവ f: f.ലിഖ (result)

@@ -27,87 +27,87 @@
 #ifndef HB_RESULT_HH
 #define HB_RESULT_HH
 
-#include "hb.hh"
+#അന്തര്ഭാവ "hb.hh"
 
 // Helper structs for Ok(...) and Err(...), not used directly
 // by users of hb_result_t.
 template <typename T>
-struct hb_result_ok_t
+ഘടന hb_result_ok_t
 {
   T value;
 };
 
 template <>
-struct hb_result_ok_t<void> {};
+ഘടന hb_result_ok_t<ശൂന്യം> {};
 
 template <typename E>
-struct hb_result_err_t
+ഘടന hb_result_err_t
 {
   E error;
 
   template <typename OtherE>
-  constexpr bool operator == (const hb_result_err_t<OtherE>& other) const { return error == other.error; }
+  constexpr തർക്കം operator == (സ്ഥിരം hb_result_err_t<OtherE>& other) സ്ഥിരം { തിരികെ error == other.error; }
   template <typename OtherE>
-  constexpr bool operator != (const hb_result_err_t<OtherE>& other) const { return error != other.error; }
+  constexpr തർക്കം operator != (സ്ഥിരം hb_result_err_t<OtherE>& other) സ്ഥിരം { തിരികെ error != other.error; }
 };
 
-template <typename X> struct _hb_is_result_tag : hb_false_type {};
-template <typename X> struct _hb_is_result_tag<hb_result_ok_t<X>> : hb_true_type {};
-template <typename X> struct _hb_is_result_tag<hb_result_err_t<X>> : hb_true_type {};
+template <typename X> ഘടന _hb_is_result_tag : hb_false_type {};
+template <typename X> ഘടന _hb_is_result_tag<hb_result_ok_t<X>> : hb_true_type {};
+template <typename X> ഘടന _hb_is_result_tag<hb_result_err_t<X>> : hb_true_type {};
 
 template <typename T>
-static inline constexpr hb_result_ok_t<T&&> Ok (T&& v)
+സ്ഥിതം വരിയിൽ constexpr hb_result_ok_t<T&&> Ok (T&& v)
 {
-  return hb_result_ok_t<T&&>{std::forward<T> (v)};
+  തിരികെ hb_result_ok_t<T&&>{std::forward<T> (v)};
 }
 
-static inline constexpr hb_result_ok_t<void> Ok ()
+സ്ഥിതം വരിയിൽ constexpr hb_result_ok_t<ശൂന്യം> Ok ()
 {
-  return hb_result_ok_t<void>{};
+  തിരികെ hb_result_ok_t<ശൂന്യം>{};
 }
 
 template <typename E>
-static inline constexpr hb_result_err_t<E&&> Err (E&& e)
+സ്ഥിതം വരിയിൽ constexpr hb_result_err_t<E&&> Err (E&& e)
 {
-  return hb_result_err_t<E&&>{std::forward<E> (e)};
+  തിരികെ hb_result_err_t<E&&>{std::forward<E> (e)};
 }
 
 template <typename T, typename E>
-struct HB_NODISCARD_STRUCT hb_result_t
+ഘടന HB_NODISCARD_STRUCT hb_result_t
 {
-  private:
-  union
+  സ്വകാര്യ:
+  സംഘം
   {
     T val_;
     E err_;
   };
-  bool is_ok_;
+  തർക്കം is_ok_;
 
-  void destroy ()
+  ശൂന്യം destroy ()
   {
-    if (is_ok_)
+    എങ്കിൽ (is_ok_)
       val_.~T ();
-    else
+    അല്ലെങ്കിൽ
       err_.~E ();
   }
 
-  void init(const hb_result_t& o) {
+  ശൂന്യം init(സ്ഥിരം hb_result_t& o) {
     is_ok_ = o.is_ok_;
-    if (is_ok_)
-      new (std::addressof (val_)) T (o.val_);
-    else
-      new (std::addressof (err_)) E (o.err_);
+    എങ്കിൽ (is_ok_)
+      പുതിയ (std::addressof (val_)) T (o.val_);
+    അല്ലെങ്കിൽ
+      പുതിയ (std::addressof (err_)) E (o.err_);
   }
 
-  void init(hb_result_t&& o) {
+  ശൂന്യം init(hb_result_t&& o) {
     is_ok_ = o.is_ok_;
-    if (is_ok_)
-      new (std::addressof (val_)) T (std::move (o.val_));
-    else
-      new (std::addressof (err_)) E (std::move (o.err_));
+    എങ്കിൽ (is_ok_)
+      പുതിയ (std::addressof (val_)) T (std::move (o.val_));
+    അല്ലെങ്കിൽ
+      പുതിയ (std::addressof (err_)) E (std::move (o.err_));
   }
 
-  public:
+  പൊതു:
   ~hb_result_t ()
   {
     destroy ();
@@ -115,94 +115,94 @@ struct HB_NODISCARD_STRUCT hb_result_t
 
   hb_result_t () = delete;
 
-  hb_result_t (const hb_result_t& o) : is_ok_ (false)
+  hb_result_t (സ്ഥിരം hb_result_t& o) : is_ok_ (അസത്യം)
   {
     init (o);
   }
 
   hb_result_t (hb_result_t&& o) noexcept (std::is_nothrow_move_constructible<T>::value &&
                                      std::is_nothrow_move_constructible<E>::value)
-      : is_ok_ (false)
+      : is_ok_ (അസത്യം)
   {
     init (std::move (o));
   }
 
-  hb_result_t& operator = (const hb_result_t& o)
+  hb_result_t& operator = (സ്ഥിരം hb_result_t& o)
   {
-    if (this == &o) return *this;
-    if (is_ok_ && o.is_ok_)
+    എങ്കിൽ (ഇത് == &o) തിരികെ *ഇത്;
+    എങ്കിൽ (is_ok_ && o.is_ok_)
     {
       val_ = o.val_;
     }
-    else if (!is_ok_ && !o.is_ok_)
+    അല്ലെങ്കിൽ എങ്കിൽ (!is_ok_ && !o.is_ok_)
     {
       err_ = o.err_;
     }
-    else
+    അല്ലെങ്കിൽ
     {
       destroy ();
       init (o);
     }
-    return *this;
+    തിരികെ *ഇത്;
   }
 
   hb_result_t& operator = (hb_result_t&& o) noexcept (std::is_nothrow_move_assignable<T>::value &&
                                                 std::is_nothrow_move_assignable<E>::value)
   {
-    if (this == &o) return *this;
-    if (is_ok_ && o.is_ok_)
+    എങ്കിൽ (ഇത് == &o) തിരികെ *ഇത്;
+    എങ്കിൽ (is_ok_ && o.is_ok_)
     {
       val_ = std::move (o.val_);
     }
-    else if (!is_ok_ && !o.is_ok_)
+    അല്ലെങ്കിൽ എങ്കിൽ (!is_ok_ && !o.is_ok_)
     {
       err_ = std::move (o.err_);
     }
-    else
+    അല്ലെങ്കിൽ
     {
       destroy ();
       init (std::move (o));
     }
-    return *this;
+    തിരികെ *ഇത്;
   }
 
   // Construct from Ok(...) tag
   template <typename U,
             hb_enable_if ((std::is_constructible<T, U>::value))>
-  hb_result_t (hb_result_ok_t<U>&& o) : is_ok_ (true)
+  hb_result_t (hb_result_ok_t<U>&& o) : is_ok_ (സത്യം)
   {
-    new (std::addressof (val_)) T (std::move (o.value));
+    പുതിയ (std::addressof (val_)) T (std::move (o.value));
   }
 
   template <typename U,
-            hb_enable_if ((std::is_constructible<T, const U&>::value))>
-  hb_result_t (const hb_result_ok_t<U>& o) : is_ok_ (true)
+            hb_enable_if ((std::is_constructible<T, സ്ഥിരം U&>::value))>
+  hb_result_t (സ്ഥിരം hb_result_ok_t<U>& o) : is_ok_ (സത്യം)
   {
-    new (std::addressof (val_)) T (o.value);
+    പുതിയ (std::addressof (val_)) T (o.value);
   }
 
   // Construct from Err(...) tag
   template <typename F,
             hb_enable_if ((std::is_constructible<E, F>::value))>
-  hb_result_t (hb_result_err_t<F>&& e) : is_ok_ (false)
+  hb_result_t (hb_result_err_t<F>&& e) : is_ok_ (അസത്യം)
   {
-    new (std::addressof (err_)) E (std::move (e.error));
+    പുതിയ (std::addressof (err_)) E (std::move (e.error));
   }
 
   template <typename F,
-            hb_enable_if ((std::is_constructible<E, const F&>::value))>
-  hb_result_t (const hb_result_err_t<F>& e) : is_ok_ (false)
+            hb_enable_if ((std::is_constructible<E, സ്ഥിരം F&>::value))>
+  hb_result_t (സ്ഥിരം hb_result_err_t<F>& e) : is_ok_ (അസത്യം)
   {
-    new (std::addressof (err_)) E (e.error);
+    പുതിയ (std::addressof (err_)) E (e.error);
   }
 
   // Construct directly from error E (when neither T or E are convertible into each other)
   template <typename F = E,
             hb_enable_if ((hb_is_same (F, E) &&
                            !(hb_is_convertible (T, E) || hb_is_convertible (E, T))))>
-  hb_result_t (F e) : is_ok_ (false)
+  hb_result_t (F e) : is_ok_ (അസത്യം)
   {
-    new (std::addressof (err_)) E (std::move (e));
+    പുതിയ (std::addressof (err_)) E (std::move (e));
   }
 
   // Construct directly from value T (when neither T or E are convertible into each other)
@@ -212,297 +212,297 @@ struct HB_NODISCARD_STRUCT hb_result_t
                            !hb_is_same (hb_decay<U>, hb_result_t) &&
                            !_hb_is_result_tag<hb_decay<U>>::value &&
                            !(hb_is_convertible (T, E) || hb_is_convertible (E, T))))>
-  hb_result_t (U&& v) : is_ok_ (true)
+  hb_result_t (U&& v) : is_ok_ (സത്യം)
   {
-    new (std::addressof (val_)) T (std::forward<U> (v));
+    പുതിയ (std::addressof (val_)) T (std::forward<U> (v));
   }
 
   // Move fallible into a result if it's in_error() method returns false.
-  static hb_result_t from (T&& fallible, E error_value) {
-    if (fallible.in_error()) {
-      return Err(error_value);
+  സ്ഥിതം hb_result_t from (T&& fallible, E error_മൂല്യം) {
+    എങ്കിൽ (fallible.in_error()) {
+      തിരികെ Err(error_മൂല്യം);
     }
-    return Ok(fallible);
+    തിരികെ Ok(fallible);
   }
 
-  bool is_ok () const { return is_ok_; }
-  bool is_err () const { return !is_ok_; }
-  explicit operator bool () const { return is_ok (); }
+  തർക്കം is_ok () സ്ഥിരം { തിരികെ is_ok_; }
+  തർക്കം is_err () സ്ഥിരം { തിരികെ !is_ok_; }
+  explicit operator തർക്കം () സ്ഥിരം { തിരികെ is_ok (); }
 
-  T& value () & { assert (is_ok_); return val_; }
-  const T& value () const & { assert (is_ok_); return val_; }
-  T value () && { assert (is_ok_); return std::move (val_); }
+  T& value () & { പ്രതിജ്ഞാ (is_ok_); തിരികെ val_; }
+  സ്ഥിരം T& value () സ്ഥിരം & { പ്രതിജ്ഞാ (is_ok_); തിരികെ val_; }
+  T value () && { പ്രതിജ്ഞാ (is_ok_); തിരികെ std::move (val_); }
 
-  T& operator * () & { return value (); }
-  const T& operator * () const & { return value (); }
-  T operator * () && { return std::move (*this).value (); }
+  T& operator * () & { തിരികെ value (); }
+  സ്ഥിരം T& operator * () സ്ഥിരം & { തിരികെ value (); }
+  T operator * () && { തിരികെ std::move (*ഇത്).value (); }
 
-  T* operator -> () { return std::addressof (value ()); }
-  const T* operator -> () const { return std::addressof (value ()); }
+  T* operator -> () { തിരികെ std::addressof (value ()); }
+  സ്ഥിരം T* operator -> () സ്ഥിരം { തിരികെ std::addressof (value ()); }
 
   template <typename U>
-  T value_or (U&& default_value) const &
+  T മൂല്യം_or (U&& default_മൂല്യം) സ്ഥിരം &
   {
-    if (is_ok_) return val_;
-    return std::forward<U> (default_value);
-  }
-
-  template <typename U>
-  T value_or (U&& default_value) &&
-  {
-    if (is_ok_) return std::move (val_);
-    return std::forward<U> (default_value);
-  }
-
-  T value_or_default () const &
-  {
-    if (is_ok_) return val_;
-    return T ();
-  }
-
-  T value_or_default () &&
-  {
-    if (is_ok_) return std::move (val_);
-    return T ();
-  }
-
-  const E& error () const & { assert (!is_ok_); return err_; }
-  E& error () & { assert (!is_ok_); return err_; }
-  E error () && { assert (!is_ok_); return std::move (err_); }
-
-  bool operator == (const hb_result_t& o) const
-  {
-    if (is_ok_ != o.is_ok_) return false;
-    if (is_ok_) return val_ == o.val_;
-    return err_ == o.err_;
-  }
-
-  bool operator != (const hb_result_t& o) const
-  {
-    return !(*this == o);
+    എങ്കിൽ (is_ok_) തിരികെ val_;
+    തിരികെ std::forward<U> (default_മൂല്യം);
   }
 
   template <typename U>
-  bool operator == (const hb_result_ok_t<U>& o) const
+  T മൂല്യം_or (U&& default_മൂല്യം) &&
   {
-    return is_ok_ && val_ == o.value;
+    എങ്കിൽ (is_ok_) തിരികെ std::move (val_);
+    തിരികെ std::forward<U> (default_മൂല്യം);
+  }
+
+  T മൂല്യം_or_default () സ്ഥിരം &
+  {
+    എങ്കിൽ (is_ok_) തിരികെ val_;
+    തിരികെ T ();
+  }
+
+  T മൂല്യം_or_default () &&
+  {
+    എങ്കിൽ (is_ok_) തിരികെ std::move (val_);
+    തിരികെ T ();
+  }
+
+  സ്ഥിരം E& error () സ്ഥിരം & { പ്രതിജ്ഞാ (!is_ok_); തിരികെ err_; }
+  E& error () & { പ്രതിജ്ഞാ (!is_ok_); തിരികെ err_; }
+  E error () && { പ്രതിജ്ഞാ (!is_ok_); തിരികെ std::move (err_); }
+
+  തർക്കം operator == (സ്ഥിരം hb_result_t& o) സ്ഥിരം
+  {
+    എങ്കിൽ (is_ok_ != o.is_ok_) തിരികെ അസത്യം;
+    എങ്കിൽ (is_ok_) തിരികെ val_ == o.val_;
+    തിരികെ err_ == o.err_;
+  }
+
+  തർക്കം operator != (സ്ഥിരം hb_result_t& o) സ്ഥിരം
+  {
+    തിരികെ !(*ഇത് == o);
   }
 
   template <typename U>
-  bool operator != (const hb_result_ok_t<U>& o) const
+  തർക്കം operator == (സ്ഥിരം hb_result_ok_t<U>& o) സ്ഥിരം
   {
-    return !(*this == o);
+    തിരികെ is_ok_ && val_ == o.value;
+  }
+
+  template <typename U>
+  തർക്കം operator != (സ്ഥിരം hb_result_ok_t<U>& o) സ്ഥിരം
+  {
+    തിരികെ !(*ഇത് == o);
   }
 
   template <typename F>
-  bool operator == (const hb_result_err_t<F>& e) const
+  തർക്കം operator == (സ്ഥിരം hb_result_err_t<F>& e) സ്ഥിരം
   {
-    return !is_ok_ && err_ == e.error;
+    തിരികെ !is_ok_ && err_ == e.error;
   }
 
   template <typename F>
-  bool operator != (const hb_result_err_t<F>& e) const
+  തർക്കം operator != (സ്ഥിരം hb_result_err_t<F>& e) സ്ഥിരം
   {
-    return !(*this == e);
+    തിരികെ !(*ഇത് == e);
   }
 
   template <typename U>
-  bool operator == (const U&) const = delete;
+  തർക്കം operator == (സ്ഥിരം U&) സ്ഥിരം = delete;
 
   template <typename U>
-  bool operator != (const U&) const = delete;
+  തർക്കം operator != (സ്ഥിരം U&) സ്ഥിരം = delete;
 };
 
 // Partial specialization for void
 template <typename E>
-struct HB_NODISCARD_STRUCT hb_result_t<void, E>
+ഘടന HB_NODISCARD_STRUCT hb_result_t<ശൂന്യം, E>
 {
-  private:
-  union
+  സ്വകാര്യ:
+  സംഘം
   {
     E err_;
   };
-  bool is_ok_;
+  തർക്കം is_ok_;
 
-  template <typename, typename> friend struct hb_result_t;
+  template <typename, typename> friend ഘടന hb_result_t;
 
-  public:
+  പൊതു:
   ~hb_result_t ()
   {
-    if (!is_ok_)
+    എങ്കിൽ (!is_ok_)
       err_.~E ();
   }
 
-  hb_result_t () : is_ok_ (true) {}
-  hb_result_t (hb_result_ok_t<void>) : is_ok_ (true) {}
+  hb_result_t () : is_ok_ (സത്യം) {}
+  hb_result_t (hb_result_ok_t<ശൂന്യം>) : is_ok_ (സത്യം) {}
 
-  hb_result_t (const hb_result_t& o) : is_ok_ (o.is_ok_)
+  hb_result_t (സ്ഥിരം hb_result_t& o) : is_ok_ (o.is_ok_)
   {
-    if (!is_ok_)
-      new (std::addressof (err_)) E (o.err_);
+    എങ്കിൽ (!is_ok_)
+      പുതിയ (std::addressof (err_)) E (o.err_);
   }
 
   hb_result_t (hb_result_t&& o) noexcept (std::is_nothrow_move_constructible<E>::value)
       : is_ok_ (o.is_ok_)
   {
-    if (!is_ok_)
-      new (std::addressof (err_)) E (std::move (o.err_));
+    എങ്കിൽ (!is_ok_)
+      പുതിയ (std::addressof (err_)) E (std::move (o.err_));
   }
 
-  hb_result_t& operator = (const hb_result_t& o)
+  hb_result_t& operator = (സ്ഥിരം hb_result_t& o)
   {
-    if (this == &o) return *this;
-    if (!is_ok_ && !o.is_ok_)
+    എങ്കിൽ (ഇത് == &o) തിരികെ *ഇത്;
+    എങ്കിൽ (!is_ok_ && !o.is_ok_)
     {
       err_ = o.err_;
     }
-    else if (!is_ok_ && o.is_ok_)
+    അല്ലെങ്കിൽ എങ്കിൽ (!is_ok_ && o.is_ok_)
     {
       err_.~E ();
-      is_ok_ = true;
+      is_ok_ = സത്യം;
     }
-    else if (is_ok_ && !o.is_ok_)
+    അല്ലെങ്കിൽ എങ്കിൽ (is_ok_ && !o.is_ok_)
     {
-      new (std::addressof (err_)) E (o.err_);
-      is_ok_ = false;
+      പുതിയ (std::addressof (err_)) E (o.err_);
+      is_ok_ = അസത്യം;
     }
-    return *this;
+    തിരികെ *ഇത്;
   }
 
   hb_result_t& operator = (hb_result_t&& o) noexcept (std::is_nothrow_move_assignable<E>::value)
   {
-    if (this == &o) return *this;
-    if (!is_ok_ && !o.is_ok_)
+    എങ്കിൽ (ഇത് == &o) തിരികെ *ഇത്;
+    എങ്കിൽ (!is_ok_ && !o.is_ok_)
     {
       err_ = std::move (o.err_);
     }
-    else if (!is_ok_ && o.is_ok_)
+    അല്ലെങ്കിൽ എങ്കിൽ (!is_ok_ && o.is_ok_)
     {
       err_.~E ();
-      is_ok_ = true;
+      is_ok_ = സത്യം;
     }
-    else if (is_ok_ && !o.is_ok_)
+    അല്ലെങ്കിൽ എങ്കിൽ (is_ok_ && !o.is_ok_)
     {
-      new (std::addressof (err_)) E (std::move (o.err_));
-      is_ok_ = false;
+      പുതിയ (std::addressof (err_)) E (std::move (o.err_));
+      is_ok_ = അസത്യം;
     }
-    return *this;
+    തിരികെ *ഇത്;
   }
 
   template <typename F,
             hb_enable_if ((std::is_constructible<E, F>::value))>
-  hb_result_t (hb_result_err_t<F>&& e) : is_ok_ (false)
+  hb_result_t (hb_result_err_t<F>&& e) : is_ok_ (അസത്യം)
   {
-    new (std::addressof (err_)) E (std::move (e.error));
+    പുതിയ (std::addressof (err_)) E (std::move (e.error));
   }
 
   template <typename F,
-            hb_enable_if ((std::is_constructible<E, const F&>::value))>
-  hb_result_t (const hb_result_err_t<F>& e) : is_ok_ (false)
+            hb_enable_if ((std::is_constructible<E, സ്ഥിരം F&>::value))>
+  hb_result_t (സ്ഥിരം hb_result_err_t<F>& e) : is_ok_ (അസത്യം)
   {
-    new (std::addressof (err_)) E (e.error);
+    പുതിയ (std::addressof (err_)) E (e.error);
   }
 
   // Construct directly from error E
-  hb_result_t (E e) : is_ok_ (false)
+  hb_result_t (E e) : is_ok_ (അസത്യം)
   {
-    new (std::addressof (err_)) E (std::move(e));
+    പുതിയ (std::addressof (err_)) E (std::move(e));
   }
 
   // V is any class which has an in_error() method. This checks the result
   // of in_error() and returns either Ok() or Err(error_value).
   template<typename V>
-  static hb_result_t<void, E> from (const V& fallible, E error_value) {
-    if (fallible.in_error()) {
-      return Err(error_value);
+  സ്ഥിതം hb_result_t<ശൂന്യം, E> from (സ്ഥിരം V& fallible, E error_മൂല്യം) {
+    എങ്കിൽ (fallible.in_error()) {
+      തിരികെ Err(error_മൂല്യം);
     }
-    return Ok();
+    തിരികെ Ok();
   }
 
-  bool is_ok () const { return is_ok_; }
-  bool is_err () const { return !is_ok_; }
-  explicit operator bool () const { return is_ok (); }
+  തർക്കം is_ok () സ്ഥിരം { തിരികെ is_ok_; }
+  തർക്കം is_err () സ്ഥിരം { തിരികെ !is_ok_; }
+  explicit operator തർക്കം () സ്ഥിരം { തിരികെ is_ok (); }
 
-  const E& error () const & { assert (!is_ok_); return err_; }
-  E& error () & { assert (!is_ok_); return err_; }
-  E error () && { assert (!is_ok_); return std::move (err_); }
+  സ്ഥിരം E& error () സ്ഥിരം & { പ്രതിജ്ഞാ (!is_ok_); തിരികെ err_; }
+  E& error () & { പ്രതിജ്ഞാ (!is_ok_); തിരികെ err_; }
+  E error () && { പ്രതിജ്ഞാ (!is_ok_); തിരികെ std::move (err_); }
 
-  void operator * () & { return; }
-  void operator * () const & { return; }
-  void operator * () && { return; }
+  ശൂന്യം operator * () & { തിരികെ; }
+  ശൂന്യം operator * () സ്ഥിരം & { തിരികെ; }
+  ശൂന്യം operator * () && { തിരികെ; }
 
-  bool operator == (const hb_result_t<void, E>& o) const
+  തർക്കം operator == (സ്ഥിരം hb_result_t<ശൂന്യം, E>& o) സ്ഥിരം
   {
-    return is_ok_ == o.is_ok_ && (is_ok_ || err_ == o.err_);
+    തിരികെ is_ok_ == o.is_ok_ && (is_ok_ || err_ == o.err_);
   }
 
-  bool operator != (const hb_result_t<void, E>& o) const
+  തർക്കം operator != (സ്ഥിരം hb_result_t<ശൂന്യം, E>& o) സ്ഥിരം
   {
-    return !(*this == o);
+    തിരികെ !(*ഇത് == o);
   }
 
-  bool operator == (hb_result_ok_t<void>) const
+  തർക്കം operator == (hb_result_ok_t<ശൂന്യം>) സ്ഥിരം
   {
-    return is_ok_;
+    തിരികെ is_ok_;
   }
 
-  bool operator != (hb_result_ok_t<void>) const
+  തർക്കം operator != (hb_result_ok_t<ശൂന്യം>) സ്ഥിരം
   {
-    return !is_ok_;
+    തിരികെ !is_ok_;
   }
 
   template <typename F>
-  bool operator == (const hb_result_err_t<F>& e) const
+  തർക്കം operator == (സ്ഥിരം hb_result_err_t<F>& e) സ്ഥിരം
   {
-    return !is_ok_ && err_ == e.error;
+    തിരികെ !is_ok_ && err_ == e.error;
   }
 
   template <typename F>
-  bool operator != (const hb_result_err_t<F>& e) const
+  തർക്കം operator != (സ്ഥിരം hb_result_err_t<F>& e) സ്ഥിരം
   {
-    return !(*this == e);
+    തിരികെ !(*ഇത് == e);
   }
 
   template <typename U>
-  bool operator == (const U&) const = delete;
+  തർക്കം operator == (സ്ഥിരം U&) സ്ഥിരം = delete;
 
   template <typename U>
-  bool operator != (const U&) const = delete;
+  തർക്കം operator != (സ്ഥിരം U&) സ്ഥിരം = delete;
 };
 
 template <typename U, typename T, typename E>
-static inline bool operator == (const hb_result_ok_t<U>& o, const hb_result_t<T, E>& r)
+സ്ഥിതം വരിയിൽ തർക്കം operator == (സ്ഥിരം hb_result_ok_t<U>& o, സ്ഥിരം hb_result_t<T, E>& r)
 {
-  return r == o;
+  തിരികെ r == o;
 }
 template <typename U, typename T, typename E>
-static inline bool operator != (const hb_result_ok_t<U>& o, const hb_result_t<T, E>& r)
+സ്ഥിതം വരിയിൽ തർക്കം operator != (സ്ഥിരം hb_result_ok_t<U>& o, സ്ഥിരം hb_result_t<T, E>& r)
 {
-  return r != o;
+  തിരികെ r != o;
 }
 template <typename F, typename T, typename E>
-static inline bool operator == (const hb_result_err_t<F>& e, const hb_result_t<T, E>& r)
+സ്ഥിതം വരിയിൽ തർക്കം operator == (സ്ഥിരം hb_result_err_t<F>& e, സ്ഥിരം hb_result_t<T, E>& r)
 {
-  return r == e;
+  തിരികെ r == e;
 }
 template <typename F, typename T, typename E>
-static inline bool operator != (const hb_result_err_t<F>& e, const hb_result_t<T, E>& r)
+സ്ഥിതം വരിയിൽ തർക്കം operator != (സ്ഥിരം hb_result_err_t<F>& e, സ്ഥിരം hb_result_t<T, E>& r)
 {
-  return r != e;
+  തിരികെ r != e;
 }
 
 #ifndef TRY
-#define TRY(expr)                                                             \
-  do {                                                                        \
-    auto _res = (expr);                                                       \
-    if (unlikely (!_res.is_ok())) return Err(std::move(_res).error());        \
-  } while (0)
+#define TRY(വ്യഞ്ജകം)                                                             \
+  ചെയ്യുക {                                                                        \
+    auto _res = (വ്യഞ്ജകം);                                                       \
+    എങ്കിൽ (unlikely (!_res.is_ok())) തിരികെ Err(std::move(_res).error());        \
+  } ആകുമ്പോൾ (0)
 #endif
 
 #ifndef TRY_ASSIGN
 #define TRY_ASSIGN(var, ...)                                                  \
   auto HB_PASTE(_res_, __LINE__) = (__VA_ARGS__);                             \
-  if (unlikely (!HB_PASTE(_res_, __LINE__).is_ok())) return Err(std::move(HB_PASTE(_res_, __LINE__)).error()); \
+  എങ്കിൽ (unlikely (!HB_PASTE(_res_, __LINE__).is_ok())) തിരികെ Err(std::move(HB_PASTE(_res_, __LINE__)).error()); \
   var = *std::move(HB_PASTE(_res_, __LINE__))
 #endif
 

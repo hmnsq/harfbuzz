@@ -27,7 +27,7 @@
 #ifndef HB_DECYCLER_HH
 #define HB_DECYCLER_HH
 
-#include "hb.hh"
+#അന്തര്ഭാവ "hb.hh"
 
 /*
  * hb_decycler_t is an efficient cycle detector for graph traversal.
@@ -82,82 +82,82 @@
  * For usage examples see test-decycler.cc.
  */
 
-struct hb_decycler_node_t;
+ഘടന hb_decycler_കണ്ണി_t;
 
-struct hb_decycler_t
+ഘടന hb_decycler_t
 {
-  friend struct hb_decycler_node_t;
+  friend ഘടന hb_decycler_കണ്ണി_t;
 
-  private:
-  bool tortoise_awake = false;
-  hb_decycler_node_t *tortoise = nullptr;
-  hb_decycler_node_t *hare = nullptr;
+  സ്വകാര്യ:
+  തർക്കം tortoise_awake = അസത്യം;
+  hb_decycler_കണ്ണി_t *tortoise = nullptr;
+  hb_decycler_കണ്ണി_t *hare = nullptr;
 };
 
-struct hb_decycler_node_t
+ഘടന hb_decycler_കണ്ണി_t
 {
-  hb_decycler_node_t (hb_decycler_t &decycler)
+  hb_decycler_കണ്ണി_t (hb_decycler_t &decycler)
   {
     u.decycler = &decycler;
 
     decycler.tortoise_awake = !decycler.tortoise_awake;
 
-    if (!decycler.tortoise)
+    എങ്കിൽ (!decycler.tortoise)
     {
       // First node.
-      assert (decycler.tortoise_awake);
-      assert (!decycler.hare);
-      decycler.tortoise = decycler.hare = this;
-      return;
+      പ്രതിജ്ഞാ (decycler.tortoise_awake);
+      പ്രതിജ്ഞാ (!decycler.hare);
+      decycler.tortoise = decycler.hare = ഇത്;
+      തിരികെ;
     }
 
-    if (decycler.tortoise_awake)
+    എങ്കിൽ (decycler.tortoise_awake)
       decycler.tortoise = decycler.tortoise->u.next; // Time to move.
 
-    this->prev = decycler.hare;
-    decycler.hare->u.next = this;
-    decycler.hare = this;
+    ഇത്->prev = decycler.hare;
+    decycler.hare->u.next = ഇത്;
+    decycler.hare = ഇത്;
   }
 
-  ~hb_decycler_node_t ()
+  ~hb_decycler_കണ്ണി_t ()
   {
     hb_decycler_t &decycler = *u.decycler;
 
     // Inverse of the constructor.
 
-    assert (decycler.hare == this);
+    പ്രതിജ്ഞാ (decycler.hare == ഇത്);
     decycler.hare = prev;
-    if (prev)
+    എങ്കിൽ (prev)
       prev->u.decycler = &decycler;
 
-    assert (decycler.tortoise);
-    if (decycler.tortoise_awake)
+    പ്രതിജ്ഞാ (decycler.tortoise);
+    എങ്കിൽ (decycler.tortoise_awake)
       decycler.tortoise = decycler.tortoise->prev;
 
     decycler.tortoise_awake = !decycler.tortoise_awake;
   }
 
-  bool visit (uintptr_t value_)
+  തർക്കം visit (uintptr_t മൂല്യം_3)
   {
-    value = value_;
+    value = മൂല്യം_3;
 
     hb_decycler_t &decycler = *u.decycler;
 
-    if (decycler.tortoise == this)
-      return true; // First node; not a cycle.
+    എങ്കിൽ (decycler.tortoise == ഇത്)
+      തിരികെ സത്യം; // First node; not a cycle.
 
-    if (decycler.tortoise->value == value)
-      return false; // Cycle detected.
+    എങ്കിൽ (decycler.tortoise->value == value)
+      തിരികെ അസത്യം; // Cycle detected.
 
-    return true;
+    തിരികെ സത്യം;
   }
 
-  private:
-  union {
+  സ്വകാര്യ:
+  സംഘം {
     hb_decycler_t *decycler;
-    hb_decycler_node_t *next;
+    hb_decycler_കണ്ണി_t *next;
   } u = {nullptr};
-  hb_decycler_node_t *prev = nullptr;
+  hb_decycler_കണ്ണി_t *prev = nullptr;
   uintptr_t value = 0;
 };
 

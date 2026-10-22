@@ -27,38 +27,38 @@
 #ifndef HB_VECTOR_PAINT_HH
 #define HB_VECTOR_PAINT_HH
 
-#include "hb.hh"
+#അന്തര്ഭാവ "hb.hh"
 
-#include "hb-vector.h"
-#include "hb-geometry.hh"
-#include "hb-machinery.hh"
-#include "hb-map.hh"
-#include "hb-vector-path.hh"
-#include "hb-vector-buf.hh"
-#include "hb-vector-internal.hh"
+#അന്തര്ഭാവ "hb-vector.h"
+#അന്തര്ഭാവ "hb-geometry.hh"
+#അന്തര്ഭാവ "hb-machinery.hh"
+#അന്തര്ഭാവ "hb-map.hh"
+#അന്തര്ഭാവ "hb-vector-path.hh"
+#അന്തര്ഭാവ "hb-vector-buf.hh"
+#അന്തര്ഭാവ "hb-vector-internal.hh"
 
 
-struct hb_vector_paint_t
+ഘടന hb_vector_paint_t
 {
   hb_object_header_t header;
 
   hb_vector_format_t format = HB_VECTOR_FORMAT_INVALID;
   hb_transform_t<> transform = {1, 0, 0, 1, 0, 0};
-  float x_scale_factor = 1.f;
-  float y_scale_factor = 1.f;
+  ദശാംശം x_scale_factor = 1.f;
+  ദശാംശം y_scale_factor = 1.f;
   hb_vector_extents_t extents = {0, 0, 0, 0};
-  bool has_extents = false;
+  തർക്കം has_extents = അസത്യം;
 
   hb_color_t foreground = HB_COLOR (0, 0, 0, 255);
   hb_color_t background = HB_COLOR (0, 0, 0, 0);
-  int palette = 0;
+  പൂർണ്ണസംഖ്യ palette = 0;
   hb_hashmap_t<unsigned, hb_color_t> custom_palette_colors;
-  char *id_prefix = nullptr;
+  അക്ഷരം *id_prefix = nullptr;
   unsigned id_prefix_length = 0;
 
   hb_vector_buf_t defs;
   hb_vector_buf_t path;
-  hb_vector_t<hb_vector_buf_t> group_stack;
+  hb_vector_t<hb_vector_buf_t> group_അട്ടി;
   uint64_t transform_group_open_mask = 0;
   unsigned transform_group_depth = 0;
   unsigned transform_group_overflow_depth = 0;
@@ -76,82 +76,82 @@ struct hb_vector_paint_t
   hb_vector_path_sink_t clip_path_sink = {nullptr, 0, 1.f, 1.f, nullptr};
   unsigned gradient_counter = 0;
   unsigned color_glyph_depth = 0;
-  unsigned path_def_count = 0;
+  unsigned path_def_എണ്ണം = 0;
   hb_set_t *active_color_glyphs = nullptr;
   hb_vector_t<hb_color_stop_t> color_stops_scratch;
   hb_vector_buf_t captured_scratch;
   hb_blob_t *recycled_blob = nullptr;
 
-  hb_vector_buf_t &current_body () { return group_stack.tail (); }
+  hb_vector_buf_t &current_body () { തിരികെ group_അട്ടി.tail (); }
 
-  void recharge_budget ()
+  ശൂന്യം recharge_budget ()
   {
     budget_remaining = budget == HB_BUDGET_DEFAULT ?
 		       HB_BUDGET_GLYPH : budget;
   }
 
-  float sx (float v) const { return v / x_scale_factor; }
-  float sy (float v) const { return v / y_scale_factor; }
+  ദശാംശം sx (ദശാംശം v) സ്ഥിരം { തിരികെ v / x_scale_factor; }
+  ദശാംശം sy (ദശാംശം v) സ്ഥിരം { തിരികെ v / y_scale_factor; }
 
-  bool fetch_color_stops (hb_color_line_t *color_line)
+  തർക്കം fetch_color_stops (hb_color_വരി_t *color_വരി)
   {
-    unsigned count = hb_color_line_get_color_stops (color_line, 0, nullptr, nullptr);
-    if (unlikely (!count || !color_stops_scratch.resize (count)))
+    unsigned എണ്ണം = hb_color_വരി_get_color_stops (color_വരി, 0, nullptr, nullptr);
+    എങ്കിൽ (unlikely (!എണ്ണം || !color_stops_scratch.resize (എണ്ണം)))
     {
       color_stops_scratch.resize (0);
-      return false;
+      തിരികെ അസത്യം;
     }
-    hb_color_line_get_color_stops (color_line, 0, &count, color_stops_scratch.arrayZ);
-    return true;
+    hb_color_വരി_get_color_stops (color_വരി, 0, &എണ്ണം, color_stops_scratch.arrayZ);
+    തിരികെ സത്യം;
   }
 
-  void set_precision (unsigned p)
+  ശൂന്യം set_precision (unsigned p)
   {
     p = hb_min (p, 12u);
     defs.precision = p;
     path.precision = p;
   }
 
-  unsigned get_precision () const { return path.precision; }
+  unsigned get_precision () സ്ഥിരം { തിരികെ path.precision; }
 
-  bool ensure_initialized ()
+  തർക്കം ensure_initialized ()
   {
-    if (group_stack.length)
-      return !group_stack.in_error () &&
-             !group_stack.tail ().in_error ();
-    if (unlikely (!group_stack.push_or_fail ()))
-      return false;
-    group_stack.tail ().alloc (4096);
-    if (unlikely (group_stack.tail ().in_error ()))
+    എങ്കിൽ (group_അട്ടി.length)
+      തിരികെ !group_അട്ടി.in_error () &&
+             !group_അട്ടി.tail ().in_error ();
+    എങ്കിൽ (unlikely (!group_അട്ടി.തള്ളുക_or_fail ()))
+      തിരികെ അസത്യം;
+    group_അട്ടി.tail ().alloc (4096);
+    എങ്കിൽ (unlikely (group_അട്ടി.tail ().in_error ()))
     {
-      group_stack.pop ();
-      return false;
+      group_അട്ടി.എടുക്കുക ();
+      തിരികെ അസത്യം;
     }
-    return true;
+    തിരികെ സത്യം;
   }
 };
 
-static inline hb_bool_t
-hb_vector_paint_set_budget_callback (hb_paint_funcs_t *, void *paint_data,
-				     int64_t budget, void *)
+സ്ഥിതം വരിയിൽ hb_bool_t
+hb_vector_paint_set_budget_callback (hb_paint_funcs_t *, ശൂന്യം *paint_data,
+				     int64_t budget, ശൂന്യം *)
 {
   auto *paint = (hb_vector_paint_t *) paint_data;
   paint->budget = budget;
   paint->recharge_budget ();
-  return true;
+  തിരികെ സത്യം;
 }
 
-static inline int64_t
-hb_vector_paint_get_budget_callback (hb_paint_funcs_t *, void *paint_data, void *)
+സ്ഥിതം വരിയിൽ int64_t
+hb_vector_paint_get_budget_callback (hb_paint_funcs_t *, ശൂന്യം *paint_data, ശൂന്യം *)
 {
-  return ((hb_vector_paint_t *) paint_data)->budget;
+  തിരികെ ((hb_vector_paint_t *) paint_data)->budget;
 }
 
-static inline int64_t *
+സ്ഥിതം വരിയിൽ int64_t *
 hb_vector_paint_get_budget_remaining_callback (hb_paint_funcs_t *,
-					       void *paint_data, void *)
+					       ശൂന്യം *paint_data, ശൂന്യം *)
 {
-  return &((hb_vector_paint_t *) paint_data)->budget_remaining;
+  തിരികെ &((hb_vector_paint_t *) paint_data)->budget_remaining;
 }
 
 /* Implemented in hb-vector-paint-svg.cc */
@@ -161,6 +161,6 @@ HB_INTERNAL hb_blob_t * hb_vector_paint_render_svg (hb_vector_paint_t *paint);
 /* Implemented in hb-vector-paint-pdf.cc */
 HB_INTERNAL hb_paint_funcs_t * hb_vector_paint_pdf_funcs_get ();
 HB_INTERNAL hb_blob_t * hb_vector_paint_render_pdf (hb_vector_paint_t *paint);
-HB_INTERNAL void hb_vector_paint_pdf_free_resources (hb_vector_paint_t *paint);
+HB_INTERNAL ശൂന്യം hb_vector_paint_pdf_free_resources (hb_vector_paint_t *paint);
 
 #endif /* HB_VECTOR_PAINT_HH */

@@ -28,9 +28,9 @@
 #ifndef OT_COLOR_CPAL_CPAL_HH
 #define OT_COLOR_CPAL_CPAL_HH
 
-#include "../../../hb-open-type.hh"
-#include "../../../hb-ot-color.h"
-#include "../../../hb-ot-name.h"
+#അന്തര്ഭാവ "../../../hb-open-type.hh"
+#അന്തര്ഭാവ "../../../hb-ot-color.h"
+#അന്തര്ഭാവ "../../../hb-ot-name.h"
 
 
 /*
@@ -39,113 +39,113 @@
  */
 #define HB_OT_TAG_CPAL HB_TAG('C','P','A','L')
 
-namespace OT {
+നാമാകാശ OT {
 
 
-struct CPALV1Tail
+ഘടന CPALV1Tail
 {
-  friend struct CPAL;
+  friend ഘടന CPAL;
 
-  private:
-  hb_ot_color_palette_flags_t get_palette_flags (const void *base,
-						 unsigned int palette_index,
-						 unsigned int palette_count) const
+  സ്വകാര്യ:
+  hb_ot_color_palette_flags_t get_palette_flags (സ്ഥിരം ശൂന്യം *base,
+						 unsigned പൂർണ്ണസംഖ്യ palette_index,
+						 unsigned പൂർണ്ണസംഖ്യ palette_എണ്ണം) സ്ഥിരം
   {
-    if (!paletteFlagsZ) return HB_OT_COLOR_PALETTE_FLAG_DEFAULT;
-    return (hb_ot_color_palette_flags_t) (uint32_t)
-	   (base+paletteFlagsZ).as_array (palette_count)[palette_index];
+    എങ്കിൽ (!paletteFlagsZ) തിരികെ HB_OT_COLOR_PALETTE_FLAG_DEFAULT;
+    തിരികെ (hb_ot_color_palette_flags_t) (uint32_t)
+	   (base+paletteFlagsZ).as_array (palette_എണ്ണം)[palette_index];
   }
 
-  hb_ot_name_id_t get_palette_name_id (const void *base,
-				       unsigned int palette_index,
-				       unsigned int palette_count) const
+  hb_ot_name_id_t get_palette_name_id (സ്ഥിരം ശൂന്യം *base,
+				       unsigned പൂർണ്ണസംഖ്യ palette_index,
+				       unsigned പൂർണ്ണസംഖ്യ palette_എണ്ണം) സ്ഥിരം
   {
-    if (!paletteLabelsZ) return HB_OT_NAME_ID_INVALID;
-    return (base+paletteLabelsZ).as_array (palette_count)[palette_index];
+    എങ്കിൽ (!paletteLabelsZ) തിരികെ HB_OT_NAME_ID_INVALID;
+    തിരികെ (base+paletteLabelsZ).as_array (palette_എണ്ണം)[palette_index];
   }
 
-  hb_ot_name_id_t get_color_name_id (const void *base,
-				     unsigned int color_index,
-				     unsigned int color_count) const
+  hb_ot_name_id_t get_color_name_id (സ്ഥിരം ശൂന്യം *base,
+				     unsigned പൂർണ്ണസംഖ്യ color_index,
+				     unsigned പൂർണ്ണസംഖ്യ color_എണ്ണം) സ്ഥിരം
   {
-    if (!colorLabelsZ) return HB_OT_NAME_ID_INVALID;
-    return (base+colorLabelsZ).as_array (color_count)[color_index];
+    എങ്കിൽ (!colorLabelsZ) തിരികെ HB_OT_NAME_ID_INVALID;
+    തിരികെ (base+colorLabelsZ).as_array (color_എണ്ണം)[color_index];
   }
 
-  public:
-  void collect_name_ids (const void *base,
-                         unsigned palette_count,
-                         unsigned color_count,
-                         const hb_map_t *color_index_map,
-                         hb_set_t *nameids_to_retain /* OUT */) const
+  പൊതു:
+  ശൂന്യം collect_name_ids (സ്ഥിരം ശൂന്യം *base,
+                         unsigned palette_എണ്ണം,
+                         unsigned color_എണ്ണം,
+                         സ്ഥിരം hb_map_t *color_index_map,
+                         hb_set_t *nameids_to_retain /* OUT */) സ്ഥിരം
   {
-    if (paletteLabelsZ)
+    എങ്കിൽ (paletteLabelsZ)
     {
-      + (base+paletteLabelsZ).as_array (palette_count)
+      + (base+paletteLabelsZ).as_array (palette_എണ്ണം)
       | hb_sink (nameids_to_retain)
       ;
     }
 
-    if (colorLabelsZ)
+    എങ്കിൽ (colorLabelsZ)
     {
-      const hb_array_t<const NameID> colorLabels = (base+colorLabelsZ).as_array (color_count);
-      for (unsigned i = 0; i < color_count; i++)
+      സ്ഥിരം hb_array_t<സ്ഥിരം NameID> colorLabels = (base+colorLabelsZ).as_array (color_എണ്ണം);
+      വേണ്ടി (unsigned i = 0; i < color_എണ്ണം; i++)
       {
-        if (!color_index_map->has (i)) continue;
+        എങ്കിൽ (!color_index_map->has (i)) തുടരുക;
         nameids_to_retain->add (colorLabels[i]);
       }
     }
   }
 
-  bool serialize (hb_serialize_context_t *c,
-                  unsigned palette_count,
-                  unsigned color_count,
-                  const void *base,
-                  const hb_map_t *color_index_map) const
+  തർക്കം serialize (hb_serialize_context_t *c,
+                  unsigned palette_എണ്ണം,
+                  unsigned color_എണ്ണം,
+                  സ്ഥിരം ശൂന്യം *base,
+                  സ്ഥിരം hb_map_t *color_index_map) സ്ഥിരം
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ഇത്);
     auto *out = c->allocate_size<CPALV1Tail> (static_size);
-    if (unlikely (!out)) return_trace (false);
+    എങ്കിൽ (unlikely (!out)) return_trace (അസത്യം);
 
     out->paletteFlagsZ = 0;
-    if (paletteFlagsZ)
-      out->paletteFlagsZ.serialize_copy (c, paletteFlagsZ, base, 0, hb_serialize_context_t::Head, palette_count);
+    എങ്കിൽ (paletteFlagsZ)
+      out->paletteFlagsZ.serialize_copy (c, paletteFlagsZ, base, 0, hb_serialize_context_t::Head, palette_എണ്ണം);
 
     out->paletteLabelsZ = 0;
-    if (paletteLabelsZ)
-      out->paletteLabelsZ.serialize_copy (c, paletteLabelsZ, base, 0, hb_serialize_context_t::Head, palette_count);
+    എങ്കിൽ (paletteLabelsZ)
+      out->paletteLabelsZ.serialize_copy (c, paletteLabelsZ, base, 0, hb_serialize_context_t::Head, palette_എണ്ണം);
 
-    const hb_array_t<const NameID> colorLabels = (base+colorLabelsZ).as_array (color_count);
-    if (colorLabelsZ)
+    സ്ഥിരം hb_array_t<സ്ഥിരം NameID> colorLabels = (base+colorLabelsZ).as_array (color_എണ്ണം);
+    എങ്കിൽ (colorLabelsZ)
     {
       c->push ();
-      for (unsigned i = 0; i < color_count; i++)
+      വേണ്ടി (unsigned i = 0; i < color_എണ്ണം; i++)
       {
-        if (!color_index_map->has (i)) continue;
-        if (!c->copy<NameID> (colorLabels[i]))
+        എങ്കിൽ (!color_index_map->has (i)) തുടരുക;
+        എങ്കിൽ (!c->copy<NameID> (colorLabels[i]))
         {
-          c->pop_discard ();
-          return_trace (false);
+          c->എടുക്കുക_discard ();
+          return_trace (അസത്യം);
         }
       }
-      c->add_link (out->colorLabelsZ, c->pop_pack ());
+      c->add_link (out->colorLabelsZ, c->എടുക്കുക_pack ());
     }
-    return_trace (true);
+    return_trace (സത്യം);
   }
 
-  bool sanitize (hb_sanitize_context_t *c,
-		 const void *base,
-		 unsigned int palette_count,
-		 unsigned int color_count) const
+  തർക്കം sanitize (hb_sanitize_context_t *c,
+		 സ്ഥിരം ശൂന്യം *base,
+		 unsigned പൂർണ്ണസംഖ്യ palette_എണ്ണം,
+		 unsigned പൂർണ്ണസംഖ്യ color_എണ്ണം) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  (!paletteFlagsZ  || (base+paletteFlagsZ).sanitize (c, palette_count)) &&
-		  (!paletteLabelsZ || (base+paletteLabelsZ).sanitize (c, palette_count)) &&
-		  (!colorLabelsZ   || (base+colorLabelsZ).sanitize (c, color_count)));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) &&
+		  (!paletteFlagsZ  || (base+paletteFlagsZ).sanitize (c, palette_എണ്ണം)) &&
+		  (!paletteLabelsZ || (base+paletteLabelsZ).sanitize (c, palette_എണ്ണം)) &&
+		  (!colorLabelsZ   || (base+colorLabelsZ).sanitize (c, color_എണ്ണം)));
   }
 
-  protected:
+  സംരക്ഷിത:
   // TODO(garretrieger): these offsets can hold nulls so we should not be using non-null offsets
   //                     here. Currently they are needed since UnsizedArrayOf doesn't define null_size
   NNOffset32To<UnsizedArrayOf<HBUINT32>>
@@ -160,143 +160,143 @@ struct CPALV1Tail
 		colorLabelsZ;		/* Offset from the beginning of CPAL table to
 					 * the color labels array. Set to 0
 					 * if no array is provided. */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (12);
 };
 
-typedef HBUINT32 BGRAColor;
+തരനിർവചനം HBUINT32 BGRAColor;
 
-struct CPAL
+ഘടന CPAL
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_CPAL;
+  സ്ഥിതം constexpr hb_tag_t tableTag = HB_OT_TAG_CPAL;
 
-  bool has_data () const { return numPalettes; }
+  തർക്കം has_data () സ്ഥിരം { തിരികെ അക്കം_Palettes; }
 
-  size_t get_size () const
-  { return min_size + numPalettes * sizeof (colorRecordIndicesZ[0]); }
+  size_t get_size () സ്ഥിരം
+  { തിരികെ min_size + അക്കം_Palettes * വലുപ്പം (colorRecordIndicesZ[0]); }
 
-  unsigned int get_palette_count () const { return numPalettes; }
-  unsigned int   get_color_count () const { return numColors; }
+  unsigned പൂർണ്ണസംഖ്യ get_palette_എണ്ണം () സ്ഥിരം { തിരികെ അക്കം_Palettes; }
+  unsigned പൂർണ്ണസംഖ്യ   get_color_എണ്ണം () സ്ഥിരം { തിരികെ അക്കം_Colors; }
 
-  hb_ot_color_palette_flags_t get_palette_flags (unsigned int palette_index) const
-  { return v1 ().get_palette_flags (this, palette_index, numPalettes); }
+  hb_ot_color_palette_flags_t get_palette_flags (unsigned പൂർണ്ണസംഖ്യ palette_index) സ്ഥിരം
+  { തിരികെ v1 ().get_palette_flags (ഇത്, palette_index, അക്കം_Palettes); }
 
-  hb_ot_name_id_t get_palette_name_id (unsigned int palette_index) const
-  { return v1 ().get_palette_name_id (this, palette_index, numPalettes); }
+  hb_ot_name_id_t get_palette_name_id (unsigned പൂർണ്ണസംഖ്യ palette_index) സ്ഥിരം
+  { തിരികെ v1 ().get_palette_name_id (ഇത്, palette_index, അക്കം_Palettes); }
 
-  hb_ot_name_id_t get_color_name_id (unsigned int color_index) const
-  { return v1 ().get_color_name_id (this, color_index, numColors); }
+  hb_ot_name_id_t get_color_name_id (unsigned പൂർണ്ണസംഖ്യ color_index) സ്ഥിരം
+  { തിരികെ v1 ().get_color_name_id (ഇത്, color_index, അക്കം_Colors); }
 
-  hb_array_t<const BGRAColor> get_palette_colors (unsigned int palette_index) const
+  hb_array_t<സ്ഥിരം BGRAColor> get_palette_colors (unsigned പൂർണ്ണസംഖ്യ palette_index) സ്ഥിരം
   {
-    if (unlikely (palette_index >= numPalettes))
-      return hb_array_t<const BGRAColor> ();
-    unsigned int start_index = colorRecordIndicesZ[palette_index];
-    hb_array_t<const BGRAColor> all_colors ((this+colorRecordsZ).arrayZ, numColorRecords);
-    return all_colors.sub_array (start_index, numColors);
+    എങ്കിൽ (unlikely (palette_index >= അക്കം_Palettes))
+      തിരികെ hb_array_t<സ്ഥിരം BGRAColor> ();
+    unsigned പൂർണ്ണസംഖ്യ start_index = colorRecordIndicesZ[palette_index];
+    hb_array_t<സ്ഥിരം BGRAColor> all_colors ((ഇത്+colorRecordsZ).arrayZ, അക്കം_Color_Records);
+    തിരികെ all_colors.sub_array (start_index, അക്കം_Colors);
   }
-  unsigned int get_palette_colors (unsigned int  palette_index,
-				   unsigned int  start_offset,
-				   unsigned int *color_count, /* IN/OUT.  May be NULL. */
-				   hb_color_t   *colors       /* OUT.     May be NULL. */) const
+  unsigned പൂർണ്ണസംഖ്യ get_palette_colors (unsigned പൂർണ്ണസംഖ്യ  palette_index,
+				   unsigned പൂർണ്ണസംഖ്യ  start_offset,
+				   unsigned പൂർണ്ണസംഖ്യ *color_എണ്ണം, /* IN/OUT.  May be NULL. */
+				   hb_color_t   *colors       /* OUT.     May be NULL. */) സ്ഥിരം
   {
-    if (unlikely (palette_index >= numPalettes))
+    എങ്കിൽ (unlikely (palette_index >= അക്കം_Palettes))
     {
-      if (color_count) *color_count = 0;
-      return 0;
+      എങ്കിൽ (color_എണ്ണം) *color_എണ്ണം = 0;
+      തിരികെ 0;
     }
-    unsigned int start_index = colorRecordIndicesZ[palette_index];
-    hb_array_t<const BGRAColor> all_colors ((this+colorRecordsZ).arrayZ, numColorRecords);
-    hb_array_t<const BGRAColor> palette_colors = all_colors.sub_array (start_index,
-								       numColors);
-    if (color_count && colors)
+    unsigned പൂർണ്ണസംഖ്യ start_index = colorRecordIndicesZ[palette_index];
+    hb_array_t<സ്ഥിരം BGRAColor> all_colors ((ഇത്+colorRecordsZ).arrayZ, അക്കം_Color_Records);
+    hb_array_t<സ്ഥിരം BGRAColor> palette_colors = all_colors.sub_array (start_index,
+								       അക്കം_Colors);
+    എങ്കിൽ (color_എണ്ണം && colors)
     {
-      + palette_colors.sub_array (start_offset, color_count)
-      | hb_sink (hb_array (colors, *color_count))
+      + palette_colors.sub_array (start_offset, color_എണ്ണം)
+      | hb_sink (hb_array (colors, *color_എണ്ണം))
       ;
     }
-    return numColors;
+    തിരികെ അക്കം_Colors;
   }
 
-  void collect_name_ids (const hb_map_t *color_index_map,
-                         hb_set_t *nameids_to_retain /* OUT */) const
+  ശൂന്യം collect_name_ids (സ്ഥിരം hb_map_t *color_index_map,
+                         hb_set_t *nameids_to_retain /* OUT */) സ്ഥിരം
   {
-    if (version == 1)
+    എങ്കിൽ (version == 1)
     {
       hb_barrier ();
-      v1 ().collect_name_ids (this, numPalettes, numColors, color_index_map, nameids_to_retain);
+      v1 ().collect_name_ids (ഇത്, അക്കം_Palettes, അക്കം_Colors, color_index_map, nameids_to_retain);
     }
   }
 
-  private:
-  const CPALV1Tail& v1 () const
+  സ്വകാര്യ:
+  സ്ഥിരം CPALV1Tail& v1 () സ്ഥിരം
   {
-    if (version == 0) return Null (CPALV1Tail);
+    എങ്കിൽ (version == 0) തിരികെ Null (CPALV1Tail);
     hb_barrier ();
-    return StructAfter<CPALV1Tail> (*this);
+    തിരികെ StructAfter<CPALV1Tail> (*ഇത്);
   }
 
-  public:
-  bool serialize (hb_serialize_context_t *c,
-                  const hb_array_t<const HBUINT16> &color_record_indices,
-                  const hb_array_t<const BGRAColor> &color_records,
-                  const hb_vector_t<unsigned>& first_color_index_for_layer,
-                  const hb_map_t& first_color_to_layer_index,
-                  const hb_set_t &retained_color_indices) const
+  പൊതു:
+  തർക്കം serialize (hb_serialize_context_t *c,
+                  സ്ഥിരം hb_array_t<സ്ഥിരം HBUINT16> &color_record_indices,
+                  സ്ഥിരം hb_array_t<സ്ഥിരം BGRAColor> &color_records,
+                  സ്ഥിരം hb_vector_t<unsigned>& first_color_index_for_layer,
+                  സ്ഥിരം hb_map_t& first_color_to_layer_index,
+                  സ്ഥിരം hb_set_t &retained_color_indices) സ്ഥിരം
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ഇത്);
 
     // TODO(grieger): limit total final size.
 
-    for (const auto idx : color_record_indices)
+    വേണ്ടി (സ്ഥിരം auto idx : color_record_indices)
     {
       hb_codepoint_t layer_index = first_color_to_layer_index[idx];
 
       HBUINT16 new_idx;
       new_idx = layer_index * retained_color_indices.get_population ();
-      if (!c->copy<HBUINT16> (new_idx)) return_trace (false);
+      എങ്കിൽ (!c->copy<HBUINT16> (new_idx)) return_trace (അസത്യം);
     }
 
     c->push ();
-    for (unsigned first_color_index : first_color_index_for_layer)
+    വേണ്ടി (unsigned first_color_index : first_color_index_for_layer)
     {
-      for (hb_codepoint_t color_index : retained_color_indices)
+      വേണ്ടി (hb_codepoint_t color_index : retained_color_indices)
       {
-        if (!c->copy<BGRAColor> (color_records[first_color_index + color_index]))
+        എങ്കിൽ (!c->copy<BGRAColor> (color_records[first_color_index + color_index]))
         {
-          c->pop_discard ();
-          return_trace (false);
+          c->എടുക്കുക_discard ();
+          return_trace (അസത്യം);
         }
       }
     }
 
-    c->add_link (colorRecordsZ, c->pop_pack ());
-    return_trace (true);
+    c->add_link (colorRecordsZ, c->എടുക്കുക_pack ());
+    return_trace (സത്യം);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  തർക്കം subset (hb_subset_context_t *c) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    if (!numPalettes) return_trace (false);
+    TRACE_SUBSET (ഇത്);
+    എങ്കിൽ (!അക്കം_Palettes) return_trace (അസത്യം);
 
-    const hb_map_t *color_index_map = &c->plan->colr_palettes;
-    if (color_index_map->is_empty ()) return_trace (false);
+    സ്ഥിരം hb_map_t *color_index_map = &c->plan->colr_palettes;
+    എങ്കിൽ (color_index_map->is_empty ()) return_trace (അസത്യം);
 
     hb_set_t retained_color_indices;
-    for (const auto _ : color_index_map->keys ())
+    വേണ്ടി (സ്ഥിരം auto _ : color_index_map->താക്കോലുകൾ ())
     {
-      if (_ == 0xFFFF) continue;
+      എങ്കിൽ (_ == 0xFFFF) തുടരുക;
       retained_color_indices.add (_);
     }
-    if (retained_color_indices.is_empty ()) return_trace (false);
+    എങ്കിൽ (retained_color_indices.is_empty ()) return_trace (അസത്യം);
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (*ഇത്);
+    എങ്കിൽ (unlikely (!c->serializer->extend_min (out))) return_trace (അസത്യം);
 
 
     out->version = version;
-    out->numColors = retained_color_indices.get_population ();
-    out->numPalettes = numPalettes;
+    out->അക്കം_Colors = retained_color_indices.get_population ();
+    out->അക്കം_Palettes = അക്കം_Palettes;
 
     hb_vector_t<unsigned> first_color_index_for_layer;
     hb_map_t first_color_to_layer_index;
@@ -306,74 +306,74 @@ struct CPAL
      * a layer's retained colors to its index to find equal layers without
      * scanning all of them. The keys point into layer_retained_colors,
      * which keeps them alive. */
-    hb_hashmap_t<hb_array_t<const BGRAColor>, unsigned> retained_colors_to_layer_index;
+    hb_hashmap_t<hb_array_t<സ്ഥിരം BGRAColor>, unsigned> retained_colors_to_layer_index;
     hb_vector_t<hb_vector_t<BGRAColor>> layer_retained_colors;
 
-    const hb_array_t<const BGRAColor> all_color_records = (this+colorRecordsZ).as_array (numColorRecords);
+    സ്ഥിരം hb_array_t<സ്ഥിരം BGRAColor> all_color_records = (ഇത്+colorRecordsZ).as_array (അക്കം_Color_Records);
 
-    const hb_array_t<const HBUINT16> colorRecordIndices = colorRecordIndicesZ.as_array (numPalettes);
-    for (const auto first_color_record_idx : colorRecordIndices)
+    സ്ഥിരം hb_array_t<സ്ഥിരം HBUINT16> colorRecordIndices = colorRecordIndicesZ.as_array (അക്കം_Palettes);
+    വേണ്ടി (സ്ഥിരം auto first_color_record_idx : colorRecordIndices)
     {
-      if (first_color_to_layer_index.has (first_color_record_idx)) continue;
+      എങ്കിൽ (first_color_to_layer_index.has (first_color_record_idx)) തുടരുക;
 
       hb_vector_t<BGRAColor> retained_colors;
-      if (unlikely (!retained_colors.alloc (retained_color_indices.get_population ()))) return_trace (false);
-      for (hb_codepoint_t color_index : retained_color_indices)
+      എങ്കിൽ (unlikely (!retained_colors.alloc (retained_color_indices.get_population ()))) return_trace (അസത്യം);
+      വേണ്ടി (hb_codepoint_t color_index : retained_color_indices)
 	retained_colors.push (all_color_records[first_color_record_idx + color_index]);
 
       unsigned layer_index = first_color_index_for_layer.length;
       unsigned *candidate_layer_index = nullptr;
-      if (retained_colors_to_layer_index.has (retained_colors.as_array (), &candidate_layer_index))
+      എങ്കിൽ (retained_colors_to_layer_index.has (retained_colors.as_array (), &candidate_layer_index))
 	layer_index = *candidate_layer_index;
-      else
+      അല്ലെങ്കിൽ
       {
 	first_color_index_for_layer.push (first_color_record_idx);
-	if (unlikely (!c->serializer->propagate_error (first_color_index_for_layer))) return_trace (false);
+	എങ്കിൽ (unlikely (!c->serializer->propagate_error (first_color_index_for_layer))) return_trace (അസത്യം);
 
-	if (unlikely (!layer_retained_colors.push_or_fail (std::move (retained_colors)))) return_trace (false);
-	if (unlikely (!retained_colors_to_layer_index.set (layer_retained_colors.tail ().as_array (), layer_index)))
-	  return_trace (false);
+	എങ്കിൽ (unlikely (!layer_retained_colors.തള്ളുക_or_fail (std::move (retained_colors)))) return_trace (അസത്യം);
+	എങ്കിൽ (unlikely (!retained_colors_to_layer_index.set (layer_retained_colors.tail ().as_array (), layer_index)))
+	  return_trace (അസത്യം);
       }
       first_color_to_layer_index.set (first_color_record_idx, layer_index);
-      if (unlikely (!c->serializer->propagate_error (first_color_to_layer_index))) return_trace (false);
+      എങ്കിൽ (unlikely (!c->serializer->propagate_error (first_color_to_layer_index))) return_trace (അസത്യം);
     }
 
-    out->numColorRecords = first_color_index_for_layer.length
+    out->അക്കം_Color_Records = first_color_index_for_layer.length
                            * retained_color_indices.get_population ();
 
-    if (!out->serialize (c->serializer,
+    എങ്കിൽ (!out->serialize (c->serializer,
                          colorRecordIndices,
                          all_color_records,
                          first_color_index_for_layer,
                          first_color_to_layer_index,
                          retained_color_indices))
-      return_trace (false);
+      return_trace (അസത്യം);
 
-    if (version == 1)
+    എങ്കിൽ (version == 1)
     {
       hb_barrier ();
-      return_trace (v1 ().serialize (c->serializer, numPalettes, numColors, this, color_index_map));
+      return_trace (v1 ().serialize (c->serializer, അക്കം_Palettes, അക്കം_Colors, ഇത്, color_index_map));
     }
 
-    return_trace (true);
+    return_trace (സത്യം);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) &&
 		  hb_barrier () &&
-		  (this+colorRecordsZ).sanitize (c, numColorRecords) &&
-		  colorRecordIndicesZ.sanitize (c, numPalettes) &&
-		  (version == 0 || v1 ().sanitize (c, this, numPalettes, numColors)));
+		  (ഇത്+colorRecordsZ).sanitize (c, അക്കം_Color_Records) &&
+		  colorRecordIndicesZ.sanitize (c, അക്കം_Palettes) &&
+		  (version == 0 || v1 ().sanitize (c, ഇത്, അക്കം_Palettes, അക്കം_Colors)));
   }
 
-  protected:
+  സംരക്ഷിത:
   HBUINT16	version;		/* Table version number */
   /* Version 0 */
-  HBUINT16	numColors;		/* Number of colors in each palette. */
-  HBUINT16	numPalettes;		/* Number of palettes in the table. */
-  HBUINT16	numColorRecords;	/* Total number of color records, combined for
+  HBUINT16	അക്കം_Colors;		/* Number of colors in each palette. */
+  HBUINT16	അക്കം_Palettes;		/* Number of palettes in the table. */
+  HBUINT16	അക്കം_Color_Records;	/* Total number of color records, combined for
 					 * all palettes. */
   NNOffset32To<UnsizedArrayOf<BGRAColor>>
 		colorRecordsZ;		/* Offset from the beginning of CPAL table to
@@ -382,7 +382,7 @@ struct CPAL
 		colorRecordIndicesZ;	/* Index of each palette’s first color record in
 					 * the combined color record array. */
 /*CPALV1Tail	v1;*/
-  public:
+  പൊതു:
   DEFINE_SIZE_ARRAY (12, colorRecordIndicesZ);
 };
 

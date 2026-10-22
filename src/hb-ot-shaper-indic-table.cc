@@ -14,18 +14,18 @@
  * # Date: 2026-07-08
  */
 
-#include "hb.hh"
+#അന്തര്ഭാവ "hb.hh"
 
 #ifndef HB_NO_OT_SHAPE
 
-#include "hb-ot-shaper-indic.hh"
+#അന്തര്ഭാവ "hb-ot-shaper-indic.hh"
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-macros"
 
-#include "hb-ot-shaper-indic-machine.hh"
-#include "hb-ot-shaper-khmer-machine.hh"
-#include "hb-ot-shaper-myanmar-machine.hh"
+#അന്തര്ഭാവ "hb-ot-shaper-indic-machine.hh"
+#അന്തര്ഭാവ "hb-ot-shaper-khmer-machine.hh"
+#അന്തര്ഭാവ "hb-ot-shaper-myanmar-machine.hh"
 
 /* indic */
 #define OT_X I_Cat(X)
@@ -46,7 +46,7 @@
 #define OT_Repha I_Cat(Repha)
 #define OT_Ra I_Cat(Ra)
 #define OT_CM I_Cat(CM)
-#define OT_Symbol I_Cat(Symbol)
+#define OT_ചിഹ്നം I_Cat(ചിഹ്നം_2)
 #define OT_CS I_Cat(CS)
 #define OT_SMPst I_Cat(SMPst)
 /* khmer */
@@ -97,7 +97,7 @@ static_assert (OT_VPst == M_Cat(VPst), "");
 #define _OT_Rt   OT_Robatic      /*   3 chars; Robatic */
 #define _OT_SM   OT_SM           /*  50 chars; SM */
 #define _OT_SP   OT_SMPst        /*   6 chars; SMPst */
-#define _OT_S    OT_Symbol       /*  22 chars; Symbol */
+#define _OT_S    OT_ചിഹ്നം       /*  22 chars; Symbol */
 #define _OT_V    OT_V            /* 172 chars; V */
 #define _OT_VA   OT_VAbv         /*  18 chars; VAbv */
 #define _OT_VB   OT_VBlw         /*   7 chars; VBlw */
@@ -123,16 +123,16 @@ static_assert (OT_VPst == M_Cat(VPst), "");
 #define _POS_LM  POS_PRE_M       /*  14 chars; PRE_M */
 #define _POS_SM  POS_SMVD        /* 130 chars; SMVD */
 
-#pragma GCC diagnostic pop
+#pragma GCC diagnostic എടുക്കുക
 
 #define INDIC_COMBINE_CATEGORIES(S,M) ((S) | ((M) << 8))
 
 #define _(S,M) INDIC_COMBINE_CATEGORIES (_OT_##S, _POS_##M)
 
 
-#include <stdint.h>
+#അന്തര്ഭാവ <stdint.h>
 
-static const uint16_t _hb_indic_values[42]=
+സ്ഥിതം സ്ഥിരം uint16_t hb_indic_മൂല്യങ്ങൾ[42]=
 {
     _(A,SM),  _(As,X),   _(C,C),  _(CM,C),  _(CS,C),  _(DC,C),  _(GB,C),   _(H,B),
      _(H,T),   _(H,X),   _(M,A),  _(M,AP),  _(M,AS),   _(M,B),  _(M,BS),  _(M,LM),
@@ -141,7 +141,7 @@ static const uint16_t _hb_indic_values[42]=
     _(VA,T),  _(VB,B),  _(VL,L),  _(VR,R),  _(VS,X),   _(X,X),  _(Xg,X),  _(Yg,X),
    _(ZWJ,X),_(ZWNJ,X),
 };
-static const uint8_t _hb_indic_u8[1224]=
+സ്ഥിതം സ്ഥിരം uint8_t _hb_indic_u8[1224]=
 {
     1,  0, 50,  4,  5, 96,  0,  7,  8,  9,  0,  0,  0,  0,  0,  0,
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
@@ -222,20 +222,20 @@ static const uint8_t _hb_indic_u8[1224]=
     5, 37, 31, 12,  2, 23, 37, 22,
 };
 
-static inline uint8_t _hb_indic_b4 (const uint8_t* a, unsigned i)
+സ്ഥിതം വരിയിൽ uint8_t _hb_indic_b4 (സ്ഥിരം uint8_t* a, unsigned i)
 {
-  return (a[i>>1]>>((i&1)<<2))&15;
+  തിരികെ (a[i>>1]>>((i&1)<<2))&15;
 }
-static inline uint8_t _hb_indic_get_categories_index (unsigned u)
+സ്ഥിതം വരിയിൽ uint8_t _hb_indic_get_categories_index (unsigned u)
 {
   /* packtab: [2^4,2^3,2^3,2^2,2^1] */
-  return u<71396u ? (uint8_t)(_hb_indic_u8[996u+_hb_indic_u8[488u+((_hb_indic_u8[186u+((_hb_indic_u8[70u+((_hb_indic_b4(_hb_indic_u8,((((((((u)>>1))>>2))>>3))>>3)))<<3)+((((((((u)>>1))>>2))>>3))&7)])<<3)+((((((u)>>1))>>2))&7)])<<2)+((((u)>>1))&3)]+((u)&1)]) : 37;
+  തിരികെ u<71396u ? (uint8_t)(_hb_indic_u8[996u+_hb_indic_u8[488u+((_hb_indic_u8[186u+((_hb_indic_u8[70u+((_hb_indic_b4(_hb_indic_u8,((((((((u)>>1))>>2))>>3))>>3)))<<3)+((((((((u)>>1))>>2))>>3))&7)])<<3)+((((((u)>>1))>>2))&7)])<<2)+((((u)>>1))&3)]+((u)&1)]) : 37;
 }
 
 uint16_t
 hb_indic_get_categories (hb_codepoint_t u)
 {
-  return _hb_indic_values[_hb_indic_get_categories_index (u)];
+  തിരികെ hb_indic_മൂല്യങ്ങൾ[_hb_indic_get_categories_index (u)];
 }
 
 #undef _

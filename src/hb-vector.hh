@@ -27,62 +27,62 @@
 #ifndef HB_VECTOR_HH
 #define HB_VECTOR_HH
 
-#include "hb.hh"
-#include "hb-array.hh"
-#include "hb-meta.hh"
-#include "hb-null.hh"
+#അന്തര്ഭാവ "hb.hh"
+#അന്തര്ഭാവ "hb-array.hh"
+#അന്തര്ഭാവ "hb-meta.hh"
+#അന്തര്ഭാവ "hb-null.hh"
 
 // Change to 1 to force inline vector allocs, to see callsite in malloc-stats tool.
-#if 0
+#എങ്കിൽ 0
 #define HB_ALWAYS_INLINE_VECTOR_ALLOCS HB_ALWAYS_INLINE
-#else
+#അല്ലെങ്കിൽ
 #define HB_ALWAYS_INLINE_VECTOR_ALLOCS
 #endif
 
 template <typename Type,
-	  bool sorted=false>
-struct hb_vector_t
+	  തർക്കം sorted=അസത്യം>
+ഘടന hb_vector_t
 {
-  static constexpr bool realloc_move = true;
+  സ്ഥിതം constexpr തർക്കം realloc_move = സത്യം;
 
-  typedef Type item_t;
-  static constexpr unsigned item_size = hb_static_size (Type);
+  തരനിർവചനം Type item_t;
+  സ്ഥിതം constexpr unsigned item_size = hb_static_size (Type);
   using array_t = typename std::conditional<sorted, hb_sorted_array_t<Type>, hb_array_t<Type>>::type;
-  using c_array_t = typename std::conditional<sorted, hb_sorted_array_t<const Type>, hb_array_t<const Type>>::type;
+  using c_array_t = typename std::conditional<sorted, hb_sorted_array_t<സ്ഥിരം Type>, hb_array_t<സ്ഥിരം Type>>::type;
 
-  hb_vector_t () = default;
+  hb_vector_t () = സ്ഥിരസ്ഥിതി;
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   hb_vector_t (std::initializer_list<Type> lst) : hb_vector_t ()
   {
-    alloc (lst.size (), true);
-    for (auto&& item : lst)
+    alloc (lst.size (), സത്യം);
+    വേണ്ടി (auto&& item : lst)
       push (item);
   }
   template <typename Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  explicit hb_vector_t (const Iterable &o) : hb_vector_t ()
+  explicit hb_vector_t (സ്ഥിരം Iterable &o) : hb_vector_t ()
   {
-    extend (o, true);
+    extend (o, സത്യം);
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  hb_vector_t (const hb_vector_t &o) : hb_vector_t ()
+  hb_vector_t (സ്ഥിരം hb_vector_t &o) : hb_vector_t ()
   {
     alloc_exact (o.length);
-    if (unlikely (in_error ())) return;
+    എങ്കിൽ (unlikely (in_error ())) തിരികെ;
     copy_array (o.as_array ());
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   hb_vector_t (array_t o) : hb_vector_t ()
   {
     alloc_exact (o.length);
-    if (unlikely (in_error ())) return;
+    എങ്കിൽ (unlikely (in_error ())) തിരികെ;
     copy_array (o);
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   hb_vector_t (c_array_t o) : hb_vector_t ()
   {
     alloc_exact (o.length);
-    if (unlikely (in_error ())) return;
+    എങ്കിൽ (unlikely (in_error ())) തിരികെ;
     copy_array (o);
   }
   hb_vector_t (hb_vector_t &&o) noexcept
@@ -95,20 +95,20 @@ struct hb_vector_t
   ~hb_vector_t () { fini (); }
 
   template <unsigned n>
-  void
+  ശൂന്യം
   set_storage (Type (&array)[n])
   { set_storage (array, n); }
-  void
+  ശൂന്യം
   set_storage (hb_array_t<Type> array)
   { set_storage (array.arrayZ, array.length); }
   template <typename T = Type,
 	    hb_enable_if (hb_is_trivially_constructible(T) &&
 			  hb_is_trivially_destructible(T))>
-  void
+  ശൂന്യം
   set_storage (Type *array, unsigned n)
   {
-    assert (allocated == 0);
-    assert (length == 0);
+    പ്രതിജ്ഞാ (allocated == 0);
+    പ്രതിജ്ഞാ (length == 0);
 
     arrayZ = array;
     length = n;
@@ -117,64 +117,64 @@ struct hb_vector_t
   template <typename Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  void extend (const Iterable &o, bool exact=false)
+  ശൂന്യം extend (സ്ഥിരം Iterable &o, തർക്കം exact=അസത്യം)
   {
     auto iter = hb_iter (o);
-    if (iter.is_random_access_iterator || iter.has_fast_len)
+    എങ്കിൽ (iter.is_random_access_iterator || iter.has_fast_len)
     {
-      if (unlikely (!alloc (length + hb_len (iter), exact)))
-	return;
-      unsigned count = hb_len (iter);
-      for (unsigned i = 0; i < count; i++)
-	push_has_room (*iter++);
+      എങ്കിൽ (unlikely (!alloc (length + hb_len (iter), exact)))
+	തിരികെ;
+      unsigned എണ്ണം = hb_len (iter);
+      വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++)
+	തള്ളുക_has_room (*iter++);
     }
-    while (iter)
+    ആകുമ്പോൾ (iter)
     {
-      if (unlikely (!alloc (length + 1)))
-        return;
+      എങ്കിൽ (unlikely (!alloc (length + 1)))
+        തിരികെ;
       unsigned room = allocated - length;
-      for (unsigned i = 0; i < room && iter; i++)
-	push_has_room (*iter++);
+      വേണ്ടി (unsigned i = 0; i < room && iter; i++)
+	തള്ളുക_has_room (*iter++);
     }
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  void extend (array_t o, bool exact=false)
+  ശൂന്യം extend (array_t o, തർക്കം exact=അസത്യം)
   { extend (c_array_t (o), exact); }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  void extend (c_array_t o, bool exact=false)
+  ശൂന്യം extend (c_array_t o, തർക്കം exact=അസത്യം)
   {
     /* o may point into our own storage, eg. v.extend (v.as_array ()).
      * alloc() may move that storage, so find o again afterwards. */
-    bool aliased = o.length && in_storage (*o.arrayZ);
+    തർക്കം aliased = o.length && in_storage (*o.arrayZ);
     unsigned offset = aliased ? o.arrayZ - arrayZ : 0;
     alloc (length + o.length, exact);
-    if (unlikely (in_error ())) return;
-    if (unlikely (aliased))
+    എങ്കിൽ (unlikely (in_error ())) തിരികെ;
+    എങ്കിൽ (unlikely (aliased))
       o = {arrayZ + offset, o.length};
     copy_array (o);
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  void extend (const hb_vector_t &o, bool exact=false)
+  ശൂന്യം extend (സ്ഥിരം hb_vector_t &o, തർക്കം exact=അസത്യം)
   { extend (o.as_array (), exact); }
 
-  public:
-  int allocated = 0; /* < 0 means allocation failed. */
-  unsigned int length = 0;
-  public:
+  പൊതു:
+  പൂർണ്ണസംഖ്യ allocated = 0; /* < 0 means allocation failed. */
+  unsigned പൂർണ്ണസംഖ്യ length = 0;
+  പൊതു:
   Type *arrayZ = nullptr;
 
-  void init ()
+  ശൂന്യം init ()
   {
     allocated = length = 0;
     arrayZ = nullptr;
   }
-  void init0 ()
+  ശൂന്യം init0 ()
   {
   }
 
-  void fini ()
+  ശൂന്യം fini ()
   {
-    if (is_owned ())
+    എങ്കിൽ (is_owned ())
     {
       shrink_vector (0);
       hb_free (arrayZ);
@@ -185,41 +185,41 @@ struct hb_vector_t
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   hb_vector_t &reset ()
   {
-    if (unlikely (in_error ()))
+    എങ്കിൽ (unlikely (in_error ()))
       reset_error ();
     clear ();
-    return *this;
+    തിരികെ *ഇത്;
   }
 
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   hb_vector_t &reset_if_error ()
   {
-    if (unlikely (in_error ()))
+    എങ്കിൽ (unlikely (in_error ()))
       reset ();
-    return *this;
+    തിരികെ *ഇത്;
   }
 
   /* Transfer ownership of the backing storage to caller.
    * Returns nullptr if storage is not owned by this vector. */
   Type *
-  steal (unsigned *len = nullptr, int *allocated_out = nullptr)
+  steal (unsigned *len = nullptr, പൂർണ്ണസംഖ്യ *allocated_out = nullptr)
   {
-    if (!is_owned ())
-      return nullptr;
-    if (len)
+    എങ്കിൽ (!is_owned ())
+      തിരികെ nullptr;
+    എങ്കിൽ (len)
       *len = length;
-    if (allocated_out)
+    എങ്കിൽ (allocated_out)
       *allocated_out = allocated;
     Type *p = arrayZ;
     init ();
-    return p;
+    തിരികെ p;
   }
 
   /* Adopt a previously detached owned buffer. */
-  void
+  ശൂന്യം
   recycle_buffer (Type *buffer,
                   unsigned len,
-                  int allocated_len)
+                  പൂർണ്ണസംഖ്യ allocated_len)
   {
     fini ();
     arrayZ = buffer;
@@ -227,215 +227,215 @@ struct hb_vector_t
     allocated = allocated_len;
   }
 
-  friend void swap (hb_vector_t& a, hb_vector_t& b) noexcept
+  friend ശൂന്യം swap (hb_vector_t& a, hb_vector_t& b) noexcept
   {
     hb_swap (a.allocated, b.allocated);
     hb_swap (a.length, b.length);
     hb_swap (a.arrayZ, b.arrayZ);
   }
 
-  hb_vector_t& operator = (const hb_vector_t &o)
+  hb_vector_t& operator = (സ്ഥിരം hb_vector_t &o)
   {
-    if (this == &o) return *this;
+    എങ്കിൽ (ഇത് == &o) തിരികെ *ഇത്;
 
     reset ();
     alloc_exact (o.length);
-    if (unlikely (in_error ())) return *this;
+    എങ്കിൽ (unlikely (in_error ())) തിരികെ *ഇത്;
 
     length = 0;
     copy_array (o.as_array ());
 
-    return *this;
+    തിരികെ *ഇത്;
   }
   hb_vector_t& operator = (hb_vector_t &&o) noexcept
   {
-    hb_swap (*this, o);
-    return *this;
+    hb_swap (*ഇത്, o);
+    തിരികെ *ഇത്;
   }
 
-  hb_bytes_t as_bytes () const
-  { return hb_bytes_t ((const char *) arrayZ, get_size ()); }
+  hb_bytes_t as_bytes () സ്ഥിരം
+  { തിരികെ hb_bytes_t ((സ്ഥിരം അക്ഷരം *) arrayZ, get_size ()); }
 
-  bool operator == (const hb_vector_t &o) const { return as_array () == o.as_array (); }
-  bool operator != (const hb_vector_t &o) const { return !(*this == o); }
-  uint32_t hash () const { return as_array ().hash (); }
+  തർക്കം operator == (സ്ഥിരം hb_vector_t &o) സ്ഥിരം { തിരികെ as_array () == o.as_array (); }
+  തർക്കം operator != (സ്ഥിരം hb_vector_t &o) സ്ഥിരം { തിരികെ !(*ഇത് == o); }
+  uint32_t hash () സ്ഥിരം { തിരികെ as_array ().hash (); }
 
-  Type& operator [] (int i_)
+  Type& operator [] (പൂർണ്ണസംഖ്യ i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= length))
-      return Crap (Type);
-    return arrayZ[i];
+    unsigned പൂർണ്ണസംഖ്യ i = (unsigned പൂർണ്ണസംഖ്യ) i_;
+    എങ്കിൽ (unlikely (i >= length))
+      തിരികെ Crap (Type);
+    തിരികെ arrayZ[i];
   }
-  const Type& operator [] (int i_) const
+  സ്ഥിരം Type& operator [] (പൂർണ്ണസംഖ്യ i_) സ്ഥിരം
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= length))
-      return Null (Type);
-    return arrayZ[i];
+    unsigned പൂർണ്ണസംഖ്യ i = (unsigned പൂർണ്ണസംഖ്യ) i_;
+    എങ്കിൽ (unlikely (i >= length))
+      തിരികെ Null (Type);
+    തിരികെ arrayZ[i];
   }
 
-  Type& tail () { return (*this)[length - 1]; }
-  const Type& tail () const { return (*this)[length - 1]; }
+  Type& tail () { തിരികെ (*ഇത്)[length - 1]; }
+  സ്ഥിരം Type& tail () സ്ഥിരം { തിരികെ (*ഇത്)[length - 1]; }
 
-  explicit operator bool () const { return length; }
-  size_t get_size () const { return hb_unsigned_mul_saturate (length, item_size); }
+  explicit operator തർക്കം () സ്ഥിരം { തിരികെ length; }
+  size_t get_size () സ്ഥിരം { തിരികെ hb_unsigned_mul_saturate (length, item_size); }
 
   /* Sink interface. */
   template <typename T>
-  hb_vector_t& operator << (T&& v) { push (std::forward<T> (v)); return *this; }
+  hb_vector_t& operator << (T&& v) { push (std::forward<T> (v)); തിരികെ *ഇത്; }
 
-  array_t   as_array ()       { return hb_array (arrayZ, length); }
-  c_array_t as_array () const { return hb_array (arrayZ, length); }
+  array_t   as_array ()       { തിരികെ hb_array (arrayZ, length); }
+  c_array_t as_array () സ്ഥിരം { തിരികെ hb_array (arrayZ, length); }
 
   /* Iterator. */
-  typedef c_array_t   iter_t;
-  typedef array_t   writer_t;
-    iter_t   iter () const { return as_array (); }
-  writer_t writer ()       { return as_array (); }
-  operator   iter_t () const { return   iter (); }
-  operator writer_t ()       { return writer (); }
+  തരനിർവചനം c_array_t   iter_t;
+  തരനിർവചനം array_t   writer_t;
+    iter_t   iter () സ്ഥിരം { തിരികെ as_array (); }
+  writer_t writer ()       { തിരികെ as_array (); }
+  operator   iter_t () സ്ഥിരം { തിരികെ   iter (); }
+  operator writer_t ()       { തിരികെ writer (); }
 
   /* Faster range-based for loop. */
-  Type *begin () const { return arrayZ; }
-  Type *end () const { return arrayZ + length; }
+  Type *begin () സ്ഥിരം { തിരികെ arrayZ; }
+  Type *end () സ്ഥിരം { തിരികെ arrayZ + length; }
 
 
   hb_sorted_array_t<Type> as_sorted_array ()
-  { return hb_sorted_array (arrayZ, length); }
-  hb_sorted_array_t<const Type> as_sorted_array () const
-  { return hb_sorted_array (arrayZ, length); }
+  { തിരികെ hb_sorted_array (arrayZ, length); }
+  hb_sorted_array_t<സ്ഥിരം Type> as_sorted_array () സ്ഥിരം
+  { തിരികെ hb_sorted_array (arrayZ, length); }
 
-  template <typename T> explicit operator T * () { return arrayZ; }
-  template <typename T> explicit operator const T * () const { return arrayZ; }
+  template <typename T> explicit operator T * () { തിരികെ arrayZ; }
+  template <typename T> explicit operator സ്ഥിരം T * () സ്ഥിരം { തിരികെ arrayZ; }
 
-  Type * operator  + (unsigned int i) { return arrayZ + i; }
-  const Type * operator  + (unsigned int i) const { return arrayZ + i; }
+  Type * operator  + (unsigned പൂർണ്ണസംഖ്യ i) { തിരികെ arrayZ + i; }
+  സ്ഥിരം Type * operator  + (unsigned പൂർണ്ണസംഖ്യ i) സ്ഥിരം { തിരികെ arrayZ + i; }
 
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   Type *push ()
   {
-    if (unlikely (!resize (length + 1)))
-      return std::addressof (Crap (Type));
-    return std::addressof (arrayZ[length - 1]);
+    എങ്കിൽ (unlikely (!resize (length + 1)))
+      തിരികെ std::addressof (Crap (Type));
+    തിരികെ std::addressof (arrayZ[length - 1]);
   }
   template <typename... Args>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
   Type *push (Args&&... args)
   {
-    if (unlikely ((int) length >= allocated))
+    എങ്കിൽ (unlikely ((പൂർണ്ണസംഖ്യ) length >= allocated))
     {
-      if (unlikely (in_error ()))
-	return std::addressof (Crap (Type));
+      എങ്കിൽ (unlikely (in_error ()))
+	തിരികെ std::addressof (Crap (Type));
 
       /* An argument may live in our own storage, eg. v.push (v[i]).
        * alloc() frees that storage, so copy it out first. */
-      if (unlikely (in_storage (args...)))
+      എങ്കിൽ (unlikely (in_storage (args...)))
       {
 	Type copy (std::forward<Args> (args)...);
-	if (unlikely (!alloc (length + 1)))
-	  return std::addressof (Crap (Type));
-	return push_has_room (std::move (copy));
+	എങ്കിൽ (unlikely (!alloc (length + 1)))
+	  തിരികെ std::addressof (Crap (Type));
+	തിരികെ തള്ളുക_has_room (std::move (copy));
       }
-      if (unlikely (!alloc (length + 1)))
+      എങ്കിൽ (unlikely (!alloc (length + 1)))
 	// If push failed to allocate then don't copy v, since this may cause
 	// the created copy to leak memory since we won't have stored a
 	// reference to it.
-	return std::addressof (Crap (Type));
+	തിരികെ std::addressof (Crap (Type));
     }
 
-    return push_has_room (std::forward<Args> (args)...);
+    തിരികെ തള്ളുക_has_room (std::forward<Args> (args)...);
   }
   template <typename... Args>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool push_or_fail (Args&&... args)
+  തർക്കം തള്ളുക_or_fail (Args&&... args)
   {
-    return push (std::forward<Args> (args)...) != std::addressof (Crap (Type));
+    തിരികെ push (std::forward<Args> (args)...) != std::addressof (Crap (Type));
   }
   template <typename... Args>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  Type *push_has_room (Args&&... args)
+  Type *തള്ളുക_has_room (Args&&... args)
   {
     /* Emplace. */
     Type *p = std::addressof (arrayZ[length++]);
-    return new (p) Type (std::forward<Args> (args)...);
+    തിരികെ പുതിയ (p) Type (std::forward<Args> (args)...);
   }
 
-  bool in_storage () const { return false; }
+  തർക്കം in_storage () സ്ഥിരം { തിരികെ അസത്യം; }
   template <typename T, typename... Ts>
-  bool in_storage (const T &v, const Ts &...vs) const
+  തർക്കം in_storage (സ്ഥിരം T &v, സ്ഥിരം Ts &...vs) സ്ഥിരം
   {
     uintptr_t p = (uintptr_t) std::addressof (v);
-    return (arrayZ &&
+    തിരികെ (arrayZ &&
 	    (uintptr_t) arrayZ <= p && p < (uintptr_t) (arrayZ + length)) ||
 	   in_storage (vs...);
   }
 
-  bool is_owned () const
+  തർക്കം is_owned () സ്ഥിരം
   {
-    return allocated != 0 && allocated != -1;
+    തിരികെ allocated != 0 && allocated != -1;
   }
 
-  bool in_error () const { return allocated < 0; }
-  void set_error ()
+  തർക്കം in_error () സ്ഥിരം { തിരികെ allocated < 0; }
+  ശൂന്യം set_error ()
   {
-    assert (allocated >= 0);
+    പ്രതിജ്ഞാ (allocated >= 0);
     allocated = -allocated - 1;
   }
-  void reset_error ()
+  ശൂന്യം reset_error ()
   {
-    assert (allocated < 0);
+    പ്രതിജ്ഞാ (allocated < 0);
     allocated = -(allocated + 1);
   }
-  void ensure_error ()
+  ശൂന്യം ensure_error ()
   {
-    if (!in_error ())
+    എങ്കിൽ (!in_error ())
       set_error ();
   }
 
   Type *
   _realloc (unsigned new_allocated)
   {
-    if (!new_allocated)
+    എങ്കിൽ (!new_allocated)
     {
-      if (is_owned ())
+      എങ്കിൽ (is_owned ())
 	hb_free (arrayZ);
-      return nullptr;
+      തിരികെ nullptr;
     }
-    if (!allocated && arrayZ)
+    എങ്കിൽ (!allocated && arrayZ)
     {
       /* If we have a non-null arrayZ but allocated is 0, then we are
        * reallocating from a foreign array. */
-      Type *new_array = (Type *) hb_malloc (new_allocated * sizeof (Type));
-      if (unlikely (!new_array))
-	return nullptr;
-      hb_memcpy ((void *) new_array, (const void *) arrayZ, length * sizeof (Type));
-      return new_array;
+      Type *new_array = (Type *) hb_malloc (new_allocated * വലുപ്പം (Type));
+      എങ്കിൽ (unlikely (!new_array))
+	തിരികെ nullptr;
+      hb_memcpy ((ശൂന്യം *) new_array, (സ്ഥിരം ശൂന്യം *) arrayZ, length * വലുപ്പം (Type));
+      തിരികെ new_array;
     }
-    return (Type *) hb_realloc (arrayZ, new_allocated * sizeof (Type));
+    തിരികെ (Type *) hb_realloc (arrayZ, new_allocated * വലുപ്പം (Type));
   }
   Type *
   _malloc_move (unsigned new_allocated)
   {
-    if (!new_allocated)
+    എങ്കിൽ (!new_allocated)
     {
-      if (is_owned ())
+      എങ്കിൽ (is_owned ())
 	hb_free (arrayZ);
-      return nullptr;
+      തിരികെ nullptr;
     }
-    Type *new_array = (Type *) hb_malloc (new_allocated * sizeof (Type));
-    if (likely (new_array))
+    Type *new_array = (Type *) hb_malloc (new_allocated * വലുപ്പം (Type));
+    എങ്കിൽ (likely (new_array))
     {
-      for (unsigned i = 0; i < length; i++)
+      വേണ്ടി (unsigned i = 0; i < length; i++)
       {
-	new (std::addressof (new_array[i])) Type ();
+	പുതിയ (std::addressof (new_array[i])) Type ();
 	new_array[i] = std::move (arrayZ[i]);
 	arrayZ[i].~Type ();
       }
-      if (is_owned ())
+      എങ്കിൽ (is_owned ())
 	hb_free (arrayZ);
     }
-    return new_array;
+    തിരികെ new_array;
   }
 
   template <typename T = Type,
@@ -443,14 +443,14 @@ struct hb_vector_t
   Type *
   realloc_vector (unsigned new_allocated, hb_priority<0>)
   {
-    return _realloc (new_allocated);
+    തിരികെ _realloc (new_allocated);
   }
   template <typename T = Type,
 	    hb_enable_if (!hb_is_trivially_copy_assignable(T))>
   Type *
   realloc_vector (unsigned new_allocated, hb_priority<0>)
   {
-    return _malloc_move (new_allocated);
+    തിരികെ _malloc_move (new_allocated);
   }
   /* Specialization for types that can be moved using realloc(). */
   template <typename T = Type,
@@ -458,60 +458,60 @@ struct hb_vector_t
   Type *
   realloc_vector (unsigned new_allocated, hb_priority<1>)
   {
-    return _realloc (new_allocated);
+    തിരികെ _realloc (new_allocated);
   }
 
   template <typename T = Type,
 	    hb_enable_if (hb_is_trivially_constructible(T))>
-  void
+  ശൂന്യം
   grow_vector (unsigned size, hb_priority<0>)
   {
-    hb_memset (arrayZ + length, 0, (size - length) * sizeof (*arrayZ));
+    hb_memset (arrayZ + length, 0, (size - length) * വലുപ്പം (*arrayZ));
     length = size;
   }
   template <typename T = Type,
 	    hb_enable_if (!hb_is_trivially_constructible(T))>
-  void
+  ശൂന്യം
   grow_vector (unsigned size, hb_priority<0>)
   {
-    for (; length < size; length++)
-      new (std::addressof (arrayZ[length])) Type ();
+    വേണ്ടി (; length < size; length++)
+      പുതിയ (std::addressof (arrayZ[length])) Type ();
   }
   /* Specialization for hb_vector_t<hb_{vector,array}_t<U>> to speed up. */
   template <typename T = Type,
 	    hb_enable_if (hb_is_same (T, hb_vector_t<typename T::item_t>) ||
 			  hb_is_same (T, hb_array_t <typename T::item_t>))>
-  void
+  ശൂന്യം
   grow_vector (unsigned size, hb_priority<1>)
   {
-    hb_memset (arrayZ + length, 0, (size - length) * sizeof (*arrayZ));
+    hb_memset (arrayZ + length, 0, (size - length) * വലുപ്പം (*arrayZ));
     length = size;
   }
 
   template <typename T = Type,
 	    hb_enable_if (hb_is_trivially_copyable (T))>
-  void
+  ശൂന്യം
   copy_array (hb_array_t<Type> other)
   {
-    hb_memcpy ((void *) (arrayZ + length), (const void *) other.arrayZ, other.length * item_size);
+    hb_memcpy ((ശൂന്യം *) (arrayZ + length), (സ്ഥിരം ശൂന്യം *) other.arrayZ, other.length * item_size);
     length += other.length;
   }
   template <typename T = Type,
 	    hb_enable_if (hb_is_trivially_copyable (T))>
-  void
-  copy_array (hb_array_t<const Type> other)
+  ശൂന്യം
+  copy_array (hb_array_t<സ്ഥിരം Type> other)
   {
-    hb_memcpy ((void *) (arrayZ + length), (const void *) other.arrayZ, other.length * item_size);
+    hb_memcpy ((ശൂന്യം *) (arrayZ + length), (സ്ഥിരം ശൂന്യം *) other.arrayZ, other.length * item_size);
     length += other.length;
   }
   template <typename T = Type,
 	    hb_enable_if (!hb_is_trivially_copyable (T) &&
 			   std::is_copy_constructible<T>::value)>
-  void
-  copy_array (hb_array_t<const Type> other)
+  ശൂന്യം
+  copy_array (hb_array_t<സ്ഥിരം Type> other)
   {
-    for (unsigned i = 0; i < other.length; i++)
-      new (std::addressof (arrayZ[length + i])) Type (other.arrayZ[i]);
+    വേണ്ടി (unsigned i = 0; i < other.length; i++)
+      പുതിയ (std::addressof (arrayZ[length + i])) Type (other.arrayZ[i]);
     length += other.length;
   }
   template <typename T = Type,
@@ -519,269 +519,269 @@ struct hb_vector_t
 			  !std::is_copy_constructible<T>::value &&
 			  std::is_default_constructible<T>::value &&
 			  std::is_copy_assignable<T>::value)>
-  void
-  copy_array (hb_array_t<const Type> other)
+  ശൂന്യം
+  copy_array (hb_array_t<സ്ഥിരം Type> other)
   {
-    for (unsigned i = 0; i < other.length; i++)
+    വേണ്ടി (unsigned i = 0; i < other.length; i++)
     {
-      new (std::addressof (arrayZ[length + i])) Type ();
+      പുതിയ (std::addressof (arrayZ[length + i])) Type ();
       arrayZ[length + i] = other.arrayZ[i];
     }
     length += other.length;
   }
 
-  void
+  ശൂന്യം
   shrink_vector (unsigned size)
   {
-    assert (size <= length);
-    if (!hb_is_trivially_destructible(Type))
+    പ്രതിജ്ഞാ (size <= length);
+    എങ്കിൽ (!hb_is_trivially_destructible(Type))
     {
-      unsigned count = length - size;
+      unsigned എണ്ണം = length - size;
       Type *p = arrayZ + length;
-      while (count--)
+      ആകുമ്പോൾ (എണ്ണം--)
         (--p)->~Type ();
     }
     length = size;
   }
 
-  void
+  ശൂന്യം
   shift_down_vector (unsigned i)
   {
-    for (; i < length; i++)
+    വേണ്ടി (; i < length; i++)
       arrayZ[i - 1] = std::move (arrayZ[i]);
   }
 
   /* Allocate for size but don't adjust length. */
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool alloc (unsigned int size, bool exact=false)
+  തർക്കം alloc (unsigned പൂർണ്ണസംഖ്യ size, തർക്കം exact=അസത്യം)
   {
-    if (unlikely (in_error ()))
-      return false;
+    എങ്കിൽ (unlikely (in_error ()))
+      തിരികെ അസത്യം;
 
-    unsigned int new_allocated;
-    if (exact)
+    unsigned പൂർണ്ണസംഖ്യ new_allocated;
+    എങ്കിൽ (exact)
     {
       /* If exact was specified, we allow shrinking the storage. */
       size = hb_max (size, length);
-      if (size <= (unsigned) allocated &&
+      എങ്കിൽ (size <= (unsigned) allocated &&
 	  size >= (unsigned) allocated >> 2)
-	return true;
+	തിരികെ സത്യം;
 
       new_allocated = size;
     }
-    else
+    അല്ലെങ്കിൽ
     {
-      if (likely (size <= (unsigned) allocated))
-	return true;
+      എങ്കിൽ (likely (size <= (unsigned) allocated))
+	തിരികെ സത്യം;
 
       new_allocated = allocated;
-      while (size > new_allocated)
+      ആകുമ്പോൾ (size > new_allocated)
 	new_allocated += (new_allocated >> 1) + 8;
     }
 
     /* Reallocate */
 
-    bool overflows =
-      (int) in_error () ||
+    തർക്കം overflows =
+      (പൂർണ്ണസംഖ്യ) in_error () ||
       (new_allocated < size) ||
-      hb_unsigned_mul_overflows (new_allocated, sizeof (Type));
+      hb_unsigned_mul_overflows (new_allocated, വലുപ്പം (Type));
 
-    if (unlikely (overflows))
+    എങ്കിൽ (unlikely (overflows))
     {
       set_error ();
-      return false;
+      തിരികെ അസത്യം;
     }
 
     Type *new_array = realloc_vector (new_allocated, hb_prioritize);
 
-    if (unlikely (new_allocated && !new_array))
+    എങ്കിൽ (unlikely (new_allocated && !new_array))
     {
-      if (new_allocated <= (unsigned) allocated)
-        return true; // shrinking failed; it's okay; happens in our fuzzer
+      എങ്കിൽ (new_allocated <= (unsigned) allocated)
+        തിരികെ സത്യം; // shrinking failed; it's okay; happens in our fuzzer
 
       set_error ();
-      return false;
+      തിരികെ അസത്യം;
     }
 
     arrayZ = new_array;
     allocated = new_allocated;
 
-    return true;
+    തിരികെ സത്യം;
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool alloc_exact (unsigned int size)
+  തർക്കം alloc_exact (unsigned പൂർണ്ണസംഖ്യ size)
   {
-    return alloc (size, true);
+    തിരികെ alloc (size, സത്യം);
   }
 
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  void clear ()
+  ശൂന്യം clear ()
   {
     shrink_vector (0);
   }
 
   template <typename allocator_t>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool allocate_from_pool (allocator_t *allocator, unsigned size, unsigned int initialize = true)
+  തർക്കം allocate_from_pool (allocator_t *allocator, unsigned size, unsigned പൂർണ്ണസംഖ്യ initialize = സത്യം)
   {
-    if (allocator)
+    എങ്കിൽ (allocator)
     {
-      assert (!length && !allocated);
-      arrayZ = (Type *) allocator->alloc (size * sizeof (Type), alignof (Type));
-      if (unlikely (!arrayZ))
+      പ്രതിജ്ഞാ (!length && !allocated);
+      arrayZ = (Type *) allocator->alloc (size * വലുപ്പം (Type), alignof (Type));
+      എങ്കിൽ (unlikely (!arrayZ))
       {
 	set_error ();
-	return false;
+	തിരികെ അസത്യം;
       }
-      if (initialize)
+      എങ്കിൽ (initialize)
 	grow_vector (size, hb_prioritize);
-      else
+      അല്ലെങ്കിൽ
 	length = size;
-      return true;
+      തിരികെ സത്യം;
     }
-    return resize_full ((int) size, initialize, true);
+    തിരികെ resize_full ((പൂർണ്ണസംഖ്യ) size, initialize, സത്യം);
   }
 
   template <typename allocator_t>
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool duplicate_vector_from_pool (allocator_t *allocator, const hb_vector_t &other)
+  തർക്കം duplicate_vector_from_pool (allocator_t *allocator, സ്ഥിരം hb_vector_t &other)
   {
-    if (unlikely (!allocate_from_pool (allocator, other.length, false)))
-      return false;
+    എങ്കിൽ (unlikely (!allocate_from_pool (allocator, other.length, അസത്യം)))
+      തിരികെ അസത്യം;
     length = 0;
     copy_array (other.as_array ());
-    return true;
+    തിരികെ സത്യം;
   }
 
   template <typename allocator_t>
-  void shrink_back_to_pool (allocator_t *allocator, int size)
+  ശൂന്യം shrink_back_to_pool (allocator_t *allocator, പൂർണ്ണസംഖ്യ size)
   {
     unsigned orig_length = length;
 
-    shrink (size, false);
+    shrink (size, അസത്യം);
 
-    if (allocator && !is_owned ())
-      allocator->discard (arrayZ + length, (orig_length - length) * sizeof (Type));
+    എങ്കിൽ (allocator && !is_owned ())
+      allocator->discard (arrayZ + length, (orig_length - length) * വലുപ്പം (Type));
   }
 
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool resize_full (int size_, bool initialize, bool exact)
+  തർക്കം resize_full (പൂർണ്ണസംഖ്യ size_, തർക്കം initialize, തർക്കം exact)
   {
-    if (unlikely (size_ < 0))
-      return false;
-    unsigned int size = (unsigned int) size_;
-    if (!alloc (size, exact))
-      return false;
+    എങ്കിൽ (unlikely (size_ < 0))
+      തിരികെ അസത്യം;
+    unsigned പൂർണ്ണസംഖ്യ size = (unsigned പൂർണ്ണസംഖ്യ) size_;
+    എങ്കിൽ (!alloc (size, exact))
+      തിരികെ അസത്യം;
 
-    if (size > length)
+    എങ്കിൽ (size > length)
     {
-      if (initialize)
+      എങ്കിൽ (initialize)
 	grow_vector (size, hb_prioritize);
     }
-    else if (size < length)
+    അല്ലെങ്കിൽ എങ്കിൽ (size < length)
     {
-      if (initialize)
+      എങ്കിൽ (initialize)
 	shrink_vector (size);
     }
 
     length = size;
-    return true;
+    തിരികെ സത്യം;
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool resize (int size_)
+  തർക്കം resize (പൂർണ്ണസംഖ്യ size_)
   {
-    return resize_full (size_, true, false);
+    തിരികെ resize_full (size_, സത്യം, അസത്യം);
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool resize_dirty (int size_)
+  തർക്കം resize_dirty (പൂർണ്ണസംഖ്യ size_)
   {
-    return resize_full (size_, false, false);
+    തിരികെ resize_full (size_, അസത്യം, അസത്യം);
   }
   HB_ALWAYS_INLINE_VECTOR_ALLOCS
-  bool resize_exact (int size_)
+  തർക്കം resize_exact (പൂർണ്ണസംഖ്യ size_)
   {
-    return resize_full (size_, true, true);
+    തിരികെ resize_full (size_, സത്യം, സത്യം);
   }
 
-  Type pop ()
+  Type എടുക്കുക ()
   {
-    if (!length) return Null (Type);
+    എങ്കിൽ (!length) തിരികെ Null (Type);
     Type v (std::move (arrayZ[length - 1]));
     arrayZ[length - 1].~Type ();
     length--;
-    return v;
+    തിരികെ v;
   }
 
-  void remove_ordered (unsigned int i)
+  ശൂന്യം remove_ordered (unsigned പൂർണ്ണസംഖ്യ i)
   {
-    if (unlikely (i >= length))
-      return;
+    എങ്കിൽ (unlikely (i >= length))
+      തിരികെ;
     shift_down_vector (i + 1);
     arrayZ[length - 1].~Type ();
     length--;
   }
 
-  template <bool Sorted = sorted,
+  template <തർക്കം Sorted = sorted,
 	    hb_enable_if (!Sorted)>
-  void remove_unordered (unsigned int i)
+  ശൂന്യം remove_unordered (unsigned പൂർണ്ണസംഖ്യ i)
   {
-    if (unlikely (i >= length))
-      return;
-    if (i != length - 1)
+    എങ്കിൽ (unlikely (i >= length))
+      തിരികെ;
+    എങ്കിൽ (i != length - 1)
       arrayZ[i] = std::move (arrayZ[length - 1]);
     arrayZ[length - 1].~Type ();
     length--;
   }
 
-  void shrink (int size_, bool shrink_memory = true)
+  ശൂന്യം shrink (പൂർണ്ണസംഖ്യ size_, തർക്കം shrink_memory = സത്യം)
   {
-    unsigned int size = size_ < 0 ? 0u : (unsigned int) size_;
-    if (size >= length)
-      return;
+    unsigned പൂർണ്ണസംഖ്യ size = size_ < 0 ? 0u : (unsigned പൂർണ്ണസംഖ്യ) size_;
+    എങ്കിൽ (size >= length)
+      തിരികെ;
 
     shrink_vector (size);
 
-    if (is_owned () && shrink_memory)
+    എങ്കിൽ (is_owned () && shrink_memory)
       alloc_exact (size); /* To force shrinking memory if needed. */
   }
 
 
   /* Sorting API. */
   template <typename Compar>
-  void qsort (Compar compar)
+  ശൂന്യം qsort (Compar compar)
   { as_array ().qsort (compar); }
-  void qsort ()
+  ശൂന്യം qsort ()
   { as_array ().qsort (); }
 
   /* Unsorted search API. */
   template <typename T>
-  Type *lsearch (const T &x, Type *not_found = nullptr)
-  { return as_array ().lsearch (x, not_found); }
+  Type *lsearch (സ്ഥിരം T &x, Type *not_found = nullptr)
+  { തിരികെ as_array ().lsearch (x, not_found); }
   template <typename T>
-  const Type *lsearch (const T &x, const Type *not_found = nullptr) const
-  { return as_array ().lsearch (x, not_found); }
+  സ്ഥിരം Type *lsearch (സ്ഥിരം T &x, സ്ഥിരം Type *not_found = nullptr) സ്ഥിരം
+  { തിരികെ as_array ().lsearch (x, not_found); }
   template <typename T>
-  bool lfind (const T &x, unsigned *pos = nullptr) const
-  { return as_array ().lfind (x, pos); }
+  തർക്കം lfind (സ്ഥിരം T &x, unsigned *pos = nullptr) സ്ഥിരം
+  { തിരികെ as_array ().lfind (x, pos); }
 
   /* Sorted search API. */
   template <typename T,
-	    bool Sorted=sorted, hb_enable_if (Sorted)>
-  Type *bsearch (const T &x, Type *not_found = nullptr)
-  { return as_array ().bsearch (x, not_found); }
+	    തർക്കം Sorted=sorted, hb_enable_if (Sorted)>
+  Type *bsearch (സ്ഥിരം T &x, Type *not_found = nullptr)
+  { തിരികെ as_array ().bsearch (x, not_found); }
   template <typename T,
-	    bool Sorted=sorted, hb_enable_if (Sorted)>
-  const Type *bsearch (const T &x, const Type *not_found = nullptr) const
-  { return as_array ().bsearch (x, not_found); }
+	    തർക്കം Sorted=sorted, hb_enable_if (Sorted)>
+  സ്ഥിരം Type *bsearch (സ്ഥിരം T &x, സ്ഥിരം Type *not_found = nullptr) സ്ഥിരം
+  { തിരികെ as_array ().bsearch (x, not_found); }
   template <typename T,
-	    bool Sorted=sorted, hb_enable_if (Sorted)>
-  bool bfind (const T &x, unsigned int *i = nullptr,
+	    തർക്കം Sorted=sorted, hb_enable_if (Sorted)>
+  തർക്കം bfind (സ്ഥിരം T &x, unsigned പൂർണ്ണസംഖ്യ *i = nullptr,
 	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
-  { return as_array ().bfind (x, i, not_found, to_store); }
+	      unsigned പൂർണ്ണസംഖ്യ to_store = (unsigned പൂർണ്ണസംഖ്യ) -1) സ്ഥിരം
+  { തിരികെ as_array ().bfind (x, i, not_found, to_store); }
 };
 
 template <typename Type>
-using hb_sorted_vector_t = hb_vector_t<Type, true>;
+using hb_sorted_vector_t = hb_vector_t<Type, സത്യം>;
 
 #endif /* HB_VECTOR_HH */

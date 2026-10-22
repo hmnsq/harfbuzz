@@ -1,98 +1,98 @@
 #ifndef OT_LAYOUT_GPOS_CURSIVEPOSFORMAT1_HH
 #define OT_LAYOUT_GPOS_CURSIVEPOSFORMAT1_HH
 
-#include "Anchor.hh"
-#include "../../../hb-limits.hh"
+#അന്തര്ഭാവ "Anchor.hh"
+#അന്തര്ഭാവ "../../../hb-limits.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
-
-template <typename Types>
-struct CursivePosFormat1_2;
+നാമാകാശ OT {
+നാമാകാശ Layout {
+നാമാകാശ GPOS_impl {
 
 template <typename Types>
-struct EntryExitRecord
+ഘടന CursivePosFormat1_2;
+
+template <typename Types>
+ഘടന EntryExitRecord
 {
-  template <typename Types2> friend struct CursivePosFormat1_2;
+  template <typename Types2> friend ഘടന CursivePosFormat1_2;
 
-  bool sanitize (hb_sanitize_context_t *c, const struct CursivePosFormat1_2<Types> *base) const
+  തർക്കം sanitize (hb_sanitize_context_t *c, സ്ഥിരം ഘടന CursivePosFormat1_2<Types> *base) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ഇത്);
     return_trace (entryAnchor.sanitize (c, base) && exitAnchor.sanitize (c, base));
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const struct CursivePosFormat1_2<Types> *src_base) const
+  ശൂന്യം collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  സ്ഥിരം ഘടന CursivePosFormat1_2<Types> *src_base) സ്ഥിരം
   {
     (src_base+entryAnchor).collect_variation_indices (c);
     (src_base+exitAnchor).collect_variation_indices (c);
   }
 
-  bool subset (hb_subset_context_t *c,
-	       const struct CursivePosFormat1_2<Types> *src_base) const
+  തർക്കം subset (hb_subset_context_t *c,
+	       സ്ഥിരം ഘടന CursivePosFormat1_2<Types> *src_base) സ്ഥിരം
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SERIALIZE (ഇത്);
+    auto *out = c->serializer->embed (ഇത്);
+    എങ്കിൽ (unlikely (!out)) return_trace (അസത്യം);
 
-    bool ret = false;
+    തർക്കം ret = അസത്യം;
     ret |= out->entryAnchor.serialize_subset (c, entryAnchor, src_base);
     ret |= out->exitAnchor.serialize_subset (c, exitAnchor, src_base);
     return_trace (ret);
   }
 
-  protected:
-  typename Types::template OffsetTo<Anchor, struct CursivePosFormat1_2<Types>>
+  സംരക്ഷിത:
+  typename Types::template OffsetTo<Anchor, ഘടന CursivePosFormat1_2<Types>>
                 entryAnchor;            /* Offset to EntryAnchor table--from
                                          * beginning of CursivePos
                                          * subtable--may be NULL */
-  typename Types::template OffsetTo<Anchor, struct CursivePosFormat1_2<Types>>
+  typename Types::template OffsetTo<Anchor, ഘടന CursivePosFormat1_2<Types>>
                 exitAnchor;             /* Offset to ExitAnchor table--from
                                          * beginning of CursivePos
                                          * subtable--may be NULL */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (2 * Types::size);
 };
 
-static inline void
+സ്ഥിതം വരിയിൽ ശൂന്യം
 reverse_cursive_minor_offset (hb_glyph_position_t *pos,
-                              unsigned int len,
-                              unsigned int i,
+                              unsigned പൂർണ്ണസംഖ്യ len,
+                              unsigned പൂർണ്ണസംഖ്യ i,
                               hb_direction_t direction,
-                              unsigned int new_parent,
+                              unsigned പൂർണ്ണസംഖ്യ new_parent,
                               unsigned nesting_level = 0)
 {
-  if (nesting_level > HB_MAX_NESTING_LEVEL)
-    return;
+  എങ്കിൽ (nesting_level > HB_MAX_NESTING_LEVEL)
+    തിരികെ;
 
-  int chain = pos[i].attach_chain(), type = pos[i].attach_type();
-  if (likely (!chain || 0 == (type & ATTACH_TYPE_CURSIVE)))
-    return;
+  പൂർണ്ണസംഖ്യ chain = pos[i].attach_chain(), type = pos[i].attach_type();
+  എങ്കിൽ (likely (!chain || 0 == (type & ATTACH_TYPE_CURSIVE)))
+    തിരികെ;
 
   pos[i].attach_chain() = 0;
 
-  unsigned int j = (int) i + chain;
+  unsigned പൂർണ്ണസംഖ്യ j = (പൂർണ്ണസംഖ്യ) i + chain;
 
-  if (unlikely (j >= len))
-    return;
+  എങ്കിൽ (unlikely (j >= len))
+    തിരികെ;
 
   /* Stop if we see new parent in the chain. */
-  if (j == new_parent)
-    return;
+  എങ്കിൽ (j == new_parent)
+    തിരികെ;
 
   int16_t reversed_chain = -chain;
   /* The old edge was cleared above; if the reversed distance truncates,
    * keep it detached instead of storing a poisoned chain.
    */
-  if (unlikely (reversed_chain != -chain))
-    return;
+  എങ്കിൽ (unlikely (reversed_chain != -chain))
+    തിരികെ;
 
   reverse_cursive_minor_offset (pos, len, j, direction, new_parent, nesting_level + 1);
 
-  if (HB_DIRECTION_IS_HORIZONTAL (direction))
+  എങ്കിൽ (HB_DIRECTION_IS_HORIZONTAL (direction))
     pos[j].y_offset = hb_saturate_neg (pos[i].y_offset);
-  else
+  അല്ലെങ്കിൽ
     pos[j].x_offset = hb_saturate_neg (pos[i].x_offset);
 
   pos[j].attach_chain() = reversed_chain;
@@ -100,16 +100,16 @@ reverse_cursive_minor_offset (hb_glyph_position_t *pos,
 }
 
 
-static inline bool
+സ്ഥിതം വരിയിൽ തർക്കം
 apply_cursive_attachment (hb_ot_apply_context_t *c,
-                          const Anchor &exit_anchor,
-                          const Anchor &entry_anchor,
+                          സ്ഥിരം Anchor &exit_anchor,
+                          സ്ഥിരം Anchor &entry_anchor,
                           unsigned i)
 {
   hb_buffer_t *buffer = c->buffer;
-  unsigned int j = buffer->idx;
+  unsigned പൂർണ്ണസംഖ്യ j = buffer->idx;
 
-  if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+  എങ്കിൽ (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
   {
     c->buffer->message (c->font,
 			  "cursive attaching glyph at %u to glyph at %u",
@@ -117,7 +117,7 @@ apply_cursive_attachment (hb_ot_apply_context_t *c,
   }
 
   buffer->unsafe_to_break (i, j + 1);
-  float entry_x, entry_y, exit_x, exit_y;
+  ദശാംശം entry_x, entry_y, exit_x, exit_y;
   exit_anchor.get_anchor (c, buffer->info[i].codepoint, &exit_x, &exit_y);
   entry_anchor.get_anchor (c, buffer->info[j].codepoint, &entry_x, &entry_y);
 
@@ -125,38 +125,38 @@ apply_cursive_attachment (hb_ot_apply_context_t *c,
 
   hb_position_t d;
   /* Main-direction adjustment */
-  switch (c->direction) {
-    case HB_DIRECTION_LTR:
+  തിരഞ്ഞെടുപ്പ് (c->direction) {
+    അവസ്ഥ HB_DIRECTION_LTR:
       pos[i].x_advance = hb_saturate_add ((hb_position_t) roundf (exit_x), pos[i].x_offset);
 
       d = hb_saturate_add ((hb_position_t) roundf (entry_x), pos[j].x_offset);
       pos[j].x_advance = hb_saturate_sub (pos[j].x_advance, d);
       pos[j].x_offset = hb_saturate_sub (pos[j].x_offset, d);
-      break;
-    case HB_DIRECTION_RTL:
+      നിർത്തുക;
+    അവസ്ഥ HB_DIRECTION_RTL:
       d = hb_saturate_add ((hb_position_t) roundf (exit_x), pos[i].x_offset);
       pos[i].x_advance = hb_saturate_sub (pos[i].x_advance, d);
       pos[i].x_offset = hb_saturate_sub (pos[i].x_offset, d);
 
       pos[j].x_advance = hb_saturate_add ((hb_position_t) roundf (entry_x), pos[j].x_offset);
-      break;
-    case HB_DIRECTION_TTB:
+      നിർത്തുക;
+    അവസ്ഥ HB_DIRECTION_TTB:
       pos[i].y_advance = hb_saturate_add ((hb_position_t) roundf (exit_y), pos[i].y_offset);
 
       d = hb_saturate_add ((hb_position_t) roundf (entry_y), pos[j].y_offset);
       pos[j].y_advance = hb_saturate_sub (pos[j].y_advance, d);
       pos[j].y_offset = hb_saturate_sub (pos[j].y_offset, d);
-      break;
-    case HB_DIRECTION_BTT:
+      നിർത്തുക;
+    അവസ്ഥ HB_DIRECTION_BTT:
       d = hb_saturate_add ((hb_position_t) roundf (exit_y), pos[i].y_offset);
       pos[i].y_advance = hb_saturate_sub (pos[i].y_advance, d);
       pos[i].y_offset = hb_saturate_sub (pos[i].y_offset, d);
 
       pos[j].y_advance = (hb_position_t) roundf (entry_y);
-      break;
-    case HB_DIRECTION_INVALID:
-    default:
-      break;
+      നിർത്തുക;
+    അവസ്ഥ HB_DIRECTION_INVALID:
+    സ്ഥിരസ്ഥിതി:
+      നിർത്തുക;
   }
 
   /* Cross-direction adjustment */
@@ -167,13 +167,13 @@ apply_cursive_attachment (hb_ot_apply_context_t *c,
    *
    * Optimize things for the case of RightToLeft, as that's most common in
    * Arabic. */
-  unsigned int child  = i;
-  unsigned int parent = j;
+  unsigned പൂർണ്ണസംഖ്യ child  = i;
+  unsigned പൂർണ്ണസംഖ്യ parent = j;
   hb_position_t x_offset = (hb_position_t) roundf (entry_x - exit_x);
   hb_position_t y_offset = (hb_position_t) roundf (entry_y - exit_y);
-  if  (!(c->lookup_props & LookupFlag::RightToLeft))
+  എങ്കിൽ  (!(c->lookup_props & LookupFlag::വലത്_To_ഇടത്))
   {
-    unsigned int k = child;
+    unsigned പൂർണ്ണസംഖ്യ k = child;
     child = parent;
     parent = k;
     x_offset = -x_offset;
@@ -187,32 +187,32 @@ apply_cursive_attachment (hb_ot_apply_context_t *c,
    */
   reverse_cursive_minor_offset (pos, buffer->len, child, c->direction, parent);
 
-  pos[child].attach_chain() = (int) parent - (int) child;
-  if (pos[child].attach_chain() != (int) parent - (int) child)
+  pos[child].attach_chain() = (പൂർണ്ണസംഖ്യ) parent - (പൂർണ്ണസംഖ്യ) child;
+  എങ്കിൽ (pos[child].attach_chain() != (പൂർണ്ണസംഖ്യ) parent - (പൂർണ്ണസംഖ്യ) child)
   {
     pos[child].attach_chain() = 0;
-    goto overflow;
+    പോകുക overflow;
   }
   pos[child].attach_type() = ATTACH_TYPE_CURSIVE;
   buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
-  if (likely (HB_DIRECTION_IS_HORIZONTAL (c->direction)))
+  എങ്കിൽ (likely (HB_DIRECTION_IS_HORIZONTAL (c->direction)))
     pos[child].y_offset = y_offset;
-  else
+  അല്ലെങ്കിൽ
     pos[child].x_offset = x_offset;
 
   /* If parent was attached to child, separate them.
    * https://github.com/harfbuzz/harfbuzz/issues/2469
    */
-  if (unlikely (pos[parent].attach_chain() == -pos[child].attach_chain()))
+  എങ്കിൽ (unlikely (pos[parent].attach_chain() == -pos[child].attach_chain()))
   {
     pos[parent].attach_chain() = 0;
-    if (likely (HB_DIRECTION_IS_HORIZONTAL (c->direction)))
+    എങ്കിൽ (likely (HB_DIRECTION_IS_HORIZONTAL (c->direction)))
 	pos[parent].y_offset = 0;
-    else
+    അല്ലെങ്കിൽ
 	pos[parent].x_offset = 0;
   }
 
-  if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+  എങ്കിൽ (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
   {
     c->buffer->message (c->font,
 			  "cursive attached glyph at %u to glyph at %u",
@@ -221,102 +221,102 @@ apply_cursive_attachment (hb_ot_apply_context_t *c,
 
 overflow:
   buffer->idx++;
-  return true;
+  തിരികെ സത്യം;
 }
 
 template <typename Types>
-struct CursivePosFormat1_2
+ഘടന CursivePosFormat1_2
 {
 
-  protected:
+  സംരക്ഷിത:
   HBUINT16      format;                 /* Format identifier--format = 1 */
   typename Types::template LOffsetTo<Coverage>
                 coverage;               /* Offset to Coverage table--from beginning of subtable */
   typename Types::template ArrayOf<EntryExitRecord<Types>>
                 entryExitRecord;        /* Array of EntryExit records--in
                                          * Coverage Index order */
-  public:
+  പൊതു:
   DEFINE_SIZE_ARRAY (2 + Types::LOffset::static_size + Types::HBUINT::static_size, entryExitRecord);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!coverage.sanitize (c, this)))
-      return_trace (false);
+    TRACE_SANITIZE (ഇത്);
+    എങ്കിൽ (unlikely (!coverage.sanitize (c, ഇത്)))
+      return_trace (അസത്യം);
 
-    if (c->lazy_some_gpos)
+    എങ്കിൽ (c->lazy_some_gpos)
       return_trace (entryExitRecord.sanitize_shallow (c));
-    else
-      return_trace (entryExitRecord.sanitize (c, this));
+    അല്ലെങ്കിൽ
+      return_trace (entryExitRecord.sanitize (c, ഇത്));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
-  { return (this+coverage).intersects (glyphs); }
+  തർക്കം intersects (സ്ഥിരം hb_set_t *glyphs) സ്ഥിരം
+  { തിരികെ (ഇത്+coverage).intersects (glyphs); }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const {}
+  ശൂന്യം closure_lookups (hb_closure_lookups_context_t *c) സ്ഥിരം {}
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  ശൂന്യം collect_variation_indices (hb_collect_variation_indices_context_t *c) സ്ഥിരം
   {
-    + hb_zip (this+coverage, entryExitRecord)
+    + hb_zip (ഇത്+coverage, entryExitRecord)
     | hb_filter (c->glyph_set, hb_first)
     | hb_map (hb_second)
-    | hb_apply ([&] (const EntryExitRecord<Types>& record) { record.collect_variation_indices (c, this); })
+    | hb_apply ([&] (സ്ഥിരം EntryExitRecord<Types>& record) { record.collect_variation_indices (c, ഇത്); })
     ;
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
-  { if (unlikely (!(this+coverage).collect_coverage (c->input))) return; }
+  ശൂന്യം collect_glyphs (hb_collect_glyphs_context_t *c) സ്ഥിരം
+  { എങ്കിൽ (unlikely (!(ഇത്+coverage).collect_coverage (c->നിവേശം))) തിരികെ; }
 
-  void collect_second_glyphs (hb_set_digest_t *digest) const
-  { (this+coverage).collect_coverage (digest); }
+  ശൂന്യം collect_second_glyphs (hb_set_digest_t *digest) സ്ഥിരം
+  { (ഇത്+coverage).collect_coverage (digest); }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  സ്ഥിരം Coverage &get_coverage () സ്ഥിരം { തിരികെ ഇത്+coverage; }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  തർക്കം apply (hb_ot_apply_context_t *c) സ്ഥിരം
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (ഇത്);
     hb_buffer_t *buffer = c->buffer;
 
-    const EntryExitRecord<Types> &this_record = entryExitRecord[(this+coverage).get_coverage  (buffer->cur().codepoint)];
-    if (!this_record.entryAnchor ||
-	unlikely (!this_record.entryAnchor.sanitize (&c->sanitizer, this))) return_trace (false);
+    സ്ഥിരം EntryExitRecord<Types> &this_record = entryExitRecord[(ഇത്+coverage).get_coverage  (buffer->cur().codepoint)];
+    എങ്കിൽ (!this_record.entryAnchor ||
+	unlikely (!this_record.entryAnchor.sanitize (&c->sanitizer, ഇത്))) return_trace (അസത്യം);
     hb_barrier ();
 
-    auto &skippy_iter = c->iter_input;
+    auto &skippy_iter = c->iter_നിവേശം;
     skippy_iter.reset_fast (buffer->idx);
     unsigned unsafe_from;
-    if (unlikely (!skippy_iter.prev (&unsafe_from)))
+    എങ്കിൽ (unlikely (!skippy_iter.prev (&unsafe_from)))
     {
       buffer->unsafe_to_concat_from_outbuffer (unsafe_from, buffer->idx + 1);
-      return_trace (false);
+      return_trace (അസത്യം);
     }
 
-    const EntryExitRecord<Types> &prev_record = entryExitRecord[(this+coverage).get_coverage  (buffer->info[skippy_iter.idx].codepoint)];
-    if (!prev_record.exitAnchor ||
-	unlikely (!prev_record.exitAnchor.sanitize (&c->sanitizer, this)))
+    സ്ഥിരം EntryExitRecord<Types> &prev_record = entryExitRecord[(ഇത്+coverage).get_coverage  (buffer->info[skippy_iter.idx].codepoint)];
+    എങ്കിൽ (!prev_record.exitAnchor ||
+	unlikely (!prev_record.exitAnchor.sanitize (&c->sanitizer, ഇത്)))
     {
       buffer->unsafe_to_concat_from_outbuffer (skippy_iter.idx, buffer->idx + 1);
-      return_trace (false);
+      return_trace (അസത്യം);
     }
     hb_barrier ();
 
     return_trace (apply_cursive_attachment (c,
-                                            this+prev_record.exitAnchor,
-                                            this+this_record.entryAnchor,
+                                            ഇത്+prev_record.exitAnchor,
+                                            ഇത്+this_record.entryAnchor,
                                             skippy_iter.idx));
   }
 
   template <typename Iterator,
             hb_requires (hb_is_iterator (Iterator))>
-  void serialize (hb_subset_context_t *c,
+  ശൂന്യം serialize (hb_subset_context_t *c,
                   Iterator it,
-                  const struct CursivePosFormat1_2<Types> *src_base)
+                  സ്ഥിരം ഘടന CursivePosFormat1_2<Types> *src_base)
   {
-    if (unlikely (!c->serializer->extend_min ((*this)))) return;
-    this->format = src_base->format;
-    this->entryExitRecord.len = it.len ();
+    എങ്കിൽ (unlikely (!c->serializer->extend_min ((*ഇത്)))) തിരികെ;
+    ഇത്->format = src_base->format;
+    ഇത്->entryExitRecord.len = it.len ();
 
-    for (const EntryExitRecord<Types>& entry_record : + it
+    വേണ്ടി (സ്ഥിരം EntryExitRecord<Types>& entry_record : + it
                                                       | hb_map (hb_second))
       entry_record.subset (c, src_base);
 
@@ -328,24 +328,24 @@ struct CursivePosFormat1_2
     coverage.serialize_serialize (c->serializer, glyphs);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  തർക്കം subset (hb_subset_context_t *c) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (ഇത്);
+    സ്ഥിരം hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+    സ്ഥിരം hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
+    auto *out = c->serializer->start_embed (*ഇത്);
 
     auto it =
-    + hb_zip (this+coverage, entryExitRecord)
+    + hb_zip (ഇത്+coverage, entryExitRecord)
     | hb_filter (glyphset, hb_first)
-    | hb_map_retains_sorting ([&] (hb_pair_t<hb_codepoint_t, const EntryExitRecord<Types>&> p)
-                              -> hb_pair_t<hb_codepoint_t, const EntryExitRecord<Types>&>
-                              { return hb_pair (glyph_map[p.first], p.second);})
+    | hb_map_retains_sorting ([&] (hb_pair_t<hb_codepoint_t, സ്ഥിരം EntryExitRecord<Types>&> p)
+                              -> hb_pair_t<hb_codepoint_t, സ്ഥിരം EntryExitRecord<Types>&>
+                              { തിരികെ hb_pair (glyph_map[p.first], p.second);})
     ;
 
-    bool ret = bool (it);
-    out->serialize (c, it, this);
+    തർക്കം ret = തർക്കം (it);
+    out->serialize (c, it, ഇത്);
     return_trace (ret);
   }
 };

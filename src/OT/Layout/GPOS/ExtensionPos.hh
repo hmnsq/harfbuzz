@@ -1,13 +1,13 @@
 #ifndef OT_LAYOUT_GPOS_EXTENSIONPOS_HH
 #define OT_LAYOUT_GPOS_EXTENSIONPOS_HH
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+നാമാകാശ OT {
+നാമാകാശ Layout {
+നാമാകാശ GPOS_impl {
 
-struct ExtensionPos : Extension<ExtensionPos>
+ഘടന ExtensionPos : Extension<ExtensionPos>
 {
-  typedef struct PosLookupSubTable SubTable;
+  തരനിർവചനം ഘടന PosLookupSubTable SubTable;
 };
 
 }

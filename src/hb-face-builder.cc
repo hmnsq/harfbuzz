@@ -26,64 +26,64 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#അന്തര്ഭാവ "hb.hh"
 
-#include "hb-face.hh"
+#അന്തര്ഭാവ "hb-face.hh"
 
-#include "hb-map.hh"
-#include "hb-open-file.hh"
-#include "hb-serialize.hh"
+#അന്തര്ഭാവ "hb-map.hh"
+#അന്തര്ഭാവ "hb-open-file.hh"
+#അന്തര്ഭാവ "hb-serialize.hh"
 
 
 /*
  * face-builder: A face that has add_table().
  */
 
-struct face_table_info_t
+ഘടന face_table_info_t
 {
   hb_blob_t* data;
   unsigned order;
 };
 
-struct hb_face_builder_data_t
+ഘടന hb_face_builder_data_t
 {
   hb_hashmap_t<hb_tag_t, face_table_info_t> tables;
 };
 
-static int compare_entries (const void* pa, const void* pb)
+സ്ഥിതം പൂർണ്ണസംഖ്യ compare_entries (സ്ഥിരം ശൂന്യം* pa, സ്ഥിരം ശൂന്യം* pb)
 {
-  const auto& a = * (const hb_pair_t<hb_tag_t, face_table_info_t> *) pa;
-  const auto& b = * (const hb_pair_t<hb_tag_t, face_table_info_t> *) pb;
+  സ്ഥിരം auto& a = * (സ്ഥിരം hb_pair_t<hb_tag_t, face_table_info_t> *) pa;
+  സ്ഥിരം auto& b = * (സ്ഥിരം hb_pair_t<hb_tag_t, face_table_info_t> *) pb;
 
   /* Order by blob size first (smallest to largest) and then table tag */
 
-  if (a.second.order != b.second.order)
-    return a.second.order < b.second.order ? -1 : +1;
+  എങ്കിൽ (a.second.order != b.second.order)
+    തിരികെ a.second.order < b.second.order ? -1 : +1;
 
-  if (a.second.data->length != b.second.data->length)
-    return a.second.data->length < b.second.data->length ? -1 : +1;
+  എങ്കിൽ (a.second.data->length != b.second.data->length)
+    തിരികെ a.second.data->length < b.second.data->length ? -1 : +1;
 
-  return a.first < b.first ? -1 : a.first == b.first ? 0 : +1;
+  തിരികെ a.first < b.first ? -1 : a.first == b.first ? 0 : +1;
 }
 
-static hb_face_builder_data_t *
+സ്ഥിതം hb_face_builder_data_t *
 _hb_face_builder_data_create ()
 {
-  hb_face_builder_data_t *data = (hb_face_builder_data_t *) hb_calloc (1, sizeof (hb_face_builder_data_t));
-  if (unlikely (!data))
-    return nullptr;
+  hb_face_builder_data_t *data = (hb_face_builder_data_t *) hb_calloc (1, വലുപ്പം (hb_face_builder_data_t));
+  എങ്കിൽ (unlikely (!data))
+    തിരികെ nullptr;
 
   data->tables.init ();
 
-  return data;
+  തിരികെ data;
 }
 
-static void
-_hb_face_builder_data_destroy (void *user_data)
+സ്ഥിതം ശൂന്യം
+_hb_face_builder_data_destroy (ശൂന്യം *user_data)
 {
   hb_face_builder_data_t *data = (hb_face_builder_data_t *) user_data;
 
-  for (auto info : data->tables.values())
+  വേണ്ടി (auto info : data->tables.values())
     hb_blob_destroy (info.data);
 
   data->tables.fini ();
@@ -91,110 +91,110 @@ _hb_face_builder_data_destroy (void *user_data)
   hb_free (data);
 }
 
-static hb_blob_t *
+സ്ഥിതം hb_blob_t *
 _hb_face_builder_data_reference_blob (hb_face_builder_data_t *data)
 {
 
-  unsigned int table_count = data->tables.get_population ();
-  unsigned int face_length = table_count * 16 + 12;
+  unsigned പൂർണ്ണസംഖ്യ table_എണ്ണം_2 = data->tables.get_population ();
+  unsigned പൂർണ്ണസംഖ്യ face_length = table_എണ്ണം_2 * 16 + 12;
 
-  for (auto info : data->tables.values())
+  വേണ്ടി (auto info : data->tables.values())
     face_length += hb_ceil_to_4 (hb_blob_get_length (info.data));
 
-  char *buf = (char *) hb_malloc (face_length);
-  if (unlikely (!buf))
-    return nullptr;
+  അക്ഷരം *buf = (അക്ഷരം *) hb_malloc (face_length);
+  എങ്കിൽ (unlikely (!buf))
+    തിരികെ nullptr;
 
   hb_serialize_context_t c (buf, face_length);
   c.propagate_error (data->tables);
   OT::OpenTypeFontFile *f = c.start_serialize<OT::OpenTypeFontFile> ();
 
-  bool is_cff = (data->tables.has (HB_TAG ('C','F','F',' '))
+  തർക്കം is_cff = (data->tables.has (HB_TAG ('C','F','F',' '))
                  || data->tables.has (HB_TAG ('C','F','F','2')));
   hb_tag_t sfnt_tag = is_cff ? OT::OpenTypeFontFile::CFFTag : OT::OpenTypeFontFile::TrueTypeTag;
 
   // Sort the tags so that produced face is deterministic.
   hb_vector_t<hb_pair_t <hb_tag_t, face_table_info_t>> sorted_entries;
   data->tables.iter () | hb_sink (sorted_entries);
-  if (unlikely (sorted_entries.in_error ()))
+  എങ്കിൽ (unlikely (sorted_entries.in_error ()))
   {
     hb_free (buf);
-    return nullptr;
+    തിരികെ nullptr;
   }
 
   sorted_entries.qsort (compare_entries);
 
-  bool ret = f->serialize_single (&c,
+  തർക്കം ret = f->serialize_single (&c,
                                   sfnt_tag,
                                   + sorted_entries.iter()
                                   | hb_map ([&] (hb_pair_t<hb_tag_t, face_table_info_t> _) {
-                                    return hb_pair_t<hb_tag_t, hb_blob_t*> (_.first, _.second.data);
+                                    തിരികെ hb_pair_t<hb_tag_t, hb_blob_t*> (_.first, _.second.data);
                                   }));
 
   c.end_serialize ();
 
-  if (unlikely (!ret))
+  എങ്കിൽ (unlikely (!ret))
   {
     hb_free (buf);
-    return nullptr;
+    തിരികെ nullptr;
   }
 
-  return hb_blob_create (buf, face_length, HB_MEMORY_MODE_WRITABLE, buf, hb_free);
+  തിരികെ hb_blob_create (buf, face_length, HB_MEMORY_MODE_WRITABLE, buf, hb_free);
 }
 
-static hb_blob_t *
-_hb_face_builder_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void *user_data)
+സ്ഥിതം hb_blob_t *
+_hb_face_builder_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, ശൂന്യം *user_data)
 {
   hb_face_builder_data_t *data = (hb_face_builder_data_t *) user_data;
 
-  if (!tag)
-    return _hb_face_builder_data_reference_blob (data);
+  എങ്കിൽ (!tag)
+    തിരികെ _hb_face_builder_data_reference_blob (data);
 
-  return hb_blob_reference (data->tables[tag].data);
+  തിരികെ hb_blob_reference (data->tables[tag].data);
 }
 
-static unsigned
-_hb_face_builder_get_table_tags (const hb_face_t *face HB_UNUSED,
-				 unsigned int start_offset,
-				 unsigned int *table_count,
+സ്ഥിതം unsigned
+_hb_face_builder_get_table_tags (സ്ഥിരം hb_face_t *face HB_UNUSED,
+				 unsigned പൂർണ്ണസംഖ്യ start_offset,
+				 unsigned പൂർണ്ണസംഖ്യ *table_എണ്ണം_2,
 				 hb_tag_t *table_tags,
-				 void *user_data)
+				 ശൂന്യം *user_data)
 {
   hb_face_builder_data_t *data = (hb_face_builder_data_t *) user_data;
 
   unsigned population = data->tables.get_population ();
 
-  if (!table_count)
-    return population;
+  എങ്കിൽ (!table_എണ്ണം_2)
+    തിരികെ population;
 
-  if (unlikely (start_offset >= population))
+  എങ്കിൽ (unlikely (start_offset >= population))
   {
-    *table_count = 0;
-    return population;
+    *table_എണ്ണം_2 = 0;
+    തിരികെ population;
   }
 
   // Sort the tags.
   hb_vector_t<hb_tag_t> sorted_tags;
-  data->tables.keys () | hb_sink (sorted_tags);
-  if (unlikely (sorted_tags.in_error ()))
+  data->tables.താക്കോലുകൾ () | hb_sink (sorted_tags);
+  എങ്കിൽ (unlikely (sorted_tags.in_error ()))
   {
     // Not much to do...
   }
-  sorted_tags.qsort ([] (const hb_tag_t &a, const hb_tag_t &b) {
-    return (a > b) - (a < b);
+  sorted_tags.qsort ([] (സ്ഥിരം hb_tag_t &a, സ്ഥിരം hb_tag_t &b) {
+    തിരികെ (a > b) - (a < b);
   });
 
-  auto array = sorted_tags.as_array ().sub_array (start_offset, table_count);
-  if (table_tags)
+  auto array = sorted_tags.as_array ().sub_array (start_offset, table_എണ്ണം_2);
+  എങ്കിൽ (table_tags)
   {
-    auto out = hb_array (table_tags, *table_count);
+    auto out = hb_array (table_tags, *table_എണ്ണം_2);
 
     + array.iter ()
     | hb_sink (out)
     ;
   }
 
-  return population;
+  തിരികെ population;
 }
 
 
@@ -213,7 +213,7 @@ hb_face_t *
 hb_face_builder_create ()
 {
   hb_face_builder_data_t *data = _hb_face_builder_data_create ();
-  if (unlikely (!data)) return hb_face_get_empty ();
+  എങ്കിൽ (unlikely (!data)) തിരികെ hb_face_get_empty ();
 
   hb_face_t *face = hb_face_create_for_tables (_hb_face_builder_reference_table,
 					       data,
@@ -224,7 +224,7 @@ hb_face_builder_create ()
 				   data,
 				   nullptr);
 
-  return face;
+  തിരികെ face;
 }
 
 /**
@@ -241,23 +241,23 @@ hb_face_builder_create ()
 hb_bool_t
 hb_face_builder_add_table (hb_face_t *face, hb_tag_t tag, hb_blob_t *blob)
 {
-  if (unlikely (face->destroy != (hb_destroy_func_t) _hb_face_builder_data_destroy))
-    return false;
+  എങ്കിൽ (unlikely (face->destroy != (hb_destroy_func_t) _hb_face_builder_data_destroy))
+    തിരികെ അസത്യം;
 
-  if (tag == HB_MAP_VALUE_INVALID)
-    return false;
+  എങ്കിൽ (tag == HB_MAP_മൂല്യം_INVALID)
+    തിരികെ അസത്യം;
 
   hb_face_builder_data_t *data = (hb_face_builder_data_t *) face->user_data;
 
   hb_blob_t* previous = data->tables.get (tag).data;
-  if (!data->tables.set (tag, face_table_info_t {hb_blob_reference (blob), (unsigned) -1}))
+  എങ്കിൽ (!data->tables.set (tag, face_table_info_t {hb_blob_reference (blob), (unsigned) -1}))
   {
     hb_blob_destroy (blob);
-    return false;
+    തിരികെ അസത്യം;
   }
 
   hb_blob_destroy (previous);
-  return true;
+  തിരികെ സത്യം;
 }
 
 /**
@@ -272,26 +272,26 @@ hb_face_builder_add_table (hb_face_t *face, hb_tag_t tag, hb_blob_t *blob)
  *
  * Since: 5.3.0
  **/
-void
+ശൂന്യം
 hb_face_builder_sort_tables (hb_face_t *face,
-                             const hb_tag_t  *tags)
+                             സ്ഥിരം hb_tag_t  *tags)
 {
-  if (unlikely (face->destroy != (hb_destroy_func_t) _hb_face_builder_data_destroy))
-    return;
+  എങ്കിൽ (unlikely (face->destroy != (hb_destroy_func_t) _hb_face_builder_data_destroy))
+    തിരികെ;
 
   hb_face_builder_data_t *data = (hb_face_builder_data_t *) face->user_data;
 
   // Sort all unspecified tables after any specified tables.
-  for (auto& info : data->tables.values_ref())
+  വേണ്ടി (auto& info : data->tables.മൂല്യങ്ങൾ_ref())
     info.order = (unsigned) -1;
 
   signed order = 0;
-  for (const hb_tag_t* tag = tags;
+  വേണ്ടി (സ്ഥിരം hb_tag_t* tag = tags;
        *tag;
        tag++)
   {
     face_table_info_t* info;
-    if (!data->tables.has (*tag, &info)) continue;
+    എങ്കിൽ (!data->tables.has (*tag, &info)) തുടരുക;
     info->order = order++;
   }
 }

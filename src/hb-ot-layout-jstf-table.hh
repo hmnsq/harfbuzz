@@ -27,50 +27,50 @@
 #ifndef HB_OT_LAYOUT_JSTF_TABLE_HH
 #define HB_OT_LAYOUT_JSTF_TABLE_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-layout-gpos-table.hh"
+#അന്തര്ഭാവ "hb-open-type.hh"
+#അന്തര്ഭാവ "hb-ot-layout-gpos-table.hh"
 
 
-namespace OT {
+നാമാകാശ OT {
 
 
 /*
  * JstfModList -- Justification Modification List Tables
  */
 
-typedef IndexArray JstfModList;
+തരനിർവചനം IndexArray JstfModList;
 
 
 /*
  * JstfMax -- Justification Maximum Table
  */
 
-typedef List16OfOffset16To<PosLookup> JstfMax;
+തരനിർവചനം List16OfOffset16To<PosLookup> JstfMax;
 
 
 /*
  * JstfPriority -- Justification Priority Table
  */
 
-struct JstfPriority
+ഘടന JstfPriority
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  shrinkageEnableGSUB.sanitize (c, this) &&
-		  shrinkageDisableGSUB.sanitize (c, this) &&
-		  shrinkageEnableGPOS.sanitize (c, this) &&
-		  shrinkageDisableGPOS.sanitize (c, this) &&
-		  shrinkageJstfMax.sanitize (c, this) &&
-		  extensionEnableGSUB.sanitize (c, this) &&
-		  extensionDisableGSUB.sanitize (c, this) &&
-		  extensionEnableGPOS.sanitize (c, this) &&
-		  extensionDisableGPOS.sanitize (c, this) &&
-		  extensionJstfMax.sanitize (c, this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) &&
+		  shrinkageEnableGSUB.sanitize (c, ഇത്) &&
+		  shrinkageDisableGSUB.sanitize (c, ഇത്) &&
+		  shrinkageEnableGPOS.sanitize (c, ഇത്) &&
+		  shrinkageDisableGPOS.sanitize (c, ഇത്) &&
+		  shrinkageJstfMax.sanitize (c, ഇത്) &&
+		  extensionEnableGSUB.sanitize (c, ഇത്) &&
+		  extensionDisableGSUB.sanitize (c, ഇത്) &&
+		  extensionEnableGPOS.sanitize (c, ഇത്) &&
+		  extensionDisableGPOS.sanitize (c, ഇത്) &&
+		  extensionJstfMax.sanitize (c, ഇത്));
   }
 
-  protected:
+  സംരക്ഷിത:
   Offset16To<JstfModList>
 		shrinkageEnableGSUB;	/* Offset to Shrinkage Enable GSUB
 					 * JstfModList table--from beginning of
@@ -112,7 +112,7 @@ struct JstfPriority
 					 * from beginning of JstfPriority table
 					 * --may be NULL */
 
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (20);
 };
 
@@ -121,12 +121,12 @@ struct JstfPriority
  * JstfLangSys -- Justification Language System Table
  */
 
-struct JstfLangSys : List16OfOffset16To<JstfPriority>
+ഘടന JstfLangSys : List16OfOffset16To<JstfPriority>
 {
-  bool sanitize (hb_sanitize_context_t *c,
-		 const Record_sanitize_closure_t * = nullptr) const
+  തർക്കം sanitize (hb_sanitize_context_t *c,
+		 സ്ഥിരം Record_sanitize_closure_t * = nullptr) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ഇത്);
     return_trace (List16OfOffset16To<JstfPriority>::sanitize (c));
   }
 };
@@ -145,37 +145,37 @@ using ExtenderGlyphs = SortedArray16Of<typename Types::HBGlyphID>;
  */
 
 template <typename Types>
-struct JstfScript
+ഘടന JstfScript
 {
-  unsigned int get_lang_sys_count () const
-  { return langSys.len; }
-  const Tag& get_lang_sys_tag (unsigned int i) const
-  { return langSys.get_tag (i); }
-  unsigned int get_lang_sys_tags (unsigned int start_offset,
-				  unsigned int *lang_sys_count /* IN/OUT */,
-				  hb_tag_t     *lang_sys_tags /* OUT */) const
-  { return langSys.get_tags (start_offset, lang_sys_count, lang_sys_tags); }
-  const JstfLangSys& get_lang_sys (unsigned int i) const
+  unsigned പൂർണ്ണസംഖ്യ get_lang_sys_എണ്ണം () സ്ഥിരം
+  { തിരികെ langSys.len; }
+  സ്ഥിരം Tag& get_lang_sys_tag (unsigned പൂർണ്ണസംഖ്യ i) സ്ഥിരം
+  { തിരികെ langSys.get_tag (i); }
+  unsigned പൂർണ്ണസംഖ്യ get_lang_sys_tags (unsigned പൂർണ്ണസംഖ്യ start_offset,
+				  unsigned പൂർണ്ണസംഖ്യ *lang_sys_എണ്ണം /* IN/OUT */,
+				  hb_tag_t     *lang_sys_tags /* OUT */) സ്ഥിരം
+  { തിരികെ langSys.get_tags (start_offset, lang_sys_എണ്ണം, lang_sys_tags); }
+  സ്ഥിരം JstfLangSys& get_lang_sys (unsigned പൂർണ്ണസംഖ്യ i) സ്ഥിരം
   {
-    if (i == Index::NOT_FOUND_INDEX) return get_default_lang_sys ();
-    return this+langSys[i].offset;
+    എങ്കിൽ (i == Index::NOT_FOUND_INDEX) തിരികെ get_default_lang_sys ();
+    തിരികെ ഇത്+langSys[i].offset;
   }
-  bool find_lang_sys_index (hb_tag_t tag, unsigned int *index) const
-  { return langSys.find_index (tag, index); }
+  തർക്കം find_lang_sys_index (hb_tag_t tag, unsigned പൂർണ്ണസംഖ്യ *index) സ്ഥിരം
+  { തിരികെ langSys.find_index (tag, index); }
 
-  bool has_default_lang_sys () const               { return defaultLangSys != 0; }
-  const JstfLangSys& get_default_lang_sys () const { return this+defaultLangSys; }
+  തർക്കം has_default_lang_sys () സ്ഥിരം               { തിരികെ defaultLangSys != 0; }
+  സ്ഥിരം JstfLangSys& get_default_lang_sys () സ്ഥിരം { തിരികെ ഇത്+defaultLangSys; }
 
-  bool sanitize (hb_sanitize_context_t *c,
-		 const Record_sanitize_closure_t * = nullptr) const
+  തർക്കം sanitize (hb_sanitize_context_t *c,
+		 സ്ഥിരം Record_sanitize_closure_t * = nullptr) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (extenderGlyphs.sanitize (c, this) &&
-		  defaultLangSys.sanitize (c, this) &&
-		  langSys.sanitize (c, this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (extenderGlyphs.sanitize (c, ഇത്) &&
+		  defaultLangSys.sanitize (c, ഇത്) &&
+		  langSys.sanitize (c, ഇത്));
   }
 
-  protected:
+  സംരക്ഷിത:
   typename Types::template LOffsetTo<ExtenderGlyphs<Types>>
 		extenderGlyphs;	/* Offset to ExtenderGlyph table--from beginning
 				 * of JstfScript table-may be NULL */
@@ -185,53 +185,53 @@ struct JstfScript
   RecordArrayOf<JstfLangSys>
 		langSys;	/* Array of JstfLangSysRecords--listed
 				 * alphabetically by LangSysTag */
-  public:
+  പൊതു:
   DEFINE_SIZE_ARRAY (2 * Types::LOffset::static_size + 2, langSys);
 };
 
 template <typename Types>
-struct JstfScriptRecord
+ഘടന JstfScriptRecord
 {
-  int cmp (hb_tag_t a) const { return tag.cmp (a); }
+  പൂർണ്ണസംഖ്യ cmp (hb_tag_t a) സ്ഥിരം { തിരികെ tag.cmp (a); }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  തർക്കം sanitize (hb_sanitize_context_t *c, സ്ഥിരം ശൂന്യം *base) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    const Record_sanitize_closure_t closure = {tag, base};
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ഇത്);
+    സ്ഥിരം Record_sanitize_closure_t closure = {tag, base};
+    return_trace (c->check_struct (ഇത്) &&
 		  offset.sanitize (c, base, &closure));
   }
 
   Tag		tag;		/* 4-byte JstfScript identification tag */
   typename Types::template LOffsetTo<JstfScript<Types>>
 		offset;		/* Offset from beginning of JSTF header */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (4 + Types::LOffset::static_size);
 };
 
 template <typename Types>
-struct JstfScriptList : SortedArray16Of<JstfScriptRecord<Types>>
+ഘടന JstfScriptList : SortedArray16Of<JstfScriptRecord<Types>>
 {
-  const Tag& get_tag (unsigned int i) const
-  { return (*this)[i].tag; }
-  unsigned int get_tags (unsigned int start_offset,
-			 unsigned int *script_count /* IN/OUT */,
-			 hb_tag_t     *script_tags /* OUT */) const
+  സ്ഥിരം Tag& get_tag (unsigned പൂർണ്ണസംഖ്യ i) സ്ഥിരം
+  { തിരികെ (*ഇത്)[i].tag; }
+  unsigned പൂർണ്ണസംഖ്യ get_tags (unsigned പൂർണ്ണസംഖ്യ start_offset,
+			 unsigned പൂർണ്ണസംഖ്യ *script_എണ്ണം /* IN/OUT */,
+			 hb_tag_t     *script_tags /* OUT */) സ്ഥിരം
   {
-    if (script_count)
+    എങ്കിൽ (script_എണ്ണം)
     {
-      + this->as_array ().sub_array (start_offset, script_count)
+      + ഇത്->as_array ().sub_array (start_offset, script_എണ്ണം)
       | hb_map (&JstfScriptRecord<Types>::tag)
-      | hb_sink (hb_array (script_tags, *script_count))
+      | hb_sink (hb_array (script_tags, *script_എണ്ണം))
       ;
     }
-    return this->len;
+    തിരികെ ഇത്->len;
   }
-  const JstfScript<Types>& get_script (const void *base, unsigned int i) const
-  { return base+(*this)[i].offset; }
-  bool find_index (hb_tag_t tag, unsigned int *index) const
+  സ്ഥിരം JstfScript<Types>& get_script (സ്ഥിരം ശൂന്യം *base, unsigned പൂർണ്ണസംഖ്യ i) സ്ഥിരം
+  { തിരികെ base+(*ഇത്)[i].offset; }
+  തർക്കം find_index (hb_tag_t tag, unsigned പൂർണ്ണസംഖ്യ *index) സ്ഥിരം
   {
-    return this->bfind (tag, index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
+    തിരികെ ഇത്->bfind (tag, index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
   }
 };
 
@@ -241,68 +241,68 @@ struct JstfScriptList : SortedArray16Of<JstfScriptRecord<Types>>
  * https://docs.microsoft.com/en-us/typography/opentype/spec/jstf
  */
 
-struct JSTF
+ഘടന JSTF
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_JSTF;
+  സ്ഥിതം constexpr hb_tag_t tableTag = HB_OT_TAG_JSTF;
 
-  unsigned int get_script_count () const
+  unsigned പൂർണ്ണസംഖ്യ get_script_എണ്ണം () സ്ഥിരം
   {
 #ifndef HB_NO_BEYOND_64K
-    if (has_script_list2 ()) return get_script_list2 ().len;
+    എങ്കിൽ (has_script_list2 ()) തിരികെ get_script_list2 ().len;
 #endif
-    return scriptList.len;
+    തിരികെ scriptList.len;
   }
-  const Tag& get_script_tag (unsigned int i) const
+  സ്ഥിരം Tag& get_script_tag (unsigned പൂർണ്ണസംഖ്യ i) സ്ഥിരം
   {
 #ifndef HB_NO_BEYOND_64K
-    if (has_script_list2 ()) return get_script_list2 ().get_tag (i);
+    എങ്കിൽ (has_script_list2 ()) തിരികെ get_script_list2 ().get_tag (i);
 #endif
-    return scriptList.get_tag (i);
+    തിരികെ scriptList.get_tag (i);
   }
-  unsigned int get_script_tags (unsigned int start_offset,
-				unsigned int *script_count /* IN/OUT */,
-				hb_tag_t     *script_tags /* OUT */) const
+  unsigned പൂർണ്ണസംഖ്യ get_script_tags (unsigned പൂർണ്ണസംഖ്യ start_offset,
+				unsigned പൂർണ്ണസംഖ്യ *script_എണ്ണം /* IN/OUT */,
+				hb_tag_t     *script_tags /* OUT */) സ്ഥിരം
   {
 #ifndef HB_NO_BEYOND_64K
-    if (has_script_list2 ())
-      return get_script_list2 ().get_tags (start_offset, script_count, script_tags);
+    എങ്കിൽ (has_script_list2 ())
+      തിരികെ get_script_list2 ().get_tags (start_offset, script_എണ്ണം, script_tags);
 #endif
-    return scriptList.get_tags (start_offset, script_count, script_tags);
+    തിരികെ scriptList.get_tags (start_offset, script_എണ്ണം, script_tags);
   }
   template <typename Types>
-  const JstfScript<Types>& get_script (unsigned int i) const;
-  bool find_script_index (hb_tag_t tag, unsigned int *index) const
+  സ്ഥിരം JstfScript<Types>& get_script (unsigned പൂർണ്ണസംഖ്യ i) സ്ഥിരം;
+  തർക്കം find_script_index (hb_tag_t tag, unsigned പൂർണ്ണസംഖ്യ *index) സ്ഥിരം
   {
 #ifndef HB_NO_BEYOND_64K
-    if (has_script_list2 ()) return get_script_list2 ().find_index (tag, index);
+    എങ്കിൽ (has_script_list2 ()) തിരികെ get_script_list2 ().find_index (tag, index);
 #endif
-    return scriptList.find_index (tag, index);
+    തിരികെ scriptList.find_index (tag, index);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!version.sanitize (c) ||
+    TRACE_SANITIZE (ഇത്);
+    എങ്കിൽ (unlikely (!version.sanitize (c) ||
 		  !hb_barrier () ||
 		  version.major != 1 ||
-		  !scriptList.sanitize (c, this)))
-      return_trace (false);
+		  !scriptList.sanitize (c, ഇത്)))
+      return_trace (അസത്യം);
 #ifndef HB_NO_BEYOND_64K
-    if (unlikely (version.minor >= 1 && !get_script_list2 ().sanitize (c, this)))
-      return_trace (false);
+    എങ്കിൽ (unlikely (version.minor >= 1 && !get_script_list2 ().sanitize (c, ഇത്)))
+      return_trace (അസത്യം);
 #endif
-    return_trace (true);
+    return_trace (സത്യം);
   }
 
-  private:
+  സ്വകാര്യ:
 #ifndef HB_NO_BEYOND_64K
-  bool has_script_list2 () const
-  { return version.minor >= 1 && get_script_list2 ().len; }
-  const JstfScriptList<Layout::MediumTypes>& get_script_list2 () const
-  { return StructAfter<JstfScriptList<Layout::MediumTypes>> (scriptList); }
+  തർക്കം has_script_list2 () സ്ഥിരം
+  { തിരികെ version.minor >= 1 && get_script_list2 ().len; }
+  സ്ഥിരം JstfScriptList<Layout::MediumTypes>& get_script_list2 () സ്ഥിരം
+  { തിരികെ StructAfter<JstfScriptList<Layout::MediumTypes>> (scriptList); }
 #endif
 
-  protected:
+  സംരക്ഷിത:
   FixedVersion<>version;	/* Version of the JSTF table--initially set
 				 * to 0x00010000u */
   JstfScriptList<Layout::SmallTypes>
@@ -314,20 +314,20 @@ struct JSTF
 				 * alphabetically by ScriptTag.
 				 * Present only if minorVersion is 1 or greater. */
 #endif
-  public:
+  പൊതു:
   DEFINE_SIZE_ARRAY (6, scriptList);
 };
 
 template <>
-inline const JstfScript<Layout::SmallTypes>&
-JSTF::get_script<Layout::SmallTypes> (unsigned int i) const
-{ return scriptList.get_script (this, i); }
+വരിയിൽ സ്ഥിരം JstfScript<Layout::SmallTypes>&
+JSTF::get_script<Layout::SmallTypes> (unsigned പൂർണ്ണസംഖ്യ i) സ്ഥിരം
+{ തിരികെ scriptList.get_script (ഇത്, i); }
 
 #ifndef HB_NO_BEYOND_64K
 template <>
-inline const JstfScript<Layout::MediumTypes>&
-JSTF::get_script<Layout::MediumTypes> (unsigned int i) const
-{ return get_script_list2 ().get_script (this, i); }
+വരിയിൽ സ്ഥിരം JstfScript<Layout::MediumTypes>&
+JSTF::get_script<Layout::MediumTypes> (unsigned പൂർണ്ണസംഖ്യ i) സ്ഥിരം
+{ തിരികെ get_script_list2 ().get_script (ഇത്, i); }
 #endif
 
 

@@ -39,26 +39,26 @@
 /* First we measure, then we cut. */
 #ifndef OT_MEASURE
 #define OT_MEASURE
-#define OT_TABLE_START			static const struct TABLE_NAME {
+#define OT_TABLE_START			സ്ഥിതം സ്ഥിരം ഘടന TABLE_NAME {
 #define OT_TABLE_END			}
-#define OT_LABEL_START(Name)		unsigned char Name[
+#define OT_LABEL_START(Name)		unsigned അക്ഷരം Name[
 #define OT_LABEL_END			];
 #define OT_UINT8(u8)			+1/*byte*/
 #define OT_UINT16(u16)			+2/*bytes*/
-#else
+#അല്ലെങ്കിൽ
 #undef  OT_MEASURE
 #define OT_TABLE_START			TABLE_NAME = {
 #define OT_TABLE_END			};
 #define OT_LABEL_START(Name)		{
 #define OT_LABEL_END			},
 #define OT_UINT8(u8)			(u8),
-#define OT_UINT16(u16)			(unsigned char)((u16)>>8), (unsigned char)((u16)&0xFFu),
-#define OT_COUNT(Name, ItemSize)	((unsigned int) sizeof(((struct TABLE_NAME*)0)->Name) \
-					 / (unsigned int)(ItemSize) \
+#define OT_UINT16(u16)			(unsigned അക്ഷരം)((u16)>>8), (unsigned അക്ഷരം)((u16)&0xFFu),
+#define OT_എണ്ണം(Name, ItemSize)	((unsigned പൂർണ്ണസംഖ്യ) വലുപ്പം(((ഘടന TABLE_NAME*)0)->Name) \
+					 / (unsigned പൂർണ്ണസംഖ്യ)(ItemSize) \
 					 /* OT_ASSERT it's divisible (and positive). */)
-#define OT_DISTANCE(From,To)		((unsigned int) \
-					 ((char*)(&((struct TABLE_NAME*)0)->To) - \
-					  (char*)(&((struct TABLE_NAME*)0)->From)) \
+#define OT_DISTANCE(From,To)		((unsigned പൂർണ്ണസംഖ്യ) \
+					 ((അക്ഷരം*)(&((ഘടന TABLE_NAME*)0)->To) - \
+					  (അക്ഷരം*)(&((ഘടന TABLE_NAME*)0)->From)) \
 					 /* OT_ASSERT it's positive. */)
 #endif
 
@@ -90,18 +90,18 @@
 /* Shorthand. */
 #define G	OT_GLYPHID
 
-#define OT_UARRAY(Name, Items) \
+#define OT_UARRAY(Name, ഇനങ്ങൾ_2) \
 	OT_LABEL_START(Name) \
-	OT_UINT16(OT_COUNT(Name##Data, 2)) \
+	OT_UINT16(OT_എണ്ണം(Name##Data, 2)) \
 	OT_LABEL(Name##Data) \
-	Items \
+	ഇനങ്ങൾ_2 \
 	OT_LABEL_END
 
-#define OT_UHEADLESSARRAY(Name, Items) \
+#define OT_UHEADLESSARRAY(Name, ഇനങ്ങൾ_2) \
 	OT_LABEL_START(Name) \
-	OT_UINT16(OT_COUNT(Name##Data, 2) + 1) \
+	OT_UINT16(OT_എണ്ണം(Name##Data, 2) + 1) \
 	OT_LABEL(Name##Data) \
-	Items \
+	ഇനങ്ങൾ_2 \
 	OT_LABEL_END
 
 
@@ -118,16 +118,16 @@
 	OT_LABEL_END \
 	OT_UARRAY(Name##SubLookupOffsetsArray, OT_LIST(SubLookupOffsets))
 
-#define OT_SUBLOOKUP(Name, SubFormat, Items) \
+#define OT_SUBLOOKUP(Name, SubFormat, ഇനങ്ങൾ_2) \
 	OT_LABEL_START(Name) \
 	OT_UINT16(SubFormat) \
-	Items
+	ഇനങ്ങൾ_2
 
-#define OT_COVERAGE1(Name, Items) \
+#define OT_COVERAGE1(Name, ഇനങ്ങൾ_2) \
 	OT_LABEL_START(Name) \
 	OT_UINT16(1) \
 	OT_LABEL_END \
-	OT_UARRAY(Name##Glyphs, OT_LIST(Items))
+	OT_UARRAY(Name##Glyphs, OT_LIST(ഇനങ്ങൾ_2))
 
 
 /*
@@ -174,11 +174,11 @@
 #define TABLE_NAME arabic_win1256_gsub_lookups
 
 /* Table manifest. */
-#define MANIFEST(Items) \
+#define MANIFEST(ഇനങ്ങൾ_2) \
 	OT_LABEL_START(manifest) \
-	OT_UINT16(OT_COUNT(manifestData, 6)) \
+	OT_UINT16(OT_എണ്ണം(manifestData, 6)) \
 	OT_LABEL(manifestData) \
-	Items \
+	ഇനങ്ങൾ_2 \
 	OT_LABEL_END
 
 #define MANIFEST_LOOKUP(Tag, Name) \
@@ -310,7 +310,7 @@ OT_TABLE_END
 #undef OT_LABEL_END
 #undef OT_UINT8
 #undef OT_UINT16
-#undef OT_COUNT
+#undef OT_എണ്ണം
 #undef OT_DISTANCE
 
 #undef OT_LABEL
@@ -338,11 +338,11 @@ OT_TABLE_END
 /*
  * Include a second time to get the table data...
  */
-#if 0
-#include "hb.hh" /* Make check-includes.sh happy. */
+#എങ്കിൽ 0
+#അന്തര്ഭാവ "hb.hh" /* Make check-includes.sh happy. */
 #endif
 #ifdef OT_MEASURE
-#include "hb-ot-shaper-arabic-win1256.hh"
+#അന്തര്ഭാവ "hb-ot-shaper-arabic-win1256.hh"
 #endif
 
 #define HB_OT_SHAPER_ARABIC_WIN1256_HH

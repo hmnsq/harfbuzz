@@ -27,7 +27,7 @@
 #ifndef HB_CACHE_HH
 #define HB_CACHE_HH
 
-#include "hb.hh"
+#അന്തര്ഭാവ "hb.hh"
 
 
 /* Implements a lockfree and thread-safe cache for int->int functions,
@@ -57,64 +57,64 @@
  * arithmetic operations and a single memory access.
  */
 
-template <unsigned int key_bits=16,
-	 unsigned int value_bits=8 + 32 - key_bits,
-	 unsigned int cache_bits=8,
-	 bool thread_safe=true>
-struct hb_cache_t
+template <unsigned പൂർണ്ണസംഖ്യ താക്കോൽ_bits=16,
+	 unsigned പൂർണ്ണസംഖ്യ മൂല്യം_bits=8 + 32 - താക്കോൽ_bits,
+	 unsigned പൂർണ്ണസംഖ്യ cache_bits=8,
+	 തർക്കം thread_safe=സത്യം>
+ഘടന hb_cache_t
 {
   using item_t = typename std::conditional<thread_safe,
-					   typename std::conditional<key_bits + value_bits - cache_bits <= 8,
-								     hb_atomic_t<unsigned char>,
-								     typename std::conditional<key_bits + value_bits - cache_bits <= 16,
+					   typename std::conditional<താക്കോൽ_bits + മൂല്യം_bits - cache_bits <= 8,
+								     hb_atomic_t<unsigned അക്ഷരം>,
+								     typename std::conditional<താക്കോൽ_bits + മൂല്യം_bits - cache_bits <= 16,
 											       hb_atomic_t<unsigned short>,
-											       hb_atomic_t<unsigned int>>::type>::type,
-					   typename std::conditional<key_bits + value_bits - cache_bits <= 8,
-								     unsigned char,
-								     typename std::conditional<key_bits + value_bits - cache_bits <= 16,
+											       hb_atomic_t<unsigned പൂർണ്ണസംഖ്യ>>::type>::type,
+					   typename std::conditional<താക്കോൽ_bits + മൂല്യം_bits - cache_bits <= 8,
+								     unsigned അക്ഷരം,
+								     typename std::conditional<താക്കോൽ_bits + മൂല്യം_bits - cache_bits <= 16,
 											       unsigned short,
-											       unsigned int>::type>::type
+											       unsigned പൂർണ്ണസംഖ്യ>::type>::type
 					  >::type;
 
-  static_assert ((key_bits >= cache_bits), "");
-  static_assert ((key_bits + value_bits <= cache_bits + 8 * sizeof (item_t)), "");
+  static_assert ((താക്കോൽ_bits >= cache_bits), "");
+  static_assert ((താക്കോൽ_bits + മൂല്യം_bits <= cache_bits + 8 * വലുപ്പം (item_t)), "");
 
-  static constexpr unsigned MAX_VALUE = (1u << value_bits) - 1;
+  സ്ഥിതം constexpr unsigned MAX_മൂല്യം = (1u << മൂല്യം_bits) - 1;
 
   hb_cache_t () { clear (); }
 
-  void clear ()
+  ശൂന്യം clear ()
   {
-    for (auto &v : values)
+    വേണ്ടി (auto &v : values)
       v = -1;
   }
 
   HB_HOT
-  bool get (unsigned int key, unsigned int *value) const
+  തർക്കം get (unsigned പൂർണ്ണസംഖ്യ key, unsigned പൂർണ്ണസംഖ്യ *value) സ്ഥിരം
   {
-    unsigned int k = key & ((1u<<cache_bits)-1);
-    unsigned int v = values[k];
-    constexpr unsigned int empty = (1ULL << (8 * sizeof (item_t))) - 1;
+    unsigned പൂർണ്ണസംഖ്യ k = key & ((1u<<cache_bits)-1);
+    unsigned പൂർണ്ണസംഖ്യ v = values[k];
+    constexpr unsigned പൂർണ്ണസംഖ്യ empty = (1ULL << (8 * വലുപ്പം (item_t))) - 1;
     /* Combine overflow, tag mismatch, and empty checks into one branch. */
-    if ((key >> key_bits) |
-	((v >> value_bits) ^ (key >> cache_bits)) |
-	((key_bits + value_bits - cache_bits == 8 * sizeof (item_t)) && (v == empty)))
-      return false;
-    *value = v & ((1u<<value_bits)-1);
-    return true;
+    എങ്കിൽ ((key >> താക്കോൽ_bits) |
+	((v >> മൂല്യം_bits) ^ (key >> cache_bits)) |
+	((താക്കോൽ_bits + മൂല്യം_bits - cache_bits == 8 * വലുപ്പം (item_t)) && (v == empty)))
+      തിരികെ അസത്യം;
+    *value = v & ((1u<<മൂല്യം_bits)-1);
+    തിരികെ സത്യം;
   }
 
   HB_HOT
-  void set (unsigned int key, unsigned int value)
+  ശൂന്യം set (unsigned പൂർണ്ണസംഖ്യ key, unsigned പൂർണ്ണസംഖ്യ value)
   {
-    if (unlikely ((key >> key_bits) || (value >> value_bits)))
-      return; /* Overflows */
-    unsigned int k = key & ((1u<<cache_bits)-1);
-    unsigned int v = ((key>>cache_bits)<<value_bits) | value;
+    എങ്കിൽ (unlikely ((key >> താക്കോൽ_bits) || (value >> മൂല്യം_bits)))
+      തിരികെ; /* Overflows */
+    unsigned പൂർണ്ണസംഖ്യ k = key & ((1u<<cache_bits)-1);
+    unsigned പൂർണ്ണസംഖ്യ v = ((key>>cache_bits)<<മൂല്യം_bits) | value;
     values[k] = v;
   }
 
-  private:
+  സ്വകാര്യ:
   item_t values[1u<<cache_bits];
 };
 

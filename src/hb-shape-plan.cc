@@ -24,11 +24,11 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
-#include "hb-shape-plan.hh"
-#include "hb-shaper.hh"
-#include "hb-font.hh"
-#include "hb-buffer.hh"
+#അന്തര്ഭാവ "hb.hh"
+#അന്തര്ഭാവ "hb-shape-plan.hh"
+#അന്തര്ഭാവ "hb-shaper.hh"
+#അന്തര്ഭാവ "hb-font.hh"
+#അന്തര്ഭാവ "hb-buffer.hh"
 
 
 #ifndef HB_NO_SHAPER
@@ -53,14 +53,14 @@
  **/
 
 #ifdef HAVE_HARFRUST
-extern "C" void _hb_harfrust_shape_plan_destroy_rs (void *data);
+ബാഹ്യ "C" ശൂന്യം _hb_harfrust_shape_plan_destroy_rs (ശൂന്യം *data);
 #endif
 
 hb_shape_plan_t::~hb_shape_plan_t ()
 {
 #ifdef HAVE_HARFRUST
-  void *data = harfrust_data.get_relaxed ();
-  if (data)
+  ശൂന്യം *data = harfrust_data.get_relaxed ();
+  എങ്കിൽ (data)
     _hb_harfrust_shape_plan_destroy_rs (data);
 #endif
   key.fini ();
@@ -71,40 +71,40 @@ hb_shape_plan_t::~hb_shape_plan_t ()
  * hb_shape_plan_key_t
  */
 
-bool
-hb_shape_plan_key_t::init (bool                           copy,
+തർക്കം
+hb_shape_plan_താക്കോൽ_t::init (തർക്കം                           copy,
 			   hb_face_t                     *face,
-			   const hb_segment_properties_t *props,
-			   const hb_feature_t            *user_features,
-			   unsigned int                   num_user_features,
-			   const int                     *coords,
-			   unsigned int                   num_coords,
-			   const char * const            *shaper_list)
+			   സ്ഥിരം hb_segment_properties_t *props,
+			   സ്ഥിരം hb_feature_t            *user_features,
+			   unsigned പൂർണ്ണസംഖ്യ                   അക്കം_user_features,
+			   സ്ഥിരം പൂർണ്ണസംഖ്യ                     *coords,
+			   unsigned പൂർണ്ണസംഖ്യ                   അക്കം_coords,
+			   സ്ഥിരം അക്ഷരം * സ്ഥിരം            *shaper_list)
 {
   hb_feature_t *features = nullptr;
-  if (copy && num_user_features && !(features = (hb_feature_t *) hb_calloc (num_user_features, sizeof (hb_feature_t))))
-    goto bail;
+  എങ്കിൽ (copy && അക്കം_user_features && !(features = (hb_feature_t *) hb_calloc (അക്കം_user_features, വലുപ്പം (hb_feature_t))))
+    പോകുക bail;
 
-  this->props = *props;
-  this->num_user_features = num_user_features;
-  this->user_features = copy ? features : user_features;
-  if (copy && num_user_features)
+  ഇത്->props = *props;
+  ഇത്->അക്കം_user_features = അക്കം_user_features;
+  ഇത്->user_features = copy ? features : user_features;
+  എങ്കിൽ (copy && അക്കം_user_features)
   {
-    hb_memcpy (features, user_features, num_user_features * sizeof (hb_feature_t));
+    hb_memcpy (features, user_features, അക്കം_user_features * വലുപ്പം (hb_feature_t));
     /* Make start/end uniform to easier catch bugs. */
-    for (unsigned int i = 0; i < num_user_features; i++)
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < അക്കം_user_features; i++)
     {
-      if (features[0].start != HB_FEATURE_GLOBAL_START)
+      എങ്കിൽ (features[0].start != HB_FEATURE_GLOBAL_START)
 	features[0].start = 1;
-      if (features[0].end   != HB_FEATURE_GLOBAL_END)
+      എങ്കിൽ (features[0].end   != HB_FEATURE_GLOBAL_END)
 	features[0].end   = 2;
     }
   }
-  this->shaper_func = nullptr;
-  this->shaper_name = nullptr;
+  ഇത്->shaper_func = nullptr;
+  ഇത്->shaper_name = nullptr;
 #ifndef HB_NO_OT_SHAPE
-  if (unlikely (!this->ot.init (face, coords, num_coords)))
-    goto bail;
+  എങ്കിൽ (unlikely (!ഇത്->ot.init (face, coords, അക്കം_coords)))
+    പോകുക bail;
 #endif
 
   /*
@@ -113,75 +113,75 @@ hb_shape_plan_key_t::init (bool                           copy,
 
 #define HB_SHAPER_PLAN(shaper) \
 	HB_STMT_START { \
-	  if (face->data.shaper) \
+	  എങ്കിൽ (face->data.shaper) \
 	  { \
-	    this->shaper_func = _hb_##shaper##_shape; \
-	    this->shaper_name = #shaper; \
-	    return true; \
+	    ഇത്->shaper_func = _hb_##shaper##_shape; \
+	    ഇത്->shaper_name = #shaper; \
+	    തിരികെ സത്യം; \
 	  } \
 	} HB_STMT_END
 
-  if (unlikely (shaper_list))
+  എങ്കിൽ (unlikely (shaper_list))
   {
-    for (; *shaper_list; shaper_list++)
-      if (false)
+    വേണ്ടി (; *shaper_list; shaper_list++)
+      എങ്കിൽ (അസത്യം)
 	;
 #define HB_SHAPER_IMPLEMENT(shaper) \
-      else if (0 == strcmp (*shaper_list, #shaper)) \
+      അല്ലെങ്കിൽ എങ്കിൽ (0 == strcmp (*shaper_list, #shaper)) \
 	HB_SHAPER_PLAN (shaper);
-#include "hb-shaper-list.hh"
+#അന്തര്ഭാവ "hb-shaper-list.hh"
 
 #undef HB_SHAPER_IMPLEMENT
   }
-  else
+  അല്ലെങ്കിൽ
   {
-    const HB_UNUSED hb_shaper_entry_t *shapers = _hb_shapers_get ();
-    for (unsigned int i = 0; i < HB_SHAPERS_COUNT; i++)
-      if (false)
+    സ്ഥിരം HB_UNUSED hb_shaper_entry_t *shapers = _hb_shapers_get ();
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < HB_SHAPERS_എണ്ണം; i++)
+      എങ്കിൽ (അസത്യം)
 	;
 #define HB_SHAPER_IMPLEMENT(shaper) \
-      else if (shapers[i].func == _hb_##shaper##_shape) \
+      അല്ലെങ്കിൽ എങ്കിൽ (shapers[i].func == _hb_##shaper##_shape) \
 	HB_SHAPER_PLAN (shaper);
-#include "hb-shaper-list.hh"
+#അന്തര്ഭാവ "hb-shaper-list.hh"
 #undef HB_SHAPER_IMPLEMENT
   }
 #undef HB_SHAPER_PLAN
 
 bail:
 #ifndef HB_NO_OT_SHAPE
-  this->ot.fini ();
+  ഇത്->ot.fini ();
 #endif
   ::hb_free (features);
-  return false;
+  തിരികെ അസത്യം;
 }
 
-bool
-hb_shape_plan_key_t::user_features_match (const hb_shape_plan_key_t *other)
+തർക്കം
+hb_shape_plan_താക്കോൽ_t::user_features_match (സ്ഥിരം hb_shape_plan_താക്കോൽ_t *other)
 {
-  if (this->num_user_features != other->num_user_features)
-    return false;
-  for (unsigned int i = 0; i < num_user_features; i++)
+  എങ്കിൽ (ഇത്->അക്കം_user_features != other->അക്കം_user_features)
+    തിരികെ അസത്യം;
+  വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < അക്കം_user_features; i++)
   {
-    if (this->user_features[i].tag   != other->user_features[i].tag   ||
-	this->user_features[i].value != other->user_features[i].value ||
-	(this->user_features[i].start == HB_FEATURE_GLOBAL_START &&
-	 this->user_features[i].end   == HB_FEATURE_GLOBAL_END) !=
+    എങ്കിൽ (ഇത്->user_features[i].tag   != other->user_features[i].tag   ||
+	ഇത്->user_features[i].value != other->user_features[i].value ||
+	(ഇത്->user_features[i].start == HB_FEATURE_GLOBAL_START &&
+	 ഇത്->user_features[i].end   == HB_FEATURE_GLOBAL_END) !=
 	(other->user_features[i].start == HB_FEATURE_GLOBAL_START &&
 	 other->user_features[i].end   == HB_FEATURE_GLOBAL_END))
-      return false;
+      തിരികെ അസത്യം;
   }
-  return true;
+  തിരികെ സത്യം;
 }
 
-bool
-hb_shape_plan_key_t::equal (const hb_shape_plan_key_t *other)
+തർക്കം
+hb_shape_plan_താക്കോൽ_t::equal (സ്ഥിരം hb_shape_plan_താക്കോൽ_t *other)
 {
-  return hb_segment_properties_equal (&this->props, &other->props) &&
-	 this->user_features_match (other) &&
+  തിരികെ hb_segment_properties_equal (&ഇത്->props, &other->props) &&
+	 ഇത്->user_features_match (other) &&
 #ifndef HB_NO_OT_SHAPE
-	 this->ot.equal (&other->ot) &&
+	 ഇത്->ot.equal (&other->ot) &&
 #endif
-	 this->shaper_func == other->shaper_func;
+	 ഇത്->shaper_func == other->shaper_func;
 }
 
 
@@ -207,13 +207,13 @@ hb_shape_plan_key_t::equal (const hb_shape_plan_key_t *other)
  **/
 hb_shape_plan_t *
 hb_shape_plan_create (hb_face_t                     *face,
-		      const hb_segment_properties_t *props,
-		      const hb_feature_t            *user_features,
-		      unsigned int                   num_user_features,
-		      const char * const            *shaper_list)
+		      സ്ഥിരം hb_segment_properties_t *props,
+		      സ്ഥിരം hb_feature_t            *user_features,
+		      unsigned പൂർണ്ണസംഖ്യ                   അക്കം_user_features,
+		      സ്ഥിരം അക്ഷരം * സ്ഥിരം            *shaper_list)
 {
-  return hb_shape_plan_create2 (face, props,
-				user_features, num_user_features,
+  തിരികെ hb_shape_plan_create2 (face, props,
+				user_features, അക്കം_user_features,
 				nullptr, 0,
 				shaper_list);
 }
@@ -238,50 +238,50 @@ hb_shape_plan_create (hb_face_t                     *face,
  **/
 hb_shape_plan_t *
 hb_shape_plan_create2 (hb_face_t                     *face,
-		       const hb_segment_properties_t *props,
-		       const hb_feature_t            *user_features,
-		       unsigned int                   num_user_features,
-		       const int                     *coords,
-		       unsigned int                   num_coords,
-		       const char * const            *shaper_list)
+		       സ്ഥിരം hb_segment_properties_t *props,
+		       സ്ഥിരം hb_feature_t            *user_features,
+		       unsigned പൂർണ്ണസംഖ്യ                   അക്കം_user_features,
+		       സ്ഥിരം പൂർണ്ണസംഖ്യ                     *coords,
+		       unsigned പൂർണ്ണസംഖ്യ                   അക്കം_coords,
+		       സ്ഥിരം അക്ഷരം * സ്ഥിരം            *shaper_list)
 {
-  DEBUG_MSG_FUNC (SHAPE_PLAN, nullptr,
+  DEBUG_സന്ദേശം_FUNC (SHAPE_PLAN, nullptr,
 		  "face=%p num_features=%u num_coords=%u shaper_list=%p",
 		  face,
-		  num_user_features,
-		  num_coords,
+		  അക്കം_user_features,
+		  അക്കം_coords,
 		  shaper_list);
 
-  if (unlikely (!HB_DIRECTION_IS_VALID (props->direction)))
-    return hb_shape_plan_get_empty ();
+  എങ്കിൽ (unlikely (!HB_DIRECTION_IS_VALID (props->direction)))
+    തിരികെ hb_shape_plan_get_empty ();
 
   hb_shape_plan_t *shape_plan;
 
-  if (unlikely (!props))
-    goto bail;
-  if (!(shape_plan = hb_object_create<hb_shape_plan_t> ()))
-    goto bail;
+  എങ്കിൽ (unlikely (!props))
+    പോകുക bail;
+  എങ്കിൽ (!(shape_plan = hb_object_create<hb_shape_plan_t> ()))
+    പോകുക bail;
 
-  if (unlikely (!face))
+  എങ്കിൽ (unlikely (!face))
     face = hb_face_get_empty ();
   hb_face_make_immutable (face);
   shape_plan->face_unsafe = face;
 
-  if (unlikely (!shape_plan->key.init (true,
+  എങ്കിൽ (unlikely (!shape_plan->key.init (സത്യം,
 				       face,
 				       props,
 				       user_features,
-				       num_user_features,
+				       അക്കം_user_features,
 				       coords,
-				       num_coords,
+				       അക്കം_coords,
 				       shaper_list)))
-    goto bail2;
+    പോകുക bail2;
 #ifndef HB_NO_OT_SHAPE
-  if (unlikely (!shape_plan->ot.init0 (face, &shape_plan->key)))
-    goto bail3;
+  എങ്കിൽ (unlikely (!shape_plan->ot.init0 (face, &shape_plan->key)))
+    പോകുക bail3;
 #endif
 
-  return shape_plan;
+  തിരികെ shape_plan;
 
 #ifndef HB_NO_OT_SHAPE
 bail3:
@@ -290,7 +290,7 @@ bail3:
 bail2:
   hb_free (shape_plan);
 bail:
-  return hb_shape_plan_get_empty ();
+  തിരികെ hb_shape_plan_get_empty ();
 }
 
 /**
@@ -305,7 +305,7 @@ bail:
 hb_shape_plan_t *
 hb_shape_plan_get_empty ()
 {
-  return const_cast<hb_shape_plan_t *> (&Null (hb_shape_plan_t));
+  തിരികെ const_cast<hb_shape_plan_t *> (&Null (hb_shape_plan_t));
 }
 
 /**
@@ -321,7 +321,7 @@ hb_shape_plan_get_empty ()
 hb_shape_plan_t *
 hb_shape_plan_reference (hb_shape_plan_t *shape_plan)
 {
-  return hb_object_reference (shape_plan);
+  തിരികെ hb_object_reference (shape_plan);
 }
 
 /**
@@ -334,10 +334,10 @@ hb_shape_plan_reference (hb_shape_plan_t *shape_plan)
  *
  * Since: 0.9.7
  **/
-void
+ശൂന്യം
 hb_shape_plan_destroy (hb_shape_plan_t *shape_plan)
 {
-  if (!hb_object_destroy (shape_plan)) return;
+  എങ്കിൽ (!hb_object_destroy (shape_plan)) തിരികെ;
 
   hb_free (shape_plan);
 }
@@ -358,12 +358,12 @@ hb_shape_plan_destroy (hb_shape_plan_t *shape_plan)
  **/
 hb_bool_t
 hb_shape_plan_set_user_data (hb_shape_plan_t    *shape_plan,
-			     hb_user_data_key_t *key,
-			     void *              data,
+			     hb_user_data_താക്കോൽ_t *key,
+			     ശൂന്യം *              data,
 			     hb_destroy_func_t   destroy,
 			     hb_bool_t           replace)
 {
-  return hb_object_set_user_data (shape_plan, key, data, destroy, replace);
+  തിരികെ hb_object_set_user_data (shape_plan, key, data, destroy, replace);
 }
 
 /**
@@ -378,11 +378,11 @@ hb_shape_plan_set_user_data (hb_shape_plan_t    *shape_plan,
  *
  * Since: 0.9.7
  **/
-void *
-hb_shape_plan_get_user_data (const hb_shape_plan_t *shape_plan,
-			     hb_user_data_key_t    *key)
+ശൂന്യം *
+hb_shape_plan_get_user_data (സ്ഥിരം hb_shape_plan_t *shape_plan,
+			     hb_user_data_താക്കോൽ_t    *key)
 {
-  return hb_object_get_user_data (shape_plan, key);
+  തിരികെ hb_object_get_user_data (shape_plan, key);
 }
 
 /**
@@ -395,56 +395,56 @@ hb_shape_plan_get_user_data (const hb_shape_plan_t *shape_plan,
  *
  * Since: 0.9.7
  **/
-const char *
+സ്ഥിരം അക്ഷരം *
 hb_shape_plan_get_shaper (hb_shape_plan_t *shape_plan)
 {
-  return shape_plan->key.shaper_name;
+  തിരികെ shape_plan->key.shaper_name;
 }
 
 
-static bool
+സ്ഥിതം തർക്കം
 _hb_shape_plan_execute_internal (hb_shape_plan_t    *shape_plan,
 				 hb_font_t          *font,
 				 hb_buffer_t        *buffer,
-				 const hb_feature_t *features,
-				 unsigned int        num_features)
+				 സ്ഥിരം hb_feature_t *features,
+				 unsigned പൂർണ്ണസംഖ്യ        അക്കം_features)
 {
-  DEBUG_MSG_FUNC (SHAPE_PLAN, shape_plan,
+  DEBUG_സന്ദേശം_FUNC (SHAPE_PLAN, shape_plan,
 		  "num_features=%u shaper_func=%p, shaper_name=%s",
-		  num_features,
+		  അക്കം_features,
 		  shape_plan->key.shaper_func,
 		  shape_plan->key.shaper_name);
 
-  if (unlikely (!buffer->len))
-    return true;
+  എങ്കിൽ (unlikely (!buffer->len))
+    തിരികെ സത്യം;
 
-  assert (!hb_object_is_immutable (buffer));
+  പ്രതിജ്ഞാ (!hb_object_is_immutable (buffer));
 
   buffer->assert_unicode ();
 
-  if (unlikely (!hb_object_is_valid (shape_plan)))
-    return false;
+  എങ്കിൽ (unlikely (!hb_object_is_valid (shape_plan)))
+    തിരികെ അസത്യം;
 
-  assert (shape_plan->face_unsafe == font->face);
-  assert (hb_segment_properties_equal (&shape_plan->key.props, &buffer->props));
+  പ്രതിജ്ഞാ (shape_plan->face_unsafe == font->face);
+  പ്രതിജ്ഞാ (hb_segment_properties_equal (&shape_plan->key.props, &buffer->props));
 
 #define HB_SHAPER_EXECUTE(shaper) \
 	HB_STMT_START { \
-	  return font->data.shaper && \
-		 _hb_##shaper##_shape (shape_plan, font, buffer, features, num_features); \
+	  തിരികെ font->data.shaper && \
+		 _hb_##shaper##_shape (shape_plan, font, buffer, features, അക്കം_features); \
 	} HB_STMT_END
 
-  if (false)
+  എങ്കിൽ (അസത്യം)
     ;
 #define HB_SHAPER_IMPLEMENT(shaper) \
-  else if (shape_plan->key.shaper_func == _hb_##shaper##_shape) \
+  അല്ലെങ്കിൽ എങ്കിൽ (shape_plan->key.shaper_func == _hb_##shaper##_shape) \
     HB_SHAPER_EXECUTE (shaper);
-#include "hb-shaper-list.hh"
+#അന്തര്ഭാവ "hb-shaper-list.hh"
 #undef HB_SHAPER_IMPLEMENT
 
 #undef HB_SHAPER_EXECUTE
 
-  return false;
+  തിരികെ അസത്യം;
 }
 /**
  * hb_shape_plan_execute:
@@ -465,16 +465,16 @@ hb_bool_t
 hb_shape_plan_execute (hb_shape_plan_t    *shape_plan,
 		       hb_font_t          *font,
 		       hb_buffer_t        *buffer,
-		       const hb_feature_t *features,
-		       unsigned int        num_features)
+		       സ്ഥിരം hb_feature_t *features,
+		       unsigned പൂർണ്ണസംഖ്യ        അക്കം_features)
 {
-  bool ret = _hb_shape_plan_execute_internal (shape_plan, font, buffer,
-					      features, num_features);
+  തർക്കം ret = _hb_shape_plan_execute_internal (shape_plan, font, buffer,
+					      features, അക്കം_features);
 
-  if (ret && buffer->content_type == HB_BUFFER_CONTENT_TYPE_UNICODE)
+  എങ്കിൽ (ret && buffer->content_type == HB_BUFFER_CONTENT_TYPE_UNICODE)
     buffer->content_type = HB_BUFFER_CONTENT_TYPE_GLYPHS;
 
-  return ret;
+  തിരികെ ret;
 }
 
 
@@ -499,13 +499,13 @@ hb_shape_plan_execute (hb_shape_plan_t    *shape_plan,
  **/
 hb_shape_plan_t *
 hb_shape_plan_create_cached (hb_face_t                     *face,
-			     const hb_segment_properties_t *props,
-			     const hb_feature_t            *user_features,
-			     unsigned int                   num_user_features,
-			     const char * const            *shaper_list)
+			     സ്ഥിരം hb_segment_properties_t *props,
+			     സ്ഥിരം hb_feature_t            *user_features,
+			     unsigned പൂർണ്ണസംഖ്യ                   അക്കം_user_features,
+			     സ്ഥിരം അക്ഷരം * സ്ഥിരം            *shaper_list)
 {
-  return hb_shape_plan_create_cached2 (face, props,
-				       user_features, num_user_features,
+  തിരികെ hb_shape_plan_create_cached2 (face, props,
+				       user_features, അക്കം_user_features,
 				       nullptr, 0,
 				       shaper_list);
 }
@@ -531,69 +531,69 @@ hb_shape_plan_create_cached (hb_face_t                     *face,
  **/
 hb_shape_plan_t *
 hb_shape_plan_create_cached2 (hb_face_t                     *face,
-			      const hb_segment_properties_t *props,
-			      const hb_feature_t            *user_features,
-			      unsigned int                   num_user_features,
-			      const int                     *coords,
-			      unsigned int                   num_coords,
-			      const char * const            *shaper_list)
+			      സ്ഥിരം hb_segment_properties_t *props,
+			      സ്ഥിരം hb_feature_t            *user_features,
+			      unsigned പൂർണ്ണസംഖ്യ                   അക്കം_user_features,
+			      സ്ഥിരം പൂർണ്ണസംഖ്യ                     *coords,
+			      unsigned പൂർണ്ണസംഖ്യ                   അക്കം_coords,
+			      സ്ഥിരം അക്ഷരം * സ്ഥിരം            *shaper_list)
 {
-  DEBUG_MSG_FUNC (SHAPE_PLAN, nullptr,
+  DEBUG_സന്ദേശം_FUNC (SHAPE_PLAN, nullptr,
 		  "face=%p num_features=%u shaper_list=%p",
 		  face,
-		  num_user_features,
+		  അക്കം_user_features,
 		  shaper_list);
 
 retry:
-  hb_face_t::plan_node_t *cached_plan_nodes = face->shape_plans;
+  hb_face_t::plan_കണ്ണി_t *cached_plan_nodes = face->shape_plans;
 
-  bool dont_cache = !hb_object_is_valid (face);
+  തർക്കം dont_cache = !hb_object_is_valid (face);
 
-  if (likely (!dont_cache))
+  എങ്കിൽ (likely (!dont_cache))
   {
-    hb_shape_plan_key_t key;
-    if (!key.init (false,
+    hb_shape_plan_താക്കോൽ_t key;
+    എങ്കിൽ (!key.init (അസത്യം,
 		   face,
 		   props,
 		   user_features,
-		   num_user_features,
+		   അക്കം_user_features,
 		   coords,
-		   num_coords,
+		   അക്കം_coords,
 		   shaper_list))
-      return hb_shape_plan_get_empty ();
+      തിരികെ hb_shape_plan_get_empty ();
 
-    for (hb_face_t::plan_node_t *node = cached_plan_nodes; node; node = node->next)
-      if (node->shape_plan->key.equal (&key))
+    വേണ്ടി (hb_face_t::plan_കണ്ണി_t *node = cached_plan_nodes; node; node = node->next)
+      എങ്കിൽ (node->shape_plan->key.equal (&key))
       {
-	DEBUG_MSG_FUNC (SHAPE_PLAN, node->shape_plan, "fulfilled from cache");
-	return hb_shape_plan_reference (node->shape_plan);
+	DEBUG_സന്ദേശം_FUNC (SHAPE_PLAN, node->shape_plan, "fulfilled from cache");
+	തിരികെ hb_shape_plan_reference (node->shape_plan);
       }
   }
 
   hb_shape_plan_t *shape_plan = hb_shape_plan_create2 (face, props,
-						       user_features, num_user_features,
-						       coords, num_coords,
+						       user_features, അക്കം_user_features,
+						       coords, അക്കം_coords,
 						       shaper_list);
 
-  if (unlikely (dont_cache))
-    return shape_plan;
+  എങ്കിൽ (unlikely (dont_cache))
+    തിരികെ shape_plan;
 
-  hb_face_t::plan_node_t *node = (hb_face_t::plan_node_t *) hb_calloc (1, sizeof (hb_face_t::plan_node_t));
-  if (unlikely (!node))
-    return shape_plan;
+  hb_face_t::plan_കണ്ണി_t *node = (hb_face_t::plan_കണ്ണി_t *) hb_calloc (1, വലുപ്പം (hb_face_t::plan_കണ്ണി_t));
+  എങ്കിൽ (unlikely (!node))
+    തിരികെ shape_plan;
 
   node->shape_plan = shape_plan;
   node->next = cached_plan_nodes;
 
-  if (unlikely (!face->shape_plans.cmpexch (cached_plan_nodes, node)))
+  എങ്കിൽ (unlikely (!face->shape_plans.cmpexch (cached_plan_nodes, node)))
   {
     hb_shape_plan_destroy (shape_plan);
     hb_free (node);
-    goto retry;
+    പോകുക retry;
   }
-  DEBUG_MSG_FUNC (SHAPE_PLAN, shape_plan, "inserted into cache");
+  DEBUG_സന്ദേശം_FUNC (SHAPE_PLAN, shape_plan, "inserted into cache");
 
-  return hb_shape_plan_reference (shape_plan);
+  തിരികെ hb_shape_plan_reference (shape_plan);
 }
 
 

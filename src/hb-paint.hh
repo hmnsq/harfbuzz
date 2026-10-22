@@ -25,28 +25,28 @@
 #ifndef HB_PAINT_HH
 #define HB_PAINT_HH
 
-#include "hb.hh"
-#include "hb-face.hh"
-#include "hb-font.hh"
-#include "hb-geometry.hh"
+#അന്തര്ഭാവ "hb.hh"
+#അന്തര്ഭാവ "hb-face.hh"
+#അന്തര്ഭാവ "hb-font.hh"
+#അന്തര്ഭാവ "hb-geometry.hh"
 
 #define HB_PAINT_FUNCS_IMPLEMENT_CALLBACKS \
-  HB_PAINT_FUNC_IMPLEMENT (push_transform) \
-  HB_PAINT_FUNC_IMPLEMENT (pop_transform) \
+  HB_PAINT_FUNC_IMPLEMENT (തള്ളുക_transform) \
+  HB_PAINT_FUNC_IMPLEMENT (എടുക്കുക_transform) \
   HB_PAINT_FUNC_IMPLEMENT (color_glyph) \
-  HB_PAINT_FUNC_IMPLEMENT (push_clip_glyph) \
-  HB_PAINT_FUNC_IMPLEMENT (push_clip_rectangle) \
-  HB_PAINT_FUNC_IMPLEMENT (push_clip_path_start) \
-  HB_PAINT_FUNC_IMPLEMENT (push_clip_path_end) \
-  HB_PAINT_FUNC_IMPLEMENT (pop_clip) \
+  HB_PAINT_FUNC_IMPLEMENT (തള്ളുക_clip_glyph) \
+  HB_PAINT_FUNC_IMPLEMENT (തള്ളുക_clip_rectangle) \
+  HB_PAINT_FUNC_IMPLEMENT (തള്ളുക_clip_path_start) \
+  HB_PAINT_FUNC_IMPLEMENT (തള്ളുക_clip_path_end) \
+  HB_PAINT_FUNC_IMPLEMENT (എടുക്കുക_clip) \
   HB_PAINT_FUNC_IMPLEMENT (color) \
   HB_PAINT_FUNC_IMPLEMENT (image) \
   HB_PAINT_FUNC_IMPLEMENT (linear_gradient) \
   HB_PAINT_FUNC_IMPLEMENT (radial_gradient) \
   HB_PAINT_FUNC_IMPLEMENT (sweep_gradient) \
-  HB_PAINT_FUNC_IMPLEMENT (push_group) \
-  HB_PAINT_FUNC_IMPLEMENT (push_group_for) \
-  HB_PAINT_FUNC_IMPLEMENT (pop_group) \
+  HB_PAINT_FUNC_IMPLEMENT (തള്ളുക_group) \
+  HB_PAINT_FUNC_IMPLEMENT (തള്ളുക_group_for) \
+  HB_PAINT_FUNC_IMPLEMENT (എടുക്കുക_group) \
   HB_PAINT_FUNC_IMPLEMENT (custom_palette_color) \
   HB_PAINT_FUNC_IMPLEMENT (fill_glyph) \
   HB_PAINT_FUNC_IMPLEMENT (set_budget) \
@@ -54,233 +54,233 @@
   HB_PAINT_FUNC_IMPLEMENT (get_budget_remaining) \
   /* ^--- Add new callbacks here */
 
-struct hb_paint_funcs_t
+ഘടന hb_paint_funcs_t
 {
   hb_object_header_t header;
 
-  struct {
+  ഘടന {
 #define HB_PAINT_FUNC_IMPLEMENT(name) hb_paint_##name##_func_t name;
     HB_PAINT_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_PAINT_FUNC_IMPLEMENT
   } func;
 
-  struct {
-#define HB_PAINT_FUNC_IMPLEMENT(name) void *name;
+  ഘടന {
+#define HB_PAINT_FUNC_IMPLEMENT(name) ശൂന്യം *name;
     HB_PAINT_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_PAINT_FUNC_IMPLEMENT
   } *user_data;
 
-  struct {
+  ഘടന {
 #define HB_PAINT_FUNC_IMPLEMENT(name) hb_destroy_func_t name;
     HB_PAINT_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_PAINT_FUNC_IMPLEMENT
   } *destroy;
 
-  void push_transform (void *paint_data,
-                       float xx, float yx,
-                       float xy, float yy,
-                       float dx, float dy)
+  ശൂന്യം തള്ളുക_transform (ശൂന്യം *paint_data,
+                       ദശാംശം xx, ദശാംശം yx,
+                       ദശാംശം xy, ദശാംശം yy,
+                       ദശാംശം dx, ദശാംശം dy)
   {
     // Handle -0.f to avoid -0.f == 0.f in the transform matrix.
-    if (dx == -0.f) dx = 0.f;
-    if (dy == -0.f) dy = 0.f;
-    func.push_transform (this, paint_data,
+    എങ്കിൽ (dx == -0.f) dx = 0.f;
+    എങ്കിൽ (dy == -0.f) dy = 0.f;
+    func.തള്ളുക_transform (ഇത്, paint_data,
                          xx, yx, xy, yy, dx, dy,
-                         !user_data ? nullptr : user_data->push_transform); }
-  void pop_transform (void *paint_data)
-  { func.pop_transform (this, paint_data,
-                        !user_data ? nullptr : user_data->pop_transform); }
-  bool color_glyph (void *paint_data,
+                         !user_data ? nullptr : user_data->തള്ളുക_transform); }
+  ശൂന്യം എടുക്കുക_transform (ശൂന്യം *paint_data)
+  { func.എടുക്കുക_transform (ഇത്, paint_data,
+                        !user_data ? nullptr : user_data->എടുക്കുക_transform); }
+  തർക്കം color_glyph (ശൂന്യം *paint_data,
                     hb_codepoint_t glyph,
                     hb_font_t *font)
-  { return func.color_glyph (this, paint_data,
+  { തിരികെ func.color_glyph (ഇത്, paint_data,
                              glyph,
                              font,
                              !user_data ? nullptr : user_data->color_glyph); }
-  void push_clip_glyph (void *paint_data,
+  ശൂന്യം തള്ളുക_clip_glyph (ശൂന്യം *paint_data,
                         hb_codepoint_t glyph,
                         hb_font_t *font)
-  { func.push_clip_glyph (this, paint_data,
+  { func.തള്ളുക_clip_glyph (ഇത്, paint_data,
                           glyph,
                           font,
-                          !user_data ? nullptr : user_data->push_clip_glyph); }
-  void push_clip_rectangle (void *paint_data,
-                           float xmin, float ymin, float xmax, float ymax)
-  { func.push_clip_rectangle (this, paint_data,
+                          !user_data ? nullptr : user_data->തള്ളുക_clip_glyph); }
+  ശൂന്യം തള്ളുക_clip_rectangle (ശൂന്യം *paint_data,
+                           ദശാംശം xmin, ദശാംശം ymin, ദശാംശം xmax, ദശാംശം ymax)
+  { func.തള്ളുക_clip_rectangle (ഇത്, paint_data,
                               xmin, ymin, xmax, ymax,
-                              !user_data ? nullptr : user_data->push_clip_rectangle); }
-  hb_draw_funcs_t *push_clip_path_start (void *paint_data,
-                                         void **draw_data)
-  { return func.push_clip_path_start (this, paint_data, draw_data,
-                                      !user_data ? nullptr : user_data->push_clip_path_start); }
-  void push_clip_path_end (void *paint_data)
-  { func.push_clip_path_end (this, paint_data,
-                             !user_data ? nullptr : user_data->push_clip_path_end); }
-  void pop_clip (void *paint_data)
-  { func.pop_clip (this, paint_data,
-                   !user_data ? nullptr : user_data->pop_clip); }
-  void color (void *paint_data,
+                              !user_data ? nullptr : user_data->തള്ളുക_clip_rectangle); }
+  hb_draw_funcs_t *തള്ളുക_clip_path_start (ശൂന്യം *paint_data,
+                                         ശൂന്യം **draw_data)
+  { തിരികെ func.തള്ളുക_clip_path_start (ഇത്, paint_data, draw_data,
+                                      !user_data ? nullptr : user_data->തള്ളുക_clip_path_start); }
+  ശൂന്യം തള്ളുക_clip_path_end (ശൂന്യം *paint_data)
+  { func.തള്ളുക_clip_path_end (ഇത്, paint_data,
+                             !user_data ? nullptr : user_data->തള്ളുക_clip_path_end); }
+  ശൂന്യം എടുക്കുക_clip (ശൂന്യം *paint_data)
+  { func.എടുക്കുക_clip (ഇത്, paint_data,
+                   !user_data ? nullptr : user_data->എടുക്കുക_clip); }
+  ശൂന്യം color (ശൂന്യം *paint_data,
               hb_bool_t is_foreground,
               hb_color_t color)
-  { func.color (this, paint_data,
+  { func.color (ഇത്, paint_data,
                 is_foreground, color,
                 !user_data ? nullptr : user_data->color); }
-  void fill_glyph (void *paint_data,
+  ശൂന്യം fill_glyph (ശൂന്യം *paint_data,
                    hb_codepoint_t glyph,
                    hb_font_t *font,
                    hb_bool_t is_foreground,
                    hb_color_t color)
-  { func.fill_glyph (this, paint_data,
+  { func.fill_glyph (ഇത്, paint_data,
                      glyph, font,
                      is_foreground, color,
                      !user_data ? nullptr : user_data->fill_glyph); }
-  bool image (void *paint_data,
+  തർക്കം image (ശൂന്യം *paint_data,
               hb_blob_t *image,
               unsigned width, unsigned height,
               hb_tag_t format,
-              float slant,
+              ദശാംശം slant,
               hb_glyph_extents_t *extents)
-  { return func.image (this, paint_data,
+  { തിരികെ func.image (ഇത്, paint_data,
                        image, width, height, format, slant, extents,
                        !user_data ? nullptr : user_data->image); }
-  void linear_gradient (void *paint_data,
-                        hb_color_line_t *color_line,
-                        float x0, float y0,
-                        float x1, float y1,
-                        float x2, float y2)
-  { func.linear_gradient (this, paint_data,
-                          color_line, x0, y0, x1, y1, x2, y2,
+  ശൂന്യം linear_gradient (ശൂന്യം *paint_data,
+                        hb_color_വരി_t *color_വരി,
+                        ദശാംശം x0, ദശാംശം y0,
+                        ദശാംശം x1, ദശാംശം y1,
+                        ദശാംശം x2, ദശാംശം y2)
+  { func.linear_gradient (ഇത്, paint_data,
+                          color_വരി, x0, y0, x1, y1, x2, y2,
                           !user_data ? nullptr : user_data->linear_gradient); }
-  void radial_gradient (void *paint_data,
-                        hb_color_line_t *color_line,
-                        float x0, float y0, float r0,
-                        float x1, float y1, float r1)
-  { func.radial_gradient (this, paint_data,
-                          color_line, x0, y0, r0, x1, y1, r1,
+  ശൂന്യം radial_gradient (ശൂന്യം *paint_data,
+                        hb_color_വരി_t *color_വരി,
+                        ദശാംശം x0, ദശാംശം y0, ദശാംശം r0,
+                        ദശാംശം x1, ദശാംശം y1, ദശാംശം r1)
+  { func.radial_gradient (ഇത്, paint_data,
+                          color_വരി, x0, y0, r0, x1, y1, r1,
                           !user_data ? nullptr : user_data->radial_gradient); }
-  void sweep_gradient (void *paint_data,
-                       hb_color_line_t *color_line,
-                       float x0, float y0,
-                       float start_angle,
-                       float end_angle)
-  { func.sweep_gradient (this, paint_data,
-                         color_line, x0, y0, start_angle, end_angle,
+  ശൂന്യം sweep_gradient (ശൂന്യം *paint_data,
+                       hb_color_വരി_t *color_വരി,
+                       ദശാംശം x0, ദശാംശം y0,
+                       ദശാംശം start_angle,
+                       ദശാംശം end_angle)
+  { func.sweep_gradient (ഇത്, paint_data,
+                         color_വരി, x0, y0, start_angle, end_angle,
                          !user_data ? nullptr : user_data->sweep_gradient); }
-  void push_group (void *paint_data)
-  { func.push_group (this, paint_data,
-                     !user_data ? nullptr : user_data->push_group); }
-  void push_group_for (void *paint_data,
+  ശൂന്യം തള്ളുക_group (ശൂന്യം *paint_data)
+  { func.തള്ളുക_group (ഇത്, paint_data,
+                     !user_data ? nullptr : user_data->തള്ളുക_group); }
+  ശൂന്യം തള്ളുക_group_for (ശൂന്യം *paint_data,
                        hb_paint_composite_mode_t mode)
-  { func.push_group_for (this, paint_data,
+  { func.തള്ളുക_group_for (ഇത്, paint_data,
                          mode,
-                         !user_data ? nullptr : user_data->push_group_for); }
-  void pop_group (void *paint_data,
+                         !user_data ? nullptr : user_data->തള്ളുക_group_for); }
+  ശൂന്യം എടുക്കുക_group (ശൂന്യം *paint_data,
                   hb_paint_composite_mode_t mode)
-  { func.pop_group (this, paint_data,
+  { func.എടുക്കുക_group (ഇത്, paint_data,
                     mode,
-                    !user_data ? nullptr : user_data->pop_group); }
-  bool custom_palette_color (void *paint_data,
-                             unsigned int color_index,
+                    !user_data ? nullptr : user_data->എടുക്കുക_group); }
+  തർക്കം custom_palette_color (ശൂന്യം *paint_data,
+                             unsigned പൂർണ്ണസംഖ്യ color_index,
                              hb_color_t *color)
-  { return func.custom_palette_color (this, paint_data,
+  { തിരികെ func.custom_palette_color (ഇത്, paint_data,
                                       color_index,
                                       color,
                                       !user_data ? nullptr : user_data->custom_palette_color); }
-  bool set_budget (void *paint_data, int64_t budget)
+  തർക്കം set_budget (ശൂന്യം *paint_data, int64_t budget)
   {
-    if (budget < 0 && budget != HB_BUDGET_DEFAULT)
+    എങ്കിൽ (budget < 0 && budget != HB_BUDGET_DEFAULT)
       budget = 0;
-    return func.set_budget (this, paint_data, budget,
+    തിരികെ func.set_budget (ഇത്, paint_data, budget,
 			    !user_data ? nullptr : user_data->set_budget);
   }
-  int64_t get_budget (void *paint_data)
-  { return func.get_budget (this, paint_data,
+  int64_t get_budget (ശൂന്യം *paint_data)
+  { തിരികെ func.get_budget (ഇത്, paint_data,
 			    !user_data ? nullptr : user_data->get_budget); }
-  int64_t *get_budget_remaining_ptr (void *paint_data)
-  { return func.get_budget_remaining (this, paint_data,
+  int64_t *get_budget_remaining_ptr (ശൂന്യം *paint_data)
+  { തിരികെ func.get_budget_remaining (ഇത്, paint_data,
 				      !user_data ? nullptr : user_data->get_budget_remaining); }
 
 
   /* Internal specializations. */
 
-  void push_font_transform (void *paint_data,
-                            const hb_font_t *font)
+  ശൂന്യം തള്ളുക_font_transform (ശൂന്യം *paint_data,
+                            സ്ഥിരം hb_font_t *font)
   {
-    float upem = font->face->get_upem ();
-    int xscale = font->x_scale, yscale = font->y_scale;
+    ദശാംശം upem = font->face->get_upem ();
+    പൂർണ്ണസംഖ്യ xscale = font->x_scale, yscale = font->y_scale;
 
-    push_transform (paint_data,
+    തള്ളുക_transform (paint_data,
 		    xscale/upem, 0,
 		    0, yscale/upem,
 		    0, 0);
   }
 
-  void push_inverse_font_transform (void *paint_data,
-                                    const hb_font_t *font)
+  ശൂന്യം തള്ളുക_inverse_font_transform (ശൂന്യം *paint_data,
+                                    സ്ഥിരം hb_font_t *font)
   {
-    float upem = font->face->get_upem ();
-    int xscale = font->x_scale ? font->x_scale : upem;
-    int yscale = font->y_scale ? font->y_scale : upem;
+    ദശാംശം upem = font->face->get_upem ();
+    പൂർണ്ണസംഖ്യ xscale = font->x_scale ? font->x_scale : upem;
+    പൂർണ്ണസംഖ്യ yscale = font->y_scale ? font->y_scale : upem;
 
-    push_transform (paint_data,
+    തള്ളുക_transform (paint_data,
 		    upem/xscale, 0,
 		    0, upem/yscale,
 		    0, 0);
   }
 
-  void push_transform (void *paint_data, hb_transform_t<float> t)
+  ശൂന്യം തള്ളുക_transform (ശൂന്യം *paint_data, hb_transform_t<ദശാംശം> t)
   {
-    push_transform (paint_data, t.xx, t.yx, t.xy, t.yy, t.x0, t.y0);
+    തള്ളുക_transform (paint_data, t.xx, t.yx, t.xy, t.yy, t.x0, t.y0);
   }
 
-  void push_translate (void *paint_data,
-                       float dx, float dy)
+  ശൂന്യം തള്ളുക_translate (ശൂന്യം *paint_data,
+                       ദശാംശം dx, ദശാംശം dy)
   {
-    push_transform (paint_data,
-		    hb_transform_t<float>::translation (dx, dy));
+    തള്ളുക_transform (paint_data,
+		    hb_transform_t<ദശാംശം>::translation (dx, dy));
   }
 
-  void push_scale (void *paint_data,
-                   float sx, float sy)
+  ശൂന്യം തള്ളുക_scale (ശൂന്യം *paint_data,
+                   ദശാംശം sx, ദശാംശം sy)
   {
-    push_transform (paint_data,
-		    hb_transform_t<float>::scaling (sx, sy));
+    തള്ളുക_transform (paint_data,
+		    hb_transform_t<ദശാംശം>::scaling (sx, sy));
   }
-  void push_scale_around_center (void *paint_data,
-				 float sx, float sy,
-				 float cx, float cy)
+  ശൂന്യം തള്ളുക_scale_around_center (ശൂന്യം *paint_data,
+				 ദശാംശം sx, ദശാംശം sy,
+				 ദശാംശം cx, ദശാംശം cy)
   {
-    push_transform (paint_data,
-		    hb_transform_t<float>::scaling_around_center (sx, sy, cx, cy));
-  }
-
-  void push_rotate (void *paint_data,
-                    float a)
-  {
-    push_transform (paint_data,
-		    hb_transform_t<float>::rotation (a * HB_PI));
+    തള്ളുക_transform (paint_data,
+		    hb_transform_t<ദശാംശം>::scaling_around_center (sx, sy, cx, cy));
   }
 
-  void push_rotate_around_center (void *paint_data,
-				  float a,
-				  float cx, float cy)
+  ശൂന്യം തള്ളുക_rotate (ശൂന്യം *paint_data,
+                    ദശാംശം a)
   {
-    push_transform (paint_data,
-		    hb_transform_t<float>::rotation_around_center (a * HB_PI, cx, cy));
+    തള്ളുക_transform (paint_data,
+		    hb_transform_t<ദശാംശം>::rotation (a * HB_PI));
   }
 
-  void push_skew (void *paint_data,
-                  float sx, float sy)
+  ശൂന്യം തള്ളുക_rotate_around_center (ശൂന്യം *paint_data,
+				  ദശാംശം a,
+				  ദശാംശം cx, ദശാംശം cy)
   {
-    push_transform (paint_data,
-		    hb_transform_t<float>::skewing (-sx * HB_PI, sy * HB_PI));
+    തള്ളുക_transform (paint_data,
+		    hb_transform_t<ദശാംശം>::rotation_around_center (a * HB_PI, cx, cy));
   }
-  void push_skew_around_center (void *paint_data,
-				float sx, float sy,
-				float cx, float cy)
+
+  ശൂന്യം തള്ളുക_skew (ശൂന്യം *paint_data,
+                  ദശാംശം sx, ദശാംശം sy)
   {
-    push_transform (paint_data,
-		    hb_transform_t<float>::skewing_around_center (-sx * HB_PI, sy * HB_PI, cx, cy));
+    തള്ളുക_transform (paint_data,
+		    hb_transform_t<ദശാംശം>::skewing (-sx * HB_PI, sy * HB_PI));
+  }
+  ശൂന്യം തള്ളുക_skew_around_center (ശൂന്യം *paint_data,
+				ദശാംശം sx, ദശാംശം sy,
+				ദശാംശം cx, ദശാംശം cy)
+  {
+    തള്ളുക_transform (paint_data,
+		    hb_transform_t<ദശാംശം>::skewing_around_center (-sx * HB_PI, sy * HB_PI, cx, cy));
   }
 };
 DECLARE_NULL_INSTANCE (hb_paint_funcs_t);
@@ -288,20 +288,20 @@ DECLARE_NULL_INSTANCE (hb_paint_funcs_t);
 
 /* Linearly interpolate between two hb_color_t values, component-wise,
  * in byte-channel space with rounding. */
-static inline hb_color_t
-hb_color_lerp (hb_color_t c0, hb_color_t c1, float t)
+സ്ഥിതം വരിയിൽ hb_color_t
+hb_color_lerp (hb_color_t c0, hb_color_t c1, ദശാംശം t)
 {
   auto lerp = [&] (unsigned shift) -> unsigned {
     unsigned v0 = (c0 >> shift) & 0xFF;
     unsigned v1 = (c1 >> shift) & 0xFF;
-    float v = v0 + t * ((float) v1 - (float) v0) + 0.5f;
+    ദശാംശം v = v0 + t * ((ദശാംശം) v1 - (ദശാംശം) v0) + 0.5f;
     /* t may be outside [0,1] (or NaN) for malformed gradients;
      * keep the float-to-unsigned conversion defined. */
-    if (!(v > 0.f)) return 0;
-    if (v > 255.f) return 255;
-    return (unsigned) v;
+    എങ്കിൽ (!(v > 0.f)) തിരികെ 0;
+    എങ്കിൽ (v > 255.f) തിരികെ 255;
+    തിരികെ (unsigned) v;
   };
-  return HB_COLOR (lerp (0), lerp (8), lerp (16), lerp (24));
+  തിരികെ HB_COLOR (lerp (0), lerp (8), lerp (16), lerp (24));
 }
 
 #endif /* HB_PAINT_HH */

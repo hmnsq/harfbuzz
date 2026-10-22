@@ -26,13 +26,13 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#അന്തര്ഭാവ "hb.hh"
 
-#include "hb-shaper.hh"
-#include "hb-shape-plan.hh"
-#include "hb-buffer.hh"
-#include "hb-font.hh"
-#include "hb-machinery.hh"
+#അന്തര്ഭാവ "hb-shaper.hh"
+#അന്തര്ഭാവ "hb-shape-plan.hh"
+#അന്തര്ഭാവ "hb-buffer.hh"
+#അന്തര്ഭാവ "hb-font.hh"
+#അന്തര്ഭാവ "hb-machinery.hh"
 
 
 #ifndef HB_NO_SHAPER
@@ -50,37 +50,37 @@
  **/
 
 
-static inline void free_static_shaper_list ();
+സ്ഥിതം വരിയിൽ ശൂന്യം free_static_shaper_list ();
 
-static const char * const nil_shaper_list[] = {nullptr};
+സ്ഥിതം സ്ഥിരം അക്ഷരം * സ്ഥിരം nil_shaper_list[] = {nullptr};
 
-static struct hb_shaper_list_lazy_loader_t : hb_lazy_loader_t<const char *,
+സ്ഥിതം ഘടന hb_shaper_list_lazy_loader_t : hb_lazy_loader_t<സ്ഥിരം അക്ഷരം *,
 							      hb_shaper_list_lazy_loader_t>
 {
-  static const char ** create ()
+  സ്ഥിതം സ്ഥിരം അക്ഷരം ** create ()
   {
-    const char **shaper_list = (const char **) hb_calloc (1 + HB_SHAPERS_COUNT, sizeof (const char *));
-    if (unlikely (!shaper_list))
-      return nullptr;
+    സ്ഥിരം അക്ഷരം **shaper_list = (സ്ഥിരം അക്ഷരം **) hb_calloc (1 + HB_SHAPERS_എണ്ണം, വലുപ്പം (സ്ഥിരം അക്ഷരം *));
+    എങ്കിൽ (unlikely (!shaper_list))
+      തിരികെ nullptr;
 
-    const hb_shaper_entry_t *shapers = _hb_shapers_get ();
-    unsigned int i;
-    for (i = 0; i < HB_SHAPERS_COUNT; i++)
+    സ്ഥിരം hb_shaper_entry_t *shapers = _hb_shapers_get ();
+    unsigned പൂർണ്ണസംഖ്യ i;
+    വേണ്ടി (i = 0; i < HB_SHAPERS_എണ്ണം; i++)
       shaper_list[i] = shapers[i].name;
     shaper_list[i] = nullptr;
 
     hb_atexit (free_static_shaper_list);
 
-    return shaper_list;
+    തിരികെ shaper_list;
   }
-  static void destroy (const char **l)
+  സ്ഥിതം ശൂന്യം destroy (സ്ഥിരം അക്ഷരം **l)
   { hb_free (l); }
-  static const char * const * get_null ()
-  { return nil_shaper_list; }
+  സ്ഥിതം സ്ഥിരം അക്ഷരം * സ്ഥിരം * get_null ()
+  { തിരികെ nil_shaper_list; }
 } static_shaper_list;
 
-static inline
-void free_static_shaper_list ()
+സ്ഥിതം വരിയിൽ
+ശൂന്യം free_static_shaper_list ()
 {
   static_shaper_list.free_instance ();
 }
@@ -98,10 +98,10 @@ void free_static_shaper_list ()
  *
  * Since: 0.9.2
  **/
-const char **
+സ്ഥിരം അക്ഷരം **
 hb_shape_list_shapers ()
 {
-  return static_shaper_list.get_unconst ();
+  തിരികെ static_shaper_list.get_unconst ();
 }
 
 
@@ -126,47 +126,47 @@ hb_shape_list_shapers ()
 hb_bool_t
 hb_shape_full (hb_font_t          *font,
 	       hb_buffer_t        *buffer,
-	       const hb_feature_t *features,
-	       unsigned int        num_features,
-	       const char * const *shaper_list)
+	       സ്ഥിരം hb_feature_t *features,
+	       unsigned പൂർണ്ണസംഖ്യ        അക്കം_features,
+	       സ്ഥിരം അക്ഷരം * സ്ഥിരം *shaper_list)
 {
-  if (unlikely (!buffer->len))
-    return true;
+  എങ്കിൽ (unlikely (!buffer->len))
+    തിരികെ സത്യം;
 
   buffer->enter ();
 
   hb_buffer_t *text_buffer = nullptr;
-  if (buffer->flags & HB_BUFFER_FLAG_VERIFY)
+  എങ്കിൽ (buffer->flags & HB_BUFFER_FLAG_VERIFY)
   {
     text_buffer = hb_buffer_create ();
     hb_buffer_append (text_buffer, buffer, 0, -1);
   }
 
   hb_shape_plan_t *shape_plan = hb_shape_plan_create_cached2 (font->face, &buffer->props,
-							      features, num_features,
-							      font->coords, font->has_nonzero_coords ? font->num_coords : 0,
+							      features, അക്കം_features,
+							      font->coords, font->has_nonzero_coords ? font->അക്കം_coords : 0,
 							      shaper_list);
 
-  hb_bool_t res = hb_shape_plan_execute (shape_plan, font, buffer, features, num_features);
+  hb_bool_t res = hb_shape_plan_execute (shape_plan, font, buffer, features, അക്കം_features);
 
   hb_shape_plan_destroy (shape_plan);
 
-  if (text_buffer)
+  എങ്കിൽ (text_buffer)
   {
-    if (res && buffer->successful
+    എങ്കിൽ (res && buffer->successful
 	    && text_buffer->successful
 	    && !buffer->verify (text_buffer,
 				font,
 				features,
-				num_features,
+				അക്കം_features,
 				shaper_list))
-      res = false;
+      res = അസത്യം;
     hb_buffer_destroy (text_buffer);
   }
 
   buffer->leave ();
 
-  return res;
+  തിരികെ res;
 }
 
 /**
@@ -185,42 +185,42 @@ hb_shape_full (hb_font_t          *font,
  *
  * Since: 0.9.2
  **/
-void
+ശൂന്യം
 hb_shape (hb_font_t           *font,
 	  hb_buffer_t         *buffer,
-	  const hb_feature_t  *features,
-	  unsigned int         num_features)
+	  സ്ഥിരം hb_feature_t  *features,
+	  unsigned പൂർണ്ണസംഖ്യ         അക്കം_features)
 {
-  hb_shape_full (font, buffer, features, num_features, nullptr);
+  hb_shape_full (font, buffer, features, അക്കം_features, nullptr);
 }
 
 
 #ifdef HB_EXPERIMENTAL_API
 #ifndef HB_NO_VAR
 
-static float
+സ്ഥിതം ദശാംശം
 buffer_advance (hb_buffer_t *buffer)
 {
-  float a = 0;
+  ദശാംശം a = 0;
   auto *pos = buffer->pos;
-  unsigned count = buffer->len;
-  if (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
-    for (unsigned i = 0; i < count; i++)
+  unsigned എണ്ണം = buffer->len;
+  എങ്കിൽ (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
+    വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++)
       a += pos[i].x_advance;
-  else
-    for (unsigned i = 0; i < count; i++)
+  അല്ലെങ്കിൽ
+    വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++)
       a += pos[i].y_advance;
-  return a;
+  തിരികെ a;
 }
 
-static void
+സ്ഥിതം ശൂന്യം
 reset_buffer (hb_buffer_t *buffer,
-	      hb_array_t<const hb_glyph_info_t> text)
+	      hb_array_t<സ്ഥിരം hb_glyph_info_t> text)
 {
-  assert (buffer->ensure (text.length));
-  buffer->have_positions = false;
+  പ്രതിജ്ഞാ (buffer->ensure (text.length));
+  buffer->have_positions = അസത്യം;
   buffer->len = text.length;
-  hb_memcpy (buffer->info, text.arrayZ, text.length * sizeof (buffer->info[0]));
+  hb_memcpy (buffer->info, text.arrayZ, text.length * വലുപ്പം (buffer->info[0]));
   hb_buffer_set_content_type (buffer, HB_BUFFER_CONTENT_TYPE_UNICODE);
 }
 
@@ -258,24 +258,24 @@ reset_buffer (hb_buffer_t *buffer,
 hb_bool_t
 hb_shape_justify (hb_font_t          *font,
 		  hb_buffer_t        *buffer,
-		  const hb_feature_t *features,
-		  unsigned int        num_features,
-		  const char * const *shaper_list,
-		  float               min_target_advance,
-		  float               max_target_advance,
-		  float              *advance, /* IN/OUT */
+		  സ്ഥിരം hb_feature_t *features,
+		  unsigned പൂർണ്ണസംഖ്യ        അക്കം_features,
+		  സ്ഥിരം അക്ഷരം * സ്ഥിരം *shaper_list,
+		  ദശാംശം               min_target_advance,
+		  ദശാംശം               max_target_advance,
+		  ദശാംശം              *advance, /* IN/OUT */
 		  hb_tag_t           *var_tag, /* OUT */
-		  float              *var_value /* OUT */)
+		  ദശാംശം              *var_മൂല്യം /* OUT */)
 {
   // TODO Negative font scales?
 
   /* If default advance already matches target, nothing to do. Shape and return. */
-  if (min_target_advance <= *advance && *advance <= max_target_advance)
+  എങ്കിൽ (min_target_advance <= *advance && *advance <= max_target_advance)
   {
     *var_tag = HB_TAG_NONE;
-    *var_value = 0.0f;
-    return hb_shape_full (font, buffer,
-			  features, num_features,
+    *var_മൂല്യം = 0.0f;
+    തിരികെ hb_shape_full (font, buffer,
+			  features, അക്കം_features,
 			  shaper_list);
   }
 
@@ -291,151 +291,151 @@ hb_shape_justify (hb_font_t          *font,
     HB_TAG ('j','s','t','f'),
     HB_TAG ('w','d','t','h'),
   };
-  for (unsigned i = 0; i < ARRAY_LENGTH (tags); i++)
-    if (hb_ot_var_find_axis_info (face, tags[i], &axis_info))
+  വേണ്ടി (unsigned i = 0; i < ARRAY_LENGTH (tags); i++)
+    എങ്കിൽ (hb_ot_var_find_axis_info (face, tags[i], &axis_info))
     {
       tag = *var_tag = tags[i];
-      break;
+      നിർത്തുക;
     }
 
   /* If no suitable variation axis found, can't justify.  Just shape and return. */
-  if (!tag)
+  എങ്കിൽ (!tag)
   {
     *var_tag = HB_TAG_NONE;
-    *var_value = 0.0f;
-    if (hb_shape_full (font, buffer,
-		       features, num_features,
+    *var_മൂല്യം = 0.0f;
+    എങ്കിൽ (hb_shape_full (font, buffer,
+		       features, അക്കം_features,
 		       shaper_list))
     {
       *advance = buffer_advance (buffer);
-      return true;
+      തിരികെ സത്യം;
     }
-    else
-      return false;
+    അല്ലെങ്കിൽ
+      തിരികെ അസത്യം;
   }
 
   /* Copy buffer text as we need it so we can shape multiple times. */
   unsigned text_len = buffer->len;
-  auto *text_info = (hb_glyph_info_t *) hb_malloc2 (text_len, sizeof (buffer->info[0]));
-  if (unlikely (text_len && !text_info))
-    return false;
+  auto *text_info = (hb_glyph_info_t *) hb_malloc2 (text_len, വലുപ്പം (buffer->info[0]));
+  എങ്കിൽ (unlikely (text_len && !text_info))
+    തിരികെ അസത്യം;
   HB_SCOPE_GUARD (hb_free (text_info));
-  hb_memcpy (text_info, buffer->info, text_len * sizeof (buffer->info[0]));
-  auto text = hb_array<const hb_glyph_info_t> (text_info, text_len);
+  hb_memcpy (text_info, buffer->info, text_len * വലുപ്പം (buffer->info[0]));
+  auto text = hb_array<സ്ഥിരം hb_glyph_info_t> (text_info, text_len);
 
   /* If default advance was not provided to us, calculate it. */
-  if (!*advance)
+  എങ്കിൽ (!*advance)
   {
-    hb_font_set_variation (font, tag, axis_info.default_value);
-    if (!hb_shape_full (font, buffer,
-			features, num_features,
+    hb_font_set_variation (font, tag, axis_info.default_മൂല്യം);
+    എങ്കിൽ (!hb_shape_full (font, buffer,
+			features, അക്കം_features,
 			shaper_list))
-      return false;
+      തിരികെ അസത്യം;
     *advance = buffer_advance (buffer);
   }
 
   /* If default advance already matches target, nothing to do. Shape and return.
    * Do this again, in case advance was just calculated.
    */
-  if (min_target_advance <= *advance && *advance <= max_target_advance)
+  എങ്കിൽ (min_target_advance <= *advance && *advance <= max_target_advance)
   {
     *var_tag = HB_TAG_NONE;
-    *var_value = 0.0f;
-    return true;
+    *var_മൂല്യം = 0.0f;
+    തിരികെ സത്യം;
   }
 
   /* Prepare for running the solver. */
-  double a, b, ya, yb;
-  if (*advance < min_target_advance)
+  ഇരട്ട a, b, ya, yb;
+  എങ്കിൽ (*advance < min_target_advance)
   {
     /* Need to expand. */
-    ya = (double) *advance;
-    a = (double) axis_info.default_value;
-    b = (double) axis_info.max_value;
+    ya = (ഇരട്ട) *advance;
+    a = (ഇരട്ട) axis_info.default_മൂല്യം;
+    b = (ഇരട്ട) axis_info.max_മൂല്യം;
 
     /* Shape buffer for maximum expansion to use as other
      * starting point for the solver. */
-    hb_font_set_variation (font, tag, (float) b);
+    hb_font_set_variation (font, tag, (ദശാംശം) b);
     reset_buffer (buffer, text);
-    if (!hb_shape_full (font, buffer,
-			features, num_features,
+    എങ്കിൽ (!hb_shape_full (font, buffer,
+			features, അക്കം_features,
 			shaper_list))
-      return false;
-    yb = (double) buffer_advance (buffer);
+      തിരികെ അസത്യം;
+    yb = (ഇരട്ട) buffer_advance (buffer);
     /* If the maximum expansion is less than max target,
      * there's nothing to solve for. Just return it. */
-    if (yb <= (double) max_target_advance)
+    എങ്കിൽ (yb <= (ഇരട്ട) max_target_advance)
     {
-      *var_value = (float) b;
-      *advance = (float) yb;
-      return true;
+      *var_മൂല്യം = (ദശാംശം) b;
+      *advance = (ദശാംശം) yb;
+      തിരികെ സത്യം;
     }
   }
-  else
+  അല്ലെങ്കിൽ
   {
     /* Need to shrink. */
-    yb = (double) *advance;
-    a = (double) axis_info.min_value;
-    b = (double) axis_info.default_value;
+    yb = (ഇരട്ട) *advance;
+    a = (ഇരട്ട) axis_info.min_മൂല്യം;
+    b = (ഇരട്ട) axis_info.default_മൂല്യം;
 
     /* Shape buffer for maximum shrinkate to use as other
      * starting point for the solver. */
-    hb_font_set_variation (font, tag, (float) a);
+    hb_font_set_variation (font, tag, (ദശാംശം) a);
     reset_buffer (buffer, text);
-    if (!hb_shape_full (font, buffer,
-			features, num_features,
+    എങ്കിൽ (!hb_shape_full (font, buffer,
+			features, അക്കം_features,
 			shaper_list))
-      return false;
-    ya = (double) buffer_advance (buffer);
+      തിരികെ അസത്യം;
+    ya = (ഇരട്ട) buffer_advance (buffer);
     /* If the maximum shrinkate is more than min target,
      * there's nothing to solve for. Just return it. */
-    if (ya >= (double) min_target_advance)
+    എങ്കിൽ (ya >= (ഇരട്ട) min_target_advance)
     {
-      *var_value = (float) a;
-      *advance = (float) ya;
-      return true;
+      *var_മൂല്യം = (ദശാംശം) a;
+      *advance = (ദശാംശം) ya;
+      തിരികെ സത്യം;
     }
   }
 
   /* Run the solver to find a var axis value that hits
    * the desired width. */
 
-  double epsilon = (b - a) / (1<<14);
-  bool failed = false;
+  ഇരട്ട epsilon = (b - a) / (1<<14);
+  തർക്കം failed = അസത്യം;
 
-  auto f = [&] (double x)
+  auto f = [&] (ഇരട്ട x)
   {
-    hb_font_set_variation (font, tag, (float) x);
+    hb_font_set_variation (font, tag, (ദശാംശം) x);
     reset_buffer (buffer, text);
-    if (unlikely (!hb_shape_full (font, buffer,
-				  features, num_features,
+    എങ്കിൽ (unlikely (!hb_shape_full (font, buffer,
+				  features, അക്കം_features,
 				  shaper_list)))
     {
-      failed = true;
-      return (double) min_target_advance;
+      failed = സത്യം;
+      തിരികെ (ഇരട്ട) min_target_advance;
     }
 
-    double w = (double) buffer_advance (buffer);
-    DEBUG_MSG (JUSTIFY, nullptr, "Trying '%c%c%c%c' axis parameter %f. Advance %g. Target: min %g max %g",
+    ഇരട്ട w = (ഇരട്ട) buffer_advance (buffer);
+    DEBUG_സന്ദേശം (JUSTIFY, nullptr, "Trying '%c%c%c%c' axis parameter %f. Advance %g. Target: min %g max %g",
 	       HB_UNTAG (tag), x, w,
-	       (double) min_target_advance, (double) max_target_advance);
-    return w;
+	       (ഇരട്ട) min_target_advance, (ഇരട്ട) max_target_advance);
+    തിരികെ w;
   };
 
-  double y = 0;
-  double itp = solve_itp (f,
+  ഇരട്ട y = 0;
+  ഇരട്ട itp = solve_itp (f,
 			  a, b,
 			  epsilon,
-			  (double) min_target_advance, (double) max_target_advance,
+			  (ഇരട്ട) min_target_advance, (ഇരട്ട) max_target_advance,
 			  ya, yb, y);
 
-  if (failed)
-    return false;
+  എങ്കിൽ (failed)
+    തിരികെ അസത്യം;
 
-  *var_value = (float) itp;
-  *advance = (float) y;
+  *var_മൂല്യം = (ദശാംശം) itp;
+  *advance = (ദശാംശം) y;
 
-  return true;
+  തിരികെ സത്യം;
 }
 #endif
 #endif

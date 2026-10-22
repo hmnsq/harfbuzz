@@ -27,25 +27,25 @@
 #ifndef HB_AAT_LAYOUT_COMMON_HH
 #define HB_AAT_LAYOUT_COMMON_HH
 
-#include "hb-aat-layout.hh"
-#include "hb-aat-map.hh"
-#include "hb-ot-layout-common.hh"
-#include "hb-ot-layout-gdef-table.hh"
-#include "hb-open-type.hh"
-#include "hb-cache.hh"
-#include "hb-bit-set.hh"
-#include "hb-bit-page.hh"
+#അന്തര്ഭാവ "hb-aat-layout.hh"
+#അന്തര്ഭാവ "hb-aat-map.hh"
+#അന്തര്ഭാവ "hb-ot-layout-common.hh"
+#അന്തര്ഭാവ "hb-ot-layout-gdef-table.hh"
+#അന്തര്ഭാവ "hb-open-type.hh"
+#അന്തര്ഭാവ "hb-cache.hh"
+#അന്തര്ഭാവ "hb-bit-set.hh"
+#അന്തര്ഭാവ "hb-bit-page.hh"
 
 
-namespace OT {
-struct GDEF;
+നാമാകാശ OT {
+ഘടന GDEF;
 };
 
-namespace AAT {
+നാമാകാശ AAT {
 
-using namespace OT;
+using നാമാകാശ OT;
 
-struct ankr;
+ഘടന ankr;
 
 using hb_aat_class_cache_t = hb_ot_layout_mapping_cache_t;
 
@@ -56,14 +56,14 @@ using hb_aat_class_cache_t = hb_ot_layout_mapping_cache_t;
  * morx/kerx-heavy fonts, for about 16KB of code. */
 #ifndef HB_OPTIMIZE_SIZE
 #define HB_AAT_TRANSITION_INLINE HB_ALWAYS_INLINE
-#else
+#അല്ലെങ്കിൽ
 #define HB_AAT_TRANSITION_INLINE
 #endif
 
-struct hb_aat_scratch_t
+ഘടന hb_aat_scratch_t
 {
-  hb_aat_scratch_t () = default;
-  hb_aat_scratch_t (const hb_aat_scratch_t &) = delete;
+  hb_aat_scratch_t () = സ്ഥിരസ്ഥിതി;
+  hb_aat_scratch_t (സ്ഥിരം hb_aat_scratch_t &) = delete;
 
   hb_aat_scratch_t (hb_aat_scratch_t &&o)
   {
@@ -74,39 +74,39 @@ struct hb_aat_scratch_t
   {
     buffer_glyph_set.set_relaxed (o.buffer_glyph_set.get_relaxed ());
     o.buffer_glyph_set.set_relaxed (nullptr);
-    return *this;
+    തിരികെ *ഇത്;
   }
   ~hb_aat_scratch_t ()
   {
     auto *s = buffer_glyph_set.get_relaxed ();
-    if (unlikely (!s))
-      return;
+    എങ്കിൽ (unlikely (!s))
+      തിരികെ;
     s->fini ();
     hb_free (s);
   }
 
-  hb_bit_set_t *create_buffer_glyph_set () const
+  hb_bit_set_t *create_buffer_glyph_set () സ്ഥിരം
   {
     hb_bit_set_t *s = buffer_glyph_set.get_acquire ();
-    if (s && buffer_glyph_set.cmpexch (s, nullptr))
+    എങ്കിൽ (s && buffer_glyph_set.cmpexch (s, nullptr))
     {
       s->clear ();
-      return s;
+      തിരികെ s;
     }
 
-    s = (hb_bit_set_t *) hb_calloc (1, sizeof (hb_bit_set_t));
-    if (unlikely (!s))
-      return nullptr;
+    s = (hb_bit_set_t *) hb_calloc (1, വലുപ്പം (hb_bit_set_t));
+    എങ്കിൽ (unlikely (!s))
+      തിരികെ nullptr;
     s->init ();
 
-    return s;
+    തിരികെ s;
   }
-  void destroy_buffer_glyph_set (hb_bit_set_t *s) const
+  ശൂന്യം destroy_buffer_glyph_set (hb_bit_set_t *s) സ്ഥിരം
   {
-    if (unlikely (!s))
-      return;
-    if (buffer_glyph_set.cmpexch (nullptr, s))
-      return;
+    എങ്കിൽ (unlikely (!s))
+      തിരികെ;
+    എങ്കിൽ (buffer_glyph_set.cmpexch (nullptr, s))
+      തിരികെ;
     s->fini ();
     hb_free (s);
   }
@@ -114,148 +114,148 @@ struct hb_aat_scratch_t
   mutable hb_atomic_t<hb_bit_set_t *> buffer_glyph_set;
 };
 
-enum { DELETED_GLYPH = 0xFFFF };
+എണ്ണൽ { DELETED_GLYPH = 0xFFFF };
 
 #define HB_BUFFER_SCRATCH_FLAG_AAT_HAS_DELETED HB_BUFFER_SCRATCH_FLAG_SHAPER0
 
-struct hb_aat_apply_context_t :
-       hb_dispatch_context_t<hb_aat_apply_context_t, bool, HB_DEBUG_APPLY>
+ഘടന hb_aat_apply_context_t :
+       hb_dispatch_context_t<hb_aat_apply_context_t, തർക്കം, HB_DEBUG_APPLY>
 {
-  const char *get_name () { return "APPLY"; }
+  സ്ഥിരം അക്ഷരം *get_name () { തിരികെ "APPLY"; }
   template <typename T, typename ...Ts>
-  return_t dispatch (const T &obj, Ts&&... ds)
-  { return obj.apply (this, std::forward<Ts> (ds)...); }
-  static return_t default_return_value () { return false; }
-  bool stop_sublookup_iteration (return_t r) const { return r; }
+  return_t dispatch (സ്ഥിരം T &obj, Ts&&... ds)
+  { തിരികെ obj.apply (ഇത്, std::forward<Ts> (ds)...); }
+  സ്ഥിതം return_t default_return_മൂല്യം () { തിരികെ അസത്യം; }
+  തർക്കം stop_sublookup_iteration (return_t r) സ്ഥിരം { തിരികെ r; }
 
-  const hb_ot_shape_plan_t *plan;
+  സ്ഥിരം hb_ot_shape_plan_t *plan;
   hb_font_t *font;
   hb_face_t *face;
   hb_buffer_t *buffer;
   hb_sanitize_context_t sanitizer;
-  const ankr *ankr_table;
-  const OT::GDEF &gdef;
-  bool has_glyph_classes;
-  const hb_sorted_vector_t<hb_aat_map_t::range_flags_t> *range_flags = nullptr;
+  സ്ഥിരം ankr *ankr_table;
+  സ്ഥിരം OT::GDEF &gdef;
+  തർക്കം has_glyph_classes;
+  സ്ഥിരം hb_sorted_vector_t<hb_aat_map_t::range_flags_t> *range_flags = nullptr;
   hb_mask_t subtable_flags = 0;
-  bool buffer_is_reversed = false;
+  തർക്കം buffer_is_reversed = അസത്യം;
   // Caches
-  bool using_buffer_glyph_set = false;
+  തർക്കം using_buffer_glyph_set = അസത്യം;
   hb_bit_set_t *buffer_glyph_set = nullptr;
-  const hb_bit_set_t *first_set = nullptr;
-  const hb_bit_set_t *second_set = nullptr;
+  സ്ഥിരം hb_bit_set_t *first_set = nullptr;
+  സ്ഥിരം hb_bit_set_t *second_set = nullptr;
   hb_aat_class_cache_t *machine_class_cache = nullptr;
 
   /* Unused. For debug tracing only. */
-  unsigned int lookup_index;
+  unsigned പൂർണ്ണസംഖ്യ lookup_index;
 
-  HB_INTERNAL hb_aat_apply_context_t (const hb_ot_shape_plan_t *plan_,
+  HB_INTERNAL hb_aat_apply_context_t (സ്ഥിരം hb_ot_shape_plan_t *plan_,
 				      hb_font_t *font_,
 				      hb_buffer_t *buffer_,
 				      hb_blob_t *blob = const_cast<hb_blob_t *> (&Null (hb_blob_t)));
 
   HB_INTERNAL ~hb_aat_apply_context_t ();
 
-  HB_INTERNAL void set_ankr_table (const AAT::ankr *ankr_table_);
+  HB_INTERNAL ശൂന്യം set_ankr_table (സ്ഥിരം AAT::ankr *ankr_table_);
 
-  void set_lookup_index (unsigned int i) { lookup_index = i; }
+  ശൂന്യം set_lookup_index (unsigned പൂർണ്ണസംഖ്യ i) { lookup_index = i; }
 
-  void reverse_buffer ()
+  ശൂന്യം reverse_buffer ()
   {
     buffer->reverse ();
     buffer_is_reversed = !buffer_is_reversed;
   }
 
-  void setup_buffer_glyph_set ()
+  ശൂന്യം setup_buffer_glyph_set ()
   {
     using_buffer_glyph_set = buffer->len >= 4 && buffer_glyph_set;
 
-    if (likely (using_buffer_glyph_set))
+    എങ്കിൽ (likely (using_buffer_glyph_set))
       buffer->collect_codepoints (*buffer_glyph_set);
   }
-  bool buffer_intersects_machine () const
+  തർക്കം buffer_intersects_machine () സ്ഥിരം
   {
-    if (likely (using_buffer_glyph_set))
-      return buffer_glyph_set->intersects (*first_set);
+    എങ്കിൽ (likely (using_buffer_glyph_set))
+      തിരികെ buffer_glyph_set->intersects (*first_set);
 
     // Faster for shorter buffers.
-    for (unsigned i = 0; i < buffer->len; i++)
-      if (first_set->has (buffer->info[i].codepoint))
-	return true;
-    return false;
+    വേണ്ടി (unsigned i = 0; i < buffer->len; i++)
+      എങ്കിൽ (first_set->has (buffer->info[i].codepoint))
+	തിരികെ സത്യം;
+    തിരികെ അസത്യം;
   }
 
   template <typename T>
-  HB_NODISCARD bool output_glyphs (unsigned int count,
-				   const T *glyphs)
+  HB_NODISCARD തർക്കം output_glyphs (unsigned പൂർണ്ണസംഖ്യ എണ്ണം,
+				   സ്ഥിരം T *glyphs)
   {
-    if (likely (using_buffer_glyph_set))
-      buffer_glyph_set->add_array (glyphs, count);
-    for (unsigned int i = 0; i < count; i++)
+    എങ്കിൽ (likely (using_buffer_glyph_set))
+      buffer_glyph_set->add_array (glyphs, എണ്ണം);
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
     {
-      bool at_end_of_text = buffer->idx == buffer->len;
-      if (at_end_of_text)
-	if (unlikely (!buffer->output_glyph (glyphs[i]))) return false;
+      തർക്കം at_end_of_text = buffer->idx == buffer->len;
+      എങ്കിൽ (at_end_of_text)
+	എങ്കിൽ (unlikely (!buffer->output_glyph (glyphs[i]))) തിരികെ അസത്യം;
 
       hb_glyph_info_t &info = at_end_of_text ? buffer->prev () : buffer->cur ();
-      if (glyphs[i] == DELETED_GLYPH)
+      എങ്കിൽ (glyphs[i] == DELETED_GLYPH)
       {
         buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_AAT_HAS_DELETED;
 	_hb_glyph_info_set_aat_deleted (&info);
       }
-      else
+      അല്ലെങ്കിൽ
       {
 #ifndef HB_NO_OT_LAYOUT
-	if (has_glyph_classes)
+	എങ്കിൽ (has_glyph_classes)
 	  _hb_glyph_info_set_glyph_props (&info,
 					  gdef.get_glyph_props (glyphs[i]));
 #endif
       }
-      if (!at_end_of_text)
-	if (unlikely (!buffer->output_glyph (glyphs[i]))) return false;
+      എങ്കിൽ (!at_end_of_text)
+	എങ്കിൽ (unlikely (!buffer->output_glyph (glyphs[i]))) തിരികെ അസത്യം;
     }
-    return true;
+    തിരികെ സത്യം;
   }
 
-  HB_NODISCARD bool replace_glyph (hb_codepoint_t glyph)
+  HB_NODISCARD തർക്കം replace_glyph (hb_codepoint_t glyph)
   {
-    if (glyph == DELETED_GLYPH)
+    എങ്കിൽ (glyph == DELETED_GLYPH)
     {
       buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_AAT_HAS_DELETED;
       _hb_glyph_info_set_aat_deleted (&buffer->cur());
     }
 
-    if (likely (using_buffer_glyph_set))
+    എങ്കിൽ (likely (using_buffer_glyph_set))
       buffer_glyph_set->add (glyph);
 #ifndef HB_NO_OT_LAYOUT
-    if (has_glyph_classes)
+    എങ്കിൽ (has_glyph_classes)
       _hb_glyph_info_set_glyph_props (&buffer->cur(),
 				      gdef.get_glyph_props (glyph));
 #endif
-    return buffer->replace_glyph (glyph);
+    തിരികെ buffer->replace_glyph (glyph);
   }
 
-  HB_NODISCARD bool delete_glyph ()
+  HB_NODISCARD തർക്കം delete_glyph ()
   {
     buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_AAT_HAS_DELETED;
     _hb_glyph_info_set_aat_deleted (&buffer->cur());
-    if (likely (using_buffer_glyph_set))
+    എങ്കിൽ (likely (using_buffer_glyph_set))
       buffer_glyph_set->add (DELETED_GLYPH);
-    return buffer->replace_glyph (DELETED_GLYPH);
+    തിരികെ buffer->replace_glyph (DELETED_GLYPH);
   }
 
-  void replace_glyph_inplace (unsigned i, hb_codepoint_t glyph)
+  ശൂന്യം replace_glyph_inplace (unsigned i, hb_codepoint_t glyph)
   {
     buffer->info[i].codepoint = glyph;
-    if (glyph == DELETED_GLYPH)
+    എങ്കിൽ (glyph == DELETED_GLYPH)
     {
       buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_AAT_HAS_DELETED;
       _hb_glyph_info_set_aat_deleted (&buffer->info[i]);
     }
-    if (likely (using_buffer_glyph_set))
+    എങ്കിൽ (likely (using_buffer_glyph_set))
       buffer_glyph_set->add (glyph);
 #ifndef HB_NO_OT_LAYOUT
-    if (has_glyph_classes)
+    എങ്കിൽ (has_glyph_classes)
       _hb_glyph_info_set_glyph_props (&buffer->info[i],
 				      gdef.get_glyph_props (glyph));
 #endif
@@ -267,545 +267,545 @@ struct hb_aat_apply_context_t :
  * Lookup Table
  */
 
-template <typename T> struct Lookup;
+template <typename T> ഘടന Lookup;
 
 template <typename T>
-struct LookupFormat0
+ഘടന LookupFormat0
 {
-  friend struct Lookup<T>;
+  friend ഘടന Lookup<T>;
 
-  private:
-  const T* get_value (hb_codepoint_t glyph_id, unsigned int num_glyphs) const
+  സ്വകാര്യ:
+  സ്ഥിരം T* get_മൂല്യം (hb_codepoint_t glyph_id, unsigned പൂർണ്ണസംഖ്യ അക്കം_glyphs) സ്ഥിരം
   {
-    if (unlikely (glyph_id >= num_glyphs)) return nullptr;
-    return &arrayZ[glyph_id];
+    എങ്കിൽ (unlikely (glyph_id >= അക്കം_glyphs)) തിരികെ nullptr;
+    തിരികെ &arrayZ[glyph_id];
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &glyphs, unsigned num_glyphs) const
+  ശൂന്യം collect_glyphs (set_t &glyphs, unsigned അക്കം_glyphs) സ്ഥിരം
   {
-    glyphs.add_range (0, num_glyphs - 1);
+    glyphs.add_range (0, അക്കം_glyphs - 1);
   }
   template <typename set_t, typename filter_t>
-  void collect_glyphs_filtered (set_t &glyphs, unsigned num_glyphs, const filter_t &filter) const
+  ശൂന്യം collect_glyphs_filtered (set_t &glyphs, unsigned അക്കം_glyphs, സ്ഥിരം filter_t &filter) സ്ഥിരം
   {
-    for (unsigned i = 0; i < num_glyphs; i++)
-      if (filter (arrayZ[i]))
+    വേണ്ടി (unsigned i = 0; i < അക്കം_glyphs; i++)
+      എങ്കിൽ (filter (arrayZ[i]))
 	glyphs.add (i);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (arrayZ.sanitize (c, c->get_num_glyphs ()));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (arrayZ.sanitize (c, c->get_അക്കം_glyphs ()));
   }
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  തർക്കം sanitize (hb_sanitize_context_t *c, സ്ഥിരം ശൂന്യം *base) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (arrayZ.sanitize (c, c->get_num_glyphs (), base));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (arrayZ.sanitize (c, c->get_അക്കം_glyphs (), base));
   }
 
-  protected:
+  സംരക്ഷിത:
   HBUINT16	format;		/* Format identifier--format = 0 */
   UnsizedArrayOf<T>
 		arrayZ;		/* Array of lookup values, indexed by glyph index. */
-  public:
+  പൊതു:
   DEFINE_SIZE_UNBOUNDED (2);
 };
 
 
 template <typename T>
-struct LookupSegmentSingle
+ഘടന LookupSegmentSingle
 {
-  static constexpr unsigned TerminationWordCount = 2u;
+  സ്ഥിതം constexpr unsigned Termination_Word_എണ്ണം = 2u;
 
-  int cmp (hb_codepoint_t g) const
-  { return g < first ? -1 : g <= last ? 0 : +1 ; }
+  പൂർണ്ണസംഖ്യ cmp (hb_codepoint_t g) സ്ഥിരം
+  { തിരികെ g < first ? -1 : g <= last ? 0 : +1 ; }
 
   template <typename set_t>
-  void collect_glyphs (set_t &glyphs) const
+  ശൂന്യം collect_glyphs (set_t &glyphs) സ്ഥിരം
   {
-    if (first == DELETED_GLYPH) return;
+    എങ്കിൽ (first == DELETED_GLYPH) തിരികെ;
     glyphs.add_range (first, last);
   }
   template <typename set_t, typename filter_t>
-  void collect_glyphs_filtered (set_t &glyphs, const filter_t &filter) const
+  ശൂന്യം collect_glyphs_filtered (set_t &glyphs, സ്ഥിരം filter_t &filter) സ്ഥിരം
   {
-    if (first == DELETED_GLYPH) return;
-    if (!filter (value)) return;
+    എങ്കിൽ (first == DELETED_GLYPH) തിരികെ;
+    എങ്കിൽ (!filter (value)) തിരികെ;
     glyphs.add_range (first, last);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && value.sanitize (c));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) && value.sanitize (c));
   }
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  തർക്കം sanitize (hb_sanitize_context_t *c, സ്ഥിരം ശൂന്യം *base) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && value.sanitize (c, base));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) && value.sanitize (c, base));
   }
 
   HBGlyphID16	last;		/* Last GlyphID in this segment */
   HBGlyphID16	first;		/* First GlyphID in this segment */
   T		value;		/* The lookup value (only one) */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (4 + T::static_size);
 };
 
 template <typename T>
-struct LookupFormat2
+ഘടന LookupFormat2
 {
-  friend struct Lookup<T>;
+  friend ഘടന Lookup<T>;
 
-  private:
-  const T* get_value (hb_codepoint_t glyph_id) const
+  സ്വകാര്യ:
+  സ്ഥിരം T* get_മൂല്യം (hb_codepoint_t glyph_id) സ്ഥിരം
   {
-    const LookupSegmentSingle<T> *v = segments.bsearch (glyph_id);
-    return v ? &v->value : nullptr;
+    സ്ഥിരം LookupSegmentSingle<T> *v = segments.bsearch (glyph_id);
+    തിരികെ v ? &v->value : nullptr;
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &glyphs) const
+  ശൂന്യം collect_glyphs (set_t &glyphs) സ്ഥിരം
   {
-    unsigned count = segments.get_length ();
-    for (unsigned int i = 0; i < count; i++)
+    unsigned എണ്ണം = segments.get_length ();
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
       segments[i].collect_glyphs (glyphs);
   }
   template <typename set_t, typename filter_t>
-  void collect_glyphs_filtered (set_t &glyphs, const filter_t &filter) const
+  ശൂന്യം collect_glyphs_filtered (set_t &glyphs, സ്ഥിരം filter_t &filter) സ്ഥിരം
   {
-    unsigned count = segments.get_length ();
-    for (unsigned int i = 0; i < count; i++)
+    unsigned എണ്ണം = segments.get_length ();
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
       segments[i].collect_glyphs_filtered (glyphs, filter);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ഇത്);
     return_trace (segments.sanitize (c));
   }
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  തർക്കം sanitize (hb_sanitize_context_t *c, സ്ഥിരം ശൂന്യം *base) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ഇത്);
     return_trace (segments.sanitize (c, base));
   }
 
-  protected:
+  സംരക്ഷിത:
   HBUINT16	format;		/* Format identifier--format = 2 */
-  VarSizedBinSearchArrayOf<LookupSegmentSingle<T>>
+  Var_Sized_Bin_തിരയൽ_Array_Of<LookupSegmentSingle<T>>
 		segments;	/* The actual segments. These must already be sorted,
 				 * according to the first word in each one (the last
 				 * glyph in each segment). */
-  public:
+  പൊതു:
   DEFINE_SIZE_ARRAY (8, segments);
 };
 
 template <typename T>
-struct LookupSegmentArray
+ഘടന LookupSegmentArray
 {
-  static constexpr unsigned TerminationWordCount = 2u;
+  സ്ഥിതം constexpr unsigned Termination_Word_എണ്ണം = 2u;
 
-  const T* get_value (hb_codepoint_t glyph_id, const void *base) const
+  സ്ഥിരം T* get_മൂല്യം (hb_codepoint_t glyph_id, സ്ഥിരം ശൂന്യം *base) സ്ഥിരം
   {
-    return first <= glyph_id && glyph_id <= last ? &(base+valuesZ)[glyph_id - first] : nullptr;
+    തിരികെ first <= glyph_id && glyph_id <= last ? &(base+മൂല്യങ്ങൾ_Z)[glyph_id - first] : nullptr;
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &glyphs) const
+  ശൂന്യം collect_glyphs (set_t &glyphs) സ്ഥിരം
   {
-    if (first == DELETED_GLYPH) return;
+    എങ്കിൽ (first == DELETED_GLYPH) തിരികെ;
     glyphs.add_range (first, last);
   }
   template <typename set_t, typename filter_t>
-  void collect_glyphs_filtered (set_t &glyphs, const void *base, const filter_t &filter) const
+  ശൂന്യം collect_glyphs_filtered (set_t &glyphs, സ്ഥിരം ശൂന്യം *base, സ്ഥിരം filter_t &filter) സ്ഥിരം
   {
-    if (first == DELETED_GLYPH) return;
-    const auto &values = base+valuesZ;
-    for (hb_codepoint_t i = first; i <= last; i++)
-      if (filter (values[i - first]))
+    എങ്കിൽ (first == DELETED_GLYPH) തിരികെ;
+    സ്ഥിരം auto &values = base+മൂല്യങ്ങൾ_Z;
+    വേണ്ടി (hb_codepoint_t i = first; i <= last; i++)
+      എങ്കിൽ (filter (values[i - first]))
 	glyphs.add (i);
   }
 
-  int cmp (hb_codepoint_t g) const
-  { return g < first ? -1 : g <= last ? 0 : +1; }
+  പൂർണ്ണസംഖ്യ cmp (hb_codepoint_t g) സ്ഥിരം
+  { തിരികെ g < first ? -1 : g <= last ? 0 : +1; }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  തർക്കം sanitize (hb_sanitize_context_t *c, സ്ഥിരം ശൂന്യം *base) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) &&
 		  hb_barrier () &&
 		  first <= last &&
-		  valuesZ.sanitize (c, base, last - first + 1));
+		  മൂല്യങ്ങൾ_Z.sanitize (c, base, last - first + 1));
   }
   template <typename ...Ts>
-  bool sanitize (hb_sanitize_context_t *c, const void *base, Ts&&... ds) const
+  തർക്കം sanitize (hb_sanitize_context_t *c, സ്ഥിരം ശൂന്യം *base, Ts&&... ds) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) &&
 		  hb_barrier () &&
 		  first <= last &&
-		  valuesZ.sanitize (c, base, last - first + 1, std::forward<Ts> (ds)...));
+		  മൂല്യങ്ങൾ_Z.sanitize (c, base, last - first + 1, std::forward<Ts> (ds)...));
   }
 
   HBGlyphID16	last;		/* Last GlyphID in this segment */
   HBGlyphID16	first;		/* First GlyphID in this segment */
   NNOffset16To<UnsizedArrayOf<T>>
-		valuesZ;	/* A 16-bit offset from the start of
+		മൂല്യങ്ങൾ_Z;	/* A 16-bit offset from the start of
 				 * the table to the data. */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (6);
 };
 
 template <typename T>
-struct LookupFormat4
+ഘടന LookupFormat4
 {
-  friend struct Lookup<T>;
+  friend ഘടന Lookup<T>;
 
-  private:
-  const T* get_value (hb_codepoint_t glyph_id) const
+  സ്വകാര്യ:
+  സ്ഥിരം T* get_മൂല്യം (hb_codepoint_t glyph_id) സ്ഥിരം
   {
-    const LookupSegmentArray<T> *v = segments.bsearch (glyph_id);
-    return v ? v->get_value (glyph_id, this) : nullptr;
+    സ്ഥിരം LookupSegmentArray<T> *v = segments.bsearch (glyph_id);
+    തിരികെ v ? v->get_മൂല്യം (glyph_id, ഇത്) : nullptr;
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &glyphs) const
+  ശൂന്യം collect_glyphs (set_t &glyphs) സ്ഥിരം
   {
-    unsigned count = segments.get_length ();
-    for (unsigned i = 0; i < count; i++)
+    unsigned എണ്ണം = segments.get_length ();
+    വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++)
       segments[i].collect_glyphs (glyphs);
   }
   template <typename set_t, typename filter_t>
-  void collect_glyphs_filtered (set_t &glyphs, const filter_t &filter) const
+  ശൂന്യം collect_glyphs_filtered (set_t &glyphs, സ്ഥിരം filter_t &filter) സ്ഥിരം
   {
-    unsigned count = segments.get_length ();
-    for (unsigned i = 0; i < count; i++)
-      segments[i].collect_glyphs_filtered (glyphs, this, filter);
+    unsigned എണ്ണം = segments.get_length ();
+    വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++)
+      segments[i].collect_glyphs_filtered (glyphs, ഇത്, filter);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (segments.sanitize (c, this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (segments.sanitize (c, ഇത്));
   }
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  തർക്കം sanitize (hb_sanitize_context_t *c, സ്ഥിരം ശൂന്യം *base) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (segments.sanitize (c, this, base));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (segments.sanitize (c, ഇത്, base));
   }
 
-  protected:
+  സംരക്ഷിത:
   HBUINT16	format;		/* Format identifier--format = 4 */
-  VarSizedBinSearchArrayOf<LookupSegmentArray<T>>
+  Var_Sized_Bin_തിരയൽ_Array_Of<LookupSegmentArray<T>>
 		segments;	/* The actual segments. These must already be sorted,
 				 * according to the first word in each one (the last
 				 * glyph in each segment). */
-  public:
+  പൊതു:
   DEFINE_SIZE_ARRAY (8, segments);
 };
 
 template <typename T>
-struct LookupSingle
+ഘടന LookupSingle
 {
-  static constexpr unsigned TerminationWordCount = 1u;
+  സ്ഥിതം constexpr unsigned Termination_Word_എണ്ണം = 1u;
 
-  int cmp (hb_codepoint_t g) const { return glyph.cmp (g); }
+  പൂർണ്ണസംഖ്യ cmp (hb_codepoint_t g) സ്ഥിരം { തിരികെ glyph.cmp (g); }
 
   template <typename set_t>
-  void collect_glyphs (set_t &glyphs) const
+  ശൂന്യം collect_glyphs (set_t &glyphs) സ്ഥിരം
   {
-    if (glyph == DELETED_GLYPH) return;
+    എങ്കിൽ (glyph == DELETED_GLYPH) തിരികെ;
     glyphs.add (glyph);
   }
   template <typename set_t, typename filter_t>
-  void collect_glyphs_filtered (set_t &glyphs, const filter_t &filter) const
+  ശൂന്യം collect_glyphs_filtered (set_t &glyphs, സ്ഥിരം filter_t &filter) സ്ഥിരം
   {
-    if (glyph == DELETED_GLYPH) return;
-    if (!filter (value)) return;
+    എങ്കിൽ (glyph == DELETED_GLYPH) തിരികെ;
+    എങ്കിൽ (!filter (value)) തിരികെ;
     glyphs.add (glyph);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && value.sanitize (c));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) && value.sanitize (c));
   }
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  തർക്കം sanitize (hb_sanitize_context_t *c, സ്ഥിരം ശൂന്യം *base) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && value.sanitize (c, base));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) && value.sanitize (c, base));
   }
 
   HBGlyphID16	glyph;		/* Last GlyphID */
   T		value;		/* The lookup value (only one) */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (2 + T::static_size);
 };
 
 template <typename T>
-struct LookupFormat6
+ഘടന LookupFormat6
 {
-  friend struct Lookup<T>;
+  friend ഘടന Lookup<T>;
 
-  private:
-  const T* get_value (hb_codepoint_t glyph_id) const
+  സ്വകാര്യ:
+  സ്ഥിരം T* get_മൂല്യം (hb_codepoint_t glyph_id) സ്ഥിരം
   {
-    const LookupSingle<T> *v = entries.bsearch (glyph_id);
-    return v ? &v->value : nullptr;
+    സ്ഥിരം LookupSingle<T> *v = entries.bsearch (glyph_id);
+    തിരികെ v ? &v->value : nullptr;
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &glyphs) const
+  ശൂന്യം collect_glyphs (set_t &glyphs) സ്ഥിരം
   {
-    unsigned count = entries.get_length ();
-    for (unsigned i = 0; i < count; i++)
+    unsigned എണ്ണം = entries.get_length ();
+    വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++)
       entries[i].collect_glyphs (glyphs);
   }
   template <typename set_t, typename filter_t>
-  void collect_glyphs_filtered (set_t &glyphs, const filter_t &filter) const
+  ശൂന്യം collect_glyphs_filtered (set_t &glyphs, സ്ഥിരം filter_t &filter) സ്ഥിരം
   {
-    unsigned count = entries.get_length ();
-    for (unsigned i = 0; i < count; i++)
+    unsigned എണ്ണം = entries.get_length ();
+    വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++)
       entries[i].collect_glyphs_filtered (glyphs, filter);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ഇത്);
     return_trace (entries.sanitize (c));
   }
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  തർക്കം sanitize (hb_sanitize_context_t *c, സ്ഥിരം ശൂന്യം *base) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ഇത്);
     return_trace (entries.sanitize (c, base));
   }
 
-  protected:
+  സംരക്ഷിത:
   HBUINT16	format;		/* Format identifier--format = 6 */
-  VarSizedBinSearchArrayOf<LookupSingle<T>>
+  Var_Sized_Bin_തിരയൽ_Array_Of<LookupSingle<T>>
 		entries;	/* The actual entries, sorted by glyph index. */
-  public:
+  പൊതു:
   DEFINE_SIZE_ARRAY (8, entries);
 };
 
 template <typename T>
-struct LookupFormat8
+ഘടന LookupFormat8
 {
-  friend struct Lookup<T>;
+  friend ഘടന Lookup<T>;
 
-  private:
-  const T* get_value (hb_codepoint_t glyph_id) const
+  സ്വകാര്യ:
+  സ്ഥിരം T* get_മൂല്യം (hb_codepoint_t glyph_id) സ്ഥിരം
   {
-    return firstGlyph <= glyph_id && glyph_id - firstGlyph < glyphCount ?
-	   &valueArrayZ[glyph_id - firstGlyph] : nullptr;
+    തിരികെ firstGlyph <= glyph_id && glyph_id - firstGlyph < glyph_എണ്ണം_2 ?
+	   &മൂല്യം_Array_Z[glyph_id - firstGlyph] : nullptr;
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &glyphs) const
+  ശൂന്യം collect_glyphs (set_t &glyphs) സ്ഥിരം
   {
-    if (unlikely (!glyphCount)) return;
-    if (firstGlyph == DELETED_GLYPH) return;
-    glyphs.add_range (firstGlyph, firstGlyph + glyphCount - 1);
+    എങ്കിൽ (unlikely (!glyph_എണ്ണം_2)) തിരികെ;
+    എങ്കിൽ (firstGlyph == DELETED_GLYPH) തിരികെ;
+    glyphs.add_range (firstGlyph, firstGlyph + glyph_എണ്ണം_2 - 1);
   }
   template <typename set_t, typename filter_t>
-  void collect_glyphs_filtered (set_t &glyphs, const filter_t &filter) const
+  ശൂന്യം collect_glyphs_filtered (set_t &glyphs, സ്ഥിരം filter_t &filter) സ്ഥിരം
   {
-    if (unlikely (!glyphCount)) return;
-    if (firstGlyph == DELETED_GLYPH) return;
-    const T *p = valueArrayZ.arrayZ;
-    for (unsigned i = 0; i < glyphCount; i++)
-      if (filter (p[i]))
+    എങ്കിൽ (unlikely (!glyph_എണ്ണം_2)) തിരികെ;
+    എങ്കിൽ (firstGlyph == DELETED_GLYPH) തിരികെ;
+    സ്ഥിരം T *p = മൂല്യം_Array_Z.arrayZ;
+    വേണ്ടി (unsigned i = 0; i < glyph_എണ്ണം_2; i++)
+      എങ്കിൽ (filter (p[i]))
 	glyphs.add (firstGlyph + i);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && valueArrayZ.sanitize (c, glyphCount));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) && മൂല്യം_Array_Z.sanitize (c, glyph_എണ്ണം_2));
   }
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  തർക്കം sanitize (hb_sanitize_context_t *c, സ്ഥിരം ശൂന്യം *base) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && valueArrayZ.sanitize (c, glyphCount, base));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) && മൂല്യം_Array_Z.sanitize (c, glyph_എണ്ണം_2, base));
   }
 
-  protected:
+  സംരക്ഷിത:
   HBUINT16	format;		/* Format identifier--format = 8 */
   HBGlyphID16	firstGlyph;	/* First glyph index included in the trimmed array. */
-  HBUINT16	glyphCount;	/* Total number of glyphs (equivalent to the last
+  HBUINT16	glyph_എണ്ണം_2;	/* Total number of glyphs (equivalent to the last
 				 * glyph minus the value of firstGlyph plus 1). */
   UnsizedArrayOf<T>
-		valueArrayZ;	/* The lookup values (indexed by the glyph index
+		മൂല്യം_Array_Z;	/* The lookup values (indexed by the glyph index
 				 * minus the value of firstGlyph). */
-  public:
-  DEFINE_SIZE_ARRAY (6, valueArrayZ);
+  പൊതു:
+  DEFINE_SIZE_ARRAY (6, മൂല്യം_Array_Z);
 };
 
 template <typename T>
-struct LookupFormat10
+ഘടന LookupFormat10
 {
-  friend struct Lookup<T>;
+  friend ഘടന Lookup<T>;
 
-  private:
-  const typename T::type get_value_or_null (hb_codepoint_t glyph_id) const
+  സ്വകാര്യ:
+  സ്ഥിരം typename T::type get_മൂല്യം_or_null (hb_codepoint_t glyph_id) സ്ഥിരം
   {
-    if (!(firstGlyph <= glyph_id && glyph_id - firstGlyph < glyphCount))
-      return Null (T);
+    എങ്കിൽ (!(firstGlyph <= glyph_id && glyph_id - firstGlyph < glyph_എണ്ണം_2))
+      തിരികെ Null (T);
 
-    const HBUINT8 *p = &valueArrayZ[(glyph_id - firstGlyph) * valueSize];
+    സ്ഥിരം HBUINT8 *p = &മൂല്യം_Array_Z[(glyph_id - firstGlyph) * മൂല്യം_Size];
 
-    unsigned int v = 0;
-    unsigned int count = valueSize;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned പൂർണ്ണസംഖ്യ v = 0;
+    unsigned പൂർണ്ണസംഖ്യ എണ്ണം = മൂല്യം_Size;
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
       v = (v << 8) | *p++;
 
-    return v;
+    തിരികെ v;
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &glyphs) const
+  ശൂന്യം collect_glyphs (set_t &glyphs) സ്ഥിരം
   {
-    if (unlikely (!glyphCount)) return;
-    if (firstGlyph == DELETED_GLYPH) return;
-    glyphs.add_range (firstGlyph, firstGlyph + glyphCount - 1);
+    എങ്കിൽ (unlikely (!glyph_എണ്ണം_2)) തിരികെ;
+    എങ്കിൽ (firstGlyph == DELETED_GLYPH) തിരികെ;
+    glyphs.add_range (firstGlyph, firstGlyph + glyph_എണ്ണം_2 - 1);
   }
 
   template <typename set_t, typename filter_t>
-  void collect_glyphs_filtered (set_t &glyphs, const filter_t &filter) const
+  ശൂന്യം collect_glyphs_filtered (set_t &glyphs, സ്ഥിരം filter_t &filter) സ്ഥിരം
   {
-    if (unlikely (!glyphCount)) return;
-    if (firstGlyph == DELETED_GLYPH) return;
-    const HBUINT8 *p = valueArrayZ.arrayZ;
-    for (unsigned i = 0; i < glyphCount; i++)
+    എങ്കിൽ (unlikely (!glyph_എണ്ണം_2)) തിരികെ;
+    എങ്കിൽ (firstGlyph == DELETED_GLYPH) തിരികെ;
+    സ്ഥിരം HBUINT8 *p = മൂല്യം_Array_Z.arrayZ;
+    വേണ്ടി (unsigned i = 0; i < glyph_എണ്ണം_2; i++)
     {
-      unsigned int v = 0;
-      unsigned int count = valueSize;
-      for (unsigned int j = 0; j < count; j++)
+      unsigned പൂർണ്ണസംഖ്യ v = 0;
+      unsigned പൂർണ്ണസംഖ്യ എണ്ണം = മൂല്യം_Size;
+      വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ j = 0; j < എണ്ണം; j++)
 	v = (v << 8) | *p++;
-      if (filter (v))
+      എങ്കിൽ (filter (v))
 	glyphs.add (firstGlyph + i);
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) &&
 		  hb_barrier () &&
-		  valueSize <= 4 &&
-		  valueArrayZ.sanitize (c, glyphCount * valueSize));
+		  മൂല്യം_Size <= 4 &&
+		  മൂല്യം_Array_Z.sanitize (c, glyph_എണ്ണം_2 * മൂല്യം_Size));
   }
 
-  protected:
+  സംരക്ഷിത:
   HBUINT16	format;		/* Format identifier--format = 8 */
-  HBUINT16	valueSize;	/* Byte size of each value. */
+  HBUINT16	മൂല്യം_Size;	/* Byte size of each value. */
   HBGlyphID16	firstGlyph;	/* First glyph index included in the trimmed array. */
-  HBUINT16	glyphCount;	/* Total number of glyphs (equivalent to the last
+  HBUINT16	glyph_എണ്ണം_2;	/* Total number of glyphs (equivalent to the last
 				 * glyph minus the value of firstGlyph plus 1). */
   UnsizedArrayOf<HBUINT8>
-		valueArrayZ;	/* The lookup values (indexed by the glyph index
+		മൂല്യം_Array_Z;	/* The lookup values (indexed by the glyph index
 				 * minus the value of firstGlyph). */
-  public:
-  DEFINE_SIZE_ARRAY (8, valueArrayZ);
+  പൊതു:
+  DEFINE_SIZE_ARRAY (8, മൂല്യം_Array_Z);
 };
 
 template <typename T>
-struct Lookup
+ഘടന Lookup
 {
-  const T* get_value (hb_codepoint_t glyph_id, unsigned int num_glyphs) const
+  സ്ഥിരം T* get_മൂല്യം (hb_codepoint_t glyph_id, unsigned പൂർണ്ണസംഖ്യ അക്കം_glyphs) സ്ഥിരം
   {
-    switch (u.format.v) {
-    case 0: hb_barrier (); return u.format0.get_value (glyph_id, num_glyphs);
-    case 2: hb_barrier (); return u.format2.get_value (glyph_id);
-    case 4: hb_barrier (); return u.format4.get_value (glyph_id);
-    case 6: hb_barrier (); return u.format6.get_value (glyph_id);
-    case 8: hb_barrier (); return u.format8.get_value (glyph_id);
-    default:return nullptr;
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 0: hb_barrier (); തിരികെ u.format0.get_മൂല്യം (glyph_id, അക്കം_glyphs);
+    അവസ്ഥ 2: hb_barrier (); തിരികെ u.format2.get_മൂല്യം (glyph_id);
+    അവസ്ഥ 4: hb_barrier (); തിരികെ u.format4.get_മൂല്യം (glyph_id);
+    അവസ്ഥ 6: hb_barrier (); തിരികെ u.format6.get_മൂല്യം (glyph_id);
+    അവസ്ഥ 8: hb_barrier (); തിരികെ u.format8.get_മൂല്യം (glyph_id);
+    സ്ഥിരസ്ഥിതി:തിരികെ nullptr;
     }
   }
 
-  const typename T::type get_value_or_null (hb_codepoint_t glyph_id, unsigned int num_glyphs) const
+  സ്ഥിരം typename T::type get_മൂല്യം_or_null (hb_codepoint_t glyph_id, unsigned പൂർണ്ണസംഖ്യ അക്കം_glyphs) സ്ഥിരം
   {
-    switch (u.format.v) {
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
       /* Format 10 cannot return a pointer. */
-      case 10: hb_barrier (); return u.format10.get_value_or_null (glyph_id);
-      default:
-      const T *v = get_value (glyph_id, num_glyphs);
-      return v ? *v : Null (T);
+      അവസ്ഥ 10: hb_barrier (); തിരികെ u.format10.get_മൂല്യം_or_null (glyph_id);
+      സ്ഥിരസ്ഥിതി:
+      സ്ഥിരം T *v = get_മൂല്യം (glyph_id, അക്കം_glyphs);
+      തിരികെ v ? *v : Null (T);
     }
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &glyphs, unsigned int num_glyphs) const
+  ശൂന്യം collect_glyphs (set_t &glyphs, unsigned പൂർണ്ണസംഖ്യ അക്കം_glyphs) സ്ഥിരം
   {
-    switch (u.format.v) {
-    case 0: hb_barrier (); u.format0.collect_glyphs (glyphs, num_glyphs); return;
-    case 2: hb_barrier (); u.format2.collect_glyphs (glyphs); return;
-    case 4: hb_barrier (); u.format4.collect_glyphs (glyphs); return;
-    case 6: hb_barrier (); u.format6.collect_glyphs (glyphs); return;
-    case 8: hb_barrier (); u.format8.collect_glyphs (glyphs); return;
-    case 10: hb_barrier (); u.format10.collect_glyphs (glyphs); return;
-    default:return;
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 0: hb_barrier (); u.format0.collect_glyphs (glyphs, അക്കം_glyphs); തിരികെ;
+    അവസ്ഥ 2: hb_barrier (); u.format2.collect_glyphs (glyphs); തിരികെ;
+    അവസ്ഥ 4: hb_barrier (); u.format4.collect_glyphs (glyphs); തിരികെ;
+    അവസ്ഥ 6: hb_barrier (); u.format6.collect_glyphs (glyphs); തിരികെ;
+    അവസ്ഥ 8: hb_barrier (); u.format8.collect_glyphs (glyphs); തിരികെ;
+    അവസ്ഥ 10: hb_barrier (); u.format10.collect_glyphs (glyphs); തിരികെ;
+    സ്ഥിരസ്ഥിതി:തിരികെ;
     }
   }
   template <typename set_t, typename filter_t>
-  void collect_glyphs_filtered (set_t &glyphs, unsigned num_glyphs, const filter_t &filter) const
+  ശൂന്യം collect_glyphs_filtered (set_t &glyphs, unsigned അക്കം_glyphs, സ്ഥിരം filter_t &filter) സ്ഥിരം
   {
-    switch (u.format.v) {
-    case 0: hb_barrier (); u.format0.collect_glyphs_filtered (glyphs, num_glyphs, filter); return;
-    case 2: hb_barrier (); u.format2.collect_glyphs_filtered (glyphs, filter); return;
-    case 4: hb_barrier (); u.format4.collect_glyphs_filtered (glyphs, filter); return;
-    case 6: hb_barrier (); u.format6.collect_glyphs_filtered (glyphs, filter); return;
-    case 8: hb_barrier (); u.format8.collect_glyphs_filtered (glyphs, filter); return;
-    case 10: hb_barrier (); u.format10.collect_glyphs_filtered (glyphs, filter); return;
-    default:return;
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 0: hb_barrier (); u.format0.collect_glyphs_filtered (glyphs, അക്കം_glyphs, filter); തിരികെ;
+    അവസ്ഥ 2: hb_barrier (); u.format2.collect_glyphs_filtered (glyphs, filter); തിരികെ;
+    അവസ്ഥ 4: hb_barrier (); u.format4.collect_glyphs_filtered (glyphs, filter); തിരികെ;
+    അവസ്ഥ 6: hb_barrier (); u.format6.collect_glyphs_filtered (glyphs, filter); തിരികെ;
+    അവസ്ഥ 8: hb_barrier (); u.format8.collect_glyphs_filtered (glyphs, filter); തിരികെ;
+    അവസ്ഥ 10: hb_barrier (); u.format10.collect_glyphs_filtered (glyphs, filter); തിരികെ;
+    സ്ഥിരസ്ഥിതി:തിരികെ;
     }
   }
 
   typename T::type get_class (hb_codepoint_t glyph_id,
-			      unsigned int num_glyphs,
-			      unsigned int outOfRange) const
+			      unsigned പൂർണ്ണസംഖ്യ അക്കം_glyphs,
+			      unsigned പൂർണ്ണസംഖ്യ outOfRange) സ്ഥിരം
   {
-    const T *v = get_value (glyph_id, num_glyphs);
-    return v ? *v : outOfRange;
+    സ്ഥിരം T *v = get_മൂല്യം (glyph_id, അക്കം_glyphs);
+    തിരികെ v ? *v : outOfRange;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (ഇത്);
+    എങ്കിൽ (!u.format.v.sanitize (c)) return_trace (അസത്യം);
     hb_barrier ();
-    switch (u.format.v) {
-    case 0: hb_barrier (); return_trace (u.format0.sanitize (c));
-    case 2: hb_barrier (); return_trace (u.format2.sanitize (c));
-    case 4: hb_barrier (); return_trace (u.format4.sanitize (c));
-    case 6: hb_barrier (); return_trace (u.format6.sanitize (c));
-    case 8: hb_barrier (); return_trace (u.format8.sanitize (c));
-    case 10: hb_barrier (); return_trace (u.format10.sanitize (c));
-    default:return_trace (true);
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 0: hb_barrier (); return_trace (u.format0.sanitize (c));
+    അവസ്ഥ 2: hb_barrier (); return_trace (u.format2.sanitize (c));
+    അവസ്ഥ 4: hb_barrier (); return_trace (u.format4.sanitize (c));
+    അവസ്ഥ 6: hb_barrier (); return_trace (u.format6.sanitize (c));
+    അവസ്ഥ 8: hb_barrier (); return_trace (u.format8.sanitize (c));
+    അവസ്ഥ 10: hb_barrier (); return_trace (u.format10.sanitize (c));
+    സ്ഥിരസ്ഥിതി:return_trace (സത്യം);
     }
   }
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  തർക്കം sanitize (hb_sanitize_context_t *c, സ്ഥിരം ശൂന്യം *base) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (ഇത്);
+    എങ്കിൽ (!u.format.v.sanitize (c)) return_trace (അസത്യം);
     hb_barrier ();
-    switch (u.format.v) {
-    case 0: hb_barrier (); return_trace (u.format0.sanitize (c, base));
-    case 2: hb_barrier (); return_trace (u.format2.sanitize (c, base));
-    case 4: hb_barrier (); return_trace (u.format4.sanitize (c, base));
-    case 6: hb_barrier (); return_trace (u.format6.sanitize (c, base));
-    case 8: hb_barrier (); return_trace (u.format8.sanitize (c, base));
-    case 10: return_trace (false); /* We don't support format10 here currently. */
-    default:return_trace (true);
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 0: hb_barrier (); return_trace (u.format0.sanitize (c, base));
+    അവസ്ഥ 2: hb_barrier (); return_trace (u.format2.sanitize (c, base));
+    അവസ്ഥ 4: hb_barrier (); return_trace (u.format4.sanitize (c, base));
+    അവസ്ഥ 6: hb_barrier (); return_trace (u.format6.sanitize (c, base));
+    അവസ്ഥ 8: hb_barrier (); return_trace (u.format8.sanitize (c, base));
+    അവസ്ഥ 10: return_trace (അസത്യം); /* We don't support format10 here currently. */
+    സ്ഥിരസ്ഥിതി:return_trace (സത്യം);
     }
   }
 
-  protected:
-  union {
-  struct { HBUINT16 v; }	format;		/* Format identifier */
+  സംരക്ഷിത:
+  സംഘം {
+  ഘടന { HBUINT16 v; }	format;		/* Format identifier */
   LookupFormat0<T>	format0;
   LookupFormat2<T>	format2;
   LookupFormat4<T>	format4;
@@ -813,7 +813,7 @@ struct Lookup
   LookupFormat8<T>	format8;
   LookupFormat10<T>	format10;
   } u;
-  public:
+  പൊതു:
   DEFINE_SIZE_UNION (2, format.v);
 };
 DECLARE_NULL_NAMESPACE_BYTES_TEMPLATE1 (AAT, Lookup, 13);
@@ -823,12 +823,12 @@ DECLARE_NULL_NAMESPACE_BYTES_TEMPLATE1 (AAT, Lookup, 13);
  */
 
 template <typename T>
-struct Entry
+ഘടന Entry
 {
   // This doesn't seem like it's ever called.
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ഇത്);
     /* Note, we don't recurse-sanitize data because we don't access it.
      * That said, in our DEFINE_SIZE_STATIC we access T::static_size,
      * which ensures that data has a simple sanitize(). To be determined
@@ -838,138 +838,138 @@ struct Entry
      * assertion wouldn't be checked, hence the line below. */
     static_assert (T::static_size, "");
 
-    return_trace (c->check_struct (this));
+    return_trace (c->check_struct (ഇത്));
   }
 
-  public:
+  പൊതു:
   HBUINT16	newState;	/* Byte offset from beginning of state table
 				 * to the new state. Really?!?! Or just state
 				 * number?  The latter in morx for sure. */
   HBUINT16	flags;		/* Table specific. */
   T		data;		/* Optional offsets to per-glyph tables. */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (4 + T::static_size);
 };
 
 template <>
-struct Entry<void>
+ഘടന Entry<ശൂന്യം>
 {
   // This does seem like it's ever called.
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
-  public:
+  പൊതു:
   HBUINT16	newState;	/* Byte offset from beginning of state table to the new state. */
   HBUINT16	flags;		/* Table specific. */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (4);
 };
 
-enum Class
+എണ്ണൽ Class
 {
   CLASS_END_OF_TEXT = 0,
   CLASS_OUT_OF_BOUNDS = 1,
   CLASS_DELETED_GLYPH = 2,
-  CLASS_END_OF_LINE = 3,
+  CLASS_END_OF_വരി = 3,
 };
 
 template <typename Types, typename Extra>
-struct StateTable
+ഘടന StateTable
 {
-  typedef typename Types::HBUINT HBUINT;
-  typedef typename Types::HBUSHORT HBUSHORT;
-  typedef typename Types::ClassTypeNarrow ClassType;
+  തരനിർവചനം typename Types::HBUINT HBUINT;
+  തരനിർവചനം typename Types::HBUSHORT HBUSHORT;
+  തരനിർവചനം typename Types::ClassTypeNarrow ClassType;
 
-  enum State
+  എണ്ണൽ State
   {
     STATE_START_OF_TEXT = 0,
-    STATE_START_OF_LINE = 1,
+    STATE_START_OF_വരി = 1,
   };
 
   template <typename set_t, typename table_t>
-  void collect_initial_glyphs (set_t &glyphs, unsigned num_glyphs, const table_t &table) const
+  ശൂന്യം collect_initial_glyphs (set_t &glyphs, unsigned അക്കം_glyphs, സ്ഥിരം table_t &table) സ്ഥിരം
   {
-    unsigned num_classes = nClasses;
+    unsigned അക്കം_classes = nClasses;
 
-    if (unlikely (num_classes > hb_bit_page_t::BITS))
+    എങ്കിൽ (unlikely (അക്കം_classes > hb_bit_page_t::BITS))
     {
-      (this+classTable).collect_glyphs (glyphs, num_glyphs);
-      return;
+      (ഇത്+classTable).collect_glyphs (glyphs, അക്കം_glyphs);
+      തിരികെ;
     }
 
     // Collect all classes going out from the start state.
     hb_bit_page_t filter;
 
-    for (unsigned i = 0; i < num_classes; i++)
+    വേണ്ടി (unsigned i = 0; i < അക്കം_classes; i++)
     {
-      const auto &entry = get_entry (STATE_START_OF_TEXT, i);
-      if (new_state (entry.newState) == STATE_START_OF_TEXT &&
+      സ്ഥിരം auto &entry = get_entry (STATE_START_OF_TEXT, i);
+      എങ്കിൽ (new_state (entry.newState) == STATE_START_OF_TEXT &&
 	  !table.is_action_initiable (entry) && !table.is_actionable (entry))
-	continue;
+	തുടരുക;
 
       filter.add (i);
     }
 
     // And glyphs in those classes.
 
-    if (filter (CLASS_DELETED_GLYPH))
+    എങ്കിൽ (filter (CLASS_DELETED_GLYPH))
       glyphs.add (DELETED_GLYPH);
 
-    (this+classTable).collect_glyphs_filtered (glyphs, num_glyphs, filter);
+    (ഇത്+classTable).collect_glyphs_filtered (glyphs, അക്കം_glyphs, filter);
   }
 
-  int new_state (unsigned int newState) const
-  { return Types::extended ? newState : ((int) newState - (int) stateArrayTable) / (int) nClasses; }
+  പൂർണ്ണസംഖ്യ new_state (unsigned പൂർണ്ണസംഖ്യ newState) സ്ഥിരം
+  { തിരികെ Types::extended ? newState : ((പൂർണ്ണസംഖ്യ) newState - (പൂർണ്ണസംഖ്യ) stateArrayTable) / (പൂർണ്ണസംഖ്യ) nClasses; }
 
-  unsigned int get_class (hb_codepoint_t glyph_id,
-			  unsigned int num_glyphs,
-			  hb_aat_class_cache_t *cache = nullptr) const
+  unsigned പൂർണ്ണസംഖ്യ get_class (hb_codepoint_t glyph_id,
+			  unsigned പൂർണ്ണസംഖ്യ അക്കം_glyphs,
+			  hb_aat_class_cache_t *cache = nullptr) സ്ഥിരം
   {
     unsigned klass;
-    if (cache && cache->get (glyph_id, &klass)) return klass;
-    if (unlikely (glyph_id == DELETED_GLYPH)) return CLASS_DELETED_GLYPH;
-    klass = (this+classTable).get_class (glyph_id, num_glyphs, CLASS_OUT_OF_BOUNDS);
-    if (cache) cache->set (glyph_id, klass);
-    return klass;
+    എങ്കിൽ (cache && cache->get (glyph_id, &klass)) തിരികെ klass;
+    എങ്കിൽ (unlikely (glyph_id == DELETED_GLYPH)) തിരികെ CLASS_DELETED_GLYPH;
+    klass = (ഇത്+classTable).get_class (glyph_id, അക്കം_glyphs, CLASS_OUT_OF_BOUNDS);
+    എങ്കിൽ (cache) cache->set (glyph_id, klass);
+    തിരികെ klass;
   }
 
-  const Entry<Extra> *get_entries () const
-  { return (this+entryTable).arrayZ; }
+  സ്ഥിരം Entry<Extra> *get_entries () സ്ഥിരം
+  { തിരികെ (ഇത്+entryTable).arrayZ; }
 
-  const Entry<Extra> &get_entry (int state, unsigned int klass) const
+  സ്ഥിരം Entry<Extra> &get_entry (പൂർണ്ണസംഖ്യ state, unsigned പൂർണ്ണസംഖ്യ klass) സ്ഥിരം
   {
     unsigned n_classes = nClasses;
-    if (unlikely (klass >= n_classes))
+    എങ്കിൽ (unlikely (klass >= n_classes))
       klass = CLASS_OUT_OF_BOUNDS;
 
-    const HBUSHORT *states = (this+stateArrayTable).arrayZ;
-    const Entry<Extra> *entries = (this+entryTable).arrayZ;
+    സ്ഥിരം HBUSHORT *states = (ഇത്+stateArrayTable).arrayZ;
+    സ്ഥിരം Entry<Extra> *entries = (ഇത്+entryTable).arrayZ;
 
-    unsigned int entry = states[state * n_classes + klass];
-    DEBUG_MSG (APPLY, nullptr, "e%u", entry);
+    unsigned പൂർണ്ണസംഖ്യ entry = states[state * n_classes + klass];
+    DEBUG_സന്ദേശം (APPLY, nullptr, "e%u", entry);
 
-    return entries[entry];
+    തിരികെ entries[entry];
   }
 
-  bool sanitize (hb_sanitize_context_t *c,
-		 unsigned int *num_entries_out = nullptr) const
+  തർക്കം sanitize (hb_sanitize_context_t *c,
+		 unsigned പൂർണ്ണസംഖ്യ *അക്കം_entries_out = nullptr) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!(c->check_struct (this) &&
+    TRACE_SANITIZE (ഇത്);
+    എങ്കിൽ (unlikely (!(c->check_struct (ഇത്) &&
 		    hb_barrier () &&
 		    nClasses >= 4 /* Ensure pre-defined classes fit.  */ &&
-		    classTable.sanitize (c, this)))) return_trace (false);
+		    classTable.sanitize (c, ഇത്)))) return_trace (അസത്യം);
 
-    const HBUSHORT *states = (this+stateArrayTable).arrayZ;
-    const Entry<Extra> *entries = (this+entryTable).arrayZ;
+    സ്ഥിരം HBUSHORT *states = (ഇത്+stateArrayTable).arrayZ;
+    സ്ഥിരം Entry<Extra> *entries = (ഇത്+entryTable).arrayZ;
 
-    unsigned int num_classes = nClasses;
-    if (unlikely (hb_unsigned_mul_overflows (num_classes, states[0].static_size)))
-      return_trace (false);
-    unsigned int row_stride = num_classes * states[0].static_size;
+    unsigned പൂർണ്ണസംഖ്യ അക്കം_classes = nClasses;
+    എങ്കിൽ (unlikely (hb_unsigned_mul_overflows (അക്കം_classes, states[0].static_size)))
+      return_trace (അസത്യം);
+    unsigned പൂർണ്ണസംഖ്യ row_stride = അക്കം_classes * states[0].static_size;
 
     /* Apple 'kern' table has this peculiarity:
      *
@@ -985,80 +985,80 @@ struct StateTable
      * tables are not affected since those address states by index, not offset.
      */
 
-    int min_state = 0;
-    int max_state = 0;
-    unsigned int num_entries = 0;
+    പൂർണ്ണസംഖ്യ min_state = 0;
+    പൂർണ്ണസംഖ്യ max_state = 0;
+    unsigned പൂർണ്ണസംഖ്യ അക്കം_entries = 0;
 
-    int state_pos = 0;
-    int state_neg = 0;
-    unsigned int entry = 0;
-    while (min_state < state_neg || state_pos <= max_state)
+    പൂർണ്ണസംഖ്യ state_pos = 0;
+    പൂർണ്ണസംഖ്യ state_neg = 0;
+    unsigned പൂർണ്ണസംഖ്യ entry = 0;
+    ആകുമ്പോൾ (min_state < state_neg || state_pos <= max_state)
     {
-      if (min_state < state_neg)
+      എങ്കിൽ (min_state < state_neg)
       {
 	/* Negative states. */
-	if (unlikely (hb_unsigned_mul_overflows (min_state, num_classes)))
-	  return_trace (false);
-	if (unlikely (!c->check_range (&states[min_state * num_classes],
+	എങ്കിൽ (unlikely (hb_unsigned_mul_overflows (min_state, അക്കം_classes)))
+	  return_trace (അസത്യം);
+	എങ്കിൽ (unlikely (!c->check_range (&states[min_state * അക്കം_classes],
 				       -min_state,
 				       row_stride)))
-	  return_trace (false);
-	if ((c->max_ops -= state_neg - min_state) <= 0)
-	  return_trace (false);
+	  return_trace (അസത്യം);
+	എങ്കിൽ ((c->max_ops -= state_neg - min_state) <= 0)
+	  return_trace (അസത്യം);
 	{ /* Sweep new states. */
-	  const HBUSHORT *stop = &states[min_state * num_classes];
-	  if (unlikely (stop > states))
-	    return_trace (false);
-	  for (const HBUSHORT *p = states; stop < p; p--)
-	    num_entries = hb_max (num_entries, *(p - 1) + 1u);
+	  സ്ഥിരം HBUSHORT *stop = &states[min_state * അക്കം_classes];
+	  എങ്കിൽ (unlikely (stop > states))
+	    return_trace (അസത്യം);
+	  വേണ്ടി (സ്ഥിരം HBUSHORT *p = states; stop < p; p--)
+	    അക്കം_entries = hb_max (അക്കം_entries, *(p - 1) + 1u);
 	  state_neg = min_state;
 	}
       }
 
-      if (state_pos <= max_state)
+      എങ്കിൽ (state_pos <= max_state)
       {
 	/* Positive states. */
-	if (unlikely (!c->check_range (states,
+	എങ്കിൽ (unlikely (!c->check_range (states,
 				       max_state + 1,
 				       row_stride)))
-	  return_trace (false);
-	if ((c->max_ops -= max_state - state_pos + 1) <= 0)
-	  return_trace (false);
+	  return_trace (അസത്യം);
+	എങ്കിൽ ((c->max_ops -= max_state - state_pos + 1) <= 0)
+	  return_trace (അസത്യം);
 	{ /* Sweep new states. */
-	  if (unlikely (hb_unsigned_mul_overflows ((max_state + 1), num_classes)))
-	    return_trace (false);
-	  const HBUSHORT *stop = &states[(max_state + 1) * num_classes];
-	  if (unlikely (stop < states))
-	    return_trace (false);
-	  for (const HBUSHORT *p = &states[state_pos * num_classes]; p < stop; p++)
-	    num_entries = hb_max (num_entries, *p + 1u);
+	  എങ്കിൽ (unlikely (hb_unsigned_mul_overflows ((max_state + 1), അക്കം_classes)))
+	    return_trace (അസത്യം);
+	  സ്ഥിരം HBUSHORT *stop = &states[(max_state + 1) * അക്കം_classes];
+	  എങ്കിൽ (unlikely (stop < states))
+	    return_trace (അസത്യം);
+	  വേണ്ടി (സ്ഥിരം HBUSHORT *p = &states[state_pos * അക്കം_classes]; p < stop; p++)
+	    അക്കം_entries = hb_max (അക്കം_entries, *p + 1u);
 	  state_pos = max_state + 1;
 	}
       }
 
-      if (unlikely (!c->check_array (entries, num_entries)))
-	return_trace (false);
-      if ((c->max_ops -= num_entries - entry) <= 0)
-	return_trace (false);
+      എങ്കിൽ (unlikely (!c->check_array (entries, അക്കം_entries)))
+	return_trace (അസത്യം);
+      എങ്കിൽ ((c->max_ops -= അക്കം_entries - entry) <= 0)
+	return_trace (അസത്യം);
       { /* Sweep new entries. */
-	const Entry<Extra> *stop = &entries[num_entries];
-	for (const Entry<Extra> *p = &entries[entry]; p < stop; p++)
+	സ്ഥിരം Entry<Extra> *stop = &entries[അക്കം_entries];
+	വേണ്ടി (സ്ഥിരം Entry<Extra> *p = &entries[entry]; p < stop; p++)
 	{
-	  int newState = new_state (p->newState);
+	  പൂർണ്ണസംഖ്യ newState = new_state (p->newState);
 	  min_state = hb_min (min_state, newState);
 	  max_state = hb_max (max_state, newState);
 	}
-	entry = num_entries;
+	entry = അക്കം_entries;
       }
     }
 
-    if (num_entries_out)
-      *num_entries_out = num_entries;
+    എങ്കിൽ (അക്കം_entries_out)
+      *അക്കം_entries_out = അക്കം_entries;
 
-    return_trace (true);
+    return_trace (സത്യം);
   }
 
-  protected:
+  സംരക്ഷിത:
   HBUINT	nClasses;	/* Number of classes, which is the number of indices
 				 * in a single line in the state array. */
   NNOffsetTo<ClassType, HBUINT>
@@ -1068,257 +1068,257 @@ struct StateTable
   NNOffsetTo<UnsizedArrayOf<Entry<Extra>>, HBUINT>
 		entryTable;	/* Offset to the entry array. */
 
-  public:
-  DEFINE_SIZE_STATIC (4 * sizeof (HBUINT));
+  പൊതു:
+  DEFINE_SIZE_STATIC (4 * വലുപ്പം (HBUINT));
 };
 
 template <typename HBUCHAR>
-struct ClassTable
+ഘടന ClassTable
 {
-  unsigned int get_class (hb_codepoint_t glyph_id, unsigned int outOfRange) const
+  unsigned പൂർണ്ണസംഖ്യ get_class (hb_codepoint_t glyph_id, unsigned പൂർണ്ണസംഖ്യ outOfRange) സ്ഥിരം
   {
-    unsigned int i = glyph_id - firstGlyph;
-    return i >= classArray.len ? outOfRange : classArray.arrayZ[i];
+    unsigned പൂർണ്ണസംഖ്യ i = glyph_id - firstGlyph;
+    തിരികെ i >= classArray.len ? outOfRange : classArray.arrayZ[i];
   }
-  unsigned int get_class (hb_codepoint_t glyph_id,
-			  unsigned int num_glyphs HB_UNUSED,
-			  unsigned int outOfRange) const
+  unsigned പൂർണ്ണസംഖ്യ get_class (hb_codepoint_t glyph_id,
+			  unsigned പൂർണ്ണസംഖ്യ അക്കം_glyphs HB_UNUSED,
+			  unsigned പൂർണ്ണസംഖ്യ outOfRange) സ്ഥിരം
   {
-    return get_class (glyph_id, outOfRange);
+    തിരികെ get_class (glyph_id, outOfRange);
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &glyphs, unsigned num_glyphs) const
+  ശൂന്യം collect_glyphs (set_t &glyphs, unsigned അക്കം_glyphs) സ്ഥിരം
   {
-    for (unsigned i = 0; i < classArray.len; i++)
-      if (classArray.arrayZ[i] != CLASS_OUT_OF_BOUNDS)
+    വേണ്ടി (unsigned i = 0; i < classArray.len; i++)
+      എങ്കിൽ (classArray.arrayZ[i] != CLASS_OUT_OF_BOUNDS)
 	glyphs.add (firstGlyph + i);
   }
   template <typename set_t, typename filter_t>
-  void collect_glyphs_filtered (set_t &glyphs, unsigned num_glyphs, const filter_t &filter) const
+  ശൂന്യം collect_glyphs_filtered (set_t &glyphs, unsigned അക്കം_glyphs, സ്ഥിരം filter_t &filter) സ്ഥിരം
   {
-    for (unsigned i = 0; i < classArray.len; i++)
-      if (filter (classArray.arrayZ[i]))
+    വേണ്ടി (unsigned i = 0; i < classArray.len; i++)
+      എങ്കിൽ (filter (classArray.arrayZ[i]))
 	glyphs.add (firstGlyph + i);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && classArray.sanitize (c));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) && classArray.sanitize (c));
   }
-  protected:
+  സംരക്ഷിത:
   HBGlyphID16		firstGlyph;	/* First glyph index included in the trimmed array. */
   Array16Of<HBUCHAR>	classArray;	/* The class codes (indexed by glyph index minus
 					 * firstGlyph). */
-  public:
+  പൊതു:
   DEFINE_SIZE_ARRAY (4, classArray);
 };
 
-struct SubtableGlyphCoverage
+ഘടന SubtableGlyphCoverage
 {
-  bool sanitize (hb_sanitize_context_t *c, unsigned subtable_count) const
+  തർക്കം sanitize (hb_sanitize_context_t *c, unsigned subtable_എണ്ണം) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ഇത്);
 
-    if (unlikely (!c->check_array (&subtableOffsets, subtable_count)))
-      return_trace (false);
+    എങ്കിൽ (unlikely (!c->check_array (&subtableOffsets, subtable_എണ്ണം)))
+      return_trace (അസത്യം);
 
-    unsigned bytes = (c->get_num_glyphs () + CHAR_BIT - 1) / CHAR_BIT;
-    for (unsigned i = 0; i < subtable_count; i++)
+    unsigned bytes = (c->get_അക്കം_glyphs () + CHAR_BIT - 1) / CHAR_BIT;
+    വേണ്ടി (unsigned i = 0; i < subtable_എണ്ണം; i++)
     {
       uint32_t offset = (uint32_t) subtableOffsets[i];
       // A font file called SFNSDisplay.ttf has value 0xFFFFFFFF in the offsets.
       // Just ignore it.
-      if (offset == 0 || offset == 0xFFFFFFFF)
-        continue;
-      if (unlikely (!subtableOffsets[i].sanitize (c, this, bytes)))
-        return_trace (false);
+      എങ്കിൽ (offset == 0 || offset == 0xFFFFFFFF)
+        തുടരുക;
+      എങ്കിൽ (unlikely (!subtableOffsets[i].sanitize (c, ഇത്, bytes)))
+        return_trace (അസത്യം);
     }
 
-    return_trace (true);
+    return_trace (സത്യം);
   }
-  protected:
+  സംരക്ഷിത:
   UnsizedArrayOf<NNOffset32To<UnsizedArrayOf<HBUINT8>>> subtableOffsets;
 					    /* Array of offsets from the beginning of the
 					     * subtable glyph coverage table to the glyph
 					     * coverage bitfield for a given subtable; there
 					     * is one offset for each subtable in the chain */
   /* UnsizedArrayOf<HBUINT8> coverageBitfields; *//* The individual coverage bitfields. */
-  public:
+  പൊതു:
   DEFINE_SIZE_ARRAY (0, subtableOffsets);
 };
 
-struct ObsoleteTypes
+ഘടന ObsoleteTypes
 {
-  static constexpr bool extended = false;
-  typedef HBUINT16 HBUINT;
-  typedef HBUINT8 HBUSHORT;
-  typedef ClassTable<HBUINT8> ClassTypeNarrow;
-  typedef ClassTable<HBUINT16> ClassTypeWide;
+  സ്ഥിതം constexpr തർക്കം extended = അസത്യം;
+  തരനിർവചനം HBUINT16 HBUINT;
+  തരനിർവചനം HBUINT8 HBUSHORT;
+  തരനിർവചനം ClassTable<HBUINT8> ClassTypeNarrow;
+  തരനിർവചനം ClassTable<HBUINT16> ClassTypeWide;
 
   template <typename T>
-  static int offsetToIndex (int64_t offset,
-			    const void *base,
-			    const T *array)
+  സ്ഥിതം പൂർണ്ണസംഖ്യ offsetToIndex (int64_t offset,
+			    സ്ഥിരം ശൂന്യം *base,
+			    സ്ഥിരം T *array)
   {
-    int64_t array_offset = (const char *) array - (const char *) base;
-    int bad_index = INT_MAX / T::static_size;
+    int64_t array_offset = (സ്ഥിരം അക്ഷരം *) array - (സ്ഥിരം അക്ഷരം *) base;
+    പൂർണ്ണസംഖ്യ bad_index = INT_MAX / T::static_size;
 
     /* https://github.com/harfbuzz/harfbuzz/issues/3483 */
     /* If offset is less than base, return an offset that would
      * result in an address half a 32bit address-space away,
      * to make sure sanitize fails even on 32bit builds. */
-    if (unlikely (offset < array_offset))
-      return bad_index;
+    എങ്കിൽ (unlikely (offset < array_offset))
+      തിരികെ bad_index;
 
     /* https://github.com/harfbuzz/harfbuzz/issues/2816 */
     int64_t index = (offset - array_offset) / T::static_size;
-    if (unlikely (index > bad_index))
-      return bad_index;
-    return index;
+    എങ്കിൽ (unlikely (index > bad_index))
+      തിരികെ bad_index;
+    തിരികെ index;
   }
   template <typename T>
-  static int byteOffsetToIndex (int64_t offset,
-				const void *base,
-				const T *array)
+  സ്ഥിതം പൂർണ്ണസംഖ്യ byteOffsetToIndex (int64_t offset,
+				സ്ഥിരം ശൂന്യം *base,
+				സ്ഥിരം T *array)
   {
-    return offsetToIndex (offset, base, array);
+    തിരികെ offsetToIndex (offset, base, array);
   }
   template <typename T>
-  static int wordOffsetToIndex (int64_t offset,
-				const void *base,
-				const T *array)
+  സ്ഥിതം പൂർണ്ണസംഖ്യ wordOffsetToIndex (int64_t offset,
+				സ്ഥിരം ശൂന്യം *base,
+				സ്ഥിരം T *array)
   {
-    return offsetToIndex (2 * offset, base, array);
+    തിരികെ offsetToIndex (2 * offset, base, array);
   }
 };
-struct ExtendedTypes
+ഘടന ExtendedTypes
 {
-  static constexpr bool extended = true;
-  typedef HBUINT32 HBUINT;
-  typedef HBUINT16 HBUSHORT;
-  typedef Lookup<HBUINT16> ClassTypeNarrow;
-  typedef Lookup<HBUINT16> ClassTypeWide;
+  സ്ഥിതം constexpr തർക്കം extended = സത്യം;
+  തരനിർവചനം HBUINT32 HBUINT;
+  തരനിർവചനം HBUINT16 HBUSHORT;
+  തരനിർവചനം Lookup<HBUINT16> ClassTypeNarrow;
+  തരനിർവചനം Lookup<HBUINT16> ClassTypeWide;
 
   template <typename T>
-  static unsigned int offsetToIndex (unsigned int offset,
-				     const void *base HB_UNUSED,
-				     const T *array HB_UNUSED)
+  സ്ഥിതം unsigned പൂർണ്ണസംഖ്യ offsetToIndex (unsigned പൂർണ്ണസംഖ്യ offset,
+				     സ്ഥിരം ശൂന്യം *base HB_UNUSED,
+				     സ്ഥിരം T *array HB_UNUSED)
   {
-    return offset;
+    തിരികെ offset;
   }
   template <typename T>
-  static unsigned int byteOffsetToIndex (unsigned int offset,
-					 const void *base HB_UNUSED,
-					 const T *array HB_UNUSED)
+  സ്ഥിതം unsigned പൂർണ്ണസംഖ്യ byteOffsetToIndex (unsigned പൂർണ്ണസംഖ്യ offset,
+					 സ്ഥിരം ശൂന്യം *base HB_UNUSED,
+					 സ്ഥിരം T *array HB_UNUSED)
   {
-    return offset / 2;
+    തിരികെ offset / 2;
   }
   template <typename T>
-  static unsigned int wordOffsetToIndex (unsigned int offset,
-					 const void *base HB_UNUSED,
-					 const T *array HB_UNUSED)
+  സ്ഥിതം unsigned പൂർണ്ണസംഖ്യ wordOffsetToIndex (unsigned പൂർണ്ണസംഖ്യ offset,
+					 സ്ഥിരം ശൂന്യം *base HB_UNUSED,
+					 സ്ഥിരം T *array HB_UNUSED)
   {
-    return offset;
+    തിരികെ offset;
   }
 };
 
 template <typename Types, typename EntryData, typename Flags>
-struct StateTableDriver
+ഘടന StateTableDriver
 {
   using StateTableT = StateTable<Types, EntryData>;
   using EntryT = Entry<EntryData>;
 
-  StateTableDriver (const StateTableT &machine_,
+  StateTableDriver (സ്ഥിരം StateTableT &machine_,
 		    hb_face_t *face_) :
 	      machine (machine_),
-	      num_glyphs (face_->get_num_glyphs ()) {}
+	      അക്കം_glyphs (face_->get_അക്കം_glyphs ()) {}
 
   template <typename context_t>
-  void drive (context_t *c, hb_aat_apply_context_t *ac)
+  ശൂന്യം drive (context_t *c, hb_aat_apply_context_t *ac)
   {
     hb_buffer_t *buffer = ac->buffer;
 
-    if (!c->in_place)
+    എങ്കിൽ (!c->in_place)
       buffer->clear_output ();
 
-    int state = StateTableT::STATE_START_OF_TEXT;
+    പൂർണ്ണസംഖ്യ state = StateTableT::STATE_START_OF_TEXT;
     // If there's only one range, we already checked the flag.
     auto *last_range = ac->range_flags && (ac->range_flags->length > 1) ? &(*ac->range_flags)[0] : nullptr;
-    const bool start_state_safe_to_break_eot =
+    സ്ഥിരം തർക്കം start_state_safe_to_break_eot =
       !c->table->is_actionable (machine.get_entry (StateTableT::STATE_START_OF_TEXT, CLASS_END_OF_TEXT));
-    for (buffer->idx = 0; buffer->successful;)
+    വേണ്ടി (buffer->idx = 0; buffer->successful;)
     {
-      unsigned int klass = likely (buffer->idx < buffer->len) ?
-			   machine.get_class (buffer->cur().codepoint, num_glyphs, ac->machine_class_cache) :
+      unsigned പൂർണ്ണസംഖ്യ klass = likely (buffer->idx < buffer->len) ?
+			   machine.get_class (buffer->cur().codepoint, അക്കം_glyphs, ac->machine_class_cache) :
 			   (unsigned) CLASS_END_OF_TEXT;
     resume:
-      DEBUG_MSG (APPLY, nullptr, "c%u at %u", klass, buffer->idx);
-      const EntryT &entry = machine.get_entry (state, klass);
-      const int next_state = machine.new_state (entry.newState);
+      DEBUG_സന്ദേശം (APPLY, nullptr, "c%u at %u", klass, buffer->idx);
+      സ്ഥിരം EntryT &entry = machine.get_entry (state, klass);
+      സ്ഥിരം പൂർണ്ണസംഖ്യ next_state = machine.new_state (entry.newState);
 
-      bool is_not_epsilon_transition = !(entry.flags & Flags::DontAdvance);
-      bool is_not_actionable = !c->table->is_actionable (entry);
+      തർക്കം is_not_epsilon_transition = !(entry.flags & Flags::DontAdvance);
+      തർക്കം is_not_actionable = !c->table->is_actionable (entry);
 
-      if (unlikely (last_range))
+      എങ്കിൽ (unlikely (last_range))
       {
 	/* This block is copied in NoncontextualSubtable::apply. Keep in sync. */
 	auto *range = last_range;
-	if (buffer->idx < buffer->len)
+	എങ്കിൽ (buffer->idx < buffer->len)
 	{
 	  unsigned cluster = buffer->cur().cluster;
-	  while (cluster < range->cluster_first)
+	  ആകുമ്പോൾ (cluster < range->cluster_first)
 	    range--;
-	  while (cluster > range->cluster_last)
+	  ആകുമ്പോൾ (cluster > range->cluster_last)
 	    range++;
 
 
 	  last_range = range;
 	}
-	if (!(range->flags & ac->subtable_flags))
+	എങ്കിൽ (!(range->flags & ac->subtable_flags))
 	{
-	  if (buffer->idx == buffer->len)
-	    break;
+	  എങ്കിൽ (buffer->idx == buffer->len)
+	    നിർത്തുക;
 
 	  state = StateTableT::STATE_START_OF_TEXT;
-	  (void) buffer->next_glyph ();
-	  continue;
+	  (ശൂന്യം) buffer->next_glyph ();
+	  തുടരുക;
 	}
       }
-      else
+      അല്ലെങ്കിൽ
       {
 	// Fast path for when transitioning from start-state to start-state with
 	// no action and advancing. Do so as long as the class remains the same.
 	// This is common with runs of non-actionable glyphs.
 
-	bool is_null_transition = state == StateTableT::STATE_START_OF_TEXT &&
+	തർക്കം is_null_transition = state == StateTableT::STATE_START_OF_TEXT &&
 				  next_state == StateTableT::STATE_START_OF_TEXT &&
 				  start_state_safe_to_break_eot &&
 				  is_not_actionable &&
 				  is_not_epsilon_transition;
 
-	if (is_null_transition)
+	എങ്കിൽ (is_null_transition)
 	{
 	  unsigned old_klass = klass;
-	  do
+	  ചെയ്യുക
 	  {
-	    c->transition (buffer, this, entry);
+	    c->transition (buffer, ഇത്, entry);
 
-	    if (buffer->idx == buffer->len || !buffer->successful)
-	      break;
+	    എങ്കിൽ (buffer->idx == buffer->len || !buffer->successful)
+	      നിർത്തുക;
 
-	    (void) buffer->next_glyph ();
+	    (ശൂന്യം) buffer->next_glyph ();
 
 	    klass = likely (buffer->idx < buffer->len) ?
-		     machine.get_class (buffer->cur().codepoint, num_glyphs, ac->machine_class_cache) :
+		     machine.get_class (buffer->cur().codepoint, അക്കം_glyphs, ac->machine_class_cache) :
 		     (unsigned) CLASS_END_OF_TEXT;
-	  } while (klass == old_klass);
+	  } ആകുമ്പോൾ (klass == old_klass);
 
-	  if (buffer->idx == buffer->len || !buffer->successful)
-	    break;
+	  എങ്കിൽ (buffer->idx == buffer->len || !buffer->successful)
+	    നിർത്തുക;
 
-	  goto resume;
+	  പോകുക resume;
 	}
       }
 
@@ -1350,8 +1350,8 @@ struct StateTableDriver
        *
        *   https://github.com/harfbuzz/harfbuzz/issues/2860
        */
-      const EntryT *wouldbe_entry;
-      bool is_safe_to_break =
+      സ്ഥിരം EntryT *wouldbe_entry;
+      തർക്കം is_safe_to_break =
       (
           /* 1. */
           !c->table->is_actionable (entry) &&
@@ -1379,28 +1379,28 @@ struct StateTableDriver
           !c->table->is_actionable (machine.get_entry (state, CLASS_END_OF_TEXT))
       );
 
-      if (!is_safe_to_break && buffer->backtrack_len () && buffer->idx < buffer->len)
+      എങ്കിൽ (!is_safe_to_break && buffer->backtrack_len () && buffer->idx < buffer->len)
 	buffer->unsafe_to_break_from_outbuffer (buffer->backtrack_len () - 1, buffer->idx + 1);
 
-      c->transition (buffer, this, entry);
+      c->transition (buffer, ഇത്, entry);
 
       state = next_state;
-      DEBUG_MSG (APPLY, nullptr, "s%d", state);
+      DEBUG_സന്ദേശം (APPLY, nullptr, "s%d", state);
 
-      if (buffer->idx == buffer->len)
-	break;
+      എങ്കിൽ (buffer->idx == buffer->len)
+	നിർത്തുക;
 
-      if (is_not_epsilon_transition || buffer->max_ops-- <= 0)
-	(void) buffer->next_glyph ();
+      എങ്കിൽ (is_not_epsilon_transition || buffer->max_ops-- <= 0)
+	(ശൂന്യം) buffer->next_glyph ();
     }
 
-    if (!c->in_place)
-      buffer->sync ();
+    എങ്കിൽ (!c->in_place)
+      buffer->സമന്വയം ();
   }
 
-  public:
-  const StateTableT &machine;
-  unsigned int num_glyphs;
+  പൊതു:
+  സ്ഥിരം StateTableT &machine;
+  unsigned പൂർണ്ണസംഖ്യ അക്കം_glyphs;
 };
 
 

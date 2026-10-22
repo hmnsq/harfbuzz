@@ -25,54 +25,54 @@
 #ifndef HB_OUTLINE_HH
 #define HB_OUTLINE_HH
 
-#include "hb.hh"
+#അന്തര്ഭാവ "hb.hh"
 
-#include "hb-draw.hh"
+#അന്തര്ഭാവ "hb-draw.hh"
 
 
-struct hb_outline_point_t
+ഘടന hb_outline_point_t
 {
-  enum class type_t
+  എണ്ണൽ വർഗ്ഗം type_t
   {
     MOVE_TO,
-    LINE_TO,
+    വരി_TO,
     QUADRATIC_TO,
     CUBIC_TO,
   };
 
-  hb_outline_point_t (float x, float y, type_t type) :
+  hb_outline_point_t (ദശാംശം x, ദശാംശം y, type_t type) :
     x (x), y (y), type (type) {}
 
-  float x, y;
+  ദശാംശം x, y;
   type_t type;
 };
 
-struct hb_outline_vector_t
+ഘടന hb_outline_vector_t
 {
-  float normalize_len ()
+  ദശാംശം normalize_len ()
   {
-    float len = hypotf (x, y);
-    if (len)
+    ദശാംശം len = hypotf (x, y);
+    എങ്കിൽ (len)
     {
       x /= len;
       y /= len;
     }
-    return len;
+    തിരികെ len;
   }
 
-  float x, y;
+  ദശാംശം x, y;
 };
 
-struct hb_outline_t
+ഘടന hb_outline_t
 {
-  void reset () { points.clear (); contours.clear (); }
+  ശൂന്യം reset () { points.clear (); contours.clear (); }
 
-  HB_INTERNAL void replay (hb_draw_funcs_t *pen, void *pen_data) const;
-  HB_INTERNAL float control_area () const;
-  HB_INTERNAL void translate (float dx, float dy);
-  HB_INTERNAL void slant (float slant_xy);
-  HB_INTERNAL void embolden (float x_strength, float y_strength,
-			     float x_shift, float y_shift);
+  HB_INTERNAL ശൂന്യം replay (hb_draw_funcs_t *pen, ശൂന്യം *pen_data) സ്ഥിരം;
+  HB_INTERNAL ദശാംശം control_area () സ്ഥിരം;
+  HB_INTERNAL ശൂന്യം translate (ദശാംശം dx, ദശാംശം dy);
+  HB_INTERNAL ശൂന്യം slant (ദശാംശം slant_xy);
+  HB_INTERNAL ശൂന്യം embolden (ദശാംശം x_strength, ദശാംശം y_strength,
+			     ദശാംശം x_shift, ദശാംശം y_shift);
 
   hb_vector_t<hb_outline_point_t> points;
   hb_vector_t<unsigned> contours;

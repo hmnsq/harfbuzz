@@ -29,26 +29,26 @@
 #ifndef HB_BUFFER_DESERIALIZE_TEXT_UNICODE_HH
 #define HB_BUFFER_DESERIALIZE_TEXT_UNICODE_HH
 
-#include "hb.hh"
+#അന്തര്ഭാവ "hb.hh"
 
 
 #line 33 "hb-buffer-deserialize-text-unicode.hh"
-static const unsigned char _deserialize_text_unicode_trans_keys[] = {
+സ്ഥിതം സ്ഥിരം unsigned അക്ഷരം deserialize_text_unicode_trans_താക്കോലുകൾ[] = {
 	0u, 0u, 43u, 102u, 48u, 102u, 48u, 124u, 48u, 57u, 62u, 124u, 48u, 124u, 60u, 117u, 
 	85u, 117u, 85u, 117u, 0
 };
 
-static const char _deserialize_text_unicode_key_spans[] = {
+സ്ഥിതം സ്ഥിരം അക്ഷരം deserialize_text_unicode_താക്കോൽ_spans[] = {
 	0, 60, 55, 77, 10, 63, 77, 58, 
 	33, 33
 };
 
-static const short _deserialize_text_unicode_index_offsets[] = {
+സ്ഥിതം സ്ഥിരം short _deserialize_text_unicode_index_offsets[] = {
 	0, 0, 61, 117, 195, 206, 270, 348, 
 	407, 441
 };
 
-static const char _deserialize_text_unicode_indicies[] = {
+സ്ഥിതം സ്ഥിരം അക്ഷരം _deserialize_text_unicode_indicies[] = {
 	0, 1, 1, 1, 1, 2, 2, 
 	2, 2, 2, 2, 2, 2, 2, 2, 
 	1, 1, 1, 1, 1, 1, 1, 2, 
@@ -111,44 +111,44 @@ static const char _deserialize_text_unicode_indicies[] = {
 	1, 1, 12, 1, 0
 };
 
-static const char _deserialize_text_unicode_trans_targs[] = {
+സ്ഥിതം സ്ഥിരം അക്ഷരം _deserialize_text_unicode_trans_targs[] = {
 	2, 0, 3, 3, 4, 9, 5, 6, 
 	9, 6, 8, 1, 1
 };
 
-static const char _deserialize_text_unicode_trans_actions[] = {
+സ്ഥിതം സ്ഥിരം അക്ഷരം _deserialize_text_unicode_trans_actions[] = {
 	0, 0, 1, 0, 2, 2, 1, 1, 
 	3, 0, 0, 4, 6
 };
 
-static const char _deserialize_text_unicode_eof_actions[] = {
+സ്ഥിതം സ്ഥിരം അക്ഷരം _deserialize_text_unicode_eof_actions[] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 5
 };
 
-static const int deserialize_text_unicode_start = 7;
-static const int deserialize_text_unicode_first_final = 7;
-static const int deserialize_text_unicode_error = 0;
+സ്ഥിതം സ്ഥിരം പൂർണ്ണസംഖ്യ deserialize_text_unicode_start = 7;
+സ്ഥിതം സ്ഥിരം പൂർണ്ണസംഖ്യ deserialize_text_unicode_first_final = 7;
+സ്ഥിതം സ്ഥിരം പൂർണ്ണസംഖ്യ deserialize_text_unicode_error = 0;
 
-static const int deserialize_text_unicode_en_main = 7;
+സ്ഥിതം സ്ഥിരം പൂർണ്ണസംഖ്യ deserialize_text_unicode_en_main = 7;
 
 
 #line 80 "hb-buffer-deserialize-text-unicode.rl"
 
 
-static hb_bool_t
+സ്ഥിതം hb_bool_t
 _hb_buffer_deserialize_text_unicode (hb_buffer_t *buffer,
-				     const char *buf,
-				     unsigned int buf_len,
-				     const char **end_ptr,
+				     സ്ഥിരം അക്ഷരം *buf,
+				     unsigned പൂർണ്ണസംഖ്യ buf_len,
+				     സ്ഥിരം അക്ഷരം **end_ptr,
 				     hb_font_t *font)
 {
-  const char *p = buf, *pe = buf + buf_len, *eof = pe;
+  സ്ഥിരം അക്ഷരം *p = buf, *pe = buf + buf_len, *eof = pe;
 
-  const char *tok = nullptr;
-  int cs;
+  സ്ഥിരം അക്ഷരം *tok = nullptr;
+  പൂർണ്ണസംഖ്യ cs;
   hb_glyph_info_t info = {0};
-  const hb_glyph_position_t pos = {0};
+  സ്ഥിരം hb_glyph_position_t pos = {0};
   
 #line 147 "hb-buffer-deserialize-text-unicode.hh"
 	{
@@ -157,87 +157,87 @@ _hb_buffer_deserialize_text_unicode (hb_buffer_t *buffer,
 
 #line 150 "hb-buffer-deserialize-text-unicode.hh"
 	{
-	int _slen;
-	int _trans;
-	const unsigned char *_keys;
-	const char *_inds;
-	if ( p == pe )
-		goto _test_eof;
-	if ( cs == 0 )
-		goto _out;
+	പൂർണ്ണസംഖ്യ _slen;
+	പൂർണ്ണസംഖ്യ _trans;
+	സ്ഥിരം unsigned അക്ഷരം *താക്കോലുകൾ_2;
+	സ്ഥിരം അക്ഷരം *_inds;
+	എങ്കിൽ ( p == pe )
+		പോകുക _test_eof;
+	എങ്കിൽ ( cs == 0 )
+		പോകുക _out;
 _resume:
-	_keys = _deserialize_text_unicode_trans_keys + (cs<<1);
+	താക്കോലുകൾ_2 = deserialize_text_unicode_trans_താക്കോലുകൾ + (cs<<1);
 	_inds = _deserialize_text_unicode_indicies + _deserialize_text_unicode_index_offsets[cs];
 
-	_slen = _deserialize_text_unicode_key_spans[cs];
-	_trans = _inds[ _slen > 0 && _keys[0] <=(*p) &&
-		(*p) <= _keys[1] ?
-		(*p) - _keys[0] : _slen ];
+	_slen = deserialize_text_unicode_താക്കോൽ_spans[cs];
+	_trans = _inds[ _slen > 0 && താക്കോലുകൾ_2[0] <=(*p) &&
+		(*p) <= താക്കോലുകൾ_2[1] ?
+		(*p) - താക്കോലുകൾ_2[0] : _slen ];
 
 	cs = _deserialize_text_unicode_trans_targs[_trans];
 
-	if ( _deserialize_text_unicode_trans_actions[_trans] == 0 )
-		goto _again;
+	എങ്കിൽ ( _deserialize_text_unicode_trans_actions[_trans] == 0 )
+		പോകുക _again;
 
-	switch ( _deserialize_text_unicode_trans_actions[_trans] ) {
-	case 4:
+	തിരഞ്ഞെടുപ്പ് ( _deserialize_text_unicode_trans_actions[_trans] ) {
+	അവസ്ഥ 4:
 #line 38 "hb-buffer-deserialize-text-unicode.rl"
 	{
-	hb_memset (&info, 0, sizeof (info));
+	hb_memset (&info, 0, വലുപ്പം (info));
 }
-	break;
-	case 1:
+	നിർത്തുക;
+	അവസ്ഥ 1:
 #line 51 "hb-buffer-deserialize-text-unicode.rl"
 	{
 	tok = p;
 }
-	break;
-	case 2:
+	നിർത്തുക;
+	അവസ്ഥ 2:
 #line 55 "hb-buffer-deserialize-text-unicode.rl"
-	{if (!parse_hex (tok, p, &info.codepoint )) return false; }
-	break;
-	case 3:
+	{എങ്കിൽ (!parse_hex (tok, p, &info.codepoint )) തിരികെ അസത്യം; }
+	നിർത്തുക;
+	അവസ്ഥ 3:
 #line 57 "hb-buffer-deserialize-text-unicode.rl"
-	{ if (!parse_uint (tok, p, &info.cluster )) return false; }
-	break;
-	case 6:
+	{ എങ്കിൽ (!parse_uint (tok, p, &info.cluster )) തിരികെ അസത്യം; }
+	നിർത്തുക;
+	അവസ്ഥ 6:
 #line 42 "hb-buffer-deserialize-text-unicode.rl"
 	{
 	buffer->add_info (info);
-	if (unlikely (!buffer->successful))
-	  return false;
-	if (buffer->have_positions)
+	എങ്കിൽ (unlikely (!buffer->successful))
+	  തിരികെ അസത്യം;
+	എങ്കിൽ (buffer->have_positions)
 	  buffer->pos[buffer->len - 1] = pos;
 	*end_ptr = p;
 }
 #line 38 "hb-buffer-deserialize-text-unicode.rl"
 	{
-	hb_memset (&info, 0, sizeof (info));
+	hb_memset (&info, 0, വലുപ്പം (info));
 }
-	break;
+	നിർത്തുക;
 #line 203 "hb-buffer-deserialize-text-unicode.hh"
 	}
 
 _again:
-	if ( cs == 0 )
-		goto _out;
-	if ( ++p != pe )
-		goto _resume;
+	എങ്കിൽ ( cs == 0 )
+		പോകുക _out;
+	എങ്കിൽ ( ++p != pe )
+		പോകുക _resume;
 	_test_eof: {}
-	if ( p == eof )
+	എങ്കിൽ ( p == eof )
 	{
-	switch ( _deserialize_text_unicode_eof_actions[cs] ) {
-	case 5:
+	തിരഞ്ഞെടുപ്പ് ( _deserialize_text_unicode_eof_actions[cs] ) {
+	അവസ്ഥ 5:
 #line 42 "hb-buffer-deserialize-text-unicode.rl"
 	{
 	buffer->add_info (info);
-	if (unlikely (!buffer->successful))
-	  return false;
-	if (buffer->have_positions)
+	എങ്കിൽ (unlikely (!buffer->successful))
+	  തിരികെ അസത്യം;
+	എങ്കിൽ (buffer->have_positions)
 	  buffer->pos[buffer->len - 1] = pos;
 	*end_ptr = p;
 }
-	break;
+	നിർത്തുക;
 #line 224 "hb-buffer-deserialize-text-unicode.hh"
 	}
 	}
@@ -250,7 +250,7 @@ _again:
 
   *end_ptr = p;
 
-  return p == pe;
+  തിരികെ p == pe;
 }
 
 #endif /* HB_BUFFER_DESERIALIZE_TEXT_UNICODE_HH */

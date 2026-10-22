@@ -24,65 +24,65 @@
  * Google Author(s): Garret Rieger, Qunxin Liu, Roderick Sheeter
  */
 
- #include "hb-ot-layout-common.hh"
-#include "hb-subset-plan.hh"
+ #അന്തര്ഭാവ "hb-ot-layout-common.hh"
+#അന്തര്ഭാവ "hb-subset-plan.hh"
 
- #include "hb-ot-var-common.hh"
- #include "hb-ot-layout-base-table.hh"
- #include "hb-ot-glyf-table.hh"
- #include "hb-ot-var-fvar-table.hh"
- #include "hb-ot-var-avar-table.hh"
- #include "hb-ot-cff2-table.hh"
+ #അന്തര്ഭാവ "hb-ot-var-common.hh"
+ #അന്തര്ഭാവ "hb-ot-layout-base-table.hh"
+ #അന്തര്ഭാവ "hb-ot-glyf-table.hh"
+ #അന്തര്ഭാവ "hb-ot-var-fvar-table.hh"
+ #അന്തര്ഭാവ "hb-ot-var-avar-table.hh"
+ #അന്തര്ഭാവ "hb-ot-cff2-table.hh"
 
  #ifndef HB_NO_VAR
 
- void
- generate_varstore_inner_maps (const hb_set_t& varidx_set,
-                               unsigned subtable_count,
+ ശൂന്യം
+ generate_varstore_inner_maps (സ്ഥിരം hb_set_t& varidx_set,
+                               unsigned subtable_എണ്ണം,
                                hb_vector_t<hb_inc_bimap_t> &inner_maps /* OUT */)
  {
-   if (varidx_set.is_empty () || subtable_count == 0) return;
+   എങ്കിൽ (varidx_set.is_empty () || subtable_എണ്ണം == 0) തിരികെ;
 
-   if (unlikely (!inner_maps.resize (subtable_count))) return;
-   for (unsigned idx : varidx_set)
+   എങ്കിൽ (unlikely (!inner_maps.resize (subtable_എണ്ണം))) തിരികെ;
+   വേണ്ടി (unsigned idx : varidx_set)
    {
      uint16_t major = idx >> 16;
      uint16_t minor = idx & 0xFFFF;
 
-     if (major >= subtable_count)
-       continue;
+     എങ്കിൽ (major >= subtable_എണ്ണം)
+       തുടരുക;
      inner_maps[major].add (minor);
    }
  }
 
  /* Evaluate a variation-region tent at v, mirroring VarRegionAxis::evaluate
   * (invalid regions evaluate as constant 1). */
- static double
- _tent_eval (const Triple &tent, double v)
+ സ്ഥിതം ഇരട്ട
+ _tent_eval (സ്ഥിരം Triple &tent, ഇരട്ട v)
  {
-   double start = (double) tent.minimum;
-   double peak = (double) tent.middle;
-   double end = (double) tent.maximum;
-   if (unlikely (start > peak || peak > end)) return 1.0;
-   if (unlikely (start < 0.0 && end > 0.0 && peak != 0.0)) return 1.0;
-   if (peak == 0.0 || v == peak) return 1.0;
-   if (v <= start || end <= v) return 0.0;
-   if (v < peak) return (v - start) / (peak - start);
-   return (end - v) / (end - peak);
+   ഇരട്ട start = (ഇരട്ട) tent.minimum;
+   ഇരട്ട peak = (ഇരട്ട) tent.നടുവ്;
+   ഇരട്ട end = (ഇരട്ട) tent.maximum;
+   എങ്കിൽ (unlikely (start > peak || peak > end)) തിരികെ 1.0;
+   എങ്കിൽ (unlikely (start < 0.0 && end > 0.0 && peak != 0.0)) തിരികെ 1.0;
+   എങ്കിൽ (peak == 0.0 || v == peak) തിരികെ 1.0;
+   എങ്കിൽ (v <= start || end <= v) തിരികെ 0.0;
+   എങ്കിൽ (v < peak) തിരികെ (v - start) / (peak - start);
+   തിരികെ (end - v) / (end - peak);
  }
 
  /* Range of a tent's scalar over an input interval [lo, hi]. The tent is
   * unimodal, so the extremes are at the interval endpoints, plus the peak
   * when it falls inside. */
- static void
- _tent_value_range (const Triple &tent, double lo, double hi,
-                    double *tmin, double *tmax)
+ സ്ഥിതം ശൂന്യം
+ tent_മൂല്യം_range (സ്ഥിരം Triple &tent, ഇരട്ട lo, ഇരട്ട hi,
+                    ഇരട്ട *tmin, ഇരട്ട *tmax)
  {
-   double a = _tent_eval (tent, lo);
-   double b = _tent_eval (tent, hi);
+   ഇരട്ട a = _tent_eval (tent, lo);
+   ഇരട്ട b = _tent_eval (tent, hi);
    *tmin = hb_min (a, b);
    *tmax = hb_max (a, b);
-   if (lo <= (double) tent.middle && (double) tent.middle <= hi)
+   എങ്കിൽ (lo <= (ഇരട്ട) tent.നടുവ് && (ഇരട്ട) tent.നടുവ് <= hi)
      *tmax = hb_max (*tmax, 1.0);
  }
 
@@ -99,77 +99,77 @@
   * plan time (the same quantity fontTools bounds via getExtremes on the
   * instanced store). Only constraining ranges (narrower than [-1, +1]) are
   * recorded. */
- static bool
+ സ്ഥിതം തർക്കം
  _compute_avar2_reachable_ranges (hb_subset_plan_t *plan,
-                                  hb_array_t<const OT::AxisRecord> axes,
-                                  const OT::avar *avar_table,
-                                  bool detect_self_contained)
+                                  hb_array_t<സ്ഥിരം OT::AxisRecord> axes,
+                                  സ്ഥിരം OT::avar *avar_table,
+                                  തർക്കം detect_self_contained)
  {
-   const OT::ItemVariationStore *var_store;
-   const OT::DeltaSetIndexMap *varidx_map;
-   if (!avar_table->get_v2_store_and_map (&var_store, &varidx_map))
-     return false;
+   സ്ഥിരം OT::ItemVariationStore *var_store;
+   സ്ഥിരം OT::DeltaSetIndexMap *varidx_map;
+   എങ്കിൽ (!avar_table->get_v2_store_and_map (&var_store, &varidx_map))
+     തിരികെ അസത്യം;
 
    /* Old-intermediate input box per axis. */
-   hb_hashmap_t<hb_tag_t, hb_pair_t<double, double>> box;
-   for (const auto &axis : axes)
+   hb_hashmap_t<hb_tag_t, hb_pair_t<ഇരട്ട, ഇരട്ട>> box;
+   വേണ്ടി (സ്ഥിരം auto &axis : axes)
    {
      hb_tag_t tag = axis.get_axis_tag ();
-     double lo = -1.0, hi = +1.0;
+     ഇരട്ട lo = -1.0, hi = +1.0;
      Triple *old_int;
-     if (plan->user_axes_location.has (tag))
+     എങ്കിൽ (plan->user_axes_location.has (tag))
      {
-       if (!plan->old_intermediates.has (tag, &old_int)) return false;
-       lo = (double) old_int->minimum;
-       hi = (double) old_int->maximum;
+       എങ്കിൽ (!plan->old_intermediates.has (tag, &old_int)) തിരികെ അസത്യം;
+       lo = (ഇരട്ട) old_int->minimum;
+       hi = (ഇരട്ട) old_int->maximum;
      }
-     else if (axis.is_hidden ())
+     അല്ലെങ്കിൽ എങ്കിൽ (axis.is_hidden ())
        lo = hi = 0.0; /* private axis: intermediate is always 0 */
-     if (!box.set (tag, hb_pair (lo, hi))) return false;
+     എങ്കിൽ (!box.set (tag, hb_pair (lo, hi))) തിരികെ അസത്യം;
    }
 
    hb_vector_t<hb_hashmap_t<hb_tag_t, Triple>> regions;
-   if (!var_store->get_region_list ().get_var_regions (plan->axes_old_index_tag_map, regions))
-     return false;
+   എങ്കിൽ (!var_store->get_region_list ().get_var_regions (plan->axes_old_index_tag_map, regions))
+     തിരികെ അസത്യം;
 
    hb_hashmap_t<hb_tag_t, unsigned> grid_pos;
-   hb_vector_t<hb_vector_t<double>> grid_points;
-   for (unsigned i = 0; i < axes.length; i++)
+   hb_vector_t<hb_vector_t<ഇരട്ട>> grid_points;
+   വേണ്ടി (unsigned i = 0; i < axes.length; i++)
    {
      grid_pos.reset ();
      grid_points.reset ();
 
      hb_tag_t tag = axes[i].get_axis_tag ();
-     hb_pair_t<double, double> *identity;
-     if (!box.has (tag, &identity)) return false;
+     hb_pair_t<ഇരട്ട, ഇരട്ട> *identity;
+     എങ്കിൽ (!box.has (tag, &identity)) തിരികെ അസത്യം;
 
      /* Collect the row's active regions (non-zero delta). A varidx (or the
       * implicit identity mapping) that doesn't resolve to a real store row
       * behaves as "no variation" at runtime, so it contributes no regions;
       * this also covers a NULL VarStore. */
-     hb_vector_t<hb_pair_t<int, unsigned>> active; /* (delta, region index) */
+     hb_vector_t<hb_pair_t<പൂർണ്ണസംഖ്യ, unsigned>> active; /* (delta, region index) */
      uint32_t varidx = varidx_map->map (i);
      /* Runtime treats out-of-range delta-set indices as zero. */
-     if (varidx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX &&
+     എങ്കിൽ (varidx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX &&
 	 !var_store->has_delta_set (varidx))
        varidx = HB_OT_LAYOUT_NO_VARIATIONS_INDEX;
-     if (varidx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
+     എങ്കിൽ (varidx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
      {
        unsigned outer = varidx >> 16;
        unsigned inner = varidx & 0xFFFF;
-       const OT::VarData &vd = var_store->get_sub_table (outer);
-       const OT::HBUINT8 *delta_bytes = vd.get_delta_bytes ();
+       സ്ഥിരം OT::VarData &vd = var_store->get_sub_table (outer);
+       സ്ഥിരം OT::HBUINT8 *delta_bytes = vd.get_delta_bytes ();
        unsigned row_size = vd.get_row_size ();
-       unsigned region_count = vd.get_region_index_count ();
-       for (unsigned r = 0; r < region_count; r++)
+       unsigned region_എണ്ണം_2 = vd.get_region_index_എണ്ണം ();
+       വേണ്ടി (unsigned r = 0; r < region_എണ്ണം_2; r++)
        {
-	 int delta = vd.get_item_delta_fast (inner, r, delta_bytes, row_size);
-	 if (!delta) continue;
+	 പൂർണ്ണസംഖ്യ delta = vd.get_item_delta_fast (inner, r, delta_bytes, row_size);
+	 എങ്കിൽ (!delta) തുടരുക;
 	 unsigned region_idx = vd.get_region_index (r);
-	 if (region_idx >= regions.length) return false;
+	 എങ്കിൽ (region_idx >= regions.length) തിരികെ അസത്യം;
 	 active.push (hb_pair (delta, region_idx));
        }
-       if (active.in_error ()) return false;
+       എങ്കിൽ (active.in_error ()) തിരികെ അസത്യം;
      }
 
      /* The delta is piecewise multilinear in the axis coordinates (each
@@ -181,132 +181,132 @@
       * looser but still conservative. Mirrors fontTools'
       * VarStore.getExtremes. */
      constexpr unsigned MAX_GRID = 1u << 14;
-     bool exact = true;
-     double dmin = 0.0, dmax = 0.0; /* delta extremes, F2Dot14 units */
-     double vmin = 0.0, vmax = 0.0; /* identity + delta extremes, coord units */
+     തർക്കം exact = സത്യം;
+     ഇരട്ട dmin = 0.0, dmax = 0.0; /* delta extremes, F2Dot14 units */
+     ഇരട്ട vmin = 0.0, vmax = 0.0; /* identity + delta extremes, coord units */
 
      /* Grid axes: the target axis (identity term), plus every axis a valid
       * tent of an active region references. */
-     auto add_grid_axis = [&] (hb_tag_t t) -> int
+     auto add_grid_axis = [&] (hb_tag_t t) -> പൂർണ്ണസംഖ്യ
      {
        unsigned *pos;
-       if (grid_pos.has (t, &pos)) return (int) *pos;
+       എങ്കിൽ (grid_pos.has (t, &pos)) തിരികെ (പൂർണ്ണസംഖ്യ) *pos;
        unsigned new_pos = grid_pos.get_population ();
-       hb_pair_t<double, double> *input;
-       double blo = -1.0, bhi = +1.0;
-       if (box.has (t, &input)) { blo = input->first; bhi = input->second; }
-       grid_points.push (hb_vector_t<double> ());
-       if (grid_points.in_error ()) return -1;
+       hb_pair_t<ഇരട്ട, ഇരട്ട> *നിവേശം;
+       ഇരട്ട blo = -1.0, bhi = +1.0;
+       എങ്കിൽ (box.has (t, &നിവേശം)) { blo = നിവേശം->first; bhi = നിവേശം->second; }
+       grid_points.push (hb_vector_t<ഇരട്ട> ());
+       എങ്കിൽ (grid_points.in_error ()) തിരികെ -1;
        auto &points = grid_points[new_pos];
        points.push (blo);
        points.push (bhi);
-       if (points.in_error () || !grid_pos.set (t, new_pos)) return -1;
-       return (int) new_pos;
+       എങ്കിൽ (points.in_error () || !grid_pos.set (t, new_pos)) തിരികെ -1;
+       തിരികെ (പൂർണ്ണസംഖ്യ) new_pos;
      };
 
-     if (add_grid_axis (tag) < 0) return false;
+     എങ്കിൽ (add_grid_axis (tag) < 0) തിരികെ അസത്യം;
      /* Per active region: (grid axis position, tent) for its valid tents. */
      hb_vector_t<hb_vector_t<hb_pair_t<unsigned, Triple>>> region_tents;
-     for (const auto &ar : active)
+     വേണ്ടി (സ്ഥിരം auto &ar : active)
      {
        region_tents.push (hb_vector_t<hb_pair_t<unsigned, Triple>> ());
-       if (region_tents.in_error ()) return false;
+       എങ്കിൽ (region_tents.in_error ()) തിരികെ അസത്യം;
        auto &tents = region_tents[region_tents.length - 1];
-       for (const auto &_ : regions[ar.second])
+       വേണ്ടി (സ്ഥിരം auto &_ : regions[ar.second])
        {
-	 const Triple &tent = _.second;
+	 സ്ഥിരം Triple &tent = _.second;
 	 /* Tents the runtime ignores (constant scalar 1) add no breakpoints. */
-	 if (tent.middle == 0.f ||
-	     tent.minimum > tent.middle || tent.middle > tent.maximum ||
+	 എങ്കിൽ (tent.നടുവ് == 0.f ||
+	     tent.minimum > tent.നടുവ് || tent.നടുവ് > tent.maximum ||
 	     (tent.minimum < 0.f && tent.maximum > 0.f))
-	   continue;
-	 int pos = add_grid_axis (_.first);
-	 if (pos < 0) return false;
+	   തുടരുക;
+	 പൂർണ്ണസംഖ്യ pos = add_grid_axis (_.first);
+	 എങ്കിൽ (pos < 0) തിരികെ അസത്യം;
 	 auto &points = grid_points[pos];
-	 double blo = points[0], bhi = points[1];
-	 points.push (hb_clamp ((double) tent.minimum, blo, bhi));
-	 points.push (hb_clamp ((double) tent.middle, blo, bhi));
-	 points.push (hb_clamp ((double) tent.maximum, blo, bhi));
+	 ഇരട്ട blo = points[0], bhi = points[1];
+	 points.push (hb_clamp ((ഇരട്ട) tent.minimum, blo, bhi));
+	 points.push (hb_clamp ((ഇരട്ട) tent.നടുവ്, blo, bhi));
+	 points.push (hb_clamp ((ഇരട്ട) tent.maximum, blo, bhi));
 	 tents.push (hb_pair ((unsigned) pos, tent));
-	 if (points.in_error () || tents.in_error ()) return false;
+	 എങ്കിൽ (points.in_error () || tents.in_error ()) തിരികെ അസത്യം;
        }
      }
 
      unsigned grid_size = 1;
-     for (auto &points : grid_points)
+     വേണ്ടി (auto &points : grid_points)
      {
-       points.qsort ([] (const double &a, const double &b) -> int
-		     { return a < b ? -1 : a > b ? +1 : 0; });
+       points.qsort ([] (സ്ഥിരം ഇരട്ട &a, സ്ഥിരം ഇരട്ട &b) -> പൂർണ്ണസംഖ്യ
+		     { തിരികെ a < b ? -1 : a > b ? +1 : 0; });
        unsigned n = 0;
-       for (unsigned j = 0; j < points.length; j++)
-	 if (!n || points.arrayZ[j] != points.arrayZ[n - 1])
+       വേണ്ടി (unsigned j = 0; j < points.length; j++)
+	 എങ്കിൽ (!n || points.arrayZ[j] != points.arrayZ[n - 1])
 	   points.arrayZ[n++] = points.arrayZ[j];
        points.shrink (n);
-       if (grid_size > MAX_GRID / points.length) { exact = false; break; }
+       എങ്കിൽ (grid_size > MAX_GRID / points.length) { exact = അസത്യം; നിർത്തുക; }
        grid_size *= points.length;
      }
 
-     if (exact)
+     എങ്കിൽ (exact)
      {
        unsigned target_pos = 0; /* the target axis was added first */
        hb_vector_t<unsigned> odometer;
-       if (!odometer.resize (grid_pos.get_population ())) return false;
-       bool first = true;
-       while (true)
+       എങ്കിൽ (!odometer.resize (grid_pos.get_population ())) തിരികെ അസത്യം;
+       തർക്കം first = സത്യം;
+       ആകുമ്പോൾ (സത്യം)
        {
-	 double delta_sum = 0.0;
-	 for (unsigned r = 0; r < active.length; r++)
+	 ഇരട്ട delta_sum = 0.0;
+	 വേണ്ടി (unsigned r = 0; r < active.length; r++)
 	 {
-	   double scalar = 1.0;
-	   for (const auto &pt : region_tents[r])
+	   ഇരട്ട scalar = 1.0;
+	   വേണ്ടി (സ്ഥിരം auto &pt : region_tents[r])
 	   {
-	     double v = grid_points[pt.first][odometer[pt.first]];
+	     ഇരട്ട v = grid_points[pt.first][odometer[pt.first]];
 	     scalar *= _tent_eval (pt.second, v);
-	     if (scalar == 0.0) break;
+	     എങ്കിൽ (scalar == 0.0) നിർത്തുക;
 	   }
 	   delta_sum += scalar * active[r].first;
 	 }
-	 double coord = grid_points[target_pos][odometer[target_pos]];
-	 double value = coord + delta_sum / 16384.0;
-	 if (first)
+	 ഇരട്ട coord = grid_points[target_pos][odometer[target_pos]];
+	 ഇരട്ട value = coord + delta_sum / 16384.0;
+	 എങ്കിൽ (first)
 	 {
 	   dmin = dmax = delta_sum;
 	   vmin = vmax = value;
-	   first = false;
+	   first = അസത്യം;
 	 }
-	 else
+	 അല്ലെങ്കിൽ
 	 {
 	   dmin = hb_min (dmin, delta_sum); dmax = hb_max (dmax, delta_sum);
 	   vmin = hb_min (vmin, value);     vmax = hb_max (vmax, value);
 	 }
 	 unsigned k = 0;
-	 for (; k < odometer.length; k++)
+	 വേണ്ടി (; k < odometer.length; k++)
 	 {
-	   if (++odometer[k] < grid_points[k].length) break;
+	   എങ്കിൽ (++odometer[k] < grid_points[k].length) നിർത്തുക;
 	   odometer[k] = 0;
 	 }
-	 if (k == odometer.length) break;
+	 എങ്കിൽ (k == odometer.length) നിർത്തുക;
        }
      }
-     else
+     അല്ലെങ്കിൽ
      {
-       for (const auto &ar : active)
+       വേണ്ടി (സ്ഥിരം auto &ar : active)
        {
-	 int delta = ar.first;
-	 double smin = 1.0, smax = 1.0;
-	 for (const auto &_ : regions[ar.second])
+	 പൂർണ്ണസംഖ്യ delta = ar.first;
+	 ഇരട്ട smin = 1.0, smax = 1.0;
+	 വേണ്ടി (സ്ഥിരം auto &_ : regions[ar.second])
 	 {
-	   hb_pair_t<double, double> *input;
-	   double blo = -1.0, bhi = +1.0;
-	   if (box.has (_.first, &input)) { blo = input->first; bhi = input->second; }
-	   double tmin, tmax;
-	   _tent_value_range (_.second, blo, bhi, &tmin, &tmax);
+	   hb_pair_t<ഇരട്ട, ഇരട്ട> *നിവേശം;
+	   ഇരട്ട blo = -1.0, bhi = +1.0;
+	   എങ്കിൽ (box.has (_.first, &നിവേശം)) { blo = നിവേശം->first; bhi = നിവേശം->second; }
+	   ഇരട്ട tmin, tmax;
+	   tent_മൂല്യം_range (_.second, blo, bhi, &tmin, &tmax);
 	   smin *= tmin;
 	   smax *= tmax;
-	   if (smax == 0.0) break;
+	   എങ്കിൽ (smax == 0.0) നിർത്തുക;
 	 }
-	 if (delta > 0) { dmin += smin * delta; dmax += smax * delta; }
-	 else           { dmin += smax * delta; dmax += smin * delta; }
+	 എങ്കിൽ (delta > 0) { dmin += smin * delta; dmax += smax * delta; }
+	 അല്ലെങ്കിൽ           { dmin += smax * delta; dmax += smin * delta; }
        }
        vmin = identity->first + dmin / 16384.0;
        vmax = identity->second + dmax / 16384.0;
@@ -318,37 +318,37 @@
       * and add it to the exact quantized intermediate, matching the runtime
       * (map_coords_2_14) and fontTools. */
      Triple *user;
-     if (detect_self_contained && dmin == dmax &&
+     എങ്കിൽ (detect_self_contained && dmin == dmax &&
 	 plan->user_axes_location.has (tag, &user) && user->is_point ())
      {
-       int v_int = (int) roundf ((float) identity->first * 16384.f) +
-		   (int) roundf ((float) dmin);
+       പൂർണ്ണസംഖ്യ v_int = (പൂർണ്ണസംഖ്യ) roundf ((ദശാംശം) identity->first * 16384.f) +
+		   (പൂർണ്ണസംഖ്യ) roundf ((ദശാംശം) dmin);
        v_int = hb_clamp (v_int, -(1 << 14), +(1 << 14));
-       if (!plan->avar2_self_contained.set (tag, v_int / 16384.0)) return false;
-       continue; /* axis is dropped; no region can reference it afterwards */
+       എങ്കിൽ (!plan->avar2_self_contained.set (tag, v_int / 16384.0)) തിരികെ അസത്യം;
+       തുടരുക; /* axis is dropped; no region can reference it afterwards */
      }
 
      /* Pad by one F2Dot14 unit against rounding differences with the
       * runtime's fixed-point evaluation. */
-     double lo = hb_clamp (vmin - 1.0 / 16384.0, -1.0, +1.0);
-     double hi = hb_clamp (vmax + 1.0 / 16384.0, -1.0, +1.0);
+     ഇരട്ട lo = hb_clamp (vmin - 1.0 / 16384.0, -1.0, +1.0);
+     ഇരട്ട hi = hb_clamp (vmax + 1.0 / 16384.0, -1.0, +1.0);
      lo = floor (lo * 16384.0) / 16384.0;
      hi = ceil (hi * 16384.0) / 16384.0;
-     if (lo <= -1.0 && hi >= +1.0)
-       continue; /* not constraining */
-     if (!plan->avar2_reachable_ranges.set (tag, Triple (lo, hb_clamp (0.0, lo, hi), hi)))
-       return false;
+     എങ്കിൽ (lo <= -1.0 && hi >= +1.0)
+       തുടരുക; /* not constraining */
+     എങ്കിൽ (!plan->avar2_reachable_ranges.set (tag, Triple (lo, hb_clamp (0.0, lo, hi), hi)))
+       തിരികെ അസത്യം;
    }
-   return true;
+   തിരികെ സത്യം;
  }
 
 #ifndef HB_NO_OT_FONT_CFF
- static inline hb_font_t*
- _get_hb_font_with_variations (const hb_subset_plan_t *plan)
+ സ്ഥിതം വരിയിൽ hb_font_t*
+ _get_hb_font_with_variations (സ്ഥിരം hb_subset_plan_t *plan)
  {
    hb_font_t *font = hb_font_create (plan->source);
 
-   if (plan->has_avar2)
+   എങ്കിൽ (plan->has_avar2)
    {
      /* Under avar2, instancing applies only to the self-contained pins,
       * whose constant final coordinates the plan holds in normalized_coords.
@@ -356,66 +356,66 @@
       * bake contributions that remain live in the instance's variations. */
      hb_font_set_var_coords_normalized (font, plan->normalized_coords.arrayZ,
                                         plan->normalized_coords.length);
-     return font;
+     തിരികെ font;
    }
 
    hb_vector_t<hb_variation_t> vars;
-   if (!vars.alloc (plan->user_axes_location.get_population ())) {
+   എങ്കിൽ (!vars.alloc (plan->user_axes_location.get_population ())) {
      hb_font_destroy (font);
-     return nullptr;
+     തിരികെ nullptr;
    }
 
-   for (auto _ : plan->user_axes_location)
+   വേണ്ടി (auto _ : plan->user_axes_location)
    {
      hb_variation_t var;
      var.tag = _.first;
-     var.value = _.second.middle;
+     var.value = _.second.നടുവ്;
      vars.push (var);
    }
 
    hb_font_set_variations (font, vars.arrayZ, plan->user_axes_location.get_population ());
-   return font;
+   തിരികെ font;
  }
 #endif
 
  template<typename ItemVarStore>
- void
- remap_variation_indices (const ItemVarStore &var_store,
-                          const hb_set_t &variation_indices,
-                          const hb_vector_t<int>& normalized_coords,
-                          bool calculate_delta, /* not pinned at default */
-                          bool no_variations, /* all axes pinned */
-                          hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> &variation_idx_delta_map /* OUT */)
+ ശൂന്യം
+ remap_variation_indices (സ്ഥിരം ItemVarStore &var_store,
+                          സ്ഥിരം hb_set_t &variation_indices,
+                          സ്ഥിരം hb_vector_t<പൂർണ്ണസംഖ്യ>& normalized_coords,
+                          തർക്കം calculate_delta, /* not pinned at default */
+                          തർക്കം no_variations, /* all axes pinned */
+                          hb_hashmap_t<unsigned, hb_pair_t<unsigned, പൂർണ്ണസംഖ്യ>> &variation_idx_delta_map /* OUT */)
  {
-   if (&var_store == &Null (OT::ItemVariationStore)) return;
-   unsigned subtable_count = var_store.get_sub_table_count ();
+   എങ്കിൽ (&var_store == &Null (OT::ItemVariationStore)) തിരികെ;
+   unsigned subtable_എണ്ണം = var_store.get_sub_table_എണ്ണം ();
    auto *store_cache = var_store.create_cache ();
 
    unsigned new_major = 0, new_minor = 0;
    unsigned last_major = (variation_indices.get_min ()) >> 16;
-   for (unsigned idx : variation_indices)
+   വേണ്ടി (unsigned idx : variation_indices)
    {
-     int delta = 0;
-     if (calculate_delta)
+     പൂർണ്ണസംഖ്യ delta = 0;
+     എങ്കിൽ (calculate_delta)
        delta = roundf (var_store.get_delta (idx, normalized_coords.arrayZ,
                                             normalized_coords.length, store_cache));
 
-     if (no_variations)
+     എങ്കിൽ (no_variations)
      {
-       variation_idx_delta_map.set (idx, hb_pair_t<unsigned, int> (HB_OT_LAYOUT_NO_VARIATIONS_INDEX, delta));
-       continue;
+       variation_idx_delta_map.set (idx, hb_pair_t<unsigned, പൂർണ്ണസംഖ്യ> (HB_OT_LAYOUT_NO_VARIATIONS_INDEX, delta));
+       തുടരുക;
      }
 
      uint16_t major = idx >> 16;
-     if (major >= subtable_count) break;
-     if (major != last_major)
+     എങ്കിൽ (major >= subtable_എണ്ണം) നിർത്തുക;
+     എങ്കിൽ (major != last_major)
      {
        new_minor = 0;
        ++new_major;
      }
 
      unsigned new_idx = (new_major << 16) + new_minor;
-     variation_idx_delta_map.set (idx, hb_pair_t<unsigned, int> (new_idx, delta));
+     variation_idx_delta_map.set (idx, hb_pair_t<unsigned, പൂർണ്ണസംഖ്യ> (new_idx, delta));
      ++new_minor;
      last_major = major;
    }
@@ -423,29 +423,29 @@
  }
 
  template
- void
- remap_variation_indices<OT::ItemVariationStore> (const OT::ItemVariationStore &var_store,
-                          const hb_set_t &variation_indices,
-                          const hb_vector_t<int>& normalized_coords,
-                          bool calculate_delta, /* not pinned at default */
-                          bool no_variations, /* all axes pinned */
-                          hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> &variation_idx_delta_map /* OUT */);
+ ശൂന്യം
+ remap_variation_indices<OT::ItemVariationStore> (സ്ഥിരം OT::ItemVariationStore &var_store,
+                          സ്ഥിരം hb_set_t &variation_indices,
+                          സ്ഥിരം hb_vector_t<പൂർണ്ണസംഖ്യ>& normalized_coords,
+                          തർക്കം calculate_delta, /* not pinned at default */
+                          തർക്കം no_variations, /* all axes pinned */
+                          hb_hashmap_t<unsigned, hb_pair_t<unsigned, പൂർണ്ണസംഖ്യ>> &variation_idx_delta_map /* OUT */);
 
  #ifndef HB_NO_BASE
- void
+ ശൂന്യം
  collect_base_variation_indices (hb_subset_plan_t* plan)
  {
    hb_blob_ptr_t<OT::BASE> base = plan->source_table<OT::BASE> ();
-   if (!base->has_var_store ())
+   എങ്കിൽ (!base->has_var_store ())
    {
      base.destroy ();
-     return;
+     തിരികെ;
    }
 
    hb_set_t varidx_set;
    base->collect_variation_indices (plan, varidx_set);
-   const OT::ItemVariationStore &var_store = base->get_var_store ();
-   unsigned subtable_count = var_store.get_sub_table_count ();
+   സ്ഥിരം OT::ItemVariationStore &var_store = base->get_var_store ();
+   unsigned subtable_എണ്ണം = var_store.get_sub_table_എണ്ണം ();
 
 
    remap_variation_indices (var_store, varidx_set,
@@ -453,77 +453,77 @@
                              !plan->pinned_at_default,
                              plan->all_axes_pinned,
                              plan->base_variation_idx_map);
-   generate_varstore_inner_maps (varidx_set, subtable_count, plan->base_varstore_inner_maps);
+   generate_varstore_inner_maps (varidx_set, subtable_എണ്ണം, plan->base_varstore_inner_maps);
 
    base.destroy ();
  }
 
  #endif
 
-bool
+തർക്കം
 normalize_axes_location (hb_face_t *face, hb_subset_plan_t *plan)
 {
-  if (plan->user_axes_location.is_empty ())
-    return true;
+  എങ്കിൽ (plan->user_axes_location.is_empty ())
+    തിരികെ സത്യം;
 
-  hb_array_t<const OT::AxisRecord> axes = face->table.fvar->get_axes ();
-  for (const auto &axis : axes)
+  hb_array_t<സ്ഥിരം OT::AxisRecord> axes = face->table.fvar->get_axes ();
+  വേണ്ടി (സ്ഥിരം auto &axis : axes)
   {
     hb_tag_t tag = axis.get_axis_tag ();
-    const Triple *range;
-    float minimum, middle, maximum;
-    axis.get_coordinates (minimum, middle, maximum);
-    if (plan->user_axes_location.has (tag, &range) && !range->is_point () &&
+    സ്ഥിരം Triple *range;
+    ദശാംശം minimum, നടുവ്, maximum;
+    axis.get_coordinates (minimum, നടുവ്, maximum);
+    എങ്കിൽ (plan->user_axes_location.has (tag, &range) && !range->is_point () &&
         range->minimum == minimum &&
-        range->middle == middle &&
+        range->നടുവ് == നടുവ് &&
         range->maximum == maximum)
       plan->user_axes_location.del (tag);
   }
-  if (plan->user_axes_location.is_empty ())
-    return true;
+  എങ്കിൽ (plan->user_axes_location.is_empty ())
+    തിരികെ സത്യം;
 
-  if (!plan->check_success (plan->normalized_coords.resize (axes.length)))
-    return false;
+  എങ്കിൽ (!plan->check_success (plan->normalized_coords.resize (axes.length)))
+    തിരികെ അസത്യം;
 
-  bool has_avar = face->table.avar->has_data ();
-  hb_vector_t<float> normalized_mins;
-  hb_vector_t<float> normalized_defaults;
-  hb_vector_t<float> normalized_maxs;
-  if (has_avar)
+  തർക്കം has_avar = face->table.avar->has_data ();
+  hb_vector_t<ദശാംശം> normalized_mins;
+  hb_vector_t<ദശാംശം> normalized_defaults;
+  hb_vector_t<ദശാംശം> normalized_maxs;
+  എങ്കിൽ (has_avar)
   {
-    if (!plan->check_success (normalized_mins.resize (axes.length)) ||
+    എങ്കിൽ (!plan->check_success (normalized_mins.resize (axes.length)) ||
         !plan->check_success (normalized_defaults.resize (axes.length)) ||
         !plan->check_success (normalized_maxs.resize (axes.length)))
-      return false;
+      തിരികെ അസത്യം;
   }
 
-  bool axis_not_pinned = false;
+  തർക്കം axis_not_pinned = അസത്യം;
   unsigned new_axis_idx = 0;
   unsigned last_idx = 0;
-  for (const auto& _ : + hb_enumerate (axes))
+  വേണ്ടി (സ്ഥിരം auto& _ : + hb_enumerate (axes))
   {
     unsigned i = _.first;
-    const OT::AxisRecord &axis = _.second;
+    സ്ഥിരം OT::AxisRecord &axis = _.second;
     hb_tag_t axis_tag = axis.get_axis_tag ();
     plan->axes_old_index_tag_map.set (i, axis_tag);
 
-    if (!plan->user_axes_location.has (axis_tag) ||
+    എങ്കിൽ (!plan->user_axes_location.has (axis_tag) ||
         !plan->user_axes_location.get (axis_tag).is_point ())
     {
-      axis_not_pinned = true;
+      axis_not_pinned = സത്യം;
       plan->axes_index_map.set (i, new_axis_idx);
       plan->axis_tags.push (axis_tag);
       new_axis_idx++;
     }
 
     Triple *axis_range;
-    if (plan->user_axes_location.has (axis_tag, &axis_range))
+    എങ്കിൽ (plan->user_axes_location.has (axis_tag, &axis_range))
     {
       plan->axes_triple_distances.set (axis_tag, axis.get_triple_distances ());
 
-      float normalized_min = axis.normalize_axis_value (axis_range->minimum);
-      float normalized_default = axis.normalize_axis_value (axis_range->middle);
-      float normalized_max = axis.normalize_axis_value (axis_range->maximum);
+      ദശാംശം normalized_min = axis.normalize_axis_മൂല്യം (axis_range->minimum);
+      ദശാംശം normalized_default = axis.normalize_axis_മൂല്യം (axis_range->നടുവ്);
+      ദശാംശം normalized_max = axis.normalize_axis_മൂല്യം (axis_range->maximum);
 
       // TODO(behdad): Spec says axis normalization should be done in 16.16;
       // We used to do it in 2.14, but that's not correct.  I fixed this in
@@ -538,22 +538,22 @@ normalize_axes_location (hb_face_t *face, hb_subset_plan_t *plan)
       normalized_default = roundf (normalized_default * 16384.f) / 16384.f;
       normalized_max = roundf (normalized_max * 16384.f) / 16384.f;
 
-      if (has_avar)
+      എങ്കിൽ (has_avar)
       {
         normalized_mins[i] = normalized_min;
         normalized_defaults[i] = normalized_default;
         normalized_maxs[i] = normalized_max;
         last_idx = i;
       }
-      else
+      അല്ലെങ്കിൽ
       {
-        plan->axes_location.set (axis_tag, Triple ((double) normalized_min,
-                                                   (double) normalized_default,
-                                                   (double) normalized_max));
-        if (normalized_default == -0.f)
+        plan->axes_location.set (axis_tag, Triple ((ഇരട്ട) normalized_min,
+                                                   (ഇരട്ട) normalized_default,
+                                                   (ഇരട്ട) normalized_max));
+        എങ്കിൽ (normalized_default == -0.f)
           normalized_default = 0.f; // Normalize -0 to 0
-        if (normalized_default != 0.f)
-          plan->pinned_at_default = false;
+        എങ്കിൽ (normalized_default != 0.f)
+          plan->pinned_at_default = അസത്യം;
 
         plan->normalized_coords[i] = roundf (normalized_default * 16384.f);
       }
@@ -563,33 +563,33 @@ normalize_axes_location (hb_face_t *face, hb_subset_plan_t *plan)
 
   // TODO: use avar map_coords_16_16() when normalization is changed to 16.16
   // in fonttools
-  if (has_avar)
+  എങ്കിൽ (has_avar)
   {
-    const OT::avar* avar_table = face->table.avar;
+    സ്ഥിരം OT::avar* avar_table = face->table.avar;
     unsigned coords_len = last_idx + 1;
 
-    if (avar_table->has_v2_data () && !plan->all_axes_pinned)
+    എങ്കിൽ (avar_table->has_v2_data () && !plan->all_axes_pinned)
     {
       /* avar2 partial instancing: use v1-only mapping to get intermediate-space
        * coords. These are used for IVS rebasing and offset compensation. */
-      plan->has_avar2 = true;
+      plan->has_avar2 = സത്യം;
 
-      if (!plan->check_success (avar_table->map_coords_2_14 (normalized_mins.arrayZ, coords_len, true)) ||
-          !plan->check_success (avar_table->map_coords_2_14 (normalized_defaults.arrayZ, coords_len, true)) ||
-          !plan->check_success (avar_table->map_coords_2_14 (normalized_maxs.arrayZ, coords_len, true)))
-        return false;
+      എങ്കിൽ (!plan->check_success (avar_table->map_coords_2_14 (normalized_mins.arrayZ, coords_len, സത്യം)) ||
+          !plan->check_success (avar_table->map_coords_2_14 (normalized_defaults.arrayZ, coords_len, സത്യം)) ||
+          !plan->check_success (avar_table->map_coords_2_14 (normalized_maxs.arrayZ, coords_len, സത്യം)))
+        തിരികെ അസത്യം;
 
-      for (const auto& _ : + hb_enumerate (axes))
+      വേണ്ടി (സ്ഥിരം auto& _ : + hb_enumerate (axes))
       {
         unsigned i = _.first;
         hb_tag_t axis_tag = _.second.get_axis_tag ();
-        if (plan->user_axes_location.has (axis_tag))
+        എങ്കിൽ (plan->user_axes_location.has (axis_tag))
         {
           /* Store intermediate-space coords for offset compensation,
            * segment-map renormalization, and IVS rebasing. */
-          plan->old_intermediates.set (axis_tag, Triple ((double) normalized_mins[i],
-                                                         (double) normalized_defaults[i],
-                                                         (double) normalized_maxs[i]));
+          plan->old_intermediates.set (axis_tag, Triple ((ഇരട്ട) normalized_mins[i],
+                                                         (ഇരട്ട) normalized_defaults[i],
+                                                         (ഇരട്ട) normalized_maxs[i]));
         }
       }
 
@@ -604,19 +604,19 @@ normalize_axes_location (hb_face_t *face, hb_subset_plan_t *plan)
        * in fvar as ordinary hidden pins. VARC remaps its axis indices and
        * rejects instancing of axes it references. */
       hb_blob_t *cff2_blob = hb_face_reference_table (face, HB_TAG ('C','F','F','2'));
-      bool detect_self_contained = !hb_blob_get_length (cff2_blob);
+      തർക്കം detect_self_contained = !hb_blob_get_length (cff2_blob);
       hb_blob_destroy (cff2_blob);
-      if (!_compute_avar2_reachable_ranges (plan, axes, avar_table,
+      എങ്കിൽ (!_compute_avar2_reachable_ranges (plan, axes, avar_table,
                                             detect_self_contained))
-        return false;
+        തിരികെ അസത്യം;
 
 #ifndef HB_NO_VAR_COMPOSITES
       /* VARC overrides can reach coordinates outside the font-level
        * ranges. Do not cull variation data using those ranges. */
-      if (!plan->drop_tables.has (HB_TAG ('V','A','R','C')))
+      എങ്കിൽ (!plan->drop_tables.has (HB_TAG ('V','A','R','C')))
       {
         hb_blob_t *varc_blob = hb_face_reference_table (face, HB_TAG ('V','A','R','C'));
-        if (hb_blob_get_length (varc_blob))
+        എങ്കിൽ (hb_blob_get_length (varc_blob))
           plan->avar2_reachable_ranges.reset ();
         hb_blob_destroy (varc_blob);
       }
@@ -627,12 +627,12 @@ normalize_axes_location (hb_face_t *face, hb_subset_plan_t *plan)
       plan->axes_index_map.reset ();
       plan->axis_tags.reset ();
       unsigned retained_axis_idx = 0;
-      for (const auto& _ : + hb_enumerate (axes))
+      വേണ്ടി (സ്ഥിരം auto& _ : + hb_enumerate (axes))
       {
         unsigned i = _.first;
         hb_tag_t axis_tag = _.second.get_axis_tag ();
-        if (plan->avar2_self_contained.has (axis_tag))
-          continue;
+        എങ്കിൽ (plan->avar2_self_contained.has (axis_tag))
+          തുടരുക;
         plan->axes_index_map.set (i, retained_axis_idx++);
         plan->axis_tags.push (axis_tag);
       }
@@ -641,95 +641,95 @@ normalize_axes_location (hb_face_t *face, hb_subset_plan_t *plan)
        * instancing machinery bakes those axes' contributions in. The
        * remaining restriction is carried entirely by avar. */
       plan->axes_location.reset ();
-      if (plan->avar2_self_contained.get_population ())
+      എങ്കിൽ (plan->avar2_self_contained.get_population ())
       {
-        bool sc_pinned_at_default = true;
-        for (auto _ : plan->avar2_self_contained)
+        തർക്കം sc_pinned_at_default = സത്യം;
+        വേണ്ടി (auto _ : plan->avar2_self_contained)
         {
           plan->axes_location.set (_.first, Triple (_.second, _.second, _.second));
-          if (_.second != 0.0)
-            sc_pinned_at_default = false;
+          എങ്കിൽ (_.second != 0.0)
+            sc_pinned_at_default = അസത്യം;
         }
-        for (const auto& _ : + hb_enumerate (axes))
+        വേണ്ടി (സ്ഥിരം auto& _ : + hb_enumerate (axes))
         {
-          double *v;
+          ഇരട്ട *v;
           plan->normalized_coords[_.first] =
               plan->avar2_self_contained.has (_.second.get_axis_tag (), &v)
-              ? (int) roundf ((float) (*v * 16384.0)) : 0;
+              ? (പൂർണ്ണസംഖ്യ) roundf ((ദശാംശം) (*v * 16384.0)) : 0;
         }
         plan->pinned_at_default = sc_pinned_at_default;
       }
-      else
+      അല്ലെങ്കിൽ
         plan->normalized_coords.shrink (0);
     }
-    else
+    അല്ലെങ്കിൽ
     {
       /* Standard avar v1 (or v1+v2 with all axes pinned) */
-      if (!plan->check_success (avar_table->map_coords_2_14 (normalized_mins.arrayZ, coords_len)) ||
+      എങ്കിൽ (!plan->check_success (avar_table->map_coords_2_14 (normalized_mins.arrayZ, coords_len)) ||
           !plan->check_success (avar_table->map_coords_2_14 (normalized_defaults.arrayZ, coords_len)) ||
           !plan->check_success (avar_table->map_coords_2_14 (normalized_maxs.arrayZ, coords_len)))
-        return false;
+        തിരികെ അസത്യം;
 
-      for (const auto& _ : + hb_enumerate (axes))
+      വേണ്ടി (സ്ഥിരം auto& _ : + hb_enumerate (axes))
       {
         unsigned i = _.first;
         hb_tag_t axis_tag = _.second.get_axis_tag ();
-        if (plan->user_axes_location.has (axis_tag))
+        എങ്കിൽ (plan->user_axes_location.has (axis_tag))
         {
-          plan->axes_location.set (axis_tag, Triple ((double) normalized_mins[i],
-                                                     (double) normalized_defaults[i],
-                                                     (double) normalized_maxs[i]));
-          float normalized_default = normalized_defaults[i];
-          if (normalized_default == -0.f)
+          plan->axes_location.set (axis_tag, Triple ((ഇരട്ട) normalized_mins[i],
+                                                     (ഇരട്ട) normalized_defaults[i],
+                                                     (ഇരട്ട) normalized_maxs[i]));
+          ദശാംശം normalized_default = normalized_defaults[i];
+          എങ്കിൽ (normalized_default == -0.f)
             normalized_default = 0.f;
-          if (normalized_default != 0.f)
-            plan->pinned_at_default = false;
+          എങ്കിൽ (normalized_default != 0.f)
+            plan->pinned_at_default = അസത്യം;
 
           plan->normalized_coords[i] = roundf (normalized_default * 16384.f);
         }
       }
     }
   }
-  return true;
+  തിരികെ സത്യം;
 }
 
 #ifndef HB_NO_OT_FONT_CFF
-void
+ശൂന്യം
 update_instance_metrics_map_from_cff2 (hb_subset_plan_t *plan)
 {
-  if (!plan->normalized_coords) return;
+  എങ്കിൽ (!plan->normalized_coords) തിരികെ;
   OT::cff2::accelerator_t cff2 (plan->source);
-  if (!cff2.is_valid ()) return;
+  എങ്കിൽ (!cff2.is_valid ()) തിരികെ;
 
   hb_font_t *font = _get_hb_font_with_variations (plan);
-  if (unlikely (!plan->check_success (font != nullptr)))
+  എങ്കിൽ (unlikely (!plan->check_success (font != nullptr)))
   {
     hb_font_destroy (font);
-    return;
+    തിരികെ;
   }
 
   hb_glyph_extents_t extents = {0x7FFF, -0x7FFF};
   OT::hmtx_accelerator_t _hmtx (plan->source);
   OT::hb_scalar_cache_t *hvar_store_cache = nullptr;
-  if (_hmtx.has_data () && _hmtx.var_table.get_length ())
+  എങ്കിൽ (_hmtx.has_data () && _hmtx.var_table.get_length ())
     hvar_store_cache = _hmtx.var_table->get_var_store ().create_cache ();
 
   OT::vmtx_accelerator_t _vmtx (plan->source);
   OT::hb_scalar_cache_t *vvar_store_cache = nullptr;
-  if (_vmtx.has_data () && _vmtx.var_table.get_length ())
+  എങ്കിൽ (_vmtx.has_data () && _vmtx.var_table.get_length ())
     vvar_store_cache = _vmtx.var_table->get_var_store ().create_cache ();
 
-  for (auto p : *plan->glyph_map)
+  വേണ്ടി (auto p : *plan->glyph_map)
   {
     hb_codepoint_t old_gid = p.first;
     hb_codepoint_t new_gid = p.second;
-    if (!cff2.get_extents (font, old_gid, &extents)) continue;
-    bool has_bounds_info = true;
-    if (extents.x_bearing == 0 && extents.width == 0 &&
+    എങ്കിൽ (!cff2.get_extents (font, old_gid, &extents)) തുടരുക;
+    തർക്കം has_bounds_info = സത്യം;
+    എങ്കിൽ (extents.x_bearing == 0 && extents.width == 0 &&
         extents.height == 0 && extents.y_bearing == 0)
-      has_bounds_info = false;
+      has_bounds_info = അസത്യം;
 
-    if (has_bounds_info)
+    എങ്കിൽ (has_bounds_info)
     {
       plan->head_maxp_info.xMin = hb_min (plan->head_maxp_info.xMin, extents.x_bearing);
       plan->head_maxp_info.xMax = hb_max (plan->head_maxp_info.xMax,
@@ -739,18 +739,18 @@ update_instance_metrics_map_from_cff2 (hb_subset_plan_t *plan)
 						 hb_saturate_add (extents.y_bearing, extents.height));
     }
 
-    if (_hmtx.has_data ())
+    എങ്കിൽ (_hmtx.has_data ())
     {
-      double hori_aw = _hmtx.get_advance_without_var_unscaled (old_gid);
-      if (_hmtx.var_table.get_length ())
-        hori_aw += (double) roundf (_hmtx.var_table->get_advance_delta_unscaled (old_gid, font->coords, font->num_coords,
+      ഇരട്ട hori_aw = _hmtx.get_advance_without_var_unscaled (old_gid);
+      എങ്കിൽ (_hmtx.var_table.get_length ())
+        hori_aw += (ഇരട്ട) roundf (_hmtx.var_table->get_advance_delta_unscaled (old_gid, font->coords, font->അക്കം_coords,
 									 hvar_store_cache));
       /* Malicious deltas can take the advance out of the UFWORD range that
        * hmtx serialization stores.  Clamp, to keep downstream consumers
        * (e.g. CFF width optimizer) bounded and consistent with hmtx. */
       hori_aw = hb_clamp (hori_aw, 0., 65535.);
-      int lsb = extents.x_bearing;
-      if (!has_bounds_info)
+      പൂർണ്ണസംഖ്യ lsb = extents.x_bearing;
+      എങ്കിൽ (!has_bounds_info)
       {
         _hmtx.get_leading_bearing_without_var_unscaled (old_gid, &lsb);
       }
@@ -758,21 +758,21 @@ update_instance_metrics_map_from_cff2 (hb_subset_plan_t *plan)
       plan->bounds_width_vec[new_gid] = extents.width;
     }
 
-    if (_vmtx.has_data ())
+    എങ്കിൽ (_vmtx.has_data ())
     {
-      double vert_aw = _vmtx.get_advance_without_var_unscaled (old_gid);
-      if (_vmtx.var_table.get_length ())
-        vert_aw += (double) roundf (_vmtx.var_table->get_advance_delta_unscaled (old_gid, font->coords, font->num_coords,
+      ഇരട്ട vert_aw = _vmtx.get_advance_without_var_unscaled (old_gid);
+      എങ്കിൽ (_vmtx.var_table.get_length ())
+        vert_aw += (ഇരട്ട) roundf (_vmtx.var_table->get_advance_delta_unscaled (old_gid, font->coords, font->അക്കം_coords,
 									 vvar_store_cache));
       vert_aw = hb_clamp (vert_aw, 0., 65535.);
       hb_position_t vorg_x = 0;
       hb_position_t vorg_y = 0;
-      int tsb = 0;
-      if (has_bounds_info &&
+      പൂർണ്ണസംഖ്യ tsb = 0;
+      എങ്കിൽ (has_bounds_info &&
            hb_font_get_glyph_v_origin (font, old_gid, &vorg_x, &vorg_y))
       {
         tsb = hb_saturate_sub (vorg_y, extents.y_bearing);
-      } else {
+      } അല്ലെങ്കിൽ {
         _vmtx.get_leading_bearing_without_var_unscaled (old_gid, &tsb);
       }
 
@@ -782,92 +782,92 @@ update_instance_metrics_map_from_cff2 (hb_subset_plan_t *plan)
   }
   /* No glyph contributed bounds: do not serialize the accumulator's
    * inverted sentinels into head (or a downgraded CFF FontBBox). */
-  if (plan->head_maxp_info.xMin > plan->head_maxp_info.xMax)
+  എങ്കിൽ (plan->head_maxp_info.xMin > plan->head_maxp_info.xMax)
   {
     plan->head_maxp_info.xMin = plan->head_maxp_info.xMax = 0;
     plan->head_maxp_info.yMin = plan->head_maxp_info.yMax = 0;
   }
   hb_font_destroy (font);
-  if (hvar_store_cache)
+  എങ്കിൽ (hvar_store_cache)
     _hmtx.var_table->get_var_store ().destroy_cache (hvar_store_cache);
-  if (vvar_store_cache)
+  എങ്കിൽ (vvar_store_cache)
     _vmtx.var_table->get_var_store ().destroy_cache (vvar_store_cache);
 }
 #endif
 
-bool
+തർക്കം
 get_instance_glyphs_contour_points (hb_subset_plan_t *plan)
 {
   /* contour_points vector only needed for updating gvar table (infer delta and
    * iup delta optimization) during partial instancing */
-  if (plan->user_axes_location.is_empty () || plan->all_axes_pinned)
-    return true;
+  എങ്കിൽ (plan->user_axes_location.is_empty () || plan->all_axes_pinned)
+    തിരികെ സത്യം;
 
   OT::glyf_accelerator_t glyf (plan->source);
 
-  for (auto &_ : plan->new_to_old_gid_list)
+  വേണ്ടി (auto &_ : plan->new_to_old_gid_list)
   {
     hb_codepoint_t new_gid = _.first;
     contour_point_vector_t all_points;
-    if (new_gid == 0 && !(plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
+    എങ്കിൽ (new_gid == 0 && !(plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
     {
-      if (unlikely (!plan->new_gid_contour_points_map.set (new_gid, all_points)))
-        return false;
-      continue;
+      എങ്കിൽ (unlikely (!plan->new_gid_contour_points_map.set (new_gid, all_points)))
+        തിരികെ അസത്യം;
+      തുടരുക;
     }
 
     hb_codepoint_t old_gid = _.second;
     auto glyph = glyf.glyph_for_gid (old_gid);
-    if (unlikely (!glyph.get_all_points_without_var (plan->source, all_points)))
-      return false;
-    if (unlikely (!plan->new_gid_contour_points_map.set (new_gid, all_points)))
-      return false;
+    എങ്കിൽ (unlikely (!glyph.get_all_points_without_var (plan->source, all_points)))
+      തിരികെ അസത്യം;
+    എങ്കിൽ (unlikely (!plan->new_gid_contour_points_map.set (new_gid, all_points)))
+      തിരികെ അസത്യം;
 
     /* composite new gids are only needed by iup delta optimization */
-    if ((plan->flags & HB_SUBSET_FLAGS_OPTIMIZE_IUP_DELTAS) && glyph.is_composite ())
+    എങ്കിൽ ((plan->flags & HB_SUBSET_FLAGS_OPTIMIZE_IUP_DELTAS) && glyph.is_composite ())
       plan->composite_new_gids.add (new_gid);
   }
-  return true;
+  തിരികെ സത്യം;
 }
 
 template<typename DeltaSetIndexMap>
-void
-remap_colrv1_delta_set_index_indices (const DeltaSetIndexMap &index_map,
-                                      const hb_set_t &delta_set_idxes,
-                                      hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> &variation_idx_delta_map, /* IN/OUT */
+ശൂന്യം
+remap_colrv1_delta_set_index_indices (സ്ഥിരം DeltaSetIndexMap &index_map,
+                                      സ്ഥിരം hb_set_t &delta_set_idxes,
+                                      hb_hashmap_t<unsigned, hb_pair_t<unsigned, പൂർണ്ണസംഖ്യ>> &variation_idx_delta_map, /* IN/OUT */
                                       hb_map_t &new_deltaset_idx_varidx_map /* OUT */)
 {
-  if (!index_map.get_map_count ())
-    return;
+  എങ്കിൽ (!index_map.get_map_എണ്ണം ())
+    തിരികെ;
 
-  hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> delta_set_idx_delta_map;
+  hb_hashmap_t<unsigned, hb_pair_t<unsigned, പൂർണ്ണസംഖ്യ>> delta_set_idx_delta_map;
   unsigned new_delta_set_idx = 0;
-  for (unsigned delta_set_idx : delta_set_idxes)
+  വേണ്ടി (unsigned delta_set_idx : delta_set_idxes)
   {
     unsigned var_idx = index_map.map (delta_set_idx);
     unsigned new_varidx = HB_OT_LAYOUT_NO_VARIATIONS_INDEX;
-    int delta = 0;
+    പൂർണ്ണസംഖ്യ delta = 0;
 
-    if (var_idx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
+    എങ്കിൽ (var_idx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
     {
-      hb_pair_t<unsigned, int> *new_varidx_delta;
-      if (!variation_idx_delta_map.has (var_idx, &new_varidx_delta)) continue;
+      hb_pair_t<unsigned, പൂർണ്ണസംഖ്യ> *new_varidx_delta;
+      എങ്കിൽ (!variation_idx_delta_map.has (var_idx, &new_varidx_delta)) തുടരുക;
 
       new_varidx = hb_first (*new_varidx_delta);
       delta = hb_second (*new_varidx_delta);
     }
 
     new_deltaset_idx_varidx_map.set (new_delta_set_idx, new_varidx);
-    delta_set_idx_delta_map.set (delta_set_idx, hb_pair_t<unsigned, int> (new_delta_set_idx, delta));
+    delta_set_idx_delta_map.set (delta_set_idx, hb_pair_t<unsigned, പൂർണ്ണസംഖ്യ> (new_delta_set_idx, delta));
     new_delta_set_idx++;
   }
   variation_idx_delta_map = std::move (delta_set_idx_delta_map);
 }
 
-template void
-remap_colrv1_delta_set_index_indices<OT::DeltaSetIndexMap> (const OT::DeltaSetIndexMap &index_map,
-                                      const hb_set_t &delta_set_idxes,
-                                      hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> &variation_idx_delta_map, /* IN/OUT */
+template ശൂന്യം
+remap_colrv1_delta_set_index_indices<OT::DeltaSetIndexMap> (സ്ഥിരം OT::DeltaSetIndexMap &index_map,
+                                      സ്ഥിരം hb_set_t &delta_set_idxes,
+                                      hb_hashmap_t<unsigned, hb_pair_t<unsigned, പൂർണ്ണസംഖ്യ>> &variation_idx_delta_map, /* IN/OUT */
                                       hb_map_t &new_deltaset_idx_varidx_map /* OUT */);
 
  #endif

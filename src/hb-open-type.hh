@@ -29,15 +29,15 @@
 #ifndef HB_OPEN_TYPE_HH
 #define HB_OPEN_TYPE_HH
 
-#include "hb.hh"
-#include "hb-blob.hh"
-#include "hb-face.hh"
-#include "hb-machinery.hh"
-#include "hb-meta.hh"
-#include "hb-subset.hh"
+#അന്തര്ഭാവ "hb.hh"
+#അന്തര്ഭാവ "hb-blob.hh"
+#അന്തര്ഭാവ "hb-face.hh"
+#അന്തര്ഭാവ "hb-machinery.hh"
+#അന്തര്ഭാവ "hb-meta.hh"
+#അന്തര്ഭാവ "hb-subset.hh"
 
 
-namespace OT {
+നാമാകാശ OT {
 
 
 /*
@@ -54,209 +54,209 @@ namespace OT {
  */
 
 /* Integer types in big-endian order and no alignment requirement */
-template <bool BE,
+template <തർക്കം BE,
 	  typename Type,
-	  unsigned int Size = sizeof (Type)>
-struct NumType
+	  unsigned പൂർണ്ണസംഖ്യ Size = വലുപ്പം (Type)>
+ഘടന അക്കം_Type
 {
-  typedef Type type;
+  തരനിർവചനം Type type;
   /* For reason we define cast out operator for signed/unsigned, instead of Type, see:
    * https://github.com/harfbuzz/harfbuzz/pull/2875/commits/09836013995cab2b9f07577a179ad7b024130467 */
-  typedef typename std::conditional<std::is_integral<Type>::value && sizeof (Type) <= sizeof(int),
+  തരനിർവചനം typename std::conditional<std::is_integral<Type>::value && വലുപ്പം (Type) <= വലുപ്പം(പൂർണ്ണസംഖ്യ),
 				     typename std::conditional<std::is_signed<Type>::value, signed, unsigned>::type,
 				     Type>::type WideType;
 
-  NumType () = default;
-  explicit constexpr NumType (Type V) : v {V} {}
-  NumType& operator = (Type V) { v = V; return *this; }
+  അക്കം_Type () = സ്ഥിരസ്ഥിതി;
+  explicit constexpr അക്കം_Type (Type V) : v {V} {}
+  അക്കം_Type& operator = (Type V) { v = V; തിരികെ *ഇത്; }
 
-  operator WideType () const { return v; }
+  operator WideType () സ്ഥിരം { തിരികെ v; }
 
-  bool operator == (const NumType &o) const { return (Type) v == (Type) o.v; }
-  bool operator != (const NumType &o) const { return !(*this == o); }
+  തർക്കം operator == (സ്ഥിരം അക്കം_Type &o) സ്ഥിരം { തിരികെ (Type) v == (Type) o.v; }
+  തർക്കം operator != (സ്ഥിരം അക്കം_Type &o) സ്ഥിരം { തിരികെ !(*ഇത് == o); }
 
-  NumType& operator += (WideType count) { *this = *this + count; return *this; }
-  NumType& operator -= (WideType count) { *this = *this - count; return *this; }
-  NumType& operator ++ () { *this += 1; return *this; }
-  NumType& operator -- () { *this -= 1; return *this; }
-  NumType operator ++ (int) { NumType c (*this); ++*this; return c; }
-  NumType operator -- (int) { NumType c (*this); --*this; return c; }
+  അക്കം_Type& operator += (WideType എണ്ണം) { *ഇത് = *ഇത് + എണ്ണം; തിരികെ *ഇത്; }
+  അക്കം_Type& operator -= (WideType എണ്ണം) { *ഇത് = *ഇത് - എണ്ണം; തിരികെ *ഇത്; }
+  അക്കം_Type& operator ++ () { *ഇത് += 1; തിരികെ *ഇത്; }
+  അക്കം_Type& operator -- () { *ഇത് -= 1; തിരികെ *ഇത്; }
+  അക്കം_Type operator ++ (പൂർണ്ണസംഖ്യ) { അക്കം_Type c (*ഇത്); ++*ഇത്; തിരികെ c; }
+  അക്കം_Type operator -- (പൂർണ്ണസംഖ്യ) { അക്കം_Type c (*ഇത്); --*ഇത്; തിരികെ c; }
 
-  uint32_t hash () const { return hb_array ((const char *) &v, sizeof (v)).hash (); }
-  HB_INTERNAL static int cmp (const NumType *a, const NumType *b)
-  { return b->cmp (*a); }
-  HB_INTERNAL static int cmp (const void *a, const void *b)
+  uint32_t hash () സ്ഥിരം { തിരികെ hb_array ((സ്ഥിരം അക്ഷരം *) &v, വലുപ്പം (v)).hash (); }
+  HB_INTERNAL സ്ഥിതം പൂർണ്ണസംഖ്യ cmp (സ്ഥിരം അക്കം_Type *a, സ്ഥിരം അക്കം_Type *b)
+  { തിരികെ b->cmp (*a); }
+  HB_INTERNAL സ്ഥിതം പൂർണ്ണസംഖ്യ cmp (സ്ഥിരം ശൂന്യം *a, സ്ഥിരം ശൂന്യം *b)
   {
-    NumType *pa = (NumType *) a;
-    NumType *pb = (NumType *) b;
+    അക്കം_Type *pa = (അക്കം_Type *) a;
+    അക്കം_Type *pb = (അക്കം_Type *) b;
 
-    return pb->cmp (*pa);
+    തിരികെ pb->cmp (*pa);
   }
   template <typename Type2,
 	    hb_enable_if (hb_is_convertible (Type2, Type))>
-  int cmp (Type2 a) const
+  പൂർണ്ണസംഖ്യ cmp (Type2 a) സ്ഥിരം
   {
     Type b = v;
-    return (a > b) - (a < b);
+    തിരികെ (a > b) - (a < b);
   }
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
-  protected:
+  സംരക്ഷിത:
   typename std::conditional<std::is_integral<Type>::value,
 			    HBInt<BE, Type, Size>,
 			    HBFloat<BE, Type, Size>>::type v;
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (Size);
 };
 
-typedef NumType<true, uint8_t>  HBUINT8;	/* 8-bit big-endian unsigned integer. */
-typedef NumType<true, int8_t>   HBINT8;		/* 8-bit big-endian signed integer. */
-typedef NumType<true, uint16_t> HBUINT16;	/* 16-bit big-endian unsigned integer. */
-typedef NumType<true, int16_t>  HBINT16;	/* 16-bit big-endian signed integer. */
-typedef NumType<true, uint32_t> HBUINT32;	/* 32-bit big-endian unsigned integer. */
-typedef NumType<true, int32_t>  HBINT32;	/* 32-bit big-endian signed integer. */
-typedef NumType<true, uint64_t> HBUINT64;	/* 64-bit big-endian unsigned integer. */
-typedef NumType<true, int64_t>  HBINT64;	/* 64-bit big-endian signed integer. */
+തരനിർവചനം അക്കം_Type<സത്യം, uint8_t>  HBUINT8;	/* 8-bit big-endian unsigned integer. */
+തരനിർവചനം അക്കം_Type<സത്യം, int8_t>   HBINT8;		/* 8-bit big-endian signed integer. */
+തരനിർവചനം അക്കം_Type<സത്യം, uint16_t> HBUINT16;	/* 16-bit big-endian unsigned integer. */
+തരനിർവചനം അക്കം_Type<സത്യം, int16_t>  HBINT16;	/* 16-bit big-endian signed integer. */
+തരനിർവചനം അക്കം_Type<സത്യം, uint32_t> HBUINT32;	/* 32-bit big-endian unsigned integer. */
+തരനിർവചനം അക്കം_Type<സത്യം, int32_t>  HBINT32;	/* 32-bit big-endian signed integer. */
+തരനിർവചനം അക്കം_Type<സത്യം, uint64_t> HBUINT64;	/* 64-bit big-endian unsigned integer. */
+തരനിർവചനം അക്കം_Type<സത്യം, int64_t>  HBINT64;	/* 64-bit big-endian signed integer. */
 /* Note: we cannot defined a signed HBINT24 because there's no corresponding C type.
  * Works for unsigned, but not signed, since we rely on compiler for sign-extension. */
-typedef NumType<true, uint32_t, 3> HBUINT24;	/* 24-bit big-endian unsigned integer. */
+തരനിർവചനം അക്കം_Type<സത്യം, uint32_t, 3> HBUINT24;	/* 24-bit big-endian unsigned integer. */
 
-typedef NumType<false, uint16_t> HBUINT16LE;	/* 16-bit little-endian unsigned integer. */
-typedef NumType<false, int16_t>  HBINT16LE;	/* 16-bit little-endian signed integer. */
-typedef NumType<false, uint32_t> HBUINT32LE;	/* 32-bit little-endian unsigned integer. */
-typedef NumType<false, int32_t>  HBINT32LE;	/* 32-bit little-endian signed integer. */
-typedef NumType<false, uint64_t> HBUINT64LE;	/* 64-bit little-endian unsigned integer. */
-typedef NumType<false, int64_t>  HBINT64LE;	/* 64-bit little-endian signed integer. */
+തരനിർവചനം അക്കം_Type<അസത്യം, uint16_t> HBUINT16LE;	/* 16-bit little-endian unsigned integer. */
+തരനിർവചനം അക്കം_Type<അസത്യം, int16_t>  HBINT16LE;	/* 16-bit little-endian signed integer. */
+തരനിർവചനം അക്കം_Type<അസത്യം, uint32_t> HBUINT32LE;	/* 32-bit little-endian unsigned integer. */
+തരനിർവചനം അക്കം_Type<അസത്യം, int32_t>  HBINT32LE;	/* 32-bit little-endian signed integer. */
+തരനിർവചനം അക്കം_Type<അസത്യം, uint64_t> HBUINT64LE;	/* 64-bit little-endian unsigned integer. */
+തരനിർവചനം അക്കം_Type<അസത്യം, int64_t>  HBINT64LE;	/* 64-bit little-endian signed integer. */
 
-typedef NumType<true,  float>  HBFLOAT32BE;	/* 32-bit little-endian floating point number. */
-typedef NumType<true,  double> HBFLOAT64BE;	/* 64-bit little-endian floating point number. */
-typedef NumType<false, float>  HBFLOAT32LE;	/* 32-bit little-endian floating point number. */
-typedef NumType<false, double> HBFLOAT64LE;	/* 64-bit little-endian floating point number. */
+തരനിർവചനം അക്കം_Type<സത്യം,  ദശാംശം>  HBFLOAT32BE;	/* 32-bit little-endian floating point number. */
+തരനിർവചനം അക്കം_Type<സത്യം,  ഇരട്ട> HBFLOAT64BE;	/* 64-bit little-endian floating point number. */
+തരനിർവചനം അക്കം_Type<അസത്യം, ദശാംശം>  HBFLOAT32LE;	/* 32-bit little-endian floating point number. */
+തരനിർവചനം അക്കം_Type<അസത്യം, ഇരട്ട> HBFLOAT64LE;	/* 64-bit little-endian floating point number. */
 
 /* 15-bit unsigned number; top bit used for extension. */
-struct HBUINT15 : HBUINT16
+ഘടന HBUINT15 : HBUINT16
 {
   /* TODO Flesh out; actually mask top bit. */
-  HBUINT15& operator = (uint16_t i ) { HBUINT16::operator= (i); return *this; }
-  public:
+  HBUINT15& operator = (uint16_t i ) { HBUINT16::operator= (i); തിരികെ *ഇത്; }
+  പൊതു:
   DEFINE_SIZE_STATIC (2);
 };
 
 /* 32-bit unsigned integer with variable encoding. */
-struct HBUINT32VAR
+ഘടന HBUINT32VAR
 {
-  size_t get_size () const
+  size_t get_size () സ്ഥിരം
   {
     unsigned b0 = v[0];
-    if (b0 < 0x80)
-      return 1;
-    else if (b0 < 0xC0)
-      return 2;
-    else if (b0 < 0xE0)
-      return 3;
-    else if (b0 < 0xF0)
-      return 4;
-    else
-      return 5;
+    എങ്കിൽ (b0 < 0x80)
+      തിരികെ 1;
+    അല്ലെങ്കിൽ എങ്കിൽ (b0 < 0xC0)
+      തിരികെ 2;
+    അല്ലെങ്കിൽ എങ്കിൽ (b0 < 0xE0)
+      തിരികെ 3;
+    അല്ലെങ്കിൽ എങ്കിൽ (b0 < 0xF0)
+      തിരികെ 4;
+    അല്ലെങ്കിൽ
+      തിരികെ 5;
   }
 
-  static size_t get_size (uint32_t v)
+  സ്ഥിതം size_t get_size (uint32_t v)
   {
-    if (v < 0x80)
-      return 1;
-    else if (v < 0x4000)
-      return 2;
-    else if (v < 0x200000)
-      return 3;
-    else if (v < 0x10000000)
-      return 4;
-    else
-      return 5;
+    എങ്കിൽ (v < 0x80)
+      തിരികെ 1;
+    അല്ലെങ്കിൽ എങ്കിൽ (v < 0x4000)
+      തിരികെ 2;
+    അല്ലെങ്കിൽ എങ്കിൽ (v < 0x200000)
+      തിരികെ 3;
+    അല്ലെങ്കിൽ എങ്കിൽ (v < 0x10000000)
+      തിരികെ 4;
+    അല്ലെങ്കിൽ
+      തിരികെ 5;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ഇത്);
     return_trace (c->check_range (v, 1) &&
 		  hb_barrier () &&
 		  c->check_range (v, get_size ()));
   }
 
-  operator uint32_t () const
+  operator uint32_t () സ്ഥിരം
   {
     unsigned b0 = v[0];
-    if (b0 < 0x80)
-      return b0;
-    else if (b0 < 0xC0)
-      return ((b0 & 0x3F) << 8) | v[1];
-    else if (b0 < 0xE0)
-      return ((b0 & 0x1F) << 16) | (v[1] << 8) | v[2];
-    else if (b0 < 0xF0)
-      return ((b0 & 0x0F) << 24) | (v[1] << 16) | (v[2] << 8) | v[3];
-    else
-      return (uint32_t (v[1]) << 24) | (v[2] << 16) | (v[3] << 8) | v[4];
+    എങ്കിൽ (b0 < 0x80)
+      തിരികെ b0;
+    അല്ലെങ്കിൽ എങ്കിൽ (b0 < 0xC0)
+      തിരികെ ((b0 & 0x3F) << 8) | v[1];
+    അല്ലെങ്കിൽ എങ്കിൽ (b0 < 0xE0)
+      തിരികെ ((b0 & 0x1F) << 16) | (v[1] << 8) | v[2];
+    അല്ലെങ്കിൽ എങ്കിൽ (b0 < 0xF0)
+      തിരികെ ((b0 & 0x0F) << 24) | (v[1] << 16) | (v[2] << 8) | v[3];
+    അല്ലെങ്കിൽ
+      തിരികെ (uint32_t (v[1]) << 24) | (v[2] << 16) | (v[3] << 8) | v[4];
   }
 
-  static unsigned serialize_unsafe (unsigned char *buf, uint32_t v)
+  സ്ഥിതം unsigned serialize_unsafe (unsigned അക്ഷരം *buf, uint32_t v)
   {
     unsigned len = get_size (v);
-    unsigned char *p = buf + len;
-    for (unsigned i = 0; i < len; i++)
+    unsigned അക്ഷരം *p = buf + len;
+    വേണ്ടി (unsigned i = 0; i < len; i++)
     {
       *--p = v & 0xFF;
       v >>= 8;
     }
 
-    if (len > 1)
+    എങ്കിൽ (len > 1)
       buf[0] |= ((1 << (len - 1)) - 1) << (9 - len);
 
-    return len;
+    തിരികെ len;
   }
 
-  static bool serialize (hb_serialize_context_t *c, uint32_t v)
+  സ്ഥിതം തർക്കം serialize (hb_serialize_context_t *c, uint32_t v)
   {
     unsigned len = get_size (v);
-    unsigned char *buf = c->allocate_size<unsigned char> (len, false);
-    if (unlikely (!buf))
-      return false;
+    unsigned അക്ഷരം *buf = c->allocate_size<unsigned അക്ഷരം> (len, അസത്യം);
+    എങ്കിൽ (unlikely (!buf))
+      തിരികെ അസത്യം;
 
     serialize_unsafe (buf, v);
-    return true;
+    തിരികെ സത്യം;
   }
 
-  protected:
-  unsigned char v[5];
+  സംരക്ഷിത:
+  unsigned അക്ഷരം v[5];
 
-  public:
+  പൊതു:
   DEFINE_SIZE_MIN (1);
 };
 
 /* 16-bit signed integer (HBINT16) that describes a quantity in FUnits. */
-typedef HBINT16 FWORD;
+തരനിർവചനം HBINT16 FWORD;
 
 /* 32-bit signed integer (HBINT32) that describes a quantity in FUnits. */
-typedef HBINT32 FWORD32;
+തരനിർവചനം HBINT32 FWORD32;
 
 /* 16-bit unsigned integer (HBUINT16) that describes a quantity in FUnits. */
-typedef HBUINT16 UFWORD;
+തരനിർവചനം HBUINT16 UFWORD;
 
 template <typename Type, unsigned fraction_bits>
-struct HBFixed : Type
+ഘടന HBFixed : Type
 {
-  static constexpr float mult = 1.f / (1 << fraction_bits);
+  സ്ഥിതം constexpr ദശാംശം mult = 1.f / (1 << fraction_bits);
   static_assert (Type::static_size * 8 > fraction_bits, "");
 
-  operator signed () const = delete;
-  operator unsigned () const = delete;
-  explicit operator float () const { return to_float (); }
-  typename Type::type to_int () const { return Type::v; }
-  void set_int (typename Type::type i ) { Type::v = i; }
-  float to_float (float offset = 0) const  { return ((int32_t) Type::v + offset) * mult; }
-  void set_float (float f) { Type::v = roundf (f / mult); }
-  public:
+  operator signed () സ്ഥിരം = delete;
+  operator unsigned () സ്ഥിരം = delete;
+  explicit operator ദശാംശം () സ്ഥിരം { തിരികെ to_float (); }
+  typename Type::type to_int () സ്ഥിരം { തിരികെ Type::v; }
+  ശൂന്യം set_int (typename Type::type i ) { Type::v = i; }
+  ദശാംശം to_float (ദശാംശം offset = 0) സ്ഥിരം  { തിരികെ ((int32_t) Type::v + offset) * mult; }
+  ശൂന്യം set_float (ദശാംശം f) { Type::v = roundf (f / mult); }
+  പൊതു:
   DEFINE_SIZE_STATIC (Type::static_size);
 };
 
@@ -270,99 +270,99 @@ using F16DOT16 = HBFixed<HBINT32, 16>;
 
 /* Date represented in number of seconds since 12:00 midnight, January 1,
  * 1904. The value is represented as a signed 64-bit integer. */
-struct LONGDATETIME
+ഘടന LONGDATETIME
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
-  protected:
+  സംരക്ഷിത:
   HBINT32 major;
   HBUINT32 minor;
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (8);
 };
 
 /* Array of four uint8s (length = 32 bits) used to identify a script, language
  * system, feature, or baseline */
-struct Tag : HBUINT32
+ഘടന Tag : HBUINT32
 {
-  Tag& operator = (hb_tag_t i) { HBUINT32::operator= (i); return *this; }
+  Tag& operator = (hb_tag_t i) { HBUINT32::operator= (i); തിരികെ *ഇത്; }
   /* What the char* converters return is NOT nul-terminated.  Print using "%.4s" */
-  operator const char* () const { return reinterpret_cast<const char *> (this); }
-  operator char* ()             { return reinterpret_cast<char *> (this); }
-  public:
+  operator സ്ഥിരം അക്ഷരം* () സ്ഥിരം { തിരികെ reinterpret_cast<സ്ഥിരം അക്ഷരം *> (ഇത്); }
+  operator അക്ഷരം* ()             { തിരികെ reinterpret_cast<അക്ഷരം *> (ഇത്); }
+  പൊതു:
   DEFINE_SIZE_STATIC (4);
 };
 
 /* Glyph index number, same as uint16 (length = 16 bits) */
-struct HBGlyphID16 : HBUINT16
+ഘടന HBGlyphID16 : HBUINT16
 {
-  HBGlyphID16& operator = (uint16_t i) { HBUINT16::operator= (i); return *this; }
+  HBGlyphID16& operator = (uint16_t i) { HBUINT16::operator= (i); തിരികെ *ഇത്; }
 };
-struct HBGlyphID24 : HBUINT24
+ഘടന HBGlyphID24 : HBUINT24
 {
-  HBGlyphID24& operator = (uint32_t i) { HBUINT24::operator= (i); return *this; }
+  HBGlyphID24& operator = (uint32_t i) { HBUINT24::operator= (i); തിരികെ *ഇത്; }
 };
 
 /* Script/language-system/feature index */
-struct Index : HBUINT16 {
-  static constexpr unsigned NOT_FOUND_INDEX = 0xFFFFu;
-  Index& operator = (uint16_t i) { HBUINT16::operator= (i); return *this; }
+ഘടന Index : HBUINT16 {
+  സ്ഥിതം constexpr unsigned NOT_FOUND_INDEX = 0xFFFFu;
+  Index& operator = (uint16_t i) { HBUINT16::operator= (i); തിരികെ *ഇത്; }
 };
 DECLARE_NULL_NAMESPACE_BYTES (OT, Index);
 
-typedef Index NameID;
+തരനിർവചനം Index NameID;
 
-struct VarIdx : HBUINT32 {
-  static constexpr unsigned NO_VARIATION = 0xFFFFFFFFu;
+ഘടന VarIdx : HBUINT32 {
+  സ്ഥിതം constexpr unsigned NO_VARIATION = 0xFFFFFFFFu;
   static_assert (NO_VARIATION == HB_OT_LAYOUT_NO_VARIATIONS_INDEX, "");
-  VarIdx& operator = (uint32_t i) { HBUINT32::operator= (i); return *this; }
+  VarIdx& operator = (uint32_t i) { HBUINT32::operator= (i); തിരികെ *ഇത്; }
 };
 DECLARE_NULL_NAMESPACE_BYTES (OT, VarIdx);
 
 /* Offset, Null offset = 0 */
-template <typename Type, bool has_null=true>
-struct Offset : Type
+template <typename Type, തർക്കം has_null=സത്യം>
+ഘടന Offset : Type
 {
-  Offset& operator = (typename Type::type i) { Type::operator= (i); return *this; }
+  Offset& operator = (typename Type::type i) { Type::operator= (i); തിരികെ *ഇത്; }
 
-  typedef Type type;
+  തരനിർവചനം Type type;
 
-  bool is_null () const { return has_null && 0 == *this; }
+  തർക്കം is_null () സ്ഥിരം { തിരികെ has_null && 0 == *ഇത്; }
 
-  public:
-  DEFINE_SIZE_STATIC (sizeof (Type));
+  പൊതു:
+  DEFINE_SIZE_STATIC (വലുപ്പം (Type));
 };
 
-typedef Offset<HBUINT16> Offset16;
-typedef Offset<HBUINT24> Offset24;
-typedef Offset<HBUINT32> Offset32;
+തരനിർവചനം Offset<HBUINT16> Offset16;
+തരനിർവചനം Offset<HBUINT24> Offset24;
+തരനിർവചനം Offset<HBUINT32> Offset32;
 
 
 /* CheckSum */
-struct CheckSum : HBUINT32
+ഘടന CheckSum : HBUINT32
 {
-  CheckSum& operator = (uint32_t i) { HBUINT32::operator= (i); return *this; }
+  CheckSum& operator = (uint32_t i) { HBUINT32::operator= (i); തിരികെ *ഇത്; }
 
   /* This is reference implementation from the spec. */
-  static uint32_t CalcTableChecksum (const HBUINT32 *Table, uint32_t Length)
+  സ്ഥിതം uint32_t CalcTableChecksum (സ്ഥിരം HBUINT32 *Table, uint32_t Length)
   {
     uint32_t Sum = 0L;
-    assert (0 == (Length & 3));
-    const HBUINT32 *EndPtr = Table + Length / HBUINT32::static_size;
+    പ്രതിജ്ഞാ (0 == (Length & 3));
+    സ്ഥിരം HBUINT32 *EndPtr = Table + Length / HBUINT32::static_size;
 
-    while (Table < EndPtr)
+    ആകുമ്പോൾ (Table < EndPtr)
       Sum += *Table++;
-    return Sum;
+    തിരികെ Sum;
   }
 
   /* Note: data should be 4byte aligned and have 4byte padding at the end. */
-  void set_for_data (const void *data, unsigned int length)
-  { *this = CalcTableChecksum ((const HBUINT32 *) data, length); }
+  ശൂന്യം set_for_data (സ്ഥിരം ശൂന്യം *data, unsigned പൂർണ്ണസംഖ്യ length)
+  { *ഇത് = CalcTableChecksum ((സ്ഥിരം HBUINT32 *) data, length); }
 
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (4);
 };
 
@@ -372,20 +372,20 @@ struct CheckSum : HBUINT32
  */
 
 template <typename FixedType=HBUINT16>
-struct FixedVersion
+ഘടന FixedVersion
 {
-  uint32_t to_int () const { return (major << (sizeof (FixedType) * 8)) + minor; }
+  uint32_t to_int () സ്ഥിരം { തിരികെ (major << (വലുപ്പം (FixedType) * 8)) + minor; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
   FixedType major;
   FixedType minor;
-  public:
-  DEFINE_SIZE_STATIC (2 * sizeof (FixedType));
+  പൊതു:
+  DEFINE_SIZE_STATIC (2 * വലുപ്പം (FixedType));
 };
 
 
@@ -394,95 +394,95 @@ struct FixedVersion
  * Use: (base+offset)
  */
 
-template <typename Type, bool has_null>
-struct _hb_has_null
+template <typename Type, തർക്കം has_null>
+ഘടന _hb_has_null
 {
-  static const Type *get_null () { return nullptr; }
-  static Type *get_crap ()       { return nullptr; }
+  സ്ഥിതം സ്ഥിരം Type *get_null () { തിരികെ nullptr; }
+  സ്ഥിതം Type *get_crap ()       { തിരികെ nullptr; }
 };
 template <typename Type>
-struct _hb_has_null<Type, true>
+ഘടന _hb_has_null<Type, സത്യം>
 {
-  static const Type *get_null () { return &Null (Type); }
-  static       Type *get_crap () { return &Crap (Type); }
+  സ്ഥിതം സ്ഥിരം Type *get_null () { തിരികെ &Null (Type); }
+  സ്ഥിതം       Type *get_crap () { തിരികെ &Crap (Type); }
 };
 
-template <typename Type, typename OffsetType, typename BaseType=void, bool has_null=true>
-struct OffsetTo : Offset<OffsetType, has_null>
+template <typename Type, typename OffsetType, typename BaseType=ശൂന്യം, തർക്കം has_null=സത്യം>
+ഘടന OffsetTo : Offset<OffsetType, has_null>
 {
   using target_t = Type;
 
   // Make sure Type is not unbounded; works only for types that are fully defined at OffsetTo time.
-  static_assert (has_null == false ||
+  static_assert (has_null == അസത്യം ||
 		 (hb_has_null_size (Type) || !hb_has_min_size (Type)), "");
 
   HB_DELETE_COPY_ASSIGN (OffsetTo);
-  OffsetTo () = default;
+  OffsetTo () = സ്ഥിരസ്ഥിതി;
 
-  OffsetTo& operator = (typename OffsetType::type i) { OffsetType::operator= (i); return *this; }
+  OffsetTo& operator = (typename OffsetType::type i) { OffsetType::operator= (i); തിരികെ *ഇത്; }
 
-  const Type& operator () (const void *base) const
+  സ്ഥിരം Type& operator () (സ്ഥിരം ശൂന്യം *base) സ്ഥിരം
   {
-    if (unlikely (this->is_null ())) return *_hb_has_null<Type, has_null>::get_null ();
-    return StructAtOffset<const Type> (base, *this);
+    എങ്കിൽ (unlikely (ഇത്->is_null ())) തിരികെ *_hb_has_null<Type, has_null>::get_null ();
+    തിരികെ StructAtOffset<സ്ഥിരം Type> (base, *ഇത്);
   }
-  Type& operator () (void *base) const
+  Type& operator () (ശൂന്യം *base) സ്ഥിരം
   {
-    if (unlikely (this->is_null ())) return *_hb_has_null<Type, has_null>::get_crap ();
-    return StructAtOffset<Type> (base, *this);
+    എങ്കിൽ (unlikely (ഇത്->is_null ())) തിരികെ *_hb_has_null<Type, has_null>::get_crap ();
+    തിരികെ StructAtOffset<Type> (base, *ഇത്);
   }
 
   template <typename Base,
-	    hb_enable_if (hb_is_convertible (const Base, const BaseType *))>
-  friend const Type& operator + (const Base &base, const OffsetTo &offset) { return offset ((const void *) base); }
+	    hb_enable_if (hb_is_convertible (സ്ഥിരം Base, സ്ഥിരം BaseType *))>
+  friend സ്ഥിരം Type& operator + (സ്ഥിരം Base &base, സ്ഥിരം OffsetTo &offset) { തിരികെ offset ((സ്ഥിരം ശൂന്യം *) base); }
   template <typename Base,
-	    hb_enable_if (hb_is_convertible (const Base, const BaseType *))>
-  friend const Type& operator + (const OffsetTo &offset, const Base &base) { return offset ((const void *) base); }
+	    hb_enable_if (hb_is_convertible (സ്ഥിരം Base, സ്ഥിരം BaseType *))>
+  friend സ്ഥിരം Type& operator + (സ്ഥിരം OffsetTo &offset, സ്ഥിരം Base &base) { തിരികെ offset ((സ്ഥിരം ശൂന്യം *) base); }
   template <typename Base,
 	    hb_enable_if (hb_is_convertible (Base, BaseType *))>
-  friend Type& operator + (Base &&base, OffsetTo &offset) { return offset ((void *) base); }
+  friend Type& operator + (Base &&base, OffsetTo &offset) { തിരികെ offset ((ശൂന്യം *) base); }
   template <typename Base,
 	    hb_enable_if (hb_is_convertible (Base, BaseType *))>
-  friend Type& operator + (OffsetTo &offset, Base &&base) { return offset ((void *) base); }
+  friend Type& operator + (OffsetTo &offset, Base &&base) { തിരികെ offset ((ശൂന്യം *) base); }
 
 
   template <typename Base, typename ...Ts>
-  bool serialize_subset (hb_subset_context_t *c, const OffsetTo& src,
-			 const Base *src_base, Ts&&... ds)
+  തർക്കം serialize_subset (hb_subset_context_t *c, സ്ഥിരം OffsetTo& src,
+			 സ്ഥിരം Base *src_base, Ts&&... ds)
   {
-    *this = 0;
-    if (src.is_null ())
-      return false;
+    *ഇത് = 0;
+    എങ്കിൽ (src.is_null ())
+      തിരികെ അസത്യം;
 
     auto *s = c->serializer;
 
     s->push ();
 
-    bool ret = c->dispatch (src_base+src, std::forward<Ts> (ds)...);
+    തർക്കം ret = c->dispatch (src_base+src, std::forward<Ts> (ds)...);
 
-    if (ret || !has_null)
-      s->add_link (*this, s->pop_pack ());
-    else
-      s->pop_discard ();
+    എങ്കിൽ (ret || !has_null)
+      s->add_link (*ഇത്, s->എടുക്കുക_pack ());
+    അല്ലെങ്കിൽ
+      s->എടുക്കുക_discard ();
 
-    return ret;
+    തിരികെ ret;
   }
 
 
   template <typename ...Ts>
-  bool serialize_serialize (hb_serialize_context_t *c, Ts&&... ds)
+  തർക്കം serialize_serialize (hb_serialize_context_t *c, Ts&&... ds)
   {
-    *this = 0;
+    *ഇത് = 0;
 
     Type* obj = c->push<Type> ();
-    bool ret = obj->serialize (c, std::forward<Ts> (ds)...);
+    തർക്കം ret = obj->serialize (c, std::forward<Ts> (ds)...);
 
-    if (ret)
-      c->add_link (*this, c->pop_pack ());
-    else
-      c->pop_discard ();
+    എങ്കിൽ (ret)
+      c->add_link (*ഇത്, c->എടുക്കുക_pack ());
+    അല്ലെങ്കിൽ
+      c->എടുക്കുക_discard ();
 
-    return ret;
+    തിരികെ ret;
   }
 
   /* TODO: Somehow merge this with previous function into a serialize_dispatch(). */
@@ -490,62 +490,62 @@ struct OffsetTo : Offset<OffsetType, has_null>
    * Can't compile: whence = hb_serialize_context_t::Head followed by Ts&&...
    */
   template <typename ...Ts>
-  bool serialize_copy (hb_serialize_context_t *c, const OffsetTo& src,
-		       const void *src_base, unsigned dst_bias,
+  തർക്കം serialize_copy (hb_serialize_context_t *c, സ്ഥിരം OffsetTo& src,
+		       സ്ഥിരം ശൂന്യം *src_base, unsigned dst_bias,
 		       hb_serialize_context_t::whence_t whence,
 		       Ts&&... ds)
   {
-    *this = 0;
-    if (src.is_null ())
-      return false;
+    *ഇത് = 0;
+    എങ്കിൽ (src.is_null ())
+      തിരികെ അസത്യം;
 
     c->push ();
 
-    bool ret = c->copy (src_base+src, std::forward<Ts> (ds)...);
+    തർക്കം ret = c->copy (src_base+src, std::forward<Ts> (ds)...);
 
-    c->add_link (*this, c->pop_pack (), whence, dst_bias);
+    c->add_link (*ഇത്, c->എടുക്കുക_pack (), whence, dst_bias);
 
-    return ret;
+    തിരികെ ret;
   }
 
-  bool serialize_copy (hb_serialize_context_t *c, const OffsetTo& src,
-		       const void *src_base, unsigned dst_bias = 0)
-  { return serialize_copy (c, src, src_base, dst_bias, hb_serialize_context_t::Head); }
+  തർക്കം serialize_copy (hb_serialize_context_t *c, സ്ഥിരം OffsetTo& src,
+		       സ്ഥിരം ശൂന്യം *src_base, unsigned dst_bias = 0)
+  { തിരികെ serialize_copy (c, src, src_base, dst_bias, hb_serialize_context_t::Head); }
 
-  bool sanitize_shallow (hb_sanitize_context_t *c, const BaseType *base) const
+  തർക്കം sanitize_shallow (hb_sanitize_context_t *c, സ്ഥിരം BaseType *base) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this))) return_trace (false);
+    TRACE_SANITIZE (ഇത്);
+    എങ്കിൽ (unlikely (!c->check_struct (ഇത്))) return_trace (അസത്യം);
     hb_barrier ();
     //if (unlikely (this->is_null ())) return_trace (true);
-    if (unlikely ((const char *) base + (unsigned) *this < (const char *) base)) return_trace (false);
-    return_trace (true);
+    എങ്കിൽ (unlikely ((സ്ഥിരം അക്ഷരം *) base + (unsigned) *ഇത് < (സ്ഥിരം അക്ഷരം *) base)) return_trace (അസത്യം);
+    return_trace (സത്യം);
   }
 
   template <typename ...Ts>
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  bool sanitize (hb_sanitize_context_t *c, const BaseType *base, Ts&&... ds) const
+  തർക്കം sanitize (hb_sanitize_context_t *c, സ്ഥിരം BaseType *base, Ts&&... ds) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ഇത്);
     return_trace (sanitize_shallow (c, base) &&
 		  hb_barrier () &&
-		  (this->is_null () ||
-		   c->dispatch (StructAtOffset<Type> (base, *this), std::forward<Ts> (ds)...)));
+		  (ഇത്->is_null () ||
+		   c->dispatch (StructAtOffset<Type> (base, *ഇത്), std::forward<Ts> (ds)...)));
   }
 
-  DEFINE_SIZE_STATIC (sizeof (OffsetType));
+  DEFINE_SIZE_STATIC (വലുപ്പം (OffsetType));
 };
 /* Partial specializations. */
-template <typename Type, typename BaseType=void, bool has_null=true> using Offset16To = OffsetTo<Type, HBUINT16, BaseType, has_null>;
-template <typename Type, typename BaseType=void, bool has_null=true> using Offset24To = OffsetTo<Type, HBUINT24, BaseType, has_null>;
-template <typename Type, typename BaseType=void, bool has_null=true> using Offset32To = OffsetTo<Type, HBUINT32, BaseType, has_null>;
+template <typename Type, typename BaseType=ശൂന്യം, തർക്കം has_null=സത്യം> using Offset16To = OffsetTo<Type, HBUINT16, BaseType, has_null>;
+template <typename Type, typename BaseType=ശൂന്യം, തർക്കം has_null=സത്യം> using Offset24To = OffsetTo<Type, HBUINT24, BaseType, has_null>;
+template <typename Type, typename BaseType=ശൂന്യം, തർക്കം has_null=സത്യം> using Offset32To = OffsetTo<Type, HBUINT32, BaseType, has_null>;
 
-template <typename Type, typename OffsetType, typename BaseType=void> using NNOffsetTo = OffsetTo<Type, OffsetType, BaseType, false>;
-template <typename Type, typename BaseType=void> using NNOffset16To = Offset16To<Type, BaseType, false>;
-template <typename Type, typename BaseType=void> using NNOffset24To = Offset24To<Type, BaseType, false>;
-template <typename Type, typename BaseType=void> using NNOffset32To = Offset32To<Type, BaseType, false>;
+template <typename Type, typename OffsetType, typename BaseType=ശൂന്യം> using NNOffsetTo = OffsetTo<Type, OffsetType, BaseType, അസത്യം>;
+template <typename Type, typename BaseType=ശൂന്യം> using NNOffset16To = Offset16To<Type, BaseType, അസത്യം>;
+template <typename Type, typename BaseType=ശൂന്യം> using NNOffset24To = Offset24To<Type, BaseType, അസത്യം>;
+template <typename Type, typename BaseType=ശൂന്യം> using NNOffset32To = Offset32To<Type, BaseType, അസത്യം>;
 
 
 /*
@@ -553,248 +553,248 @@ template <typename Type, typename BaseType=void> using NNOffset32To = Offset32To
  */
 
 template <typename Type>
-struct UnsizedArrayOf
+ഘടന UnsizedArrayOf
 {
-  typedef Type item_t;
-  static constexpr unsigned item_size = hb_static_size (Type);
+  തരനിർവചനം Type item_t;
+  സ്ഥിതം constexpr unsigned item_size = hb_static_size (Type);
 
   HB_DELETE_CREATE_COPY_ASSIGN (UnsizedArrayOf);
 
-  const Type& operator [] (unsigned int i) const
+  സ്ഥിരം Type& operator [] (unsigned പൂർണ്ണസംഖ്യ i) സ്ഥിരം
   {
-    return arrayZ[i];
+    തിരികെ arrayZ[i];
   }
-  Type& operator [] (unsigned int i)
+  Type& operator [] (unsigned പൂർണ്ണസംഖ്യ i)
   {
-    return arrayZ[i];
+    തിരികെ arrayZ[i];
   }
 
-  static size_t get_size (unsigned int len)
-  { return hb_unsigned_mul_saturate (len, Type::static_size); }
+  സ്ഥിതം size_t get_size (unsigned പൂർണ്ണസംഖ്യ len)
+  { തിരികെ hb_unsigned_mul_saturate (len, Type::static_size); }
 
-  template <typename T> operator T * () { return arrayZ; }
-  template <typename T> operator const T * () const { return arrayZ; }
-  hb_array_t<Type> as_array (unsigned int len)
-  { return hb_array (arrayZ, len); }
-  hb_array_t<const Type> as_array (unsigned int len) const
-  { return hb_array (arrayZ, len); }
+  template <typename T> operator T * () { തിരികെ arrayZ; }
+  template <typename T> operator സ്ഥിരം T * () സ്ഥിരം { തിരികെ arrayZ; }
+  hb_array_t<Type> as_array (unsigned പൂർണ്ണസംഖ്യ len)
+  { തിരികെ hb_array (arrayZ, len); }
+  hb_array_t<സ്ഥിരം Type> as_array (unsigned പൂർണ്ണസംഖ്യ len) സ്ഥിരം
+  { തിരികെ hb_array (arrayZ, len); }
 
   template <typename T>
-  Type &lsearch (unsigned int len, const T &x, Type &not_found = Crap (Type))
-  { return *as_array (len).lsearch (x, &not_found); }
+  Type &lsearch (unsigned പൂർണ്ണസംഖ്യ len, സ്ഥിരം T &x, Type &not_found = Crap (Type))
+  { തിരികെ *as_array (len).lsearch (x, &not_found); }
   template <typename T>
-  const Type &lsearch (unsigned int len, const T &x, const Type &not_found = Null (Type)) const
-  { return *as_array (len).lsearch (x, &not_found); }
+  സ്ഥിരം Type &lsearch (unsigned പൂർണ്ണസംഖ്യ len, സ്ഥിരം T &x, സ്ഥിരം Type &not_found = Null (Type)) സ്ഥിരം
+  { തിരികെ *as_array (len).lsearch (x, &not_found); }
   template <typename T>
-  bool lfind (unsigned int len, const T &x, unsigned int *i = nullptr,
+  തർക്കം lfind (unsigned പൂർണ്ണസംഖ്യ len, സ്ഥിരം T &x, unsigned പൂർണ്ണസംഖ്യ *i = nullptr,
 	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
-  { return as_array (len).lfind (x, i, not_found, to_store); }
+	      unsigned പൂർണ്ണസംഖ്യ to_store = (unsigned പൂർണ്ണസംഖ്യ) -1) സ്ഥിരം
+  { തിരികെ as_array (len).lfind (x, i, not_found, to_store); }
 
-  void qsort (unsigned int len, unsigned int start = 0, unsigned int end = (unsigned int) -1)
+  ശൂന്യം qsort (unsigned പൂർണ്ണസംഖ്യ len, unsigned പൂർണ്ണസംഖ്യ start = 0, unsigned പൂർണ്ണസംഖ്യ end = (unsigned പൂർണ്ണസംഖ്യ) -1)
   { as_array (len).qsort (start, end); }
 
-  bool serialize (hb_serialize_context_t *c, unsigned int items_len, bool clear = true)
+  തർക്കം serialize (hb_serialize_context_t *c, unsigned പൂർണ്ണസംഖ്യ ഇനങ്ങൾ_len, തർക്കം clear = സത്യം)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_size (this, get_size (items_len), clear))) return_trace (false);
-    return_trace (true);
+    TRACE_SERIALIZE (ഇത്);
+    എങ്കിൽ (unlikely (!c->extend_size (ഇത്, get_size (ഇനങ്ങൾ_len), clear))) return_trace (അസത്യം);
+    return_trace (സത്യം);
   }
   template <typename Iterator,
 	    hb_requires (hb_is_source_of (Iterator, Type))>
-  bool serialize (hb_serialize_context_t *c, Iterator items)
+  തർക്കം serialize (hb_serialize_context_t *c, Iterator ഇനങ്ങൾ)
   {
-    TRACE_SERIALIZE (this);
-    unsigned count = hb_len (items);
-    if (unlikely (!serialize (c, count, false))) return_trace (false);
+    TRACE_SERIALIZE (ഇത്);
+    unsigned എണ്ണം = hb_len (ഇനങ്ങൾ);
+    എങ്കിൽ (unlikely (!serialize (c, എണ്ണം, അസത്യം))) return_trace (അസത്യം);
     /* TODO Umm. Just exhaust the iterator instead?  Being extra
      * cautious right now.. */
-    for (unsigned i = 0; i < count; i++, ++items)
-      arrayZ[i] = *items;
-    return_trace (true);
+    വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++, ++ഇനങ്ങൾ)
+      arrayZ[i] = *ഇനങ്ങൾ;
+    return_trace (സത്യം);
   }
 
-  UnsizedArrayOf* copy (hb_serialize_context_t *c, unsigned count) const
+  UnsizedArrayOf* copy (hb_serialize_context_t *c, unsigned എണ്ണം) സ്ഥിരം
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->start_embed (this);
-    if (unlikely (!as_array (count).copy (c))) return_trace (nullptr);
+    TRACE_SERIALIZE (ഇത്);
+    auto *out = c->start_embed (ഇത്);
+    എങ്കിൽ (unlikely (!as_array (എണ്ണം).copy (c))) return_trace (nullptr);
     return_trace (out);
   }
 
   template <typename ...Ts>
   HB_ALWAYS_INLINE
-  bool sanitize (hb_sanitize_context_t *c, unsigned int count, Ts&&... ds) const
+  തർക്കം sanitize (hb_sanitize_context_t *c, unsigned പൂർണ്ണസംഖ്യ എണ്ണം, Ts&&... ds) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!sanitize_shallow (c, count))) return_trace (false);
-    if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
+    TRACE_SANITIZE (ഇത്);
+    എങ്കിൽ (unlikely (!sanitize_shallow (c, എണ്ണം))) return_trace (അസത്യം);
+    എങ്കിൽ (!വലുപ്പം... (Ts) && hb_is_trivially_copyable(Type)) return_trace (സത്യം);
     hb_barrier ();
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
-	return_trace (false);
-    return_trace (true);
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
+      എങ്കിൽ (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
+	return_trace (അസത്യം);
+    return_trace (സത്യം);
   }
 
-  bool sanitize_shallow (hb_sanitize_context_t *c, unsigned int count) const
+  തർക്കം sanitize_shallow (hb_sanitize_context_t *c, unsigned പൂർണ്ണസംഖ്യ എണ്ണം) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_array (arrayZ, count));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_array (arrayZ, എണ്ണം));
   }
 
-  public:
+  പൊതു:
   Type		arrayZ[HB_VAR_ARRAY];
-  public:
+  പൊതു:
   DEFINE_SIZE_UNBOUNDED (0);
 };
 
 /* Unsized array of offset's */
-template <typename Type, typename OffsetType, typename BaseType=void, bool has_null=true>
+template <typename Type, typename OffsetType, typename BaseType=ശൂന്യം, തർക്കം has_null=സത്യം>
 using UnsizedArray16OfOffsetTo = UnsizedArrayOf<OffsetTo<Type, OffsetType, BaseType, has_null>>;
 
 /* Unsized array of offsets relative to the beginning of the array itself. */
-template <typename Type, typename OffsetType, typename BaseType=void, bool has_null=true>
-struct UnsizedListOfOffset16To : UnsizedArray16OfOffsetTo<Type, OffsetType, BaseType, has_null>
+template <typename Type, typename OffsetType, typename BaseType=ശൂന്യം, തർക്കം has_null=സത്യം>
+ഘടന UnsizedListOfOffset16To : UnsizedArray16OfOffsetTo<Type, OffsetType, BaseType, has_null>
 {
-  const Type& operator [] (int i_) const
+  സ്ഥിരം Type& operator [] (പൂർണ്ണസംഖ്യ i_) സ്ഥിരം
   {
-    unsigned int i = (unsigned int) i_;
-    const OffsetTo<Type, OffsetType, BaseType, has_null> *p = &this->arrayZ[i];
-    if (unlikely ((const void *) p < (const void *) this->arrayZ)) return Null (Type); /* Overflowed. */
+    unsigned പൂർണ്ണസംഖ്യ i = (unsigned പൂർണ്ണസംഖ്യ) i_;
+    സ്ഥിരം OffsetTo<Type, OffsetType, BaseType, has_null> *p = &ഇത്->arrayZ[i];
+    എങ്കിൽ (unlikely ((സ്ഥിരം ശൂന്യം *) p < (സ്ഥിരം ശൂന്യം *) ഇത്->arrayZ)) തിരികെ Null (Type); /* Overflowed. */
     hb_barrier ();
-    return this+*p;
+    തിരികെ ഇത്+*p;
   }
-  Type& operator [] (int i_)
+  Type& operator [] (പൂർണ്ണസംഖ്യ i_)
   {
-    unsigned int i = (unsigned int) i_;
-    const OffsetTo<Type, OffsetType, BaseType, has_null> *p = &this->arrayZ[i];
-    if (unlikely ((const void *) p < (const void *) this->arrayZ)) return Crap (Type); /* Overflowed. */
+    unsigned പൂർണ്ണസംഖ്യ i = (unsigned പൂർണ്ണസംഖ്യ) i_;
+    സ്ഥിരം OffsetTo<Type, OffsetType, BaseType, has_null> *p = &ഇത്->arrayZ[i];
+    എങ്കിൽ (unlikely ((സ്ഥിരം ശൂന്യം *) p < (സ്ഥിരം ശൂന്യം *) ഇത്->arrayZ)) തിരികെ Crap (Type); /* Overflowed. */
     hb_barrier ();
-    return this+*p;
+    തിരികെ ഇത്+*p;
   }
 
   template <typename ...Ts>
-  bool sanitize (hb_sanitize_context_t *c, unsigned int count, Ts&&... ds) const
+  തർക്കം sanitize (hb_sanitize_context_t *c, unsigned പൂർണ്ണസംഖ്യ എണ്ണം, Ts&&... ds) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ഇത്);
     return_trace ((UnsizedArray16OfOffsetTo<Type, OffsetType, BaseType, has_null>
-		   ::sanitize (c, count, this, std::forward<Ts> (ds)...)));
+		   ::sanitize (c, എണ്ണം, ഇത്, std::forward<Ts> (ds)...)));
   }
 };
 
 /* An array with sorted elements.  Supports binary searching. */
 template <typename Type>
-struct SortedUnsizedArrayOf : UnsizedArrayOf<Type>
+ഘടന SortedUnsizedArrayOf : UnsizedArrayOf<Type>
 {
-  hb_sorted_array_t<Type> as_array (unsigned int len)
-  { return hb_sorted_array (this->arrayZ, len); }
-  hb_sorted_array_t<const Type> as_array (unsigned int len) const
-  { return hb_sorted_array (this->arrayZ, len); }
-  operator hb_sorted_array_t<Type> ()             { return as_array (); }
-  operator hb_sorted_array_t<const Type> () const { return as_array (); }
+  hb_sorted_array_t<Type> as_array (unsigned പൂർണ്ണസംഖ്യ len)
+  { തിരികെ hb_sorted_array (ഇത്->arrayZ, len); }
+  hb_sorted_array_t<സ്ഥിരം Type> as_array (unsigned പൂർണ്ണസംഖ്യ len) സ്ഥിരം
+  { തിരികെ hb_sorted_array (ഇത്->arrayZ, len); }
+  operator hb_sorted_array_t<Type> ()             { തിരികെ as_array (); }
+  operator hb_sorted_array_t<സ്ഥിരം Type> () സ്ഥിരം { തിരികെ as_array (); }
 
   template <typename T>
-  Type &bsearch (unsigned int len, const T &x, Type &not_found = Crap (Type))
-  { return *as_array (len).bsearch (x, &not_found); }
+  Type &bsearch (unsigned പൂർണ്ണസംഖ്യ len, സ്ഥിരം T &x, Type &not_found = Crap (Type))
+  { തിരികെ *as_array (len).bsearch (x, &not_found); }
   template <typename T>
-  const Type &bsearch (unsigned int len, const T &x, const Type &not_found = Null (Type)) const
-  { return *as_array (len).bsearch (x, &not_found); }
+  സ്ഥിരം Type &bsearch (unsigned പൂർണ്ണസംഖ്യ len, സ്ഥിരം T &x, സ്ഥിരം Type &not_found = Null (Type)) സ്ഥിരം
+  { തിരികെ *as_array (len).bsearch (x, &not_found); }
   template <typename T>
-  bool bfind (unsigned int len, const T &x, unsigned int *i = nullptr,
+  തർക്കം bfind (unsigned പൂർണ്ണസംഖ്യ len, സ്ഥിരം T &x, unsigned പൂർണ്ണസംഖ്യ *i = nullptr,
 	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
-  { return as_array (len).bfind (x, i, not_found, to_store); }
+	      unsigned പൂർണ്ണസംഖ്യ to_store = (unsigned പൂർണ്ണസംഖ്യ) -1) സ്ഥിരം
+  { തിരികെ as_array (len).bfind (x, i, not_found, to_store); }
 };
 
 
 /* An array with a number of elements. */
 template <typename Type, typename LenType>
-struct ArrayOf
+ഘടന ArrayOf
 {
-  typedef Type item_t;
-  static constexpr unsigned item_size = hb_static_size (Type);
+  തരനിർവചനം Type item_t;
+  സ്ഥിതം constexpr unsigned item_size = hb_static_size (Type);
 
   HB_DELETE_CREATE_COPY_ASSIGN (ArrayOf);
 
-  const Type& operator [] (int i_) const
+  സ്ഥിരം Type& operator [] (പൂർണ്ണസംഖ്യ i_) സ്ഥിരം
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= len)) return Null (Type);
+    unsigned പൂർണ്ണസംഖ്യ i = (unsigned പൂർണ്ണസംഖ്യ) i_;
+    എങ്കിൽ (unlikely (i >= len)) തിരികെ Null (Type);
     hb_barrier ();
-    return arrayZ[i];
+    തിരികെ arrayZ[i];
   }
-  Type& operator [] (int i_)
+  Type& operator [] (പൂർണ്ണസംഖ്യ i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= len)) return Crap (Type);
+    unsigned പൂർണ്ണസംഖ്യ i = (unsigned പൂർണ്ണസംഖ്യ) i_;
+    എങ്കിൽ (unlikely (i >= len)) തിരികെ Crap (Type);
     hb_barrier ();
-    return arrayZ[i];
+    തിരികെ arrayZ[i];
   }
 
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (len, Type::static_size, len.static_size); }
+  size_t get_size () സ്ഥിരം
+  { തിരികെ hb_unsigned_mul_add_saturate (len, Type::static_size, len.static_size); }
 
-  explicit operator bool () const { return len; }
+  explicit operator തർക്കം () സ്ഥിരം { തിരികെ len; }
 
-  void pop () { len--; }
+  ശൂന്യം എടുക്കുക () { len--; }
 
-  hb_array_t<      Type> as_array ()       { return hb_array (arrayZ, len); }
-  hb_array_t<const Type> as_array () const { return hb_array (arrayZ, len); }
+  hb_array_t<      Type> as_array ()       { തിരികെ hb_array (arrayZ, len); }
+  hb_array_t<സ്ഥിരം Type> as_array () സ്ഥിരം { തിരികെ hb_array (arrayZ, len); }
 
   /* Iterator. */
-  typedef hb_array_t<const Type>   iter_t;
-  typedef hb_array_t<      Type> writer_t;
-    iter_t   iter () const { return as_array (); }
-  writer_t writer ()       { return as_array (); }
-  operator   iter_t () const { return   iter (); }
-  operator writer_t ()       { return writer (); }
+  തരനിർവചനം hb_array_t<സ്ഥിരം Type>   iter_t;
+  തരനിർവചനം hb_array_t<      Type> writer_t;
+    iter_t   iter () സ്ഥിരം { തിരികെ as_array (); }
+  writer_t writer ()       { തിരികെ as_array (); }
+  operator   iter_t () സ്ഥിരം { തിരികെ   iter (); }
+  operator writer_t ()       { തിരികെ writer (); }
 
   /* Faster range-based for loop. */
-  const Type *begin () const { return arrayZ; }
-  const Type *end () const { return arrayZ + len; }
+  സ്ഥിരം Type *begin () സ്ഥിരം { തിരികെ arrayZ; }
+  സ്ഥിരം Type *end () സ്ഥിരം { തിരികെ arrayZ + len; }
 
   template <typename T>
-  Type &lsearch (const T &x, Type &not_found = Crap (Type))
-  { return *as_array ().lsearch (x, &not_found); }
+  Type &lsearch (സ്ഥിരം T &x, Type &not_found = Crap (Type))
+  { തിരികെ *as_array ().lsearch (x, &not_found); }
   template <typename T>
-  const Type &lsearch (const T &x, const Type &not_found = Null (Type)) const
-  { return *as_array ().lsearch (x, &not_found); }
+  സ്ഥിരം Type &lsearch (സ്ഥിരം T &x, സ്ഥിരം Type &not_found = Null (Type)) സ്ഥിരം
+  { തിരികെ *as_array ().lsearch (x, &not_found); }
   template <typename T>
-  bool lfind (const T &x, unsigned int *i = nullptr,
+  തർക്കം lfind (സ്ഥിരം T &x, unsigned പൂർണ്ണസംഖ്യ *i = nullptr,
 	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
-  { return as_array ().lfind (x, i, not_found, to_store); }
+	      unsigned പൂർണ്ണസംഖ്യ to_store = (unsigned പൂർണ്ണസംഖ്യ) -1) സ്ഥിരം
+  { തിരികെ as_array ().lfind (x, i, not_found, to_store); }
 
-  void qsort ()
+  ശൂന്യം qsort ()
   { as_array ().qsort (); }
 
-  HB_NODISCARD bool serialize (hb_serialize_context_t *c, unsigned items_len, bool clear = true)
+  HB_NODISCARD തർക്കം serialize (hb_serialize_context_t *c, unsigned ഇനങ്ങൾ_len, തർക്കം clear = സത്യം)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    c->check_assign (len, items_len, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW);
-    if (unlikely (!c->extend_size (this, get_size (), clear))) return_trace (false);
-    return_trace (true);
+    TRACE_SERIALIZE (ഇത്);
+    എങ്കിൽ (unlikely (!c->extend_min (ഇത്))) return_trace (അസത്യം);
+    c->check_assign (len, ഇനങ്ങൾ_len, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW);
+    എങ്കിൽ (unlikely (!c->extend_size (ഇത്, get_size (), clear))) return_trace (അസത്യം);
+    return_trace (സത്യം);
   }
   template <typename Iterator,
 	    hb_requires (hb_is_source_of (Iterator, Type))>
-  HB_NODISCARD bool serialize (hb_serialize_context_t *c, Iterator items)
+  HB_NODISCARD തർക്കം serialize (hb_serialize_context_t *c, Iterator ഇനങ്ങൾ)
   {
-    TRACE_SERIALIZE (this);
-    unsigned count = hb_len (items);
-    if (unlikely (!serialize (c, count, false))) return_trace (false);
+    TRACE_SERIALIZE (ഇത്);
+    unsigned എണ്ണം = hb_len (ഇനങ്ങൾ);
+    എങ്കിൽ (unlikely (!serialize (c, എണ്ണം, അസത്യം))) return_trace (അസത്യം);
     /* TODO Umm. Just exhaust the iterator instead?  Being extra
      * cautious right now.. */
-    for (unsigned i = 0; i < count; i++, ++items)
-      arrayZ[i] = *items;
-    return_trace (true);
+    വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++, ++ഇനങ്ങൾ)
+      arrayZ[i] = *ഇനങ്ങൾ;
+    return_trace (സത്യം);
   }
 
   Type* serialize_append (hb_serialize_context_t *c)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ഇത്);
     len++;
-    if (unlikely (!len || !c->extend (this)))
+    എങ്കിൽ (unlikely (!len || !c->extend (ഇത്)))
     {
       len--;
       return_trace (nullptr);
@@ -802,44 +802,44 @@ struct ArrayOf
     return_trace (&arrayZ[len - 1]);
   }
 
-  ArrayOf* copy (hb_serialize_context_t *c) const
+  ArrayOf* copy (hb_serialize_context_t *c) സ്ഥിരം
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->start_embed (this);
-    if (unlikely (!c->extend_min (out))) return_trace (nullptr);
+    TRACE_SERIALIZE (ഇത്);
+    auto *out = c->start_embed (ഇത്);
+    എങ്കിൽ (unlikely (!c->extend_min (out))) return_trace (nullptr);
     c->check_assign (out->len, len, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW);
-    if (unlikely (!as_array ().copy (c))) return_trace (nullptr);
+    എങ്കിൽ (unlikely (!as_array ().copy (c))) return_trace (nullptr);
     return_trace (out);
   }
 
   template <typename ...Ts>
   HB_ALWAYS_INLINE
-  bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
+  തർക്കം sanitize (hb_sanitize_context_t *c, Ts&&... ds) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!sanitize_shallow (c))) return_trace (false);
-    if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
+    TRACE_SANITIZE (ഇത്);
+    എങ്കിൽ (unlikely (!sanitize_shallow (c))) return_trace (അസത്യം);
+    എങ്കിൽ (!വലുപ്പം... (Ts) && hb_is_trivially_copyable(Type)) return_trace (സത്യം);
     hb_barrier ();
-    unsigned int count = len;
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
-	return_trace (false);
-    return_trace (true);
+    unsigned പൂർണ്ണസംഖ്യ എണ്ണം = len;
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
+      എങ്കിൽ (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
+	return_trace (അസത്യം);
+    return_trace (സത്യം);
   }
 
-  bool sanitize_shallow (hb_sanitize_context_t *c) const
+  തർക്കം sanitize_shallow (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ഇത്);
     return_trace (len.sanitize (c) &&
 		  hb_barrier () &&
-		  c->check_array_sized (arrayZ, len, sizeof (LenType)));
+		  c->check_array_sized (arrayZ, len, വലുപ്പം (LenType)));
   }
 
-  public:
+  പൊതു:
   LenType	len;
   Type		arrayZ[HB_VAR_ARRAY];
-  public:
-  DEFINE_SIZE_ARRAY (sizeof (LenType), arrayZ);
+  പൊതു:
+  DEFINE_SIZE_ARRAY (വലുപ്പം (LenType), arrayZ);
 };
 template <typename Type> using Array16Of = ArrayOf<Type, HBUINT16>;
 template <typename Type> using Array24Of = ArrayOf<Type, HBUINT24>;
@@ -854,39 +854,39 @@ template <typename Type> using Array32OfOffset32To = ArrayOf<OffsetTo<Type, HBUI
 
 /* Array of offsets relative to the beginning of the array itself. */
 template <typename Type, typename OffsetType>
-struct List16OfOffsetTo : ArrayOf<OffsetTo<Type, OffsetType>, HBUINT16>
+ഘടന List16OfOffsetTo : ArrayOf<OffsetTo<Type, OffsetType>, HBUINT16>
 {
-  const Type& operator [] (int i_) const
+  സ്ഥിരം Type& operator [] (പൂർണ്ണസംഖ്യ i_) സ്ഥിരം
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= this->len)) return Null (Type);
+    unsigned പൂർണ്ണസംഖ്യ i = (unsigned പൂർണ്ണസംഖ്യ) i_;
+    എങ്കിൽ (unlikely (i >= ഇത്->len)) തിരികെ Null (Type);
     hb_barrier ();
-    return this+this->arrayZ[i];
+    തിരികെ ഇത്+ഇത്->arrayZ[i];
   }
-  const Type& operator [] (int i_)
+  സ്ഥിരം Type& operator [] (പൂർണ്ണസംഖ്യ i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= this->len)) return Crap (Type);
+    unsigned പൂർണ്ണസംഖ്യ i = (unsigned പൂർണ്ണസംഖ്യ) i_;
+    എങ്കിൽ (unlikely (i >= ഇത്->len)) തിരികെ Crap (Type);
     hb_barrier ();
-    return this+this->arrayZ[i];
+    തിരികെ ഇത്+ഇത്->arrayZ[i];
   }
 
-  bool subset (hb_subset_context_t *c) const
+  തർക്കം subset (hb_subset_context_t *c) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    struct List16OfOffsetTo *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
-    unsigned int count = this->len;
-    for (unsigned int i = 0; i < count; i++)
-      out->arrayZ[i].serialize_subset (c, this->arrayZ[i], this, out);
-    return_trace (true);
+    TRACE_SUBSET (ഇത്);
+    ഘടന List16OfOffsetTo *out = c->serializer->embed (*ഇത്);
+    എങ്കിൽ (unlikely (!out)) return_trace (അസത്യം);
+    unsigned പൂർണ്ണസംഖ്യ എണ്ണം = ഇത്->len;
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
+      out->arrayZ[i].serialize_subset (c, ഇത്->arrayZ[i], ഇത്, out);
+    return_trace (സത്യം);
   }
 
   template <typename ...Ts>
-  bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
+  തർക്കം sanitize (hb_sanitize_context_t *c, Ts&&... ds) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace ((Array16Of<OffsetTo<Type, OffsetType>>::sanitize (c, this, std::forward<Ts> (ds)...)));
+    TRACE_SANITIZE (ഇത്);
+    return_trace ((Array16Of<OffsetTo<Type, OffsetType>>::sanitize (c, ഇത്, std::forward<Ts> (ds)...)));
   }
 };
 
@@ -895,206 +895,206 @@ using List16OfOffset16To = List16OfOffsetTo<Type, HBUINT16>;
 
 /* An array starting at second element. */
 template <typename Type, typename LenType>
-struct HeadlessArrayOf
+ഘടന HeadlessArrayOf
 {
-  static constexpr unsigned item_size = Type::static_size;
+  സ്ഥിതം constexpr unsigned item_size = Type::static_size;
 
   HB_DELETE_CREATE_COPY_ASSIGN (HeadlessArrayOf);
 
-  const Type& operator [] (int i_) const
+  സ്ഥിരം Type& operator [] (പൂർണ്ണസംഖ്യ i_) സ്ഥിരം
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= lenP1 || !i)) return Null (Type);
+    unsigned പൂർണ്ണസംഖ്യ i = (unsigned പൂർണ്ണസംഖ്യ) i_;
+    എങ്കിൽ (unlikely (i >= lenP1 || !i)) തിരികെ Null (Type);
     hb_barrier ();
-    return arrayZ[i-1];
+    തിരികെ arrayZ[i-1];
   }
-  Type& operator [] (int i_)
+  Type& operator [] (പൂർണ്ണസംഖ്യ i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= lenP1 || !i)) return Crap (Type);
+    unsigned പൂർണ്ണസംഖ്യ i = (unsigned പൂർണ്ണസംഖ്യ) i_;
+    എങ്കിൽ (unlikely (i >= lenP1 || !i)) തിരികെ Crap (Type);
     hb_barrier ();
-    return arrayZ[i-1];
+    തിരികെ arrayZ[i-1];
   }
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (get_length (), Type::static_size, lenP1.static_size); }
+  size_t get_size () സ്ഥിരം
+  { തിരികെ hb_unsigned_mul_add_saturate (get_length (), Type::static_size, lenP1.static_size); }
 
-  unsigned get_length () const { return lenP1 ? lenP1 - 1 : 0; }
+  unsigned get_length () സ്ഥിരം { തിരികെ lenP1 ? lenP1 - 1 : 0; }
 
-  hb_array_t<      Type> as_array ()       { return hb_array (arrayZ, get_length ()); }
-  hb_array_t<const Type> as_array () const { return hb_array (arrayZ, get_length ()); }
+  hb_array_t<      Type> as_array ()       { തിരികെ hb_array (arrayZ, get_length ()); }
+  hb_array_t<സ്ഥിരം Type> as_array () സ്ഥിരം { തിരികെ hb_array (arrayZ, get_length ()); }
 
   /* Iterator. */
-  typedef hb_array_t<const Type>   iter_t;
-  typedef hb_array_t<      Type> writer_t;
-    iter_t   iter () const { return as_array (); }
-  writer_t writer ()       { return as_array (); }
-  operator   iter_t () const { return   iter (); }
-  operator writer_t ()       { return writer (); }
+  തരനിർവചനം hb_array_t<സ്ഥിരം Type>   iter_t;
+  തരനിർവചനം hb_array_t<      Type> writer_t;
+    iter_t   iter () സ്ഥിരം { തിരികെ as_array (); }
+  writer_t writer ()       { തിരികെ as_array (); }
+  operator   iter_t () സ്ഥിരം { തിരികെ   iter (); }
+  operator writer_t ()       { തിരികെ writer (); }
 
   /* Faster range-based for loop. */
-  const Type *begin () const { return arrayZ; }
-  const Type *end () const { return arrayZ + get_length (); }
+  സ്ഥിരം Type *begin () സ്ഥിരം { തിരികെ arrayZ; }
+  സ്ഥിരം Type *end () സ്ഥിരം { തിരികെ arrayZ + get_length (); }
 
-  HB_NODISCARD bool serialize (hb_serialize_context_t *c, unsigned int items_len, bool clear = true)
+  HB_NODISCARD തർക്കം serialize (hb_serialize_context_t *c, unsigned പൂർണ്ണസംഖ്യ ഇനങ്ങൾ_len, തർക്കം clear = സത്യം)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    c->check_assign (lenP1, items_len + 1, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW);
-    if (unlikely (!c->extend_size (this, get_size (), clear))) return_trace (false);
-    return_trace (true);
+    TRACE_SERIALIZE (ഇത്);
+    എങ്കിൽ (unlikely (!c->extend_min (ഇത്))) return_trace (അസത്യം);
+    c->check_assign (lenP1, ഇനങ്ങൾ_len + 1, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW);
+    എങ്കിൽ (unlikely (!c->extend_size (ഇത്, get_size (), clear))) return_trace (അസത്യം);
+    return_trace (സത്യം);
   }
   template <typename Iterator,
 	    hb_requires (hb_is_source_of (Iterator, Type))>
-  HB_NODISCARD bool serialize (hb_serialize_context_t *c, Iterator items)
+  HB_NODISCARD തർക്കം serialize (hb_serialize_context_t *c, Iterator ഇനങ്ങൾ)
   {
-    TRACE_SERIALIZE (this);
-    unsigned count = hb_len (items);
-    if (unlikely (!serialize (c, count, false))) return_trace (false);
+    TRACE_SERIALIZE (ഇത്);
+    unsigned എണ്ണം = hb_len (ഇനങ്ങൾ);
+    എങ്കിൽ (unlikely (!serialize (c, എണ്ണം, അസത്യം))) return_trace (അസത്യം);
     /* TODO Umm. Just exhaust the iterator instead?  Being extra
      * cautious right now.. */
-    for (unsigned i = 0; i < count; i++, ++items)
-      arrayZ[i] = *items;
-    return_trace (true);
+    വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++, ++ഇനങ്ങൾ)
+      arrayZ[i] = *ഇനങ്ങൾ;
+    return_trace (സത്യം);
   }
 
   template <typename ...Ts>
   HB_ALWAYS_INLINE
-  bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
+  തർക്കം sanitize (hb_sanitize_context_t *c, Ts&&... ds) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!sanitize_shallow (c))) return_trace (false);
-    if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
+    TRACE_SANITIZE (ഇത്);
+    എങ്കിൽ (unlikely (!sanitize_shallow (c))) return_trace (അസത്യം);
+    എങ്കിൽ (!വലുപ്പം... (Ts) && hb_is_trivially_copyable(Type)) return_trace (സത്യം);
     hb_barrier ();
-    unsigned int count = get_length ();
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
-	return_trace (false);
-    return_trace (true);
+    unsigned പൂർണ്ണസംഖ്യ എണ്ണം = get_length ();
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
+      എങ്കിൽ (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
+	return_trace (അസത്യം);
+    return_trace (സത്യം);
   }
 
-  private:
-  bool sanitize_shallow (hb_sanitize_context_t *c) const
+  സ്വകാര്യ:
+  തർക്കം sanitize_shallow (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ഇത്);
     return_trace (lenP1.sanitize (c) &&
 		  hb_barrier () &&
-		  (!lenP1 || c->check_array_sized (arrayZ, lenP1 - 1, sizeof (LenType))));
+		  (!lenP1 || c->check_array_sized (arrayZ, lenP1 - 1, വലുപ്പം (LenType))));
   }
 
-  public:
+  പൊതു:
   LenType	lenP1;
   Type		arrayZ[HB_VAR_ARRAY];
-  public:
-  DEFINE_SIZE_ARRAY (sizeof (LenType), arrayZ);
+  പൊതു:
+  DEFINE_SIZE_ARRAY (വലുപ്പം (LenType), arrayZ);
 };
 template <typename Type> using HeadlessArray16Of = HeadlessArrayOf<Type, HBUINT16>;
 
 /* An array storing length-1. */
 template <typename Type, typename LenType=HBUINT16>
-struct ArrayOfM1
+ഘടന ArrayOfM1
 {
   HB_DELETE_CREATE_COPY_ASSIGN (ArrayOfM1);
 
-  const Type& operator [] (int i_) const
+  സ്ഥിരം Type& operator [] (പൂർണ്ണസംഖ്യ i_) സ്ഥിരം
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i > lenM1)) return Null (Type);
+    unsigned പൂർണ്ണസംഖ്യ i = (unsigned പൂർണ്ണസംഖ്യ) i_;
+    എങ്കിൽ (unlikely (i > lenM1)) തിരികെ Null (Type);
     hb_barrier ();
-    return arrayZ[i];
+    തിരികെ arrayZ[i];
   }
-  Type& operator [] (int i_)
+  Type& operator [] (പൂർണ്ണസംഖ്യ i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i > lenM1)) return Crap (Type);
+    unsigned പൂർണ്ണസംഖ്യ i = (unsigned പൂർണ്ണസംഖ്യ) i_;
+    എങ്കിൽ (unlikely (i > lenM1)) തിരികെ Crap (Type);
     hb_barrier ();
-    return arrayZ[i];
+    തിരികെ arrayZ[i];
   }
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (lenM1 + 1, Type::static_size, lenM1.static_size); }
+  size_t get_size () സ്ഥിരം
+  { തിരികെ hb_unsigned_mul_add_saturate (lenM1 + 1, Type::static_size, lenM1.static_size); }
 
   template <typename ...Ts>
   HB_ALWAYS_INLINE
-  bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
+  തർക്കം sanitize (hb_sanitize_context_t *c, Ts&&... ds) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!sanitize_shallow (c))) return_trace (false);
-    if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
+    TRACE_SANITIZE (ഇത്);
+    എങ്കിൽ (unlikely (!sanitize_shallow (c))) return_trace (അസത്യം);
+    എങ്കിൽ (!വലുപ്പം... (Ts) && hb_is_trivially_copyable(Type)) return_trace (സത്യം);
     hb_barrier ();
-    unsigned int count = lenM1 + 1;
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
-	return_trace (false);
-    return_trace (true);
+    unsigned പൂർണ്ണസംഖ്യ എണ്ണം = lenM1 + 1;
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
+      എങ്കിൽ (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
+	return_trace (അസത്യം);
+    return_trace (സത്യം);
   }
 
-  private:
-  bool sanitize_shallow (hb_sanitize_context_t *c) const
+  സ്വകാര്യ:
+  തർക്കം sanitize_shallow (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ഇത്);
     return_trace (lenM1.sanitize (c) &&
 		  hb_barrier () &&
-		  (c->check_array_sized (arrayZ, lenM1 + 1, sizeof (LenType))));
+		  (c->check_array_sized (arrayZ, lenM1 + 1, വലുപ്പം (LenType))));
   }
 
-  public:
+  പൊതു:
   LenType	lenM1;
   Type		arrayZ[HB_VAR_ARRAY];
-  public:
-  DEFINE_SIZE_ARRAY (sizeof (LenType), arrayZ);
+  പൊതു:
+  DEFINE_SIZE_ARRAY (വലുപ്പം (LenType), arrayZ);
 };
 
 /* An array with sorted elements.  Supports binary searching. */
 template <typename Type, typename LenType>
-struct SortedArrayOf : ArrayOf<Type, LenType>
+ഘടന SortedArrayOf : ArrayOf<Type, LenType>
 {
-  hb_sorted_array_t<      Type> as_array ()       { return hb_sorted_array (this->arrayZ, this->len); }
-  hb_sorted_array_t<const Type> as_array () const { return hb_sorted_array (this->arrayZ, this->len); }
+  hb_sorted_array_t<      Type> as_array ()       { തിരികെ hb_sorted_array (ഇത്->arrayZ, ഇത്->len); }
+  hb_sorted_array_t<സ്ഥിരം Type> as_array () സ്ഥിരം { തിരികെ hb_sorted_array (ഇത്->arrayZ, ഇത്->len); }
 
   /* Iterator. */
-  typedef hb_sorted_array_t<const Type>   iter_t;
-  typedef hb_sorted_array_t<      Type> writer_t;
-    iter_t   iter () const { return as_array (); }
-  writer_t writer ()       { return as_array (); }
-  operator   iter_t () const { return   iter (); }
-  operator writer_t ()       { return writer (); }
+  തരനിർവചനം hb_sorted_array_t<സ്ഥിരം Type>   iter_t;
+  തരനിർവചനം hb_sorted_array_t<      Type> writer_t;
+    iter_t   iter () സ്ഥിരം { തിരികെ as_array (); }
+  writer_t writer ()       { തിരികെ as_array (); }
+  operator   iter_t () സ്ഥിരം { തിരികെ   iter (); }
+  operator writer_t ()       { തിരികെ writer (); }
 
   /* Faster range-based for loop. */
-  const Type *begin () const { return this->arrayZ; }
-  const Type *end () const { return this->arrayZ + this->len; }
+  സ്ഥിരം Type *begin () സ്ഥിരം { തിരികെ ഇത്->arrayZ; }
+  സ്ഥിരം Type *end () സ്ഥിരം { തിരികെ ഇത്->arrayZ + ഇത്->len; }
 
-  bool serialize (hb_serialize_context_t *c, unsigned int items_len)
+  തർക്കം serialize (hb_serialize_context_t *c, unsigned പൂർണ്ണസംഖ്യ ഇനങ്ങൾ_len)
   {
-    TRACE_SERIALIZE (this);
-    bool ret = ArrayOf<Type, LenType>::serialize (c, items_len);
+    TRACE_SERIALIZE (ഇത്);
+    തർക്കം ret = ArrayOf<Type, LenType>::serialize (c, ഇനങ്ങൾ_len);
     return_trace (ret);
   }
   template <typename Iterator,
 	    hb_requires (hb_is_sorted_source_of (Iterator, Type))>
-  bool serialize (hb_serialize_context_t *c, Iterator items)
+  തർക്കം serialize (hb_serialize_context_t *c, Iterator ഇനങ്ങൾ)
   {
-    TRACE_SERIALIZE (this);
-    bool ret = ArrayOf<Type, LenType>::serialize (c, items);
+    TRACE_SERIALIZE (ഇത്);
+    തർക്കം ret = ArrayOf<Type, LenType>::serialize (c, ഇനങ്ങൾ);
     return_trace (ret);
   }
 
-  SortedArrayOf* copy (hb_serialize_context_t *c) const
+  SortedArrayOf* copy (hb_serialize_context_t *c) സ്ഥിരം
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ഇത്);
     SortedArrayOf* out = reinterpret_cast<SortedArrayOf *> (ArrayOf<Type, LenType>::copy (c));
     return_trace (out);
   }
 
   template <typename T>
-  Type &bsearch (const T &x, Type &not_found = Crap (Type))
-  { return *as_array ().bsearch (x, &not_found); }
+  Type &bsearch (സ്ഥിരം T &x, Type &not_found = Crap (Type))
+  { തിരികെ *as_array ().bsearch (x, &not_found); }
   template <typename T>
-  const Type &bsearch (const T &x, const Type &not_found = Null (Type)) const
-  { return *as_array ().bsearch (x, &not_found); }
+  സ്ഥിരം Type &bsearch (സ്ഥിരം T &x, സ്ഥിരം Type &not_found = Null (Type)) സ്ഥിരം
+  { തിരികെ *as_array ().bsearch (x, &not_found); }
   template <typename T>
-  bool bfind (const T &x, unsigned int *i = nullptr,
+  തർക്കം bfind (സ്ഥിരം T &x, unsigned പൂർണ്ണസംഖ്യ *i = nullptr,
 	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
-  { return as_array ().bfind (x, i, not_found, to_store); }
+	      unsigned പൂർണ്ണസംഖ്യ to_store = (unsigned പൂർണ്ണസംഖ്യ) -1) സ്ഥിരം
+  { തിരികെ as_array ().bfind (x, i, not_found, to_store); }
 };
 
 template <typename Type> using SortedArray16Of = SortedArrayOf<Type, HBUINT16>;
@@ -1106,139 +1106,139 @@ template <typename Type> using SortedArray32Of = SortedArrayOf<Type, HBUINT32>;
  */
 
 template <typename LenType=HBUINT16>
-struct BinSearchHeader
+ഘടന Bin_തിരയൽ_Header
 {
-  operator uint32_t () const { return len; }
+  operator uint32_t () സ്ഥിരം { തിരികെ len; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
-  BinSearchHeader& operator = (unsigned int v)
+  Bin_തിരയൽ_Header& operator = (unsigned പൂർണ്ണസംഖ്യ v)
   {
     len = v;
-    assert (len == v);
+    പ്രതിജ്ഞാ (len == v);
     entrySelector = hb_max (1u, hb_bit_storage (v)) - 1;
-    searchRange = 16 * (1u << entrySelector);
-    rangeShift = v * 16 > searchRange
-		 ? 16 * v - searchRange
+    തിരയൽ_Range = 16 * (1u << entrySelector);
+    rangeShift = v * 16 > തിരയൽ_Range
+		 ? 16 * v - തിരയൽ_Range
 		 : 0;
-    return *this;
+    തിരികെ *ഇത്;
   }
 
-  protected:
+  സംരക്ഷിത:
   LenType	len;
-  LenType	searchRange;
+  LenType	തിരയൽ_Range;
   LenType	entrySelector;
   LenType	rangeShift;
 
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (8);
 };
 
 template <typename Type, typename LenType=HBUINT16>
-using BinSearchArrayOf = SortedArrayOf<Type, BinSearchHeader<LenType>>;
+using Bin_തിരയൽ_Array_Of = SortedArrayOf<Type, Bin_തിരയൽ_Header<LenType>>;
 
 
-struct VarSizedBinSearchHeader
+ഘടന Var_Sized_Bin_തിരയൽ_Header
 {
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
   HBUINT16	unitSize;	/* Size of a lookup unit for this search in bytes. */
   HBUINT16	nUnits;		/* Number of units of the preceding size to be searched. */
-  HBUINT16	searchRange;	/* The value of unitSize times the largest power of 2
+  HBUINT16	തിരയൽ_Range;	/* The value of unitSize times the largest power of 2
 				 * that is less than or equal to the value of nUnits. */
   HBUINT16	entrySelector;	/* The log base 2 of the largest power of 2 less than
 				 * or equal to the value of nUnits. */
   HBUINT16	rangeShift;	/* The value of unitSize times the difference of the
 				 * value of nUnits minus the largest power of 2 less
 				 * than or equal to the value of nUnits. */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (10);
 };
 
 template <typename Type>
-struct VarSizedBinSearchArrayOf
+ഘടന Var_Sized_Bin_തിരയൽ_Array_Of
 {
-  static constexpr unsigned item_size = Type::static_size;
+  സ്ഥിതം constexpr unsigned item_size = Type::static_size;
 
-  HB_DELETE_CREATE_COPY_ASSIGN (VarSizedBinSearchArrayOf);
+  HB_DELETE_CREATE_COPY_ASSIGN (Var_Sized_Bin_തിരയൽ_Array_Of);
 
-  bool last_is_terminator () const
+  തർക്കം last_is_terminator () സ്ഥിരം
   {
-    if (unlikely (!header.nUnits)) return false;
+    എങ്കിൽ (unlikely (!header.nUnits)) തിരികെ അസത്യം;
 
     /* Gah.
      *
      * "The number of termination values that need to be included is table-specific.
      * The value that indicates binary search termination is 0xFFFF." */
-    const HBUINT16 *words = &StructAtOffset<HBUINT16> (&bytesZ, (header.nUnits - 1) * header.unitSize);
-    unsigned int count = Type::TerminationWordCount;
-    for (unsigned int i = 0; i < count; i++)
-      if (words[i] != 0xFFFFu)
-	return false;
-    return true;
+    സ്ഥിരം HBUINT16 *വാക്കുകൾ = &StructAtOffset<HBUINT16> (&bytesZ, (header.nUnits - 1) * header.unitSize);
+    unsigned പൂർണ്ണസംഖ്യ എണ്ണം = Type::Termination_Word_എണ്ണം;
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
+      എങ്കിൽ (വാക്കുകൾ[i] != 0xFFFFu)
+	തിരികെ അസത്യം;
+    തിരികെ സത്യം;
   }
 
-  const Type& operator [] (int i_) const
+  സ്ഥിരം Type& operator [] (പൂർണ്ണസംഖ്യ i_) സ്ഥിരം
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= get_length ())) return Null (Type);
+    unsigned പൂർണ്ണസംഖ്യ i = (unsigned പൂർണ്ണസംഖ്യ) i_;
+    എങ്കിൽ (unlikely (i >= get_length ())) തിരികെ Null (Type);
     hb_barrier ();
-    return StructAtOffset<Type> (&bytesZ, i * header.unitSize);
+    തിരികെ StructAtOffset<Type> (&bytesZ, i * header.unitSize);
   }
-  Type& operator [] (int i_)
+  Type& operator [] (പൂർണ്ണസംഖ്യ i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= get_length ())) return Crap (Type);
+    unsigned പൂർണ്ണസംഖ്യ i = (unsigned പൂർണ്ണസംഖ്യ) i_;
+    എങ്കിൽ (unlikely (i >= get_length ())) തിരികെ Crap (Type);
     hb_barrier ();
-    return StructAtOffset<Type> (&bytesZ, i * header.unitSize);
+    തിരികെ StructAtOffset<Type> (&bytesZ, i * header.unitSize);
   }
-  unsigned int get_length () const
-  { return header.nUnits - last_is_terminator (); }
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (header.nUnits, header.unitSize, header.static_size); }
+  unsigned പൂർണ്ണസംഖ്യ get_length () സ്ഥിരം
+  { തിരികെ header.nUnits - last_is_terminator (); }
+  size_t get_size () സ്ഥിരം
+  { തിരികെ hb_unsigned_mul_add_saturate (header.nUnits, header.unitSize, header.static_size); }
 
   template <typename ...Ts>
   HB_ALWAYS_INLINE
-  bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
+  തർക്കം sanitize (hb_sanitize_context_t *c, Ts&&... ds) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!sanitize_shallow (c))) return_trace (false);
-    if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
+    TRACE_SANITIZE (ഇത്);
+    എങ്കിൽ (unlikely (!sanitize_shallow (c))) return_trace (അസത്യം);
+    എങ്കിൽ (!വലുപ്പം... (Ts) && hb_is_trivially_copyable(Type)) return_trace (സത്യം);
     hb_barrier ();
-    unsigned int count = get_length ();
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!(*this)[i].sanitize (c, std::forward<Ts> (ds)...)))
-	return_trace (false);
-    return_trace (true);
+    unsigned പൂർണ്ണസംഖ്യ എണ്ണം = get_length ();
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
+      എങ്കിൽ (unlikely (!(*ഇത്)[i].sanitize (c, std::forward<Ts> (ds)...)))
+	return_trace (അസത്യം);
+    return_trace (സത്യം);
   }
 
   template <typename T>
-  const Type *bsearch (const T &key) const
+  സ്ഥിരം Type *bsearch (സ്ഥിരം T &key) സ്ഥിരം
   {
     unsigned pos;
-    return hb_bsearch_impl (&pos,
+    തിരികെ hb_bsearch_impl (&pos,
 			    key,
-			    (const void *) bytesZ,
+			    (സ്ഥിരം ശൂന്യം *) bytesZ,
 			    get_length (),
 			    header.unitSize,
 			    _hb_cmp_method<T, Type>)
-	   ? (const Type *) (((const char *) &bytesZ) + (pos * header.unitSize))
+	   ? (സ്ഥിരം Type *) (((സ്ഥിരം അക്ഷരം *) &bytesZ) + (pos * header.unitSize))
 	   : nullptr;
   }
 
-  private:
-  bool sanitize_shallow (hb_sanitize_context_t *c) const
+  സ്വകാര്യ:
+  തർക്കം sanitize_shallow (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ഇത്);
     return_trace (header.sanitize (c) &&
 		  hb_barrier () &&
 		  Type::static_size <= header.unitSize &&
@@ -1247,338 +1247,338 @@ struct VarSizedBinSearchArrayOf
 				  header.unitSize));
   }
 
-  protected:
-  VarSizedBinSearchHeader	header;
+  സംരക്ഷിത:
+  Var_Sized_Bin_തിരയൽ_Header	header;
   UnsizedArrayOf<HBUINT8>	bytesZ;
-  public:
+  പൊതു:
   DEFINE_SIZE_ARRAY (10, bytesZ);
 };
 
 
 /* CFF INDEX */
 
-template <typename COUNT>
-struct CFFIndex
+template <typename എണ്ണം_3>
+ഘടന CFFIndex
 {
-  unsigned int offset_array_size () const
-  { return offSize * (count + 1); }
+  unsigned പൂർണ്ണസംഖ്യ offset_array_size () സ്ഥിരം
+  { തിരികെ offSize * (എണ്ണം + 1); }
 
   template <typename Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  bool serialize (hb_serialize_context_t *c,
-		  const Iterable &iterable,
-		  const unsigned *p_data_size = nullptr,
+  തർക്കം serialize (hb_serialize_context_t *c,
+		  സ്ഥിരം Iterable &iterable,
+		  സ്ഥിരം unsigned *p_data_size = nullptr,
                   unsigned min_off_size = 0)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ഇത്);
     unsigned data_size;
-    if (p_data_size)
+    എങ്കിൽ (p_data_size)
       data_size = *p_data_size;
-    else
+    അല്ലെങ്കിൽ
       total_size (iterable, &data_size);
 
     auto it = hb_iter (iterable);
-    if (unlikely (!serialize_header (c, +it, data_size, min_off_size))) return_trace (false);
-    unsigned char *ret = c->allocate_size<unsigned char> (data_size, false);
-    if (unlikely (!ret)) return_trace (false);
+    എങ്കിൽ (unlikely (!serialize_header (c, +it, data_size, min_off_size))) return_trace (അസത്യം);
+    unsigned അക്ഷരം *ret = c->allocate_size<unsigned അക്ഷരം> (data_size, അസത്യം);
+    എങ്കിൽ (unlikely (!ret)) return_trace (അസത്യം);
     unsigned remaining = data_size;
-    for (const auto &_ : +it)
+    വേണ്ടി (സ്ഥിരം auto &_ : +it)
     {
       unsigned len = _.length;
 
-      if (!len)
-	continue;
+      എങ്കിൽ (!len)
+	തുടരുക;
 
-      if (unlikely (len > remaining)) {
+      എങ്കിൽ (unlikely (len > remaining)) {
         // We have more bytes to write then the computed data size, so the size calculation
         // must have encountered overflow.
-        return_trace (c->check_success (false, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+        return_trace (c->check_success (അസത്യം, HB_SERIALIZE_ERROR_INT_OVERFLOW));
       }
 
       remaining -= len;
 
-      if (len <= 1)
+      എങ്കിൽ (len <= 1)
       {
 	*ret++ = *_.arrayZ;
-	continue;
+	തുടരുക;
       }
       hb_memcpy (ret, _.arrayZ, len);
       ret += len;
     }
-    return_trace (true);
+    return_trace (സത്യം);
   }
 
   template <typename Iterator,
 	    hb_requires (hb_is_iterator (Iterator))>
-  bool serialize_header (hb_serialize_context_t *c,
+  തർക്കം serialize_header (hb_serialize_context_t *c,
 			 Iterator it,
 			 unsigned data_size,
                          unsigned min_off_size = 0)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ഇത്);
 
     unsigned off_size = (hb_bit_storage (data_size + 1) + 7) / 8;
     off_size = hb_max(min_off_size, off_size);
 
     /* serialize CFFIndex header */
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    this->count = hb_len (it);
-    if (!this->count) return_trace (true);
-    if (unlikely (!c->extend (this->offSize))) return_trace (false);
-    this->offSize = off_size;
-    if (unlikely (!c->allocate_size<HBUINT8> (off_size * (this->count + 1), false)))
-      return_trace (false);
+    എങ്കിൽ (unlikely (!c->extend_min (ഇത്))) return_trace (അസത്യം);
+    ഇത്->എണ്ണം = hb_len (it);
+    എങ്കിൽ (!ഇത്->എണ്ണം) return_trace (സത്യം);
+    എങ്കിൽ (unlikely (!c->extend (ഇത്->offSize))) return_trace (അസത്യം);
+    ഇത്->offSize = off_size;
+    എങ്കിൽ (unlikely (!c->allocate_size<HBUINT8> (off_size * (ഇത്->എണ്ണം + 1), അസത്യം)))
+      return_trace (അസത്യം);
 
     /* serialize indices */
-    unsigned int offset = 1;
-    if (HB_OPTIMIZE_SIZE_VAL)
+    unsigned പൂർണ്ണസംഖ്യ offset = 1;
+    എങ്കിൽ (HB_OPTIMIZE_SIZE_VAL)
     {
-      unsigned int i = 0;
-      for (const auto &_ : +it)
+      unsigned പൂർണ്ണസംഖ്യ i = 0;
+      വേണ്ടി (സ്ഥിരം auto &_ : +it)
       {
 	set_offset_at (i++, offset);
 	offset += hb_len_of (_);
       }
       set_offset_at (i, offset);
     }
-    else
-      switch (off_size)
+    അല്ലെങ്കിൽ
+      തിരഞ്ഞെടുപ്പ് (off_size)
       {
-	case 1:
+	അവസ്ഥ 1:
 	{
 	  HBUINT8 *p = (HBUINT8 *) offsets;
-	  for (const auto &_ : +it)
+	  വേണ്ടി (സ്ഥിരം auto &_ : +it)
 	  {
 	    *p++ = offset;
 	    offset += hb_len_of (_);
 	  }
 	  *p = offset;
 	}
-	break;
-	case 2:
+	നിർത്തുക;
+	അവസ്ഥ 2:
 	{
 	  HBUINT16 *p = (HBUINT16 *) offsets;
-	  for (const auto &_ : +it)
+	  വേണ്ടി (സ്ഥിരം auto &_ : +it)
 	  {
 	    *p++ = offset;
 	    offset += hb_len_of (_);
 	  }
 	  *p = offset;
 	}
-	break;
-	case 3:
+	നിർത്തുക;
+	അവസ്ഥ 3:
 	{
 	  HBUINT24 *p = (HBUINT24 *) offsets;
-	  for (const auto &_ : +it)
+	  വേണ്ടി (സ്ഥിരം auto &_ : +it)
 	  {
 	    *p++ = offset;
 	    offset += hb_len_of (_);
 	  }
 	  *p = offset;
 	}
-	break;
-	case 4:
+	നിർത്തുക;
+	അവസ്ഥ 4:
 	{
 	  HBUINT32 *p = (HBUINT32 *) offsets;
-	  for (const auto &_ : +it)
+	  വേണ്ടി (സ്ഥിരം auto &_ : +it)
 	  {
 	    *p++ = offset;
 	    offset += hb_len_of (_);
 	  }
 	  *p = offset;
 	}
-	break;
-	default:
-	break;
+	നിർത്തുക;
+	സ്ഥിരസ്ഥിതി:
+	നിർത്തുക;
       }
 
-    assert (offset == data_size + 1);
-    return_trace (true);
+    പ്രതിജ്ഞാ (offset == data_size + 1);
+    return_trace (സത്യം);
   }
 
   template <typename Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  static unsigned total_size (const Iterable &iterable, unsigned *data_size = nullptr, unsigned min_off_size = 0)
+  സ്ഥിതം unsigned total_size (സ്ഥിരം Iterable &iterable, unsigned *data_size = nullptr, unsigned min_off_size = 0)
   {
     auto it = + hb_iter (iterable);
-    if (!it)
+    എങ്കിൽ (!it)
     {
-      if (data_size) *data_size = 0;
-      return min_size;
+      എങ്കിൽ (data_size) *data_size = 0;
+      തിരികെ min_size;
     }
 
     unsigned total = 0;
-    for (const auto &_ : +it)
+    വേണ്ടി (സ്ഥിരം auto &_ : +it)
       total += hb_len_of (_);
 
-    if (data_size) *data_size = total;
+    എങ്കിൽ (data_size) *data_size = total;
 
     unsigned off_size = (hb_bit_storage (total + 1) + 7) / 8;
     off_size = hb_max(min_off_size, off_size);
 
-    return min_size + HBUINT8::static_size + (hb_len (it) + 1) * off_size + total;
+    തിരികെ min_size + HBUINT8::static_size + (hb_len (it) + 1) * off_size + total;
   }
 
-  void set_offset_at (unsigned int index, unsigned int offset)
+  ശൂന്യം set_offset_at (unsigned പൂർണ്ണസംഖ്യ index, unsigned പൂർണ്ണസംഖ്യ offset)
   {
-    assert (index <= count);
+    പ്രതിജ്ഞാ (index <= എണ്ണം);
 
-    unsigned int size = offSize;
-    const HBUINT8 *p = offsets;
-    switch (size)
+    unsigned പൂർണ്ണസംഖ്യ size = offSize;
+    സ്ഥിരം HBUINT8 *p = offsets;
+    തിരഞ്ഞെടുപ്പ് (size)
     {
-      case 1: ((HBUINT8  *) p)[index] = offset; break;
-      case 2: ((HBUINT16 *) p)[index] = offset; break;
-      case 3: ((HBUINT24 *) p)[index] = offset; break;
-      case 4: ((HBUINT32 *) p)[index] = offset; break;
-      default: return;
+      അവസ്ഥ 1: ((HBUINT8  *) p)[index] = offset; നിർത്തുക;
+      അവസ്ഥ 2: ((HBUINT16 *) p)[index] = offset; നിർത്തുക;
+      അവസ്ഥ 3: ((HBUINT24 *) p)[index] = offset; നിർത്തുക;
+      അവസ്ഥ 4: ((HBUINT32 *) p)[index] = offset; നിർത്തുക;
+      സ്ഥിരസ്ഥിതി: തിരികെ;
     }
   }
 
-  private:
-  unsigned int offset_at (unsigned int index) const
+  സ്വകാര്യ:
+  unsigned പൂർണ്ണസംഖ്യ offset_at (unsigned പൂർണ്ണസംഖ്യ index) സ്ഥിരം
   {
-    assert (index <= count);
+    പ്രതിജ്ഞാ (index <= എണ്ണം);
 
-    unsigned int size = offSize;
-    const HBUINT8 *p = offsets;
-    switch (size)
+    unsigned പൂർണ്ണസംഖ്യ size = offSize;
+    സ്ഥിരം HBUINT8 *p = offsets;
+    തിരഞ്ഞെടുപ്പ് (size)
     {
-      case 1: return ((HBUINT8  *) p)[index];
-      case 2: return ((HBUINT16 *) p)[index];
-      case 3: return ((HBUINT24 *) p)[index];
-      case 4: return ((HBUINT32 *) p)[index];
-      default: return 0;
+      അവസ്ഥ 1: തിരികെ ((HBUINT8  *) p)[index];
+      അവസ്ഥ 2: തിരികെ ((HBUINT16 *) p)[index];
+      അവസ്ഥ 3: തിരികെ ((HBUINT24 *) p)[index];
+      അവസ്ഥ 4: തിരികെ ((HBUINT32 *) p)[index];
+      സ്ഥിരസ്ഥിതി: തിരികെ 0;
     }
   }
 
-  const unsigned char *data_base () const
-  { return (const unsigned char *) this + min_size + offSize.static_size - 1 + offset_array_size (); }
-  public:
+  സ്ഥിരം unsigned അക്ഷരം *data_base () സ്ഥിരം
+  { തിരികെ (സ്ഥിരം unsigned അക്ഷരം *) ഇത് + min_size + offSize.static_size - 1 + offset_array_size (); }
+  പൊതു:
 
-  hb_ubytes_t operator [] (unsigned int index) const
+  hb_ubytes_t operator [] (unsigned പൂർണ്ണസംഖ്യ index) സ്ഥിരം
   {
-    if (unlikely (index >= count)) return hb_ubytes_t ();
+    എങ്കിൽ (unlikely (index >= എണ്ണം)) തിരികെ hb_ubytes_t ();
     hb_barrier ();
     unsigned offset0 = offset_at (index);
     unsigned offset1 = offset_at (index + 1);
-    if (unlikely (offset1 < offset0 || offset1 > offset_at (count)))
-      return hb_ubytes_t ();
-    return hb_ubytes_t (data_base () + offset0, offset1 - offset0);
+    എങ്കിൽ (unlikely (offset1 < offset0 || offset1 > offset_at (എണ്ണം)))
+      തിരികെ hb_ubytes_t ();
+    തിരികെ hb_ubytes_t (data_base () + offset0, offset1 - offset0);
   }
 
-  size_t get_size () const
+  size_t get_size () സ്ഥിരം
   {
-    if (count)
-      return hb_unsigned_add_saturate (min_size, offSize.static_size,
-				       offset_array_size (), offset_at (count) - 1);
-    return min_size;  /* empty CFFIndex contains count only */
+    എങ്കിൽ (എണ്ണം)
+      തിരികെ hb_unsigned_add_saturate (min_size, offSize.static_size,
+				       offset_array_size (), offset_at (എണ്ണം) - 1);
+    തിരികെ min_size;  /* empty CFFIndex contains count only */
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (ഇത്);
+    return_trace (likely (c->check_struct (ഇത്) &&
 			  hb_barrier () &&
-			  (count == 0 || /* empty INDEX */
-			   (count < count + 1u &&
+			  (എണ്ണം == 0 || /* empty INDEX */
+			   (എണ്ണം < എണ്ണം + 1u &&
 			    c->check_struct (&offSize) && offSize >= 1 && offSize <= 4 &&
-			    c->check_array (offsets, offSize, count + 1u) &&
-			    c->check_range (data_base (), offset_at (count))))));
+			    c->check_array (offsets, offSize, എണ്ണം + 1u) &&
+			    c->check_range (data_base (), offset_at (എണ്ണം))))));
   }
 
-  public:
-  COUNT		count;		/* Number of object data. Note there are (count+1) offsets */
-  private:
+  പൊതു:
+  എണ്ണം_3		എണ്ണം;		/* Number of object data. Note there are (count+1) offsets */
+  സ്വകാര്യ:
   HBUINT8	offSize;	/* The byte size of each offset in the offsets array. */
   HBUINT8	offsets[HB_VAR_ARRAY];
 				/* The array of (count + 1) offsets into objects array (1-base). */
   /* HBUINT8 data[HB_VAR_ARRAY];	Object data */
-  public:
-  DEFINE_SIZE_MIN (COUNT::static_size);
+  പൊതു:
+  DEFINE_SIZE_MIN (എണ്ണം_3::static_size);
 };
-typedef CFFIndex<HBUINT16> CFF1Index;
-typedef CFFIndex<HBUINT32> CFF2Index;
+തരനിർവചനം CFFIndex<HBUINT16> CFF1Index;
+തരനിർവചനം CFFIndex<HBUINT32> CFF2Index;
 
 
 /* TupleValues */
-struct TupleValues
+ഘടന Tuple_മൂല്യങ്ങൾ
 {
-  enum packed_value_flag_t
+  എണ്ണൽ packed_മൂല്യം_flag_t
   {
-    VALUES_ARE_ZEROS     = 0x80,
-    VALUES_ARE_BYTES     = 0x00,
-    VALUES_ARE_WORDS     = 0x40,
-    VALUES_ARE_LONGS     = 0xC0,
-    VALUES_SIZE_MASK     = 0xC0,
-    VALUE_RUN_COUNT_MASK = 0x3F
+    മൂല്യങ്ങൾ_ARE_ZEROS     = 0x80,
+    മൂല്യങ്ങൾ_ARE_BYTES     = 0x00,
+    മൂല്യങ്ങൾ_ARE_വാക്കുകൾ     = 0x40,
+    മൂല്യങ്ങൾ_ARE_LONGS     = 0xC0,
+    മൂല്യങ്ങൾ_SIZE_MASK     = 0xC0,
+    മൂല്യം_RUN_എണ്ണം_MASK = 0x3F
   };
 
-  static unsigned compile_unsafe (hb_array_t<const int> values, /* IN */
-				  unsigned char *encoded_bytes /* OUT */)
+  സ്ഥിതം unsigned compile_unsafe (hb_array_t<സ്ഥിരം പൂർണ്ണസംഖ്യ> values, /* IN */
+				  unsigned അക്ഷരം *encoded_bytes /* OUT */)
   {
-    unsigned num_values = values.length;
+    unsigned അക്കം_മൂല്യങ്ങൾ_3 = values.length;
     unsigned encoded_len = 0;
     unsigned i = 0;
-    while (i < num_values)
+    ആകുമ്പോൾ (i < അക്കം_മൂല്യങ്ങൾ_3)
     {
-      int val = values.arrayZ[i];
-      if (val == 0)
-        encoded_len += encode_value_run_as_zeroes (i, encoded_bytes + encoded_len, values);
-      else if ((int8_t) val == val)
-        encoded_len += encode_value_run_as_bytes (i, encoded_bytes + encoded_len, values);
-      else if ((int16_t) val == val)
-        encoded_len += encode_value_run_as_words (i, encoded_bytes + encoded_len, values);
-      else
-        encoded_len += encode_value_run_as_longs (i, encoded_bytes + encoded_len, values);
+      പൂർണ്ണസംഖ്യ val = values.arrayZ[i];
+      എങ്കിൽ (val == 0)
+        encoded_len += encode_മൂല്യം_run_as_zeroes (i, encoded_bytes + encoded_len, values);
+      അല്ലെങ്കിൽ എങ്കിൽ ((int8_t) val == val)
+        encoded_len += encode_മൂല്യം_run_as_bytes (i, encoded_bytes + encoded_len, values);
+      അല്ലെങ്കിൽ എങ്കിൽ ((int16_t) val == val)
+        encoded_len += encode_മൂല്യം_run_as_വാക്കുകൾ (i, encoded_bytes + encoded_len, values);
+      അല്ലെങ്കിൽ
+        encoded_len += encode_മൂല്യം_run_as_longs (i, encoded_bytes + encoded_len, values);
     }
-    return encoded_len;
+    തിരികെ encoded_len;
   }
 
-  static unsigned encode_value_run_as_zeroes (unsigned& i,
-					      unsigned char *it,
-					      hb_array_t<const int> values)
+  സ്ഥിതം unsigned encode_മൂല്യം_run_as_zeroes (unsigned& i,
+					      unsigned അക്ഷരം *it,
+					      hb_array_t<സ്ഥിരം പൂർണ്ണസംഖ്യ> values)
   {
-    unsigned num_values = values.length;
+    unsigned അക്കം_മൂല്യങ്ങൾ_3 = values.length;
     unsigned run_length = 0;
     unsigned encoded_len = 0;
-    while (i < num_values && values.arrayZ[i] == 0)
+    ആകുമ്പോൾ (i < അക്കം_മൂല്യങ്ങൾ_3 && values.arrayZ[i] == 0)
     {
       i++;
       run_length++;
     }
 
-    while (run_length >= 64)
+    ആകുമ്പോൾ (run_length >= 64)
     {
-      *it++ = char (VALUES_ARE_ZEROS | 63);
+      *it++ = അക്ഷരം (മൂല്യങ്ങൾ_ARE_ZEROS | 63);
       run_length -= 64;
       encoded_len++;
     }
 
-    if (run_length)
+    എങ്കിൽ (run_length)
     {
-      *it++ = char (VALUES_ARE_ZEROS | (run_length - 1));
+      *it++ = അക്ഷരം (മൂല്യങ്ങൾ_ARE_ZEROS | (run_length - 1));
       encoded_len++;
     }
-    return encoded_len;
+    തിരികെ encoded_len;
   }
 
-  static unsigned encode_value_run_as_bytes (unsigned &i,
-					     unsigned char *it,
-					     hb_array_t<const int> values)
+  സ്ഥിതം unsigned encode_മൂല്യം_run_as_bytes (unsigned &i,
+					     unsigned അക്ഷരം *it,
+					     hb_array_t<സ്ഥിരം പൂർണ്ണസംഖ്യ> values)
   {
     unsigned start = i;
-    unsigned num_values = values.length;
-    while (i < num_values)
+    unsigned അക്കം_മൂല്യങ്ങൾ_3 = values.length;
+    ആകുമ്പോൾ (i < അക്കം_മൂല്യങ്ങൾ_3)
     {
-      int val = values.arrayZ[i];
-      if ((int8_t) val != val)
-        break;
+      പൂർണ്ണസംഖ്യ val = values.arrayZ[i];
+      എങ്കിൽ ((int8_t) val != val)
+        നിർത്തുക;
 
       /* from fonttools: if there're 2 or more zeros in a sequence,
        * it is better to start a new run to save bytes. */
-      if (val == 0 && i + 1 < num_values && values.arrayZ[i+1] == 0)
-        break;
+      എങ്കിൽ (val == 0 && i + 1 < അക്കം_മൂല്യങ്ങൾ_3 && values.arrayZ[i+1] == 0)
+        നിർത്തുക;
 
       i++;
     }
@@ -1586,13 +1586,13 @@ struct TupleValues
 
     unsigned encoded_len = 0;
 
-    while (run_length >= 64)
+    ആകുമ്പോൾ (run_length >= 64)
     {
-      *it++ = (VALUES_ARE_BYTES | 63);
+      *it++ = (മൂല്യങ്ങൾ_ARE_BYTES | 63);
       encoded_len++;
 
-      for (unsigned j = 0; j < 64; j++)
-	it[j] = static_cast<char> (values.arrayZ[start + j]);
+      വേണ്ടി (unsigned j = 0; j < 64; j++)
+	it[j] = static_cast<അക്ഷരം> (values.arrayZ[start + j]);
       it += 64;
       encoded_len += 64;
 
@@ -1600,58 +1600,58 @@ struct TupleValues
       run_length -= 64;
     }
 
-    if (run_length)
+    എങ്കിൽ (run_length)
     {
-      *it++ = (VALUES_ARE_BYTES | (run_length - 1));
+      *it++ = (മൂല്യങ്ങൾ_ARE_BYTES | (run_length - 1));
       encoded_len++;
 
-      for (unsigned j = 0; j < run_length; j++)
-        it[j] = static_cast<char> (values.arrayZ[start + j]);
+      വേണ്ടി (unsigned j = 0; j < run_length; j++)
+        it[j] = static_cast<അക്ഷരം> (values.arrayZ[start + j]);
       encoded_len += run_length;
     }
 
-    return encoded_len;
+    തിരികെ encoded_len;
   }
 
-  static unsigned encode_value_run_as_words (unsigned &i,
-					     unsigned char *it,
-					     hb_array_t<const int> values)
+  സ്ഥിതം unsigned encode_മൂല്യം_run_as_വാക്കുകൾ (unsigned &i,
+					     unsigned അക്ഷരം *it,
+					     hb_array_t<സ്ഥിരം പൂർണ്ണസംഖ്യ> values)
   {
     unsigned start = i;
-    unsigned num_values = values.length;
-    while (i < num_values)
+    unsigned അക്കം_മൂല്യങ്ങൾ_3 = values.length;
+    ആകുമ്പോൾ (i < അക്കം_മൂല്യങ്ങൾ_3)
     {
-      int val = values.arrayZ[i];
+      പൂർണ്ണസംഖ്യ val = values.arrayZ[i];
 
-      if ((int16_t) val != val)
-        break;
+      എങ്കിൽ ((int16_t) val != val)
+        നിർത്തുക;
 
       /* start a new run for a single zero value. */
-      if (val == 0) break;
+      എങ്കിൽ (val == 0) നിർത്തുക;
 
       /* From fonttools: continue word-encoded run if there's only one
        * single value in the range [-128, 127] because it is more compact.
        * Only start a new run when there're 2 continuous such values. */
-      if ((int8_t) val == val &&
-          i + 1 < num_values &&
+      എങ്കിൽ ((int8_t) val == val &&
+          i + 1 < അക്കം_മൂല്യങ്ങൾ_3 &&
           (int8_t) values.arrayZ[i+1] == values.arrayZ[i+1])
-        break;
+        നിർത്തുക;
 
       i++;
     }
 
     unsigned run_length = i - start;
     unsigned encoded_len = 0;
-    while (run_length >= 64)
+    ആകുമ്പോൾ (run_length >= 64)
     {
-      *it++ = (VALUES_ARE_WORDS | 63);
+      *it++ = (മൂല്യങ്ങൾ_ARE_വാക്കുകൾ | 63);
       encoded_len++;
 
-      for (unsigned j = 0; j < 64; j++)
+      വേണ്ടി (unsigned j = 0; j < 64; j++)
       {
-        int16_t value_val = values.arrayZ[start + j];
-        *it++ = static_cast<char> (value_val >> 8);
-        *it++ = static_cast<char> (value_val & 0xFF);
+        int16_t മൂല്യം_val = values.arrayZ[start + j];
+        *it++ = static_cast<അക്ഷരം> (മൂല്യം_val >> 8);
+        *it++ = static_cast<അക്ഷരം> (മൂല്യം_val & 0xFF);
 
         encoded_len += 2;
       }
@@ -1660,52 +1660,52 @@ struct TupleValues
       run_length -= 64;
     }
 
-    if (run_length)
+    എങ്കിൽ (run_length)
     {
-      *it++ = (VALUES_ARE_WORDS | (run_length - 1));
+      *it++ = (മൂല്യങ്ങൾ_ARE_വാക്കുകൾ | (run_length - 1));
       encoded_len++;
-      while (start < i)
+      ആകുമ്പോൾ (start < i)
       {
-        int16_t value_val = values.arrayZ[start++];
-        *it++ = static_cast<char> (value_val >> 8);
-        *it++ = static_cast<char> (value_val & 0xFF);
+        int16_t മൂല്യം_val = values.arrayZ[start++];
+        *it++ = static_cast<അക്ഷരം> (മൂല്യം_val >> 8);
+        *it++ = static_cast<അക്ഷരം> (മൂല്യം_val & 0xFF);
 
         encoded_len += 2;
       }
     }
-    return encoded_len;
+    തിരികെ encoded_len;
   }
 
-  static unsigned encode_value_run_as_longs (unsigned &i,
-					     unsigned char *it,
-					     hb_array_t<const int> values)
+  സ്ഥിതം unsigned encode_മൂല്യം_run_as_longs (unsigned &i,
+					     unsigned അക്ഷരം *it,
+					     hb_array_t<സ്ഥിരം പൂർണ്ണസംഖ്യ> values)
   {
     unsigned start = i;
-    unsigned num_values = values.length;
-    while (i < num_values)
+    unsigned അക്കം_മൂല്യങ്ങൾ_3 = values.length;
+    ആകുമ്പോൾ (i < അക്കം_മൂല്യങ്ങൾ_3)
     {
-      int val = values.arrayZ[i];
+      പൂർണ്ണസംഖ്യ val = values.arrayZ[i];
 
-      if ((int16_t) val == val)
-        break;
+      എങ്കിൽ ((int16_t) val == val)
+        നിർത്തുക;
 
       i++;
     }
 
     unsigned run_length = i - start;
     unsigned encoded_len = 0;
-    while (run_length >= 64)
+    ആകുമ്പോൾ (run_length >= 64)
     {
-      *it++ = (VALUES_ARE_LONGS | 63);
+      *it++ = (മൂല്യങ്ങൾ_ARE_LONGS | 63);
       encoded_len++;
 
-      for (unsigned j = 0; j < 64; j++)
+      വേണ്ടി (unsigned j = 0; j < 64; j++)
       {
-        int32_t value_val = values.arrayZ[start + j];
-        *it++ = static_cast<char> (value_val >> 24);
-        *it++ = static_cast<char> (value_val >> 16);
-        *it++ = static_cast<char> (value_val >> 8);
-        *it++ = static_cast<char> (value_val & 0xFF);
+        int32_t മൂല്യം_val = values.arrayZ[start + j];
+        *it++ = static_cast<അക്ഷരം> (മൂല്യം_val >> 24);
+        *it++ = static_cast<അക്ഷരം> (മൂല്യം_val >> 16);
+        *it++ = static_cast<അക്ഷരം> (മൂല്യം_val >> 8);
+        *it++ = static_cast<അക്ഷരം> (മൂല്യം_val & 0xFF);
 
         encoded_len += 4;
       }
@@ -1714,324 +1714,324 @@ struct TupleValues
       run_length -= 64;
     }
 
-    if (run_length)
+    എങ്കിൽ (run_length)
     {
-      *it++ = (VALUES_ARE_LONGS | (run_length - 1));
+      *it++ = (മൂല്യങ്ങൾ_ARE_LONGS | (run_length - 1));
       encoded_len++;
-      while (start < i)
+      ആകുമ്പോൾ (start < i)
       {
-        int32_t value_val = values.arrayZ[start++];
-        *it++ = static_cast<char> (value_val >> 24);
-        *it++ = static_cast<char> (value_val >> 16);
-        *it++ = static_cast<char> (value_val >> 8);
-        *it++ = static_cast<char> (value_val & 0xFF);
+        int32_t മൂല്യം_val = values.arrayZ[start++];
+        *it++ = static_cast<അക്ഷരം> (മൂല്യം_val >> 24);
+        *it++ = static_cast<അക്ഷരം> (മൂല്യം_val >> 16);
+        *it++ = static_cast<അക്ഷരം> (മൂല്യം_val >> 8);
+        *it++ = static_cast<അക്ഷരം> (മൂല്യം_val & 0xFF);
 
         encoded_len += 4;
       }
     }
-    return encoded_len;
+    തിരികെ encoded_len;
   }
 
   template <typename T>
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  static bool decompile (const HBUINT8 *&p /* IN/OUT */,
+  സ്ഥിതം തർക്കം decompile (സ്ഥിരം HBUINT8 *&p /* IN/OUT */,
 			 hb_vector_t<T> &values /* IN/OUT */,
-			 const HBUINT8 *end,
-			 bool consume_all = false,
+			 സ്ഥിരം HBUINT8 *end,
+			 തർക്കം consume_all = അസത്യം,
 			 unsigned start = 0)
   {
     unsigned i = 0;
-    unsigned count = consume_all ? UINT_MAX : values.length;
-    if (consume_all)
+    unsigned എണ്ണം = consume_all ? UINT_MAX : values.length;
+    എങ്കിൽ (consume_all)
       values.alloc ((end - p) / 2);
-    while (i < count)
+    ആകുമ്പോൾ (i < എണ്ണം)
     {
-      if (unlikely (p + 1 > end)) return consume_all;
+      എങ്കിൽ (unlikely (p + 1 > end)) തിരികെ consume_all;
       unsigned control = *p++;
-      unsigned run_count = (control & VALUE_RUN_COUNT_MASK) + 1;
-      if (consume_all)
+      unsigned run_എണ്ണം = (control & മൂല്യം_RUN_എണ്ണം_MASK) + 1;
+      എങ്കിൽ (consume_all)
       {
-        if (unlikely (!values.resize_dirty  (values.length + run_count)))
-	  return false;
+        എങ്കിൽ (unlikely (!values.resize_dirty  (values.length + run_എണ്ണം)))
+	  തിരികെ അസത്യം;
       }
-      unsigned stop = i + run_count;
-      if (unlikely (stop > count)) return false;
+      unsigned stop = i + run_എണ്ണം;
+      എങ്കിൽ (unlikely (stop > എണ്ണം)) തിരികെ അസത്യം;
 
-      unsigned skip = i < start ? hb_min (start - i, run_count) : 0;
+      unsigned skip = i < start ? hb_min (start - i, run_എണ്ണം) : 0;
       i += skip;
 
-      if ((control & VALUES_SIZE_MASK) == VALUES_ARE_ZEROS)
+      എങ്കിൽ ((control & മൂല്യങ്ങൾ_SIZE_MASK) == മൂല്യങ്ങൾ_ARE_ZEROS)
       {
-	hb_memset (&values.arrayZ[i], 0, (stop - i) * sizeof (T));
+	hb_memset (&values.arrayZ[i], 0, (stop - i) * വലുപ്പം (T));
 	i = stop;
       }
-      else if ((control & VALUES_SIZE_MASK) ==  VALUES_ARE_WORDS)
+      അല്ലെങ്കിൽ എങ്കിൽ ((control & മൂല്യങ്ങൾ_SIZE_MASK) ==  മൂല്യങ്ങൾ_ARE_വാക്കുകൾ)
       {
-        if (unlikely (p + run_count * HBINT16::static_size > end)) return false;
+        എങ്കിൽ (unlikely (p + run_എണ്ണം * HBINT16::static_size > end)) തിരികെ അസത്യം;
 	p += skip * HBINT16::static_size;
 #ifndef HB_OPTIMIZE_SIZE
-        for (; i + 3 < stop; i += 4)
+        വേണ്ടി (; i + 3 < stop; i += 4)
 	{
-	  values.arrayZ[i] = * (const HBINT16 *) p;
+	  values.arrayZ[i] = * (സ്ഥിരം HBINT16 *) p;
 	  p += HBINT16::static_size;
-	  values.arrayZ[i + 1] = * (const HBINT16 *) p;
+	  values.arrayZ[i + 1] = * (സ്ഥിരം HBINT16 *) p;
 	  p += HBINT16::static_size;
-	  values.arrayZ[i + 2] = * (const HBINT16 *) p;
+	  values.arrayZ[i + 2] = * (സ്ഥിരം HBINT16 *) p;
 	  p += HBINT16::static_size;
-	  values.arrayZ[i + 3] = * (const HBINT16 *) p;
+	  values.arrayZ[i + 3] = * (സ്ഥിരം HBINT16 *) p;
 	  p += HBINT16::static_size;
 	}
 #endif
-        for (; i < stop; i++)
+        വേണ്ടി (; i < stop; i++)
         {
-          values.arrayZ[i] = * (const HBINT16 *) p;
+          values.arrayZ[i] = * (സ്ഥിരം HBINT16 *) p;
           p += HBINT16::static_size;
         }
       }
-      else if ((control & VALUES_SIZE_MASK) ==  VALUES_ARE_LONGS)
+      അല്ലെങ്കിൽ എങ്കിൽ ((control & മൂല്യങ്ങൾ_SIZE_MASK) ==  മൂല്യങ്ങൾ_ARE_LONGS)
       {
-        if (unlikely (p + run_count * HBINT32::static_size > end)) return false;
+        എങ്കിൽ (unlikely (p + run_എണ്ണം * HBINT32::static_size > end)) തിരികെ അസത്യം;
 	p += skip * HBINT32::static_size;
-        for (; i < stop; i++)
+        വേണ്ടി (; i < stop; i++)
         {
-          values.arrayZ[i] = * (const HBINT32 *) p;
+          values.arrayZ[i] = * (സ്ഥിരം HBINT32 *) p;
           p += HBINT32::static_size;
         }
       }
-      else if ((control & VALUES_SIZE_MASK) ==  VALUES_ARE_BYTES)
+      അല്ലെങ്കിൽ എങ്കിൽ ((control & മൂല്യങ്ങൾ_SIZE_MASK) ==  മൂല്യങ്ങൾ_ARE_BYTES)
       {
-        if (unlikely (p + run_count > end)) return false;
+        എങ്കിൽ (unlikely (p + run_എണ്ണം > end)) തിരികെ അസത്യം;
 	p += skip * HBINT8::static_size;
 #ifndef HB_OPTIMIZE_SIZE
-	for (; i + 3 < stop; i += 4)
+	വേണ്ടി (; i + 3 < stop; i += 4)
 	{
-	  values.arrayZ[i] = * (const HBINT8 *) p++;
-	  values.arrayZ[i + 1] = * (const HBINT8 *) p++;
-	  values.arrayZ[i + 2] = * (const HBINT8 *) p++;
-	  values.arrayZ[i + 3] = * (const HBINT8 *) p++;
+	  values.arrayZ[i] = * (സ്ഥിരം HBINT8 *) p++;
+	  values.arrayZ[i + 1] = * (സ്ഥിരം HBINT8 *) p++;
+	  values.arrayZ[i + 2] = * (സ്ഥിരം HBINT8 *) p++;
+	  values.arrayZ[i + 3] = * (സ്ഥിരം HBINT8 *) p++;
 	}
 #endif
-        for (; i < stop; i++)
-          values.arrayZ[i] = * (const HBINT8 *) p++;
+        വേണ്ടി (; i < stop; i++)
+          values.arrayZ[i] = * (സ്ഥിരം HBINT8 *) p++;
       }
     }
-    return true;
+    തിരികെ സത്യം;
   }
 
-  static bool skip (const unsigned char *&p /* IN/OUT */,
-		    const unsigned char *end,
-		    unsigned count)
+  സ്ഥിതം തർക്കം skip (സ്ഥിരം unsigned അക്ഷരം *&p /* IN/OUT */,
+		    സ്ഥിരം unsigned അക്ഷരം *end,
+		    unsigned എണ്ണം)
   {
     unsigned seen = 0;
-    while (seen < count)
+    ആകുമ്പോൾ (seen < എണ്ണം)
     {
-      if (unlikely (p >= end)) return false;
+      എങ്കിൽ (unlikely (p >= end)) തിരികെ അസത്യം;
       unsigned control = *p++;
-      unsigned run_count = (control & VALUE_RUN_COUNT_MASK) + 1;
-      if (unlikely (run_count > count - seen)) return false;
+      unsigned run_എണ്ണം = (control & മൂല്യം_RUN_എണ്ണം_MASK) + 1;
+      എങ്കിൽ (unlikely (run_എണ്ണം > എണ്ണം - seen)) തിരികെ അസത്യം;
 
       unsigned width = 0;
-      switch (control & VALUES_SIZE_MASK)
+      തിരഞ്ഞെടുപ്പ് (control & മൂല്യങ്ങൾ_SIZE_MASK)
       {
-	case VALUES_ARE_ZEROS: break;
-	case VALUES_ARE_BYTES: width = HBINT8::static_size; break;
-	case VALUES_ARE_WORDS: width = HBINT16::static_size; break;
-	case VALUES_ARE_LONGS: width = HBINT32::static_size; break;
+	അവസ്ഥ മൂല്യങ്ങൾ_ARE_ZEROS: നിർത്തുക;
+	അവസ്ഥ മൂല്യങ്ങൾ_ARE_BYTES: width = HBINT8::static_size; നിർത്തുക;
+	അവസ്ഥ മൂല്യങ്ങൾ_ARE_വാക്കുകൾ: width = HBINT16::static_size; നിർത്തുക;
+	അവസ്ഥ മൂല്യങ്ങൾ_ARE_LONGS: width = HBINT32::static_size; നിർത്തുക;
       }
-      if (unlikely (unsigned (end - p) < run_count * width)) return false;
-      p += run_count * width;
-      seen += run_count;
+      എങ്കിൽ (unlikely (unsigned (end - p) < run_എണ്ണം * width)) തിരികെ അസത്യം;
+      p += run_എണ്ണം * width;
+      seen += run_എണ്ണം;
     }
-    return true;
+    തിരികെ സത്യം;
   }
 
-  struct iter_t : hb_iter_with_fallback_t<iter_t, int>
+  ഘടന iter_t : hb_iter_with_fallback_t<iter_t, പൂർണ്ണസംഖ്യ>
   {
-    iter_t (const unsigned char *p_, unsigned len_)
+    iter_t (സ്ഥിരം unsigned അക്ഷരം *p_, unsigned len_)
 	    : p (p_), endp (p_ + len_)
-    { if (likely (ensure_run ())) read_value (); }
+    { എങ്കിൽ (likely (ensure_run ())) read_മൂല്യം (); }
 
-    private:
-    const unsigned char *p;
-    const unsigned char * const endp;
-    int current_value = 0;
-    signed run_count = 0;
+    സ്വകാര്യ:
+    സ്ഥിരം unsigned അക്ഷരം *p;
+    സ്ഥിരം unsigned അക്ഷരം * സ്ഥിരം endp;
+    പൂർണ്ണസംഖ്യ current_മൂല്യം = 0;
+    signed run_എണ്ണം = 0;
     unsigned width = 0;
 
     HB_ALWAYS_INLINE
-    bool ensure_run ()
+    തർക്കം ensure_run ()
     {
-      if (likely (run_count > 0)) return true;
-      return _ensure_run ();
+      എങ്കിൽ (likely (run_എണ്ണം > 0)) തിരികെ സത്യം;
+      തിരികെ _ensure_run ();
     }
-    bool _ensure_run ()
+    തർക്കം _ensure_run ()
     {
-      if (unlikely (p >= endp))
+      എങ്കിൽ (unlikely (p >= endp))
       {
-        run_count = 0;
-        current_value = 0;
-	return false;
+        run_എണ്ണം = 0;
+        current_മൂല്യം = 0;
+	തിരികെ അസത്യം;
       }
 
       unsigned control = *p++;
-      run_count = (control & VALUE_RUN_COUNT_MASK) + 1;
-      width = control & VALUES_SIZE_MASK;
-      switch (width)
+      run_എണ്ണം = (control & മൂല്യം_RUN_എണ്ണം_MASK) + 1;
+      width = control & മൂല്യങ്ങൾ_SIZE_MASK;
+      തിരഞ്ഞെടുപ്പ് (width)
       {
-        case VALUES_ARE_ZEROS: width = 0; break;
-	case VALUES_ARE_BYTES: width = HBINT8::static_size;  break;
-	case VALUES_ARE_WORDS: width = HBINT16::static_size; break;
-	case VALUES_ARE_LONGS: width = HBINT32::static_size; break;
-	default: assert (false);
+        അവസ്ഥ മൂല്യങ്ങൾ_ARE_ZEROS: width = 0; നിർത്തുക;
+	അവസ്ഥ മൂല്യങ്ങൾ_ARE_BYTES: width = HBINT8::static_size;  നിർത്തുക;
+	അവസ്ഥ മൂല്യങ്ങൾ_ARE_വാക്കുകൾ: width = HBINT16::static_size; നിർത്തുക;
+	അവസ്ഥ മൂല്യങ്ങൾ_ARE_LONGS: width = HBINT32::static_size; നിർത്തുക;
+	സ്ഥിരസ്ഥിതി: പ്രതിജ്ഞാ (അസത്യം);
       }
 
-      if (unlikely (p + run_count * width > endp))
+      എങ്കിൽ (unlikely (p + run_എണ്ണം * width > endp))
       {
-	run_count = 0;
-	current_value = 0;
-	return false;
+	run_എണ്ണം = 0;
+	current_മൂല്യം = 0;
+	തിരികെ അസത്യം;
       }
 
-      return true;
+      തിരികെ സത്യം;
     }
-    void read_value ()
+    ശൂന്യം read_മൂല്യം ()
     {
-      switch (width)
+      തിരഞ്ഞെടുപ്പ് (width)
       {
-        case 0: current_value = 0; break;
-	case 1: current_value = * (const HBINT8  *) p; break;
-	case 2: current_value = * (const HBINT16 *) p; break;
-	case 4: current_value = * (const HBINT32 *) p; break;
+        അവസ്ഥ 0: current_മൂല്യം = 0; നിർത്തുക;
+	അവസ്ഥ 1: current_മൂല്യം = * (സ്ഥിരം HBINT8  *) p; നിർത്തുക;
+	അവസ്ഥ 2: current_മൂല്യം = * (സ്ഥിരം HBINT16 *) p; നിർത്തുക;
+	അവസ്ഥ 4: current_മൂല്യം = * (സ്ഥിരം HBINT32 *) p; നിർത്തുക;
       }
       p += width;
     }
 
-    public:
+    പൊതു:
 
-    typedef int __item_t__;
-    __item_t__ __item__ () const
-    { return current_value; }
+    തരനിർവചനം പൂർണ്ണസംഖ്യ __item_t__;
+    __item_t__ __item__ () സ്ഥിരം
+    { തിരികെ current_മൂല്യം; }
 
-    bool __more__ () const { return run_count || p < endp; }
-    void __next__ ()
+    തർക്കം __more__ () സ്ഥിരം { തിരികെ run_എണ്ണം || p < endp; }
+    ശൂന്യം __next__ ()
     {
-      run_count--;
-      if (unlikely (!ensure_run ()))
-	return;
-      read_value ();
+      run_എണ്ണം--;
+      എങ്കിൽ (unlikely (!ensure_run ()))
+	തിരികെ;
+      read_മൂല്യം ();
     }
-    void __forward__ (unsigned n)
+    ശൂന്യം __forward__ (unsigned n)
     {
-      if (unlikely (!ensure_run ()))
-	return;
-      while (n)
+      എങ്കിൽ (unlikely (!ensure_run ()))
+	തിരികെ;
+      ആകുമ്പോൾ (n)
       {
-	unsigned i = hb_min (n, (unsigned) run_count);
-	run_count -= i;
+	unsigned i = hb_min (n, (unsigned) run_എണ്ണം);
+	run_എണ്ണം -= i;
 	n -= i;
 	p += (i - 1) * width;
-	if (unlikely (!ensure_run ()))
-	  return;
-	read_value ();
+	എങ്കിൽ (unlikely (!ensure_run ()))
+	  തിരികെ;
+	read_മൂല്യം ();
       }
     }
-    bool operator != (const iter_t& o) const
-    { return p != o.p || run_count != o.run_count; }
-    iter_t __end__ () const
+    തർക്കം operator != (സ്ഥിരം iter_t& o) സ്ഥിരം
+    { തിരികെ p != o.p || run_എണ്ണം != o.run_എണ്ണം; }
+    iter_t __end__ () സ്ഥിരം
     {
       iter_t it (endp, 0);
-      return it;
+      തിരികെ it;
     }
   };
 
-  struct fetcher_t
+  ഘടന fetcher_t
   {
-    fetcher_t (const unsigned char *p_, unsigned len_)
+    fetcher_t (സ്ഥിരം unsigned അക്ഷരം *p_, unsigned len_)
 	      : p (p_), end (p_ + len_) {}
 
-    private:
-    const unsigned char *p;
-    const unsigned char * const end;
-    signed run_count = 0;
+    സ്വകാര്യ:
+    സ്ഥിരം unsigned അക്ഷരം *p;
+    സ്ഥിരം unsigned അക്ഷരം * സ്ഥിരം end;
+    signed run_എണ്ണം = 0;
     unsigned width = 0;
 
     HB_ALWAYS_INLINE
-    bool ensure_run ()
+    തർക്കം ensure_run ()
     {
-      if (likely (run_count > 0)) return true;
-      return _ensure_run ();
+      എങ്കിൽ (likely (run_എണ്ണം > 0)) തിരികെ സത്യം;
+      തിരികെ _ensure_run ();
     }
 
-    bool _ensure_run ()
+    തർക്കം _ensure_run ()
     {
-      if (unlikely (p >= end))
+      എങ്കിൽ (unlikely (p >= end))
       {
-        run_count = 0;
-	return false;
+        run_എണ്ണം = 0;
+	തിരികെ അസത്യം;
       }
 
       unsigned control = *p++;
-      run_count = (control & VALUE_RUN_COUNT_MASK) + 1;
-      width = control & VALUES_SIZE_MASK;
-      switch (width)
+      run_എണ്ണം = (control & മൂല്യം_RUN_എണ്ണം_MASK) + 1;
+      width = control & മൂല്യങ്ങൾ_SIZE_MASK;
+      തിരഞ്ഞെടുപ്പ് (width)
       {
-        case VALUES_ARE_ZEROS: width = 0; break;
-	case VALUES_ARE_BYTES: width = HBINT8::static_size;  break;
-	case VALUES_ARE_WORDS: width = HBINT16::static_size; break;
-	case VALUES_ARE_LONGS: width = HBINT32::static_size; break;
-	default: assert (false);
+        അവസ്ഥ മൂല്യങ്ങൾ_ARE_ZEROS: width = 0; നിർത്തുക;
+	അവസ്ഥ മൂല്യങ്ങൾ_ARE_BYTES: width = HBINT8::static_size;  നിർത്തുക;
+	അവസ്ഥ മൂല്യങ്ങൾ_ARE_വാക്കുകൾ: width = HBINT16::static_size; നിർത്തുക;
+	അവസ്ഥ മൂല്യങ്ങൾ_ARE_LONGS: width = HBINT32::static_size; നിർത്തുക;
+	സ്ഥിരസ്ഥിതി: പ്രതിജ്ഞാ (അസത്യം);
       }
 
-      if (unlikely (p + run_count * width > end))
+      എങ്കിൽ (unlikely (p + run_എണ്ണം * width > end))
       {
-	run_count = 0;
-	return false;
+	run_എണ്ണം = 0;
+	തിരികെ അസത്യം;
       }
 
-      return true;
+      തിരികെ സത്യം;
     }
 
-    public:
-    void skip (unsigned n)
+    പൊതു:
+    ശൂന്യം skip (unsigned n)
     {
-      while (n)
+      ആകുമ്പോൾ (n)
       {
-	if (unlikely (!ensure_run ()))
-	  return;
-	unsigned i = hb_min (n, (unsigned) run_count);
-	run_count -= i;
+	എങ്കിൽ (unlikely (!ensure_run ()))
+	  തിരികെ;
+	unsigned i = hb_min (n, (unsigned) run_എണ്ണം);
+	run_എണ്ണം -= i;
 	n -= i;
 	p += i * width;
       }
     }
 
-    private:
-    template <bool scaled, typename T>
-    void _add_to (hb_array_t<T> out, T scale = T (1))
+    സ്വകാര്യ:
+    template <തർക്കം scaled, typename T>
+    ശൂന്യം _add_to (hb_array_t<T> out, T scale = T (1))
     {
       unsigned n = out.length;
       T *arrayZ = out.arrayZ;
 
-      for (unsigned i = 0; i < n;)
+      വേണ്ടി (unsigned i = 0; i < n;)
       {
-	if (unlikely (!ensure_run ()))
-	  break;
-	unsigned count = hb_min (n - i, (unsigned) run_count);
-	switch (width)
+	എങ്കിൽ (unlikely (!ensure_run ()))
+	  നിർത്തുക;
+	unsigned എണ്ണം = hb_min (n - i, (unsigned) run_എണ്ണം);
+	തിരഞ്ഞെടുപ്പ് (width)
 	{
-	  case 0:
+	  അവസ്ഥ 0:
 	  {
-	    arrayZ += count;
-	    break;
+	    arrayZ += എണ്ണം;
+	    നിർത്തുക;
 	  }
-	  case 1:
+	  അവസ്ഥ 1:
 	  {
-	    const auto *pp = (const HBINT8 *) p;
+	    സ്ഥിരം auto *pp = (സ്ഥിരം HBINT8 *) p;
 	    unsigned j = 0;
 #ifndef HB_OPTIMIZE_SIZE
-	    for (; j + 3 < count; j += 4)
+	    വേണ്ടി (; j + 3 < എണ്ണം; j += 4)
 	    {
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
@@ -2039,18 +2039,18 @@ struct TupleValues
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	    }
 #endif
-	    for (; j < count; j++)
+	    വേണ്ടി (; j < എണ്ണം; j++)
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 
-	    p = (const unsigned char *) pp;
+	    p = (സ്ഥിരം unsigned അക്ഷരം *) pp;
 	  }
-	  break;
-	  case 2:
+	  നിർത്തുക;
+	  അവസ്ഥ 2:
 	  {
-	    const auto *pp = (const HBINT16 *) p;
+	    സ്ഥിരം auto *pp = (സ്ഥിരം HBINT16 *) p;
 	    unsigned j = 0;
 #ifndef HB_OPTIMIZE_SIZE
-	    for (; j + 3 < count; j += 4)
+	    വേണ്ടി (; j + 3 < എണ്ണം; j += 4)
 	    {
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
@@ -2058,72 +2058,72 @@ struct TupleValues
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	    }
 #endif
-	    for (; j < count; j++)
+	    വേണ്ടി (; j < എണ്ണം; j++)
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 
-	    p = (const unsigned char *) pp;
+	    p = (സ്ഥിരം unsigned അക്ഷരം *) pp;
 	  }
-	  break;
-	  case 4:
+	  നിർത്തുക;
+	  അവസ്ഥ 4:
 	  {
-	    const auto *pp = (const HBINT32 *) p;
-	    for (unsigned j = 0; j < count; j++)
+	    സ്ഥിരം auto *pp = (സ്ഥിരം HBINT32 *) p;
+	    വേണ്ടി (unsigned j = 0; j < എണ്ണം; j++)
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 
-	    p = (const unsigned char *) pp;
+	    p = (സ്ഥിരം unsigned അക്ഷരം *) pp;
 	  }
-	  break;
+	  നിർത്തുക;
 	}
-	run_count -= count;
-	i += count;
+	run_എണ്ണം -= എണ്ണം;
+	i += എണ്ണം;
       }
     }
 
-    public:
+    പൊതു:
     template <typename T>
-    void add_to (hb_array_t<T> out, float scale = 1.0f)
+    ശൂന്യം add_to (hb_array_t<T> out, ദശാംശം scale = 1.0f)
     {
 #ifndef HB_OPTIMIZE_SIZE
       // The following branch is supposed to speed things up by avoiding
       // the multiplication in _add_to<> if scale is 1.0f.
       // But in practice it seems to bloat the code and slow things down.
-      if (false && scale == 1.0f)
-        _add_to<false> (out);
-      else
+      എങ്കിൽ (അസത്യം && scale == 1.0f)
+        _add_to<അസത്യം> (out);
+      അല്ലെങ്കിൽ
 #endif
-        _add_to<true> (out, (T) scale);
+        _add_to<സത്യം> (out, (T) scale);
     }
   };
 };
 
-struct TupleList : CFF2Index
+ഘടന TupleList : CFF2Index
 {
-  TupleValues::iter_t operator [] (unsigned i) const
+  Tuple_മൂല്യങ്ങൾ::iter_t operator [] (unsigned i) സ്ഥിരം
   {
     auto bytes = CFF2Index::operator [] (i);
-    return TupleValues::iter_t (bytes.arrayZ, bytes.length);
+    തിരികെ Tuple_മൂല്യങ്ങൾ::iter_t (bytes.arrayZ, bytes.length);
   }
 
-  TupleValues::fetcher_t fetcher (unsigned i) const
+  Tuple_മൂല്യങ്ങൾ::fetcher_t fetcher (unsigned i) സ്ഥിരം
   {
     auto bytes = CFF2Index::operator [] (i);
-    return TupleValues::fetcher_t (bytes.arrayZ, bytes.length);
+    തിരികെ Tuple_മൂല്യങ്ങൾ::fetcher_t (bytes.arrayZ, bytes.length);
   }
 };
 
 
 // Alignment
 
-template <unsigned int alignment>
-struct Align
+template <unsigned പൂർണ്ണസംഖ്യ alignment>
+ഘടന Align
 {
-  size_t get_size (const void *base) const
+  size_t get_size (സ്ഥിരം ശൂന്യം *base) സ്ഥിരം
   {
-    unsigned offset = (const char *) this - (const char *) base;
-    return (alignment - offset) & (alignment - 1);
+    unsigned offset = (സ്ഥിരം അക്ഷരം *) ഇത് - (സ്ഥിരം അക്ഷരം *) base;
+    തിരികെ (alignment - offset) & (alignment - 1);
   }
 
-  public:
+  പൊതു:
   DEFINE_SIZE_MIN (0);
 };
 

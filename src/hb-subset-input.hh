@@ -24,22 +24,22 @@
  * Google Author(s): Garret Rieger, Roderick Sheeter
  */
 
-#ifndef HB_SUBSET_INPUT_HH
-#define HB_SUBSET_INPUT_HH
+#ifndef HB_SUBSET_നിവേശം_HH
+#define HB_SUBSET_നിവേശം_HH
 
 
-#include "hb.hh"
+#അന്തര്ഭാവ "hb.hh"
 
-#include "hb-subset.h"
-#include "hb-map.hh"
-#include "hb-set.hh"
-#include "hb-cplusplus.hh"
-#include "hb-font.hh"
-#include "hb-subset-instancer-solver.hh"
+#അന്തര്ഭാവ "hb-subset.h"
+#അന്തര്ഭാവ "hb-map.hh"
+#അന്തര്ഭാവ "hb-set.hh"
+#അന്തര്ഭാവ "hb-cplusplus.hh"
+#അന്തര്ഭാവ "hb-font.hh"
+#അന്തര്ഭാവ "hb-subset-instancer-solver.hh"
 
-struct hb_ot_name_record_ids_t
+ഘടന hb_ot_name_record_ids_t
 {
-  hb_ot_name_record_ids_t () = default;
+  hb_ot_name_record_ids_t () = സ്ഥിരസ്ഥിതി;
   hb_ot_name_record_ids_t (unsigned platform_id_,
                            unsigned encoding_id_,
                            unsigned language_id_,
@@ -49,25 +49,25 @@ struct hb_ot_name_record_ids_t
       language_id (language_id_),
       name_id (name_id_) {}
 
-  bool operator != (const hb_ot_name_record_ids_t o) const
-  { return !(*this == o); }
+  തർക്കം operator != (സ്ഥിരം hb_ot_name_record_ids_t o) സ്ഥിരം
+  { തിരികെ !(*ഇത് == o); }
 
-  inline bool operator == (const hb_ot_name_record_ids_t& o) const
+  വരിയിൽ തർക്കം operator == (സ്ഥിരം hb_ot_name_record_ids_t& o) സ്ഥിരം
   {
-    return platform_id == o.platform_id &&
+    തിരികെ platform_id == o.platform_id &&
            encoding_id == o.encoding_id &&
            language_id == o.language_id &&
            name_id == o.name_id;
   }
 
-  inline uint32_t hash () const
+  വരിയിൽ uint32_t hash () സ്ഥിരം
   {
     uint32_t current = 0;
     current = current * 31 + hb_hash (platform_id);
     current = current * 31 + hb_hash (encoding_id);
     current = current * 31 + hb_hash (language_id);
     current = current * 31 + hb_hash (name_id);
-    return current;
+    തിരികെ current;
   }
 
   unsigned platform_id;
@@ -76,28 +76,28 @@ struct hb_ot_name_record_ids_t
   unsigned name_id;
 };
 
-typedef struct hb_ot_name_record_ids_t hb_ot_name_record_ids_t;
+തരനിർവചനം ഘടന hb_ot_name_record_ids_t hb_ot_name_record_ids_t;
 
 
 HB_MARK_AS_FLAG_T (hb_subset_flags_t);
 
-struct hb_subset_input_t
+ഘടന hb_subset_നിവേശം_t
 {
-  HB_INTERNAL hb_subset_input_t ();
+  HB_INTERNAL hb_subset_നിവേശം_t ();
 
-  ~hb_subset_input_t ()
+  ~hb_subset_നിവേശം_t ()
   {
     sets.~sets_t ();
 
 #ifdef HB_EXPERIMENTAL_API
-    for (auto _ : name_table_overrides.values ())
+    വേണ്ടി (auto _ : name_table_overrides.values ())
       _.fini ();
 #endif
   }
 
   hb_object_header_t header;
 
-  struct sets_t {
+  ഘടന sets_t {
     hb::shared_ptr<hb_set_t> glyphs;
     hb::shared_ptr<hb_set_t> unicodes;
     hb::shared_ptr<hb_set_t> no_subset_tables;
@@ -108,16 +108,16 @@ struct hb_subset_input_t
     hb::shared_ptr<hb_set_t> layout_scripts;
   };
 
-  union {
+  സംഘം {
     sets_t sets;
-    hb::shared_ptr<hb_set_t> set_ptrs[sizeof (sets_t) / sizeof (hb_set_t*)];
+    hb::shared_ptr<hb_set_t> set_ptrs[വലുപ്പം (sets_t) / വലുപ്പം (hb_set_t*)];
   };
 
   unsigned flags;
-  bool attach_accelerator_data = false;
+  തർക്കം attach_accelerator_data = അസത്യം;
 
   // If set loca format will always be the long version.
-  bool force_long_loca = false;
+  തർക്കം force_long_loca = അസത്യം;
 
   hb_hashmap_t<hb_tag_t, Triple> axes_location;
   hb_map_t glyph_map;
@@ -125,25 +125,25 @@ struct hb_subset_input_t
   hb_hashmap_t<hb_ot_name_record_ids_t, hb_bytes_t> name_table_overrides;
 #endif
 
-  inline unsigned num_sets () const
+  വരിയിൽ unsigned അക്കം_sets () സ്ഥിരം
   {
-    return sizeof (set_ptrs) / sizeof (hb_set_t*);
+    തിരികെ വലുപ്പം (set_ptrs) / വലുപ്പം (hb_set_t*);
   }
 
-  inline hb_array_t<hb::shared_ptr<hb_set_t>> sets_iter ()
+  വരിയിൽ hb_array_t<hb::shared_ptr<hb_set_t>> sets_iter ()
   {
-    return hb_array (set_ptrs);
+    തിരികെ hb_array (set_ptrs);
   }
 
-  bool in_error () const
+  തർക്കം in_error () സ്ഥിരം
   {
-    for (unsigned i = 0; i < num_sets (); i++)
+    വേണ്ടി (unsigned i = 0; i < അക്കം_sets (); i++)
     {
-      if (unlikely (set_ptrs[i]->in_error ()))
-        return true;
+      എങ്കിൽ (unlikely (set_ptrs[i]->in_error ()))
+        തിരികെ സത്യം;
     }
 
-    return axes_location.in_error ()
+    തിരികെ axes_location.in_error ()
 #ifdef HB_EXPERIMENTAL_API
 	|| name_table_overrides.in_error ()
 #endif

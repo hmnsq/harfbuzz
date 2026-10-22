@@ -25,20 +25,20 @@
 #ifndef HB_PAINT_BOUNDED_HH
 #define HB_PAINT_BOUNDED_HH
 
-#include "hb.hh"
-#include "hb-paint.h"
+#അന്തര്ഭാവ "hb.hh"
+#അന്തര്ഭാവ "hb-paint.h"
 
-#include "hb-geometry.hh"
+#അന്തര്ഭാവ "hb-geometry.hh"
 
 
-typedef struct  hb_paint_bounded_context_t hb_paint_bounded_context_t;
+തരനിർവചനം ഘടന  hb_paint_bounded_context_t hb_paint_bounded_context_t;
 
-struct hb_paint_bounded_context_t
+ഘടന hb_paint_bounded_context_t
 {
-  void clear ()
+  ശൂന്യം clear ()
   {
     clips = 0;
-    bounded = true;
+    bounded = സത്യം;
     groups.clear ();
   }
 
@@ -47,67 +47,67 @@ struct hb_paint_bounded_context_t
     clear ();
   }
 
-  bool is_bounded ()
+  തർക്കം is_bounded ()
   {
-    return bounded;
+    തിരികെ bounded;
   }
 
-  void push_clip ()
+  ശൂന്യം തള്ളുക_clip ()
   {
     clips++;
   }
 
-  void pop_clip ()
+  ശൂന്യം എടുക്കുക_clip ()
   {
-    if (clips == 0) return;
+    എങ്കിൽ (clips == 0) തിരികെ;
     clips--;
   }
 
-  void push_group ()
+  ശൂന്യം തള്ളുക_group ()
   {
     groups.push (bounded);
-    bounded = true;
+    bounded = സത്യം;
   }
 
-  void pop_group (hb_paint_composite_mode_t mode)
+  ശൂന്യം എടുക്കുക_group (hb_paint_composite_mode_t mode)
   {
-    const bool src_bounded = bounded;
-    bounded = groups.pop ();
-    bool &backdrop_bounded = bounded;
+    സ്ഥിരം തർക്കം src_bounded = bounded;
+    bounded = groups.എടുക്കുക ();
+    തർക്കം &backdrop_bounded = bounded;
 
     // https://learn.microsoft.com/en-us/typography/opentype/spec/colr#format-32-paintcomposite
-    switch ((int) mode)
+    തിരഞ്ഞെടുപ്പ് ((പൂർണ്ണസംഖ്യ) mode)
     {
-      case HB_PAINT_COMPOSITE_MODE_CLEAR:
-	backdrop_bounded = true;
-	break;
-      case HB_PAINT_COMPOSITE_MODE_SRC:
-      case HB_PAINT_COMPOSITE_MODE_SRC_OUT:
+      അവസ്ഥ HB_PAINT_COMPOSITE_MODE_CLEAR:
+	backdrop_bounded = സത്യം;
+	നിർത്തുക;
+      അവസ്ഥ HB_PAINT_COMPOSITE_MODE_SRC:
+      അവസ്ഥ HB_PAINT_COMPOSITE_MODE_SRC_OUT:
 	backdrop_bounded = src_bounded;
-	break;
-      case HB_PAINT_COMPOSITE_MODE_DEST:
-      case HB_PAINT_COMPOSITE_MODE_DEST_OUT:
-	break;
-      case HB_PAINT_COMPOSITE_MODE_SRC_IN:
-      case HB_PAINT_COMPOSITE_MODE_DEST_IN:
+	നിർത്തുക;
+      അവസ്ഥ HB_PAINT_COMPOSITE_MODE_DEST:
+      അവസ്ഥ HB_PAINT_COMPOSITE_MODE_DEST_OUT:
+	നിർത്തുക;
+      അവസ്ഥ HB_PAINT_COMPOSITE_MODE_SRC_IN:
+      അവസ്ഥ HB_PAINT_COMPOSITE_MODE_DEST_IN:
 	backdrop_bounded = backdrop_bounded && src_bounded;
-	break;
-      default:
+	നിർത്തുക;
+      സ്ഥിരസ്ഥിതി:
 	backdrop_bounded = backdrop_bounded || src_bounded;
-	break;
+	നിർത്തുക;
      }
   }
 
-  void paint ()
+  ശൂന്യം paint ()
   {
-    if (!clips)
-      bounded = false;
+    എങ്കിൽ (!clips)
+      bounded = അസത്യം;
   }
 
-  protected:
-  bool bounded; // true if current drawing bounded
+  സംരക്ഷിത:
+  തർക്കം bounded; // true if current drawing bounded
   unsigned clips; // number of active clips
-  hb_vector_t<bool> groups; // true if group bounded
+  hb_vector_t<തർക്കം> groups; // true if group bounded
 };
 
 HB_INTERNAL hb_paint_funcs_t *

@@ -29,10 +29,10 @@
 #ifndef HB_OT_SHAPER_MYANMAR_MACHINE_HH
 #define HB_OT_SHAPER_MYANMAR_MACHINE_HH
 
-#include "hb.hh"
+#അന്തര്ഭാവ "hb.hh"
 
-#include "hb-ot-layout.hh"
-#include "hb-ot-shaper-indic.hh"
+#അന്തര്ഭാവ "hb-ot-layout.hh"
+#അന്തര്ഭാവ "hb-ot-shaper-indic.hh"
 
 /* buffer var allocations */
 #define myanmar_category() ot_shaper_var_u8_category() /* myanmar_category_t */
@@ -43,7 +43,7 @@ using myanmar_position_t = ot_position_t;
 
 #define M_Cat(Cat) myanmar_syllable_machine_ex_##Cat
 
-enum myanmar_syllable_type_t {
+എണ്ണൽ myanmar_syllable_type_t {
   myanmar_consonant_syllable,
   myanmar_broken_cluster,
   myanmar_non_myanmar_cluster,
@@ -79,7 +79,7 @@ enum myanmar_syllable_type_t {
 
 
 #line 77 "hb-ot-shaper-myanmar-machine.hh"
-static const unsigned char _myanmar_syllable_machine_trans_keys[] = {
+സ്ഥിതം സ്ഥിരം unsigned അക്ഷരം myanmar_syllable_machine_trans_താക്കോലുകൾ[] = {
 	1u, 57u, 3u, 57u, 5u, 57u, 5u, 57u, 3u, 57u, 5u, 57u, 3u, 57u, 3u, 57u, 
 	3u, 57u, 3u, 57u, 3u, 57u, 5u, 57u, 1u, 15u, 3u, 57u, 3u, 57u, 3u, 57u, 
 	3u, 57u, 3u, 57u, 3u, 57u, 3u, 57u, 3u, 57u, 3u, 57u, 3u, 57u, 3u, 57u, 
@@ -89,7 +89,7 @@ static const unsigned char _myanmar_syllable_machine_trans_keys[] = {
 	3u, 57u, 3u, 57u, 3u, 57u, 1u, 57u, 1u, 15u, 0
 };
 
-static const char _myanmar_syllable_machine_key_spans[] = {
+സ്ഥിതം സ്ഥിരം അക്ഷരം myanmar_syllable_machine_താക്കോൽ_spans[] = {
 	57, 55, 53, 53, 55, 53, 55, 55, 
 	55, 55, 55, 53, 15, 55, 55, 55, 
 	55, 55, 55, 55, 55, 55, 55, 55, 
@@ -99,7 +99,7 @@ static const char _myanmar_syllable_machine_key_spans[] = {
 	55, 55, 55, 57, 15
 };
 
-static const short _myanmar_syllable_machine_index_offsets[] = {
+സ്ഥിതം സ്ഥിരം short _myanmar_syllable_machine_index_offsets[] = {
 	0, 58, 114, 168, 222, 278, 332, 388, 
 	444, 500, 556, 612, 666, 682, 738, 794, 
 	850, 906, 962, 1018, 1074, 1130, 1186, 1242, 
@@ -109,7 +109,7 @@ static const short _myanmar_syllable_machine_index_offsets[] = {
 	2594, 2650, 2706, 2762, 2820
 };
 
-static const char _myanmar_syllable_machine_indicies[] = {
+സ്ഥിതം സ്ഥിരം അക്ഷരം _myanmar_syllable_machine_indicies[] = {
 	1, 1, 2, 3, 4, 4, 0, 5, 
 	6, 1, 1, 0, 0, 0, 7, 0, 
 	0, 8, 0, 9, 10, 11, 12, 0, 
@@ -467,7 +467,7 @@ static const char _myanmar_syllable_machine_indicies[] = {
 	60, 60, 1, 60, 0
 };
 
-static const char _myanmar_syllable_machine_trans_targs[] = {
+സ്ഥിതം സ്ഥിരം അക്ഷരം _myanmar_syllable_machine_trans_targs[] = {
 	0, 1, 25, 35, 0, 26, 30, 49, 
 	52, 37, 38, 39, 29, 41, 42, 44, 
 	45, 46, 27, 48, 43, 26, 0, 2, 
@@ -478,7 +478,7 @@ static const char _myanmar_syllable_machine_trans_targs[] = {
 	40, 47, 50, 51, 0
 };
 
-static const char _myanmar_syllable_machine_trans_actions[] = {
+സ്ഥിതം സ്ഥിരം അക്ഷരം _myanmar_syllable_machine_trans_actions[] = {
 	3, 0, 0, 0, 4, 5, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 6, 7, 0, 
@@ -489,7 +489,7 @@ static const char _myanmar_syllable_machine_trans_actions[] = {
 	0, 0, 0, 0, 12
 };
 
-static const char _myanmar_syllable_machine_to_state_actions[] = {
+സ്ഥിതം സ്ഥിരം അക്ഷരം _myanmar_syllable_machine_to_state_actions[] = {
 	1, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
@@ -499,7 +499,7 @@ static const char _myanmar_syllable_machine_to_state_actions[] = {
 	0, 0, 0, 0, 0
 };
 
-static const char _myanmar_syllable_machine_from_state_actions[] = {
+സ്ഥിതം സ്ഥിരം അക്ഷരം _myanmar_syllable_machine_from_state_actions[] = {
 	2, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
@@ -509,7 +509,7 @@ static const char _myanmar_syllable_machine_from_state_actions[] = {
 	0, 0, 0, 0, 0
 };
 
-static const short _myanmar_syllable_machine_eof_trans[] = {
+സ്ഥിതം സ്ഥിരം short _myanmar_syllable_machine_eof_trans[] = {
 	0, 23, 23, 23, 23, 23, 23, 23, 
 	23, 23, 23, 23, 23, 23, 23, 23, 
 	23, 23, 23, 23, 23, 23, 23, 23, 
@@ -519,11 +519,11 @@ static const short _myanmar_syllable_machine_eof_trans[] = {
 	48, 23, 23, 48, 61
 };
 
-static const int myanmar_syllable_machine_start = 0;
-static const int myanmar_syllable_machine_first_final = 0;
-static const int myanmar_syllable_machine_error = -1;
+സ്ഥിതം സ്ഥിരം പൂർണ്ണസംഖ്യ myanmar_syllable_machine_start = 0;
+സ്ഥിതം സ്ഥിരം പൂർണ്ണസംഖ്യ myanmar_syllable_machine_first_final = 0;
+സ്ഥിതം സ്ഥിരം പൂർണ്ണസംഖ്യ myanmar_syllable_machine_error = -1;
 
-static const int myanmar_syllable_machine_en_main = 0;
+സ്ഥിതം സ്ഥിരം പൂർണ്ണസംഖ്യ myanmar_syllable_machine_en_main = 0;
 
 
 #line 55 "hb-ot-shaper-myanmar-machine.rl"
@@ -535,18 +535,18 @@ static const int myanmar_syllable_machine_en_main = 0;
 
 #define found_syllable(syllable_type) \
   HB_STMT_START { \
-    if (0) fprintf (stderr, "syllable %u..%u %s\n", ts, te, #syllable_type); \
-    for (unsigned int i = ts; i < te; i++) \
+    എങ്കിൽ (0) fprintf (stderr, "syllable %u..%u %s\n", ts, te, #syllable_type); \
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = ts; i < te; i++) \
       info[i].syllable() = (syllable_serial << 4) | syllable_type; \
     syllable_serial++; \
-    if (syllable_serial == 16) syllable_serial = 1; \
+    എങ്കിൽ (syllable_serial == 16) syllable_serial = 1; \
   } HB_STMT_END
 
-inline void
+വരിയിൽ ശൂന്യം
 find_syllables_myanmar (hb_buffer_t *buffer)
 {
-  unsigned int p, pe, eof, ts, te, act HB_UNUSED;
-  int cs;
+  unsigned പൂർണ്ണസംഖ്യ p, pe, eof, ts, te, act HB_UNUSED;
+  പൂർണ്ണസംഖ്യ cs;
   hb_glyph_info_t *info = buffer->info;
   
 #line 542 "hb-ot-shaper-myanmar-machine.hh"
@@ -563,112 +563,112 @@ find_syllables_myanmar (hb_buffer_t *buffer)
   p = 0;
   pe = eof = buffer->len;
 
-  unsigned int syllable_serial = 1;
+  unsigned പൂർണ്ണസംഖ്യ syllable_serial = 1;
   
 #line 554 "hb-ot-shaper-myanmar-machine.hh"
 	{
-	int _slen;
-	int _trans;
-	const unsigned char *_keys;
-	const char *_inds;
-	if ( p == pe )
-		goto _test_eof;
+	പൂർണ്ണസംഖ്യ _slen;
+	പൂർണ്ണസംഖ്യ _trans;
+	സ്ഥിരം unsigned അക്ഷരം *താക്കോലുകൾ_2;
+	സ്ഥിരം അക്ഷരം *_inds;
+	എങ്കിൽ ( p == pe )
+		പോകുക _test_eof;
 _resume:
-	switch ( _myanmar_syllable_machine_from_state_actions[cs] ) {
-	case 2:
+	തിരഞ്ഞെടുപ്പ് ( _myanmar_syllable_machine_from_state_actions[cs] ) {
+	അവസ്ഥ 2:
 #line 1 "NONE"
 	{ts = p;}
-	break;
+	നിർത്തുക;
 #line 566 "hb-ot-shaper-myanmar-machine.hh"
 	}
 
-	_keys = _myanmar_syllable_machine_trans_keys + (cs<<1);
+	താക്കോലുകൾ_2 = myanmar_syllable_machine_trans_താക്കോലുകൾ + (cs<<1);
 	_inds = _myanmar_syllable_machine_indicies + _myanmar_syllable_machine_index_offsets[cs];
 
-	_slen = _myanmar_syllable_machine_key_spans[cs];
-	_trans = _inds[ _slen > 0 && _keys[0] <=( info[p].myanmar_category()) &&
-		( info[p].myanmar_category()) <= _keys[1] ?
-		( info[p].myanmar_category()) - _keys[0] : _slen ];
+	_slen = myanmar_syllable_machine_താക്കോൽ_spans[cs];
+	_trans = _inds[ _slen > 0 && താക്കോലുകൾ_2[0] <=( info[p].myanmar_category()) &&
+		( info[p].myanmar_category()) <= താക്കോലുകൾ_2[1] ?
+		( info[p].myanmar_category()) - താക്കോലുകൾ_2[0] : _slen ];
 
 _eof_trans:
 	cs = _myanmar_syllable_machine_trans_targs[_trans];
 
-	if ( _myanmar_syllable_machine_trans_actions[_trans] == 0 )
-		goto _again;
+	എങ്കിൽ ( _myanmar_syllable_machine_trans_actions[_trans] == 0 )
+		പോകുക _again;
 
-	switch ( _myanmar_syllable_machine_trans_actions[_trans] ) {
-	case 8:
+	തിരഞ്ഞെടുപ്പ് ( _myanmar_syllable_machine_trans_actions[_trans] ) {
+	അവസ്ഥ 8:
 #line 111 "hb-ot-shaper-myanmar-machine.rl"
 	{te = p+1;{ found_syllable (myanmar_consonant_syllable); }}
-	break;
-	case 4:
+	നിർത്തുക;
+	അവസ്ഥ 4:
 #line 112 "hb-ot-shaper-myanmar-machine.rl"
 	{te = p+1;{ found_syllable (myanmar_non_myanmar_cluster); }}
-	break;
-	case 10:
+	നിർത്തുക;
+	അവസ്ഥ 10:
 #line 113 "hb-ot-shaper-myanmar-machine.rl"
 	{te = p+1;{ found_syllable (myanmar_broken_cluster); buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }}
-	break;
-	case 3:
+	നിർത്തുക;
+	അവസ്ഥ 3:
 #line 114 "hb-ot-shaper-myanmar-machine.rl"
 	{te = p+1;{ found_syllable (myanmar_non_myanmar_cluster); }}
-	break;
-	case 7:
+	നിർത്തുക;
+	അവസ്ഥ 7:
 #line 111 "hb-ot-shaper-myanmar-machine.rl"
 	{te = p;p--;{ found_syllable (myanmar_consonant_syllable); }}
-	break;
-	case 9:
+	നിർത്തുക;
+	അവസ്ഥ 9:
 #line 113 "hb-ot-shaper-myanmar-machine.rl"
 	{te = p;p--;{ found_syllable (myanmar_broken_cluster); buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }}
-	break;
-	case 12:
+	നിർത്തുക;
+	അവസ്ഥ 12:
 #line 114 "hb-ot-shaper-myanmar-machine.rl"
 	{te = p;p--;{ found_syllable (myanmar_non_myanmar_cluster); }}
-	break;
-	case 11:
+	നിർത്തുക;
+	അവസ്ഥ 11:
 #line 1 "NONE"
-	{	switch( act ) {
-	case 2:
+	{	തിരഞ്ഞെടുപ്പ്( act ) {
+	അവസ്ഥ 2:
 	{{p = ((te))-1;} found_syllable (myanmar_non_myanmar_cluster); }
-	break;
-	case 3:
+	നിർത്തുക;
+	അവസ്ഥ 3:
 	{{p = ((te))-1;} found_syllable (myanmar_broken_cluster); buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }
-	break;
+	നിർത്തുക;
 	}
 	}
-	break;
-	case 6:
+	നിർത്തുക;
+	അവസ്ഥ 6:
 #line 1 "NONE"
 	{te = p+1;}
 #line 112 "hb-ot-shaper-myanmar-machine.rl"
 	{act = 2;}
-	break;
-	case 5:
+	നിർത്തുക;
+	അവസ്ഥ 5:
 #line 1 "NONE"
 	{te = p+1;}
 #line 113 "hb-ot-shaper-myanmar-machine.rl"
 	{act = 3;}
-	break;
+	നിർത്തുക;
 #line 623 "hb-ot-shaper-myanmar-machine.hh"
 	}
 
 _again:
-	switch ( _myanmar_syllable_machine_to_state_actions[cs] ) {
-	case 1:
+	തിരഞ്ഞെടുപ്പ് ( _myanmar_syllable_machine_to_state_actions[cs] ) {
+	അവസ്ഥ 1:
 #line 1 "NONE"
 	{ts = 0;}
-	break;
+	നിർത്തുക;
 #line 630 "hb-ot-shaper-myanmar-machine.hh"
 	}
 
-	if ( ++p != pe )
-		goto _resume;
+	എങ്കിൽ ( ++p != pe )
+		പോകുക _resume;
 	_test_eof: {}
-	if ( p == eof )
+	എങ്കിൽ ( p == eof )
 	{
-	if ( _myanmar_syllable_machine_eof_trans[cs] > 0 ) {
+	എങ്കിൽ ( _myanmar_syllable_machine_eof_trans[cs] > 0 ) {
 		_trans = _myanmar_syllable_machine_eof_trans[cs] - 1;
-		goto _eof_trans;
+		പോകുക _eof_trans;
 	}
 	}
 

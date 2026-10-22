@@ -25,18 +25,18 @@
 #ifndef HB_WASM_API_BLOB_HH
 #define HB_WASM_API_BLOB_HH
 
-#include "hb-wasm-api.hh"
+#അന്തര്ഭാവ "hb-wasm-api.hh"
 
-namespace hb {
-namespace wasm {
+നാമാകാശ hb {
+നാമാകാശ wasm {
 
 
-HB_WASM_API (void, blob_free) (HB_WASM_EXEC_ENV
+HB_WASM_API (ശൂന്യം, blob_free) (HB_WASM_EXEC_ENV
 			       ptr_d(blob_t, blob))
 {
   HB_PTR_PARAM (blob_t, blob);
-  if (unlikely (!blob))
-    return;
+  എങ്കിൽ (unlikely (!blob))
+    തിരികെ;
 
   module_free (blob->data);
 

@@ -28,489 +28,489 @@
 #ifndef HB_BIT_SET_INVERTIBLE_HH
 #define HB_BIT_SET_INVERTIBLE_HH
 
-#include "hb.hh"
-#include "hb-bit-set.hh"
+#അന്തര്ഭാവ "hb.hh"
+#അന്തര്ഭാവ "hb-bit-set.hh"
 
 
-struct hb_bit_set_invertible_t
+ഘടന hb_bit_set_invertible_t
 {
   hb_bit_set_t s;
-  bool inverted = false;
+  തർക്കം inverted = അസത്യം;
 
-  hb_bit_set_invertible_t () = default;
-  hb_bit_set_invertible_t (const hb_bit_set_invertible_t& o) = default;
-  hb_bit_set_invertible_t (hb_bit_set_invertible_t&& other)  noexcept : hb_bit_set_invertible_t () { hb_swap (*this, other); }
-  hb_bit_set_invertible_t& operator= (const hb_bit_set_invertible_t& o) = default;
-  hb_bit_set_invertible_t& operator= (hb_bit_set_invertible_t&& other)  noexcept { hb_swap (*this, other); return *this; }
-  friend void swap (hb_bit_set_invertible_t &a, hb_bit_set_invertible_t &b) noexcept
+  hb_bit_set_invertible_t () = സ്ഥിരസ്ഥിതി;
+  hb_bit_set_invertible_t (സ്ഥിരം hb_bit_set_invertible_t& o) = സ്ഥിരസ്ഥിതി;
+  hb_bit_set_invertible_t (hb_bit_set_invertible_t&& other)  noexcept : hb_bit_set_invertible_t () { hb_swap (*ഇത്, other); }
+  hb_bit_set_invertible_t& operator= (സ്ഥിരം hb_bit_set_invertible_t& o) = സ്ഥിരസ്ഥിതി;
+  hb_bit_set_invertible_t& operator= (hb_bit_set_invertible_t&& other)  noexcept { hb_swap (*ഇത്, other); തിരികെ *ഇത്; }
+  friend ശൂന്യം swap (hb_bit_set_invertible_t &a, hb_bit_set_invertible_t &b) noexcept
   {
-    if (likely (!a.s.successful || !b.s.successful))
-      return;
+    എങ്കിൽ (likely (!a.s.successful || !b.s.successful))
+      തിരികെ;
     hb_swap (a.inverted, b.inverted);
     hb_swap (a.s, b.s);
   }
 
-  void init () { s.init (); inverted = false; }
-  void fini () { s.fini (); }
-  void err () { s.err (); }
-  bool in_error () const { return s.in_error (); }
-  explicit operator bool () const { return !is_empty (); }
+  ശൂന്യം init () { s.init (); inverted = അസത്യം; }
+  ശൂന്യം fini () { s.fini (); }
+  ശൂന്യം err () { s.err (); }
+  തർക്കം in_error () സ്ഥിരം { തിരികെ s.in_error (); }
+  explicit operator തർക്കം () സ്ഥിരം { തിരികെ !is_empty (); }
 
-  void alloc (unsigned sz) { s.alloc (sz); }
-  void reset ()
+  ശൂന്യം alloc (unsigned sz) { s.alloc (sz); }
+  ശൂന്യം reset ()
   {
     s.reset ();
-    inverted = false;
+    inverted = അസത്യം;
   }
-  void clear ()
+  ശൂന്യം clear ()
   {
     s.clear ();
-    if (likely (s.successful))
-      inverted = false;
+    എങ്കിൽ (likely (s.successful))
+      inverted = അസത്യം;
   }
-  void invert ()
+  ശൂന്യം invert ()
   {
-    if (likely (s.successful))
+    എങ്കിൽ (likely (s.successful))
       inverted = !inverted;
   }
 
-  bool is_inverted () const
+  തർക്കം is_inverted () സ്ഥിരം
   {
-    return inverted;
+    തിരികെ inverted;
   }
 
-  bool is_empty () const
+  തർക്കം is_empty () സ്ഥിരം
   {
     hb_codepoint_t v = INVALID;
     next (&v);
-    return v == INVALID;
+    തിരികെ v == INVALID;
   }
-  uint32_t hash () const { return s.hash () ^ (uint32_t) inverted; }
+  uint32_t hash () സ്ഥിരം { തിരികെ s.hash () ^ (uint32_t) inverted; }
 
-  hb_codepoint_t get_min () const
+  hb_codepoint_t get_min () സ്ഥിരം
   {
     hb_codepoint_t v = INVALID;
     next (&v);
-    return v;
+    തിരികെ v;
   }
-  hb_codepoint_t get_max () const
+  hb_codepoint_t get_max () സ്ഥിരം
   {
     hb_codepoint_t v = INVALID;
     previous (&v);
-    return v;
+    തിരികെ v;
   }
-  unsigned int get_population () const
-  { return inverted ? INVALID - s.get_population () : s.get_population (); }
-  bool get_singleton (hb_codepoint_t *codepoint) const
+  unsigned പൂർണ്ണസംഖ്യ get_population () സ്ഥിരം
+  { തിരികെ inverted ? INVALID - s.get_population () : s.get_population (); }
+  തർക്കം get_singleton (hb_codepoint_t *codepoint) സ്ഥിരം
   {
-    if (likely (!inverted))
-      return s.get_singleton (codepoint);
-    if (s.get_population () != INVALID - 1)
-      return false;
+    എങ്കിൽ (likely (!inverted))
+      തിരികെ s.get_singleton (codepoint);
+    എങ്കിൽ (s.get_population () != INVALID - 1)
+      തിരികെ അസത്യം;
     *codepoint = get_min ();
-    return *codepoint != INVALID;
+    തിരികെ *codepoint != INVALID;
   }
 
 
-  void add (hb_codepoint_t g) { unlikely (inverted) ? s.del (g) : s.add (g); }
-  void add_bits (hb_codepoint_t g, uint64_t bits)
+  ശൂന്യം add (hb_codepoint_t g) { unlikely (inverted) ? s.del (g) : s.add (g); }
+  ശൂന്യം add_bits (hb_codepoint_t g, uint64_t bits)
   { unlikely (inverted) ? s.del_bits (g, bits) : s.add_bits (g, bits); }
-  bool add_range (hb_codepoint_t a, hb_codepoint_t b)
-  { return unlikely (inverted) ? ((void) s.del_range (a, b), true) : s.add_range (a, b); }
+  തർക്കം add_range (hb_codepoint_t a, hb_codepoint_t b)
+  { തിരികെ unlikely (inverted) ? ((ശൂന്യം) s.del_range (a, b), സത്യം) : s.add_range (a, b); }
 
   template <typename T>
-  void add_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { inverted ? s.del_array (array, count, stride) : s.add_array (array, count, stride); }
+  ശൂന്യം add_array (സ്ഥിരം T *array, unsigned പൂർണ്ണസംഖ്യ എണ്ണം, unsigned പൂർണ്ണസംഖ്യ stride=വലുപ്പം(T))
+  { inverted ? s.del_array (array, എണ്ണം, stride) : s.add_array (array, എണ്ണം, stride); }
   template <typename T>
-  void add_array (const hb_array_t<const T>& arr) { add_array (&arr, arr.len ()); }
+  ശൂന്യം add_array (സ്ഥിരം hb_array_t<സ്ഥിരം T>& arr) { add_array (&arr, arr.len ()); }
 
   /* Might return false if array looks unsorted.
    * Used for faster rejection of corrupt data. */
   template <typename T>
-  bool add_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { return inverted ? s.del_sorted_array (array, count, stride) : s.add_sorted_array (array, count, stride); }
+  തർക്കം add_sorted_array (സ്ഥിരം T *array, unsigned പൂർണ്ണസംഖ്യ എണ്ണം, unsigned പൂർണ്ണസംഖ്യ stride=വലുപ്പം(T))
+  { തിരികെ inverted ? s.del_sorted_array (array, എണ്ണം, stride) : s.add_sorted_array (array, എണ്ണം, stride); }
   template <typename T>
-  bool add_sorted_array (const hb_sorted_array_t<const T>& arr) { return add_sorted_array (&arr, arr.len ()); }
+  തർക്കം add_sorted_array (സ്ഥിരം hb_sorted_array_t<സ്ഥിരം T>& arr) { തിരികെ add_sorted_array (&arr, arr.len ()); }
 
-  void del (hb_codepoint_t g) { unlikely (inverted) ? s.add (g) : s.del (g); }
-  void del_range (hb_codepoint_t a, hb_codepoint_t b)
-  { unlikely (inverted) ? (void) s.add_range (a, b) : s.del_range (a, b); }
+  ശൂന്യം del (hb_codepoint_t g) { unlikely (inverted) ? s.add (g) : s.del (g); }
+  ശൂന്യം del_range (hb_codepoint_t a, hb_codepoint_t b)
+  { unlikely (inverted) ? (ശൂന്യം) s.add_range (a, b) : s.del_range (a, b); }
 
-  bool get (hb_codepoint_t g) const { return s.get (g) ^ inverted; }
-  bool may_have (hb_codepoint_t g) const { return get (g); }
+  തർക്കം get (hb_codepoint_t g) സ്ഥിരം { തിരികെ s.get (g) ^ inverted; }
+  തർക്കം may_have (hb_codepoint_t g) സ്ഥിരം { തിരികെ get (g); }
 
   /* Has interface. */
-  bool operator [] (hb_codepoint_t k) const { return get (k); }
-  bool has (hb_codepoint_t k) const { return (*this)[k]; }
+  തർക്കം operator [] (hb_codepoint_t k) സ്ഥിരം { തിരികെ get (k); }
+  തർക്കം has (hb_codepoint_t k) സ്ഥിരം { തിരികെ (*ഇത്)[k]; }
   /* Predicate. */
-  bool operator () (hb_codepoint_t k) const { return has (k); }
+  തർക്കം operator () (hb_codepoint_t k) സ്ഥിരം { തിരികെ has (k); }
 
   /* Sink interface. */
   hb_bit_set_invertible_t& operator << (hb_codepoint_t v)
-  { add (v); return *this; }
-  hb_bit_set_invertible_t& operator << (const hb_codepoint_pair_t& range)
-  { add_range (range.first, range.second); return *this; }
+  { add (v); തിരികെ *ഇത്; }
+  hb_bit_set_invertible_t& operator << (സ്ഥിരം hb_codepoint_pair_t& range)
+  { add_range (range.first, range.second); തിരികെ *ഇത്; }
 
-  bool may_intersect (const hb_bit_set_invertible_t &other) const
-  { return inverted || other.inverted || s.intersects (other.s); }
+  തർക്കം may_intersect (സ്ഥിരം hb_bit_set_invertible_t &other) സ്ഥിരം
+  { തിരികെ inverted || other.inverted || s.intersects (other.s); }
 
-  bool intersects (const hb_bit_set_invertible_t &other) const
+  തർക്കം intersects (സ്ഥിരം hb_bit_set_invertible_t &other) സ്ഥിരം
   {
-    if (likely (!inverted))
-      return unlikely (other.inverted) ? !s.is_subset (other.s)
+    എങ്കിൽ (likely (!inverted))
+      തിരികെ unlikely (other.inverted) ? !s.is_subset (other.s)
 				       : s.intersects (other.s);
-    if (likely (!other.inverted))
-      return !other.s.is_subset (s);
+    എങ്കിൽ (likely (!other.inverted))
+      തിരികെ !other.s.is_subset (s);
 
     unsigned population = s.get_population ();
     unsigned other_population = other.s.get_population ();
-    if ((uint64_t) population + other_population < INVALID)
-      return true;
+    എങ്കിൽ ((uint64_t) population + other_population < INVALID)
+      തിരികെ സത്യം;
 
-    return population >= other_population
+    തിരികെ population >= other_population
 	 ? !hb_all (iter (), other.s)
 	 : !hb_all (other.iter (), s);
   }
 
-  bool intersects (hb_codepoint_t first, hb_codepoint_t last) const
+  തർക്കം intersects (hb_codepoint_t first, hb_codepoint_t last) സ്ഥിരം
   {
     hb_codepoint_t c = first - 1;
-    return next (&c) && c <= last;
+    തിരികെ next (&c) && c <= last;
   }
 
-  void set (const hb_bit_set_invertible_t &other)
+  ശൂന്യം set (സ്ഥിരം hb_bit_set_invertible_t &other)
   {
     s.set (other.s);
-    if (likely (s.successful))
+    എങ്കിൽ (likely (s.successful))
       inverted = other.inverted;
   }
 
-  bool is_equal (const hb_bit_set_invertible_t &other) const
+  തർക്കം is_equal (സ്ഥിരം hb_bit_set_invertible_t &other) സ്ഥിരം
   {
-    if (likely (inverted == other.inverted))
-      return s.is_equal (other.s);
-    else
+    എങ്കിൽ (likely (inverted == other.inverted))
+      തിരികെ s.is_equal (other.s);
+    അല്ലെങ്കിൽ
     {
-      if (get_population () != other.get_population ())
-	return false;
+      എങ്കിൽ (get_population () != other.get_population ())
+	തിരികെ അസത്യം;
 
       /* TODO Add iter_ranges() and use here. */
       auto it1 = iter ();
       auto it2 = other.iter ();
-      return hb_all (+ hb_zip (it1, it2)
-		     | hb_map ([](hb_codepoint_pair_t _) { return _.first == _.second; }));
+      തിരികെ hb_all (+ hb_zip (it1, it2)
+		     | hb_map ([](hb_codepoint_pair_t _) { തിരികെ _.first == _.second; }));
     }
   }
 
-  bool is_subset (const hb_bit_set_invertible_t &larger_set) const
+  തർക്കം is_subset (സ്ഥിരം hb_bit_set_invertible_t &larger_set) സ്ഥിരം
   {
-    if (unlikely (inverted != larger_set.inverted))
+    എങ്കിൽ (unlikely (inverted != larger_set.inverted))
     {
-      if (inverted)
-	return hb_all (iter (), larger_set.s);
-      else
+      എങ്കിൽ (inverted)
+	തിരികെ hb_all (iter (), larger_set.s);
+      അല്ലെങ്കിൽ
         // larger set is inverted so larger_set.s is the set of things that are not present
         // in larger_set, therefore if s has any of those it can't be a subset.
-	return !s.intersects (larger_set.s);
+	തിരികെ !s.intersects (larger_set.s);
     }
-    else
-      return unlikely (inverted) ? larger_set.s.is_subset (s) : s.is_subset (larger_set.s);
+    അല്ലെങ്കിൽ
+      തിരികെ unlikely (inverted) ? larger_set.s.is_subset (s) : s.is_subset (larger_set.s);
   }
 
-  protected:
+  സംരക്ഷിത:
   template <typename Op>
-  void process (const Op& op,
-		const hb_bit_set_invertible_t &other,
+  ശൂന്യം process (സ്ഥിരം Op& op,
+		സ്ഥിരം hb_bit_set_invertible_t &other,
 		hb_vector_t<unsigned> *workspace = nullptr)
   { s.process (op, other.s, workspace); }
-  public:
-  void union_ (const hb_bit_set_invertible_t &other)
+  പൊതു:
+  ശൂന്യം union_ (സ്ഥിരം hb_bit_set_invertible_t &other)
   {
-    if (likely (inverted == other.inverted))
+    എങ്കിൽ (likely (inverted == other.inverted))
     {
-      if (unlikely (inverted))
+      എങ്കിൽ (unlikely (inverted))
 	process (hb_bitwise_and, other);
-      else
+      അല്ലെങ്കിൽ
 	process (hb_bitwise_or, other); /* Main branch. */
     }
-    else
+    അല്ലെങ്കിൽ
     {
-      if (unlikely (inverted))
+      എങ്കിൽ (unlikely (inverted))
 	process (hb_bitwise_gt, other);
-      else
+      അല്ലെങ്കിൽ
 	process (hb_bitwise_lt, other);
     }
-    if (likely (s.successful))
+    എങ്കിൽ (likely (s.successful))
       inverted = inverted || other.inverted;
   }
-  void intersect (const hb_bit_set_invertible_t &other,
+  ശൂന്യം intersect (സ്ഥിരം hb_bit_set_invertible_t &other,
 		  hb_vector_t<unsigned> *workspace = nullptr)
   {
-    if (likely (inverted == other.inverted))
+    എങ്കിൽ (likely (inverted == other.inverted))
     {
-      if (unlikely (inverted))
+      എങ്കിൽ (unlikely (inverted))
 	process (hb_bitwise_or, other, workspace);
-      else
+      അല്ലെങ്കിൽ
 	process (hb_bitwise_and, other, workspace); /* Main branch. */
     }
-    else
+    അല്ലെങ്കിൽ
     {
-      if (unlikely (inverted))
+      എങ്കിൽ (unlikely (inverted))
 	process (hb_bitwise_lt, other, workspace);
-      else
+      അല്ലെങ്കിൽ
 	process (hb_bitwise_gt, other, workspace);
     }
-    if (likely (s.successful))
+    എങ്കിൽ (likely (s.successful))
       inverted = inverted && other.inverted;
   }
-  void subtract (const hb_bit_set_invertible_t &other)
+  ശൂന്യം subtract (സ്ഥിരം hb_bit_set_invertible_t &other)
   {
-    if (likely (inverted == other.inverted))
+    എങ്കിൽ (likely (inverted == other.inverted))
     {
-      if (unlikely (inverted))
+      എങ്കിൽ (unlikely (inverted))
 	process (hb_bitwise_lt, other);
-      else
+      അല്ലെങ്കിൽ
 	process (hb_bitwise_gt, other); /* Main branch. */
     }
-    else
+    അല്ലെങ്കിൽ
     {
-      if (unlikely (inverted))
+      എങ്കിൽ (unlikely (inverted))
 	process (hb_bitwise_or, other);
-      else
+      അല്ലെങ്കിൽ
 	process (hb_bitwise_and, other);
     }
-    if (likely (s.successful))
+    എങ്കിൽ (likely (s.successful))
       inverted = inverted && !other.inverted;
   }
-  void symmetric_difference (const hb_bit_set_invertible_t &other)
+  ശൂന്യം symmetric_difference (സ്ഥിരം hb_bit_set_invertible_t &other)
   {
     process (hb_bitwise_xor, other);
-    if (likely (s.successful))
+    എങ്കിൽ (likely (s.successful))
       inverted = inverted ^ other.inverted;
   }
 
-  bool next (hb_codepoint_t *codepoint) const
+  തർക്കം next (hb_codepoint_t *codepoint) സ്ഥിരം
   {
-    if (likely (!inverted))
-      return s.next (codepoint);
+    എങ്കിൽ (likely (!inverted))
+      തിരികെ s.next (codepoint);
 
     auto old = *codepoint;
-    if (unlikely (old + 1 == INVALID))
+    എങ്കിൽ (unlikely (old + 1 == INVALID))
     {
       *codepoint = INVALID;
-      return false;
+      തിരികെ അസത്യം;
     }
 
     auto v = old;
     s.next (&v);
-    if (old + 1 < v)
+    എങ്കിൽ (old + 1 < v)
     {
       *codepoint = old + 1;
-      return true;
+      തിരികെ സത്യം;
     }
 
     v = old;
     s.next_range (&old, &v);
 
     *codepoint = v + 1;
-    return *codepoint != INVALID;
+    തിരികെ *codepoint != INVALID;
   }
-  bool next_bits (hb_codepoint_t *codepoint, uint64_t *bits) const
+  തർക്കം next_bits (hb_codepoint_t *codepoint, uint64_t *bits) സ്ഥിരം
   {
-    if (likely (!inverted))
-      return s.next_bits (codepoint, bits);
+    എങ്കിൽ (likely (!inverted))
+      തിരികെ s.next_bits (codepoint, bits);
 
     hb_codepoint_t base;
-    if (unlikely (*codepoint == INVALID))
+    എങ്കിൽ (unlikely (*codepoint == INVALID))
       base = 0;
-    else
+    അല്ലെങ്കിൽ
     {
       base = *codepoint & ~hb_bit_page_t::ELT_MASK;
-      if (unlikely (base >= INVALID - hb_bit_page_t::ELT_BITS + 1))
-	goto done;
+      എങ്കിൽ (unlikely (base >= INVALID - hb_bit_page_t::ELT_BITS + 1))
+	പോകുക done;
       base += hb_bit_page_t::ELT_BITS;
     }
 
-    while (true)
+    ആകുമ്പോൾ (സത്യം)
     {
       hb_codepoint_t cursor = base ? base - hb_bit_page_t::ELT_BITS : INVALID;
       uint64_t excluded = 0;
-      if (!s.next_bits (&cursor, &excluded) || cursor != base)
+      എങ്കിൽ (!s.next_bits (&cursor, &excluded) || cursor != base)
 	excluded = 0;
       *bits = ~excluded;
-      bool last = unlikely (base >= INVALID - hb_bit_page_t::ELT_BITS + 1);
-      if (last)
+      തർക്കം last = unlikely (base >= INVALID - hb_bit_page_t::ELT_BITS + 1);
+      എങ്കിൽ (last)
 	*bits &= UINT64_MAX >> 1;
-      if (*bits)
+      എങ്കിൽ (*bits)
       {
 	*codepoint = base;
-	return true;
+	തിരികെ സത്യം;
       }
-      if (unlikely (last))
-	break;
+      എങ്കിൽ (unlikely (last))
+	നിർത്തുക;
       base += hb_bit_page_t::ELT_BITS;
     }
 
   done:
     *codepoint = INVALID;
     *bits = 0;
-    return false;
+    തിരികെ അസത്യം;
   }
-  bool previous (hb_codepoint_t *codepoint) const
+  തർക്കം previous (hb_codepoint_t *codepoint) സ്ഥിരം
   {
-    if (likely (!inverted))
-      return s.previous (codepoint);
+    എങ്കിൽ (likely (!inverted))
+      തിരികെ s.previous (codepoint);
 
     auto old = *codepoint;
-    if (unlikely (old - 1 == INVALID))
+    എങ്കിൽ (unlikely (old - 1 == INVALID))
     {
       *codepoint = INVALID;
-      return false;
+      തിരികെ അസത്യം;
     }
 
     auto v = old;
     s.previous (&v);
 
-    if (old - 1 > v || v == INVALID)
+    എങ്കിൽ (old - 1 > v || v == INVALID)
     {
       *codepoint = old - 1;
-      return true;
+      തിരികെ സത്യം;
     }
 
     v = old;
     s.previous_range (&v, &old);
 
     *codepoint = v - 1;
-    return *codepoint != INVALID;
+    തിരികെ *codepoint != INVALID;
   }
-  bool next_range (hb_codepoint_t *first, hb_codepoint_t *last) const
+  തർക്കം next_range (hb_codepoint_t *first, hb_codepoint_t *last) സ്ഥിരം
   {
-    if (likely (!inverted))
-      return s.next_range (first, last);
+    എങ്കിൽ (likely (!inverted))
+      തിരികെ s.next_range (first, last);
 
-    if (!next (last))
+    എങ്കിൽ (!next (last))
     {
       *last = *first = INVALID;
-      return false;
+      തിരികെ അസത്യം;
     }
 
     *first = *last;
     s.next (last);
     --*last;
-    return true;
+    തിരികെ സത്യം;
   }
-  bool previous_range (hb_codepoint_t *first, hb_codepoint_t *last) const
+  തർക്കം previous_range (hb_codepoint_t *first, hb_codepoint_t *last) സ്ഥിരം
   {
-    if (likely (!inverted))
-      return s.previous_range (first, last);
+    എങ്കിൽ (likely (!inverted))
+      തിരികെ s.previous_range (first, last);
 
-    if (!previous (first))
+    എങ്കിൽ (!previous (first))
     {
       *last = *first = INVALID;
-      return false;
+      തിരികെ അസത്യം;
     }
 
     *last = *first;
     s.previous (first);
     ++*first;
-    return true;
+    തിരികെ സത്യം;
   }
 
-  unsigned int next_many (hb_codepoint_t  codepoint,
+  unsigned പൂർണ്ണസംഖ്യ next_many (hb_codepoint_t  codepoint,
 			  hb_codepoint_t *out,
-			  unsigned int    size) const
+			  unsigned പൂർണ്ണസംഖ്യ    size) സ്ഥിരം
   {
-    return inverted ? s.next_many_inverted (codepoint, out, size)
+    തിരികെ inverted ? s.next_many_inverted (codepoint, out, size)
 		    : s.next_many (codepoint, out, size);
   }
 
-  static constexpr hb_codepoint_t INVALID = hb_bit_set_t::INVALID;
+  സ്ഥിതം constexpr hb_codepoint_t INVALID = hb_bit_set_t::INVALID;
 
   /*
    * Iterator implementation.
    * Mutating the set invalidates its iterators.
    */
-  struct iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
+  ഘടന iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
   {
-    static constexpr bool is_sorted_iterator = true;
-    static constexpr bool has_fast_len = true;
-    iter_t (const hb_bit_set_invertible_t &s_ = Null (hb_bit_set_invertible_t),
-    bool init = true) : s (&s_), v (INVALID), remaining (0),
+    സ്ഥിതം constexpr തർക്കം is_sorted_iterator = സത്യം;
+    സ്ഥിതം constexpr തർക്കം has_fast_len = സത്യം;
+    iter_t (സ്ഥിരം hb_bit_set_invertible_t &s_ = Null (hb_bit_set_invertible_t),
+    തർക്കം init = സത്യം) : s (&s_), v (INVALID), remaining (0),
 				     have_len (!init), base (INVALID), bits (0)
     {
-      if (init)
+      എങ്കിൽ (init)
 	advance ();
     }
 
-    typedef hb_codepoint_t __item_t__;
-    hb_codepoint_t __item__ () const { return v; }
-    bool __more__ () const { return v != INVALID; }
-    void __next__ ()
+    തരനിർവചനം hb_codepoint_t __item_t__;
+    hb_codepoint_t __item__ () സ്ഥിരം { തിരികെ v; }
+    തർക്കം __more__ () സ്ഥിരം { തിരികെ v != INVALID; }
+    ശൂന്യം __next__ ()
     {
       remaining--;
       advance ();
     }
-    void __prev__ ()
+    ശൂന്യം __prev__ ()
     {
-      if (s->previous (&v))
+      എങ്കിൽ (s->previous (&v))
       {
-	sync ();
+	സമന്വയം ();
 	remaining++;
       }
-      else
+      അല്ലെങ്കിൽ
       {
 	base = INVALID;
 	bits = 0;
       }
     }
-    unsigned __len__ () const
+    unsigned __len__ () സ്ഥിരം
     {
-      if (unlikely (!have_len))
+      എങ്കിൽ (unlikely (!have_len))
       {
 	remaining += s->get_population ();
-	have_len = true;
+	have_len = സത്യം;
       }
-      return remaining;
+      തിരികെ remaining;
     }
-    iter_t end () const { return iter_t (*s, false); }
-    bool operator != (const iter_t& o) const
-    { return v != o.v; }
+    iter_t end () സ്ഥിരം { തിരികെ iter_t (*s, അസത്യം); }
+    തർക്കം operator != (സ്ഥിരം iter_t& o) സ്ഥിരം
+    { തിരികെ v != o.v; }
 
-    protected:
-    const hb_bit_set_invertible_t *s;
+    സംരക്ഷിത:
+    സ്ഥിരം hb_bit_set_invertible_t *s;
     hb_codepoint_t v;
     mutable unsigned remaining;
-    mutable bool have_len;
+    mutable തർക്കം have_len;
     hb_codepoint_t base;
     uint64_t bits;
 
-    void advance ()
+    ശൂന്യം advance ()
     {
-      if (likely (bits))
+      എങ്കിൽ (likely (bits))
       {
 	v = base + hb_ctz (bits);
 	bits &= bits - 1;
       }
-      else if (s->next_bits (&base, &bits))
+      അല്ലെങ്കിൽ എങ്കിൽ (s->next_bits (&base, &bits))
       {
 	v = base + hb_ctz (bits);
 	bits &= bits - 1;
       }
-      else
+      അല്ലെങ്കിൽ
 	v = INVALID;
     }
 
-    void sync ()
+    ശൂന്യം സമന്വയം ()
     {
       base = v & ~hb_bit_page_t::ELT_MASK;
       hb_codepoint_t cursor = base ? base - hb_bit_page_t::ELT_BITS : INVALID;
       s->next_bits (&cursor, &bits);
-      unsigned int bit = v & (hb_bit_page_t::ELT_BITS - 1);
+      unsigned പൂർണ്ണസംഖ്യ bit = v & (hb_bit_page_t::ELT_BITS - 1);
       bits = bit == hb_bit_page_t::ELT_BITS - 1 ? 0 : bits >> (bit + 1) << (bit + 1);
     }
   };
-  iter_t iter () const { return iter_t (*this); }
-  operator iter_t () const { return iter (); }
+  iter_t iter () സ്ഥിരം { തിരികെ iter_t (*ഇത്); }
+  operator iter_t () സ്ഥിരം { തിരികെ iter (); }
 };
 
 

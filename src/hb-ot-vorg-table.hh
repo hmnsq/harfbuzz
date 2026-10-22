@@ -27,8 +27,8 @@
 #ifndef HB_OT_VORG_TABLE_HH
 #define HB_OT_VORG_TABLE_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-dual.hh"
+#അന്തര്ഭാവ "hb-open-type.hh"
+#അന്തര്ഭാവ "hb-ot-dual.hh"
 
 /*
  * VORG -- Vertical Origin Table
@@ -36,155 +36,155 @@
  */
 #define HB_OT_TAG_VORG HB_TAG('V','O','R','G')
 
-namespace OT {
+നാമാകാശ OT {
 
 template <typename Types>
-struct VertOriginMetric
+ഘടന VertOriginMetric
 {
-  int cmp (hb_codepoint_t g) const { return glyph.cmp (g); }
+  പൂർണ്ണസംഖ്യ cmp (hb_codepoint_t g) സ്ഥിരം { തിരികെ glyph.cmp (g); }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
-  public:
+  പൊതു:
   typename Types::HBGlyphID
 		glyph;
   FWORD		vertOriginY;
 
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (Types::HBGlyphID::static_size + FWORD::static_size);
 };
 
 template <typename Types>
-struct VORGFormat1_2
+ഘടന VORGFormat1_2
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_VORG;
+  സ്ഥിതം constexpr hb_tag_t tableTag = HB_OT_TAG_VORG;
 
-  bool has_data () const { return version.to_int (); }
+  തർക്കം has_data () സ്ഥിരം { തിരികെ version.to_int (); }
 
   HB_ALWAYS_INLINE
-  int get_y_origin (hb_codepoint_t glyph) const
+  പൂർണ്ണസംഖ്യ get_y_origin (hb_codepoint_t glyph) സ്ഥിരം
   {
-    unsigned int i;
-    if (!vertYOrigins.bfind (glyph, &i))
-      return defaultVertOriginY;
-    return vertYOrigins[i].vertOriginY;
+    unsigned പൂർണ്ണസംഖ്യ i;
+    എങ്കിൽ (!vertYOrigins.bfind (glyph, &i))
+      തിരികെ defaultVertOriginY;
+    തിരികെ vertYOrigins[i].vertOriginY;
   }
 
   template <typename Iterator,
 	    hb_requires (hb_is_iterator (Iterator))>
-  void serialize (hb_serialize_context_t *c,
+  ശൂന്യം serialize (hb_serialize_context_t *c,
 		  Iterator it,
 		  FWORD defaultVertOriginY)
   {
 
-    if (unlikely (!c->extend_min ((*this))))  return;
+    എങ്കിൽ (unlikely (!c->extend_min ((*ഇത്))))  തിരികെ;
 
-    this->version.major = Types::size == 2 ? 1 : 2;
-    this->version.minor = 0;
+    ഇത്->version.major = Types::size == 2 ? 1 : 2;
+    ഇത്->version.minor = 0;
 
-    this->defaultVertOriginY = defaultVertOriginY;
-    this->vertYOrigins.len = it.len ();
+    ഇത്->defaultVertOriginY = defaultVertOriginY;
+    ഇത്->vertYOrigins.len = it.len ();
 
     c->copy_all (it);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  തർക്കം subset (hb_subset_context_t *c) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    auto *vorg_prime = c->serializer->start_embed<VORGFormat1_2> ();
-    if (unlikely (!c->serializer->check_success (vorg_prime))) return_trace (false);
+    TRACE_SUBSET (ഇത്);
+    auto *vorg_അഭാജ്യം = c->serializer->start_embed<VORGFormat1_2> ();
+    എങ്കിൽ (unlikely (!c->serializer->check_success (vorg_അഭാജ്യം))) return_trace (അസത്യം);
 
     auto it =
     + vertYOrigins.as_array ()
     | hb_filter (c->plan->glyphset (), &VertOriginMetric<Types>::glyph)
-    | hb_map ([&] (const VertOriginMetric<Types>& _)
+    | hb_map ([&] (സ്ഥിരം VertOriginMetric<Types>& _)
 	      {
-		hb_codepoint_t new_glyph = HB_SET_VALUE_INVALID;
+		hb_codepoint_t new_glyph = HB_SET_മൂല്യം_INVALID;
 		c->plan->new_gid_for_old_gid (_.glyph, &new_glyph);
 
 		VertOriginMetric<Types> metric;
 		metric.glyph = new_glyph;
 		metric.vertOriginY = _.vertOriginY;
-		return metric;
+		തിരികെ metric;
 	      })
     ;
 
     /* serialize the new table */
-    vorg_prime->serialize (c->serializer, it, defaultVertOriginY);
-    return_trace (true);
+    vorg_അഭാജ്യം->serialize (c->serializer, it, defaultVertOriginY);
+    return_trace (സത്യം);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) &&
 		  hb_barrier () &&
 		  version.major == (Types::size == 2 ? 1 : 2) &&
 		  vertYOrigins.sanitize (c));
   }
 
-  protected:
+  സംരക്ഷിത:
   FixedVersion<>version;	/* Version of VORG table. */
   FWORD		defaultVertOriginY;
 				/* The default vertical origin. */
   typename Types::template SortedArrayOf<VertOriginMetric<Types>>
 		vertYOrigins;	/* The array of vertical origins. */
 
-  public:
+  പൊതു:
   DEFINE_SIZE_ARRAY(6 + Types::HBUINT::static_size, vertYOrigins);
 };
 
-struct VORG
+ഘടന VORG
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_VORG;
+  സ്ഥിതം constexpr hb_tag_t tableTag = HB_OT_TAG_VORG;
 
-  bool has_data () const { return u.version.v.to_int (); }
+  തർക്കം has_data () സ്ഥിരം { തിരികെ u.version.v.to_int (); }
 
   HB_ALWAYS_INLINE
-  int get_y_origin (hb_codepoint_t glyph) const
+  പൂർണ്ണസംഖ്യ get_y_origin (hb_codepoint_t glyph) സ്ഥിരം
   {
-    switch (u.version.v.major) {
-    case 1: return u.version1.get_y_origin (glyph);
+    തിരഞ്ഞെടുപ്പ് (u.version.v.major) {
+    അവസ്ഥ 1: തിരികെ u.version1.get_y_origin (glyph);
 #ifndef HB_NO_BEYOND_64K
-    case 2: return u.version2.get_y_origin (glyph);
+    അവസ്ഥ 2: തിരികെ u.version2.get_y_origin (glyph);
 #endif
-    default: return 0;
+    സ്ഥിരസ്ഥിതി: തിരികെ 0;
     }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  തർക്കം subset (hb_subset_context_t *c) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    switch (u.version.v.major) {
-    case 1: return_trace (u.version1.subset (c));
+    TRACE_SUBSET (ഇത്);
+    തിരഞ്ഞെടുപ്പ് (u.version.v.major) {
+    അവസ്ഥ 1: return_trace (u.version1.subset (c));
 #ifndef HB_NO_BEYOND_64K
-    case 2: return_trace (u.version2.subset (c));
+    അവസ്ഥ 2: return_trace (u.version2.subset (c));
 #endif
-    default: return_trace (false);
+    സ്ഥിരസ്ഥിതി: return_trace (അസത്യം);
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!u.version.v.sanitize (c))) return_trace (false);
+    TRACE_SANITIZE (ഇത്);
+    എങ്കിൽ (unlikely (!u.version.v.sanitize (c))) return_trace (അസത്യം);
     hb_barrier ();
-    switch (u.version.v.major) {
-    case 1: hb_barrier (); return_trace (u.version1.sanitize (c));
+    തിരഞ്ഞെടുപ്പ് (u.version.v.major) {
+    അവസ്ഥ 1: hb_barrier (); return_trace (u.version1.sanitize (c));
 #ifndef HB_NO_BEYOND_64K
-    case 2: hb_barrier (); return_trace (u.version2.sanitize (c));
+    അവസ്ഥ 2: hb_barrier (); return_trace (u.version2.sanitize (c));
 #endif
-    default: return_trace (false);
+    സ്ഥിരസ്ഥിതി: return_trace (അസത്യം);
     }
   }
 
-  protected:
-  union {
-  struct {
+  സംരക്ഷിത:
+  സംഘം {
+  ഘടന {
   FixedVersion<>v;		/* Version of VORG table. */
   }				version;
   VORGFormat1_2<Layout::SmallTypes>version1;
@@ -193,7 +193,7 @@ struct VORG
 #endif
   } u;
 
-  public:
+  പൊതു:
   DEFINE_SIZE_UNION (4, version.v);
 };
 } /* namespace OT */

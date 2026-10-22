@@ -22,9 +22,9 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb-subset-instancer-iup.hh"
+#അന്തര്ഭാവ "hb-subset-instancer-iup.hh"
 
-#include "hb-bit-page.hh"
+#അന്തര്ഭാവ "hb-bit-page.hh"
 
 using hb_iup_set_t = hb_bit_page_t;
 
@@ -36,52 +36,52 @@ using hb_iup_set_t = hb_bit_page_t;
  * referenced point indices.
  */
 
-constexpr static unsigned MAX_LOOKBACK = 8;
+constexpr സ്ഥിതം unsigned MAX_LOOKBACK = 8;
 
-static void _iup_contour_bound_forced_set (const hb_array_t<const contour_point_t> contour_points,
-                                           const hb_array_t<const int> x_deltas,
-                                           const hb_array_t<const int> y_deltas,
+സ്ഥിതം ശൂന്യം _iup_contour_bound_forced_set (സ്ഥിരം hb_array_t<സ്ഥിരം contour_point_t> contour_points,
+                                           സ്ഥിരം hb_array_t<സ്ഥിരം പൂർണ്ണസംഖ്യ> x_deltas,
+                                           സ്ഥിരം hb_array_t<സ്ഥിരം പൂർണ്ണസംഖ്യ> y_deltas,
                                            hb_iup_set_t& forced_set, /* OUT */
-                                           double tolerance = 0.0)
+                                           ഇരട്ട tolerance = 0.0)
 {
   unsigned len = contour_points.length;
   unsigned next_i = 0;
-  for (int i = len - 1; i >= 0; i--)
+  വേണ്ടി (പൂർണ്ണസംഖ്യ i = len - 1; i >= 0; i--)
   {
     unsigned last_i = (len + i - 1) % len;
-    for (unsigned j = 0; j < 2; j++)
+    വേണ്ടി (unsigned j = 0; j < 2; j++)
     {
-      double cj, lcj, ncj;
-      double dj, ldj, ndj;
-      if (j == 0)
+      ഇരട്ട cj, lcj, ncj;
+      ഇരട്ട dj, ldj, ndj;
+      എങ്കിൽ (j == 0)
       {
-        cj = static_cast<double> (contour_points.arrayZ[i].x);
+        cj = static_cast<ഇരട്ട> (contour_points.arrayZ[i].x);
         dj = x_deltas.arrayZ[i];
-        lcj = static_cast<double> (contour_points.arrayZ[last_i].x);
+        lcj = static_cast<ഇരട്ട> (contour_points.arrayZ[last_i].x);
         ldj = x_deltas.arrayZ[last_i];
-        ncj = static_cast<double> (contour_points.arrayZ[next_i].x);
+        ncj = static_cast<ഇരട്ട> (contour_points.arrayZ[next_i].x);
         ndj = x_deltas.arrayZ[next_i];
       }
-      else
+      അല്ലെങ്കിൽ
       {
-        cj = static_cast<double> (contour_points.arrayZ[i].y);
+        cj = static_cast<ഇരട്ട> (contour_points.arrayZ[i].y);
         dj = y_deltas.arrayZ[i];
-        lcj = static_cast<double> (contour_points.arrayZ[last_i].y);
+        lcj = static_cast<ഇരട്ട> (contour_points.arrayZ[last_i].y);
         ldj = y_deltas.arrayZ[last_i];
-        ncj = static_cast<double> (contour_points.arrayZ[next_i].y);
+        ncj = static_cast<ഇരട്ട> (contour_points.arrayZ[next_i].y);
         ndj = y_deltas.arrayZ[next_i];
       }
 
-      double c1, c2;
-      double d1, d2;
-      if (lcj <= ncj)
+      ഇരട്ട c1, c2;
+      ഇരട്ട d1, d2;
+      എങ്കിൽ (lcj <= ncj)
       {
         c1 = lcj;
         c2 = ncj;
         d1 = ldj;
         d2 = ndj;
       }
-      else
+      അല്ലെങ്കിൽ
       {
         c1 = ncj;
         c2 = lcj;
@@ -89,43 +89,43 @@ static void _iup_contour_bound_forced_set (const hb_array_t<const contour_point_
         d2 = ldj;
       }
 
-      bool force = false;
-      if (c1 == c2)
+      തർക്കം force = അസത്യം;
+      എങ്കിൽ (c1 == c2)
       {
-        if (fabs (d1 - d2) > tolerance && fabs (dj) > tolerance)
-          force = true;
+        എങ്കിൽ (fabs (d1 - d2) > tolerance && fabs (dj) > tolerance)
+          force = സത്യം;
       }
-      else if (c1 <= cj && cj <= c2)
+      അല്ലെങ്കിൽ എങ്കിൽ (c1 <= cj && cj <= c2)
       {
-        if (!(hb_min (d1, d2) - tolerance <= dj &&
+        എങ്കിൽ (!(hb_min (d1, d2) - tolerance <= dj &&
               dj <= hb_max (d1, d2) + tolerance))
-          force = true;
+          force = സത്യം;
       }
-      else
+      അല്ലെങ്കിൽ
       {
-        if (d1 != d2)
+        എങ്കിൽ (d1 != d2)
         {
-          if (cj < c1)
+          എങ്കിൽ (cj < c1)
           {
-            if (fabs (dj) > tolerance &&
+            എങ്കിൽ (fabs (dj) > tolerance &&
                 fabs (dj - d1) > tolerance &&
                 ((dj - tolerance < d1) != (d1 < d2)))
-                force = true;
+                force = സത്യം;
           }
-          else
+          അല്ലെങ്കിൽ
           {
-            if (fabs (dj) > tolerance &&
+            എങ്കിൽ (fabs (dj) > tolerance &&
                 fabs (dj - d2) > tolerance &&
                 ((d2 < dj + tolerance) != (d1 < d2)))
-              force = true;
+              force = സത്യം;
           }
         }
       }
 
-      if (force)
+      എങ്കിൽ (force)
       {
         forced_set.add (i);
-        break;
+        നിർത്തുക;
       }
     }
     next_i = i;
@@ -134,202 +134,202 @@ static void _iup_contour_bound_forced_set (const hb_array_t<const contour_point_
 
 template <typename T,
           hb_enable_if (hb_is_trivially_copyable (T))>
-static bool rotate_array (const hb_array_t<const T>& org_array,
-                          int k,
+സ്ഥിതം തർക്കം rotate_array (സ്ഥിരം hb_array_t<സ്ഥിരം T>& org_array,
+                          പൂർണ്ണസംഖ്യ k,
                           hb_vector_t<T>& out)
 {
   unsigned n = org_array.length;
-  if (!n) return true;
-  if (unlikely (!out.resize_dirty  (n)))
-    return false;
+  എങ്കിൽ (!n) തിരികെ സത്യം;
+  എങ്കിൽ (unlikely (!out.resize_dirty  (n)))
+    തിരികെ അസത്യം;
 
   unsigned item_size = hb_static_size (T);
-  if (k < 0)
+  എങ്കിൽ (k < 0)
     k = n - (-k) % n;
-  else
+  അല്ലെങ്കിൽ
     k %= n;
 
-  hb_memcpy ((void *) out.arrayZ, (const void *) (org_array.arrayZ + n - k), k * item_size);
-  hb_memcpy ((void *) (out.arrayZ + k), (const void *) org_array.arrayZ, (n - k) * item_size);
-  return true;
+  hb_memcpy ((ശൂന്യം *) out.arrayZ, (സ്ഥിരം ശൂന്യം *) (org_array.arrayZ + n - k), k * item_size);
+  hb_memcpy ((ശൂന്യം *) (out.arrayZ + k), (സ്ഥിരം ശൂന്യം *) org_array.arrayZ, (n - k) * item_size);
+  തിരികെ സത്യം;
 }
 
-static bool rotate_set (const hb_iup_set_t& org_set,
-                        int k,
+സ്ഥിതം തർക്കം rotate_set (സ്ഥിരം hb_iup_set_t& org_set,
+                        പൂർണ്ണസംഖ്യ k,
                         unsigned n,
                         hb_iup_set_t& out)
 {
-  if (!n) return false;
+  എങ്കിൽ (!n) തിരികെ അസത്യം;
   k %= n;
-  if (k < 0)
+  എങ്കിൽ (k < 0)
     k = n + k;
 
-  if (k == 0)
+  എങ്കിൽ (k == 0)
   {
     out = org_set;
   }
-  else
+  അല്ലെങ്കിൽ
   {
-    for (unsigned v : org_set)
+    വേണ്ടി (unsigned v : org_set)
       out.add ((v + k) % n);
   }
-  return true;
+  തിരികെ സത്യം;
 }
 
 /* Given two reference coordinates (start and end of contour_points array),
  * output interpolated deltas for points in between */
-static bool _iup_segment (const hb_array_t<const contour_point_t> contour_points,
-                          const hb_array_t<const int> x_deltas,
-                          const hb_array_t<const int> y_deltas,
-                          const contour_point_t& p1, const contour_point_t& p2,
-                          int p1_dx, int p2_dx,
-                          int p1_dy, int p2_dy,
-			  double tolerance_sq,
-                          hb_vector_t<double>& interp_x_deltas, /* OUT */
-                          hb_vector_t<double>& interp_y_deltas /* OUT */)
+സ്ഥിതം തർക്കം _iup_segment (സ്ഥിരം hb_array_t<സ്ഥിരം contour_point_t> contour_points,
+                          സ്ഥിരം hb_array_t<സ്ഥിരം പൂർണ്ണസംഖ്യ> x_deltas,
+                          സ്ഥിരം hb_array_t<സ്ഥിരം പൂർണ്ണസംഖ്യ> y_deltas,
+                          സ്ഥിരം contour_point_t& p1, സ്ഥിരം contour_point_t& p2,
+                          പൂർണ്ണസംഖ്യ p1_dx, പൂർണ്ണസംഖ്യ p2_dx,
+                          പൂർണ്ണസംഖ്യ p1_dy, പൂർണ്ണസംഖ്യ p2_dy,
+			  ഇരട്ട tolerance_sq,
+                          hb_vector_t<ഇരട്ട>& interp_x_deltas, /* OUT */
+                          hb_vector_t<ഇരട്ട>& interp_y_deltas /* OUT */)
 {
   unsigned n = contour_points.length;
-  if (unlikely (!interp_x_deltas.resize_dirty  (n) ||
+  എങ്കിൽ (unlikely (!interp_x_deltas.resize_dirty  (n) ||
                 !interp_y_deltas.resize_dirty  (n)))
-    return false;
+    തിരികെ അസത്യം;
 
-  for (unsigned j = 0; j < 2; j++)
+  വേണ്ടി (unsigned j = 0; j < 2; j++)
   {
-    float contour_point_t::* xp;
-    double x1, x2, d1, d2;
-    const int *in;
-    double *out;
-    if (j == 0)
+    ദശാംശം contour_point_t::* xp;
+    ഇരട്ട x1, x2, d1, d2;
+    സ്ഥിരം പൂർണ്ണസംഖ്യ *in;
+    ഇരട്ട *out;
+    എങ്കിൽ (j == 0)
     {
       xp = &contour_point_t::x;
-      x1 = static_cast<double> (p1.x);
-      x2 = static_cast<double> (p2.x);
+      x1 = static_cast<ഇരട്ട> (p1.x);
+      x2 = static_cast<ഇരട്ട> (p2.x);
       d1 = p1_dx;
       d2 = p2_dx;
       in = x_deltas.arrayZ;
       out = interp_x_deltas.arrayZ;
     }
-    else
+    അല്ലെങ്കിൽ
     {
       xp = &contour_point_t::y;
-      x1 = static_cast<double> (p1.y);
-      x2 = static_cast<double> (p2.y);
+      x1 = static_cast<ഇരട്ട> (p1.y);
+      x2 = static_cast<ഇരട്ട> (p2.y);
       d1 = p1_dy;
       d2 = p2_dy;
       in = y_deltas.arrayZ;
       out = interp_y_deltas.arrayZ;
     }
 
-    if (x1 == x2)
+    എങ്കിൽ (x1 == x2)
     {
-      if (d1 == d2)
+      എങ്കിൽ (d1 == d2)
       {
-        for (unsigned i = 0; i < n; i++)
+        വേണ്ടി (unsigned i = 0; i < n; i++)
           out[i] = d1;
       }
-      else
+      അല്ലെങ്കിൽ
       {
-        for (unsigned i = 0; i < n; i++)
+        വേണ്ടി (unsigned i = 0; i < n; i++)
           out[i] = 0.0;
       }
-      continue;
+      തുടരുക;
     }
 
-    if (x1 > x2)
+    എങ്കിൽ (x1 > x2)
     {
       hb_swap (x1, x2);
       hb_swap (d1, d2);
     }
 
-    double scale = (d2 - d1) / (x2 - x1);
-    for (unsigned i = 0; i < n; i++)
+    ഇരട്ട scale = (d2 - d1) / (x2 - x1);
+    വേണ്ടി (unsigned i = 0; i < n; i++)
     {
-      double x = (double) (contour_points.arrayZ[i].*xp);
-      double d;
-      if (x <= x1)
+      ഇരട്ട x = (ഇരട്ട) (contour_points.arrayZ[i].*xp);
+      ഇരട്ട d;
+      എങ്കിൽ (x <= x1)
         d = d1;
-      else if (x >= x2)
+      അല്ലെങ്കിൽ എങ്കിൽ (x >= x2)
         d = d2;
-      else
+      അല്ലെങ്കിൽ
         d = d1 + (x - x1) * scale;
 
       out[i] = d;
-      double err = d - in[i];
-      if (err * err > tolerance_sq)
-	return false;
+      ഇരട്ട err = d - in[i];
+      എങ്കിൽ (err * err > tolerance_sq)
+	തിരികെ അസത്യം;
     }
   }
-  return true;
+  തിരികെ സത്യം;
 }
 
-static bool _can_iup_in_between (const hb_array_t<const contour_point_t> contour_points,
-                                 const hb_array_t<const int> x_deltas,
-                                 const hb_array_t<const int> y_deltas,
-                                 const contour_point_t& p1, const contour_point_t& p2,
-                                 int p1_dx, int p2_dx,
-                                 int p1_dy, int p2_dy,
-                                 double tolerance_sq,
-				 hb_vector_t<double> &interp_x_deltas, /* scratch */
-				 hb_vector_t<double> &interp_y_deltas /* scratch */)
+സ്ഥിതം തർക്കം _can_iup_in_between (സ്ഥിരം hb_array_t<സ്ഥിരം contour_point_t> contour_points,
+                                 സ്ഥിരം hb_array_t<സ്ഥിരം പൂർണ്ണസംഖ്യ> x_deltas,
+                                 സ്ഥിരം hb_array_t<സ്ഥിരം പൂർണ്ണസംഖ്യ> y_deltas,
+                                 സ്ഥിരം contour_point_t& p1, സ്ഥിരം contour_point_t& p2,
+                                 പൂർണ്ണസംഖ്യ p1_dx, പൂർണ്ണസംഖ്യ p2_dx,
+                                 പൂർണ്ണസംഖ്യ p1_dy, പൂർണ്ണസംഖ്യ p2_dy,
+                                 ഇരട്ട tolerance_sq,
+				 hb_vector_t<ഇരട്ട> &interp_x_deltas, /* scratch */
+				 hb_vector_t<ഇരട്ട> &interp_y_deltas /* scratch */)
 {
-  if (!_iup_segment (contour_points, x_deltas, y_deltas,
+  എങ്കിൽ (!_iup_segment (contour_points, x_deltas, y_deltas,
                      p1, p2, p1_dx, p2_dx, p1_dy, p2_dy,
 		     tolerance_sq,
                      interp_x_deltas, interp_y_deltas))
-    return false;
+    തിരികെ അസത്യം;
 
-  unsigned num = contour_points.length;
+  unsigned അക്കം = contour_points.length;
 
-  for (unsigned i = 0; i < num; i++)
+  വേണ്ടി (unsigned i = 0; i < അക്കം; i++)
   {
-    double dx = static_cast<double> (x_deltas.arrayZ[i]) - interp_x_deltas.arrayZ[i];
-    double dy = static_cast<double> (y_deltas.arrayZ[i]) - interp_y_deltas.arrayZ[i];
+    ഇരട്ട dx = static_cast<ഇരട്ട> (x_deltas.arrayZ[i]) - interp_x_deltas.arrayZ[i];
+    ഇരട്ട dy = static_cast<ഇരട്ട> (y_deltas.arrayZ[i]) - interp_y_deltas.arrayZ[i];
 
-    if (dx * dx + dy * dy > tolerance_sq)
-      return false;
+    എങ്കിൽ (dx * dx + dy * dy > tolerance_sq)
+      തിരികെ അസത്യം;
   }
-  return true;
+  തിരികെ സത്യം;
 }
 
-static bool _iup_contour_optimize_dp (const contour_point_vector_t& contour_points,
-                                      const hb_vector_t<int>& x_deltas,
-                                      const hb_vector_t<int>& y_deltas,
-                                      const hb_iup_set_t& forced_set,
-                                      double tolerance_sq,
+സ്ഥിതം തർക്കം _iup_contour_optimize_dp (സ്ഥിരം contour_point_vector_t& contour_points,
+                                      സ്ഥിരം hb_vector_t<പൂർണ്ണസംഖ്യ>& x_deltas,
+                                      സ്ഥിരം hb_vector_t<പൂർണ്ണസംഖ്യ>& y_deltas,
+                                      സ്ഥിരം hb_iup_set_t& forced_set,
+                                      ഇരട്ട tolerance_sq,
                                       unsigned lookback,
                                       hb_vector_t<unsigned>& costs, /* OUT */
-                                      hb_vector_t<int>& chain, /* OUT */
-				      hb_vector_t<double> &interp_x_deltas_scratch,
-				      hb_vector_t<double> &interp_y_deltas_scratch)
+                                      hb_vector_t<പൂർണ്ണസംഖ്യ>& chain, /* OUT */
+				      hb_vector_t<ഇരട്ട> &interp_x_deltas_scratch,
+				      hb_vector_t<ഇരട്ട> &interp_y_deltas_scratch)
 {
   unsigned n = contour_points.length;
-  if (unlikely (!costs.resize_dirty  (n) ||
+  എങ്കിൽ (unlikely (!costs.resize_dirty  (n) ||
                 !chain.resize_dirty  (n)))
-    return false;
+    തിരികെ അസത്യം;
 
   lookback = hb_min (lookback, MAX_LOOKBACK);
 
-  for (unsigned i = 0; i < n; i++)
+  വേണ്ടി (unsigned i = 0; i < n; i++)
   {
     unsigned best_cost = (i == 0 ? 1 : costs.arrayZ[i-1] + 1);
 
     costs.arrayZ[i] = best_cost;
     chain.arrayZ[i] = (i == 0 ? -1 : i - 1);
 
-    if (i > 0 && forced_set.has (i - 1))
-      continue;
+    എങ്കിൽ (i > 0 && forced_set.has (i - 1))
+      തുടരുക;
 
-    int lookback_index = hb_max ((int) i - (int) lookback + 1, -1);
-    for (int j = i - 2; j >= lookback_index; j--)
+    പൂർണ്ണസംഖ്യ lookback_index = hb_max ((പൂർണ്ണസംഖ്യ) i - (പൂർണ്ണസംഖ്യ) lookback + 1, -1);
+    വേണ്ടി (പൂർണ്ണസംഖ്യ j = i - 2; j >= lookback_index; j--)
     {
       unsigned cost = j == -1 ? 1 : costs.arrayZ[j] + 1;
       /* num points between i and j */
-      unsigned num_points = i - j - 1;
+      unsigned അക്കം_points = i - j - 1;
       unsigned p1 = (j == -1 ? n - 1 : j);
-      if (cost < best_cost &&
-          _can_iup_in_between (contour_points.as_array ().sub_array (j + 1, num_points),
-                               x_deltas.as_array ().sub_array (j + 1, num_points),
-                               y_deltas.as_array ().sub_array (j + 1, num_points),
+      എങ്കിൽ (cost < best_cost &&
+          _can_iup_in_between (contour_points.as_array ().sub_array (j + 1, അക്കം_points),
+                               x_deltas.as_array ().sub_array (j + 1, അക്കം_points),
+                               y_deltas.as_array ().sub_array (j + 1, അക്കം_points),
                                contour_points.arrayZ[p1], contour_points.arrayZ[i],
                                x_deltas.arrayZ[p1], x_deltas.arrayZ[i],
                                y_deltas.arrayZ[p1], y_deltas.arrayZ[i],
@@ -341,74 +341,74 @@ static bool _iup_contour_optimize_dp (const contour_point_vector_t& contour_poin
         chain.arrayZ[i] = j;
       }
 
-      if (j > 0 && forced_set.has (j))
-        break;
+      എങ്കിൽ (j > 0 && forced_set.has (j))
+        നിർത്തുക;
     }
   }
-  return true;
+  തിരികെ സത്യം;
 }
 
-static bool _iup_contour_optimize (const hb_array_t<const contour_point_t> contour_points,
-                                   const hb_array_t<const int> x_deltas,
-                                   const hb_array_t<const int> y_deltas,
-                                   hb_array_t<bool> opt_indices, /* OUT */
-                                   double tolerance,
+സ്ഥിതം തർക്കം _iup_contour_optimize (സ്ഥിരം hb_array_t<സ്ഥിരം contour_point_t> contour_points,
+                                   സ്ഥിരം hb_array_t<സ്ഥിരം പൂർണ്ണസംഖ്യ> x_deltas,
+                                   സ്ഥിരം hb_array_t<സ്ഥിരം പൂർണ്ണസംഖ്യ> y_deltas,
+                                   hb_array_t<തർക്കം> opt_indices, /* OUT */
+                                   ഇരട്ട tolerance,
 				   iup_scratch_t &scratch)
 {
   unsigned n = contour_points.length;
-  if (opt_indices.length != n ||
+  എങ്കിൽ (opt_indices.length != n ||
       x_deltas.length != n ||
       y_deltas.length != n)
-    return false;
+    തിരികെ അസത്യം;
 
-  if (unlikely (n > hb_iup_set_t::PAGE_BITS))
+  എങ്കിൽ (unlikely (n > hb_iup_set_t::PAGE_BITS))
   {
     /* The forced and solution sets cannot hold this contour. Preserve
      * its explicit deltas instead of leaving every reference false. */
-    for (unsigned i = 0; i < n; i++)
-      opt_indices.arrayZ[i] = true;
-    return true;
+    വേണ്ടി (unsigned i = 0; i < n; i++)
+      opt_indices.arrayZ[i] = സത്യം;
+    തിരികെ സത്യം;
   }
 
-  bool all_within_tolerance = true;
-  double tolerance_sq = tolerance * tolerance;
-  for (unsigned i = 0; i < n; i++)
+  തർക്കം all_within_tolerance = സത്യം;
+  ഇരട്ട tolerance_sq = tolerance * tolerance;
+  വേണ്ടി (unsigned i = 0; i < n; i++)
   {
-    int dx = x_deltas.arrayZ[i];
-    int dy = y_deltas.arrayZ[i];
-    if ((double) dx * dx + (double) dy * dy > tolerance_sq)
+    പൂർണ്ണസംഖ്യ dx = x_deltas.arrayZ[i];
+    പൂർണ്ണസംഖ്യ dy = y_deltas.arrayZ[i];
+    എങ്കിൽ ((ഇരട്ട) dx * dx + (ഇരട്ട) dy * dy > tolerance_sq)
     {
-      all_within_tolerance = false;
-      break;
+      all_within_tolerance = അസത്യം;
+      നിർത്തുക;
     }
   }
 
   /* If all are within tolerance distance, do nothing, opt_indices is
    * initilized to false */
-  if (all_within_tolerance)
-    return true;
+  എങ്കിൽ (all_within_tolerance)
+    തിരികെ സത്യം;
 
   /* If there's exactly one point, return it */
-  if (n == 1)
+  എങ്കിൽ (n == 1)
   {
-    opt_indices.arrayZ[0] = true;
-    return true;
+    opt_indices.arrayZ[0] = സത്യം;
+    തിരികെ സത്യം;
   }
 
   /* If all deltas are exactly the same, return just one (the first one) */
-  bool all_deltas_are_equal = true;
-  for (unsigned i = 1; i < n; i++)
-    if (x_deltas.arrayZ[i] != x_deltas.arrayZ[0] ||
+  തർക്കം all_deltas_are_equal = സത്യം;
+  വേണ്ടി (unsigned i = 1; i < n; i++)
+    എങ്കിൽ (x_deltas.arrayZ[i] != x_deltas.arrayZ[0] ||
         y_deltas.arrayZ[i] != y_deltas.arrayZ[0])
     {
-      all_deltas_are_equal = false;
-      break;
+      all_deltas_are_equal = അസത്യം;
+      നിർത്തുക;
     }
 
-  if (all_deltas_are_equal)
+  എങ്കിൽ (all_deltas_are_equal)
   {
-    opt_indices.arrayZ[0] = true;
-    return true;
+    opt_indices.arrayZ[0] = സത്യം;
+    തിരികെ സത്യം;
   }
 
   /* else, solve the general problem using Dynamic Programming */
@@ -416,101 +416,101 @@ static bool _iup_contour_optimize (const hb_array_t<const contour_point_t> conto
   _iup_contour_bound_forced_set (contour_points, x_deltas, y_deltas, forced_set, tolerance);
 
   hb_vector_t<unsigned> &costs = scratch.costs.reset ();
-  hb_vector_t<int> &chain = scratch.chain.reset ();
+  hb_vector_t<പൂർണ്ണസംഖ്യ> &chain = scratch.chain.reset ();
 
-  if (!forced_set.is_empty ())
+  എങ്കിൽ (!forced_set.is_empty ())
   {
-    int k = n - 1 - forced_set.get_max ();
-    if (k < 0)
-      return false;
+    പൂർണ്ണസംഖ്യ k = n - 1 - forced_set.get_max ();
+    എങ്കിൽ (k < 0)
+      തിരികെ അസത്യം;
 
-    hb_vector_t<int> &rot_x_deltas = scratch.rot_x_deltas.reset ();
-    hb_vector_t<int> &rot_y_deltas = scratch.rot_y_deltas.reset ();
+    hb_vector_t<പൂർണ്ണസംഖ്യ> &rot_x_deltas = scratch.rot_x_deltas.reset ();
+    hb_vector_t<പൂർണ്ണസംഖ്യ> &rot_y_deltas = scratch.rot_y_deltas.reset ();
     contour_point_vector_t &rot_points = scratch.rot_points;
     rot_points.reset ();
     hb_iup_set_t rot_forced_set;
-    if (!rotate_array (contour_points, k, rot_points) ||
+    എങ്കിൽ (!rotate_array (contour_points, k, rot_points) ||
         !rotate_array (x_deltas, k, rot_x_deltas) ||
         !rotate_array (y_deltas, k, rot_y_deltas) ||
         !rotate_set (forced_set, k, n, rot_forced_set))
-      return false;
+      തിരികെ അസത്യം;
 
-    if (!_iup_contour_optimize_dp (rot_points, rot_x_deltas, rot_y_deltas,
+    എങ്കിൽ (!_iup_contour_optimize_dp (rot_points, rot_x_deltas, rot_y_deltas,
                                    rot_forced_set, tolerance_sq, n,
                                    costs, chain,
 				   scratch.interp_x_deltas, scratch.interp_y_deltas))
-      return false;
+      തിരികെ അസത്യം;
 
     hb_iup_set_t solution;
-    int index = n - 1;
-    while (index != -1)
+    പൂർണ്ണസംഖ്യ index = n - 1;
+    ആകുമ്പോൾ (index != -1)
     {
       solution.add (index);
       index = chain.arrayZ[index];
     }
 
-    if (solution.is_empty () ||
+    എങ്കിൽ (solution.is_empty () ||
         forced_set.get_population () > solution.get_population ())
-      return false;
+      തിരികെ അസത്യം;
 
-    for (unsigned i : solution)
-      opt_indices.arrayZ[i] = true;
+    വേണ്ടി (unsigned i : solution)
+      opt_indices.arrayZ[i] = സത്യം;
 
-    hb_vector_t<bool> &rot_indices = scratch.rot_indices.reset ();
-    const hb_array_t<const bool> opt_indices_array (opt_indices.arrayZ, opt_indices.length);
-    if (unlikely (!rotate_array (opt_indices_array, -k, rot_indices)))
-      return false;
+    hb_vector_t<തർക്കം> &rot_indices = scratch.rot_indices.reset ();
+    സ്ഥിരം hb_array_t<സ്ഥിരം തർക്കം> opt_indices_array (opt_indices.arrayZ, opt_indices.length);
+    എങ്കിൽ (unlikely (!rotate_array (opt_indices_array, -k, rot_indices)))
+      തിരികെ അസത്യം;
 
-    for (unsigned i = 0; i < n; i++)
+    വേണ്ടി (unsigned i = 0; i < n; i++)
       opt_indices.arrayZ[i] = rot_indices.arrayZ[i];
   }
-  else
+  അല്ലെങ്കിൽ
   {
-    hb_vector_t<int> repeat_x_deltas, repeat_y_deltas;
+    hb_vector_t<പൂർണ്ണസംഖ്യ> repeat_x_deltas, repeat_y_deltas;
     contour_point_vector_t repeat_points;
 
-    if (unlikely (!repeat_x_deltas.resize_dirty  (n * 2) ||
+    എങ്കിൽ (unlikely (!repeat_x_deltas.resize_dirty  (n * 2) ||
                   !repeat_y_deltas.resize_dirty  (n * 2) ||
                   !repeat_points.resize_dirty  (n * 2)))
-      return false;
+      തിരികെ അസത്യം;
 
     unsigned contour_point_size = hb_static_size (contour_point_t);
-    for (unsigned i = 0; i < n; i++)
+    വേണ്ടി (unsigned i = 0; i < n; i++)
     {
-      hb_memcpy ((void *) repeat_x_deltas.arrayZ, (const void *) x_deltas.arrayZ, n * sizeof (repeat_x_deltas[0]));
-      hb_memcpy ((void *) (repeat_x_deltas.arrayZ + n), (const void *) x_deltas.arrayZ, n * sizeof (repeat_x_deltas[0]));
+      hb_memcpy ((ശൂന്യം *) repeat_x_deltas.arrayZ, (സ്ഥിരം ശൂന്യം *) x_deltas.arrayZ, n * വലുപ്പം (repeat_x_deltas[0]));
+      hb_memcpy ((ശൂന്യം *) (repeat_x_deltas.arrayZ + n), (സ്ഥിരം ശൂന്യം *) x_deltas.arrayZ, n * വലുപ്പം (repeat_x_deltas[0]));
 
-      hb_memcpy ((void *) repeat_y_deltas.arrayZ, (const void *) y_deltas.arrayZ, n * sizeof (repeat_x_deltas[0]));
-      hb_memcpy ((void *) (repeat_y_deltas.arrayZ + n), (const void *) y_deltas.arrayZ, n * sizeof (repeat_x_deltas[0]));
+      hb_memcpy ((ശൂന്യം *) repeat_y_deltas.arrayZ, (സ്ഥിരം ശൂന്യം *) y_deltas.arrayZ, n * വലുപ്പം (repeat_x_deltas[0]));
+      hb_memcpy ((ശൂന്യം *) (repeat_y_deltas.arrayZ + n), (സ്ഥിരം ശൂന്യം *) y_deltas.arrayZ, n * വലുപ്പം (repeat_x_deltas[0]));
 
-      hb_memcpy ((void *) repeat_points.arrayZ, (const void *) contour_points.arrayZ, n * contour_point_size);
-      hb_memcpy ((void *) (repeat_points.arrayZ + n), (const void *) contour_points.arrayZ, n * contour_point_size);
+      hb_memcpy ((ശൂന്യം *) repeat_points.arrayZ, (സ്ഥിരം ശൂന്യം *) contour_points.arrayZ, n * contour_point_size);
+      hb_memcpy ((ശൂന്യം *) (repeat_points.arrayZ + n), (സ്ഥിരം ശൂന്യം *) contour_points.arrayZ, n * contour_point_size);
     }
 
-    if (!_iup_contour_optimize_dp (repeat_points, repeat_x_deltas, repeat_y_deltas,
+    എങ്കിൽ (!_iup_contour_optimize_dp (repeat_points, repeat_x_deltas, repeat_y_deltas,
                                    forced_set, tolerance_sq, n,
                                    costs, chain,
 				   scratch.interp_x_deltas, scratch.interp_y_deltas))
-      return false;
+      തിരികെ അസത്യം;
 
     unsigned best_cost = n + 1;
-    int len = costs.length;
+    പൂർണ്ണസംഖ്യ len = costs.length;
     hb_iup_set_t best_sol;
-    for (int start = n - 1; start < len; start++)
+    വേണ്ടി (പൂർണ്ണസംഖ്യ start = n - 1; start < len; start++)
     {
       hb_iup_set_t solution;
-      int i = start;
-      int lookback = start - (int) n;
-      while (i > lookback)
+      പൂർണ്ണസംഖ്യ i = start;
+      പൂർണ്ണസംഖ്യ lookback = start - (പൂർണ്ണസംഖ്യ) n;
+      ആകുമ്പോൾ (i > lookback)
       {
         solution.add (i % n);
         i = chain.arrayZ[i];
       }
-      if (i == lookback)
+      എങ്കിൽ (i == lookback)
       {
         unsigned cost_i = i < 0 ? 0 : costs.arrayZ[i];
         unsigned cost = costs.arrayZ[start] - cost_i;
-        if (cost <= best_cost)
+        എങ്കിൽ (cost <= best_cost)
         {
           best_sol = solution;
           best_cost = cost;
@@ -518,59 +518,59 @@ static bool _iup_contour_optimize (const hb_array_t<const contour_point_t> conto
       }
     }
 
-    for (unsigned i = 0; i < n; i++)
-      if (best_sol.has (i))
-        opt_indices.arrayZ[i] = true;
+    വേണ്ടി (unsigned i = 0; i < n; i++)
+      എങ്കിൽ (best_sol.has (i))
+        opt_indices.arrayZ[i] = സത്യം;
   }
-  return true;
+  തിരികെ സത്യം;
 }
 
-bool iup_delta_optimize (const contour_point_vector_t& contour_points,
-                         const hb_vector_t<int>& x_deltas,
-                         const hb_vector_t<int>& y_deltas,
-                         hb_vector_t<bool>& opt_indices, /* OUT */
+തർക്കം iup_delta_optimize (സ്ഥിരം contour_point_vector_t& contour_points,
+                         സ്ഥിരം hb_vector_t<പൂർണ്ണസംഖ്യ>& x_deltas,
+                         സ്ഥിരം hb_vector_t<പൂർണ്ണസംഖ്യ>& y_deltas,
+                         hb_vector_t<തർക്കം>& opt_indices, /* OUT */
 			 iup_scratch_t &scratch,
-                         double tolerance)
+                         ഇരട്ട tolerance)
 {
-  if (!opt_indices.resize (contour_points.length))
-      return false;
+  എങ്കിൽ (!opt_indices.resize (contour_points.length))
+      തിരികെ അസത്യം;
 
   hb_vector_t<unsigned> &end_points = scratch.end_points.reset ();
 
-  unsigned count = contour_points.length;
-  if (unlikely (!end_points.alloc (count)))
-    return false;
+  unsigned എണ്ണം = contour_points.length;
+  എങ്കിൽ (unlikely (!end_points.alloc (എണ്ണം)))
+    തിരികെ അസത്യം;
 
-  if (count < 4)
+  എങ്കിൽ (എണ്ണം < 4)
   {
-    for (unsigned i = 0; i < count; i++)
+    വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++)
       end_points.push (i);
   }
-  else
+  അല്ലെങ്കിൽ
   {
-    for (unsigned i = 0; i < count - 4; i++)
-      if (contour_points.arrayZ[i].is_end_point)
+    വേണ്ടി (unsigned i = 0; i < എണ്ണം - 4; i++)
+      എങ്കിൽ (contour_points.arrayZ[i].is_end_point)
         end_points.push (i);
 
     /* phantom points */
-    for (unsigned i = count - 4; i < count; i++)
+    വേണ്ടി (unsigned i = എണ്ണം - 4; i < എണ്ണം; i++)
       end_points.push (i);
   }
 
-  if (end_points.in_error ()) return false;
+  എങ്കിൽ (end_points.in_error ()) തിരികെ അസത്യം;
 
   unsigned start = 0;
-  for (unsigned end : end_points)
+  വേണ്ടി (unsigned end : end_points)
   {
     unsigned len = end - start + 1;
-    if (!_iup_contour_optimize (contour_points.as_array ().sub_array (start, len),
+    എങ്കിൽ (!_iup_contour_optimize (contour_points.as_array ().sub_array (start, len),
                                 x_deltas.as_array ().sub_array (start, len),
                                 y_deltas.as_array ().sub_array (start, len),
                                 opt_indices.as_array ().sub_array (start, len),
                                 tolerance,
 				scratch))
-      return false;
+      തിരികെ അസത്യം;
     start = end + 1;
   }
-  return true;
+  തിരികെ സത്യം;
 }

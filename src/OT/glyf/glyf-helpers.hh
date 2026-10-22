@@ -2,122 +2,122 @@
 #define OT_GLYF_GLYF_HELPERS_HH
 
 
-#include "../../hb-open-type.hh"
-#include "../../hb-subset-plan.hh"
+#അന്തര്ഭാവ "../../hb-open-type.hh"
+#അന്തര്ഭാവ "../../hb-subset-plan.hh"
 
-#include "loca.hh"
+#അന്തര്ഭാവ "loca.hh"
 
 
-namespace OT {
-namespace glyf_impl {
+നാമാകാശ OT {
+നാമാകാശ glyf_impl {
 
 
 template<typename IteratorIn, typename TypeOut,
-	 hb_requires (hb_is_source_of (IteratorIn, unsigned int))>
-static void
+	 hb_requires (hb_is_source_of (IteratorIn, unsigned പൂർണ്ണസംഖ്യ))>
+സ്ഥിതം ശൂന്യം
 _write_loca (IteratorIn&& it,
-	     const hb_sorted_vector_t<hb_codepoint_pair_t> new_to_old_gid_list,
-	     bool short_offsets,
+	     സ്ഥിരം hb_sorted_vector_t<hb_codepoint_pair_t> new_to_old_gid_list,
+	     തർക്കം short_offsets,
 	     TypeOut *dest,
-	     unsigned num_offsets)
+	     unsigned അക്കം_offsets)
 {
-  unsigned right_shift = short_offsets ? 1 : 0;
+  unsigned വലത്_shift = short_offsets ? 1 : 0;
   unsigned offset = 0;
   TypeOut value;
   value = 0;
   *dest++ = value;
   hb_codepoint_t last = 0;
-  for (auto _ : new_to_old_gid_list)
+  വേണ്ടി (auto _ : new_to_old_gid_list)
   {
     hb_codepoint_t gid = _.first;
-    for (; last < gid; last++)
+    വേണ്ടി (; last < gid; last++)
     {
-      DEBUG_MSG (SUBSET, nullptr, "loca entry empty offset %u", offset);
+      DEBUG_സന്ദേശം (SUBSET, nullptr, "loca entry empty offset %u", offset);
       *dest++ = value;
     }
 
     unsigned padded_size = *it++;
     offset += padded_size;
-    DEBUG_MSG (SUBSET, nullptr, "loca entry gid %" PRIu32 " offset %u padded-size %u", gid, offset, padded_size);
-    value = offset >> right_shift;
+    DEBUG_സന്ദേശം (SUBSET, nullptr, "loca entry gid %" PRIu32 " offset %u padded-size %u", gid, offset, padded_size);
+    value = offset >> വലത്_shift;
     *dest++ = value;
 
     last++; // Skip over gid
   }
-  unsigned num_glyphs = num_offsets - 1;
-  for (; last < num_glyphs; last++)
+  unsigned അക്കം_glyphs = അക്കം_offsets - 1;
+  വേണ്ടി (; last < അക്കം_glyphs; last++)
   {
-    DEBUG_MSG (SUBSET, nullptr, "loca entry empty offset %u", offset);
+    DEBUG_സന്ദേശം (SUBSET, nullptr, "loca entry empty offset %u", offset);
     *dest++ = value;
   }
 }
 
-static bool
-_add_head_and_set_loca_version (hb_subset_plan_t *plan, bool use_short_loca)
+സ്ഥിതം തർക്കം
+_add_head_and_set_loca_version (hb_subset_plan_t *plan, തർക്കം use_short_loca)
 {
   hb_blob_t *head_blob = hb_sanitize_context_t ().reference_table<head> (plan->source);
-  hb_blob_t *head_prime_blob = hb_blob_copy_writable_or_fail (head_blob);
+  hb_blob_t *head_അഭാജ്യം_blob = hb_blob_copy_writable_or_fail (head_blob);
   hb_blob_destroy (head_blob);
 
-  if (unlikely (!head_prime_blob))
-    return false;
+  എങ്കിൽ (unlikely (!head_അഭാജ്യം_blob))
+    തിരികെ അസത്യം;
 
-  head *head_prime = (head *) hb_blob_get_data_writable (head_prime_blob, nullptr);
-  head_prime->indexToLocFormat = use_short_loca ? 0 : 1;
-  if (plan->normalized_coords)
+  head *head_അഭാജ്യം = (head *) hb_blob_get_data_writable (head_അഭാജ്യം_blob, nullptr);
+  head_അഭാജ്യം->indexToLocFormat = use_short_loca ? 0 : 1;
+  എങ്കിൽ (plan->normalized_coords)
   {
-    head_prime->xMin = plan->head_maxp_info.xMin;
-    head_prime->xMax = plan->head_maxp_info.xMax;
-    head_prime->yMin = plan->head_maxp_info.yMin;
-    head_prime->yMax = plan->head_maxp_info.yMax;
+    head_അഭാജ്യം->xMin = plan->head_maxp_info.xMin;
+    head_അഭാജ്യം->xMax = plan->head_maxp_info.xMax;
+    head_അഭാജ്യം->yMin = plan->head_maxp_info.yMin;
+    head_അഭാജ്യം->yMax = plan->head_maxp_info.yMax;
 
-    unsigned orig_flag = head_prime->flags;
-    if (plan->head_maxp_info.allXMinIsLsb)
+    unsigned orig_flag = head_അഭാജ്യം->flags;
+    എങ്കിൽ (plan->head_maxp_info.allXMinIsLsb)
       orig_flag |= 1 << 1;
-    else
+    അല്ലെങ്കിൽ
       orig_flag &= ~(1 << 1);
-    head_prime->flags = orig_flag;
+    head_അഭാജ്യം->flags = orig_flag;
   }
-  bool success = plan->add_table (HB_OT_TAG_head, head_prime_blob);
+  തർക്കം success = plan->add_table (HB_OT_TAG_head, head_അഭാജ്യം_blob);
 
-  hb_blob_destroy (head_prime_blob);
-  return success;
+  hb_blob_destroy (head_അഭാജ്യം_blob);
+  തിരികെ success;
 }
 
 template<typename Iterator,
-	 hb_requires (hb_is_source_of (Iterator, unsigned int))>
-static bool
+	 hb_requires (hb_is_source_of (Iterator, unsigned പൂർണ്ണസംഖ്യ))>
+സ്ഥിതം തർക്കം
 _add_loca_and_head (hb_subset_context_t *c,
 		    Iterator padded_offsets,
-		    bool use_short_loca,
-		    bool extended)
+		    തർക്കം use_short_loca,
+		    തർക്കം extended)
 {
-  unsigned num_offsets = c->plan->num_output_glyphs () + 1;
+  unsigned അക്കം_offsets = c->plan->അക്കം_output_glyphs () + 1;
   unsigned entry_size = use_short_loca ? 2 : 4;
 
-  char *loca_prime_data = (char *) hb_malloc2 (num_offsets, entry_size);
+  അക്ഷരം *loca_അഭാജ്യം_data = (അക്ഷരം *) hb_malloc2 (അക്കം_offsets, entry_size);
 
-  if (unlikely (!loca_prime_data)) return false;
+  എങ്കിൽ (unlikely (!loca_അഭാജ്യം_data)) തിരികെ അസത്യം;
 
-  DEBUG_MSG (SUBSET, nullptr, "loca entry_size %u num_offsets %u size %u",
-	     entry_size, num_offsets, entry_size * num_offsets);
+  DEBUG_സന്ദേശം (SUBSET, nullptr, "loca entry_size %u num_offsets %u size %u",
+	     entry_size, അക്കം_offsets, entry_size * അക്കം_offsets);
 
-  if (use_short_loca)
-    _write_loca (padded_offsets, c->plan->new_to_old_gid_list, true, (HBUINT16 *) loca_prime_data, num_offsets);
-  else
-    _write_loca (padded_offsets, c->plan->new_to_old_gid_list, false, (HBUINT32 *) loca_prime_data, num_offsets);
+  എങ്കിൽ (use_short_loca)
+    _write_loca (padded_offsets, c->plan->new_to_old_gid_list, സത്യം, (HBUINT16 *) loca_അഭാജ്യം_data, അക്കം_offsets);
+  അല്ലെങ്കിൽ
+    _write_loca (padded_offsets, c->plan->new_to_old_gid_list, അസത്യം, (HBUINT32 *) loca_അഭാജ്യം_data, അക്കം_offsets);
 
-  hb_blob_t *loca_blob = hb_blob_create (loca_prime_data,
-					 entry_size * num_offsets,
+  hb_blob_t *loca_blob = hb_blob_create (loca_അഭാജ്യം_data,
+					 entry_size * അക്കം_offsets,
 					 HB_MEMORY_MODE_WRITABLE,
-					 loca_prime_data,
+					 loca_അഭാജ്യം_data,
 					 hb_free);
 
-  bool result = c->plan->add_table (extended ? HB_OT_TAG_LOCA : HB_OT_TAG_loca, loca_blob)
+  തർക്കം result = c->plan->add_table (extended ? HB_OT_TAG_LOCA : HB_OT_TAG_loca, loca_blob)
 	     && _add_head_and_set_loca_version (c->plan, use_short_loca);
 
   hb_blob_destroy (loca_blob);
-  return result;
+  തിരികെ result;
 }
 
 

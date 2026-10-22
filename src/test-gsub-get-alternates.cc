@@ -24,16 +24,16 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include <hb.h>
-#include <hb-ot.h>
+#അന്തര്ഭാവ <hb.h>
+#അന്തര്ഭാവ <hb-ot.h>
 
-#include <stdlib.h>
-#include <stdio.h>
+#അന്തര്ഭാവ <stdlib.h>
+#അന്തര്ഭാവ <stdio.h>
 
-int
-main (int argc, char **argv)
+പൂർണ്ണസംഖ്യ
+പ്രധാന (പൂർണ്ണസംഖ്യ argc, അക്ഷരം **argv)
 {
-  if (argc != 3) {
+  എങ്കിൽ (argc != 3) {
     fprintf (stderr, "usage: %s font-file text\n", argv[0]);
     exit (1);
   }
@@ -49,32 +49,32 @@ main (int argc, char **argv)
 
   hb_buffer_add_utf8 (buffer, argv[2], -1, 0, -1);
   hb_buffer_guess_segment_properties (buffer);
-  hb_shape (font, buffer, NULL, 0);
+  hb_shape (font, buffer, ശൂന്യ, 0);
 
   hb_tag_t features[] = {HB_TAG('a','a','l','t'), HB_TAG_NONE};
   hb_set_t *lookup_indexes = hb_set_create ();
   hb_ot_layout_collect_lookups (face,
 				HB_OT_TAG_GSUB,
-				NULL, NULL,
+				ശൂന്യ, ശൂന്യ,
 				features,
 				lookup_indexes);
   printf ("lookups %u\n", hb_set_get_population (lookup_indexes));
 
-  unsigned count;
-  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, &count);
-  for (unsigned i = 0; i < count; i++)
+  unsigned എണ്ണം;
+  hb_glyph_info_t *info = hb_buffer_get_glyph_infos (buffer, &എണ്ണം);
+  വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++)
   {
-    unsigned alt_count = 0;
-    for (hb_codepoint_t lookup_index = HB_SET_VALUE_INVALID;
+    unsigned alt_എണ്ണം = 0;
+    വേണ്ടി (hb_codepoint_t lookup_index = HB_SET_മൂല്യം_INVALID;
 	 hb_set_next (lookup_indexes, &lookup_index);)
-      if ((alt_count = hb_ot_layout_lookup_get_glyph_alternates (face,
+      എങ്കിൽ ((alt_എണ്ണം = hb_ot_layout_lookup_get_glyph_alternates (face,
 								 lookup_index,
 								 info[i].codepoint,
 								 0,
-								 NULL,
-								 NULL)))
-        break;
-    printf ("glyph %u alt count %u\n", info[i].codepoint, alt_count);
+								 ശൂന്യ,
+								 ശൂന്യ)))
+        നിർത്തുക;
+    printf ("glyph %u alt count %u\n", info[i].codepoint, alt_എണ്ണം);
   }
 
   hb_set_destroy (lookup_indexes);
@@ -82,5 +82,5 @@ main (int argc, char **argv)
   hb_font_destroy (font);
   hb_face_destroy (face);
 
-  return 0;
+  തിരികെ 0;
 }

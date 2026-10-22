@@ -1,12 +1,12 @@
-#include "hb-ot-shaper-use-table.hh"
+#അന്തര്ഭാവ "hb-ot-shaper-use-table.hh"
 
-int main (int argc, char **argv)
+പൂർണ്ണസംഖ്യ പ്രധാന (പൂർണ്ണസംഖ്യ argc, അക്ഷരം **argv)
 {
-  if (argc != 2)
+  എങ്കിൽ (argc != 2)
   {
-    for (unsigned u = 0; u < 0x10FFFFu; u++)
+    വേണ്ടി (unsigned u = 0; u < 0x10FFFFu; u++)
       printf ("U+%04X %d\n", u, hb_use_get_category (u));
-    return 0;
+    തിരികെ 0;
   }
 
   hb_codepoint_t u;
@@ -14,5 +14,5 @@ int main (int argc, char **argv)
 
   printf ("%d\n", hb_use_get_category (u));
 
-  return 0;
+  തിരികെ 0;
 }

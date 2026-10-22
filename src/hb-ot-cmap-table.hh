@@ -27,12 +27,12 @@
 #ifndef HB_OT_CMAP_TABLE_HH
 #define HB_OT_CMAP_TABLE_HH
 
-#include "hb-ot-os2-table.hh"
-#include "hb-ot-shaper-arabic-pua.hh"
-#include "hb-open-type.hh"
-#include "hb-ot-dual.hh"
-#include "hb-set.hh"
-#include "hb-cache.hh"
+#അന്തര്ഭാവ "hb-ot-os2-table.hh"
+#അന്തര്ഭാവ "hb-ot-shaper-arabic-pua.hh"
+#അന്തര്ഭാവ "hb-open-type.hh"
+#അന്തര്ഭാവ "hb-ot-dual.hh"
+#അന്തര്ഭാവ "hb-set.hh"
+#അന്തര്ഭാവ "hb-cache.hh"
 
 /*
  * cmap -- Character to Glyph Index Mapping
@@ -41,11 +41,11 @@
 #define HB_OT_TAG_cmap HB_TAG('c','m','a','p')
 #define HB_OT_TAG_DMAP HB_TAG('D','M','A','P')
 
-namespace OT {
+നാമാകാശ OT {
 
-static inline uint8_t unicode_to_macroman (hb_codepoint_t u)
+സ്ഥിതം വരിയിൽ uint8_t unicode_to_macroman (hb_codepoint_t u)
 {
-  static const struct unicode_to_macroman_t
+  സ്ഥിതം സ്ഥിരം ഘടന unicode_to_macroman_t
   {
     uint16_t unicode;
     uint8_t macroman;
@@ -181,39 +181,39 @@ static inline uint8_t unicode_to_macroman (hb_codepoint_t u)
     { 0xFB01, 0xDE },
     { 0xFB02, 0xDF },
   };
-  auto *c = hb_bsearch (u, mapping, ARRAY_LENGTH (mapping), sizeof (mapping[0]),
+  auto *c = hb_bsearch (u, mapping, ARRAY_LENGTH (mapping), വലുപ്പം (mapping[0]),
 			_hb_cmp_operator<uint16_t, uint16_t>);
-  return c ? c->macroman : 0;
+  തിരികെ c ? c->macroman : 0;
 }
 
-struct CmapSubtableFormat0
+ഘടന CmapSubtableFormat0
 {
-  bool get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph) const
+  തർക്കം get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph) സ്ഥിരം
   {
     hb_codepoint_t gid = codepoint < 256 ? glyphIdArray[codepoint] : 0;
-    if (unlikely (!gid))
-      return false;
+    എങ്കിൽ (unlikely (!gid))
+      തിരികെ അസത്യം;
     *glyph = gid;
-    return true;
+    തിരികെ സത്യം;
   }
 
-  unsigned get_language () const
+  unsigned get_language () സ്ഥിരം
   {
-    return language;
+    തിരികെ language;
   }
 
-  void collect_unicodes (hb_set_t *out) const
+  ശൂന്യം collect_unicodes (hb_set_t *out) സ്ഥിരം
   {
-    for (unsigned int i = 0; i < 256; i++)
-      if (glyphIdArray[i])
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < 256; i++)
+      എങ്കിൽ (glyphIdArray[i])
 	out->add (i);
   }
 
-  void collect_mapping (hb_set_t *unicodes, /* OUT */
-			hb_map_t *mapping /* OUT */) const
+  ശൂന്യം collect_mapping (hb_set_t *unicodes, /* OUT */
+			hb_map_t *mapping /* OUT */) സ്ഥിരം
   {
-    for (unsigned i = 0; i < 256; i++)
-      if (glyphIdArray[i])
+    വേണ്ടി (unsigned i = 0; i < 256; i++)
+      എങ്കിൽ (glyphIdArray[i])
       {
 	hb_codepoint_t glyph = glyphIdArray[i];
 	unicodes->add (i);
@@ -221,41 +221,41 @@ struct CmapSubtableFormat0
       }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
-  protected:
+  സംരക്ഷിത:
   HBUINT16	format;		/* Format number is set to 0. */
   HBUINT16	length;		/* Byte length of this subtable. */
   HBUINT16	language;	/* Ignore. */
   HBUINT8	glyphIdArray[256];/* An array that maps character
 				 * code to glyph index values. */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (6 + 256);
 };
 
-struct CmapSubtableFormat4
+ഘടന CmapSubtableFormat4
 {
   template<typename Iterator,
       typename Writer,
 	   hb_requires (hb_is_iterator (Iterator))>
-  void to_ranges (Iterator it, Writer& range_writer)
+  ശൂന്യം to_ranges (Iterator it, Writer& range_writer)
   {
     hb_codepoint_t start_cp = 0, prev_run_start_cp = 0, run_start_cp = 0, end_cp = 0, last_gid = 0;
-    int run_length = 0 , delta = 0, prev_delta = 0;
+    പൂർണ്ണസംഖ്യ run_length = 0 , delta = 0, prev_delta = 0;
 
-    enum {
+    എണ്ണൽ {
       FIRST_SUB_RANGE,
       FOLLOWING_SUB_RANGE,
     } mode;
 
-    while (it) {
+    ആകുമ്പോൾ (it) {
       // Start a new range
       {
-        const auto& pair = *it;
+        സ്ഥിരം auto& pair = *it;
         start_cp = pair.first;
         prev_run_start_cp = start_cp;
         run_start_cp = start_cp;
@@ -269,29 +269,29 @@ struct CmapSubtableFormat4
       mode = FIRST_SUB_RANGE;
       it++;
 
-      while (it) {
+      ആകുമ്പോൾ (it) {
         // Process range
-        const auto& pair = *it;
+        സ്ഥിരം auto& pair = *it;
         hb_codepoint_t next_cp = pair.first;
         hb_codepoint_t next_gid = pair.second;
-        if (next_cp != end_cp + 1) {
+        എങ്കിൽ (next_cp != end_cp + 1) {
           // Current range is over, stop processing.
-          break;
+          നിർത്തുക;
         }
 
-        if (next_gid == last_gid + 1) {
+        എങ്കിൽ (next_gid == last_gid + 1) {
           // The current run continues.
           end_cp = next_cp;
           run_length++;
           last_gid = next_gid;
           it++;
-          continue;
+          തുടരുക;
         }
 
         // A new run is starting, decide if we want to commit the current run.
-        int split_cost = (mode == FIRST_SUB_RANGE) ? 8 : 16;
-        int run_cost = run_length * 2;
-        if (run_cost >= split_cost) {
+        പൂർണ്ണസംഖ്യ split_cost = (mode == FIRST_SUB_RANGE) ? 8 : 16;
+        പൂർണ്ണസംഖ്യ run_cost = run_length * 2;
+        എങ്കിൽ (run_cost >= split_cost) {
           commit_current_range(start_cp,
                                prev_run_start_cp,
                                run_start_cp,
@@ -326,7 +326,7 @@ struct CmapSubtableFormat4
                             range_writer);
     }
 
-    if (likely (end_cp != 0xFFFF)) {
+    എങ്കിൽ (likely (end_cp != 0xFFFF)) {
       range_writer (0xFFFF, 0xFFFF, 1);
     }
   }
@@ -335,39 +335,39 @@ struct CmapSubtableFormat4
    * Writes the current range as either one or two ranges depending on what is most efficient.
    */
   template<typename Writer>
-  void commit_current_range (hb_codepoint_t start,
+  ശൂന്യം commit_current_range (hb_codepoint_t start,
                              hb_codepoint_t prev_run_start,
                              hb_codepoint_t run_start,
                              hb_codepoint_t end,
-                             int run_delta,
-                             int previous_run_delta,
-                             int split_cost,
+                             പൂർണ്ണസംഖ്യ run_delta,
+                             പൂർണ്ണസംഖ്യ previous_run_delta,
+                             പൂർണ്ണസംഖ്യ split_cost,
                              Writer& range_writer) {
-    bool should_split = false;
-    if (start < run_start && run_start < end) {
-      int run_cost = (end - run_start + 1) * 2;
-      if (run_cost >= split_cost) {
-        should_split = true;
+    തർക്കം should_split = അസത്യം;
+    എങ്കിൽ (start < run_start && run_start < end) {
+      പൂർണ്ണസംഖ്യ run_cost = (end - run_start + 1) * 2;
+      എങ്കിൽ (run_cost >= split_cost) {
+        should_split = സത്യം;
       }
     }
 
     // A zero delta is also the marker for ranges that need a
     // glyphIdArray; serialize_rangeoffset_glyid() tells the two cases
     // apart by re-checking the mapping.
-    if (should_split) {
-      if (start == prev_run_start)
+    എങ്കിൽ (should_split) {
+      എങ്കിൽ (start == prev_run_start)
         range_writer (start, run_start - 1, previous_run_delta);
-      else
+      അല്ലെങ്കിൽ
         range_writer (start, run_start - 1, 0);
       range_writer (run_start, end, run_delta);
-      return;
+      തിരികെ;
     }
 
 
-    if (start == run_start) {
+    എങ്കിൽ (start == run_start) {
       // Range is only a run
       range_writer (start, end, run_delta);
-      return;
+      തിരികെ;
     }
 
     // Write only a single non-run range.
@@ -377,33 +377,33 @@ struct CmapSubtableFormat4
   template<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
   unsigned serialize_find_segcount (Iterator it) {
-    struct Counter {
+    ഘടന Counter {
       unsigned segcount = 0;
 
-      void operator() (hb_codepoint_t start,
+      ശൂന്യം operator() (hb_codepoint_t start,
                        hb_codepoint_t end,
-                       int delta) {
+                       പൂർണ്ണസംഖ്യ delta) {
         segcount++;
       }
     } counter;
 
     to_ranges (+it, counter);
-    return counter.segcount;
+    തിരികെ counter.segcount;
   }
 
 
   template<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  bool serialize_start_end_delta_arrays (hb_serialize_context_t *c,
+  തർക്കം serialize_start_end_delta_arrays (hb_serialize_context_t *c,
                                          Iterator it,
-                                         int segcount)
+                                         പൂർണ്ണസംഖ്യ segcount)
   {
-    struct Writer {
+    ഘടന Writer {
       hb_serialize_context_t *serializer_;
       HBUINT16* end_code_;
       HBUINT16* start_code_;
       HBINT16* id_delta_;
-      int index_;
+      പൂർണ്ണസംഖ്യ index_;
 
       Writer(hb_serialize_context_t *serializer)
           : serializer_(serializer),
@@ -411,9 +411,9 @@ struct CmapSubtableFormat4
             start_code_(nullptr),
             id_delta_(nullptr),
             index_ (0) {}
-      void operator() (hb_codepoint_t start,
+      ശൂന്യം operator() (hb_codepoint_t start,
                        hb_codepoint_t end,
-                       int delta) {
+                       പൂർണ്ണസംഖ്യ delta) {
         start_code_[index_] = start;
         end_code_[index_] = end;
         id_delta_[index_] = delta;
@@ -421,15 +421,15 @@ struct CmapSubtableFormat4
       }
     } writer(c);
 
-    writer.end_code_ = c->allocate_size<HBUINT16> (HBUINT16::static_size * segcount, false);
-    (void) c->allocate_size<HBUINT16> (2); // padding
-    writer.start_code_ = c->allocate_size<HBUINT16> (HBUINT16::static_size * segcount, false);
-    writer.id_delta_ = c->allocate_size<HBINT16> (HBINT16::static_size * segcount, false);
+    writer.end_code_ = c->allocate_size<HBUINT16> (HBUINT16::static_size * segcount, അസത്യം);
+    (ശൂന്യം) c->allocate_size<HBUINT16> (2); // padding
+    writer.start_code_ = c->allocate_size<HBUINT16> (HBUINT16::static_size * segcount, അസത്യം);
+    writer.id_delta_ = c->allocate_size<HBINT16> (HBINT16::static_size * segcount, അസത്യം);
 
-    if (unlikely (!writer.end_code_ || !writer.start_code_ || !writer.id_delta_)) return false;
+    എങ്കിൽ (unlikely (!writer.end_code_ || !writer.start_code_ || !writer.id_delta_)) തിരികെ അസത്യം;
 
     to_ranges (+it, writer);
-    return true;
+    തിരികെ സത്യം;
   }
 
   template<typename Iterator,
@@ -444,34 +444,34 @@ struct CmapSubtableFormat4
     hb_map_t cp_to_gid { it };
 
     HBUINT16 *idRangeOffset = c->allocate_size<HBUINT16> (HBUINT16::static_size * segcount);
-    if (unlikely (!c->check_success (idRangeOffset))) return nullptr;
-    if (unlikely ((char *)idRangeOffset - (char *)idDelta != (int) segcount * (int) HBINT16::static_size)) return nullptr;
+    എങ്കിൽ (unlikely (!c->check_success (idRangeOffset))) തിരികെ nullptr;
+    എങ്കിൽ (unlikely ((അക്ഷരം *)idRangeOffset - (അക്ഷരം *)idDelta != (പൂർണ്ണസംഖ്യ) segcount * (പൂർണ്ണസംഖ്യ) HBINT16::static_size)) തിരികെ nullptr;
 
-    for (unsigned i : hb_range (segcount))
+    വേണ്ടി (unsigned i : hb_range (segcount))
     {
       /* A non-zero delta is always a real run. A zero delta is
        * ambiguous: identity mapping, or the marker for a range that
        * needs a glyphIdArray. Only zero deltas need a check. */
-      int delta = idDelta[i];
-      if (delta)
-	continue;
-      bool use_delta = true;
-      for (hb_codepoint_t cp = startCode[i]; cp <= endCode[i]; cp++)
+      പൂർണ്ണസംഖ്യ delta = idDelta[i];
+      എങ്കിൽ (delta)
+	തുടരുക;
+      തർക്കം use_delta = സത്യം;
+      വേണ്ടി (hb_codepoint_t cp = startCode[i]; cp <= endCode[i]; cp++)
       {
 	hb_codepoint_t gid = cp_to_gid.get (cp);
-	if (gid == HB_MAP_VALUE_INVALID)
+	എങ്കിൽ (gid == HB_MAP_മൂല്യം_INVALID)
 	  gid = 0;
-	if (gid != cp)
+	എങ്കിൽ (gid != cp)
 	{
-	  use_delta = false;
-	  break;
+	  use_delta = അസത്യം;
+	  നിർത്തുക;
 	}
       }
-      if (use_delta)
-	continue;
+      എങ്കിൽ (use_delta)
+	തുടരുക;
 
       idRangeOffset[i] = 2 * (c->start_embed<HBUINT16> () - idRangeOffset - i);
-      for (hb_codepoint_t cp = startCode[i]; cp <= endCode[i]; cp++)
+      വേണ്ടി (hb_codepoint_t cp = startCode[i]; cp <= endCode[i]; cp++)
       {
         HBUINT16 gid;
         gid = cp_to_gid[cp];
@@ -479,25 +479,25 @@ struct CmapSubtableFormat4
       }
     }
 
-    return idRangeOffset;
+    തിരികെ idRangeOffset;
   }
 
   template<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  void serialize (hb_serialize_context_t *c,
+  ശൂന്യം serialize (hb_serialize_context_t *c,
 		  Iterator it)
   {
     auto format4_iter =
     + it
-    | hb_filter ([&] (const hb_codepoint_pair_t _)
-		 { return _.first <= 0xFFFF; })
+    | hb_filter ([&] (സ്ഥിരം hb_codepoint_pair_t _)
+		 { തിരികെ _.first <= 0xFFFF; })
     ;
 
-    if (!format4_iter) return;
+    എങ്കിൽ (!format4_iter) തിരികെ;
 
     unsigned table_initpos = c->length ();
-    if (unlikely (!c->extend_min (this))) return;
-    this->format = 4;
+    എങ്കിൽ (unlikely (!c->extend_min (ഇത്))) തിരികെ;
+    ഇത്->format = 4;
 
     hb_vector_t<hb_codepoint_pair_t> cp_to_gid {
       format4_iter
@@ -506,8 +506,8 @@ struct CmapSubtableFormat4
     //serialize endCode[], startCode[], idDelta[]
     HBUINT16* endCode = c->start_embed<HBUINT16> ();
     unsigned segcount = serialize_find_segcount (cp_to_gid.iter());
-    if (unlikely (!serialize_start_end_delta_arrays (c, cp_to_gid.iter(), segcount)))
-      return;
+    എങ്കിൽ (unlikely (!serialize_start_end_delta_arrays (c, cp_to_gid.iter(), segcount)))
+      തിരികെ;
 
     HBUINT16 *startCode = endCode + segcount + 1;
     HBINT16 *idDelta = ((HBINT16*)startCode) + segcount;
@@ -518,171 +518,171 @@ struct CmapSubtableFormat4
                                                            startCode,
                                                            idDelta,
                                                            segcount);
-    if (unlikely (!c->check_success (idRangeOffset))) return;
+    എങ്കിൽ (unlikely (!c->check_success (idRangeOffset))) തിരികെ;
 
-    this->length = c->length () - table_initpos;
-    if ((long long) this->length != (long long) c->length () - table_initpos)
+    ഇത്->length = c->length () - table_initpos;
+    എങ്കിൽ ((long long) ഇത്->length != (long long) c->length () - table_initpos)
     {
       c->err (HB_SERIALIZE_ERROR_INT_OVERFLOW);
-      return;
+      തിരികെ;
     }
 
-    this->segCountX2 = segcount * 2;
-    this->entrySelector = hb_max (1u, hb_bit_storage (segcount)) - 1;
-    this->searchRange = 2 * (1u << this->entrySelector);
-    this->rangeShift = segcount * 2 > this->searchRange
-		       ? 2 * segcount - this->searchRange
+    ഇത്->seg_എണ്ണം_X2 = segcount * 2;
+    ഇത്->entrySelector = hb_max (1u, hb_bit_storage (segcount)) - 1;
+    ഇത്->തിരയൽ_Range = 2 * (1u << ഇത്->entrySelector);
+    ഇത്->rangeShift = segcount * 2 > ഇത്->തിരയൽ_Range
+		       ? 2 * segcount - ഇത്->തിരയൽ_Range
 		       : 0;
   }
 
-  unsigned get_language () const
+  unsigned get_language () സ്ഥിരം
   {
-    return language;
+    തിരികെ language;
   }
 
-  struct accelerator_t
+  ഘടന accelerator_t
   {
     accelerator_t () {}
-    accelerator_t (const CmapSubtableFormat4 *subtable) = delete;
+    accelerator_t (സ്ഥിരം CmapSubtableFormat4 *subtable) = delete;
 
-    void init (const CmapSubtableFormat4 *subtable,
-	       unsigned int              subtable_data_size)
+    ശൂന്യം init (സ്ഥിരം CmapSubtableFormat4 *subtable,
+	       unsigned പൂർണ്ണസംഖ്യ              subtable_data_size)
     {
-      segCount = subtable->segCountX2 / 2;
-      endCount = subtable->values.arrayZ;
-      startCount = endCount + segCount + 1;
-      idDelta = startCount + segCount;
-      idRangeOffset = idDelta + segCount;
-      glyphIdArray = idRangeOffset + segCount;
+      seg_എണ്ണം_2 = subtable->seg_എണ്ണം_X2 / 2;
+      end_എണ്ണം = subtable->values.arrayZ;
+      start_എണ്ണം = end_എണ്ണം + seg_എണ്ണം_2 + 1;
+      idDelta = start_എണ്ണം + seg_എണ്ണം_2;
+      idRangeOffset = idDelta + seg_എണ്ണം_2;
+      glyphIdArray = idRangeOffset + seg_എണ്ണം_2;
 
-      unsigned int values_offset = 16 + 8 * segCount;
-      glyphIdArrayLength = subtable_data_size > values_offset
-			   ? (subtable_data_size - values_offset) / 2
+      unsigned പൂർണ്ണസംഖ്യ മൂല്യങ്ങൾ_offset = 16 + 8 * seg_എണ്ണം_2;
+      glyphIdArrayLength = subtable_data_size > മൂല്യങ്ങൾ_offset
+			   ? (subtable_data_size - മൂല്യങ്ങൾ_offset) / 2
 			   : 0;
     }
 
-    bool get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph) const
+    തർക്കം get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph) സ്ഥിരം
     {
-      struct CustomRange
+      ഘടന CustomRange
       {
-	int cmp (hb_codepoint_t k,
-		 unsigned distance) const
+	പൂർണ്ണസംഖ്യ cmp (hb_codepoint_t k,
+		 unsigned distance) സ്ഥിരം
 	{
-	  if (k > last) return +1;
-	  if (k < (&last)[distance]/*first*/) return -1;
-	  return 0;
+	  എങ്കിൽ (k > last) തിരികെ +1;
+	  എങ്കിൽ (k < (&last)[distance]/*first*/) തിരികെ -1;
+	  തിരികെ 0;
 	}
 	HBUINT16 last;
       };
 
-      const HBUINT16 *found = hb_bsearch (codepoint,
-					  this->endCount,
-					  this->segCount,
-					  sizeof (CustomRange),
+      സ്ഥിരം HBUINT16 *found = hb_bsearch (codepoint,
+					  ഇത്->end_എണ്ണം,
+					  ഇത്->seg_എണ്ണം_2,
+					  വലുപ്പം (CustomRange),
 					  _hb_cmp_method<hb_codepoint_t, CustomRange, unsigned>,
-					  this->segCount + 1);
-      if (unlikely (!found))
-	return false;
-      unsigned int i = found - endCount;
+					  ഇത്->seg_എണ്ണം_2 + 1);
+      എങ്കിൽ (unlikely (!found))
+	തിരികെ അസത്യം;
+      unsigned പൂർണ്ണസംഖ്യ i = found - end_എണ്ണം;
 
       hb_codepoint_t gid;
-      unsigned int rangeOffset = this->idRangeOffset[i];
-      if (rangeOffset == 0)
-	gid = codepoint + this->idDelta[i];
-      else
+      unsigned പൂർണ്ണസംഖ്യ rangeOffset = ഇത്->idRangeOffset[i];
+      എങ്കിൽ (rangeOffset == 0)
+	gid = codepoint + ഇത്->idDelta[i];
+      അല്ലെങ്കിൽ
       {
 	/* Somebody has been smoking... */
-	unsigned int index = rangeOffset / 2 + (codepoint - this->startCount[i]) + i - this->segCount;
-	if (unlikely (index >= this->glyphIdArrayLength))
-	  return false;
-	gid = this->glyphIdArray[index];
-	if (unlikely (!gid))
-	  return false;
-	gid += this->idDelta[i];
+	unsigned പൂർണ്ണസംഖ്യ index = rangeOffset / 2 + (codepoint - ഇത്->start_എണ്ണം[i]) + i - ഇത്->seg_എണ്ണം_2;
+	എങ്കിൽ (unlikely (index >= ഇത്->glyphIdArrayLength))
+	  തിരികെ അസത്യം;
+	gid = ഇത്->glyphIdArray[index];
+	എങ്കിൽ (unlikely (!gid))
+	  തിരികെ അസത്യം;
+	gid += ഇത്->idDelta[i];
       }
       gid &= 0xFFFFu;
-      if (unlikely (!gid))
-	return false;
+      എങ്കിൽ (unlikely (!gid))
+	തിരികെ അസത്യം;
       *glyph = gid;
-      return true;
+      തിരികെ സത്യം;
     }
 
-    HB_INTERNAL static bool get_glyph_func (const void *obj, hb_codepoint_t codepoint, hb_codepoint_t *glyph)
-    { return ((const accelerator_t *) obj)->get_glyph (codepoint, glyph); }
+    HB_INTERNAL സ്ഥിതം തർക്കം get_glyph_func (സ്ഥിരം ശൂന്യം *obj, hb_codepoint_t codepoint, hb_codepoint_t *glyph)
+    { തിരികെ ((സ്ഥിരം accelerator_t *) obj)->get_glyph (codepoint, glyph); }
 
-    void collect_unicodes (hb_set_t *out) const
+    ശൂന്യം collect_unicodes (hb_set_t *out) സ്ഥിരം
     {
-      unsigned int count = this->segCount;
-      if (count && this->startCount[count - 1] == 0xFFFFu)
-	count--; /* Skip sentinel segment. */
-      for (unsigned int i = 0; i < count; i++)
+      unsigned പൂർണ്ണസംഖ്യ എണ്ണം = ഇത്->seg_എണ്ണം_2;
+      എങ്കിൽ (എണ്ണം && ഇത്->start_എണ്ണം[എണ്ണം - 1] == 0xFFFFu)
+	എണ്ണം--; /* Skip sentinel segment. */
+      വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
       {
-	hb_codepoint_t start = this->startCount[i];
-	hb_codepoint_t end = this->endCount[i];
-	unsigned int rangeOffset = this->idRangeOffset[i];
+	hb_codepoint_t start = ഇത്->start_എണ്ണം[i];
+	hb_codepoint_t end = ഇത്->end_എണ്ണം[i];
+	unsigned പൂർണ്ണസംഖ്യ rangeOffset = ഇത്->idRangeOffset[i];
         out->add_range(start, end);
-	if (rangeOffset == 0)
+	എങ്കിൽ (rangeOffset == 0)
 	{
-	  for (hb_codepoint_t codepoint = start; codepoint <= end; codepoint++)
+	  വേണ്ടി (hb_codepoint_t codepoint = start; codepoint <= end; codepoint++)
 	  {
-	    hb_codepoint_t gid = (codepoint + this->idDelta[i]) & 0xFFFFu;
-	    if (unlikely (!gid))
+	    hb_codepoint_t gid = (codepoint + ഇത്->idDelta[i]) & 0xFFFFu;
+	    എങ്കിൽ (unlikely (!gid))
               out->del(codepoint);
 	  }
 	}
-	else
+	അല്ലെങ്കിൽ
 	{
-	  for (hb_codepoint_t codepoint = start; codepoint <= end; codepoint++)
+	  വേണ്ടി (hb_codepoint_t codepoint = start; codepoint <= end; codepoint++)
 	  {
-	    unsigned int index = rangeOffset / 2 + (codepoint - this->startCount[i]) + i - this->segCount;
-	    if (unlikely (index >= this->glyphIdArrayLength))
+	    unsigned പൂർണ്ണസംഖ്യ index = rangeOffset / 2 + (codepoint - ഇത്->start_എണ്ണം[i]) + i - ഇത്->seg_എണ്ണം_2;
+	    എങ്കിൽ (unlikely (index >= ഇത്->glyphIdArrayLength))
             {
               out->del_range (codepoint, end);
-	      break;
+	      നിർത്തുക;
             }
-	    hb_codepoint_t gid = this->glyphIdArray[index];
-	    if (unlikely (!gid))
+	    hb_codepoint_t gid = ഇത്->glyphIdArray[index];
+	    എങ്കിൽ (unlikely (!gid))
               out->del(codepoint);
 	  }
 	}
       }
     }
 
-    void collect_mapping (hb_set_t *unicodes, /* OUT */
-			  hb_map_t *mapping /* OUT */) const
+    ശൂന്യം collect_mapping (hb_set_t *unicodes, /* OUT */
+			  hb_map_t *mapping /* OUT */) സ്ഥിരം
     {
       // TODO(grieger): optimize similar to collect_unicodes
       // (ie. use add_range())
-      unsigned count = this->segCount;
-      if (count && this->startCount[count - 1] == 0xFFFFu)
-	count--; /* Skip sentinel segment. */
-      for (unsigned i = 0; i < count; i++)
+      unsigned എണ്ണം = ഇത്->seg_എണ്ണം_2;
+      എങ്കിൽ (എണ്ണം && ഇത്->start_എണ്ണം[എണ്ണം - 1] == 0xFFFFu)
+	എണ്ണം--; /* Skip sentinel segment. */
+      വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++)
       {
-	hb_codepoint_t start = this->startCount[i];
-	hb_codepoint_t end = this->endCount[i];
-	unsigned rangeOffset = this->idRangeOffset[i];
-	if (rangeOffset == 0)
+	hb_codepoint_t start = ഇത്->start_എണ്ണം[i];
+	hb_codepoint_t end = ഇത്->end_എണ്ണം[i];
+	unsigned rangeOffset = ഇത്->idRangeOffset[i];
+	എങ്കിൽ (rangeOffset == 0)
 	{
-	  for (hb_codepoint_t codepoint = start; codepoint <= end; codepoint++)
+	  വേണ്ടി (hb_codepoint_t codepoint = start; codepoint <= end; codepoint++)
 	  {
-	    hb_codepoint_t gid = (codepoint + this->idDelta[i]) & 0xFFFFu;
-	    if (unlikely (!gid))
-	      continue;
+	    hb_codepoint_t gid = (codepoint + ഇത്->idDelta[i]) & 0xFFFFu;
+	    എങ്കിൽ (unlikely (!gid))
+	      തുടരുക;
 	    unicodes->add (codepoint);
 	    mapping->set (codepoint, gid);
 	  }
 	}
-	else
+	അല്ലെങ്കിൽ
 	{
-	  for (hb_codepoint_t codepoint = start; codepoint <= end; codepoint++)
+	  വേണ്ടി (hb_codepoint_t codepoint = start; codepoint <= end; codepoint++)
 	  {
-	    unsigned index = rangeOffset / 2 + (codepoint - this->startCount[i]) + i - this->segCount;
-	    if (unlikely (index >= this->glyphIdArrayLength))
-	      break;
-	    hb_codepoint_t gid = this->glyphIdArray[index];
-	    if (unlikely (!gid))
-	      continue;
-            gid = (gid + this->idDelta[i]) & 0xFFFFu;
+	    unsigned index = rangeOffset / 2 + (codepoint - ഇത്->start_എണ്ണം[i]) + i - ഇത്->seg_എണ്ണം_2;
+	    എങ്കിൽ (unlikely (index >= ഇത്->glyphIdArrayLength))
+	      നിർത്തുക;
+	    hb_codepoint_t gid = ഇത്->glyphIdArray[index];
+	    എങ്കിൽ (unlikely (!gid))
+	      തുടരുക;
+            gid = (gid + ഇത്->idDelta[i]) & 0xFFFFu;
 	    unicodes->add (codepoint);
 	    mapping->set (codepoint, gid);
 	  }
@@ -690,148 +690,148 @@ struct CmapSubtableFormat4
       }
     }
 
-    const HBUINT16 *endCount;
-    const HBUINT16 *startCount;
-    const HBUINT16 *idDelta;
-    const HBUINT16 *idRangeOffset;
-    const HBUINT16 *glyphIdArray;
-    unsigned int segCount;
-    unsigned int glyphIdArrayLength;
+    സ്ഥിരം HBUINT16 *end_എണ്ണം;
+    സ്ഥിരം HBUINT16 *start_എണ്ണം;
+    സ്ഥിരം HBUINT16 *idDelta;
+    സ്ഥിരം HBUINT16 *idRangeOffset;
+    സ്ഥിരം HBUINT16 *glyphIdArray;
+    unsigned പൂർണ്ണസംഖ്യ seg_എണ്ണം_2;
+    unsigned പൂർണ്ണസംഖ്യ glyphIdArrayLength;
   };
 
-  bool get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph,
-		  unsigned int subtable_data_size) const
+  തർക്കം get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph,
+		  unsigned പൂർണ്ണസംഖ്യ subtable_data_size) സ്ഥിരം
   {
     accelerator_t accel;
-    accel.init (this, subtable_data_size);
-    return accel.get_glyph_func (&accel, codepoint, glyph);
+    accel.init (ഇത്, subtable_data_size);
+    തിരികെ accel.get_glyph_func (&accel, codepoint, glyph);
   }
-  bool get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph) const
-  { return false; }
+  തർക്കം get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph) സ്ഥിരം
+  { തിരികെ അസത്യം; }
 
-  void collect_unicodes (hb_set_t *out, unsigned int subtable_data_size) const
+  ശൂന്യം collect_unicodes (hb_set_t *out, unsigned പൂർണ്ണസംഖ്യ subtable_data_size) സ്ഥിരം
   {
     accelerator_t accel;
-    accel.init (this, subtable_data_size);
+    accel.init (ഇത്, subtable_data_size);
     accel.collect_unicodes (out);
   }
-  void collect_unicodes (hb_set_t *out) const
+  ശൂന്യം collect_unicodes (hb_set_t *out) സ്ഥിരം
   { collect_unicodes (out, length); }
 
-  void collect_mapping (hb_set_t *unicodes, /* OUT */
+  ശൂന്യം collect_mapping (hb_set_t *unicodes, /* OUT */
 			hb_map_t *mapping, /* OUT */
-			unsigned int subtable_data_size) const
+			unsigned പൂർണ്ണസംഖ്യ subtable_data_size) സ്ഥിരം
   {
     accelerator_t accel;
-    accel.init (this, subtable_data_size);
+    accel.init (ഇത്, subtable_data_size);
     accel.collect_mapping (unicodes, mapping);
   }
-  void collect_mapping (hb_set_t *unicodes, /* OUT */
-			hb_map_t *mapping /* OUT */) const
+  ശൂന്യം collect_mapping (hb_set_t *unicodes, /* OUT */
+			hb_map_t *mapping /* OUT */) സ്ഥിരം
   { collect_mapping (unicodes, mapping, length); }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
-      return_trace (false);
+    TRACE_SANITIZE (ഇത്);
+    എങ്കിൽ (unlikely (!c->check_struct (ഇത്)))
+      return_trace (അസത്യം);
     hb_barrier ();
 
-    return_trace (c->check_range (values, 2 + 4 * segCountX2));
+    return_trace (c->check_range (values, 2 + 4 * seg_എണ്ണം_X2));
   }
 
-  protected:
+  സംരക്ഷിത:
   HBUINT16	format;		/* Format number is set to 4. */
   HBUINT16	length;		/* This is the length in bytes of the
 				 * subtable. */
   HBUINT16	language;	/* Ignore. */
-  HBUINT16	segCountX2;	/* 2 x segCount. */
-  HBUINT16	searchRange;	/* 2 * (2**floor(log2(segCount))) */
+  HBUINT16	seg_എണ്ണം_X2;	/* 2 x segCount. */
+  HBUINT16	തിരയൽ_Range;	/* 2 * (2**floor(log2(segCount))) */
   HBUINT16	entrySelector;	/* log2(searchRange/2) */
   HBUINT16	rangeShift;	/* 2 x segCount - searchRange */
 
   UnsizedArrayOf<HBUINT16>
 		values;
-#if 0
-  HBUINT16	endCount[segCount];	/* End characterCode for each segment,
+#എങ്കിൽ 0
+  HBUINT16	end_എണ്ണം[seg_എണ്ണം_2];	/* End characterCode for each segment,
 					 * last=0xFFFFu. */
   HBUINT16	reservedPad;		/* Set to 0. */
-  HBUINT16	startCount[segCount];	/* Start character code for each segment. */
-  HBINT16		idDelta[segCount];	/* Delta for all character codes in segment. */
-  HBUINT16	idRangeOffset[segCount];/* Offsets into glyphIdArray or 0 */
+  HBUINT16	start_എണ്ണം[seg_എണ്ണം_2];	/* Start character code for each segment. */
+  HBINT16		idDelta[seg_എണ്ണം_2];	/* Delta for all character codes in segment. */
+  HBUINT16	idRangeOffset[seg_എണ്ണം_2];/* Offsets into glyphIdArray or 0 */
   UnsizedArrayOf<HBUINT16>
 		glyphIdArray;	/* Glyph index array (arbitrary length) */
 #endif
 
-  public:
+  പൊതു:
   DEFINE_SIZE_ARRAY (14, values);
 };
 
-struct CmapSubtableLongGroup
+ഘടന CmapSubtableLongGroup
 {
-  friend struct CmapSubtableFormat12;
-  friend struct CmapSubtableFormat13;
+  friend ഘടന CmapSubtableFormat12;
+  friend ഘടന CmapSubtableFormat13;
   template<typename U>
-  friend struct CmapSubtableLongSegmented;
-  friend struct cmap;
+  friend ഘടന CmapSubtableLongSegmented;
+  friend ഘടന cmap;
 
-  int cmp (hb_codepoint_t codepoint) const
+  പൂർണ്ണസംഖ്യ cmp (hb_codepoint_t codepoint) സ്ഥിരം
   {
-    if (codepoint < startCharCode) return -1;
-    if (codepoint > endCharCode)   return +1;
-    return 0;
+    എങ്കിൽ (codepoint < startCharCode) തിരികെ -1;
+    എങ്കിൽ (codepoint > endCharCode)   തിരികെ +1;
+    തിരികെ 0;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
-  private:
+  സ്വകാര്യ:
   HBUINT32		startCharCode;	/* First character code in this group. */
   HBUINT32		endCharCode;	/* Last character code in this group. */
   HBUINT32		glyphID;	/* Glyph index; interpretation depends on
 					 * subtable format. */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (12);
 };
 DECLARE_NULL_NAMESPACE_BYTES (OT, CmapSubtableLongGroup);
 
 template <typename UINT>
-struct CmapSubtableTrimmed
+ഘടന CmapSubtableTrimmed
 {
-  bool get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph) const
+  തർക്കം get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph) സ്ഥിരം
   {
     /* Rely on our implicit array bound-checking. */
     hb_codepoint_t gid = glyphIdArray[codepoint - startCharCode];
-    if (unlikely (!gid))
-      return false;
+    എങ്കിൽ (unlikely (!gid))
+      തിരികെ അസത്യം;
     *glyph = gid;
-    return true;
+    തിരികെ സത്യം;
   }
 
-  unsigned get_language () const
+  unsigned get_language () സ്ഥിരം
   {
-    return language;
+    തിരികെ language;
   }
 
-  void collect_unicodes (hb_set_t *out) const
+  ശൂന്യം collect_unicodes (hb_set_t *out) സ്ഥിരം
   {
     hb_codepoint_t start = startCharCode;
-    unsigned int count = glyphIdArray.len;
-    for (unsigned int i = 0; i < count; i++)
-      if (glyphIdArray[i])
+    unsigned പൂർണ്ണസംഖ്യ എണ്ണം = glyphIdArray.len;
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
+      എങ്കിൽ (glyphIdArray[i])
 	out->add (start + i);
   }
 
-  void collect_mapping (hb_set_t *unicodes, /* OUT */
-			hb_map_t *mapping /* OUT */) const
+  ശൂന്യം collect_mapping (hb_set_t *unicodes, /* OUT */
+			hb_map_t *mapping /* OUT */) സ്ഥിരം
   {
     hb_codepoint_t start_cp = startCharCode;
-    unsigned count = glyphIdArray.len;
-    for (unsigned i = 0; i < count; i++)
-      if (glyphIdArray[i])
+    unsigned എണ്ണം = glyphIdArray.len;
+    വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++)
+      എങ്കിൽ (glyphIdArray[i])
       {
 	hb_codepoint_t unicode = start_cp + i;
 	hb_codepoint_t glyphid = glyphIdArray[i];
@@ -840,13 +840,13 @@ struct CmapSubtableTrimmed
       }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && glyphIdArray.sanitize (c));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) && glyphIdArray.sanitize (c));
   }
 
-  protected:
+  സംരക്ഷിത:
   UINT		formatReserved;	/* Subtable format and (maybe) padding. */
   UINT		length;		/* Byte length of this subtable. */
   UINT		language;	/* Ignore. */
@@ -854,88 +854,88 @@ struct CmapSubtableTrimmed
   ArrayOf<HBGlyphID16, UINT>
 		glyphIdArray;	/* Array of glyph index values for character
 				 * codes in the range. */
-  public:
-  DEFINE_SIZE_ARRAY (5 * sizeof (UINT), glyphIdArray);
+  പൊതു:
+  DEFINE_SIZE_ARRAY (5 * വലുപ്പം (UINT), glyphIdArray);
 };
 
-struct CmapSubtableFormat6  : CmapSubtableTrimmed<HBUINT16> {};
-struct CmapSubtableFormat10 : CmapSubtableTrimmed<HBUINT32> {};
+ഘടന CmapSubtableFormat6  : CmapSubtableTrimmed<HBUINT16> {};
+ഘടന CmapSubtableFormat10 : CmapSubtableTrimmed<HBUINT32> {};
 
 template <typename T>
-struct CmapSubtableLongSegmented
+ഘടന CmapSubtableLongSegmented
 {
-  friend struct cmap;
+  friend ഘടന cmap;
 
-  bool get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph) const
+  തർക്കം get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph) സ്ഥിരം
   {
     hb_codepoint_t gid = T::group_get_glyph (groups.bsearch (codepoint), codepoint);
-    if (unlikely (!gid))
-      return false;
+    എങ്കിൽ (unlikely (!gid))
+      തിരികെ അസത്യം;
     *glyph = gid;
-    return true;
+    തിരികെ സത്യം;
   }
 
-  unsigned get_language () const
+  unsigned get_language () സ്ഥിരം
   {
-    return language;
+    തിരികെ language;
   }
 
-  void collect_unicodes (hb_set_t *out, unsigned int num_glyphs) const
+  ശൂന്യം collect_unicodes (hb_set_t *out, unsigned പൂർണ്ണസംഖ്യ അക്കം_glyphs) സ്ഥിരം
   {
-    for (unsigned int i = 0; i < this->groups.len; i++)
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < ഇത്->groups.len; i++)
     {
-      hb_codepoint_t start = this->groups[i].startCharCode;
-      hb_codepoint_t end = hb_min ((hb_codepoint_t) this->groups[i].endCharCode,
+      hb_codepoint_t start = ഇത്->groups[i].startCharCode;
+      hb_codepoint_t end = hb_min ((hb_codepoint_t) ഇത്->groups[i].endCharCode,
 				   (hb_codepoint_t) HB_UNICODE_MAX);
-      hb_codepoint_t gid = this->groups[i].glyphID;
-      if (!gid)
+      hb_codepoint_t gid = ഇത്->groups[i].glyphID;
+      എങ്കിൽ (!gid)
       {
 	/* Intention is: if (hb_is_same (T, CmapSubtableFormat13)) continue; */
-	if (! T::group_get_glyph (this->groups[i], end)) continue;
+	എങ്കിൽ (! T::group_get_glyph (ഇത്->groups[i], end)) തുടരുക;
 	start++;
 	gid++;
       }
-      if (unlikely ((unsigned int) gid >= num_glyphs)) continue;
-      if (unlikely ((unsigned int) (gid + end - start) >= num_glyphs))
-	end = start + (hb_codepoint_t) num_glyphs - gid;
+      എങ്കിൽ (unlikely ((unsigned പൂർണ്ണസംഖ്യ) gid >= അക്കം_glyphs)) തുടരുക;
+      എങ്കിൽ (unlikely ((unsigned പൂർണ്ണസംഖ്യ) (gid + end - start) >= അക്കം_glyphs))
+	end = start + (hb_codepoint_t) അക്കം_glyphs - gid;
 
       out->add_range (start, hb_min (end, 0x10FFFFu));
     }
   }
 
-  void collect_mapping (hb_set_t *unicodes, /* OUT */
+  ശൂന്യം collect_mapping (hb_set_t *unicodes, /* OUT */
 			hb_map_t *mapping, /* OUT */
-			unsigned num_glyphs) const
+			unsigned അക്കം_glyphs) സ്ഥിരം
   {
     hb_codepoint_t last_end = 0;
-    unsigned count = this->groups.len;
-    for (unsigned i = 0; i < count; i++)
+    unsigned എണ്ണം = ഇത്->groups.len;
+    വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++)
     {
-      hb_codepoint_t start = this->groups.arrayZ[i].startCharCode;
-      hb_codepoint_t end = hb_min ((hb_codepoint_t) this->groups.arrayZ[i].endCharCode,
+      hb_codepoint_t start = ഇത്->groups.arrayZ[i].startCharCode;
+      hb_codepoint_t end = hb_min ((hb_codepoint_t) ഇത്->groups.arrayZ[i].endCharCode,
 				   (hb_codepoint_t) HB_UNICODE_MAX);
-      if (unlikely (start > end || start < last_end)) {
+      എങ്കിൽ (unlikely (start > end || start < last_end)) {
         // Range is not in order and is invalid, skip it.
-        continue;
+        തുടരുക;
       }
       last_end = end;
 
 
-      hb_codepoint_t gid = this->groups.arrayZ[i].glyphID;
-      if (!gid)
+      hb_codepoint_t gid = ഇത്->groups.arrayZ[i].glyphID;
+      എങ്കിൽ (!gid)
       {
-        if (T::formatNumber == 13) continue;
+        എങ്കിൽ (T::format_സംഖ്യ == 13) തുടരുക;
 	start++;
 	gid++;
       }
-      if (unlikely ((unsigned int) gid >= num_glyphs)) continue;
-      if (unlikely ((unsigned int) (gid + end - start) >= num_glyphs))
-	end = start + (hb_codepoint_t) num_glyphs - gid;
+      എങ്കിൽ (unlikely ((unsigned പൂർണ്ണസംഖ്യ) gid >= അക്കം_glyphs)) തുടരുക;
+      എങ്കിൽ (unlikely ((unsigned പൂർണ്ണസംഖ്യ) (gid + end - start) >= അക്കം_glyphs))
+	end = start + (hb_codepoint_t) അക്കം_glyphs - gid;
 
       mapping->alloc (mapping->get_population () + end - start + 1);
 
       unicodes->add_range (start, end);
-      for (unsigned cp = start; cp <= end; cp++)
+      വേണ്ടി (unsigned cp = start; cp <= end; cp++)
       {
 	mapping->set (cp, gid);
         gid += T::increment;
@@ -943,55 +943,55 @@ struct CmapSubtableLongSegmented
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && groups.sanitize (c));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) && groups.sanitize (c));
   }
 
-  protected:
+  സംരക്ഷിത:
   HBUINT16	format;		/* Subtable format; set to 12. */
   HBUINT16	reserved;	/* Reserved; set to 0. */
   HBUINT32	length;		/* Byte length of this subtable. */
   HBUINT32	language;	/* Ignore. */
   SortedArray32Of<CmapSubtableLongGroup>
 		groups;		/* Groupings. */
-  public:
+  പൊതു:
   DEFINE_SIZE_ARRAY (16, groups);
 };
 
-struct CmapSubtableFormat12 : CmapSubtableLongSegmented<CmapSubtableFormat12>
+ഘടന CmapSubtableFormat12 : CmapSubtableLongSegmented<CmapSubtableFormat12>
 {
-  static constexpr int increment = 1;
-  static constexpr int formatNumber = 12;
+  സ്ഥിതം constexpr പൂർണ്ണസംഖ്യ increment = 1;
+  സ്ഥിതം constexpr പൂർണ്ണസംഖ്യ format_സംഖ്യ = 12;
 
-  static hb_codepoint_t group_get_glyph (const CmapSubtableLongGroup &group,
+  സ്ഥിതം hb_codepoint_t group_get_glyph (സ്ഥിരം CmapSubtableLongGroup &group,
 					 hb_codepoint_t u)
-  { return likely (group.startCharCode <= group.endCharCode) ?
+  { തിരികെ likely (group.startCharCode <= group.endCharCode) ?
 	   group.glyphID + (u - group.startCharCode) : 0; }
 
 
   template<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  void serialize (hb_serialize_context_t *c,
+  ശൂന്യം serialize (hb_serialize_context_t *c,
 		  Iterator it)
   {
-    if (!it) return;
+    എങ്കിൽ (!it) തിരികെ;
     unsigned table_initpos = c->length ();
-    if (unlikely (!c->extend_min (this))) return;
+    എങ്കിൽ (unlikely (!c->extend_min (ഇത്))) തിരികെ;
 
     hb_codepoint_t startCharCode = (hb_codepoint_t) -1, endCharCode = (hb_codepoint_t) -1;
     hb_codepoint_t glyphID = 0;
 
-    for (const auto& _ : +it)
+    വേണ്ടി (സ്ഥിരം auto& _ : +it)
     {
-      if (startCharCode == (hb_codepoint_t) -1)
+      എങ്കിൽ (startCharCode == (hb_codepoint_t) -1)
       {
 	startCharCode = _.first;
 	endCharCode = _.first;
 	glyphID = _.second;
       }
-      else if (!_is_gid_consecutive (endCharCode, startCharCode, glyphID, _.first, _.second))
+      അല്ലെങ്കിൽ എങ്കിൽ (!_is_gid_consecutive (endCharCode, startCharCode, glyphID, _.first, _.second))
       {
 	CmapSubtableLongGroup  grouprecord;
 	grouprecord.startCharCode = startCharCode;
@@ -1003,7 +1003,7 @@ struct CmapSubtableFormat12 : CmapSubtableLongSegmented<CmapSubtableFormat12>
 	endCharCode = _.first;
 	glyphID = _.second;
       }
-      else
+      അല്ലെങ്കിൽ
 	endCharCode = _.first;
     }
 
@@ -1013,293 +1013,293 @@ struct CmapSubtableFormat12 : CmapSubtableLongSegmented<CmapSubtableFormat12>
     record.glyphID = glyphID;
     c->copy<CmapSubtableLongGroup> (record);
 
-    this->format = 12;
-    this->reserved = 0;
-    this->length = c->length () - table_initpos;
-    this->groups.len = (this->length - min_size) / CmapSubtableLongGroup::static_size;
+    ഇത്->format = 12;
+    ഇത്->reserved = 0;
+    ഇത്->length = c->length () - table_initpos;
+    ഇത്->groups.len = (ഇത്->length - min_size) / CmapSubtableLongGroup::static_size;
   }
 
-  static size_t get_sub_table_size (const hb_sorted_vector_t<CmapSubtableLongGroup> &groups_data)
-  { return 16 + 12 * groups_data.length; }
+  സ്ഥിതം size_t get_sub_table_size (സ്ഥിരം hb_sorted_vector_t<CmapSubtableLongGroup> &groups_data)
+  { തിരികെ 16 + 12 * groups_data.length; }
 
-  private:
-  static bool _is_gid_consecutive (hb_codepoint_t endCharCode,
+  സ്വകാര്യ:
+  സ്ഥിതം തർക്കം _is_gid_consecutive (hb_codepoint_t endCharCode,
 				   hb_codepoint_t startCharCode,
 				   hb_codepoint_t glyphID,
 				   hb_codepoint_t cp,
 				   hb_codepoint_t new_gid)
   {
-    return (cp - 1 == endCharCode) &&
+    തിരികെ (cp - 1 == endCharCode) &&
 	new_gid == glyphID + (cp - startCharCode);
   }
 
 };
 
-struct CmapSubtableFormat13 : CmapSubtableLongSegmented<CmapSubtableFormat13>
+ഘടന CmapSubtableFormat13 : CmapSubtableLongSegmented<CmapSubtableFormat13>
 {
-  static constexpr int increment = 0;
-  static constexpr int formatNumber = 13;
+  സ്ഥിതം constexpr പൂർണ്ണസംഖ്യ increment = 0;
+  സ്ഥിതം constexpr പൂർണ്ണസംഖ്യ format_സംഖ്യ = 13;
 
-  static hb_codepoint_t group_get_glyph (const CmapSubtableLongGroup &group,
+  സ്ഥിതം hb_codepoint_t group_get_glyph (സ്ഥിരം CmapSubtableLongGroup &group,
 					 hb_codepoint_t u HB_UNUSED)
-  { return group.glyphID; }
+  { തിരികെ group.glyphID; }
 };
 
-typedef enum
+തരനിർവചനം എണ്ണൽ
 {
   GLYPH_VARIANT_NOT_FOUND = 0,
   GLYPH_VARIANT_FOUND = 1,
   GLYPH_VARIANT_USE_DEFAULT = 2
 } glyph_variant_t;
 
-struct UnicodeValueRange
+ഘടന Unicode_മൂല്യം_Range
 {
-  int cmp (const hb_codepoint_t &codepoint) const
+  പൂർണ്ണസംഖ്യ cmp (സ്ഥിരം hb_codepoint_t &codepoint) സ്ഥിരം
   {
-    if (codepoint < startUnicodeValue) return -1;
-    if (codepoint > startUnicodeValue + additionalCount) return +1;
-    return 0;
+    എങ്കിൽ (codepoint < start_Unicode_മൂല്യം) തിരികെ -1;
+    എങ്കിൽ (codepoint > start_Unicode_മൂല്യം + additional_എണ്ണം) തിരികെ +1;
+    തിരികെ 0;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
-  HBUINT24	startUnicodeValue;	/* First value in this range. */
-  HBUINT8	additionalCount;	/* Number of additional values in this
+  HBUINT24	start_Unicode_മൂല്യം;	/* First value in this range. */
+  HBUINT8	additional_എണ്ണം;	/* Number of additional values in this
 					 * range. */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (4);
 };
 
-struct DefaultUVS : SortedArray32Of<UnicodeValueRange>
+ഘടന DefaultUVS : SortedArray32Of<Unicode_മൂല്യം_Range>
 {
-  void collect_unicodes (hb_set_t *out) const
+  ശൂന്യം collect_unicodes (hb_set_t *out) സ്ഥിരം
   {
-    unsigned int count = len;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned പൂർണ്ണസംഖ്യ എണ്ണം = len;
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
     {
-      hb_codepoint_t first = arrayZ[i].startUnicodeValue;
-      hb_codepoint_t last = hb_min ((hb_codepoint_t) (first + arrayZ[i].additionalCount),
+      hb_codepoint_t first = arrayZ[i].start_Unicode_മൂല്യം;
+      hb_codepoint_t last = hb_min ((hb_codepoint_t) (first + arrayZ[i].additional_എണ്ണം),
 				    (hb_codepoint_t) HB_UNICODE_MAX);
       out->add_range (first, last);
     }
   }
 
   DefaultUVS* copy (hb_serialize_context_t *c,
-		    const hb_set_t *unicodes) const
+		    സ്ഥിരം hb_set_t *unicodes) സ്ഥിരം
   {
     auto *out = c->start_embed<DefaultUVS> ();
     auto snap = c->snapshot ();
 
     HBUINT32 len;
     len = 0;
-    if (unlikely (!c->copy<HBUINT32> (len))) return nullptr;
+    എങ്കിൽ (unlikely (!c->copy<HBUINT32> (len))) തിരികെ nullptr;
     unsigned init_len = c->length ();
 
-    if (this->len > unicodes->get_population () * hb_bit_storage ((unsigned) this->len))
+    എങ്കിൽ (ഇത്->len > unicodes->get_population () * hb_bit_storage ((unsigned) ഇത്->len))
     {
-      hb_codepoint_t start = HB_SET_VALUE_INVALID;
-      hb_codepoint_t end = HB_SET_VALUE_INVALID;
+      hb_codepoint_t start = HB_SET_മൂല്യം_INVALID;
+      hb_codepoint_t end = HB_SET_മൂല്യം_INVALID;
 
-      for (auto u : *unicodes)
+      വേണ്ടി (auto u : *unicodes)
       {
-        if (!as_array ().bsearch (u))
-	  continue;
-	if (start == HB_SET_VALUE_INVALID)
+        എങ്കിൽ (!as_array ().bsearch (u))
+	  തുടരുക;
+	എങ്കിൽ (start == HB_SET_മൂല്യം_INVALID)
 	{
 	  start = u;
 	  end = start - 1;
 	}
-	if (end + 1 != u || end - start == 255)
+	എങ്കിൽ (end + 1 != u || end - start == 255)
         {
-	  UnicodeValueRange rec;
-	  rec.startUnicodeValue = start;
-	  rec.additionalCount = end - start;
-	  c->copy<UnicodeValueRange> (rec);
+	  Unicode_മൂല്യം_Range rec;
+	  rec.start_Unicode_മൂല്യം = start;
+	  rec.additional_എണ്ണം = end - start;
+	  c->copy<Unicode_മൂല്യം_Range> (rec);
 	  start = u;
 	}
 	end = u;
       }
-      if (start != HB_SET_VALUE_INVALID)
+      എങ്കിൽ (start != HB_SET_മൂല്യം_INVALID)
       {
-	UnicodeValueRange rec;
-	rec.startUnicodeValue = start;
-	rec.additionalCount = end - start;
-	c->copy<UnicodeValueRange> (rec);
+	Unicode_മൂല്യം_Range rec;
+	rec.start_Unicode_മൂല്യം = start;
+	rec.additional_എണ്ണം = end - start;
+	c->copy<Unicode_മൂല്യം_Range> (rec);
       }
 
     }
-    else
+    അല്ലെങ്കിൽ
     {
-      hb_codepoint_t lastCode = HB_SET_VALUE_INVALID;
-      int count = -1;
+      hb_codepoint_t lastCode = HB_SET_മൂല്യം_INVALID;
+      പൂർണ്ണസംഖ്യ എണ്ണം = -1;
 
-      for (const UnicodeValueRange& _ : *this)
+      വേണ്ടി (സ്ഥിരം Unicode_മൂല്യം_Range& _ : *ഇത്)
       {
-	hb_codepoint_t curEntry = (hb_codepoint_t) (_.startUnicodeValue - 1);
-	hb_codepoint_t end = curEntry + _.additionalCount + 2;
+	hb_codepoint_t curEntry = (hb_codepoint_t) (_.start_Unicode_മൂല്യം - 1);
+	hb_codepoint_t end = curEntry + _.additional_എണ്ണം + 2;
 
-	for (; unicodes->next (&curEntry) && curEntry < end;)
+	വേണ്ടി (; unicodes->next (&curEntry) && curEntry < end;)
 	{
-	  count += 1;
-	  if (lastCode == HB_SET_VALUE_INVALID)
+	  എണ്ണം += 1;
+	  എങ്കിൽ (lastCode == HB_SET_മൂല്യം_INVALID)
 	    lastCode = curEntry;
-	  else if (lastCode + count != curEntry || count > 255)
+	  അല്ലെങ്കിൽ എങ്കിൽ (lastCode + എണ്ണം != curEntry || എണ്ണം > 255)
 	  {
-	    UnicodeValueRange rec;
-	    rec.startUnicodeValue = lastCode;
-	    rec.additionalCount = count - 1;
-	    c->copy<UnicodeValueRange> (rec);
+	    Unicode_മൂല്യം_Range rec;
+	    rec.start_Unicode_മൂല്യം = lastCode;
+	    rec.additional_എണ്ണം = എണ്ണം - 1;
+	    c->copy<Unicode_മൂല്യം_Range> (rec);
 
 	    lastCode = curEntry;
-	    count = 0;
+	    എണ്ണം = 0;
 	  }
 	}
       }
 
-      if (lastCode != HB_MAP_VALUE_INVALID)
+      എങ്കിൽ (lastCode != HB_MAP_മൂല്യം_INVALID)
       {
-	UnicodeValueRange rec;
-	rec.startUnicodeValue = lastCode;
-	rec.additionalCount = count;
-	c->copy<UnicodeValueRange> (rec);
+	Unicode_മൂല്യം_Range rec;
+	rec.start_Unicode_മൂല്യം = lastCode;
+	rec.additional_എണ്ണം = എണ്ണം;
+	c->copy<Unicode_മൂല്യം_Range> (rec);
       }
     }
 
-    if (c->length () - init_len == 0)
+    എങ്കിൽ (c->length () - init_len == 0)
     {
       c->revert (snap);
-      return nullptr;
+      തിരികെ nullptr;
     }
-    else
+    അല്ലെങ്കിൽ
     {
-      if (unlikely (!c->check_assign (out->len,
-                                      (c->length () - init_len) / UnicodeValueRange::static_size,
-                                      HB_SERIALIZE_ERROR_INT_OVERFLOW))) return nullptr;
-      return out;
+      എങ്കിൽ (unlikely (!c->check_assign (out->len,
+                                      (c->length () - init_len) / Unicode_മൂല്യം_Range::static_size,
+                                      HB_SERIALIZE_ERROR_INT_OVERFLOW))) തിരികെ nullptr;
+      തിരികെ out;
     }
   }
 
-  public:
-  DEFINE_SIZE_ARRAY (4, *this);
+  പൊതു:
+  DEFINE_SIZE_ARRAY (4, *ഇത്);
 };
 
 template <typename Types>
-struct UVSMapping
+ഘടന UVSMapping
 {
   using GlyphID = typename Types::HBGlyphID;
 
-  int cmp (const hb_codepoint_t &codepoint) const
-  { return unicodeValue.cmp (codepoint); }
+  പൂർണ്ണസംഖ്യ cmp (സ്ഥിരം hb_codepoint_t &codepoint) സ്ഥിരം
+  { തിരികെ unicode_മൂല്യം.cmp (codepoint); }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
-  HBUINT24	unicodeValue;	/* Base Unicode value of the UVS */
+  HBUINT24	unicode_മൂല്യം;	/* Base Unicode value of the UVS */
   GlyphID
 		glyphID;	/* Glyph ID of the UVS. */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (3 + GlyphID::static_size);
 };
 
 template <typename Types>
-struct NonDefaultUVS : SortedArray32Of<UVSMapping<Types>>
+ഘടന NonDefaultUVS : SortedArray32Of<UVSMapping<Types>>
 {
   using Mapping = UVSMapping<Types>;
 
-  void collect_unicodes (hb_set_t *out) const
+  ശൂന്യം collect_unicodes (hb_set_t *out) സ്ഥിരം
   {
-    for (const auto& a : this->as_array ())
-      out->add (a.unicodeValue);
+    വേണ്ടി (സ്ഥിരം auto& a : ഇത്->as_array ())
+      out->add (a.unicode_മൂല്യം);
   }
 
-  void collect_mapping (hb_set_t *unicodes, /* OUT */
-			hb_map_t *mapping /* OUT */) const
+  ശൂന്യം collect_mapping (hb_set_t *unicodes, /* OUT */
+			hb_map_t *mapping /* OUT */) സ്ഥിരം
   {
-    for (const auto& a : this->as_array ())
+    വേണ്ടി (സ്ഥിരം auto& a : ഇത്->as_array ())
     {
-      hb_codepoint_t unicode = a.unicodeValue;
+      hb_codepoint_t unicode = a.unicode_മൂല്യം;
       hb_codepoint_t glyphid = a.glyphID;
       unicodes->add (unicode);
       mapping->set (unicode, glyphid);
     }
   }
 
-  void closure_glyphs (const hb_set_t      *unicodes,
-		       hb_set_t            *glyphset) const
+  ശൂന്യം closure_glyphs (സ്ഥിരം hb_set_t      *unicodes,
+		       hb_set_t            *glyphset) സ്ഥിരം
   {
-    + this->as_array ()
-    | hb_filter (unicodes, &Mapping::unicodeValue)
+    + ഇത്->as_array ()
+    | hb_filter (unicodes, &Mapping::unicode_മൂല്യം)
     | hb_map (&Mapping::glyphID)
     | hb_sink (glyphset)
     ;
   }
 
   NonDefaultUVS* copy (hb_serialize_context_t *c,
-		       const hb_set_t *unicodes,
-		       const hb_set_t *glyphs_requested,
-		       const hb_map_t *glyph_map) const
+		       സ്ഥിരം hb_set_t *unicodes,
+		       സ്ഥിരം hb_set_t *glyphs_requested,
+		       സ്ഥിരം hb_map_t *glyph_map) സ്ഥിരം
   {
     auto *out = c->start_embed<NonDefaultUVS> ();
     auto it =
-    + this->as_array ()
-    | hb_filter ([&] (const Mapping& _)
+    + ഇത്->as_array ()
+    | hb_filter ([&] (സ്ഥിരം Mapping& _)
 		 {
-		   return unicodes->has (_.unicodeValue) || glyphs_requested->has (_.glyphID);
+		   തിരികെ unicodes->has (_.unicode_മൂല്യം) || glyphs_requested->has (_.glyphID);
 		 })
     ;
 
-    if (!it) return nullptr;
+    എങ്കിൽ (!it) തിരികെ nullptr;
 
     HBUINT32 len;
     len = it.len ();
-    if (unlikely (!c->copy<HBUINT32> (len))) return nullptr;
+    എങ്കിൽ (unlikely (!c->copy<HBUINT32> (len))) തിരികെ nullptr;
 
-    for (const Mapping& _ : it)
+    വേണ്ടി (സ്ഥിരം Mapping& _ : it)
     {
       Mapping mapping;
-      mapping.unicodeValue = _.unicodeValue;
+      mapping.unicode_മൂല്യം = _.unicode_മൂല്യം;
       mapping.glyphID = glyph_map->get (_.glyphID);
       c->copy<Mapping> (mapping);
     }
 
-    return out;
+    തിരികെ out;
   }
 
-  public:
-  DEFINE_SIZE_ARRAY (4, *this);
+  പൊതു:
+  DEFINE_SIZE_ARRAY (4, *ഇത്);
 };
 
 template <typename Types>
-struct VariationSelectorRecord
+ഘടന VariationSelectorRecord
 {
   glyph_variant_t get_glyph (hb_codepoint_t codepoint,
 			     hb_codepoint_t *glyph,
-			     const void *base) const
+			     സ്ഥിരം ശൂന്യം *base) സ്ഥിരം
   {
-    if ((base+defaultUVS).bfind (codepoint))
-      return GLYPH_VARIANT_USE_DEFAULT;
-    const UVSMapping<Types> &nonDefault = (base+nonDefaultUVS).bsearch (codepoint);
-    if (nonDefault.glyphID)
+    എങ്കിൽ ((base+defaultUVS).bfind (codepoint))
+      തിരികെ GLYPH_VARIANT_USE_DEFAULT;
+    സ്ഥിരം UVSMapping<Types> &nonDefault = (base+nonDefaultUVS).bsearch (codepoint);
+    എങ്കിൽ (nonDefault.glyphID)
     {
       *glyph = nonDefault.glyphID;
-       return GLYPH_VARIANT_FOUND;
+       തിരികെ GLYPH_VARIANT_FOUND;
     }
-    return GLYPH_VARIANT_NOT_FOUND;
+    തിരികെ GLYPH_VARIANT_NOT_FOUND;
   }
 
-  VariationSelectorRecord(const VariationSelectorRecord& other)
+  VariationSelectorRecord(സ്ഥിരം VariationSelectorRecord& other)
   {
-    *this = other;
+    *ഇത് = other;
   }
 
-  void operator= (const VariationSelectorRecord& other)
+  ശൂന്യം operator= (സ്ഥിരം VariationSelectorRecord& other)
   {
     varSelector = other.varSelector;
     HBUINT32 offset = other.defaultUVS;
@@ -1308,68 +1308,68 @@ struct VariationSelectorRecord
     nonDefaultUVS = offset;
   }
 
-  void collect_unicodes (hb_set_t *out, const void *base) const
+  ശൂന്യം collect_unicodes (hb_set_t *out, സ്ഥിരം ശൂന്യം *base) സ്ഥിരം
   {
     (base+defaultUVS).collect_unicodes (out);
     (base+nonDefaultUVS).collect_unicodes (out);
   }
 
-  void collect_mapping (const void *base,
+  ശൂന്യം collect_mapping (സ്ഥിരം ശൂന്യം *base,
 			hb_set_t *unicodes, /* OUT */
-			hb_map_t *mapping /* OUT */) const
+			hb_map_t *mapping /* OUT */) സ്ഥിരം
   {
     (base+defaultUVS).collect_unicodes (unicodes);
     (base+nonDefaultUVS).collect_mapping (unicodes, mapping);
   }
 
-  int cmp (const hb_codepoint_t &variation_selector) const
-  { return varSelector.cmp (variation_selector); }
+  പൂർണ്ണസംഖ്യ cmp (സ്ഥിരം hb_codepoint_t &variation_selector) സ്ഥിരം
+  { തിരികെ varSelector.cmp (variation_selector); }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  തർക്കം sanitize (hb_sanitize_context_t *c, സ്ഥിരം ശൂന്യം *base) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) &&
 		  defaultUVS.sanitize (c, base) &&
 		  nonDefaultUVS.sanitize (c, base));
   }
 
   hb_pair_t<unsigned, unsigned>
   copy (hb_serialize_context_t *c,
-	const hb_set_t *unicodes,
-	const hb_set_t *glyphs_requested,
-	const hb_map_t *glyph_map,
-	const void *base) const
+	സ്ഥിരം hb_set_t *unicodes,
+	സ്ഥിരം hb_set_t *glyphs_requested,
+	സ്ഥിരം hb_map_t *glyph_map,
+	സ്ഥിരം ശൂന്യം *base) സ്ഥിരം
   {
     auto snap = c->snapshot ();
-    auto *out = c->embed<VariationSelectorRecord> (*this);
-    if (unlikely (!out)) return hb_pair (0, 0);
+    auto *out = c->embed<VariationSelectorRecord> (*ഇത്);
+    എങ്കിൽ (unlikely (!out)) തിരികെ hb_pair (0, 0);
 
     out->defaultUVS = 0;
     out->nonDefaultUVS = 0;
 
     unsigned non_default_uvs_objidx = 0;
-    if (nonDefaultUVS != 0)
+    എങ്കിൽ (nonDefaultUVS != 0)
     {
       c->push ();
-      if (c->copy (base+nonDefaultUVS, unicodes, glyphs_requested, glyph_map))
-	non_default_uvs_objidx = c->pop_pack ();
-      else c->pop_discard ();
+      എങ്കിൽ (c->copy (base+nonDefaultUVS, unicodes, glyphs_requested, glyph_map))
+	non_default_uvs_objidx = c->എടുക്കുക_pack ();
+      അല്ലെങ്കിൽ c->എടുക്കുക_discard ();
     }
 
     unsigned default_uvs_objidx = 0;
-    if (defaultUVS != 0)
+    എങ്കിൽ (defaultUVS != 0)
     {
       c->push ();
-      if (c->copy (base+defaultUVS, unicodes))
-	default_uvs_objidx = c->pop_pack ();
-      else c->pop_discard ();
+      എങ്കിൽ (c->copy (base+defaultUVS, unicodes))
+	default_uvs_objidx = c->എടുക്കുക_pack ();
+      അല്ലെങ്കിൽ c->എടുക്കുക_discard ();
     }
 
 
-    if (!default_uvs_objidx && !non_default_uvs_objidx)
+    എങ്കിൽ (!default_uvs_objidx && !non_default_uvs_objidx)
       c->revert (snap);
 
-    return hb_pair (default_uvs_objidx, non_default_uvs_objidx);
+    തിരികെ hb_pair (default_uvs_objidx, non_default_uvs_objidx);
   }
 
   HBUINT24	varSelector;	/* Variation selector. */
@@ -1377,45 +1377,45 @@ struct VariationSelectorRecord
 		defaultUVS;	/* Offset to Default UVS Table.  May be 0. */
   Offset32To<NonDefaultUVS<Types>>
 		nonDefaultUVS;	/* Offset to Non-Default UVS Table.  May be 0. */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (11);
 };
 
 template <typename Types>
-struct CmapSubtableFormat14_15
+ഘടന CmapSubtableFormat14_15
 {
-  static constexpr unsigned format_value = Types::size == 2 ? 14 : 15;
+  സ്ഥിതം constexpr unsigned format_മൂല്യം = Types::size == 2 ? 14 : 15;
   using Record = VariationSelectorRecord<Types>;
   using NonDefault = NonDefaultUVS<Types>;
 
   glyph_variant_t get_glyph_variant (hb_codepoint_t codepoint,
 				     hb_codepoint_t variation_selector,
-				     hb_codepoint_t *glyph) const
-  { return record.bsearch (variation_selector).get_glyph (codepoint, glyph, this); }
+				     hb_codepoint_t *glyph) സ്ഥിരം
+  { തിരികെ record.bsearch (variation_selector).get_glyph (codepoint, glyph, ഇത്); }
 
-  void collect_variation_selectors (hb_set_t *out) const
+  ശൂന്യം collect_variation_selectors (hb_set_t *out) സ്ഥിരം
   {
-    for (const auto& a : record.as_array ())
+    വേണ്ടി (സ്ഥിരം auto& a : record.as_array ())
       out->add (a.varSelector);
   }
-  void collect_variation_unicodes (hb_codepoint_t variation_selector,
-				   hb_set_t *out) const
-  { record.bsearch (variation_selector).collect_unicodes (out, this); }
+  ശൂന്യം collect_variation_unicodes (hb_codepoint_t variation_selector,
+				   hb_set_t *out) സ്ഥിരം
+  { record.bsearch (variation_selector).collect_unicodes (out, ഇത്); }
 
-  void serialize (hb_serialize_context_t *c,
-		  const hb_set_t *unicodes,
-		  const hb_set_t *glyphs_requested,
-		  const hb_map_t *glyph_map,
-		  const void *base)
+  ശൂന്യം serialize (hb_serialize_context_t *c,
+		  സ്ഥിരം hb_set_t *unicodes,
+		  സ്ഥിരം hb_set_t *glyphs_requested,
+		  സ്ഥിരം hb_map_t *glyph_map,
+		  സ്ഥിരം ശൂന്യം *base)
   {
     auto snap = c->snapshot ();
     unsigned table_initpos = c->length ();
-    const char* init_tail = c->tail;
+    സ്ഥിരം അക്ഷരം* init_tail = c->tail;
 
-    if (unlikely (!c->extend_min (this))) return;
-    this->format = format_value;
+    എങ്കിൽ (unlikely (!c->extend_min (ഇത്))) തിരികെ;
+    ഇത്->format = format_മൂല്യം;
 
-    auto src_tbl = reinterpret_cast<const CmapSubtableFormat14_15*> (base);
+    auto src_tbl = reinterpret_cast<സ്ഥിരം CmapSubtableFormat14_15*> (base);
 
     /*
      * Some versions of OTS require that offsets are in order. Due to the use
@@ -1431,29 +1431,29 @@ struct CmapSubtableFormat14_15
      * records after everything is finalized.
      */
     hb_vector_t<hb_pair_t<unsigned, unsigned>> obj_indices;
-    for (int i = src_tbl->record.len - 1; i >= 0; i--)
+    വേണ്ടി (പൂർണ്ണസംഖ്യ i = src_tbl->record.len - 1; i >= 0; i--)
     {
-      if (!unicodes->has(src_tbl->record[i].varSelector))
-        continue;
+      എങ്കിൽ (!unicodes->has(src_tbl->record[i].varSelector))
+        തുടരുക;
 
       hb_pair_t<unsigned, unsigned> result = src_tbl->record[i].copy (c, unicodes, glyphs_requested, glyph_map, base);
-      if (result.first || result.second)
+      എങ്കിൽ (result.first || result.second)
 	obj_indices.push (result);
     }
 
-    if (c->length () - table_initpos == CmapSubtableFormat14_15::min_size)
+    എങ്കിൽ (c->length () - table_initpos == CmapSubtableFormat14_15::min_size)
     {
       c->revert (snap);
-      return;
+      തിരികെ;
     }
 
-    if (unlikely (!c->check_success (!obj_indices.in_error ())))
-      return;
+    എങ്കിൽ (unlikely (!c->check_success (!obj_indices.in_error ())))
+      തിരികെ;
 
-    int tail_len = init_tail - c->tail;
-    c->check_assign (this->length, c->length () - table_initpos + tail_len,
+    പൂർണ്ണസംഖ്യ tail_len = init_tail - c->tail;
+    c->check_assign (ഇത്->length, c->length () - table_initpos + tail_len,
                      HB_SERIALIZE_ERROR_INT_OVERFLOW);
-    c->check_assign (this->record.len,
+    c->check_assign (ഇത്->record.len,
 		     (c->length () - table_initpos - CmapSubtableFormat14_15::min_size) /
 		     Record::static_size,
                      HB_SERIALIZE_ERROR_INT_OVERFLOW);
@@ -1466,247 +1466,247 @@ struct CmapSubtableFormat14_15
     _add_links_to_variation_records (c, obj_indices);
   }
 
-  void _reverse_variation_records ()
+  ശൂന്യം _reverse_variation_records ()
   {
     record.as_array ().reverse ();
   }
 
-  void _add_links_to_variation_records (hb_serialize_context_t *c,
-					const hb_vector_t<hb_pair_t<unsigned, unsigned>>& obj_indices)
+  ശൂന്യം _add_links_to_variation_records (hb_serialize_context_t *c,
+					സ്ഥിരം hb_vector_t<hb_pair_t<unsigned, unsigned>>& obj_indices)
   {
-    for (unsigned i = 0; i < obj_indices.length; i++)
+    വേണ്ടി (unsigned i = 0; i < obj_indices.length; i++)
     {
       /*
        * Since the record array has been reversed (see comments in copy())
        * but obj_indices has not been, the indices at obj_indices[i]
        * are for the variation record at record[j].
        */
-      int j = obj_indices.length - 1 - i;
+      പൂർണ്ണസംഖ്യ j = obj_indices.length - 1 - i;
       c->add_link (record[j].defaultUVS, obj_indices[i].first);
       c->add_link (record[j].nonDefaultUVS, obj_indices[i].second);
     }
   }
 
-  void closure_glyphs (const hb_set_t      *unicodes,
-		       hb_set_t            *glyphset) const
+  ശൂന്യം closure_glyphs (സ്ഥിരം hb_set_t      *unicodes,
+		       hb_set_t            *glyphset) സ്ഥിരം
   {
     + hb_iter (record)
     | hb_filter (hb_bool, &Record::nonDefaultUVS)
     | hb_filter (unicodes, &Record::varSelector)
     | hb_map (&Record::nonDefaultUVS)
-    | hb_map (hb_add (this))
-    | hb_apply ([=] (const NonDefault& _) { _.closure_glyphs (unicodes, glyphset); })
+    | hb_map (hb_add (ഇത്))
+    | hb_apply ([=] (സ്ഥിരം NonDefault& _) { _.closure_glyphs (unicodes, glyphset); })
     ;
   }
 
-  void collect_unicodes (hb_set_t *out) const
+  ശൂന്യം collect_unicodes (hb_set_t *out) സ്ഥിരം
   {
-    for (const Record& _ : record)
-      _.collect_unicodes (out, this);
+    വേണ്ടി (സ്ഥിരം Record& _ : record)
+      _.collect_unicodes (out, ഇത്);
   }
 
-  void collect_mapping (hb_set_t *unicodes, /* OUT */
-			hb_map_t *mapping /* OUT */) const
+  ശൂന്യം collect_mapping (hb_set_t *unicodes, /* OUT */
+			hb_map_t *mapping /* OUT */) സ്ഥിരം
   {
-    for (const Record& _ : record)
-      _.collect_mapping (this, unicodes, mapping);
+    വേണ്ടി (സ്ഥിരം Record& _ : record)
+      _.collect_mapping (ഇത്, unicodes, mapping);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  record.sanitize (c, this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) &&
+		  record.sanitize (c, ഇത്));
   }
 
-  protected:
+  സംരക്ഷിത:
   HBUINT16	format;		/* Format number is set to 14 or 15. */
   HBUINT32	length;		/* Byte length of this subtable. */
   SortedArray32Of<Record>
 		record;		/* Variation selector records; sorted
 				 * in increasing order of `varSelector'. */
-  public:
+  പൊതു:
   DEFINE_SIZE_ARRAY (10, record);
 };
 
-struct CmapSubtable
+ഘടന CmapSubtable
 {
   /* Note: We intentionally do NOT implement subtable formats 2 and 8. */
 
-  bool is_variation_selector () const
+  തർക്കം is_variation_selector () സ്ഥിരം
   {
-    switch (u.format.v) {
-    case 14:
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 14:
 #ifndef HB_NO_BEYOND_64K
-    case 15:
+    അവസ്ഥ 15:
 #endif
-      return true;
-    default:
-      return false;
+      തിരികെ സത്യം;
+    സ്ഥിരസ്ഥിതി:
+      തിരികെ അസത്യം;
     }
   }
 
   glyph_variant_t get_glyph_variant (hb_codepoint_t codepoint,
 				     hb_codepoint_t variation_selector,
-				     hb_codepoint_t *glyph) const
+				     hb_codepoint_t *glyph) സ്ഥിരം
   {
-    switch (u.format.v) {
-    case 14: hb_barrier (); return u.format14.get_glyph_variant (codepoint, variation_selector, glyph);
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 14: hb_barrier (); തിരികെ u.format14.get_glyph_variant (codepoint, variation_selector, glyph);
 #ifndef HB_NO_BEYOND_64K
-    case 15: hb_barrier (); return u.format15.get_glyph_variant (codepoint, variation_selector, glyph);
+    അവസ്ഥ 15: hb_barrier (); തിരികെ u.format15.get_glyph_variant (codepoint, variation_selector, glyph);
 #endif
-    default: return GLYPH_VARIANT_NOT_FOUND;
+    സ്ഥിരസ്ഥിതി: തിരികെ GLYPH_VARIANT_NOT_FOUND;
     }
   }
 
-  void collect_variation_selectors (hb_set_t *out) const
+  ശൂന്യം collect_variation_selectors (hb_set_t *out) സ്ഥിരം
   {
-    switch (u.format.v) {
-    case 14: hb_barrier (); u.format14.collect_variation_selectors (out); return;
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 14: hb_barrier (); u.format14.collect_variation_selectors (out); തിരികെ;
 #ifndef HB_NO_BEYOND_64K
-    case 15: hb_barrier (); u.format15.collect_variation_selectors (out); return;
+    അവസ്ഥ 15: hb_barrier (); u.format15.collect_variation_selectors (out); തിരികെ;
 #endif
-    default: return;
+    സ്ഥിരസ്ഥിതി: തിരികെ;
     }
   }
 
-  void collect_variation_unicodes (hb_codepoint_t variation_selector,
-				    hb_set_t *out) const
+  ശൂന്യം collect_variation_unicodes (hb_codepoint_t variation_selector,
+				    hb_set_t *out) സ്ഥിരം
   {
-    switch (u.format.v) {
-    case 14: hb_barrier (); u.format14.collect_variation_unicodes (variation_selector, out); return;
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 14: hb_barrier (); u.format14.collect_variation_unicodes (variation_selector, out); തിരികെ;
 #ifndef HB_NO_BEYOND_64K
-    case 15: hb_barrier (); u.format15.collect_variation_unicodes (variation_selector, out); return;
+    അവസ്ഥ 15: hb_barrier (); u.format15.collect_variation_unicodes (variation_selector, out); തിരികെ;
 #endif
-    default: return;
+    സ്ഥിരസ്ഥിതി: തിരികെ;
     }
   }
 
-  void closure_glyphs (const hb_set_t *unicodes, hb_set_t *glyphset) const
+  ശൂന്യം closure_glyphs (സ്ഥിരം hb_set_t *unicodes, hb_set_t *glyphset) സ്ഥിരം
   {
-    switch (u.format.v) {
-    case 14: hb_barrier (); u.format14.closure_glyphs (unicodes, glyphset); return;
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 14: hb_barrier (); u.format14.closure_glyphs (unicodes, glyphset); തിരികെ;
 #ifndef HB_NO_BEYOND_64K
-    case 15: hb_barrier (); u.format15.closure_glyphs (unicodes, glyphset); return;
+    അവസ്ഥ 15: hb_barrier (); u.format15.closure_glyphs (unicodes, glyphset); തിരികെ;
 #endif
-    default: return;
+    സ്ഥിരസ്ഥിതി: തിരികെ;
     }
   }
 
-  bool get_glyph (hb_codepoint_t codepoint,
+  തർക്കം get_glyph (hb_codepoint_t codepoint,
 		  hb_codepoint_t *glyph,
-		  unsigned int subtable_data_size = 0) const
+		  unsigned പൂർണ്ണസംഖ്യ subtable_data_size = 0) സ്ഥിരം
   {
-    switch (u.format.v) {
-    case  0: hb_barrier (); return u.format0 .get_glyph (codepoint, glyph);
-    case  4: hb_barrier (); return subtable_data_size
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ  0: hb_barrier (); തിരികെ u.format0 .get_glyph (codepoint, glyph);
+    അവസ്ഥ  4: hb_barrier (); തിരികെ subtable_data_size
 				      ? u.format4.get_glyph (codepoint, glyph, subtable_data_size)
-				      : false;
-    case  6: hb_barrier (); return u.format6 .get_glyph (codepoint, glyph);
-    case 10: hb_barrier (); return u.format10.get_glyph (codepoint, glyph);
-    case 12: hb_barrier (); return u.format12.get_glyph (codepoint, glyph);
-    case 13: hb_barrier (); return u.format13.get_glyph (codepoint, glyph);
-    case 14:
-    default: return false;
+				      : അസത്യം;
+    അവസ്ഥ  6: hb_barrier (); തിരികെ u.format6 .get_glyph (codepoint, glyph);
+    അവസ്ഥ 10: hb_barrier (); തിരികെ u.format10.get_glyph (codepoint, glyph);
+    അവസ്ഥ 12: hb_barrier (); തിരികെ u.format12.get_glyph (codepoint, glyph);
+    അവസ്ഥ 13: hb_barrier (); തിരികെ u.format13.get_glyph (codepoint, glyph);
+    അവസ്ഥ 14:
+    സ്ഥിരസ്ഥിതി: തിരികെ അസത്യം;
     }
   }
-  void collect_unicodes (hb_set_t *out,
-			 unsigned int num_glyphs = UINT_MAX,
-			 unsigned int subtable_data_size = 0) const
+  ശൂന്യം collect_unicodes (hb_set_t *out,
+			 unsigned പൂർണ്ണസംഖ്യ അക്കം_glyphs = UINT_MAX,
+			 unsigned പൂർണ്ണസംഖ്യ subtable_data_size = 0) സ്ഥിരം
   {
-    switch (u.format.v) {
-    case  0: hb_barrier (); u.format0 .collect_unicodes (out); return;
-    case  4: hb_barrier (); if (subtable_data_size)
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ  0: hb_barrier (); u.format0 .collect_unicodes (out); തിരികെ;
+    അവസ്ഥ  4: hb_barrier (); എങ്കിൽ (subtable_data_size)
 			      u.format4.collect_unicodes (out, subtable_data_size);
-			    else
+			    അല്ലെങ്കിൽ
 			      u.format4.collect_unicodes (out);
-			    return;
-    case  6: hb_barrier (); u.format6 .collect_unicodes (out); return;
-    case 10: hb_barrier (); u.format10.collect_unicodes (out); return;
-    case 12: hb_barrier (); u.format12.collect_unicodes (out, num_glyphs); return;
-    case 13: hb_barrier (); u.format13.collect_unicodes (out, num_glyphs); return;
-    case 14:
-    default: return;
+			    തിരികെ;
+    അവസ്ഥ  6: hb_barrier (); u.format6 .collect_unicodes (out); തിരികെ;
+    അവസ്ഥ 10: hb_barrier (); u.format10.collect_unicodes (out); തിരികെ;
+    അവസ്ഥ 12: hb_barrier (); u.format12.collect_unicodes (out, അക്കം_glyphs); തിരികെ;
+    അവസ്ഥ 13: hb_barrier (); u.format13.collect_unicodes (out, അക്കം_glyphs); തിരികെ;
+    അവസ്ഥ 14:
+    സ്ഥിരസ്ഥിതി: തിരികെ;
     }
   }
 
-  void collect_mapping (hb_set_t *unicodes, /* OUT */
+  ശൂന്യം collect_mapping (hb_set_t *unicodes, /* OUT */
 			hb_map_t *mapping, /* OUT */
-			unsigned num_glyphs = UINT_MAX,
-			unsigned int subtable_data_size = 0) const
+			unsigned അക്കം_glyphs = UINT_MAX,
+			unsigned പൂർണ്ണസംഖ്യ subtable_data_size = 0) സ്ഥിരം
   {
-    switch (u.format.v) {
-    case  0: hb_barrier (); u.format0 .collect_mapping (unicodes, mapping); return;
-    case  4: hb_barrier (); if (subtable_data_size)
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ  0: hb_barrier (); u.format0 .collect_mapping (unicodes, mapping); തിരികെ;
+    അവസ്ഥ  4: hb_barrier (); എങ്കിൽ (subtable_data_size)
 			      u.format4.collect_mapping (unicodes, mapping, subtable_data_size);
-			    else
+			    അല്ലെങ്കിൽ
 			      u.format4.collect_mapping (unicodes, mapping);
-			    return;
-    case  6: hb_barrier (); u.format6 .collect_mapping (unicodes, mapping); return;
-    case 10: hb_barrier (); u.format10.collect_mapping (unicodes, mapping); return;
-    case 12: hb_barrier (); u.format12.collect_mapping (unicodes, mapping, num_glyphs); return;
-    case 13: hb_barrier (); u.format13.collect_mapping (unicodes, mapping, num_glyphs); return;
-    case 14:
-    default: return;
+			    തിരികെ;
+    അവസ്ഥ  6: hb_barrier (); u.format6 .collect_mapping (unicodes, mapping); തിരികെ;
+    അവസ്ഥ 10: hb_barrier (); u.format10.collect_mapping (unicodes, mapping); തിരികെ;
+    അവസ്ഥ 12: hb_barrier (); u.format12.collect_mapping (unicodes, mapping, അക്കം_glyphs); തിരികെ;
+    അവസ്ഥ 13: hb_barrier (); u.format13.collect_mapping (unicodes, mapping, അക്കം_glyphs); തിരികെ;
+    അവസ്ഥ 14:
+    സ്ഥിരസ്ഥിതി: തിരികെ;
     }
   }
 
-  unsigned get_language () const
+  unsigned get_language () സ്ഥിരം
   {
-    switch (u.format.v) {
-    case  0: hb_barrier (); return u.format0 .get_language ();
-    case  4: hb_barrier (); return u.format4 .get_language ();
-    case  6: hb_barrier (); return u.format6 .get_language ();
-    case 10: hb_barrier (); return u.format10.get_language ();
-    case 12: hb_barrier (); return u.format12.get_language ();
-    case 13: hb_barrier (); return u.format13.get_language ();
-    case 14:
-    default: return 0;
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ  0: hb_barrier (); തിരികെ u.format0 .get_language ();
+    അവസ്ഥ  4: hb_barrier (); തിരികെ u.format4 .get_language ();
+    അവസ്ഥ  6: hb_barrier (); തിരികെ u.format6 .get_language ();
+    അവസ്ഥ 10: hb_barrier (); തിരികെ u.format10.get_language ();
+    അവസ്ഥ 12: hb_barrier (); തിരികെ u.format12.get_language ();
+    അവസ്ഥ 13: hb_barrier (); തിരികെ u.format13.get_language ();
+    അവസ്ഥ 14:
+    സ്ഥിരസ്ഥിതി: തിരികെ 0;
     }
   }
 
   template<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  void serialize (hb_serialize_context_t *c,
+  ശൂന്യം serialize (hb_serialize_context_t *c,
 		  Iterator it,
 		  unsigned format,
-		  const hb_subset_plan_t *plan,
-		  const void *base)
+		  സ്ഥിരം hb_subset_plan_t *plan,
+		  സ്ഥിരം ശൂന്യം *base)
   {
-    switch (format) {
-    case  4: hb_barrier (); return u.format4.serialize (c, it);
-    case 12: hb_barrier (); return u.format12.serialize (c, it);
-    case 14: hb_barrier (); return u.format14.serialize (c, &plan->unicodes, &plan->glyphs_requested, plan->glyph_map, base);
+    തിരഞ്ഞെടുപ്പ് (format) {
+    അവസ്ഥ  4: hb_barrier (); തിരികെ u.format4.serialize (c, it);
+    അവസ്ഥ 12: hb_barrier (); തിരികെ u.format12.serialize (c, it);
+    അവസ്ഥ 14: hb_barrier (); തിരികെ u.format14.serialize (c, &plan->unicodes, &plan->glyphs_requested, plan->glyph_map, base);
 #ifndef HB_NO_BEYOND_64K
-    case 15: hb_barrier (); return u.format15.serialize (c, &plan->unicodes, &plan->glyphs_requested, plan->glyph_map, base);
+    അവസ്ഥ 15: hb_barrier (); തിരികെ u.format15.serialize (c, &plan->unicodes, &plan->glyphs_requested, plan->glyph_map, base);
 #endif
-    default: return;
+    സ്ഥിരസ്ഥിതി: തിരികെ;
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (ഇത്);
+    എങ്കിൽ (!u.format.v.sanitize (c)) return_trace (അസത്യം);
     hb_barrier ();
-    switch (u.format.v) {
-    case  0: hb_barrier (); return_trace (u.format0 .sanitize (c));
-    case  4: hb_barrier (); return_trace (u.format4 .sanitize (c));
-    case  6: hb_barrier (); return_trace (u.format6 .sanitize (c));
-    case 10: hb_barrier (); return_trace (u.format10.sanitize (c));
-    case 12: hb_barrier (); return_trace (u.format12.sanitize (c));
-    case 13: hb_barrier (); return_trace (u.format13.sanitize (c));
-    case 14: hb_barrier (); return_trace (u.format14.sanitize (c));
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ  0: hb_barrier (); return_trace (u.format0 .sanitize (c));
+    അവസ്ഥ  4: hb_barrier (); return_trace (u.format4 .sanitize (c));
+    അവസ്ഥ  6: hb_barrier (); return_trace (u.format6 .sanitize (c));
+    അവസ്ഥ 10: hb_barrier (); return_trace (u.format10.sanitize (c));
+    അവസ്ഥ 12: hb_barrier (); return_trace (u.format12.sanitize (c));
+    അവസ്ഥ 13: hb_barrier (); return_trace (u.format13.sanitize (c));
+    അവസ്ഥ 14: hb_barrier (); return_trace (u.format14.sanitize (c));
 #ifndef HB_NO_BEYOND_64K
-    case 15: hb_barrier (); return_trace (u.format15.sanitize (c));
+    അവസ്ഥ 15: hb_barrier (); return_trace (u.format15.sanitize (c));
 #endif
-    default:return_trace (true);
+    സ്ഥിരസ്ഥിതി:return_trace (സത്യം);
     }
   }
 
-  public:
-  union {
-  struct { HBUINT16 v; }	format;		/* Format identifier */
+  പൊതു:
+  സംഘം {
+  ഘടന { HBUINT16 v; }	format;		/* Format identifier */
   CmapSubtableFormat0	format0;
   CmapSubtableFormat4	format4;
   CmapSubtableFormat6	format6;
@@ -1720,30 +1720,30 @@ struct CmapSubtable
 			format15;
 #endif
   } u;
-  public:
+  പൊതു:
   DEFINE_SIZE_UNION (2, format.v);
 };
 
 
-struct EncodingRecord
+ഘടന EncodingRecord
 {
-  int cmp (const EncodingRecord &other) const
+  പൂർണ്ണസംഖ്യ cmp (സ്ഥിരം EncodingRecord &other) സ്ഥിരം
   {
-    int ret;
+    പൂർണ്ണസംഖ്യ ret;
     ret = platformID.cmp (other.platformID);
-    if (ret) return ret;
-    if (other.encodingID != 0xFFFF)
+    എങ്കിൽ (ret) തിരികെ ret;
+    എങ്കിൽ (other.encodingID != 0xFFFF)
     {
       ret = encodingID.cmp (other.encodingID);
-      if (ret) return ret;
+      എങ്കിൽ (ret) തിരികെ ret;
     }
-    return 0;
+    തിരികെ 0;
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  തർക്കം sanitize (hb_sanitize_context_t *c, സ്ഥിരം ശൂന്യം *base) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) &&
 		  subtable.sanitize (c, base));
   }
 
@@ -1752,26 +1752,26 @@ struct EncodingRecord
   EncodingRecord* copy (hb_serialize_context_t *c,
 			Iterator it,
 			unsigned format,
-			const void *base,
-			const hb_subset_plan_t *plan,
-			/* INOUT */ unsigned *objidx) const
+			സ്ഥിരം ശൂന്യം *base,
+			സ്ഥിരം hb_subset_plan_t *plan,
+			/* INOUT */ unsigned *objidx) സ്ഥിരം
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ഇത്);
     auto snap = c->snapshot ();
-    auto *out = c->embed (this);
-    if (unlikely (!out)) return_trace (nullptr);
+    auto *out = c->embed (ഇത്);
+    എങ്കിൽ (unlikely (!out)) return_trace (nullptr);
     out->subtable = 0;
 
-    if (*objidx == 0)
+    എങ്കിൽ (*objidx == 0)
     {
       CmapSubtable *cmapsubtable = c->push<CmapSubtable> ();
       unsigned origin_length = c->length ();
       cmapsubtable->serialize (c, it, format, plan, &(base+subtable));
-      if (c->length () > origin_length && !c->in_error()) *objidx = c->pop_pack ();
-      else c->pop_discard ();
+      എങ്കിൽ (c->length () > origin_length && !c->in_error()) *objidx = c->എടുക്കുക_pack ();
+      അല്ലെങ്കിൽ c->എടുക്കുക_discard ();
     }
 
-    if (*objidx == 0)
+    എങ്കിൽ (*objidx == 0)
     {
       c->revert (snap);
       return_trace (nullptr);
@@ -1785,53 +1785,53 @@ struct EncodingRecord
   HBUINT16	encodingID;	/* Platform-specific encoding ID. */
   Offset32To<CmapSubtable>
 		subtable;	/* Byte offset from beginning of table to the subtable for this encoding. */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (8);
 };
 
-struct cmap;
+ഘടന cmap;
 
-struct SubtableUnicodesCache {
+ഘടന SubtableUnicodesCache {
 
- private:
+ സ്വകാര്യ:
   hb_blob_ptr_t<cmap> base_blob;
-  const char* base;
-  unsigned int table_length;
+  സ്ഥിരം അക്ഷരം* base;
+  unsigned പൂർണ്ണസംഖ്യ table_length;
   hb_hashmap_t<unsigned, hb::unique_ptr<hb_set_t>> cached_unicodes;
 
- public:
+ പൊതു:
 
-  static SubtableUnicodesCache* create (hb_blob_ptr_t<cmap> source_table)
+  സ്ഥിതം SubtableUnicodesCache* create (hb_blob_ptr_t<cmap> source_table)
   {
     SubtableUnicodesCache* cache =
-        (SubtableUnicodesCache*) hb_malloc (sizeof(SubtableUnicodesCache));
+        (SubtableUnicodesCache*) hb_malloc (വലുപ്പം(SubtableUnicodesCache));
 
-    if (unlikely (!cache))
-      return nullptr;
+    എങ്കിൽ (unlikely (!cache))
+      തിരികെ nullptr;
 
-    new (cache) SubtableUnicodesCache (source_table);
-    return cache;
+    പുതിയ (cache) SubtableUnicodesCache (source_table);
+    തിരികെ cache;
   }
 
-  static void destroy (void* value) {
-    if (!value) return;
+  സ്ഥിതം ശൂന്യം destroy (ശൂന്യം* value) {
+    എങ്കിൽ (!value) തിരികെ;
 
     SubtableUnicodesCache* cache = (SubtableUnicodesCache*) value;
     cache->~SubtableUnicodesCache ();
     hb_free (cache);
   }
 
-  SubtableUnicodesCache(const void* cmap_base,
-			unsigned int table_length_ = 0)
+  SubtableUnicodesCache(സ്ഥിരം ശൂന്യം* cmap_base,
+			unsigned പൂർണ്ണസംഖ്യ table_length_ = 0)
       : base_blob(),
-        base ((const char*) cmap_base),
+        base ((സ്ഥിരം അക്ഷരം*) cmap_base),
         table_length (table_length_),
         cached_unicodes ()
   {}
 
   SubtableUnicodesCache(hb_blob_ptr_t<cmap> base_blob_)
       : base_blob(base_blob_),
-        base ((const char *) base_blob.get()),
+        base ((സ്ഥിരം അക്ഷരം *) base_blob.get()),
         table_length (base_blob.get_length ()),
         cached_unicodes ()
   {}
@@ -1841,95 +1841,95 @@ struct SubtableUnicodesCache {
     base_blob.destroy ();
   }
 
-  bool same_base(const void* other) const
+  തർക്കം same_base(സ്ഥിരം ശൂന്യം* other) സ്ഥിരം
   {
-    return other == (const void*) base;
+    തിരികെ other == (സ്ഥിരം ശൂന്യം*) base;
   }
 
-  const hb_set_t* set_for (const EncodingRecord* record,
-                           SubtableUnicodesCache& mutable_cache) const
+  സ്ഥിരം hb_set_t* set_for (സ്ഥിരം EncodingRecord* record,
+                           SubtableUnicodesCache& mutable_cache) സ്ഥിരം
   {
-    if (cached_unicodes.has ((unsigned) ((const char *) record - base)))
-      return cached_unicodes.get ((unsigned) ((const char *) record - base));
+    എങ്കിൽ (cached_unicodes.has ((unsigned) ((സ്ഥിരം അക്ഷരം *) record - base)))
+      തിരികെ cached_unicodes.get ((unsigned) ((സ്ഥിരം അക്ഷരം *) record - base));
 
-    return mutable_cache.set_for (record);
+    തിരികെ mutable_cache.set_for (record);
   }
 
-  const hb_set_t* set_for (const EncodingRecord* record)
+  സ്ഥിരം hb_set_t* set_for (സ്ഥിരം EncodingRecord* record)
   {
-    if (!cached_unicodes.has ((unsigned) ((const char *) record - base)))
+    എങ്കിൽ (!cached_unicodes.has ((unsigned) ((സ്ഥിരം അക്ഷരം *) record - base)))
     {
       hb_set_t *s = hb_set_create ();
-      if (unlikely (s->in_error ()))
-	return hb_set_get_empty ();
+      എങ്കിൽ (unlikely (s->in_error ()))
+	തിരികെ hb_set_get_empty ();
 
-      unsigned int subtable_data_size = record->subtable < table_length
-					? table_length - (unsigned int) record->subtable
+      unsigned പൂർണ്ണസംഖ്യ subtable_data_size = record->subtable < table_length
+					? table_length - (unsigned പൂർണ്ണസംഖ്യ) record->subtable
 					: 0;
       (base+record->subtable).collect_unicodes (s, UINT_MAX, subtable_data_size);
 
-      if (unlikely (!cached_unicodes.set ((unsigned) ((const char *) record - base), hb::unique_ptr<hb_set_t> {s})))
-        return hb_set_get_empty ();
+      എങ്കിൽ (unlikely (!cached_unicodes.set ((unsigned) ((സ്ഥിരം അക്ഷരം *) record - base), hb::unique_ptr<hb_set_t> {s})))
+        തിരികെ hb_set_get_empty ();
 
-      return s;
+      തിരികെ s;
     }
-    return cached_unicodes.get ((unsigned) ((const char *) record - base));
+    തിരികെ cached_unicodes.get ((unsigned) ((സ്ഥിരം അക്ഷരം *) record - base));
   }
 
 };
 
-static inline uint16_t
-_hb_symbol_pua_map (unsigned codepoint)
+സ്ഥിതം വരിയിൽ uint16_t
+hb_ചിഹ്നം_pua_map (unsigned codepoint)
 {
-  if (codepoint <= 0x00FFu)
+  എങ്കിൽ (codepoint <= 0x00FFu)
   {
     /* For symbol-encoded OpenType fonts, we duplicate the
      * U+F000..F0FF range at U+0000..U+00FF.  That's what
      * Windows seems to do, and that's hinted about at:
      * https://docs.microsoft.com/en-us/typography/opentype/spec/recom
      * under "Non-Standard (Symbol) Fonts". */
-    return 0xF000u + codepoint;
+    തിരികെ 0xF000u + codepoint;
   }
-  return 0;
+  തിരികെ 0;
 }
 
-struct cmap
+ഘടന cmap
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_cmap;
+  സ്ഥിതം constexpr hb_tag_t tableTag = HB_OT_TAG_cmap;
 
 
-  static SubtableUnicodesCache* create_filled_cache(hb_blob_ptr_t<cmap> source_table) {
-    const cmap* cmap = source_table.get();
+  സ്ഥിതം SubtableUnicodesCache* create_filled_cache(hb_blob_ptr_t<cmap> source_table) {
+    സ്ഥിരം cmap* cmap = source_table.get();
     auto it =
     + hb_iter (cmap->encodingRecord)
-    | hb_filter ([&](const EncodingRecord& _) {
-      return cmap::filter_encoding_records_for_subset (cmap, _);
+    | hb_filter ([&](സ്ഥിരം EncodingRecord& _) {
+      തിരികെ cmap::filter_encoding_records_for_subset (cmap, _);
     })
     ;
 
     SubtableUnicodesCache* cache = SubtableUnicodesCache::create(source_table);
 
-    if (unlikely (!cache))
-      return nullptr;
+    എങ്കിൽ (unlikely (!cache))
+      തിരികെ nullptr;
 
-    for (const EncodingRecord& _ : it)
+    വേണ്ടി (സ്ഥിരം EncodingRecord& _ : it)
       cache->set_for(&_); // populate the cache for this encoding record.
 
-    return cache;
+    തിരികെ cache;
   }
 
   template<typename Iterator, typename EncodingRecIter,
 	   hb_requires (hb_is_iterator (EncodingRecIter))>
-  bool serialize (hb_serialize_context_t *c,
+  തർക്കം serialize (hb_serialize_context_t *c,
 		  Iterator it,
 		  EncodingRecIter encodingrec_iter,
-		  const void *base,
+		  സ്ഥിരം ശൂന്യം *base,
 		  hb_subset_plan_t *plan,
-	                  bool drop_format_4 = false,
-			  unsigned int source_table_length = 0)
+	                  തർക്കം drop_format_4 = അസത്യം,
+			  unsigned പൂർണ്ണസംഖ്യ source_table_length = 0)
   {
-    if (unlikely (!c->extend_min ((*this))))  return false;
-    this->version = 0;
+    എങ്കിൽ (unlikely (!c->extend_min ((*ഇത്))))  തിരികെ അസത്യം;
+    ഇത്->version = 0;
 
     unsigned format4objidx = 0, format12objidx = 0, format14objidx = 0;
 #ifndef HB_NO_BEYOND_64K
@@ -1938,339 +1938,339 @@ struct cmap
     auto snap = c->snapshot ();
 
     SubtableUnicodesCache local_unicodes_cache (base, source_table_length);
-    const SubtableUnicodesCache* unicodes_cache = &local_unicodes_cache;
+    സ്ഥിരം SubtableUnicodesCache* unicodes_cache = &local_unicodes_cache;
 
-    if (plan->accelerator &&
+    എങ്കിൽ (plan->accelerator &&
         plan->accelerator->cmap_cache &&
         plan->accelerator->cmap_cache->same_base (base))
       unicodes_cache = plan->accelerator->cmap_cache;
 
-    for (const EncodingRecord& _ : encodingrec_iter)
+    വേണ്ടി (സ്ഥിരം EncodingRecord& _ : encodingrec_iter)
     {
-      if (c->in_error ())
-        return false;
+      എങ്കിൽ (c->in_error ())
+        തിരികെ അസത്യം;
 
       unsigned format = (base+_.subtable).u.format.v;
-      if (format != 4 && format != 12 && format != 14
+      എങ്കിൽ (format != 4 && format != 12 && format != 14
 #ifndef HB_NO_BEYOND_64K
 	  && format != 15
 #endif
-	 ) continue;
+	 ) തുടരുക;
 
-      const hb_set_t* unicodes_set = unicodes_cache->set_for (&_, local_unicodes_cache);
+      സ്ഥിരം hb_set_t* unicodes_set = unicodes_cache->set_for (&_, local_unicodes_cache);
 
-      if (!drop_format_4 && format == 4)
+      എങ്കിൽ (!drop_format_4 && format == 4)
       {
         c->copy (_, + it | hb_filter (*unicodes_set, hb_first), 4u, base, plan, &format4objidx);
-        if (c->in_error () && c->only_overflow ())
+        എങ്കിൽ (c->in_error () && c->only_overflow ())
         {
           // cmap4 overflowed, reset and retry serialization without format 4 subtables.
           c->revert (snap);
-          return serialize (c, it,
+          തിരികെ serialize (c, it,
                             encodingrec_iter,
                             base,
                             plan,
-                            true,
+                            സത്യം,
 			    source_table_length);
         }
       }
 
-      else if (format == 12)
+      അല്ലെങ്കിൽ എങ്കിൽ (format == 12)
       {
-        if (_can_drop (_,
+        എങ്കിൽ (_can_drop (_,
                        *unicodes_set,
                        base,
                        *unicodes_cache,
                        local_unicodes_cache,
                        + it | hb_map (hb_first), encodingrec_iter))
-          continue;
+          തുടരുക;
         c->copy (_, + it | hb_filter (*unicodes_set, hb_first), 12u, base, plan, &format12objidx);
       }
-      else if (format == 14) c->copy (_, it, 14u, base, plan, &format14objidx);
+      അല്ലെങ്കിൽ എങ്കിൽ (format == 14) c->copy (_, it, 14u, base, plan, &format14objidx);
 #ifndef HB_NO_BEYOND_64K
-      else if (format == 15) c->copy (_, it, 15u, base, plan, &format15objidx);
+      അല്ലെങ്കിൽ എങ്കിൽ (format == 15) c->copy (_, it, 15u, base, plan, &format15objidx);
 #endif
     }
         unsigned length = c->length ();
         unsigned available = length > cmap::min_size ? length - cmap::min_size : 0;
-        c->check_assign(this->encodingRecord.len,
+        c->check_assign(ഇത്->encodingRecord.len,
                         available / EncodingRecord::static_size,
                         HB_SERIALIZE_ERROR_INT_OVERFLOW);
 
     // Fail if format 4 was dropped and there is no cmap12.
-    return !drop_format_4 || format12objidx;
+    തിരികെ !drop_format_4 || format12objidx;
   }
 
   template<typename Iterator, typename EncodingRecordIterator,
       hb_requires (hb_is_iterator (Iterator)),
       hb_requires (hb_is_iterator (EncodingRecordIterator))>
-  bool _can_drop (const EncodingRecord& cmap12,
-                  const hb_set_t& cmap12_unicodes,
-                  const void* base,
-                  const SubtableUnicodesCache& unicodes_cache,
+  തർക്കം _can_drop (സ്ഥിരം EncodingRecord& cmap12,
+                  സ്ഥിരം hb_set_t& cmap12_unicodes,
+                  സ്ഥിരം ശൂന്യം* base,
+                  സ്ഥിരം SubtableUnicodesCache& unicodes_cache,
                   SubtableUnicodesCache& local_unicodes_cache,
                   Iterator subset_unicodes,
                   EncodingRecordIterator encoding_records)
   {
-    for (auto cp : + subset_unicodes | hb_filter (cmap12_unicodes))
+    വേണ്ടി (auto cp : + subset_unicodes | hb_filter (cmap12_unicodes))
     {
-      if (cp >= 0x10000) return false;
+      എങ്കിൽ (cp >= 0x10000) തിരികെ അസത്യം;
     }
 
     unsigned target_platform;
     unsigned target_encoding;
     unsigned target_language = (base+cmap12.subtable).get_language ();
 
-    if (cmap12.platformID == 0 && cmap12.encodingID == 4)
+    എങ്കിൽ (cmap12.platformID == 0 && cmap12.encodingID == 4)
     {
       target_platform = 0;
       target_encoding = 3;
-    } else if (cmap12.platformID == 3 && cmap12.encodingID == 10) {
+    } അല്ലെങ്കിൽ എങ്കിൽ (cmap12.platformID == 3 && cmap12.encodingID == 10) {
       target_platform = 3;
       target_encoding = 1;
-    } else {
-      return false;
+    } അല്ലെങ്കിൽ {
+      തിരികെ അസത്യം;
     }
 
-    for (const auto& _ : encoding_records)
+    വേണ്ടി (സ്ഥിരം auto& _ : encoding_records)
     {
-      if (_.platformID != target_platform
+      എങ്കിൽ (_.platformID != target_platform
           || _.encodingID != target_encoding
           || (base+_.subtable).get_language() != target_language)
-        continue;
+        തുടരുക;
 
-      const hb_set_t* sibling_unicodes = unicodes_cache.set_for (&_, local_unicodes_cache);
+      സ്ഥിരം hb_set_t* sibling_unicodes = unicodes_cache.set_for (&_, local_unicodes_cache);
 
       auto cmap12 = + subset_unicodes | hb_filter (cmap12_unicodes);
       auto sibling = + subset_unicodes | hb_filter (*sibling_unicodes);
-      for (; cmap12 && sibling; cmap12++, sibling++)
+      വേണ്ടി (; cmap12 && sibling; cmap12++, sibling++)
       {
         unsigned a = *cmap12;
         unsigned b = *sibling;
-        if (a != b) return false;
+        എങ്കിൽ (a != b) തിരികെ അസത്യം;
       }
 
-      return !cmap12 && !sibling;
+      തിരികെ !cmap12 && !sibling;
     }
 
-    return false;
+    തിരികെ അസത്യം;
   }
 
-  void closure_glyphs (const hb_set_t      *unicodes,
-		       hb_set_t            *glyphset) const
+  ശൂന്യം closure_glyphs (സ്ഥിരം hb_set_t      *unicodes,
+		       hb_set_t            *glyphset) സ്ഥിരം
   {
     + hb_iter (encodingRecord)
     | hb_map (&EncodingRecord::subtable)
-    | hb_map (hb_add (this))
+    | hb_map (hb_add (ഇത്))
     | hb_filter (&CmapSubtable::is_variation_selector)
-    | hb_apply ([=] (const CmapSubtable& _) { _.closure_glyphs (unicodes, glyphset); })
+    | hb_apply ([=] (സ്ഥിരം CmapSubtable& _) { _.closure_glyphs (unicodes, glyphset); })
     ;
   }
 
-  bool subset (hb_subset_context_t *c) const
-  { return subset (c, false); }
+  തർക്കം subset (hb_subset_context_t *c) സ്ഥിരം
+  { തിരികെ subset (c, അസത്യം); }
 
-  bool subset (hb_subset_context_t *c, bool is_dmap) const
+  തർക്കം subset (hb_subset_context_t *c, തർക്കം is_dmap) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (ഇത്);
 
-    cmap *cmap_prime = c->serializer->start_embed<cmap> ();
+    cmap *cmap_അഭാജ്യം = c->serializer->start_embed<cmap> ();
 
     auto encodingrec_iter =
     + hb_iter (encodingRecord)
-    | hb_filter ([&](const EncodingRecord& _) {
-      return cmap::filter_encoding_records_for_subset (this, _);
+    | hb_filter ([&](സ്ഥിരം EncodingRecord& _) {
+      തിരികെ cmap::filter_encoding_records_for_subset (ഇത്, _);
     })
     ;
 
-    if (unlikely (!encodingrec_iter.len ())) return_trace (false);
+    എങ്കിൽ (unlikely (!encodingrec_iter.len ())) return_trace (അസത്യം);
 
-    const EncodingRecord *unicode_bmp= nullptr, *unicode_ucs4 = nullptr, *ms_bmp = nullptr, *ms_ucs4 = nullptr;
-    bool has_format12 = false;
+    സ്ഥിരം EncodingRecord *unicode_bmp= nullptr, *unicode_ucs4 = nullptr, *ms_bmp = nullptr, *ms_ucs4 = nullptr;
+    തർക്കം has_format12 = അസത്യം;
 
-    for (const EncodingRecord& _ : encodingrec_iter)
+    വേണ്ടി (സ്ഥിരം EncodingRecord& _ : encodingrec_iter)
     {
-      unsigned format = (this + _.subtable).u.format.v;
-      if (format == 12) has_format12 = true;
+      unsigned format = (ഇത് + _.subtable).u.format.v;
+      എങ്കിൽ (format == 12) has_format12 = സത്യം;
 
-      const EncodingRecord *table = std::addressof (_);
-      if      (_.platformID == 0 && _.encodingID ==  3) unicode_bmp = table;
-      else if (_.platformID == 0 && _.encodingID ==  4) unicode_ucs4 = table;
-      else if (_.platformID == 3 && _.encodingID ==  1) ms_bmp = table;
-      else if (_.platformID == 3 && _.encodingID == 10) ms_ucs4 = table;
+      സ്ഥിരം EncodingRecord *table = std::addressof (_);
+      എങ്കിൽ      (_.platformID == 0 && _.encodingID ==  3) unicode_bmp = table;
+      അല്ലെങ്കിൽ എങ്കിൽ (_.platformID == 0 && _.encodingID ==  4) unicode_ucs4 = table;
+      അല്ലെങ്കിൽ എങ്കിൽ (_.platformID == 3 && _.encodingID ==  1) ms_bmp = table;
+      അല്ലെങ്കിൽ എങ്കിൽ (_.platformID == 3 && _.encodingID == 10) ms_ucs4 = table;
     }
 
-    if (unlikely (!is_dmap && !has_format12 && !unicode_bmp && !ms_bmp)) return_trace (false);
-    if (unlikely (!is_dmap && has_format12 && (!unicode_ucs4 && !ms_ucs4))) return_trace (false);
+    എങ്കിൽ (unlikely (!is_dmap && !has_format12 && !unicode_bmp && !ms_bmp)) return_trace (അസത്യം);
+    എങ്കിൽ (unlikely (!is_dmap && has_format12 && (!unicode_ucs4 && !ms_ucs4))) return_trace (അസത്യം);
 
     auto it =
     + c->plan->unicode_to_new_gid_list.iter ()
-    | hb_filter ([&] (const hb_codepoint_pair_t _)
-		 { return (_.second != HB_MAP_VALUE_INVALID); })
+    | hb_filter ([&] (സ്ഥിരം hb_codepoint_pair_t _)
+		 { തിരികെ (_.second != HB_MAP_മൂല്യം_INVALID); })
     ;
 
-    return_trace (cmap_prime->serialize (c->serializer,
+    return_trace (cmap_അഭാജ്യം->serialize (c->serializer,
                                          it,
                                          encodingrec_iter,
-                                         this,
+                                         ഇത്,
                                          c->plan,
-					 false,
+					 അസത്യം,
 					 c->source_blob->length));
   }
 
-  const CmapSubtable *find_best_subtable (bool *symbol = nullptr,
-					  bool *mac = nullptr,
-					  bool *macroman = nullptr) const
+  സ്ഥിരം CmapSubtable *find_best_subtable (തർക്കം *ചിഹ്നം = nullptr,
+					  തർക്കം *mac = nullptr,
+					  തർക്കം *macroman = nullptr) സ്ഥിരം
   {
-    if (symbol) *symbol = false;
-    if (mac) *mac = false;
-    if (macroman) *macroman = false;
+    എങ്കിൽ (ചിഹ്നം) *ചിഹ്നം = അസത്യം;
+    എങ്കിൽ (mac) *mac = അസത്യം;
+    എങ്കിൽ (macroman) *macroman = അസത്യം;
 
-    const CmapSubtable *subtable;
+    സ്ഥിരം CmapSubtable *subtable;
 
     /* Symbol subtable.
      * Prefer symbol if available.
      * https://github.com/harfbuzz/harfbuzz/issues/1918 */
-    if ((subtable = this->find_subtable (3, 0)))
+    എങ്കിൽ ((subtable = ഇത്->find_subtable (3, 0)))
     {
-      if (symbol) *symbol = true;
-      return subtable;
+      എങ്കിൽ (ചിഹ്നം) *ചിഹ്നം = സത്യം;
+      തിരികെ subtable;
     }
 
     /* 32-bit subtables. */
-    if ((subtable = this->find_subtable (3, 10))) return subtable;
-    if ((subtable = this->find_subtable (0, 6))) return subtable;
-    if ((subtable = this->find_subtable (0, 4))) return subtable;
+    എങ്കിൽ ((subtable = ഇത്->find_subtable (3, 10))) തിരികെ subtable;
+    എങ്കിൽ ((subtable = ഇത്->find_subtable (0, 6))) തിരികെ subtable;
+    എങ്കിൽ ((subtable = ഇത്->find_subtable (0, 4))) തിരികെ subtable;
 
     /* 16-bit subtables. */
-    if ((subtable = this->find_subtable (3, 1))) return subtable;
-    if ((subtable = this->find_subtable (0, 3))) return subtable;
-    if ((subtable = this->find_subtable (0, 2))) return subtable;
-    if ((subtable = this->find_subtable (0, 1))) return subtable;
-    if ((subtable = this->find_subtable (0, 0))) return subtable;
+    എങ്കിൽ ((subtable = ഇത്->find_subtable (3, 1))) തിരികെ subtable;
+    എങ്കിൽ ((subtable = ഇത്->find_subtable (0, 3))) തിരികെ subtable;
+    എങ്കിൽ ((subtable = ഇത്->find_subtable (0, 2))) തിരികെ subtable;
+    എങ്കിൽ ((subtable = ഇത്->find_subtable (0, 1))) തിരികെ subtable;
+    എങ്കിൽ ((subtable = ഇത്->find_subtable (0, 0))) തിരികെ subtable;
 
     /* MacRoman subtable. */
-    if ((subtable = this->find_subtable (1, 0)))
+    എങ്കിൽ ((subtable = ഇത്->find_subtable (1, 0)))
     {
-      if (mac) *mac = true;
-      if (macroman) *macroman = true;
-      return subtable;
+      എങ്കിൽ (mac) *mac = സത്യം;
+      എങ്കിൽ (macroman) *macroman = സത്യം;
+      തിരികെ subtable;
     }
     /* Any other Mac subtable; we just map ASCII for these. */
-    if ((subtable = this->find_subtable (1, 0xFFFF)))
+    എങ്കിൽ ((subtable = ഇത്->find_subtable (1, 0xFFFF)))
     {
-      if (mac) *mac = true;
-      return subtable;
+      എങ്കിൽ (mac) *mac = സത്യം;
+      തിരികെ subtable;
     }
 
     /* Meh. */
-    return &Null (CmapSubtable);
+    തിരികെ &Null (CmapSubtable);
   }
 
-  struct accelerator_t
+  ഘടന accelerator_t
   {
     using cache_t = hb_cache_t<21, 19>;
-    static_assert (sizeof (cache_t) == 1024, "");
+    static_assert (വലുപ്പം (cache_t) == 1024, "");
 
     accelerator_t (hb_face_t *face, hb_tag_t table_tag = cmap::tableTag)
     {
-      this->table = hb_sanitize_context_t ().reference_table<cmap> (face, table_tag);
-      if (!this->table.get_length ())
-	return;
+      ഇത്->table = hb_sanitize_context_t ().reference_table<cmap> (face, table_tag);
+      എങ്കിൽ (!ഇത്->table.get_length ())
+	തിരികെ;
 
-      bool symbol, mac, macroman;
-      this->subtable = table->find_best_subtable (&symbol, &mac, &macroman);
-      this->subtable_uvs = &Null (CmapSubtable);
+      തർക്കം ചിഹ്നം, mac, macroman;
+      ഇത്->subtable = table->find_best_subtable (&ചിഹ്നം, &mac, &macroman);
+      ഇത്->subtable_uvs = &Null (CmapSubtable);
       {
-	const CmapSubtable *st = table->find_variation_selector_subtable ();
-	if (st)
+	സ്ഥിരം CmapSubtable *st = table->find_variation_selector_subtable ();
+	എങ്കിൽ (st)
 	  subtable_uvs = st;
       }
 
 #ifndef HB_NO_OT_FONT_CMAP_CACHE
-      cache = (cache_t *) hb_malloc (sizeof (cache_t));
-      if (cache)
-	new (cache) cache_t ();
-      else
-        return; // Such that get_glyph_funcZ remains null.
+      cache = (cache_t *) hb_malloc (വലുപ്പം (cache_t));
+      എങ്കിൽ (cache)
+	പുതിയ (cache) cache_t ();
+      അല്ലെങ്കിൽ
+        തിരികെ; // Such that get_glyph_funcZ remains null.
 #endif
 
-      this->get_glyph_data = subtable;
+      ഇത്->get_glyph_data = subtable;
 #ifndef HB_NO_CMAP_LEGACY_SUBTABLES
-      bool is_format4 = subtable->u.format.v == 4;
-      auto set_format4_getter = [this] (bool (*func) (const void *,
+      തർക്കം is_format4 = subtable->u.format.v == 4;
+      auto set_format4_getter = [ഇത്] (തർക്കം (*func) (സ്ഥിരം ശൂന്യം *,
 						      hb_codepoint_t,
 						      hb_codepoint_t *))
       {
-	this->format4_accel.init (&this->subtable->u.format4,
-				  get_subtable_data_size (this->subtable));
-	this->get_glyph_data = &this->format4_accel;
-	this->get_glyph_funcZ = func;
+	ഇത്->format4_accel.init (&ഇത്->subtable->u.format4,
+				  get_subtable_data_size (ഇത്->subtable));
+	ഇത്->get_glyph_data = &ഇത്->format4_accel;
+	ഇത്->get_glyph_funcZ = func;
       };
-      if (unlikely (symbol))
+      എങ്കിൽ (unlikely (ചിഹ്നം))
       {
-	switch ((unsigned) face->table.OS2->get_font_page ()) {
-	case OS2::font_page_t::FONT_PAGE_NONE:
-	  if (is_format4)
-	    set_format4_getter (get_glyph_from_symbol<CmapSubtableFormat4::accelerator_t, _hb_symbol_pua_map>);
-	  else
-	    this->get_glyph_funcZ = get_glyph_from_symbol<CmapSubtable, _hb_symbol_pua_map>;
-	  break;
+	തിരഞ്ഞെടുപ്പ് ((unsigned) face->table.OS2->get_font_page ()) {
+	അവസ്ഥ OS2::font_page_t::FONT_PAGE_NONE:
+	  എങ്കിൽ (is_format4)
+	    set_format4_getter (get_glyph_from_ചിഹ്നം<CmapSubtableFormat4::accelerator_t, hb_ചിഹ്നം_pua_map>);
+	  അല്ലെങ്കിൽ
+	    ഇത്->get_glyph_funcZ = get_glyph_from_ചിഹ്നം<CmapSubtable, hb_ചിഹ്നം_pua_map>;
+	  നിർത്തുക;
 #ifndef HB_NO_OT_SHAPER_ARABIC_FALLBACK
-	case OS2::font_page_t::FONT_PAGE_SIMP_ARABIC:
-	  if (is_format4)
-	    set_format4_getter (get_glyph_from_symbol<CmapSubtableFormat4::accelerator_t, _hb_arabic_pua_simp_map>);
-	  else
-	    this->get_glyph_funcZ = get_glyph_from_symbol<CmapSubtable, _hb_arabic_pua_simp_map>;
-	  break;
-	case OS2::font_page_t::FONT_PAGE_TRAD_ARABIC:
-	  if (is_format4)
-	    set_format4_getter (get_glyph_from_symbol<CmapSubtableFormat4::accelerator_t, _hb_arabic_pua_trad_map>);
-	  else
-	    this->get_glyph_funcZ = get_glyph_from_symbol<CmapSubtable, _hb_arabic_pua_trad_map>;
-	  break;
+	അവസ്ഥ OS2::font_page_t::FONT_PAGE_SIMP_ARABIC:
+	  എങ്കിൽ (is_format4)
+	    set_format4_getter (get_glyph_from_ചിഹ്നം<CmapSubtableFormat4::accelerator_t, _hb_arabic_pua_simp_map>);
+	  അല്ലെങ്കിൽ
+	    ഇത്->get_glyph_funcZ = get_glyph_from_ചിഹ്നം<CmapSubtable, _hb_arabic_pua_simp_map>;
+	  നിർത്തുക;
+	അവസ്ഥ OS2::font_page_t::FONT_PAGE_TRAD_ARABIC:
+	  എങ്കിൽ (is_format4)
+	    set_format4_getter (get_glyph_from_ചിഹ്നം<CmapSubtableFormat4::accelerator_t, _hb_arabic_pua_trad_map>);
+	  അല്ലെങ്കിൽ
+	    ഇത്->get_glyph_funcZ = get_glyph_from_ചിഹ്നം<CmapSubtable, _hb_arabic_pua_trad_map>;
+	  നിർത്തുക;
 #endif
-	default:
-	  if (is_format4)
+	സ്ഥിരസ്ഥിതി:
+	  എങ്കിൽ (is_format4)
 	    set_format4_getter (get_glyph_from<CmapSubtableFormat4::accelerator_t>);
-	  else
-	    this->get_glyph_funcZ = get_glyph_from<CmapSubtable>;
-	  break;
+	  അല്ലെങ്കിൽ
+	    ഇത്->get_glyph_funcZ = get_glyph_from<CmapSubtable>;
+	  നിർത്തുക;
 	}
       }
-      else if (unlikely (macroman))
+      അല്ലെങ്കിൽ എങ്കിൽ (unlikely (macroman))
       {
-	if (is_format4)
+	എങ്കിൽ (is_format4)
 	  set_format4_getter (get_glyph_from_macroman<CmapSubtableFormat4::accelerator_t>);
-	else
-	  this->get_glyph_funcZ = get_glyph_from_macroman<CmapSubtable>;
+	അല്ലെങ്കിൽ
+	  ഇത്->get_glyph_funcZ = get_glyph_from_macroman<CmapSubtable>;
       }
-      else if (unlikely (mac))
+      അല്ലെങ്കിൽ എങ്കിൽ (unlikely (mac))
       {
-	if (is_format4)
+	എങ്കിൽ (is_format4)
 	  set_format4_getter (get_glyph_from_ascii<CmapSubtableFormat4::accelerator_t>);
-	else
-	  this->get_glyph_funcZ = get_glyph_from_ascii<CmapSubtable>;
+	അല്ലെങ്കിൽ
+	  ഇത്->get_glyph_funcZ = get_glyph_from_ascii<CmapSubtable>;
       }
-      else
+      അല്ലെങ്കിൽ
 #endif
       {
-	switch (subtable->u.format.v) {
+	തിരഞ്ഞെടുപ്പ് (subtable->u.format.v) {
 	  /* Accelerate format 4 and format 12. */
-	  default:
-	    this->get_glyph_funcZ = get_glyph_from<CmapSubtable>;
-	    break;
-	  case 12:
-	    this->get_glyph_funcZ = get_glyph_from<CmapSubtableFormat12>;
-	    break;
-	  case  4:
+	  സ്ഥിരസ്ഥിതി:
+	    ഇത്->get_glyph_funcZ = get_glyph_from<CmapSubtable>;
+	    നിർത്തുക;
+	  അവസ്ഥ 12:
+	    ഇത്->get_glyph_funcZ = get_glyph_from<CmapSubtableFormat12>;
+	    നിർത്തുക;
+	  അവസ്ഥ  4:
 	  {
 	    hb_barrier ();
-	    this->format4_accel.init (&subtable->u.format4,
+	    ഇത്->format4_accel.init (&subtable->u.format4,
 				      get_subtable_data_size (subtable));
-	    this->get_glyph_data = &this->format4_accel;
-	    this->get_glyph_funcZ = this->format4_accel.get_glyph_func;
-	    break;
+	    ഇത്->get_glyph_data = &ഇത്->format4_accel;
+	    ഇത്->get_glyph_funcZ = ഇത്->format4_accel.get_glyph_func;
+	    നിർത്തുക;
 	  }
 	}
       }
@@ -2283,163 +2283,163 @@ struct cmap
       table.destroy ();
     }
 
-    inline bool _cached_get (hb_codepoint_t unicode,
-			     hb_codepoint_t *glyph) const
+    വരിയിൽ തർക്കം _cached_get (hb_codepoint_t unicode,
+			     hb_codepoint_t *glyph) സ്ഥിരം
     {
 #ifndef HB_NO_OT_FONT_CMAP_CACHE
       // cache is always non-null if we have a get_glyph_funcZ
       unsigned v;
-      if (cache->get (unicode, &v))
+      എങ്കിൽ (cache->get (unicode, &v))
       {
         *glyph = v;
-	return true;
+	തിരികെ സത്യം;
       }
 #endif
-      bool ret  = this->get_glyph_funcZ (this->get_glyph_data, unicode, glyph);
+      തർക്കം ret  = ഇത്->get_glyph_funcZ (ഇത്->get_glyph_data, unicode, glyph);
 
 #ifndef HB_NO_OT_FONT_CMAP_CACHE
-      if (ret)
+      എങ്കിൽ (ret)
         cache->set (unicode, *glyph);
 #endif
 
-      return ret;
+      തിരികെ ret;
     }
 
-    bool get_nominal_glyph (hb_codepoint_t  unicode,
-			    hb_codepoint_t *glyph) const
+    തർക്കം get_nominal_glyph (hb_codepoint_t  unicode,
+			    hb_codepoint_t *glyph) സ്ഥിരം
     {
-      if (unlikely (!this->get_glyph_funcZ)) return false;
-      return _cached_get (unicode, glyph);
+      എങ്കിൽ (unlikely (!ഇത്->get_glyph_funcZ)) തിരികെ അസത്യം;
+      തിരികെ _cached_get (unicode, glyph);
     }
 
-    unsigned int get_nominal_glyphs (unsigned int count,
-				     const hb_codepoint_t *first_unicode,
-				     unsigned int unicode_stride,
+    unsigned പൂർണ്ണസംഖ്യ get_nominal_glyphs (unsigned പൂർണ്ണസംഖ്യ എണ്ണം,
+				     സ്ഥിരം hb_codepoint_t *first_unicode,
+				     unsigned പൂർണ്ണസംഖ്യ unicode_stride,
 				     hb_codepoint_t *first_glyph,
-				     unsigned int glyph_stride) const
+				     unsigned പൂർണ്ണസംഖ്യ glyph_stride) സ്ഥിരം
     {
-      if (unlikely (!this->get_glyph_funcZ)) return 0;
+      എങ്കിൽ (unlikely (!ഇത്->get_glyph_funcZ)) തിരികെ 0;
 
-      unsigned int done;
-      for (done = 0;
-	   done < count && _cached_get (*first_unicode, first_glyph);
+      unsigned പൂർണ്ണസംഖ്യ done;
+      വേണ്ടി (done = 0;
+	   done < എണ്ണം && _cached_get (*first_unicode, first_glyph);
 	   done++)
       {
 	first_unicode = &StructAtOffsetUnaligned<hb_codepoint_t> (first_unicode, unicode_stride);
 	first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
       }
-      return done;
+      തിരികെ done;
     }
 
-    bool get_variation_glyph (hb_codepoint_t  unicode,
+    തർക്കം get_variation_glyph (hb_codepoint_t  unicode,
 			      hb_codepoint_t  variation_selector,
-			      hb_codepoint_t *glyph) const
+			      hb_codepoint_t *glyph) സ്ഥിരം
     {
-      switch (get_glyph_variant (unicode, variation_selector, glyph))
+      തിരഞ്ഞെടുപ്പ് (get_glyph_variant (unicode, variation_selector, glyph))
       {
-	case GLYPH_VARIANT_NOT_FOUND:	return false;
-	case GLYPH_VARIANT_FOUND:	return true;
-	case GLYPH_VARIANT_USE_DEFAULT:	break;
+	അവസ്ഥ GLYPH_VARIANT_NOT_FOUND:	തിരികെ അസത്യം;
+	അവസ്ഥ GLYPH_VARIANT_FOUND:	തിരികെ സത്യം;
+	അവസ്ഥ GLYPH_VARIANT_USE_DEFAULT:	നിർത്തുക;
       }
 
-      return get_nominal_glyph (unicode, glyph);
+      തിരികെ get_nominal_glyph (unicode, glyph);
     }
 
     glyph_variant_t get_glyph_variant (hb_codepoint_t  unicode,
 				       hb_codepoint_t  variation_selector,
-				       hb_codepoint_t *glyph) const
+				       hb_codepoint_t *glyph) സ്ഥിരം
     {
-      return this->subtable_uvs->get_glyph_variant (unicode,
+      തിരികെ ഇത്->subtable_uvs->get_glyph_variant (unicode,
 						    variation_selector,
 						    glyph);
     }
 
-    bool has_data () const { return table.get_length (); }
+    തർക്കം has_data () സ്ഥിരം { തിരികെ table.get_length (); }
 
-    void collect_unicodes (hb_set_t *out, unsigned int num_glyphs) const
-    { subtable->collect_unicodes (out, num_glyphs, get_subtable_data_size (subtable)); }
-    void collect_mapping (hb_set_t *unicodes, hb_map_t *mapping,
-			  unsigned num_glyphs = UINT_MAX) const
-    { subtable->collect_mapping (unicodes, mapping, num_glyphs, get_subtable_data_size (subtable)); }
-    void collect_variation_selectors (hb_set_t *out) const
+    ശൂന്യം collect_unicodes (hb_set_t *out, unsigned പൂർണ്ണസംഖ്യ അക്കം_glyphs) സ്ഥിരം
+    { subtable->collect_unicodes (out, അക്കം_glyphs, get_subtable_data_size (subtable)); }
+    ശൂന്യം collect_mapping (hb_set_t *unicodes, hb_map_t *mapping,
+			  unsigned അക്കം_glyphs = UINT_MAX) സ്ഥിരം
+    { subtable->collect_mapping (unicodes, mapping, അക്കം_glyphs, get_subtable_data_size (subtable)); }
+    ശൂന്യം collect_variation_selectors (hb_set_t *out) സ്ഥിരം
     { subtable_uvs->collect_variation_selectors (out); }
-    void collect_variation_unicodes (hb_codepoint_t variation_selector,
-				     hb_set_t *out) const
+    ശൂന്യം collect_variation_unicodes (hb_codepoint_t variation_selector,
+				     hb_set_t *out) സ്ഥിരം
     { subtable_uvs->collect_variation_unicodes (variation_selector, out); }
 
-    protected:
-    typedef bool (*hb_cmap_get_glyph_func_t) (const void *obj,
+    സംരക്ഷിത:
+    തരനിർവചനം തർക്കം (*hb_cmap_get_glyph_func_t) (സ്ഥിരം ശൂന്യം *obj,
 					      hb_codepoint_t codepoint,
 					      hb_codepoint_t *glyph);
-    typedef uint16_t (*hb_pua_remap_func_t) (unsigned);
+    തരനിർവചനം uint16_t (*hb_pua_remap_func_t) (unsigned);
 
     template <typename Type>
-    HB_INTERNAL static bool get_glyph_from (const void *obj,
+    HB_INTERNAL സ്ഥിതം തർക്കം get_glyph_from (സ്ഥിരം ശൂന്യം *obj,
 					    hb_codepoint_t codepoint,
 					    hb_codepoint_t *glyph)
     {
-      const Type *typed_obj = (const Type *) obj;
-      return typed_obj->get_glyph (codepoint, glyph);
+      സ്ഥിരം Type *typed_obj = (സ്ഥിരം Type *) obj;
+      തിരികെ typed_obj->get_glyph (codepoint, glyph);
     }
 
     template <typename Type, hb_pua_remap_func_t remap>
-    HB_INTERNAL static bool get_glyph_from_symbol (const void *obj,
+    HB_INTERNAL സ്ഥിതം തർക്കം get_glyph_from_ചിഹ്നം (സ്ഥിരം ശൂന്യം *obj,
 						   hb_codepoint_t codepoint,
 						   hb_codepoint_t *glyph)
     {
-      const Type *typed_obj = (const Type *) obj;
-      if (likely (typed_obj->get_glyph (codepoint, glyph)))
-	return true;
+      സ്ഥിരം Type *typed_obj = (സ്ഥിരം Type *) obj;
+      എങ്കിൽ (likely (typed_obj->get_glyph (codepoint, glyph)))
+	തിരികെ സത്യം;
 
-      if (hb_codepoint_t c = remap (codepoint))
-	return typed_obj->get_glyph (c, glyph);
+      എങ്കിൽ (hb_codepoint_t c = remap (codepoint))
+	തിരികെ typed_obj->get_glyph (c, glyph);
 
-      return false;
+      തിരികെ അസത്യം;
     }
 
     template <typename Type>
-    HB_INTERNAL static bool get_glyph_from_ascii (const void *obj,
+    HB_INTERNAL സ്ഥിതം തർക്കം get_glyph_from_ascii (സ്ഥിരം ശൂന്യം *obj,
 						  hb_codepoint_t codepoint,
 						  hb_codepoint_t *glyph)
     {
-      const Type *typed_obj = (const Type *) obj;
-      return codepoint < 0x80 && typed_obj->get_glyph (codepoint, glyph);
+      സ്ഥിരം Type *typed_obj = (സ്ഥിരം Type *) obj;
+      തിരികെ codepoint < 0x80 && typed_obj->get_glyph (codepoint, glyph);
     }
 
     template <typename Type>
-    HB_INTERNAL static bool get_glyph_from_macroman (const void *obj,
+    HB_INTERNAL സ്ഥിതം തർക്കം get_glyph_from_macroman (സ്ഥിരം ശൂന്യം *obj,
 						     hb_codepoint_t codepoint,
 						     hb_codepoint_t *glyph)
     {
-      if (get_glyph_from_ascii<Type> (obj, codepoint, glyph))
-	return true;
+      എങ്കിൽ (get_glyph_from_ascii<Type> (obj, codepoint, glyph))
+	തിരികെ സത്യം;
 
-      const Type *typed_obj = (const Type *) obj;
+      സ്ഥിരം Type *typed_obj = (സ്ഥിരം Type *) obj;
       unsigned c = unicode_to_macroman (codepoint);
-      return c && typed_obj->get_glyph (c, glyph);
+      തിരികെ c && typed_obj->get_glyph (c, glyph);
     }
 
-    unsigned int get_subtable_data_size (const CmapSubtable *subtable) const
+    unsigned പൂർണ്ണസംഖ്യ get_subtable_data_size (സ്ഥിരം CmapSubtable *subtable) സ്ഥിരം
     {
-      unsigned int table_length = this->table.get_length ();
-      uintptr_t table_start = (uintptr_t) (const void *) this->table.get ();
-      uintptr_t subtable_addr = (uintptr_t) (const void *) subtable;
-      if (unlikely (subtable_addr < table_start))
-	return 0;
+      unsigned പൂർണ്ണസംഖ്യ table_length = ഇത്->table.get_length ();
+      uintptr_t table_start = (uintptr_t) (സ്ഥിരം ശൂന്യം *) ഇത്->table.get ();
+      uintptr_t subtable_addr = (uintptr_t) (സ്ഥിരം ശൂന്യം *) subtable;
+      എങ്കിൽ (unlikely (subtable_addr < table_start))
+	തിരികെ 0;
 
       uintptr_t subtable_offset = subtable_addr - table_start;
-      if (unlikely (subtable_offset >= table_length))
-	return 0;
+      എങ്കിൽ (unlikely (subtable_offset >= table_length))
+	തിരികെ 0;
 
-      return table_length - (unsigned int) subtable_offset;
+      തിരികെ table_length - (unsigned പൂർണ്ണസംഖ്യ) subtable_offset;
     }
 
-    private:
-    hb_nonnull_ptr_t<const CmapSubtable> subtable;
-    hb_nonnull_ptr_t<const CmapSubtable> subtable_uvs;
+    സ്വകാര്യ:
+    hb_nonnull_ptr_t<സ്ഥിരം CmapSubtable> subtable;
+    hb_nonnull_ptr_t<സ്ഥിരം CmapSubtable> subtable_uvs;
 
     hb_cmap_get_glyph_func_t get_glyph_funcZ = nullptr;
-    const void *get_glyph_data = nullptr;
+    സ്ഥിരം ശൂന്യം *get_glyph_data = nullptr;
 
     CmapSubtableFormat4::accelerator_t format4_accel;
 
@@ -2447,62 +2447,62 @@ struct cmap
     cache_t *cache = nullptr;
 #endif
 
-    public:
+    പൊതു:
     hb_blob_ptr_t<cmap> table;
   };
 
-  protected:
+  സംരക്ഷിത:
 
-  const CmapSubtable *find_subtable (unsigned int platform_id,
-				     unsigned int encoding_id) const
+  സ്ഥിരം CmapSubtable *find_subtable (unsigned പൂർണ്ണസംഖ്യ platform_id,
+				     unsigned പൂർണ്ണസംഖ്യ encoding_id) സ്ഥിരം
   {
     EncodingRecord key;
     key.platformID = platform_id;
     key.encodingID = encoding_id;
 
-    const EncodingRecord &result = encodingRecord.bsearch (key);
-    if (!result.subtable)
-      return nullptr;
+    സ്ഥിരം EncodingRecord &result = encodingRecord.bsearch (key);
+    എങ്കിൽ (!result.subtable)
+      തിരികെ nullptr;
 
-    return &(this+result.subtable);
+    തിരികെ &(ഇത്+result.subtable);
   }
 
-  const CmapSubtable *find_variation_selector_subtable () const
+  സ്ഥിരം CmapSubtable *find_variation_selector_subtable () സ്ഥിരം
   {
-    const CmapSubtable *format14 = nullptr;
-    for (const EncodingRecord& record : encodingRecord)
+    സ്ഥിരം CmapSubtable *format14 = nullptr;
+    വേണ്ടി (സ്ഥിരം EncodingRecord& record : encodingRecord)
     {
-      if (record.platformID != 0 || record.encodingID != 5)
-	continue;
+      എങ്കിൽ (record.platformID != 0 || record.encodingID != 5)
+	തുടരുക;
 
-      const CmapSubtable *subtable = &(this+record.subtable);
+      സ്ഥിരം CmapSubtable *subtable = &(ഇത്+record.subtable);
 #ifndef HB_NO_BEYOND_64K
-      if (subtable->u.format.v == 15)
-	return subtable;
+      എങ്കിൽ (subtable->u.format.v == 15)
+	തിരികെ subtable;
 #endif
-      if (subtable->u.format.v == 14)
+      എങ്കിൽ (subtable->u.format.v == 14)
 	format14 = subtable;
     }
-    return format14;
+    തിരികെ format14;
   }
 
-  public:
+  പൊതു:
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) &&
 		  hb_barrier () &&
 		  likely (version == 0) &&
-		  encodingRecord.sanitize (c, this));
+		  encodingRecord.sanitize (c, ഇത്));
   }
 
- private:
+ സ്വകാര്യ:
 
-  static bool filter_encoding_records_for_subset(const cmap* cmap,
-                                                 const EncodingRecord& _)
+  സ്ഥിതം തർക്കം filter_encoding_records_for_subset(സ്ഥിരം cmap* cmap,
+                                                 സ്ഥിരം EncodingRecord& _)
   {
-    return
+    തിരികെ
         (_.platformID == 0 && _.encodingID == 3) ||
         (_.platformID == 0 && _.encodingID == 4) ||
         (_.platformID == 3 && _.encodingID == 1) ||
@@ -2510,129 +2510,129 @@ struct cmap
         (cmap + _.subtable).is_variation_selector ();
   }
 
-  protected:
+  സംരക്ഷിത:
   HBUINT16	version;	/* Table version number (0). */
   SortedArray16Of<EncodingRecord>
 		encodingRecord;	/* Encoding tables. */
-  public:
+  പൊതു:
   DEFINE_SIZE_ARRAY (4, encodingRecord);
 };
 
-struct DMAP : cmap
+ഘടന DMAP : cmap
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_DMAP;
+  സ്ഥിതം constexpr hb_tag_t tableTag = HB_OT_TAG_DMAP;
 
-  bool subset (hb_subset_context_t *c) const
-  { return cmap::subset (c, true); }
+  തർക്കം subset (hb_subset_context_t *c) സ്ഥിരം
+  { തിരികെ cmap::subset (c, സത്യം); }
 };
 
-struct cmap_accelerator_t
+ഘടന cmap_accelerator_t
 {
   cmap_accelerator_t (hb_face_t *face) :
     dmap (face, HB_OT_TAG_DMAP),
     base (face)
   {}
 
-  bool get_nominal_glyph (hb_codepoint_t  unicode,
-			  hb_codepoint_t *glyph) const
+  തർക്കം get_nominal_glyph (hb_codepoint_t  unicode,
+			  hb_codepoint_t *glyph) സ്ഥിരം
   {
-    return dmap.get_nominal_glyph (unicode, glyph) ||
+    തിരികെ dmap.get_nominal_glyph (unicode, glyph) ||
 	   base.get_nominal_glyph (unicode, glyph);
   }
 
-  unsigned int get_nominal_glyphs (unsigned int count,
-				   const hb_codepoint_t *first_unicode,
-				   unsigned int unicode_stride,
+  unsigned പൂർണ്ണസംഖ്യ get_nominal_glyphs (unsigned പൂർണ്ണസംഖ്യ എണ്ണം,
+				   സ്ഥിരം hb_codepoint_t *first_unicode,
+				   unsigned പൂർണ്ണസംഖ്യ unicode_stride,
 				   hb_codepoint_t *first_glyph,
-				   unsigned int glyph_stride) const
+				   unsigned പൂർണ്ണസംഖ്യ glyph_stride) സ്ഥിരം
   {
-    if (likely (!dmap.has_data ()))
-      return base.get_nominal_glyphs (count,
+    എങ്കിൽ (likely (!dmap.has_data ()))
+      തിരികെ base.get_nominal_glyphs (എണ്ണം,
 				      first_unicode, unicode_stride,
 				      first_glyph, glyph_stride);
 
-    unsigned int done;
-    for (done = 0;
-	 done < count && get_nominal_glyph (*first_unicode, first_glyph);
+    unsigned പൂർണ്ണസംഖ്യ done;
+    വേണ്ടി (done = 0;
+	 done < എണ്ണം && get_nominal_glyph (*first_unicode, first_glyph);
 	 done++)
     {
       first_unicode = &StructAtOffsetUnaligned<hb_codepoint_t> (first_unicode, unicode_stride);
       first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
     }
-    return done;
+    തിരികെ done;
   }
 
-  bool get_variation_glyph (hb_codepoint_t  unicode,
+  തർക്കം get_variation_glyph (hb_codepoint_t  unicode,
 			    hb_codepoint_t  variation_selector,
-			    hb_codepoint_t *glyph) const
+			    hb_codepoint_t *glyph) സ്ഥിരം
   {
     glyph_variant_t result = dmap.get_glyph_variant (unicode,
 						     variation_selector,
 						     glyph);
-    if (result == GLYPH_VARIANT_NOT_FOUND)
+    എങ്കിൽ (result == GLYPH_VARIANT_NOT_FOUND)
       result = base.get_glyph_variant (unicode, variation_selector, glyph);
 
-    switch (result)
+    തിരഞ്ഞെടുപ്പ് (result)
     {
-      case GLYPH_VARIANT_NOT_FOUND: return false;
-      case GLYPH_VARIANT_FOUND: return true;
-      case GLYPH_VARIANT_USE_DEFAULT: break;
+      അവസ്ഥ GLYPH_VARIANT_NOT_FOUND: തിരികെ അസത്യം;
+      അവസ്ഥ GLYPH_VARIANT_FOUND: തിരികെ സത്യം;
+      അവസ്ഥ GLYPH_VARIANT_USE_DEFAULT: നിർത്തുക;
     }
 
-    return get_nominal_glyph (unicode, glyph);
+    തിരികെ get_nominal_glyph (unicode, glyph);
   }
 
-  void collect_unicodes (hb_set_t *out, unsigned int num_glyphs) const
+  ശൂന്യം collect_unicodes (hb_set_t *out, unsigned പൂർണ്ണസംഖ്യ അക്കം_glyphs) സ്ഥിരം
   {
-    base.collect_unicodes (out, num_glyphs);
-    dmap.collect_unicodes (out, num_glyphs);
+    base.collect_unicodes (out, അക്കം_glyphs);
+    dmap.collect_unicodes (out, അക്കം_glyphs);
   }
 
-  void collect_mapping (hb_set_t *unicodes, hb_map_t *mapping,
-			unsigned num_glyphs = UINT_MAX) const
+  ശൂന്യം collect_mapping (hb_set_t *unicodes, hb_map_t *mapping,
+			unsigned അക്കം_glyphs = UINT_MAX) സ്ഥിരം
   {
-    base.collect_mapping (unicodes, mapping, num_glyphs);
-    dmap.collect_mapping (unicodes, mapping, num_glyphs);
+    base.collect_mapping (unicodes, mapping, അക്കം_glyphs);
+    dmap.collect_mapping (unicodes, mapping, അക്കം_glyphs);
   }
 
-  void collect_variation_selectors (hb_set_t *out) const
+  ശൂന്യം collect_variation_selectors (hb_set_t *out) സ്ഥിരം
   {
     base.collect_variation_selectors (out);
     dmap.collect_variation_selectors (out);
   }
 
-  void collect_variation_unicodes (hb_codepoint_t variation_selector,
-				   hb_set_t *out) const
+  ശൂന്യം collect_variation_unicodes (hb_codepoint_t variation_selector,
+				   hb_set_t *out) സ്ഥിരം
   {
     base.collect_variation_unicodes (variation_selector, out);
     dmap.collect_variation_unicodes (variation_selector, out);
   }
 
-  void closure_glyphs (const hb_set_t *unicodes,
-		       hb_set_t       *glyphset) const
+  ശൂന്യം closure_glyphs (സ്ഥിരം hb_set_t *unicodes,
+		       hb_set_t       *glyphset) സ്ഥിരം
   {
-    if (likely (!dmap.has_data ()))
+    എങ്കിൽ (likely (!dmap.has_data ()))
     {
       base.table->closure_glyphs (unicodes, glyphset);
-      return;
+      തിരികെ;
     }
 
     hb_set_t variation_selectors;
     collect_variation_selectors (&variation_selectors);
-    for (hb_codepoint_t variation_selector : variation_selectors)
+    വേണ്ടി (hb_codepoint_t variation_selector : variation_selectors)
     {
-      if (!unicodes->has (variation_selector))
-	continue;
+      എങ്കിൽ (!unicodes->has (variation_selector))
+	തുടരുക;
 
       hb_set_t variation_unicodes;
       collect_variation_unicodes (variation_selector, &variation_unicodes);
-      for (hb_codepoint_t unicode : variation_unicodes)
+      വേണ്ടി (hb_codepoint_t unicode : variation_unicodes)
       {
-	if (!unicodes->has (unicode))
-	  continue;
+	എങ്കിൽ (!unicodes->has (unicode))
+	  തുടരുക;
 
 	hb_codepoint_t glyph;
-	if (get_variation_glyph (unicode, variation_selector, &glyph))
+	എങ്കിൽ (get_variation_glyph (unicode, variation_selector, &glyph))
 	  glyphset->add (glyph);
       }
     }

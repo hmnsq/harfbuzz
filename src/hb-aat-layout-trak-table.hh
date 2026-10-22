@@ -28,10 +28,10 @@
 #ifndef HB_AAT_LAYOUT_TRAK_TABLE_HH
 #define HB_AAT_LAYOUT_TRAK_TABLE_HH
 
-#include "hb-aat-layout-common.hh"
-#include "hb-ot-layout.hh"
-#include "hb-open-type.hh"
-#include "hb-ot-stat-table.hh"
+#അന്തര്ഭാവ "hb-aat-layout-common.hh"
+#അന്തര്ഭാവ "hb-ot-layout.hh"
+#അന്തര്ഭാവ "hb-open-type.hh"
+#അന്തര്ഭാവ "hb-ot-stat-table.hh"
 
 /*
  * trak -- Tracking
@@ -40,139 +40,139 @@
 #define HB_AAT_TAG_trak HB_TAG('t','r','a','k')
 
 
-namespace AAT {
+നാമാകാശ AAT {
 
 
-struct TrackTableEntry
+ഘടന TrackTableEntry
 {
-  friend struct TrackData;
+  friend ഘടന TrackData;
 
-  float get_track_value () const { return track.to_float (); }
+  ദശാംശം get_track_മൂല്യം () സ്ഥിരം { തിരികെ track.to_float (); }
 
-  float interpolate_at (unsigned int idx,
-			float ptem,
-			const void *base,
-			hb_array_t<const F16DOT16> size_table) const
+  ദശാംശം interpolate_at (unsigned പൂർണ്ണസംഖ്യ idx,
+			ദശാംശം ptem,
+			സ്ഥിരം ശൂന്യം *base,
+			hb_array_t<സ്ഥിരം F16DOT16> size_table) സ്ഥിരം
   {
-    const FWORD *values = (base+valuesZ).arrayZ;
+    സ്ഥിരം FWORD *values = (base+മൂല്യങ്ങൾ_Z).arrayZ;
 
-    float s0 = size_table[idx].to_float ();
-    float s1 = size_table[idx + 1].to_float ();
-    int v0 = values[idx];
-    int v1 = values[idx + 1];
+    ദശാംശം s0 = size_table[idx].to_float ();
+    ദശാംശം s1 = size_table[idx + 1].to_float ();
+    പൂർണ്ണസംഖ്യ v0 = values[idx];
+    പൂർണ്ണസംഖ്യ v1 = values[idx + 1];
 
     // Deal with font bugs.
-    if (unlikely (s1 < s0))
+    എങ്കിൽ (unlikely (s1 < s0))
     { hb_swap (s0, s1); hb_swap (v0, v1); }
-    if (unlikely (ptem < s0)) return v0;
-    if (unlikely (ptem > s1)) return v1;
-    if (unlikely (s0 == s1)) return (v0 + v1) * 0.5f;
+    എങ്കിൽ (unlikely (ptem < s0)) തിരികെ v0;
+    എങ്കിൽ (unlikely (ptem > s1)) തിരികെ v1;
+    എങ്കിൽ (unlikely (s0 == s1)) തിരികെ (v0 + v1) * 0.5f;
 
-    float t = (ptem - s0) / (s1 - s0);
-    return v0 + t * (v1 - v0);
+    ദശാംശം t = (ptem - s0) / (s1 - s0);
+    തിരികെ v0 + t * (v1 - v0);
   }
 
-  float get_value (float ptem,
-		   const void *base,
-		   hb_array_t<const F16DOT16> size_table) const
+  ദശാംശം get_മൂല്യം (ദശാംശം ptem,
+		   സ്ഥിരം ശൂന്യം *base,
+		   hb_array_t<സ്ഥിരം F16DOT16> size_table) സ്ഥിരം
   {
-    const FWORD *values = (base+valuesZ).arrayZ;
+    സ്ഥിരം FWORD *values = (base+മൂല്യങ്ങൾ_Z).arrayZ;
 
-    unsigned int n_sizes = size_table.length;
+    unsigned പൂർണ്ണസംഖ്യ n_sizes = size_table.length;
 
     /*
      * Choose size.
      */
-    if (!n_sizes) return 0.f;
-    if (n_sizes == 1) return values[0];
+    എങ്കിൽ (!n_sizes) തിരികെ 0.f;
+    എങ്കിൽ (n_sizes == 1) തിരികെ values[0];
 
     // At least two entries.
 
     unsigned i;
-    for (i = 0; i < n_sizes; i++)
-      if (size_table[i].to_float () >= ptem)
-	break;
+    വേണ്ടി (i = 0; i < n_sizes; i++)
+      എങ്കിൽ (size_table[i].to_float () >= ptem)
+	നിർത്തുക;
 
     // Boundary conditions.
-    if (i == 0)       return values[0];
-    if (i == n_sizes) return values[n_sizes - 1];
+    എങ്കിൽ (i == 0)       തിരികെ values[0];
+    എങ്കിൽ (i == n_sizes) തിരികെ values[n_sizes - 1];
 
     // Exact match.
-    if (size_table[i].to_float () == ptem) return values[i];
+    എങ്കിൽ (size_table[i].to_float () == ptem) തിരികെ values[i];
 
     // Interpolate.
-    return interpolate_at (i - 1, ptem, base, size_table);
+    തിരികെ interpolate_at (i - 1, ptem, base, size_table);
   }
 
-  public:
-  bool sanitize (hb_sanitize_context_t *c,
-		 const void *base,
-		 unsigned int n_sizes) const
+  പൊതു:
+  തർക്കം sanitize (hb_sanitize_context_t *c,
+		 സ്ഥിരം ശൂന്യം *base,
+		 unsigned പൂർണ്ണസംഖ്യ n_sizes) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  (valuesZ.sanitize (c, base, n_sizes))));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (likely (c->check_struct (ഇത്) &&
+			  (മൂല്യങ്ങൾ_Z.sanitize (c, base, n_sizes))));
   }
 
-  protected:
+  സംരക്ഷിത:
   F16DOT16	track;		/* Track value for this record. */
   OT::NameID	trackNameID;	/* The 'name' table index for this track.
 				 * (a short word or phrase like "loose"
 				 * or "very tight") */
   NNOffset16To<UnsizedArrayOf<FWORD>>
-		valuesZ;	/* Offset from start of tracking table to
+		മൂല്യങ്ങൾ_Z;	/* Offset from start of tracking table to
 				 * per-size tracking values for this track. */
 
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (8);
 };
 
-struct TrackData
+ഘടന TrackData
 {
-  float get_tracking (const void *base, float ptem, float track = 0.f) const
+  ദശാംശം get_tracking (സ്ഥിരം ശൂന്യം *base, ദശാംശം ptem, ദശാംശം track = 0.f) സ്ഥിരം
   {
-    unsigned count = nTracks;
-    hb_array_t<const F16DOT16> size_table = (base+sizeTable).as_array (nSizes);
+    unsigned എണ്ണം = nTracks;
+    hb_array_t<സ്ഥിരം F16DOT16> size_table = (base+sizeTable).as_array (nSizes);
 
-    if (!count) return 0.f;
-    if (count == 1) return trackTable[0].get_value (ptem, base, size_table);
+    എങ്കിൽ (!എണ്ണം) തിരികെ 0.f;
+    എങ്കിൽ (എണ്ണം == 1) തിരികെ trackTable[0].get_മൂല്യം (ptem, base, size_table);
 
     // At least two entries.
 
     unsigned i = 0;
-    unsigned j = count - 1;
+    unsigned j = എണ്ണം - 1;
 
     // Find the two entries that track is between.
-    while (i + 1 < count && trackTable[i + 1].get_track_value () <= track)
+    ആകുമ്പോൾ (i + 1 < എണ്ണം && trackTable[i + 1].get_track_മൂല്യം () <= track)
       i++;
-    while (j > 0 && trackTable[j - 1].get_track_value () >= track)
+    ആകുമ്പോൾ (j > 0 && trackTable[j - 1].get_track_മൂല്യം () >= track)
       j--;
 
     // Exact match.
-    if (i == j) return trackTable[i].get_value (ptem, base, size_table);
+    എങ്കിൽ (i == j) തിരികെ trackTable[i].get_മൂല്യം (ptem, base, size_table);
 
     // Interpolate.
 
-    float t0 = trackTable[i].get_track_value ();
-    float t1 = trackTable[j].get_track_value ();
+    ദശാംശം t0 = trackTable[i].get_track_മൂല്യം ();
+    ദശാംശം t1 = trackTable[j].get_track_മൂല്യം ();
 
-    float t = (track - t0) / (t1 - t0);
+    ദശാംശം t = (track - t0) / (t1 - t0);
 
-    float a = trackTable[i].get_value (ptem, base, size_table);
-    float b = trackTable[j].get_value (ptem, base, size_table);
-    return a + t * (b - a);
+    ദശാംശം a = trackTable[i].get_മൂല്യം (ptem, base, size_table);
+    ദശാംശം b = trackTable[j].get_മൂല്യം (ptem, base, size_table);
+    തിരികെ a + t * (b - a);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  തർക്കം sanitize (hb_sanitize_context_t *c, സ്ഥിരം ശൂന്യം *base) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (ഇത്);
+    return_trace (likely (c->check_struct (ഇത്) &&
 			  hb_barrier () &&
 			  sizeTable.sanitize (c, base, nSizes) &&
 			  trackTable.sanitize (c, nTracks, base, nSizes)));
   }
 
-  protected:
+  സംരക്ഷിത:
   HBUINT16	nTracks;	/* Number of separate tracks included in this table. */
   HBUINT16	nSizes;		/* Number of point sizes included in this table. */
   NNOffset32To<UnsizedArrayOf<F16DOT16>>
@@ -181,79 +181,79 @@ struct TrackData
   UnsizedArrayOf<TrackTableEntry>
 		trackTable;	/* Array[nTracks] of TrackTableEntry records. */
 
-  public:
+  പൊതു:
   DEFINE_SIZE_ARRAY (8, trackTable);
 };
 
-struct trak
+ഘടന trak
 {
-  static constexpr hb_tag_t tableTag = HB_AAT_TAG_trak;
+  സ്ഥിതം constexpr hb_tag_t tableTag = HB_AAT_TAG_trak;
 
-  bool has_data () const { return version.to_int (); }
+  തർക്കം has_data () സ്ഥിരം { തിരികെ version.to_int (); }
 
-  hb_position_t get_h_tracking (hb_font_t *font, float track = 0.f) const
+  hb_position_t get_h_tracking (hb_font_t *font, ദശാംശം track = 0.f) സ്ഥിരം
   {
-    float ptem = font->ptem > 0.f ? font->ptem : HB_CORETEXT_DEFAULT_FONT_SIZE;
-    return font->em_scalef_x ((this+horizData).get_tracking (this, ptem, track));
+    ദശാംശം ptem = font->ptem > 0.f ? font->ptem : HB_CORETEXT_DEFAULT_FONT_SIZE;
+    തിരികെ font->em_scalef_x ((ഇത്+horizData).get_tracking (ഇത്, ptem, track));
   }
-  hb_position_t get_v_tracking (hb_font_t *font, float track = 0.f) const
+  hb_position_t get_v_tracking (hb_font_t *font, ദശാംശം track = 0.f) സ്ഥിരം
   {
-    float ptem = font->ptem > 0.f ? font->ptem : HB_CORETEXT_DEFAULT_FONT_SIZE;
-    return font->em_scalef_y ((this+vertData).get_tracking (this, ptem, track));
+    ദശാംശം ptem = font->ptem > 0.f ? font->ptem : HB_CORETEXT_DEFAULT_FONT_SIZE;
+    തിരികെ font->em_scalef_y ((ഇത്+vertData).get_tracking (ഇത്, ptem, track));
   }
-  hb_position_t get_tracking (hb_font_t *font, hb_direction_t dir, float track = 0.f) const
+  hb_position_t get_tracking (hb_font_t *font, hb_direction_t dir, ദശാംശം track = 0.f) സ്ഥിരം
   {
 #ifndef HB_NO_STYLE
-    if (!font->face->table.STAT->has_data ())
-      return 0;
-    return HB_DIRECTION_IS_HORIZONTAL (dir) ?
+    എങ്കിൽ (!font->face->table.STAT->has_data ())
+      തിരികെ 0;
+    തിരികെ HB_DIRECTION_IS_HORIZONTAL (dir) ?
       get_h_tracking (font, track) :
       get_v_tracking (font, track);
-#else
-    return 0;
+#അല്ലെങ്കിൽ
+    തിരികെ 0;
 #endif
   }
 
-  bool apply (hb_aat_apply_context_t *c, float track = 0.f) const
+  തർക്കം apply (hb_aat_apply_context_t *c, ദശാംശം track = 0.f) സ്ഥിരം
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (ഇത്);
 
-    float ptem = c->font->ptem;
-    if (unlikely (ptem <= 0.f))
+    ദശാംശം ptem = c->font->ptem;
+    എങ്കിൽ (unlikely (ptem <= 0.f))
     {
       /* https://developer.apple.com/documentation/coretext/1508745-ctfontcreatewithgraphicsfont */
       ptem = HB_CORETEXT_DEFAULT_FONT_SIZE;
     }
 
     hb_buffer_t *buffer = c->buffer;
-    if (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
+    എങ്കിൽ (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
     {
       hb_position_t advance_to_add = get_h_tracking (c->font, track);
       foreach_grapheme (buffer, start, end)
 	buffer->pos[start].x_advance = hb_saturate_add (buffer->pos[start].x_advance, advance_to_add);
     }
-    else
+    അല്ലെങ്കിൽ
     {
       hb_position_t advance_to_add = get_v_tracking (c->font, track);
       foreach_grapheme (buffer, start, end)
 	buffer->pos[start].y_advance = hb_saturate_add (buffer->pos[start].y_advance, advance_to_add);
     }
 
-    return_trace (true);
+    return_trace (സത്യം);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ഇത്);
 
-    return_trace (likely (c->check_struct (this) &&
+    return_trace (likely (c->check_struct (ഇത്) &&
 			  hb_barrier () &&
 			  version.major == 1 &&
-			  horizData.sanitize (c, this, this) &&
-			  vertData.sanitize (c, this, this)));
+			  horizData.sanitize (c, ഇത്, ഇത്) &&
+			  vertData.sanitize (c, ഇത്, ഇത്)));
   }
 
-  protected:
+  സംരക്ഷിത:
   FixedVersion<>version;	/* Version of the tracking table
 				 * (0x00010000u for version 1.0). */
   HBUINT16	format;		/* Format of the tracking table (set to 0). */
@@ -265,7 +265,7 @@ struct trak
 				 * for vertical text (or 0 if none). */
   HBUINT16	reserved;	/* Reserved. Set to 0. */
 
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (12);
 };
 

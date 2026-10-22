@@ -1,24 +1,24 @@
 #!/usr/bin/env python3
-import sys
+ഇറക്കുമതി sys
 
 
 news_path = sys.argv[1]
 release = sys.argv[2]
 
-with open(news_path, "r", encoding="utf-8") as news_file:
-    lines = news_file.readlines()
+with open(news_path, "r", encoding="utf-8") ഇവ news_file:
+    വരികൾ = news_file.readlines()
 
 start = None
 end = None
-for i, line in enumerate(lines):
-    line = line.rstrip()
-    if line.startswith("Overview of changes leading to"):
-        if start is not None:  # Start of next release
+വേണ്ടി i, വരി ഇൽ enumerate(വരികൾ):
+    വരി = വരി.rstrip()
+    എങ്കിൽ വരി.startswith("Overview of changes leading to"):
+        എങ്കിൽ start is അല്ല None:  # Start of next release
             end = i
-            break
-        if line.endswith(release):  # Start of the release
+            നിർത്തുക
+        എങ്കിൽ വരി.endswith(release):  # Start of the release
             start = i + 3  # Skip the header lines
 
-assert start and end and end > start
+പ്രതിജ്ഞാ start ഒപ്പം end ഒപ്പം end > start
 
-print("".join(lines[start:end]))
+print("".join(വരികൾ[start:end]))

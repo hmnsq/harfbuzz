@@ -24,10 +24,10 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#അന്തര്ഭാവ "hb.hh"
 
-#include "hb-machinery.hh"
-#include "hb-vector-buf.hh"
+#അന്തര്ഭാവ "hb-machinery.hh"
+#അന്തര്ഭാവ "hb-vector-buf.hh"
 
 /**
  * SECTION:hb-vector
@@ -74,23 +74,23 @@
  * painted as a single uniform layer.
  **/
 
-struct hb_vector_decimal_point_t
+ഘടന hb_vector_decimal_point_t
 {
-  char value[8];
+  അക്ഷരം value[8];
 };
 
-static hb_vector_decimal_point_t hb_vector_decimal_point_default = {{'.', '\0'}};
+സ്ഥിതം hb_vector_decimal_point_t hb_vector_decimal_point_default = {{'.', '\0'}};
 
-static inline void free_static_svg_decimal_point ();
+സ്ഥിതം വരിയിൽ ശൂന്യം free_static_svg_decimal_point ();
 
-static struct hb_vector_decimal_point_lazy_loader_t
+സ്ഥിതം ഘടന hb_vector_decimal_point_lazy_loader_t
   : hb_lazy_loader_t<hb_vector_decimal_point_t, hb_vector_decimal_point_lazy_loader_t>
 {
-  static hb_vector_decimal_point_t *create ()
+  സ്ഥിതം hb_vector_decimal_point_t *create ()
   {
-    auto *p = (hb_vector_decimal_point_t *) hb_calloc (1, sizeof (hb_vector_decimal_point_t));
-    if (!p)
-      return nullptr;
+    auto *p = (hb_vector_decimal_point_t *) hb_calloc (1, വലുപ്പം (hb_vector_decimal_point_t));
+    എങ്കിൽ (!p)
+      തിരികെ nullptr;
 
     p->value[0] = '.';
     p->value[1] = '\0';
@@ -99,37 +99,37 @@ static struct hb_vector_decimal_point_lazy_loader_t
     lconv *lc = nullptr;
 #ifdef HAVE_LOCALECONV_L
     hb_locale_t current_locale = hb_uselocale ((hb_locale_t) 0);
-    if (current_locale)
+    എങ്കിൽ (current_locale)
       lc = localeconv_l (current_locale);
 #endif
-    if (!lc)
+    എങ്കിൽ (!lc)
       lc = localeconv ();
-    if (lc && lc->decimal_point && lc->decimal_point[0])
+    എങ്കിൽ (lc && lc->decimal_point && lc->decimal_point[0])
     {
-      strncpy (p->value, lc->decimal_point, sizeof (p->value) - 1);
-      p->value[sizeof (p->value) - 1] = '\0';
+      strncpy (p->value, lc->decimal_point, വലുപ്പം (p->value) - 1);
+      p->value[വലുപ്പം (p->value) - 1] = '\0';
     }
 #endif
 
     hb_atexit (free_static_svg_decimal_point);
-    return p;
+    തിരികെ p;
   }
 
-  static void destroy (hb_vector_decimal_point_t *p)
+  സ്ഥിതം ശൂന്യം destroy (hb_vector_decimal_point_t *p)
   { hb_free (p); }
 
-  static const hb_vector_decimal_point_t *get_null ()
-  { return &hb_vector_decimal_point_default; }
+  സ്ഥിതം സ്ഥിരം hb_vector_decimal_point_t *get_null ()
+  { തിരികെ &hb_vector_decimal_point_default; }
 } static_svg_decimal_point;
 
-static inline void
+സ്ഥിതം വരിയിൽ ശൂന്യം
 free_static_svg_decimal_point ()
 {
   static_svg_decimal_point.free_instance ();
 }
 
-const char *
-hb_vector_decimal_point_get (void)
+സ്ഥിരം അക്ഷരം *
+hb_vector_decimal_point_get (ശൂന്യം)
 {
-  return static_svg_decimal_point.get_unconst ()->value;
+  തിരികെ static_svg_decimal_point.get_unconst ()->value;
 }

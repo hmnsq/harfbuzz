@@ -24,35 +24,35 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#അന്തര്ഭാവ "hb.hh"
 
-#include "hb.h"
-#include "hb-ot.h"
+#അന്തര്ഭാവ "hb.h"
+#അന്തര്ഭാവ "hb-ot.h"
 #ifdef HAVE_FREETYPE
-#include "hb-ft.h"
+#അന്തര്ഭാവ "hb-ft.h"
 #endif
 
 #ifdef HB_NO_OPEN
 #define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
 #endif
 
-int
-main (int argc, char **argv)
+പൂർണ്ണസംഖ്യ
+പ്രധാന (പൂർണ്ണസംഖ്യ argc, അക്ഷരം **argv)
 {
-  bool ret = true;
+  തർക്കം ret = സത്യം;
 
 #ifndef HB_NO_BUFFER_SERIALIZE
 
   hb_buffer_serialize_format_t format = HB_BUFFER_SERIALIZE_FORMAT_TEXT;
-  if (argc > 1)
+  എങ്കിൽ (argc > 1)
   {
-    if (!strcmp (argv[1], "--json"))
+    എങ്കിൽ (!strcmp (argv[1], "--json"))
     {
       format = HB_BUFFER_SERIALIZE_FORMAT_JSON;
       argc--;
       argv++;
     }
-    else if (!strcmp (argv[1], "--text"))
+    അല്ലെങ്കിൽ എങ്കിൽ (!strcmp (argv[1], "--text"))
     {
       format = HB_BUFFER_SERIALIZE_FORMAT_TEXT;
       argc--;
@@ -60,8 +60,8 @@ main (int argc, char **argv)
     }
   }
 
-  if (argc < 2)
-    argv[1] = (char *) "/dev/null";
+  എങ്കിൽ (argc < 2)
+    argv[1] = (അക്ഷരം *) "/dev/null";
 
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (argv[1]);
   hb_always_assert (blob);
@@ -69,7 +69,7 @@ main (int argc, char **argv)
   hb_blob_destroy (blob);
   blob = nullptr;
 
-  unsigned int upem = hb_face_get_upem (face);
+  unsigned പൂർണ്ണസംഖ്യ upem = hb_face_get_upem (face);
   hb_font_t *font = hb_font_create (face);
   hb_face_destroy (face);
   hb_font_set_scale (font, upem, upem);
@@ -77,46 +77,46 @@ main (int argc, char **argv)
   hb_buffer_t *buf;
   buf = hb_buffer_create ();
 
-  char line[BUFSIZ], out[BUFSIZ];
-  while (fgets (line, sizeof(line), stdin))
+  അക്ഷരം വരി[BUFSIZ], out[BUFSIZ];
+  ആകുമ്പോൾ (fgets (വരി, വലുപ്പം(വരി), stdin))
   {
     hb_buffer_clear_contents (buf);
 
-    while (true)
+    ആകുമ്പോൾ (സത്യം)
     {
-      const char *p = line;
-      const char *end = p + strlen (p);
-      if (p < end && *(end - 1) == '\n')
+      സ്ഥിരം അക്ഷരം *p = വരി;
+      സ്ഥിരം അക്ഷരം *end = p + strlen (p);
+      എങ്കിൽ (p < end && *(end - 1) == '\n')
 	  end--;
-      if (!hb_buffer_deserialize_glyphs (buf,
+      എങ്കിൽ (!hb_buffer_deserialize_glyphs (buf,
 					 p, end - p, &p,
 					 font,
 					 format))
       {
-        ret = false;
-        break;
+        ret = അസത്യം;
+        നിർത്തുക;
       }
 
-      if (*p == '\n')
-        break;
-      if (p == line)
+      എങ്കിൽ (*p == '\n')
+        നിർത്തുക;
+      എങ്കിൽ (p == വരി)
       {
-	ret = false;
-	break;
+	ret = അസത്യം;
+	നിർത്തുക;
       }
 
       unsigned len = strlen (p);
-      memmove (line, p, len);
-      if (!fgets (line + len, sizeof(line) - len, stdin))
-        line[len] = '\0';
+      memmove (വരി, p, len);
+      എങ്കിൽ (!fgets (വരി + len, വലുപ്പം(വരി) - len, stdin))
+        വരി[len] = '\0';
     }
 
-    unsigned count = hb_buffer_get_length (buf);
-    for (unsigned offset = 0; offset < count;)
+    unsigned എണ്ണം = hb_buffer_get_length (buf);
+    വേണ്ടി (unsigned offset = 0; offset < എണ്ണം;)
     {
       unsigned len;
-      offset += hb_buffer_serialize_glyphs (buf, offset, count,
-					    out, sizeof (out), &len,
+      offset += hb_buffer_serialize_glyphs (buf, offset, എണ്ണം,
+					    out, വലുപ്പം (out), &len,
 					    font,
 					    format,
 					    HB_BUFFER_SERIALIZE_FLAG_GLYPH_FLAGS);
@@ -131,5 +131,5 @@ main (int argc, char **argv)
 
 #endif
 
-  return !ret;
+  തിരികെ !ret;
 }

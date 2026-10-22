@@ -29,24 +29,24 @@
 #ifndef OT_LAYOUT_COMMON_COVERAGE_HH
 #define OT_LAYOUT_COMMON_COVERAGE_HH
 
-#include "../../../hb-ot-dual.hh"
-#include "CoverageFormat1.hh"
-#include "CoverageFormat2.hh"
+#അന്തര്ഭാവ "../../../hb-ot-dual.hh"
+#അന്തര്ഭാവ "CoverageFormat1.hh"
+#അന്തര്ഭാവ "CoverageFormat2.hh"
 
-namespace OT {
-namespace Layout {
-namespace Common {
+നാമാകാശ OT {
+നാമാകാശ Layout {
+നാമാകാശ Common {
 
 template<typename Iterator>
-static inline void Coverage_serialize (hb_serialize_context_t *c,
+സ്ഥിതം വരിയിൽ ശൂന്യം Coverage_serialize (hb_serialize_context_t *c,
                                        Iterator it);
 
-struct Coverage
+ഘടന Coverage
 {
 
-  protected:
-  union {
-  struct { HBUINT16 v; }        format;         /* Format identifier */
+  സംരക്ഷിത:
+  സംഘം {
+  ഘടന { HBUINT16 v; }        format;         /* Format identifier */
   CoverageFormat1_3<SmallTypes> format1;
   CoverageFormat2_4<SmallTypes> format2;
 #ifndef HB_NO_BEYOND_64K
@@ -54,325 +54,325 @@ struct Coverage
   CoverageFormat2_4<MediumTypes>format4;
 #endif
   } u;
-  public:
+  പൊതു:
   DEFINE_SIZE_UNION (2, format.v);
 
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (ഇത്);
+    എങ്കിൽ (!u.format.v.sanitize (c)) return_trace (അസത്യം);
     hb_barrier ();
-    switch (u.format.v)
+    തിരഞ്ഞെടുപ്പ് (u.format.v)
     {
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c));
-    case 2: hb_barrier (); return_trace (u.format2.sanitize (c));
+    അവസ്ഥ 1: hb_barrier (); return_trace (u.format1.sanitize (c));
+    അവസ്ഥ 2: hb_barrier (); return_trace (u.format2.sanitize (c));
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c));
-    case 4: hb_barrier (); return_trace (u.format4.sanitize (c));
+    അവസ്ഥ 3: hb_barrier (); return_trace (u.format3.sanitize (c));
+    അവസ്ഥ 4: hb_barrier (); return_trace (u.format4.sanitize (c));
 #endif
-    default:return_trace (true);
+    സ്ഥിരസ്ഥിതി:return_trace (സത്യം);
     }
   }
 
   /* Has interface. */
-  unsigned operator [] (hb_codepoint_t k) const { return get (k); }
-  bool has (hb_codepoint_t k) const { return (*this)[k] != NOT_COVERED; }
+  unsigned operator [] (hb_codepoint_t k) സ്ഥിരം { തിരികെ get (k); }
+  തർക്കം has (hb_codepoint_t k) സ്ഥിരം { തിരികെ (*ഇത്)[k] != NOT_COVERED; }
   /* Predicate. */
-  bool operator () (hb_codepoint_t k) const { return has (k); }
+  തർക്കം operator () (hb_codepoint_t k) സ്ഥിരം { തിരികെ has (k); }
 
-  unsigned int get (hb_codepoint_t k) const { return get_coverage (k); }
-  unsigned int get_coverage (hb_codepoint_t glyph_id) const
+  unsigned പൂർണ്ണസംഖ്യ get (hb_codepoint_t k) സ്ഥിരം { തിരികെ get_coverage (k); }
+  unsigned പൂർണ്ണസംഖ്യ get_coverage (hb_codepoint_t glyph_id) സ്ഥിരം
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.get_coverage (glyph_id);
-    case 2: hb_barrier (); return u.format2.get_coverage (glyph_id);
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 1: hb_barrier (); തിരികെ u.format1.get_coverage (glyph_id);
+    അവസ്ഥ 2: hb_barrier (); തിരികെ u.format2.get_coverage (glyph_id);
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.get_coverage (glyph_id);
-    case 4: hb_barrier (); return u.format4.get_coverage (glyph_id);
+    അവസ്ഥ 3: hb_barrier (); തിരികെ u.format3.get_coverage (glyph_id);
+    അവസ്ഥ 4: hb_barrier (); തിരികെ u.format4.get_coverage (glyph_id);
 #endif
-    default:return NOT_COVERED;
+    സ്ഥിരസ്ഥിതി:തിരികെ NOT_COVERED;
     }
   }
-  unsigned int get_coverage (hb_codepoint_t glyph_id,
-			     hb_ot_layout_mapping_cache_t *cache) const
+  unsigned പൂർണ്ണസംഖ്യ get_coverage (hb_codepoint_t glyph_id,
+			     hb_ot_layout_mapping_cache_t *cache) സ്ഥിരം
   {
     unsigned coverage;
-    if (cache && cache->get (glyph_id, &coverage)) return coverage < cache->MAX_VALUE ? coverage : NOT_COVERED;
+    എങ്കിൽ (cache && cache->get (glyph_id, &coverage)) തിരികെ coverage < cache->MAX_മൂല്യം ? coverage : NOT_COVERED;
     coverage = get_coverage (glyph_id);
-    if (cache) {
-      if (coverage == NOT_COVERED)
-	cache->set (glyph_id, cache->MAX_VALUE);
-      else if (likely (coverage < cache->MAX_VALUE))
+    എങ്കിൽ (cache) {
+      എങ്കിൽ (coverage == NOT_COVERED)
+	cache->set (glyph_id, cache->MAX_മൂല്യം);
+      അല്ലെങ്കിൽ എങ്കിൽ (likely (coverage < cache->MAX_മൂല്യം))
 	cache->set (glyph_id, coverage);
     }
-    return coverage;
+    തിരികെ coverage;
   }
 
-  unsigned int get_coverage_binary (hb_codepoint_t glyph_id,
-				    hb_ot_layout_binary_cache_t *cache) const
+  unsigned പൂർണ്ണസംഖ്യ get_coverage_ദ്വിമാന (hb_codepoint_t glyph_id,
+				    hb_ot_layout_ദ്വിമാന_cache_t *cache) സ്ഥിരം
   {
     unsigned coverage;
-    if (cache && cache->get (glyph_id, &coverage)) return coverage < cache->MAX_VALUE ? coverage : NOT_COVERED;
+    എങ്കിൽ (cache && cache->get (glyph_id, &coverage)) തിരികെ coverage < cache->MAX_മൂല്യം ? coverage : NOT_COVERED;
     coverage = get_coverage (glyph_id);
-    if (cache) {
-      if (coverage == NOT_COVERED)
-	cache->set (glyph_id, cache->MAX_VALUE);
-      else
+    എങ്കിൽ (cache) {
+      എങ്കിൽ (coverage == NOT_COVERED)
+	cache->set (glyph_id, cache->MAX_മൂല്യം);
+      അല്ലെങ്കിൽ
 	cache->set (glyph_id, 0);
     }
-    return coverage;
+    തിരികെ coverage;
   }
 
-  unsigned get_population () const
+  unsigned get_population () സ്ഥിരം
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.get_population ();
-    case 2: hb_barrier (); return u.format2.get_population ();
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 1: hb_barrier (); തിരികെ u.format1.get_population ();
+    അവസ്ഥ 2: hb_barrier (); തിരികെ u.format2.get_population ();
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.get_population ();
-    case 4: hb_barrier (); return u.format4.get_population ();
+    അവസ്ഥ 3: hb_barrier (); തിരികെ u.format3.get_population ();
+    അവസ്ഥ 4: hb_barrier (); തിരികെ u.format4.get_population ();
 #endif
-    default:return NOT_COVERED;
+    സ്ഥിരസ്ഥിതി:തിരികെ NOT_COVERED;
     }
   }
 
   template <typename Iterator,
       hb_requires (hb_is_sorted_source_of (Iterator, hb_codepoint_t))>
-  bool serialize (hb_serialize_context_t *c, Iterator glyphs)
+  തർക്കം serialize (hb_serialize_context_t *c, Iterator glyphs)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (ഇത്);
+    എങ്കിൽ (unlikely (!c->extend_min (ഇത്))) return_trace (അസത്യം);
 
-    unsigned count = hb_len (+ glyphs);
-    unsigned num_ranges = 0;
+    unsigned എണ്ണം = hb_len (+ glyphs);
+    unsigned അക്കം_ranges = 0;
     hb_codepoint_t last = (hb_codepoint_t) -2;
     hb_codepoint_t max = 0;
-    bool unsorted = false;
-    for (auto g: + glyphs)
+    തർക്കം unsorted = അസത്യം;
+    വേണ്ടി (auto g: + glyphs)
     {
-      if (last != (hb_codepoint_t) -2 && g < last)
-	unsorted = true;
-      if (last + 1 != g)
-	num_ranges++;
+      എങ്കിൽ (last != (hb_codepoint_t) -2 && g < last)
+	unsorted = സത്യം;
+      എങ്കിൽ (last + 1 != g)
+	അക്കം_ranges++;
       last = g;
-      if (g > max) max = g;
+      എങ്കിൽ (g > max) max = g;
     }
-    u.format.v = !unsorted && count <= num_ranges * 3 ? 1 : 2;
+    u.format.v = !unsorted && എണ്ണം <= അക്കം_ranges * 3 ? 1 : 2;
 
 #ifndef HB_NO_BEYOND_64K
-    if (max > 0xFFFFu)
+    എങ്കിൽ (max > 0xFFFFu)
       u.format.v += 2;
-    if (unlikely (max > 0xFFFFFFu))
-#else
-    if (unlikely (max > 0xFFFFu))
+    എങ്കിൽ (unlikely (max > 0xFFFFFFu))
+#അല്ലെങ്കിൽ
+    എങ്കിൽ (unlikely (max > 0xFFFFu))
 #endif
     {
-      c->check_success (false, HB_SERIALIZE_ERROR_INT_OVERFLOW);
-      return_trace (false);
+      c->check_success (അസത്യം, HB_SERIALIZE_ERROR_INT_OVERFLOW);
+      return_trace (അസത്യം);
     }
 
-    switch (u.format.v)
+    തിരഞ്ഞെടുപ്പ് (u.format.v)
     {
-    case 1: hb_barrier (); return_trace (u.format1.serialize (c, glyphs));
-    case 2: hb_barrier (); return_trace (u.format2.serialize (c, glyphs));
+    അവസ്ഥ 1: hb_barrier (); return_trace (u.format1.serialize (c, glyphs));
+    അവസ്ഥ 2: hb_barrier (); return_trace (u.format2.serialize (c, glyphs));
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return_trace (u.format3.serialize (c, glyphs));
-    case 4: hb_barrier (); return_trace (u.format4.serialize (c, glyphs));
+    അവസ്ഥ 3: hb_barrier (); return_trace (u.format3.serialize (c, glyphs));
+    അവസ്ഥ 4: hb_barrier (); return_trace (u.format4.serialize (c, glyphs));
 #endif
-    default:return_trace (false);
+    സ്ഥിരസ്ഥിതി:return_trace (അസത്യം);
     }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  തർക്കം subset (hb_subset_context_t *c) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    const hb_subset_plan_t *plan = c->plan;
+    TRACE_SUBSET (ഇത്);
+    സ്ഥിരം hb_subset_plan_t *plan = c->plan;
     auto it =
     + iter ()
-    | hb_take (plan->source->get_num_glyphs ())
+    | hb_take (plan->source->get_അക്കം_glyphs ())
     | hb_map_retains_sorting ([plan] (hb_codepoint_t g) {
-	return plan->map_gsub_glyph (g);
+	തിരികെ plan->map_gsub_glyph (g);
       })
-    | hb_filter ([] (hb_codepoint_t glyph) { return glyph != HB_MAP_VALUE_INVALID; })
+    | hb_filter ([] (hb_codepoint_t glyph) { തിരികെ glyph != HB_MAP_മൂല്യം_INVALID; })
     ;
 
     // Cache the iterator result as it will be iterated multiple times
     // by the serialize code below.
     hb_sorted_vector_t<hb_codepoint_t> glyphs (it);
     Coverage_serialize (c->serializer, glyphs.iter ());
-    return_trace (bool (glyphs));
+    return_trace (തർക്കം (glyphs));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  തർക്കം intersects (സ്ഥിരം hb_set_t *glyphs) സ്ഥിരം
   {
-    switch (u.format.v)
+    തിരഞ്ഞെടുപ്പ് (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.intersects (glyphs);
-    case 2: hb_barrier (); return u.format2.intersects (glyphs);
+    അവസ്ഥ 1: hb_barrier (); തിരികെ u.format1.intersects (glyphs);
+    അവസ്ഥ 2: hb_barrier (); തിരികെ u.format2.intersects (glyphs);
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.intersects (glyphs);
-    case 4: hb_barrier (); return u.format4.intersects (glyphs);
+    അവസ്ഥ 3: hb_barrier (); തിരികെ u.format3.intersects (glyphs);
+    അവസ്ഥ 4: hb_barrier (); തിരികെ u.format4.intersects (glyphs);
 #endif
-    default:return false;
+    സ്ഥിരസ്ഥിതി:തിരികെ അസത്യം;
     }
   }
-  bool intersects_coverage (const hb_set_t *glyphs, unsigned int index) const
+  തർക്കം intersects_coverage (സ്ഥിരം hb_set_t *glyphs, unsigned പൂർണ്ണസംഖ്യ index) സ്ഥിരം
   {
-    switch (u.format.v)
+    തിരഞ്ഞെടുപ്പ് (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.intersects_coverage (glyphs, index);
-    case 2: hb_barrier (); return u.format2.intersects_coverage (glyphs, index);
+    അവസ്ഥ 1: hb_barrier (); തിരികെ u.format1.intersects_coverage (glyphs, index);
+    അവസ്ഥ 2: hb_barrier (); തിരികെ u.format2.intersects_coverage (glyphs, index);
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.intersects_coverage (glyphs, index);
-    case 4: hb_barrier (); return u.format4.intersects_coverage (glyphs, index);
+    അവസ്ഥ 3: hb_barrier (); തിരികെ u.format3.intersects_coverage (glyphs, index);
+    അവസ്ഥ 4: hb_barrier (); തിരികെ u.format4.intersects_coverage (glyphs, index);
 #endif
-    default:return false;
+    സ്ഥിരസ്ഥിതി:തിരികെ അസത്യം;
     }
   }
 
-  unsigned cost () const
+  unsigned cost () സ്ഥിരം
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.cost ();
-    case 2: hb_barrier (); return u.format2.cost ();
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 1: hb_barrier (); തിരികെ u.format1.cost ();
+    അവസ്ഥ 2: hb_barrier (); തിരികെ u.format2.cost ();
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.cost ();
-    case 4: hb_barrier (); return u.format4.cost ();
+    അവസ്ഥ 3: hb_barrier (); തിരികെ u.format3.cost ();
+    അവസ്ഥ 4: hb_barrier (); തിരികെ u.format4.cost ();
 #endif
-    default:return 0u;
+    സ്ഥിരസ്ഥിതി:തിരികെ 0u;
     }
   }
 
   /* Might return false if array looks unsorted.
    * Used for faster rejection of corrupt data. */
   template <typename set_t>
-  bool collect_coverage (set_t *glyphs) const
+  തർക്കം collect_coverage (set_t *glyphs) സ്ഥിരം
   {
-    switch (u.format.v)
+    തിരഞ്ഞെടുപ്പ് (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.collect_coverage (glyphs);
-    case 2: hb_barrier (); return u.format2.collect_coverage (glyphs);
+    അവസ്ഥ 1: hb_barrier (); തിരികെ u.format1.collect_coverage (glyphs);
+    അവസ്ഥ 2: hb_barrier (); തിരികെ u.format2.collect_coverage (glyphs);
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.collect_coverage (glyphs);
-    case 4: hb_barrier (); return u.format4.collect_coverage (glyphs);
+    അവസ്ഥ 3: hb_barrier (); തിരികെ u.format3.collect_coverage (glyphs);
+    അവസ്ഥ 4: hb_barrier (); തിരികെ u.format4.collect_coverage (glyphs);
 #endif
-    default:return false;
+    സ്ഥിരസ്ഥിതി:തിരികെ അസത്യം;
     }
   }
 
   template <typename IterableOut,
 	    hb_requires (hb_is_sink_of (IterableOut, hb_codepoint_t))>
-  void intersect_set (const hb_set_t &glyphs, IterableOut&& intersect_glyphs) const
+  ശൂന്യം intersect_set (സ്ഥിരം hb_set_t &glyphs, IterableOut&& intersect_glyphs) സ്ഥിരം
   {
-    switch (u.format.v)
+    തിരഞ്ഞെടുപ്പ് (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.intersect_set (glyphs, intersect_glyphs);
-    case 2: hb_barrier (); return u.format2.intersect_set (glyphs, intersect_glyphs);
+    അവസ്ഥ 1: hb_barrier (); തിരികെ u.format1.intersect_set (glyphs, intersect_glyphs);
+    അവസ്ഥ 2: hb_barrier (); തിരികെ u.format2.intersect_set (glyphs, intersect_glyphs);
 #ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.intersect_set (glyphs, intersect_glyphs);
-    case 4: hb_barrier (); return u.format4.intersect_set (glyphs, intersect_glyphs);
+    അവസ്ഥ 3: hb_barrier (); തിരികെ u.format3.intersect_set (glyphs, intersect_glyphs);
+    അവസ്ഥ 4: hb_barrier (); തിരികെ u.format4.intersect_set (glyphs, intersect_glyphs);
 #endif
-    default:return ;
+    സ്ഥിരസ്ഥിതി:തിരികെ ;
     }
   }
 
-  struct iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
+  ഘടന iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
   {
-    static constexpr bool is_sorted_iterator = true;
-    iter_t (const Coverage &c_ = Null (Coverage))
+    സ്ഥിതം constexpr തർക്കം is_sorted_iterator = സത്യം;
+    iter_t (സ്ഥിരം Coverage &c_ = Null (Coverage))
     {
-      hb_memset (this, 0, sizeof (*this));
+      hb_memset (ഇത്, 0, വലുപ്പം (*ഇത്));
       format = c_.u.format.v;
-      switch (format)
+      തിരഞ്ഞെടുപ്പ് (format)
       {
-      case 1: hb_barrier (); u.format1.init (c_.u.format1); return;
-      case 2: hb_barrier (); u.format2.init (c_.u.format2); return;
+      അവസ്ഥ 1: hb_barrier (); u.format1.init (c_.u.format1); തിരികെ;
+      അവസ്ഥ 2: hb_barrier (); u.format2.init (c_.u.format2); തിരികെ;
 #ifndef HB_NO_BEYOND_64K
-      case 3: hb_barrier (); u.format3.init (c_.u.format3); return;
-      case 4: hb_barrier (); u.format4.init (c_.u.format4); return;
+      അവസ്ഥ 3: hb_barrier (); u.format3.init (c_.u.format3); തിരികെ;
+      അവസ്ഥ 4: hb_barrier (); u.format4.init (c_.u.format4); തിരികെ;
 #endif
-      default:                               return;
+      സ്ഥിരസ്ഥിതി:                               തിരികെ;
       }
     }
-    bool __more__ () const
+    തർക്കം __more__ () സ്ഥിരം
     {
-      switch (format)
+      തിരഞ്ഞെടുപ്പ് (format)
       {
-      case 1: hb_barrier (); return u.format1.__more__ ();
-      case 2: hb_barrier (); return u.format2.__more__ ();
+      അവസ്ഥ 1: hb_barrier (); തിരികെ u.format1.__more__ ();
+      അവസ്ഥ 2: hb_barrier (); തിരികെ u.format2.__more__ ();
 #ifndef HB_NO_BEYOND_64K
-      case 3: hb_barrier (); return u.format3.__more__ ();
-      case 4: hb_barrier (); return u.format4.__more__ ();
+      അവസ്ഥ 3: hb_barrier (); തിരികെ u.format3.__more__ ();
+      അവസ്ഥ 4: hb_barrier (); തിരികെ u.format4.__more__ ();
 #endif
-      default:return false;
+      സ്ഥിരസ്ഥിതി:തിരികെ അസത്യം;
       }
     }
-    void __next__ ()
+    ശൂന്യം __next__ ()
     {
-      switch (format)
+      തിരഞ്ഞെടുപ്പ് (format)
       {
-      case 1: hb_barrier (); u.format1.__next__ (); break;
-      case 2: hb_barrier (); u.format2.__next__ (); break;
+      അവസ്ഥ 1: hb_barrier (); u.format1.__next__ (); നിർത്തുക;
+      അവസ്ഥ 2: hb_barrier (); u.format2.__next__ (); നിർത്തുക;
 #ifndef HB_NO_BEYOND_64K
-      case 3: hb_barrier (); u.format3.__next__ (); break;
-      case 4: hb_barrier (); u.format4.__next__ (); break;
+      അവസ്ഥ 3: hb_barrier (); u.format3.__next__ (); നിർത്തുക;
+      അവസ്ഥ 4: hb_barrier (); u.format4.__next__ (); നിർത്തുക;
 #endif
-      default:                   break;
+      സ്ഥിരസ്ഥിതി:                   നിർത്തുക;
       }
     }
-    typedef hb_codepoint_t __item_t__;
-    __item_t__ __item__ () const { return get_glyph (); }
+    തരനിർവചനം hb_codepoint_t __item_t__;
+    __item_t__ __item__ () സ്ഥിരം { തിരികെ get_glyph (); }
 
-    hb_codepoint_t get_glyph () const
+    hb_codepoint_t get_glyph () സ്ഥിരം
     {
-      switch (format)
+      തിരഞ്ഞെടുപ്പ് (format)
       {
-      case 1: hb_barrier (); return u.format1.get_glyph ();
-      case 2: hb_barrier (); return u.format2.get_glyph ();
+      അവസ്ഥ 1: hb_barrier (); തിരികെ u.format1.get_glyph ();
+      അവസ്ഥ 2: hb_barrier (); തിരികെ u.format2.get_glyph ();
 #ifndef HB_NO_BEYOND_64K
-      case 3: hb_barrier (); return u.format3.get_glyph ();
-      case 4: hb_barrier (); return u.format4.get_glyph ();
+      അവസ്ഥ 3: hb_barrier (); തിരികെ u.format3.get_glyph ();
+      അവസ്ഥ 4: hb_barrier (); തിരികെ u.format4.get_glyph ();
 #endif
-      default:return 0;
+      സ്ഥിരസ്ഥിതി:തിരികെ 0;
       }
     }
-    bool operator != (const iter_t& o) const
+    തർക്കം operator != (സ്ഥിരം iter_t& o) സ്ഥിരം
     {
-      if (unlikely (format != o.format)) return true;
-      switch (format)
+      എങ്കിൽ (unlikely (format != o.format)) തിരികെ സത്യം;
+      തിരഞ്ഞെടുപ്പ് (format)
       {
-      case 1: hb_barrier (); return u.format1 != o.u.format1;
-      case 2: hb_barrier (); return u.format2 != o.u.format2;
+      അവസ്ഥ 1: hb_barrier (); തിരികെ u.format1 != o.u.format1;
+      അവസ്ഥ 2: hb_barrier (); തിരികെ u.format2 != o.u.format2;
 #ifndef HB_NO_BEYOND_64K
-      case 3: hb_barrier (); return u.format3 != o.u.format3;
-      case 4: hb_barrier (); return u.format4 != o.u.format4;
+      അവസ്ഥ 3: hb_barrier (); തിരികെ u.format3 != o.u.format3;
+      അവസ്ഥ 4: hb_barrier (); തിരികെ u.format4 != o.u.format4;
 #endif
-      default:return false;
+      സ്ഥിരസ്ഥിതി:തിരികെ അസത്യം;
       }
     }
-    iter_t __end__ () const
+    iter_t __end__ () സ്ഥിരം
     {
       iter_t it;
       it.format = format;
-      switch (format)
+      തിരഞ്ഞെടുപ്പ് (format)
       {
-      case 1: hb_barrier (); it.u.format1 = u.format1.__end__ (); break;
-      case 2: hb_barrier (); it.u.format2 = u.format2.__end__ (); break;
+      അവസ്ഥ 1: hb_barrier (); it.u.format1 = u.format1.__end__ (); നിർത്തുക;
+      അവസ്ഥ 2: hb_barrier (); it.u.format2 = u.format2.__end__ (); നിർത്തുക;
 #ifndef HB_NO_BEYOND_64K
-      case 3: hb_barrier (); it.u.format3 = u.format3.__end__ (); break;
-      case 4: hb_barrier (); it.u.format4 = u.format4.__end__ (); break;
+      അവസ്ഥ 3: hb_barrier (); it.u.format3 = u.format3.__end__ (); നിർത്തുക;
+      അവസ്ഥ 4: hb_barrier (); it.u.format4 = u.format4.__end__ (); നിർത്തുക;
 #endif
-      default: break;
+      സ്ഥിരസ്ഥിതി: നിർത്തുക;
       }
-      return it;
+      തിരികെ it;
     }
 
-    private:
-    unsigned int format;
-    union {
+    സ്വകാര്യ:
+    unsigned പൂർണ്ണസംഖ്യ format;
+    സംഘം {
 #ifndef HB_NO_BEYOND_64K
     CoverageFormat2_4<MediumTypes>::iter_t      format4; /* Put this one first since it's larger; helps shut up compiler. */
     CoverageFormat1_3<MediumTypes>::iter_t      format3;
@@ -381,11 +381,11 @@ struct Coverage
     CoverageFormat1_3<SmallTypes>::iter_t       format1;
     } u;
   };
-  iter_t iter () const { return iter_t (*this); }
+  iter_t iter () സ്ഥിരം { തിരികെ iter_t (*ഇത്); }
 };
 
 template<typename Iterator>
-static inline void
+സ്ഥിതം വരിയിൽ ശൂന്യം
 Coverage_serialize (hb_serialize_context_t *c,
                     Iterator it)
 { c->start_embed<Coverage> ()->serialize (c, it); }

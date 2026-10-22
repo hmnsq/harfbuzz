@@ -29,11 +29,11 @@
 #ifndef HB_OPEN_FILE_HH
 #define HB_OPEN_FILE_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-head-table.hh"
+#അന്തര്ഭാവ "hb-open-type.hh"
+#അന്തര്ഭാവ "hb-ot-head-table.hh"
 
 
-namespace OT {
+നാമാകാശ OT {
 
 /*
  *
@@ -46,26 +46,26 @@ namespace OT {
  * Organization of an OpenType Font
  */
 
-struct OpenTypeFontFile;
-struct OpenTypeOffsetTable;
-struct TTCHeader;
+ഘടന OpenTypeFontFile;
+ഘടന OpenTypeOffsetTable;
+ഘടന TTCHeader;
 
 
-typedef struct TableRecord
+തരനിർവചനം ഘടന TableRecord
 {
-  int cmp (Tag t) const { return -t.cmp (tag); }
+  പൂർണ്ണസംഖ്യ cmp (Tag t) സ്ഥിരം { തിരികെ -t.cmp (tag); }
 
-  HB_INTERNAL static int cmp (const void *pa, const void *pb)
+  HB_INTERNAL സ്ഥിതം പൂർണ്ണസംഖ്യ cmp (സ്ഥിരം ശൂന്യം *pa, സ്ഥിരം ശൂന്യം *pb)
   {
-    const TableRecord *a = (const TableRecord *) pa;
-    const TableRecord *b = (const TableRecord *) pb;
-    return b->cmp (a->tag);
+    സ്ഥിരം TableRecord *a = (സ്ഥിരം TableRecord *) pa;
+    സ്ഥിരം TableRecord *b = (സ്ഥിരം TableRecord *) pb;
+    തിരികെ b->cmp (a->tag);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
   Tag		tag;		/* 4-byte identifier. */
@@ -73,98 +73,98 @@ typedef struct TableRecord
   Offset32	offset;		/* Offset from beginning of TrueType font
 				 * file. */
   HBUINT32	length;		/* Length of this table. */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (16);
 } OpenTypeTable;
 
-typedef struct OpenTypeOffsetTable
+തരനിർവചനം ഘടന OpenTypeOffsetTable
 {
-  friend struct OpenTypeFontFile;
+  friend ഘടന OpenTypeFontFile;
 
-  unsigned int get_table_count () const { return tables.len; }
-  const TableRecord& get_table (unsigned int i) const
-  { return tables[i]; }
-  unsigned int get_table_tags (unsigned int  start_offset,
-			       unsigned int *table_count, /* IN/OUT */
-			       hb_tag_t     *table_tags /* OUT */) const
+  unsigned പൂർണ്ണസംഖ്യ get_table_എണ്ണം () സ്ഥിരം { തിരികെ tables.len; }
+  സ്ഥിരം TableRecord& get_table (unsigned പൂർണ്ണസംഖ്യ i) സ്ഥിരം
+  { തിരികെ tables[i]; }
+  unsigned പൂർണ്ണസംഖ്യ get_table_tags (unsigned പൂർണ്ണസംഖ്യ  start_offset,
+			       unsigned പൂർണ്ണസംഖ്യ *table_എണ്ണം_2, /* IN/OUT */
+			       hb_tag_t     *table_tags /* OUT */) സ്ഥിരം
   {
-    if (table_count && table_tags)
+    എങ്കിൽ (table_എണ്ണം_2 && table_tags)
     {
-      + tables.as_array ().sub_array (start_offset, table_count)
+      + tables.as_array ().sub_array (start_offset, table_എണ്ണം_2)
       | hb_map (&TableRecord::tag)
-      | hb_sink (hb_array (table_tags, *table_count))
+      | hb_sink (hb_array (table_tags, *table_എണ്ണം_2))
       ;
     }
-    return tables.len;
+    തിരികെ tables.len;
   }
-  bool find_table_index (hb_tag_t tag, unsigned int *table_index) const
+  തർക്കം find_table_index (hb_tag_t tag, unsigned പൂർണ്ണസംഖ്യ *table_index) സ്ഥിരം
   {
     Tag t;
     t = tag;
     /* Use lfind for small fonts; there are fonts that have unsorted table entries;
      * those tend to work in other tools, so tolerate them.
      * https://github.com/harfbuzz/harfbuzz/issues/3065 */
-    if (tables.len < 16)
-      return tables.lfind (t, table_index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
-    else
-      return tables.bfind (t, table_index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
+    എങ്കിൽ (tables.len < 16)
+      തിരികെ tables.lfind (t, table_index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
+    അല്ലെങ്കിൽ
+      തിരികെ tables.bfind (t, table_index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
   }
-  const TableRecord& get_table_by_tag (hb_tag_t tag) const
+  സ്ഥിരം TableRecord& get_table_by_tag (hb_tag_t tag) സ്ഥിരം
   {
-    unsigned int table_index;
+    unsigned പൂർണ്ണസംഖ്യ table_index;
     find_table_index (tag, &table_index);
-    return get_table (table_index);
+    തിരികെ get_table (table_index);
   }
 
-  public:
+  പൊതു:
 
   template <typename Iterator,
 	    hb_requires ((hb_is_source_of<Iterator, hb_pair_t<hb_tag_t, hb_blob_t *>>::value))>
-  bool serialize (hb_serialize_context_t *c,
+  തർക്കം serialize (hb_serialize_context_t *c,
 		  hb_tag_t sfnt_tag,
 		  Iterator it)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ഇത്);
     /* Alloc 12 for the OTHeader. */
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    എങ്കിൽ (unlikely (!c->extend_min (ഇത്))) return_trace (അസത്യം);
     /* Write sfntVersion (bytes 0..3). */
     sfnt_version = sfnt_tag;
     /* Take space for numTables, searchRange, entrySelector, RangeShift
      * and the TableRecords themselves.  */
-    unsigned num_items = hb_len (it);
-    if (unlikely (!tables.serialize (c, num_items))) return_trace (false);
+    unsigned അക്കം_ഇനങ്ങൾ = hb_len (it);
+    എങ്കിൽ (unlikely (!tables.serialize (c, അക്കം_ഇനങ്ങൾ))) return_trace (അസത്യം);
 
-    const char *dir_end = (const char *) c->head;
+    സ്ഥിരം അക്ഷരം *dir_end = (സ്ഥിരം അക്ഷരം *) c->head;
     HBUINT32 *checksum_adjustment = nullptr;
 
     /* Write OffsetTables, alloc for and write actual table blobs. */
     unsigned i = 0;
-    for (hb_pair_t<hb_tag_t, hb_blob_t*> entry : it)
+    വേണ്ടി (hb_pair_t<hb_tag_t, hb_blob_t*> entry : it)
     {
       hb_blob_t *blob = entry.second;
       unsigned len = blob->length;
 
       /* Allocate room for the table and copy it. */
-      char *start = (char *) c->allocate_size<void> (len, false);
-      if (unlikely (!start)) return false;
+      അക്ഷരം *start = (അക്ഷരം *) c->allocate_size<ശൂന്യം> (len, അസത്യം);
+      എങ്കിൽ (unlikely (!start)) തിരികെ അസത്യം;
 
       TableRecord &rec = tables.arrayZ[i];
       rec.tag = entry.first;
       rec.length = len;
       rec.offset = 0;
-      if (unlikely (!c->check_assign (rec.offset,
-				      (unsigned) ((char *) start - (char *) this),
+      എങ്കിൽ (unlikely (!c->check_assign (rec.offset,
+				      (unsigned) ((അക്ഷരം *) start - (അക്ഷരം *) ഇത്),
 				      HB_SERIALIZE_ERROR_OFFSET_OVERFLOW)))
-        return_trace (false);
+        return_trace (അസത്യം);
 
-      if (likely (len))
+      എങ്കിൽ (likely (len))
 	hb_memcpy (start, blob->data, len);
 
       /* 4-byte alignment. */
       c->align (4);
-      const char *end = (const char *) c->head;
+      സ്ഥിരം അക്ഷരം *end = (സ്ഥിരം അക്ഷരം *) c->head;
 
-      if (entry.first == HB_OT_TAG_head &&
+      എങ്കിൽ (entry.first == HB_OT_TAG_head &&
 	  (unsigned) (end - start) >= head::static_size)
       {
 	head *h = (head *) start;
@@ -178,14 +178,14 @@ typedef struct OpenTypeOffsetTable
 
     tables.qsort ();
 
-    if (checksum_adjustment)
+    എങ്കിൽ (checksum_adjustment)
     {
       CheckSum checksum;
 
       /* The following line is a slower version of the following block. */
       //checksum.set_for_data (this, (const char *) c->head - (const char *) this);
-      checksum.set_for_data (this, dir_end - (const char *) this);
-      for (unsigned int i = 0; i < num_items; i++)
+      checksum.set_for_data (ഇത്, dir_end - (സ്ഥിരം അക്ഷരം *) ഇത്);
+      വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < അക്കം_ഇനങ്ങൾ; i++)
       {
 	TableRecord &rec = tables.arrayZ[i];
 	checksum = checksum + rec.checkSum;
@@ -194,20 +194,20 @@ typedef struct OpenTypeOffsetTable
       *checksum_adjustment = 0xB1B0AFBAu - checksum;
     }
 
-    return_trace (true);
+    return_trace (സത്യം);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && tables.sanitize (c));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) && tables.sanitize (c));
   }
 
-  protected:
+  സംരക്ഷിത:
   Tag		sfnt_version;	/* '\0\001\0\00' if TrueType / 'OTTO' if CFF */
-  BinSearchArrayOf<TableRecord>
+  Bin_തിരയൽ_Array_Of<TableRecord>
 		tables;
-  public:
+  പൊതു:
   DEFINE_SIZE_ARRAY (12, tables);
 } OpenTypeFontFace;
 
@@ -216,96 +216,96 @@ typedef struct OpenTypeOffsetTable
  * TrueType Collections
  */
 
-struct TTCHeaderVersion1
+ഘടന TTCHeaderVersion1
 {
-  friend struct TTCHeader;
+  friend ഘടന TTCHeader;
 
   using DirectoryList = Array32Of<Offset32To<OpenTypeOffsetTable>>;
 
-  unsigned int get_face_count () const { return get_directory_list ().len; }
-  const OpenTypeFontFace& get_face (unsigned int i) const
-  { return this+get_directory_list ()[i]; }
+  unsigned പൂർണ്ണസംഖ്യ get_face_എണ്ണം () സ്ഥിരം { തിരികെ get_directory_list ().len; }
+  സ്ഥിരം OpenTypeFontFace& get_face (unsigned പൂർണ്ണസംഖ്യ i) സ്ഥിരം
+  { തിരികെ ഇത്+get_directory_list ()[i]; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ഇത്);
 #ifndef HB_NO_BEYOND_64K
-    if (version.minor >= 1)
+    എങ്കിൽ (version.minor >= 1)
     {
-      if (unlikely (!table.sanitize_shallow (c)))
-	return_trace (false);
+      എങ്കിൽ (unlikely (!table.sanitize_shallow (c)))
+	return_trace (അസത്യം);
       unsigned extra_size = version.major == 2 ? 12 : 0;
-      if (unlikely (!c->check_range (&table, table.get_size () + extra_size)))
-	return_trace (false);
-      const DirectoryList &table2 = StructAtOffset<DirectoryList> (&table,
+      എങ്കിൽ (unlikely (!c->check_range (&table, table.get_size () + extra_size)))
+	return_trace (അസത്യം);
+      സ്ഥിരം DirectoryList &table2 = StructAtOffset<DirectoryList> (&table,
 								   table.get_size () + extra_size);
-      return_trace (table2.sanitize (c, this));
+      return_trace (table2.sanitize (c, ഇത്));
     }
 #endif
-    return_trace (table.sanitize (c, this));
+    return_trace (table.sanitize (c, ഇത്));
   }
 
-  private:
-  const DirectoryList& get_directory_list () const
+  സ്വകാര്യ:
+  സ്ഥിരം DirectoryList& get_directory_list () സ്ഥിരം
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.minor >= 1)
+    എങ്കിൽ (version.minor >= 1)
     {
       unsigned extra_size = version.major == 2 ? 12 : 0;
-      return StructAtOffset<DirectoryList> (&table, table.get_size () + extra_size);
+      തിരികെ StructAtOffset<DirectoryList> (&table, table.get_size () + extra_size);
     }
 #endif
-    return table;
+    തിരികെ table;
   }
 
-  protected:
+  സംരക്ഷിത:
   Tag		ttcTag;		/* TrueType Collection ID string: 'ttcf' */
   FixedVersion<>version;	/* Version of the TTC Header. */
   DirectoryList
 		table;		/* Array of offsets to the OffsetTable for each font
 				 * from the beginning of the file */
-  public:
+  പൊതു:
   DEFINE_SIZE_ARRAY (12, table);
 };
 
-struct TTCHeader
+ഘടന TTCHeader
 {
-  friend struct OpenTypeFontFile;
+  friend ഘടന OpenTypeFontFile;
 
-  private:
+  സ്വകാര്യ:
 
-  unsigned int get_face_count () const
+  unsigned പൂർണ്ണസംഖ്യ get_face_എണ്ണം () സ്ഥിരം
   {
-    switch (u.header.version.major) {
-    case 2: /* version 2 is compatible with version 1 */
-    case 1: hb_barrier (); return u.version1.get_face_count ();
-    default:return 0;
+    തിരഞ്ഞെടുപ്പ് (u.header.version.major) {
+    അവസ്ഥ 2: /* version 2 is compatible with version 1 */
+    അവസ്ഥ 1: hb_barrier (); തിരികെ u.version1.get_face_എണ്ണം ();
+    സ്ഥിരസ്ഥിതി:തിരികെ 0;
     }
   }
-  const OpenTypeFontFace& get_face (unsigned int i) const
+  സ്ഥിരം OpenTypeFontFace& get_face (unsigned പൂർണ്ണസംഖ്യ i) സ്ഥിരം
   {
-    switch (u.header.version.major) {
-    case 2: /* version 2 is compatible with version 1 */
-    case 1: hb_barrier (); return u.version1.get_face (i);
-    default:return Null (OpenTypeFontFace);
+    തിരഞ്ഞെടുപ്പ് (u.header.version.major) {
+    അവസ്ഥ 2: /* version 2 is compatible with version 1 */
+    അവസ്ഥ 1: hb_barrier (); തിരികെ u.version1.get_face (i);
+    സ്ഥിരസ്ഥിതി:തിരികെ Null (OpenTypeFontFace);
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!u.header.version.sanitize (c))) return_trace (false);
+    TRACE_SANITIZE (ഇത്);
+    എങ്കിൽ (unlikely (!u.header.version.sanitize (c))) return_trace (അസത്യം);
     hb_barrier ();
-    switch (u.header.version.major) {
-    case 2: /* version 2 is compatible with version 1 */
-    case 1: hb_barrier (); return_trace (u.version1.sanitize (c));
-    default:return_trace (true);
+    തിരഞ്ഞെടുപ്പ് (u.header.version.major) {
+    അവസ്ഥ 2: /* version 2 is compatible with version 1 */
+    അവസ്ഥ 1: hb_barrier (); return_trace (u.version1.sanitize (c));
+    സ്ഥിരസ്ഥിതി:return_trace (സത്യം);
     }
   }
 
-  protected:
-  union {
-  struct {
+  സംരക്ഷിത:
+  സംഘം {
+  ഘടന {
   Tag		ttcTag;		/* TrueType Collection ID string: 'ttcf' */
   FixedVersion<>version;	/* Version of the TTC Header (1.0 or 2.0),
 				 * 0x00010000u or 0x00020000u */
@@ -320,22 +320,22 @@ struct TTCHeader
  * http://mirror.informatimago.com/next/developer.apple.com/documentation/mac/MoreToolbox/MoreToolbox-99.html
  */
 
-struct ResourceRecord
+ഘടന ResourceRecord
 {
-  const OpenTypeFontFace & get_face (const void *data_base) const
-  { return * reinterpret_cast<const OpenTypeFontFace *> ((data_base+offset).arrayZ); }
+  സ്ഥിരം OpenTypeFontFace & get_face (സ്ഥിരം ശൂന്യം *data_base) സ്ഥിരം
+  { തിരികെ * reinterpret_cast<സ്ഥിരം OpenTypeFontFace *> ((data_base+offset).arrayZ); }
 
-  bool sanitize (hb_sanitize_context_t *c,
-		 const void *data_base) const
+  തർക്കം sanitize (hb_sanitize_context_t *c,
+		 സ്ഥിരം ശൂന്യം *data_base) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) &&
 		  offset.sanitize (c, data_base) &&
 		  hb_barrier () &&
 		  get_face (data_base).sanitize (c));
   }
 
-  protected:
+  സംരക്ഷിത:
   HBUINT16	id;		/* Resource ID. */
   HBINT16	nameOffset;	/* Offset from beginning of resource name list
 				 * to resource name, -1 means there is none. */
@@ -344,91 +344,91 @@ struct ResourceRecord
 		offset;		/* Offset from beginning of data block to
 				 * data for this resource */
   HBUINT32	reserved;	/* Reserved for handle to resource */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (12);
 };
 
 #define HB_TAG_sfnt HB_TAG ('s','f','n','t')
 
-struct ResourceTypeRecord
+ഘടന ResourceTypeRecord
 {
-  unsigned int get_resource_count () const
-  { return tag == HB_TAG_sfnt ? resCountM1 + 1 : 0; }
+  unsigned പൂർണ്ണസംഖ്യ get_resource_എണ്ണം () സ്ഥിരം
+  { തിരികെ tag == HB_TAG_sfnt ? res_എണ്ണം_M1 + 1 : 0; }
 
-  bool is_sfnt () const { return tag == HB_TAG_sfnt; }
+  തർക്കം is_sfnt () സ്ഥിരം { തിരികെ tag == HB_TAG_sfnt; }
 
-  const ResourceRecord& get_resource_record (unsigned int i,
-					     const void *type_base) const
-  { return (type_base+resourcesZ).as_array (get_resource_count ())[i]; }
+  സ്ഥിരം ResourceRecord& get_resource_record (unsigned പൂർണ്ണസംഖ്യ i,
+					     സ്ഥിരം ശൂന്യം *type_base) സ്ഥിരം
+  { തിരികെ (type_base+resourcesZ).as_array (get_resource_എണ്ണം ())[i]; }
 
-  bool sanitize (hb_sanitize_context_t *c,
-		 const void *type_base,
-		 const void *data_base) const
+  തർക്കം sanitize (hb_sanitize_context_t *c,
+		 സ്ഥിരം ശൂന്യം *type_base,
+		 സ്ഥിരം ശൂന്യം *data_base) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) &&
 		  hb_barrier () &&
 		  resourcesZ.sanitize (c, type_base,
-				       get_resource_count (),
+				       get_resource_എണ്ണം (),
 				       data_base));
   }
 
-  protected:
+  സംരക്ഷിത:
   Tag		tag;		/* Resource type. */
-  HBUINT16	resCountM1;	/* Number of resources minus 1. */
+  HBUINT16	res_എണ്ണം_M1;	/* Number of resources minus 1. */
   NNOffset16To<UnsizedArrayOf<ResourceRecord>>
 		resourcesZ;	/* Offset from beginning of resource type list
 				 * to reference item list for this type. */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (8);
 };
 
-struct ResourceMap
+ഘടന ResourceMap
 {
-  unsigned int get_face_count () const
+  unsigned പൂർണ്ണസംഖ്യ get_face_എണ്ണം () സ്ഥിരം
   {
-    unsigned int count = get_type_count ();
-    for (unsigned int i = 0; i < count; i++)
+    unsigned പൂർണ്ണസംഖ്യ എണ്ണം = get_type_എണ്ണം ();
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
     {
-      const ResourceTypeRecord& type = get_type_record (i);
-      if (type.is_sfnt ())
-	return type.get_resource_count ();
+      സ്ഥിരം ResourceTypeRecord& type = get_type_record (i);
+      എങ്കിൽ (type.is_sfnt ())
+	തിരികെ type.get_resource_എണ്ണം ();
     }
-    return 0;
+    തിരികെ 0;
   }
 
-  const OpenTypeFontFace& get_face (unsigned int idx,
-				    const void *data_base) const
+  സ്ഥിരം OpenTypeFontFace& get_face (unsigned പൂർണ്ണസംഖ്യ idx,
+				    സ്ഥിരം ശൂന്യം *data_base) സ്ഥിരം
   {
-    unsigned int count = get_type_count ();
-    for (unsigned int i = 0; i < count; i++)
+    unsigned പൂർണ്ണസംഖ്യ എണ്ണം = get_type_എണ്ണം ();
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
     {
-      const ResourceTypeRecord& type = get_type_record (i);
+      സ്ഥിരം ResourceTypeRecord& type = get_type_record (i);
       /* The check for idx < count is here because ResourceRecord is NOT null-safe.
        * Because an offset of 0 there does NOT mean null. */
-      if (type.is_sfnt () && idx < type.get_resource_count ())
-	return type.get_resource_record (idx, &(this+typeList)).get_face (data_base);
+      എങ്കിൽ (type.is_sfnt () && idx < type.get_resource_എണ്ണം ())
+	തിരികെ type.get_resource_record (idx, &(ഇത്+typeList)).get_face (data_base);
     }
-    return Null (OpenTypeFontFace);
+    തിരികെ Null (OpenTypeFontFace);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *data_base) const
+  തർക്കം sanitize (hb_sanitize_context_t *c, സ്ഥിരം ശൂന്യം *data_base) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) &&
 		  hb_barrier () &&
-		  typeList.sanitize (c, this,
-				     &(this+typeList),
+		  typeList.sanitize (c, ഇത്,
+				     &(ഇത്+typeList),
 				     data_base));
   }
 
-  private:
-  unsigned int get_type_count () const { return (this+typeList).lenM1 + 1; }
+  സ്വകാര്യ:
+  unsigned പൂർണ്ണസംഖ്യ get_type_എണ്ണം () സ്ഥിരം { തിരികെ (ഇത്+typeList).lenM1 + 1; }
 
-  const ResourceTypeRecord& get_type_record (unsigned int i) const
-  { return (this+typeList)[i]; }
+  സ്ഥിരം ResourceTypeRecord& get_type_record (unsigned പൂർണ്ണസംഖ്യ i) സ്ഥിരം
+  { തിരികെ (ഇത്+typeList)[i]; }
 
-  protected:
+  സംരക്ഷിത:
   HBUINT8	reserved0[16];	/* Reserved for copy of resource header */
   HBUINT32	reserved1;	/* Reserved for handle to next resource map */
   HBUINT16	resreved2;	/* Reserved for file reference number */
@@ -438,34 +438,34 @@ struct ResourceMap
 				 * resource type list */
   Offset16	nameList;	/* Offset from beginning of map to
 				 * resource name list */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (28);
 };
 
-struct ResourceForkHeader
+ഘടന ResourceForkHeader
 {
-  unsigned int get_face_count () const
-  { return (this+map).get_face_count (); }
+  unsigned പൂർണ്ണസംഖ്യ get_face_എണ്ണം () സ്ഥിരം
+  { തിരികെ (ഇത്+map).get_face_എണ്ണം (); }
 
-  const OpenTypeFontFace& get_face (unsigned int idx,
-				    unsigned int *base_offset = nullptr) const
+  സ്ഥിരം OpenTypeFontFace& get_face (unsigned പൂർണ്ണസംഖ്യ idx,
+				    unsigned പൂർണ്ണസംഖ്യ *base_offset = nullptr) സ്ഥിരം
   {
-    const OpenTypeFontFace &face = (this+map).get_face (idx, &(this+data));
-    if (base_offset)
-      *base_offset = (const char *) &face - (const char *) this;
-    return face;
+    സ്ഥിരം OpenTypeFontFace &face = (ഇത്+map).get_face (idx, &(ഇത്+data));
+    എങ്കിൽ (base_offset)
+      *base_offset = (സ്ഥിരം അക്ഷരം *) &face - (സ്ഥിരം അക്ഷരം *) ഇത്;
+    തിരികെ face;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) &&
 		  hb_barrier () &&
-		  data.sanitize (c, this, dataLen) &&
-		  map.sanitize (c, this, &(this+data)));
+		  data.sanitize (c, ഇത്, dataLen) &&
+		  map.sanitize (c, ഇത്, &(ഇത്+data)));
   }
 
-  protected:
+  സംരക്ഷിത:
   NNOffset32To<UnsizedArrayOf<HBUINT8>>
 		data;		/* Offset from beginning of resource fork
 				 * to resource data */
@@ -474,7 +474,7 @@ struct ResourceForkHeader
 				 * to resource map */
   HBUINT32	dataLen;	/* Length of resource data */
   HBUINT32	mapLen;		/* Length of resource map */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (16);
 };
 
@@ -482,9 +482,9 @@ struct ResourceForkHeader
  * OpenType Font File
  */
 
-struct OpenTypeFontFile
+ഘടന OpenTypeFontFile
 {
-  enum {
+  എണ്ണൽ {
     CFFTag		= HB_TAG ('O','T','T','O'), /* OpenType with Postscript outlines */
     TrueTypeTag		= HB_TAG ( 0 , 1 , 0 , 0 ), /* OpenType with TrueType outlines */
     TTCTag		= HB_TAG ('t','t','c','f'), /* TrueType Collection */
@@ -493,74 +493,74 @@ struct OpenTypeFontFile
     Typ1Tag		= HB_TAG ('t','y','p','1')  /* Obsolete Apple Type1 font in SFNT container */
   };
 
-  hb_tag_t get_tag () const { return u.tag.v; }
+  hb_tag_t get_tag () സ്ഥിരം { തിരികെ u.tag.v; }
 
-  unsigned int get_face_count () const
+  unsigned പൂർണ്ണസംഖ്യ get_face_എണ്ണം () സ്ഥിരം
   {
-    switch (u.tag.v) {
-    case CFFTag:	/* All the non-collection tags */
-    case TrueTag:
-    case Typ1Tag:
-    case TrueTypeTag:	return 1;
-    case TTCTag:	hb_barrier (); return u.ttcHeader.get_face_count ();
-    case DFontTag:	hb_barrier (); return u.rfHeader.get_face_count ();
-    default:		return 0;
+    തിരഞ്ഞെടുപ്പ് (u.tag.v) {
+    അവസ്ഥ CFFTag:	/* All the non-collection tags */
+    അവസ്ഥ TrueTag:
+    അവസ്ഥ Typ1Tag:
+    അവസ്ഥ TrueTypeTag:	തിരികെ 1;
+    അവസ്ഥ TTCTag:	hb_barrier (); തിരികെ u.ttcHeader.get_face_എണ്ണം ();
+    അവസ്ഥ DFontTag:	hb_barrier (); തിരികെ u.rfHeader.get_face_എണ്ണം ();
+    സ്ഥിരസ്ഥിതി:		തിരികെ 0;
     }
   }
-  const OpenTypeFontFace& get_face (unsigned int i, unsigned int *base_offset = nullptr) const
+  സ്ഥിരം OpenTypeFontFace& get_face (unsigned പൂർണ്ണസംഖ്യ i, unsigned പൂർണ്ണസംഖ്യ *base_offset = nullptr) സ്ഥിരം
   {
-    if (base_offset)
+    എങ്കിൽ (base_offset)
       *base_offset = 0;
-    switch (u.tag.v) {
+    തിരഞ്ഞെടുപ്പ് (u.tag.v) {
     /* Note: for non-collection SFNT data we ignore index.  This is because
      * Apple dfont container is a container of SFNT's.  So each SFNT is a
      * non-TTC, but the index is more than zero. */
-    case CFFTag:	/* All the non-collection tags */
-    case TrueTag:
-    case Typ1Tag:
-    case TrueTypeTag:	hb_barrier (); return u.fontFace;
-    case TTCTag:	hb_barrier (); return u.ttcHeader.get_face (i);
-    case DFontTag:	hb_barrier (); return u.rfHeader.get_face (i, base_offset);
-    default:		return Null (OpenTypeFontFace);
+    അവസ്ഥ CFFTag:	/* All the non-collection tags */
+    അവസ്ഥ TrueTag:
+    അവസ്ഥ Typ1Tag:
+    അവസ്ഥ TrueTypeTag:	hb_barrier (); തിരികെ u.fontFace;
+    അവസ്ഥ TTCTag:	hb_barrier (); തിരികെ u.ttcHeader.get_face (i);
+    അവസ്ഥ DFontTag:	hb_barrier (); തിരികെ u.rfHeader.get_face (i, base_offset);
+    സ്ഥിരസ്ഥിതി:		തിരികെ Null (OpenTypeFontFace);
     }
   }
 
   template <typename Iterator,
 	    hb_requires ((hb_is_source_of<Iterator, hb_pair_t<hb_tag_t, hb_blob_t *>>::value))>
-  bool serialize_single (hb_serialize_context_t *c,
+  തർക്കം serialize_single (hb_serialize_context_t *c,
 			 hb_tag_t sfnt_tag,
-			 Iterator items)
+			 Iterator ഇനങ്ങൾ)
   {
-    TRACE_SERIALIZE (this);
-    assert (sfnt_tag != TTCTag);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    return_trace (u.fontFace.serialize (c, sfnt_tag, items));
+    TRACE_SERIALIZE (ഇത്);
+    പ്രതിജ്ഞാ (sfnt_tag != TTCTag);
+    എങ്കിൽ (unlikely (!c->extend_min (ഇത്))) return_trace (അസത്യം);
+    return_trace (u.fontFace.serialize (c, sfnt_tag, ഇനങ്ങൾ));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!u.tag.v.sanitize (c))) return_trace (false);
+    TRACE_SANITIZE (ഇത്);
+    എങ്കിൽ (unlikely (!u.tag.v.sanitize (c))) return_trace (അസത്യം);
     hb_barrier ();
-    switch (u.tag.v) {
-    case CFFTag:	/* All the non-collection tags */
-    case TrueTag:
-    case Typ1Tag:
-    case TrueTypeTag:	hb_barrier (); return_trace (u.fontFace.sanitize (c));
-    case TTCTag:	hb_barrier (); return_trace (u.ttcHeader.sanitize (c));
-    case DFontTag:	hb_barrier (); return_trace (u.rfHeader.sanitize (c));
-    default:		return_trace (true);
+    തിരഞ്ഞെടുപ്പ് (u.tag.v) {
+    അവസ്ഥ CFFTag:	/* All the non-collection tags */
+    അവസ്ഥ TrueTag:
+    അവസ്ഥ Typ1Tag:
+    അവസ്ഥ TrueTypeTag:	hb_barrier (); return_trace (u.fontFace.sanitize (c));
+    അവസ്ഥ TTCTag:	hb_barrier (); return_trace (u.ttcHeader.sanitize (c));
+    അവസ്ഥ DFontTag:	hb_barrier (); return_trace (u.rfHeader.sanitize (c));
+    സ്ഥിരസ്ഥിതി:		return_trace (സത്യം);
     }
   }
 
-  protected:
-  union {
-  struct { Tag v; }	tag;		/* 4-byte identifier. */
+  സംരക്ഷിത:
+  സംഘം {
+  ഘടന { Tag v; }	tag;		/* 4-byte identifier. */
   OpenTypeFontFace	fontFace;
   TTCHeader		ttcHeader;
   ResourceForkHeader	rfHeader;
   } u;
-  public:
+  പൊതു:
   DEFINE_SIZE_UNION (4, tag.v);
 };
 

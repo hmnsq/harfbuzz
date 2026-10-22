@@ -22,14 +22,14 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#എങ്കിൽ !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb-ot.h> instead."
 #endif
 
 #ifndef HB_OT_META_H
 #define HB_OT_META_H
 
-#include "hb.h"
+#അന്തര്ഭാവ "hb.h"
 
 HB_BEGIN_DECLS
 
@@ -46,7 +46,7 @@ HB_BEGIN_DECLS
  *
  * Since: 2.6.0
  **/
-typedef enum {
+തരനിർവചനം എണ്ണൽ {
 /*
    HB_OT_META_TAG_APPL		= HB_TAG ('a','p','p','l'),
    HB_OT_META_TAG_BILD		= HB_TAG ('b','i','l','d'),
@@ -55,13 +55,13 @@ typedef enum {
   HB_OT_META_TAG_SUPPORTED_LANGUAGES	= HB_TAG ('s','l','n','g'),
 
   /*< private >*/
-  _HB_OT_META_TAG_MAX_VALUE = HB_TAG_MAX_SIGNED /*< skip >*/
+  HB_OT_META_TAG_MAX_മൂല്യം = HB_TAG_MAX_SIGNED /*< skip >*/
 } hb_ot_meta_tag_t;
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned പൂർണ്ണസംഖ്യ
 hb_ot_meta_get_entry_tags (hb_face_t        *face,
-			   unsigned int      start_offset,
-			   unsigned int     *entries_count, /* IN/OUT.  May be NULL. */
+			   unsigned പൂർണ്ണസംഖ്യ      start_offset,
+			   unsigned പൂർണ്ണസംഖ്യ     *entries_എണ്ണം, /* IN/OUT.  May be NULL. */
 			   hb_ot_meta_tag_t *entries        /* OUT.     May be NULL. */);
 
 HB_EXTERN hb_blob_t *

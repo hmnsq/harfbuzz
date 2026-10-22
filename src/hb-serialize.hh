@@ -31,18 +31,18 @@
 #ifndef HB_SERIALIZE_HH
 #define HB_SERIALIZE_HH
 
-#include "hb.hh"
-#include "hb-blob.hh"
-#include "hb-map.hh"
-#include "hb-free-pool.hh"
+#അന്തര്ഭാവ "hb.hh"
+#അന്തര്ഭാവ "hb-blob.hh"
+#അന്തര്ഭാവ "hb-map.hh"
+#അന്തര്ഭാവ "hb-free-pool.hh"
 
-#include "hb-subset-serialize.h"
+#അന്തര്ഭാവ "hb-subset-serialize.h"
 
 /*
  * Serialize
  */
 
-enum hb_serialize_error_t {
+എണ്ണൽ hb_serialize_error_t {
   HB_SERIALIZE_ERROR_NONE =            0x00000000u,
   HB_SERIALIZE_ERROR_OTHER =           0x00000001u,
   HB_SERIALIZE_ERROR_OFFSET_OVERFLOW = 0x00000002u,
@@ -52,11 +52,11 @@ enum hb_serialize_error_t {
 };
 HB_MARK_AS_FLAG_T (hb_serialize_error_t);
 
-struct hb_serialize_context_t
+ഘടന hb_serialize_context_t
 {
-  typedef unsigned objidx_t;
+  തരനിർവചനം unsigned objidx_t;
 
-  enum whence_t {
+  എണ്ണൽ whence_t {
      Head,	/* Relative to the current object head (default). */
      Tail,	/* Relative to the current object tail after packed. */
      Absolute	/* Absolute: from the start of the serialize buffer. */
@@ -64,42 +64,42 @@ struct hb_serialize_context_t
 
 
 
-  struct object_t
+  ഘടന object_t
   {
-    void fini () {
+    ശൂന്യം fini () {
       real_links.fini ();
       virtual_links.fini ();
     }
 
-    object_t () = default;
+    object_t () = സ്ഥിരസ്ഥിതി;
 
-    object_t (const hb_subset_serialize_object_t &o)
+    object_t (സ്ഥിരം hb_subset_serialize_object_t &o)
     {
       head = o.head;
       tail = o.tail;
       next = nullptr;
-      real_links.alloc_exact (o.num_real_links);
-      for (unsigned i = 0 ; i < o.num_real_links; i++)
+      real_links.alloc_exact (o.അക്കം_real_links);
+      വേണ്ടി (unsigned i = 0 ; i < o.അക്കം_real_links; i++)
         real_links.push (o.real_links[i]);
 
-      virtual_links.alloc_exact (o.num_virtual_links);
-      for (unsigned i = 0; i < o.num_virtual_links; i++)
+      virtual_links.alloc_exact (o.അക്കം_virtual_links);
+      വേണ്ടി (unsigned i = 0; i < o.അക്കം_virtual_links; i++)
         virtual_links.push (o.virtual_links[i]);
     }
 
-    bool in_error () const
+    തർക്കം in_error () സ്ഥിരം
     {
-      return real_links.in_error() || virtual_links.in_error();
+      തിരികെ real_links.in_error() || virtual_links.in_error();
     }
 
-    bool add_virtual_link (objidx_t objidx)
+    തർക്കം add_virtual_link (objidx_t objidx)
     {
-      if (!objidx)
-        return false;
+      എങ്കിൽ (!objidx)
+        തിരികെ അസത്യം;
 
       auto& link = *virtual_links.push ();
-      if (virtual_links.in_error ())
-        return false;
+      എങ്കിൽ (virtual_links.in_error ())
+        തിരികെ അസത്യം;
 
       link.objidx = objidx;
       // Remaining fields were previously zero'd by push():
@@ -109,10 +109,10 @@ struct hb_serialize_context_t
       // link.position = 0;
       // link.bias = 0;
 
-      return true;
+      തിരികെ സത്യം;
     }
 
-    friend void swap (object_t& a, object_t& b) noexcept
+    friend ശൂന്യം swap (object_t& a, object_t& b) noexcept
     {
       hb_swap (a.head, b.head);
       hb_swap (a.tail, b.tail);
@@ -121,24 +121,24 @@ struct hb_serialize_context_t
       hb_swap (a.virtual_links, b.virtual_links);
     }
 
-    bool operator == (const object_t &o) const
+    തർക്കം operator == (സ്ഥിരം object_t &o) സ്ഥിരം
     {
       // Virtual links aren't considered for equality since they don't affect the functionality
       // of the object.
-      return (tail - head == o.tail - o.head)
+      തിരികെ (tail - head == o.tail - o.head)
 	  && (real_links.length == o.real_links.length)
 	  && 0 == hb_memcmp (head, o.head, tail - head)
 	  && real_links.as_bytes () == o.real_links.as_bytes ();
     }
-    uint32_t hash () const
+    uint32_t hash () സ്ഥിരം
     {
       // Virtual links aren't considered for equality since they don't affect the functionality
       // of the object.
-      return hb_bytes_t (head, hb_min (128, tail - head)).hash () ^
+      തിരികെ hb_bytes_t (head, hb_min (128, tail - head)).hash () ^
           real_links.as_bytes ().hash ();
     }
 
-    struct link_t
+    ഘടന link_t
     {
       unsigned width: 3;
       unsigned is_signed: 1;
@@ -147,9 +147,9 @@ struct hb_serialize_context_t
       unsigned position;
       objidx_t objidx;
 
-      link_t () = default;
+      link_t () = സ്ഥിരസ്ഥിതി;
 
-      link_t (const hb_subset_serialize_link_t &o)
+      link_t (സ്ഥിരം hb_subset_serialize_link_t &o)
       {
         width = o.width;
         is_signed = 0;
@@ -159,40 +159,40 @@ struct hb_serialize_context_t
         objidx = o.objidx;
       }
 
-      HB_INTERNAL static int cmp (const void* a, const void* b)
+      HB_INTERNAL സ്ഥിതം പൂർണ്ണസംഖ്യ cmp (സ്ഥിരം ശൂന്യം* a, സ്ഥിരം ശൂന്യം* b)
       {
-        int cmp = ((const link_t*)a)->position - ((const link_t*)b)->position;
-        if (cmp) return cmp;
+        പൂർണ്ണസംഖ്യ cmp = ((സ്ഥിരം link_t*)a)->position - ((സ്ഥിരം link_t*)b)->position;
+        എങ്കിൽ (cmp) തിരികെ cmp;
 
-        return ((const link_t*)a)->objidx - ((const link_t*)b)->objidx;
+        തിരികെ ((സ്ഥിരം link_t*)a)->objidx - ((സ്ഥിരം link_t*)b)->objidx;
       }
     };
 
-    char *head;
-    char *tail;
+    അക്ഷരം *head;
+    അക്ഷരം *tail;
     hb_vector_t<link_t> real_links;
     hb_vector_t<link_t> virtual_links;
     object_t *next;
 
-    auto all_links () const HB_AUTO_RETURN
+    auto all_links () സ്ഥിരം HB_AUTO_RETURN
         (( hb_concat (real_links, virtual_links) ));
     auto all_links_writer () HB_AUTO_RETURN
         (( hb_concat (real_links.writer (), virtual_links.writer ()) ));
   };
 
-  struct snapshot_t
+  ഘടന snapshot_t
   {
-    char *head;
-    char *tail;
+    അക്ഷരം *head;
+    അക്ഷരം *tail;
     object_t *current; // Just for sanity check
-    unsigned num_real_links;
-    unsigned num_virtual_links;
+    unsigned അക്കം_real_links;
+    unsigned അക്കം_virtual_links;
     hb_serialize_error_t errors;
   };
 
   snapshot_t snapshot ()
   {
-    return snapshot_t {
+    തിരികെ snapshot_t {
       head, tail, current,
       current ? current->real_links.length : 0,
       current ? current->virtual_links.length : 0,
@@ -200,20 +200,20 @@ struct hb_serialize_context_t
      };
   }
 
-  hb_serialize_context_t (void *start_, size_t size) :
-    start ((char *) start_),
+  hb_serialize_context_t (ശൂന്യം *start_, size_t size) :
+    start ((അക്ഷരം *) start_),
     end (start + size),
     current (nullptr)
   { reset (); }
   ~hb_serialize_context_t () { fini (); }
 
-  void fini ()
+  ശൂന്യം fini ()
   {
-    for (object_t *_ : ++hb_iter (packed)) _->fini ();
+    വേണ്ടി (object_t *_ : ++hb_iter (packed)) _->fini ();
     packed.fini ();
-    this->packed_map.fini ();
+    ഇത്->packed_map.fini ();
 
-    while (current)
+    ആകുമ്പോൾ (current)
     {
       auto *_ = current;
       current = current->next;
@@ -221,138 +221,138 @@ struct hb_serialize_context_t
     }
   }
 
-  bool in_error () const { return bool (errors); }
+  തർക്കം in_error () സ്ഥിരം { തിരികെ തർക്കം (errors); }
 
-  bool successful () const { return !bool (errors); }
+  തർക്കം successful () സ്ഥിരം { തിരികെ !തർക്കം (errors); }
 
-  HB_NODISCARD bool ran_out_of_room () const { return errors & HB_SERIALIZE_ERROR_OUT_OF_ROOM; }
-  HB_NODISCARD bool offset_overflow () const { return errors & HB_SERIALIZE_ERROR_OFFSET_OVERFLOW; }
-  HB_NODISCARD bool only_offset_overflow () const { return errors == HB_SERIALIZE_ERROR_OFFSET_OVERFLOW; }
-  HB_NODISCARD bool only_overflow () const
+  HB_NODISCARD തർക്കം ran_out_of_room () സ്ഥിരം { തിരികെ errors & HB_SERIALIZE_ERROR_OUT_OF_ROOM; }
+  HB_NODISCARD തർക്കം offset_overflow () സ്ഥിരം { തിരികെ errors & HB_SERIALIZE_ERROR_OFFSET_OVERFLOW; }
+  HB_NODISCARD തർക്കം only_offset_overflow () സ്ഥിരം { തിരികെ errors == HB_SERIALIZE_ERROR_OFFSET_OVERFLOW; }
+  HB_NODISCARD തർക്കം only_overflow () സ്ഥിരം
   {
-    return errors == HB_SERIALIZE_ERROR_OFFSET_OVERFLOW
+    തിരികെ errors == HB_SERIALIZE_ERROR_OFFSET_OVERFLOW
         || errors == HB_SERIALIZE_ERROR_INT_OVERFLOW
         || errors == HB_SERIALIZE_ERROR_ARRAY_OVERFLOW;
   }
 
-  void reset (void *start_, size_t size)
+  ശൂന്യം reset (ശൂന്യം *start_, size_t size)
   {
-    start = (char*) start_;
+    start = (അക്ഷരം*) start_;
     end = start + size;
     reset ();
     current = nullptr;
   }
 
-  void reset ()
+  ശൂന്യം reset ()
   {
-    this->errors = HB_SERIALIZE_ERROR_NONE;
-    this->head = this->start;
-    this->tail = this->end;
-    this->zerocopy = nullptr;
-    this->debug_depth = 0;
+    ഇത്->errors = HB_SERIALIZE_ERROR_NONE;
+    ഇത്->head = ഇത്->start;
+    ഇത്->tail = ഇത്->end;
+    ഇത്->zerocopy = nullptr;
+    ഇത്->debug_depth = 0;
 
     fini ();
-    this->packed.push (nullptr);
-    this->packed_map.init ();
+    ഇത്->packed.push (nullptr);
+    ഇത്->packed_map.init ();
   }
 
-  bool check_success (bool success,
+  തർക്കം check_success (തർക്കം success,
                       hb_serialize_error_t err_type = HB_SERIALIZE_ERROR_OTHER)
   {
-    return successful ()
+    തിരികെ successful ()
         && (success || err (err_type));
   }
 
   template <typename T1, typename T2>
-  bool check_equal (T1 &&v1, T2 &&v2, hb_serialize_error_t err_type)
+  തർക്കം check_equal (T1 &&v1, T2 &&v2, hb_serialize_error_t err_type)
   {
-    if ((long long) v1 != (long long) v2)
+    എങ്കിൽ ((long long) v1 != (long long) v2)
     {
-      return err (err_type);
+      തിരികെ err (err_type);
     }
-    return true;
+    തിരികെ സത്യം;
   }
 
   template <typename T1, typename T2>
-  bool check_assign (T1 &v1, T2 &&v2, hb_serialize_error_t err_type)
-  { return check_equal (v1 = v2, v2, err_type); }
+  തർക്കം check_assign (T1 &v1, T2 &&v2, hb_serialize_error_t err_type)
+  { തിരികെ check_equal (v1 = v2, v2, err_type); }
 
-  template <typename T> bool propagate_error (T &&obj)
-  { return check_success (!hb_deref (obj).in_error ()); }
+  template <typename T> തർക്കം propagate_error (T &&obj)
+  { തിരികെ check_success (!hb_deref (obj).in_error ()); }
 
-  template <typename T1, typename... Ts> bool propagate_error (T1 &&o1, Ts&&... os)
-  { return propagate_error (std::forward<T1> (o1)) &&
+  template <typename T1, typename... Ts> തർക്കം propagate_error (T1 &&o1, Ts&&... os)
+  { തിരികെ propagate_error (std::forward<T1> (o1)) &&
 	   propagate_error (std::forward<Ts> (os)...); }
 
   /* To be called around main operation. */
-  template <typename Type=char>
+  template <typename Type=അക്ഷരം>
   __attribute__((returns_nonnull))
   Type *start_serialize ()
   {
-    DEBUG_MSG_LEVEL (SERIALIZE, this->start, 0, +1,
+    DEBUG_സന്ദേശം_LEVEL (SERIALIZE, ഇത്->start, 0, +1,
 		     "start [%p..%p] (%lu bytes)",
-		     this->start, this->end,
-		     (unsigned long) (this->end - this->start));
+		     ഇത്->start, ഇത്->end,
+		     (unsigned long) (ഇത്->end - ഇത്->start));
 
-    assert (!current);
-    return push<Type> ();
+    പ്രതിജ്ഞാ (!current);
+    തിരികെ push<Type> ();
   }
-  void end_serialize ()
+  ശൂന്യം end_serialize ()
   {
-    DEBUG_MSG_LEVEL (SERIALIZE, this->start, 0, -1,
+    DEBUG_സന്ദേശം_LEVEL (SERIALIZE, ഇത്->start, 0, -1,
 		     "end [%p..%p] serialized %u bytes; %s",
-		     this->start, this->end,
-		     (unsigned) (this->head - this->start),
+		     ഇത്->start, ഇത്->end,
+		     (unsigned) (ഇത്->head - ഇത്->start),
 		     successful () ? "successful" : "UNSUCCESSFUL");
 
     propagate_error (packed, packed_map);
 
-    if (unlikely (!current)) return;
-    if (unlikely (in_error()))
+    എങ്കിൽ (unlikely (!current)) തിരികെ;
+    എങ്കിൽ (unlikely (in_error()))
     {
       // Offset overflows that occur before link resolution cannot be handled
       // by repacking, so set a more general error.
-      if (offset_overflow ()) err (HB_SERIALIZE_ERROR_OTHER);
-      return;
+      എങ്കിൽ (offset_overflow ()) err (HB_SERIALIZE_ERROR_OTHER);
+      തിരികെ;
     }
 
-    assert (!current->next);
+    പ്രതിജ്ഞാ (!current->next);
 
     /* Only "pack" if there exist other objects... Otherwise, don't bother.
      * Saves a move. */
-    if (packed.length <= 1)
-      return;
+    എങ്കിൽ (packed.length <= 1)
+      തിരികെ;
 
-    pop_pack (false);
+    എടുക്കുക_pack (അസത്യം);
 
     resolve_links ();
   }
 
-  template <typename Type = void>
+  template <typename Type = ശൂന്യം>
   __attribute__((returns_nonnull))
   Type *push ()
   {
-    if (unlikely (in_error ())) return start_embed<Type> ();
+    എങ്കിൽ (unlikely (in_error ())) തിരികെ start_embed<Type> ();
 
     object_t *obj = object_pool.alloc ();
-    if (unlikely (!obj))
-      check_success (false);
-    else
+    എങ്കിൽ (unlikely (!obj))
+      check_success (അസത്യം);
+    അല്ലെങ്കിൽ
     {
       obj->head = head;
       obj->tail = tail;
       obj->next = current;
       current = obj;
     }
-    return start_embed<Type> ();
+    തിരികെ start_embed<Type> ();
   }
-  void pop_discard ()
+  ശൂന്യം എടുക്കുക_discard ()
   {
     object_t *obj = current;
-    if (unlikely (!obj)) return;
+    എങ്കിൽ (unlikely (!obj)) തിരികെ;
     // Allow cleanup when we've error'd out on int overflows which don't compromise
     // the serializer state.
-    if (unlikely (in_error() && !only_overflow ())) return;
+    എങ്കിൽ (unlikely (in_error() && !only_overflow ())) തിരികെ;
 
     current = current->next;
     revert (zerocopy ? zerocopy : obj->head, obj->tail);
@@ -365,49 +365,49 @@ struct hb_serialize_context_t
    * so not worth an attempt, or a contiguous table is serialized as
    * multiple consecutive objects in the reverse order so can't be shared.
    */
-  objidx_t pop_pack (bool share=true)
+  objidx_t എടുക്കുക_pack (തർക്കം share=സത്യം)
   {
     object_t *obj = current;
-    if (unlikely (!obj)) return 0;
+    എങ്കിൽ (unlikely (!obj)) തിരികെ 0;
     // Allow cleanup when we've error'd out on int overflows which don't compromise
     // the serializer state.
-    if (unlikely (in_error()  && !only_overflow ())) return 0;
+    എങ്കിൽ (unlikely (in_error()  && !only_overflow ())) തിരികെ 0;
 
     current = current->next;
     obj->tail = head;
     obj->next = nullptr;
-    assert (obj->head <= obj->tail);
+    പ്രതിജ്ഞാ (obj->head <= obj->tail);
     unsigned len = obj->tail - obj->head;
     head = zerocopy ? zerocopy : obj->head; /* Rewind head. */
-    bool was_zerocopy = zerocopy;
+    തർക്കം was_zerocopy = zerocopy;
     zerocopy = nullptr;
 
-    if (!len)
+    എങ്കിൽ (!len)
     {
-      assert (!obj->real_links.length);
-      assert (!obj->virtual_links.length);
-      return 0;
+      പ്രതിജ്ഞാ (!obj->real_links.length);
+      പ്രതിജ്ഞാ (!obj->virtual_links.length);
+      തിരികെ 0;
     }
 
     objidx_t objidx;
     uint32_t hash = 0;
-    if (share)
+    എങ്കിൽ (share)
     {
       hash = hb_hash (obj);
       objidx = packed_map.get_with_hash (obj, hash);
-      if (objidx)
+      എങ്കിൽ (objidx)
       {
         merge_virtual_links (obj, objidx);
 	obj->fini ();
         object_pool.release (obj);
-	return objidx;
+	തിരികെ objidx;
       }
     }
 
     tail -= len;
-    if (was_zerocopy)
-      assert (tail == obj->head);
-    else
+    എങ്കിൽ (was_zerocopy)
+      പ്രതിജ്ഞാ (tail == obj->head);
+    അല്ലെങ്കിൽ
       memmove (tail, obj->head, len);
 
     obj->head = tail;
@@ -415,63 +415,63 @@ struct hb_serialize_context_t
 
     packed.push (obj);
 
-    if (unlikely (!propagate_error (packed)))
+    എങ്കിൽ (unlikely (!propagate_error (packed)))
     {
       /* Obj wasn't successfully added to packed, so clean it up otherwise its
        * links will be leaked. When we use constructor/destructors properly, we
        * can remove these. */
       obj->fini ();
-      return 0;
+      തിരികെ 0;
     }
 
     objidx = packed.length - 1;
 
-    if (share) packed_map.set_with_hash (obj, hash, objidx);
+    എങ്കിൽ (share) packed_map.set_with_hash (obj, hash, objidx);
     propagate_error (packed_map);
 
-    return objidx;
+    തിരികെ objidx;
   }
 
-  void revert (snapshot_t snap)
+  ശൂന്യം revert (snapshot_t snap)
   {
     // Overflows that happened after the snapshot will be erased by the revert.
-    if (unlikely (in_error () && !only_overflow ())) return;
-    assert (snap.current == current);
-    if (current)
+    എങ്കിൽ (unlikely (in_error () && !only_overflow ())) തിരികെ;
+    പ്രതിജ്ഞാ (snap.current == current);
+    എങ്കിൽ (current)
     {
-      current->real_links.shrink (snap.num_real_links);
-      current->virtual_links.shrink (snap.num_virtual_links);
+      current->real_links.shrink (snap.അക്കം_real_links);
+      current->virtual_links.shrink (snap.അക്കം_virtual_links);
     }
     errors = snap.errors;
     revert (snap.head, snap.tail);
   }
 
-  void revert (char *snap_head,
-	       char *snap_tail)
+  ശൂന്യം revert (അക്ഷരം *snap_head,
+	       അക്ഷരം *snap_tail)
   {
-    if (unlikely (in_error ())) return;
-    assert (snap_head <= head);
-    assert (tail <= snap_tail);
+    എങ്കിൽ (unlikely (in_error ())) തിരികെ;
+    പ്രതിജ്ഞാ (snap_head <= head);
+    പ്രതിജ്ഞാ (tail <= snap_tail);
     head = snap_head;
     tail = snap_tail;
     discard_stale_objects ();
   }
 
-  void discard_stale_objects ()
+  ശൂന്യം discard_stale_objects ()
   {
-    if (unlikely (in_error ())) return;
-    while (packed.length > 1 &&
+    എങ്കിൽ (unlikely (in_error ())) തിരികെ;
+    ആകുമ്പോൾ (packed.length > 1 &&
 	   packed.tail ()->head < tail)
     {
       object_t *obj = packed.tail ();
       packed_map.del (obj);
-      assert (!obj->next);
+      പ്രതിജ്ഞാ (!obj->next);
       obj->fini ();
       object_pool.release (obj);
-      packed.pop ();
+      packed.എടുക്കുക ();
     }
-    if (packed.length > 1)
-      assert (packed.tail ()->head == tail);
+    എങ്കിൽ (packed.length > 1)
+      പ്രതിജ്ഞാ (packed.tail ()->head == tail);
   }
 
   // Adds a virtual link from the current object to objidx. A virtual link is not associated with
@@ -482,28 +482,28 @@ struct hb_serialize_context_t
   // This is useful in certain situations where there needs to be a specific ordering in the
   // final serialization. Such as when platform bugs require certain orderings, or to provide
   //  guidance to the repacker for better offset overflow resolution.
-  void add_virtual_link (objidx_t objidx)
+  ശൂന്യം add_virtual_link (objidx_t objidx)
   {
-    if (unlikely (in_error ())) return;
+    എങ്കിൽ (unlikely (in_error ())) തിരികെ;
 
-    if (!objidx)
-      return;
+    എങ്കിൽ (!objidx)
+      തിരികെ;
 
-    assert (current);
+    പ്രതിജ്ഞാ (current);
 
-    if (!current->add_virtual_link(objidx))
+    എങ്കിൽ (!current->add_virtual_link(objidx))
       err (HB_SERIALIZE_ERROR_OTHER);
   }
 
-  objidx_t last_added_child_index() const {
-    if (unlikely (in_error ())) return (objidx_t) -1;
+  objidx_t last_added_child_index() സ്ഥിരം {
+    എങ്കിൽ (unlikely (in_error ())) തിരികെ (objidx_t) -1;
 
-    assert (current);
-    if (!bool(current->real_links)) {
-      return (objidx_t) -1;
+    പ്രതിജ്ഞാ (current);
+    എങ്കിൽ (!തർക്കം(current->real_links)) {
+      തിരികെ (objidx_t) -1;
     }
 
-    return current->real_links[current->real_links.length - 1].objidx;
+    തിരികെ current->real_links[current->real_links.length - 1].objidx;
   }
 
   // For the current object ensure that the sub-table bytes for child objidx are always placed
@@ -511,16 +511,16 @@ struct hb_serialize_context_t
   // repacker will not move the target subtable before the other children
   // (by adding virtual links). It is up to the caller to ensure the initial serialization
   // order is correct.
-  void repack_last(objidx_t objidx) {
-    if (unlikely (in_error ())) return;
+  ശൂന്യം repack_last(objidx_t objidx) {
+    എങ്കിൽ (unlikely (in_error ())) തിരികെ;
 
-    if (!objidx)
-      return;
+    എങ്കിൽ (!objidx)
+      തിരികെ;
 
-    assert (current);
-    for (auto& l : current->real_links) {
-      if (l.objidx == objidx) {
-        continue;
+    പ്രതിജ്ഞാ (current);
+    വേണ്ടി (auto& l : current->real_links) {
+      എങ്കിൽ (l.objidx == objidx) {
+        തുടരുക;
       }
 
       packed[l.objidx]->add_virtual_link(objidx);
@@ -528,25 +528,25 @@ struct hb_serialize_context_t
   }
 
   template <typename T>
-  void add_link (T &ofs, objidx_t objidx,
+  ശൂന്യം add_link (T &ofs, objidx_t objidx,
 		 whence_t whence = Head,
 		 unsigned bias = 0)
   {
-    if (unlikely (in_error ())) return;
+    എങ്കിൽ (unlikely (in_error ())) തിരികെ;
 
-    if (!objidx)
-      return;
+    എങ്കിൽ (!objidx)
+      തിരികെ;
 
-    assert (current);
-    assert (current->head <= (const char *) &ofs);
+    പ്രതിജ്ഞാ (current);
+    പ്രതിജ്ഞാ (current->head <= (സ്ഥിരം അക്ഷരം *) &ofs);
 
     auto& link = *current->real_links.push ();
-    if (current->real_links.in_error ())
+    എങ്കിൽ (current->real_links.in_error ())
       err (HB_SERIALIZE_ERROR_OTHER);
 
-    link.width = sizeof (T);
+    link.width = വലുപ്പം (T);
     link.objidx = objidx;
-    if (unlikely (!sizeof (T)))
+    എങ്കിൽ (unlikely (!വലുപ്പം (T)))
     {
       // This link is not associated with an actual offset and exists merely to enforce
       // an ordering constraint.
@@ -554,268 +554,268 @@ struct hb_serialize_context_t
       link.whence = 0;
       link.position = 0;
       link.bias = 0;
-      return;
+      തിരികെ;
     }
 
     link.is_signed = std::is_signed<hb_unwrap_type (T)>::value;
     link.whence = (unsigned) whence;
-    link.position = (const char *) &ofs - current->head;
+    link.position = (സ്ഥിരം അക്ഷരം *) &ofs - current->head;
     link.bias = bias;
   }
 
-  unsigned to_bias (const void *base) const
+  unsigned to_bias (സ്ഥിരം ശൂന്യം *base) സ്ഥിരം
   {
-    if (unlikely (in_error ())) return 0;
-    if (!base) return 0;
-    assert (current);
-    assert (current->head <= (const char *) base);
-    return (const char *) base - current->head;
+    എങ്കിൽ (unlikely (in_error ())) തിരികെ 0;
+    എങ്കിൽ (!base) തിരികെ 0;
+    പ്രതിജ്ഞാ (current);
+    പ്രതിജ്ഞാ (current->head <= (സ്ഥിരം അക്ഷരം *) base);
+    തിരികെ (സ്ഥിരം അക്ഷരം *) base - current->head;
   }
 
-  void resolve_links ()
+  ശൂന്യം resolve_links ()
   {
-    if (unlikely (in_error ())) return;
+    എങ്കിൽ (unlikely (in_error ())) തിരികെ;
 
-    assert (!current);
-    assert (packed.length > 1);
+    പ്രതിജ്ഞാ (!current);
+    പ്രതിജ്ഞാ (packed.length > 1);
 
-    for (const object_t* parent : ++hb_iter (packed))
-      for (const object_t::link_t &link : parent->real_links)
+    വേണ്ടി (സ്ഥിരം object_t* parent : ++hb_iter (packed))
+      വേണ്ടി (സ്ഥിരം object_t::link_t &link : parent->real_links)
       {
-	const object_t* child = packed[link.objidx];
-	if (unlikely (!child)) { err (HB_SERIALIZE_ERROR_OTHER); return; }
+	സ്ഥിരം object_t* child = packed[link.objidx];
+	എങ്കിൽ (unlikely (!child)) { err (HB_SERIALIZE_ERROR_OTHER); തിരികെ; }
 	unsigned offset = 0;
-	switch ((whence_t) link.whence) {
-	case Head:     offset = child->head - parent->head; break;
-	case Tail:     offset = child->head - parent->tail; break;
-	case Absolute: offset = (head - start) + (child->head - tail); break;
+	തിരഞ്ഞെടുപ്പ് ((whence_t) link.whence) {
+	അവസ്ഥ Head:     offset = child->head - parent->head; നിർത്തുക;
+	അവസ്ഥ Tail:     offset = child->head - parent->tail; നിർത്തുക;
+	അവസ്ഥ Absolute: offset = (head - start) + (child->head - tail); നിർത്തുക;
 	}
 
-	assert (offset >= link.bias);
+	പ്രതിജ്ഞാ (offset >= link.bias);
 	offset -= link.bias;
-	if (link.is_signed)
+	എങ്കിൽ (link.is_signed)
 	{
-	  assert (link.width == 2 || link.width == 4);
-	  if (link.width == 4)
+	  പ്രതിജ്ഞാ (link.width == 2 || link.width == 4);
+	  എങ്കിൽ (link.width == 4)
 	    assign_offset<int32_t> (parent, link, offset);
-	  else
+	  അല്ലെങ്കിൽ
 	    assign_offset<int16_t> (parent, link, offset);
 	}
-	else
+	അല്ലെങ്കിൽ
 	{
-	  assert (link.width == 2 || link.width == 3 || link.width == 4);
-	  if (link.width == 4)
+	  പ്രതിജ്ഞാ (link.width == 2 || link.width == 3 || link.width == 4);
+	  എങ്കിൽ (link.width == 4)
 	    assign_offset<uint32_t> (parent, link, offset);
-	  else if (link.width == 3)
+	  അല്ലെങ്കിൽ എങ്കിൽ (link.width == 3)
 	    assign_offset<uint32_t, 3> (parent, link, offset);
-	  else
+	  അല്ലെങ്കിൽ
 	    assign_offset<uint16_t> (parent, link, offset);
 	}
       }
   }
 
-  unsigned int length () const
+  unsigned പൂർണ്ണസംഖ്യ length () സ്ഥിരം
   {
-    if (unlikely (!current)) return 0;
-    return this->head - current->head;
+    എങ്കിൽ (unlikely (!current)) തിരികെ 0;
+    തിരികെ ഇത്->head - current->head;
   }
 
-  void align (unsigned int alignment)
+  ശൂന്യം align (unsigned പൂർണ്ണസംഖ്യ alignment)
   {
-    unsigned int l = length () % alignment;
-    if (l)
-      (void) allocate_size<void> (alignment - l);
+    unsigned പൂർണ്ണസംഖ്യ l = length () % alignment;
+    എങ്കിൽ (l)
+      (ശൂന്യം) allocate_size<ശൂന്യം> (alignment - l);
   }
 
-  template <typename Type = void>
+  template <typename Type = ശൂന്യം>
   __attribute__((returns_nonnull))
-  Type *start_embed (const Type *obj HB_UNUSED = nullptr) const
-  { return reinterpret_cast<Type *> (this->head); }
+  Type *start_embed (സ്ഥിരം Type *obj HB_UNUSED = nullptr) സ്ഥിരം
+  { തിരികെ reinterpret_cast<Type *> (ഇത്->head); }
   template <typename Type>
   __attribute__((returns_nonnull))
-  Type *start_embed (const Type &obj) const
-  { return start_embed (std::addressof (obj)); }
+  Type *start_embed (സ്ഥിരം Type &obj) സ്ഥിരം
+  { തിരികെ start_embed (std::addressof (obj)); }
 
-  bool err (hb_serialize_error_t err_type)
+  തർക്കം err (hb_serialize_error_t err_type)
   {
-    return !bool ((errors = (errors | err_type)));
+    തിരികെ !തർക്കം ((errors = (errors | err_type)));
   }
 
-  bool start_zerocopy (size_t size)
+  തർക്കം start_zerocopy (size_t size)
   {
-    if (unlikely (in_error ())) return false;
+    എങ്കിൽ (unlikely (in_error ())) തിരികെ അസത്യം;
 
-    if (unlikely (size > INT_MAX || this->tail - this->head < ptrdiff_t (size)))
+    എങ്കിൽ (unlikely (size > INT_MAX || ഇത്->tail - ഇത്->head < ptrdiff_t (size)))
     {
       err (HB_SERIALIZE_ERROR_OUT_OF_ROOM);
-      return false;
+      തിരികെ അസത്യം;
     }
 
-    assert (!this->zerocopy);
-    this->zerocopy = this->head;
+    പ്രതിജ്ഞാ (!ഇത്->zerocopy);
+    ഇത്->zerocopy = ഇത്->head;
 
-    assert (this->current->head == this->head);
-    this->current->head = this->current->tail = this->head = this->tail - size;
-    return true;
+    പ്രതിജ്ഞാ (ഇത്->current->head == ഇത്->head);
+    ഇത്->current->head = ഇത്->current->tail = ഇത്->head = ഇത്->tail - size;
+    തിരികെ സത്യം;
   }
 
   template <typename Type>
   HB_NODISCARD
-  Type *allocate_size (size_t size, bool clear = true)
+  Type *allocate_size (size_t size, തർക്കം clear = സത്യം)
   {
-    if (unlikely (in_error ())) return nullptr;
+    എങ്കിൽ (unlikely (in_error ())) തിരികെ nullptr;
 
-    if (unlikely (size > INT_MAX || this->tail - this->head < ptrdiff_t (size)))
+    എങ്കിൽ (unlikely (size > INT_MAX || ഇത്->tail - ഇത്->head < ptrdiff_t (size)))
     {
       err (HB_SERIALIZE_ERROR_OUT_OF_ROOM);
-      return nullptr;
+      തിരികെ nullptr;
     }
-    if (clear)
-      hb_memset (this->head, 0, size);
-    char *ret = this->head;
-    this->head += size;
-    return reinterpret_cast<Type *> (ret);
+    എങ്കിൽ (clear)
+      hb_memset (ഇത്->head, 0, size);
+    അക്ഷരം *ret = ഇത്->head;
+    ഇത്->head += size;
+    തിരികെ reinterpret_cast<Type *> (ret);
   }
 
   template <typename Type>
   Type *allocate_min ()
-  { return this->allocate_size<Type> (Type::min_size); }
+  { തിരികെ ഇത്->allocate_size<Type> (Type::min_size); }
 
   template <typename Type>
   HB_NODISCARD
-  Type *embed (const Type *obj)
+  Type *embed (സ്ഥിരം Type *obj)
   {
     size_t size = obj->get_size ();
-    Type *ret = this->allocate_size<Type> (size, false);
-    if (unlikely (!ret)) return nullptr;
+    Type *ret = ഇത്->allocate_size<Type> (size, അസത്യം);
+    എങ്കിൽ (unlikely (!ret)) തിരികെ nullptr;
     hb_memcpy (ret, obj, size);
-    return ret;
+    തിരികെ ret;
   }
   template <typename Type>
   HB_NODISCARD
-  Type *embed (const Type &obj)
-  { return embed (std::addressof (obj)); }
-  char *embed (const char *obj, unsigned size)
+  Type *embed (സ്ഥിരം Type &obj)
+  { തിരികെ embed (std::addressof (obj)); }
+  അക്ഷരം *embed (സ്ഥിരം അക്ഷരം *obj, unsigned size)
   {
-    char *ret = this->allocate_size<char> (size, false);
-    if (unlikely (!ret)) return nullptr;
+    അക്ഷരം *ret = ഇത്->allocate_size<അക്ഷരം> (size, അസത്യം);
+    എങ്കിൽ (unlikely (!ret)) തിരികെ nullptr;
     hb_memcpy (ret, obj, size);
-    return ret;
+    തിരികെ ret;
   }
 
   template <typename Type, typename ...Ts> auto
-  _copy (const Type &src, hb_priority<1>, Ts&&... ds) HB_RETURN
-  (Type *, src.copy (this, std::forward<Ts> (ds)...))
+  _copy (സ്ഥിരം Type &src, hb_priority<1>, Ts&&... ds) HB_RETURN
+  (Type *, src.copy (ഇത്, std::forward<Ts> (ds)...))
 
   template <typename Type> auto
-  _copy (const Type &src, hb_priority<0>) -> decltype (&(hb_declval<Type> () = src))
+  _copy (സ്ഥിരം Type &src, hb_priority<0>) -> decltype (&(hb_declval<Type> () = src))
   {
-    Type *ret = this->allocate_size<Type> (sizeof (Type));
-    if (unlikely (!ret)) return nullptr;
+    Type *ret = ഇത്->allocate_size<Type> (വലുപ്പം (Type));
+    എങ്കിൽ (unlikely (!ret)) തിരികെ nullptr;
     *ret = src;
-    return ret;
+    തിരികെ ret;
   }
 
   /* Like embed, but active: calls obj.operator=() or obj.copy() to transfer data
    * instead of hb_memcpy(). */
   template <typename Type, typename ...Ts>
-  Type *copy (const Type &src, Ts&&... ds)
-  { return _copy (src, hb_prioritize, std::forward<Ts> (ds)...); }
+  Type *copy (സ്ഥിരം Type &src, Ts&&... ds)
+  { തിരികെ _copy (src, hb_prioritize, std::forward<Ts> (ds)...); }
   template <typename Type, typename ...Ts>
-  Type *copy (const Type *src, Ts&&... ds)
-  { return copy (*src, std::forward<Ts> (ds)...); }
+  Type *copy (സ്ഥിരം Type *src, Ts&&... ds)
+  { തിരികെ copy (*src, std::forward<Ts> (ds)...); }
 
   template<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator)),
 	   typename ...Ts>
-  void copy_all (Iterator it, Ts&&... ds)
-  { for (decltype (*it) _ : it) copy (_, ds...); }
+  ശൂന്യം copy_all (Iterator it, Ts&&... ds)
+  { വേണ്ടി (decltype (*it) _ : it) copy (_, ds...); }
 
   template <typename Type>
-  hb_serialize_context_t& operator << (const Type &obj) & { embed (obj); return *this; }
+  hb_serialize_context_t& operator << (സ്ഥിരം Type &obj) & { embed (obj); തിരികെ *ഇത്; }
 
   template <typename Type>
-  Type *extend_size (Type *obj, size_t size, bool clear = true)
+  Type *extend_size (Type *obj, size_t size, തർക്കം clear = സത്യം)
   {
-    if (unlikely (in_error ())) return nullptr;
-    if (unlikely (size >= INT_MAX)) { err (HB_SERIALIZE_ERROR_OTHER); return nullptr; }
+    എങ്കിൽ (unlikely (in_error ())) തിരികെ nullptr;
+    എങ്കിൽ (unlikely (size >= INT_MAX)) { err (HB_SERIALIZE_ERROR_OTHER); തിരികെ nullptr; }
 
-    assert (this->start <= (char *) obj);
-    assert ((char *) obj <= this->head);
-    assert ((size_t) (this->head - (char *) obj) <= size);
-    if (unlikely (((char *) obj + size < (char *) obj) ||
-		  !this->allocate_size<Type> (((char *) obj) + size - this->head, clear))) return nullptr;
-    return reinterpret_cast<Type *> (obj);
+    പ്രതിജ്ഞാ (ഇത്->start <= (അക്ഷരം *) obj);
+    പ്രതിജ്ഞാ ((അക്ഷരം *) obj <= ഇത്->head);
+    പ്രതിജ്ഞാ ((size_t) (ഇത്->head - (അക്ഷരം *) obj) <= size);
+    എങ്കിൽ (unlikely (((അക്ഷരം *) obj + size < (അക്ഷരം *) obj) ||
+		  !ഇത്->allocate_size<Type> (((അക്ഷരം *) obj) + size - ഇത്->head, clear))) തിരികെ nullptr;
+    തിരികെ reinterpret_cast<Type *> (obj);
   }
   template <typename Type>
-  Type *extend_size (Type &obj, size_t size, bool clear = true)
-  { return extend_size (std::addressof (obj), size, clear); }
+  Type *extend_size (Type &obj, size_t size, തർക്കം clear = സത്യം)
+  { തിരികെ extend_size (std::addressof (obj), size, clear); }
 
   template <typename Type>
-  Type *extend_min (Type *obj) { return extend_size (obj, obj->min_size); }
+  Type *extend_min (Type *obj) { തിരികെ extend_size (obj, obj->min_size); }
   template <typename Type>
-  Type *extend_min (Type &obj) { return extend_min (std::addressof (obj)); }
+  Type *extend_min (Type &obj) { തിരികെ extend_min (std::addressof (obj)); }
 
   template <typename Type, typename ...Ts>
   Type *extend (Type *obj, Ts&&... ds)
-  { return extend_size (obj, obj->get_size (std::forward<Ts> (ds)...)); }
+  { തിരികെ extend_size (obj, obj->get_size (std::forward<Ts> (ds)...)); }
   template <typename Type, typename ...Ts>
   Type *extend (Type &obj, Ts&&... ds)
-  { return extend (std::addressof (obj), std::forward<Ts> (ds)...); }
+  { തിരികെ extend (std::addressof (obj), std::forward<Ts> (ds)...); }
 
   /* Output routines. */
-  hb_bytes_t copy_bytes () const
+  hb_bytes_t copy_bytes () സ്ഥിരം
   {
-    assert (successful ());
+    പ്രതിജ്ഞാ (successful ());
     /* Copy both items from head side and tail side... */
-    unsigned int len = (this->head - this->start)
-		     + (this->end  - this->tail);
+    unsigned പൂർണ്ണസംഖ്യ len = (ഇത്->head - ഇത്->start)
+		     + (ഇത്->end  - ഇത്->tail);
 
     // If len is zero don't hb_malloc as the memory won't get properly
     // cleaned up later.
-    if (!len) return hb_bytes_t ();
+    എങ്കിൽ (!len) തിരികെ hb_bytes_t ();
 
-    char *p = (char *) hb_malloc (len);
-    if (unlikely (!p)) return hb_bytes_t ();
+    അക്ഷരം *p = (അക്ഷരം *) hb_malloc (len);
+    എങ്കിൽ (unlikely (!p)) തിരികെ hb_bytes_t ();
 
-    hb_memcpy (p, this->start, this->head - this->start);
-    hb_memcpy (p + (this->head - this->start), this->tail, this->end - this->tail);
-    return hb_bytes_t (p, len);
+    hb_memcpy (p, ഇത്->start, ഇത്->head - ഇത്->start);
+    hb_memcpy (p + (ഇത്->head - ഇത്->start), ഇത്->tail, ഇത്->end - ഇത്->tail);
+    തിരികെ hb_bytes_t (p, len);
   }
   template <typename Type>
-  Type *copy () const
-  { return reinterpret_cast<Type *> ((char *) copy_bytes ().arrayZ); }
-  hb_blob_t *copy_blob () const
+  Type *copy () സ്ഥിരം
+  { തിരികെ reinterpret_cast<Type *> ((അക്ഷരം *) copy_bytes ().arrayZ); }
+  hb_blob_t *copy_blob () സ്ഥിരം
   {
     hb_bytes_t b = copy_bytes ();
-    return hb_blob_create (b.arrayZ, b.length,
+    തിരികെ hb_blob_create (b.arrayZ, b.length,
 			   HB_MEMORY_MODE_WRITABLE,
-			   (char *) b.arrayZ, hb_free);
+			   (അക്ഷരം *) b.arrayZ, hb_free);
   }
 
-  const hb_vector_t<object_t *>& object_graph() const
-  { return packed; }
+  സ്ഥിരം hb_vector_t<object_t *>& object_graph() സ്ഥിരം
+  { തിരികെ packed; }
 
-  private:
-  template <typename T, unsigned Size = sizeof (T)>
-  void assign_offset (const object_t* parent, const object_t::link_t &link, unsigned offset)
+  സ്വകാര്യ:
+  template <typename T, unsigned Size = വലുപ്പം (T)>
+  ശൂന്യം assign_offset (സ്ഥിരം object_t* parent, സ്ഥിരം object_t::link_t &link, unsigned offset)
   {
     // XXX We should stop assuming big-endian!
-    auto &off = * ((HBInt<true, T, Size> *) (parent->head + link.position));
-    assert (0 == off);
+    auto &off = * ((HBInt<സത്യം, T, Size> *) (parent->head + link.position));
+    പ്രതിജ്ഞാ (0 == off);
     check_assign (off, offset, HB_SERIALIZE_ERROR_OFFSET_OVERFLOW);
   }
 
-  public:
-  char *start, *head, *tail, *end, *zerocopy;
-  unsigned int debug_depth;
+  പൊതു:
+  അക്ഷരം *start, *head, *tail, *end, *zerocopy;
+  unsigned പൂർണ്ണസംഖ്യ debug_depth;
   hb_serialize_error_t errors;
 
-  private:
+  സ്വകാര്യ:
 
-  void merge_virtual_links (const object_t* from, objidx_t to_idx) {
+  ശൂന്യം merge_virtual_links (സ്ഥിരം object_t* from, objidx_t to_idx) {
     object_t* to = packed[to_idx];
-    for (const auto& l : from->virtual_links) {
+    വേണ്ടി (സ്ഥിരം auto& l : from->virtual_links) {
       to->virtual_links.push (l);
     }
   }
@@ -830,7 +830,7 @@ struct hb_serialize_context_t
   hb_vector_t<object_t *> packed;
 
   /* Map view of packed objects. */
-  hb_hashmap_t<const object_t *, objidx_t> packed_map;
+  hb_hashmap_t<സ്ഥിരം object_t *, objidx_t> packed_map;
 };
 
 #endif /* HB_SERIALIZE_HH */

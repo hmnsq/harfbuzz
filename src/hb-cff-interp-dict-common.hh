@@ -26,174 +26,174 @@
 #ifndef HB_CFF_INTERP_DICT_COMMON_HH
 #define HB_CFF_INTERP_DICT_COMMON_HH
 
-#include "hb-cff-interp-common.hh"
+#അന്തര്ഭാവ "hb-cff-interp-common.hh"
 
-namespace CFF {
+നാമാകാശ CFF {
 
-using namespace OT;
+using നാമാകാശ OT;
 
 /* an opstr and the parsed out dict value(s) */
-struct dict_val_t : op_str_t
+ഘടന dict_val_t : op_str_t
 {
-  void init () {}
-  void fini () {}
+  ശൂന്യം init () {}
+  ശൂന്യം fini () {}
 };
 
-typedef dict_val_t num_dict_val_t;
+തരനിർവചനം dict_val_t അക്കം_dict_val_t;
 
-template <typename VAL> struct dict_values_t : parsed_values_t<VAL> {};
+template <typename VAL> ഘടന dict_മൂല്യങ്ങൾ_t : parsed_മൂല്യങ്ങൾ_t<VAL> {};
 
 template <typename OPSTR=op_str_t>
-struct top_dict_values_t : dict_values_t<OPSTR>
+ഘടന മുകൾ_dict_മൂല്യങ്ങൾ_t : dict_മൂല്യങ്ങൾ_t<OPSTR>
 {
-  void init ()
+  ശൂന്യം init ()
   {
-    dict_values_t<OPSTR>::init ();
+    dict_മൂല്യങ്ങൾ_t<OPSTR>::init ();
     charStringsOffset = 0;
     FDArrayOffset = 0;
   }
-  void fini () { dict_values_t<OPSTR>::fini (); }
+  ശൂന്യം fini () { dict_മൂല്യങ്ങൾ_t<OPSTR>::fini (); }
 
-  int  charStringsOffset;
-  int  FDArrayOffset;
+  പൂർണ്ണസംഖ്യ  charStringsOffset;
+  പൂർണ്ണസംഖ്യ  FDArrayOffset;
 };
 
-struct dict_opset_t : opset_t<number_t>
+ഘടന dict_opset_t : opset_t<സംഖ്യ_t>
 {
-  static void process_op (op_code_t op, interp_env_t<number_t>& env)
+  സ്ഥിതം ശൂന്യം process_op (op_code_t op, interp_env_t<സംഖ്യ_t>& env)
   {
-    switch (op) {
-      case OpCode_longintdict:  /* 5-byte integer */
-	env.argStack.push_longint_from_substr (env.str_ref);
-	break;
+    തിരഞ്ഞെടുപ്പ് (op) {
+      അവസ്ഥ OpCode_longintdict:  /* 5-byte integer */
+	env.arg_അട്ടി.തള്ളുക_longint_from_substr (env.str_ref);
+	നിർത്തുക;
 
-      case OpCode_BCD:  /* real number */
-	env.argStack.push_real (parse_bcd (env.str_ref));
-	break;
+      അവസ്ഥ OpCode_BCD:  /* real number */
+	env.arg_അട്ടി.തള്ളുക_real (parse_bcd (env.str_ref));
+	നിർത്തുക;
 
-      default:
-	opset_t<number_t>::process_op (op, env);
-	break;
+      സ്ഥിരസ്ഥിതി:
+	opset_t<സംഖ്യ_t>::process_op (op, env);
+	നിർത്തുക;
     }
   }
 
   /* Turns CFF's BCD format into strtod understandable string */
-  static double parse_bcd (byte_str_ref_t& str_ref)
+  സ്ഥിതം ഇരട്ട parse_bcd (byte_str_ref_t& str_ref)
   {
-    if (unlikely (str_ref.in_error ())) return .0;
+    എങ്കിൽ (unlikely (str_ref.in_error ())) തിരികെ .0;
 
-    enum Nibble { DECIMAL=10, EXP_POS, EXP_NEG, RESERVED, NEG, END };
+    എണ്ണൽ Nibble { DECIMAL=10, EXP_POS, EXP_NEG, RESERVED, NEG, END };
 
-    char buf[32] = {0};
-    unsigned char byte = 0;
-    for (unsigned i = 0, count = 0; count < ARRAY_LENGTH (buf); ++i, ++count)
+    അക്ഷരം buf[32] = {0};
+    unsigned അക്ഷരം byte = 0;
+    വേണ്ടി (unsigned i = 0, എണ്ണം = 0; എണ്ണം < ARRAY_LENGTH (buf); ++i, ++എണ്ണം)
     {
       unsigned nibble;
-      if (!(i & 1))
+      എങ്കിൽ (!(i & 1))
       {
-	if (unlikely (!str_ref.avail ())) break;
+	എങ്കിൽ (unlikely (!str_ref.avail ())) നിർത്തുക;
 
 	byte = str_ref[0];
 	str_ref.inc ();
 	nibble = byte >> 4;
       }
-      else
+      അല്ലെങ്കിൽ
 	nibble = byte & 0x0F;
 
-      if (unlikely (nibble == RESERVED)) break;
-      else if (nibble == END)
+      എങ്കിൽ (unlikely (nibble == RESERVED)) നിർത്തുക;
+      അല്ലെങ്കിൽ എങ്കിൽ (nibble == END)
       {
-	const char *p = buf;
-	double pv;
-	if (unlikely (!hb_parse_double (&p, p + count, &pv, true/* whole buffer */)))
-	  break;
-	return pv;
+	സ്ഥിരം അക്ഷരം *p = buf;
+	ഇരട്ട pv;
+	എങ്കിൽ (unlikely (!hb_parse_double (&p, p + എണ്ണം, &pv, സത്യം/* whole buffer */)))
+	  നിർത്തുക;
+	തിരികെ pv;
       }
-      else
+      അല്ലെങ്കിൽ
       {
-	buf[count] = "0123456789.EE?-?"[nibble];
-	if (nibble == EXP_NEG)
+	buf[എണ്ണം] = "0123456789.EE?-?"[nibble];
+	എങ്കിൽ (nibble == EXP_NEG)
 	{
-	  ++count;
-	  if (unlikely (count == ARRAY_LENGTH (buf))) break;
-	  buf[count] = '-';
+	  ++എണ്ണം;
+	  എങ്കിൽ (unlikely (എണ്ണം == ARRAY_LENGTH (buf))) നിർത്തുക;
+	  buf[എണ്ണം] = '-';
 	}
       }
     }
 
     str_ref.set_error ();
-    return .0;
+    തിരികെ .0;
   }
 
-  static bool is_hint_op (op_code_t op)
+  സ്ഥിതം തർക്കം is_hint_op (op_code_t op)
   {
-    switch (op)
+    തിരഞ്ഞെടുപ്പ് (op)
     {
-      case OpCode_BlueValues:
-      case OpCode_OtherBlues:
-      case OpCode_FamilyBlues:
-      case OpCode_FamilyOtherBlues:
-      case OpCode_StemSnapH:
-      case OpCode_StemSnapV:
-      case OpCode_StdHW:
-      case OpCode_StdVW:
-      case OpCode_BlueScale:
-      case OpCode_BlueShift:
-      case OpCode_BlueFuzz:
-      case OpCode_ForceBold:
-      case OpCode_LanguageGroup:
-      case OpCode_ExpansionFactor:
-	return true;
-      default:
-	return false;
+      അവസ്ഥ Op_Code_Blue_മൂല്യങ്ങൾ:
+      അവസ്ഥ OpCode_OtherBlues:
+      അവസ്ഥ OpCode_FamilyBlues:
+      അവസ്ഥ OpCode_FamilyOtherBlues:
+      അവസ്ഥ OpCode_StemSnapH:
+      അവസ്ഥ OpCode_StemSnapV:
+      അവസ്ഥ OpCode_StdHW:
+      അവസ്ഥ OpCode_StdVW:
+      അവസ്ഥ OpCode_BlueScale:
+      അവസ്ഥ OpCode_BlueShift:
+      അവസ്ഥ OpCode_BlueFuzz:
+      അവസ്ഥ OpCode_ForceBold:
+      അവസ്ഥ OpCode_LanguageGroup:
+      അവസ്ഥ OpCode_ExpansionFactor:
+	തിരികെ സത്യം;
+      സ്ഥിരസ്ഥിതി:
+	തിരികെ അസത്യം;
     }
   }
 };
 
 template <typename VAL=op_str_t>
-struct top_dict_opset_t : dict_opset_t
+ഘടന മുകൾ_dict_opset_t : dict_opset_t
 {
-  static void process_op (op_code_t op, interp_env_t<number_t>& env, top_dict_values_t<VAL> & dictval)
+  സ്ഥിതം ശൂന്യം process_op (op_code_t op, interp_env_t<സംഖ്യ_t>& env, മുകൾ_dict_മൂല്യങ്ങൾ_t<VAL> & dictval)
   {
-    switch (op) {
-      case OpCode_CharStrings:
-	dictval.charStringsOffset = env.argStack.pop_int ();
+    തിരഞ്ഞെടുപ്പ് (op) {
+      അവസ്ഥ OpCode_CharStrings:
+	dictval.charStringsOffset = env.arg_അട്ടി.എടുക്കുക_int ();
 	env.clear_args ();
-	break;
-      case OpCode_FDArray:
-	dictval.FDArrayOffset = env.argStack.pop_int ();
+	നിർത്തുക;
+      അവസ്ഥ OpCode_FDArray:
+	dictval.FDArrayOffset = env.arg_അട്ടി.എടുക്കുക_int ();
 	env.clear_args ();
-	break;
-      case OpCode_FontMatrix:
+	നിർത്തുക;
+      അവസ്ഥ OpCode_FontMatrix:
 	env.clear_args ();
-	break;
-      default:
+	നിർത്തുക;
+      സ്ഥിരസ്ഥിതി:
 	dict_opset_t::process_op (op, env);
-	break;
+	നിർത്തുക;
     }
   }
 };
 
-template <typename OPSET, typename PARAM, typename ENV=num_interp_env_t>
-struct dict_interpreter_t : interpreter_t<ENV>
+template <typename OPSET, typename PARAM, typename ENV=അക്കം_interp_env_t>
+ഘടന dict_interpreter_t : interpreter_t<ENV>
 {
   dict_interpreter_t (ENV& env_) : interpreter_t<ENV> (env_) {}
 
-  bool interpret (PARAM& param)
+  തർക്കം interpret (PARAM& param)
   {
     param.init ();
-    while (SUPER::env.str_ref.avail ())
+    ആകുമ്പോൾ (SUPER::env.str_ref.avail ())
     {
       OPSET::process_op (SUPER::env.fetch_op (), SUPER::env, param);
-      if (unlikely (SUPER::env.in_error ()))
-	return false;
+      എങ്കിൽ (unlikely (SUPER::env.in_error ()))
+	തിരികെ അസത്യം;
     }
 
-    return true;
+    തിരികെ സത്യം;
   }
 
-  private:
-  typedef interpreter_t<ENV> SUPER;
+  സ്വകാര്യ:
+  തരനിർവചനം interpreter_t<ENV> SUPER;
 };
 
 } /* namespace CFF */

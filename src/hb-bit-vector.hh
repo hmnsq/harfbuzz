@@ -25,169 +25,169 @@
 #ifndef HB_BIT_VECTOR_HH
 #define HB_BIT_VECTOR_HH
 
-#include "hb.hh"
+#അന്തര്ഭാവ "hb.hh"
 
-#include "hb-atomic.hh"
+#അന്തര്ഭാവ "hb-atomic.hh"
 
-struct hb_min_max_t
+ഘടന hb_min_max_t
 {
-  void add (hb_codepoint_t v) { min_v = hb_min (min_v, v); max_v = hb_max (max_v, v); }
-  void add_range (hb_codepoint_t a, hb_codepoint_t b)
+  ശൂന്യം add (hb_codepoint_t v) { min_v = hb_min (min_v, v); max_v = hb_max (max_v, v); }
+  ശൂന്യം add_range (hb_codepoint_t a, hb_codepoint_t b)
   {
     min_v = hb_min (min_v, a);
     max_v = hb_max (max_v, b);
   }
 
   template <typename set_t>
-  void union_ (const set_t &set)
+  ശൂന്യം union_ (സ്ഥിരം set_t &set)
   {
     hb_codepoint_t set_min = set.get_min ();
-    if (unlikely (set_min == HB_CODEPOINT_INVALID))
-      return;
+    എങ്കിൽ (unlikely (set_min == HB_CODEPOINT_INVALID))
+      തിരികെ;
     hb_codepoint_t set_max = set.get_max ();
     min_v = hb_min (min_v, set_min);
     max_v = hb_max (max_v, set_max);
   }
 
-  hb_codepoint_t get_min () const { return min_v; }
-  hb_codepoint_t get_max () const { return max_v; }
+  hb_codepoint_t get_min () സ്ഥിരം { തിരികെ min_v; }
+  hb_codepoint_t get_max () സ്ഥിരം { തിരികെ max_v; }
 
-  private:
+  സ്വകാര്യ:
   hb_codepoint_t min_v = HB_CODEPOINT_INVALID;
   hb_codepoint_t max_v = 0;
 };
 
-template <bool atomic = false>
-struct hb_bit_vector_t
+template <തർക്കം atomic = അസത്യം>
+ഘടന hb_bit_vector_t
 {
   using int_t = uint64_t;
   using elt_t = typename std::conditional<atomic, hb_atomic_t<int_t>, int_t>::type;
 
   hb_bit_vector_t () = delete;
-  hb_bit_vector_t (const hb_bit_vector_t &other) = delete;
-  hb_bit_vector_t &operator= (const hb_bit_vector_t &other) = delete;
+  hb_bit_vector_t (സ്ഥിരം hb_bit_vector_t &other) = delete;
+  hb_bit_vector_t &operator= (സ്ഥിരം hb_bit_vector_t &other) = delete;
 
   // Move
   hb_bit_vector_t (hb_bit_vector_t &&other)
-		: min_v (other.min_v), max_v (other.max_v), count (other.count), elts (other.elts)
+		: min_v (other.min_v), max_v (other.max_v), എണ്ണം (other.എണ്ണം), elts (other.elts)
   {
-    other.min_v = other.max_v = other.count = 0;
+    other.min_v = other.max_v = other.എണ്ണം = 0;
     other.elts = nullptr;
   }
   hb_bit_vector_t &operator= (hb_bit_vector_t &&other)
   {
     hb_swap (min_v, other.min_v);
     hb_swap (max_v, other.max_v);
-    hb_swap (count, other.count);
+    hb_swap (എണ്ണം, other.എണ്ണം);
     hb_swap (elts, other.elts);
-    return *this;
+    തിരികെ *ഇത്;
   }
 
   hb_bit_vector_t (unsigned min_v, unsigned max_v)
     : min_v (min_v), max_v (max_v)
   {
-    if (unlikely (min_v >= max_v))
+    എങ്കിൽ (unlikely (min_v >= max_v))
     {
-      min_v = max_v = count = 0;
-      return;
+      min_v = max_v = എണ്ണം = 0;
+      തിരികെ;
     }
 
-    unsigned num = (max_v - min_v + sizeof (int_t) * 8) / (sizeof (int_t) * 8);
-    elts = (elt_t *) hb_calloc (num, sizeof (int_t));
-    if (unlikely (!elts))
+    unsigned അക്കം = (max_v - min_v + വലുപ്പം (int_t) * 8) / (വലുപ്പം (int_t) * 8);
+    elts = (elt_t *) hb_calloc (അക്കം, വലുപ്പം (int_t));
+    എങ്കിൽ (unlikely (!elts))
     {
-      min_v = max_v = count = 0;
-      return;
+      min_v = max_v = എണ്ണം = 0;
+      തിരികെ;
     }
 
-    count = max_v - min_v + 1;
+    എണ്ണം = max_v - min_v + 1;
   }
   ~hb_bit_vector_t ()
   {
     hb_free (elts);
   }
 
-  void add (hb_codepoint_t g) { elt (g) |= mask (g); }
-  void del (hb_codepoint_t g) { elt (g) &= ~mask (g); }
-  void set (hb_codepoint_t g, bool value) { if (value) add (g); else del (g); }
-  bool get (hb_codepoint_t g) const { return elt (g) & mask (g); }
-  bool has (hb_codepoint_t g) const { return get (g); }
-  bool may_have (hb_codepoint_t g) const { return get (g); }
+  ശൂന്യം add (hb_codepoint_t g) { elt (g) |= mask (g); }
+  ശൂന്യം del (hb_codepoint_t g) { elt (g) &= ~mask (g); }
+  ശൂന്യം set (hb_codepoint_t g, തർക്കം value) { എങ്കിൽ (value) add (g); അല്ലെങ്കിൽ del (g); }
+  തർക്കം get (hb_codepoint_t g) സ്ഥിരം { തിരികെ elt (g) & mask (g); }
+  തർക്കം has (hb_codepoint_t g) സ്ഥിരം { തിരികെ get (g); }
+  തർക്കം may_have (hb_codepoint_t g) സ്ഥിരം { തിരികെ get (g); }
 
-  bool operator [] (hb_codepoint_t g) const { return get (g); }
-  bool operator () (hb_codepoint_t g) const { return get (g); }
+  തർക്കം operator [] (hb_codepoint_t g) സ്ഥിരം { തിരികെ get (g); }
+  തർക്കം operator () (hb_codepoint_t g) സ്ഥിരം { തിരികെ get (g); }
 
-  void add_range (hb_codepoint_t a, hb_codepoint_t b)
+  ശൂന്യം add_range (hb_codepoint_t a, hb_codepoint_t b)
   {
-    if (unlikely (!count || a > b || a < min_v || b > max_v))
-      return;
+    എങ്കിൽ (unlikely (!എണ്ണം || a > b || a < min_v || b > max_v))
+      തിരികെ;
 
     elt_t *la = &elt (a);
     elt_t *lb = &elt (b);
-    if (la == lb)
+    എങ്കിൽ (la == lb)
       *la |= (mask (b) << 1) - mask(a);
-    else
+    അല്ലെങ്കിൽ
     {
       *la |= ~(mask (a) - 1llu);
       la++;
 
-      hb_memset (la, 0xff, (char *) lb - (char *) la);
+      hb_memset (la, 0xff, (അക്ഷരം *) lb - (അക്ഷരം *) la);
 
       *lb |= ((mask (b) << 1) - 1llu);
     }
   }
-  void del_range (hb_codepoint_t a, hb_codepoint_t b)
+  ശൂന്യം del_range (hb_codepoint_t a, hb_codepoint_t b)
   {
-    if (unlikely (!count || a > b || a < min_v || b > max_v))
-      return;
+    എങ്കിൽ (unlikely (!എണ്ണം || a > b || a < min_v || b > max_v))
+      തിരികെ;
 
     elt_t *la = &elt (a);
     elt_t *lb = &elt (b);
-    if (la == lb)
+    എങ്കിൽ (la == lb)
       *la &= ~((mask (b) << 1llu) - mask(a));
-    else
+    അല്ലെങ്കിൽ
     {
       *la &= mask (a) - 1;
       la++;
 
-      hb_memset (la, 0, (char *) lb - (char *) la);
+      hb_memset (la, 0, (അക്ഷരം *) lb - (അക്ഷരം *) la);
 
       *lb &= ~((mask (b) << 1) - 1llu);
     }
   }
-  void set_range (hb_codepoint_t a, hb_codepoint_t b, bool v)
-  { if (v) add_range (a, b); else del_range (a, b); }
+  ശൂന്യം set_range (hb_codepoint_t a, hb_codepoint_t b, തർക്കം v)
+  { എങ്കിൽ (v) add_range (a, b); അല്ലെങ്കിൽ del_range (a, b); }
 
   template <typename set_t>
-  void union_ (const set_t &set)
+  ശൂന്യം union_ (സ്ഥിരം set_t &set)
   {
-    for (hb_codepoint_t g : set)
+    വേണ്ടി (hb_codepoint_t g : set)
       add (g);
   }
 
-  static const unsigned int ELT_BITS = sizeof (elt_t) * 8;
-  static constexpr unsigned ELT_MASK = ELT_BITS - 1;
+  സ്ഥിതം സ്ഥിരം unsigned പൂർണ്ണസംഖ്യ ELT_BITS = വലുപ്പം (elt_t) * 8;
+  സ്ഥിതം constexpr unsigned ELT_MASK = ELT_BITS - 1;
 
-  static constexpr elt_t zero = 0;
+  സ്ഥിതം constexpr elt_t zero = 0;
 
   elt_t &elt (hb_codepoint_t g)
   {
     g -= min_v;
-    if (unlikely (g >= count))
-      return Crap(elt_t);
-    return elts[g / ELT_BITS];
+    എങ്കിൽ (unlikely (g >= എണ്ണം))
+      തിരികെ Crap(elt_t);
+    തിരികെ elts[g / ELT_BITS];
   }
-  const elt_t& elt (hb_codepoint_t g) const
+  സ്ഥിരം elt_t& elt (hb_codepoint_t g) സ്ഥിരം
   {
     g -= min_v;
-    if (unlikely (g >= count))
-      return Null(elt_t);
-    return elts[g / ELT_BITS];
+    എങ്കിൽ (unlikely (g >= എണ്ണം))
+      തിരികെ Null(elt_t);
+    തിരികെ elts[g / ELT_BITS];
   }
 
-  static constexpr int_t mask (hb_codepoint_t g) { return elt_t (1) << (g & ELT_MASK); }
+  സ്ഥിതം constexpr int_t mask (hb_codepoint_t g) { തിരികെ elt_t (1) << (g & ELT_MASK); }
 
-  hb_codepoint_t min_v = 0, max_v = 0, count = 0;
+  hb_codepoint_t min_v = 0, max_v = 0, എണ്ണം = 0;
   elt_t *elts = nullptr;
 };
 

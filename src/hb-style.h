@@ -22,14 +22,14 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#എങ്കിൽ !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
 #ifndef HB_STYLE_H
 #define HB_STYLE_H
 
-#include "hb.h"
+#അന്തര്ഭാവ "hb.h"
 
 HB_BEGIN_DECLS
 
@@ -59,7 +59,7 @@ HB_BEGIN_DECLS
  *
  * Since: 3.0.0
  **/
-typedef enum
+തരനിർവചനം എണ്ണൽ
 {
   HB_STYLE_TAG_ITALIC		= HB_TAG ('i','t','a','l'),
   HB_STYLE_TAG_OPTICAL_SIZE	= HB_TAG ('o','p','s','z'),
@@ -69,12 +69,12 @@ typedef enum
   HB_STYLE_TAG_WEIGHT		= HB_TAG ('w','g','h','t'),
 
   /*< private >*/
-  _HB_STYLE_TAG_MAX_VALUE	= HB_TAG_MAX_SIGNED /*< skip >*/
+  HB_STYLE_TAG_MAX_മൂല്യം	= HB_TAG_MAX_SIGNED /*< skip >*/
 } hb_style_tag_t;
 
 
-HB_EXTERN float
-hb_style_get_value (hb_font_t *font, hb_style_tag_t style_tag);
+HB_EXTERN ദശാംശം
+hb_style_get_മൂല്യം (hb_font_t *font, hb_style_tag_t style_tag);
 
 HB_END_DECLS
 

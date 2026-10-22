@@ -24,19 +24,19 @@
  * Adobe Author(s): Skef Iterum
  */
 
-#include "hb.hh"
+#അന്തര്ഭാവ "hb.hh"
 
-#include "hb-depend.hh"
+#അന്തര്ഭാവ "hb-depend.hh"
 
-#include "hb-face.hh"
-#include "hb-ot-cmap-table.hh"
-#include "hb-ot-glyf-table.hh"
-#include "hb-ot-layout-gsub-table.hh"
-#include "hb-ot-math-table.hh"
-#include "hb-ot-cff1-table.hh"
-#include "hb-ot-var-varc-table.hh"
-#include "OT/Color/COLR/COLR.hh"
-#include "OT/Color/COLR/colrv1-depend.hh"
+#അന്തര്ഭാവ "hb-face.hh"
+#അന്തര്ഭാവ "hb-ot-cmap-table.hh"
+#അന്തര്ഭാവ "hb-ot-glyf-table.hh"
+#അന്തര്ഭാവ "hb-ot-layout-gsub-table.hh"
+#അന്തര്ഭാവ "hb-ot-math-table.hh"
+#അന്തര്ഭാവ "hb-ot-cff1-table.hh"
+#അന്തര്ഭാവ "hb-ot-var-varc-table.hh"
+#അന്തര്ഭാവ "OT/Color/COLR/COLR.hh"
+#അന്തര്ഭാവ "OT/Color/COLR/colrv1-depend.hh"
 
 /**
  * SECTION:hb-subset-depend
@@ -63,14 +63,14 @@
 
 hb_subset_depend_t::hb_subset_depend_t (hb_face_t *f)
 {
-  if (unlikely (!data.glyph_dependencies.resize_exact (f->get_num_glyphs ()))) {
-    successful = false;
-    return;
+  എങ്കിൽ (unlikely (!data.glyph_dependencies.resize_exact (f->get_അക്കം_glyphs ()))) {
+    successful = അസത്യം;
+    തിരികെ;
   }
   successful = hb_depend_data_builder_t (data).compile (f);
 }
 
-bool
+തർക്കം
 hb_depend_data_builder_t::compile (hb_face_t *face)
 {
   /* Extract dependencies from all relevant OpenType tables.
@@ -82,22 +82,22 @@ hb_depend_data_builder_t::compile (hb_face_t *face)
    * in libharfbuzz, after which get_relaxed() safely returns the already-
    * constructed accelerator without instantiating the GSUB_accelerator_t
    * constructor (which references a hidden is_blocklisted symbol) in this TU. */
-  if (hb_ot_layout_has_substitution (face))
-    face->table.GSUB.get_relaxed ()->depend (this, face);
+  എങ്കിൽ (hb_ot_layout_has_substitution (face))
+    face->table.GSUB.get_relaxed ()->depend (ഇത്, face);
 #ifndef HB_NO_MATH
-  face->table.MATH->depend (this);
+  face->table.MATH->depend (ഇത്);
 #endif
 #ifndef HB_NO_COLOR
-  face->table.COLR->depend (this);
+  face->table.COLR->depend (ഇത്);
 #endif
-  face->table.glyf->depend (this);
+  face->table.glyf->depend (ഇത്);
 #ifndef HB_NO_CFF
-  OT::cff1_subset_accelerator_t (face).depend (this);
+  OT::cff1_subset_accelerator_t (face).depend (ഇത്);
 #endif
 #ifndef HB_NO_VAR_COMPOSITES
-  face->table.VARC->depend (this);
+  face->table.VARC->depend (ഇത്);
 #endif
-  return successful;
+  തിരികെ successful;
 }
 
 
@@ -132,16 +132,16 @@ hb_subset_depend_t *
 hb_subset_depend_from_face_or_fail (hb_face_t *face)
 {
   hb_subset_depend_t *depend;
-  if (unlikely (!(depend = hb_object_create<hb_subset_depend_t> (face))))
-    return nullptr;
+  എങ്കിൽ (unlikely (!(depend = hb_object_create<hb_subset_depend_t> (face))))
+    തിരികെ nullptr;
 
-  if (unlikely (depend->in_error ()))
+  എങ്കിൽ (unlikely (depend->in_error ()))
   {
     hb_subset_depend_destroy (depend);
-    return nullptr;
+    തിരികെ nullptr;
   }
 
-  return depend;
+  തിരികെ depend;
 }
 
 /**
@@ -173,19 +173,19 @@ hb_subset_depend_from_face_or_fail (hb_face_t *face)
  *
  * Since: 14.3.0
  **/
-unsigned int
+unsigned പൂർണ്ണസംഖ്യ
 hb_subset_depend_lookup_glyph (hb_subset_depend_t *depend,
                                 hb_codepoint_t gid,
-                                unsigned int start_offset,
-                                unsigned int *entry_count,
+                                unsigned പൂർണ്ണസംഖ്യ start_offset,
+                                unsigned പൂർണ്ണസംഖ്യ *entry_എണ്ണം,
                                 hb_subset_depend_entry_t *entries)
 {
-  unsigned int total = depend->data.get_glyph_entry_count (gid);
-  if (entry_count)
+  unsigned പൂർണ്ണസംഖ്യ total = depend->data.get_glyph_entry_എണ്ണം (gid);
+  എങ്കിൽ (entry_എണ്ണം)
   {
-    unsigned int count = hb_min (*entry_count,
+    unsigned പൂർണ്ണസംഖ്യ എണ്ണം = hb_min (*entry_എണ്ണം,
                                   start_offset < total ? total - start_offset : 0u);
-    for (unsigned int i = 0; i < count; i++)
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
     {
       uint8_t flags_byte = 0;
       depend->data.get_glyph_entry (gid, start_offset + i,
@@ -195,9 +195,9 @@ hb_subset_depend_lookup_glyph (hb_subset_depend_t *depend,
                                     &flags_byte);
       entries[i].flags = (hb_subset_depend_edge_flags_t) flags_byte;
     }
-    *entry_count = count;
+    *entry_എണ്ണം = എണ്ണം;
   }
-  return total;
+  തിരികെ total;
 }
 
 /**
@@ -227,10 +227,10 @@ hb_bool_t
 hb_subset_depend_lookup_set (hb_subset_depend_t *depend, hb_codepoint_t index,
                               hb_set_t *out)
 {
-  const hb_set_t *s = depend->get_set_from_index (index);
-  if (!s) return false;
+  സ്ഥിരം hb_set_t *s = depend->get_set_from_index (index);
+  എങ്കിൽ (!s) തിരികെ അസത്യം;
   out->set (*s);
-  return true;
+  തിരികെ സത്യം;
 }
 
 /**
@@ -242,10 +242,10 @@ hb_subset_depend_lookup_set (hb_subset_depend_t *depend, hb_codepoint_t index,
  *
  * Since: 14.3.0
  **/
-void
+ശൂന്യം
 hb_subset_depend_destroy (hb_subset_depend_t *depend)
 {
-  if (!hb_object_destroy (depend)) return;
+  എങ്കിൽ (!hb_object_destroy (depend)) തിരികെ;
 
   hb_free (depend);
 }

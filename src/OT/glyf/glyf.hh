@@ -2,22 +2,22 @@
 #define OT_GLYF_GLYF_HH
 
 
-#include "../../hb-open-type.hh"
-#include "../../hb-depend-data.hh"
-#include "../../hb-ot-head-table.hh"
-#include "../../hb-ot-hmtx-table.hh"
-#include "../../hb-ot-var-gvar-table.hh"
-#include "../../hb-draw.hh"
-#include "../../hb-paint.hh"
+#അന്തര്ഭാവ "../../hb-open-type.hh"
+#അന്തര്ഭാവ "../../hb-depend-data.hh"
+#അന്തര്ഭാവ "../../hb-ot-head-table.hh"
+#അന്തര്ഭാവ "../../hb-ot-hmtx-table.hh"
+#അന്തര്ഭാവ "../../hb-ot-var-gvar-table.hh"
+#അന്തര്ഭാവ "../../hb-draw.hh"
+#അന്തര്ഭാവ "../../hb-paint.hh"
 
-#include "glyf-helpers.hh"
-#include "Glyph.hh"
-#include "SubsetGlyph.hh"
-#include "loca.hh"
-#include "path-builder.hh"
+#അന്തര്ഭാവ "glyf-helpers.hh"
+#അന്തര്ഭാവ "Glyph.hh"
+#അന്തര്ഭാവ "SubsetGlyph.hh"
+#അന്തര്ഭാവ "loca.hh"
+#അന്തര്ഭാവ "path-builder.hh"
 
 
-namespace OT {
+നാമാകാശ OT {
 
 
 /*
@@ -27,186 +27,186 @@ namespace OT {
 #define HB_OT_TAG_glyf HB_TAG('g','l','y','f')
 #define HB_OT_TAG_GLYF HB_TAG('G','L','Y','F')
 
-struct glyf
+ഘടന glyf
 {
-  friend struct glyf_accelerator_t;
+  friend ഘടന glyf_accelerator_t;
 
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_glyf;
+  സ്ഥിതം constexpr hb_tag_t tableTag = HB_OT_TAG_glyf;
 
-  static bool has_valid_glyf_format(const hb_face_t* face)
+  സ്ഥിതം തർക്കം has_valid_glyf_format(സ്ഥിരം hb_face_t* face)
   {
-    const OT::head &head = *face->table.head;
-    return head.indexToLocFormat <= 1 && head.glyphDataFormat <= 1;
+    സ്ഥിരം OT::head &head = *face->table.head;
+    തിരികെ head.indexToLocFormat <= 1 && head.glyphDataFormat <= 1;
   }
 
-  static bool has_extended_glyf (hb_face_t *face)
+  സ്ഥിതം തർക്കം has_extended_glyf (hb_face_t *face)
   {
 #ifndef HB_NO_BEYOND_64K
     hb_blob_ptr_t<glyf> GLYF_table = hb_sanitize_context_t ().reference_table<glyf> (face, HB_OT_TAG_GLYF);
     hb_blob_ptr_t<loca> LOCA_table = hb_sanitize_context_t ().reference_table<loca> (face, HB_OT_TAG_LOCA);
-    bool ret = GLYF_table.get_length () && LOCA_table.get_length ();
+    തർക്കം ret = GLYF_table.get_length () && LOCA_table.get_length ();
     GLYF_table.destroy ();
     LOCA_table.destroy ();
-    return ret;
-#else
-    return false;
+    തിരികെ ret;
+#അല്ലെങ്കിൽ
+    തിരികെ അസത്യം;
 #endif
   }
 
-  bool sanitize (hb_sanitize_context_t *c HB_UNUSED) const
+  തർക്കം sanitize (hb_sanitize_context_t *c HB_UNUSED) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ഇത്);
     /* Runtime checks as eager sanitizing each glyph is costy */
-    return_trace (true);
+    return_trace (സത്യം);
   }
 
   /* requires source of SubsetGlyph complains the identifier isn't declared */
   template <typename Iterator>
-  bool serialize (hb_serialize_context_t *c,
+  തർക്കം serialize (hb_serialize_context_t *c,
 		  Iterator it,
-                  bool use_short_loca,
-		  const hb_subset_plan_t *plan)
+                  തർക്കം use_short_loca,
+		  സ്ഥിരം hb_subset_plan_t *plan)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ഇത്);
 
     unsigned init_len = c->length ();
-    for (auto &_ : it)
-      if (unlikely (!_.serialize (c, use_short_loca, plan)))
-        return false;
+    വേണ്ടി (auto &_ : it)
+      എങ്കിൽ (unlikely (!_.serialize (c, use_short_loca, plan)))
+        തിരികെ അസത്യം;
 
     /* As a special case when all glyph in the font are empty, add a zero byte
      * to the table, so that OTS doesn’t reject it, and to make the table work
      * on Windows as well.
      * See https://github.com/khaledhosny/ots/issues/52 */
-    if (init_len == c->length ())
+    എങ്കിൽ (init_len == c->length ())
     {
       HBUINT8 empty_byte;
       empty_byte = 0;
       c->copy (empty_byte);
     }
-    return_trace (true);
+    return_trace (സത്യം);
   }
 
   /* Byte region(s) per glyph to output
      unpadded, hints removed if so requested
      If we fail to process a glyph we produce an empty (0-length) glyph */
-  bool subset (hb_subset_context_t *c) const
+  തർക്കം subset (hb_subset_context_t *c) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (ഇത്);
 
-    bool extended = has_extended_glyf (c->plan->source);
+    തർക്കം extended = has_extended_glyf (c->plan->source);
 #ifndef HB_NO_BEYOND_64K
-    if (extended != (c->table_tag == HB_OT_TAG_GLYF))
-      return_trace (false);
+    എങ്കിൽ (extended != (c->table_tag == HB_OT_TAG_GLYF))
+      return_trace (അസത്യം);
 #endif
 
-    if (!has_valid_glyf_format (c->plan->source)) {
+    എങ്കിൽ (!has_valid_glyf_format (c->plan->source)) {
       // glyf format is unknown don't attempt to subset it.
-      DEBUG_MSG (SUBSET, nullptr,
+      DEBUG_സന്ദേശം (SUBSET, nullptr,
                  "unkown glyf format, dropping from subset.");
-      return_trace (false);
+      return_trace (അസത്യം);
     }
 
     hb_font_t *font = nullptr;
-    if (c->plan->normalized_coords)
+    എങ്കിൽ (c->plan->normalized_coords)
     {
       font = _create_font_for_instancing (c->plan);
-      if (unlikely (!font))
-	return_trace (false);
+      എങ്കിൽ (unlikely (!font))
+	return_trace (അസത്യം);
     }
 
     hb_vector_t<unsigned> padded_offsets;
-    if (unlikely (!padded_offsets.alloc_exact (c->plan->new_to_old_gid_list.length)))
+    എങ്കിൽ (unlikely (!padded_offsets.alloc_exact (c->plan->new_to_old_gid_list.length)))
     {
       hb_font_destroy (font);
-      return_trace (false);
+      return_trace (അസത്യം);
     }
 
     hb_vector_t<glyf_impl::SubsetGlyph> glyphs;
     /* SubsetGlyphs borrow bytes from this blob until they are serialized. */
     hb_blob_t *source_glyf = nullptr;
-    if (!_populate_subset_glyphs (c->plan, font, glyphs, &source_glyf))
+    എങ്കിൽ (!_populate_subset_glyphs (c->plan, font, glyphs, &source_glyf))
     {
       hb_blob_destroy (source_glyf);
       hb_font_destroy (font);
-      return_trace (false);
+      return_trace (അസത്യം);
     }
 
-    if (font)
+    എങ്കിൽ (font)
       hb_font_destroy (font);
 
     unsigned max_offset = 0;
-    for (auto &g : glyphs)
+    വേണ്ടി (auto &g : glyphs)
     {
       unsigned size = g.padded_size ();
       padded_offsets.push (size);
       max_offset += size;
     }
 
-    bool use_short_loca = false;
-    if (likely (!c->plan->force_long_loca))
+    തർക്കം use_short_loca = അസത്യം;
+    എങ്കിൽ (likely (!c->plan->force_long_loca))
       use_short_loca = max_offset < 0x1FFFF;
 
-    if (!use_short_loca)
+    എങ്കിൽ (!use_short_loca)
     {
       padded_offsets.clear ();
-      for (auto &g : glyphs)
+      വേണ്ടി (auto &g : glyphs)
 	padded_offsets.push (g.length ());
     }
 
-    auto *glyf_prime = c->serializer->start_embed <glyf> ();
-    bool result = glyf_prime->serialize (c->serializer, hb_iter (glyphs), use_short_loca, c->plan);
-    if (c->plan->normalized_coords && !c->plan->pinned_at_default)
+    auto *glyf_അഭാജ്യം = c->serializer->start_embed <glyf> ();
+    തർക്കം result = glyf_അഭാജ്യം->serialize (c->serializer, hb_iter (glyphs), use_short_loca, c->plan);
+    എങ്കിൽ (c->plan->normalized_coords && !c->plan->pinned_at_default)
       _free_compiled_subset_glyphs (glyphs);
     hb_blob_destroy (source_glyf);
 
-    if (unlikely (!c->serializer->check_success (glyf_impl::_add_loca_and_head (c,
+    എങ്കിൽ (unlikely (!c->serializer->check_success (glyf_impl::_add_loca_and_head (c,
 						 padded_offsets.iter (),
 						 use_short_loca,
 						 extended))))
-      return_trace (false);
+      return_trace (അസത്യം);
 
-    return result;
+    തിരികെ result;
   }
 
-  bool
-  _populate_subset_glyphs (const hb_subset_plan_t   *plan,
+  തർക്കം
+  _populate_subset_glyphs (സ്ഥിരം hb_subset_plan_t   *plan,
 			   hb_font_t                *font,
 			   hb_vector_t<glyf_impl::SubsetGlyph>& glyphs /* OUT */,
-			   hb_blob_t               **source_glyf /* OUT */) const;
+			   hb_blob_t               **source_glyf /* OUT */) സ്ഥിരം;
 
   hb_font_t *
-  _create_font_for_instancing (const hb_subset_plan_t *plan) const;
+  _create_font_for_instancing (സ്ഥിരം hb_subset_plan_t *plan) സ്ഥിരം;
 
-  void _free_compiled_subset_glyphs (hb_vector_t<glyf_impl::SubsetGlyph> &glyphs) const
+  ശൂന്യം _free_compiled_subset_glyphs (hb_vector_t<glyf_impl::SubsetGlyph> &glyphs) സ്ഥിരം
   {
-    for (auto &g : glyphs)
+    വേണ്ടി (auto &g : glyphs)
       g.free_compiled_bytes ();
   }
 
-  protected:
+  സംരക്ഷിത:
   UnsizedArrayOf<HBUINT8>
 		dataZ;	/* Glyphs data. */
-  public:
+  പൊതു:
   DEFINE_SIZE_MIN (0);	/* In reality, this is UNBOUNDED() type; but since we always
 			 * check the size externally, allow Null() object of it by
 			 * defining it _MIN instead. */
 };
 
 #ifndef HB_NO_BEYOND_64K
-struct GLYF : glyf
+ഘടന GLYF : glyf
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_GLYF;
+  സ്ഥിതം constexpr hb_tag_t tableTag = HB_OT_TAG_GLYF;
 };
 #endif
 
-struct glyf_accelerator_t
+ഘടന glyf_accelerator_t
 {
   glyf_accelerator_t (hb_face_t *face)
   {
-    extended = false;
-    short_offset = false;
-    num_glyphs = 0;
+    extended = അസത്യം;
+    short_offset = അസത്യം;
+    അക്കം_glyphs = 0;
     loca_table = nullptr;
     glyf_table = nullptr;
 #ifndef HB_NO_VAR
@@ -216,28 +216,28 @@ struct glyf_accelerator_t
 #ifndef HB_NO_VERTICAL
     vmtx = nullptr;
 #endif
-    const OT::head &head = *face->table.head;
-    if (!glyf::has_valid_glyf_format (face))
+    സ്ഥിരം OT::head &head = *face->table.head;
+    എങ്കിൽ (!glyf::has_valid_glyf_format (face))
       /* Unknown format.  Leave num_glyphs=0, that takes care of disabling us. */
-      return;
+      തിരികെ;
     short_offset = 0 == head.indexToLocFormat;
 
 #ifndef HB_NO_BEYOND_64K
     hb_blob_ptr_t<glyf> GLYF_table = hb_sanitize_context_t ().reference_table<glyf> (face, HB_OT_TAG_GLYF);
     hb_blob_ptr_t<loca> LOCA_table = hb_sanitize_context_t ().reference_table<loca> (face, HB_OT_TAG_LOCA);
     extended = GLYF_table.get_length () && LOCA_table.get_length ();
-    if (extended)
+    എങ്കിൽ (extended)
     {
       glyf_table = std::move (GLYF_table);
       loca_table = std::move (LOCA_table);
     }
-    else
+    അല്ലെങ്കിൽ
     {
       GLYF_table.destroy ();
       LOCA_table.destroy ();
     }
 #endif
-    if (!extended)
+    എങ്കിൽ (!extended)
     {
       glyf_table = hb_sanitize_context_t ().reference_table<glyf> (face);
       loca_table = hb_sanitize_context_t ().reference_table<loca> (face);
@@ -250,13 +250,13 @@ struct glyf_accelerator_t
     vmtx = face->table.vmtx;
 #endif
 
-    num_glyphs = hb_max (1u, loca_table.get_length () / (short_offset ? 2 : 4)) - 1;
-    num_glyphs = hb_min (num_glyphs, face->get_num_glyphs ());
+    അക്കം_glyphs = hb_max (1u, loca_table.get_length () / (short_offset ? 2 : 4)) - 1;
+    അക്കം_glyphs = hb_min (അക്കം_glyphs, face->get_അക്കം_glyphs ());
   }
   ~glyf_accelerator_t ()
   {
     auto *scratch = cached_scratch.get_relaxed ();
-    if (scratch)
+    എങ്കിൽ (scratch)
     {
       scratch->~hb_glyf_scratch_t ();
       hb_free (scratch);
@@ -266,91 +266,91 @@ struct glyf_accelerator_t
     loca_table.destroy ();
   }
 
-  bool has_data () const { return num_glyphs; }
-  bool is_extended () const { return extended; }
+  തർക്കം has_data () സ്ഥിരം { തിരികെ അക്കം_glyphs; }
+  തർക്കം is_extended () സ്ഥിരം { തിരികെ extended; }
 
-  void depend (hb_depend_data_builder_t *builder) const
+  ശൂന്യം depend (hb_depend_data_builder_t *builder) സ്ഥിരം
   {
-    if (!has_data ()) return;
-    for (hb_codepoint_t gid = 0; gid < get_num_glyphs (); gid++)
+    എങ്കിൽ (!has_data ()) തിരികെ;
+    വേണ്ടി (hb_codepoint_t gid = 0; gid < get_അക്കം_glyphs (); gid++)
     {
       auto glyph = glyph_for_gid (gid);
-      for (auto &item : glyph.get_composite_iterator ())
+      വേണ്ടി (auto &item : glyph.get_composite_iterator ())
         builder->add_depend (gid,
                              extended ? HB_OT_TAG_GLYF : HB_OT_TAG_glyf,
                              item.get_gid (extended));
     }
   }
 
-  protected:
+  സംരക്ഷിത:
   template<typename T>
-  bool get_points (hb_font_t *font, hb_codepoint_t gid, T consumer,
-		   hb_array_t<const int> coords,
+  തർക്കം get_points (hb_font_t *font, hb_codepoint_t gid, T consumer,
+		   hb_array_t<സ്ഥിരം പൂർണ്ണസംഖ്യ> coords,
 		   hb_glyf_scratch_t &scratch,
 		   hb_scalar_cache_t *gvar_cache = nullptr,
-		   int64_t *budget = nullptr) const
+		   int64_t *budget = nullptr) സ്ഥിരം
   {
-    if (gid >= num_glyphs) return false;
+    എങ്കിൽ (gid >= അക്കം_glyphs) തിരികെ അസത്യം;
 
-    int64_t stack_budget = HB_BUDGET_GLYPH;
-    if (!budget) budget = &stack_budget;
+    int64_t അട്ടി_budget = HB_BUDGET_GLYPH;
+    എങ്കിൽ (!budget) budget = &അട്ടി_budget;
 
     auto &all_points = scratch.all_points;
     all_points.clear ();
 
-    bool phantom_only = !consumer.is_consuming_contour_points ();
-    if (unlikely (!glyph_for_gid (gid).get_points (font, *this, all_points, scratch, nullptr, nullptr, nullptr, true, true, phantom_only, coords, gvar_cache, 0, nullptr, budget)))
-      return false;
+    തർക്കം phantom_only = !consumer.is_consuming_contour_points ();
+    എങ്കിൽ (unlikely (!glyph_for_gid (gid).get_points (font, *ഇത്, all_points, scratch, nullptr, nullptr, nullptr, സത്യം, സത്യം, phantom_only, coords, gvar_cache, 0, nullptr, budget)))
+      തിരികെ അസത്യം;
 
-    if (unlikely (!hb_budget_spend (*budget, HB_BUDGET_1, all_points.length)))
-      return false;
+    എങ്കിൽ (unlikely (!hb_budget_spend (*budget, HB_BUDGET_1, all_points.length)))
+      തിരികെ അസത്യം;
 
-    unsigned count = all_points.length;
-    assert (count >= glyf_impl::PHANTOM_COUNT);
-    count -= glyf_impl::PHANTOM_COUNT;
+    unsigned എണ്ണം = all_points.length;
+    പ്രതിജ്ഞാ (എണ്ണം >= glyf_impl::PHANTOM_എണ്ണം);
+    എണ്ണം -= glyf_impl::PHANTOM_എണ്ണം;
 
-    if (consumer.is_consuming_contour_points ())
+    എങ്കിൽ (consumer.is_consuming_contour_points ())
     {
       auto *points = all_points.arrayZ;
 
-      if (false)
+      എങ്കിൽ (അസത്യം)
       {
 	/* Our path-builder was designed to work with this simple loop.
 	 * But FreeType and CoreText do it differently, so we match those
 	 * with the other, more complicated, code branch below. */
-	for (unsigned i = 0; i < count; i++)
+	വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++)
 	{
 	  consumer.consume_point (points[i]);
-	  if (points[i].is_end_point)
+	  എങ്കിൽ (points[i].is_end_point)
 	    consumer.contour_end ();
 	}
       }
-      else
+      അല്ലെങ്കിൽ
       {
-	for (unsigned i = 0; i < count; i++)
+	വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++)
 	{
 	  // Start of a contour.
-	  if (points[i].flag & glyf_impl::SimpleGlyph::FLAG_ON_CURVE)
+	  എങ്കിൽ (points[i].flag & glyf_impl::SimpleGlyph::FLAG_ON_CURVE)
 	  {
 	    // First point is on-curve. Draw the contour.
-	    for (; i < count; i++)
+	    വേണ്ടി (; i < എണ്ണം; i++)
 	    {
 	      consumer.consume_point (points[i]);
-	      if (points[i].is_end_point)
+	      എങ്കിൽ (points[i].is_end_point)
 	      {
 		consumer.contour_end ();
-		break;
+		നിർത്തുക;
 	      }
 	    }
 	  }
-	  else
+	  അല്ലെങ്കിൽ
 	  {
 	    unsigned start = i;
 
 	    // Find end of the contour.
-	    for (; i < count; i++)
-	      if (points[i].is_end_point)
-		break;
+	    വേണ്ടി (; i < എണ്ണം; i++)
+	      എങ്കിൽ (points[i].is_end_point)
+		നിർത്തുക;
 
 	    unsigned end = i;
 
@@ -359,18 +359,18 @@ struct glyf_accelerator_t
 	    /* Rotating by one control point changes cubic pairing.  Preserve
 	     * the original order when the contour starts and ends off-curve
 	     * with cubic controls, including all-off-curve contours. */
-	    if (likely (end < count) &&
+	    എങ്കിൽ (likely (end < എണ്ണം) &&
 		(points[start].flag & glyf_impl::SimpleGlyph::FLAG_CUBIC) &&
 		(points[end].flag & (glyf_impl::SimpleGlyph::FLAG_ON_CURVE |
 				    glyf_impl::SimpleGlyph::FLAG_CUBIC)) ==
 		 glyf_impl::SimpleGlyph::FLAG_CUBIC)
 	      limit++;
-	    else
+	    അല്ലെങ്കിൽ
 #endif
-	    if (likely (end < count))
+	    എങ്കിൽ (likely (end < എണ്ണം))
 	      consumer.consume_point (points[end]);
 
-	    for (i = start; i < limit; i++)
+	    വേണ്ടി (i = start; i < limit; i++)
 	      consumer.consume_point (points[i]);
 	    i = end;
 
@@ -384,27 +384,27 @@ struct glyf_accelerator_t
 
     /* Where to write phantoms, nullptr if not requested */
     contour_point_t *phantoms = consumer.get_phantoms_sink ();
-    if (phantoms)
-      for (unsigned i = 0; i < glyf_impl::PHANTOM_COUNT; ++i)
-	phantoms[i] = all_points.arrayZ[count + i];
+    എങ്കിൽ (phantoms)
+      വേണ്ടി (unsigned i = 0; i < glyf_impl::PHANTOM_എണ്ണം; ++i)
+	phantoms[i] = all_points.arrayZ[എണ്ണം + i];
 
-    return true;
+    തിരികെ സത്യം;
   }
 
-  public:
+  പൊതു:
 
-  struct points_aggregator_t
+  ഘടന points_aggregator_t
   {
     hb_font_t *font;
     hb_glyph_extents_t *extents;
     contour_point_t *phantoms;
-    bool scaled;
+    തർക്കം scaled;
 
-    struct contour_bounds_t
+    ഘടന contour_bounds_t
     {
       contour_bounds_t () { min_x = min_y = FLT_MAX; max_x = max_y = -FLT_MAX; }
 
-      void add (const contour_point_t &p)
+      ശൂന്യം add (സ്ഥിരം contour_point_t &p)
       {
 	min_x = hb_min (min_x, p.x);
 	min_y = hb_min (min_y, p.y);
@@ -412,264 +412,264 @@ struct glyf_accelerator_t
 	max_y = hb_max (max_y, p.y);
       }
 
-      bool empty () const { return (min_x >= max_x) || (min_y >= max_y); }
+      തർക്കം empty () സ്ഥിരം { തിരികെ (min_x >= max_x) || (min_y >= max_y); }
 
-      void get_extents (hb_font_t *font, hb_glyph_extents_t *extents, bool scaled)
+      ശൂന്യം get_extents (hb_font_t *font, hb_glyph_extents_t *extents, തർക്കം scaled)
       {
-	if (unlikely (empty ()))
+	എങ്കിൽ (unlikely (empty ()))
 	{
 	  extents->width = 0;
 	  extents->x_bearing = 0;
 	  extents->height = 0;
 	  extents->y_bearing = 0;
-	  return;
+	  തിരികെ;
 	}
 	{
-	  double x_bearing = (double) roundf (min_x);
-	  double y_bearing = (double) roundf (max_y);
+	  ഇരട്ട x_bearing = (ഇരട്ട) roundf (min_x);
+	  ഇരട്ട y_bearing = (ഇരട്ട) roundf (max_y);
 	  extents->x_bearing = hb_clamp_to<hb_position_t> (x_bearing);
-	  extents->width = hb_clamp_to<hb_position_t> ((double) roundf (max_x) - x_bearing);
+	  extents->width = hb_clamp_to<hb_position_t> ((ഇരട്ട) roundf (max_x) - x_bearing);
 	  extents->y_bearing = hb_clamp_to<hb_position_t> (y_bearing);
-	  extents->height = hb_clamp_to<hb_position_t> ((double) roundf (min_y) - y_bearing);
+	  extents->height = hb_clamp_to<hb_position_t> ((ഇരട്ട) roundf (min_y) - y_bearing);
 
-	  if (scaled)
+	  എങ്കിൽ (scaled)
 	    font->scale_glyph_extents (extents);
 	}
       }
 
-      protected:
-      float min_x, min_y, max_x, max_y;
+      സംരക്ഷിത:
+      ദശാംശം min_x, min_y, max_x, max_y;
     } bounds;
 
-    points_aggregator_t (hb_font_t *font_, hb_glyph_extents_t *extents_, contour_point_t *phantoms_, bool scaled_)
+    points_aggregator_t (hb_font_t *font_, hb_glyph_extents_t *extents_, contour_point_t *phantoms_, തർക്കം scaled_)
     {
       font = font_;
       extents = extents_;
       phantoms = phantoms_;
       scaled = scaled_;
-      if (extents) bounds = contour_bounds_t ();
+      എങ്കിൽ (extents) bounds = contour_bounds_t ();
     }
 
     HB_ALWAYS_INLINE
-    void consume_point (const contour_point_t &point) { bounds.add (point); }
-    void contour_end () {}
-    void points_end () { bounds.get_extents (font, extents, scaled); }
+    ശൂന്യം consume_point (സ്ഥിരം contour_point_t &point) { bounds.add (point); }
+    ശൂന്യം contour_end () {}
+    ശൂന്യം points_end () { bounds.get_extents (font, extents, scaled); }
 
-    bool is_consuming_contour_points () { return extents; }
-    contour_point_t *get_phantoms_sink () { return phantoms; }
+    തർക്കം is_consuming_contour_points () { തിരികെ extents; }
+    contour_point_t *get_phantoms_sink () { തിരികെ phantoms; }
   };
 
 #ifndef HB_NO_VAR
   unsigned
   get_advance_with_var_unscaled (hb_codepoint_t gid,
 				 hb_font_t *font,
-				 bool is_vertical,
+				 തർക്കം is_vertical,
 				  hb_glyf_scratch_t &scratch,
-				 hb_scalar_cache_t *gvar_cache = nullptr) const
+				 hb_scalar_cache_t *gvar_cache = nullptr) സ്ഥിരം
   {
-    if (unlikely (gid >= num_glyphs)) return 0;
+    എങ്കിൽ (unlikely (gid >= അക്കം_glyphs)) തിരികെ 0;
 
-    bool success = false;
+    തർക്കം success = അസത്യം;
 
-    contour_point_t phantoms[glyf_impl::PHANTOM_COUNT];
-    success = get_points (font, gid, points_aggregator_t (font, nullptr, phantoms, false),
+    contour_point_t phantoms[glyf_impl::PHANTOM_എണ്ണം];
+    success = get_points (font, gid, points_aggregator_t (font, nullptr, phantoms, അസത്യം),
 			  hb_array (font->coords,
-				    font->has_nonzero_coords ? font->num_coords : 0),
+				    font->has_nonzero_coords ? font->അക്കം_coords : 0),
 			  scratch, gvar_cache);
-    if (unlikely (!success))
+    എങ്കിൽ (unlikely (!success))
     {
       unsigned upem = font->face->get_upem ();
-      return is_vertical ? upem : upem / 2;
+      തിരികെ is_vertical ? upem : upem / 2;
     }
 
-    float result = is_vertical
-		 ? phantoms[glyf_impl::PHANTOM_TOP].y - phantoms[glyf_impl::PHANTOM_BOTTOM].y
-		 : phantoms[glyf_impl::PHANTOM_RIGHT].x - phantoms[glyf_impl::PHANTOM_LEFT].x;
-    return hb_clamp (roundf (result), 0.f, (float) UINT_MAX / 2);
+    ദശാംശം result = is_vertical
+		 ? phantoms[glyf_impl::PHANTOM_മുകൾ].y - phantoms[glyf_impl::PHANTOM_BOTTOM].y
+		 : phantoms[glyf_impl::PHANTOM_വലത്].x - phantoms[glyf_impl::PHANTOM_ഇടത്].x;
+    തിരികെ hb_clamp (roundf (result), 0.f, (ദശാംശം) UINT_MAX / 2);
   }
 #endif
 
-  float
+  ദശാംശം
   get_v_origin_with_var_unscaled (hb_codepoint_t gid,
 				  hb_font_t *font,
 				  hb_glyf_scratch_t &scratch,
-				  hb_scalar_cache_t *gvar_cache = nullptr) const
+				  hb_scalar_cache_t *gvar_cache = nullptr) സ്ഥിരം
   {
-    if (unlikely (gid >= num_glyphs)) return 0;
+    എങ്കിൽ (unlikely (gid >= അക്കം_glyphs)) തിരികെ 0;
 
-    bool success = false;
+    തർക്കം success = അസത്യം;
 
-    contour_point_t phantoms[glyf_impl::PHANTOM_COUNT];
-    success = get_points (font, gid, points_aggregator_t (font, nullptr, phantoms, false),
+    contour_point_t phantoms[glyf_impl::PHANTOM_എണ്ണം];
+    success = get_points (font, gid, points_aggregator_t (font, nullptr, phantoms, അസത്യം),
 			  hb_array (font->coords,
-				    font->has_nonzero_coords ? font->num_coords : 0),
+				    font->has_nonzero_coords ? font->അക്കം_coords : 0),
 			  scratch, gvar_cache);
-    if (unlikely (!success))
+    എങ്കിൽ (unlikely (!success))
     {
-      return font->face->get_upem ();
+      തിരികെ font->face->get_upem ();
     }
 
-    return phantoms[glyf_impl::PHANTOM_TOP].y;
+    തിരികെ phantoms[glyf_impl::PHANTOM_മുകൾ].y;
   }
 
-  public:
+  പൊതു:
 
-  bool get_extents (hb_font_t *font,
+  തർക്കം get_extents (hb_font_t *font,
 		    hb_codepoint_t gid,
-		    hb_glyph_extents_t *extents) const
-  { return get_extents_at (font, gid, extents, hb_array (font->coords,
-							 font->has_nonzero_coords ? font->num_coords : 0)); }
+		    hb_glyph_extents_t *extents) സ്ഥിരം
+  { തിരികെ get_extents_at (font, gid, extents, hb_array (font->coords,
+							 font->has_nonzero_coords ? font->അക്കം_coords : 0)); }
 
-  bool get_extents_at (hb_font_t *font,
+  തർക്കം get_extents_at (hb_font_t *font,
 		       hb_codepoint_t gid,
 		       hb_glyph_extents_t *extents,
-		       hb_array_t<const int> coords,
-		       int64_t *budget = nullptr) const
+		       hb_array_t<സ്ഥിരം പൂർണ്ണസംഖ്യ> coords,
+		       int64_t *budget = nullptr) സ്ഥിരം
   {
-    if (unlikely (gid >= num_glyphs)) return false;
+    എങ്കിൽ (unlikely (gid >= അക്കം_glyphs)) തിരികെ അസത്യം;
 
 #ifndef HB_NO_VAR
-    if (coords)
+    എങ്കിൽ (coords)
     {
       hb_glyf_scratch_t *scratch = acquire_scratch ();
-      if (unlikely (!scratch)) return false;
-      bool ret = get_points (font,
+      എങ്കിൽ (unlikely (!scratch)) തിരികെ അസത്യം;
+      തർക്കം ret = get_points (font,
 			     gid,
-			     points_aggregator_t (font, extents, nullptr, true),
+			     points_aggregator_t (font, extents, nullptr, സത്യം),
 			     coords,
 			     *scratch,
 			     nullptr,
 			     budget);
       release_scratch (scratch);
-      return ret;
+      തിരികെ ret;
     }
 #endif
-    return glyph_for_gid (gid).get_extents_without_var_scaled (font, *this, extents);
+    തിരികെ glyph_for_gid (gid).get_extents_without_var_scaled (font, *ഇത്, extents);
   }
 
-  const glyf_impl::Glyph
-  glyph_for_gid (hb_codepoint_t gid, bool needs_padding_removal = false) const
+  സ്ഥിരം glyf_impl::Glyph
+  glyph_for_gid (hb_codepoint_t gid, തർക്കം needs_padding_removal = അസത്യം) സ്ഥിരം
   {
-    if (unlikely (gid >= num_glyphs)) return glyf_impl::Glyph ();
+    എങ്കിൽ (unlikely (gid >= അക്കം_glyphs)) തിരികെ glyf_impl::Glyph ();
 
-    unsigned int start_offset, end_offset;
+    unsigned പൂർണ്ണസംഖ്യ start_offset, end_offset;
 
-    if (short_offset)
+    എങ്കിൽ (short_offset)
     {
-      const HBUINT16 *offsets = (const HBUINT16 *) loca_table->dataZ.arrayZ;
+      സ്ഥിരം HBUINT16 *offsets = (സ്ഥിരം HBUINT16 *) loca_table->dataZ.arrayZ;
       start_offset = 2 * offsets[gid];
       end_offset   = 2 * offsets[gid + 1];
     }
-    else
+    അല്ലെങ്കിൽ
     {
-      const HBUINT32 *offsets = (const HBUINT32 *) loca_table->dataZ.arrayZ;
+      സ്ഥിരം HBUINT32 *offsets = (സ്ഥിരം HBUINT32 *) loca_table->dataZ.arrayZ;
       start_offset = offsets[gid];
       end_offset   = offsets[gid + 1];
     }
 
-    if (unlikely (start_offset > end_offset || end_offset > glyf_table.get_length ()))
-      return glyf_impl::Glyph ();
+    എങ്കിൽ (unlikely (start_offset > end_offset || end_offset > glyf_table.get_length ()))
+      തിരികെ glyf_impl::Glyph ();
 
-    glyf_impl::Glyph glyph (hb_bytes_t ((const char *) this->glyf_table + start_offset,
+    glyf_impl::Glyph glyph (hb_bytes_t ((സ്ഥിരം അക്ഷരം *) ഇത്->glyf_table + start_offset,
 			     end_offset - start_offset), gid, extended);
-    return needs_padding_removal ? glyf_impl::Glyph (glyph.trim_padding (), gid, extended) : glyph;
+    തിരികെ needs_padding_removal ? glyf_impl::Glyph (glyph.trim_padding (), gid, extended) : glyph;
   }
 
-  bool
+  തർക്കം
   get_path (hb_font_t *font, hb_codepoint_t gid, hb_draw_session_t &draw_session,
 	    hb_scalar_cache_t *gvar_cache = nullptr,
-	    int64_t *budget = nullptr) const
+	    int64_t *budget = nullptr) സ്ഥിരം
   {
-    if (!has_data ()) return false;
+    എങ്കിൽ (!has_data ()) തിരികെ അസത്യം;
 
     hb_glyf_scratch_t *scratch = acquire_scratch ();
-    if (unlikely (!scratch)) return true;
+    എങ്കിൽ (unlikely (!scratch)) തിരികെ സത്യം;
 
-    bool ret = get_points (font, gid, glyf_impl::path_builder_t (font, draw_session),
+    തർക്കം ret = get_points (font, gid, glyf_impl::path_builder_t (font, draw_session),
 			   hb_array (font->coords,
-				     font->has_nonzero_coords ? font->num_coords : 0),
+				     font->has_nonzero_coords ? font->അക്കം_coords : 0),
 			   *scratch,
 			   gvar_cache,
 			   budget);
 
     release_scratch (scratch);
 
-    return ret;
+    തിരികെ ret;
   }
 
-  bool
+  തർക്കം
   get_path_at (hb_font_t *font, hb_codepoint_t gid, hb_draw_session_t &draw_session,
-	       hb_array_t<const int> coords,
+	       hb_array_t<സ്ഥിരം പൂർണ്ണസംഖ്യ> coords,
 	       hb_glyf_scratch_t &scratch,
 	       hb_scalar_cache_t *gvar_cache = nullptr,
-	       int64_t *budget = nullptr) const
+	       int64_t *budget = nullptr) സ്ഥിരം
   {
-    if (!has_data ()) return false;
-    bool ret = get_points (font, gid, glyf_impl::path_builder_t (font, draw_session),
+    എങ്കിൽ (!has_data ()) തിരികെ അസത്യം;
+    തർക്കം ret = get_points (font, gid, glyf_impl::path_builder_t (font, draw_session),
 			   coords,
 			   scratch,
 			   gvar_cache,
 			   budget);
-    return ret;
+    തിരികെ ret;
   }
 
 
-  hb_glyf_scratch_t *acquire_scratch () const
+  hb_glyf_scratch_t *acquire_scratch () സ്ഥിരം
   {
-    if (!has_data ()) return nullptr;
+    എങ്കിൽ (!has_data ()) തിരികെ nullptr;
     hb_glyf_scratch_t *scratch = cached_scratch.get_acquire ();
-    if (!scratch || unlikely (!cached_scratch.cmpexch (scratch, nullptr)))
+    എങ്കിൽ (!scratch || unlikely (!cached_scratch.cmpexch (scratch, nullptr)))
     {
-      scratch = (hb_glyf_scratch_t *) hb_calloc (1, sizeof (hb_glyf_scratch_t));
-      if (unlikely (!scratch))
-	return nullptr;
+      scratch = (hb_glyf_scratch_t *) hb_calloc (1, വലുപ്പം (hb_glyf_scratch_t));
+      എങ്കിൽ (unlikely (!scratch))
+	തിരികെ nullptr;
     }
-    return scratch;
+    തിരികെ scratch;
   }
-  void release_scratch (hb_glyf_scratch_t *scratch) const
+  ശൂന്യം release_scratch (hb_glyf_scratch_t *scratch) സ്ഥിരം
   {
-    if (!scratch)
-      return;
-    if (!cached_scratch.cmpexch (nullptr, scratch))
+    എങ്കിൽ (!scratch)
+      തിരികെ;
+    എങ്കിൽ (!cached_scratch.cmpexch (nullptr, scratch))
     {
       scratch->~hb_glyf_scratch_t ();
       hb_free (scratch);
     }
   }
 
-  unsigned int get_num_glyphs () const { return num_glyphs; }
-  hb_blob_t *reference_glyf_table () const
-  { return hb_blob_reference (glyf_table.get_blob ()); }
+  unsigned പൂർണ്ണസംഖ്യ get_അക്കം_glyphs () സ്ഥിരം { തിരികെ അക്കം_glyphs; }
+  hb_blob_t *reference_glyf_table () സ്ഥിരം
+  { തിരികെ hb_blob_reference (glyf_table.get_blob ()); }
 
 #ifndef HB_NO_VAR
-  const gvar_accelerator_t *gvar;
+  സ്ഥിരം gvar_accelerator_t *gvar;
 #endif
-  const hmtx_accelerator_t *hmtx;
+  സ്ഥിരം hmtx_accelerator_t *hmtx;
 #ifndef HB_NO_VERTICAL
-  const vmtx_accelerator_t *vmtx;
+  സ്ഥിരം vmtx_accelerator_t *vmtx;
 #endif
 
-  private:
-  bool extended;
-  bool short_offset;
-  unsigned int num_glyphs;
+  സ്വകാര്യ:
+  തർക്കം extended;
+  തർക്കം short_offset;
+  unsigned പൂർണ്ണസംഖ്യ അക്കം_glyphs;
   hb_blob_ptr_t<loca> loca_table;
   hb_blob_ptr_t<glyf> glyf_table;
   mutable hb_atomic_t<hb_glyf_scratch_t *> cached_scratch;
 };
 
 
-inline bool
-glyf::_populate_subset_glyphs (const hb_subset_plan_t   *plan,
+വരിയിൽ തർക്കം
+glyf::_populate_subset_glyphs (സ്ഥിരം hb_subset_plan_t   *plan,
 			       hb_font_t *font,
 			       hb_vector_t<glyf_impl::SubsetGlyph>& glyphs /* OUT */,
-			       hb_blob_t **source_glyf /* OUT */) const
+			       hb_blob_t **source_glyf /* OUT */) സ്ഥിരം
 {
   OT::glyf_accelerator_t glyf (plan->source);
-  if (!glyphs.alloc_exact (plan->new_to_old_gid_list.length)) return false;
+  എങ്കിൽ (!glyphs.alloc_exact (plan->new_to_old_gid_list.length)) തിരികെ അസത്യം;
   *source_glyf = glyf.reference_glyf_table ();
 
-  for (const auto &pair : plan->new_to_old_gid_list)
+  വേണ്ടി (സ്ഥിരം auto &pair : plan->new_to_old_gid_list)
   {
     hb_codepoint_t new_gid = pair.first;
     hb_codepoint_t old_gid = pair.second;
@@ -677,44 +677,44 @@ glyf::_populate_subset_glyphs (const hb_subset_plan_t   *plan,
     glyf_impl::SubsetGlyph& subset_glyph = *p;
     subset_glyph.old_gid = old_gid;
 
-    if (unlikely (old_gid == 0 && new_gid == 0 &&
+    എങ്കിൽ (unlikely (old_gid == 0 && new_gid == 0 &&
                   !(plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE)) &&
                   !plan->normalized_coords)
       subset_glyph.source_glyph = glyf_impl::Glyph ();
-    else
+    അല്ലെങ്കിൽ
     {
       /* If plan has an accelerator, the preprocessing step already trimmed glyphs.
        * Don't trim them again! */
       subset_glyph.source_glyph = glyf.glyph_for_gid (subset_glyph.old_gid, !plan->accelerator);
     }
 
-    if (plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
+    എങ്കിൽ (plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
       subset_glyph.drop_hints_bytes ();
-    else
+    അല്ലെങ്കിൽ
       subset_glyph.dest_start = subset_glyph.source_glyph.get_bytes ();
 
-    if (font)
+    എങ്കിൽ (font)
     {
-      if (unlikely (!subset_glyph.compile_bytes_with_deltas (plan, font, glyf)))
+      എങ്കിൽ (unlikely (!subset_glyph.compile_bytes_with_deltas (plan, font, glyf)))
       {
         // when pinned at default, only bounds are updated, thus no need to free
-        if (!plan->pinned_at_default)
+        എങ്കിൽ (!plan->pinned_at_default)
           _free_compiled_subset_glyphs (glyphs);
-        return false;
+        തിരികെ അസത്യം;
       }
     }
   }
-  return true;
+  തിരികെ സത്യം;
 }
 
-inline hb_font_t *
-glyf::_create_font_for_instancing (const hb_subset_plan_t *plan) const
+വരിയിൽ hb_font_t *
+glyf::_create_font_for_instancing (സ്ഥിരം hb_subset_plan_t *plan) സ്ഥിരം
 {
   hb_font_t *font = hb_font_create (plan->source);
-  if (unlikely (font == hb_font_get_empty ())) return nullptr;
+  എങ്കിൽ (unlikely (font == hb_font_get_empty ())) തിരികെ nullptr;
 
 #ifndef HB_NO_VAR
-  if (plan->has_avar2)
+  എങ്കിൽ (plan->has_avar2)
   {
     /* Under avar2, instancing applies only to the self-contained pins,
      * whose constant final coordinates the plan holds in normalized_coords.
@@ -722,29 +722,29 @@ glyf::_create_font_for_instancing (const hb_subset_plan_t *plan) const
      * bake contributions that remain live in the instance's variations. */
     hb_font_set_var_coords_normalized (font, plan->normalized_coords.arrayZ,
 				       plan->normalized_coords.length);
-    return font;
+    തിരികെ font;
   }
 #endif
 
   hb_vector_t<hb_variation_t> vars;
-  if (unlikely (!vars.alloc (plan->user_axes_location.get_population (), true)))
+  എങ്കിൽ (unlikely (!vars.alloc (plan->user_axes_location.get_population (), സത്യം)))
   {
     hb_font_destroy (font);
-    return nullptr;
+    തിരികെ nullptr;
   }
 
-  for (auto _ : plan->user_axes_location)
+  വേണ്ടി (auto _ : plan->user_axes_location)
   {
     hb_variation_t var;
     var.tag = _.first;
-    var.value = _.second.middle;
+    var.value = _.second.നടുവ്;
     vars.push (var);
   }
 
 #ifndef HB_NO_VAR
   hb_font_set_variations (font, vars.arrayZ, plan->user_axes_location.get_population ());
 #endif
-  return font;
+  തിരികെ font;
 }
 
 

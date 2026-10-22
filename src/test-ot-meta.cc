@@ -22,17 +22,17 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
-#include "hb-ot.h"
+#അന്തര്ഭാവ "hb.hh"
+#അന്തര്ഭാവ "hb-ot.h"
 
 #ifdef HB_NO_OPEN
 #define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
 #endif
 
-int
-main (int argc, char **argv)
+പൂർണ്ണസംഖ്യ
+പ്രധാന (പൂർണ്ണസംഖ്യ argc, അക്ഷരം **argv)
 {
-  if (argc != 2) {
+  എങ്കിൽ (argc != 2) {
     fprintf (stderr, "usage: %s font-file\n", argv[0]);
     exit (1);
   }
@@ -43,26 +43,26 @@ main (int argc, char **argv)
   hb_blob_destroy (blob);
   blob = nullptr;
 
-  unsigned int count = 0;
+  unsigned പൂർണ്ണസംഖ്യ എണ്ണം = 0;
 
 #ifndef HB_NO_META
-  count = hb_ot_meta_get_entry_tags (face, 0, nullptr, nullptr);
+  എണ്ണം = hb_ot_meta_get_entry_tags (face, 0, nullptr, nullptr);
 
   hb_ot_meta_tag_t *tags = (hb_ot_meta_tag_t *)
-			   malloc (sizeof (hb_ot_meta_tag_t) * count);
-  hb_ot_meta_get_entry_tags (face, 0, &count, tags);
-  for (unsigned i = 0; i < count; ++i)
+			   malloc (വലുപ്പം (hb_ot_meta_tag_t) * എണ്ണം);
+  hb_ot_meta_get_entry_tags (face, 0, &എണ്ണം, tags);
+  വേണ്ടി (unsigned i = 0; i < എണ്ണം; ++i)
   {
     hb_blob_t *entry = hb_ot_meta_reference_entry (face, tags[i]);
     printf ("%c%c%c%c, size: %u: %.*s\n",
 	    HB_UNTAG (tags[i]), hb_blob_get_length (entry),
-	    (int) hb_blob_get_length (entry), hb_blob_get_data (entry, nullptr));
+	    (പൂർണ്ണസംഖ്യ) hb_blob_get_length (entry), hb_blob_get_data (entry, nullptr));
     hb_blob_destroy (entry);
   }
-  free (tags);
+  സ്വതന്ത്രം (tags);
 #endif
 
   hb_face_destroy (face);
 
-  return !count;
+  തിരികെ !എണ്ണം;
 }

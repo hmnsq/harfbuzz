@@ -29,10 +29,10 @@
 #ifndef HB_FT_H
 #define HB_FT_H
 
-#include "hb.h"
+#അന്തര്ഭാവ "hb.h"
 
-#include <ft2build.h>
-#include FT_FREETYPE_H
+#അന്തര്ഭാവ <ft2build.h>
+#അന്തര്ഭാവ FT_FREETYPE_H
 
 HB_BEGIN_DECLS
 
@@ -85,12 +85,12 @@ HB_EXTERN hb_face_t *
 hb_ft_face_create_referenced (FT_Face ft_face);
 
 HB_EXTERN hb_face_t *
-hb_ft_face_create_from_file_or_fail (const char   *file_name,
-				     unsigned int  index);
+hb_ft_face_create_from_file_or_fail (സ്ഥിരം അക്ഷരം   *file_name,
+				     unsigned പൂർണ്ണസംഖ്യ  index);
 
 HB_EXTERN hb_face_t *
 hb_ft_face_create_from_blob_or_fail (hb_blob_t    *blob,
-				     unsigned int  index);
+				     unsigned പൂർണ്ണസംഖ്യ  index);
 
 /*
  * hb-font from ft-face.
@@ -120,18 +120,18 @@ hb_ft_font_get_ft_face (hb_font_t *font);
 HB_EXTERN FT_Face
 hb_ft_font_lock_face (hb_font_t *font);
 
-HB_EXTERN void
+HB_EXTERN ശൂന്യം
 hb_ft_font_unlock_face (hb_font_t *font);
 
-HB_EXTERN void
-hb_ft_font_set_load_flags (hb_font_t *font, int load_flags);
+HB_EXTERN ശൂന്യം
+hb_ft_font_set_load_flags (hb_font_t *font, പൂർണ്ണസംഖ്യ load_flags);
 
-HB_EXTERN int
+HB_EXTERN പൂർണ്ണസംഖ്യ
 hb_ft_font_get_load_flags (hb_font_t *font);
 
 /* Call when size or variations settings on underlying FT_Face changed,
  * and you want to update the hb_font_t from it. */
-HB_EXTERN void
+HB_EXTERN ശൂന്യം
 hb_ft_font_changed (hb_font_t *font);
 
 /* Call when size or variations settings on underlying hb_font_t may have
@@ -143,7 +143,7 @@ hb_ft_hb_font_changed (hb_font_t *font);
 /* Makes an hb_font_t use FreeType internally to implement font functions.
  * Note: this internally creates an FT_Face.  Use it when you create your
  * hb_face_t using hb_face_create(). */
-HB_EXTERN void
+HB_EXTERN ശൂന്യം
 hb_ft_font_set_funcs (hb_font_t *font);
 
 #ifndef HB_DISABLE_DEPRECATED

@@ -26,7 +26,7 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#അന്തര്ഭാവ "hb.hh"
 
 #ifndef HB_NO_OT_SHAPE
 
@@ -34,33 +34,33 @@
 #error "Cannot compile 'ot' shaper with HB_NO_OT_LAYOUT."
 #endif
 
-#include "hb-shaper-impl.hh"
+#അന്തര്ഭാവ "hb-shaper-impl.hh"
 
-#include "hb-ot-shape.hh"
-#include "hb-ot-shaper.hh"
-#include "hb-ot-shape-fallback.hh"
-#include "hb-ot-shape-normalize.hh"
+#അന്തര്ഭാവ "hb-ot-shape.hh"
+#അന്തര്ഭാവ "hb-ot-shaper.hh"
+#അന്തര്ഭാവ "hb-ot-shape-fallback.hh"
+#അന്തര്ഭാവ "hb-ot-shape-normalize.hh"
 
-#include "hb-ot-face.hh"
+#അന്തര്ഭാവ "hb-ot-face.hh"
 
-#include "hb-set.hh"
-#include "hb-unicode.hh"
+#അന്തര്ഭാവ "hb-set.hh"
+#അന്തര്ഭാവ "hb-unicode.hh"
 
-#include "hb-aat-layout.hh"
-#include "hb-ot-layout-gdef-table.hh"
-#include "hb-ot-stat-table.hh"
+#അന്തര്ഭാവ "hb-aat-layout.hh"
+#അന്തര്ഭാവ "hb-ot-layout-gdef-table.hh"
+#അന്തര്ഭാവ "hb-ot-stat-table.hh"
 
 
-static inline bool
+സ്ഥിതം വരിയിൽ തർക്കം
 _hb_codepoint_is_regional_indicator (hb_codepoint_t u)
-{ return hb_in_range<hb_codepoint_t> (u, 0x1F1E6u, 0x1F1FFu); }
+{ തിരികെ hb_in_range<hb_codepoint_t> (u, 0x1F1E6u, 0x1F1FFu); }
 
 #ifndef HB_NO_AAT_SHAPE
-static inline bool
-_hb_apply_morx (hb_face_t *face, const hb_segment_properties_t &props)
+സ്ഥിതം വരിയിൽ തർക്കം
+_hb_apply_morx (hb_face_t *face, സ്ഥിരം hb_segment_properties_t &props)
 {
   /* https://github.com/harfbuzz/harfbuzz/issues/2124 */
-  return hb_aat_layout_has_substitution (face) &&
+  തിരികെ hb_aat_layout_has_substitution (face) &&
 	 (HB_DIRECTION_IS_HORIZONTAL (props.direction) || !hb_ot_layout_has_substitution (face));
 }
 #endif
@@ -75,13 +75,13 @@ _hb_apply_morx (hb_face_t *face, const hb_segment_properties_t &props)
  **/
 
 
-static void
+സ്ഥിതം ശൂന്യം
 hb_ot_shape_collect_features (hb_ot_shape_planner_t          *planner,
-			      const hb_feature_t             *user_features,
-			      unsigned int                    num_user_features);
+			      സ്ഥിരം hb_feature_t             *user_features,
+			      unsigned പൂർണ്ണസംഖ്യ                    അക്കം_user_features);
 
 hb_ot_shape_planner_t::hb_ot_shape_planner_t (hb_face_t                     *face,
-					      const hb_segment_properties_t &props) :
+					      സ്ഥിരം hb_segment_properties_t &props) :
 						face (face),
 						props (props),
 						map (face, props)
@@ -97,20 +97,20 @@ hb_ot_shape_planner_t::hb_ot_shape_planner_t (hb_face_t                     *fac
 
 #ifndef HB_NO_AAT_SHAPE
   /* https://github.com/harfbuzz/harfbuzz/issues/1528 */
-  if (apply_morx && shaper != &_hb_ot_shaper_default)
+  എങ്കിൽ (apply_morx && shaper != &_hb_ot_shaper_default)
     shaper = &_hb_ot_shaper_dumber;
 #endif
 }
 
-void
+ശൂന്യം
 hb_ot_shape_planner_t::compile (hb_ot_shape_plan_t           &plan,
-				const hb_ot_shape_plan_key_t &key)
+				സ്ഥിരം hb_ot_shape_plan_താക്കോൽ_t &key)
 {
   plan.props = props;
   plan.shaper = shaper;
   map.compile (plan.map, key);
 #ifndef HB_NO_AAT_SHAPE
-  if (apply_morx)
+  എങ്കിൽ (apply_morx)
     aat_map.compile (plan.aat_map);
 #endif
 
@@ -131,16 +131,16 @@ hb_ot_shape_planner_t::compile (hb_ot_shape_plan_t           &plan,
   plan.requested_kerning = !!plan.kern_mask;
 #endif
 
-  bool has_gpos_kern = plan.map.get_feature_index (1, kern_tag) != HB_OT_LAYOUT_NO_FEATURE_INDEX;
-  bool disable_gpos = plan.shaper->gpos_tag &&
+  തർക്കം has_gpos_kern = plan.map.get_feature_index (1, kern_tag) != HB_OT_LAYOUT_NO_FEATURE_INDEX;
+  തർക്കം disable_gpos = plan.shaper->gpos_tag &&
 		      plan.shaper->gpos_tag != plan.map.chosen_script[1];
 
   /*
    * Decide who provides glyph classes. GDEF or Unicode.
    */
 
-  if (!hb_ot_layout_has_glyph_classes (face))
-    plan.fallback_glyph_classes = true;
+  എങ്കിൽ (!hb_ot_layout_has_glyph_classes (face))
+    plan.fallback_glyph_classes = സത്യം;
 
   /*
    * Decide who does substitutions. GSUB, morx, or fallback.
@@ -155,33 +155,33 @@ hb_ot_shape_planner_t::compile (hb_ot_shape_plan_t           &plan,
    */
 
 #ifndef HB_NO_AAT_SHAPE
-  bool has_kerx = hb_aat_layout_has_positioning (face);
-  bool has_gsub = !apply_morx && hb_ot_layout_has_substitution (face);
+  തർക്കം has_kerx = hb_aat_layout_has_positioning (face);
+  തർക്കം has_gsub = !apply_morx && hb_ot_layout_has_substitution (face);
 #endif
-  bool has_gpos = !disable_gpos && hb_ot_layout_has_positioning (face);
-  if (false)
+  തർക്കം has_gpos = !disable_gpos && hb_ot_layout_has_positioning (face);
+  എങ്കിൽ (അസത്യം)
     {}
 #ifndef HB_NO_AAT_SHAPE
   /* Prefer GPOS over kerx if GSUB is present;
    * https://github.com/harfbuzz/harfbuzz/issues/3008 */
-  else if (has_kerx && !(has_gsub && has_gpos))
-    plan.apply_kerx = true;
+  അല്ലെങ്കിൽ എങ്കിൽ (has_kerx && !(has_gsub && has_gpos))
+    plan.apply_kerx = സത്യം;
 #endif
-  else if (has_gpos)
-    plan.apply_gpos = true;
+  അല്ലെങ്കിൽ എങ്കിൽ (has_gpos)
+    plan.apply_gpos = സത്യം;
 
-  if (!plan.apply_kerx && (!has_gpos_kern || !plan.apply_gpos))
+  എങ്കിൽ (!plan.apply_kerx && (!has_gpos_kern || !plan.apply_gpos))
   {
-    if (false) {}
+    എങ്കിൽ (അസത്യം) {}
 #ifndef HB_NO_AAT_SHAPE
-    else if (has_kerx)
-      plan.apply_kerx = true;
+    അല്ലെങ്കിൽ എങ്കിൽ (has_kerx)
+      plan.apply_kerx = സത്യം;
 #endif
 #ifndef HB_NO_OT_KERN
-    else if (hb_ot_layout_has_kerning (face))
+    അല്ലെങ്കിൽ എങ്കിൽ (hb_ot_layout_has_kerning (face))
       plan.apply_kern = script_fallback_position; // Not all shapers apply legacy `kern`
 #endif
-    else {}
+    അല്ലെങ്കിൽ {}
   }
 
   plan.apply_fallback_kern = script_fallback_position && !(plan.apply_gpos || plan.apply_kerx || plan.apply_kern);
@@ -210,22 +210,22 @@ hb_ot_shape_planner_t::compile (hb_ot_shape_plan_t           &plan,
   /* If we're using morx shaping, we cancel mark position adjustment because
      Apple Color Emoji assumes this will NOT be done when forming emoji sequences;
      https://github.com/harfbuzz/harfbuzz/issues/2967. */
-  if (plan.apply_morx)
-    plan.adjust_mark_positioning_when_zeroing = false;
+  എങ്കിൽ (plan.apply_morx)
+    plan.adjust_mark_positioning_when_zeroing = അസത്യം;
 
   /* According to Ned, trak is applied by default for "modern fonts", as detected by presence of STAT table. */
 #ifndef HB_NO_STYLE
   plan.apply_trak = hb_aat_layout_has_tracking (face) && face->table.STAT->has_data ();
-#else
-  plan.apply_trak = false;
+#അല്ലെങ്കിൽ
+  plan.apply_trak = അസത്യം;
 #endif
 
 #endif
 }
 
-bool
+തർക്കം
 hb_ot_shape_plan_t::init0 (hb_face_t                     *face,
-			   const hb_shape_plan_key_t     *key)
+			   സ്ഥിരം hb_shape_plan_താക്കോൽ_t     *key)
 {
   map.init ();
 
@@ -234,65 +234,65 @@ hb_ot_shape_plan_t::init0 (hb_face_t                     *face,
 
   hb_ot_shape_collect_features (&planner,
 				key->user_features,
-				key->num_user_features);
+				key->അക്കം_user_features);
 
-  planner.compile (*this, key->ot);
+  planner.compile (*ഇത്, key->ot);
 
-  if (shaper->data_create)
+  എങ്കിൽ (shaper->data_create)
   {
-    data = shaper->data_create (this);
-    if (unlikely (!data))
+    data = shaper->data_create (ഇത്);
+    എങ്കിൽ (unlikely (!data))
     {
       map.fini ();
-      return false;
+      തിരികെ അസത്യം;
     }
   }
 
-  return true;
+  തിരികെ സത്യം;
 }
 
-void
+ശൂന്യം
 hb_ot_shape_plan_t::fini ()
 {
-  if (shaper->data_destroy)
-    shaper->data_destroy (const_cast<void *> (data));
+  എങ്കിൽ (shaper->data_destroy)
+    shaper->data_destroy (const_cast<ശൂന്യം *> (data));
 
   map.fini ();
 }
 
-void
+ശൂന്യം
 hb_ot_shape_plan_t::substitute (hb_font_t   *font,
-				hb_buffer_t *buffer) const
+				hb_buffer_t *buffer) സ്ഥിരം
 {
-  map.substitute (this, font, buffer);
+  map.substitute (ഇത്, font, buffer);
 }
 
-void
+ശൂന്യം
 hb_ot_shape_plan_t::position (hb_font_t   *font,
-			      hb_buffer_t *buffer) const
+			      hb_buffer_t *buffer) സ്ഥിരം
 {
-  if (this->apply_gpos)
-    map.position (this, font, buffer);
+  എങ്കിൽ (ഇത്->apply_gpos)
+    map.position (ഇത്, font, buffer);
 #ifndef HB_NO_AAT_SHAPE
-  else if (this->apply_kerx)
-    hb_aat_layout_position (this, font, buffer);
+  അല്ലെങ്കിൽ എങ്കിൽ (ഇത്->apply_kerx)
+    hb_aat_layout_position (ഇത്, font, buffer);
 #endif
 
 #ifndef HB_NO_OT_KERN
-  if (this->apply_kern)
-    hb_ot_layout_kern (this, font, buffer);
+  എങ്കിൽ (ഇത്->apply_kern)
+    hb_ot_layout_kern (ഇത്, font, buffer);
 #endif
-  else if (this->apply_fallback_kern)
-    _hb_ot_shape_fallback_kern (this, font, buffer);
+  അല്ലെങ്കിൽ എങ്കിൽ (ഇത്->apply_fallback_kern)
+    _hb_ot_shape_fallback_kern (ഇത്, font, buffer);
 
 #ifndef HB_NO_AAT_SHAPE
-  if (this->apply_trak)
-    hb_aat_layout_track (this, font, buffer);
+  എങ്കിൽ (ഇത്->apply_trak)
+    hb_aat_layout_track (ഇത്, font, buffer);
 #endif
 }
 
 
-static const hb_ot_map_feature_t
+സ്ഥിതം സ്ഥിരം hb_ot_map_feature_t
 common_features[] =
 {
   {HB_TAG('a','b','v','m'), F_GLOBAL},
@@ -305,7 +305,7 @@ common_features[] =
 };
 
 
-static const hb_ot_map_feature_t
+സ്ഥിതം സ്ഥിരം hb_ot_map_feature_t
 horizontal_features[] =
 {
   {HB_TAG('c','a','l','t'), F_GLOBAL},
@@ -317,33 +317,33 @@ horizontal_features[] =
   {HB_TAG('r','c','l','t'), F_GLOBAL},
 };
 
-static void
+സ്ഥിതം ശൂന്യം
 hb_ot_shape_collect_features (hb_ot_shape_planner_t *planner,
-			      const hb_feature_t    *user_features,
-			      unsigned int           num_user_features)
+			      സ്ഥിരം hb_feature_t    *user_features,
+			      unsigned പൂർണ്ണസംഖ്യ           അക്കം_user_features)
 {
   hb_ot_map_builder_t *map = &planner->map;
 
-  map->is_simple = true;
+  map->is_simple = സത്യം;
 
   map->enable_feature (HB_TAG('r','v','r','n'));
   map->add_gsub_pause (nullptr);
 
-  switch (planner->props.direction)
+  തിരഞ്ഞെടുപ്പ് (planner->props.direction)
   {
-    case HB_DIRECTION_LTR:
+    അവസ്ഥ HB_DIRECTION_LTR:
       map->enable_feature (HB_TAG ('l','t','r','a'));
       map->enable_feature (HB_TAG ('l','t','r','m'));
-      break;
-    case HB_DIRECTION_RTL:
+      നിർത്തുക;
+    അവസ്ഥ HB_DIRECTION_RTL:
       map->enable_feature (HB_TAG ('r','t','l','a'));
       map->add_feature (HB_TAG ('r','t','l','m'));
-      break;
-    case HB_DIRECTION_TTB:
-    case HB_DIRECTION_BTT:
-    case HB_DIRECTION_INVALID:
-    default:
-      break;
+      നിർത്തുക;
+    അവസ്ഥ HB_DIRECTION_TTB:
+    അവസ്ഥ HB_DIRECTION_BTT:
+    അവസ്ഥ HB_DIRECTION_INVALID:
+    സ്ഥിരസ്ഥിതി:
+      നിർത്തുക;
   }
 
 #ifndef HB_NO_OT_SHAPE_FRACTIONS
@@ -354,27 +354,27 @@ hb_ot_shape_collect_features (hb_ot_shape_planner_t *planner,
 #endif
 
   /* Random! */
-  map->enable_feature (HB_TAG ('r','a','n','d'), F_RANDOM, HB_OT_MAP_MAX_VALUE);
+  map->enable_feature (HB_TAG ('r','a','n','d'), F_RANDOM, HB_OT_MAP_MAX_മൂല്യം);
 
   map->enable_feature (HB_TAG ('H','a','r','f')); /* Considered required. */
   map->enable_feature (HB_TAG ('H','A','R','F')); /* Considered discretionary. */
 
-  if (planner->shaper->collect_features)
+  എങ്കിൽ (planner->shaper->collect_features)
   {
-    map->is_simple = false;
+    map->is_simple = അസത്യം;
     planner->shaper->collect_features (planner);
   }
 
   map->enable_feature (HB_TAG ('B','u','z','z')); /* Considered required. */
   map->enable_feature (HB_TAG ('B','U','Z','Z')); /* Considered discretionary. */
 
-  for (unsigned int i = 0; i < ARRAY_LENGTH (common_features); i++)
+  വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < ARRAY_LENGTH (common_features); i++)
     map->add_feature (common_features[i]);
 
-  if (HB_DIRECTION_IS_HORIZONTAL (planner->props.direction))
-    for (unsigned int i = 0; i < ARRAY_LENGTH (horizontal_features); i++)
+  എങ്കിൽ (HB_DIRECTION_IS_HORIZONTAL (planner->props.direction))
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < ARRAY_LENGTH (horizontal_features); i++)
       map->add_feature (horizontal_features[i]);
-  else
+  അല്ലെങ്കിൽ
   {
     /* We only apply `vert` feature. See:
      * https://github.com/harfbuzz/harfbuzz/commit/d71c0df2d17f4590d5611239577a6cb532c26528
@@ -384,21 +384,21 @@ hb_ot_shape_collect_features (hb_ot_shape_planner_t *planner,
      * matter which script/langsys it is listed (or not) under.
      * See various bugs referenced from:
      * https://github.com/harfbuzz/harfbuzz/issues/63 */
-    map->enable_feature (HB_TAG ('v','e','r','t'), F_GLOBAL_SEARCH);
+    map->enable_feature (HB_TAG ('v','e','r','t'), F_GLOBAL_തിരയൽ);
   }
 
-  if (num_user_features)
-    map->is_simple = false;
-  for (unsigned int i = 0; i < num_user_features; i++)
+  എങ്കിൽ (അക്കം_user_features)
+    map->is_simple = അസത്യം;
+  വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < അക്കം_user_features; i++)
   {
-    const hb_feature_t *feature = &user_features[i];
+    സ്ഥിരം hb_feature_t *feature = &user_features[i];
     map->add_feature (feature->tag,
 		      (feature->start == HB_FEATURE_GLOBAL_START &&
 		       feature->end == HB_FEATURE_GLOBAL_END) ?  F_GLOBAL : F_NONE,
 		      feature->value);
   }
 
-  if (planner->shaper->override_features)
+  എങ്കിൽ (planner->shaper->override_features)
     planner->shaper->override_features (planner);
 }
 
@@ -407,15 +407,15 @@ hb_ot_shape_collect_features (hb_ot_shape_planner_t *planner,
  * shaper face data
  */
 
-struct hb_ot_face_data_t {};
+ഘടന hb_ot_face_data_t {};
 
 hb_ot_face_data_t *
 _hb_ot_shaper_face_data_create (hb_face_t *face)
 {
-  return (hb_ot_face_data_t *) HB_SHAPER_DATA_SUCCEEDED;
+  തിരികെ (hb_ot_face_data_t *) HB_SHAPER_DATA_SUCCEEDED;
 }
 
-void
+ശൂന്യം
 _hb_ot_shaper_face_data_destroy (hb_ot_face_data_t *data)
 {
 }
@@ -425,18 +425,18 @@ _hb_ot_shaper_face_data_destroy (hb_ot_face_data_t *data)
  * shaper font data
  */
 
-struct hb_ot_font_data_t {
+ഘടന hb_ot_font_data_t {
   OT::hb_scalar_cache_t unused; // Just for alignment
 };
 
 hb_ot_font_data_t *
 _hb_ot_shaper_font_data_create (hb_font_t *font)
 {
-  const OT::ItemVariationStore &var_store = font->face->table.GDEF->table->get_var_store ();
-  return (hb_ot_font_data_t *) var_store.create_cache ();
+  സ്ഥിരം OT::ItemVariationStore &var_store = font->face->table.GDEF->table->get_var_store ();
+  തിരികെ (hb_ot_font_data_t *) var_store.create_cache ();
 }
 
-void
+ശൂന്യം
 _hb_ot_shaper_font_data_destroy (hb_ot_font_data_t *data)
 {
   OT::ItemVariationStore::destroy_cache ((OT::hb_scalar_cache_t *) data);
@@ -447,14 +447,14 @@ _hb_ot_shaper_font_data_destroy (hb_ot_font_data_t *data)
  * shaper
  */
 
-struct hb_ot_shape_context_t
+ഘടന hb_ot_shape_context_t
 {
   hb_ot_shape_plan_t *plan;
   hb_font_t *font;
   hb_face_t *face;
   hb_buffer_t  *buffer;
-  const hb_feature_t *user_features;
-  unsigned int        num_user_features;
+  സ്ഥിരം hb_feature_t *user_features;
+  unsigned പൂർണ്ണസംഖ്യ        അക്കം_user_features;
 
   /* Transient stuff */
   hb_direction_t target_direction;
@@ -467,7 +467,7 @@ struct hb_ot_shape_context_t
 
 /* Prepare */
 
-static void
+സ്ഥിതം ശൂന്യം
 hb_set_unicode_props (hb_buffer_t *buffer,
 		      hb_mask_t    global_mask)
 {
@@ -479,45 +479,45 @@ hb_set_unicode_props (hb_buffer_t *buffer,
    *
    * https://www.unicode.org/reports/tr29/#Regex_Definitions
    */
-  unsigned int count = buffer->len;
+  unsigned പൂർണ്ണസംഖ്യ എണ്ണം = buffer->len;
   hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
+  വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
   {
     info[i].mask = global_mask;
     _hb_glyph_info_set_unicode_props (&info[i], buffer);
 
-    if (info[i].codepoint < 0x80)
-      continue;
+    എങ്കിൽ (info[i].codepoint < 0x80)
+      തുടരുക;
 
     unsigned gen_cat = _hb_glyph_info_get_general_category (&info[i]);
-    if (FLAG_UNSAFE (gen_cat) &
+    എങ്കിൽ (FLAG_UNSAFE (gen_cat) &
 	(FLAG (HB_UNICODE_GENERAL_CATEGORY_LOWERCASE_LETTER) |
 	 FLAG (HB_UNICODE_GENERAL_CATEGORY_UPPERCASE_LETTER) |
 	 FLAG (HB_UNICODE_GENERAL_CATEGORY_TITLECASE_LETTER) |
 	 FLAG (HB_UNICODE_GENERAL_CATEGORY_OTHER_LETTER) |
 	 FLAG (HB_UNICODE_GENERAL_CATEGORY_SPACE_SEPARATOR)))
-      continue;
+      തുടരുക;
 
     /* Marks are already set as continuation by the above line.
      * Handle Emoji_Modifier and ZWJ-continuation. */
-    if (unlikely (gen_cat == HB_UNICODE_GENERAL_CATEGORY_MODIFIER_SYMBOL &&
+    എങ്കിൽ (unlikely (gen_cat == HB_UNICODE_GENERAL_CATEGORY_MODIFIER_ചിഹ്നം &&
 		  hb_in_range<hb_codepoint_t> (info[i].codepoint, 0x1F3FBu, 0x1F3FFu)))
     {
       _hb_glyph_info_set_continuation (&info[i], buffer);
     }
     /* Regional_Indicators are hairy as hell...
      * https://github.com/harfbuzz/harfbuzz/issues/2265 */
-    else if (unlikely (i && _hb_codepoint_is_regional_indicator (info[i].codepoint)))
+    അല്ലെങ്കിൽ എങ്കിൽ (unlikely (i && _hb_codepoint_is_regional_indicator (info[i].codepoint)))
     {
-      if (_hb_codepoint_is_regional_indicator (info[i - 1].codepoint) &&
+      എങ്കിൽ (_hb_codepoint_is_regional_indicator (info[i - 1].codepoint) &&
 	  !_hb_glyph_info_is_continuation (&info[i - 1]))
 	_hb_glyph_info_set_continuation (&info[i], buffer);
     }
 #ifndef HB_NO_EMOJI_SEQUENCES
-    else if (unlikely (_hb_glyph_info_is_zwj (&info[i])))
+    അല്ലെങ്കിൽ എങ്കിൽ (unlikely (_hb_glyph_info_is_zwj (&info[i])))
     {
       _hb_glyph_info_set_continuation (&info[i], buffer);
-      if (i + 1 < count &&
+      എങ്കിൽ (i + 1 < എണ്ണം &&
 	  _hb_unicode_is_emoji_Extended_Pictographic (info[i + 1].codepoint))
       {
 	i++;
@@ -541,26 +541,26 @@ hb_set_unicode_props (hb_buffer_t *buffer,
      * Katakana ones were requested:
      * https://github.com/harfbuzz/harfbuzz/issues/3844
      */
-    else if (unlikely (hb_in_ranges<hb_codepoint_t> (info[i].codepoint, 0xFF9Eu, 0xFF9Fu, 0xE0020u, 0xE007Fu)))
+    അല്ലെങ്കിൽ എങ്കിൽ (unlikely (hb_in_ranges<hb_codepoint_t> (info[i].codepoint, 0xFF9Eu, 0xFF9Fu, 0xE0020u, 0xE007Fu)))
       _hb_glyph_info_set_continuation (&info[i], buffer);
-    else if (unlikely (info[i].codepoint == 0x2044u /* FRACTION SLASH */))
+    അല്ലെങ്കിൽ എങ്കിൽ (unlikely (info[i].codepoint == 0x2044u /* FRACTION SLASH */))
       buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_FRACTION_SLASH;
   }
 }
 
-static void
-hb_insert_dotted_circle (hb_buffer_t *buffer, hb_font_t *font)
+സ്ഥിതം ശൂന്യം
+hb_തിരുകുക_dotted_circle (hb_buffer_t *buffer, hb_font_t *font)
 {
-  if (unlikely (buffer->flags & HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE))
-    return;
+  എങ്കിൽ (unlikely (buffer->flags & HB_BUFFER_FLAG_DO_NOT_തിരുകുക_DOTTED_CIRCLE))
+    തിരികെ;
 
-  if (!(buffer->flags & HB_BUFFER_FLAG_BOT) ||
+  എങ്കിൽ (!(buffer->flags & HB_BUFFER_FLAG_BOT) ||
       buffer->context_len[0] ||
       !_hb_glyph_info_is_unicode_mark (&buffer->info[0]))
-    return;
+    തിരികെ;
 
-  if (!font->has_glyph (0x25CCu))
-    return;
+  എങ്കിൽ (!font->has_glyph (0x25CCu))
+    തിരികെ;
 
   hb_glyph_info_t dottedcircle = {0};
   dottedcircle.codepoint = 0x25CCu;
@@ -572,22 +572,22 @@ hb_insert_dotted_circle (hb_buffer_t *buffer, hb_font_t *font)
   hb_glyph_info_t info = dottedcircle;
   info.cluster = buffer->cur().cluster;
   info.mask = buffer->cur().mask;
-  (void) buffer->output_info (info);
+  (ശൂന്യം) buffer->output_info (info);
 
-  buffer->sync ();
+  buffer->സമന്വയം ();
 }
 
-static void
+സ്ഥിതം ശൂന്യം
 hb_form_clusters (hb_buffer_t *buffer)
 {
-  if (!(buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_CONTINUATIONS))
-    return;
+  എങ്കിൽ (!(buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_CONTINUATIONS))
+    തിരികെ;
 
   foreach_grapheme (buffer, start, end)
     buffer->merge_grapheme_clusters (start, end);
 }
 
-static void
+സ്ഥിതം ശൂന്യം
 hb_ensure_native_direction (hb_buffer_t *buffer)
 {
   hb_direction_t direction = buffer->props.direction;
@@ -610,25 +610,25 @@ hb_ensure_native_direction (hb_buffer_t *buffer)
    *
    * https://github.com/harfbuzz/harfbuzz/issues/3314
    */
-  if (unlikely (horiz_dir == HB_DIRECTION_RTL && direction == HB_DIRECTION_LTR))
+  എങ്കിൽ (unlikely (horiz_dir == HB_DIRECTION_RTL && direction == HB_DIRECTION_LTR))
   {
-    bool found_number = false, found_letter = false, found_ri = false;
-    const auto* info = buffer->info;
-    const auto count = buffer->len;
-    for (unsigned i = 0; i < count; i++)
+    തർക്കം found_സംഖ്യ = അസത്യം, found_letter = അസത്യം, found_ri = അസത്യം;
+    സ്ഥിരം auto* info = buffer->info;
+    സ്ഥിരം auto എണ്ണം = buffer->len;
+    വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++)
     {
       auto gc = _hb_glyph_info_get_general_category (&info[i]);
-      if (HB_UNICODE_GENERAL_CATEGORY_IS_LETTER (gc))
+      എങ്കിൽ (HB_UNICODE_GENERAL_CATEGORY_IS_LETTER (gc))
       {
-	found_letter = true;
-	break;
+	found_letter = സത്യം;
+	നിർത്തുക;
       }
-      else if (gc == HB_UNICODE_GENERAL_CATEGORY_DECIMAL_NUMBER)
-	found_number = true;
-      else if (unlikely (_hb_codepoint_is_regional_indicator (info[i].codepoint)))
-	found_ri = true;
+      അല്ലെങ്കിൽ എങ്കിൽ (gc == HB_UNICODE_GENERAL_CATEGORY_DECIMAL_സംഖ്യ)
+	found_സംഖ്യ = സത്യം;
+      അല്ലെങ്കിൽ എങ്കിൽ (unlikely (_hb_codepoint_is_regional_indicator (info[i].codepoint)))
+	found_ri = സത്യം;
     }
-    if ((found_number || found_ri) && !found_letter)
+    എങ്കിൽ ((found_സംഖ്യ || found_ri) && !found_letter)
       horiz_dir = HB_DIRECTION_LTR;
   }
 
@@ -636,7 +636,7 @@ hb_ensure_native_direction (hb_buffer_t *buffer)
    * The only BTT vertical script is Ogham, but it's not clear to me whether OpenType
    * Ogham fonts are supposed to be implemented BTT or not.  Need to research that
    * first. */
-  if ((HB_DIRECTION_IS_HORIZONTAL (direction) &&
+  എങ്കിൽ ((HB_DIRECTION_IS_HORIZONTAL (direction) &&
        direction != horiz_dir && HB_DIRECTION_IS_VALID (horiz_dir)) ||
       (HB_DIRECTION_IS_VERTICAL   (direction) &&
        direction != HB_DIRECTION_TTB))
@@ -651,94 +651,94 @@ hb_ensure_native_direction (hb_buffer_t *buffer)
  * Substitute
  */
 
-static inline void
-hb_ot_rotate_chars (const hb_ot_shape_context_t *c)
+സ്ഥിതം വരിയിൽ ശൂന്യം
+hb_ot_rotate_chars (സ്ഥിരം hb_ot_shape_context_t *c)
 {
   hb_buffer_t *buffer = c->buffer;
-  unsigned int count = buffer->len;
+  unsigned പൂർണ്ണസംഖ്യ എണ്ണം = buffer->len;
   hb_glyph_info_t *info = buffer->info;
 
-  if (HB_DIRECTION_IS_BACKWARD (c->target_direction))
+  എങ്കിൽ (HB_DIRECTION_IS_BACKWARD (c->target_direction))
   {
     hb_unicode_funcs_t *unicode = buffer->unicode;
     hb_mask_t rtlm_mask = c->plan->rtlm_mask;
 
-    for (unsigned int i = 0; i < count; i++) {
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++) {
       hb_codepoint_t codepoint = unicode->mirroring (info[i].codepoint);
-      if (unlikely (codepoint != info[i].codepoint && c->font->has_glyph (codepoint)))
+      എങ്കിൽ (unlikely (codepoint != info[i].codepoint && c->font->has_glyph (codepoint)))
 	info[i].codepoint = codepoint;
-      else
+      അല്ലെങ്കിൽ
 	info[i].mask |= rtlm_mask;
     }
   }
 
 #ifndef HB_NO_VERTICAL
-  if (HB_DIRECTION_IS_VERTICAL (c->target_direction) && !c->plan->has_vert)
+  എങ്കിൽ (HB_DIRECTION_IS_VERTICAL (c->target_direction) && !c->plan->has_vert)
   {
-    for (unsigned int i = 0; i < count; i++) {
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++) {
       hb_codepoint_t codepoint = hb_unicode_funcs_t::vertical_char_for (info[i].codepoint);
-      if (unlikely (codepoint != info[i].codepoint && c->font->has_glyph (codepoint)))
+      എങ്കിൽ (unlikely (codepoint != info[i].codepoint && c->font->has_glyph (codepoint)))
 	info[i].codepoint = codepoint;
     }
   }
 #endif
 }
 
-static inline void
-hb_ot_shape_setup_masks_fraction (const hb_ot_shape_context_t *c)
+സ്ഥിതം വരിയിൽ ശൂന്യം
+hb_ot_shape_setup_masks_fraction (സ്ഥിരം hb_ot_shape_context_t *c)
 {
 #ifdef HB_NO_OT_SHAPE_FRACTIONS
-  return;
+  തിരികെ;
 #endif
 
-  if (!(c->buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_FRACTION_SLASH) ||
+  എങ്കിൽ (!(c->buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_FRACTION_SLASH) ||
       !c->plan->has_frac)
-    return;
+    തിരികെ;
 
   hb_buffer_t *buffer = c->buffer;
 
   hb_mask_t pre_mask, post_mask;
-  if (HB_DIRECTION_IS_FORWARD (buffer->props.direction))
+  എങ്കിൽ (HB_DIRECTION_IS_FORWARD (buffer->props.direction))
   {
     pre_mask = c->plan->numr_mask | c->plan->frac_mask;
     post_mask = c->plan->frac_mask | c->plan->dnom_mask;
   }
-  else
+  അല്ലെങ്കിൽ
   {
     pre_mask = c->plan->frac_mask | c->plan->dnom_mask;
     post_mask = c->plan->numr_mask | c->plan->frac_mask;
   }
 
-  unsigned int count = buffer->len;
+  unsigned പൂർണ്ണസംഖ്യ എണ്ണം = buffer->len;
   hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
+  വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
   {
-    if (info[i].codepoint == 0x2044u) /* FRACTION SLASH */
+    എങ്കിൽ (info[i].codepoint == 0x2044u) /* FRACTION SLASH */
     {
-      unsigned int start = i, end = i + 1;
-      while (start &&
+      unsigned പൂർണ്ണസംഖ്യ start = i, end = i + 1;
+      ആകുമ്പോൾ (start &&
 	     _hb_glyph_info_get_general_category (&info[start - 1]) ==
-	     HB_UNICODE_GENERAL_CATEGORY_DECIMAL_NUMBER)
+	     HB_UNICODE_GENERAL_CATEGORY_DECIMAL_സംഖ്യ)
 	start--;
-      while (end < count &&
+      ആകുമ്പോൾ (end < എണ്ണം &&
 	     _hb_glyph_info_get_general_category (&info[end]) ==
-	     HB_UNICODE_GENERAL_CATEGORY_DECIMAL_NUMBER)
+	     HB_UNICODE_GENERAL_CATEGORY_DECIMAL_സംഖ്യ)
 	end++;
-      if (start == i || end == i + 1)
+      എങ്കിൽ (start == i || end == i + 1)
       {
-        if (start == i)
+        എങ്കിൽ (start == i)
 	  buffer->unsafe_to_concat (start, start + 1);
-	if (end == i + 1)
+	എങ്കിൽ (end == i + 1)
 	  buffer->unsafe_to_concat (end - 1, end);
-	continue;
+	തുടരുക;
       }
 
       buffer->unsafe_to_break (start, end);
 
-      for (unsigned int j = start; j < i; j++)
+      വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ j = start; j < i; j++)
 	info[j].mask |= pre_mask;
       info[i].mask |= c->plan->frac_mask;
-      for (unsigned int j = i + 1; j < end; j++)
+      വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ j = i + 1; j < end; j++)
 	info[j].mask |= post_mask;
 
       i = end - 1;
@@ -746,118 +746,118 @@ hb_ot_shape_setup_masks_fraction (const hb_ot_shape_context_t *c)
   }
 }
 
-static inline void
-hb_ot_shape_setup_masks (const hb_ot_shape_context_t *c)
+സ്ഥിതം വരിയിൽ ശൂന്യം
+hb_ot_shape_setup_masks (സ്ഥിരം hb_ot_shape_context_t *c)
 {
   hb_ot_map_t *map = &c->plan->map;
   hb_buffer_t *buffer = c->buffer;
 
   hb_ot_shape_setup_masks_fraction (c);
 
-  if (c->plan->shaper->setup_masks)
+  എങ്കിൽ (c->plan->shaper->setup_masks)
     c->plan->shaper->setup_masks (c->plan, buffer, c->font);
 
-  for (unsigned int i = 0; i < c->num_user_features; i++)
+  വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < c->അക്കം_user_features; i++)
   {
-    const hb_feature_t *feature = &c->user_features[i];
-    if (!(feature->start == HB_FEATURE_GLOBAL_START && feature->end == HB_FEATURE_GLOBAL_END)) {
-      unsigned int shift;
+    സ്ഥിരം hb_feature_t *feature = &c->user_features[i];
+    എങ്കിൽ (!(feature->start == HB_FEATURE_GLOBAL_START && feature->end == HB_FEATURE_GLOBAL_END)) {
+      unsigned പൂർണ്ണസംഖ്യ shift;
       hb_mask_t mask = map->get_mask (feature->tag, &shift);
       buffer->set_masks (feature->value << shift, mask, feature->start, feature->end);
     }
   }
 }
 
-static void
-hb_ot_zero_width_default_ignorables (const hb_buffer_t *buffer)
+സ്ഥിതം ശൂന്യം
+hb_ot_zero_width_default_ignorables (സ്ഥിരം hb_buffer_t *buffer)
 {
-  if (!(buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_DEFAULT_IGNORABLES) ||
+  എങ്കിൽ (!(buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_DEFAULT_IGNORABLES) ||
       (buffer->flags & HB_BUFFER_FLAG_PRESERVE_DEFAULT_IGNORABLES) ||
       (buffer->flags & HB_BUFFER_FLAG_REMOVE_DEFAULT_IGNORABLES))
-    return;
+    തിരികെ;
 
-  unsigned int count = buffer->len;
+  unsigned പൂർണ്ണസംഖ്യ എണ്ണം = buffer->len;
   hb_glyph_info_t *info = buffer->info;
   hb_glyph_position_t *pos = buffer->pos;
-  unsigned int i = 0;
-  for (i = 0; i < count; i++)
-    if (unlikely (_hb_glyph_info_is_default_ignorable (&info[i])))
+  unsigned പൂർണ്ണസംഖ്യ i = 0;
+  വേണ്ടി (i = 0; i < എണ്ണം; i++)
+    എങ്കിൽ (unlikely (_hb_glyph_info_is_default_ignorable (&info[i])))
     {
       pos[i].x_advance = pos[i].y_advance = 0;
-      if (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
+      എങ്കിൽ (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
 	pos[i].x_offset = 0;
-      else
+      അല്ലെങ്കിൽ
         pos[i].y_offset = 0;
     }
 }
 
-static void
+സ്ഥിതം ശൂന്യം
 hb_ot_deal_with_variation_selectors (hb_buffer_t *buffer)
 {
-  if (!(buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_VARIATION_SELECTOR_FALLBACK) ||
+  എങ്കിൽ (!(buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_VARIATION_SELECTOR_FALLBACK) ||
 	buffer->not_found_variation_selector == HB_CODEPOINT_INVALID)
-    return;
+    തിരികെ;
 
-  unsigned int count = buffer->len;
+  unsigned പൂർണ്ണസംഖ്യ എണ്ണം = buffer->len;
   hb_glyph_info_t *info = buffer->info;
   hb_glyph_position_t *pos = buffer->pos;
 
-  for (unsigned int i = 0; i < count; i++)
+  വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
   {
-    if (_hb_glyph_info_is_variation_selector (&info[i]))
+    എങ്കിൽ (_hb_glyph_info_is_variation_selector (&info[i]))
     {
       info[i].codepoint = buffer->not_found_variation_selector;
       pos[i].x_advance = pos[i].y_advance = pos[i].x_offset = pos[i].y_offset = 0;
-      _hb_glyph_info_set_variation_selector (&info[i], false);
+      _hb_glyph_info_set_variation_selector (&info[i], അസത്യം);
     }
   }
 }
 
-static void
+സ്ഥിതം ശൂന്യം
 hb_ot_hide_default_ignorables (hb_buffer_t *buffer,
 			       hb_font_t   *font)
 {
-  if (!(buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_DEFAULT_IGNORABLES) ||
+  എങ്കിൽ (!(buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_DEFAULT_IGNORABLES) ||
       (buffer->flags & HB_BUFFER_FLAG_PRESERVE_DEFAULT_IGNORABLES))
-    return;
+    തിരികെ;
 
-  unsigned int count = buffer->len;
+  unsigned പൂർണ്ണസംഖ്യ എണ്ണം = buffer->len;
   hb_glyph_info_t *info = buffer->info;
 
   hb_codepoint_t invisible = buffer->invisible;
-  if (!(buffer->flags & HB_BUFFER_FLAG_REMOVE_DEFAULT_IGNORABLES) &&
+  എങ്കിൽ (!(buffer->flags & HB_BUFFER_FLAG_REMOVE_DEFAULT_IGNORABLES) &&
       (invisible || font->get_nominal_glyph (' ', &invisible)))
   {
     /* Replace default-ignorables with a zero-advance invisible glyph. */
-    for (unsigned int i = 0; i < count; i++)
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
     {
-      if (_hb_glyph_info_is_default_ignorable (&info[i]))
+      എങ്കിൽ (_hb_glyph_info_is_default_ignorable (&info[i]))
 	info[i].codepoint = invisible;
     }
   }
-  else
+  അല്ലെങ്കിൽ
     buffer->delete_glyphs_inplace (_hb_glyph_info_is_default_ignorable);
 }
 
 
-static inline void
+സ്ഥിതം വരിയിൽ ശൂന്യം
 hb_ot_map_glyphs_fast (hb_buffer_t  *buffer)
 {
   /* Normalization process sets up normalizer_glyph_index(), we just copy it. */
-  unsigned int count = buffer->len;
+  unsigned പൂർണ്ണസംഖ്യ എണ്ണം = buffer->len;
   hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
+  വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
     info[i].codepoint = info[i].normalizer_glyph_index();
 
   buffer->content_type = HB_BUFFER_CONTENT_TYPE_GLYPHS;
 }
 
-static inline void
+സ്ഥിതം വരിയിൽ ശൂന്യം
 hb_synthesize_glyph_classes (hb_buffer_t *buffer)
 {
-  unsigned int count = buffer->len;
+  unsigned പൂർണ്ണസംഖ്യ എണ്ണം = buffer->len;
   hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
+  വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
   {
     hb_ot_layout_glyph_props_flags_t klass;
 
@@ -878,8 +878,8 @@ hb_synthesize_glyph_classes (hb_buffer_t *buffer)
   }
 }
 
-static inline void
-hb_ot_substitute_default (const hb_ot_shape_context_t *c)
+സ്ഥിതം വരിയിൽ ശൂന്യം
+hb_ot_substitute_default (സ്ഥിരം hb_ot_shape_context_t *c)
 {
   hb_buffer_t *buffer = c->buffer;
 
@@ -892,7 +892,7 @@ hb_ot_substitute_default (const hb_ot_shape_context_t *c)
   hb_ot_shape_setup_masks (c);
 
   /* This is unfortunate to go here, but necessary... */
-  if (c->plan->fallback_mark_positioning)
+  എങ്കിൽ (c->plan->fallback_mark_positioning)
     _hb_ot_shape_fallback_mark_position_recategorize_marks (c->plan, c->font, buffer);
 
   hb_ot_map_glyphs_fast (buffer);
@@ -900,40 +900,40 @@ hb_ot_substitute_default (const hb_ot_shape_context_t *c)
   HB_BUFFER_DEALLOCATE_VAR (buffer, normalizer_glyph_index);
 }
 
-static inline void
-hb_ot_substitute_plan (const hb_ot_shape_context_t *c)
+സ്ഥിതം വരിയിൽ ശൂന്യം
+hb_ot_substitute_plan (സ്ഥിരം hb_ot_shape_context_t *c)
 {
   hb_buffer_t *buffer = c->buffer;
 
 #ifndef HB_NO_AAT_SHAPE
-  if (unlikely (c->plan->apply_morx))
+  എങ്കിൽ (unlikely (c->plan->apply_morx))
   {
     hb_ot_layout_substitute_start (c->font, buffer);
 
-    if (c->plan->fallback_glyph_classes)
+    എങ്കിൽ (c->plan->fallback_glyph_classes)
       hb_synthesize_glyph_classes (buffer);
 
     hb_aat_layout_substitute (c->plan, c->font, c->buffer,
-			      c->user_features, c->num_user_features);
+			      c->user_features, c->അക്കം_user_features);
     /* The buffer digest is only used by the OT lookup-apply loop;
      * without GPOS ahead, nothing consumes it. */
-    if (c->plan->apply_gpos)
+    എങ്കിൽ (c->plan->apply_gpos)
       c->buffer->update_digest ();
   }
-  else
+  അല്ലെങ്കിൽ
 #endif
   {
     hb_ot_layout_substitute_start_with_digest (c->font, buffer);
 
-    if (c->plan->fallback_glyph_classes)
+    എങ്കിൽ (c->plan->fallback_glyph_classes)
       hb_synthesize_glyph_classes (buffer);
 
     c->plan->substitute (c->font, buffer);
   }
 }
 
-static inline void
-hb_ot_substitute_pre (const hb_ot_shape_context_t *c)
+സ്ഥിതം വരിയിൽ ശൂന്യം
+hb_ot_substitute_pre (സ്ഥിരം hb_ot_shape_context_t *c)
 {
   hb_ot_substitute_default (c);
 
@@ -942,26 +942,26 @@ hb_ot_substitute_pre (const hb_ot_shape_context_t *c)
   hb_ot_substitute_plan (c);
 
 #ifndef HB_NO_AAT_SHAPE
-  if (c->plan->apply_morx && c->plan->apply_gpos)
+  എങ്കിൽ (c->plan->apply_morx && c->plan->apply_gpos)
     hb_aat_layout_remove_deleted_glyphs (c->buffer);
 #endif
 }
 
-static inline void
-hb_ot_substitute_post (const hb_ot_shape_context_t *c)
+സ്ഥിതം വരിയിൽ ശൂന്യം
+hb_ot_substitute_post (സ്ഥിരം hb_ot_shape_context_t *c)
 {
 #ifndef HB_NO_AAT_SHAPE
-  if (c->plan->apply_morx && !c->plan->apply_gpos)
+  എങ്കിൽ (c->plan->apply_morx && !c->plan->apply_gpos)
     hb_aat_layout_remove_deleted_glyphs (c->buffer);
 #endif
 
   hb_ot_deal_with_variation_selectors (c->buffer);
   hb_ot_hide_default_ignorables (c->buffer, c->font);
 
-  if (c->plan->shaper->postprocess_glyphs &&
+  എങ്കിൽ (c->plan->shaper->postprocess_glyphs &&
     c->buffer->message(c->font, "start postprocess-glyphs")) {
     c->plan->shaper->postprocess_glyphs (c->plan, c->buffer, c->font);
-    (void) c->buffer->message(c->font, "end postprocess-glyphs");
+    (ശൂന്യം) c->buffer->message(c->font, "end postprocess-glyphs");
   }
 }
 
@@ -970,63 +970,63 @@ hb_ot_substitute_post (const hb_ot_shape_context_t *c)
  * Position
  */
 
-static inline void
+സ്ഥിതം വരിയിൽ ശൂന്യം
 adjust_mark_offsets (hb_glyph_position_t *pos)
 {
   pos->x_offset = hb_saturate_sub (pos->x_offset, pos->x_advance);
   pos->y_offset = hb_saturate_sub (pos->y_offset, pos->y_advance);
 }
 
-static inline void
+സ്ഥിതം വരിയിൽ ശൂന്യം
 zero_mark_width (hb_glyph_position_t *pos)
 {
   pos->x_advance = 0;
   pos->y_advance = 0;
 }
 
-static inline void
-zero_mark_widths_by_gdef (hb_buffer_t *buffer, bool adjust_offsets)
+സ്ഥിതം വരിയിൽ ശൂന്യം
+zero_mark_widths_by_gdef (hb_buffer_t *buffer, തർക്കം adjust_offsets)
 {
-  unsigned int count = buffer->len;
+  unsigned പൂർണ്ണസംഖ്യ എണ്ണം = buffer->len;
   hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
-    if (_hb_glyph_info_is_mark (&info[i]))
+  വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
+    എങ്കിൽ (_hb_glyph_info_is_mark (&info[i]))
     {
-      if (adjust_offsets)
+      എങ്കിൽ (adjust_offsets)
 	adjust_mark_offsets (&buffer->pos[i]);
       zero_mark_width (&buffer->pos[i]);
     }
 }
 
-static inline void
-hb_ot_position_default (const hb_ot_shape_context_t *c)
+സ്ഥിതം വരിയിൽ ശൂന്യം
+hb_ot_position_default (സ്ഥിരം hb_ot_shape_context_t *c)
 {
   hb_direction_t direction = c->buffer->props.direction;
-  unsigned int count = c->buffer->len;
+  unsigned പൂർണ്ണസംഖ്യ എണ്ണം = c->buffer->len;
   hb_glyph_info_t *info = c->buffer->info;
   hb_glyph_position_t *pos = c->buffer->pos;
 
-  if (HB_DIRECTION_IS_HORIZONTAL (direction))
+  എങ്കിൽ (HB_DIRECTION_IS_HORIZONTAL (direction))
   {
-    c->font->get_glyph_h_advances (count, &info[0].codepoint, sizeof(info[0]),
-				   &pos[0].x_advance, sizeof(pos[0]));
+    c->font->get_glyph_h_advances (എണ്ണം, &info[0].codepoint, വലുപ്പം(info[0]),
+				   &pos[0].x_advance, വലുപ്പം(pos[0]));
     // h_origin defaults to zero; only apply it if the font has it.
-    if (c->font->has_glyph_h_origin_func () || c->font->has_glyph_h_origins_func ())
+    എങ്കിൽ (c->font->has_glyph_h_origin_func () || c->font->has_glyph_h_origins_func ())
       c->font->subtract_glyph_h_origins (c->buffer);
   }
-  else
+  അല്ലെങ്കിൽ
   {
-    c->font->get_glyph_v_advances (count, &info[0].codepoint, sizeof(info[0]),
-				   &pos[0].y_advance, sizeof(pos[0]));
+    c->font->get_glyph_v_advances (എണ്ണം, &info[0].codepoint, വലുപ്പം(info[0]),
+				   &pos[0].y_advance, വലുപ്പം(pos[0]));
     // v_origin defaults to non-zero; apply even if only fallback is there.
     c->font->subtract_glyph_v_origins (c->buffer);
   }
-  if (c->buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_SPACE_FALLBACK)
+  എങ്കിൽ (c->buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_SPACE_FALLBACK)
     _hb_ot_shape_fallback_spaces (c->plan, c->font, c->buffer);
 }
 
-static inline void
-hb_ot_position_plan (const hb_ot_shape_context_t *c)
+സ്ഥിതം വരിയിൽ ശൂന്യം
+hb_ot_position_plan (സ്ഥിരം hb_ot_shape_context_t *c)
 {
   /* If the font has no GPOS and direction is forward, then when
    * zeroing mark widths, we shift the mark with it, such that the
@@ -1037,43 +1037,43 @@ hb_ot_position_plan (const hb_ot_shape_context_t *c)
    * Note: If fallback positioning happens, we don't care about
    * this as it will be overridden.
    */
-  bool adjust_offsets_when_zeroing = c->plan->adjust_mark_positioning_when_zeroing &&
+  തർക്കം adjust_offsets_when_zeroing = c->plan->adjust_mark_positioning_when_zeroing &&
 				     HB_DIRECTION_IS_FORWARD (c->buffer->props.direction);
 
   /* We change glyph origin to what GPOS expects (horizontal), apply GPOS, change it back. */
 
   // h_origin defaults to zero; only apply it if the font has it.
-  if (c->font->has_glyph_h_origin_func () || c->font->has_glyph_h_origins_func ())
+  എങ്കിൽ (c->font->has_glyph_h_origin_func () || c->font->has_glyph_h_origins_func ())
     c->font->add_glyph_h_origins (c->buffer);
 
   hb_ot_layout_position_start (c->font, c->buffer);
 
-  if (c->plan->zero_marks)
-    switch (c->plan->shaper->zero_width_marks)
+  എങ്കിൽ (c->plan->zero_marks)
+    തിരഞ്ഞെടുപ്പ് (c->plan->shaper->zero_width_marks)
     {
-      case HB_OT_SHAPE_ZERO_WIDTH_MARKS_BY_GDEF_EARLY:
+      അവസ്ഥ HB_OT_SHAPE_ZERO_WIDTH_MARKS_BY_GDEF_EARLY:
 	zero_mark_widths_by_gdef (c->buffer, adjust_offsets_when_zeroing);
-	break;
+	നിർത്തുക;
 
-      default:
-      case HB_OT_SHAPE_ZERO_WIDTH_MARKS_NONE:
-      case HB_OT_SHAPE_ZERO_WIDTH_MARKS_BY_GDEF_LATE:
-	break;
+      സ്ഥിരസ്ഥിതി:
+      അവസ്ഥ HB_OT_SHAPE_ZERO_WIDTH_MARKS_NONE:
+      അവസ്ഥ HB_OT_SHAPE_ZERO_WIDTH_MARKS_BY_GDEF_LATE:
+	നിർത്തുക;
     }
 
   c->plan->position (c->font, c->buffer);
 
-  if (c->plan->zero_marks)
-    switch (c->plan->shaper->zero_width_marks)
+  എങ്കിൽ (c->plan->zero_marks)
+    തിരഞ്ഞെടുപ്പ് (c->plan->shaper->zero_width_marks)
     {
-      case HB_OT_SHAPE_ZERO_WIDTH_MARKS_BY_GDEF_LATE:
+      അവസ്ഥ HB_OT_SHAPE_ZERO_WIDTH_MARKS_BY_GDEF_LATE:
 	zero_mark_widths_by_gdef (c->buffer, adjust_offsets_when_zeroing);
-	break;
+	നിർത്തുക;
 
-      default:
-      case HB_OT_SHAPE_ZERO_WIDTH_MARKS_NONE:
-      case HB_OT_SHAPE_ZERO_WIDTH_MARKS_BY_GDEF_EARLY:
-	break;
+      സ്ഥിരസ്ഥിതി:
+      അവസ്ഥ HB_OT_SHAPE_ZERO_WIDTH_MARKS_NONE:
+      അവസ്ഥ HB_OT_SHAPE_ZERO_WIDTH_MARKS_BY_GDEF_EARLY:
+	നിർത്തുക;
     }
 
   /* Finish off.  Has to follow a certain order. */
@@ -1082,16 +1082,16 @@ hb_ot_position_plan (const hb_ot_shape_context_t *c)
   hb_ot_layout_position_finish_offsets (c->font, c->buffer);
 
   // h_origin defaults to zero; only apply it if the font has it.
-  if (c->font->has_glyph_h_origin_func () || c->font->has_glyph_h_origins_func ())
+  എങ്കിൽ (c->font->has_glyph_h_origin_func () || c->font->has_glyph_h_origins_func ())
     c->font->subtract_glyph_h_origins (c->buffer);
 
-  if (c->plan->fallback_mark_positioning)
+  എങ്കിൽ (c->plan->fallback_mark_positioning)
     _hb_ot_shape_fallback_mark_position (c->plan, c->font, c->buffer,
 					 adjust_offsets_when_zeroing);
 }
 
-static inline void
-hb_ot_position (const hb_ot_shape_context_t *c)
+സ്ഥിതം വരിയിൽ ശൂന്യം
+hb_ot_position (സ്ഥിരം hb_ot_shape_context_t *c)
 {
   c->buffer->clear_positions ();
 
@@ -1099,44 +1099,44 @@ hb_ot_position (const hb_ot_shape_context_t *c)
 
   hb_ot_position_plan (c);
 
-  if (HB_DIRECTION_IS_BACKWARD (c->buffer->props.direction))
+  എങ്കിൽ (HB_DIRECTION_IS_BACKWARD (c->buffer->props.direction))
     hb_buffer_reverse (c->buffer);
 
   _hb_buffer_deallocate_gsubgpos_vars (c->buffer);
 }
 
-static inline void
+സ്ഥിതം വരിയിൽ ശൂന്യം
 hb_propagate_flags (hb_buffer_t *buffer)
 {
   /* Propagate cluster-level glyph flags to be the same on all cluster glyphs.
    * Simplifies using them. */
 
   hb_mask_t and_mask = HB_GLYPH_FLAG_DEFINED;
-  if ((buffer->flags & HB_BUFFER_FLAG_PRODUCE_UNSAFE_TO_CONCAT) == 0)
+  എങ്കിൽ ((buffer->flags & HB_BUFFER_FLAG_PRODUCE_UNSAFE_TO_CONCAT) == 0)
     and_mask &= ~HB_GLYPH_FLAG_UNSAFE_TO_CONCAT;
 
   hb_glyph_info_t *info = buffer->info;
 
-  if ((buffer->flags & HB_BUFFER_FLAG_PRODUCE_SAFE_TO_INSERT_TATWEEL) == 0)
+  എങ്കിൽ ((buffer->flags & HB_BUFFER_FLAG_PRODUCE_SAFE_TO_തിരുകുക_TATWEEL) == 0)
   {
     foreach_cluster (buffer, start, end)
     {
-      if (end - start == 1)
+      എങ്കിൽ (end - start == 1)
       {
         info[start].mask &= and_mask;
-	continue;
+	തുടരുക;
       }
 
-      unsigned int mask = 0;
-      for (unsigned int i = start; i < end; i++)
+      unsigned പൂർണ്ണസംഖ്യ mask = 0;
+      വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = start; i < end; i++)
 	mask |= info[i].mask;
 
       mask &= and_mask;
 
-      for (unsigned int i = start; i < end; i++)
+      വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = start; i < end; i++)
 	info[i].mask = mask;
     }
-    return;
+    തിരികെ;
   }
 
   /* If we are producing SAFE_TO_INSERT_TATWEEL, then do two things:
@@ -1149,25 +1149,25 @@ hb_propagate_flags (hb_buffer_t *buffer)
    */
   foreach_cluster (buffer, start, end)
   {
-    unsigned int mask = 0;
-    for (unsigned int i = start; i < end; i++)
+    unsigned പൂർണ്ണസംഖ്യ mask = 0;
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = start; i < end; i++)
       mask |= info[i].mask;
 
-    if (mask & HB_GLYPH_FLAG_UNSAFE_TO_BREAK)
-      mask &= ~HB_GLYPH_FLAG_SAFE_TO_INSERT_TATWEEL;
-    if (mask & HB_GLYPH_FLAG_SAFE_TO_INSERT_TATWEEL)
+    എങ്കിൽ (mask & HB_GLYPH_FLAG_UNSAFE_TO_BREAK)
+      mask &= ~HB_GLYPH_FLAG_SAFE_TO_തിരുകുക_TATWEEL;
+    എങ്കിൽ (mask & HB_GLYPH_FLAG_SAFE_TO_തിരുകുക_TATWEEL)
       mask |= HB_GLYPH_FLAG_UNSAFE_TO_BREAK | HB_GLYPH_FLAG_UNSAFE_TO_CONCAT;
 
     mask &= and_mask;
 
-    for (unsigned int i = start; i < end; i++)
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = start; i < end; i++)
       info[i].mask = mask;
   }
 }
 
 /* Pull it all together! */
 
-static void
+സ്ഥിതം ശൂന്യം
 hb_ot_shape_internal (hb_ot_shape_context_t *c)
 {
   /* Save the original direction, we use it later. */
@@ -1176,17 +1176,17 @@ hb_ot_shape_internal (hb_ot_shape_context_t *c)
   _hb_buffer_allocate_unicode_vars (c->buffer);
 
   hb_set_unicode_props (c->buffer, c->plan->map.get_global_mask ());
-  hb_insert_dotted_circle (c->buffer, c->font);
+  hb_തിരുകുക_dotted_circle (c->buffer, c->font);
 
   hb_form_clusters (c->buffer);
 
   hb_ensure_native_direction (c->buffer);
 
-  if (c->plan->shaper->preprocess_text &&
+  എങ്കിൽ (c->plan->shaper->preprocess_text &&
       c->buffer->message(c->font, "start preprocess-text"))
   {
     c->plan->shaper->preprocess_text (c->plan, c->buffer, c->font);
-    (void) c->buffer->message(c->font, "end preprocess-text");
+    (ശൂന്യം) c->buffer->message(c->font, "end preprocess-text");
   }
 
   hb_ot_substitute_pre (c);
@@ -1205,13 +1205,13 @@ hb_bool_t
 _hb_ot_shape (hb_shape_plan_t    *shape_plan,
 	      hb_font_t          *font,
 	      hb_buffer_t        *buffer,
-	      const hb_feature_t *features,
-	      unsigned int        num_features)
+	      സ്ഥിരം hb_feature_t *features,
+	      unsigned പൂർണ്ണസംഖ്യ        അക്കം_features)
 {
-  hb_ot_shape_context_t c = {&shape_plan->ot, font, font->face, buffer, features, num_features};
+  hb_ot_shape_context_t c = {&shape_plan->ot, font, font->face, buffer, features, അക്കം_features};
   hb_ot_shape_internal (&c);
 
-  return true;
+  തിരികെ സത്യം;
 }
 
 
@@ -1226,7 +1226,7 @@ _hb_ot_shape (hb_shape_plan_t    *shape_plan,
  *
  * Since: 0.9.7
  **/
-void
+ശൂന്യം
 hb_ot_shape_plan_collect_lookups (hb_shape_plan_t *shape_plan,
 				  hb_tag_t         table_tag,
 				  hb_set_t        *lookup_indexes /* OUT */)
@@ -1249,24 +1249,24 @@ hb_ot_shape_plan_collect_lookups (hb_shape_plan_t *shape_plan,
  *
  * Since: 10.3.0
  */
-unsigned int
+unsigned പൂർണ്ണസംഖ്യ
 hb_ot_shape_plan_get_feature_tags (hb_shape_plan_t *shape_plan,
-				   unsigned int     start_offset,
-				   unsigned int    *tag_count, /* IN/OUT */
+				   unsigned പൂർണ്ണസംഖ്യ     start_offset,
+				   unsigned പൂർണ്ണസംഖ്യ    *tag_എണ്ണം, /* IN/OUT */
 				   hb_tag_t        *tags /* OUT */)
 {
 #ifndef HB_NO_OT_SHAPE
-  return shape_plan->ot.map.get_feature_tags (start_offset, tag_count, tags);
-#else
-  if (tag_count)
-	*tag_count = 0;
-  return 0;
+  തിരികെ shape_plan->ot.map.get_feature_tags (start_offset, tag_എണ്ണം, tags);
+#അല്ലെങ്കിൽ
+  എങ്കിൽ (tag_എണ്ണം)
+	*tag_എണ്ണം = 0;
+  തിരികെ 0;
 #endif
 }
 
 
 /* TODO Move this to hb-ot-shape-normalize, make it do decompose, and make it public. */
-static void
+സ്ഥിതം ശൂന്യം
 add_char (hb_font_t          *font,
 	  hb_unicode_funcs_t *unicode,
 	  hb_bool_t           mirror,
@@ -1274,12 +1274,12 @@ add_char (hb_font_t          *font,
 	  hb_set_t           *glyphs)
 {
   hb_codepoint_t glyph;
-  if (font->get_nominal_glyph (u, &glyph))
+  എങ്കിൽ (font->get_nominal_glyph (u, &glyph))
     glyphs->add (glyph);
-  if (mirror)
+  എങ്കിൽ (mirror)
   {
     hb_codepoint_t m = unicode->mirroring (u);
-    if (m != u && font->get_nominal_glyph (m, &glyph))
+    എങ്കിൽ (m != u && font->get_nominal_glyph (m, &glyph))
       glyphs->add (glyph);
   }
 }
@@ -1299,22 +1299,22 @@ add_char (hb_font_t          *font,
  *
  * Since: 0.9.2
  **/
-void
+ശൂന്യം
 hb_ot_shape_glyphs_closure (hb_font_t          *font,
 			    hb_buffer_t        *buffer,
-			    const hb_feature_t *features,
-			    unsigned int        num_features,
+			    സ്ഥിരം hb_feature_t *features,
+			    unsigned പൂർണ്ണസംഖ്യ        അക്കം_features,
 			    hb_set_t           *glyphs)
 {
-  const char *shapers[] = {"ot", nullptr};
+  സ്ഥിരം അക്ഷരം *shapers[] = {"ot", nullptr};
   hb_shape_plan_t *shape_plan = hb_shape_plan_create_cached (font->face, &buffer->props,
-							     features, num_features, shapers);
+							     features, അക്കം_features, shapers);
 
-  bool mirror = hb_script_get_horizontal_direction (buffer->props.script) == HB_DIRECTION_RTL;
+  തർക്കം mirror = hb_script_get_horizontal_direction (buffer->props.script) == HB_DIRECTION_RTL;
 
-  unsigned int count = buffer->len;
+  unsigned പൂർണ്ണസംഖ്യ എണ്ണം = buffer->len;
   hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
+  വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
     add_char (font, buffer->unicode, mirror, info[i].codepoint, glyphs);
 
   hb_set_t *lookups = hb_set_create ();
@@ -1337,10 +1337,10 @@ hb_ot_shape_glyphs_closure (hb_font_t          *font,
  *
  * Since: 13.2.0
  **/
-unsigned int
-hb_ot_shape_get_buffer_format_serial (void)
+unsigned പൂർണ്ണസംഖ്യ
+hb_ot_shape_get_buffer_format_serial (ശൂന്യം)
 {
-  return HB_OT_SHAPE_BUFFER_FORMAT_SERIAL;
+  തിരികെ HB_OT_SHAPE_BUFFER_FORMAT_SERIAL;
 }
 
 #endif

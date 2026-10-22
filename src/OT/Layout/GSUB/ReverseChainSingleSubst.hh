@@ -1,18 +1,18 @@
 #ifndef OT_LAYOUT_GSUB_REVERSECHAINSINGLESUBST_HH
 #define OT_LAYOUT_GSUB_REVERSECHAINSINGLESUBST_HH
 
-#include "Common.hh"
-#include "ReverseChainSingleSubstFormat1.hh"
+#അന്തര്ഭാവ "Common.hh"
+#അന്തര്ഭാവ "ReverseChainSingleSubstFormat1.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+നാമാകാശ OT {
+നാമാകാശ Layout {
+നാമാകാശ GSUB_impl {
 
-struct ReverseChainSingleSubst
+ഘടന ReverseChainSingleSubst
 {
-  protected:
-  union {
-  struct { HBUINT16 v; }                format;         /* Format identifier */
+  സംരക്ഷിത:
+  സംഘം {
+  ഘടന { HBUINT16 v; }                format;         /* Format identifier */
   ReverseChainSingleSubstFormat1_2<SmallTypes>
                                         format1;
 #ifndef HB_NO_BEYOND_64K
@@ -21,18 +21,18 @@ struct ReverseChainSingleSubst
 #endif
   } u;
 
-  public:
+  പൊതു:
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) സ്ഥിരം
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    എങ്കിൽ (unlikely (!c->may_dispatch (ഇത്, &u.format.v))) തിരികെ c->no_dispatch_return_മൂല്യം ();
+    TRACE_DISPATCH (ഇത്, u.format.v);
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
 #ifndef HB_NO_BEYOND_64K
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    അവസ്ഥ 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
 #endif
-    default:return_trace (c->default_return_value ());
+    സ്ഥിരസ്ഥിതി:return_trace (c->default_return_മൂല്യം ());
     }
   }
 };

@@ -1,35 +1,35 @@
 #ifndef OT_LAYOUT_GPOS_LIGATUREARRAY_HH
 #define OT_LAYOUT_GPOS_LIGATUREARRAY_HH
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+നാമാകാശ OT {
+നാമാകാശ Layout {
+നാമാകാശ GPOS_impl {
 
-HB_INTERNAL inline
-void collect_ligature_variation_indices (hb_collect_variation_indices_context_t *c,
-                                        const Coverage &coverage,
-                                        const void *base,
+HB_INTERNAL വരിയിൽ
+ശൂന്യം collect_ligature_variation_indices (hb_collect_variation_indices_context_t *c,
+                                        സ്ഥിരം Coverage &coverage,
+                                        സ്ഥിരം ശൂന്യം *base,
                                         glyph_data_t offsets,
-                                        unsigned count,
-                                        unsigned class_count,
-                                        const hb_map_t &klass_mapping)
+                                        unsigned എണ്ണം,
+                                        unsigned class_എണ്ണം,
+                                        സ്ഥിരം hb_map_t &klass_mapping)
 {
-  for (const auto _ : hb_zip (coverage, hb_range (count)))
+  വേണ്ടി (സ്ഥിരം auto _ : hb_zip (coverage, hb_range (എണ്ണം)))
   {
-    if (!c->glyph_set->has (_.first)) continue;
+    എങ്കിൽ (!c->glyph_set->has (_.first)) തുടരുക;
     hb_barrier ();
     unsigned offset = offsets[_.second];
-    if (!offset) continue;
+    എങ്കിൽ (!offset) തുടരുക;
 
-    const void *matrix = &StructAtOffset<const HBUINT16> (base, offset);
+    സ്ഥിരം ശൂന്യം *matrix = &StructAtOffset<സ്ഥിരം HBUINT16> (base, offset);
     /* LigatureAttach always has a 16-bit component count; its anchor
      * offsets have the same width as the LigatureArray offsets. */
-    unsigned rows = *static_cast<const HBUINT16 *> (matrix);
+    unsigned rows = *static_cast<സ്ഥിരം HBUINT16 *> (matrix);
     glyph_data_t anchors = offsets;
-    anchors.data = (const char *) matrix + HBUINT16::static_size;
+    anchors.data = (സ്ഥിരം അക്ഷരം *) matrix + HBUINT16::static_size;
 
     hb_sorted_vector_t<unsigned> indexes;
-    collect_ligature_anchor_indexes (rows, class_count, klass_mapping, indexes);
+    collect_ligature_anchor_indexes (rows, class_എണ്ണം, klass_mapping, indexes);
     collect_anchor_variation_indices (c, matrix, anchors, indexes.iter ());
   }
 }
@@ -37,73 +37,73 @@ void collect_ligature_variation_indices (hb_collect_variation_indices_context_t 
 
 /* Array of LigatureAttach tables ordered by LigatureCoverage Index */
 template <typename Types>
-struct LigatureArray :
+ഘടന LigatureArray :
   Types::template ArrayOf<typename Types::template OffsetTo<AnchorMatrix<Types, HBUINT16>>>
 {
-  typedef AnchorMatrix<Types, HBUINT16> LigatureAttach;
-  typedef typename Types::template OffsetTo<LigatureAttach> LigatureAttachOffset;
-  typedef typename Types::template ArrayOf<LigatureAttachOffset> Super;
+  തരനിർവചനം AnchorMatrix<Types, HBUINT16> LigatureAttach;
+  തരനിർവചനം typename Types::template OffsetTo<LigatureAttach> LigatureAttachOffset;
+  തരനിർവചനം typename Types::template ArrayOf<LigatureAttachOffset> Super;
 
-  const LigatureAttach& operator [] (int i_) const
+  സ്ഥിരം LigatureAttach& operator [] (പൂർണ്ണസംഖ്യ i_) സ്ഥിരം
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= this->len)) return Null (LigatureAttach);
+    unsigned പൂർണ്ണസംഖ്യ i = (unsigned പൂർണ്ണസംഖ്യ) i_;
+    എങ്കിൽ (unlikely (i >= ഇത്->len)) തിരികെ Null (LigatureAttach);
     hb_barrier ();
-    return this+this->arrayZ[i];
+    തിരികെ ഇത്+ഇത്->arrayZ[i];
   }
 
   template <typename ...Ts>
-  bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
+  തർക്കം sanitize (hb_sanitize_context_t *c, Ts&&... ds) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (Super::sanitize (c, this, std::forward<Ts> (ds)...));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (Super::sanitize (c, ഇത്, std::forward<Ts> (ds)...));
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const Coverage &coverage,
-                                  unsigned class_count,
-                                  const hb_map_t &klass_mapping) const
+  ശൂന്യം collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  സ്ഥിരം Coverage &coverage,
+                                  unsigned class_എണ്ണം,
+                                  സ്ഥിരം hb_map_t &klass_mapping) സ്ഥിരം
   {
-    collect_ligature_variation_indices (c, coverage, this, this->arrayZ,
-                                        this->len, class_count, klass_mapping);
+    collect_ligature_variation_indices (c, coverage, ഇത്, ഇത്->arrayZ,
+                                        ഇത്->len, class_എണ്ണം, klass_mapping);
   }
 
   template <typename Iterator,
             hb_requires (hb_is_iterator (Iterator))>
-  bool subset (hb_subset_context_t *c,
+  തർക്കം subset (hb_subset_context_t *c,
                Iterator             coverage,
-               unsigned             class_count,
-               const hb_map_t      *klass_mapping,
-               hb_sorted_vector_t<hb_codepoint_t> &new_coverage /* OUT */) const
+               unsigned             class_എണ്ണം,
+               സ്ഥിരം hb_map_t      *klass_mapping,
+               hb_sorted_vector_t<hb_codepoint_t> &new_coverage /* OUT */) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    const hb_map_t &glyph_map = c->plan->glyph_map_gsub;
+    TRACE_SUBSET (ഇത്);
+    സ്ഥിരം hb_map_t &glyph_map = c->plan->glyph_map_gsub;
 
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->extend_min (out)))  return_trace (false);
+    auto *out = c->serializer->start_embed (ഇത്);
+    എങ്കിൽ (unlikely (!c->serializer->extend_min (out)))  return_trace (അസത്യം);
 
-    bool ret = false;
-    for (const auto _ : + hb_zip (coverage, *this)
+    തർക്കം ret = അസത്യം;
+    വേണ്ടി (സ്ഥിരം auto _ : + hb_zip (coverage, *ഇത്)
                         | hb_filter (glyph_map, hb_first))
     {
-      const LigatureAttach& src = (this + _.second);
-      bool non_empty = + hb_range (src.rows * class_count)
-                       | hb_filter ([=] (unsigned index) { return klass_mapping->has (index % class_count); })
-                       | hb_map ([&] (const unsigned index) { return !src.offset_is_null (index / class_count, index % class_count, class_count); })
+      സ്ഥിരം LigatureAttach& src = (ഇത് + _.second);
+      തർക്കം non_empty = + hb_range (src.rows * class_എണ്ണം)
+                       | hb_filter ([=] (unsigned index) { തിരികെ klass_mapping->has (index % class_എണ്ണം); })
+                       | hb_map ([&] (സ്ഥിരം unsigned index) { തിരികെ !src.offset_is_null (index / class_എണ്ണം, index % class_എണ്ണം, class_എണ്ണം); })
                        | hb_any;
 
-      if (!non_empty) continue;
+      എങ്കിൽ (!non_empty) തുടരുക;
 
       auto *matrix = out->serialize_append (c->serializer);
-      if (unlikely (!matrix)) return_trace (false);
+      എങ്കിൽ (unlikely (!matrix)) return_trace (അസത്യം);
 
       auto indexes =
-          + hb_range (src.rows * class_count)
-          | hb_filter ([=] (unsigned index) { return klass_mapping->has (index % class_count); })
+          + hb_range (src.rows * class_എണ്ണം)
+          | hb_filter ([=] (unsigned index) { തിരികെ klass_mapping->has (index % class_എണ്ണം); })
           ;
       ret |= matrix->serialize_subset (c,
 				       _.second,
-				       this,
+				       ഇത്,
 				       src.rows,
 				       indexes);
 

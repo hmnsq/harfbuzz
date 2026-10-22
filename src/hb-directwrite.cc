@@ -22,13 +22,13 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#അന്തര്ഭാവ "hb.hh"
 
 #ifdef HAVE_DIRECTWRITE
 
-#include "hb-directwrite.hh"
+#അന്തര്ഭാവ "hb-directwrite.hh"
 
-#include "hb-font.hh"
+#അന്തര്ഭാവ "hb-font.hh"
 
 
 /**
@@ -40,40 +40,40 @@
  * Functions for using HarfBuzz with DirectWrite fonts.
  **/
 
-static inline void free_static_directwrite_global ();
+സ്ഥിതം വരിയിൽ ശൂന്യം free_static_directwrite_global ();
 
-static struct hb_directwrite_global_lazy_loader_t : hb_lazy_loader_t<hb_directwrite_global_t,
+സ്ഥിതം ഘടന hb_directwrite_global_lazy_loader_t : hb_lazy_loader_t<hb_directwrite_global_t,
 								     hb_directwrite_global_lazy_loader_t>
 {
-  static hb_directwrite_global_t * create ()
+  സ്ഥിതം hb_directwrite_global_t * create ()
   {
     hb_directwrite_global_t *global = hb_directwrite_object_create<hb_directwrite_global_t> ();
 
-    if (unlikely (!global))
-      return nullptr;
-    if (unlikely (!global->success))
+    എങ്കിൽ (unlikely (!global))
+      തിരികെ nullptr;
+    എങ്കിൽ (unlikely (!global->success))
     {
       hb_directwrite_object_destroy (global);
-      return nullptr;
+      തിരികെ nullptr;
     }
 
     hb_atexit (free_static_directwrite_global);
 
-    return global;
+    തിരികെ global;
   }
-  static void destroy (hb_directwrite_global_t *l)
+  സ്ഥിതം ശൂന്യം destroy (hb_directwrite_global_t *l)
   {
     hb_directwrite_object_destroy (l);
   }
-  static hb_directwrite_global_t * get_null ()
+  സ്ഥിതം hb_directwrite_global_t * get_null ()
   {
-    return nullptr;
+    തിരികെ nullptr;
   }
 } static_directwrite_global;
 
 
-static inline
-void free_static_directwrite_global ()
+സ്ഥിതം വരിയിൽ
+ശൂന്യം free_static_directwrite_global ()
 {
   static_directwrite_global.free_instance ();
 }
@@ -81,24 +81,24 @@ void free_static_directwrite_global ()
 hb_directwrite_global_t *
 get_directwrite_global ()
 {
-  return static_directwrite_global.get_unconst ();
+  തിരികെ static_directwrite_global.get_unconst ();
 }
 
 DWriteFontFileStream::DWriteFontFileStream (hb_blob_t *blob)
 {
   auto *global = get_directwrite_global ();
   mLoader = global->fontFileLoader;
-  mRefCount.init ();
+  m_Ref_എണ്ണം.init ();
   mLoader->AddRef ();
   hb_blob_make_immutable (blob);
   mBlob = hb_blob_reference (blob);
   mData = (uint8_t *) hb_blob_get_data (blob, &mSize);
-  fontFileKey = mLoader->RegisterFontFileStream (this);
+  font_File_താക്കോൽ = mLoader->RegisterFontFileStream (ഇത്);
 }
 
 DWriteFontFileStream::~DWriteFontFileStream()
 {
-  mLoader->UnregisterFontFileStream (fontFileKey);
+  mLoader->UnregisterFontFileStream (font_File_താക്കോൽ);
   mLoader->Release ();
   hb_blob_destroy (mBlob);
 }
@@ -108,33 +108,33 @@ dw_face_create (hb_blob_t *blob, unsigned index)
 {
 #define FAIL(...) \
   HB_STMT_START { \
-    DEBUG_MSG (DIRECTWRITE, nullptr, __VA_ARGS__); \
-    return nullptr; \
+    DEBUG_സന്ദേശം (DIRECTWRITE, nullptr, __VA_ARGS__); \
+    തിരികെ nullptr; \
   } HB_STMT_END
 
   auto *global = get_directwrite_global ();
-  if (unlikely (!global))
+  എങ്കിൽ (unlikely (!global))
     FAIL ("Couldn't load DirectWrite!");
 
   DWriteFontFileStream *fontFileStream = hb_directwrite_object_create<DWriteFontFileStream> (blob);
-  if (unlikely (!fontFileStream))
+  എങ്കിൽ (unlikely (!fontFileStream))
     FAIL ("Failed to allocate font file stream!");
 
   IDWriteFontFile *fontFile;
-  auto hr = global->dwriteFactory->CreateCustomFontFileReference (&fontFileStream->fontFileKey, sizeof (fontFileStream->fontFileKey),
+  auto hr = global->dwriteFactory->CreateCustomFontFileReference (&fontFileStream->font_File_താക്കോൽ, വലുപ്പം (fontFileStream->font_File_താക്കോൽ),
 								  global->fontFileLoader, &fontFile);
 
   fontFileStream->Release ();
 
-  if (FAILED (hr))
+  എങ്കിൽ (FAILED (hr))
     FAIL ("Failed to load font file from data!");
 
   BOOL isSupported;
   DWRITE_FONT_FILE_TYPE fileType;
   DWRITE_FONT_FACE_TYPE faceType;
-  uint32_t numberOfFaces;
-  hr = fontFile->Analyze (&isSupported, &fileType, &faceType, &numberOfFaces);
-  if (FAILED (hr) || !isSupported)
+  uint32_t സംഖ്യ_Of_Faces;
+  hr = fontFile->Analyze (&isSupported, &fileType, &faceType, &സംഖ്യ_Of_Faces);
+  എങ്കിൽ (FAILED (hr) || !isSupported)
   {
     fontFile->Release ();
     FAIL ("Font file is not supported.");
@@ -147,108 +147,108 @@ dw_face_create (hb_blob_t *blob, unsigned index)
 					 DWRITE_FONT_SIMULATIONS_NONE, &fontFace);
   fontFile->Release ();
 
-  return fontFace;
+  തിരികെ fontFace;
 }
 
-struct _hb_directwrite_font_table_context {
+ഘടന _hb_directwrite_font_table_context {
   IDWriteFontFace *face;
-  void *table_context;
+  ശൂന്യം *table_context;
 };
 
-static void
-_hb_directwrite_table_data_release (void *data)
+സ്ഥിതം ശൂന്യം
+_hb_directwrite_table_data_release (ശൂന്യം *data)
 {
   _hb_directwrite_font_table_context *context = (_hb_directwrite_font_table_context *) data;
   context->face->ReleaseFontTable (context->table_context);
   hb_free (context);
 }
 
-static hb_blob_t *
+സ്ഥിതം hb_blob_t *
 _hb_directwrite_get_file_blob (IDWriteFontFace *dw_face)
 {
-  UINT32 file_count;
-  if (FAILED (dw_face->GetFiles(&file_count, NULL)))
-    return nullptr;
+  UINT32 file_എണ്ണം;
+  എങ്കിൽ (FAILED (dw_face->GetFiles(&file_എണ്ണം, ശൂന്യ)))
+    തിരികെ nullptr;
 
   hb_vector_t<IDWriteFontFile *> files;
-  if (unlikely (!files.resize_exact (file_count)))
-    return nullptr;
-  if (FAILED (dw_face->GetFiles(&file_count, files.arrayZ)))
-    return nullptr;
+  എങ്കിൽ (unlikely (!files.resize_exact (file_എണ്ണം)))
+    തിരികെ nullptr;
+  എങ്കിൽ (FAILED (dw_face->GetFiles(&file_എണ്ണം, files.arrayZ)))
+    തിരികെ nullptr;
 
   hb_blob_t *blob = nullptr;
-  for (UINT32 i = 0; i < file_count; i++)
+  വേണ്ടി (UINT32 i = 0; i < file_എണ്ണം; i++)
   {
-    LPCVOID reference_key;
-    UINT32 reference_key_size;
-    if (FAILED (files[i]->GetReferenceKey(&reference_key, &reference_key_size)))
-      continue;
+    LPCVOID reference_താക്കോൽ;
+    UINT32 reference_താക്കോൽ_size;
+    എങ്കിൽ (FAILED (files[i]->Get_Reference_താക്കോൽ(&reference_താക്കോൽ, &reference_താക്കോൽ_size)))
+      തുടരുക;
 
     IDWriteFontFileLoader *loader;
-    if (FAILED (files[i]->GetLoader(&loader)))
-      continue;
+    എങ്കിൽ (FAILED (files[i]->GetLoader(&loader)))
+      തുടരുക;
     
     IDWriteFontFileStream *stream;
-    if (FAILED (loader->CreateStreamFromKey (reference_key, reference_key_size, &stream)))
+    എങ്കിൽ (FAILED (loader->Create_Stream_From_താക്കോൽ (reference_താക്കോൽ, reference_താക്കോൽ_size, &stream)))
     {
       loader->Release ();
-      continue;
+      തുടരുക;
     }
 
     UINT64 file_size;
-    const void *fragment;
-    void *context;
-    if (FAILED (stream->GetFileSize(&file_size)) ||
+    സ്ഥിരം ശൂന്യം *fragment;
+    ശൂന്യം *context;
+    എങ്കിൽ (FAILED (stream->GetFileSize(&file_size)) ||
         FAILED (stream->ReadFileFragment (&fragment, 0, file_size, &context)))
     {
       loader->Release ();
-      continue;
+      തുടരുക;
     }
-    blob = hb_blob_create ((const char *) fragment, file_size, HB_MEMORY_MODE_DUPLICATE, NULL, NULL);
+    blob = hb_blob_create ((സ്ഥിരം അക്ഷരം *) fragment, file_size, HB_MEMORY_MODE_DUPLICATE, ശൂന്യ, ശൂന്യ);
     stream->ReleaseFileFragment (context);
     loader->Release ();
-    break;
+    നിർത്തുക;
   }
 
-  return blob;
+  തിരികെ blob;
 }
 
-static hb_blob_t *
-_hb_directwrite_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void *user_data)
+സ്ഥിതം hb_blob_t *
+_hb_directwrite_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, ശൂന്യം *user_data)
 {
   IDWriteFontFace *dw_face = ((IDWriteFontFace *) user_data);
-  const void *data;
+  സ്ഥിരം ശൂന്യം *data;
   uint32_t length;
-  void *table_context;
+  ശൂന്യം *table_context;
   BOOL exists;
-  if (tag == HB_TAG_NONE)
-    return _hb_directwrite_get_file_blob (dw_face);
+  എങ്കിൽ (tag == HB_TAG_NONE)
+    തിരികെ _hb_directwrite_get_file_blob (dw_face);
 
-  if (FAILED (dw_face->TryGetFontTable (hb_uint32_swap (tag), &data,
+  എങ്കിൽ (FAILED (dw_face->TryGetFontTable (hb_uint32_swap (tag), &data,
 					&length, &table_context, &exists)))
-    return nullptr;
+    തിരികെ nullptr;
 
-  if (!data || !exists || !length)
+  എങ്കിൽ (!data || !exists || !length)
   {
     dw_face->ReleaseFontTable (table_context);
-    return nullptr;
+    തിരികെ nullptr;
   }
 
-  _hb_directwrite_font_table_context *context = (_hb_directwrite_font_table_context *) hb_malloc (sizeof (_hb_directwrite_font_table_context));
-  if (unlikely (!context))
+  _hb_directwrite_font_table_context *context = (_hb_directwrite_font_table_context *) hb_malloc (വലുപ്പം (_hb_directwrite_font_table_context));
+  എങ്കിൽ (unlikely (!context))
   {
     dw_face->ReleaseFontTable (table_context);
-    return nullptr;
+    തിരികെ nullptr;
   }
   context->face = dw_face;
   context->table_context = table_context;
 
-  return hb_blob_create ((const char *) data, length, HB_MEMORY_MODE_READONLY,
+  തിരികെ hb_blob_create ((സ്ഥിരം അക്ഷരം *) data, length, HB_MEMORY_MODE_READONLY,
 			 context, _hb_directwrite_table_data_release);
 }
 
-static void
-_hb_directwrite_face_release (void *data)
+സ്ഥിതം ശൂന്യം
+_hb_directwrite_face_release (ശൂന്യം *data)
 {
   ((IDWriteFontFace *) data)->Release ();
 }
@@ -266,8 +266,8 @@ _hb_directwrite_face_release (void *data)
 hb_face_t *
 hb_directwrite_face_create (IDWriteFontFace *dw_face)
 {
-  if (!dw_face)
-    return hb_face_get_empty ();
+  എങ്കിൽ (!dw_face)
+    തിരികെ hb_face_get_empty ();
 
   dw_face->AddRef ();
   hb_face_t *face = hb_face_create_for_tables (_hb_directwrite_reference_table,
@@ -275,9 +275,9 @@ hb_directwrite_face_create (IDWriteFontFace *dw_face)
 					       _hb_directwrite_face_release);
 
   hb_face_set_index (face, dw_face->GetIndex ());
-  hb_face_set_glyph_count (face, dw_face->GetGlyphCount ());
+  hb_face_set_glyph_എണ്ണം (face, dw_face->Get_Glyph_എണ്ണം ());
 
-  return face;
+  തിരികെ face;
 }
 
 /**
@@ -297,14 +297,14 @@ hb_directwrite_face_create (IDWriteFontFace *dw_face)
  * Since: 11.0.0
  */
 hb_face_t *
-hb_directwrite_face_create_from_file_or_fail (const char   *file_name,
-					      unsigned int  index)
+hb_directwrite_face_create_from_file_or_fail (സ്ഥിരം അക്ഷരം   *file_name,
+					      unsigned പൂർണ്ണസംഖ്യ  index)
 {
   auto *blob = hb_blob_create_from_file_or_fail (file_name);
-  if (unlikely (!blob))
-    return nullptr;
+  എങ്കിൽ (unlikely (!blob))
+    തിരികെ nullptr;
 
-  return hb_directwrite_face_create_from_blob_or_fail (blob, index);
+  തിരികെ hb_directwrite_face_create_from_blob_or_fail (blob, index);
 }
 
 /**
@@ -325,23 +325,23 @@ hb_directwrite_face_create_from_file_or_fail (const char   *file_name,
  */
 HB_EXTERN hb_face_t *
 hb_directwrite_face_create_from_blob_or_fail (hb_blob_t    *blob,
-					      unsigned int  index)
+					      unsigned പൂർണ്ണസംഖ്യ  index)
 {
   IDWriteFontFace *dw_face = dw_face_create (blob, index);
-  if (unlikely (!dw_face))
-    return nullptr;
+  എങ്കിൽ (unlikely (!dw_face))
+    തിരികെ nullptr;
 
   hb_face_t *face = hb_directwrite_face_create (dw_face);
-  if (unlikely (hb_object_is_immutable (face)))
+  എങ്കിൽ (unlikely (hb_object_is_immutable (face)))
   {
     dw_face->Release ();
-    return face;
+    തിരികെ face;
   }
 
   /* Let there be dragons here... */
   face->data.directwrite.cmpexch (nullptr, (hb_directwrite_face_data_t *) dw_face);
 
-  return face;
+  തിരികെ face;
 }
 
 /**
@@ -357,7 +357,7 @@ hb_directwrite_face_create_from_blob_or_fail (hb_blob_t    *blob,
 IDWriteFontFace *
 hb_directwrite_face_get_dw_font_face (hb_face_t *face)
 {
-  return (IDWriteFontFace *) (const void *) face->data.directwrite;
+  തിരികെ (IDWriteFontFace *) (സ്ഥിരം ശൂന്യം *) face->data.directwrite;
 }
 
 #ifndef HB_DISABLE_DEPRECATED
@@ -376,7 +376,7 @@ hb_directwrite_face_get_dw_font_face (hb_face_t *face)
 IDWriteFontFace *
 hb_directwrite_face_get_font_face (hb_face_t *face)
 {
-  return hb_directwrite_face_get_dw_font_face (face);
+  തിരികെ hb_directwrite_face_get_dw_font_face (face);
 }
 
 #endif
@@ -400,26 +400,26 @@ hb_directwrite_font_create (IDWriteFontFace *dw_face)
   hb_font_t *font = hb_font_create (face);
   hb_face_destroy (face);
 
-  if (unlikely (hb_object_is_immutable (font)))
-    return font;
+  എങ്കിൽ (unlikely (hb_object_is_immutable (font)))
+    തിരികെ font;
 
   /* Copy font variations */
-  if (SUCCEEDED (dw_face->QueryInterface (__uuidof (IDWriteFontFace5), (void**) &dw_face5)))
+  എങ്കിൽ (SUCCEEDED (dw_face->QueryInterface (__uuidof (IDWriteFontFace5), (ശൂന്യം**) &dw_face5)))
   {
-    if (dw_face5->HasVariations ())
+    എങ്കിൽ (dw_face5->HasVariations ())
     {
-      hb_vector_t<DWRITE_FONT_AXIS_VALUE> values;
-      uint32_t count = dw_face5->GetFontAxisValueCount ();
-      if (likely (values.resize_exact (count)) &&
-	  SUCCEEDED (dw_face5->GetFontAxisValues (values.arrayZ, count)))
+      hb_vector_t<DWRITE_FONT_AXIS_മൂല്യം> values;
+      uint32_t എണ്ണം = dw_face5->Get_Font_Axis_മൂല്യം_എണ്ണം ();
+      എങ്കിൽ (likely (values.resize_exact (എണ്ണം)) &&
+	  SUCCEEDED (dw_face5->Get_Font_Axis_മൂല്യങ്ങൾ (values.arrayZ, എണ്ണം)))
       {
 	hb_vector_t<hb_variation_t> vars;
-	if (likely (vars.resize_exact (count)))
+	എങ്കിൽ (likely (vars.resize_exact (എണ്ണം)))
 	{
-	  for (uint32_t i = 0; i < count; ++i)
+	  വേണ്ടി (uint32_t i = 0; i < എണ്ണം; ++i)
 	  {
 	    hb_tag_t tag = hb_uint32_swap (values[i].axisTag);
-	    float value = values[i].value;
+	    ദശാംശം value = values[i].value;
 	    vars[i] = {tag, value};
 	  }
 	  hb_font_set_variations (font, vars.arrayZ, vars.length);
@@ -433,7 +433,7 @@ hb_directwrite_font_create (IDWriteFontFace *dw_face)
   dw_face->AddRef ();
   font->data.directwrite.cmpexch (nullptr, (hb_directwrite_font_data_t *) dw_face);
 
-  return font;
+  തിരികെ font;
 }
 
 /**
@@ -449,7 +449,7 @@ hb_directwrite_font_create (IDWriteFontFace *dw_face)
 IDWriteFontFace *
 hb_directwrite_font_get_dw_font_face (hb_font_t *font)
 {
-  return (IDWriteFontFace *) (const void *) font->data.directwrite;
+  തിരികെ (IDWriteFontFace *) (സ്ഥിരം ശൂന്യം *) font->data.directwrite;
 }
 
 #ifndef HB_DISABLE_DEPRECATED
@@ -468,7 +468,7 @@ hb_directwrite_font_get_dw_font_face (hb_font_t *font)
 IDWriteFont *
 hb_directwrite_font_get_dw_font (hb_font_t *font)
 {
-  return nullptr;
+  തിരികെ nullptr;
 }
 
 #endif

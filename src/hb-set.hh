@@ -28,15 +28,15 @@
 #ifndef HB_SET_HH
 #define HB_SET_HH
 
-#include "hb.hh"
-#include "hb-bit-set-invertible.hh"
-#include "hb-bit-vector.hh" // Just to include
+#അന്തര്ഭാവ "hb.hh"
+#അന്തര്ഭാവ "hb-bit-set-invertible.hh"
+#അന്തര്ഭാവ "hb-bit-vector.hh" // Just to include
 
 
 template <typename impl_t>
-struct hb_sparseset_t
+ഘടന hb_sparseset_t
 {
-  static constexpr bool realloc_move = true;
+  സ്ഥിതം constexpr തർക്കം realloc_move = സത്യം;
 
   hb_object_header_t header;
   impl_t s;
@@ -44,157 +44,157 @@ struct hb_sparseset_t
   hb_sparseset_t () { init (); }
   ~hb_sparseset_t () { fini (); }
 
-  hb_sparseset_t (const hb_sparseset_t& other) : hb_sparseset_t () { set (other); }
+  hb_sparseset_t (സ്ഥിരം hb_sparseset_t& other) : hb_sparseset_t () { set (other); }
   hb_sparseset_t (hb_sparseset_t&& other)  noexcept : hb_sparseset_t () { s = std::move (other.s); }
-  hb_sparseset_t& operator = (const hb_sparseset_t& other) { set (other); return *this; }
-  hb_sparseset_t& operator = (hb_sparseset_t&& other)  noexcept { s = std::move (other.s); return *this; }
-  friend void swap (hb_sparseset_t& a, hb_sparseset_t& b)  noexcept { hb_swap (a.s, b.s); }
+  hb_sparseset_t& operator = (സ്ഥിരം hb_sparseset_t& other) { set (other); തിരികെ *ഇത്; }
+  hb_sparseset_t& operator = (hb_sparseset_t&& other)  noexcept { s = std::move (other.s); തിരികെ *ഇത്; }
+  friend ശൂന്യം swap (hb_sparseset_t& a, hb_sparseset_t& b)  noexcept { hb_swap (a.s, b.s); }
 
   hb_sparseset_t (std::initializer_list<hb_codepoint_t> lst) : hb_sparseset_t ()
   {
-    for (auto&& item : lst)
+    വേണ്ടി (auto&& item : lst)
       add (item);
   }
   template <typename Iterable,
            hb_requires (hb_is_iterable (Iterable))>
-  hb_sparseset_t (const Iterable &o) : hb_sparseset_t ()
+  hb_sparseset_t (സ്ഥിരം Iterable &o) : hb_sparseset_t ()
   {
-    hb_copy (o, *this);
+    hb_copy (o, *ഇത്);
   }
 
-  void init ()
+  ശൂന്യം init ()
   {
-    hb_object_init (this);
+    hb_object_init (ഇത്);
     s.init ();
   }
-  void fini ()
+  ശൂന്യം fini ()
   {
-    hb_object_fini (this);
+    hb_object_fini (ഇത്);
     s.fini ();
   }
 
-  explicit operator bool () const { return !is_empty (); }
+  explicit operator തർക്കം () സ്ഥിരം { തിരികെ !is_empty (); }
 
-  void err () { s.err (); }
-  bool in_error () const { return s.in_error (); }
+  ശൂന്യം err () { s.err (); }
+  തർക്കം in_error () സ്ഥിരം { തിരികെ s.in_error (); }
 
-  void alloc (unsigned sz) { s.alloc (sz); }
-  void reset () { s.reset (); }
-  void clear () { s.clear (); }
-  void invert () { s.invert (); }
-  bool is_inverted () const { return s.is_inverted (); }
-  bool is_empty () const { return s.is_empty (); }
-  uint32_t hash () const { return s.hash (); }
+  ശൂന്യം alloc (unsigned sz) { s.alloc (sz); }
+  ശൂന്യം reset () { s.reset (); }
+  ശൂന്യം clear () { s.clear (); }
+  ശൂന്യം invert () { s.invert (); }
+  തർക്കം is_inverted () സ്ഥിരം { തിരികെ s.is_inverted (); }
+  തർക്കം is_empty () സ്ഥിരം { തിരികെ s.is_empty (); }
+  uint32_t hash () സ്ഥിരം { തിരികെ s.hash (); }
 
-  void add (hb_codepoint_t g) { s.add (g); }
-  void add_bits (hb_codepoint_t g, uint64_t bits) { s.add_bits (g, bits); }
-  bool add_range (hb_codepoint_t first, hb_codepoint_t last) { return s.add_range (first, last); }
+  ശൂന്യം add (hb_codepoint_t g) { s.add (g); }
+  ശൂന്യം add_bits (hb_codepoint_t g, uint64_t bits) { s.add_bits (g, bits); }
+  തർക്കം add_range (hb_codepoint_t first, hb_codepoint_t last) { തിരികെ s.add_range (first, last); }
 
   template <typename T>
-  void add_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { s.add_array (array, count, stride); }
+  ശൂന്യം add_array (സ്ഥിരം T *array, unsigned പൂർണ്ണസംഖ്യ എണ്ണം, unsigned പൂർണ്ണസംഖ്യ stride=വലുപ്പം(T))
+  { s.add_array (array, എണ്ണം, stride); }
   template <typename T>
-  void add_array (const hb_array_t<const T>& arr) { add_array (&arr, arr.len ()); }
+  ശൂന്യം add_array (സ്ഥിരം hb_array_t<സ്ഥിരം T>& arr) { add_array (&arr, arr.len ()); }
 
   /* Might return false if array looks unsorted.
    * Used for faster rejection of corrupt data. */
   template <typename T>
-  bool add_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { return s.add_sorted_array (array, count, stride); }
+  തർക്കം add_sorted_array (സ്ഥിരം T *array, unsigned പൂർണ്ണസംഖ്യ എണ്ണം, unsigned പൂർണ്ണസംഖ്യ stride=വലുപ്പം(T))
+  { തിരികെ s.add_sorted_array (array, എണ്ണം, stride); }
   template <typename T>
-  bool add_sorted_array (const hb_sorted_array_t<const T>& arr) { return add_sorted_array (&arr, arr.len ()); }
+  തർക്കം add_sorted_array (സ്ഥിരം hb_sorted_array_t<സ്ഥിരം T>& arr) { തിരികെ add_sorted_array (&arr, arr.len ()); }
 
-  void del (hb_codepoint_t g) { s.del (g); }
-  void del_range (hb_codepoint_t a, hb_codepoint_t b) { s.del_range (a, b); }
+  ശൂന്യം del (hb_codepoint_t g) { s.del (g); }
+  ശൂന്യം del_range (hb_codepoint_t a, hb_codepoint_t b) { s.del_range (a, b); }
 
-  bool get (hb_codepoint_t g) const { return s.get (g); }
-  bool may_have (hb_codepoint_t g) const { return get (g); }
+  തർക്കം get (hb_codepoint_t g) സ്ഥിരം { തിരികെ s.get (g); }
+  തർക്കം may_have (hb_codepoint_t g) സ്ഥിരം { തിരികെ get (g); }
 
   /* Has interface. */
-  bool operator [] (hb_codepoint_t k) const { return get (k); }
-  bool has (hb_codepoint_t k) const { return (*this)[k]; }
+  തർക്കം operator [] (hb_codepoint_t k) സ്ഥിരം { തിരികെ get (k); }
+  തർക്കം has (hb_codepoint_t k) സ്ഥിരം { തിരികെ (*ഇത്)[k]; }
 
   /* Predicate. */
-  bool operator () (hb_codepoint_t k) const { return has (k); }
+  തർക്കം operator () (hb_codepoint_t k) സ്ഥിരം { തിരികെ has (k); }
 
   /* Sink interface. */
   hb_sparseset_t& operator << (hb_codepoint_t v)
-  { add (v); return *this; }
-  hb_sparseset_t& operator << (const hb_codepoint_pair_t& range)
-  { add_range (range.first, range.second); return *this; }
+  { add (v); തിരികെ *ഇത്; }
+  hb_sparseset_t& operator << (സ്ഥിരം hb_codepoint_pair_t& range)
+  { add_range (range.first, range.second); തിരികെ *ഇത്; }
 
-  bool may_intersect (const hb_sparseset_t &other) const
-  { return s.may_intersect (other.s); }
+  തർക്കം may_intersect (സ്ഥിരം hb_sparseset_t &other) സ്ഥിരം
+  { തിരികെ s.may_intersect (other.s); }
 
-  bool intersects (const hb_sparseset_t &other) const
-  { return s.intersects (other.s); }
+  തർക്കം intersects (സ്ഥിരം hb_sparseset_t &other) സ്ഥിരം
+  { തിരികെ s.intersects (other.s); }
 
-  bool intersects (hb_codepoint_t first, hb_codepoint_t last) const
-  { return s.intersects (first, last); }
+  തർക്കം intersects (hb_codepoint_t first, hb_codepoint_t last) സ്ഥിരം
+  { തിരികെ s.intersects (first, last); }
 
-  void set (const hb_sparseset_t &other) { s.set (other.s); }
+  ശൂന്യം set (സ്ഥിരം hb_sparseset_t &other) { s.set (other.s); }
 
-  bool is_equal (const hb_sparseset_t &other) const { return s.is_equal (other.s); }
-  bool operator == (const hb_set_t &other) const { return is_equal (other); }
-  bool operator != (const hb_set_t &other) const { return !is_equal (other); }
+  തർക്കം is_equal (സ്ഥിരം hb_sparseset_t &other) സ്ഥിരം { തിരികെ s.is_equal (other.s); }
+  തർക്കം operator == (സ്ഥിരം hb_set_t &other) സ്ഥിരം { തിരികെ is_equal (other); }
+  തർക്കം operator != (സ്ഥിരം hb_set_t &other) സ്ഥിരം { തിരികെ !is_equal (other); }
 
-  bool is_subset (const hb_sparseset_t &larger_set) const { return s.is_subset (larger_set.s); }
+  തർക്കം is_subset (സ്ഥിരം hb_sparseset_t &larger_set) സ്ഥിരം { തിരികെ s.is_subset (larger_set.s); }
 
-  void union_ (const hb_sparseset_t &other) { s.union_ (other.s); }
-  void intersect (const hb_sparseset_t &other,
+  ശൂന്യം union_ (സ്ഥിരം hb_sparseset_t &other) { s.union_ (other.s); }
+  ശൂന്യം intersect (സ്ഥിരം hb_sparseset_t &other,
 		  hb_vector_t<unsigned> *workspace = nullptr)
   { s.intersect (other.s, workspace); }
-  void subtract (const hb_sparseset_t &other) { s.subtract (other.s); }
-  void symmetric_difference (const hb_sparseset_t &other) { s.symmetric_difference (other.s); }
+  ശൂന്യം subtract (സ്ഥിരം hb_sparseset_t &other) { s.subtract (other.s); }
+  ശൂന്യം symmetric_difference (സ്ഥിരം hb_sparseset_t &other) { s.symmetric_difference (other.s); }
 
-  bool next (hb_codepoint_t *codepoint) const { return s.next (codepoint); }
-  bool next_bits (hb_codepoint_t *codepoint, uint64_t *bits) const
-  { return s.next_bits (codepoint, bits); }
-  bool previous (hb_codepoint_t *codepoint) const { return s.previous (codepoint); }
-  bool next_range (hb_codepoint_t *first, hb_codepoint_t *last) const
-  { return s.next_range (first, last); }
-  bool previous_range (hb_codepoint_t *first, hb_codepoint_t *last) const
-  { return s.previous_range (first, last); }
-  unsigned int next_many (hb_codepoint_t codepoint, hb_codepoint_t *out, unsigned int size) const
-  { return s.next_many (codepoint, out, size); }
+  തർക്കം next (hb_codepoint_t *codepoint) സ്ഥിരം { തിരികെ s.next (codepoint); }
+  തർക്കം next_bits (hb_codepoint_t *codepoint, uint64_t *bits) സ്ഥിരം
+  { തിരികെ s.next_bits (codepoint, bits); }
+  തർക്കം previous (hb_codepoint_t *codepoint) സ്ഥിരം { തിരികെ s.previous (codepoint); }
+  തർക്കം next_range (hb_codepoint_t *first, hb_codepoint_t *last) സ്ഥിരം
+  { തിരികെ s.next_range (first, last); }
+  തർക്കം previous_range (hb_codepoint_t *first, hb_codepoint_t *last) സ്ഥിരം
+  { തിരികെ s.previous_range (first, last); }
+  unsigned പൂർണ്ണസംഖ്യ next_many (hb_codepoint_t codepoint, hb_codepoint_t *out, unsigned പൂർണ്ണസംഖ്യ size) സ്ഥിരം
+  { തിരികെ s.next_many (codepoint, out, size); }
 
-  unsigned int get_population () const { return s.get_population (); }
-  bool get_singleton (hb_codepoint_t *codepoint) const { return s.get_singleton (codepoint); }
-  hb_codepoint_t get_min () const { return s.get_min (); }
-  hb_codepoint_t get_max () const { return s.get_max (); }
+  unsigned പൂർണ്ണസംഖ്യ get_population () സ്ഥിരം { തിരികെ s.get_population (); }
+  തർക്കം get_singleton (hb_codepoint_t *codepoint) സ്ഥിരം { തിരികെ s.get_singleton (codepoint); }
+  hb_codepoint_t get_min () സ്ഥിരം { തിരികെ s.get_min (); }
+  hb_codepoint_t get_max () സ്ഥിരം { തിരികെ s.get_max (); }
 
-  static constexpr hb_codepoint_t INVALID = impl_t::INVALID;
+  സ്ഥിതം constexpr hb_codepoint_t INVALID = impl_t::INVALID;
 
   /*
    * Iterator implementation.
    */
   using iter_t = typename impl_t::iter_t;
-  iter_t iter () const { return iter_t (this->s); }
-  operator iter_t () const { return iter (); }
+  iter_t iter () സ്ഥിരം { തിരികെ iter_t (ഇത്->s); }
+  operator iter_t () സ്ഥിരം { തിരികെ iter (); }
 };
 
-struct hb_set_t : hb_sparseset_t<hb_bit_set_invertible_t>
+ഘടന hb_set_t : hb_sparseset_t<hb_bit_set_invertible_t>
 {
   using sparseset = hb_sparseset_t<hb_bit_set_invertible_t>;
 
-  ~hb_set_t () = default;
+  ~hb_set_t () = സ്ഥിരസ്ഥിതി;
   hb_set_t () : sparseset () {};
-  hb_set_t (const hb_set_t &o) : sparseset ((sparseset &) o) {};
+  hb_set_t (സ്ഥിരം hb_set_t &o) : sparseset ((sparseset &) o) {};
   hb_set_t (hb_set_t&& o)  noexcept : sparseset (std::move ((sparseset &) o)) {}
-  hb_set_t& operator = (const hb_set_t&) = default;
-  hb_set_t& operator = (hb_set_t&&) = default;
+  hb_set_t& operator = (സ്ഥിരം hb_set_t&) = സ്ഥിരസ്ഥിതി;
+  hb_set_t& operator = (hb_set_t&&) = സ്ഥിരസ്ഥിതി;
   hb_set_t (std::initializer_list<hb_codepoint_t> lst) : sparseset (lst) {}
   template <typename Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  hb_set_t (const Iterable &o) : sparseset (o) {}
+  hb_set_t (സ്ഥിരം Iterable &o) : sparseset (o) {}
 
   hb_set_t& operator << (hb_codepoint_t v)
-  { sparseset::operator<< (v); return *this; }
-  hb_set_t& operator << (const hb_codepoint_pair_t& range)
-  { sparseset::operator<< (range); return *this; }
+  { sparseset::operator<< (v); തിരികെ *ഇത്; }
+  hb_set_t& operator << (സ്ഥിരം hb_codepoint_pair_t& range)
+  { sparseset::operator<< (range); തിരികെ *ഇത്; }
 };
 
-static_assert (hb_set_t::INVALID == HB_SET_VALUE_INVALID, "");
+static_assert (hb_set_t::INVALID == HB_SET_മൂല്യം_INVALID, "");
 
 
 #endif /* HB_SET_HH */

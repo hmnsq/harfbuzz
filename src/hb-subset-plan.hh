@@ -27,28 +27,28 @@
 #ifndef HB_SUBSET_PLAN_HH
 #define HB_SUBSET_PLAN_HH
 
-#include "hb.hh"
+#അന്തര്ഭാവ "hb.hh"
 
-#include "hb-subset.h"
-#include "hb-subset-input.hh"
-#include "hb-subset-accelerator.hh"
+#അന്തര്ഭാവ "hb-subset.h"
+#അന്തര്ഭാവ "hb-subset-input.hh"
+#അന്തര്ഭാവ "hb-subset-accelerator.hh"
 
-#include "hb-map.hh"
-#include "hb-bimap.hh"
-#include "hb-set.hh"
+#അന്തര്ഭാവ "hb-map.hh"
+#അന്തര്ഭാവ "hb-bimap.hh"
+#അന്തര്ഭാവ "hb-set.hh"
 
-namespace OT {
-struct Feature;
+നാമാകാശ OT {
+ഘടന Feature;
 }
 
-struct os2_info_t {
+ഘടന os2_info_t {
   hb_codepoint_t min_cmap_codepoint;
   hb_codepoint_t max_cmap_codepoint;
 };
 
-typedef struct os2_info_t os2_info_t;
+തരനിർവചനം ഘടന os2_info_t os2_info_t;
 
-struct head_maxp_info_t
+ഘടന head_maxp_info_t
 {
   head_maxp_info_t ()
       :xMin (0x7FFF), xMax (-0x7FFF), yMin (0x7FFF), yMax (-0x7FFF),
@@ -57,87 +57,87 @@ struct head_maxp_info_t
       maxCompositeContours (0),
       maxComponentElements (0),
       maxComponentDepth (0),
-      allXMinIsLsb (true) {}
+      allXMinIsLsb (സത്യം) {}
 
-  int xMin;
-  int xMax;
-  int yMin;
-  int yMax;
+  പൂർണ്ണസംഖ്യ xMin;
+  പൂർണ്ണസംഖ്യ xMax;
+  പൂർണ്ണസംഖ്യ yMin;
+  പൂർണ്ണസംഖ്യ yMax;
   unsigned maxPoints;
   unsigned maxContours;
   unsigned maxCompositePoints;
   unsigned maxCompositeContours;
   unsigned maxComponentElements;
   unsigned maxComponentDepth;
-  bool allXMinIsLsb;
+  തർക്കം allXMinIsLsb;
 };
 
-typedef struct head_maxp_info_t head_maxp_info_t;
+തരനിർവചനം ഘടന head_maxp_info_t head_maxp_info_t;
 
-struct contour_point_t
+ഘടന contour_point_t
 {
-  void init (float x_ = 0.f, float y_ = 0.f, bool is_end_point_ = false)
+  ശൂന്യം init (ദശാംശം x_ = 0.f, ദശാംശം y_ = 0.f, തർക്കം is_end_point_ = അസത്യം)
   { flag = 0; x = x_; y = y_; is_end_point = is_end_point_; }
 
-  void transform (const float (&matrix)[4])
+  ശൂന്യം transform (സ്ഥിരം ദശാംശം (&matrix)[4])
   {
-    float x_ = x * matrix[0] + y * matrix[2];
+    ദശാംശം x_ = x * matrix[0] + y * matrix[2];
 	  y  = x * matrix[1] + y * matrix[3];
     x  = x_;
   }
 
-  void add_delta (float delta_x, float delta_y)
+  ശൂന്യം add_delta (ദശാംശം delta_x, ദശാംശം delta_y)
   {
     x += delta_x;
     y += delta_y;
   }
 
   HB_ALWAYS_INLINE
-  void translate (const contour_point_t &p) { x += p.x; y += p.y; }
+  ശൂന്യം translate (സ്ഥിരം contour_point_t &p) { x += p.x; y += p.y; }
 
-  float x;
-  float y;
+  ദശാംശം x;
+  ദശാംശം y;
   uint8_t flag;
-  bool is_end_point;
+  തർക്കം is_end_point;
 };
 
-struct contour_point_vector_t : hb_vector_t<contour_point_t>
+ഘടന contour_point_vector_t : hb_vector_t<contour_point_t>
 {
-  bool add_deltas (hb_array_t<const float> deltas_x,
-                   hb_array_t<const float> deltas_y,
-                   hb_array_t<const bool> indices)
+  തർക്കം add_deltas (hb_array_t<സ്ഥിരം ദശാംശം> deltas_x,
+                   hb_array_t<സ്ഥിരം ദശാംശം> deltas_y,
+                   hb_array_t<സ്ഥിരം തർക്കം> indices)
   {
-    if (indices.length != deltas_x.length ||
+    എങ്കിൽ (indices.length != deltas_x.length ||
         indices.length != deltas_y.length)
-      return false;
+      തിരികെ അസത്യം;
 
-    for (unsigned i = 0; i < indices.length; i++)
+    വേണ്ടി (unsigned i = 0; i < indices.length; i++)
     {
-      if (!indices.arrayZ[i]) continue;
+      എങ്കിൽ (!indices.arrayZ[i]) തുടരുക;
       arrayZ[i].add_delta (deltas_x.arrayZ[i], deltas_y.arrayZ[i]);
     }
-    return true;
+    തിരികെ സത്യം;
   }
 };
 
-namespace OT {
-  struct cff1_subset_accelerator_t;
-  struct cff2_subset_accelerator_t;
+നാമാകാശ OT {
+  ഘടന cff1_subset_accelerator_t;
+  ഘടന cff2_subset_accelerator_t;
 }
 
-struct hb_subset_plan_t
+ഘടന hb_subset_plan_t
 {
   HB_INTERNAL hb_subset_plan_t (hb_face_t *,
-				const hb_subset_input_t *input);
+				സ്ഥിരം hb_subset_നിവേശം_t *നിവേശം);
 
   HB_INTERNAL ~hb_subset_plan_t();
 
   hb_object_header_t header;
 
-  bool successful;
+  തർക്കം successful;
   unsigned flags;
-  bool attach_accelerator_data = false;
-  bool force_long_loca = false;
+  തർക്കം attach_accelerator_data = അസത്യം;
+  തർക്കം force_long_loca = അസത്യം;
 
   // The glyph subset
   hb_map_t *codepoint_to_glyph; // Needs to be heap-allocated
@@ -156,24 +156,24 @@ struct hb_subset_plan_t
 
   hb_face_t *dest;
 
-  unsigned int _num_output_glyphs;
+  unsigned പൂർണ്ണസംഖ്യ അക്കം_output_glyphs_2;
 
-  bool all_axes_pinned;
-  bool pinned_at_default;
-  bool has_seac;
+  തർക്കം all_axes_pinned;
+  തർക്കം pinned_at_default;
+  തർക്കം has_seac;
 
   // whether to insert a catch-all FeatureVariationRecord
-  bool gsub_insert_catch_all_feature_variation_rec;
-  bool gpos_insert_catch_all_feature_variation_rec;
+  തർക്കം gsub_തിരുകുക_catch_all_feature_variation_rec;
+  തർക്കം gpos_തിരുകുക_catch_all_feature_variation_rec;
 
   // whether GDEF ItemVariationStore is retained
-  mutable bool has_gdef_varstore;
+  mutable തർക്കം has_gdef_varstore;
 
   // whether we're doing avar2 partial instancing
-  bool has_avar2;
+  തർക്കം has_avar2;
 
 #define HB_SUBSET_PLAN_MEMBER(Type, Name) Type Name;
-#include "hb-subset-plan-member-list.hh"
+#അന്തര്ഭാവ "hb-subset-plan-member-list.hh"
 #undef HB_SUBSET_PLAN_MEMBER
 
   //recalculated head/maxp table info after instancing
@@ -181,46 +181,46 @@ struct hb_subset_plan_t
 
   os2_info_t os2_info;
 
-  const hb_subset_accelerator_t* accelerator = nullptr;
+  സ്ഥിരം hb_subset_accelerator_t* accelerator = nullptr;
   hb_subset_accelerator_t* inprogress_accelerator = nullptr;
 
- public:
+ പൊതു:
 
   template<typename T>
-  struct source_table_loader
+  ഘടന source_table_loader
   {
     hb_blob_ptr_t<T> operator () (hb_subset_plan_t *plan)
     {
       hb_lock_t lock (plan->accelerator ? &plan->accelerator->sanitized_table_cache_lock : nullptr);
 
       auto *cache = plan->accelerator ? &plan->accelerator->sanitized_table_cache : &plan->sanitized_table_cache;
-      if (cache
+      എങ്കിൽ (cache
 	  && !cache->in_error ()
 	  && cache->has (+T::tableTag)) {
-	return hb_blob_reference (cache->get (+T::tableTag).get ());
+	തിരികെ hb_blob_reference (cache->get (+T::tableTag).get ());
       }
 
       hb::unique_ptr<hb_blob_t> table_blob {hb_sanitize_context_t ().reference_table<T> (plan->source)};
       hb_blob_t* ret = hb_blob_reference (table_blob.get ());
 
-      if (likely (cache))
+      എങ്കിൽ (likely (cache))
 	cache->set (+T::tableTag, std::move (table_blob));
 
-      return ret;
+      തിരികെ ret;
     }
   };
 
   template<typename T>
-  auto source_table() HB_AUTO_RETURN (source_table_loader<T> {} (this))
+  auto source_table() HB_AUTO_RETURN (source_table_loader<T> {} (ഇത്))
 
-  bool in_error () const { return !successful; }
+  തർക്കം in_error () സ്ഥിരം { തിരികെ !successful; }
 
-  HB_INTERNAL double layout_variation_delta (unsigned var_idx);
+  HB_INTERNAL ഇരട്ട layout_variation_delta (unsigned var_idx);
 
-  bool check_success(bool success)
+  തർക്കം check_success(തർക്കം success)
   {
     successful = (successful && success);
-    return successful;
+    തിരികെ successful;
   }
 
   /*
@@ -228,88 +228,88 @@ struct hb_subset_plan_t
    * Does NOT include ids kept due to retain_gids. You probably want to use
    * glyph_map/reverse_glyph_map.
    */
-  inline const hb_set_t *
-  glyphset () const
+  വരിയിൽ സ്ഥിരം hb_set_t *
+  glyphset () സ്ഥിരം
   {
-    return &_glyphset;
+    തിരികെ &_glyphset;
   }
 
   /*
    * The set of input glyph ids which will be retained in the subset.
    */
-  inline const hb_set_t *
-  glyphset_gsub () const
+  വരിയിൽ സ്ഥിരം hb_set_t *
+  glyphset_gsub () സ്ഥിരം
   {
-    return &_glyphset_gsub;
+    തിരികെ &_glyphset_gsub;
   }
 
   /*
    * Old-to-new glyph id mapping for GSUB glyphs, through the flat
    * array; returns HB_MAP_VALUE_INVALID for glyphs not retained.
    */
-  inline hb_codepoint_t
-  map_gsub_glyph (hb_codepoint_t old_gid) const
+  വരിയിൽ hb_codepoint_t
+  map_gsub_glyph (hb_codepoint_t old_gid) സ്ഥിരം
   {
-    return old_gid < glyph_map_gsub_flat.length
+    തിരികെ old_gid < glyph_map_gsub_flat.length
 	 ? glyph_map_gsub_flat.arrayZ[old_gid]
-	 : HB_MAP_VALUE_INVALID;
+	 : HB_MAP_മൂല്യം_INVALID;
   }
 
   /*
    * The total number of output glyphs in the final subset.
    */
-  inline unsigned int
-  num_output_glyphs () const
+  വരിയിൽ unsigned പൂർണ്ണസംഖ്യ
+  അക്കം_output_glyphs () സ്ഥിരം
   {
-    return _num_output_glyphs;
+    തിരികെ അക്കം_output_glyphs_2;
   }
 
-  inline bool new_gid_for_codepoint (hb_codepoint_t codepoint,
-				     hb_codepoint_t *new_gid) const
+  വരിയിൽ തർക്കം new_gid_for_codepoint (hb_codepoint_t codepoint,
+				     hb_codepoint_t *new_gid) സ്ഥിരം
   {
     hb_codepoint_t old_gid = codepoint_to_glyph->get (codepoint);
-    if (old_gid == HB_MAP_VALUE_INVALID)
-      return false;
+    എങ്കിൽ (old_gid == HB_MAP_മൂല്യം_INVALID)
+      തിരികെ അസത്യം;
 
-    return new_gid_for_old_gid (old_gid, new_gid);
+    തിരികെ new_gid_for_old_gid (old_gid, new_gid);
   }
 
-  inline bool new_gid_for_old_gid (hb_codepoint_t old_gid,
-				   hb_codepoint_t *new_gid) const
+  വരിയിൽ തർക്കം new_gid_for_old_gid (hb_codepoint_t old_gid,
+				   hb_codepoint_t *new_gid) സ്ഥിരം
   {
     hb_codepoint_t gid = glyph_map->get (old_gid);
-    if (gid == HB_MAP_VALUE_INVALID)
-      return false;
+    എങ്കിൽ (gid == HB_MAP_മൂല്യം_INVALID)
+      തിരികെ അസത്യം;
 
     *new_gid = gid;
-    return true;
+    തിരികെ സത്യം;
   }
 
-  inline bool old_gid_for_new_gid (hb_codepoint_t  new_gid,
-				   hb_codepoint_t *old_gid) const
+  വരിയിൽ തർക്കം old_gid_for_new_gid (hb_codepoint_t  new_gid,
+				   hb_codepoint_t *old_gid) സ്ഥിരം
   {
     hb_codepoint_t gid = reverse_glyph_map->get (new_gid);
-    if (gid == HB_MAP_VALUE_INVALID)
-      return false;
+    എങ്കിൽ (gid == HB_MAP_മൂല്യം_INVALID)
+      തിരികെ അസത്യം;
 
     *old_gid = gid;
-    return true;
+    തിരികെ സത്യം;
   }
 
-  inline bool
+  വരിയിൽ തർക്കം
   add_table (hb_tag_t tag,
 	     hb_blob_t *contents)
   {
-    if (HB_DEBUG_SUBSET)
+    എങ്കിൽ (HB_DEBUG_SUBSET)
     {
       hb_blob_t *source_blob = source->reference_table (tag);
-      DEBUG_MSG(SUBSET, nullptr, "add table %c%c%c%c, dest %u bytes, source %u bytes",
+      DEBUG_സന്ദേശം(SUBSET, nullptr, "add table %c%c%c%c, dest %u bytes, source %u bytes",
 		HB_UNTAG(tag),
 		hb_blob_get_length (contents),
 		hb_blob_get_length (source_blob));
       hb_blob_destroy (source_blob);
     }
-    return hb_face_builder_add_table (dest, tag, contents);
+    തിരികെ hb_face_builder_add_table (dest, tag, contents);
   }
 };
 
@@ -321,66 +321,66 @@ struct hb_subset_plan_t
 //
 // The functions below are those needed to connect the split files
 // above together.
-HB_INTERNAL void
-remap_indexes (const hb_set_t *indexes,
+HB_INTERNAL ശൂന്യം
+remap_indexes (സ്ഥിരം hb_set_t *indexes,
                hb_map_t       *mapping /* OUT */);
 
 
 #ifndef HB_NO_VAR
 template<typename ItemVarStore>
-HB_INTERNAL void
-remap_variation_indices (const ItemVarStore &var_store,
-                         const hb_set_t &variation_indices,
-                         const hb_vector_t<int>& normalized_coords,
-                         bool calculate_delta, /* not pinned at default */
-                         bool no_variations, /* all axes pinned */
-                         hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> &variation_idx_delta_map /* OUT */);
+HB_INTERNAL ശൂന്യം
+remap_variation_indices (സ്ഥിരം ItemVarStore &var_store,
+                         സ്ഥിരം hb_set_t &variation_indices,
+                         സ്ഥിരം hb_vector_t<പൂർണ്ണസംഖ്യ>& normalized_coords,
+                         തർക്കം calculate_delta, /* not pinned at default */
+                         തർക്കം no_variations, /* all axes pinned */
+                         hb_hashmap_t<unsigned, hb_pair_t<unsigned, പൂർണ്ണസംഖ്യ>> &variation_idx_delta_map /* OUT */);
 
 
 template<typename DeltaSetIndexMap>
-HB_INTERNAL void
-remap_colrv1_delta_set_index_indices (const DeltaSetIndexMap &index_map,
-                                      const hb_set_t &delta_set_idxes,
-                                      hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> &variation_idx_delta_map, /* IN/OUT */
+HB_INTERNAL ശൂന്യം
+remap_colrv1_delta_set_index_indices (സ്ഥിരം DeltaSetIndexMap &index_map,
+                                      സ്ഥിരം hb_set_t &delta_set_idxes,
+                                      hb_hashmap_t<unsigned, hb_pair_t<unsigned, പൂർണ്ണസംഖ്യ>> &variation_idx_delta_map, /* IN/OUT */
                                       hb_map_t &new_deltaset_idx_varidx_map /* OUT */);
 
 
-HB_INTERNAL void
-generate_varstore_inner_maps (const hb_set_t& varidx_set,
-                              unsigned subtable_count,
+HB_INTERNAL ശൂന്യം
+generate_varstore_inner_maps (സ്ഥിരം hb_set_t& varidx_set,
+                              unsigned subtable_എണ്ണം,
                               hb_vector_t<hb_inc_bimap_t> &inner_maps /* OUT */);
 
-HB_INTERNAL bool
+HB_INTERNAL തർക്കം
 normalize_axes_location (hb_face_t *face, hb_subset_plan_t *plan);
 
-HB_INTERNAL void
+HB_INTERNAL ശൂന്യം
 update_instance_metrics_map_from_cff2 (hb_subset_plan_t *plan);
 
-HB_INTERNAL bool
+HB_INTERNAL തർക്കം
 get_instance_glyphs_contour_points (hb_subset_plan_t *plan);
 
 #ifndef HB_NO_BASE
-HB_INTERNAL void
+HB_INTERNAL ശൂന്യം
 collect_base_variation_indices (hb_subset_plan_t* plan);
 #endif
 #endif
 
 #ifndef HB_NO_SUBSET_LAYOUT
-typedef hb_hashmap_t<unsigned, hb::unique_ptr<hb_set_t>> script_langsys_map;
+തരനിർവചനം hb_hashmap_t<unsigned, hb::unique_ptr<hb_set_t>> script_langsys_map;
 
-HB_INTERNAL void
+HB_INTERNAL ശൂന്യം
 remap_used_mark_sets (hb_subset_plan_t *plan,
                       hb_map_t& used_mark_sets_map);
 
-HB_INTERNAL void
+HB_INTERNAL ശൂന്യം
 layout_nameid_closure (hb_subset_plan_t* plan,
                        hb_set_t* drop_tables);
 
-HB_INTERNAL void
+HB_INTERNAL ശൂന്യം
 layout_populate_gids_to_retain (hb_subset_plan_t* plan,
                                 hb_set_t* drop_tables);
 
-HB_INTERNAL void
+HB_INTERNAL ശൂന്യം
 collect_layout_variation_indices (hb_subset_plan_t* plan);
 #endif
 

@@ -25,68 +25,68 @@
 #ifndef HB_MULTIMAP_HH
 #define HB_MULTIMAP_HH
 
-#include "hb.hh"
-#include "hb-map.hh"
-#include "hb-vector.hh"
+#അന്തര്ഭാവ "hb.hh"
+#അന്തര്ഭാവ "hb-map.hh"
+#അന്തര്ഭാവ "hb-vector.hh"
 
 
 /*
  * hb_multimap_t
  */
 
-struct hb_multimap_t
+ഘടന hb_multimap_t
 {
-  void add (hb_codepoint_t k, hb_codepoint_t v)
+  ശൂന്യം add (hb_codepoint_t k, hb_codepoint_t v)
   {
     hb_vector_t<hb_codepoint_t> *m;
-    if (multiples.has (k, &m))
+    എങ്കിൽ (multiples.has (k, &m))
     {
       m->push (v);
-      return;
+      തിരികെ;
     }
 
     hb_codepoint_t *old_v;
-    if (singulars.has (k, &old_v))
+    എങ്കിൽ (singulars.has (k, &old_v))
     {
       hb_codepoint_t old = *old_v;
       singulars.del (k);
 
       multiples.set (k, hb_vector_t<hb_codepoint_t> {old, v});
-      return;
+      തിരികെ;
     }
 
     singulars.set (k, v);
   }
 
-  hb_array_t<const hb_codepoint_t> get (hb_codepoint_t k) const
+  hb_array_t<സ്ഥിരം hb_codepoint_t> get (hb_codepoint_t k) സ്ഥിരം
   {
-    const hb_codepoint_t *v;
-    if (singulars.has (k, &v))
-      return hb_array (v, 1);
+    സ്ഥിരം hb_codepoint_t *v;
+    എങ്കിൽ (singulars.has (k, &v))
+      തിരികെ hb_array (v, 1);
 
     hb_vector_t<hb_codepoint_t> *m;
-    if (multiples.has (k, &m))
-      return m->as_array ();
+    എങ്കിൽ (multiples.has (k, &m))
+      തിരികെ m->as_array ();
 
-    return hb_array_t<const hb_codepoint_t> ();
+    തിരികെ hb_array_t<സ്ഥിരം hb_codepoint_t> ();
   }
 
-  bool in_error () const
+  തർക്കം in_error () സ്ഥിരം
   {
-    if (singulars.in_error () || multiples.in_error ())
-      return true;
-    for (const auto &m : multiples.values_ref ())
-      if (m.in_error ())
-        return true;
-    return false;
+    എങ്കിൽ (singulars.in_error () || multiples.in_error ())
+      തിരികെ സത്യം;
+    വേണ്ടി (സ്ഥിരം auto &m : multiples.മൂല്യങ്ങൾ_ref ())
+      എങ്കിൽ (m.in_error ())
+        തിരികെ സത്യം;
+    തിരികെ അസത്യം;
   }
 
-  void alloc (unsigned size)
+  ശൂന്യം alloc (unsigned size)
   {
     singulars.alloc (size);
   }
 
-  protected:
+  സംരക്ഷിത:
   hb_map_t singulars;
   hb_hashmap_t<hb_codepoint_t, hb_vector_t<hb_codepoint_t>> multiples;
 };

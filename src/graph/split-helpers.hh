@@ -27,33 +27,33 @@
 #ifndef GRAPH_SPLIT_HELPERS_HH
 #define GRAPH_SPLIT_HELPERS_HH
 
-#include "graph-result.hh"
+#അന്തര്ഭാവ "graph-result.hh"
 
-namespace graph {
+നാമാകാശ graph {
 
 template<typename Context>
 HB_INTERNAL
 graph_result_t<hb_vector_t<unsigned>> actuate_subtable_split (Context& split_context,
-                                                              const hb_vector_t<unsigned>& split_points)
+                                                              സ്ഥിരം hb_vector_t<unsigned>& split_points)
 {
   hb_vector_t<unsigned> new_objects;
-  if (!split_points)
-    return Ok(new_objects);
+  എങ്കിൽ (!split_points)
+    തിരികെ Ok(new_objects);
 
-  for (unsigned i = 0; i < split_points.length; i++)
+  വേണ്ടി (unsigned i = 0; i < split_points.length; i++)
   {
     unsigned start = split_points[i];
     unsigned end = (i < split_points.length - 1)
                    ? split_points[i + 1]
-                   : split_context.original_count ();
+                   : split_context.original_എണ്ണം_2 ();
     TRY_ASSIGN (unsigned id, split_context.clone_range (start, end));
     new_objects.push (id);
-    TRY (graph_result_t<void>::from (new_objects, ALLOCATION_FAILURE));
+    TRY (graph_result_t<ശൂന്യം>::from (new_objects, ALLOCATION_FAILURE));
   }
 
   TRY (split_context.shrink (split_points[0]));
 
-  return Ok(new_objects);
+  തിരികെ Ok(new_objects);
 }
 
 }

@@ -24,68 +24,68 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#അന്തര്ഭാവ "hb.hh"
 
 #ifdef HAVE_DIRECTWRITE
 
-#include "hb-directwrite.h"
+#അന്തര്ഭാവ "hb-directwrite.h"
 
-#include <d2d1.h>
+#അന്തര്ഭാവ <d2d1.h>
 
-#include "hb-draw.hh"
-#include "hb-font.hh"
-#include "hb-machinery.hh"
+#അന്തര്ഭാവ "hb-draw.hh"
+#അന്തര്ഭാവ "hb-font.hh"
+#അന്തര്ഭാവ "hb-machinery.hh"
 
 #define MAX_GLYPHS 256u
 
-static hb_position_t
+സ്ഥിതം hb_position_t
 hb_directwrite_scale_x (hb_font_t *font, int64_t value)
 {
-  if (value >= INT16_MIN && value <= INT16_MAX)
-    return font->em_scale_x ((int16_t) value);
-  return font->em_scalef_x ((float) value);
+  എങ്കിൽ (value >= INT16_MIN && value <= INT16_MAX)
+    തിരികെ font->em_scale_x ((int16_t) value);
+  തിരികെ font->em_scalef_x ((ദശാംശം) value);
 }
 
-static hb_position_t
+സ്ഥിതം hb_position_t
 hb_directwrite_scale_y (hb_font_t *font, int64_t value)
 {
-  if (value >= INT16_MIN && value <= INT16_MAX)
-    return font->em_scale_y ((int16_t) value);
-  return font->em_scalef_y ((float) value);
+  എങ്കിൽ (value >= INT16_MIN && value <= INT16_MAX)
+    തിരികെ font->em_scale_y ((int16_t) value);
+  തിരികെ font->em_scalef_y ((ദശാംശം) value);
 }
 
-static unsigned int
+സ്ഥിതം unsigned പൂർണ്ണസംഖ്യ
 hb_directwrite_get_nominal_glyphs (hb_font_t *font,
-				   void *font_data HB_UNUSED,
-				   unsigned int count,
-				   const hb_codepoint_t *first_unicode,
-				   unsigned int unicode_stride,
+				   ശൂന്യം *font_data HB_UNUSED,
+				   unsigned പൂർണ്ണസംഖ്യ എണ്ണം,
+				   സ്ഥിരം hb_codepoint_t *first_unicode,
+				   unsigned പൂർണ്ണസംഖ്യ unicode_stride,
 				   hb_codepoint_t *first_glyph,
-				   unsigned int glyph_stride,
-				   void *user_data HB_UNUSED)
+				   unsigned പൂർണ്ണസംഖ്യ glyph_stride,
+				   ശൂന്യം *user_data HB_UNUSED)
 {
-  IDWriteFontFace *dw_face = (IDWriteFontFace *) (const void *) font->data.directwrite;
+  IDWriteFontFace *dw_face = (IDWriteFontFace *) (സ്ഥിരം ശൂന്യം *) font->data.directwrite;
 
-  for (unsigned i = 0; i < count;)
+  വേണ്ടി (unsigned i = 0; i < എണ്ണം;)
   {
     UINT32 unicodes[MAX_GLYPHS];
     UINT16 gids[MAX_GLYPHS];
 
-    unsigned n = hb_min (MAX_GLYPHS, count - i);
+    unsigned n = hb_min (MAX_GLYPHS, എണ്ണം - i);
 
-    for (unsigned j = 0; j < n; j++)
+    വേണ്ടി (unsigned j = 0; j < n; j++)
     {
       unicodes[j] = *first_unicode;
-      first_unicode = &StructAtOffset<const hb_codepoint_t> (first_unicode, unicode_stride);
+      first_unicode = &StructAtOffset<സ്ഥിരം hb_codepoint_t> (first_unicode, unicode_stride);
     }
 
-    if (!SUCCEEDED (dw_face->GetGlyphIndices (unicodes, n, gids)))
-      return i;
+    എങ്കിൽ (!SUCCEEDED (dw_face->GetGlyphIndices (unicodes, n, gids)))
+      തിരികെ i;
 
-    for (unsigned j = 0; j < n; j++)
+    വേണ്ടി (unsigned j = 0; j < n; j++)
     {
-      if (!gids[j])
-        return i + j;
+      എങ്കിൽ (!gids[j])
+        തിരികെ i + j;
       *first_glyph = gids[j];
       first_glyph = &StructAtOffset<hb_codepoint_t> (first_glyph, glyph_stride);
     }
@@ -93,63 +93,63 @@ hb_directwrite_get_nominal_glyphs (hb_font_t *font,
     i += n;
   }
 
-  return count;
+  തിരികെ എണ്ണം;
 }
 
-static hb_bool_t
+സ്ഥിതം hb_bool_t
 hb_directwrite_get_font_h_extents (hb_font_t *font,
-				   void *font_data HB_UNUSED,
+				   ശൂന്യം *font_data HB_UNUSED,
 				   hb_font_extents_t *metrics,
-				   void *user_data HB_UNUSED)
+				   ശൂന്യം *user_data HB_UNUSED)
 {
-  IDWriteFontFace *dw_face = (IDWriteFontFace *) (const void *) font->data.directwrite;
+  IDWriteFontFace *dw_face = (IDWriteFontFace *) (സ്ഥിരം ശൂന്യം *) font->data.directwrite;
 
   DWRITE_FONT_METRICS dw_metrics;
   dw_face->GetMetrics (&dw_metrics);
 
   metrics->ascender = hb_directwrite_scale_y (font, dw_metrics.ascent);
   metrics->descender = hb_saturate_neg (hb_directwrite_scale_y (font, dw_metrics.descent));
-  metrics->line_gap = hb_directwrite_scale_y (font, dw_metrics.lineGap);
+  metrics->വരി_gap = hb_directwrite_scale_y (font, dw_metrics.വരി_Gap);
 
-  return true;
+  തിരികെ സത്യം;
 }
 
-static void
+സ്ഥിതം ശൂന്യം
 hb_directwrite_get_glyph_h_advances (hb_font_t* font,
-				     void* font_data HB_UNUSED,
-				     unsigned count,
-				     const hb_codepoint_t *first_glyph,
+				     ശൂന്യം* font_data HB_UNUSED,
+				     unsigned എണ്ണം,
+				     സ്ഥിരം hb_codepoint_t *first_glyph,
 				     unsigned glyph_stride,
 				     hb_position_t *first_advance,
 				     unsigned advance_stride,
-				     void *user_data HB_UNUSED)
+				     ശൂന്യം *user_data HB_UNUSED)
 {
-  IDWriteFontFace *dw_face = (IDWriteFontFace *) (const void *) font->data.directwrite;
+  IDWriteFontFace *dw_face = (IDWriteFontFace *) (സ്ഥിരം ശൂന്യം *) font->data.directwrite;
 
   IDWriteFontFace1 *dw_face1 = nullptr;
-  dw_face->QueryInterface (__uuidof(IDWriteFontFace1), (void**)&dw_face1);
-  assert (dw_face1);
+  dw_face->QueryInterface (__uuidof(IDWriteFontFace1), (ശൂന്യം**)&dw_face1);
+  പ്രതിജ്ഞാ (dw_face1);
 
-  unsigned int num_glyphs = font->face->get_num_glyphs ();
+  unsigned പൂർണ്ണസംഖ്യ അക്കം_glyphs = font->face->get_അക്കം_glyphs ();
 
-  for (unsigned i = 0; i < count;)
+  വേണ്ടി (unsigned i = 0; i < എണ്ണം;)
   {
     UINT16 gids[MAX_GLYPHS];
     INT32 advances[MAX_GLYPHS];
 
-    unsigned n = hb_min (MAX_GLYPHS, count - i);
+    unsigned n = hb_min (MAX_GLYPHS, എണ്ണം - i);
 
-    for (unsigned j = 0; j < n; j++)
+    വേണ്ടി (unsigned j = 0; j < n; j++)
     {
       gids[j] = *first_glyph;
       advances[j] = 0;
-      first_glyph = &StructAtOffset<const hb_codepoint_t> (first_glyph, glyph_stride);
+      first_glyph = &StructAtOffset<സ്ഥിരം hb_codepoint_t> (first_glyph, glyph_stride);
     }
-    dw_face1->GetDesignGlyphAdvances (n, gids, advances, false);
-    for (unsigned j = 0; j < n; j++)
+    dw_face1->GetDesignGlyphAdvances (n, gids, advances, അസത്യം);
+    വേണ്ടി (unsigned j = 0; j < n; j++)
     {
       // https://github.com/harfbuzz/harfbuzz/issues/5319
-      auto advance = gids[j] < num_glyphs ? advances[j] : 0;
+      auto advance = gids[j] < അക്കം_glyphs ? advances[j] : 0;
       *first_advance = hb_directwrite_scale_x (font, advance);
       first_advance = &StructAtOffset<hb_position_t> (first_advance, advance_stride);
     }
@@ -160,37 +160,37 @@ hb_directwrite_get_glyph_h_advances (hb_font_t* font,
 
 #ifndef HB_NO_VERTICAL
 
-static void
+സ്ഥിതം ശൂന്യം
 hb_directwrite_get_glyph_v_advances (hb_font_t* font,
-				     void* font_data HB_UNUSED,
-				     unsigned count,
-				     const hb_codepoint_t *first_glyph,
+				     ശൂന്യം* font_data HB_UNUSED,
+				     unsigned എണ്ണം,
+				     സ്ഥിരം hb_codepoint_t *first_glyph,
 				     unsigned glyph_stride,
 				     hb_position_t *first_advance,
 				     unsigned advance_stride,
-				     void *user_data HB_UNUSED)
+				     ശൂന്യം *user_data HB_UNUSED)
 {
-  IDWriteFontFace *dw_face = (IDWriteFontFace *) (const void *) font->data.directwrite;
+  IDWriteFontFace *dw_face = (IDWriteFontFace *) (സ്ഥിരം ശൂന്യം *) font->data.directwrite;
 
   IDWriteFontFace1 *dw_face1 = nullptr;
-  dw_face->QueryInterface (__uuidof(IDWriteFontFace1), (void**)&dw_face1);
-  assert (dw_face1);
+  dw_face->QueryInterface (__uuidof(IDWriteFontFace1), (ശൂന്യം**)&dw_face1);
+  പ്രതിജ്ഞാ (dw_face1);
 
-  for (unsigned i = 0; i < count;)
+  വേണ്ടി (unsigned i = 0; i < എണ്ണം;)
   {
     UINT16 gids[MAX_GLYPHS];
     INT32 advances[MAX_GLYPHS];
 
-    unsigned n = hb_min (MAX_GLYPHS, count - i);
+    unsigned n = hb_min (MAX_GLYPHS, എണ്ണം - i);
 
-    for (unsigned j = 0; j < n; j++)
+    വേണ്ടി (unsigned j = 0; j < n; j++)
     {
       gids[j] = *first_glyph;
       advances[j] = 0;
-      first_glyph = &StructAtOffset<const hb_codepoint_t> (first_glyph, glyph_stride);
+      first_glyph = &StructAtOffset<സ്ഥിരം hb_codepoint_t> (first_glyph, glyph_stride);
     }
-    dw_face1->GetDesignGlyphAdvances (n, gids, advances, true);
-    for (unsigned j = 0; j < n; j++)
+    dw_face1->GetDesignGlyphAdvances (n, gids, advances, സത്യം);
+    വേണ്ടി (unsigned j = 0; j < n; j++)
     {
       *first_advance = hb_saturate_neg (hb_directwrite_scale_y (font, advances[j]));
       first_advance = &StructAtOffset<hb_position_t> (first_advance, advance_stride);
@@ -200,131 +200,131 @@ hb_directwrite_get_glyph_v_advances (hb_font_t* font,
   }
 }
 
-static hb_bool_t
+സ്ഥിതം hb_bool_t
 hb_directwrite_get_glyph_v_origin (hb_font_t *font,
-				   void *font_data HB_UNUSED,
+				   ശൂന്യം *font_data HB_UNUSED,
 				   hb_codepoint_t glyph,
 				   hb_position_t *x,
 				   hb_position_t *y,
-				   void *user_data HB_UNUSED)
+				   ശൂന്യം *user_data HB_UNUSED)
 {
-  IDWriteFontFace *dw_face = (IDWriteFontFace *) (const void *) font->data.directwrite;
+  IDWriteFontFace *dw_face = (IDWriteFontFace *) (സ്ഥിരം ശൂന്യം *) font->data.directwrite;
 
   UINT16 gid = glyph;
   DWRITE_GLYPH_METRICS metrics;
 
-  if (FAILED (dw_face->GetDesignGlyphMetrics (&gid, 1, &metrics)))
-    return false;
+  എങ്കിൽ (FAILED (dw_face->GetDesignGlyphMetrics (&gid, 1, &metrics)))
+    തിരികെ അസത്യം;
 
   *x = hb_directwrite_scale_x (font, metrics.advanceWidth / 2);
   *y = hb_directwrite_scale_y (font, metrics.verticalOriginY); // Untested
 
-  return true;
+  തിരികെ സത്യം;
 }
 #endif
 
-static hb_bool_t
+സ്ഥിതം hb_bool_t
 hb_directwrite_get_glyph_extents (hb_font_t *font,
-				  void *font_data HB_UNUSED,
+				  ശൂന്യം *font_data HB_UNUSED,
 				  hb_codepoint_t glyph,
 				  hb_glyph_extents_t *extents,
-				  void *user_data HB_UNUSED)
+				  ശൂന്യം *user_data HB_UNUSED)
 {
-  IDWriteFontFace *dw_face = (IDWriteFontFace *) (const void *) font->data.directwrite;
+  IDWriteFontFace *dw_face = (IDWriteFontFace *) (സ്ഥിരം ശൂന്യം *) font->data.directwrite;
 
   UINT16 gid = glyph;
   DWRITE_GLYPH_METRICS metrics;
 
-  if (FAILED (dw_face->GetDesignGlyphMetrics (&gid, 1, &metrics)))
-    return false;
+  എങ്കിൽ (FAILED (dw_face->GetDesignGlyphMetrics (&gid, 1, &metrics)))
+    തിരികെ അസത്യം;
 
-  int64_t right = (int64_t) metrics.advanceWidth - metrics.rightSideBearing;
-  int64_t top = (int64_t) metrics.verticalOriginY - metrics.topSideBearing;
+  int64_t വലത് = (int64_t) metrics.advanceWidth - metrics.വലത്_Side_Bearing;
+  int64_t മുകൾ_2 = (int64_t) metrics.verticalOriginY - metrics.മുകൾ_Side_Bearing;
   int64_t bottom = (int64_t) metrics.verticalOriginY - metrics.advanceHeight + metrics.bottomSideBearing;
 
-  extents->x_bearing = hb_directwrite_scale_x (font, metrics.leftSideBearing);
-  extents->y_bearing = hb_directwrite_scale_y (font, top);
-  extents->width = hb_saturate_sub (hb_directwrite_scale_x (font, right), extents->x_bearing);
+  extents->x_bearing = hb_directwrite_scale_x (font, metrics.ഇടത്_Side_Bearing);
+  extents->y_bearing = hb_directwrite_scale_y (font, മുകൾ_2);
+  extents->width = hb_saturate_sub (hb_directwrite_scale_x (font, വലത്), extents->x_bearing);
   extents->height = hb_saturate_sub (hb_directwrite_scale_y (font, bottom),
 				     extents->y_bearing); // Magic
 
-  return true;
+  തിരികെ സത്യം;
 }
 
 
 #ifndef HB_NO_DRAW
 
-class GeometrySink : public IDWriteGeometrySink
+വർഗ്ഗം GeometrySink : പൊതു IDWriteGeometrySink
 {
   hb_font_t *font;
   hb_draw_session_t drawing;
 
-public:
+പൊതു:
   GeometrySink(hb_font_t *font,
 	       hb_draw_funcs_t *draw_funcs,
-	       void *draw_data)
+	       ശൂന്യം *draw_data)
     : font (font), drawing ({draw_funcs, draw_data}) {}
 
-  HRESULT STDMETHODCALLTYPE Close() override { return S_OK; }
-  void STDMETHODCALLTYPE SetFillMode(D2D1_FILL_MODE) override {}
-  void STDMETHODCALLTYPE SetSegmentFlags(D2D1_PATH_SEGMENT) override {}
+  HRESULT STDMETHODCALLTYPE Close() override { തിരികെ S_OK; }
+  ശൂന്യം STDMETHODCALLTYPE SetFillMode(D2D1_FILL_MODE) override {}
+  ശൂന്യം STDMETHODCALLTYPE SetSegmentFlags(D2D1_PATH_SEGMENT) override {}
 
-  IFACEMETHOD(QueryInterface)(REFIID, void **) override { return E_NOINTERFACE; }
-  IFACEMETHOD_(ULONG, AddRef)() override { return 1; }
-  IFACEMETHOD_(ULONG, Release)() override { return 1; }
+  IFACEMETHOD(QueryInterface)(REFIID, ശൂന്യം **) override { തിരികെ E_NOINTERFACE; }
+  IFACEMETHOD_(ULONG, AddRef)() override { തിരികെ 1; }
+  IFACEMETHOD_(ULONG, Release)() override { തിരികെ 1; }
 
-  void STDMETHODCALLTYPE BeginFigure(D2D1_POINT_2F startPoint, D2D1_FIGURE_BEGIN) override
+  ശൂന്യം STDMETHODCALLTYPE BeginFigure(D2D1_POINT_2F startPoint, D2D1_FIGURE_BEGIN) override
   {
-    drawing.move_to (font->em_scalef_x (startPoint.x), -(float) font->em_scalef_y (startPoint.y));
+    drawing.move_to (font->em_scalef_x (startPoint.x), -(ദശാംശം) font->em_scalef_y (startPoint.y));
   }
 
-  void STDMETHODCALLTYPE AddBeziers(const D2D1_BEZIER_SEGMENT *beziers, UINT beziersCount) override
+  ശൂന്യം STDMETHODCALLTYPE AddBeziers(സ്ഥിരം D2D1_BEZIER_SEGMENT *beziers, UINT beziers_എണ്ണം) override
   {
-    for (unsigned i = 0; i < beziersCount; ++i)
-      drawing.cubic_to (font->em_scalef_x (beziers[i].point1.x), -(float) font->em_scalef_y (beziers[i].point1.y),
-			font->em_scalef_x (beziers[i].point2.x), -(float) font->em_scalef_y (beziers[i].point2.y),
-			font->em_scalef_x (beziers[i].point3.x), -(float) font->em_scalef_y (beziers[i].point3.y));
+    വേണ്ടി (unsigned i = 0; i < beziers_എണ്ണം; ++i)
+      drawing.cubic_to (font->em_scalef_x (beziers[i].point1.x), -(ദശാംശം) font->em_scalef_y (beziers[i].point1.y),
+			font->em_scalef_x (beziers[i].point2.x), -(ദശാംശം) font->em_scalef_y (beziers[i].point2.y),
+			font->em_scalef_x (beziers[i].point3.x), -(ദശാംശം) font->em_scalef_y (beziers[i].point3.y));
   }
 
-  void STDMETHODCALLTYPE AddLines(const D2D1_POINT_2F *points, UINT pointsCount) override
+  ശൂന്യം STDMETHODCALLTYPE Add_വരികൾ(സ്ഥിരം D2D1_POINT_2F *points, UINT points_എണ്ണം) override
   {
-    for (unsigned i = 0; i < pointsCount; ++i)
-      drawing.line_to (font->em_scalef_x (points[i].x), -(float) font->em_scalef_y (points[i].y));
+    വേണ്ടി (unsigned i = 0; i < points_എണ്ണം; ++i)
+      drawing.വരി_to (font->em_scalef_x (points[i].x), -(ദശാംശം) font->em_scalef_y (points[i].y));
   }
 
-  void STDMETHODCALLTYPE EndFigure(D2D1_FIGURE_END) override
+  ശൂന്യം STDMETHODCALLTYPE EndFigure(D2D1_FIGURE_END) override
   {
     drawing.close_path ();
   }
 };
 
-static hb_bool_t
+സ്ഥിതം hb_bool_t
 hb_directwrite_draw_glyph_or_fail (hb_font_t *font,
-				   void *font_data HB_UNUSED,
+				   ശൂന്യം *font_data HB_UNUSED,
 				   hb_codepoint_t glyph,
-				   hb_draw_funcs_t *draw_funcs, void *draw_data,
-				   void *user_data)
+				   hb_draw_funcs_t *draw_funcs, ശൂന്യം *draw_data,
+				   ശൂന്യം *user_data)
 {
-  IDWriteFontFace *dw_face = (IDWriteFontFace *) (const void *) font->data.directwrite;
+  IDWriteFontFace *dw_face = (IDWriteFontFace *) (സ്ഥിരം ശൂന്യം *) font->data.directwrite;
 
   GeometrySink sink (font, draw_funcs, draw_data);
   UINT16 gid = static_cast<UINT16>(glyph);
   unsigned upem = font->face->get_upem();
 
-  return S_OK == dw_face->GetGlyphRunOutline (upem,
+  തിരികെ S_OK == dw_face->GetGlyphRunOutline (upem,
 					      &gid, nullptr, nullptr,
 					      1,
-					      false, false,
+					      അസത്യം, അസത്യം,
 					      &sink);
 }
 
 #endif
 
-static inline void free_static_directwrite_funcs ();
+സ്ഥിതം വരിയിൽ ശൂന്യം free_static_directwrite_funcs ();
 
-static struct hb_directwrite_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t<hb_directwrite_font_funcs_lazy_loader_t>
+സ്ഥിതം ഘടന hb_directwrite_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t<hb_directwrite_font_funcs_lazy_loader_t>
 {
-  static hb_font_funcs_t *create ()
+  സ്ഥിതം hb_font_funcs_t *create ()
   {
     hb_font_funcs_t *funcs = hb_font_funcs_create ();
 
@@ -354,20 +354,20 @@ static struct hb_directwrite_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loade
 
     hb_atexit (free_static_directwrite_funcs);
 
-    return funcs;
+    തിരികെ funcs;
   }
 } static_directwrite_funcs;
 
-static inline
-void free_static_directwrite_funcs ()
+സ്ഥിതം വരിയിൽ
+ശൂന്യം free_static_directwrite_funcs ()
 {
   static_directwrite_funcs.free_instance ();
 }
 
-static hb_font_funcs_t *
+സ്ഥിതം hb_font_funcs_t *
 _hb_directwrite_get_font_funcs ()
 {
-  return static_directwrite_funcs.get_unconst ();
+  തിരികെ static_directwrite_funcs.get_unconst ();
 }
 
 /**
@@ -388,16 +388,16 @@ _hb_directwrite_get_font_funcs ()
  *
  * Since: 11.0.0
  **/
-void
+ശൂന്യം
 hb_directwrite_font_set_funcs (hb_font_t *font)
 {
-  IDWriteFontFace *dw_face = (IDWriteFontFace *) (const void *) font->data.directwrite;
-  if (unlikely (!dw_face))
+  IDWriteFontFace *dw_face = (IDWriteFontFace *) (സ്ഥിരം ശൂന്യം *) font->data.directwrite;
+  എങ്കിൽ (unlikely (!dw_face))
   {
     hb_font_set_funcs (font,
 		       hb_font_funcs_get_empty (),
 		       nullptr, nullptr);
-    return;
+    തിരികെ;
   }
 
   dw_face->AddRef ();

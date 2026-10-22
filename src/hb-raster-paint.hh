@@ -27,13 +27,13 @@
 #ifndef HB_RASTER_PAINT_HH
 #define HB_RASTER_PAINT_HH
 
-#include "hb.hh"
+#അന്തര്ഭാവ "hb.hh"
 
-#include "hb-raster-image.hh"
-#include "hb-geometry.hh"
+#അന്തര്ഭാവ "hb-raster-image.hh"
+#അന്തര്ഭാവ "hb-geometry.hh"
 
 /* hb_raster_clip_t — alpha mask for clipping */
-struct hb_raster_clip_t
+ഘടന hb_raster_clip_t
 {
   hb_vector_t<uint8_t> alpha;	/* A8 mask, same extents as root surface */
   unsigned width  = 0;
@@ -41,85 +41,85 @@ struct hb_raster_clip_t
   unsigned stride = 0;
 
   /* Fast path: simple rectangle (no alpha buffer needed) */
-  bool is_rect = true;
-  int rect_x0 = 0, rect_y0 = 0;
-  int rect_x1 = 0, rect_y1 = 0;
+  തർക്കം is_rect = സത്യം;
+  പൂർണ്ണസംഖ്യ rect_x0 = 0, rect_y0 = 0;
+  പൂർണ്ണസംഖ്യ rect_x1 = 0, rect_y1 = 0;
 
   /* Bounding box of non-zero alpha region (valid for both rect and mask) */
   unsigned min_x = 0, min_y = 0;
   unsigned max_x = 0, max_y = 0;
 
-  void init_full (unsigned w, unsigned h)
+  ശൂന്യം init_full (unsigned w, unsigned h)
   {
     width = w;
     height = h;
     stride = (w + 3u) & ~3u;
-    is_rect = true;
+    is_rect = സത്യം;
     rect_x0 = 0;
     rect_y0 = 0;
-    rect_x1 = (int) w;
-    rect_y1 = (int) h;
+    rect_x1 = (പൂർണ്ണസംഖ്യ) w;
+    rect_y1 = (പൂർണ്ണസംഖ്യ) h;
     min_x = 0;
     min_y = 0;
     max_x = w;
     max_y = h;
   }
 
-  void update_bounds_from_rect ()
+  ശൂന്യം update_bounds_from_rect ()
   {
     min_x = (unsigned) hb_max (rect_x0, 0);
     min_y = (unsigned) hb_max (rect_y0, 0);
-    max_x = (unsigned) hb_max (hb_min (rect_x1, (int) width), 0);
-    max_y = (unsigned) hb_max (hb_min (rect_y1, (int) height), 0);
+    max_x = (unsigned) hb_max (hb_min (rect_x1, (പൂർണ്ണസംഖ്യ) width), 0);
+    max_y = (unsigned) hb_max (hb_min (rect_y1, (പൂർണ്ണസംഖ്യ) height), 0);
   }
 
-  uint8_t get_alpha (unsigned x, unsigned y) const
+  uint8_t get_alpha (unsigned x, unsigned y) സ്ഥിരം
   {
-    if (is_rect)
-      return ((int) x >= rect_x0 && (int) x < rect_x1 &&
-	      (int) y >= rect_y0 && (int) y < rect_y1) ? 255 : 0;
-    if (x >= width || y >= height) return 0;
-    if (stride < width) return 0;
-    if (height && stride > (size_t) -1 / height) return 0;
+    എങ്കിൽ (is_rect)
+      തിരികെ ((പൂർണ്ണസംഖ്യ) x >= rect_x0 && (പൂർണ്ണസംഖ്യ) x < rect_x1 &&
+	      (പൂർണ്ണസംഖ്യ) y >= rect_y0 && (പൂർണ്ണസംഖ്യ) y < rect_y1) ? 255 : 0;
+    എങ്കിൽ (x >= width || y >= height) തിരികെ 0;
+    എങ്കിൽ (stride < width) തിരികെ 0;
+    എങ്കിൽ (height && stride > (size_t) -1 / height) തിരികെ 0;
     size_t idx = (size_t) y * stride + x;
-    if (!alpha.arrayZ || idx >= alpha.length) return 0;
-    return alpha[idx];
+    എങ്കിൽ (!alpha.arrayZ || idx >= alpha.length) തിരികെ 0;
+    തിരികെ alpha[idx];
   }
 
-  bool has_valid_alpha_mask () const
+  തർക്കം has_valid_alpha_mask () സ്ഥിരം
   {
-    if (is_rect)
-      return true;
-    if (!alpha.arrayZ || stride < width)
-      return false;
-    if (height && stride > (size_t) -1 / height)
-      return false;
-    return (size_t) stride * height <= alpha.length;
+    എങ്കിൽ (is_rect)
+      തിരികെ സത്യം;
+    എങ്കിൽ (!alpha.arrayZ || stride < width)
+      തിരികെ അസത്യം;
+    എങ്കിൽ (height && stride > (size_t) -1 / height)
+      തിരികെ അസത്യം;
+    തിരികെ (size_t) stride * height <= alpha.length;
   }
 };
 
 
 /* hb_raster_paint_t — color glyph paint context */
-struct hb_raster_paint_t
+ഘടന hb_raster_paint_t
 {
   hb_object_header_t header;
 
   /* Configuration */
   hb_transform_t<>    base_transform     = {1, 0, 0, 1, 0, 0};
-  float               x_scale_factor     = 1.f;
-  float               y_scale_factor     = 1.f;
+  ദശാംശം               x_scale_factor     = 1.f;
+  ദശാംശം               y_scale_factor     = 1.f;
   hb_raster_extents_t fixed_extents      = {};
-  bool                has_extents  = false;
+  തർക്കം                has_extents  = അസത്യം;
   hb_color_t          foreground         = HB_COLOR (0, 0, 0, 255);
   hb_color_t          background         = HB_COLOR (0, 0, 0, 0);
   unsigned            palette            = 0;
   hb_map_t           *custom_palette     = nullptr;
 
   /* Stacks */
-  hb_vector_t<hb_transform_t<>>     transform_stack;
-  hb_vector_t<hb_raster_clip_t>     clip_stack;
+  hb_vector_t<hb_transform_t<>>     transform_അട്ടി;
+  hb_vector_t<hb_raster_clip_t>     clip_അട്ടി;
   hb_vector_t<hb_raster_clip_t>     clip_cache;
-  hb_vector_t<hb_raster_image_t *>  surface_stack;
+  hb_vector_t<hb_raster_image_t *>  surface_അട്ടി;
 
   /* Cached surface pool (freelist for reuse across push/pop group) */
   hb_vector_t<hb_raster_image_t *>  surface_cache;
@@ -148,114 +148,114 @@ struct hb_raster_paint_t
 
   /* Helpers */
 
-  int64_t get_default_pixel_budget () const
+  int64_t get_default_pixel_budget () സ്ഥിരം
   {
-    return hb_max ((int64_t) HB_BUDGET_RASTER_PIXELS,
+    തിരികെ hb_max ((int64_t) HB_BUDGET_RASTER_PIXELS,
 		   (int64_t) HB_BUDGET_RASTER_PAINT_PASSES *
 		   fixed_extents.width * fixed_extents.height);
   }
 
-  void recharge_budget ()
+  ശൂന്യം recharge_budget ()
   {
     budget_remaining = budget == HB_BUDGET_DEFAULT ?
 		       (int64_t) HB_BUDGET_GLYPH : budget;
     pixel_remaining = budget == HB_BUDGET_UNLIMITED ? budget :
-		      (surface_stack.length ? get_default_pixel_budget () :
+		      (surface_അട്ടി.length ? get_default_pixel_budget () :
 					      (int64_t) HB_BUDGET_RASTER_PIXELS);
   }
 
   /* Returns whether the pixel operation should proceed.  Allows a single
    * overshoot past zero; callers skip work once the budget is spent. */
-  bool charge_work (int64_t work)
+  തർക്കം charge_work (int64_t work)
   {
-    if (unlikely (pixel_remaining < 0)) return false;
+    എങ്കിൽ (unlikely (pixel_remaining < 0)) തിരികെ അസത്യം;
     pixel_remaining -= work;
-    return true;
+    തിരികെ സത്യം;
   }
 
   /* Reject work that would exceed the remaining budget before it starts. */
-  bool precharge_work (int64_t work)
+  തർക്കം precharge_work (int64_t work)
   {
-    if (unlikely (pixel_remaining < work))
+    എങ്കിൽ (unlikely (pixel_remaining < work))
     {
       pixel_remaining = -1;
-      return false;
+      തിരികെ അസത്യം;
     }
     pixel_remaining -= work;
-    return true;
+    തിരികെ സത്യം;
   }
 
   hb_raster_image_t *acquire_surface ()
   {
     hb_raster_image_t *img;
-    if (surface_cache.length)
-      img = surface_cache.pop ();
-    else
+    എങ്കിൽ (surface_cache.length)
+      img = surface_cache.എടുക്കുക ();
+    അല്ലെങ്കിൽ
     {
       img = hb_raster_image_create_or_fail ();
-      if (unlikely (!img)) return nullptr;
+      എങ്കിൽ (unlikely (!img)) തിരികെ nullptr;
     }
 
-    if (unlikely (!img->configure (HB_RASTER_FORMAT_BGRA32, fixed_extents)))
+    എങ്കിൽ (unlikely (!img->configure (HB_RASTER_FORMAT_BGRA32, fixed_extents)))
     {
       hb_raster_image_destroy (img);
-      return nullptr;
+      തിരികെ nullptr;
     }
     img->clear ();
-    return img;
+    തിരികെ img;
   }
 
-  void release_surface (hb_raster_image_t *img)
+  ശൂന്യം release_surface (hb_raster_image_t *img)
   {
-    if (!surface_cache.push_or_fail (img))
+    എങ്കിൽ (!surface_cache.തള്ളുക_or_fail (img))
       hb_raster_image_destroy (img);
   }
 
   hb_raster_clip_t acquire_clip (unsigned w, unsigned h)
   {
     hb_raster_clip_t clip;
-    if (clip_cache.length)
-      clip = clip_cache.pop ();
+    എങ്കിൽ (clip_cache.length)
+      clip = clip_cache.എടുക്കുക ();
     clip.width = w;
     clip.height = h;
     clip.stride = (w + 3u) & ~3u;
-    clip.is_rect = false;
+    clip.is_rect = അസത്യം;
     clip.rect_x0 = clip.rect_y0 = 0;
     clip.rect_x1 = clip.rect_y1 = 0;
     clip.min_x = clip.min_y = clip.max_x = clip.max_y = 0;
-    return clip;
+    തിരികെ clip;
   }
 
-  void release_clip (hb_raster_clip_t &&clip)
+  ശൂന്യം release_clip (hb_raster_clip_t &&clip)
   {
-    if (clip.alpha.arrayZ)
+    എങ്കിൽ (clip.alpha.arrayZ)
       clip_cache.push (std::move (clip));
   }
 
-  void release_all_clips ()
+  ശൂന്യം release_all_clips ()
   {
-    while (clip_stack.length)
-      release_clip (clip_stack.pop ());
+    ആകുമ്പോൾ (clip_അട്ടി.length)
+      release_clip (clip_അട്ടി.എടുക്കുക ());
   }
 
   hb_raster_image_t *current_surface ()
   {
-    return surface_stack.length ? surface_stack.tail () : nullptr;
+    തിരികെ surface_അട്ടി.length ? surface_അട്ടി.tail () : nullptr;
   }
 
   hb_raster_clip_t &current_clip ()
   {
-    return clip_stack.tail ();
+    തിരികെ clip_അട്ടി.tail ();
   }
 
   hb_transform_t<> current_transform ()
   {
-    if (unlikely (!transform_stack.length))
-      return {1, 0, 0, 1, 0, 0};
-    return transform_stack.tail ();
+    എങ്കിൽ (unlikely (!transform_അട്ടി.length))
+      തിരികെ {1, 0, 0, 1, 0, 0};
+    തിരികെ transform_അട്ടി.tail ();
   }
 
-  void apply_scale_factor (hb_transform_t<> &t) const
+  ശൂന്യം apply_scale_factor (hb_transform_t<> &t) സ്ഥിരം
   {
     t.xx /= x_scale_factor;
     t.xy /= x_scale_factor;
@@ -269,19 +269,19 @@ struct hb_raster_paint_t
   {
     hb_transform_t<> t = current_transform ();
     apply_scale_factor (t);
-    return t;
+    തിരികെ t;
   }
 
-  bool fetch_color_stops (hb_color_line_t *color_line)
+  തർക്കം fetch_color_stops (hb_color_വരി_t *color_വരി)
   {
-    unsigned count = hb_color_line_get_color_stops (color_line, 0, nullptr, nullptr);
-    if (unlikely (!count || !scratch_color_stops.resize (count)))
+    unsigned എണ്ണം = hb_color_വരി_get_color_stops (color_വരി, 0, nullptr, nullptr);
+    എങ്കിൽ (unlikely (!എണ്ണം || !scratch_color_stops.resize (എണ്ണം)))
     {
       scratch_color_stops.resize (0);
-      return false;
+      തിരികെ അസത്യം;
     }
-    hb_color_line_get_color_stops (color_line, 0, &count, scratch_color_stops.arrayZ);
-    return true;
+    hb_color_വരി_get_color_stops (color_വരി, 0, &എണ്ണം, scratch_color_stops.arrayZ);
+    തിരികെ സത്യം;
   }
 };
 

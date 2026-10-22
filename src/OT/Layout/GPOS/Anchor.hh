@@ -1,80 +1,80 @@
 #ifndef OT_LAYOUT_GPOS_ANCHOR_HH
 #define OT_LAYOUT_GPOS_ANCHOR_HH
 
-#include "AnchorFormat1.hh"
-#include "AnchorFormat2.hh"
-#include "AnchorFormat3.hh"
+#അന്തര്ഭാവ "AnchorFormat1.hh"
+#അന്തര്ഭാവ "AnchorFormat2.hh"
+#അന്തര്ഭാവ "AnchorFormat3.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+നാമാകാശ OT {
+നാമാകാശ Layout {
+നാമാകാശ GPOS_impl {
 
-struct Anchor
+ഘടന Anchor
 {
-  protected:
-  union {
-  struct { HBUINT16 v; } format;        /* Format identifier */
+  സംരക്ഷിത:
+  സംഘം {
+  ഘടന { HBUINT16 v; } format;        /* Format identifier */
   AnchorFormat1         format1;
   AnchorFormat2         format2;
   AnchorFormat3         format3;
   } u;
-  public:
+  പൊതു:
   DEFINE_SIZE_UNION (2, format.v);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (ഇത്);
+    എങ്കിൽ (!u.format.v.sanitize (c)) return_trace (അസത്യം);
     hb_barrier ();
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c));
-    case 2: hb_barrier (); return_trace (u.format2.sanitize (c));
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c));
-    default:return_trace (true);
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 1: hb_barrier (); return_trace (u.format1.sanitize (c));
+    അവസ്ഥ 2: hb_barrier (); return_trace (u.format2.sanitize (c));
+    അവസ്ഥ 3: hb_barrier (); return_trace (u.format3.sanitize (c));
+    സ്ഥിരസ്ഥിതി:return_trace (സത്യം);
     }
   }
 
-  void get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id,
-                   float *x, float *y) const
+  ശൂന്യം get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id,
+                   ദശാംശം *x, ദശാംശം *y) സ്ഥിരം
   {
     *x = *y = 0;
-    switch (u.format.v) {
-    case 1: hb_barrier (); u.format1.get_anchor (c, glyph_id, x, y); return;
-    case 2: hb_barrier (); u.format2.get_anchor (c, glyph_id, x, y); return;
-    case 3: hb_barrier (); u.format3.get_anchor (c, glyph_id, x, y); return;
-    default:                                          return;
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 1: hb_barrier (); u.format1.get_anchor (c, glyph_id, x, y); തിരികെ;
+    അവസ്ഥ 2: hb_barrier (); u.format2.get_anchor (c, glyph_id, x, y); തിരികെ;
+    അവസ്ഥ 3: hb_barrier (); u.format3.get_anchor (c, glyph_id, x, y); തിരികെ;
+    സ്ഥിരസ്ഥിതി:                                          തിരികെ;
     }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  തർക്കം subset (hb_subset_context_t *c) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (bool (reinterpret_cast<Anchor *> (u.format1.copy (c->serializer))));
-    case 2:
+    TRACE_SUBSET (ഇത്);
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 1: hb_barrier (); return_trace (തർക്കം (reinterpret_cast<Anchor *> (u.format1.copy (c->serializer))));
+    അവസ്ഥ 2:
       hb_barrier ();
-      if (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
+      എങ്കിൽ (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
       {
         // AnchorFormat 2 just containins extra hinting information, so
         // if hints are being dropped convert to format 1.
-        return_trace (bool (reinterpret_cast<Anchor *> (u.format1.copy (c->serializer))));
+        return_trace (തർക്കം (reinterpret_cast<Anchor *> (u.format1.copy (c->serializer))));
       }
-      return_trace (bool (reinterpret_cast<Anchor *> (u.format2.copy (c->serializer))));
-    case 3: hb_barrier (); return_trace (u.format3.subset (c));
-    default:return_trace (false);
+      return_trace (തർക്കം (reinterpret_cast<Anchor *> (u.format2.copy (c->serializer))));
+    അവസ്ഥ 3: hb_barrier (); return_trace (u.format3.subset (c));
+    സ്ഥിരസ്ഥിതി:return_trace (അസത്യം);
     }
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  ശൂന്യം collect_variation_indices (hb_collect_variation_indices_context_t *c) സ്ഥിരം
   {
-    switch (u.format.v) {
-    case 1: case 2:
-      return;
-    case 3:
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 1: അവസ്ഥ 2:
+      തിരികെ;
+    അവസ്ഥ 3:
       hb_barrier ();
       u.format3.collect_variation_indices (c);
-      return;
-    default: return;
+      തിരികെ;
+    സ്ഥിരസ്ഥിതി: തിരികെ;
     }
   }
 };

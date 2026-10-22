@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 
-import os
-import shutil
-import subprocess
-import sys
+ഇറക്കുമതി os
+ഇറക്കുമതി shutil
+ഇറക്കുമതി subprocess
+ഇറക്കുമതി sys
 
-from check_helpers import CHECK_LIBSTDCXX_LIBS
+തഃ check_helpers ഇറക്കുമതി CHECK_LIBSTDCXX_LIBS
 
 srcdir = sys.argv[1]
 base_srcdir = sys.argv[2]
@@ -14,32 +14,32 @@ builddir = sys.argv[3]
 os.chdir(srcdir)
 
 ldd = os.getenv("LDD", shutil.which("ldd"))
-if not ldd:
+എങ്കിൽ അല്ല ldd:
     otool = os.getenv("OTOOL", shutil.which("otool"))
-    if otool:
+    എങ്കിൽ otool:
         ldd = otool + " -L"
-    else:
+    അല്ലെങ്കിൽ:
         print("check-libstdc++.py: 'ldd' not found; skipping test")
         sys.exit(77)
 
 stat = 0
-tested = False
+tested = അസത്യം
 
-for soname in CHECK_LIBSTDCXX_LIBS:
-    for suffix in ["so", "dylib"]:
+വേണ്ടി soname ഇൽ CHECK_LIBSTDCXX_LIBS:
+    വേണ്ടി suffix ഇൽ ["so", "dylib"]:
         so = os.path.join(builddir, "lib%s.%s" % (soname, suffix))
-        if not os.path.exists(so):
-            continue
+        എങ്കിൽ അല്ല os.path.exists(so):
+            തുടരുക
 
         print("Checking that we are not linking to libstdc++ or libc++ in %s" % so)
         ldd_result = subprocess.check_output(ldd.split() + [so])
-        if (b"libstdc++" in ldd_result) or (b"libc++" in ldd_result):
+        എങ്കിൽ (b"libstdc++" ഇൽ ldd_result) അഥവാ (b"libc++" ഇൽ ldd_result):
             print("Ouch, %s is linked to libstdc++ or libc++" % so)
             stat = 1
 
-        tested = True
+        tested = സത്യം
 
-if not tested:
+എങ്കിൽ അല്ല tested:
     print("check-libstdc++.py: libharfbuzz shared library not found; skipping test")
     sys.exit(77)
 

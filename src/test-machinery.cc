@@ -22,25 +22,25 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
-#include "hb-machinery.hh"
+#അന്തര്ഭാവ "hb.hh"
+#അന്തര്ഭാവ "hb-machinery.hh"
 
-struct hb_intp_lazy_loader_t : hb_lazy_loader_t<int, hb_intp_lazy_loader_t>
+ഘടന hb_intp_lazy_loader_t : hb_lazy_loader_t<പൂർണ്ണസംഖ്യ, hb_intp_lazy_loader_t>
 {
-  static int* create () { return nullptr; }
-  static void destroy (int* l) {}
-  static int* get_null () { return nullptr; }
+  സ്ഥിതം പൂർണ്ണസംഖ്യ* create () { തിരികെ nullptr; }
+  സ്ഥിതം ശൂന്യം destroy (പൂർണ്ണസംഖ്യ* l) {}
+  സ്ഥിതം പൂർണ്ണസംഖ്യ* get_null () { തിരികെ nullptr; }
 };
 
-struct hb_void_lazy_loader_t : hb_lazy_loader_t<void, hb_void_lazy_loader_t>
+ഘടന hb_void_lazy_loader_t : hb_lazy_loader_t<ശൂന്യം, hb_void_lazy_loader_t>
 {
-  static void* create () { return nullptr; }
-  static void destroy (void* l) {}
-  static void* get_null () { return nullptr; }
+  സ്ഥിതം ശൂന്യം* create () { തിരികെ nullptr; }
+  സ്ഥിതം ശൂന്യം destroy (ശൂന്യം* l) {}
+  സ്ഥിതം ശൂന്യം* get_null () { തിരികെ nullptr; }
 };
 
-int
-main (int argc, char **argv)
+പൂർണ്ണസംഖ്യ
+പ്രധാന (പൂർണ്ണസംഖ്യ argc, അക്ഷരം **argv)
 {
-  return 0;
+  തിരികെ 0;
 }

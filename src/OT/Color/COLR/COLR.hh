@@ -28,17 +28,17 @@
 #ifndef OT_COLOR_COLR_COLR_HH
 #define OT_COLOR_COLR_COLR_HH
 
-#include "../../../hb.hh"
-#include "../../../hb-decycler.hh"
-#include "../../../hb-open-type.hh"
-#include "../../../hb-ot-var-common.hh"
-#include "../../../hb-paint.hh"
-#include "../../../hb-paint-bounded.hh"
-#include "../../../hb-paint-extents.hh"
-#include "../../../hb-depend-data.hh"
+#അന്തര്ഭാവ "../../../hb.hh"
+#അന്തര്ഭാവ "../../../hb-decycler.hh"
+#അന്തര്ഭാവ "../../../hb-open-type.hh"
+#അന്തര്ഭാവ "../../../hb-ot-var-common.hh"
+#അന്തര്ഭാവ "../../../hb-paint.hh"
+#അന്തര്ഭാവ "../../../hb-paint-bounded.hh"
+#അന്തര്ഭാവ "../../../hb-paint-extents.hh"
+#അന്തര്ഭാവ "../../../hb-depend-data.hh"
 
-#include "../../../hb-ot-dual.hh"
-#include "../CPAL/CPAL.hh"
+#അന്തര്ഭാവ "../../../hb-ot-dual.hh"
+#അന്തര്ഭാവ "../CPAL/CPAL.hh"
 
 /*
  * COLR -- Color
@@ -46,51 +46,51 @@
  */
 #define HB_OT_TAG_COLR HB_TAG('C','O','L','R')
 
-namespace OT {
-struct hb_paint_context_t;
+നാമാകാശ OT {
+ഘടന hb_paint_context_t;
 }
 
-struct hb_colr_scratch_t
+ഘടന hb_colr_scratch_t
 {
   hb_paint_bounded_context_t paint_bounded;
   hb_paint_extents_context_t paint_extents;
 };
 
-namespace OT {
+നാമാകാശ OT {
 
-struct COLR;
+ഘടന COLR;
 
-struct Paint;
+ഘടന Paint;
 
-struct hb_paint_context_t :
+ഘടന hb_paint_context_t :
        hb_dispatch_context_t<hb_paint_context_t>
 {
-  const char *get_name () { return "PAINT"; }
+  സ്ഥിരം അക്ഷരം *get_name () { തിരികെ "PAINT"; }
   template <typename T>
-  return_t dispatch (const T &obj) { obj.paint_glyph (this); return hb_empty_t (); }
-  static return_t default_return_value () { return hb_empty_t (); }
+  return_t dispatch (സ്ഥിരം T &obj) { obj.paint_glyph (ഇത്); തിരികെ hb_empty_t (); }
+  സ്ഥിതം return_t default_return_മൂല്യം () { തിരികെ hb_empty_t (); }
 
-  const COLR* get_colr_table () const
-  { return reinterpret_cast<const COLR *> (base); }
+  സ്ഥിരം COLR* get_colr_table () സ്ഥിരം
+  { തിരികെ reinterpret_cast<സ്ഥിരം COLR *> (base); }
 
-public:
-  const void *base;
+പൊതു:
+  സ്ഥിരം ശൂന്യം *base;
   hb_paint_funcs_t *funcs;
-  void *data;
+  ശൂന്യം *data;
   hb_font_t *font;
-  hb_array_t<const BGRAColor> palette;
+  hb_array_t<സ്ഥിരം BGRAColor> palette;
   hb_color_t foreground;
   ItemVarStoreInstancer &instancer;
   hb_decycler_t glyphs_decycler;
   hb_decycler_t layers_decycler;
-  int depth_left = HB_MAX_NESTING_LEVEL;
-  int edge_count = HB_MAX_GRAPH_EDGE_COUNT;
+  പൂർണ്ണസംഖ്യ depth_ഇടത് = HB_MAX_NESTING_LEVEL;
+  പൂർണ്ണസംഖ്യ edge_എണ്ണം = HB_MAX_GRAPH_EDGE_എണ്ണം;
 
-  hb_paint_context_t (const void *base_,
+  hb_paint_context_t (സ്ഥിരം ശൂന്യം *base_,
 		      hb_paint_funcs_t *funcs_,
-		      void *data_,
+		      ശൂന്യം *data_,
                       hb_font_t *font_,
-                      unsigned int palette_,
+                      unsigned പൂർണ്ണസംഖ്യ palette_,
                       hb_color_t foreground_,
 		      ItemVarStoreInstancer &instancer_) :
     base (base_),
@@ -100,19 +100,19 @@ public:
     palette (
 #ifndef HB_NO_COLOR
 	     // https://github.com/harfbuzz/harfbuzz/issues/5116
-	     font->face->table.CPAL->get_palette_colors (palette_ < font->face->table.CPAL->get_palette_count () ? palette_ : 0)
+	     font->face->table.CPAL->get_palette_colors (palette_ < font->face->table.CPAL->get_palette_എണ്ണം () ? palette_ : 0)
 #endif
     ),
     foreground (foreground_),
     instancer (instancer_)
   {
-    if (font->is_synthetic)
+    എങ്കിൽ (font->is_synthetic)
     {
       font = hb_font_create_sub_font (font);
-      hb_font_set_synthetic_bold (font, 0, 0, true);
+      hb_font_set_synthetic_bold (font, 0, 0, സത്യം);
       hb_font_set_synthetic_slant (font, 0);
     }
-    else
+    അല്ലെങ്കിൽ
       hb_font_reference (font);
   }
 
@@ -121,177 +121,177 @@ public:
     hb_font_destroy (font);
   }
 
-  static unsigned
-  color_alpha (hb_color_t color, float alpha)
+  സ്ഥിതം unsigned
+  color_alpha (hb_color_t color, ദശാംശം alpha)
   {
     /* Font-supplied alpha is F2DOT14 plus variation deltas, so it can be
      * negative or greater than one; converting that to unsigned is UB. */
-    return roundf (hb_color_get_alpha (color) * hb_clamp (alpha, 0.f, 1.f));
+    തിരികെ roundf (hb_color_get_alpha (color) * hb_clamp (alpha, 0.f, 1.f));
   }
 
-  hb_color_t get_color (unsigned int color_index, float alpha, hb_bool_t *is_foreground)
+  hb_color_t get_color (unsigned പൂർണ്ണസംഖ്യ color_index, ദശാംശം alpha, hb_bool_t *is_foreground)
   {
     hb_color_t color = foreground;
 
-    *is_foreground = true;
+    *is_foreground = സത്യം;
 
-    if (color_index != 0xffff)
+    എങ്കിൽ (color_index != 0xffff)
     {
-      if (!funcs->custom_palette_color (data, color_index, &color))
+      എങ്കിൽ (!funcs->custom_palette_color (data, color_index, &color))
         color = palette[color_index];
 
-      *is_foreground = false;
+      *is_foreground = അസത്യം;
     }
 
-    return HB_COLOR (hb_color_get_blue (color),
+    തിരികെ HB_COLOR (hb_color_get_blue (color),
                      hb_color_get_green (color),
                      hb_color_get_red (color),
                      color_alpha (color, alpha));
   }
 
-  inline void recurse (const Paint &paint);
+  വരിയിൽ ശൂന്യം recurse (സ്ഥിരം Paint &paint);
 };
 
-struct hb_colrv1_closure_context_t :
+ഘടന hb_colrv1_closure_context_t :
        hb_dispatch_context_t<hb_colrv1_closure_context_t>
 {
   template <typename T>
-  return_t dispatch (const T &obj)
+  return_t dispatch (സ്ഥിരം T &obj)
   {
-    if (unlikely (nesting_level_left == 0))
-      return hb_empty_t ();
+    എങ്കിൽ (unlikely (nesting_level_ഇടത് == 0))
+      തിരികെ hb_empty_t ();
 
-    if (paint_visited (&obj))
-      return hb_empty_t ();
+    എങ്കിൽ (paint_visited (&obj))
+      തിരികെ hb_empty_t ();
 
-    nesting_level_left--;
-    obj.closurev1 (this);
-    nesting_level_left++;
-    return hb_empty_t ();
+    nesting_level_ഇടത്--;
+    obj.closurev1 (ഇത്);
+    nesting_level_ഇടത്++;
+    തിരികെ hb_empty_t ();
   }
-  static return_t default_return_value () { return hb_empty_t (); }
+  സ്ഥിതം return_t default_return_മൂല്യം () { തിരികെ hb_empty_t (); }
 
-  bool paint_visited (const void *paint)
+  തർക്കം paint_visited (സ്ഥിരം ശൂന്യം *paint)
   {
     hb_codepoint_t delta = (hb_codepoint_t) ((uintptr_t) paint - (uintptr_t) base);
-    if (visited_paint.in_error() || visited_paint.has (delta))
-      return true;
+    എങ്കിൽ (visited_paint.in_error() || visited_paint.has (delta))
+      തിരികെ സത്യം;
 
     visited_paint.add (delta);
-    return false;
+    തിരികെ അസത്യം;
   }
 
-  const COLR* get_colr_table () const
-  { return reinterpret_cast<const COLR *> (base); }
+  സ്ഥിരം COLR* get_colr_table () സ്ഥിരം
+  { തിരികെ reinterpret_cast<സ്ഥിരം COLR *> (base); }
 
-  void add_glyph (unsigned glyph_id)
+  ശൂന്യം add_glyph (unsigned glyph_id)
   { glyphs->add (glyph_id); }
 
-  void add_layer_indices (unsigned first_layer_index, unsigned num_of_layers)
+  ശൂന്യം add_layer_indices (unsigned first_layer_index, unsigned അക്കം_of_layers)
   {
-    if (num_of_layers == 0) return;
-    layer_indices->add_range (first_layer_index, first_layer_index + num_of_layers - 1);
+    എങ്കിൽ (അക്കം_of_layers == 0) തിരികെ;
+    layer_indices->add_range (first_layer_index, first_layer_index + അക്കം_of_layers - 1);
   }
 
-  void add_palette_index (unsigned palette_index)
+  ശൂന്യം add_palette_index (unsigned palette_index)
   { palette_indices->add (palette_index); }
 
-  void add_var_idxes (unsigned first_var_idx, unsigned num_idxes)
+  ശൂന്യം add_var_idxes (unsigned first_var_idx, unsigned അക്കം_idxes)
   {
-    if (!num_idxes || first_var_idx == VarIdx::NO_VARIATION) return;
-    variation_indices->add_range (first_var_idx, first_var_idx + num_idxes - 1);
+    എങ്കിൽ (!അക്കം_idxes || first_var_idx == VarIdx::NO_VARIATION) തിരികെ;
+    variation_indices->add_range (first_var_idx, first_var_idx + അക്കം_idxes - 1);
   }
 
-  public:
-  const void *base;
+  പൊതു:
+  സ്ഥിരം ശൂന്യം *base;
   hb_set_t visited_paint;
   hb_set_t *glyphs;
   hb_set_t *layer_indices;
   hb_set_t *palette_indices;
   hb_set_t *variation_indices;
-  unsigned num_var_idxes;
-  unsigned nesting_level_left;
+  unsigned അക്കം_var_idxes;
+  unsigned nesting_level_ഇടത്;
 
-  hb_colrv1_closure_context_t (const void *base_,
+  hb_colrv1_closure_context_t (സ്ഥിരം ശൂന്യം *base_,
                                hb_set_t *glyphs_,
                                hb_set_t *layer_indices_,
                                hb_set_t *palette_indices_,
                                hb_set_t *variation_indices_,
-                               unsigned num_var_idxes_ = 1,
-                               unsigned nesting_level_left_ = HB_MAX_NESTING_LEVEL) :
+                               unsigned അക്കം_var_idxes_2 = 1,
+                               unsigned nesting_level_ഇടത്_2 = HB_MAX_NESTING_LEVEL) :
                           base (base_),
                           glyphs (glyphs_),
                           layer_indices (layer_indices_),
                           palette_indices (palette_indices_),
                           variation_indices (variation_indices_),
-                          num_var_idxes (num_var_idxes_),
-                          nesting_level_left (nesting_level_left_)
+                          അക്കം_var_idxes (അക്കം_var_idxes_2),
+                          nesting_level_ഇടത് (nesting_level_ഇടത്_2)
   {}
 };
 
 
-struct hb_colrv1_depend_context_t :
+ഘടന hb_colrv1_depend_context_t :
        hb_dispatch_context_t<hb_colrv1_depend_context_t>
 {
   template <typename T>
-  return_t dispatch (const T &obj)
+  return_t dispatch (സ്ഥിരം T &obj)
   {
-    if (unlikely (nesting_level_left == 0))
-      return hb_empty_t ();
+    എങ്കിൽ (unlikely (nesting_level_ഇടത് == 0))
+      തിരികെ hb_empty_t ();
 
-    if (paint_visited (&obj))
-      return hb_empty_t ();
+    എങ്കിൽ (paint_visited (&obj))
+      തിരികെ hb_empty_t ();
 
-    nesting_level_left--;
-    obj.dependv1 (this);
-    nesting_level_left++;
-    return hb_empty_t ();
+    nesting_level_ഇടത്--;
+    obj.dependv1 (ഇത്);
+    nesting_level_ഇടത്++;
+    തിരികെ hb_empty_t ();
   }
-  static return_t default_return_value () { return hb_empty_t (); }
+  സ്ഥിതം return_t default_return_മൂല്യം () { തിരികെ hb_empty_t (); }
 
-  bool paint_visited (const void *paint)
+  തർക്കം paint_visited (സ്ഥിരം ശൂന്യം *paint)
   {
     hb_codepoint_t delta = (hb_codepoint_t) ((uintptr_t) paint - (uintptr_t) colr);
-    if (visited_paint.in_error() || visited_paint.has (delta))
-      return true;
+    എങ്കിൽ (visited_paint.in_error() || visited_paint.has (delta))
+      തിരികെ സത്യം;
 
     visited_paint.add (delta);
-    if (unlikely (visited_paint.in_error ()))
+    എങ്കിൽ (unlikely (visited_paint.in_error ()))
       depend_data->fail ();
-    return false;
+    തിരികെ അസത്യം;
   }
 
-  const COLR* get_colr_table () const
-  { return colr; }
+  സ്ഥിരം COLR* get_colr_table () സ്ഥിരം
+  { തിരികെ colr; }
 
-  public:
-  const COLR *colr;
+  പൊതു:
+  സ്ഥിരം COLR *colr;
   hb_depend_data_builder_t *depend_data;
   hb_set_t visited_paint;
-  unsigned nesting_level_left;
+  unsigned nesting_level_ഇടത്;
   hb_codepoint_t source_gid;
 
-  hb_colrv1_depend_context_t (const COLR *colr_,
+  hb_colrv1_depend_context_t (സ്ഥിരം COLR *colr_,
                               hb_depend_data_builder_t *depend_data_,
-                              unsigned nesting_level_left_ = HB_MAX_NESTING_LEVEL) :
+                              unsigned nesting_level_ഇടത്_2 = HB_MAX_NESTING_LEVEL) :
                           colr (colr_),
                           depend_data (depend_data_),
-                          nesting_level_left (nesting_level_left_),
+                          nesting_level_ഇടത് (nesting_level_ഇടത്_2),
                           source_gid (0)
   {}
 };
 
-struct LayerRecord
+ഘടന LayerRecord
 {
-  operator hb_ot_color_layer_t () const { return {glyphId, colorIdx}; }
+  operator hb_ot_color_layer_t () സ്ഥിരം { തിരികെ {glyphId, colorIdx}; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
-  public:
+  പൊതു:
   HBGlyphID16	glyphId;	/* Glyph ID of layer glyph */
   Index		colorIdx;	/* Index value to use with a
 				 * selected color palette.
@@ -303,73 +303,73 @@ struct LayerRecord
 				 * be used and shall not be
 				 * treated as actual index
 				 * into CPAL ColorRecord array. */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (4);
 };
 
-struct BaseGlyphRecord
+ഘടന BaseGlyphRecord
 {
-  int cmp (hb_codepoint_t g) const
-  { return g < glyphId ? -1 : g > glyphId ? 1 : 0; }
+  പൂർണ്ണസംഖ്യ cmp (hb_codepoint_t g) സ്ഥിരം
+  { തിരികെ g < glyphId ? -1 : g > glyphId ? 1 : 0; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
-  public:
+  പൊതു:
   HBGlyphID16	glyphId;	/* Glyph ID of reference glyph */
   HBUINT16	firstLayerIdx;	/* Index (from beginning of
 				 * the Layer Records) to the
 				 * layer record. There will be
 				 * numLayers consecutive entries
 				 * for this base glyph. */
-  HBUINT16	numLayers;	/* Number of color layers
+  HBUINT16	അക്കം_Layers;	/* Number of color layers
 				 * associated with this glyph */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (6);
 };
 
 template <typename T>
-struct Variable
+ഘടന Variable
 {
-  static constexpr bool is_variable = true;
+  സ്ഥിതം constexpr തർക്കം is_variable = സത്യം;
 
-  const T& get_value () const { return value; }
+  സ്ഥിരം T& get_മൂല്യം () സ്ഥിരം { തിരികെ value; }
 
-  Variable<T>* copy (hb_serialize_context_t *c) const
+  Variable<T>* copy (hb_serialize_context_t *c) സ്ഥിരം
   {
-    TRACE_SERIALIZE (this);
-    return_trace (c->embed (this));
+    TRACE_SERIALIZE (ഇത്);
+    return_trace (c->embed (ഇത്));
   }
 
-  void dependv1 (hb_colrv1_depend_context_t* c) const
+  ശൂന്യം dependv1 (hb_colrv1_depend_context_t* c) സ്ഥിരം
   { value.dependv1 (c); }
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  ശൂന്യം closurev1 (hb_colrv1_closure_context_t* c) സ്ഥിരം
   {
-    c->num_var_idxes = 0;
+    c->അക്കം_var_idxes = 0;
     // update c->num_var_idxes during value closure
     value.closurev1 (c);
-    c->add_var_idxes (varIdxBase, c->num_var_idxes);
+    c->add_var_idxes (varIdxBase, c->അക്കം_var_idxes);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  തർക്കം subset (hb_subset_context_t *c,
+               സ്ഥിരം ItemVarStoreInstancer &instancer) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    if (!value.subset (c, instancer, varIdxBase)) return_trace (false);
-    if (c->plan->all_axes_pinned)
-      return_trace (true);
+    TRACE_SUBSET (ഇത്);
+    എങ്കിൽ (!value.subset (c, instancer, varIdxBase)) return_trace (അസത്യം);
+    എങ്കിൽ (c->plan->all_axes_pinned)
+      return_trace (സത്യം);
 
     VarIdx new_varidx;
     new_varidx = varIdxBase;
-    if (varIdxBase != VarIdx::NO_VARIATION)
+    എങ്കിൽ (varIdxBase != VarIdx::NO_VARIATION)
     {
-      hb_pair_t<unsigned, int> *new_varidx_delta;
-      if (!c->plan->colrv1_variation_idx_delta_map.has (varIdxBase, &new_varidx_delta))
-        return_trace (false);
+      hb_pair_t<unsigned, പൂർണ്ണസംഖ്യ> *new_varidx_delta;
+      എങ്കിൽ (!c->plan->colrv1_variation_idx_delta_map.has (varIdxBase, &new_varidx_delta))
+        return_trace (അസത്യം);
 
       new_varidx = hb_first (*new_varidx_delta);
     }
@@ -377,139 +377,139 @@ struct Variable
     return_trace (c->serializer->embed (new_varidx));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && value.sanitize (c));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) && value.sanitize (c));
   }
 
-  void paint_glyph (hb_paint_context_t *c) const
+  ശൂന്യം paint_glyph (hb_paint_context_t *c) സ്ഥിരം
   {
-    TRACE_PAINT (this);
+    TRACE_PAINT (ഇത്);
     value.paint_glyph (c, varIdxBase);
   }
 
-  void get_color_stop (hb_paint_context_t *c,
+  ശൂന്യം get_color_stop (hb_paint_context_t *c,
                        hb_color_stop_t *stop,
-		       const ItemVarStoreInstancer &instancer) const
+		       സ്ഥിരം ItemVarStoreInstancer &instancer) സ്ഥിരം
   {
     value.get_color_stop (c, stop, varIdxBase, instancer);
   }
 
-  void get_solid_color (hb_paint_context_t *c,
-                        hb_bool_t *is_foreground, hb_color_t *color) const
+  ശൂന്യം get_solid_color (hb_paint_context_t *c,
+                        hb_bool_t *is_foreground, hb_color_t *color) സ്ഥിരം
   {
     value.get_solid_color (c, varIdxBase, is_foreground, color);
   }
 
-  hb_paint_extend_t get_extend () const
+  hb_paint_extend_t get_extend () സ്ഥിരം
   {
-    return value.get_extend ();
+    തിരികെ value.get_extend ();
   }
 
-  protected:
+  സംരക്ഷിത:
   T      value;
-  public:
+  പൊതു:
   VarIdx varIdxBase;
-  public:
+  പൊതു:
   DEFINE_SIZE_MIN (VarIdx::static_size + T::min_size);
 };
 
 template <typename T>
-struct NoVariable
+ഘടന NoVariable
 {
-  static constexpr bool is_variable = false;
+  സ്ഥിതം constexpr തർക്കം is_variable = അസത്യം;
 
-  const T& get_value () const { return value; }
+  സ്ഥിരം T& get_മൂല്യം () സ്ഥിരം { തിരികെ value; }
 
-  static constexpr uint32_t varIdxBase = VarIdx::NO_VARIATION;
+  സ്ഥിതം constexpr uint32_t varIdxBase = VarIdx::NO_VARIATION;
 
-  NoVariable<T>* copy (hb_serialize_context_t *c) const
+  NoVariable<T>* copy (hb_serialize_context_t *c) സ്ഥിരം
   {
-    TRACE_SERIALIZE (this);
-    return_trace (c->embed (this));
+    TRACE_SERIALIZE (ഇത്);
+    return_trace (c->embed (ഇത്));
   }
 
-  void dependv1 (hb_colrv1_depend_context_t* c) const
+  ശൂന്യം dependv1 (hb_colrv1_depend_context_t* c) സ്ഥിരം
   { value.dependv1 (c); }
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  ശൂന്യം closurev1 (hb_colrv1_closure_context_t* c) സ്ഥിരം
   { value.closurev1 (c); }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  തർക്കം subset (hb_subset_context_t *c,
+               സ്ഥിരം ItemVarStoreInstancer &instancer) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (ഇത്);
     return_trace (value.subset (c, instancer, varIdxBase));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && value.sanitize (c));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) && value.sanitize (c));
   }
 
-  void paint_glyph (hb_paint_context_t *c) const
+  ശൂന്യം paint_glyph (hb_paint_context_t *c) സ്ഥിരം
   {
-    TRACE_PAINT (this);
+    TRACE_PAINT (ഇത്);
     value.paint_glyph (c, varIdxBase);
   }
 
-  void get_color_stop (hb_paint_context_t *c,
+  ശൂന്യം get_color_stop (hb_paint_context_t *c,
                        hb_color_stop_t *stop,
-		       const ItemVarStoreInstancer &instancer) const
+		       സ്ഥിരം ItemVarStoreInstancer &instancer) സ്ഥിരം
   {
     value.get_color_stop (c, stop, VarIdx::NO_VARIATION, instancer);
   }
 
-  void get_solid_color (hb_paint_context_t *c,
-                        hb_bool_t *is_foreground, hb_color_t *color) const
+  ശൂന്യം get_solid_color (hb_paint_context_t *c,
+                        hb_bool_t *is_foreground, hb_color_t *color) സ്ഥിരം
   {
     value.get_solid_color (c, VarIdx::NO_VARIATION, is_foreground, color);
   }
 
-  hb_paint_extend_t get_extend () const
+  hb_paint_extend_t get_extend () സ്ഥിരം
   {
-    return value.get_extend ();
+    തിരികെ value.get_extend ();
   }
 
   T      value;
-  public:
+  പൊതു:
   DEFINE_SIZE_MIN (T::min_size);
 };
 
 // Color structures
 
 template <typename Type, unsigned fraction_bits>
-static void
-set_fixed_clamped (HBFixed<Type, fraction_bits> &out, float value)
+സ്ഥിതം ശൂന്യം
+set_fixed_clamped (HBFixed<Type, fraction_bits> &out, ദശാംശം value)
 {
   // Variation deltas are unbounded; clamp before the implicit integer cast.
   out.set_int (hb_clamp_to<typename Type::type> (roundf ((value / HBFixed<Type, fraction_bits>::mult))));
 }
 
-struct ColorStop
+ഘടന ColorStop
 {
-  void dependv1 (hb_colrv1_depend_context_t * c) const {}
+  ശൂന്യം dependv1 (hb_colrv1_depend_context_t * c) സ്ഥിരം {}
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  ശൂന്യം closurev1 (hb_colrv1_closure_context_t* c) സ്ഥിരം
   {
     c->add_palette_index (paletteIndex);
-    c->num_var_idxes = 2;
+    c->അക്കം_var_idxes = 2;
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  തർക്കം subset (hb_subset_context_t *c,
+               സ്ഥിരം ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ഇത്);
+    auto *out = c->serializer->embed (*ഇത്);
+    എങ്കിൽ (unlikely (!out)) return_trace (അസത്യം);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    എങ്കിൽ (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       set_fixed_clamped (out->stopOffset, stopOffset.to_float(instancer (varIdxBase, 0)));
-      float a = alpha.to_float (instancer (varIdxBase, 1));
+      ദശാംശം a = alpha.to_float (instancer (varIdxBase, 1));
       /* Partial instances must keep the unclamped base: retained axes can
        * bring the alpha back into range. Clamp before narrowing a full
        * instance so overflow cannot wrap an opaque alpha to transparent. */
@@ -520,16 +520,16 @@ struct ColorStop
                                                HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
-  void get_color_stop (hb_paint_context_t *c,
+  ശൂന്യം get_color_stop (hb_paint_context_t *c,
                        hb_color_stop_t *out,
 		       uint32_t varIdx,
-		       const ItemVarStoreInstancer &instancer) const
+		       സ്ഥിരം ItemVarStoreInstancer &instancer) സ്ഥിരം
   {
     out->offset = stopOffset.to_float(instancer (varIdx, 0));
     out->color = c->get_color (paletteIndex,
@@ -540,111 +540,111 @@ struct ColorStop
   F2DOT14	stopOffset;
   HBUINT16	paletteIndex;
   F2DOT14	alpha;
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (2 + 2 * F2DOT14::static_size);
 };
 
-struct Extend : HBUINT8
+ഘടന Extend : HBUINT8
 {
-  enum {
+  എണ്ണൽ {
     EXTEND_PAD     = 0,
     EXTEND_REPEAT  = 1,
     EXTEND_REFLECT = 2,
   };
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (1);
 };
 
-template <template<typename> class Var>
-struct ColorLine
+template <template<typename> വർഗ്ഗം Var>
+ഘടന Color_വരി
 {
-  void dependv1 (hb_colrv1_depend_context_t * c) const {}
+  ശൂന്യം dependv1 (hb_colrv1_depend_context_t * c) സ്ഥിരം {}
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  ശൂന്യം closurev1 (hb_colrv1_closure_context_t* c) സ്ഥിരം
   {
-    for (const auto &stop : stops.iter ())
+    വേണ്ടി (സ്ഥിരം auto &stop : stops.iter ())
       stop.closurev1 (c);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  തർക്കം subset (hb_subset_context_t *c,
+               സ്ഥിരം ItemVarStoreInstancer &instancer) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (ഇത്);
+    auto *out = c->serializer->start_embed (ഇത്);
+    എങ്കിൽ (unlikely (!c->serializer->extend_min (out))) return_trace (അസത്യം);
 
-    if (!c->serializer->check_assign (out->extend, extend, HB_SERIALIZE_ERROR_INT_OVERFLOW)) return_trace (false);
-    if (!c->serializer->check_assign (out->stops.len, stops.len, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW)) return_trace (false);
+    എങ്കിൽ (!c->serializer->check_assign (out->extend, extend, HB_SERIALIZE_ERROR_INT_OVERFLOW)) return_trace (അസത്യം);
+    എങ്കിൽ (!c->serializer->check_assign (out->stops.len, stops.len, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW)) return_trace (അസത്യം);
 
-    for (const auto& stop : stops.iter ())
+    വേണ്ടി (സ്ഥിരം auto& stop : stops.iter ())
     {
-      if (!stop.subset (c, instancer)) return_trace (false);
+      എങ്കിൽ (!stop.subset (c, instancer)) return_trace (അസത്യം);
     }
-    return_trace (true);
+    return_trace (സത്യം);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) &&
                   stops.sanitize (c));
   }
 
   /* get up to count stops from start */
-  unsigned int
+  unsigned പൂർണ്ണസംഖ്യ
   get_color_stops (hb_paint_context_t *c,
-                   unsigned int start,
-		   unsigned int *count,
+                   unsigned പൂർണ്ണസംഖ്യ start,
+		   unsigned പൂർണ്ണസംഖ്യ *എണ്ണം,
 		   hb_color_stop_t *color_stops,
-		   const ItemVarStoreInstancer &instancer) const
+		   സ്ഥിരം ItemVarStoreInstancer &instancer) സ്ഥിരം
   {
-    unsigned int len = stops.len;
+    unsigned പൂർണ്ണസംഖ്യ len = stops.len;
 
-    if (count && color_stops)
+    എങ്കിൽ (എണ്ണം && color_stops)
     {
-      unsigned int i;
-      for (i = 0; i < *count && start + i < len; i++)
+      unsigned പൂർണ്ണസംഖ്യ i;
+      വേണ്ടി (i = 0; i < *എണ്ണം && start + i < len; i++)
         stops[start + i].get_color_stop (c, &color_stops[i], instancer);
-      *count = i;
+      *എണ്ണം = i;
     }
 
-    return len;
+    തിരികെ len;
   }
 
-  HB_INTERNAL static unsigned int static_get_color_stops (hb_color_line_t *color_line,
-							  void *color_line_data,
-							  unsigned int start,
-							  unsigned int *count,
+  HB_INTERNAL സ്ഥിതം unsigned പൂർണ്ണസംഖ്യ static_get_color_stops (hb_color_വരി_t *color_വരി,
+							  ശൂന്യം *color_വരി_data,
+							  unsigned പൂർണ്ണസംഖ്യ start,
+							  unsigned പൂർണ്ണസംഖ്യ *എണ്ണം,
 							  hb_color_stop_t *color_stops,
-							  void *user_data)
+							  ശൂന്യം *user_data)
   {
-    const ColorLine *thiz = (const ColorLine *) color_line_data;
+    സ്ഥിരം Color_വരി *thiz = (സ്ഥിരം Color_വരി *) color_വരി_data;
     hb_paint_context_t *c = (hb_paint_context_t *) user_data;
-    return thiz->get_color_stops (c, start, count, color_stops, c->instancer);
+    തിരികെ thiz->get_color_stops (c, start, എണ്ണം, color_stops, c->instancer);
   }
 
-  hb_paint_extend_t get_extend () const
+  hb_paint_extend_t get_extend () സ്ഥിരം
   {
-    switch ((unsigned int) extend)
+    തിരഞ്ഞെടുപ്പ് ((unsigned പൂർണ്ണസംഖ്യ) extend)
     {
-      case Extend::EXTEND_REPEAT:  return HB_PAINT_EXTEND_REPEAT;
-      case Extend::EXTEND_REFLECT: return HB_PAINT_EXTEND_REFLECT;
-      case Extend::EXTEND_PAD:
-      default:                     return HB_PAINT_EXTEND_PAD;
+      അവസ്ഥ Extend::EXTEND_REPEAT:  തിരികെ HB_PAINT_EXTEND_REPEAT;
+      അവസ്ഥ Extend::EXTEND_REFLECT: തിരികെ HB_PAINT_EXTEND_REFLECT;
+      അവസ്ഥ Extend::EXTEND_PAD:
+      സ്ഥിരസ്ഥിതി:                     തിരികെ HB_PAINT_EXTEND_PAD;
     }
   }
 
-  HB_INTERNAL static hb_paint_extend_t static_get_extend (hb_color_line_t *color_line,
-							  void *color_line_data,
-							  void *user_data)
+  HB_INTERNAL സ്ഥിതം hb_paint_extend_t static_get_extend (hb_color_വരി_t *color_വരി,
+							  ശൂന്യം *color_വരി_data,
+							  ശൂന്യം *user_data)
   {
-    const ColorLine *thiz = (const ColorLine *) color_line_data;
-    return thiz->get_extend ();
+    സ്ഥിരം Color_വരി *thiz = (സ്ഥിരം Color_വരി *) color_വരി_data;
+    തിരികെ thiz->get_extend ();
   }
 
   Extend	extend;
   Array16Of<Var<ColorStop>>	stops;
-  public:
+  പൊതു:
   DEFINE_SIZE_ARRAY_SIZED (3, stops);
 };
 
@@ -653,38 +653,38 @@ struct ColorLine
 // Compositing modes are taken from https://www.w3.org/TR/compositing-1/
 // NOTE: a brief audit of major implementations suggests most support most
 // or all of the specified modes.
-struct CompositeMode : HBUINT8
+ഘടന CompositeMode : HBUINT8
 {
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (1);
 };
 
-struct Affine2x3
+ഘടന Affine2x3
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
-  void dependv1 (hb_colrv1_depend_context_t* c) const {}
+  ശൂന്യം dependv1 (hb_colrv1_depend_context_t* c) സ്ഥിരം {}
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
-  { c->num_var_idxes = 6; }
+  ശൂന്യം closurev1 (hb_colrv1_closure_context_t* c) സ്ഥിരം
+  { c->അക്കം_var_idxes = 6; }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  തർക്കം subset (hb_subset_context_t *c,
+               സ്ഥിരം ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    TRACE_SUBSET (ഇത്);
+    auto *out = c->serializer->embed (*ഇത്);
+    എങ്കിൽ (unlikely (!out)) return_trace (അസത്യം);
+    എങ്കിൽ (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       auto fold = [&] (F16DOT16 &target, F16DOT16 source, unsigned offset) {
         // Keep the stored integer precise while applying the float delta.
-        target.set_int (hb_clamp_to<int32_t> (roundf ((double) source.to_int () +
-                                                    (double) instancer (varIdxBase, offset))));
+        target.set_int (hb_clamp_to<int32_t> (roundf ((ഇരട്ട) source.to_int () +
+                                                    (ഇരട്ട) instancer (varIdxBase, offset))));
       };
       fold (out->xx, xx, 0);
       fold (out->yx, yx, 1);
@@ -693,13 +693,13 @@ struct Affine2x3
       fold (out->dx, dx, 4);
       fold (out->dy, dy, 5);
     }
-    return_trace (true);
+    return_trace (സത്യം);
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  ശൂന്യം paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) സ്ഥിരം
   {
-    TRACE_PAINT (this);
-    c->funcs->push_transform (c->data,
+    TRACE_PAINT (ഇത്);
+    c->funcs->തള്ളുക_transform (c->data,
 			      xx.to_float (c->instancer (varIdxBase, 0)),
 			      yx.to_float (c->instancer (varIdxBase, 1)),
                               xy.to_float (c->instancer (varIdxBase, 2)),
@@ -714,89 +714,89 @@ struct Affine2x3
   F16DOT16 yy;
   F16DOT16 dx;
   F16DOT16 dy;
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (6 * F16DOT16::static_size);
 };
 
-struct PaintColrLayers
+ഘടന PaintColrLayers
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL ശൂന്യം dependv1 (hb_colrv1_depend_context_t* c) സ്ഥിരം;
+  HB_INTERNAL ശൂന്യം closurev1 (hb_colrv1_closure_context_t* c) സ്ഥിരം;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer HB_UNUSED) const
+  തർക്കം subset (hb_subset_context_t *c,
+               സ്ഥിരം ItemVarStoreInstancer &instancer HB_UNUSED) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ഇത്);
+    auto *out = c->serializer->embed (ഇത്);
+    എങ്കിൽ (unlikely (!out)) return_trace (അസത്യം);
 
-    uint32_t first_layer_index = numLayers ? c->plan->colrv1_layers.get (firstLayerIndex) : 0;
+    uint32_t first_layer_index = അക്കം_Layers ? c->plan->colrv1_layers.get (firstLayerIndex) : 0;
     return_trace (c->serializer->check_assign (out->firstLayerIndex, first_layer_index,
                                                HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
-  inline void paint_glyph (hb_paint_context_t *c) const;
+  വരിയിൽ ശൂന്യം paint_glyph (hb_paint_context_t *c) സ്ഥിരം;
 
   HBUINT8	format; /* format = 1 */
-  HBUINT8	numLayers;
+  HBUINT8	അക്കം_Layers;
   HBUINT32	firstLayerIndex;  /* index into COLRv1::layerList */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (6);
 };
 
-struct PaintSolid
+ഘടന PaintSolid
 {
-  void dependv1 (hb_colrv1_depend_context_t* c) const {}
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  ശൂന്യം dependv1 (hb_colrv1_depend_context_t* c) സ്ഥിരം {}
+  ശൂന്യം closurev1 (hb_colrv1_closure_context_t* c) സ്ഥിരം
   {
     c->add_palette_index (paletteIndex);
-    c->num_var_idxes = 1;
+    c->അക്കം_var_idxes = 1;
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  തർക്കം subset (hb_subset_context_t *c,
+               സ്ഥിരം ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ഇത്);
+    auto *out = c->serializer->embed (*ഇത്);
+    എങ്കിൽ (unlikely (!out)) return_trace (അസത്യം);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    എങ്കിൽ (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
-      float a = alpha.to_float (instancer (varIdxBase, 0));
+      ദശാംശം a = alpha.to_float (instancer (varIdxBase, 0));
       set_fixed_clamped (out->alpha, c->plan->all_axes_pinned ? hb_clamp (a, 0.f, 1.f) : a);
     }
 
-    if (format == 3 && c->plan->all_axes_pinned)
+    എങ്കിൽ (format == 3 && c->plan->all_axes_pinned)
         out->format = 2;
 
     return_trace (c->serializer->check_assign (out->paletteIndex, c->plan->colr_palettes.get (paletteIndex),
                                                HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
-  void get_solid_color (hb_paint_context_t *c, uint32_t varIdxBase,
-                        hb_bool_t *is_foreground, hb_color_t *color) const
+  ശൂന്യം get_solid_color (hb_paint_context_t *c, uint32_t varIdxBase,
+                        hb_bool_t *is_foreground, hb_color_t *color) സ്ഥിരം
   {
     *color = c->get_color (paletteIndex,
                            alpha.to_float (c->instancer (varIdxBase, 0)),
                            is_foreground);
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  ശൂന്യം paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) സ്ഥിരം
   {
-    TRACE_PAINT (this);
+    TRACE_PAINT (ഇത്);
     hb_bool_t is_foreground;
     hb_color_t color;
 
@@ -807,58 +807,58 @@ struct PaintSolid
   HBUINT8	format; /* format = 2(noVar) or 3(Var)*/
   HBUINT16	paletteIndex;
   F2DOT14	alpha;
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (3 + F2DOT14::static_size);
 };
 
-template <template<typename> class Var>
-struct PaintLinearGradient
+template <template<typename> വർഗ്ഗം Var>
+ഘടന PaintLinearGradient
 {
-  void dependv1 (hb_colrv1_depend_context_t* c) const {}
+  ശൂന്യം dependv1 (hb_colrv1_depend_context_t* c) സ്ഥിരം {}
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  ശൂന്യം closurev1 (hb_colrv1_closure_context_t* c) സ്ഥിരം
   {
-    (this+colorLine).closurev1 (c);
-    c->num_var_idxes = 6;
+    (ഇത്+color_വരി_2).closurev1 (c);
+    c->അക്കം_var_idxes = 6;
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  തർക്കം subset (hb_subset_context_t *c,
+               സ്ഥിരം ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ഇത്);
+    auto *out = c->serializer->embed (ഇത്);
+    എങ്കിൽ (unlikely (!out)) return_trace (അസത്യം);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    എങ്കിൽ (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
-      out->x0 = hb_clamp_to<int16_t> ((double) x0 + (double) roundf (instancer (varIdxBase, 0)));
-      out->y0 = hb_clamp_to<int16_t> ((double) y0 + (double) roundf (instancer (varIdxBase, 1)));
-      out->x1 = hb_clamp_to<int16_t> ((double) x1 + (double) roundf (instancer (varIdxBase, 2)));
-      out->y1 = hb_clamp_to<int16_t> ((double) y1 + (double) roundf (instancer (varIdxBase, 3)));
-      out->x2 = hb_clamp_to<int16_t> ((double) x2 + (double) roundf (instancer (varIdxBase, 4)));
-      out->y2 = hb_clamp_to<int16_t> ((double) y2 + (double) roundf (instancer (varIdxBase, 5)));
+      out->x0 = hb_clamp_to<int16_t> ((ഇരട്ട) x0 + (ഇരട്ട) roundf (instancer (varIdxBase, 0)));
+      out->y0 = hb_clamp_to<int16_t> ((ഇരട്ട) y0 + (ഇരട്ട) roundf (instancer (varIdxBase, 1)));
+      out->x1 = hb_clamp_to<int16_t> ((ഇരട്ട) x1 + (ഇരട്ട) roundf (instancer (varIdxBase, 2)));
+      out->y1 = hb_clamp_to<int16_t> ((ഇരട്ട) y1 + (ഇരട്ട) roundf (instancer (varIdxBase, 3)));
+      out->x2 = hb_clamp_to<int16_t> ((ഇരട്ട) x2 + (ഇരട്ട) roundf (instancer (varIdxBase, 4)));
+      out->y2 = hb_clamp_to<int16_t> ((ഇരട്ട) y2 + (ഇരട്ട) roundf (instancer (varIdxBase, 5)));
     }
 
-    if (format == 5 && c->plan->all_axes_pinned)
+    എങ്കിൽ (format == 5 && c->plan->all_axes_pinned)
         out->format = 4;
 
-    return_trace (out->colorLine.serialize_subset (c, colorLine, this, instancer));
+    return_trace (out->color_വരി_2.serialize_subset (c, color_വരി_2, ഇത്, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && colorLine.sanitize (c, this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) && color_വരി_2.sanitize (c, ഇത്));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  ശൂന്യം paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) സ്ഥിരം
   {
-    TRACE_PAINT (this);
-    hb_color_line_t cl = {
-      (void *) &(this+colorLine),
-      (this+colorLine).static_get_color_stops, c,
-      (this+colorLine).static_get_extend, nullptr
+    TRACE_PAINT (ഇത്);
+    hb_color_വരി_t cl = {
+      (ശൂന്യം *) &(ഇത്+color_വരി_2),
+      (ഇത്+color_വരി_2).static_get_color_stops, c,
+      (ഇത്+color_വരി_2).static_get_extend, nullptr
     };
 
     c->funcs->linear_gradient (c->data, &cl,
@@ -871,7 +871,7 @@ struct PaintLinearGradient
   }
 
   HBUINT8			format; /* format = 4(noVar) or 5 (Var) */
-  Offset24To<ColorLine<Var>>	colorLine; /* Offset (from beginning of PaintLinearGradient
+  Offset24To<Color_വരി<Var>>	color_വരി_2; /* Offset (from beginning of PaintLinearGradient
                                             * table) to ColorLine subtable. */
   FWORD			x0;
   FWORD			y0;
@@ -879,217 +879,217 @@ struct PaintLinearGradient
   FWORD			y1;
   FWORD			x2;
   FWORD			y2;
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (4 + 6 * FWORD::static_size);
 };
 
-template <template<typename> class Var>
-struct PaintRadialGradient
+template <template<typename> വർഗ്ഗം Var>
+ഘടന PaintRadialGradient
 {
-  bool constant_after_pinning (hb_subset_context_t *c,
-                               const ItemVarStoreInstancer &instancer) const
+  തർക്കം constant_after_pinning (hb_subset_context_t *c,
+                               സ്ഥിരം ItemVarStoreInstancer &instancer) സ്ഥിരം
   {
-    if (c->plan->has_avar2) return false;
-    const auto &regions = instancer.varStore->get_region_list ();
-    for (unsigned i = 0; i < regions.regionCount; i++)
+    എങ്കിൽ (c->plan->has_avar2) തിരികെ അസത്യം;
+    സ്ഥിരം auto &regions = instancer.varStore->get_region_list ();
+    വേണ്ടി (unsigned i = 0; i < regions.region_എണ്ണം; i++)
     {
       hb_hashmap_t<hb_tag_t, Triple> axes;
-      if (!regions.get_var_region (i, c->plan->axes_old_index_tag_map, axes))
+      എങ്കിൽ (!regions.get_var_region (i, c->plan->axes_old_index_tag_map, axes))
       {
         c->serializer->err (HB_SERIALIZE_ERROR_OUT_OF_ROOM);
-        return false;
+        തിരികെ അസത്യം;
       }
-      for (auto axis : axes)
+      വേണ്ടി (auto axis : axes)
       {
         Triple *limit;
-        if (!c->plan->user_axes_location.has (axis.first, &limit) ||
+        എങ്കിൽ (!c->plan->user_axes_location.has (axis.first, &limit) ||
             limit->minimum != limit->maximum)
-          return false;
+          തിരികെ അസത്യം;
       }
     }
-    return true;
+    തിരികെ സത്യം;
   }
 
-  void dependv1 (hb_colrv1_depend_context_t* c) const {}
+  ശൂന്യം dependv1 (hb_colrv1_depend_context_t* c) സ്ഥിരം {}
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  ശൂന്യം closurev1 (hb_colrv1_closure_context_t* c) സ്ഥിരം
   {
-    (this+colorLine).closurev1 (c);
-    c->num_var_idxes = 6;
+    (ഇത്+color_വരി_2).closurev1 (c);
+    c->അക്കം_var_idxes = 6;
   }
 
-  bool subset_nonnegative (hb_subset_context_t *c,
-                           const ItemVarStoreInstancer &instancer,
-                           uint32_t varIdxBase) const
+  തർക്കം subset_nonnegative (hb_subset_context_t *c,
+                           സ്ഥിരം ItemVarStoreInstancer &instancer,
+                           uint32_t varIdxBase) സ്ഥിരം
   {
-    double source[6] = {
-      x0 + (double) roundf (instancer (varIdxBase, 0)),
-      y0 + (double) roundf (instancer (varIdxBase, 1)),
-      radius0 + (double) roundf (instancer (varIdxBase, 2)),
-      x1 + (double) roundf (instancer (varIdxBase, 3)),
-      y1 + (double) roundf (instancer (varIdxBase, 4)),
-      radius1 + (double) roundf (instancer (varIdxBase, 5))
+    ഇരട്ട source[6] = {
+      x0 + (ഇരട്ട) roundf (instancer (varIdxBase, 0)),
+      y0 + (ഇരട്ട) roundf (instancer (varIdxBase, 1)),
+      radius0 + (ഇരട്ട) roundf (instancer (varIdxBase, 2)),
+      x1 + (ഇരട്ട) roundf (instancer (varIdxBase, 3)),
+      y1 + (ഇരട്ട) roundf (instancer (varIdxBase, 4)),
+      radius1 + (ഇരട്ട) roundf (instancer (varIdxBase, 5))
     };
     auto transparent = [&] {
       auto *out = c->serializer->allocate_size<PaintSolid> (5);
-      if (!out) return false;
+      എങ്കിൽ (!out) തിരികെ അസത്യം;
       out->format = 2; out->paletteIndex = 0xFFFF; out->alpha.set_float (0);
-      return true;
+      തിരികെ സത്യം;
     };
-    const auto &line = this+colorLine;
-    if (source[2] == source[5] || !line.stops.len) return transparent ();
-    struct stop_t { double offset, alpha; unsigned palette, order; };
+    സ്ഥിരം auto &വരി = ഇത്+color_വരി_2;
+    എങ്കിൽ (source[2] == source[5] || !വരി.stops.len) തിരികെ transparent ();
+    ഘടന stop_t { ഇരട്ട offset, alpha; unsigned palette, order; };
     hb_vector_t<stop_t> stops;
-    if (!stops.alloc (line.stops.len)) return false;
+    എങ്കിൽ (!stops.alloc (വരി.stops.len)) തിരികെ അസത്യം;
     unsigned order = 0;
-    for (const auto &entry : line.stops.iter ())
+    വേണ്ടി (സ്ഥിരം auto &entry : വരി.stops.iter ())
     {
-      const auto &stop = entry.get_value ();
-      stops.push (stop_t {(double) roundf (stop.stopOffset.to_float (instancer (entry.varIdxBase, 0)) * 16384.f) / 16384.,
-                   (double) hb_clamp (stop.alpha.to_float (instancer (entry.varIdxBase, 1)), 0.f, 1.f),
+      സ്ഥിരം auto &stop = entry.get_മൂല്യം ();
+      stops.push (stop_t {(ഇരട്ട) roundf (stop.stopOffset.to_float (instancer (entry.varIdxBase, 0)) * 16384.f) / 16384.,
+                   (ഇരട്ട) hb_clamp (stop.alpha.to_float (instancer (entry.varIdxBase, 1)), 0.f, 1.f),
                    stop.paletteIndex, order++});
     }
-    if (stops.in_error ()) return false;
-    stops.qsort ([] (const stop_t &a, const stop_t &b) {
-      return a.offset < b.offset ? -1 : a.offset > b.offset ? 1 :
+    എങ്കിൽ (stops.in_error ()) തിരികെ അസത്യം;
+    stops.qsort ([] (സ്ഥിരം stop_t &a, സ്ഥിരം stop_t &b) {
+      തിരികെ a.offset < b.offset ? -1 : a.offset > b.offset ? 1 :
              a.order < b.order ? -1 : a.order > b.order ? 1 : 0;
     });
-    double dr = source[5] - source[2];
+    ഇരട്ട dr = source[5] - source[2];
     // Fractional shifts must preserve both integer circles and F2Dot14 stops.
     unsigned lattice = 16384;
-    for (unsigned j = 0; j < 3; j++)
+    വേണ്ടി (unsigned j = 0; j < 3; j++)
     {
-      double remainder = fmod (fabs (source[j + 3] - source[j]), 16384.);
-      if (!(remainder >= 0 && remainder < 16384))
+      ഇരട്ട remainder = fmod (fabs (source[j + 3] - source[j]), 16384.);
+      എങ്കിൽ (!(remainder >= 0 && remainder < 16384))
       {
         c->serializer->err (HB_SERIALIZE_ERROR_INT_OVERFLOW);
-        return false;
+        തിരികെ അസത്യം;
       }
-      unsigned right = (unsigned) remainder;
-      while (right) { unsigned r = lattice % right; lattice = right; right = r; }
+      unsigned വലത് = (unsigned) remainder;
+      ആകുമ്പോൾ (വലത്) { unsigned r = lattice % വലത്; lattice = വലത്; വലത് = r; }
     }
-    for (unsigned shift = 0; shift < 16; shift++)
+    വേണ്ടി (unsigned shift = 0; shift < 16; shift++)
     {
-      double b = 1u << shift;
-      double coarse = dr > 0 ? ceil (-source[2] / dr) : floor (source[2] / -dr) - b;
-      double fine = dr > 0 ? ceil (-source[2] / dr * lattice) / lattice :
+      ഇരട്ട b = 1u << shift;
+      ഇരട്ട coarse = dr > 0 ? ceil (-source[2] / dr) : floor (source[2] / -dr) - b;
+      ഇരട്ട fine = dr > 0 ? ceil (-source[2] / dr * lattice) / lattice :
                             floor (source[2] / -dr * lattice) / lattice - b;
-      double candidates[] = {coarse, fine};
-      for (double a : candidates)
+      ഇരട്ട candidates[] = {coarse, fine};
+      വേണ്ടി (ഇരട്ട a : candidates)
       {
         // omega = a + b*q. Positive b preserves the largest valid root.
-        double geometry[6];
-        bool fits = true;
-        for (unsigned j = 0; j < 3; j++)
+        ഇരട്ട geometry[6];
+        തർക്കം fits = സത്യം;
+        വേണ്ടി (unsigned j = 0; j < 3; j++)
         {
-          double difference = source[j + 3] - source[j];
+          ഇരട്ട difference = source[j + 3] - source[j];
           geometry[j] = source[j] + a * difference;
           geometry[j + 3] = source[j] + (a + b) * difference;
-          double low = j == 2 ? 0 : -32768, high = j == 2 ? 65535 : 32767;
-          fits &= geometry[j] >= low && geometry[j] <= high &&
-                  geometry[j + 3] >= low && geometry[j + 3] <= high;
+          ഇരട്ട താഴെയുള്ള = j == 2 ? 0 : -32768, മുകളിലെ = j == 2 ? 65535 : 32767;
+          fits &= geometry[j] >= താഴെയുള്ള && geometry[j] <= മുകളിലെ &&
+                  geometry[j + 3] >= താഴെയുള്ള && geometry[j + 3] <= മുകളിലെ;
         }
-        if (!fits) continue;
-        unsigned first = 0, count = stops.length;
-        double min = (stops[0].offset - a) / b, max = (stops.tail ().offset - a) / b;
-        double bias = 0;
-        bool constant = false;
-        if (line.extend == Extend::EXTEND_PAD)
+        എങ്കിൽ (!fits) തുടരുക;
+        unsigned first = 0, എണ്ണം = stops.length;
+        ഇരട്ട min = (stops[0].offset - a) / b, max = (stops.tail ().offset - a) / b;
+        ഇരട്ട bias = 0;
+        തർക്കം constant = അസത്യം;
+        എങ്കിൽ (വരി.extend == Extend::EXTEND_PAD)
         {
-          double tip = -geometry[2] / (b * dr);
-          if ((dr > 0 && max <= tip) || (dr < 0 && min > tip))
+          ഇരട്ട tip = -geometry[2] / (b * dr);
+          എങ്കിൽ ((dr > 0 && max <= tip) || (dr < 0 && min > tip))
           {
             first = dr > 0 ? stops.length - 1 : 0;
-            count = 1; constant = true;
+            എണ്ണം = 1; constant = സത്യം;
           }
         }
-        else
+        അല്ലെങ്കിൽ
         {
-          double period = max - min;
-          if (line.extend == Extend::EXTEND_REFLECT) period *= 2;
-          if (period <= 0) return transparent ();
-          double n = ceil ((-2 - min) / period);
-          if (n > floor ((32767. / 16384. - max) / period)) continue;
+          ഇരട്ട period = max - min;
+          എങ്കിൽ (വരി.extend == Extend::EXTEND_REFLECT) period *= 2;
+          എങ്കിൽ (period <= 0) തിരികെ transparent ();
+          ഇരട്ട n = ceil ((-2 - min) / period);
+          എങ്കിൽ (n > floor ((32767. / 16384. - max) / period)) തുടരുക;
           bias = n * period;
         }
-        for (unsigned j = 0; j < count; j++)
+        വേണ്ടി (unsigned j = 0; j < എണ്ണം; j++)
         {
-          double bits = constant ? 0 : ((stops[first + j].offset - a) / b + bias) * 16384;
+          ഇരട്ട bits = constant ? 0 : ((stops[first + j].offset - a) / b + bias) * 16384;
           fits &= bits >= -32768 && bits <= 32767 && bits == round (bits);
         }
-        if (!fits) continue;
+        എങ്കിൽ (!fits) തുടരുക;
         auto *out = c->serializer->allocate_size<PaintRadialGradient<NoVariable>> (16);
-        if (!out) return false;
+        എങ്കിൽ (!out) തിരികെ അസത്യം;
         out->format = 6;
-        out->x0 = (int) geometry[0]; out->y0 = (int) geometry[1]; out->radius0 = (unsigned) geometry[2];
-        out->x1 = (int) geometry[3]; out->y1 = (int) geometry[4]; out->radius1 = (unsigned) geometry[5];
+        out->x0 = (പൂർണ്ണസംഖ്യ) geometry[0]; out->y0 = (പൂർണ്ണസംഖ്യ) geometry[1]; out->radius0 = (unsigned) geometry[2];
+        out->x1 = (പൂർണ്ണസംഖ്യ) geometry[3]; out->y1 = (പൂർണ്ണസംഖ്യ) geometry[4]; out->radius1 = (unsigned) geometry[5];
         c->serializer->push ();
-        auto *out_line = c->serializer->allocate_size<ColorLine<NoVariable>> (3 + count * ColorStop::static_size);
-        if (!out_line) { c->serializer->pop_discard (); return false; }
-        out_line->extend = line.extend;
-        out_line->stops.len = count;
-        for (unsigned j = 0; j < count; j++)
+        auto *out_വരി = c->serializer->allocate_size<Color_വരി<NoVariable>> (3 + എണ്ണം * ColorStop::static_size);
+        എങ്കിൽ (!out_വരി) { c->serializer->എടുക്കുക_discard (); തിരികെ അസത്യം; }
+        out_വരി->extend = വരി.extend;
+        out_വരി->stops.len = എണ്ണം;
+        വേണ്ടി (unsigned j = 0; j < എണ്ണം; j++)
         {
-          const auto &stop = stops[first + j];
-          auto &out_stop = out_line->stops[j].value;
-          out_stop.stopOffset.set_float ((float) (constant ? 0 : (stop.offset - a) / b + bias));
-          out_stop.alpha.set_float ((float) stop.alpha);
-          if (!c->serializer->check_assign (out_stop.paletteIndex, c->plan->colr_palettes.get (stop.palette),
+          സ്ഥിരം auto &stop = stops[first + j];
+          auto &out_stop = out_വരി->stops[j].value;
+          out_stop.stopOffset.set_float ((ദശാംശം) (constant ? 0 : (stop.offset - a) / b + bias));
+          out_stop.alpha.set_float ((ദശാംശം) stop.alpha);
+          എങ്കിൽ (!c->serializer->check_assign (out_stop.paletteIndex, c->plan->colr_palettes.get (stop.palette),
                                             HB_SERIALIZE_ERROR_INT_OVERFLOW))
-          { c->serializer->pop_discard (); return false; }
+          { c->serializer->എടുക്കുക_discard (); തിരികെ അസത്യം; }
         }
-        c->serializer->add_link (out->colorLine, c->serializer->pop_pack ());
-        return !c->serializer->in_error ();
+        c->serializer->add_link (out->color_വരി_2, c->serializer->എടുക്കുക_pack ());
+        തിരികെ !c->serializer->in_error ();
       }
     }
     // Reject an unrepresentable static result instead of changing its colors.
     c->serializer->err (HB_SERIALIZE_ERROR_INT_OVERFLOW);
-    return false;
+    തിരികെ അസത്യം;
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  തർക്കം subset (hb_subset_context_t *c,
+               സ്ഥിരം ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    if (instancer && !c->plan->pinned_at_default &&
+    TRACE_SUBSET (ഇത്);
+    എങ്കിൽ (instancer && !c->plan->pinned_at_default &&
         (c->plan->all_axes_pinned || constant_after_pinning (c, instancer)) &&
         varIdxBase != VarIdx::NO_VARIATION &&
-        (radius0 + (double) roundf (instancer (varIdxBase, 2)) < 0 ||
-         radius1 + (double) roundf (instancer (varIdxBase, 5)) < 0))
+        (radius0 + (ഇരട്ട) roundf (instancer (varIdxBase, 2)) < 0 ||
+         radius1 + (ഇരട്ട) roundf (instancer (varIdxBase, 5)) < 0))
       return_trace (subset_nonnegative (c, instancer, varIdxBase));
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    auto *out = c->serializer->embed (ഇത്);
+    എങ്കിൽ (unlikely (!out)) return_trace (അസത്യം);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    എങ്കിൽ (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
-      out->x0 = hb_clamp_to<int16_t> ((double) x0 + (double) roundf (instancer (varIdxBase, 0)));
-      out->y0 = hb_clamp_to<int16_t> ((double) y0 + (double) roundf (instancer (varIdxBase, 1)));
-      out->radius0 = hb_clamp_to<uint16_t> ((double) radius0 + (double) roundf (instancer (varIdxBase, 2)));
-      out->x1 = hb_clamp_to<int16_t> ((double) x1 + (double) roundf (instancer (varIdxBase, 3)));
-      out->y1 = hb_clamp_to<int16_t> ((double) y1 + (double) roundf (instancer (varIdxBase, 4)));
-      out->radius1 = hb_clamp_to<uint16_t> ((double) radius1 + (double) roundf (instancer (varIdxBase, 5)));
+      out->x0 = hb_clamp_to<int16_t> ((ഇരട്ട) x0 + (ഇരട്ട) roundf (instancer (varIdxBase, 0)));
+      out->y0 = hb_clamp_to<int16_t> ((ഇരട്ട) y0 + (ഇരട്ട) roundf (instancer (varIdxBase, 1)));
+      out->radius0 = hb_clamp_to<uint16_t> ((ഇരട്ട) radius0 + (ഇരട്ട) roundf (instancer (varIdxBase, 2)));
+      out->x1 = hb_clamp_to<int16_t> ((ഇരട്ട) x1 + (ഇരട്ട) roundf (instancer (varIdxBase, 3)));
+      out->y1 = hb_clamp_to<int16_t> ((ഇരട്ട) y1 + (ഇരട്ട) roundf (instancer (varIdxBase, 4)));
+      out->radius1 = hb_clamp_to<uint16_t> ((ഇരട്ട) radius1 + (ഇരട്ട) roundf (instancer (varIdxBase, 5)));
     }
 
-    if (format == 7 && c->plan->all_axes_pinned)
+    എങ്കിൽ (format == 7 && c->plan->all_axes_pinned)
         out->format = 6;
 
-    return_trace (out->colorLine.serialize_subset (c, colorLine, this, instancer));
+    return_trace (out->color_വരി_2.serialize_subset (c, color_വരി_2, ഇത്, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && colorLine.sanitize (c, this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) && color_വരി_2.sanitize (c, ഇത്));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  ശൂന്യം paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) സ്ഥിരം
   {
-    TRACE_PAINT (this);
-    hb_color_line_t cl = {
-      (void *) &(this+colorLine),
-      (this+colorLine).static_get_color_stops, c,
-      (this+colorLine).static_get_extend, nullptr
+    TRACE_PAINT (ഇത്);
+    hb_color_വരി_t cl = {
+      (ശൂന്യം *) &(ഇത്+color_വരി_2),
+      (ഇത്+color_വരി_2).static_get_color_stops, c,
+      (ഇത്+color_വരി_2).static_get_extend, nullptr
     };
 
     c->funcs->radial_gradient (c->data, &cl,
@@ -1102,7 +1102,7 @@ struct PaintRadialGradient
   }
 
   HBUINT8			format; /* format = 6(noVar) or 7 (Var) */
-  Offset24To<ColorLine<Var>>	colorLine; /* Offset (from beginning of PaintRadialGradient
+  Offset24To<Color_വരി<Var>>	color_വരി_2; /* Offset (from beginning of PaintRadialGradient
                                             * table) to ColorLine subtable. */
   FWORD			x0;
   FWORD			y0;
@@ -1110,56 +1110,56 @@ struct PaintRadialGradient
   FWORD			x1;
   FWORD			y1;
   UFWORD		radius1;
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (4 + 6 * FWORD::static_size);
 };
 
-template <template<typename> class Var>
-struct PaintSweepGradient
+template <template<typename> വർഗ്ഗം Var>
+ഘടന PaintSweepGradient
 {
-  void dependv1 (hb_colrv1_depend_context_t* c) const {}
+  ശൂന്യം dependv1 (hb_colrv1_depend_context_t* c) സ്ഥിരം {}
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  ശൂന്യം closurev1 (hb_colrv1_closure_context_t* c) സ്ഥിരം
   {
-    (this+colorLine).closurev1 (c);
-    c->num_var_idxes = 4;
+    (ഇത്+color_വരി_2).closurev1 (c);
+    c->അക്കം_var_idxes = 4;
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  തർക്കം subset (hb_subset_context_t *c,
+               സ്ഥിരം ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ഇത്);
+    auto *out = c->serializer->embed (ഇത്);
+    എങ്കിൽ (unlikely (!out)) return_trace (അസത്യം);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    എങ്കിൽ (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
-      out->centerX = hb_clamp_to<int16_t> ((double) centerX + (double) roundf (instancer (varIdxBase, 0)));
-      out->centerY = hb_clamp_to<int16_t> ((double) centerY + (double) roundf (instancer (varIdxBase, 1)));
+      out->centerX = hb_clamp_to<int16_t> ((ഇരട്ട) centerX + (ഇരട്ട) roundf (instancer (varIdxBase, 0)));
+      out->centerY = hb_clamp_to<int16_t> ((ഇരട്ട) centerY + (ഇരട്ട) roundf (instancer (varIdxBase, 1)));
       set_fixed_clamped (out->startAngle, startAngle.to_float (instancer (varIdxBase, 2)));
       set_fixed_clamped (out->endAngle, endAngle.to_float (instancer (varIdxBase, 3)));
     }
 
-    if (format == 9 && c->plan->all_axes_pinned)
+    എങ്കിൽ (format == 9 && c->plan->all_axes_pinned)
         out->format = 8;
 
-    return_trace (out->colorLine.serialize_subset (c, colorLine, this, instancer));
+    return_trace (out->color_വരി_2.serialize_subset (c, color_വരി_2, ഇത്, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && colorLine.sanitize (c, this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) && color_വരി_2.sanitize (c, ഇത്));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  ശൂന്യം paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) സ്ഥിരം
   {
-    TRACE_PAINT (this);
-    hb_color_line_t cl = {
-      (void *) &(this+colorLine),
-      (this+colorLine).static_get_color_stops, c,
-      (this+colorLine).static_get_extend, nullptr
+    TRACE_PAINT (ഇത്);
+    hb_color_വരി_t cl = {
+      (ശൂന്യം *) &(ഇത്+color_വരി_2),
+      (ഇത്+color_വരി_2).static_get_color_stops, c,
+      (ഇത്+color_വരി_2).static_get_extend, nullptr
     };
 
     c->funcs->sweep_gradient (c->data, &cl,
@@ -1170,190 +1170,190 @@ struct PaintSweepGradient
   }
 
   HBUINT8			format; /* format = 8(noVar) or 9 (Var) */
-  Offset24To<ColorLine<Var>>	colorLine; /* Offset (from beginning of PaintSweepGradient
+  Offset24To<Color_വരി<Var>>	color_വരി_2; /* Offset (from beginning of PaintSweepGradient
                                             * table) to ColorLine subtable. */
   FWORD			centerX;
   FWORD			centerY;
   F2DOT14		startAngle;
   F2DOT14		endAngle;
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (4 + 2 * FWORD::static_size + 2 * F2DOT14::static_size);
 };
 
 // Paint a non-COLR glyph, filled as indicated by paint.
 template <typename Types>
-struct PaintGlyph
+ഘടന PaintGlyph
 {
   using HBGlyphID = typename Types::HBGlyphID;
 
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL ശൂന്യം dependv1 (hb_colrv1_depend_context_t* c) സ്ഥിരം;
+  HB_INTERNAL ശൂന്യം closurev1 (hb_colrv1_closure_context_t* c) സ്ഥിരം;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  തർക്കം subset (hb_subset_context_t *c,
+               സ്ഥിരം ItemVarStoreInstancer &instancer) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ഇത്);
+    auto *out = c->serializer->embed (ഇത്);
+    എങ്കിൽ (unlikely (!out)) return_trace (അസത്യം);
 
-    if (! c->serializer->check_assign (out->gid, c->plan->glyph_map->get (gid),
+    എങ്കിൽ (! c->serializer->check_assign (out->gid, c->plan->glyph_map->get (gid),
                                        HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
+      return_trace (അസത്യം);
 
-    return_trace (out->paint.serialize_subset (c, paint, this, instancer));
+    return_trace (out->paint.serialize_subset (c, paint, ഇത്, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && paint.sanitize (c, this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) && paint.sanitize (c, ഇത്));
   }
 
-  inline void paint_glyph (hb_paint_context_t *c) const;
+  വരിയിൽ ശൂന്യം paint_glyph (hb_paint_context_t *c) സ്ഥിരം;
 
   HBUINT8		format; /* format = 10 or 33 */
   Offset24To<Paint>	paint;  /* Offset (from beginning of PaintGlyph table) to Paint subtable. */
   HBGlyphID		gid;
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (4 + HBGlyphID::static_size);
 };
 
-struct PaintColrGlyph
+ഘടന PaintColrGlyph
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL ശൂന്യം dependv1 (hb_colrv1_depend_context_t* c) സ്ഥിരം;
+  HB_INTERNAL ശൂന്യം closurev1 (hb_colrv1_closure_context_t* c) സ്ഥിരം;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer HB_UNUSED) const
+  തർക്കം subset (hb_subset_context_t *c,
+               സ്ഥിരം ItemVarStoreInstancer &instancer HB_UNUSED) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ഇത്);
+    auto *out = c->serializer->embed (ഇത്);
+    എങ്കിൽ (unlikely (!out)) return_trace (അസത്യം);
 
     return_trace (c->serializer->check_assign (out->gid, c->plan->glyph_map->get (gid),
                                                HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
-  inline void paint_glyph (hb_paint_context_t *c) const;
+  വരിയിൽ ശൂന്യം paint_glyph (hb_paint_context_t *c) സ്ഥിരം;
 
   HBUINT8	format; /* format = 11 */
   HBUINT16	gid;
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (3);
 };
 
-template <template<typename> class Var>
-struct PaintTransform
+template <template<typename> വർഗ്ഗം Var>
+ഘടന PaintTransform
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL ശൂന്യം dependv1 (hb_colrv1_depend_context_t* c) സ്ഥിരം;
+  HB_INTERNAL ശൂന്യം closurev1 (hb_colrv1_closure_context_t* c) സ്ഥിരം;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  തർക്കം subset (hb_subset_context_t *c,
+               സ്ഥിരം ItemVarStoreInstancer &instancer) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
-    if (!out->transform.serialize_subset (c, transform, this, instancer)) return_trace (false);
-    if (format == 13 && c->plan->all_axes_pinned)
+    TRACE_SUBSET (ഇത്);
+    auto *out = c->serializer->embed (ഇത്);
+    എങ്കിൽ (unlikely (!out)) return_trace (അസത്യം);
+    എങ്കിൽ (!out->transform.serialize_subset (c, transform, ഇത്, instancer)) return_trace (അസത്യം);
+    എങ്കിൽ (format == 13 && c->plan->all_axes_pinned)
       out->format = 12;
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (out->src.serialize_subset (c, src, ഇത്, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-                  src.sanitize (c, this) &&
-                  transform.sanitize (c, this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) &&
+                  src.sanitize (c, ഇത്) &&
+                  transform.sanitize (c, ഇത്));
   }
 
-  void paint_glyph (hb_paint_context_t *c) const
+  ശൂന്യം paint_glyph (hb_paint_context_t *c) സ്ഥിരം
   {
-    TRACE_PAINT (this);
-    (this+transform).paint_glyph (c); // This does a push_transform()
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    TRACE_PAINT (ഇത്);
+    (ഇത്+transform).paint_glyph (c); // This does a push_transform()
+    c->recurse (ഇത്+src);
+    c->funcs->എടുക്കുക_transform (c->data);
   }
 
   HBUINT8			format; /* format = 12(noVar) or 13 (Var) */
   Offset24To<Paint>		src; /* Offset (from beginning of PaintTransform table) to Paint subtable. */
   Offset24To<Var<Affine2x3>>	transform;
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (7);
 };
 
-struct PaintTranslate
+ഘടന PaintTranslate
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL ശൂന്യം dependv1 (hb_colrv1_depend_context_t* c) സ്ഥിരം;
+  HB_INTERNAL ശൂന്യം closurev1 (hb_colrv1_closure_context_t* c) സ്ഥിരം;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  തർക്കം subset (hb_subset_context_t *c,
+               സ്ഥിരം ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ഇത്);
+    auto *out = c->serializer->embed (ഇത്);
+    എങ്കിൽ (unlikely (!out)) return_trace (അസത്യം);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    എങ്കിൽ (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
-      out->dx = hb_clamp_to<int16_t> ((double) dx + (double) roundf (instancer (varIdxBase, 0)));
-      out->dy = hb_clamp_to<int16_t> ((double) dy + (double) roundf (instancer (varIdxBase, 1)));
+      out->dx = hb_clamp_to<int16_t> ((ഇരട്ട) dx + (ഇരട്ട) roundf (instancer (varIdxBase, 0)));
+      out->dy = hb_clamp_to<int16_t> ((ഇരട്ട) dy + (ഇരട്ട) roundf (instancer (varIdxBase, 1)));
     }
 
-    if (format == 15 && c->plan->all_axes_pinned)
+    എങ്കിൽ (format == 15 && c->plan->all_axes_pinned)
         out->format = 14;
 
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (out->src.serialize_subset (c, src, ഇത്, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && src.sanitize (c, this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) && src.sanitize (c, ഇത്));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  ശൂന്യം paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) സ്ഥിരം
   {
-    TRACE_PAINT (this);
-    float ddx = dx + c->instancer (varIdxBase, 0);
-    float ddy = dy + c->instancer (varIdxBase, 1);
+    TRACE_PAINT (ഇത്);
+    ദശാംശം ddx = dx + c->instancer (varIdxBase, 0);
+    ദശാംശം ddy = dy + c->instancer (varIdxBase, 1);
 
-    c->funcs->push_translate (c->data, ddx, ddy);
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->തള്ളുക_translate (c->data, ddx, ddy);
+    c->recurse (ഇത്+src);
+    c->funcs->എടുക്കുക_transform (c->data);
   }
 
   HBUINT8		format; /* format = 14(noVar) or 15 (Var) */
   Offset24To<Paint>	src; /* Offset (from beginning of PaintTranslate table) to Paint subtable. */
   FWORD		dx;
   FWORD		dy;
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (4 + 2 * FWORD::static_size);
 };
 
 template <typename Source>
-static bool serialize_scale_transform (hb_subset_context_t *c,
-                                       float sx, float sy, float dx, float dy,
-                                       const Source &source)
+സ്ഥിതം തർക്കം serialize_scale_transform (hb_subset_context_t *c,
+                                       ദശാംശം sx, ദശാംശം sy, ദശാംശം dx, ദശാംശം dy,
+                                       സ്ഥിരം Source &source)
 {
   auto *out = c->serializer->allocate_size<PaintTransform<NoVariable>> (7);
-  if (unlikely (!out)) return false;
+  എങ്കിൽ (unlikely (!out)) തിരികെ അസത്യം;
   out->format = 12;
 
   c->serializer->push ();
   auto *transform = c->serializer->allocate_size<Affine2x3> (Affine2x3::static_size);
-  if (unlikely (!transform))
+  എങ്കിൽ (unlikely (!transform))
   {
-    c->serializer->pop_discard ();
-    return false;
+    c->serializer->എടുക്കുക_discard ();
+    തിരികെ അസത്യം;
   }
   set_fixed_clamped (transform->xx, sx);
   transform->yx.set_float (0);
@@ -1361,161 +1361,161 @@ static bool serialize_scale_transform (hb_subset_context_t *c,
   set_fixed_clamped (transform->yy, sy);
   set_fixed_clamped (transform->dx, dx);
   set_fixed_clamped (transform->dy, dy);
-  c->serializer->add_link (out->transform, c->serializer->pop_pack ());
+  c->serializer->add_link (out->transform, c->serializer->എടുക്കുക_pack ());
 
   c->serializer->push ();
-  bool ret = source ();
-  if (ret)
-    c->serializer->add_link (out->src, c->serializer->pop_pack ());
-  else
-    c->serializer->pop_discard ();
-  return ret;
+  തർക്കം ret = source ();
+  എങ്കിൽ (ret)
+    c->serializer->add_link (out->src, c->serializer->എടുക്കുക_pack ());
+  അല്ലെങ്കിൽ
+    c->serializer->എടുക്കുക_discard ();
+  തിരികെ ret;
 }
 
 template <typename Base>
-static bool subset_scale_as_transform (hb_subset_context_t *c,
-                                      const Base *base,
-                                      const Offset24To<Paint> &src,
-                                      const ItemVarStoreInstancer &instancer,
-                                      float sx, float sy,
-                                      float cx = 0, float cy = 0)
+സ്ഥിതം തർക്കം subset_scale_as_transform (hb_subset_context_t *c,
+                                      സ്ഥിരം Base *base,
+                                      സ്ഥിരം Offset24To<Paint> &src,
+                                      സ്ഥിരം ItemVarStoreInstancer &instancer,
+                                      ദശാംശം sx, ദശാംശം sy,
+                                      ദശാംശം cx = 0, ദശാംശം cy = 0)
 {
-  if (src.is_null ()) return false;
-  auto source = [&] { return c->dispatch (base+src, instancer); };
-  float dx = cx * (1 - sx), dy = cy * (1 - sy);
-  if (dx >= -32768 && dx < 32768 && dy >= -32768 && dy < 32768)
-    return serialize_scale_transform (c, sx, sy, dx, dy, source);
+  എങ്കിൽ (src.is_null ()) തിരികെ അസത്യം;
+  auto source = [&] { തിരികെ c->dispatch (base+src, instancer); };
+  ദശാംശം dx = cx * (1 - sx), dy = cy * (1 - sy);
+  എങ്കിൽ (dx >= -32768 && dx < 32768 && dy >= -32768 && dy < 32768)
+    തിരികെ serialize_scale_transform (c, sx, sy, dx, dy, source);
 
   // Preserve the center as separate translations when the combined matrix
   // exceeds Fixed. Splitting also makes the inverse of -32768 representable.
   auto inner = [&] {
-    return serialize_scale_transform (c, 1, 1, -cx / 2, -cy / 2, source);
+    തിരികെ serialize_scale_transform (c, 1, 1, -cx / 2, -cy / 2, source);
   };
   auto inverse = [&] {
-    return serialize_scale_transform (c, 1, 1, -cx / 2, -cy / 2, inner);
+    തിരികെ serialize_scale_transform (c, 1, 1, -cx / 2, -cy / 2, inner);
   };
   auto scale = [&] {
-    return serialize_scale_transform (c, sx, sy, 0, 0, inverse);
+    തിരികെ serialize_scale_transform (c, sx, sy, 0, 0, inverse);
   };
   auto outer = [&] {
-    return serialize_scale_transform (c, 1, 1, cx / 2, cy / 2, scale);
+    തിരികെ serialize_scale_transform (c, 1, 1, cx / 2, cy / 2, scale);
   };
-  return serialize_scale_transform (c, 1, 1, cx / 2, cy / 2, outer);
+  തിരികെ serialize_scale_transform (c, 1, 1, cx / 2, cy / 2, outer);
 }
 
-struct PaintScale
+ഘടന PaintScale
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL ശൂന്യം dependv1 (hb_colrv1_depend_context_t* c) സ്ഥിരം;
+  HB_INTERNAL ശൂന്യം closurev1 (hb_colrv1_closure_context_t* c) സ്ഥിരം;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  തർക്കം subset (hb_subset_context_t *c,
+               സ്ഥിരം ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    if (c->plan->all_axes_pinned && instancer &&
+    TRACE_SUBSET (ഇത്);
+    എങ്കിൽ (c->plan->all_axes_pinned && instancer &&
         !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
-      float sx = roundf (scaleX.to_float (instancer (varIdxBase, 0)) * 16384) / 16384;
-      float sy = roundf (scaleY.to_float (instancer (varIdxBase, 1)) * 16384) / 16384;
-      if (sx < -2 || sx >= 2 || sy < -2 || sy >= 2)
-        return_trace (subset_scale_as_transform (c, this, src, instancer, sx, sy));
+      ദശാംശം sx = roundf (scaleX.to_float (instancer (varIdxBase, 0)) * 16384) / 16384;
+      ദശാംശം sy = roundf (scaleY.to_float (instancer (varIdxBase, 1)) * 16384) / 16384;
+      എങ്കിൽ (sx < -2 || sx >= 2 || sy < -2 || sy >= 2)
+        return_trace (subset_scale_as_transform (c, ഇത്, src, instancer, sx, sy));
     }
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    auto *out = c->serializer->embed (ഇത്);
+    എങ്കിൽ (unlikely (!out)) return_trace (അസത്യം);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    എങ്കിൽ (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       set_fixed_clamped (out->scaleX, scaleX.to_float (instancer (varIdxBase, 0)));
       set_fixed_clamped (out->scaleY, scaleY.to_float (instancer (varIdxBase, 1)));
     }
 
-    if (format == 17 && c->plan->all_axes_pinned)
+    എങ്കിൽ (format == 17 && c->plan->all_axes_pinned)
         out->format = 16;
 
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (out->src.serialize_subset (c, src, ഇത്, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && src.sanitize (c, this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) && src.sanitize (c, ഇത്));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  ശൂന്യം paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) സ്ഥിരം
   {
-    TRACE_PAINT (this);
-    float sx = scaleX.to_float (c->instancer (varIdxBase, 0));
-    float sy = scaleY.to_float (c->instancer (varIdxBase, 1));
+    TRACE_PAINT (ഇത്);
+    ദശാംശം sx = scaleX.to_float (c->instancer (varIdxBase, 0));
+    ദശാംശം sy = scaleY.to_float (c->instancer (varIdxBase, 1));
 
-    c->funcs->push_scale (c->data, sx, sy);
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->തള്ളുക_scale (c->data, sx, sy);
+    c->recurse (ഇത്+src);
+    c->funcs->എടുക്കുക_transform (c->data);
   }
 
   HBUINT8		format; /* format = 16 (noVar) or 17(Var) */
   Offset24To<Paint>	src; /* Offset (from beginning of PaintScale table) to Paint subtable. */
   F2DOT14		scaleX;
   F2DOT14		scaleY;
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (4 + 2 * F2DOT14::static_size);
 };
 
-struct PaintScaleAroundCenter
+ഘടന PaintScaleAroundCenter
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL ശൂന്യം dependv1 (hb_colrv1_depend_context_t* c) സ്ഥിരം;
+  HB_INTERNAL ശൂന്യം closurev1 (hb_colrv1_closure_context_t* c) സ്ഥിരം;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  തർക്കം subset (hb_subset_context_t *c,
+               സ്ഥിരം ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    if (c->plan->all_axes_pinned && instancer &&
+    TRACE_SUBSET (ഇത്);
+    എങ്കിൽ (c->plan->all_axes_pinned && instancer &&
         !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
-      float sx = roundf (scaleX.to_float (instancer (varIdxBase, 0)) * 16384) / 16384;
-      float sy = roundf (scaleY.to_float (instancer (varIdxBase, 1)) * 16384) / 16384;
-      if (sx < -2 || sx >= 2 || sy < -2 || sy >= 2)
+      ദശാംശം sx = roundf (scaleX.to_float (instancer (varIdxBase, 0)) * 16384) / 16384;
+      ദശാംശം sy = roundf (scaleY.to_float (instancer (varIdxBase, 1)) * 16384) / 16384;
+      എങ്കിൽ (sx < -2 || sx >= 2 || sy < -2 || sy >= 2)
         return_trace (subset_scale_as_transform (
-            c, this, src, instancer, sx, sy,
+            c, ഇത്, src, instancer, sx, sy,
             centerX + roundf (instancer (varIdxBase, 2)),
             centerY + roundf (instancer (varIdxBase, 3))));
     }
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    auto *out = c->serializer->embed (ഇത്);
+    എങ്കിൽ (unlikely (!out)) return_trace (അസത്യം);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    എങ്കിൽ (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       set_fixed_clamped (out->scaleX, scaleX.to_float (instancer (varIdxBase, 0)));
       set_fixed_clamped (out->scaleY, scaleY.to_float (instancer (varIdxBase, 1)));
-      out->centerX = hb_clamp_to<int16_t> ((double) centerX + (double) roundf (instancer (varIdxBase, 2)));
-      out->centerY = hb_clamp_to<int16_t> ((double) centerY + (double) roundf (instancer (varIdxBase, 3)));
+      out->centerX = hb_clamp_to<int16_t> ((ഇരട്ട) centerX + (ഇരട്ട) roundf (instancer (varIdxBase, 2)));
+      out->centerY = hb_clamp_to<int16_t> ((ഇരട്ട) centerY + (ഇരട്ട) roundf (instancer (varIdxBase, 3)));
     }
 
-    if (format == 19 && c->plan->all_axes_pinned)
+    എങ്കിൽ (format == 19 && c->plan->all_axes_pinned)
         out->format = 18;
 
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (out->src.serialize_subset (c, src, ഇത്, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && src.sanitize (c, this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) && src.sanitize (c, ഇത്));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  ശൂന്യം paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) സ്ഥിരം
   {
-    TRACE_PAINT (this);
-    float sx = scaleX.to_float (c->instancer (varIdxBase, 0));
-    float sy = scaleY.to_float (c->instancer (varIdxBase, 1));
-    float tCenterX = centerX + c->instancer (varIdxBase, 2);
-    float tCenterY = centerY + c->instancer (varIdxBase, 3);
+    TRACE_PAINT (ഇത്);
+    ദശാംശം sx = scaleX.to_float (c->instancer (varIdxBase, 0));
+    ദശാംശം sy = scaleY.to_float (c->instancer (varIdxBase, 1));
+    ദശാംശം tCenterX = centerX + c->instancer (varIdxBase, 2);
+    ദശാംശം tCenterY = centerY + c->instancer (varIdxBase, 3);
 
-    c->funcs->push_scale_around_center (c->data, sx, sy, tCenterX, tCenterY);
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->തള്ളുക_scale_around_center (c->data, sx, sy, tCenterX, tCenterY);
+    c->recurse (ഇത്+src);
+    c->funcs->എടുക്കുക_transform (c->data);
   }
 
   HBUINT8		format; /* format = 18 (noVar) or 19(Var) */
@@ -1524,114 +1524,114 @@ struct PaintScaleAroundCenter
   F2DOT14	scaleY;
   FWORD		centerX;
   FWORD		centerY;
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (4 + 2 * F2DOT14::static_size + 2 * FWORD::static_size);
 };
 
-struct PaintScaleUniform
+ഘടന PaintScaleUniform
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL ശൂന്യം dependv1 (hb_colrv1_depend_context_t* c) സ്ഥിരം;
+  HB_INTERNAL ശൂന്യം closurev1 (hb_colrv1_closure_context_t* c) സ്ഥിരം;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  തർക്കം subset (hb_subset_context_t *c,
+               സ്ഥിരം ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    if (c->plan->all_axes_pinned && instancer &&
+    TRACE_SUBSET (ഇത്);
+    എങ്കിൽ (c->plan->all_axes_pinned && instancer &&
         !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
-      float s = roundf (scale.to_float (instancer (varIdxBase, 0)) * 16384) / 16384;
-      if (s < -2 || s >= 2)
-        return_trace (subset_scale_as_transform (c, this, src, instancer, s, s));
+      ദശാംശം s = roundf (scale.to_float (instancer (varIdxBase, 0)) * 16384) / 16384;
+      എങ്കിൽ (s < -2 || s >= 2)
+        return_trace (subset_scale_as_transform (c, ഇത്, src, instancer, s, s));
     }
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    auto *out = c->serializer->embed (ഇത്);
+    എങ്കിൽ (unlikely (!out)) return_trace (അസത്യം);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    എങ്കിൽ (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
       set_fixed_clamped (out->scale, scale.to_float (instancer (varIdxBase, 0)));
 
-    if (format == 21 && c->plan->all_axes_pinned)
+    എങ്കിൽ (format == 21 && c->plan->all_axes_pinned)
         out->format = 20;
 
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (out->src.serialize_subset (c, src, ഇത്, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && src.sanitize (c, this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) && src.sanitize (c, ഇത്));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  ശൂന്യം paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) സ്ഥിരം
   {
-    TRACE_PAINT (this);
-    float s = scale.to_float (c->instancer (varIdxBase, 0));
+    TRACE_PAINT (ഇത്);
+    ദശാംശം s = scale.to_float (c->instancer (varIdxBase, 0));
 
-    c->funcs->push_scale (c->data, s, s);
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->തള്ളുക_scale (c->data, s, s);
+    c->recurse (ഇത്+src);
+    c->funcs->എടുക്കുക_transform (c->data);
   }
 
   HBUINT8		format; /* format = 20 (noVar) or 21(Var) */
   Offset24To<Paint>	src; /* Offset (from beginning of PaintScaleUniform table) to Paint subtable. */
   F2DOT14		scale;
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (4 + F2DOT14::static_size);
 };
 
-struct PaintScaleUniformAroundCenter
+ഘടന PaintScaleUniformAroundCenter
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL ശൂന്യം dependv1 (hb_colrv1_depend_context_t* c) സ്ഥിരം;
+  HB_INTERNAL ശൂന്യം closurev1 (hb_colrv1_closure_context_t* c) സ്ഥിരം;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  തർക്കം subset (hb_subset_context_t *c,
+               സ്ഥിരം ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    if (c->plan->all_axes_pinned && instancer &&
+    TRACE_SUBSET (ഇത്);
+    എങ്കിൽ (c->plan->all_axes_pinned && instancer &&
         !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
-      float s = roundf (scale.to_float (instancer (varIdxBase, 0)) * 16384) / 16384;
-      if (s < -2 || s >= 2)
+      ദശാംശം s = roundf (scale.to_float (instancer (varIdxBase, 0)) * 16384) / 16384;
+      എങ്കിൽ (s < -2 || s >= 2)
         return_trace (subset_scale_as_transform (
-            c, this, src, instancer, s, s,
+            c, ഇത്, src, instancer, s, s,
             centerX + roundf (instancer (varIdxBase, 1)),
             centerY + roundf (instancer (varIdxBase, 2))));
     }
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    auto *out = c->serializer->embed (ഇത്);
+    എങ്കിൽ (unlikely (!out)) return_trace (അസത്യം);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    എങ്കിൽ (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       set_fixed_clamped (out->scale, scale.to_float (instancer (varIdxBase, 0)));
-      out->centerX = hb_clamp_to<int16_t> ((double) centerX + (double) roundf (instancer (varIdxBase, 1)));
-      out->centerY = hb_clamp_to<int16_t> ((double) centerY + (double) roundf (instancer (varIdxBase, 2)));
+      out->centerX = hb_clamp_to<int16_t> ((ഇരട്ട) centerX + (ഇരട്ട) roundf (instancer (varIdxBase, 1)));
+      out->centerY = hb_clamp_to<int16_t> ((ഇരട്ട) centerY + (ഇരട്ട) roundf (instancer (varIdxBase, 2)));
     }
 
-    if (format == 23 && c->plan->all_axes_pinned)
+    എങ്കിൽ (format == 23 && c->plan->all_axes_pinned)
         out->format = 22;
 
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (out->src.serialize_subset (c, src, ഇത്, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && src.sanitize (c, this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) && src.sanitize (c, ഇത്));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  ശൂന്യം paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) സ്ഥിരം
   {
-    TRACE_PAINT (this);
-    float s = scale.to_float (c->instancer (varIdxBase, 0));
-    float tCenterX = centerX + c->instancer (varIdxBase, 1);
-    float tCenterY = centerY + c->instancer (varIdxBase, 2);
+    TRACE_PAINT (ഇത്);
+    ദശാംശം s = scale.to_float (c->instancer (varIdxBase, 0));
+    ദശാംശം tCenterX = centerX + c->instancer (varIdxBase, 1);
+    ദശാംശം tCenterY = centerY + c->instancer (varIdxBase, 2);
 
-    c->funcs->push_scale_around_center (c->data, s, s, tCenterX, tCenterY);
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->തള്ളുക_scale_around_center (c->data, s, s, tCenterX, tCenterY);
+    c->recurse (ഇത്+src);
+    c->funcs->എടുക്കുക_transform (c->data);
   }
 
   HBUINT8		format; /* format = 22 (noVar) or 23(Var) */
@@ -1639,97 +1639,97 @@ struct PaintScaleUniformAroundCenter
   F2DOT14	scale;
   FWORD		centerX;
   FWORD		centerY;
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (4 + F2DOT14::static_size + 2 * FWORD::static_size);
 };
 
-struct PaintRotate
+ഘടന PaintRotate
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL ശൂന്യം dependv1 (hb_colrv1_depend_context_t* c) സ്ഥിരം;
+  HB_INTERNAL ശൂന്യം closurev1 (hb_colrv1_closure_context_t* c) സ്ഥിരം;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  തർക്കം subset (hb_subset_context_t *c,
+               സ്ഥിരം ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ഇത്);
+    auto *out = c->serializer->embed (ഇത്);
+    എങ്കിൽ (unlikely (!out)) return_trace (അസത്യം);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    എങ്കിൽ (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
       set_fixed_clamped (out->angle, angle.to_float (instancer (varIdxBase, 0)));
 
-    if (format == 25 && c->plan->all_axes_pinned)
+    എങ്കിൽ (format == 25 && c->plan->all_axes_pinned)
       out->format = 24;
 
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (out->src.serialize_subset (c, src, ഇത്, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && src.sanitize (c, this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) && src.sanitize (c, ഇത്));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  ശൂന്യം paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) സ്ഥിരം
   {
-    TRACE_PAINT (this);
-    float a = angle.to_float (c->instancer (varIdxBase, 0));
+    TRACE_PAINT (ഇത്);
+    ദശാംശം a = angle.to_float (c->instancer (varIdxBase, 0));
 
-    c->funcs->push_rotate (c->data, a);
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->തള്ളുക_rotate (c->data, a);
+    c->recurse (ഇത്+src);
+    c->funcs->എടുക്കുക_transform (c->data);
   }
 
   HBUINT8		format; /* format = 24 (noVar) or 25(Var) */
   Offset24To<Paint>	src; /* Offset (from beginning of PaintRotate table) to Paint subtable. */
   F2DOT14		angle;
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (4 + F2DOT14::static_size);
 };
 
-struct PaintRotateAroundCenter
+ഘടന PaintRotateAroundCenter
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL ശൂന്യം dependv1 (hb_colrv1_depend_context_t* c) സ്ഥിരം;
+  HB_INTERNAL ശൂന്യം closurev1 (hb_colrv1_closure_context_t* c) സ്ഥിരം;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  തർക്കം subset (hb_subset_context_t *c,
+               സ്ഥിരം ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ഇത്);
+    auto *out = c->serializer->embed (ഇത്);
+    എങ്കിൽ (unlikely (!out)) return_trace (അസത്യം);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    എങ്കിൽ (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       set_fixed_clamped (out->angle, angle.to_float (instancer (varIdxBase, 0)));
-      out->centerX = hb_clamp_to<int16_t> ((double) centerX + (double) roundf (instancer (varIdxBase, 1)));
-      out->centerY = hb_clamp_to<int16_t> ((double) centerY + (double) roundf (instancer (varIdxBase, 2)));
+      out->centerX = hb_clamp_to<int16_t> ((ഇരട്ട) centerX + (ഇരട്ട) roundf (instancer (varIdxBase, 1)));
+      out->centerY = hb_clamp_to<int16_t> ((ഇരട്ട) centerY + (ഇരട്ട) roundf (instancer (varIdxBase, 2)));
     }
 
-    if (format ==27 && c->plan->all_axes_pinned)
+    എങ്കിൽ (format ==27 && c->plan->all_axes_pinned)
         out->format = 26;
 
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (out->src.serialize_subset (c, src, ഇത്, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && src.sanitize (c, this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) && src.sanitize (c, ഇത്));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  ശൂന്യം paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) സ്ഥിരം
   {
-    TRACE_PAINT (this);
-    float a = angle.to_float (c->instancer (varIdxBase, 0));
-    float tCenterX = centerX + c->instancer (varIdxBase, 1);
-    float tCenterY = centerY + c->instancer (varIdxBase, 2);
+    TRACE_PAINT (ഇത്);
+    ദശാംശം a = angle.to_float (c->instancer (varIdxBase, 0));
+    ദശാംശം tCenterX = centerX + c->instancer (varIdxBase, 1);
+    ദശാംശം tCenterY = centerY + c->instancer (varIdxBase, 2);
 
-    c->funcs->push_rotate_around_center (c->data, a, tCenterX, tCenterY);
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->തള്ളുക_rotate_around_center (c->data, a, tCenterX, tCenterY);
+    c->recurse (ഇത്+src);
+    c->funcs->എടുക്കുക_transform (c->data);
   }
 
   HBUINT8		format; /* format = 26 (noVar) or 27(Var) */
@@ -1737,104 +1737,104 @@ struct PaintRotateAroundCenter
   F2DOT14	angle;
   FWORD		centerX;
   FWORD		centerY;
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (4 + F2DOT14::static_size + 2 * FWORD::static_size);
 };
 
-struct PaintSkew
+ഘടന PaintSkew
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL ശൂന്യം dependv1 (hb_colrv1_depend_context_t* c) സ്ഥിരം;
+  HB_INTERNAL ശൂന്യം closurev1 (hb_colrv1_closure_context_t* c) സ്ഥിരം;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  തർക്കം subset (hb_subset_context_t *c,
+               സ്ഥിരം ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ഇത്);
+    auto *out = c->serializer->embed (ഇത്);
+    എങ്കിൽ (unlikely (!out)) return_trace (അസത്യം);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    എങ്കിൽ (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       set_fixed_clamped (out->xSkewAngle, xSkewAngle.to_float (instancer (varIdxBase, 0)));
       set_fixed_clamped (out->ySkewAngle, ySkewAngle.to_float (instancer (varIdxBase, 1)));
     }
 
-    if (format == 29 && c->plan->all_axes_pinned)
+    എങ്കിൽ (format == 29 && c->plan->all_axes_pinned)
         out->format = 28;
 
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (out->src.serialize_subset (c, src, ഇത്, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && src.sanitize (c, this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) && src.sanitize (c, ഇത്));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  ശൂന്യം paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) സ്ഥിരം
   {
-    TRACE_PAINT (this);
-    float sx = xSkewAngle.to_float(c->instancer (varIdxBase, 0));
-    float sy = ySkewAngle.to_float(c->instancer (varIdxBase, 1));
+    TRACE_PAINT (ഇത്);
+    ദശാംശം sx = xSkewAngle.to_float(c->instancer (varIdxBase, 0));
+    ദശാംശം sy = ySkewAngle.to_float(c->instancer (varIdxBase, 1));
 
-    c->funcs->push_skew (c->data, sx, sy);
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->തള്ളുക_skew (c->data, sx, sy);
+    c->recurse (ഇത്+src);
+    c->funcs->എടുക്കുക_transform (c->data);
   }
 
   HBUINT8		format; /* format = 28(noVar) or 29 (Var) */
   Offset24To<Paint>	src; /* Offset (from beginning of PaintSkew table) to Paint subtable. */
   F2DOT14		xSkewAngle;
   F2DOT14		ySkewAngle;
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (4 + 2 * F2DOT14::static_size);
 };
 
-struct PaintSkewAroundCenter
+ഘടന PaintSkewAroundCenter
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL ശൂന്യം dependv1 (hb_colrv1_depend_context_t* c) സ്ഥിരം;
+  HB_INTERNAL ശൂന്യം closurev1 (hb_colrv1_closure_context_t* c) സ്ഥിരം;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  തർക്കം subset (hb_subset_context_t *c,
+               സ്ഥിരം ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ഇത്);
+    auto *out = c->serializer->embed (ഇത്);
+    എങ്കിൽ (unlikely (!out)) return_trace (അസത്യം);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    എങ്കിൽ (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
       set_fixed_clamped (out->xSkewAngle, xSkewAngle.to_float (instancer (varIdxBase, 0)));
       set_fixed_clamped (out->ySkewAngle, ySkewAngle.to_float (instancer (varIdxBase, 1)));
-      out->centerX = hb_clamp_to<int16_t> ((double) centerX + (double) roundf (instancer (varIdxBase, 2)));
-      out->centerY = hb_clamp_to<int16_t> ((double) centerY + (double) roundf (instancer (varIdxBase, 3)));
+      out->centerX = hb_clamp_to<int16_t> ((ഇരട്ട) centerX + (ഇരട്ട) roundf (instancer (varIdxBase, 2)));
+      out->centerY = hb_clamp_to<int16_t> ((ഇരട്ട) centerY + (ഇരട്ട) roundf (instancer (varIdxBase, 3)));
     }
 
-    if (format == 31 && c->plan->all_axes_pinned)
+    എങ്കിൽ (format == 31 && c->plan->all_axes_pinned)
         out->format = 30;
 
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (out->src.serialize_subset (c, src, ഇത്, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && src.sanitize (c, this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) && src.sanitize (c, ഇത്));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  ശൂന്യം paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) സ്ഥിരം
   {
-    TRACE_PAINT (this);
-    float sx = xSkewAngle.to_float(c->instancer (varIdxBase, 0));
-    float sy = ySkewAngle.to_float(c->instancer (varIdxBase, 1));
-    float tCenterX = centerX + c->instancer (varIdxBase, 2);
-    float tCenterY = centerY + c->instancer (varIdxBase, 3);
+    TRACE_PAINT (ഇത്);
+    ദശാംശം sx = xSkewAngle.to_float(c->instancer (varIdxBase, 0));
+    ദശാംശം sy = ySkewAngle.to_float(c->instancer (varIdxBase, 1));
+    ദശാംശം tCenterX = centerX + c->instancer (varIdxBase, 2);
+    ദശാംശം tCenterY = centerY + c->instancer (varIdxBase, 3);
 
-    c->funcs->push_skew_around_center (c->data, sx, sy, tCenterX, tCenterY);
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->തള്ളുക_skew_around_center (c->data, sx, sy, tCenterX, tCenterY);
+    c->recurse (ഇത്+src);
+    c->funcs->എടുക്കുക_transform (c->data);
   }
 
   HBUINT8		format; /* format = 30(noVar) or 31 (Var) */
@@ -1843,108 +1843,108 @@ struct PaintSkewAroundCenter
   F2DOT14	ySkewAngle;
   FWORD		centerX;
   FWORD		centerY;
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (4 + 2 * F2DOT14::static_size + 2 * FWORD::static_size);
 };
 
-struct PaintComposite
+ഘടന PaintComposite
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_INTERNAL ശൂന്യം dependv1 (hb_colrv1_depend_context_t* c) സ്ഥിരം;
+  HB_INTERNAL ശൂന്യം closurev1 (hb_colrv1_closure_context_t* c) സ്ഥിരം;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  തർക്കം subset (hb_subset_context_t *c,
+               സ്ഥിരം ItemVarStoreInstancer &instancer) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ഇത്);
+    auto *out = c->serializer->embed (ഇത്);
+    എങ്കിൽ (unlikely (!out)) return_trace (അസത്യം);
 
-    bool ret = false;
-    ret |= out->src.serialize_subset (c, src, this, instancer);
-    ret |= out->backdrop.serialize_subset (c, backdrop, this, instancer);
+    തർക്കം ret = അസത്യം;
+    ret |= out->src.serialize_subset (c, src, ഇത്, instancer);
+    ret |= out->backdrop.serialize_subset (c, backdrop, ഇത്, instancer);
     return_trace (ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  c->check_ops (this->min_size) && // PainComposite can get exponential
-                  src.sanitize (c, this) &&
-                  backdrop.sanitize (c, this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) &&
+		  c->check_ops (ഇത്->min_size) && // PainComposite can get exponential
+                  src.sanitize (c, ഇത്) &&
+                  backdrop.sanitize (c, ഇത്));
   }
 
-  void paint_glyph (hb_paint_context_t *c) const
+  ശൂന്യം paint_glyph (hb_paint_context_t *c) സ്ഥിരം
   {
-    TRACE_PAINT (this);
+    TRACE_PAINT (ഇത്);
     hb_paint_composite_mode_t composite_mode;
-    switch ((unsigned int) mode)
+    തിരഞ്ഞെടുപ്പ് ((unsigned പൂർണ്ണസംഖ്യ) mode)
     {
-      case HB_PAINT_COMPOSITE_MODE_CLEAR:
-      case HB_PAINT_COMPOSITE_MODE_SRC:
-      case HB_PAINT_COMPOSITE_MODE_DEST:
-      case HB_PAINT_COMPOSITE_MODE_SRC_OVER:
-      case HB_PAINT_COMPOSITE_MODE_DEST_OVER:
-      case HB_PAINT_COMPOSITE_MODE_SRC_IN:
-      case HB_PAINT_COMPOSITE_MODE_DEST_IN:
-      case HB_PAINT_COMPOSITE_MODE_SRC_OUT:
-      case HB_PAINT_COMPOSITE_MODE_DEST_OUT:
-      case HB_PAINT_COMPOSITE_MODE_SRC_ATOP:
-      case HB_PAINT_COMPOSITE_MODE_DEST_ATOP:
-      case HB_PAINT_COMPOSITE_MODE_XOR:
-      case HB_PAINT_COMPOSITE_MODE_PLUS:
-      case HB_PAINT_COMPOSITE_MODE_SCREEN:
-      case HB_PAINT_COMPOSITE_MODE_OVERLAY:
-      case HB_PAINT_COMPOSITE_MODE_DARKEN:
-      case HB_PAINT_COMPOSITE_MODE_LIGHTEN:
-      case HB_PAINT_COMPOSITE_MODE_COLOR_DODGE:
-      case HB_PAINT_COMPOSITE_MODE_COLOR_BURN:
-      case HB_PAINT_COMPOSITE_MODE_HARD_LIGHT:
-      case HB_PAINT_COMPOSITE_MODE_SOFT_LIGHT:
-      case HB_PAINT_COMPOSITE_MODE_DIFFERENCE:
-      case HB_PAINT_COMPOSITE_MODE_EXCLUSION:
-      case HB_PAINT_COMPOSITE_MODE_MULTIPLY:
-      case HB_PAINT_COMPOSITE_MODE_HSL_HUE:
-      case HB_PAINT_COMPOSITE_MODE_HSL_SATURATION:
-      case HB_PAINT_COMPOSITE_MODE_HSL_COLOR:
-      case HB_PAINT_COMPOSITE_MODE_HSL_LUMINOSITY:
-	composite_mode = (hb_paint_composite_mode_t) (unsigned int) mode;
-	break;
-      default:
+      അവസ്ഥ HB_PAINT_COMPOSITE_MODE_CLEAR:
+      അവസ്ഥ HB_PAINT_COMPOSITE_MODE_SRC:
+      അവസ്ഥ HB_PAINT_COMPOSITE_MODE_DEST:
+      അവസ്ഥ HB_PAINT_COMPOSITE_MODE_SRC_OVER:
+      അവസ്ഥ HB_PAINT_COMPOSITE_MODE_DEST_OVER:
+      അവസ്ഥ HB_PAINT_COMPOSITE_MODE_SRC_IN:
+      അവസ്ഥ HB_PAINT_COMPOSITE_MODE_DEST_IN:
+      അവസ്ഥ HB_PAINT_COMPOSITE_MODE_SRC_OUT:
+      അവസ്ഥ HB_PAINT_COMPOSITE_MODE_DEST_OUT:
+      അവസ്ഥ HB_PAINT_COMPOSITE_MODE_SRC_ATOP:
+      അവസ്ഥ HB_PAINT_COMPOSITE_MODE_DEST_ATOP:
+      അവസ്ഥ HB_PAINT_COMPOSITE_MODE_XOR:
+      അവസ്ഥ HB_PAINT_COMPOSITE_MODE_PLUS:
+      അവസ്ഥ HB_PAINT_COMPOSITE_MODE_SCREEN:
+      അവസ്ഥ HB_PAINT_COMPOSITE_MODE_OVERLAY:
+      അവസ്ഥ HB_PAINT_COMPOSITE_MODE_DARKEN:
+      അവസ്ഥ HB_PAINT_COMPOSITE_MODE_LIGHTEN:
+      അവസ്ഥ HB_PAINT_COMPOSITE_MODE_COLOR_DODGE:
+      അവസ്ഥ HB_PAINT_COMPOSITE_MODE_COLOR_BURN:
+      അവസ്ഥ HB_PAINT_COMPOSITE_MODE_HARD_LIGHT:
+      അവസ്ഥ HB_PAINT_COMPOSITE_MODE_SOFT_LIGHT:
+      അവസ്ഥ HB_PAINT_COMPOSITE_MODE_DIFFERENCE:
+      അവസ്ഥ HB_PAINT_COMPOSITE_MODE_EXCLUSION:
+      അവസ്ഥ HB_PAINT_COMPOSITE_MODE_MULTIPLY:
+      അവസ്ഥ HB_PAINT_COMPOSITE_MODE_HSL_HUE:
+      അവസ്ഥ HB_PAINT_COMPOSITE_MODE_HSL_SATURATION:
+      അവസ്ഥ HB_PAINT_COMPOSITE_MODE_HSL_COLOR:
+      അവസ്ഥ HB_PAINT_COMPOSITE_MODE_HSL_LUMINOSITY:
+	composite_mode = (hb_paint_composite_mode_t) (unsigned പൂർണ്ണസംഖ്യ) mode;
+	നിർത്തുക;
+      സ്ഥിരസ്ഥിതി:
 	composite_mode = HB_PAINT_COMPOSITE_MODE_CLEAR;
-	break;
+	നിർത്തുക;
     }
 
-    c->funcs->push_group_for (c->data, HB_PAINT_COMPOSITE_MODE_SRC_OVER);
-    c->recurse (this+backdrop);
-    c->funcs->push_group_for (c->data, composite_mode);
-    c->recurse (this+src);
-    c->funcs->pop_group (c->data, composite_mode);
-    c->funcs->pop_group (c->data, HB_PAINT_COMPOSITE_MODE_SRC_OVER);
+    c->funcs->തള്ളുക_group_for (c->data, HB_PAINT_COMPOSITE_MODE_SRC_OVER);
+    c->recurse (ഇത്+backdrop);
+    c->funcs->തള്ളുക_group_for (c->data, composite_mode);
+    c->recurse (ഇത്+src);
+    c->funcs->എടുക്കുക_group (c->data, composite_mode);
+    c->funcs->എടുക്കുക_group (c->data, HB_PAINT_COMPOSITE_MODE_SRC_OVER);
   }
 
   HBUINT8		format; /* format = 32 */
   Offset24To<Paint>	src; /* Offset (from beginning of PaintComposite table) to source Paint subtable. */
   CompositeMode		mode;   /* If mode is unrecognized use COMPOSITE_CLEAR */
   Offset24To<Paint>	backdrop; /* Offset (from beginning of PaintComposite table) to backdrop Paint subtable. */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (8);
 };
 
-struct ClipBoxData
+ഘടന ClipBoxData
 {
-  int xMin, yMin, xMax, yMax;
+  പൂർണ്ണസംഖ്യ xMin, yMin, xMax, yMax;
 };
 
-struct ClipBoxFormat1
+ഘടന ClipBoxFormat1
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
-  void get_clip_box (ClipBoxData &clip_box, const ItemVarStoreInstancer &instancer HB_UNUSED) const
+  ശൂന്യം get_clip_box (ClipBoxData &clip_box, സ്ഥിരം ItemVarStoreInstancer &instancer HB_UNUSED) സ്ഥിരം
   {
     clip_box.xMin = xMin;
     clip_box.yMin = yMin;
@@ -1952,193 +1952,193 @@ struct ClipBoxFormat1
     clip_box.yMax = yMax;
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  തർക്കം subset (hb_subset_context_t *c,
+               സ്ഥിരം ItemVarStoreInstancer &instancer,
+               uint32_t varIdxBase) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ഇത്);
+    auto *out = c->serializer->embed (*ഇത്);
+    എങ്കിൽ (unlikely (!out)) return_trace (അസത്യം);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    എങ്കിൽ (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
     {
-      out->xMin = hb_clamp_to<int16_t> ((double) xMin + (double) floorf (instancer (varIdxBase, 0)));
-      out->yMin = hb_clamp_to<int16_t> ((double) yMin + (double) floorf (instancer (varIdxBase, 1)));
-      out->xMax = hb_clamp_to<int16_t> ((double) xMax + (double) ceilf (instancer (varIdxBase, 2)));
-      out->yMax = hb_clamp_to<int16_t> ((double) yMax + (double) ceilf (instancer (varIdxBase, 3)));
+      out->xMin = hb_clamp_to<int16_t> ((ഇരട്ട) xMin + (ഇരട്ട) floorf (instancer (varIdxBase, 0)));
+      out->yMin = hb_clamp_to<int16_t> ((ഇരട്ട) yMin + (ഇരട്ട) floorf (instancer (varIdxBase, 1)));
+      out->xMax = hb_clamp_to<int16_t> ((ഇരട്ട) xMax + (ഇരട്ട) ceilf (instancer (varIdxBase, 2)));
+      out->yMax = hb_clamp_to<int16_t> ((ഇരട്ട) yMax + (ഇരട്ട) ceilf (instancer (varIdxBase, 3)));
     }
 
-    if (format == 2 && c->plan->all_axes_pinned)
+    എങ്കിൽ (format == 2 && c->plan->all_axes_pinned)
         out->format = 1;
 
-    return_trace (true);
+    return_trace (സത്യം);
   }
 
-  public:
+  പൊതു:
   HBUINT8	format; /* format = 1(noVar) or 2(Var)*/
   FWORD		xMin;
   FWORD		yMin;
   FWORD		xMax;
   FWORD		yMax;
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (1 + 4 * FWORD::static_size);
 };
 
-struct ClipBoxFormat2 : Variable<ClipBoxFormat1>
+ഘടന ClipBoxFormat2 : Variable<ClipBoxFormat1>
 {
-  void get_clip_box (ClipBoxData &clip_box, const ItemVarStoreInstancer &instancer) const
+  ശൂന്യം get_clip_box (ClipBoxData &clip_box, സ്ഥിരം ItemVarStoreInstancer &instancer) സ്ഥിരം
   {
     value.get_clip_box(clip_box, instancer);
-    if (instancer)
+    എങ്കിൽ (instancer)
     {
-      clip_box.xMin = hb_saturate_add (clip_box.xMin, hb_clamp_to<int> (floorf (instancer (varIdxBase, 0))));
-      clip_box.yMin = hb_saturate_add (clip_box.yMin, hb_clamp_to<int> (floorf (instancer (varIdxBase, 1))));
-      clip_box.xMax = hb_saturate_add (clip_box.xMax, hb_clamp_to<int> (ceilf (instancer (varIdxBase, 2))));
-      clip_box.yMax = hb_saturate_add (clip_box.yMax, hb_clamp_to<int> (ceilf (instancer (varIdxBase, 3))));
+      clip_box.xMin = hb_saturate_add (clip_box.xMin, hb_clamp_to<പൂർണ്ണസംഖ്യ> (floorf (instancer (varIdxBase, 0))));
+      clip_box.yMin = hb_saturate_add (clip_box.yMin, hb_clamp_to<പൂർണ്ണസംഖ്യ> (floorf (instancer (varIdxBase, 1))));
+      clip_box.xMax = hb_saturate_add (clip_box.xMax, hb_clamp_to<പൂർണ്ണസംഖ്യ> (ceilf (instancer (varIdxBase, 2))));
+      clip_box.yMax = hb_saturate_add (clip_box.yMax, hb_clamp_to<പൂർണ്ണസംഖ്യ> (ceilf (instancer (varIdxBase, 3))));
     }
   }
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  ശൂന്യം closurev1 (hb_colrv1_closure_context_t* c) സ്ഥിരം
   { c->variation_indices->add_range (varIdxBase, varIdxBase + 3); }
 };
 
-struct ClipBox
+ഘടന ClipBox
 {
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  തർക്കം subset (hb_subset_context_t *c,
+               സ്ഥിരം ItemVarStoreInstancer &instancer) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.subset (c, instancer, VarIdx::NO_VARIATION));
-    case 2: hb_barrier (); return_trace (u.format2.subset (c, instancer));
-    default:return_trace (c->default_return_value ());
+    TRACE_SUBSET (ഇത്);
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 1: hb_barrier (); return_trace (u.format1.subset (c, instancer, VarIdx::NO_VARIATION));
+    അവസ്ഥ 2: hb_barrier (); return_trace (u.format2.subset (c, instancer));
+    സ്ഥിരസ്ഥിതി:return_trace (c->default_return_മൂല്യം ());
     }
   }
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  ശൂന്യം closurev1 (hb_colrv1_closure_context_t* c) സ്ഥിരം
   {
-    switch (u.format.v) {
-    case 2: hb_barrier (); u.format2.closurev1 (c); return;
-    default:return;
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 2: hb_barrier (); u.format2.closurev1 (c); തിരികെ;
+    സ്ഥിരസ്ഥിതി:തിരികെ;
     }
   }
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) സ്ഥിരം
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-    default:return_trace (c->default_return_value ());
+    എങ്കിൽ (unlikely (!c->may_dispatch (ഇത്, &u.format.v))) തിരികെ c->no_dispatch_return_മൂല്യം ();
+    TRACE_DISPATCH (ഇത്, u.format.v);
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    അവസ്ഥ 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    സ്ഥിരസ്ഥിതി:return_trace (c->default_return_മൂല്യം ());
     }
   }
 
-  bool get_extents (hb_glyph_extents_t *extents,
-                    const ItemVarStoreInstancer &instancer) const
+  തർക്കം get_extents (hb_glyph_extents_t *extents,
+                    സ്ഥിരം ItemVarStoreInstancer &instancer) സ്ഥിരം
   {
     ClipBoxData clip_box;
-    switch (u.format.v) {
-    case 1:
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 1:
       hb_barrier ();
       u.format1.get_clip_box (clip_box, instancer);
-      break;
-    case 2:
+      നിർത്തുക;
+    അവസ്ഥ 2:
       hb_barrier ();
       u.format2.get_clip_box (clip_box, instancer);
-      break;
-    default:
-      return false;
+      നിർത്തുക;
+    സ്ഥിരസ്ഥിതി:
+      തിരികെ അസത്യം;
     }
 
     extents->x_bearing = clip_box.xMin;
     extents->y_bearing = clip_box.yMax;
     extents->width = hb_saturate_sub (clip_box.xMax, clip_box.xMin);
     extents->height = hb_saturate_sub (clip_box.yMin, clip_box.yMax);
-    return true;
+    തിരികെ സത്യം;
   }
 
-  protected:
-  union {
-  struct { HBUINT8 v; }	format;         /* Format identifier */
+  സംരക്ഷിത:
+  സംഘം {
+  ഘടന { HBUINT8 v; }	format;         /* Format identifier */
   ClipBoxFormat1	format1;
   ClipBoxFormat2	format2;
   } u;
 };
 
-struct ClipRecord
+ഘടന ClipRecord
 {
-  int cmp (hb_codepoint_t g) const
-  { return g < startGlyphID ? -1 : g <= endGlyphID ? 0 : +1; }
+  പൂർണ്ണസംഖ്യ cmp (hb_codepoint_t g) സ്ഥിരം
+  { തിരികെ g < startGlyphID ? -1 : g <= endGlyphID ? 0 : +1; }
 
-  void closurev1 (hb_colrv1_closure_context_t* c, const void *base) const
+  ശൂന്യം closurev1 (hb_colrv1_closure_context_t* c, സ്ഥിരം ശൂന്യം *base) സ്ഥിരം
   {
-    if (!c->glyphs->intersects (startGlyphID, endGlyphID)) return;
+    എങ്കിൽ (!c->glyphs->intersects (startGlyphID, endGlyphID)) തിരികെ;
     (base+clipBox).closurev1 (c);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const void *base,
-               const ItemVarStoreInstancer &instancer) const
+  തർക്കം subset (hb_subset_context_t *c,
+               സ്ഥിരം ശൂന്യം *base,
+               സ്ഥിരം ItemVarStoreInstancer &instancer) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ഇത്);
+    auto *out = c->serializer->embed (*ഇത്);
+    എങ്കിൽ (unlikely (!out)) return_trace (അസത്യം);
 
     return_trace (out->clipBox.serialize_subset (c, clipBox, base, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  തർക്കം sanitize (hb_sanitize_context_t *c, സ്ഥിരം ശൂന്യം *base) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && clipBox.sanitize (c, base));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) && clipBox.sanitize (c, base));
   }
 
-  bool get_extents (hb_glyph_extents_t *extents,
-		    const void *base,
-		    const ItemVarStoreInstancer &instancer) const
+  തർക്കം get_extents (hb_glyph_extents_t *extents,
+		    സ്ഥിരം ശൂന്യം *base,
+		    സ്ഥിരം ItemVarStoreInstancer &instancer) സ്ഥിരം
   {
-    return (base+clipBox).get_extents (extents, instancer);
+    തിരികെ (base+clipBox).get_extents (extents, instancer);
   }
 
-  public:
+  പൊതു:
   HBUINT16		startGlyphID;  // first gid clip applies to
   HBUINT16		endGlyphID;    // last gid clip applies to, inclusive
   Offset24To<ClipBox>	clipBox;   // Box or VarBox
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (7);
 };
 DECLARE_NULL_NAMESPACE_BYTES (OT, ClipRecord);
 
-struct ClipList
+ഘടന ClipList
 {
   unsigned serialize_clip_records (hb_subset_context_t *c,
-                                   const ItemVarStoreInstancer &instancer,
-                                   const hb_set_t& gids,
-                                   const hb_map_t& gid_offset_map) const
+                                   സ്ഥിരം ItemVarStoreInstancer &instancer,
+                                   സ്ഥിരം hb_set_t& gids,
+                                   സ്ഥിരം hb_map_t& gid_offset_map) സ്ഥിരം
   {
-    TRACE_SERIALIZE (this);
-    if (gids.is_empty () ||
+    TRACE_SERIALIZE (ഇത്);
+    എങ്കിൽ (gids.is_empty () ||
         gid_offset_map.get_population () != gids.get_population ())
       return_trace (0);
 
-    unsigned count  = 0;
+    unsigned എണ്ണം  = 0;
 
     hb_codepoint_t start_gid= gids.get_min ();
     hb_codepoint_t prev_gid = start_gid;
 
     unsigned offset = gid_offset_map.get (start_gid);
     unsigned prev_offset = offset;
-    for (const hb_codepoint_t _ : gids.iter ())
+    വേണ്ടി (സ്ഥിരം hb_codepoint_t _ : gids.iter ())
     {
-      if (_ == start_gid) continue;
+      എങ്കിൽ (_ == start_gid) തുടരുക;
 
       offset = gid_offset_map.get (_);
-      if (_ == prev_gid + 1 &&  offset == prev_offset)
+      എങ്കിൽ (_ == prev_gid + 1 &&  offset == prev_offset)
       {
         prev_gid = _;
-        continue;
+        തുടരുക;
       }
 
       ClipRecord record;
@@ -2146,8 +2146,8 @@ struct ClipList
       record.endGlyphID = prev_gid;
       record.clipBox = prev_offset;
 
-      if (!record.subset (c, this, instancer)) return_trace (0);
-      count++;
+      എങ്കിൽ (!record.subset (c, ഇത്, instancer)) return_trace (0);
+      എണ്ണം++;
 
       start_gid = _;
       prev_gid = _;
@@ -2160,139 +2160,139 @@ struct ClipList
       record.startGlyphID = start_gid;
       record.endGlyphID = prev_gid;
       record.clipBox = prev_offset;
-      if (!record.subset (c, this, instancer)) return_trace (0);
-      count++;
+      എങ്കിൽ (!record.subset (c, ഇത്, instancer)) return_trace (0);
+      എണ്ണം++;
     }
-    return_trace (count);
+    return_trace (എണ്ണം);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  തർക്കം subset (hb_subset_context_t *c,
+               സ്ഥിരം ItemVarStoreInstancer &instancer) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
-    if (!c->serializer->check_assign (out->format, format, HB_SERIALIZE_ERROR_INT_OVERFLOW)) return_trace (false);
+    TRACE_SUBSET (ഇത്);
+    auto *out = c->serializer->start_embed (*ഇത്);
+    എങ്കിൽ (unlikely (!c->serializer->extend_min (out))) return_trace (അസത്യം);
+    എങ്കിൽ (!c->serializer->check_assign (out->format, format, HB_SERIALIZE_ERROR_INT_OVERFLOW)) return_trace (അസത്യം);
 
-    const hb_set_t& glyphset = c->plan->_glyphset_colred;
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    സ്ഥിരം hb_set_t& glyphset = c->plan->_glyphset_colred;
+    സ്ഥിരം hb_map_t &glyph_map = *c->plan->glyph_map;
 
     hb_map_t new_gid_offset_map;
     hb_set_t new_gids;
-    for (const ClipRecord& record : clips.iter ())
+    വേണ്ടി (സ്ഥിരം ClipRecord& record : clips.iter ())
     {
       unsigned start_gid = record.startGlyphID;
       unsigned end_gid = record.endGlyphID;
-      for (unsigned gid = start_gid; gid <= end_gid; gid++)
+      വേണ്ടി (unsigned gid = start_gid; gid <= end_gid; gid++)
       {
-        if (!glyphset.has (gid) || !glyph_map.has (gid)) continue;
+        എങ്കിൽ (!glyphset.has (gid) || !glyph_map.has (gid)) തുടരുക;
         unsigned new_gid = glyph_map.get (gid);
         new_gid_offset_map.set (new_gid, record.clipBox);
         new_gids.add (new_gid);
       }
     }
 
-    unsigned count = serialize_clip_records (c, instancer, new_gids, new_gid_offset_map);
-    if (!count) return_trace (false);
-    return_trace (c->serializer->check_assign (out->clips.len, count, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    unsigned എണ്ണം = serialize_clip_records (c, instancer, new_gids, new_gid_offset_map);
+    എങ്കിൽ (!എണ്ണം) return_trace (അസത്യം);
+    return_trace (c->serializer->check_assign (out->clips.len, എണ്ണം, HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ഇത്);
     // TODO Make a formatted struct!
-    return_trace (c->check_struct (this) && clips.sanitize (c, this));
+    return_trace (c->check_struct (ഇത്) && clips.sanitize (c, ഇത്));
   }
 
-  bool
+  തർക്കം
   get_extents (hb_codepoint_t gid,
 	       hb_glyph_extents_t *extents,
-	       const ItemVarStoreInstancer &instancer) const
+	       സ്ഥിരം ItemVarStoreInstancer &instancer) സ്ഥിരം
   {
     auto *rec = clips.as_array ().bsearch (gid);
-    if (rec)
-      return rec->get_extents (extents, this, instancer);
-    return false;
+    എങ്കിൽ (rec)
+      തിരികെ rec->get_extents (extents, ഇത്, instancer);
+    തിരികെ അസത്യം;
   }
 
   HBUINT8			format;  // Set to 1.
   SortedArray32Of<ClipRecord>	clips;  // Clip records, sorted by startGlyphID
-  public:
+  പൊതു:
   DEFINE_SIZE_ARRAY_SIZED (5, clips);
 };
 
-struct Paint
+ഘടന Paint
 {
 
   template <typename ...Ts>
-  bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
+  തർക്കം sanitize (hb_sanitize_context_t *c, Ts&&... ds) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ഇത്);
 
-    if (unlikely (!c->check_start_recursion (HB_MAX_NESTING_LEVEL)))
-      return_trace (c->no_dispatch_return_value ());
+    എങ്കിൽ (unlikely (!c->check_start_recursion (HB_MAX_NESTING_LEVEL)))
+      return_trace (c->no_dispatch_return_മൂല്യം ());
 
-    return_trace (c->end_recursion (this->dispatch (c, std::forward<Ts> (ds)...)));
+    return_trace (c->end_recursion (ഇത്->dispatch (c, std::forward<Ts> (ds)...)));
   }
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) സ്ഥിരം
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.paintformat1, std::forward<Ts> (ds)...));
-    case 2: hb_barrier (); return_trace (c->dispatch (u.paintformat2, std::forward<Ts> (ds)...));
-    case 3: hb_barrier (); return_trace (c->dispatch (u.paintformat3, std::forward<Ts> (ds)...));
-    case 4: hb_barrier (); return_trace (c->dispatch (u.paintformat4, std::forward<Ts> (ds)...));
-    case 5: hb_barrier (); return_trace (c->dispatch (u.paintformat5, std::forward<Ts> (ds)...));
-    case 6: hb_barrier (); return_trace (c->dispatch (u.paintformat6, std::forward<Ts> (ds)...));
-    case 7: hb_barrier (); return_trace (c->dispatch (u.paintformat7, std::forward<Ts> (ds)...));
-    case 8: hb_barrier (); return_trace (c->dispatch (u.paintformat8, std::forward<Ts> (ds)...));
-    case 9: hb_barrier (); return_trace (c->dispatch (u.paintformat9, std::forward<Ts> (ds)...));
-    case 10: hb_barrier (); return_trace (c->dispatch (u.paintformat10, std::forward<Ts> (ds)...));
-    case 11: hb_barrier (); return_trace (c->dispatch (u.paintformat11, std::forward<Ts> (ds)...));
-    case 12: hb_barrier (); return_trace (c->dispatch (u.paintformat12, std::forward<Ts> (ds)...));
-    case 13: hb_barrier (); return_trace (c->dispatch (u.paintformat13, std::forward<Ts> (ds)...));
-    case 14: hb_barrier (); return_trace (c->dispatch (u.paintformat14, std::forward<Ts> (ds)...));
-    case 15: hb_barrier (); return_trace (c->dispatch (u.paintformat15, std::forward<Ts> (ds)...));
-    case 16: hb_barrier (); return_trace (c->dispatch (u.paintformat16, std::forward<Ts> (ds)...));
-    case 17: hb_barrier (); return_trace (c->dispatch (u.paintformat17, std::forward<Ts> (ds)...));
-    case 18: hb_barrier (); return_trace (c->dispatch (u.paintformat18, std::forward<Ts> (ds)...));
-    case 19: hb_barrier (); return_trace (c->dispatch (u.paintformat19, std::forward<Ts> (ds)...));
-    case 20: hb_barrier (); return_trace (c->dispatch (u.paintformat20, std::forward<Ts> (ds)...));
-    case 21: hb_barrier (); return_trace (c->dispatch (u.paintformat21, std::forward<Ts> (ds)...));
-    case 22: hb_barrier (); return_trace (c->dispatch (u.paintformat22, std::forward<Ts> (ds)...));
-    case 23: hb_barrier (); return_trace (c->dispatch (u.paintformat23, std::forward<Ts> (ds)...));
-    case 24: hb_barrier (); return_trace (c->dispatch (u.paintformat24, std::forward<Ts> (ds)...));
-    case 25: hb_barrier (); return_trace (c->dispatch (u.paintformat25, std::forward<Ts> (ds)...));
-    case 26: hb_barrier (); return_trace (c->dispatch (u.paintformat26, std::forward<Ts> (ds)...));
-    case 27: hb_barrier (); return_trace (c->dispatch (u.paintformat27, std::forward<Ts> (ds)...));
-    case 28: hb_barrier (); return_trace (c->dispatch (u.paintformat28, std::forward<Ts> (ds)...));
-    case 29: hb_barrier (); return_trace (c->dispatch (u.paintformat29, std::forward<Ts> (ds)...));
-    case 30: hb_barrier (); return_trace (c->dispatch (u.paintformat30, std::forward<Ts> (ds)...));
-    case 31: hb_barrier (); return_trace (c->dispatch (u.paintformat31, std::forward<Ts> (ds)...));
-    case 32: hb_barrier (); return_trace (c->dispatch (u.paintformat32, std::forward<Ts> (ds)...));
+    എങ്കിൽ (unlikely (!c->may_dispatch (ഇത്, &u.format.v))) തിരികെ c->no_dispatch_return_മൂല്യം ();
+    TRACE_DISPATCH (ഇത്, u.format.v);
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 1: hb_barrier (); return_trace (c->dispatch (u.paintformat1, std::forward<Ts> (ds)...));
+    അവസ്ഥ 2: hb_barrier (); return_trace (c->dispatch (u.paintformat2, std::forward<Ts> (ds)...));
+    അവസ്ഥ 3: hb_barrier (); return_trace (c->dispatch (u.paintformat3, std::forward<Ts> (ds)...));
+    അവസ്ഥ 4: hb_barrier (); return_trace (c->dispatch (u.paintformat4, std::forward<Ts> (ds)...));
+    അവസ്ഥ 5: hb_barrier (); return_trace (c->dispatch (u.paintformat5, std::forward<Ts> (ds)...));
+    അവസ്ഥ 6: hb_barrier (); return_trace (c->dispatch (u.paintformat6, std::forward<Ts> (ds)...));
+    അവസ്ഥ 7: hb_barrier (); return_trace (c->dispatch (u.paintformat7, std::forward<Ts> (ds)...));
+    അവസ്ഥ 8: hb_barrier (); return_trace (c->dispatch (u.paintformat8, std::forward<Ts> (ds)...));
+    അവസ്ഥ 9: hb_barrier (); return_trace (c->dispatch (u.paintformat9, std::forward<Ts> (ds)...));
+    അവസ്ഥ 10: hb_barrier (); return_trace (c->dispatch (u.paintformat10, std::forward<Ts> (ds)...));
+    അവസ്ഥ 11: hb_barrier (); return_trace (c->dispatch (u.paintformat11, std::forward<Ts> (ds)...));
+    അവസ്ഥ 12: hb_barrier (); return_trace (c->dispatch (u.paintformat12, std::forward<Ts> (ds)...));
+    അവസ്ഥ 13: hb_barrier (); return_trace (c->dispatch (u.paintformat13, std::forward<Ts> (ds)...));
+    അവസ്ഥ 14: hb_barrier (); return_trace (c->dispatch (u.paintformat14, std::forward<Ts> (ds)...));
+    അവസ്ഥ 15: hb_barrier (); return_trace (c->dispatch (u.paintformat15, std::forward<Ts> (ds)...));
+    അവസ്ഥ 16: hb_barrier (); return_trace (c->dispatch (u.paintformat16, std::forward<Ts> (ds)...));
+    അവസ്ഥ 17: hb_barrier (); return_trace (c->dispatch (u.paintformat17, std::forward<Ts> (ds)...));
+    അവസ്ഥ 18: hb_barrier (); return_trace (c->dispatch (u.paintformat18, std::forward<Ts> (ds)...));
+    അവസ്ഥ 19: hb_barrier (); return_trace (c->dispatch (u.paintformat19, std::forward<Ts> (ds)...));
+    അവസ്ഥ 20: hb_barrier (); return_trace (c->dispatch (u.paintformat20, std::forward<Ts> (ds)...));
+    അവസ്ഥ 21: hb_barrier (); return_trace (c->dispatch (u.paintformat21, std::forward<Ts> (ds)...));
+    അവസ്ഥ 22: hb_barrier (); return_trace (c->dispatch (u.paintformat22, std::forward<Ts> (ds)...));
+    അവസ്ഥ 23: hb_barrier (); return_trace (c->dispatch (u.paintformat23, std::forward<Ts> (ds)...));
+    അവസ്ഥ 24: hb_barrier (); return_trace (c->dispatch (u.paintformat24, std::forward<Ts> (ds)...));
+    അവസ്ഥ 25: hb_barrier (); return_trace (c->dispatch (u.paintformat25, std::forward<Ts> (ds)...));
+    അവസ്ഥ 26: hb_barrier (); return_trace (c->dispatch (u.paintformat26, std::forward<Ts> (ds)...));
+    അവസ്ഥ 27: hb_barrier (); return_trace (c->dispatch (u.paintformat27, std::forward<Ts> (ds)...));
+    അവസ്ഥ 28: hb_barrier (); return_trace (c->dispatch (u.paintformat28, std::forward<Ts> (ds)...));
+    അവസ്ഥ 29: hb_barrier (); return_trace (c->dispatch (u.paintformat29, std::forward<Ts> (ds)...));
+    അവസ്ഥ 30: hb_barrier (); return_trace (c->dispatch (u.paintformat30, std::forward<Ts> (ds)...));
+    അവസ്ഥ 31: hb_barrier (); return_trace (c->dispatch (u.paintformat31, std::forward<Ts> (ds)...));
+    അവസ്ഥ 32: hb_barrier (); return_trace (c->dispatch (u.paintformat32, std::forward<Ts> (ds)...));
 #ifndef HB_NO_BEYOND_64K
-    case 33: hb_barrier (); return_trace (c->dispatch (u.paintformat33, std::forward<Ts> (ds)...));
+    അവസ്ഥ 33: hb_barrier (); return_trace (c->dispatch (u.paintformat33, std::forward<Ts> (ds)...));
 #endif
-    default:return_trace (c->default_return_value ());
+    സ്ഥിരസ്ഥിതി:return_trace (c->default_return_മൂല്യം ());
     }
   }
 
-  bool get_solid_color (hb_paint_context_t *c,
-			hb_bool_t *is_foreground, hb_color_t *color) const
+  തർക്കം get_solid_color (hb_paint_context_t *c,
+			hb_bool_t *is_foreground, hb_color_t *color) സ്ഥിരം
   {
-    switch (u.format.v) {
-    case 2: hb_barrier (); u.paintformat2.get_solid_color (c, is_foreground, color); return true;
-    case 3: hb_barrier (); u.paintformat3.get_solid_color (c, is_foreground, color); return true;
-    default: return false;
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 2: hb_barrier (); u.paintformat2.get_solid_color (c, is_foreground, color); തിരികെ സത്യം;
+    അവസ്ഥ 3: hb_barrier (); u.paintformat3.get_solid_color (c, is_foreground, color); തിരികെ സത്യം;
+    സ്ഥിരസ്ഥിതി: തിരികെ അസത്യം;
     }
   }
 
-  protected:
-  union {
-  struct { HBUINT8 v; }				format;
+  സംരക്ഷിത:
+  സംഘം {
+  ഘടന { HBUINT8 v; }				format;
   PaintColrLayers				paintformat1;
   NoVariable<PaintSolid>			paintformat2;
   Variable<PaintSolid>				paintformat3;
@@ -2329,209 +2329,209 @@ struct Paint
   PaintGlyph<Layout::MediumTypes>		paintformat33;
 #endif
   } u;
-  public:
+  പൊതു:
   DEFINE_SIZE_MIN (2);
 };
 
-struct BaseGlyphPaintRecord
+ഘടന BaseGlyphPaintRecord
 {
-  int cmp (hb_codepoint_t g) const
-  { return g < glyphId ? -1 : g > glyphId ? 1 : 0; }
+  പൂർണ്ണസംഖ്യ cmp (hb_codepoint_t g) സ്ഥിരം
+  { തിരികെ g < glyphId ? -1 : g > glyphId ? 1 : 0; }
 
-  bool serialize (hb_serialize_context_t *s, const hb_map_t* glyph_map,
-                  const void* src_base, hb_subset_context_t *c,
-                  const ItemVarStoreInstancer &instancer) const
+  തർക്കം serialize (hb_serialize_context_t *s, സ്ഥിരം hb_map_t* glyph_map,
+                  സ്ഥിരം ശൂന്യം* src_base, hb_subset_context_t *c,
+                  സ്ഥിരം ItemVarStoreInstancer &instancer) സ്ഥിരം
   {
-    TRACE_SERIALIZE (this);
-    auto *out = s->embed (this);
-    if (unlikely (!out)) return_trace (false);
-    if (!s->check_assign (out->glyphId, glyph_map->get (glyphId),
+    TRACE_SERIALIZE (ഇത്);
+    auto *out = s->embed (ഇത്);
+    എങ്കിൽ (unlikely (!out)) return_trace (അസത്യം);
+    എങ്കിൽ (!s->check_assign (out->glyphId, glyph_map->get (glyphId),
                           HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
+      return_trace (അസത്യം);
 
     return_trace (out->paint.serialize_subset (c, paint, src_base, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  തർക്കം sanitize (hb_sanitize_context_t *c, സ്ഥിരം ശൂന്യം *base) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) && paint.sanitize (c, base)));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (likely (c->check_struct (ഇത്) && paint.sanitize (c, base)));
   }
 
-  public:
+  പൊതു:
   HBGlyphID16		glyphId;    /* Glyph ID of reference glyph */
   Offset32To<Paint>	paint;      /* Offset (from beginning of BaseGlyphPaintRecord array) to Paint,
                                      * Typically PaintColrLayers */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (6);
 };
 
-struct BaseGlyphList : SortedArray32Of<BaseGlyphPaintRecord>
+ഘടന BaseGlyphList : SortedArray32Of<BaseGlyphPaintRecord>
 {
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  തർക്കം subset (hb_subset_context_t *c,
+               സ്ഥിരം ItemVarStoreInstancer &instancer) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->extend_min (out)))  return_trace (false);
-    const hb_set_t* glyphset = &c->plan->_glyphset_colred;
+    TRACE_SUBSET (ഇത്);
+    auto *out = c->serializer->start_embed (ഇത്);
+    എങ്കിൽ (unlikely (!c->serializer->extend_min (out)))  return_trace (അസത്യം);
+    സ്ഥിരം hb_set_t* glyphset = &c->plan->_glyphset_colred;
 
-    for (const auto& _ : as_array ())
+    വേണ്ടി (സ്ഥിരം auto& _ : as_array ())
     {
       unsigned gid = _.glyphId;
-      if (!glyphset->has (gid)) continue;
+      എങ്കിൽ (!glyphset->has (gid)) തുടരുക;
 
-      if (_.serialize (c->serializer, c->plan->glyph_map, this, c, instancer)) out->len++;
-      else return_trace (false);
+      എങ്കിൽ (_.serialize (c->serializer, c->plan->glyph_map, ഇത്, c, instancer)) out->len++;
+      അല്ലെങ്കിൽ return_trace (അസത്യം);
     }
 
     return_trace (out->len != 0);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (SortedArray32Of<BaseGlyphPaintRecord>::sanitize (c, this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (SortedArray32Of<BaseGlyphPaintRecord>::sanitize (c, ഇത്));
   }
 };
 
-struct LayerList : Array32OfOffset32To<Paint>
+ഘടന LayerList : Array32OfOffset32To<Paint>
 {
-  const Paint& get_paint (unsigned i) const
-  { return this+(*this)[i]; }
+  സ്ഥിരം Paint& get_paint (unsigned i) സ്ഥിരം
+  { തിരികെ ഇത്+(*ഇത്)[i]; }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  തർക്കം subset (hb_subset_context_t *c,
+               സ്ഥിരം ItemVarStoreInstancer &instancer) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->extend_min (out)))  return_trace (false);
+    TRACE_SUBSET (ഇത്);
+    auto *out = c->serializer->start_embed (ഇത്);
+    എങ്കിൽ (unlikely (!c->serializer->extend_min (out)))  return_trace (അസത്യം);
 
-    bool ret = false;
-    for (const auto& _ : + hb_enumerate (*this)
+    തർക്കം ret = അസത്യം;
+    വേണ്ടി (സ്ഥിരം auto& _ : + hb_enumerate (*ഇത്)
                          | hb_filter (c->plan->colrv1_layers, hb_first))
 
     {
       auto *o = out->serialize_append (c->serializer);
-      if (unlikely (!o)) return_trace (false);
-      ret |= o->serialize_subset (c, _.second, this, instancer);
+      എങ്കിൽ (unlikely (!o)) return_trace (അസത്യം);
+      ret |= o->serialize_subset (c, _.second, ഇത്, instancer);
     }
     return_trace (ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (Array32OfOffset32To<Paint>::sanitize (c, this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (Array32OfOffset32To<Paint>::sanitize (c, ഇത്));
   }
 };
 
-struct delta_set_index_map_subset_plan_t
+ഘടന delta_set_index_map_subset_plan_t
 {
-  unsigned get_inner_bit_count () const { return inner_bit_count; }
-  unsigned get_width ()           const { return ((outer_bit_count + inner_bit_count + 7) / 8); }
-  hb_array_t<const uint32_t> get_output_map () const { return output_map.as_array (); }
+  unsigned get_inner_bit_എണ്ണം () സ്ഥിരം { തിരികെ inner_bit_എണ്ണം; }
+  unsigned get_width ()           സ്ഥിരം { തിരികെ ((outer_bit_എണ്ണം + inner_bit_എണ്ണം + 7) / 8); }
+  hb_array_t<സ്ഥിരം uint32_t> get_output_map () സ്ഥിരം { തിരികെ output_map.as_array (); }
 
-  delta_set_index_map_subset_plan_t (const hb_map_t &new_deltaset_idx_varidx_map)
+  delta_set_index_map_subset_plan_t (സ്ഥിരം hb_map_t &new_deltaset_idx_varidx_map)
   {
-    map_count = 0;
-    outer_bit_count = 0;
-    inner_bit_count = 1;
+    map_എണ്ണം = 0;
+    outer_bit_എണ്ണം = 0;
+    inner_bit_എണ്ണം = 1;
     output_map.init ();
 
     /* search backwards */
-    unsigned count = new_deltaset_idx_varidx_map.get_population ();
-    if (!count) return;
+    unsigned എണ്ണം = new_deltaset_idx_varidx_map.get_population ();
+    എങ്കിൽ (!എണ്ണം) തിരികെ;
 
     unsigned last_idx = (unsigned)-1;
     unsigned last_varidx = (unsigned)-1;
 
-    for (unsigned i = count; i; i--)
+    വേണ്ടി (unsigned i = എണ്ണം; i; i--)
     {
       unsigned delta_set_idx = i - 1;
       unsigned var_idx = new_deltaset_idx_varidx_map.get (delta_set_idx);
-      if (i == count)
+      എങ്കിൽ (i == എണ്ണം)
       {
         last_idx = delta_set_idx;
         last_varidx = var_idx;
-        continue;
+        തുടരുക;
       }
-      if (var_idx != last_varidx)
-        break;
+      എങ്കിൽ (var_idx != last_varidx)
+        നിർത്തുക;
       last_idx = delta_set_idx;
     }
 
-    map_count = last_idx + 1;
+    map_എണ്ണം = last_idx + 1;
   }
 
-  bool remap (const hb_map_t &new_deltaset_idx_varidx_map)
+  തർക്കം remap (സ്ഥിരം hb_map_t &new_deltaset_idx_varidx_map)
   {
     /* recalculate bit_count */
-    outer_bit_count = 1;
-    inner_bit_count = 1;
+    outer_bit_എണ്ണം = 1;
+    inner_bit_എണ്ണം = 1;
 
-    if (unlikely (!output_map.resize_dirty (map_count))) return false;
+    എങ്കിൽ (unlikely (!output_map.resize_dirty (map_എണ്ണം))) തിരികെ അസത്യം;
 
-    for (unsigned idx = 0; idx < map_count; idx++)
+    വേണ്ടി (unsigned idx = 0; idx < map_എണ്ണം; idx++)
     {
       uint32_t *var_idx;
-      if (!new_deltaset_idx_varidx_map.has (idx, &var_idx)) return false;
+      എങ്കിൽ (!new_deltaset_idx_varidx_map.has (idx, &var_idx)) തിരികെ അസത്യം;
       output_map.arrayZ[idx] = *var_idx;
 
       unsigned outer = (*var_idx) >> 16;
-      unsigned bit_count = (outer == 0) ? 1 : hb_bit_storage (outer);
-      outer_bit_count = hb_max (bit_count, outer_bit_count);
+      unsigned bit_എണ്ണം = (outer == 0) ? 1 : hb_bit_storage (outer);
+      outer_bit_എണ്ണം = hb_max (bit_എണ്ണം, outer_bit_എണ്ണം);
 
       unsigned inner = (*var_idx) & 0xFFFF;
-      bit_count = (inner == 0) ? 1 : hb_bit_storage (inner);
-      inner_bit_count = hb_max (bit_count, inner_bit_count);
+      bit_എണ്ണം = (inner == 0) ? 1 : hb_bit_storage (inner);
+      inner_bit_എണ്ണം = hb_max (bit_എണ്ണം, inner_bit_എണ്ണം);
     }
-    return true;
+    തിരികെ സത്യം;
   }
 
-  private:
-  unsigned map_count;
-  unsigned outer_bit_count;
-  unsigned inner_bit_count;
+  സ്വകാര്യ:
+  unsigned map_എണ്ണം;
+  unsigned outer_bit_എണ്ണം;
+  unsigned inner_bit_എണ്ണം;
   hb_vector_t<uint32_t> output_map;
 };
 
-struct COLR
+ഘടന COLR
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_COLR;
+  സ്ഥിതം constexpr hb_tag_t tableTag = HB_OT_TAG_COLR;
 
-  bool has_data () const { return has_v0_data () || version; }
+  തർക്കം has_data () സ്ഥിരം { തിരികെ has_v0_data () || version; }
 
-  bool has_v0_data () const { return numBaseGlyphs; }
-  bool has_v1_data () const
+  തർക്കം has_v0_data () സ്ഥിരം { തിരികെ അക്കം_Base_Glyphs; }
+  തർക്കം has_v1_data () സ്ഥിരം
   {
-    if (version < 1)
-      return false;
+    എങ്കിൽ (version < 1)
+      തിരികെ അസത്യം;
     hb_barrier ();
 
-    return (this+baseGlyphList).len > 0;
+    തിരികെ (ഇത്+baseGlyphList).len > 0;
   }
 
-  unsigned int get_glyph_layers (hb_codepoint_t       glyph,
-				 unsigned int         start_offset,
-				 unsigned int        *count, /* IN/OUT.  May be NULL. */
-				 hb_ot_color_layer_t *layers /* OUT.     May be NULL. */) const
+  unsigned പൂർണ്ണസംഖ്യ get_glyph_layers (hb_codepoint_t       glyph,
+				 unsigned പൂർണ്ണസംഖ്യ         start_offset,
+				 unsigned പൂർണ്ണസംഖ്യ        *എണ്ണം, /* IN/OUT.  May be NULL. */
+				 hb_ot_color_layer_t *layers /* OUT.     May be NULL. */) സ്ഥിരം
   {
-    const BaseGlyphRecord &record = (this+baseGlyphsZ).bsearch (numBaseGlyphs, glyph);
+    സ്ഥിരം BaseGlyphRecord &record = (ഇത്+baseGlyphsZ).bsearch (അക്കം_Base_Glyphs, glyph);
 
-    hb_array_t<const LayerRecord> all_layers = (this+layersZ).as_array (numLayers);
-    hb_array_t<const LayerRecord> glyph_layers = all_layers.sub_array (record.firstLayerIdx,
-								       record.numLayers);
-    if (count && layers)
+    hb_array_t<സ്ഥിരം LayerRecord> all_layers = (ഇത്+layersZ).as_array (അക്കം_Layers);
+    hb_array_t<സ്ഥിരം LayerRecord> glyph_layers = all_layers.sub_array (record.firstLayerIdx,
+								       record.അക്കം_Layers);
+    എങ്കിൽ (എണ്ണം && layers)
     {
-      + glyph_layers.sub_array (start_offset, count)
-      | hb_sink (hb_array (layers, *count))
+      + glyph_layers.sub_array (start_offset, എണ്ണം)
+      | hb_sink (hb_array (layers, *എണ്ണം))
       ;
     }
-    return glyph_layers.length;
+    തിരികെ glyph_layers.length;
   }
 
-  struct accelerator_t
+  ഘടന accelerator_t
   {
     accelerator_t (hb_face_t *face)
     { colr = hb_sanitize_context_t ().reference_table<COLR> (face); }
@@ -2539,7 +2539,7 @@ struct COLR
     ~accelerator_t ()
     {
       auto *scratch = cached_scratch.get_relaxed ();
-      if (scratch)
+      എങ്കിൽ (scratch)
       {
 	scratch->~hb_colr_scratch_t ();
 	hb_free (scratch);
@@ -2549,613 +2549,613 @@ struct COLR
     }
 
 
-    bool has_data () const { return colr->has_data (); }
+    തർക്കം has_data () സ്ഥിരം { തിരികെ colr->has_data (); }
 
 #ifndef HB_NO_PAINT
-    bool
+    തർക്കം
     get_extents (hb_font_t *font,
 		 hb_codepoint_t glyph,
-		 hb_glyph_extents_t *extents) const
+		 hb_glyph_extents_t *extents) സ്ഥിരം
     {
-      if (unlikely (!has_data ())) return false;
+      എങ്കിൽ (unlikely (!has_data ())) തിരികെ അസത്യം;
 
       hb_colr_scratch_t *scratch = acquire_scratch ();
-      if (unlikely (!scratch)) return true;
-      bool ret = colr->get_extents (font, glyph, extents, *scratch);
+      എങ്കിൽ (unlikely (!scratch)) തിരികെ സത്യം;
+      തർക്കം ret = colr->get_extents (font, glyph, extents, *scratch);
       release_scratch (scratch);
-      return ret;
+      തിരികെ ret;
     }
 
-    bool paint_glyph (hb_font_t *font,
+    തർക്കം paint_glyph (hb_font_t *font,
 		      hb_codepoint_t glyph,
-		      hb_paint_funcs_t *funcs, void *data,
-		      unsigned int palette_index,
+		      hb_paint_funcs_t *funcs, ശൂന്യം *data,
+		      unsigned പൂർണ്ണസംഖ്യ palette_index,
 		      hb_color_t foreground,
-		      bool clip = true) const
+		      തർക്കം clip = സത്യം) സ്ഥിരം
     {
-      if (unlikely (!has_data ())) return false;
+      എങ്കിൽ (unlikely (!has_data ())) തിരികെ അസത്യം;
 
       hb_colr_scratch_t *scratch = acquire_scratch ();
-      if (unlikely (!scratch)) return true;
-      bool ret = colr->paint_glyph (font, glyph, funcs, data, palette_index, foreground, clip, *scratch);
+      എങ്കിൽ (unlikely (!scratch)) തിരികെ സത്യം;
+      തർക്കം ret = colr->paint_glyph (font, glyph, funcs, data, palette_index, foreground, clip, *scratch);
       release_scratch (scratch);
-      return ret;
+      തിരികെ ret;
     }
 #endif
 
-    bool is_valid () { return colr.get_blob ()->length; }
+    തർക്കം is_valid () { തിരികെ colr.get_blob ()->length; }
 
-    void depend (hb_depend_data_builder_t *depend_data) const
+    ശൂന്യം depend (hb_depend_data_builder_t *depend_data) സ്ഥിരം
     {
-      if (!has_data ()) return;
+      എങ്കിൽ (!has_data ()) തിരികെ;
       colr->depend (depend_data);
     }
 
-    void closure_glyphs (hb_codepoint_t glyph,
-			 hb_set_t *related_ids /* OUT */) const
+    ശൂന്യം closure_glyphs (hb_codepoint_t glyph,
+			 hb_set_t *related_ids /* OUT */) സ്ഥിരം
     { colr->closure_glyphs (glyph, related_ids); }
 
-    void closure_V0palette_indices (const hb_set_t *glyphs,
-				    hb_set_t *palettes /* OUT */) const
+    ശൂന്യം closure_V0palette_indices (സ്ഥിരം hb_set_t *glyphs,
+				    hb_set_t *palettes /* OUT */) സ്ഥിരം
     { colr->closure_V0palette_indices (glyphs, palettes); }
 
-    void closure_forV1 (hb_set_t *glyphset,
+    ശൂന്യം closure_forV1 (hb_set_t *glyphset,
                         hb_set_t *layer_indices,
                         hb_set_t *palette_indices,
                         hb_set_t *variation_indices,
-                        hb_set_t *delta_set_indices) const
+                        hb_set_t *delta_set_indices) സ്ഥിരം
     { colr->closure_forV1 (glyphset, layer_indices, palette_indices, variation_indices, delta_set_indices); }
 
-    bool has_var_store () const
-    { return colr->has_var_store (); }
+    തർക്കം has_var_store () സ്ഥിരം
+    { തിരികെ colr->has_var_store (); }
 
-    const ItemVariationStore &get_var_store () const
-    { return colr->get_var_store (); }
-    const ItemVariationStore *get_var_store_ptr () const
-    { return colr->get_var_store_ptr (); }
+    സ്ഥിരം ItemVariationStore &get_var_store () സ്ഥിരം
+    { തിരികെ colr->get_var_store (); }
+    സ്ഥിരം ItemVariationStore *get_var_store_ptr () സ്ഥിരം
+    { തിരികെ colr->get_var_store_ptr (); }
 
-    bool has_delta_set_index_map () const
-    { return colr->has_delta_set_index_map (); }
+    തർക്കം has_delta_set_index_map () സ്ഥിരം
+    { തിരികെ colr->has_delta_set_index_map (); }
 
-    const DeltaSetIndexMap &get_delta_set_index_map () const
-    { return colr->get_delta_set_index_map (); }
-    const DeltaSetIndexMap *get_delta_set_index_map_ptr () const
-    { return colr->get_delta_set_index_map_ptr (); }
+    സ്ഥിരം DeltaSetIndexMap &get_delta_set_index_map () സ്ഥിരം
+    { തിരികെ colr->get_delta_set_index_map (); }
+    സ്ഥിരം DeltaSetIndexMap *get_delta_set_index_map_ptr () സ്ഥിരം
+    { തിരികെ colr->get_delta_set_index_map_ptr (); }
 
-    private:
+    സ്വകാര്യ:
 
-    hb_colr_scratch_t *acquire_scratch () const
+    hb_colr_scratch_t *acquire_scratch () സ്ഥിരം
     {
       hb_colr_scratch_t *scratch = cached_scratch.get_acquire ();
 
-      if (!scratch || unlikely (!cached_scratch.cmpexch (scratch, nullptr)))
+      എങ്കിൽ (!scratch || unlikely (!cached_scratch.cmpexch (scratch, nullptr)))
       {
-	scratch = (hb_colr_scratch_t *) hb_calloc (1, sizeof (hb_colr_scratch_t));
-	if (unlikely (!scratch))
-	  return nullptr;
+	scratch = (hb_colr_scratch_t *) hb_calloc (1, വലുപ്പം (hb_colr_scratch_t));
+	എങ്കിൽ (unlikely (!scratch))
+	  തിരികെ nullptr;
       }
 
-      return scratch;
+      തിരികെ scratch;
     }
-    void release_scratch (hb_colr_scratch_t *scratch) const
+    ശൂന്യം release_scratch (hb_colr_scratch_t *scratch) സ്ഥിരം
     {
-      if (!cached_scratch.cmpexch (nullptr, scratch))
+      എങ്കിൽ (!cached_scratch.cmpexch (nullptr, scratch))
       {
 	scratch->~hb_colr_scratch_t ();
 	hb_free (scratch);
       }
     }
 
-    public:
+    പൊതു:
     hb_blob_ptr_t<COLR> colr;
-    private:
+    സ്വകാര്യ:
     mutable hb_atomic_t<hb_colr_scratch_t *> cached_scratch;
   };
 
-  void depend (hb_depend_data_builder_t *depend_data) const
+  ശൂന്യം depend (hb_depend_data_builder_t *depend_data) സ്ഥിരം
   {
     // v0
-    hb_array_t<const BaseGlyphRecord> baseGlyphs = (this+baseGlyphsZ).as_array (numBaseGlyphs);
-    for (const BaseGlyphRecord &record : baseGlyphs)
+    hb_array_t<സ്ഥിരം BaseGlyphRecord> baseGlyphs = (ഇത്+baseGlyphsZ).as_array (അക്കം_Base_Glyphs);
+    വേണ്ടി (സ്ഥിരം BaseGlyphRecord &record : baseGlyphs)
     {
-      auto glyph_layers = (this+layersZ).as_array (numLayers).sub_array (record.firstLayerIdx,
-                                                                         record.numLayers);
-      for (const LayerRecord layer : glyph_layers)
+      auto glyph_layers = (ഇത്+layersZ).as_array (അക്കം_Layers).sub_array (record.firstLayerIdx,
+                                                                         record.അക്കം_Layers);
+      വേണ്ടി (സ്ഥിരം LayerRecord layer : glyph_layers)
         depend_data->add_depend(record.glyphId, HB_OT_TAG_COLR, layer.glyphId);
     }
 
-    if (!has_v1_data())
-      return;
+    എങ്കിൽ (!has_v1_data())
+      തിരികെ;
 
     // v1
-    hb_colrv1_depend_context_t c (this, depend_data);
-    const BaseGlyphList &baseglyph_paintrecords = this+baseGlyphList;
+    hb_colrv1_depend_context_t c (ഇത്, depend_data);
+    സ്ഥിരം BaseGlyphList &baseglyph_paintrecords = ഇത്+baseGlyphList;
 
-    for (const BaseGlyphPaintRecord &baseglyph_paintrecord: baseglyph_paintrecords.iter ())
+    വേണ്ടി (സ്ഥിരം BaseGlyphPaintRecord &baseglyph_paintrecord: baseglyph_paintrecords.iter ())
     {
       c.source_gid = baseglyph_paintrecord.glyphId;
       c.visited_paint.clear ();
 
-      const Paint &paint = &baseglyph_paintrecords+baseglyph_paintrecord.paint;
+      സ്ഥിരം Paint &paint = &baseglyph_paintrecords+baseglyph_paintrecord.paint;
       paint.dispatch (&c);
     }
   }
 
-  void closure_glyphs (hb_codepoint_t glyph,
-		       hb_set_t *related_ids /* OUT */) const
+  ശൂന്യം closure_glyphs (hb_codepoint_t glyph,
+		       hb_set_t *related_ids /* OUT */) സ്ഥിരം
   {
-    const BaseGlyphRecord *record = get_base_glyph_record (glyph);
-    if (!record) return;
+    സ്ഥിരം BaseGlyphRecord *record = get_base_glyph_record (glyph);
+    എങ്കിൽ (!record) തിരികെ;
 
-    auto glyph_layers = (this+layersZ).as_array (numLayers).sub_array (record->firstLayerIdx,
-								       record->numLayers);
-    if (!glyph_layers.length) return;
+    auto glyph_layers = (ഇത്+layersZ).as_array (അക്കം_Layers).sub_array (record->firstLayerIdx,
+								       record->അക്കം_Layers);
+    എങ്കിൽ (!glyph_layers.length) തിരികെ;
     related_ids->add_array (&glyph_layers[0].glyphId, glyph_layers.length, LayerRecord::min_size);
   }
 
-  void closure_V0palette_indices (const hb_set_t *glyphs,
-				  hb_set_t *palettes /* OUT */) const
+  ശൂന്യം closure_V0palette_indices (സ്ഥിരം hb_set_t *glyphs,
+				  hb_set_t *palettes /* OUT */) സ്ഥിരം
   {
-    if (!numBaseGlyphs || !numLayers) return;
-    hb_array_t<const BaseGlyphRecord> baseGlyphs = (this+baseGlyphsZ).as_array (numBaseGlyphs);
-    hb_array_t<const LayerRecord> all_layers = (this+layersZ).as_array (numLayers);
+    എങ്കിൽ (!അക്കം_Base_Glyphs || !അക്കം_Layers) തിരികെ;
+    hb_array_t<സ്ഥിരം BaseGlyphRecord> baseGlyphs = (ഇത്+baseGlyphsZ).as_array (അക്കം_Base_Glyphs);
+    hb_array_t<സ്ഥിരം LayerRecord> all_layers = (ഇത്+layersZ).as_array (അക്കം_Layers);
 
-    for (const BaseGlyphRecord record : baseGlyphs)
+    വേണ്ടി (സ്ഥിരം BaseGlyphRecord record : baseGlyphs)
     {
-      if (!glyphs->has (record.glyphId)) continue;
-      hb_array_t<const LayerRecord> glyph_layers = all_layers.sub_array (record.firstLayerIdx,
-                                                                   record.numLayers);
-      for (const LayerRecord layer : glyph_layers)
+      എങ്കിൽ (!glyphs->has (record.glyphId)) തുടരുക;
+      hb_array_t<സ്ഥിരം LayerRecord> glyph_layers = all_layers.sub_array (record.firstLayerIdx,
+                                                                   record.അക്കം_Layers);
+      വേണ്ടി (സ്ഥിരം LayerRecord layer : glyph_layers)
         palettes->add (layer.colorIdx);
     }
   }
 
-  void closure_forV1 (hb_set_t *glyphset,
+  ശൂന്യം closure_forV1 (hb_set_t *glyphset,
                       hb_set_t *layer_indices,
                       hb_set_t *palette_indices,
                       hb_set_t *variation_indices,
-                      hb_set_t *delta_set_indices) const
+                      hb_set_t *delta_set_indices) സ്ഥിരം
   {
-    if (version < 1) return;
+    എങ്കിൽ (version < 1) തിരികെ;
     hb_barrier ();
 
     hb_set_t visited_glyphs;
 
-    hb_colrv1_closure_context_t c (this, &visited_glyphs, layer_indices, palette_indices, variation_indices);
-    const BaseGlyphList &baseglyph_paintrecords = this+baseGlyphList;
+    hb_colrv1_closure_context_t c (ഇത്, &visited_glyphs, layer_indices, palette_indices, variation_indices);
+    സ്ഥിരം BaseGlyphList &baseglyph_paintrecords = ഇത്+baseGlyphList;
 
-    for (const BaseGlyphPaintRecord &baseglyph_paintrecord: baseglyph_paintrecords.iter ())
+    വേണ്ടി (സ്ഥിരം BaseGlyphPaintRecord &baseglyph_paintrecord: baseglyph_paintrecords.iter ())
     {
       unsigned gid = baseglyph_paintrecord.glyphId;
-      if (!glyphset->has (gid)) continue;
+      എങ്കിൽ (!glyphset->has (gid)) തുടരുക;
 
-      const Paint &paint = &baseglyph_paintrecords+baseglyph_paintrecord.paint;
+      സ്ഥിരം Paint &paint = &baseglyph_paintrecords+baseglyph_paintrecord.paint;
       paint.dispatch (&c);
     }
     hb_set_union (glyphset, &visited_glyphs);
 
-    const ClipList &cliplist = this+clipList;
+    സ്ഥിരം ClipList &cliplist = ഇത്+clipList;
     c.glyphs = glyphset;
-    for (const ClipRecord &clip_record : cliplist.clips.iter())
+    വേണ്ടി (സ്ഥിരം ClipRecord &clip_record : cliplist.clips.iter())
       clip_record.closurev1 (&c, &cliplist);
 
     // if a DeltaSetIndexMap is included, collected variation indices are
     // actually delta set indices, we need to map them into variation indices
-    if (has_delta_set_index_map ())
+    എങ്കിൽ (has_delta_set_index_map ())
     {
-      const DeltaSetIndexMap &var_idx_map = this+varIdxMap;
+      സ്ഥിരം DeltaSetIndexMap &var_idx_map = ഇത്+varIdxMap;
       delta_set_indices->set (*variation_indices);
       variation_indices->clear ();
-      for (unsigned delta_set_idx : *delta_set_indices)
+      വേണ്ടി (unsigned delta_set_idx : *delta_set_indices)
         variation_indices->add (var_idx_map.map (delta_set_idx));
     }
   }
 
-  const LayerList& get_layerList () const
-  { return (this+layerList); }
+  സ്ഥിരം LayerList& get_layerList () സ്ഥിരം
+  { തിരികെ (ഇത്+layerList); }
 
-  const BaseGlyphList& get_baseglyphList () const
-  { return (this+baseGlyphList); }
+  സ്ഥിരം BaseGlyphList& get_baseglyphList () സ്ഥിരം
+  { തിരികെ (ഇത്+baseGlyphList); }
 
-  bool has_var_store () const
-  { return version >= 1 && hb_barrier () && varStore != 0; }
+  തർക്കം has_var_store () സ്ഥിരം
+  { തിരികെ version >= 1 && hb_barrier () && varStore != 0; }
 
-  bool has_delta_set_index_map () const
-  { return version >= 1 && hb_barrier () && varIdxMap != 0; }
+  തർക്കം has_delta_set_index_map () സ്ഥിരം
+  { തിരികെ version >= 1 && hb_barrier () && varIdxMap != 0; }
 
-  bool has_clip_list () const
-  { return version >= 1 && hb_barrier () && clipList != 0; }
+  തർക്കം has_clip_list () സ്ഥിരം
+  { തിരികെ version >= 1 && hb_barrier () && clipList != 0; }
 
-  const DeltaSetIndexMap &get_delta_set_index_map () const
-  { return has_delta_set_index_map () && hb_barrier () ? this+varIdxMap : Null (DeltaSetIndexMap); }
-  const DeltaSetIndexMap *get_delta_set_index_map_ptr () const
-  { return has_delta_set_index_map () && hb_barrier () ? &(this+varIdxMap) : nullptr; }
+  സ്ഥിരം DeltaSetIndexMap &get_delta_set_index_map () സ്ഥിരം
+  { തിരികെ has_delta_set_index_map () && hb_barrier () ? ഇത്+varIdxMap : Null (DeltaSetIndexMap); }
+  സ്ഥിരം DeltaSetIndexMap *get_delta_set_index_map_ptr () സ്ഥിരം
+  { തിരികെ has_delta_set_index_map () && hb_barrier () ? &(ഇത്+varIdxMap) : nullptr; }
 
-  const ItemVariationStore &get_var_store () const
-  { return has_var_store () && hb_barrier () ? this+varStore : Null (ItemVariationStore); }
-  const ItemVariationStore *get_var_store_ptr () const
-  { return has_var_store () && hb_barrier () ? &(this+varStore) : nullptr; }
+  സ്ഥിരം ItemVariationStore &get_var_store () സ്ഥിരം
+  { തിരികെ has_var_store () && hb_barrier () ? ഇത്+varStore : Null (ItemVariationStore); }
+  സ്ഥിരം ItemVariationStore *get_var_store_ptr () സ്ഥിരം
+  { തിരികെ has_var_store () && hb_barrier () ? &(ഇത്+varStore) : nullptr; }
 
-  const ClipList &get_clip_list () const
-  { return has_clip_list () && hb_barrier () ? this+clipList : Null (ClipList); }
+  സ്ഥിരം ClipList &get_clip_list () സ്ഥിരം
+  { തിരികെ has_clip_list () && hb_barrier () ? ഇത്+clipList : Null (ClipList); }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) &&
 		  hb_barrier () &&
-                  (this+baseGlyphsZ).sanitize (c, numBaseGlyphs) &&
-                  (this+layersZ).sanitize (c, numLayers) &&
+                  (ഇത്+baseGlyphsZ).sanitize (c, അക്കം_Base_Glyphs) &&
+                  (ഇത്+layersZ).sanitize (c, അക്കം_Layers) &&
                   (version == 0 ||
 		   (hb_barrier () &&
-		    baseGlyphList.sanitize (c, this) &&
-		    layerList.sanitize (c, this) &&
-		    clipList.sanitize (c, this) &&
-		    varIdxMap.sanitize (c, this) &&
-		    varStore.sanitize (c, this))));
+		    baseGlyphList.sanitize (c, ഇത്) &&
+		    layerList.sanitize (c, ഇത്) &&
+		    clipList.sanitize (c, ഇത്) &&
+		    varIdxMap.sanitize (c, ഇത്) &&
+		    varStore.sanitize (c, ഇത്))));
   }
 
   template<typename BaseIterator, typename LayerIterator,
 	   hb_requires (hb_is_iterator (BaseIterator)),
 	   hb_requires (hb_is_iterator (LayerIterator))>
-  bool serialize_V0 (hb_serialize_context_t *c,
+  തർക്കം serialize_V0 (hb_serialize_context_t *c,
 		     unsigned version,
 		     BaseIterator base_it,
 		     LayerIterator layer_it)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (base_it.len () != layer_it.len ()))
-      return_trace (false);
+    TRACE_SERIALIZE (ഇത്);
+    എങ്കിൽ (unlikely (base_it.len () != layer_it.len ()))
+      return_trace (അസത്യം);
 
-    this->version = version;
-    numLayers = 0;
-    numBaseGlyphs = base_it.len ();
-    if (numBaseGlyphs == 0)
+    ഇത്->version = version;
+    അക്കം_Layers = 0;
+    അക്കം_Base_Glyphs = base_it.len ();
+    എങ്കിൽ (അക്കം_Base_Glyphs == 0)
     {
       baseGlyphsZ = 0;
       layersZ = 0;
-      return_trace (true);
+      return_trace (സത്യം);
     }
 
     c->push ();
-    for (const hb_item_type<BaseIterator> _ : + base_it.iter ())
+    വേണ്ടി (സ്ഥിരം hb_item_type<BaseIterator> _ : + base_it.iter ())
     {
       auto* record = c->embed (_);
-      if (unlikely (!record)) return_trace (false);
-      record->firstLayerIdx = numLayers;
-      numLayers += record->numLayers;
+      എങ്കിൽ (unlikely (!record)) return_trace (അസത്യം);
+      record->firstLayerIdx = അക്കം_Layers;
+      അക്കം_Layers += record->അക്കം_Layers;
     }
-    c->add_link (baseGlyphsZ, c->pop_pack ());
+    c->add_link (baseGlyphsZ, c->എടുക്കുക_pack ());
 
     c->push ();
-    for (const hb_item_type<LayerIterator>& _ : + layer_it.iter ())
+    വേണ്ടി (സ്ഥിരം hb_item_type<LayerIterator>& _ : + layer_it.iter ())
       _.as_array ().copy (c);
 
-    c->add_link (layersZ, c->pop_pack ());
+    c->add_link (layersZ, c->എടുക്കുക_pack ());
 
-    return_trace (true);
+    return_trace (സത്യം);
   }
 
-  const BaseGlyphRecord* get_base_glyph_record (hb_codepoint_t gid) const
+  സ്ഥിരം BaseGlyphRecord* get_base_glyph_record (hb_codepoint_t gid) സ്ഥിരം
   {
-    const BaseGlyphRecord* record = &(this+baseGlyphsZ).bsearch (numBaseGlyphs, (unsigned int) gid);
-    if (record == &Null (BaseGlyphRecord) ||
+    സ്ഥിരം BaseGlyphRecord* record = &(ഇത്+baseGlyphsZ).bsearch (അക്കം_Base_Glyphs, (unsigned പൂർണ്ണസംഖ്യ) gid);
+    എങ്കിൽ (record == &Null (BaseGlyphRecord) ||
         (record && (hb_codepoint_t) record->glyphId != gid))
       record = nullptr;
-    return record;
+    തിരികെ record;
   }
 
-  const BaseGlyphPaintRecord* get_base_glyph_paintrecord (hb_codepoint_t gid) const
+  സ്ഥിരം BaseGlyphPaintRecord* get_base_glyph_paintrecord (hb_codepoint_t gid) സ്ഥിരം
   {
-    const BaseGlyphList &list = this+baseGlyphList;
-    unsigned int i;
-    if (!list.bfind ((unsigned) gid, &i))
-      return nullptr;
-    return &list[i];
+    സ്ഥിരം BaseGlyphList &list = ഇത്+baseGlyphList;
+    unsigned പൂർണ്ണസംഖ്യ i;
+    എങ്കിൽ (!list.bfind ((unsigned) gid, &i))
+      തിരികെ nullptr;
+    തിരികെ &list[i];
   }
 
-  bool downgrade_to_V0 (const hb_set_t &glyphset) const
+  തർക്കം downgrade_to_V0 (സ്ഥിരം hb_set_t &glyphset) സ്ഥിരം
   {
     //no more COLRv1 glyphs, downgrade to version 0
-    for (const BaseGlyphPaintRecord& _ : get_baseglyphList ())
-      if (glyphset.has (_.glyphId))
-        return false;
+    വേണ്ടി (സ്ഥിരം BaseGlyphPaintRecord& _ : get_baseglyphList ())
+      എങ്കിൽ (glyphset.has (_.glyphId))
+        തിരികെ അസത്യം;
 
-    return true;
+    തിരികെ സത്യം;
   }
 
-  bool subset_varstore (hb_subset_context_t *c,
-                        COLR* out /* OUT */) const
+  തർക്കം subset_varstore (hb_subset_context_t *c,
+                        COLR* out /* OUT */) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    if (!varStore || c->plan->all_axes_pinned ||
+    TRACE_SUBSET (ഇത്);
+    എങ്കിൽ (!varStore || c->plan->all_axes_pinned ||
         !c->plan->colrv1_variation_idx_delta_map)
-      return_trace (true);
+      return_trace (സത്യം);
 
-    const ItemVariationStore& var_store = this+varStore;
-    if (c->plan->normalized_coords)
+    സ്ഥിരം ItemVariationStore& var_store = ഇത്+varStore;
+    എങ്കിൽ (c->plan->normalized_coords)
     {
       item_variations_t item_vars;
       /* turn off varstore optimization when varIdxMap is null, so we maintain
        * original var_idx sequence */
-      bool optimize = (varIdxMap != 0) ? true : false;
-      if (!item_vars.instantiate (var_store, c->plan,
+      തർക്കം optimize = (varIdxMap != 0) ? സത്യം : അസത്യം;
+      എങ്കിൽ (!item_vars.instantiate (var_store, c->plan,
                                   optimize, /* optimization */
                                   optimize, /* use_no_variation_idx = false */
                                   c->plan->colrv1_varstore_inner_maps.as_array ()))
-        return_trace (false);
+        return_trace (അസത്യം);
 
       /* do not serialize varStore if there's no variation data after
        * instancing: region_list or var_data is empty */
-      if (item_vars.get_region_list () &&
+      എങ്കിൽ (item_vars.get_region_list () &&
           item_vars.get_vardata_encodings () &&
           !out->varStore.serialize_serialize (c->serializer,
                                               item_vars.has_long_word (),
                                               c->plan->axis_tags,
                                               item_vars.get_region_list (),
                                               item_vars.get_vardata_encodings ()))
-        return_trace (false);
+        return_trace (അസത്യം);
 
       /* if varstore is optimized, update colrv1_new_deltaset_idx_varidx_map in
        * subset plan.
        * If varstore is empty after instancing, varidx_map would be empty and
        * all var_idxes will be updated to VarIdx::NO_VARIATION */
-      if (optimize)
+      എങ്കിൽ (optimize)
       {
-        const hb_map_t &varidx_map = item_vars.get_varidx_map ();
-        for (auto _ : c->plan->colrv1_new_deltaset_idx_varidx_map.iter_ref ())
+        സ്ഥിരം hb_map_t &varidx_map = item_vars.get_varidx_map ();
+        വേണ്ടി (auto _ : c->plan->colrv1_new_deltaset_idx_varidx_map.iter_ref ())
         {
           uint32_t varidx = _.second;
           uint32_t *new_varidx;
-          if (varidx_map.has (varidx, &new_varidx))
+          എങ്കിൽ (varidx_map.has (varidx, &new_varidx))
             _.second = *new_varidx;
-          else
+          അല്ലെങ്കിൽ
             _.second = VarIdx::NO_VARIATION;
         }
       }
     }
-    else
+    അല്ലെങ്കിൽ
     {
       /* avar2 partial instancing: cull unreachable regions. */
       hb_set_t dead_regions;
-      if (c->plan->has_avar2)
+      എങ്കിൽ (c->plan->has_avar2)
         var_store.collect_dead_regions (c->plan->axes_old_index_tag_map,
                                         c->plan->avar2_reachable_ranges,
                                         dead_regions);
 
-      if (unlikely (!out->varStore.serialize_serialize (c->serializer,
+      എങ്കിൽ (unlikely (!out->varStore.serialize_serialize (c->serializer,
                                                         &var_store,
                                                         c->plan->colrv1_varstore_inner_maps.as_array (),
                                                         dead_regions.get_population () ? &dead_regions : nullptr)))
-        return_trace (false);
+        return_trace (അസത്യം);
     }
 
-    return_trace (true);
+    return_trace (സത്യം);
   }
 
-  bool subset_delta_set_index_map (hb_subset_context_t *c,
-                                   COLR* out /* OUT */) const
+  തർക്കം subset_delta_set_index_map (hb_subset_context_t *c,
+                                   COLR* out /* OUT */) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    if (!varIdxMap || c->plan->all_axes_pinned ||
+    TRACE_SUBSET (ഇത്);
+    എങ്കിൽ (!varIdxMap || c->plan->all_axes_pinned ||
         !c->plan->colrv1_new_deltaset_idx_varidx_map)
-      return_trace (true);
+      return_trace (സത്യം);
 
-    const hb_map_t &deltaset_idx_varidx_map = c->plan->colrv1_new_deltaset_idx_varidx_map;
+    സ്ഥിരം hb_map_t &deltaset_idx_varidx_map = c->plan->colrv1_new_deltaset_idx_varidx_map;
     delta_set_index_map_subset_plan_t index_map_plan (deltaset_idx_varidx_map);
 
-    if (unlikely (!index_map_plan.remap (deltaset_idx_varidx_map)))
-      return_trace (false);
+    എങ്കിൽ (unlikely (!index_map_plan.remap (deltaset_idx_varidx_map)))
+      return_trace (അസത്യം);
 
     return_trace (out->varIdxMap.serialize_serialize (c->serializer, index_map_plan));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  തർക്കം subset (hb_subset_context_t *c) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    const hb_map_t &reverse_glyph_map = *c->plan->reverse_glyph_map;
-    const hb_set_t& glyphset = c->plan->_glyphset_colred;
+    TRACE_SUBSET (ഇത്);
+    സ്ഥിരം hb_map_t &reverse_glyph_map = *c->plan->reverse_glyph_map;
+    സ്ഥിരം hb_set_t& glyphset = c->plan->_glyphset_colred;
 
     auto base_it =
-    + hb_range (c->plan->num_output_glyphs ())
+    + hb_range (c->plan->അക്കം_output_glyphs ())
     | hb_filter ([&](hb_codepoint_t new_gid)
 		 {
 		    hb_codepoint_t old_gid = reverse_glyph_map.get (new_gid);
-		    if (glyphset.has (old_gid)) return true;
-		    return false;
+		    എങ്കിൽ (glyphset.has (old_gid)) തിരികെ സത്യം;
+		    തിരികെ അസത്യം;
 		 })
     | hb_map_retains_sorting ([&](hb_codepoint_t new_gid)
 			      {
 				hb_codepoint_t old_gid = reverse_glyph_map.get (new_gid);
 
-				const BaseGlyphRecord* old_record = get_base_glyph_record (old_gid);
-				if (unlikely (!old_record))
-				  return hb_pair_t<bool, BaseGlyphRecord> (false, Null (BaseGlyphRecord));
+				സ്ഥിരം BaseGlyphRecord* old_record = get_base_glyph_record (old_gid);
+				എങ്കിൽ (unlikely (!old_record))
+				  തിരികെ hb_pair_t<തർക്കം, BaseGlyphRecord> (അസത്യം, Null (BaseGlyphRecord));
 				BaseGlyphRecord new_record = {};
 				new_record.glyphId = new_gid;
-				new_record.numLayers = old_record->numLayers;
-				return hb_pair_t<bool, BaseGlyphRecord> (true, new_record);
+				new_record.അക്കം_Layers = old_record->അക്കം_Layers;
+				തിരികെ hb_pair_t<തർക്കം, BaseGlyphRecord> (സത്യം, new_record);
 			      })
     | hb_filter (hb_first)
     | hb_map_retains_sorting (hb_second)
     ;
 
     auto layer_it =
-    + hb_range (c->plan->num_output_glyphs ())
+    + hb_range (c->plan->അക്കം_output_glyphs ())
     | hb_map (reverse_glyph_map)
     | hb_filter (glyphset)
     | hb_map_retains_sorting ([&](hb_codepoint_t old_gid)
 			      {
-				const BaseGlyphRecord* old_record = get_base_glyph_record (old_gid);
+				സ്ഥിരം BaseGlyphRecord* old_record = get_base_glyph_record (old_gid);
 				hb_vector_t<LayerRecord> out_layers;
 
-				if (unlikely (!old_record ||
-					      old_record->firstLayerIdx >= numLayers ||
-					      old_record->firstLayerIdx + old_record->numLayers > numLayers))
-				  return hb_pair_t<bool, hb_vector_t<LayerRecord>> (false, out_layers);
+				എങ്കിൽ (unlikely (!old_record ||
+					      old_record->firstLayerIdx >= അക്കം_Layers ||
+					      old_record->firstLayerIdx + old_record->അക്കം_Layers > അക്കം_Layers))
+				  തിരികെ hb_pair_t<തർക്കം, hb_vector_t<LayerRecord>> (അസത്യം, out_layers);
 
-				auto layers = (this+layersZ).as_array (numLayers).sub_array (old_record->firstLayerIdx,
-											     old_record->numLayers);
+				auto layers = (ഇത്+layersZ).as_array (അക്കം_Layers).sub_array (old_record->firstLayerIdx,
+											     old_record->അക്കം_Layers);
 				out_layers.resize (layers.length);
-				for (unsigned int i = 0; i < layers.length; i++) {
+				വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < layers.length; i++) {
 				  out_layers[i] = layers[i];
 				  hb_codepoint_t new_gid = 0;
-				  if (unlikely (!c->plan->new_gid_for_old_gid (out_layers[i].glyphId, &new_gid)))
-				    return hb_pair_t<bool, hb_vector_t<LayerRecord>> (false, out_layers);
+				  എങ്കിൽ (unlikely (!c->plan->new_gid_for_old_gid (out_layers[i].glyphId, &new_gid)))
+				    തിരികെ hb_pair_t<തർക്കം, hb_vector_t<LayerRecord>> (അസത്യം, out_layers);
 				  out_layers[i].glyphId = new_gid;
 				  out_layers[i].colorIdx = c->plan->colr_palettes.get (layers[i].colorIdx);
 				}
 
-				return hb_pair_t<bool, hb_vector_t<LayerRecord>> (true, out_layers);
+				തിരികെ hb_pair_t<തർക്കം, hb_vector_t<LayerRecord>> (സത്യം, out_layers);
 			      })
     | hb_filter (hb_first)
     | hb_map_retains_sorting (hb_second)
     ;
 
-    if (version == 0 && (!base_it || !layer_it))
-      return_trace (false);
+    എങ്കിൽ (version == 0 && (!base_it || !layer_it))
+      return_trace (അസത്യം);
 
-    auto *colr_prime = c->serializer->start_embed<COLR> ();
-    if (unlikely (!c->serializer->extend_min (colr_prime)))  return_trace (false);
+    auto *colr_അഭാജ്യം = c->serializer->start_embed<COLR> ();
+    എങ്കിൽ (unlikely (!c->serializer->extend_min (colr_അഭാജ്യം)))  return_trace (അസത്യം);
 
-    if (version == 0 || downgrade_to_V0 (glyphset))
-      return_trace (colr_prime->serialize_V0 (c->serializer, 0, base_it, layer_it));
+    എങ്കിൽ (version == 0 || downgrade_to_V0 (glyphset))
+      return_trace (colr_അഭാജ്യം->serialize_V0 (c->serializer, 0, base_it, layer_it));
 
     hb_barrier ();
 
     //start version 1
-    if (!c->serializer->allocate_size<void> (5 * HBUINT32::static_size)) return_trace (false);
-    if (!colr_prime->serialize_V0 (c->serializer, version, base_it, layer_it)) return_trace (false);
+    എങ്കിൽ (!c->serializer->allocate_size<ശൂന്യം> (5 * HBUINT32::static_size)) return_trace (അസത്യം);
+    എങ്കിൽ (!colr_അഭാജ്യം->serialize_V0 (c->serializer, version, base_it, layer_it)) return_trace (അസത്യം);
 
     /* subset ItemVariationStore first, cause varidx_map needs to be updated
      * after instancing */
-    if (!subset_varstore (c, colr_prime)) return_trace (false);
+    എങ്കിൽ (!subset_varstore (c, colr_അഭാജ്യം)) return_trace (അസത്യം);
 
     ItemVarStoreInstancer instancer (c->plan->normalized_coords ? get_var_store_ptr () : nullptr,
 				     c->plan->normalized_coords ? get_delta_set_index_map_ptr () : nullptr,
 				     c->plan->normalized_coords.as_array ());
 
-    if (!colr_prime->baseGlyphList.serialize_subset (c, baseGlyphList, this, instancer))
-      return_trace (false);
+    എങ്കിൽ (!colr_അഭാജ്യം->baseGlyphList.serialize_subset (c, baseGlyphList, ഇത്, instancer))
+      return_trace (അസത്യം);
 
-    colr_prime->layerList.serialize_subset (c, layerList, this, instancer);
-    colr_prime->clipList.serialize_subset (c, clipList, this, instancer);
+    colr_അഭാജ്യം->layerList.serialize_subset (c, layerList, ഇത്, instancer);
+    colr_അഭാജ്യം->clipList.serialize_subset (c, clipList, ഇത്, instancer);
 
-    return_trace (subset_delta_set_index_map (c, colr_prime));
+    return_trace (subset_delta_set_index_map (c, colr_അഭാജ്യം));
   }
 
-  const Paint *get_base_glyph_paint (hb_codepoint_t glyph) const
+  സ്ഥിരം Paint *get_base_glyph_paint (hb_codepoint_t glyph) സ്ഥിരം
   {
-    const BaseGlyphList &baseglyph_paintrecords = this+baseGlyphList;
-    const BaseGlyphPaintRecord* record = get_base_glyph_paintrecord (glyph);
-    if (record)
+    സ്ഥിരം BaseGlyphList &baseglyph_paintrecords = ഇത്+baseGlyphList;
+    സ്ഥിരം BaseGlyphPaintRecord* record = get_base_glyph_paintrecord (glyph);
+    എങ്കിൽ (record)
     {
-      const Paint &paint = &baseglyph_paintrecords+record->paint;
-      return &paint;
+      സ്ഥിരം Paint &paint = &baseglyph_paintrecords+record->paint;
+      തിരികെ &paint;
     }
-    else
-      return nullptr;
+    അല്ലെങ്കിൽ
+      തിരികെ nullptr;
   }
 
 #ifndef HB_NO_PAINT
-  bool
+  തർക്കം
   get_extents (hb_font_t *font,
 	       hb_codepoint_t glyph,
 	       hb_glyph_extents_t *extents,
-	       hb_colr_scratch_t &scratch) const
+	       hb_colr_scratch_t &scratch) സ്ഥിരം
   {
 
     ItemVarStoreInstancer instancer (get_var_store_ptr (),
                                      get_delta_set_index_map_ptr (),
-                                     hb_array (font->coords, font->num_coords));
+                                     hb_array (font->coords, font->അക്കം_coords));
 
-    if (get_clip (glyph, extents, instancer))
+    എങ്കിൽ (get_clip (glyph, extents, instancer))
     {
       font->scale_glyph_extents (extents);
-      return true;
+      തിരികെ സത്യം;
     }
 
     auto *extents_funcs = hb_paint_extents_get_funcs ();
     scratch.paint_extents.clear ();
-    bool ret = paint_glyph (font, glyph, extents_funcs, &scratch.paint_extents, 0, HB_COLOR(0,0,0,0), true, scratch);
+    തർക്കം ret = paint_glyph (font, glyph, extents_funcs, &scratch.paint_extents, 0, HB_COLOR(0,0,0,0), സത്യം, scratch);
 
     auto e = scratch.paint_extents.get_extents ();
-    if (e.is_void ())
+    എങ്കിൽ (e.is_void ())
     {
       extents->x_bearing = 0;
       extents->y_bearing = 0;
       extents->width = 0;
       extents->height = 0;
     }
-    else
+    അല്ലെങ്കിൽ
       *extents = e.to_glyph_extents ();
 
-    return ret;
+    തിരികെ ret;
   }
 #endif
 
-  bool
-  has_paint_for_glyph (hb_codepoint_t glyph) const
+  തർക്കം
+  has_paint_for_glyph (hb_codepoint_t glyph) സ്ഥിരം
   {
-    if (version >= 1)
+    എങ്കിൽ (version >= 1)
     {
       hb_barrier ();
 
-      const Paint *paint = get_base_glyph_paint (glyph);
+      സ്ഥിരം Paint *paint = get_base_glyph_paint (glyph);
 
-      return paint != nullptr;
+      തിരികെ paint != nullptr;
     }
 
-    return false;
+    തിരികെ അസത്യം;
   }
 
-  bool get_clip (hb_codepoint_t glyph,
+  തർക്കം get_clip (hb_codepoint_t glyph,
 		 hb_glyph_extents_t *extents,
-		 const ItemVarStoreInstancer instancer) const
+		 സ്ഥിരം ItemVarStoreInstancer instancer) സ്ഥിരം
   {
-    return get_clip_list ().get_extents (glyph,
+    തിരികെ get_clip_list ().get_extents (glyph,
 					extents,
 					instancer);
   }
 
 #ifndef HB_NO_PAINT
-  bool
+  തർക്കം
   paint_glyph (hb_font_t *font,
 	       hb_codepoint_t glyph,
-	       hb_paint_funcs_t *funcs, void *data,
-	       unsigned int palette_index, hb_color_t foreground,
-	       bool clip,
-	       hb_colr_scratch_t &scratch) const
+	       hb_paint_funcs_t *funcs, ശൂന്യം *data,
+	       unsigned പൂർണ്ണസംഖ്യ palette_index, hb_color_t foreground,
+	       തർക്കം clip,
+	       hb_colr_scratch_t &scratch) സ്ഥിരം
   {
     ItemVarStoreInstancer instancer (get_var_store_ptr (),
 				     get_delta_set_index_map_ptr (),
 				     hb_array (font->coords,
-					       font->has_nonzero_coords ? font->num_coords : 0));
-    hb_paint_context_t c (this, funcs, data, font, palette_index, foreground, instancer);
+					       font->has_nonzero_coords ? font->അക്കം_coords : 0));
+    hb_paint_context_t c (ഇത്, funcs, data, font, palette_index, foreground, instancer);
 
-    hb_decycler_node_t node (c.glyphs_decycler);
+    hb_decycler_കണ്ണി_t node (c.glyphs_decycler);
     node.visit (glyph);
 
-    if (version >= 1)
+    എങ്കിൽ (version >= 1)
     {
       hb_barrier ();
 
-      const Paint *paint = get_base_glyph_paint (glyph);
-      if (paint)
+      സ്ഥിരം Paint *paint = get_base_glyph_paint (glyph);
+      എങ്കിൽ (paint)
       {
         // COLRv1 glyph
 
-	bool is_bounded = true;
+	തർക്കം is_bounded = സത്യം;
 	hb_glyph_extents_t extents = {};
-	if (clip)
+	എങ്കിൽ (clip)
 	{
-	  if (!get_clip (glyph, &extents, instancer))
+	  എങ്കിൽ (!get_clip (glyph, &extents, instancer))
 	  {
-	    clip = false;
-	    is_bounded = false;
+	    clip = അസത്യം;
+	    is_bounded = അസത്യം;
 	  }
 
-	  if (!is_bounded)
+	  എങ്കിൽ (!is_bounded)
 	  {
 	    auto *bounded_funcs = hb_paint_bounded_get_funcs ();
 	    scratch.paint_bounded.clear ();
@@ -3163,161 +3163,161 @@ struct COLR
 	    paint_glyph (font, glyph,
 			 bounded_funcs, &scratch.paint_bounded,
 			 palette_index, foreground,
-			 false,
+			 അസത്യം,
 			 scratch);
 
 	    is_bounded = scratch.paint_bounded.is_bounded ();
 	  }
 	}
 
-	c.funcs->push_font_transform (c.data, font);
+	c.funcs->തള്ളുക_font_transform (c.data, font);
 
-	if (clip)
-	  c.funcs->push_clip_rectangle (c.data,
-					(float) extents.x_bearing,
-					(float) extents.y_bearing + extents.height,
-					(float) extents.x_bearing + extents.width,
-					(float) extents.y_bearing);
+	എങ്കിൽ (clip)
+	  c.funcs->തള്ളുക_clip_rectangle (c.data,
+					(ദശാംശം) extents.x_bearing,
+					(ദശാംശം) extents.y_bearing + extents.height,
+					(ദശാംശം) extents.x_bearing + extents.width,
+					(ദശാംശം) extents.y_bearing);
 
-	if (is_bounded)
+	എങ്കിൽ (is_bounded)
 	  c.recurse (*paint);
 
-	if (clip)
-	  c.funcs->pop_clip (c.data);
+	എങ്കിൽ (clip)
+	  c.funcs->എടുക്കുക_clip (c.data);
 
-	c.funcs->pop_transform (c.data);
+	c.funcs->എടുക്കുക_transform (c.data);
 
-        return true;
+        തിരികെ സത്യം;
       }
     }
 
-    const BaseGlyphRecord *record = get_base_glyph_record (glyph);
-    if (record && ((hb_codepoint_t) record->glyphId == glyph))
+    സ്ഥിരം BaseGlyphRecord *record = get_base_glyph_record (glyph);
+    എങ്കിൽ (record && ((hb_codepoint_t) record->glyphId == glyph))
     {
       // COLRv0 glyph
-      for (const auto &r : (this+layersZ).as_array (numLayers)
-			   .sub_array (record->firstLayerIdx, record->numLayers))
+      വേണ്ടി (സ്ഥിരം auto &r : (ഇത്+layersZ).as_array (അക്കം_Layers)
+			   .sub_array (record->firstLayerIdx, record->അക്കം_Layers))
       {
         hb_bool_t is_foreground;
         hb_color_t color = c.get_color (r.colorIdx, 1., &is_foreground);
         c.funcs->fill_glyph (c.data, r.glyphId, c.font, is_foreground, color);
       }
 
-      return true;
+      തിരികെ സത്യം;
     }
 
-    return false;
+    തിരികെ അസത്യം;
   }
 #endif
 
-  protected:
+  സംരക്ഷിത:
   HBUINT16	version;	/* Table version number (starts at 0). */
-  HBUINT16	numBaseGlyphs;	/* Number of Base Glyph Records. */
+  HBUINT16	അക്കം_Base_Glyphs;	/* Number of Base Glyph Records. */
   NNOffset32To<SortedUnsizedArrayOf<BaseGlyphRecord>>
 		baseGlyphsZ;	/* Offset to Base Glyph records. */
   NNOffset32To<UnsizedArrayOf<LayerRecord>>
 		layersZ;	/* Offset to Layer Records. */
-  HBUINT16	numLayers;	/* Number of Layer Records. */
+  HBUINT16	അക്കം_Layers;	/* Number of Layer Records. */
   // Version-1 additions
   Offset32To<BaseGlyphList>		baseGlyphList;
   Offset32To<LayerList>			layerList;
   Offset32To<ClipList>			clipList;   // Offset to ClipList table (may be NULL)
   Offset32To<DeltaSetIndexMap>		varIdxMap;  // Offset to DeltaSetIndexMap table (may be NULL)
   Offset32To<ItemVariationStore>	varStore;
-  public:
+  പൊതു:
   DEFINE_SIZE_MIN (14);
 };
 
-struct COLR_accelerator_t : COLR::accelerator_t {
+ഘടന COLR_accelerator_t : COLR::accelerator_t {
   COLR_accelerator_t (hb_face_t *face) : COLR::accelerator_t (face) {}
 };
 
-void
-hb_paint_context_t::recurse (const Paint &paint)
+ശൂന്യം
+hb_paint_context_t::recurse (സ്ഥിരം Paint &paint)
 {
-  if (unlikely (depth_left <= 0 || edge_count <= 0)) return;
-  depth_left--;
-  edge_count--;
-  paint.dispatch (this);
-  depth_left++;
+  എങ്കിൽ (unlikely (depth_ഇടത് <= 0 || edge_എണ്ണം <= 0)) തിരികെ;
+  depth_ഇടത്--;
+  edge_എണ്ണം--;
+  paint.dispatch (ഇത്);
+  depth_ഇടത്++;
 }
 
 template <typename Types>
-void PaintGlyph<Types>::paint_glyph (hb_paint_context_t *c) const
+ശൂന്യം PaintGlyph<Types>::paint_glyph (hb_paint_context_t *c) സ്ഥിരം
 {
-  TRACE_PAINT (this);
+  TRACE_PAINT (ഇത്);
 
   hb_bool_t is_foreground;
   hb_color_t color;
   /* Optimize cases that can use a simple fill-glyph operation. */
-  if (likely (c->depth_left > 0 && c->edge_count > 0) &&
-      (this+paint).get_solid_color (c, &is_foreground, &color))
+  എങ്കിൽ (likely (c->depth_ഇടത് > 0 && c->edge_എണ്ണം > 0) &&
+      (ഇത്+paint).get_solid_color (c, &is_foreground, &color))
   {
-    c->edge_count--;
-    c->funcs->push_inverse_font_transform (c->data, c->font);
+    c->edge_എണ്ണം--;
+    c->funcs->തള്ളുക_inverse_font_transform (c->data, c->font);
     c->funcs->fill_glyph (c->data, gid, c->font, is_foreground, color);
-    c->funcs->pop_transform (c->data);
-    return;
+    c->funcs->എടുക്കുക_transform (c->data);
+    തിരികെ;
   }
 
-  c->funcs->push_inverse_font_transform (c->data, c->font);
-  c->funcs->push_clip_glyph (c->data, gid, c->font);
-  c->funcs->push_font_transform (c->data, c->font);
-  c->recurse (this+paint);
-  c->funcs->pop_transform (c->data);
-  c->funcs->pop_clip (c->data);
-  c->funcs->pop_transform (c->data);
+  c->funcs->തള്ളുക_inverse_font_transform (c->data, c->font);
+  c->funcs->തള്ളുക_clip_glyph (c->data, gid, c->font);
+  c->funcs->തള്ളുക_font_transform (c->data, c->font);
+  c->recurse (ഇത്+paint);
+  c->funcs->എടുക്കുക_transform (c->data);
+  c->funcs->എടുക്കുക_clip (c->data);
+  c->funcs->എടുക്കുക_transform (c->data);
 }
 
-void PaintColrLayers::paint_glyph (hb_paint_context_t *c) const
+ശൂന്യം PaintColrLayers::paint_glyph (hb_paint_context_t *c) സ്ഥിരം
 {
-  TRACE_PAINT (this);
-  const LayerList &paint_offset_lists = c->get_colr_table ()->get_layerList ();
-  hb_decycler_node_t node (c->layers_decycler);
-  for (unsigned i = firstLayerIndex; i < firstLayerIndex + numLayers; i++)
+  TRACE_PAINT (ഇത്);
+  സ്ഥിരം LayerList &paint_offset_lists = c->get_colr_table ()->get_layerList ();
+  hb_decycler_കണ്ണി_t node (c->layers_decycler);
+  വേണ്ടി (unsigned i = firstLayerIndex; i < firstLayerIndex + അക്കം_Layers; i++)
   {
-    if (unlikely (!node.visit (i)))
-      return;
+    എങ്കിൽ (unlikely (!node.visit (i)))
+      തിരികെ;
 
-    const Paint &paint = paint_offset_lists.get_paint (i);
+    സ്ഥിരം Paint &paint = paint_offset_lists.get_paint (i);
     c->recurse (paint);
   }
 }
 
-void PaintColrGlyph::paint_glyph (hb_paint_context_t *c) const
+ശൂന്യം PaintColrGlyph::paint_glyph (hb_paint_context_t *c) സ്ഥിരം
 {
-  TRACE_PAINT (this);
+  TRACE_PAINT (ഇത്);
 
-  hb_decycler_node_t node (c->glyphs_decycler);
-  if (unlikely (!node.visit (gid)))
-    return;
+  hb_decycler_കണ്ണി_t node (c->glyphs_decycler);
+  എങ്കിൽ (unlikely (!node.visit (gid)))
+    തിരികെ;
 
-  c->funcs->push_inverse_font_transform (c->data, c->font);
-  if (c->funcs->color_glyph (c->data, gid, c->font))
+  c->funcs->തള്ളുക_inverse_font_transform (c->data, c->font);
+  എങ്കിൽ (c->funcs->color_glyph (c->data, gid, c->font))
   {
-    c->funcs->pop_transform (c->data);
-    return;
+    c->funcs->എടുക്കുക_transform (c->data);
+    തിരികെ;
   }
-  c->funcs->pop_transform (c->data);
+  c->funcs->എടുക്കുക_transform (c->data);
 
-  const COLR *colr_table = c->get_colr_table ();
-  const Paint *paint = colr_table->get_base_glyph_paint (gid);
+  സ്ഥിരം COLR *colr_table = c->get_colr_table ();
+  സ്ഥിരം Paint *paint = colr_table->get_base_glyph_paint (gid);
 
   hb_glyph_extents_t extents = {0};
-  bool has_clip_box = colr_table->get_clip (gid, &extents, c->instancer);
+  തർക്കം has_clip_box = colr_table->get_clip (gid, &extents, c->instancer);
 
-  if (has_clip_box)
-    c->funcs->push_clip_rectangle (c->data,
-				   (float) extents.x_bearing,
-				   (float) extents.y_bearing + extents.height,
-				   (float) extents.x_bearing + extents.width,
-				   (float) extents.y_bearing);
+  എങ്കിൽ (has_clip_box)
+    c->funcs->തള്ളുക_clip_rectangle (c->data,
+				   (ദശാംശം) extents.x_bearing,
+				   (ദശാംശം) extents.y_bearing + extents.height,
+				   (ദശാംശം) extents.x_bearing + extents.width,
+				   (ദശാംശം) extents.y_bearing);
 
-  if (paint)
+  എങ്കിൽ (paint)
     c->recurse (*paint);
 
-  if (has_clip_box)
-    c->funcs->pop_clip (c->data);
+  എങ്കിൽ (has_clip_box)
+    c->funcs->എടുക്കുക_clip (c->data);
 }
 
 } /* namespace OT */

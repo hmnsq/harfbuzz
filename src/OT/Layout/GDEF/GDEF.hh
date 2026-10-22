@@ -29,13 +29,13 @@
 #ifndef OT_LAYOUT_GDEF_GDEF_HH
 #define OT_LAYOUT_GDEF_GDEF_HH
 
-#include "../../../hb-ot-var-common.hh"
+#അന്തര്ഭാവ "../../../hb-ot-var-common.hh"
 
-#include "../../../hb-font.hh"
-#include "../../../hb-cache.hh"
+#അന്തര്ഭാവ "../../../hb-font.hh"
+#അന്തര്ഭാവ "../../../hb-cache.hh"
 
 
-namespace OT {
+നാമാകാശ OT {
 
 
 /*
@@ -43,12 +43,12 @@ namespace OT {
  */
 
 /* Array of contour point indices--in increasing numerical order */
-struct AttachPoint : Array16Of<HBUINT16>
+ഘടന AttachPoint : Array16Of<HBUINT16>
 {
-  bool subset (hb_subset_context_t *c) const
+  തർക്കം subset (hb_subset_context_t *c) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
+    TRACE_SUBSET (ഇത്);
+    auto *out = c->serializer->start_embed (*ഇത്);
     return_trace (out->serialize (c->serializer, + iter ()));
   }
 };
@@ -56,68 +56,68 @@ struct AttachPoint : Array16Of<HBUINT16>
 /* AttachList is referenced by both GDEF attachListOffset and
  * attachListOffset2. The v1.4 top-level offset widens, but the
  * AttachList table itself keeps Offset16 internals. */
-struct AttachList
+ഘടന AttachList
 {
-  unsigned int get_attach_points (hb_codepoint_t glyph_id,
-				  unsigned int start_offset,
-				  unsigned int *point_count /* IN/OUT */,
-				  unsigned int *point_array /* OUT */) const
+  unsigned പൂർണ്ണസംഖ്യ get_attach_points (hb_codepoint_t glyph_id,
+				  unsigned പൂർണ്ണസംഖ്യ start_offset,
+				  unsigned പൂർണ്ണസംഖ്യ *point_എണ്ണം /* IN/OUT */,
+				  unsigned പൂർണ്ണസംഖ്യ *point_array /* OUT */) സ്ഥിരം
   {
-    unsigned int index = (this+coverage).get_coverage (glyph_id);
-    if (index == NOT_COVERED)
+    unsigned പൂർണ്ണസംഖ്യ index = (ഇത്+coverage).get_coverage (glyph_id);
+    എങ്കിൽ (index == NOT_COVERED)
     {
-      if (point_count)
-	*point_count = 0;
-      return 0;
+      എങ്കിൽ (point_എണ്ണം)
+	*point_എണ്ണം = 0;
+      തിരികെ 0;
     }
 
-    const AttachPoint &points = this+attachPoint[index];
+    സ്ഥിരം AttachPoint &points = ഇത്+attachPoint[index];
 
-    if (point_count && point_array)
+    എങ്കിൽ (point_എണ്ണം && point_array)
     {
-      + points.as_array ().sub_array (start_offset, point_count)
-      | hb_sink (hb_array (point_array, *point_count))
+      + points.as_array ().sub_array (start_offset, point_എണ്ണം)
+      | hb_sink (hb_array (point_array, *point_എണ്ണം))
       ;
     }
 
-    return points.len;
+    തിരികെ points.len;
   }
 
-  bool subset (hb_subset_context_t *c) const
+  തർക്കം subset (hb_subset_context_t *c) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (ഇത്);
+    സ്ഥിരം hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+    സ്ഥിരം hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (*ഇത്);
+    എങ്കിൽ (unlikely (!c->serializer->extend_min (out))) return_trace (അസത്യം);
 
     hb_sorted_vector_t<hb_codepoint_t> new_coverage;
-    + hb_zip (this+coverage, attachPoint)
+    + hb_zip (ഇത്+coverage, attachPoint)
     | hb_filter (glyphset, hb_first)
-    | hb_filter (subset_offset_array (c, out->attachPoint, this), hb_second)
+    | hb_filter (subset_offset_array (c, out->attachPoint, ഇത്), hb_second)
     | hb_map (hb_first)
     | hb_map (glyph_map)
     | hb_sink (new_coverage)
     ;
     out->coverage.serialize_serialize (c->serializer, new_coverage.iter ());
-    return_trace (bool (new_coverage));
+    return_trace (തർക്കം (new_coverage));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (coverage.sanitize (c, this) && attachPoint.sanitize (c, this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (coverage.sanitize (c, ഇത്) && attachPoint.sanitize (c, ഇത്));
   }
 
-  protected:
+  സംരക്ഷിത:
   Offset16To<Coverage>
 		coverage;		/* Offset to Coverage table -- from
 					 * beginning of AttachList table */
   Array16OfOffset16To<AttachPoint>
 		attachPoint;		/* Array of AttachPoint tables
 					 * in Coverage Index order */
-  public:
+  പൊതു:
   DEFINE_SIZE_ARRAY (4, attachPoint);
 };
 
@@ -125,320 +125,320 @@ struct AttachList
  * Ligature Caret Table
  */
 
-struct CaretValueFormat1
+ഘടന Caret_മൂല്യം_Format1
 {
-  friend struct CaretValue;
-  bool subset (hb_subset_context_t *c) const
+  friend ഘടന Caret_മൂല്യം;
+  തർക്കം subset (hb_subset_context_t *c) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
-    return_trace (true);
+    TRACE_SUBSET (ഇത്);
+    auto *out = c->serializer->embed (ഇത്);
+    എങ്കിൽ (unlikely (!out)) return_trace (അസത്യം);
+    return_trace (സത്യം);
   }
 
-  private:
-  hb_position_t get_caret_value (hb_font_t *font, hb_direction_t direction) const
+  സ്വകാര്യ:
+  hb_position_t get_caret_മൂല്യം (hb_font_t *font, hb_direction_t direction) സ്ഥിരം
   {
-    return HB_DIRECTION_IS_HORIZONTAL (direction) ? font->em_scale_x (coordinate) : font->em_scale_y (coordinate);
+    തിരികെ HB_DIRECTION_IS_HORIZONTAL (direction) ? font->em_scale_x (coordinate) : font->em_scale_y (coordinate);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
-  protected:
-  HBUINT16	caretValueFormat;	/* Format identifier--format = 1 */
+  സംരക്ഷിത:
+  HBUINT16	caret_മൂല്യം_Format;	/* Format identifier--format = 1 */
   FWORD		coordinate;		/* X or Y value, in design units */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (4);
 };
 
-struct CaretValueFormat2
+ഘടന Caret_മൂല്യം_Format2
 {
-  friend struct CaretValue;
-  bool subset (hb_subset_context_t *c) const
+  friend ഘടന Caret_മൂല്യം;
+  തർക്കം subset (hb_subset_context_t *c) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
-    return_trace (true);
+    TRACE_SUBSET (ഇത്);
+    auto *out = c->serializer->embed (ഇത്);
+    എങ്കിൽ (unlikely (!out)) return_trace (അസത്യം);
+    return_trace (സത്യം);
   }
 
-  private:
-  hb_position_t get_caret_value (hb_font_t *font, hb_direction_t direction, hb_codepoint_t glyph_id) const
+  സ്വകാര്യ:
+  hb_position_t get_caret_മൂല്യം (hb_font_t *font, hb_direction_t direction, hb_codepoint_t glyph_id) സ്ഥിരം
   {
     hb_position_t x, y;
-    font->get_glyph_contour_point_for_origin (glyph_id, caretValuePoint, direction, &x, &y);
-    return HB_DIRECTION_IS_HORIZONTAL (direction) ? x : y;
+    font->get_glyph_contour_point_for_origin (glyph_id, caret_മൂല്യം_Point, direction, &x, &y);
+    തിരികെ HB_DIRECTION_IS_HORIZONTAL (direction) ? x : y;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
-  protected:
-  HBUINT16	caretValueFormat;	/* Format identifier--format = 2 */
-  HBUINT16	caretValuePoint;	/* Contour point index on glyph */
-  public:
+  സംരക്ഷിത:
+  HBUINT16	caret_മൂല്യം_Format;	/* Format identifier--format = 2 */
+  HBUINT16	caret_മൂല്യം_Point;	/* Contour point index on glyph */
+  പൊതു:
   DEFINE_SIZE_STATIC (4);
 };
 
-struct CaretValueFormat3
+ഘടന Caret_മൂല്യം_Format3
 {
-  friend struct CaretValue;
+  friend ഘടന Caret_മൂല്യം;
 
-  hb_position_t get_caret_value (hb_font_t *font, hb_direction_t direction,
-				 const ItemVariationStore &var_store) const
+  hb_position_t get_caret_മൂല്യം (hb_font_t *font, hb_direction_t direction,
+				 സ്ഥിരം ItemVariationStore &var_store) സ്ഥിരം
   {
-    return HB_DIRECTION_IS_HORIZONTAL (direction) ?
-	   hb_saturate_add (font->em_scale_x (coordinate), (this+deviceTable).get_x_delta (font, var_store)) :
-	   hb_saturate_add (font->em_scale_y (coordinate), (this+deviceTable).get_y_delta (font, var_store));
+    തിരികെ HB_DIRECTION_IS_HORIZONTAL (direction) ?
+	   hb_saturate_add (font->em_scale_x (coordinate), (ഇത്+deviceTable).get_x_delta (font, var_store)) :
+	   hb_saturate_add (font->em_scale_y (coordinate), (ഇത്+deviceTable).get_y_delta (font, var_store));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  തർക്കം subset (hb_subset_context_t *c) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (!c->serializer->embed (caretValueFormat)) return_trace (false);
-    if (!c->serializer->embed (coordinate)) return_trace (false);
+    TRACE_SUBSET (ഇത്);
+    auto *out = c->serializer->start_embed (*ഇത്);
+    എങ്കിൽ (!c->serializer->embed (caret_മൂല്യം_Format)) return_trace (അസത്യം);
+    എങ്കിൽ (!c->serializer->embed (coordinate)) return_trace (അസത്യം);
 
-    unsigned varidx = (this+deviceTable).get_variation_index ();
-    hb_pair_t<unsigned, int> *new_varidx_delta;
-    if (c->plan->layout_variation_idx_delta_map.has (varidx, &new_varidx_delta)) {
+    unsigned varidx = (ഇത്+deviceTable).get_variation_index ();
+    hb_pair_t<unsigned, പൂർണ്ണസംഖ്യ> *new_varidx_delta;
+    എങ്കിൽ (c->plan->layout_variation_idx_delta_map.has (varidx, &new_varidx_delta)) {
       uint32_t new_varidx = hb_first (*new_varidx_delta);
-      int delta = hb_second (*new_varidx_delta);
-      if (delta != 0)
+      പൂർണ്ണസംഖ്യ delta = hb_second (*new_varidx_delta);
+      എങ്കിൽ (delta != 0)
       {
-        if (!c->serializer->check_assign (out->coordinate, coordinate + delta, HB_SERIALIZE_ERROR_INT_OVERFLOW))
-          return_trace (false);
+        എങ്കിൽ (!c->serializer->check_assign (out->coordinate, coordinate + delta, HB_SERIALIZE_ERROR_INT_OVERFLOW))
+          return_trace (അസത്യം);
       }
 
-      if (new_varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
-        return_trace (c->serializer->check_assign (out->caretValueFormat, 1, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+      എങ്കിൽ (new_varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
+        return_trace (c->serializer->check_assign (out->caret_മൂല്യം_Format, 1, HB_SERIALIZE_ERROR_INT_OVERFLOW));
     }
 
-    if (!c->serializer->embed (deviceTable))
-      return_trace (false);
+    എങ്കിൽ (!c->serializer->embed (deviceTable))
+      return_trace (അസത്യം);
 
-    return_trace (out->deviceTable.serialize_copy (c->serializer, deviceTable, this, c->serializer->to_bias (out),
+    return_trace (out->deviceTable.serialize_copy (c->serializer, deviceTable, ഇത്, c->serializer->to_bias (out),
 						   hb_serialize_context_t::Head, &c->plan->layout_variation_idx_delta_map));
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
-  { (this+deviceTable).collect_variation_indices (c); }
+  ശൂന്യം collect_variation_indices (hb_collect_variation_indices_context_t *c) സ്ഥിരം
+  { (ഇത്+deviceTable).collect_variation_indices (c); }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && deviceTable.sanitize (c, this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) && deviceTable.sanitize (c, ഇത്));
   }
 
-  protected:
-  HBUINT16	caretValueFormat;	/* Format identifier--format = 3 */
+  സംരക്ഷിത:
+  HBUINT16	caret_മൂല്യം_Format;	/* Format identifier--format = 3 */
   FWORD		coordinate;		/* X or Y value, in design units */
   Offset16To<Device>
 		deviceTable;		/* Offset to Device table for X or Y
 					 * value--from beginning of CaretValue
 					 * table */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (6);
 };
 
-struct CaretValue
+ഘടന Caret_മൂല്യം
 {
-  hb_position_t get_caret_value (hb_font_t *font,
+  hb_position_t get_caret_മൂല്യം (hb_font_t *font,
 				 hb_direction_t direction,
 				 hb_codepoint_t glyph_id,
-				 const ItemVariationStore &var_store) const
+				 സ്ഥിരം ItemVariationStore &var_store) സ്ഥിരം
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.get_caret_value (font, direction);
-    case 2: hb_barrier (); return u.format2.get_caret_value (font, direction, glyph_id);
-    case 3: hb_barrier (); return u.format3.get_caret_value (font, direction, var_store);
-    default:return 0;
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 1: hb_barrier (); തിരികെ u.format1.get_caret_മൂല്യം (font, direction);
+    അവസ്ഥ 2: hb_barrier (); തിരികെ u.format2.get_caret_മൂല്യം (font, direction, glyph_id);
+    അവസ്ഥ 3: hb_barrier (); തിരികെ u.format3.get_caret_മൂല്യം (font, direction, var_store);
+    സ്ഥിരസ്ഥിതി:തിരികെ 0;
     }
   }
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) സ്ഥിരം
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-    case 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
-    default:return_trace (c->default_return_value ());
+    എങ്കിൽ (unlikely (!c->may_dispatch (ഇത്, &u.format.v))) തിരികെ c->no_dispatch_return_മൂല്യം ();
+    TRACE_DISPATCH (ഇത്, u.format.v);
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    അവസ്ഥ 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    അവസ്ഥ 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
+    സ്ഥിരസ്ഥിതി:return_trace (c->default_return_മൂല്യം ());
     }
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  ശൂന്യം collect_variation_indices (hb_collect_variation_indices_context_t *c) സ്ഥിരം
   {
-    switch (u.format.v) {
-    case 1:
-    case 2:
-      return;
-    case 3:
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 1:
+    അവസ്ഥ 2:
+      തിരികെ;
+    അവസ്ഥ 3:
       hb_barrier ();
       u.format3.collect_variation_indices (c);
-      return;
-    default: return;
+      തിരികെ;
+    സ്ഥിരസ്ഥിതി: തിരികെ;
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (ഇത്);
+    എങ്കിൽ (!u.format.v.sanitize (c)) return_trace (അസത്യം);
     hb_barrier ();
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c));
-    case 2: hb_barrier (); return_trace (u.format2.sanitize (c));
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c));
-    default:return_trace (true);
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 1: hb_barrier (); return_trace (u.format1.sanitize (c));
+    അവസ്ഥ 2: hb_barrier (); return_trace (u.format2.sanitize (c));
+    അവസ്ഥ 3: hb_barrier (); return_trace (u.format3.sanitize (c));
+    സ്ഥിരസ്ഥിതി:return_trace (സത്യം);
     }
   }
 
-  protected:
-  union {
-  struct { HBUINT16 v; }	format;		/* Format identifier */
-  CaretValueFormat1	format1;
-  CaretValueFormat2	format2;
-  CaretValueFormat3	format3;
+  സംരക്ഷിത:
+  സംഘം {
+  ഘടന { HBUINT16 v; }	format;		/* Format identifier */
+  Caret_മൂല്യം_Format1	format1;
+  Caret_മൂല്യം_Format2	format2;
+  Caret_മൂല്യം_Format3	format3;
   } u;
-  public:
+  പൊതു:
   DEFINE_SIZE_UNION (2, format.v);
 };
 
-struct LigGlyph
+ഘടന LigGlyph
 {
   unsigned get_lig_carets (hb_font_t            *font,
 			   hb_direction_t        direction,
 			   hb_codepoint_t        glyph_id,
-			   const ItemVariationStore &var_store,
+			   സ്ഥിരം ItemVariationStore &var_store,
 			   unsigned              start_offset,
-			   unsigned             *caret_count /* IN/OUT */,
-			   hb_position_t        *caret_array /* OUT */) const
+			   unsigned             *caret_എണ്ണം /* IN/OUT */,
+			   hb_position_t        *caret_array /* OUT */) സ്ഥിരം
   {
-    if (caret_count && caret_array)
+    എങ്കിൽ (caret_എണ്ണം && caret_array)
     {
-      + carets.as_array ().sub_array (start_offset, caret_count)
-      | hb_map (hb_add (this))
-      | hb_map ([&] (const CaretValue &value) { return value.get_caret_value (font, direction, glyph_id, var_store); })
-      | hb_sink (hb_array (caret_array, *caret_count))
+      + carets.as_array ().sub_array (start_offset, caret_എണ്ണം)
+      | hb_map (hb_add (ഇത്))
+      | hb_map ([&] (സ്ഥിരം Caret_മൂല്യം &value) { തിരികെ value.get_caret_മൂല്യം (font, direction, glyph_id, var_store); })
+      | hb_sink (hb_array (caret_array, *caret_എണ്ണം))
       ;
     }
 
-    return carets.len;
+    തിരികെ carets.len;
   }
 
-  bool subset (hb_subset_context_t *c) const
+  തർക്കം subset (hb_subset_context_t *c) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (ഇത്);
+    auto *out = c->serializer->start_embed (*ഇത്);
+    എങ്കിൽ (unlikely (!c->serializer->extend_min (out))) return_trace (അസത്യം);
 
     + hb_iter (carets)
-    | hb_apply (subset_offset_array (c, out->carets, this))
+    | hb_apply (subset_offset_array (c, out->carets, ഇത്))
     ;
 
-    return_trace (bool (out->carets));
+    return_trace (തർക്കം (out->carets));
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  ശൂന്യം collect_variation_indices (hb_collect_variation_indices_context_t *c) സ്ഥിരം
   {
-    for (const Offset16To<CaretValue>& offset : carets.iter ())
-      (this+offset).collect_variation_indices (c);
+    വേണ്ടി (സ്ഥിരം Offset16To<Caret_മൂല്യം>& offset : carets.iter ())
+      (ഇത്+offset).collect_variation_indices (c);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (carets.sanitize (c, this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (carets.sanitize (c, ഇത്));
   }
 
-  protected:
-  Array16OfOffset16To<CaretValue>
+  സംരക്ഷിത:
+  Array16OfOffset16To<Caret_മൂല്യം>
 		carets;			/* Offset array of CaretValue tables
 					 * --from beginning of LigGlyph table
 					 * --in increasing coordinate order */
-  public:
+  പൊതു:
   DEFINE_SIZE_ARRAY (2, carets);
 };
 
 /* LigCaretList2 widens the LigCaretList coverage, count, and LigGlyph
  * offsets. The LigGlyph table itself keeps Offset16 caretValueOffsets. */
 template <typename Types>
-struct LigCaretList
+ഘടന LigCaretList
 {
-  unsigned int get_lig_carets (hb_font_t *font,
+  unsigned പൂർണ്ണസംഖ്യ get_lig_carets (hb_font_t *font,
 			       hb_direction_t direction,
 			       hb_codepoint_t glyph_id,
-			       const ItemVariationStore &var_store,
-			       unsigned int start_offset,
-			       unsigned int *caret_count /* IN/OUT */,
-			       hb_position_t *caret_array /* OUT */) const
+			       സ്ഥിരം ItemVariationStore &var_store,
+			       unsigned പൂർണ്ണസംഖ്യ start_offset,
+			       unsigned പൂർണ്ണസംഖ്യ *caret_എണ്ണം /* IN/OUT */,
+			       hb_position_t *caret_array /* OUT */) സ്ഥിരം
   {
-    unsigned int index = (this+coverage).get_coverage (glyph_id);
-    if (index == NOT_COVERED)
+    unsigned പൂർണ്ണസംഖ്യ index = (ഇത്+coverage).get_coverage (glyph_id);
+    എങ്കിൽ (index == NOT_COVERED)
     {
-      if (caret_count)
-	*caret_count = 0;
-      return 0;
+      എങ്കിൽ (caret_എണ്ണം)
+	*caret_എണ്ണം = 0;
+      തിരികെ 0;
     }
-    const LigGlyph &lig_glyph = this+ligGlyph[index];
-    return lig_glyph.get_lig_carets (font, direction, glyph_id, var_store, start_offset, caret_count, caret_array);
+    സ്ഥിരം LigGlyph &lig_glyph = ഇത്+ligGlyph[index];
+    തിരികെ lig_glyph.get_lig_carets (font, direction, glyph_id, var_store, start_offset, caret_എണ്ണം, caret_array);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  തർക്കം subset (hb_subset_context_t *c) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (ഇത്);
+    സ്ഥിരം hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+    സ്ഥിരം hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (*ഇത്);
+    എങ്കിൽ (unlikely (!c->serializer->extend_min (out))) return_trace (അസത്യം);
 
     hb_sorted_vector_t<hb_codepoint_t> new_coverage;
-    + hb_zip (this+coverage, ligGlyph)
+    + hb_zip (ഇത്+coverage, ligGlyph)
     | hb_filter (glyphset, hb_first)
-    | hb_filter (subset_offset_array (c, out->ligGlyph, this), hb_second)
+    | hb_filter (subset_offset_array (c, out->ligGlyph, ഇത്), hb_second)
     | hb_map (hb_first)
     | hb_map (glyph_map)
     | hb_sink (new_coverage)
     ;
     out->coverage.serialize_serialize (c->serializer, new_coverage.iter ());
-    return_trace (bool (new_coverage));
+    return_trace (തർക്കം (new_coverage));
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  ശൂന്യം collect_variation_indices (hb_collect_variation_indices_context_t *c) സ്ഥിരം
   {
-    + hb_zip (this+coverage, ligGlyph)
+    + hb_zip (ഇത്+coverage, ligGlyph)
     | hb_filter (c->glyph_set, hb_first)
     | hb_map (hb_second)
-    | hb_map (hb_add (this))
-    | hb_apply ([c] (const LigGlyph& _) { _.collect_variation_indices (c); })
+    | hb_map (hb_add (ഇത്))
+    | hb_apply ([c] (സ്ഥിരം LigGlyph& _) { _.collect_variation_indices (c); })
     ;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (coverage.sanitize (c, this) && ligGlyph.sanitize (c, this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (coverage.sanitize (c, ഇത്) && ligGlyph.sanitize (c, ഇത്));
   }
 
-  protected:
+  സംരക്ഷിത:
   typename Types::template LOffsetTo<Coverage>
 		coverage;		/* Offset to Coverage table--from
 					 * beginning of LigCaretList table */
   typename Types::template ArrayOf<typename Types::template OffsetTo<LigGlyph>>
 		ligGlyph;		/* Array of LigGlyph tables
 					 * in Coverage Index order */
-  public:
+  പൊതു:
   DEFINE_SIZE_ARRAY (Types::LOffset::static_size + Types::HBUINT::static_size, ligGlyph);
 };
 
@@ -448,19 +448,19 @@ static_assert (LigCaretList<MediumTypes>::min_size ==
 #endif
 
 
-struct MarkGlyphSetsFormat1
+ഘടന MarkGlyphSetsFormat1
 {
-  bool covers (unsigned int set_index, hb_codepoint_t glyph_id) const
-  { return (this+coverage[set_index]).get_coverage (glyph_id) != NOT_COVERED; }
+  തർക്കം covers (unsigned പൂർണ്ണസംഖ്യ set_index, hb_codepoint_t glyph_id) സ്ഥിരം
+  { തിരികെ (ഇത്+coverage[set_index]).get_coverage (glyph_id) != NOT_COVERED; }
 
-  void collect_used_mark_sets (const hb_set_t& glyph_set,
-                               hb_set_t& used_mark_sets /* OUT */) const
+  ശൂന്യം collect_used_mark_sets (സ്ഥിരം hb_set_t& glyph_set,
+                               hb_set_t& used_mark_sets /* OUT */) സ്ഥിരം
   {
     unsigned i = 0;
-    for (const auto &offset : coverage)
+    വേണ്ടി (സ്ഥിരം auto &offset : coverage)
      {
-       const auto &cov = this+offset;
-       if (cov.intersects (&glyph_set))
+       സ്ഥിരം auto &cov = ഇത്+offset;
+       എങ്കിൽ (cov.intersects (&glyph_set))
          used_mark_sets.add (i);
 
        i++;
@@ -468,119 +468,119 @@ struct MarkGlyphSetsFormat1
   }
 
   template <typename set_t>
-  void collect_coverage (hb_vector_t<set_t> &sets) const
+  ശൂന്യം collect_coverage (hb_vector_t<set_t> &sets) സ്ഥിരം
   {
-     for (const auto &offset : coverage)
+     വേണ്ടി (സ്ഥിരം auto &offset : coverage)
      {
-       const auto &cov = this+offset;
+       സ്ഥിരം auto &cov = ഇത്+offset;
        cov.collect_coverage (sets.push ());
      }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  തർക്കം subset (hb_subset_context_t *c) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (ഇത്);
+    auto *out = c->serializer->start_embed (*ഇത്);
+    എങ്കിൽ (unlikely (!c->serializer->extend_min (out))) return_trace (അസത്യം);
     out->format = format;
 
-    bool ret = true;
-    for (const Offset32To<Coverage>& offset : coverage.iter ())
+    തർക്കം ret = സത്യം;
+    വേണ്ടി (സ്ഥിരം Offset32To<Coverage>& offset : coverage.iter ())
     {
       auto snap = c->serializer->snapshot ();
       auto *o = out->coverage.serialize_append (c->serializer);
-      if (unlikely (!o))
+      എങ്കിൽ (unlikely (!o))
       {
-	ret = false;
-	break;
+	ret = അസത്യം;
+	നിർത്തുക;
       }
 
       //skip empty coverage
       c->serializer->push ();
-      bool res = false;
-      if (offset) res = c->dispatch (this+offset);
-      if (!res)
+      തർക്കം res = അസത്യം;
+      എങ്കിൽ (offset) res = c->dispatch (ഇത്+offset);
+      എങ്കിൽ (!res)
       {
-        c->serializer->pop_discard ();
+        c->serializer->എടുക്കുക_discard ();
         c->serializer->revert (snap);
         (out->coverage.len)--;
-        continue;
+        തുടരുക;
       }
-      c->serializer->add_link (*o, c->serializer->pop_pack ());
+      c->serializer->add_link (*o, c->serializer->എടുക്കുക_pack ());
     }
 
     return_trace (ret && out->coverage.len);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (coverage.sanitize (c, this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (coverage.sanitize (c, ഇത്));
   }
 
-  protected:
+  സംരക്ഷിത:
   HBUINT16	format;			/* Format identifier--format = 1 */
   Array16Of<Offset32To<Coverage>>
 		coverage;		/* Array of long offsets to mark set
 					 * coverage tables */
-  public:
+  പൊതു:
   DEFINE_SIZE_ARRAY (4, coverage);
 };
 
-struct MarkGlyphSets
+ഘടന MarkGlyphSets
 {
-  bool covers (unsigned int set_index, hb_codepoint_t glyph_id) const
+  തർക്കം covers (unsigned പൂർണ്ണസംഖ്യ set_index, hb_codepoint_t glyph_id) സ്ഥിരം
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.covers (set_index, glyph_id);
-    default:return false;
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 1: hb_barrier (); തിരികെ u.format1.covers (set_index, glyph_id);
+    സ്ഥിരസ്ഥിതി:തിരികെ അസത്യം;
     }
   }
 
   template <typename set_t>
-  void collect_coverage (hb_vector_t<set_t> &sets) const
+  ശൂന്യം collect_coverage (hb_vector_t<set_t> &sets) സ്ഥിരം
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); u.format1.collect_coverage (sets); return;
-    default:return;
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 1: hb_barrier (); u.format1.collect_coverage (sets); തിരികെ;
+    സ്ഥിരസ്ഥിതി:തിരികെ;
     }
   }
 
-  void collect_used_mark_sets (const hb_set_t& glyph_set,
-                               hb_set_t& used_mark_sets /* OUT */) const
+  ശൂന്യം collect_used_mark_sets (സ്ഥിരം hb_set_t& glyph_set,
+                               hb_set_t& used_mark_sets /* OUT */) സ്ഥിരം
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); u.format1.collect_used_mark_sets (glyph_set, used_mark_sets); return;
-    default:return;
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 1: hb_barrier (); u.format1.collect_used_mark_sets (glyph_set, used_mark_sets); തിരികെ;
+    സ്ഥിരസ്ഥിതി:തിരികെ;
     }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  തർക്കം subset (hb_subset_context_t *c) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.subset (c));
-    default:return_trace (false);
+    TRACE_SUBSET (ഇത്);
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 1: hb_barrier (); return_trace (u.format1.subset (c));
+    സ്ഥിരസ്ഥിതി:return_trace (അസത്യം);
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (ഇത്);
+    എങ്കിൽ (!u.format.v.sanitize (c)) return_trace (അസത്യം);
     hb_barrier ();
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c));
-    default:return_trace (true);
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 1: hb_barrier (); return_trace (u.format1.sanitize (c));
+    സ്ഥിരസ്ഥിതി:return_trace (സത്യം);
     }
   }
 
-  protected:
-  union {
-  struct { HBUINT16 v; }	format;		/* Format identifier */
+  സംരക്ഷിത:
+  സംഘം {
+  ഘടന { HBUINT16 v; }	format;		/* Format identifier */
   MarkGlyphSetsFormat1	format1;
   } u;
-  public:
+  പൊതു:
   DEFINE_SIZE_UNION (2, format.v);
 };
 
@@ -591,11 +591,11 @@ struct MarkGlyphSets
  */
 
 
-struct GDEF
+ഘടന GDEF
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_GDEF;
+  സ്ഥിതം constexpr hb_tag_t tableTag = HB_OT_TAG_GDEF;
 
-  enum GlyphClasses {
+  എണ്ണൽ GlyphClasses {
     UnclassifiedGlyph	= 0,
     BaseGlyph		= 1,
     LigatureGlyph	= 2,
@@ -603,45 +603,45 @@ struct GDEF
     ComponentGlyph	= 4
   };
 
-  size_t get_size () const
+  size_t get_size () സ്ഥിരം
   {
-    if (version.major != 1) return version.static_size;
+    എങ്കിൽ (version.major != 1) തിരികെ version.static_size;
 
-    return min_size +
+    തിരികെ min_size +
 	   (version.to_int () >= 0x00010002u ? markGlyphSetsDef.static_size : 0) +
 	   (version.to_int () >= 0x00010003u ? varStore.static_size : 0) +
 #ifndef HB_NO_BEYOND_64K
 	   (version.to_int () >= 0x00010004u ? 5 * Offset32::static_size : 0)
-#else
+#അല്ലെങ്കിൽ
 	   0
 #endif
 	   ;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!version.sanitize (c) ||
+    TRACE_SANITIZE (ഇത്);
+    എങ്കിൽ (unlikely (!version.sanitize (c) ||
 		  version.major != 1 ||
-		  !c->check_range (this, get_size ())))
-      return_trace (false);
+		  !c->check_range (ഇത്, get_size ())))
+      return_trace (അസത്യം);
     hb_barrier ();
 
-    bool glyph_class_def_ok = glyphClassDef.sanitize (c, this);
-    bool attach_list_ok = attachList.sanitize (c, this);
-    bool lig_caret_list_ok = ligCaretList.sanitize (c, this);
-    bool mark_attach_class_def_ok = markAttachClassDef.sanitize (c, this);
-    bool mark_glyph_sets_def_ok = version.to_int () < 0x00010002u ||
-				  markGlyphSetsDef.sanitize (c, this);
+    തർക്കം glyph_class_def_ok = glyphClassDef.sanitize (c, ഇത്);
+    തർക്കം attach_list_ok = attachList.sanitize (c, ഇത്);
+    തർക്കം lig_caret_list_ok = ligCaretList.sanitize (c, ഇത്);
+    തർക്കം mark_attach_class_def_ok = markAttachClassDef.sanitize (c, ഇത്);
+    തർക്കം mark_glyph_sets_def_ok = version.to_int () < 0x00010002u ||
+				  markGlyphSetsDef.sanitize (c, ഇത്);
 
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u)
+    എങ്കിൽ (version.to_int () >= 0x00010004u)
     {
-      if (glyphClassDef2) glyph_class_def_ok = glyphClassDef2.sanitize (c, this);
-      if (attachList2) attach_list_ok = attachList2.sanitize (c, this);
-      if (ligCaretList2) lig_caret_list_ok = ligCaretList2.sanitize (c, this);
-      if (markAttachClassDef2) mark_attach_class_def_ok = markAttachClassDef2.sanitize (c, this);
-      if (markGlyphSetsDef2) mark_glyph_sets_def_ok = markGlyphSetsDef2.sanitize (c, this);
+      എങ്കിൽ (glyphClassDef2) glyph_class_def_ok = glyphClassDef2.sanitize (c, ഇത്);
+      എങ്കിൽ (attachList2) attach_list_ok = attachList2.sanitize (c, ഇത്);
+      എങ്കിൽ (ligCaretList2) lig_caret_list_ok = ligCaretList2.sanitize (c, ഇത്);
+      എങ്കിൽ (markAttachClassDef2) mark_attach_class_def_ok = markAttachClassDef2.sanitize (c, ഇത്);
+      എങ്കിൽ (markGlyphSetsDef2) mark_glyph_sets_def_ok = markGlyphSetsDef2.sanitize (c, ഇത്);
     }
 #endif
 
@@ -650,56 +650,56 @@ struct GDEF
 		  lig_caret_list_ok &&
 		  mark_attach_class_def_ok &&
 		  mark_glyph_sets_def_ok &&
-		  (version.to_int () < 0x00010003u || varStore.sanitize (c, this)));
+		  (version.to_int () < 0x00010003u || varStore.sanitize (c, ഇത്)));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  തർക്കം subset (hb_subset_context_t *c) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    if (version.major != 1) return_trace (false);
+    TRACE_SUBSET (ഇത്);
+    എങ്കിൽ (version.major != 1) return_trace (അസത്യം);
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (*ഇത്);
+    എങ്കിൽ (unlikely (!c->serializer->extend_min (out))) return_trace (അസത്യം);
 
     // Push var store first (if it's needed) so that it's last in the
     // serialization order. Some font consumers assume that varstore runs to
     // the end of the GDEF table.
     // See: https://github.com/harfbuzz/harfbuzz/issues/4636
     auto snapshot_version0 = c->serializer->snapshot ();
-    if (unlikely (version.to_int () >= 0x00010002u && hb_barrier () &&
+    എങ്കിൽ (unlikely (version.to_int () >= 0x00010002u && hb_barrier () &&
 		  !c->serializer->embed (markGlyphSetsDef)))
-      return_trace (false);
+      return_trace (അസത്യം);
 
     auto snapshot_version2 = c->serializer->snapshot ();
-    if (unlikely (version.to_int () >= 0x00010003u && hb_barrier () &&
+    എങ്കിൽ (unlikely (version.to_int () >= 0x00010003u && hb_barrier () &&
 		  !c->serializer->embed (varStore)))
-      return_trace (false);
+      return_trace (അസത്യം);
 
-    bool use_v14 = false;
+    തർക്കം use_v14 = അസത്യം;
 #ifndef HB_NO_BEYOND_64K
     use_v14 = version.to_int () >= 0x00010004u &&
 	      (glyphClassDef2 || attachList2 || ligCaretList2 ||
 	       markAttachClassDef2 || markGlyphSetsDef2);
-    if (unlikely (version.to_int () >= 0x00010004u && hb_barrier () &&
+    എങ്കിൽ (unlikely (version.to_int () >= 0x00010004u && hb_barrier () &&
 		  !c->serializer->extend_size (out, get_size ())))
-      return_trace (false);
+      return_trace (അസത്യം);
 #endif
 
-    bool subset_varstore = false;
+    തർക്കം subset_varstore = അസത്യം;
     unsigned varstore_index = (unsigned) -1;
-    if (version.to_int () >= 0x00010003u && hb_barrier ())
+    എങ്കിൽ (version.to_int () >= 0x00010003u && hb_barrier ())
     {
-      if (c->plan->all_axes_pinned)
+      എങ്കിൽ (c->plan->all_axes_pinned)
 	out->varStore = 0;
-      else if (c->plan->normalized_coords)
+      അല്ലെങ്കിൽ എങ്കിൽ (c->plan->normalized_coords)
       {
-	if (varStore)
+	എങ്കിൽ (varStore)
 	{
 	  item_variations_t item_vars;
-	  if (unlikely (!c->serializer->check_success (
-                  item_vars.instantiate (this+varStore, c->plan, true, true,
-                                          c->plan->gdef_varstore_inner_maps.as_array (), true))))
-            return_trace (false);
+	  എങ്കിൽ (unlikely (!c->serializer->check_success (
+                  item_vars.instantiate (ഇത്+varStore, c->plan, സത്യം, സത്യം,
+                                          c->plan->gdef_varstore_inner_maps.as_array (), സത്യം))))
+            return_trace (അസത്യം);
 	  subset_varstore = out->varStore.serialize_serialize (c->serializer,
 							     item_vars.has_long_word (),
 							     c->plan->axis_tags,
@@ -709,12 +709,12 @@ struct GDEF
 	  remap_varidx_after_instantiation (item_vars.get_varidx_map (),
 					    c->plan->layout_variation_idx_delta_map);
           remap_varidx_after_instantiation (item_vars.get_varidx_map (),
-                                            c->plan->layout_condition_idx_value_map);
+                                            c->plan->layout_condition_idx_മൂല്യം_map);
 	}
       }
-      else
+      അല്ലെങ്കിൽ
       {
-	subset_varstore = out->varStore.serialize_subset (c, varStore, this,
+	subset_varstore = out->varStore.serialize_subset (c, varStore, ഇത്,
 							  c->plan->gdef_varstore_inner_maps.as_array ());
 	varstore_index = c->serializer->last_added_child_index();
       }
@@ -723,115 +723,115 @@ struct GDEF
     out->version.major = version.major;
     out->version.minor = version.minor;
 
-    if (!subset_varstore && version.to_int () >= 0x00010002u && !use_v14) {
+    എങ്കിൽ (!subset_varstore && version.to_int () >= 0x00010002u && !use_v14) {
       c->serializer->revert (snapshot_version2);
     }
-    if (!subset_varstore)
+    എങ്കിൽ (!subset_varstore)
       out->varStore = 0;
-    else
-      c->plan->has_gdef_varstore = true;
+    അല്ലെങ്കിൽ
+      c->plan->has_gdef_varstore = സത്യം;
 
-    bool subset_markglyphsetsdef = false;
-    if (version.to_int () >= 0x00010002u && hb_barrier ())
+    തർക്കം subset_markglyphsetsdef = അസത്യം;
+    എങ്കിൽ (version.to_int () >= 0x00010002u && hb_barrier ())
     {
 #ifndef HB_NO_BEYOND_64K
-      if (use_v14 && markGlyphSetsDef2)
+      എങ്കിൽ (use_v14 && markGlyphSetsDef2)
       {
 	out->markGlyphSetsDef = 0;
 	subset_markglyphsetsdef = serialize_subset_offset (c, out->markGlyphSetsDef2,
-							   markGlyphSetsDef2, this);
+							   markGlyphSetsDef2, ഇത്);
       }
-      else
+      അല്ലെങ്കിൽ
 #endif
       {
 #ifndef HB_NO_BEYOND_64K
-	if (use_v14) out->markGlyphSetsDef2 = 0;
+	എങ്കിൽ (use_v14) out->markGlyphSetsDef2 = 0;
 #endif
-	subset_markglyphsetsdef = out->markGlyphSetsDef.serialize_subset (c, markGlyphSetsDef, this);
+	subset_markglyphsetsdef = out->markGlyphSetsDef.serialize_subset (c, markGlyphSetsDef, ഇത്);
       }
     }
 
-    if (use_v14)
+    എങ്കിൽ (use_v14)
     {
       out->version.minor = 4;
-    } else if (subset_varstore) {
+    } അല്ലെങ്കിൽ എങ്കിൽ (subset_varstore) {
       out->version.minor = 3;
-    } else if (subset_markglyphsetsdef) {
+    } അല്ലെങ്കിൽ എങ്കിൽ (subset_markglyphsetsdef) {
       out->version.minor = 2;
-    } else  {
+    } അല്ലെങ്കിൽ  {
       out->version.minor = 0;
       c->serializer->revert (snapshot_version0);
     }
 
-    bool subset_glyphclassdef = false;
-    bool subset_attachlist = false;
-    bool subset_markattachclassdef = false;
-    bool subset_ligcaretlist = false;
+    തർക്കം subset_glyphclassdef = അസത്യം;
+    തർക്കം subset_attachlist = അസത്യം;
+    തർക്കം subset_markattachclassdef = അസത്യം;
+    തർക്കം subset_ligcaretlist = അസത്യം;
 
 #ifndef HB_NO_BEYOND_64K
-    if (use_v14 && glyphClassDef2)
+    എങ്കിൽ (use_v14 && glyphClassDef2)
     {
       out->glyphClassDef = 0;
       subset_glyphclassdef = serialize_subset_offset (c, out->glyphClassDef2,
-						      glyphClassDef2, this, nullptr, false, true);
+						      glyphClassDef2, ഇത്, nullptr, അസത്യം, സത്യം);
     }
-    else
+    അല്ലെങ്കിൽ
 #endif
     {
 #ifndef HB_NO_BEYOND_64K
-      if (use_v14) out->glyphClassDef2 = 0;
+      എങ്കിൽ (use_v14) out->glyphClassDef2 = 0;
 #endif
-      subset_glyphclassdef = out->glyphClassDef.serialize_subset (c, glyphClassDef, this, nullptr, false, true);
+      subset_glyphclassdef = out->glyphClassDef.serialize_subset (c, glyphClassDef, ഇത്, nullptr, അസത്യം, സത്യം);
     }
 
 #ifndef HB_NO_BEYOND_64K
-    if (use_v14 && attachList2)
+    എങ്കിൽ (use_v14 && attachList2)
     {
       out->attachList = 0;
-      subset_attachlist = serialize_subset_offset (c, out->attachList2, attachList2, this);
+      subset_attachlist = serialize_subset_offset (c, out->attachList2, attachList2, ഇത്);
     }
-    else
+    അല്ലെങ്കിൽ
 #endif
     {
 #ifndef HB_NO_BEYOND_64K
-      if (use_v14) out->attachList2 = 0;
+      എങ്കിൽ (use_v14) out->attachList2 = 0;
 #endif
-      subset_attachlist = out->attachList.serialize_subset (c, attachList, this);
+      subset_attachlist = out->attachList.serialize_subset (c, attachList, ഇത്);
     }
 
 #ifndef HB_NO_BEYOND_64K
-    if (use_v14 && markAttachClassDef2)
+    എങ്കിൽ (use_v14 && markAttachClassDef2)
     {
       out->markAttachClassDef = 0;
       subset_markattachclassdef = serialize_subset_offset (c, out->markAttachClassDef2,
-							   markAttachClassDef2, this, nullptr, false, true);
+							   markAttachClassDef2, ഇത്, nullptr, അസത്യം, സത്യം);
     }
-    else
+    അല്ലെങ്കിൽ
 #endif
     {
 #ifndef HB_NO_BEYOND_64K
-      if (use_v14) out->markAttachClassDef2 = 0;
+      എങ്കിൽ (use_v14) out->markAttachClassDef2 = 0;
 #endif
       subset_markattachclassdef = out->markAttachClassDef.serialize_subset (c, markAttachClassDef,
-									   this, nullptr, false, true);
+									   ഇത്, nullptr, അസത്യം, സത്യം);
     }
 
 #ifndef HB_NO_BEYOND_64K
-    if (use_v14 && ligCaretList2)
+    എങ്കിൽ (use_v14 && ligCaretList2)
     {
       out->ligCaretList = 0;
-      subset_ligcaretlist = serialize_subset_offset (c, out->ligCaretList2, ligCaretList2, this);
+      subset_ligcaretlist = serialize_subset_offset (c, out->ligCaretList2, ligCaretList2, ഇത്);
     }
-    else
+    അല്ലെങ്കിൽ
 #endif
     {
 #ifndef HB_NO_BEYOND_64K
-      if (use_v14) out->ligCaretList2 = 0;
+      എങ്കിൽ (use_v14) out->ligCaretList2 = 0;
 #endif
-      subset_ligcaretlist = out->ligCaretList.serialize_subset (c, ligCaretList, this);
+      subset_ligcaretlist = out->ligCaretList.serialize_subset (c, ligCaretList, ഇത്);
     }
 
-    if (subset_varstore && varstore_index != (unsigned) -1) {
+    എങ്കിൽ (subset_varstore && varstore_index != (unsigned) -1) {
       c->serializer->repack_last(varstore_index);
     }
 
@@ -841,145 +841,145 @@ struct GDEF
 		  (out->version.to_int () >= 0x00010003u && subset_varstore));
   }
 
-  bool has_glyph_classes () const
+  തർക്കം has_glyph_classes () സ്ഥിരം
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && glyphClassDef2) return true;
+    എങ്കിൽ (version.to_int () >= 0x00010004u && glyphClassDef2) തിരികെ സത്യം;
 #endif
-    return glyphClassDef != 0;
+    തിരികെ glyphClassDef != 0;
   }
-  const ClassDef &get_glyph_class_def () const
+  സ്ഥിരം ClassDef &get_glyph_class_def () സ്ഥിരം
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && glyphClassDef2) return this+glyphClassDef2;
+    എങ്കിൽ (version.to_int () >= 0x00010004u && glyphClassDef2) തിരികെ ഇത്+glyphClassDef2;
 #endif
-    return this+glyphClassDef;
+    തിരികെ ഇത്+glyphClassDef;
   }
-  bool has_attach_list () const
+  തർക്കം has_attach_list () സ്ഥിരം
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && attachList2) return true;
+    എങ്കിൽ (version.to_int () >= 0x00010004u && attachList2) തിരികെ സത്യം;
 #endif
-    return attachList != 0;
+    തിരികെ attachList != 0;
   }
-  const AttachList &get_attach_list () const
+  സ്ഥിരം AttachList &get_attach_list () സ്ഥിരം
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && attachList2) return this+attachList2;
+    എങ്കിൽ (version.to_int () >= 0x00010004u && attachList2) തിരികെ ഇത്+attachList2;
 #endif
-    return this+attachList;
+    തിരികെ ഇത്+attachList;
   }
-  bool has_lig_carets () const
+  തർക്കം has_lig_carets () സ്ഥിരം
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && ligCaretList2) return true;
+    എങ്കിൽ (version.to_int () >= 0x00010004u && ligCaretList2) തിരികെ സത്യം;
 #endif
-    return ligCaretList != 0;
+    തിരികെ ligCaretList != 0;
   }
-  bool has_mark_attachment_types () const
+  തർക്കം has_mark_attachment_types () സ്ഥിരം
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && markAttachClassDef2) return true;
+    എങ്കിൽ (version.to_int () >= 0x00010004u && markAttachClassDef2) തിരികെ സത്യം;
 #endif
-    return markAttachClassDef != 0;
+    തിരികെ markAttachClassDef != 0;
   }
-  const ClassDef &get_mark_attach_class_def () const
+  സ്ഥിരം ClassDef &get_mark_attach_class_def () സ്ഥിരം
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && markAttachClassDef2) return this+markAttachClassDef2;
+    എങ്കിൽ (version.to_int () >= 0x00010004u && markAttachClassDef2) തിരികെ ഇത്+markAttachClassDef2;
 #endif
-    return this+markAttachClassDef;
+    തിരികെ ഇത്+markAttachClassDef;
   }
-  bool has_mark_glyph_sets () const
+  തർക്കം has_mark_glyph_sets () സ്ഥിരം
   {
-    if (version.to_int () < 0x00010002u) return false;
+    എങ്കിൽ (version.to_int () < 0x00010002u) തിരികെ അസത്യം;
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && markGlyphSetsDef2) return true;
+    എങ്കിൽ (version.to_int () >= 0x00010004u && markGlyphSetsDef2) തിരികെ സത്യം;
 #endif
-    return markGlyphSetsDef != 0;
+    തിരികെ markGlyphSetsDef != 0;
   }
-  const MarkGlyphSets &get_mark_glyph_sets () const
+  സ്ഥിരം MarkGlyphSets &get_mark_glyph_sets () സ്ഥിരം
   {
-    if (version.to_int () < 0x00010002u) return Null(MarkGlyphSets);
+    എങ്കിൽ (version.to_int () < 0x00010002u) തിരികെ Null(MarkGlyphSets);
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && markGlyphSetsDef2) return this+markGlyphSetsDef2;
+    എങ്കിൽ (version.to_int () >= 0x00010004u && markGlyphSetsDef2) തിരികെ ഇത്+markGlyphSetsDef2;
 #endif
-    return this+markGlyphSetsDef;
+    തിരികെ ഇത്+markGlyphSetsDef;
   }
-  bool has_var_store () const
+  തർക്കം has_var_store () സ്ഥിരം
   {
-    return version.to_int () >= 0x00010003u && hb_barrier () && varStore != 0;
+    തിരികെ version.to_int () >= 0x00010003u && hb_barrier () && varStore != 0;
   }
-  const ItemVariationStore &get_var_store () const
+  സ്ഥിരം ItemVariationStore &get_var_store () സ്ഥിരം
   {
-    return version.to_int () >= 0x00010003u && hb_barrier () ? this+varStore : Null(ItemVariationStore);
+    തിരികെ version.to_int () >= 0x00010003u && hb_barrier () ? ഇത്+varStore : Null(ItemVariationStore);
   }
 
 
-  bool has_data () const { return version.to_int (); }
-  unsigned int get_glyph_class (hb_codepoint_t glyph) const
-  { return get_glyph_class_def ().get_class (glyph); }
-  void get_glyphs_in_class (unsigned int klass, hb_set_t *glyphs) const
+  തർക്കം has_data () സ്ഥിരം { തിരികെ version.to_int (); }
+  unsigned പൂർണ്ണസംഖ്യ get_glyph_class (hb_codepoint_t glyph) സ്ഥിരം
+  { തിരികെ get_glyph_class_def ().get_class (glyph); }
+  ശൂന്യം get_glyphs_in_class (unsigned പൂർണ്ണസംഖ്യ klass, hb_set_t *glyphs) സ്ഥിരം
   { get_glyph_class_def ().collect_class (glyphs, klass); }
 
-  unsigned int get_mark_attachment_type (hb_codepoint_t glyph) const
-  { return get_mark_attach_class_def ().get_class (glyph); }
+  unsigned പൂർണ്ണസംഖ്യ get_mark_attachment_type (hb_codepoint_t glyph) സ്ഥിരം
+  { തിരികെ get_mark_attach_class_def ().get_class (glyph); }
 
-  unsigned int get_attach_points (hb_codepoint_t glyph_id,
-				  unsigned int start_offset,
-				  unsigned int *point_count /* IN/OUT */,
-				  unsigned int *point_array /* OUT */) const
-  { return get_attach_list ().get_attach_points (glyph_id, start_offset, point_count, point_array); }
+  unsigned പൂർണ്ണസംഖ്യ get_attach_points (hb_codepoint_t glyph_id,
+				  unsigned പൂർണ്ണസംഖ്യ start_offset,
+				  unsigned പൂർണ്ണസംഖ്യ *point_എണ്ണം /* IN/OUT */,
+				  unsigned പൂർണ്ണസംഖ്യ *point_array /* OUT */) സ്ഥിരം
+  { തിരികെ get_attach_list ().get_attach_points (glyph_id, start_offset, point_എണ്ണം, point_array); }
 
-  unsigned int get_lig_carets (hb_font_t *font,
+  unsigned പൂർണ്ണസംഖ്യ get_lig_carets (hb_font_t *font,
 			       hb_direction_t direction,
 			       hb_codepoint_t glyph_id,
-			       unsigned int start_offset,
-			       unsigned int *caret_count /* IN/OUT */,
-			       hb_position_t *caret_array /* OUT */) const
+			       unsigned പൂർണ്ണസംഖ്യ start_offset,
+			       unsigned പൂർണ്ണസംഖ്യ *caret_എണ്ണം /* IN/OUT */,
+			       hb_position_t *caret_array /* OUT */) സ്ഥിരം
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && ligCaretList2)
-      return (this+ligCaretList2).get_lig_carets (font, direction, glyph_id, get_var_store (),
-						  start_offset, caret_count, caret_array);
+    എങ്കിൽ (version.to_int () >= 0x00010004u && ligCaretList2)
+      തിരികെ (ഇത്+ligCaretList2).get_lig_carets (font, direction, glyph_id, get_var_store (),
+						  start_offset, caret_എണ്ണം, caret_array);
 #endif
-    return (this+ligCaretList).get_lig_carets (font, direction, glyph_id, get_var_store (),
-					       start_offset, caret_count, caret_array);
+    തിരികെ (ഇത്+ligCaretList).get_lig_carets (font, direction, glyph_id, get_var_store (),
+					       start_offset, caret_എണ്ണം, caret_array);
   }
 
-  bool mark_set_covers (unsigned int set_index, hb_codepoint_t glyph_id) const
-  { return get_mark_glyph_sets ().covers (set_index, glyph_id); }
+  തർക്കം mark_set_covers (unsigned പൂർണ്ണസംഖ്യ set_index, hb_codepoint_t glyph_id) സ്ഥിരം
+  { തിരികെ get_mark_glyph_sets ().covers (set_index, glyph_id); }
 
   /* glyph_props is a 16-bit integer where the lower 8-bit have bits representing
    * glyph class and other bits, and high 8-bit the mark attachment type (if any).
    * Not to be confused with lookup_props which is very similar. */
-  unsigned int get_glyph_props (hb_codepoint_t glyph) const
+  unsigned പൂർണ്ണസംഖ്യ get_glyph_props (hb_codepoint_t glyph) സ്ഥിരം
   {
-    unsigned int klass = get_glyph_class (glyph);
+    unsigned പൂർണ്ണസംഖ്യ klass = get_glyph_class (glyph);
 
-    static_assert (((unsigned int) HB_OT_LAYOUT_GLYPH_PROPS_BASE_GLYPH == (unsigned int) LookupFlag::IgnoreBaseGlyphs), "");
-    static_assert (((unsigned int) HB_OT_LAYOUT_GLYPH_PROPS_LIGATURE == (unsigned int) LookupFlag::IgnoreLigatures), "");
-    static_assert (((unsigned int) HB_OT_LAYOUT_GLYPH_PROPS_MARK == (unsigned int) LookupFlag::IgnoreMarks), "");
+    static_assert (((unsigned പൂർണ്ണസംഖ്യ) HB_OT_LAYOUT_GLYPH_PROPS_BASE_GLYPH == (unsigned പൂർണ്ണസംഖ്യ) LookupFlag::IgnoreBaseGlyphs), "");
+    static_assert (((unsigned പൂർണ്ണസംഖ്യ) HB_OT_LAYOUT_GLYPH_PROPS_LIGATURE == (unsigned പൂർണ്ണസംഖ്യ) LookupFlag::IgnoreLigatures), "");
+    static_assert (((unsigned പൂർണ്ണസംഖ്യ) HB_OT_LAYOUT_GLYPH_PROPS_MARK == (unsigned പൂർണ്ണസംഖ്യ) LookupFlag::IgnoreMarks), "");
 
-    switch (klass) {
-    default:			return HB_OT_LAYOUT_GLYPH_CLASS_UNCLASSIFIED;
-    case BaseGlyph:		return HB_OT_LAYOUT_GLYPH_PROPS_BASE_GLYPH;
-    case LigatureGlyph:		return HB_OT_LAYOUT_GLYPH_PROPS_LIGATURE;
-    case MarkGlyph:
+    തിരഞ്ഞെടുപ്പ് (klass) {
+    സ്ഥിരസ്ഥിതി:			തിരികെ HB_OT_LAYOUT_GLYPH_CLASS_UNCLASSIFIED;
+    അവസ്ഥ BaseGlyph:		തിരികെ HB_OT_LAYOUT_GLYPH_PROPS_BASE_GLYPH;
+    അവസ്ഥ LigatureGlyph:		തിരികെ HB_OT_LAYOUT_GLYPH_PROPS_LIGATURE;
+    അവസ്ഥ MarkGlyph:
 	  klass = get_mark_attachment_type (glyph);
-	  return HB_OT_LAYOUT_GLYPH_PROPS_MARK | (klass << 8);
+	  തിരികെ HB_OT_LAYOUT_GLYPH_PROPS_MARK | (klass << 8);
     }
   }
 
-  HB_INTERNAL bool is_blocklisted (hb_blob_t *blob,
-				   hb_face_t *face) const;
+  HB_INTERNAL തർക്കം is_blocklisted (hb_blob_t *blob,
+				   hb_face_t *face) സ്ഥിരം;
 
-  struct accelerator_t
+  ഘടന accelerator_t
   {
     accelerator_t (hb_face_t *face)
     {
       table = hb_sanitize_context_t ().reference_table<GDEF> (face);
-      if (unlikely (table->is_blocklisted (table.get_blob (), face)))
+      എങ്കിൽ (unlikely (table->is_blocklisted (table.get_blob (), face)))
       {
 	hb_blob_destroy (table.get_blob ());
 	table = hb_blob_get_empty ();
@@ -993,29 +993,29 @@ struct GDEF
       {
 	hb_vector_t<hb_set_t> sets;
 	table->get_mark_glyph_sets ().collect_coverage (sets);
-	if (!sets.in_error () &&
+	എങ്കിൽ (!sets.in_error () &&
 	    mark_glyph_set_bitmaps.resize (sets.length))
-	  for (unsigned i = 0; i < sets.length; i++)
+	  വേണ്ടി (unsigned i = 0; i < sets.length; i++)
 	  {
 	    auto &bitmap = mark_glyph_set_bitmaps.arrayZ[i];
-	    bitmap.bias = HB_SET_VALUE_INVALID;
-	    const auto &set = sets.arrayZ[i];
-	    if (unlikely (set.in_error ())) continue;
-	    hb_codepoint_t min_gid = HB_SET_VALUE_INVALID;
-	    hb_codepoint_t max_gid = HB_SET_VALUE_INVALID;
+	    bitmap.bias = HB_SET_മൂല്യം_INVALID;
+	    സ്ഥിരം auto &set = sets.arrayZ[i];
+	    എങ്കിൽ (unlikely (set.in_error ())) തുടരുക;
+	    hb_codepoint_t min_gid = HB_SET_മൂല്യം_INVALID;
+	    hb_codepoint_t max_gid = HB_SET_മൂല്യം_INVALID;
 	    hb_set_next (&set, &min_gid);
 	    hb_set_previous (&set, &max_gid);
-	    if (max_gid == HB_SET_VALUE_INVALID)
-	      continue;
-	    if (max_gid - min_gid >= hb_bit_page_t::PAGE_BITS)
+	    എങ്കിൽ (max_gid == HB_SET_മൂല്യം_INVALID)
+	      തുടരുക;
+	    എങ്കിൽ (max_gid - min_gid >= hb_bit_page_t::PAGE_BITS)
 	    {
 	      /* Too wide for one page; a digest pre-filter instead. */
-	      for (hb_codepoint_t gid : set)
+	      വേണ്ടി (hb_codepoint_t gid : set)
 		bitmap.u.digest.add (gid);
-	      continue;
+	      തുടരുക;
 	    }
 	    bitmap.bias = min_gid;
-	    for (hb_codepoint_t gid : set)
+	    വേണ്ടി (hb_codepoint_t gid : set)
 	      bitmap.u.page.add (gid - min_gid);
 	  }
       }
@@ -1023,77 +1023,77 @@ struct GDEF
     }
     ~accelerator_t () { table.destroy (); }
 
-    unsigned int get_glyph_props (hb_codepoint_t glyph) const
+    unsigned പൂർണ്ണസംഖ്യ get_glyph_props (hb_codepoint_t glyph) സ്ഥിരം
     {
       unsigned v;
 
 #ifndef HB_NO_GDEF_CACHE
-      if (glyph_props_cache.get (glyph, &v))
-        return v;
+      എങ്കിൽ (glyph_props_cache.get (glyph, &v))
+        തിരികെ v;
 #endif
 
       v = table->get_glyph_props (glyph);
 
 #ifndef HB_NO_GDEF_CACHE
-      if (likely (table.get_blob ())) // Don't try setting if we are the null instance!
+      എങ്കിൽ (likely (table.get_blob ())) // Don't try setting if we are the null instance!
 	glyph_props_cache.set (glyph, v);
 #endif
 
-      return v;
+      തിരികെ v;
 
     }
 
     HB_ALWAYS_INLINE
-    bool mark_set_covers (unsigned int set_index, hb_codepoint_t glyph_id) const
+    തർക്കം mark_set_covers (unsigned പൂർണ്ണസംഖ്യ set_index, hb_codepoint_t glyph_id) സ്ഥിരം
     {
 #ifndef HB_NO_GDEF_CACHE
       // We can access arrayZ directly because of sanitize_lookup_props() guarantee.
-      const auto &bitmap = mark_glyph_set_bitmaps.arrayZ[set_index];
-      if (likely (bitmap.bias != HB_SET_VALUE_INVALID))
+      സ്ഥിരം auto &bitmap = mark_glyph_set_bitmaps.arrayZ[set_index];
+      എങ്കിൽ (likely (bitmap.bias != HB_SET_മൂല്യം_INVALID))
       {
 	hb_codepoint_t biased = glyph_id - bitmap.bias;
-	return biased < hb_bit_page_t::PAGE_BITS &&
+	തിരികെ biased < hb_bit_page_t::PAGE_BITS &&
 	       bitmap.u.page.get (biased);
       }
-      return mark_set_covers_slow (set_index, glyph_id);
-#else
-      return table->mark_set_covers (set_index, glyph_id);
+      തിരികെ mark_set_covers_slow (set_index, glyph_id);
+#അല്ലെങ്കിൽ
+      തിരികെ table->mark_set_covers (set_index, glyph_id);
 #endif
     }
 
 #ifndef HB_NO_GDEF_CACHE
     HB_NEVER_INLINE
-    bool mark_set_covers_slow (unsigned int set_index, hb_codepoint_t glyph_id) const
+    തർക്കം mark_set_covers_slow (unsigned പൂർണ്ണസംഖ്യ set_index, hb_codepoint_t glyph_id) സ്ഥിരം
     {
-      const auto &bitmap = mark_glyph_set_bitmaps.arrayZ[set_index];
-      if (!bitmap.u.digest.may_have (glyph_id))
-	return false;
-      return table->mark_set_covers (set_index, glyph_id);
+      സ്ഥിരം auto &bitmap = mark_glyph_set_bitmaps.arrayZ[set_index];
+      എങ്കിൽ (!bitmap.u.digest.may_have (glyph_id))
+	തിരികെ അസത്യം;
+      തിരികെ table->mark_set_covers (set_index, glyph_id);
     }
 #endif
 
-    unsigned sanitize_lookup_props (unsigned lookup_props) const
+    unsigned sanitize_lookup_props (unsigned lookup_props) സ്ഥിരം
     {
 #ifndef HB_NO_GDEF_CACHE
-      if (lookup_props & LookupFlag::UseMarkFilteringSet &&
+      എങ്കിൽ (lookup_props & LookupFlag::UseMarkFilteringSet &&
 	  (lookup_props >> 16) >= mark_glyph_set_bitmaps.length)
       {
         // Invalid mark filtering set index; unset the flag.
 	lookup_props &= ~LookupFlag::UseMarkFilteringSet;
       }
 #endif
-      return lookup_props;
+      തിരികെ lookup_props;
     }
 
     hb_blob_ptr_t<GDEF> table;
 #ifndef HB_NO_GDEF_CACHE
-    struct mark_glyph_set_bitmap_t
+    ഘടന mark_glyph_set_bitmap_t
     {
       /* Gid of the first bit (not page-aligned) for an exact one-page
        * set, or HB_SET_VALUE_INVALID; then digest is a pre-filter for
        * the table.  The all-zeros state is valid for both members. */
-      hb_codepoint_t bias = HB_SET_VALUE_INVALID;
-      union u_t {
+      hb_codepoint_t bias = HB_SET_മൂല്യം_INVALID;
+      സംഘം u_t {
 	u_t () : page () {}
 	hb_bit_page_t page;
 	hb_set_digest_t digest;
@@ -1102,60 +1102,60 @@ struct GDEF
 
     hb_vector_t<mark_glyph_set_bitmap_t> mark_glyph_set_bitmaps;
     mutable hb_cache_t<21, 3> glyph_props_cache;
-    static_assert (sizeof (glyph_props_cache) == 512, "");
+    static_assert (വലുപ്പം (glyph_props_cache) == 512, "");
 #endif
   };
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  ശൂന്യം collect_variation_indices (hb_collect_variation_indices_context_t *c) സ്ഥിരം
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && ligCaretList2)
+    എങ്കിൽ (version.to_int () >= 0x00010004u && ligCaretList2)
     {
-      (this+ligCaretList2).collect_variation_indices (c);
-      return;
+      (ഇത്+ligCaretList2).collect_variation_indices (c);
+      തിരികെ;
     }
 #endif
-    (this+ligCaretList).collect_variation_indices (c);
+    (ഇത്+ligCaretList).collect_variation_indices (c);
   }
 
-  protected:
-  template <typename Key>
-  static void remap_varidx_after_instantiation (const hb_map_t& varidx_map,
-                                                hb_hashmap_t<Key, hb_pair_t<unsigned, int>>& layout_variation_idx_delta_map /* IN/OUT */)
+  സംരക്ഷിത:
+  template <typename താക്കോൽ>
+  സ്ഥിതം ശൂന്യം remap_varidx_after_instantiation (സ്ഥിരം hb_map_t& varidx_map,
+                                                hb_hashmap_t<താക്കോൽ, hb_pair_t<unsigned, പൂർണ്ണസംഖ്യ>>& layout_variation_idx_delta_map /* IN/OUT */)
   {
     /* varidx_map is empty which means varstore is empty after instantiation,
      * no variations, map all varidx to HB_OT_LAYOUT_NO_VARIATIONS_INDEX.
      * varidx_map doesn't have original varidx, indicating delta row is all
      * zeros, map varidx to HB_OT_LAYOUT_NO_VARIATIONS_INDEX */
-    for (auto _ : layout_variation_idx_delta_map.iter_ref ())
+    വേണ്ടി (auto _ : layout_variation_idx_delta_map.iter_ref ())
     {
       /* old_varidx->(varidx, delta) mapping generated for subsetting, then this
        * varidx is used as key of varidx_map during instantiation */
       uint32_t varidx = _.second.first;
       uint32_t *new_varidx;
-      if (varidx_map.has (varidx, &new_varidx))
+      എങ്കിൽ (varidx_map.has (varidx, &new_varidx))
 	_.second.first = *new_varidx;
-      else
+      അല്ലെങ്കിൽ
 	_.second.first = HB_OT_LAYOUT_NO_VARIATIONS_INDEX;
     }
   }
 
   template <typename OffsetOut, typename OffsetIn, typename Base, typename ...Ts>
-  static bool serialize_subset_offset (hb_subset_context_t *c,
+  സ്ഥിതം തർക്കം serialize_subset_offset (hb_subset_context_t *c,
 				       OffsetOut& out,
-				       const OffsetIn& in,
-				       const Base *base,
+				       സ്ഥിരം OffsetIn& in,
+				       സ്ഥിരം Base *base,
 				       Ts&&... ds)
   {
     out = 0;
-    if (in.is_null ()) return false;
+    എങ്കിൽ (in.is_null ()) തിരികെ അസത്യം;
 
     auto *s = c->serializer;
     s->push ();
-    bool ret = c->dispatch (base+in, std::forward<Ts> (ds)...);
-    if (ret) s->add_link (out, s->pop_pack ());
-    else s->pop_discard ();
-    return ret;
+    തർക്കം ret = c->dispatch (base+in, std::forward<Ts> (ds)...);
+    എങ്കിൽ (ret) s->add_link (out, s->എടുക്കുക_pack ());
+    അല്ലെങ്കിൽ s->എടുക്കുക_discard ();
+    തിരികെ ret;
   }
 
   FixedVersion<>version;		/* Version of the GDEF table--currently
@@ -1207,11 +1207,11 @@ struct GDEF
 					 * set definitions.  Introduced in
 					 * version 0x00010004. */
 #endif
-  public:
+  പൊതു:
   DEFINE_SIZE_MIN (12);
 };
 
-struct GDEF_accelerator_t : GDEF::accelerator_t {
+ഘടന GDEF_accelerator_t : GDEF::accelerator_t {
   GDEF_accelerator_t (hb_face_t *face) : GDEF::accelerator_t (face) {}
 };
 

@@ -24,28 +24,28 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "../hb-set.hh"
-#include "../hb-priority-queue.hh"
-#include "../hb-serialize.hh"
-#include "graph-result.hh"
+#അന്തര്ഭാവ "../hb-set.hh"
+#അന്തര്ഭാവ "../hb-priority-queue.hh"
+#അന്തര്ഭാവ "../hb-serialize.hh"
+#അന്തര്ഭാവ "graph-result.hh"
 
 #ifndef GRAPH_GRAPH_HH
 #define GRAPH_GRAPH_HH
 
 #define HB_GRAPH_INVALID ((unsigned) -1)
 
-namespace graph {
+നാമാകാശ graph {
 
 /**
  * Represents a serialized table in the form of a graph.
  * Provides methods for modifying and reordering the graph.
  */
-struct graph_t
+ഘടന graph_t
 {
   // TODO(garretrieger): experiment with using scratch vector for visited sets instead of allocating
   // a new hb_set_t each time.
 
-  struct vertex_t
+  ഘടന vertex_t
   {
     // TODO(garretrieger): have vertex_t gaurantee that head/tail are non null and head < tail
     // so downstream users don't need to constantly check that.
@@ -63,170 +63,170 @@ struct graph_t
     unsigned end = 0;
     unsigned priority = 0;
 
-    private:
+    സ്വകാര്യ:
     hb_serialize_context_t::object_t obj_;
     unsigned incoming_edges_ = 0;
     unsigned single_parent = HB_GRAPH_INVALID;
-    bool has_incoming_virtual_edges_ = false;
+    തർക്കം has_incoming_virtual_edges_ = അസത്യം;
     hb_hashmap_t<unsigned, unsigned> parents;
     hb_set_t virtual_parents;
-    public:
+    പൊതു:
 
     vertex_t ()
     {}
 
-    explicit vertex_t(const hb_serialize_context_t::object_t& obj) : obj_(obj)
+    explicit vertex_t(സ്ഥിരം hb_serialize_context_t::object_t& obj) : obj_(obj)
     {}
 
-    auto parents_iter () const HB_AUTO_RETURN
+    auto parents_iter () സ്ഥിരം HB_AUTO_RETURN
     (
       hb_concat (
 	hb_iter (&single_parent, single_parent != HB_GRAPH_INVALID),
-	parents.keys_ref ()
+	parents.താക്കോലുകൾ_ref ()
       )
     )
 
-    void set_buffer (char* head, char* tail) {
+    ശൂന്യം set_buffer (അക്ഷരം* head, അക്ഷരം* tail) {
       obj_.head = head;
       obj_.tail = tail;
     }
 
-    void shrink_buffer (size_t count)
+    ശൂന്യം shrink_buffer (size_t എണ്ണം)
     {
-      obj_.tail -= count;
+      obj_.tail -= എണ്ണം;
     }
 
     auto all_links_writer () HB_AUTO_RETURN (( obj_.all_links_writer() ));
     auto real_links_writer () HB_AUTO_RETURN (( obj_.real_links.writer() ));
     auto virtual_links_writer () HB_AUTO_RETURN (( obj_.virtual_links.writer() ));
 
-    void sort_real_links () {
+    ശൂന്യം sort_real_links () {
       obj_.real_links.qsort ();
     }
 
-    graph_result_t<void> add_real_link (unsigned width, unsigned obj_idx, unsigned position) {
+    graph_result_t<ശൂന്യം> add_real_link (unsigned width, unsigned obj_idx, unsigned position) {
       auto* link = obj_.real_links.push ();
-      TRY (graph_result_t<void>::from (obj_.real_links, ALLOCATION_FAILURE));
+      TRY (graph_result_t<ശൂന്യം>::from (obj_.real_links, ALLOCATION_FAILURE));
       link->width = width;
       link->objidx = obj_idx;
       link->position = position;
-      return Ok();
+      തിരികെ Ok();
     }
 
-    graph_result_t<void> add_virtual_link (unsigned obj_idx) {
+    graph_result_t<ശൂന്യം> add_virtual_link (unsigned obj_idx) {
       auto* link = obj_.virtual_links.push ();
-      TRY (graph_result_t<void>::from (obj_.virtual_links, ALLOCATION_FAILURE));
+      TRY (graph_result_t<ശൂന്യം>::from (obj_.virtual_links, ALLOCATION_FAILURE));
       link->objidx = obj_idx;
-      return Ok();
+      തിരികെ Ok();
     }
 
-    graph_result_t<void> add_real_link (const hb_serialize_context_t::object_t::link_t& link)
+    graph_result_t<ശൂന്യം> add_real_link (സ്ഥിരം hb_serialize_context_t::object_t::link_t& link)
     {
       obj_.real_links.push (link);
-      return graph_result_t<void>::from (obj_.real_links, ALLOCATION_FAILURE);
+      തിരികെ graph_result_t<ശൂന്യം>::from (obj_.real_links, ALLOCATION_FAILURE);
     }
 
-    graph_result_t<void> set_real_links (hb_vector_t<hb_serialize_context_t::object_t::link_t>&& links)
+    graph_result_t<ശൂന്യം> set_real_links (hb_vector_t<hb_serialize_context_t::object_t::link_t>&& links)
     {
-      TRY(graph_result_t<void>::from (links, ALLOCATION_FAILURE));
+      TRY(graph_result_t<ശൂന്യം>::from (links, ALLOCATION_FAILURE));
       obj_.real_links = links;
-      return Ok();
+      തിരികെ Ok();
     }
 
-    void clear_real_links ()
+    ശൂന്യം clear_real_links ()
     {
       obj_.real_links.reset();
     }
 
-    void clear_virtual_links ()
+    ശൂന്യം clear_virtual_links ()
     {
       obj_.virtual_links.reset();
     }
 
-    graph_result_t<void> add_virtual_link (const hb_serialize_context_t::object_t::link_t& link)
+    graph_result_t<ശൂന്യം> add_virtual_link (സ്ഥിരം hb_serialize_context_t::object_t::link_t& link)
     {
       obj_.virtual_links.push (link);
-      return graph_result_t<void>::from (obj_.virtual_links, ALLOCATION_FAILURE);
+      തിരികെ graph_result_t<ശൂന്യം>::from (obj_.virtual_links, ALLOCATION_FAILURE);
     }
 
-    const hb_serialize_context_t::object_t& obj() const { return obj_; }
+    സ്ഥിരം hb_serialize_context_t::object_t& obj() സ്ഥിരം { തിരികെ obj_; }
 
     template<typename T>
-    T as () const
+    T as () സ്ഥിരം
     {
-      return reinterpret_cast<T> (obj_.head);
+      തിരികെ reinterpret_cast<T> (obj_.head);
     }
 
-    bool has_incoming_virtual_edges () const
+    തർക്കം has_incoming_virtual_edges () സ്ഥിരം
     {
-      return has_incoming_virtual_edges_;
+      തിരികെ has_incoming_virtual_edges_;
     }
 
-    graph_result_t<void> link_positions_valid (unsigned num_objects, bool removed_nil)
+    graph_result_t<ശൂന്യം> link_positions_valid (unsigned അക്കം_objects, തർക്കം removed_nil)
     {
       hb_set_t assigned_bytes;
-      for (const auto& l : obj_.real_links)
+      വേണ്ടി (സ്ഥിരം auto& l : obj_.real_links)
       {
-        if (unlikely (l.objidx >= num_objects
+        എങ്കിൽ (unlikely (l.objidx >= അക്കം_objects
             || (removed_nil && !l.objidx)))
         {
-          DEBUG_MSG (SUBSET_REPACK, nullptr,
+          DEBUG_സന്ദേശം (SUBSET_REPACK, nullptr,
                      "Invalid graph. Invalid object index.");
-          return Err(INVALID_ARGUMENT);
+          തിരികെ Err(INVALID_ARGUMENT);
         }
 
         unsigned start = l.position;
         unsigned end = start + l.width - 1;
 
-        if (unlikely (l.width < 2 || l.width > 4))
+        എങ്കിൽ (unlikely (l.width < 2 || l.width > 4))
         {
-          DEBUG_MSG (SUBSET_REPACK, nullptr,
+          DEBUG_സന്ദേശം (SUBSET_REPACK, nullptr,
                      "Invalid graph. Invalid link width.");
-          return Err(INVALID_ARGUMENT);
+          തിരികെ Err(INVALID_ARGUMENT);
         }
 
-        if (unlikely (end >= table_size ()))
+        എങ്കിൽ (unlikely (end >= table_size ()))
         {
-          DEBUG_MSG (SUBSET_REPACK, nullptr,
+          DEBUG_സന്ദേശം (SUBSET_REPACK, nullptr,
                      "Invalid graph. Link position is out of bounds.");
-          return Err(OUT_OF_BOUNDS);
+          തിരികെ Err(OUT_OF_BOUNDS);
         }
 
-        if (unlikely (assigned_bytes.intersects (start, end)))
+        എങ്കിൽ (unlikely (assigned_bytes.intersects (start, end)))
         {
-          DEBUG_MSG (SUBSET_REPACK, nullptr,
+          DEBUG_സന്ദേശം (SUBSET_REPACK, nullptr,
                      "Invalid graph. Found offsets whose positions overlap.");
-          return Err(INVALID_ARGUMENT);
+          തിരികെ Err(INVALID_ARGUMENT);
         }
 
         assigned_bytes.add_range (start, end);
       }
 
-      return graph_result_t<void>::from (assigned_bytes, ALLOCATION_FAILURE);
+      തിരികെ graph_result_t<ശൂന്യം>::from (assigned_bytes, ALLOCATION_FAILURE);
     }
 
-    void normalize ()
+    ശൂന്യം normalize ()
     {
       obj_.real_links.qsort ();
-      for (const auto& l : obj_.real_links)
+      വേണ്ടി (സ്ഥിരം auto& l : obj_.real_links)
       {
-        for (unsigned i = 0; i < l.width; i++)
+        വേണ്ടി (unsigned i = 0; i < l.width; i++)
         {
           obj_.head[l.position + i] = 0;
         }
       }
     }
 
-    bool equals (unsigned this_index,
+    തർക്കം equals (unsigned this_index,
                  unsigned other_index,
-                 const vertex_t& other,
-                 const graph_t& graph,
-                 const graph_t& other_graph,
-                 unsigned depth) const
+                 സ്ഥിരം vertex_t& other,
+                 സ്ഥിരം graph_t& graph,
+                 സ്ഥിരം graph_t& other_graph,
+                 unsigned depth) സ്ഥിരം
     {
-      if (!(as_bytes () == other.as_bytes ()))
+      എങ്കിൽ (!(as_bytes () == other.as_bytes ()))
       {
-        DEBUG_MSG (SUBSET_REPACK, nullptr,
+        DEBUG_സന്ദേശം (SUBSET_REPACK, nullptr,
                    "vertex %u [%lu bytes] != %u [%lu bytes], depth = %u",
                    this_index,
                    (unsigned long) table_size (),
@@ -236,25 +236,25 @@ struct graph_t
 
         auto a = as_bytes ();
         auto b = other.as_bytes ();
-        while (a || b)
+        ആകുമ്പോൾ (a || b)
         {
-          DEBUG_MSG (SUBSET_REPACK, nullptr,
+          DEBUG_സന്ദേശം (SUBSET_REPACK, nullptr,
                      "  0x%x %s 0x%x", (unsigned) *a, (*a == *b) ? "==" : "!=", (unsigned) *b);
           a++;
           b++;
         }
-        return false;
+        തിരികെ അസത്യം;
       }
 
-      return links_equal (obj_.real_links, other.obj_.real_links, graph, other_graph, depth);
+      തിരികെ links_equal (obj_.real_links, other.obj_.real_links, graph, other_graph, depth);
     }
 
-    hb_bytes_t as_bytes () const
+    hb_bytes_t as_bytes () സ്ഥിരം
     {
-      return hb_bytes_t (obj_.head, table_size ());
+      തിരികെ hb_bytes_t (obj_.head, table_size ());
     }
 
-    friend void swap (vertex_t& a, vertex_t& b)
+    friend ശൂന്യം swap (vertex_t& a, vertex_t& b)
     {
       hb_swap (a.obj_, b.obj_);
       hb_swap (a.distance, b.distance);
@@ -270,206 +270,206 @@ struct graph_t
     }
 
     graph_result_t<hb_hashmap_t<unsigned, unsigned>>
-    position_to_index_map () const
+    position_to_index_map () സ്ഥിരം
     {
       hb_hashmap_t<unsigned, unsigned> result;
 
       result.alloc (obj_.real_links.length);
-      for (const auto& l : obj_.real_links) {
+      വേണ്ടി (സ്ഥിരം auto& l : obj_.real_links) {
         result.set (l.position, l.objidx);
       }
 
-      return graph_result_t<hb_hashmap_t<unsigned, unsigned>>::from (std::move(result), ALLOCATION_FAILURE);
+      തിരികെ graph_result_t<hb_hashmap_t<unsigned, unsigned>>::from (std::move(result), ALLOCATION_FAILURE);
     }
 
-    bool is_shared () const
+    തർക്കം is_shared () സ്ഥിരം
     {
-      return parents.get_population () > virtual_parents.get_population () + 1;
+      തിരികെ parents.get_population () > virtual_parents.get_population () + 1;
     }
 
-    unsigned incoming_edges () const
+    unsigned incoming_edges () സ്ഥിരം
     {
-      if (HB_DEBUG_SUBSET_REPACK)
+      എങ്കിൽ (HB_DEBUG_SUBSET_REPACK)
        {
-	assert (incoming_edges_ == (single_parent != HB_GRAPH_INVALID) +
-		(parents.values_ref () | hb_reduce (hb_add, 0)));
+	പ്രതിജ്ഞാ (incoming_edges_ == (single_parent != HB_GRAPH_INVALID) +
+		(parents.മൂല്യങ്ങൾ_ref () | hb_reduce (hb_add, 0)));
        }
-      return incoming_edges_;
+      തിരികെ incoming_edges_;
     }
 
-    unsigned incoming_edges_from_parent (unsigned parent_index) const {
-      if (single_parent != HB_GRAPH_INVALID) {
-        return single_parent == parent_index ? 1 : 0;
+    unsigned incoming_edges_from_parent (unsigned parent_index) സ്ഥിരം {
+      എങ്കിൽ (single_parent != HB_GRAPH_INVALID) {
+        തിരികെ single_parent == parent_index ? 1 : 0;
       }
 
-      unsigned* count;
-      return  parents.has(parent_index, &count) ? *count : 0;
+      unsigned* എണ്ണം;
+      തിരികെ  parents.has(parent_index, &എണ്ണം) ? *എണ്ണം : 0;
     }
 
-    void reset_parents ()
+    ശൂന്യം reset_parents ()
     {
       incoming_edges_ = 0;
-      has_incoming_virtual_edges_ = false;
+      has_incoming_virtual_edges_ = അസത്യം;
       single_parent = HB_GRAPH_INVALID;
       parents.reset ();
       virtual_parents.reset ();
     }
 
-    graph_result_t<void> add_parent (unsigned parent_index, bool is_virtual)
+    graph_result_t<ശൂന്യം> add_parent (unsigned parent_index, തർക്കം is_virtual)
     {
-      assert (parent_index != HB_GRAPH_INVALID);
+      പ്രതിജ്ഞാ (parent_index != HB_GRAPH_INVALID);
       has_incoming_virtual_edges_ |= is_virtual;
-      if (is_virtual)
+      എങ്കിൽ (is_virtual)
         virtual_parents.add (parent_index);
 
-      if (incoming_edges_ == 0)
+      എങ്കിൽ (incoming_edges_ == 0)
       {
 	single_parent = parent_index;
 	incoming_edges_ = 1;
-	return to_result();
+	തിരികെ to_result();
       }
-      else if (single_parent != HB_GRAPH_INVALID)
+      അല്ലെങ്കിൽ എങ്കിൽ (single_parent != HB_GRAPH_INVALID)
       {
-        assert (incoming_edges_ == 1);
-	if (!parents.set (single_parent, 1))
-	  return to_result ();
+        പ്രതിജ്ഞാ (incoming_edges_ == 1);
+	എങ്കിൽ (!parents.set (single_parent, 1))
+	  തിരികെ to_result ();
 	single_parent = HB_GRAPH_INVALID;
       }
 
       unsigned *v;
-      if (parents.has (parent_index, &v))
+      എങ്കിൽ (parents.has (parent_index, &v))
       {
         (*v)++;
 	incoming_edges_++;
       }
-      else if (parents.set (parent_index, 1))
+      അല്ലെങ്കിൽ എങ്കിൽ (parents.set (parent_index, 1))
 	incoming_edges_++;
 
-      return to_result();
+      തിരികെ to_result();
     }
 
-    void remove_parent (unsigned parent_index)
+    ശൂന്യം remove_parent (unsigned parent_index)
     {
-      if (parent_index == single_parent)
+      എങ്കിൽ (parent_index == single_parent)
       {
 	single_parent = HB_GRAPH_INVALID;
 	incoming_edges_--;
 	virtual_parents.reset ();
-	return;
+	തിരികെ;
       }
 
       unsigned *v;
-      if (parents.has (parent_index, &v))
+      എങ്കിൽ (parents.has (parent_index, &v))
       {
 	incoming_edges_--;
-	if (*v > 1)
+	എങ്കിൽ (*v > 1)
 	  (*v)--;
-	else
+	അല്ലെങ്കിൽ
         {
 	  parents.del (parent_index);
           virtual_parents.del (parent_index);
         }
 
-	if (incoming_edges_ == 1)
+	എങ്കിൽ (incoming_edges_ == 1)
 	{
-	  single_parent = *parents.keys ();
+	  single_parent = *parents.താക്കോലുകൾ ();
 	  parents.reset ();
 	}
       }
     }
 
-    void remove_real_link_unordered (unsigned link_array_index) {
+    ശൂന്യം remove_real_link_unordered (unsigned link_array_index) {
       obj_.real_links.remove_unordered (link_array_index);
     }
 
-    void remove_real_link_unordered (unsigned child_index, const void* offset)
+    ശൂന്യം remove_real_link_unordered (unsigned child_index, സ്ഥിരം ശൂന്യം* offset)
     {
-      unsigned count = obj_.real_links.length;
-      for (unsigned i = 0; i < count; i++)
+      unsigned എണ്ണം = obj_.real_links.length;
+      വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++)
       {
         auto& link = obj_.real_links.arrayZ[i];
-        if (link.objidx != child_index)
-          continue;
+        എങ്കിൽ (link.objidx != child_index)
+          തുടരുക;
 
-        if ((obj_.head + link.position) != offset)
-          continue;
+        എങ്കിൽ ((obj_.head + link.position) != offset)
+          തുടരുക;
 
         obj_.real_links.remove_unordered (i);
-        return;
+        തിരികെ;
       }
     }
 
-    graph_result_t<void> remap_parent (unsigned old_index, unsigned new_index)
+    graph_result_t<ശൂന്യം> remap_parent (unsigned old_index, unsigned new_index)
     {
-      if (single_parent != HB_GRAPH_INVALID)
+      എങ്കിൽ (single_parent != HB_GRAPH_INVALID)
       {
-        if (single_parent == old_index)
+        എങ്കിൽ (single_parent == old_index)
         {
 	  single_parent = new_index;
-          if (virtual_parents.has (old_index))
+          എങ്കിൽ (virtual_parents.has (old_index))
           {
             virtual_parents.del (old_index);
             virtual_parents.add (new_index);
           }
         }
-        return graph_result_t<void>::from(virtual_parents, ALLOCATION_FAILURE);
+        തിരികെ graph_result_t<ശൂന്യം>::from(virtual_parents, ALLOCATION_FAILURE);
       }
 
-      const unsigned *pv;
-      if (parents.has (old_index, &pv))
+      സ്ഥിരം unsigned *pv;
+      എങ്കിൽ (parents.has (old_index, &pv))
       {
         unsigned v = *pv;
-	if (!parents.set (new_index, v))
+	എങ്കിൽ (!parents.set (new_index, v))
           incoming_edges_ -= v;
 	parents.del (old_index);
 
-        if (incoming_edges_ == 1)
+        എങ്കിൽ (incoming_edges_ == 1)
 	{
-	  single_parent = *parents.keys ();
+	  single_parent = *parents.താക്കോലുകൾ ();
 	  parents.reset ();
 	}
       }
 
-      if (virtual_parents.has (old_index))
+      എങ്കിൽ (virtual_parents.has (old_index))
       {
         virtual_parents.del (old_index);
         virtual_parents.add (new_index);
       }
 
-      return graph_result_t<void>::from(virtual_parents, ALLOCATION_FAILURE);
+      തിരികെ graph_result_t<ശൂന്യം>::from(virtual_parents, ALLOCATION_FAILURE);
     }
 
-    bool is_leaf () const
+    തർക്കം is_leaf () സ്ഥിരം
     {
-      return !obj_.real_links.length && !obj_.virtual_links.length;
+      തിരികെ !obj_.real_links.length && !obj_.virtual_links.length;
     }
 
-    bool raise_priority ()
+    തർക്കം raise_priority ()
     {
-      if (has_max_priority ()) return false;
+      എങ്കിൽ (has_max_priority ()) തിരികെ അസത്യം;
       priority++;
-      return true;
+      തിരികെ സത്യം;
     }
 
-    bool give_max_priority ()
+    തർക്കം give_max_priority ()
     {
-      bool result = false;
-      while (!has_max_priority()) {
-        result = true;
+      തർക്കം result = അസത്യം;
+      ആകുമ്പോൾ (!has_max_priority()) {
+        result = സത്യം;
         priority++;
       }
-      return result;
+      തിരികെ result;
     }
 
-    bool has_max_priority () const {
-      return priority >= 3;
+    തർക്കം has_max_priority () സ്ഥിരം {
+      തിരികെ priority >= 3;
     }
 
-    size_t table_size () const {
-      return obj_.tail - obj_.head;
+    size_t table_size () സ്ഥിരം {
+      തിരികെ obj_.tail - obj_.head;
     }
 
-    int64_t modified_distance (unsigned order) const
+    int64_t modified_distance (unsigned order) സ്ഥിരം
     {
       // TODO(garretrieger): once priority is high enough, should try
       // setting distance = 0 which will force to sort immediately after
@@ -478,88 +478,88 @@ struct graph_t
       int64_t modified_distance =
           hb_clamp (distance + distance_modifier (), (int64_t) 0,
                     hb_int_max (int64_t) >> 18);
-      if (has_max_priority ()) {
+      എങ്കിൽ (has_max_priority ()) {
         modified_distance = 0;
       }
-      return (modified_distance << 18) | (0x003FFFF & order);
+      തിരികെ (modified_distance << 18) | (0x003FFFF & order);
     }
 
-    int64_t distance_modifier () const
+    int64_t distance_modifier () സ്ഥിരം
     {
-      if (!priority) return 0;
+      എങ്കിൽ (!priority) തിരികെ 0;
       int64_t table_size = obj_.tail - obj_.head;
 
-      if (priority == 1)
-        return -table_size / 2;
+      എങ്കിൽ (priority == 1)
+        തിരികെ -table_size / 2;
 
-      return -table_size;
+      തിരികെ -table_size;
     }
 
-   private:
-    graph_result_t<void> to_result() const {
-      if (unlikely (
+   സ്വകാര്യ:
+    graph_result_t<ശൂന്യം> to_result() സ്ഥിരം {
+      എങ്കിൽ (unlikely (
         parents.in_error() || virtual_parents.in_error() ||
         obj_.real_links.in_error() || obj_.virtual_links.in_error()))
-        return Err(ALLOCATION_FAILURE);
-      return Ok();
+        തിരികെ Err(ALLOCATION_FAILURE);
+      തിരികെ Ok();
     }
 
-    bool links_equal (const hb_vector_t<hb_serialize_context_t::object_t::link_t>& this_links,
-                      const hb_vector_t<hb_serialize_context_t::object_t::link_t>& other_links,
-                      const graph_t& graph,
-                      const graph_t& other_graph,
-                      unsigned depth) const
+    തർക്കം links_equal (സ്ഥിരം hb_vector_t<hb_serialize_context_t::object_t::link_t>& this_links,
+                      സ്ഥിരം hb_vector_t<hb_serialize_context_t::object_t::link_t>& other_links,
+                      സ്ഥിരം graph_t& graph,
+                      സ്ഥിരം graph_t& other_graph,
+                      unsigned depth) സ്ഥിരം
     {
       auto a = this_links.iter ();
       auto b = other_links.iter ();
 
-      while (a && b)
+      ആകുമ്പോൾ (a && b)
       {
-        const auto& link_a = *a;
-        const auto& link_b = *b;
+        സ്ഥിരം auto& link_a = *a;
+        സ്ഥിരം auto& link_b = *b;
 
-        if (link_a.width != link_b.width ||
+        എങ്കിൽ (link_a.width != link_b.width ||
             link_a.is_signed != link_b.is_signed ||
             link_a.whence != link_b.whence ||
             link_a.position != link_b.position ||
             link_a.bias != link_b.bias)
-          return false;
+          തിരികെ അസത്യം;
 
-        if (!graph.vertices_[link_a.objidx].equals (link_a.objidx, link_b.objidx,
+        എങ്കിൽ (!graph.vertices_[link_a.objidx].equals (link_a.objidx, link_b.objidx,
                 other_graph.vertices_[link_b.objidx], graph, other_graph, depth + 1))
-          return false;
+          തിരികെ അസത്യം;
 
         a++;
         b++;
       }
 
-      if (bool (a) != bool (b))
-        return false;
+      എങ്കിൽ (തർക്കം (a) != തർക്കം (b))
+        തിരികെ അസത്യം;
 
-      return true;
+      തിരികെ സത്യം;
     }
   };
 
-  enum vertex_mutability_t
+  എണ്ണൽ vertex_mutability_t
   {
     Immutable,
     Mutable
   };
 
   template <typename T, vertex_mutability_t mutability = Mutable>
-  struct vertex_and_table_t
+  ഘടന vertex_and_table_t
   {
     vertex_and_table_t () : index (0), vertex (nullptr), table (nullptr)
     {}
 
     template <vertex_mutability_t other_mutability>
-    vertex_and_table_t (const vertex_and_table_t<T, other_mutability>& o)
+    vertex_and_table_t (സ്ഥിരം vertex_and_table_t<T, other_mutability>& o)
       : index (o.index), vertex (o.vertex), table (o.table)
     {}
 
     unsigned index;
-    typename std::conditional<mutability == Immutable, const vertex_t*, vertex_t*>::type vertex;
-    typename std::conditional<mutability == Immutable, const T*, T*>::type table;
+    typename std::conditional<mutability == Immutable, സ്ഥിരം vertex_t*, vertex_t*>::type vertex;
+    typename std::conditional<mutability == Immutable, സ്ഥിരം T*, T*>::type table;
 
   };
 
@@ -571,51 +571,51 @@ struct graph_t
    * serializer
    */
   template<typename T>
-  static graph_result_t<graph_t> create (const T& objects)
+  സ്ഥിതം graph_result_t<graph_t> create (സ്ഥിരം T& objects)
   {
-    if (unlikely (objects.length > HB_REPACKER_MAX_VERTICES))
+    എങ്കിൽ (unlikely (objects.length > HB_REPACKER_MAX_VERTICES))
     {
-      DEBUG_MSG (SUBSET_REPACK, nullptr,
+      DEBUG_സന്ദേശം (SUBSET_REPACK, nullptr,
                  "constructing graph: num of objects %u exceeds HB_REPACKER_MAX_VERTICES.",
                  objects.length);
-      return Err(LIMIT_EXCEEDED);
+      തിരികെ Err(LIMIT_EXCEEDED);
     }
 
     graph_t g;
-    g.num_roots_for_space_.push (1);
-    TRY (graph_result_t<void>::from (g.num_roots_for_space_, ALLOCATION_FAILURE));
+    g.അക്കം_roots_for_space.push (1);
+    TRY (graph_result_t<ശൂന്യം>::from (g.അക്കം_roots_for_space, ALLOCATION_FAILURE));
 
-    bool removed_nil = false;
-    const unsigned count = objects.length;
-    g.vertices_.alloc (count);
-    g.ordering_.resize (count);
-    g.ordering_scratch_.alloc (count);
-    TRY (graph_result_t<void>::from (g.vertices_, ALLOCATION_FAILURE));
-    TRY (graph_result_t<void>::from (g.ordering_, ALLOCATION_FAILURE));
-    TRY (graph_result_t<void>::from (g.ordering_scratch_, ALLOCATION_FAILURE));
+    തർക്കം removed_nil = അസത്യം;
+    സ്ഥിരം unsigned എണ്ണം = objects.length;
+    g.vertices_.alloc (എണ്ണം);
+    g.ordering_.resize (എണ്ണം);
+    g.ordering_scratch_.alloc (എണ്ണം);
+    TRY (graph_result_t<ശൂന്യം>::from (g.vertices_, ALLOCATION_FAILURE));
+    TRY (graph_result_t<ശൂന്യം>::from (g.ordering_, ALLOCATION_FAILURE));
+    TRY (graph_result_t<ശൂന്യം>::from (g.ordering_scratch_, ALLOCATION_FAILURE));
 
     unsigned order = objects.length;
     unsigned skip = 0;
-    for (unsigned i = 0; i < count; i++)
+    വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++)
     {
       // If this graph came from a serialization buffer object 0 is the
       // nil object. We don't need it for our purposes here so drop it.
-      if (i == 0 && !objects.arrayZ[i])
+      എങ്കിൽ (i == 0 && !objects.arrayZ[i])
       {
-        removed_nil = true;
+        removed_nil = സത്യം;
         order--;
-        g.ordering_.resize (count - 1);
+        g.ordering_.resize (എണ്ണം - 1);
         skip++;
-        continue;
+        തുടരുക;
       }
 
       hb_serialize_context_t::object_t obj (*objects.arrayZ[i]);
-      if (unlikely (obj.in_error ())) {
-        return Err(ALLOCATION_FAILURE);
+      എങ്കിൽ (unlikely (obj.in_error ())) {
+        തിരികെ Err(ALLOCATION_FAILURE);
       }
       vertex_t* v = g.vertices_.push (std::move (obj));
 
-      TRY (v->link_positions_valid (count, removed_nil));
+      TRY (v->link_positions_valid (എണ്ണം, removed_nil));
 
       // To start we set the ordering to match the provided objects
       // list. Note: objects are provided to us in reverse order (ie.
@@ -623,52 +623,52 @@ struct graph_t
       unsigned obj_idx = i - skip;
       g.ordering_[--order] = obj_idx;
 
-      if (!removed_nil) continue;
+      എങ്കിൽ (!removed_nil) തുടരുക;
       // Fix indices to account for removed nil object.
-      for (auto& l : v->all_links_writer ()) {
+      വേണ്ടി (auto& l : v->all_links_writer ()) {
         l.objidx--;
       }
     }
 
     auto r = g.is_fully_connected();
-    if (r.is_err() && r.error() == ORPHANED_NODES) {
+    എങ്കിൽ (r.is_err() && r.error() == ORPHANED_NODES) {
       g.print_orphaned_nodes ();
     }
     TRY(r);
 
-    return Ok (std::move (g));
+    തിരികെ Ok (std::move (g));
   }
 
-  graph_t (const graph_t&) = delete;
-  graph_t& operator = (const graph_t&) = delete;
-  graph_t (graph_t&&) = default;
-  graph_t& operator = (graph_t&&) = default;
+  graph_t (സ്ഥിരം graph_t&) = delete;
+  graph_t& operator = (സ്ഥിരം graph_t&) = delete;
+  graph_t (graph_t&&) = സ്ഥിരസ്ഥിതി;
+  graph_t& operator = (graph_t&&) = സ്ഥിരസ്ഥിതി;
 
   ~graph_t ()
   {
-    for (char* b : buffers)
+    വേണ്ടി (അക്ഷരം* b : buffers)
       hb_free (b);
   }
 
-private:
-  graph_t () = default;
+സ്വകാര്യ:
+  graph_t () = സ്ഥിരസ്ഥിതി;
 
-public:
+പൊതു:
 
-  bool operator== (const graph_t& other) const
+  തർക്കം operator== (സ്ഥിരം graph_t& other) സ്ഥിരം
   {
-    return root ().equals (root_idx(), other.root_idx(), other.root (), *this, other, 0);
+    തിരികെ വേര് ().equals (വേര്_idx(), other.വേര്_idx(), other.വേര് (), *ഇത്, other, 0);
   }
 
-  void print () const {
-    for (unsigned id : ordering_)
+  ശൂന്യം print () സ്ഥിരം {
+    വേണ്ടി (unsigned id : ordering_)
     {
-      const auto& v = vertices_[id];
-      printf("%u: %u [", id, (unsigned int)v.table_size());
-      for (const auto &l : v.obj().real_links) {
+      സ്ഥിരം auto& v = vertices_[id];
+      printf("%u: %u [", id, (unsigned പൂർണ്ണസംഖ്യ)v.table_size());
+      വേണ്ടി (സ്ഥിരം auto &l : v.obj().real_links) {
         printf("%u, ", l.objidx);
       }
-      for (const auto &l : v.obj().virtual_links) {
+      വേണ്ടി (സ്ഥിരം auto &l : v.obj().virtual_links) {
         printf("v%u, ", l.objidx);
       }
       printf("]\n");
@@ -676,59 +676,59 @@ public:
   }
 
   // Sorts links of all objects in a consistent manner and zeroes all offsets.
-  void normalize ()
+  ശൂന്യം normalize ()
   {
-    for (auto& v : vertices_.writer ())
+    വേണ്ടി (auto& v : vertices_.writer ())
       v.normalize ();
   }
 
-  const vertex_t& root () const
+  സ്ഥിരം vertex_t& വേര് () സ്ഥിരം
   {
-    return vertices_[root_idx ()];
+    തിരികെ vertices_[വേര്_idx ()];
   }
 
-  unsigned root_idx () const
+  unsigned വേര്_idx () സ്ഥിരം
   {
     // First element of ordering_ is the root.
     // Since the graph is topologically sorted it's safe to
     // assume the first object has no incoming edges.
-    return ordering_[0];
+    തിരികെ ordering_[0];
   }
 
-  const hb_serialize_context_t::object_t& object (unsigned i) const
+  സ്ഥിരം hb_serialize_context_t::object_t& object (unsigned i) സ്ഥിരം
   {
-    return vertices_[i].obj();
+    തിരികെ vertices_[i].obj();
   }
 
-  graph_result_t<void> add_buffer (char* buffer)
+  graph_result_t<ശൂന്യം> add_buffer (അക്ഷരം* buffer)
   {
     buffers.push (buffer);
-    return graph_result_t<void>::from (buffers, ALLOCATION_FAILURE);
+    തിരികെ graph_result_t<ശൂന്യം>::from (buffers, ALLOCATION_FAILURE);
   }
 
   /*
    * Adds a 16 bit link from parent_id to child_id
    */
   template<typename T>
-  graph_result_t<void> add_link (T* offset,
+  graph_result_t<ശൂന്യം> add_link (T* offset,
                                  unsigned parent_id,
                                  unsigned child_id)
   {
-    if (unlikely (parent_id >= vertices_.length || child_id >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+    എങ്കിൽ (unlikely (parent_id >= vertices_.length || child_id >= vertices_.length))
+      തിരികെ Err(OUT_OF_BOUNDS);
     auto& v = vertices_[parent_id];
-    TRY(v.add_real_link(2, child_id, (char*) offset - (char*) v.obj().head));
-    return vertices_[child_id].add_parent (parent_id, false);
+    TRY(v.add_real_link(2, child_id, (അക്ഷരം*) offset - (അക്ഷരം*) v.obj().head));
+    തിരികെ vertices_[child_id].add_parent (parent_id, അസത്യം);
   }
 
   /*
    * Generates a new topological sorting of graph ordered by the shortest
    * distance to each node if positions are marked as invalid.
    */
-  graph_result_t<void> sort_shortest_distance_if_needed ()
+  graph_result_t<ശൂന്യം> sort_shortest_distance_if_needed ()
   {
-    if (!positions_invalid) return Ok();
-    return sort_shortest_distance ();
+    എങ്കിൽ (!positions_invalid) തിരികെ Ok();
+    തിരികെ sort_shortest_distance ();
   }
 
 
@@ -736,53 +736,53 @@ public:
    * Generates a new topological sorting of graph ordered by the shortest
    * distance to each node.
    */
-  graph_result_t<void> sort_shortest_distance ()
+  graph_result_t<ശൂന്യം> sort_shortest_distance ()
   {
-    positions_invalid = true;
+    positions_invalid = സത്യം;
 
-    if (vertices_.length <= 1) {
+    എങ്കിൽ (vertices_.length <= 1) {
       // Graph of 1 or less doesn't need sorting.
-      return Ok();
+      തിരികെ Ok();
     }
 
     TRY (update_distances ());
 
     hb_priority_queue_t<int64_t> queue;
     queue.alloc (vertices_.length);
-    TRY (graph_result_t<void>::from (queue, ALLOCATION_FAILURE));
+    TRY (graph_result_t<ശൂന്യം>::from (queue, ALLOCATION_FAILURE));
 
     hb_vector_t<unsigned> &new_ordering = ordering_scratch_;
     new_ordering.resize (vertices_.length);
-    TRY (graph_result_t<void>::from (new_ordering, ALLOCATION_FAILURE));
+    TRY (graph_result_t<ശൂന്യം>::from (new_ordering, ALLOCATION_FAILURE));
 
     hb_vector_t<unsigned> removed_edges;
     removed_edges.resize (vertices_.length);
-    TRY (graph_result_t<void>::from (removed_edges, ALLOCATION_FAILURE));
+    TRY (graph_result_t<ശൂന്യം>::from (removed_edges, ALLOCATION_FAILURE));
 
     TRY (update_parents ());
 
-    queue.insert (root ().modified_distance (0), root_idx ());
+    queue.insert (വേര് ().modified_distance (0), വേര്_idx ());
     unsigned order = 1;
     unsigned pos = 0;
-    while (!queue.in_error () && !queue.is_empty ())
+    ആകുമ്പോൾ (!queue.in_error () && !queue.is_empty ())
     {
-      unsigned next_id = queue.pop_minimum().second;
+      unsigned next_id = queue.എടുക്കുക_minimum().second;
 
-      if (unlikely (pos >= new_ordering.length)) {
+      എങ്കിൽ (unlikely (pos >= new_ordering.length)) {
         // We are out of ids. Which means we've visited a node more than once.
         // This graph contains a cycle which is not allowed.
-        DEBUG_MSG (SUBSET_REPACK, nullptr, "Invalid graph. Contains cycle.");
-        return Err(CYCLE_DETECTED);
+        DEBUG_സന്ദേശം (SUBSET_REPACK, nullptr, "Invalid graph. Contains cycle.");
+        തിരികെ Err(CYCLE_DETECTED);
       }
       new_ordering[pos++] = next_id;
-      const vertex_t& next = vertices_[next_id];
+      സ്ഥിരം vertex_t& next = vertices_[next_id];
 
-      for (const auto& link : next.obj().all_links ()) {
-        if (unlikely (link.objidx >= vertices_.length))
-          return Err(OUT_OF_BOUNDS);
+      വേണ്ടി (സ്ഥിരം auto& link : next.obj().all_links ()) {
+        എങ്കിൽ (unlikely (link.objidx >= vertices_.length))
+          തിരികെ Err(OUT_OF_BOUNDS);
         removed_edges[link.objidx]++;
-        const auto& v = vertices_[link.objidx];
-        if (!(v.incoming_edges () - removed_edges[link.objidx]))
+        സ്ഥിരം auto& v = vertices_[link.objidx];
+        എങ്കിൽ (!(v.incoming_edges () - removed_edges[link.objidx]))
           // Add the order that the links were encountered to the priority.
           // This ensures that ties between priorities objects are broken in a consistent
           // way. More specifically this is set up so that if a set of objects have the same
@@ -793,17 +793,17 @@ public:
       }
     }
 
-    TRY (graph_result_t<void>::from (queue, ALLOCATION_FAILURE));
-    TRY (graph_result_t<void>::from (new_ordering, ALLOCATION_FAILURE));
+    TRY (graph_result_t<ശൂന്യം>::from (queue, ALLOCATION_FAILURE));
+    TRY (graph_result_t<ശൂന്യം>::from (new_ordering, ALLOCATION_FAILURE));
 
     hb_swap (ordering_, new_ordering);
 
-    if (unlikely (pos != vertices_.length)) {
+    എങ്കിൽ (unlikely (pos != vertices_.length)) {
       print_orphaned_nodes ();
-      return Err(ORPHANED_NODES);
+      തിരികെ Err(ORPHANED_NODES);
     }
 
-    return Ok();
+    തിരികെ Ok();
   }
 
   /*
@@ -811,25 +811,25 @@ public:
    * More specifically this looks for the top most 24 bit or 32 bit links in the graph.
    * Some special casing is done that is specific to the layout of GSUB/GPOS tables.
    */
-  graph_result_t<void> find_space_roots (hb_set_t& visited, hb_set_t& roots)
+  graph_result_t<ശൂന്യം> find_space_roots (hb_set_t& visited, hb_set_t& roots)
   {
-    unsigned root_index = root_idx ();
-    for (unsigned i : ordering_)
+    unsigned വേര്_index = വേര്_idx ();
+    വേണ്ടി (unsigned i : ordering_)
     {
-      if (visited.has (i)) continue;
+      എങ്കിൽ (visited.has (i)) തുടരുക;
 
       // Only real links can form 32 bit spaces
-      for (const auto& l : vertices_[i].obj().real_links)
+      വേണ്ടി (സ്ഥിരം auto& l : vertices_[i].obj().real_links)
       {
-        if (l.is_signed || l.width < 3)
-          continue;
+        എങ്കിൽ (l.is_signed || l.width < 3)
+          തുടരുക;
 
-        if (i == root_index && l.width == 3)
+        എങ്കിൽ (i == വേര്_index && l.width == 3)
           // Ignore 24bit links from the root node, this skips past the single 24bit
           // pointer to the lookup list.
-          continue;
+          തുടരുക;
 
-        if (l.width >= 3)
+        എങ്കിൽ (l.width >= 3)
         {
           // A wide offset forms a root, unless there are 32-bit offsets somewhere
           // in its subgraph, then those become the roots instead. This is to make sure
@@ -837,12 +837,12 @@ public:
           // 32-bit lookup list become the spaces instead of their enclosing lists.
           hb_set_t sub_roots;
           TRY (find_32bit_roots (l.objidx, sub_roots));
-          if (sub_roots) {
-            for (unsigned sub_root_idx : sub_roots) {
-              roots.add (sub_root_idx);
-              TRY (find_subgraph (sub_root_idx, visited));
+          എങ്കിൽ (sub_roots) {
+            വേണ്ടി (unsigned sub_വേര്_idx : sub_roots) {
+              roots.add (sub_വേര്_idx);
+              TRY (find_subgraph (sub_വേര്_idx, visited));
             }
-            continue;
+            തുടരുക;
           }
         }
 
@@ -851,82 +851,82 @@ public:
       }
     }
 
-    TRY(graph_result_t<void>::from (visited, ALLOCATION_FAILURE));
-    TRY(graph_result_t<void>::from (roots, ALLOCATION_FAILURE));
-    return Ok();
+    TRY(graph_result_t<ശൂന്യം>::from (visited, ALLOCATION_FAILURE));
+    TRY(graph_result_t<ശൂന്യം>::from (roots, ALLOCATION_FAILURE));
+    തിരികെ Ok();
   }
 
   template <typename T, typename ...Ts>
-  graph_result_t<vertex_and_table_t<T, Immutable>> as_table (unsigned parent, const void* offset, Ts... ds)
+  graph_result_t<vertex_and_table_t<T, Immutable>> as_table (unsigned parent, സ്ഥിരം ശൂന്യം* offset, Ts... ds)
   {
     TRY_ASSIGN (unsigned idx, index_for_offset (parent, offset));
-    return as_table_from_index<T, Immutable> (idx, std::forward<Ts>(ds)...);
+    തിരികെ as_table_from_index<T, Immutable> (idx, std::forward<Ts>(ds)...);
   }
 
   template <typename T, typename ...Ts>
-  graph_result_t<vertex_and_table_t<T, Mutable>> as_mutable_table (unsigned parent, const void* offset, Ts... ds)
+  graph_result_t<vertex_and_table_t<T, Mutable>> as_mutable_table (unsigned parent, സ്ഥിരം ശൂന്യം* offset, Ts... ds)
   {
     TRY_ASSIGN (auto idx, mutable_index_for_offset (parent, offset));
-    return as_table_from_index<T, Mutable> (idx, std::forward<Ts>(ds)...);
+    തിരികെ as_table_from_index<T, Mutable> (idx, std::forward<Ts>(ds)...);
   }
 
   template <typename T, vertex_mutability_t mutability = Mutable, typename ...Ts>
   graph_result_t<vertex_and_table_t<T, mutability>> as_table_from_index (unsigned index, Ts... ds)
   {
-    if (unlikely (index >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+    എങ്കിൽ (unlikely (index >= vertices_.length))
+      തിരികെ Err(OUT_OF_BOUNDS);
 
     vertex_and_table_t<T, mutability> r;
-    r.vertex = (typename std::conditional<mutability == Immutable, const vertex_t*, vertex_t*>::type) &vertices_[index];
-    r.table = r.vertex->template as<typename std::conditional<mutability == Immutable, const T*, T*>::type> ();
+    r.vertex = (typename std::conditional<mutability == Immutable, സ്ഥിരം vertex_t*, vertex_t*>::type) &vertices_[index];
+    r.table = r.vertex->template as<typename std::conditional<mutability == Immutable, സ്ഥിരം T*, T*>::type> ();
     r.index = index;
-    if (unlikely (!r.table))
-      return Err(INVALID_ARGUMENT);
+    എങ്കിൽ (unlikely (!r.table))
+      തിരികെ Err(INVALID_ARGUMENT);
 
     TRY(r.table->sanitize (*(r.vertex), std::forward<Ts>(ds)...));
-    return r;
+    തിരികെ r;
   }
 
   // Finds the object id of the object pointed to by the offset at 'offset'
   // within object[node_idx].
-  graph_result_t<unsigned> index_for_offset (unsigned node_idx, const void* offset) const
+  graph_result_t<unsigned> index_for_offset (unsigned കണ്ണി_idx, സ്ഥിരം ശൂന്യം* offset) സ്ഥിരം
   {
-    if (unlikely (node_idx >= vertices_.length)) return Err(OUT_OF_BOUNDS);
-    const auto& node = object (node_idx);
-    if (unlikely (offset < node.head || offset >= node.tail)) return Err(OUT_OF_BOUNDS);
+    എങ്കിൽ (unlikely (കണ്ണി_idx >= vertices_.length)) തിരികെ Err(OUT_OF_BOUNDS);
+    സ്ഥിരം auto& node = object (കണ്ണി_idx);
+    എങ്കിൽ (unlikely (offset < node.head || offset >= node.tail)) തിരികെ Err(OUT_OF_BOUNDS);
 
-    unsigned count = node.real_links.length;
-    for (unsigned i = 0; i < count; i++)
+    unsigned എണ്ണം = node.real_links.length;
+    വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++)
     {
       // Use direct access for increased performance, this is a hot method.
-      const auto& link = node.real_links.arrayZ[i];
-      if (offset != node.head + link.position)
-        continue;
-      return Ok(link.objidx);
+      സ്ഥിരം auto& link = node.real_links.arrayZ[i];
+      എങ്കിൽ (offset != node.head + link.position)
+        തുടരുക;
+      തിരികെ Ok(link.objidx);
     }
 
-    return Err(INVALID_ARGUMENT);
+    തിരികെ Err(INVALID_ARGUMENT);
   }
 
   // Finds the object id of the object pointed to by the offset at 'offset'
   // within object[node_idx]. Ensures that the returned object is safe to mutate.
   // That is, if the original child object is shared by parents other than node_idx
   // it will be duplicated and the duplicate will be returned instead.
-  graph_result_t<unsigned> mutable_index_for_offset (unsigned node_idx, const void* offset)
+  graph_result_t<unsigned> mutable_index_for_offset (unsigned കണ്ണി_idx, സ്ഥിരം ശൂന്യം* offset)
   {
-    TRY_ASSIGN (unsigned child_idx, index_for_offset (node_idx, offset));
-    if (unlikely (child_idx >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+    TRY_ASSIGN (unsigned child_idx, index_for_offset (കണ്ണി_idx, offset));
+    എങ്കിൽ (unlikely (child_idx >= vertices_.length))
+      തിരികെ Err(OUT_OF_BOUNDS);
 
     auto& child = vertices_[child_idx];
-    for (unsigned p : child.parents_iter ())
+    വേണ്ടി (unsigned p : child.parents_iter ())
     {
-      if (p != node_idx) {
-        return duplicate (node_idx, child_idx, true);
+      എങ്കിൽ (p != കണ്ണി_idx) {
+        തിരികെ duplicate (കണ്ണി_idx, child_idx, സത്യം);
       }
     }
 
-    return Ok(child_idx);
+    തിരികെ Ok(child_idx);
   }
 
 
@@ -935,20 +935,20 @@ public:
    * Currently, this is implemented specifically tailored to the structure of a GPOS/GSUB
    * (including with 24bit offsets) table.
    */
-  graph_result_t<bool> assign_spaces ()
+  graph_result_t<തർക്കം> assign_spaces ()
   {
     TRY (update_parents ());
 
-    for (auto& vertex : vertices_.writer ())
+    വേണ്ടി (auto& vertex : vertices_.writer ())
     {
       vertex.space = 0;
       vertex.priority = 0;
     }
-    num_roots_for_space_.resize (1);
-    TRY (graph_result_t<void>::from (num_roots_for_space_, ALLOCATION_FAILURE));
-    num_roots_for_space_[0] = 1;
-    distance_invalid = true;
-    positions_invalid = true;
+    അക്കം_roots_for_space.resize (1);
+    TRY (graph_result_t<ശൂന്യം>::from (അക്കം_roots_for_space, ALLOCATION_FAILURE));
+    അക്കം_roots_for_space[0] = 1;
+    distance_invalid = സത്യം;
+    positions_invalid = സത്യം;
 
     hb_set_t visited;
     hb_set_t roots;
@@ -958,46 +958,46 @@ public:
     // subgraphs from being connected via nodes not in those subgraphs.
     visited.invert ();
 
-    if (!roots) return Ok(false);
+    എങ്കിൽ (!roots) തിരികെ Ok(അസത്യം);
 
-    while (roots)
+    ആകുമ്പോൾ (roots)
     {
-      uint32_t next = HB_SET_VALUE_INVALID;
-      TRY (graph_result_t<void>::from (roots, ALLOCATION_FAILURE));
-      if (!roots.next (&next)) break;
+      uint32_t next = HB_SET_മൂല്യം_INVALID;
+      TRY (graph_result_t<ശൂന്യം>::from (roots, ALLOCATION_FAILURE));
+      എങ്കിൽ (!roots.next (&next)) നിർത്തുക;
 
       hb_set_t connected_roots;
       TRY (find_connected_nodes (next, roots, visited, connected_roots));
-      TRY (graph_result_t<void>::from (connected_roots, ALLOCATION_FAILURE));
+      TRY (graph_result_t<ശൂന്യം>::from (connected_roots, ALLOCATION_FAILURE));
 
       TRY (isolate_subgraph (connected_roots));
-      TRY (graph_result_t<void>::from (connected_roots, ALLOCATION_FAILURE));
+      TRY (graph_result_t<ശൂന്യം>::from (connected_roots, ALLOCATION_FAILURE));
 
-      unsigned next_space = this->next_space ();
-      if (unlikely (next_space >= HB_REPACKER_MAX_SPACES))
+      unsigned next_space = ഇത്->next_space ();
+      എങ്കിൽ (unlikely (next_space >= HB_REPACKER_MAX_SPACES))
       {
-        DEBUG_MSG (SUBSET_REPACK, nullptr,
+        DEBUG_സന്ദേശം (SUBSET_REPACK, nullptr,
                  "num of spaces %u exceeds HB_REPACKER_MAX_SPACES.",
                  next_space);
-        return Err(LIMIT_EXCEEDED);
+        തിരികെ Err(LIMIT_EXCEEDED);
       }
-      num_roots_for_space_.push (0);
-      TRY(graph_result_t<void>::from (num_roots_for_space_, ALLOCATION_FAILURE));
+      അക്കം_roots_for_space.push (0);
+      TRY(graph_result_t<ശൂന്യം>::from (അക്കം_roots_for_space, ALLOCATION_FAILURE));
 
-      for (unsigned root : connected_roots)
+      വേണ്ടി (unsigned വേര് : connected_roots)
       {
-        DEBUG_MSG (SUBSET_REPACK, nullptr, "Subgraph %u gets space %u", root, next_space);
-        vertices_[root].space = next_space;
-        num_roots_for_space_[next_space] = num_roots_for_space_[next_space] + 1;
-        distance_invalid = true;
-        positions_invalid = true;
+        DEBUG_സന്ദേശം (SUBSET_REPACK, nullptr, "Subgraph %u gets space %u", വേര്, next_space);
+        vertices_[വേര്].space = next_space;
+        അക്കം_roots_for_space[next_space] = അക്കം_roots_for_space[next_space] + 1;
+        distance_invalid = സത്യം;
+        positions_invalid = സത്യം;
       }
 
       // TODO(grieger): special case for GSUB/GPOS use extension promotions to move 16 bit space
       //                into the 32 bit space as needed, instead of using isolation.
     }
 
-    return Ok(true);
+    തിരികെ Ok(സത്യം);
   }
 
   /*
@@ -1007,7 +1007,7 @@ public:
    *
    * Indices stored in roots will be updated if any of the roots are duplicated to new indices.
    */
-  graph_result_t<bool> isolate_subgraph (hb_set_t& roots)
+  graph_result_t<തർക്കം> isolate_subgraph (hb_set_t& roots)
   {
     TRY(update_parents ());
     hb_map_t subgraph;
@@ -1015,63 +1015,63 @@ public:
     // incoming edges to root_idx should be all 32 bit in length so we don't need to de-dup these
     // set the subgraph incoming edge count to match all of root_idx's incoming edges
     hb_set_t parents;
-    for (unsigned root_idx : roots)
+    വേണ്ടി (unsigned വേര്_idx : roots)
     {
-      if (unlikely (root_idx >= vertices_.length))
-        return Err(OUT_OF_BOUNDS);
-      subgraph.set (root_idx, wide_parents (root_idx, parents));
+      എങ്കിൽ (unlikely (വേര്_idx >= vertices_.length))
+        തിരികെ Err(OUT_OF_BOUNDS);
+      subgraph.set (വേര്_idx, wide_parents (വേര്_idx, parents));
     }
-    for (unsigned root_idx : roots)
+    വേണ്ടി (unsigned വേര്_idx : roots)
     {
-      TRY (find_subgraph (root_idx, subgraph));
+      TRY (find_subgraph (വേര്_idx, subgraph));
     }
-    TRY (graph_result_t<void>::from (subgraph, ALLOCATION_FAILURE));
+    TRY (graph_result_t<ശൂന്യം>::from (subgraph, ALLOCATION_FAILURE));
 
     hb_map_t index_map;
-    bool made_changes = false;
-    for (auto entry : subgraph.iter ())
+    തർക്കം made_changes = അസത്യം;
+    വേണ്ടി (auto entry : subgraph.iter ())
     {
-      assert (entry.first < vertices_.length);
-      const auto& node = vertices_[entry.first];
+      പ്രതിജ്ഞാ (entry.first < vertices_.length);
+      സ്ഥിരം auto& node = vertices_[entry.first];
       unsigned subgraph_incoming_edges = entry.second;
 
-      if (subgraph_incoming_edges < node.incoming_edges ())
+      എങ്കിൽ (subgraph_incoming_edges < node.incoming_edges ())
       {
         // Only  de-dup objects with incoming links from outside the subgraph.
-        made_changes = true;
+        made_changes = സത്യം;
         TRY (duplicate_subgraph (entry.first, index_map));
       }
     }
 
-    TRY (graph_result_t<void>::from (index_map, ALLOCATION_FAILURE));
+    TRY (graph_result_t<ശൂന്യം>::from (index_map, ALLOCATION_FAILURE));
 
-    if (!made_changes)
-      return Ok(false);
+    എങ്കിൽ (!made_changes)
+      തിരികെ Ok(അസത്യം);
 
     auto new_subgraph =
-        + subgraph.keys ()
-        | hb_map([&] (uint32_t node_idx) {
-          const uint32_t *v;
-          if (index_map.has (node_idx, &v)) return *v;
-          return node_idx;
+        + subgraph.താക്കോലുകൾ ()
+        | hb_map([&] (uint32_t കണ്ണി_idx) {
+          സ്ഥിരം uint32_t *v;
+          എങ്കിൽ (index_map.has (കണ്ണി_idx, &v)) തിരികെ *v;
+          തിരികെ കണ്ണി_idx;
         })
         ;
 
     TRY(remap_obj_indices (index_map, new_subgraph));
-    TRY(remap_obj_indices (index_map, parents.iter (), true));
+    TRY(remap_obj_indices (index_map, parents.iter (), സത്യം));
 
     // Update roots set with new indices as needed.
-    for (auto next : roots)
+    വേണ്ടി (auto next : roots)
     {
-      const uint32_t *v;
-      if (index_map.has (next, &v))
+      സ്ഥിരം uint32_t *v;
+      എങ്കിൽ (index_map.has (next, &v))
       {
         roots.del (next);
         roots.add (*v);
       }
     }
 
-    return Ok(true);
+    തിരികെ Ok(സത്യം);
   }
 
   // BFS graph traversal starting at start_idx.
@@ -1088,22 +1088,22 @@ public:
   // This traversal does not use a visited set internally, it is the responsibility of visit_edge
   // to track and filter visited nodes if required for the particular traversal.
   template <typename VisitEdgeFunc>
-  graph_result_t<void> traverse_directed_bfs (unsigned start_idx, VisitEdgeFunc&& visit_edge)
+  graph_result_t<ശൂന്യം> traverse_directed_bfs (unsigned start_idx, VisitEdgeFunc&& visit_edge)
   {
-    if (unlikely (start_idx >= vertices_.length))
+    എങ്കിൽ (unlikely (start_idx >= vertices_.length))
     {
-      DEBUG_MSG (SUBSET_REPACK, nullptr,
+      DEBUG_സന്ദേശം (SUBSET_REPACK, nullptr,
                  "traverse_directed_bfs: unexpected start_idx out of bounds.");
-      return Err(OUT_OF_BOUNDS);
+      തിരികെ Err(OUT_OF_BOUNDS);
     }
 
     // For performance we want to avoid allocating extra memory. So use the ordering_scratch_
     // buffer to implement a queue for BFS.
     ordering_scratch_.resize (vertices_.length);
-    TRY (graph_result_t<void>::from (ordering_scratch_, ALLOCATION_FAILURE));
+    TRY (graph_result_t<ശൂന്യം>::from (ordering_scratch_, ALLOCATION_FAILURE));
 
-    if (!visit_edge (HB_CODEPOINT_INVALID, nullptr, start_idx, 0))
-      return Ok();
+    എങ്കിൽ (!visit_edge (HB_CODEPOINT_INVALID, nullptr, start_idx, 0))
+      തിരികെ Ok();
 
     unsigned head = 0;
     unsigned tail = 0;
@@ -1111,119 +1111,119 @@ public:
     queue[tail++] = start_idx;
 
     unsigned depth = 0;
-    while (head < tail)
+    ആകുമ്പോൾ (head < tail)
     {
       unsigned level_end = tail;
-      while (head < level_end)
+      ആകുമ്പോൾ (head < level_end)
       {
-        unsigned node_idx = queue[head++];
-        const auto& v = vertices_[node_idx];
+        unsigned കണ്ണി_idx = queue[head++];
+        സ്ഥിരം auto& v = vertices_[കണ്ണി_idx];
 
-        unsigned num_real = v.obj().real_links.length;
-        unsigned total_links = num_real + v.obj().virtual_links.length;
+        unsigned അക്കം_real = v.obj().real_links.length;
+        unsigned total_links = അക്കം_real + v.obj().virtual_links.length;
 
-        for (unsigned i = 0; i < total_links; i++)
+        വേണ്ടി (unsigned i = 0; i < total_links; i++)
         {
           // vertices_ may have re-alloc'd inside an op() call, so reassign the v ref.
-          const auto& v = vertices_[node_idx];
-          const auto& link = (i < num_real)
+          സ്ഥിരം auto& v = vertices_[കണ്ണി_idx];
+          സ്ഥിരം auto& link = (i < അക്കം_real)
                              ? v.obj().real_links[i]
-                             : v.obj().virtual_links[i - num_real];
+                             : v.obj().virtual_links[i - അക്കം_real];
           unsigned child_idx = link.objidx;
 
-          if (!visit_edge (node_idx, &link, child_idx, depth + 1))
-            continue;
+          എങ്കിൽ (!visit_edge (കണ്ണി_idx, &link, child_idx, depth + 1))
+            തുടരുക;
 
-          if (unlikely (tail >= queue.length))
-            return Err(CYCLE_DETECTED);
+          എങ്കിൽ (unlikely (tail >= queue.length))
+            തിരികെ Err(CYCLE_DETECTED);
 
           queue[tail++] = child_idx;
         }
       }
       depth++;
     }
-    return Ok();
+    തിരികെ Ok();
   }
 
-  graph_result_t<void> find_subgraph (unsigned node_idx, hb_map_t& subgraph)
+  graph_result_t<ശൂന്യം> find_subgraph (unsigned കണ്ണി_idx, hb_map_t& subgraph)
   {
-    return traverse_directed_bfs (node_idx, [&] (
+    തിരികെ traverse_directed_bfs (കണ്ണി_idx, [&] (
       unsigned parent,
-      const hb_serialize_context_t::object_t::link_t* link,
+      സ്ഥിരം hb_serialize_context_t::object_t::link_t* link,
       unsigned child,
       unsigned depth) {
-      if (depth == 0) return true;
-      hb_codepoint_t *count;
-      if (subgraph.has (child, &count))
+      എങ്കിൽ (depth == 0) തിരികെ സത്യം;
+      hb_codepoint_t *എണ്ണം;
+      എങ്കിൽ (subgraph.has (child, &എണ്ണം))
       {
-        (*count)++;
-        return false;
+        (*എണ്ണം)++;
+        തിരികെ അസത്യം;
       }
       subgraph.set (child, 1);
-      return true;
+      തിരികെ സത്യം;
     });
   }
 
-  graph_result_t<void> find_subgraph (unsigned node_idx, hb_set_t& subgraph)
+  graph_result_t<ശൂന്യം> find_subgraph (unsigned കണ്ണി_idx, hb_set_t& subgraph)
   {
-    return traverse_directed_bfs (node_idx, [&] (
+    തിരികെ traverse_directed_bfs (കണ്ണി_idx, [&] (
       unsigned parent,
-      const hb_serialize_context_t::object_t::link_t* link,
+      സ്ഥിരം hb_serialize_context_t::object_t::link_t* link,
       unsigned child,
       unsigned depth) {
-      if (subgraph.has (child)) return false;
+      എങ്കിൽ (subgraph.has (child)) തിരികെ അസത്യം;
       subgraph.add (child);
-      return true;
+      തിരികെ സത്യം;
     });
   }
 
-  graph_result_t<size_t> find_subgraph_size (unsigned node_idx, hb_set_t& subgraph, unsigned max_depth = HB_GRAPH_INVALID)
+  graph_result_t<size_t> find_subgraph_size (unsigned കണ്ണി_idx, hb_set_t& subgraph, unsigned max_depth = HB_GRAPH_INVALID)
   {
     size_t size = 0;
-    TRY (traverse_directed_bfs (node_idx, [&] (
+    TRY (traverse_directed_bfs (കണ്ണി_idx, [&] (
       unsigned parent,
-      const hb_serialize_context_t::object_t::link_t* link,
+      സ്ഥിരം hb_serialize_context_t::object_t::link_t* link,
       unsigned child,
       unsigned depth) {
-      if (subgraph.has (child)) return false;
+      എങ്കിൽ (subgraph.has (child)) തിരികെ അസത്യം;
       subgraph.add (child);
 
-      const auto& o = vertices_[child].obj();
+      സ്ഥിരം auto& o = vertices_[child].obj();
       size += o.tail - o.head;
-      return depth < max_depth;
+      തിരികെ depth < max_depth;
     }));
-    return Ok(size);
+    തിരികെ Ok(size);
   }
 
   /*
    * Finds the topmost children of 32bit offsets in the subgraph starting
    * at node_idx. Found indices are placed into 'found'.
    */
-  graph_result_t<void> find_32bit_roots (unsigned node_idx, hb_set_t& found)
+  graph_result_t<ശൂന്യം> find_32bit_roots (unsigned കണ്ണി_idx, hb_set_t& found)
   {
     // Note: this specifically requires a BFS based traversal to ensure we don't recurse through
     // a node that is accessible via both 32bit and non-32 bit links.
     hb_set_t visited;
-    return traverse_directed_bfs (node_idx, [&] (
+    തിരികെ traverse_directed_bfs (കണ്ണി_idx, [&] (
       unsigned parent,
-      const hb_serialize_context_t::object_t::link_t* link,
+      സ്ഥിരം hb_serialize_context_t::object_t::link_t* link,
       unsigned child,
       unsigned _) {
 
-      if (link && found.has(parent))
+      എങ്കിൽ (link && found.has(parent))
         // Don't traverse from something that's already marked as a root.
-        return false;
+        തിരികെ അസത്യം;
 
-      if (link && !link->is_signed && link->width == 4)
+      എങ്കിൽ (link && !link->is_signed && link->width == 4)
       {
         found.add (link->objidx);
         visited.add (link->objidx);
-        return false;
+        തിരികെ അസത്യം;
       }
 
-      if (visited.has (child)) return false;
+      എങ്കിൽ (visited.has (child)) തിരികെ അസത്യം;
       visited.add (child);
-      return true;
+      തിരികെ സത്യം;
     });
   }
 
@@ -1235,34 +1235,34 @@ public:
    */
   template<typename O>
   graph_result_t<unsigned> move_child (unsigned old_parent_idx,
-                                       const O* old_offset,
+                                       സ്ഥിരം O* old_offset,
                                        unsigned new_parent_idx,
-                                       const O* new_offset)
+                                       സ്ഥിരം O* new_offset)
   {
-    distance_invalid = true;
-    positions_invalid = true;
+    distance_invalid = സത്യം;
+    positions_invalid = സത്യം;
 
-    if (unlikely (old_parent_idx >= vertices_.length ||
+    എങ്കിൽ (unlikely (old_parent_idx >= vertices_.length ||
                   new_parent_idx >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+      തിരികെ Err(OUT_OF_BOUNDS);
 
     auto& old_v = vertices_[old_parent_idx];
     auto& new_v = vertices_[new_parent_idx];
 
     TRY_ASSIGN (unsigned child_id, index_for_offset (old_parent_idx,
                                                      old_offset));
-    if (unlikely (child_id >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+    എങ്കിൽ (unlikely (child_id >= vertices_.length))
+      തിരികെ Err(OUT_OF_BOUNDS);
 
-    TRY(new_v.add_real_link(O::static_size, child_id, (const char*) new_offset - (const char*) new_v.obj().head));
+    TRY(new_v.add_real_link(O::static_size, child_id, (സ്ഥിരം അക്ഷരം*) new_offset - (സ്ഥിരം അക്ഷരം*) new_v.obj().head));
 
     auto& child = vertices_[child_id];
-    TRY(child.add_parent (new_parent_idx, false));
+    TRY(child.add_parent (new_parent_idx, അസത്യം));
 
     old_v.remove_real_link_unordered (child_id, old_offset);
     child.remove_parent (old_parent_idx);
 
-    return Ok(child_id);
+    തിരികെ Ok(child_id);
   }
 
   /*
@@ -1272,46 +1272,46 @@ public:
    * parent starting at new_pos_start.
    */
   template<typename O>
-  graph_result_t<void> move_children (unsigned old_parent_idx,
+  graph_result_t<ശൂന്യം> move_children (unsigned old_parent_idx,
                                       unsigned old_pos_start,
                                       unsigned old_pos_end,
                                       unsigned new_parent_idx,
                                       unsigned new_pos_start)
   {
-    if (unlikely (old_parent_idx >= vertices_.length ||
+    എങ്കിൽ (unlikely (old_parent_idx >= vertices_.length ||
                   new_parent_idx >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+      തിരികെ Err(OUT_OF_BOUNDS);
 
-    distance_invalid = true;
-    positions_invalid = true;
+    distance_invalid = സത്യം;
+    positions_invalid = സത്യം;
 
     auto& old_v = vertices_[old_parent_idx];
     auto& new_v = vertices_[new_parent_idx];
 
     hb_vector_t<hb_serialize_context_t::object_t::link_t> old_links;
-    for (const auto& l : old_v.obj().real_links)
+    വേണ്ടി (സ്ഥിരം auto& l : old_v.obj().real_links)
     {
-      if (l.position < old_pos_start || l.position >= old_pos_end)
+      എങ്കിൽ (l.position < old_pos_start || l.position >= old_pos_end)
       {
         old_links.push (l);
-        continue;
+        തുടരുക;
       }
 
       unsigned array_pos = l.position - old_pos_start;
 
       unsigned child_id = l.objidx;
-      if (unlikely (child_id >= vertices_.length))
-        return Err(OUT_OF_BOUNDS);
+      എങ്കിൽ (unlikely (child_id >= vertices_.length))
+        തിരികെ Err(OUT_OF_BOUNDS);
 
       TRY(new_v.add_real_link(O::static_size, child_id, new_pos_start + array_pos));
 
       auto& child = vertices_[child_id];
-      TRY(child.add_parent (new_parent_idx, false));
+      TRY(child.add_parent (new_parent_idx, അസത്യം));
       child.remove_parent (old_parent_idx);
     }
 
-    TRY (graph_result_t<void>::from (old_links, ALLOCATION_FAILURE));
-    return old_v.set_real_links(std::move (old_links));
+    TRY (graph_result_t<ശൂന്യം>::from (old_links, ALLOCATION_FAILURE));
+    തിരികെ old_v.set_real_links(std::move (old_links));
   }
 
   /*
@@ -1319,72 +1319,72 @@ public:
    * links. index_map is updated with mappings from old id to new id. If a duplication has already
    * been performed for a given index, then it will be skipped.
    */
-  graph_result_t<void> duplicate_subgraph (unsigned node_idx, hb_map_t& index_map)
+  graph_result_t<ശൂന്യം> duplicate_subgraph (unsigned കണ്ണി_idx, hb_map_t& index_map)
   {
-    graph_result_t<void> result = Ok();
-    TRY (traverse_directed_bfs (node_idx, [&] (
+    graph_result_t<ശൂന്യം> result = Ok();
+    TRY (traverse_directed_bfs (കണ്ണി_idx, [&] (
       unsigned parent,
-      const hb_serialize_context_t::object_t::link_t* link,
+      സ്ഥിരം hb_serialize_context_t::object_t::link_t* link,
       unsigned child,
       unsigned _) {
-      if (result.is_err () || index_map.has (child)) return false;
+      എങ്കിൽ (result.is_err () || index_map.has (child)) തിരികെ അസത്യം;
       auto r = duplicate (child);
-      if (unlikely (r.is_err ()))
+      എങ്കിൽ (unlikely (r.is_err ()))
       {
         result = Err(r.error ());
-        return false;
+        തിരികെ അസത്യം;
       }
       index_map.set (child, *r);
-      return true;
+      തിരികെ സത്യം;
     }));
 
-    return graph_result_t<void>::from(index_map, ALLOCATION_FAILURE);
+    തിരികെ graph_result_t<ശൂന്യം>::from(index_map, ALLOCATION_FAILURE);
   }
 
   /*
    * Creates a copy of node_idx and returns it's new index.
    */
-  graph_result_t<unsigned> duplicate (unsigned node_idx, bool copy_table = false)
+  graph_result_t<unsigned> duplicate (unsigned കണ്ണി_idx, തർക്കം copy_table = അസത്യം)
   {
-    if (unlikely (node_idx >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+    എങ്കിൽ (unlikely (കണ്ണി_idx >= vertices_.length))
+      തിരികെ Err(OUT_OF_BOUNDS);
 
-    if (unlikely (vertices_.length >= HB_REPACKER_MAX_VERTICES))
+    എങ്കിൽ (unlikely (vertices_.length >= HB_REPACKER_MAX_VERTICES))
     {
-      DEBUG_MSG (SUBSET_REPACK, nullptr,
+      DEBUG_സന്ദേശം (SUBSET_REPACK, nullptr,
                  "duplicating node: num of vertices %u exceeds HB_REPACKER_MAX_VERTICES.",
                  vertices_.length);
-      return Err(LIMIT_EXCEEDED);
+      തിരികെ Err(LIMIT_EXCEEDED);
     }
 
-    positions_invalid = true;
-    distance_invalid = true;
+    positions_invalid = സത്യം;
+    distance_invalid = സത്യം;
 
     auto* clone = vertices_.push ();
-    TRY (graph_result_t<void>::from (vertices_, ALLOCATION_FAILURE));
+    TRY (graph_result_t<ശൂന്യം>::from (vertices_, ALLOCATION_FAILURE));
 
     unsigned clone_idx = vertices_.length - 1;
     ordering_.push (clone_idx);
-    TRY (graph_result_t<void>::from (ordering_, ALLOCATION_FAILURE));
+    TRY (graph_result_t<ശൂന്യം>::from (ordering_, ALLOCATION_FAILURE));
 
-    auto& child = vertices_[node_idx];
+    auto& child = vertices_[കണ്ണി_idx];
 
     unsigned table_size = child.obj().tail - child.obj().head;
-    if (copy_table && table_size)
+    എങ്കിൽ (copy_table && table_size)
     {
-      char* buffer = (char*) hb_malloc (table_size);
-      if (unlikely (!buffer))
-        return Err(ALLOCATION_FAILURE);
+      അക്ഷരം* buffer = (അക്ഷരം*) hb_malloc (table_size);
+      എങ്കിൽ (unlikely (!buffer))
+        തിരികെ Err(ALLOCATION_FAILURE);
       auto res = add_buffer (buffer);
-      if (unlikely (res.is_err ()))
+      എങ്കിൽ (unlikely (res.is_err ()))
       {
         hb_free (buffer);
-        return Err(res.error ());
+        തിരികെ Err(res.error ());
       }
       hb_memcpy (buffer, child.obj().head, table_size);
       clone->set_buffer(buffer, buffer + table_size);
     }
-    else
+    അല്ലെങ്കിൽ
     {
       clone->set_buffer(child.obj().head, child.obj().tail);
     }
@@ -1392,19 +1392,19 @@ public:
     clone->space = child.space;
     clone->reset_parents ();
 
-    for (const auto& l : child.obj().real_links)
+    വേണ്ടി (സ്ഥിരം auto& l : child.obj().real_links)
     {
       TRY(clone->add_real_link (l));
-      TRY(vertices_[l.objidx].add_parent (clone_idx, false));
+      TRY(vertices_[l.objidx].add_parent (clone_idx, അസത്യം));
     }
 
-    for (const auto& l : child.obj().virtual_links)
+    വേണ്ടി (സ്ഥിരം auto& l : child.obj().virtual_links)
     {
       TRY(clone->add_virtual_link (l));
-      TRY(vertices_[l.objidx].add_parent (clone_idx, true));
+      TRY(vertices_[l.objidx].add_parent (clone_idx, സത്യം));
     }
 
-    return Ok(clone_idx);
+    തിരികെ Ok(clone_idx);
   }
 
   /*
@@ -1417,17 +1417,17 @@ public:
    * If the child_idx only has incoming edges from parent_idx,
    * duplication isn't possible and this will return an error.
    */
-  graph_result_t<unsigned> duplicate (unsigned parent_idx, unsigned child_idx, bool copy_table = false)
+  graph_result_t<unsigned> duplicate (unsigned parent_idx, unsigned child_idx, തർക്കം copy_table = അസത്യം)
   {
-    if (unlikely (parent_idx >= vertices_.length || child_idx >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+    എങ്കിൽ (unlikely (parent_idx >= vertices_.length || child_idx >= vertices_.length))
+      തിരികെ Err(OUT_OF_BOUNDS);
 
     TRY (update_parents ());
 
-    const auto& child = vertices_[child_idx];
+    സ്ഥിരം auto& child = vertices_[child_idx];
     unsigned links_to_child = child.incoming_edges_from_parent (parent_idx);
 
-    if (unlikely (child.incoming_edges () <= links_to_child || child.has_incoming_virtual_edges ()))
+    എങ്കിൽ (unlikely (child.incoming_edges () <= links_to_child || child.has_incoming_virtual_edges ()))
     {
       // Can't duplicate this node, doing so would orphan the original one as all remaining links
       // to child are from parent.
@@ -1436,31 +1436,31 @@ public:
       // the number of virtual vs real incoming edges. As a result we can't tell if a node
       // with virtual edges may end up orphaned by duplication (ie. where one copy is only pointed
       // to by virtual edges).
-      DEBUG_MSG (SUBSET_REPACK, nullptr, "  Not duplicating %u => %u",
+      DEBUG_സന്ദേശം (SUBSET_REPACK, nullptr, "  Not duplicating %u => %u",
                  parent_idx, child_idx);
-      return Err(INVALID_ARGUMENT);
+      തിരികെ Err(INVALID_ARGUMENT);
     }
 
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "  Duplicating %u => %u",
+    DEBUG_സന്ദേശം (SUBSET_REPACK, nullptr, "  Duplicating %u => %u",
                parent_idx, child_idx);
 
     TRY_ASSIGN (unsigned clone_idx, duplicate (child_idx, copy_table));
     // duplicate shifts the root node idx, so if parent_idx was root update it.
-    if (parent_idx == clone_idx) parent_idx++;
+    എങ്കിൽ (parent_idx == clone_idx) parent_idx++;
 
     auto& parent = vertices_[parent_idx];
-    unsigned count = 0;
-    unsigned num_real = parent.obj().real_links.length;
-    for (auto& l : parent.all_links_writer ())
+    unsigned എണ്ണം = 0;
+    unsigned അക്കം_real = parent.obj().real_links.length;
+    വേണ്ടി (auto& l : parent.all_links_writer ())
     {
-      count++;
-      if (l.objidx != child_idx)
-        continue;
+      എണ്ണം++;
+      എങ്കിൽ (l.objidx != child_idx)
+        തുടരുക;
 
-      TRY(reassign_link (l, parent_idx, clone_idx, count > num_real));
+      TRY(reassign_link (l, parent_idx, clone_idx, എണ്ണം > അക്കം_real));
     }
 
-    return Ok(clone_idx);
+    തിരികെ Ok(clone_idx);
   }
 
   /*
@@ -1474,27 +1474,27 @@ public:
    * duplication isn't possible or duplication fails and this will
    * return an error.
    */
-  graph_result_t<unsigned> duplicate (const hb_set_t* parents, unsigned child_idx)
+  graph_result_t<unsigned> duplicate (സ്ഥിരം hb_set_t* parents, unsigned child_idx)
   {
-    if (unlikely (!parents || parents->is_empty ()))
-      return Err(INVALID_ARGUMENT);
+    എങ്കിൽ (unlikely (!parents || parents->is_empty ()))
+      തിരികെ Err(INVALID_ARGUMENT);
 
-    if (unlikely (child_idx >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+    എങ്കിൽ (unlikely (child_idx >= vertices_.length))
+      തിരികെ Err(OUT_OF_BOUNDS);
 
     TRY (update_parents ());
 
-    const auto& child = vertices_[child_idx];
+    സ്ഥിരം auto& child = vertices_[child_idx];
     unsigned links_to_child = 0;
     unsigned last_parent = parents->get_max ();
     unsigned first_parent = parents->get_min ();
-    for (unsigned parent_idx : *parents) {
-      if (unlikely (parent_idx >= vertices_.length))
-        return Err(OUT_OF_BOUNDS);
+    വേണ്ടി (unsigned parent_idx : *parents) {
+      എങ്കിൽ (unlikely (parent_idx >= vertices_.length))
+        തിരികെ Err(OUT_OF_BOUNDS);
       links_to_child += child.incoming_edges_from_parent (parent_idx);
     }
 
-    if (unlikely (child.incoming_edges () <= links_to_child || child.has_incoming_virtual_edges ()))
+    എങ്കിൽ (unlikely (child.incoming_edges () <= links_to_child || child.has_incoming_virtual_edges ()))
     {
       // Can't duplicate this node, doing so would orphan the original one as all remaining links
       // to child are from parent.
@@ -1503,62 +1503,62 @@ public:
       // the number of virtual vs real incoming edges. As a result we can't tell if a node
       // with virtual edges may end up orphaned by duplication (ie. where one copy is only pointed
       // to by virtual edges).
-      DEBUG_MSG (SUBSET_REPACK, nullptr, "  Not duplicating %u, ..., %u => %u", first_parent, last_parent, child_idx);
-      return Err(INVALID_ARGUMENT);
+      DEBUG_സന്ദേശം (SUBSET_REPACK, nullptr, "  Not duplicating %u, ..., %u => %u", first_parent, last_parent, child_idx);
+      തിരികെ Err(INVALID_ARGUMENT);
     }
 
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "  Duplicating %u, ..., %u => %u", first_parent, last_parent, child_idx);
+    DEBUG_സന്ദേശം (SUBSET_REPACK, nullptr, "  Duplicating %u, ..., %u => %u", first_parent, last_parent, child_idx);
 
     TRY_ASSIGN (unsigned clone_idx, duplicate (child_idx));
 
-    for (unsigned parent_idx : *parents) {
+    വേണ്ടി (unsigned parent_idx : *parents) {
       // duplicate shifts the root node idx, so if parent_idx was root update it.
-      if (parent_idx == clone_idx) parent_idx++;
+      എങ്കിൽ (parent_idx == clone_idx) parent_idx++;
       auto& parent = vertices_[parent_idx];
-      unsigned count = 0;
-      unsigned num_real = parent.obj().real_links.length;
-      for (auto& l : parent.all_links_writer ())
+      unsigned എണ്ണം = 0;
+      unsigned അക്കം_real = parent.obj().real_links.length;
+      വേണ്ടി (auto& l : parent.all_links_writer ())
       {
-        count++;
-        if (l.objidx != child_idx)
-          continue;
+        എണ്ണം++;
+        എങ്കിൽ (l.objidx != child_idx)
+          തുടരുക;
 
-        TRY(reassign_link (l, parent_idx, clone_idx, count > num_real));
+        TRY(reassign_link (l, parent_idx, clone_idx, എണ്ണം > അക്കം_real));
       }
     }
 
-    return Ok(clone_idx);
+    തിരികെ Ok(clone_idx);
   }
 
 
   /*
    * Adds a new node to the graph, not connected to anything.
    */
-  graph_result_t<unsigned> new_node (char* head, char* tail)
+  graph_result_t<unsigned> new_കണ്ണി (അക്ഷരം* head, അക്ഷരം* tail)
   {
-    if (unlikely (vertices_.length >= HB_REPACKER_MAX_VERTICES))
+    എങ്കിൽ (unlikely (vertices_.length >= HB_REPACKER_MAX_VERTICES))
     {
-      DEBUG_MSG (SUBSET_REPACK, nullptr,
+      DEBUG_സന്ദേശം (SUBSET_REPACK, nullptr,
                  "creating new node: num of vertices %u exceeds HB_REPACKER_MAX_VERTICES.",
                  vertices_.length);
-      return Err(LIMIT_EXCEEDED);
+      തിരികെ Err(LIMIT_EXCEEDED);
     }
 
-    positions_invalid = true;
-    distance_invalid = true;
+    positions_invalid = സത്യം;
+    distance_invalid = സത്യം;
 
     auto* clone = vertices_.push ();
-    TRY (graph_result_t<void>::from (vertices_, ALLOCATION_FAILURE));
+    TRY (graph_result_t<ശൂന്യം>::from (vertices_, ALLOCATION_FAILURE));
 
     unsigned clone_idx = vertices_.length - 1;
     ordering_.push (clone_idx);
-    TRY (graph_result_t<void>::from (ordering_, ALLOCATION_FAILURE));
+    TRY (graph_result_t<ശൂന്യം>::from (ordering_, ALLOCATION_FAILURE));
 
     clone->set_buffer (head, tail);
     clone->distance = 0;
     clone->space = 0;
 
-    return Ok(clone_idx);
+    തിരികെ Ok(clone_idx);
   }
 
   /*
@@ -1569,88 +1569,88 @@ public:
    */
   graph_result_t<unsigned> remap_child (unsigned parent_idx, unsigned old_child_idx)
   {
-    if (unlikely (parent_idx >= vertices_.length || old_child_idx >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+    എങ്കിൽ (unlikely (parent_idx >= vertices_.length || old_child_idx >= vertices_.length))
+      തിരികെ Err(OUT_OF_BOUNDS);
 
     TRY_ASSIGN (unsigned new_child_idx, duplicate (old_child_idx));
 
     auto& parent = vertices_[parent_idx];
-    for (auto& l : parent.real_links_writer ())
+    വേണ്ടി (auto& l : parent.real_links_writer ())
     {
-      if (l.objidx != old_child_idx)
-        continue;
-      TRY(reassign_link (l, parent_idx, new_child_idx, false));
+      എങ്കിൽ (l.objidx != old_child_idx)
+        തുടരുക;
+      TRY(reassign_link (l, parent_idx, new_child_idx, അസത്യം));
     }
 
-    for (auto& l : parent.virtual_links_writer ())
+    വേണ്ടി (auto& l : parent.virtual_links_writer ())
     {
-      if (l.objidx != old_child_idx)
-        continue;
-      TRY(reassign_link (l, parent_idx, new_child_idx, true));
+      എങ്കിൽ (l.objidx != old_child_idx)
+        തുടരുക;
+      TRY(reassign_link (l, parent_idx, new_child_idx, സത്യം));
     }
-    return Ok(new_child_idx);
+    തിരികെ Ok(new_child_idx);
   }
 
   /*
    * Raises the sorting priority of all children.
    */
-  graph_result_t<bool> raise_childrens_priority (unsigned parent_idx)
+  graph_result_t<തർക്കം> raise_childrens_priority (unsigned parent_idx)
   {
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "  Raising priority of all children of %u",
+    DEBUG_സന്ദേശം (SUBSET_REPACK, nullptr, "  Raising priority of all children of %u",
                parent_idx);
     // This operation doesn't change ordering until a sort is run, so no need
     // to invalidate positions. It does not change graph structure so no need
     // to update distances or edge counts.
-    if (unlikely (parent_idx >= vertices_.length)) return Err(OUT_OF_BOUNDS);
-    bool made_change = false;
-    for (auto& l : vertices_[parent_idx].all_links_writer ())
+    എങ്കിൽ (unlikely (parent_idx >= vertices_.length)) തിരികെ Err(OUT_OF_BOUNDS);
+    തർക്കം made_change = അസത്യം;
+    വേണ്ടി (auto& l : vertices_[parent_idx].all_links_writer ())
       made_change |= vertices_[l.objidx].raise_priority ();
-    return Ok(made_change);
+    തിരികെ Ok(made_change);
   }
 
-  graph_result_t<void> is_fully_connected ()
+  graph_result_t<ശൂന്യം> is_fully_connected ()
   {
     TRY(update_parents());
 
-    if (unlikely (root().incoming_edges ()))
+    എങ്കിൽ (unlikely (വേര്().incoming_edges ()))
       // Root cannot have parents.
-      return Err(ORPHANED_NODES);
+      തിരികെ Err(ORPHANED_NODES);
 
-    for (unsigned i = 0; i < root_idx (); i++)
+    വേണ്ടി (unsigned i = 0; i < വേര്_idx (); i++)
     {
-      if (unlikely (!vertices_[i].incoming_edges ()))
-        return Err(ORPHANED_NODES);
+      എങ്കിൽ (unlikely (!vertices_[i].incoming_edges ()))
+        തിരികെ Err(ORPHANED_NODES);
     }
-    return Ok();
+    തിരികെ Ok();
   }
 
-#if 0
+#എങ്കിൽ 0
   /*
    * Saves the current graph to a packed binary format which the repacker fuzzer takes
    * as a seed.
    */
-  void save_fuzzer_seed (hb_tag_t tag) const
+  ശൂന്യം save_fuzzer_seed (hb_tag_t tag) സ്ഥിരം
   {
     FILE* f = fopen ("./repacker_fuzzer_seed", "w");
-    fwrite ((void*) &tag, sizeof (tag), 1, f);
+    fwrite ((ശൂന്യം*) &tag, വലുപ്പം (tag), 1, f);
 
-    uint16_t num_objects = vertices_.length;
-    fwrite ((void*) &num_objects, sizeof (num_objects), 1, f);
+    uint16_t അക്കം_objects = vertices_.length;
+    fwrite ((ശൂന്യം*) &അക്കം_objects, വലുപ്പം (അക്കം_objects), 1, f);
 
-    for (const auto& v : vertices_)
+    വേണ്ടി (സ്ഥിരം auto& v : vertices_)
     {
       uint16_t blob_size = v.table_size ();
-      fwrite ((void*) &blob_size, sizeof (blob_size), 1, f);
-      fwrite ((const void*) v.obj.head, blob_size, 1, f);
+      fwrite ((ശൂന്യം*) &blob_size, വലുപ്പം (blob_size), 1, f);
+      fwrite ((സ്ഥിരം ശൂന്യം*) v.obj.head, blob_size, 1, f);
     }
 
-    uint16_t link_count = 0;
-    for (const auto& v : vertices_)
-      link_count += v.obj.real_links.length;
+    uint16_t link_എണ്ണം = 0;
+    വേണ്ടി (സ്ഥിരം auto& v : vertices_)
+      link_എണ്ണം += v.obj.real_links.length;
 
-    fwrite ((void*) &link_count, sizeof (link_count), 1, f);
+    fwrite ((ശൂന്യം*) &link_എണ്ണം, വലുപ്പം (link_എണ്ണം), 1, f);
 
-    typedef struct
+    തരനിർവചനം ഘടന
     {
       uint16_t parent;
       uint16_t child;
@@ -1658,15 +1658,15 @@ public:
       uint8_t width;
     } link_t;
 
-    for (unsigned i = 0; i < vertices_.length; i++)
+    വേണ്ടി (unsigned i = 0; i < vertices_.length; i++)
     {
-      for (const auto& l : vertices_[i].obj.real_links)
+      വേണ്ടി (സ്ഥിരം auto& l : vertices_[i].obj.real_links)
       {
         link_t link {
           (uint16_t) i, (uint16_t) l.objidx,
           (uint16_t) l.position, (uint8_t) l.width
         };
-        fwrite ((void*) &link, sizeof (link), 1, f);
+        fwrite ((ശൂന്യം*) &link, വലുപ്പം (link), 1, f);
       }
     }
 
@@ -1674,164 +1674,164 @@ public:
   }
 #endif
 
-  unsigned num_roots_for_space (unsigned space) const
+  unsigned അക്കം_roots_for_space_2 (unsigned space) സ്ഥിരം
   {
-    return num_roots_for_space_[space];
+    തിരികെ അക്കം_roots_for_space[space];
   }
 
-  unsigned next_space () const
+  unsigned next_space () സ്ഥിരം
   {
-    return num_roots_for_space_.length;
+    തിരികെ അക്കം_roots_for_space.length;
   }
 
-  graph_result_t<void> move_to_new_space (const hb_set_t& indices)
+  graph_result_t<ശൂന്യം> move_to_new_space (സ്ഥിരം hb_set_t& indices)
   {
-    if (unlikely (num_roots_for_space_.length >= HB_REPACKER_MAX_SPACES))
+    എങ്കിൽ (unlikely (അക്കം_roots_for_space.length >= HB_REPACKER_MAX_SPACES))
     {
-      DEBUG_MSG (SUBSET_REPACK, nullptr,
+      DEBUG_സന്ദേശം (SUBSET_REPACK, nullptr,
                  "move_to_new_space: num of spaces %u exceeds HB_REPACKER_MAX_SPACES.",
-                 num_roots_for_space_.length);
-      return Err(LIMIT_EXCEEDED);
+                 അക്കം_roots_for_space.length);
+      തിരികെ Err(LIMIT_EXCEEDED);
     }
-    num_roots_for_space_.push (0);
-    TRY (graph_result_t<void>::from (num_roots_for_space_, ALLOCATION_FAILURE));
-    unsigned new_space = num_roots_for_space_.length - 1;
+    അക്കം_roots_for_space.push (0);
+    TRY (graph_result_t<ശൂന്യം>::from (അക്കം_roots_for_space, ALLOCATION_FAILURE));
+    unsigned new_space = അക്കം_roots_for_space.length - 1;
 
-    for (unsigned index : indices) {
-      if (unlikely (index >= vertices_.length))
-        return Err(OUT_OF_BOUNDS);
+    വേണ്ടി (unsigned index : indices) {
+      എങ്കിൽ (unlikely (index >= vertices_.length))
+        തിരികെ Err(OUT_OF_BOUNDS);
       auto& node = vertices_[index];
-      num_roots_for_space_[node.space] = num_roots_for_space_[node.space] - 1;
-      num_roots_for_space_[new_space] = num_roots_for_space_[new_space] + 1;
+      അക്കം_roots_for_space[node.space] = അക്കം_roots_for_space[node.space] - 1;
+      അക്കം_roots_for_space[new_space] = അക്കം_roots_for_space[new_space] + 1;
       node.space = new_space;
-      distance_invalid = true;
-      positions_invalid = true;
+      distance_invalid = സത്യം;
+      positions_invalid = സത്യം;
     }
-    return Ok();
+    തിരികെ Ok();
   }
 
-  unsigned space_for (unsigned index, unsigned* root = nullptr) const
+  unsigned space_for (unsigned index, unsigned* വേര് = nullptr) സ്ഥിരം
   {
-    while (true)
+    ആകുമ്പോൾ (സത്യം)
     {
-      assert (index < vertices_.length);
-      const auto& node = vertices_[index];
-      if (node.space)
+      പ്രതിജ്ഞാ (index < vertices_.length);
+      സ്ഥിരം auto& node = vertices_[index];
+      എങ്കിൽ (node.space)
       {
-        if (root != nullptr)
-          *root = index;
-        return node.space;
+        എങ്കിൽ (വേര് != nullptr)
+          *വേര് = index;
+        തിരികെ node.space;
       }
 
-      if (!node.incoming_edges ())
+      എങ്കിൽ (!node.incoming_edges ())
       {
-        if (root)
-          *root = index;
-        return 0;
+        എങ്കിൽ (വേര്)
+          *വേര് = index;
+        തിരികെ 0;
       }
 
       index = *node.parents_iter ();
     }
   }
 
-  size_t total_size_in_bytes () const {
+  size_t total_size_in_bytes () സ്ഥിരം {
     size_t total_size = 0;
-    unsigned count = vertices_.length;
-    for (unsigned i = 0; i < count; i++) {
+    unsigned എണ്ണം = vertices_.length;
+    വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++) {
       size_t size = vertices_.arrayZ[i].table_size ();
       total_size += size;
     }
-    return total_size;
+    തിരികെ total_size;
   }
 
 
- private:
+ സ്വകാര്യ:
 
-  void print_orphaned_nodes ()
+  ശൂന്യം print_orphaned_nodes ()
   {
-    if (!DEBUG_ENABLED(SUBSET_REPACK)) return;
+    എങ്കിൽ (!DEBUG_ENABLED(SUBSET_REPACK)) തിരികെ;
 
-    DEBUG_MSG (SUBSET_REPACK, nullptr, "Graph is not fully connected.");
+    DEBUG_സന്ദേശം (SUBSET_REPACK, nullptr, "Graph is not fully connected.");
 
-    parents_invalid = true;
-    (void) update_parents();
+    parents_invalid = സത്യം;
+    (ശൂന്യം) update_parents();
 
-    if (root().incoming_edges ()) {
-      DEBUG_MSG (SUBSET_REPACK, nullptr, "Root node has incoming edges.");
+    എങ്കിൽ (വേര്().incoming_edges ()) {
+      DEBUG_സന്ദേശം (SUBSET_REPACK, nullptr, "Root node has incoming edges.");
     }
 
-    for (unsigned i = 0; i < vertices_.length; i++)
+    വേണ്ടി (unsigned i = 0; i < vertices_.length; i++)
     {
-      const auto& v = vertices_[i];
-      if (!v.incoming_edges ())
-        DEBUG_MSG (SUBSET_REPACK, nullptr, "Node %u is orphaned.", i);
+      സ്ഥിരം auto& v = vertices_[i];
+      എങ്കിൽ (!v.incoming_edges ())
+        DEBUG_സന്ദേശം (SUBSET_REPACK, nullptr, "Node %u is orphaned.", i);
     }
   }
 
   /*
    * Returns the numbers of incoming edges that are 24 or 32 bits wide.
    */
-  unsigned wide_parents (unsigned node_idx, hb_set_t& parents) const
+  unsigned wide_parents (unsigned കണ്ണി_idx, hb_set_t& parents) സ്ഥിരം
   {
-    unsigned count = 0;
-    for (unsigned p : vertices_[node_idx].parents_iter ())
+    unsigned എണ്ണം = 0;
+    വേണ്ടി (unsigned p : vertices_[കണ്ണി_idx].parents_iter ())
     {
       // Only real links can be wide
-      for (const auto& l : vertices_[p].obj().real_links)
+      വേണ്ടി (സ്ഥിരം auto& l : vertices_[p].obj().real_links)
       {
-        if (l.objidx == node_idx
+        എങ്കിൽ (l.objidx == കണ്ണി_idx
             && (l.width == 3 || l.width == 4)
             && !l.is_signed)
         {
-          count++;
+          എണ്ണം++;
           parents.add (p);
         }
       }
     }
-    return count;
+    തിരികെ എണ്ണം;
   }
 
- public:
+ പൊതു:
   /*
    * Creates a map from objid to # of incoming edges.
    */
-  graph_result_t<void> update_parents ()
+  graph_result_t<ശൂന്യം> update_parents ()
   {
-    if (!parents_invalid) return Ok();
+    എങ്കിൽ (!parents_invalid) തിരികെ Ok();
 
-    unsigned count = vertices_.length;
+    unsigned എണ്ണം = vertices_.length;
 
-    for (unsigned i = 0; i < count; i++)
+    വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++)
       vertices_.arrayZ[i].reset_parents ();
 
-    for (unsigned p = 0; p < count; p++)
+    വേണ്ടി (unsigned p = 0; p < എണ്ണം; p++)
     {
-      for (const auto& l : vertices_.arrayZ[p].obj().real_links)
+      വേണ്ടി (സ്ഥിരം auto& l : vertices_.arrayZ[p].obj().real_links)
       {
-        if (unlikely (l.objidx >= count)) return Err(INVALID_ARGUMENT);
-        TRY(vertices_[l.objidx].add_parent (p, false));
+        എങ്കിൽ (unlikely (l.objidx >= എണ്ണം)) തിരികെ Err(INVALID_ARGUMENT);
+        TRY(vertices_[l.objidx].add_parent (p, അസത്യം));
       }
 
-      for (const auto& l : vertices_.arrayZ[p].obj().virtual_links)
+      വേണ്ടി (സ്ഥിരം auto& l : vertices_.arrayZ[p].obj().virtual_links)
       {
-        if (unlikely (l.objidx >= count)) return Err(INVALID_ARGUMENT);
-        TRY(vertices_[l.objidx].add_parent (p, true));
+        എങ്കിൽ (unlikely (l.objidx >= എണ്ണം)) തിരികെ Err(INVALID_ARGUMENT);
+        TRY(vertices_[l.objidx].add_parent (p, സത്യം));
       }
     }
 
-    parents_invalid = false;
-    return Ok();
+    parents_invalid = അസത്യം;
+    തിരികെ Ok();
   }
 
   /*
    * compute the serialized start and end positions for each vertex.
    */
-  void update_positions ()
+  ശൂന്യം update_positions ()
   {
-    if (!positions_invalid) return;
+    എങ്കിൽ (!positions_invalid) തിരികെ;
 
     unsigned current_pos = 0;
-    for (unsigned i : ordering_)
+    വേണ്ടി (unsigned i : ordering_)
     {
       auto& v = vertices_[i];
       v.start = current_pos;
@@ -1839,16 +1839,16 @@ public:
       v.end = current_pos;
     }
 
-    positions_invalid = false;
+    positions_invalid = അസത്യം;
   }
 
   /*
    * Finds the distance to each object in the graph
    * from the initial node.
    */
-  graph_result_t<void> update_distances ()
+  graph_result_t<ശൂന്യം> update_distances ()
   {
-    if (!distance_invalid) return Ok();
+    എങ്കിൽ (!distance_invalid) തിരികെ Ok();
 
     // Uses Dijkstra's algorithm to find all of the shortest distances.
     // https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
@@ -1860,43 +1860,43 @@ public:
     // According to https://www3.cs.stonybrook.edu/~rezaul/papers/TR-07-54.pdf
     // for practical performance this is faster then using a more advanced queue
     // (such as a fibonacci queue) with a fast decrease priority.
-    unsigned count = vertices_.length;
-    for (unsigned i = 0; i < count; i++)
+    unsigned എണ്ണം = vertices_.length;
+    വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++)
       vertices_.arrayZ[i].distance = hb_int_max (int64_t);
-    vertices_[root_idx ()].distance = 0;
+    vertices_[വേര്_idx ()].distance = 0;
 
     hb_priority_queue_t<int64_t> queue;
-    queue.alloc (count);
-    queue.insert (0, root_idx ());
-    TRY (graph_result_t<void>::from (queue, ALLOCATION_FAILURE));
+    queue.alloc (എണ്ണം);
+    queue.insert (0, വേര്_idx ());
+    TRY (graph_result_t<ശൂന്യം>::from (queue, ALLOCATION_FAILURE));
 
-    hb_vector_t<bool> visited;
+    hb_vector_t<തർക്കം> visited;
     visited.resize (vertices_.length);
-    TRY (graph_result_t<void>::from (visited, ALLOCATION_FAILURE));
+    TRY (graph_result_t<ശൂന്യം>::from (visited, ALLOCATION_FAILURE));
 
-    while (!queue.in_error () && !queue.is_empty ())
+    ആകുമ്പോൾ (!queue.in_error () && !queue.is_empty ())
     {
-      unsigned next_idx = queue.pop_minimum ().second;
-      if (visited[next_idx]) continue;
-      const auto& next = vertices_[next_idx];
+      unsigned next_idx = queue.എടുക്കുക_minimum ().second;
+      എങ്കിൽ (visited[next_idx]) തുടരുക;
+      സ്ഥിരം auto& next = vertices_[next_idx];
       int64_t next_distance = next.distance;
-      visited[next_idx] = true;
+      visited[next_idx] = സത്യം;
 
-      for (const auto& link : next.obj().all_links ())
+      വേണ്ടി (സ്ഥിരം auto& link : next.obj().all_links ())
       {
-        if (unlikely (link.objidx >= vertices_.length))
-          return Err(OUT_OF_BOUNDS);
+        എങ്കിൽ (unlikely (link.objidx >= vertices_.length))
+          തിരികെ Err(OUT_OF_BOUNDS);
 
-        if (visited[link.objidx]) continue;
+        എങ്കിൽ (visited[link.objidx]) തുടരുക;
 
         auto& child_v = vertices_.arrayZ[link.objidx];
-        const auto& child = child_v.obj ();
+        സ്ഥിരം auto& child = child_v.obj ();
         unsigned link_width = link.width ? link.width : 4; // treat virtual offsets as 32 bits wide
         int64_t child_weight = (child.tail - child.head) +
                                ((int64_t) 1 << (link_width * 8)) * (child_v.space + 1);
         int64_t child_distance = next_distance + child_weight;
 
-        if (child_distance < child_v.distance)
+        എങ്കിൽ (child_distance < child_v.distance)
         {
           child_v.distance = child_distance;
           queue.insert (child_distance, link.objidx);
@@ -1904,58 +1904,58 @@ public:
       }
     }
 
-    TRY (graph_result_t<void>::from (queue, ALLOCATION_FAILURE));
-    if (unlikely (!queue.is_empty ()))
+    TRY (graph_result_t<ശൂന്യം>::from (queue, ALLOCATION_FAILURE));
+    എങ്കിൽ (unlikely (!queue.is_empty ()))
     {
       print_orphaned_nodes ();
-      return Err(ORPHANED_NODES);
+      തിരികെ Err(ORPHANED_NODES);
     }
 
-    distance_invalid = false;
-    return Ok();
+    distance_invalid = അസത്യം;
+    തിരികെ Ok();
   }
 
- private:
+ സ്വകാര്യ:
   /*
    * Updates a link in the graph to point to a different object. Corrects the
    * parents vector on the previous and new child nodes.
    */
-  graph_result_t<void> reassign_link (hb_serialize_context_t::object_t::link_t& link,
+  graph_result_t<ശൂന്യം> reassign_link (hb_serialize_context_t::object_t::link_t& link,
                       unsigned parent_idx,
                       unsigned new_idx,
-                      bool is_virtual)
+                      തർക്കം is_virtual)
   {
     unsigned old_idx = link.objidx;
     link.objidx = new_idx;
     vertices_[old_idx].remove_parent (parent_idx);
-    return vertices_[new_idx].add_parent (parent_idx, is_virtual);
+    തിരികെ vertices_[new_idx].add_parent (parent_idx, is_virtual);
   }
 
   /*
    * Updates all objidx's in all links using the provided mapping. Corrects incoming edge counts.
    */
   template<typename Iterator, hb_requires (hb_is_iterator (Iterator))>
-  graph_result_t<void> remap_obj_indices (const hb_map_t& id_map,
+  graph_result_t<ശൂന്യം> remap_obj_indices (സ്ഥിരം hb_map_t& id_map,
                                           Iterator subgraph,
-                                          bool only_wide = false)
+                                          തർക്കം only_wide = അസത്യം)
   {
-    if (!id_map) return Ok();
-    for (unsigned i : subgraph)
+    എങ്കിൽ (!id_map) തിരികെ Ok();
+    വേണ്ടി (unsigned i : subgraph)
     {
       auto& vertex = vertices_[i];
-      unsigned num_real = vertex.obj().real_links.length;
-      unsigned count = 0;
-      for (auto& link : vertex.all_links_writer ())
+      unsigned അക്കം_real = vertex.obj().real_links.length;
+      unsigned എണ്ണം = 0;
+      വേണ്ടി (auto& link : vertex.all_links_writer ())
       {
-        count++;
-        const uint32_t *v;
-        if (!id_map.has (link.objidx, &v)) continue;
-        if (only_wide && (link.is_signed || (link.width != 4 && link.width != 3))) continue;
+        എണ്ണം++;
+        സ്ഥിരം uint32_t *v;
+        എങ്കിൽ (!id_map.has (link.objidx, &v)) തുടരുക;
+        എങ്കിൽ (only_wide && (link.is_signed || (link.width != 4 && link.width != 3))) തുടരുക;
 
-        TRY(reassign_link (link, i, *v, count > num_real));
+        TRY(reassign_link (link, i, *v, എണ്ണം > അക്കം_real));
       }
     }
-    return Ok();
+    തിരികെ Ok();
   }
 
   /*
@@ -1965,74 +1965,74 @@ public:
    * Connected targets will be added to connected and removed from targets. All visited nodes
    * will be added to visited.
    */
-  graph_result_t<void> find_connected_nodes (unsigned start_idx,
+  graph_result_t<ശൂന്യം> find_connected_nodes (unsigned start_idx,
                                              hb_set_t& targets,
                                              hb_set_t& visited,
                                              hb_set_t& connected)
   {
-    TRY (graph_result_t<void>::from (visited, ALLOCATION_FAILURE));
-    if (visited.has (start_idx)) return Ok();
-    if (unlikely (start_idx >= vertices_.length))
+    TRY (graph_result_t<ശൂന്യം>::from (visited, ALLOCATION_FAILURE));
+    എങ്കിൽ (visited.has (start_idx)) തിരികെ Ok();
+    എങ്കിൽ (unlikely (start_idx >= vertices_.length))
     {
-      DEBUG_MSG (SUBSET_REPACK, nullptr,
+      DEBUG_സന്ദേശം (SUBSET_REPACK, nullptr,
                  "find_connected_nodes: unexpected start_idx out of bounds.");
-      return Err(OUT_OF_BOUNDS);
+      തിരികെ Err(OUT_OF_BOUNDS);
     }
 
     // For performance we want to avoid allocating extra memory. So use the ordering_scratch_
     // buffer to implement a stack for DFS.
     ordering_scratch_.resize (vertices_.length);
-    TRY (graph_result_t<void>::from (ordering_scratch_, ALLOCATION_FAILURE));
+    TRY (graph_result_t<ശൂന്യം>::from (ordering_scratch_, ALLOCATION_FAILURE));
 
-    auto& stack = ordering_scratch_;
-    unsigned stack_len = 0;
+    auto& അട്ടി = ordering_scratch_;
+    unsigned അട്ടി_len = 0;
 
-    graph_result_t<void> res = Ok();
-    auto handle_node = [&] (unsigned node_idx) {
-      visited.add (node_idx);
-      if (targets.has (node_idx)) {
-        targets.del (node_idx);
-        connected.add (node_idx);
+    graph_result_t<ശൂന്യം> res = Ok();
+    auto handle_കണ്ണി = [&] (unsigned കണ്ണി_idx) {
+      visited.add (കണ്ണി_idx);
+      എങ്കിൽ (targets.has (കണ്ണി_idx)) {
+        targets.del (കണ്ണി_idx);
+        connected.add (കണ്ണി_idx);
       }
 
-      if (unlikely (stack_len >= stack.length))
+      എങ്കിൽ (unlikely (അട്ടി_len >= അട്ടി.length))
       {
         res = Err(CYCLE_DETECTED);
-        return false;
+        തിരികെ അസത്യം;
       }
-      stack[stack_len++] = node_idx;
-      return true;
+      അട്ടി[അട്ടി_len++] = കണ്ണി_idx;
+      തിരികെ സത്യം;
     };
 
-    if (!handle_node (start_idx)) return res;
+    എങ്കിൽ (!handle_കണ്ണി (start_idx)) തിരികെ res;
 
-    while (stack_len > 0)
+    ആകുമ്പോൾ (അട്ടി_len > 0)
     {
-      unsigned node_idx = stack[--stack_len];
-      const auto& v = vertices_[node_idx];
+      unsigned കണ്ണി_idx = അട്ടി[--അട്ടി_len];
+      സ്ഥിരം auto& v = vertices_[കണ്ണി_idx];
 
       // Graph is treated as undirected so search children and parents of node_idx
-      for (const auto& l : v.obj().all_links ())
+      വേണ്ടി (സ്ഥിരം auto& l : v.obj().all_links ())
       {
         unsigned child_idx = l.objidx;
-        if (visited.has (child_idx)) continue;
-        if (!handle_node (child_idx)) return res;
+        എങ്കിൽ (visited.has (child_idx)) തുടരുക;
+        എങ്കിൽ (!handle_കണ്ണി (child_idx)) തിരികെ res;
       }
 
-      for (unsigned parent_idx : v.parents_iter ())
+      വേണ്ടി (unsigned parent_idx : v.parents_iter ())
       {
-        if (visited.has (parent_idx)) continue;
-        if (!handle_node (parent_idx)) return res;
+        എങ്കിൽ (visited.has (parent_idx)) തുടരുക;
+        എങ്കിൽ (!handle_കണ്ണി (parent_idx)) തിരികെ res;
       }
     }
 
-    TRY (graph_result_t<void>::from (visited, ALLOCATION_FAILURE));
-    TRY (graph_result_t<void>::from (connected, ALLOCATION_FAILURE));
+    TRY (graph_result_t<ശൂന്യം>::from (visited, ALLOCATION_FAILURE));
+    TRY (graph_result_t<ശൂന്യം>::from (connected, ALLOCATION_FAILURE));
 
-    return Ok();
+    തിരികെ Ok();
   }
 
- public:
+ പൊതു:
   // TODO(garretrieger): make private, will need to move most of offset overflow code into graph.
   hb_vector_t<vertex_t> vertices_;
 
@@ -2045,12 +2045,12 @@ public:
   hb_vector_t<unsigned> ordering_;
   hb_vector_t<unsigned> ordering_scratch_;
 
- private:
-  bool parents_invalid = true;
-  bool distance_invalid = true;
-  bool positions_invalid = true;
-  hb_vector_t<unsigned> num_roots_for_space_;
-  hb_vector_t<char*> buffers;
+ സ്വകാര്യ:
+  തർക്കം parents_invalid = സത്യം;
+  തർക്കം distance_invalid = സത്യം;
+  തർക്കം positions_invalid = സത്യം;
+  hb_vector_t<unsigned> അക്കം_roots_for_space;
+  hb_vector_t<അക്ഷരം*> buffers;
 };
 
 }

@@ -27,75 +27,75 @@
 #ifndef HB_RASTER_HH
 #define HB_RASTER_HH
 
-#include "hb.hh"
+#അന്തര്ഭാവ "hb.hh"
 
-#include "hb-raster.h"
+#അന്തര്ഭാവ "hb-raster.h"
 
 /* Visibility clip box for curve flattening, in device pixels.  Curves
  * whose control-point bounding box falls entirely outside the box are
  * replaced by their chord, which is exact for coverage inside the box.
  * Cleared by hb_raster_draw_clear() (and hence after every render). */
-HB_INTERNAL void
+HB_INTERNAL ശൂന്യം
 hb_raster_draw_set_clip_box (hb_raster_draw_t *draw,
-			     float x0, float y0,
-			     float x1, float y1);
+			     ദശാംശം x0, ദശാംശം y0,
+			     ദശാംശം x1, ദശാംശം y1);
 
 /* Estimated sweep work for the accumulated edges: each edge is charged
  * its scanline span plus its column span, both clipped to the surface.
  * Raster paint uses this to precharge its separate pixel budget before
  * rendering a mask. */
 HB_INTERNAL int64_t
-hb_raster_draw_get_pixel_work (const hb_raster_draw_t *draw,
-			       unsigned int max_rows,
-			       unsigned int max_cols);
+hb_raster_draw_get_pixel_work (സ്ഥിരം hb_raster_draw_t *draw,
+			       unsigned പൂർണ്ണസംഖ്യ max_rows,
+			       unsigned പൂർണ്ണസംഖ്യ max_cols);
 
 /* Shared pixel helpers (used by paint and image compositing). */
 
-static HB_ALWAYS_INLINE uint8_t
+സ്ഥിതം HB_ALWAYS_INLINE uint8_t
 hb_raster_div255 (unsigned a)
 {
-  if (true)
+  എങ്കിൽ (സത്യം)
   {
     // An approximation. Slightly faster.
     // https://github.com/linebender/vello/blob/ab58009c8289e83689cd0effc4e34d1c6e8b51f5/sparse_strips/vello_cpu/src/util.rs#L10-L63
-    return (a + 255) >> 8;
+    തിരികെ (a + 255) >> 8;
   }
 
-  return (uint8_t) ((a + 128 + ((a + 128) >> 8)) >> 8);
+  തിരികെ (uint8_t) ((a + 128 + ((a + 128) >> 8)) >> 8);
 }
 
-static HB_ALWAYS_INLINE uint32_t
+സ്ഥിതം HB_ALWAYS_INLINE uint32_t
 hb_raster_pack_pixel (uint8_t b, uint8_t g, uint8_t r, uint8_t a)
 {
-  return (uint32_t) b | ((uint32_t) g << 8) | ((uint32_t) r << 16) | ((uint32_t) a << 24);
+  തിരികെ (uint32_t) b | ((uint32_t) g << 8) | ((uint32_t) r << 16) | ((uint32_t) a << 24);
 }
 
 /* SRC_OVER: premultiplied src over premultiplied dst. */
-static HB_ALWAYS_INLINE uint32_t
+സ്ഥിതം HB_ALWAYS_INLINE uint32_t
 hb_raster_src_over (uint32_t src, uint32_t dst)
 {
   uint8_t sa = (uint8_t) (src >> 24);
-  if (sa == 255) return src;
-  if (sa == 0) return dst;
+  എങ്കിൽ (sa == 255) തിരികെ src;
+  എങ്കിൽ (sa == 0) തിരികെ dst;
   unsigned inv_sa = 255 - sa;
   uint8_t rb = hb_raster_div255 ((dst & 0xFF) * inv_sa) + (uint8_t) (src & 0xFF);
   uint8_t rg = hb_raster_div255 (((dst >> 8) & 0xFF) * inv_sa) + (uint8_t) ((src >> 8) & 0xFF);
   uint8_t rr = hb_raster_div255 (((dst >> 16) & 0xFF) * inv_sa) + (uint8_t) ((src >> 16) & 0xFF);
   uint8_t ra = hb_raster_div255 (((dst >> 24) & 0xFF) * inv_sa) + sa;
-  return (uint32_t) rb | ((uint32_t) rg << 8) | ((uint32_t) rr << 16) | ((uint32_t) ra << 24);
+  തിരികെ (uint32_t) rb | ((uint32_t) rg << 8) | ((uint32_t) rr << 16) | ((uint32_t) ra << 24);
 }
 
 /* Scale a premultiplied pixel by an alpha [0,255]. */
-static HB_ALWAYS_INLINE uint32_t
+സ്ഥിതം HB_ALWAYS_INLINE uint32_t
 hb_raster_alpha_mul (uint32_t px, unsigned a)
 {
-  if (a == 255) return px;
-  if (a == 0) return 0;
+  എങ്കിൽ (a == 255) തിരികെ px;
+  എങ്കിൽ (a == 0) തിരികെ 0;
   uint8_t rb = hb_raster_div255 ((px & 0xFF) * a);
   uint8_t rg = hb_raster_div255 (((px >> 8) & 0xFF) * a);
   uint8_t rr = hb_raster_div255 (((px >> 16) & 0xFF) * a);
   uint8_t ra = hb_raster_div255 (((px >> 24) & 0xFF) * a);
-  return (uint32_t) rb | ((uint32_t) rg << 8) | ((uint32_t) rr << 16) | ((uint32_t) ra << 24);
+  തിരികെ (uint32_t) rb | ((uint32_t) rg << 8) | ((uint32_t) rr << 16) | ((uint32_t) ra << 24);
 }
 
 #endif /* HB_RASTER_HH */

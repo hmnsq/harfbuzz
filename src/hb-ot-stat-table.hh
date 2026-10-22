@@ -25,8 +25,8 @@
 #ifndef HB_OT_STAT_TABLE_HH
 #define HB_OT_STAT_TABLE_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-layout-common.hh"
+#അന്തര്ഭാവ "hb-open-type.hh"
+#അന്തര്ഭാവ "hb-ot-layout-common.hh"
 
 /*
  * STAT -- Style Attributes
@@ -35,9 +35,9 @@
 #define HB_OT_TAG_STAT HB_TAG('S','T','A','T')
 
 
-namespace OT {
+നാമാകാശ OT {
 
-enum
+എണ്ണൽ
 {
   OLDER_SIBLING_FONT_ATTRIBUTE = 0x0001,	/* If set, this axis value table
 						 * provides axis value information
@@ -50,474 +50,474 @@ enum
 						 * fonts include the information
 						 * themselves and are present,
 						 * then this record is ignored. */
-  ELIDABLE_AXIS_VALUE_NAME = 0x0002		/* If set, it indicates that the axis
+  ELIDABLE_AXIS_മൂല്യം_NAME = 0x0002		/* If set, it indicates that the axis
 						 * value represents the “normal” value
 						 * for the axis and may be omitted when
 						 * composing name strings. */
   // Reserved = 0xFFFC				/* Reserved for future use — set to zero. */
 };
 
-static bool axis_value_is_outside_axis_range (hb_tag_t axis_tag, float axis_value,
-                                              const hb_hashmap_t<hb_tag_t, Triple> *user_axes_location)
+സ്ഥിതം തർക്കം axis_മൂല്യം_is_outside_axis_range (hb_tag_t axis_tag, ദശാംശം axis_മൂല്യം,
+                                              സ്ഥിരം hb_hashmap_t<hb_tag_t, Triple> *user_axes_location)
 {
-  if (!user_axes_location->has (axis_tag))
-    return false;
+  എങ്കിൽ (!user_axes_location->has (axis_tag))
+    തിരികെ അസത്യം;
 
   Triple axis_range = user_axes_location->get (axis_tag);
-  return (axis_value < axis_range.minimum || axis_value > axis_range.maximum);
+  തിരികെ (axis_മൂല്യം < axis_range.minimum || axis_മൂല്യം > axis_range.maximum);
 }
 
-struct StatAxisRecord
+ഘടന StatAxisRecord
 {
-  int cmp (hb_tag_t key) const { return tag.cmp (key); }
+  പൂർണ്ണസംഖ്യ cmp (hb_tag_t key) സ്ഥിരം { തിരികെ tag.cmp (key); }
 
-  hb_ot_name_id_t get_name_id () const { return nameID; }
+  hb_ot_name_id_t get_name_id () സ്ഥിരം { തിരികെ nameID; }
 
-  hb_tag_t get_axis_tag () const { return tag; }
+  hb_tag_t get_axis_tag () സ്ഥിരം { തിരികെ tag; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this)));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (likely (c->check_struct (ഇത്)));
   }
 
-  protected:
+  സംരക്ഷിത:
   Tag		tag;		/* A tag identifying the axis of design variation. */
   NameID	nameID;		/* The name ID for entries in the 'name' table that
 				 * provide a display string for this axis. */
   HBUINT16	ordering;	/* A value that applications can use to determine
 				 * primary sorting of face names, or for ordering
 				 * of descriptors when composing family or face names. */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (8);
 };
 
-struct AxisValueFormat1
+ഘടന Axis_മൂല്യം_Format1
 {
-  unsigned int get_axis_index () const { return axisIndex; }
-  float get_value ()             const { return value.to_float (); }
+  unsigned പൂർണ്ണസംഖ്യ get_axis_index () സ്ഥിരം { തിരികെ axisIndex; }
+  ദശാംശം get_മൂല്യം ()             സ്ഥിരം { തിരികെ value.to_float (); }
 
-  hb_ot_name_id_t get_value_name_id () const { return valueNameID; }
+  hb_ot_name_id_t get_മൂല്യം_name_id () സ്ഥിരം { തിരികെ മൂല്യം_Name_ID; }
 
-  hb_tag_t get_axis_tag (const hb_array_t<const StatAxisRecord> axis_records) const
+  hb_tag_t get_axis_tag (സ്ഥിരം hb_array_t<സ്ഥിരം StatAxisRecord> axis_records) സ്ഥിരം
   {
     unsigned axis_idx = get_axis_index ();
-    return axis_records[axis_idx].get_axis_tag ();
+    തിരികെ axis_records[axis_idx].get_axis_tag ();
   }
 
-  bool keep_axis_value (const hb_array_t<const StatAxisRecord> axis_records,
-                        const hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) const
+  തർക്കം keep_axis_മൂല്യം (സ്ഥിരം hb_array_t<സ്ഥിരം StatAxisRecord> axis_records,
+                        സ്ഥിരം hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) സ്ഥിരം
   {
     hb_tag_t axis_tag = get_axis_tag (axis_records);
-    float axis_value = get_value ();
+    ദശാംശം axis_മൂല്യം = get_മൂല്യം ();
 
-    return !axis_value_is_outside_axis_range (axis_tag, axis_value, user_axes_location);
+    തിരികെ !axis_മൂല്യം_is_outside_axis_range (axis_tag, axis_മൂല്യം, user_axes_location);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const hb_array_t<const StatAxisRecord> axis_records) const
+  തർക്കം subset (hb_subset_context_t *c,
+               സ്ഥിരം hb_array_t<സ്ഥിരം StatAxisRecord> axis_records) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    const hb_hashmap_t<hb_tag_t, Triple>* user_axes_location = &c->plan->user_axes_location;
+    TRACE_SUBSET (ഇത്);
+    സ്ഥിരം hb_hashmap_t<hb_tag_t, Triple>* user_axes_location = &c->plan->user_axes_location;
 
-    if (keep_axis_value (axis_records, user_axes_location))
-      return_trace (c->serializer->embed (this));
+    എങ്കിൽ (keep_axis_മൂല്യം (axis_records, user_axes_location))
+      return_trace (c->serializer->embed (ഇത്));
 
-    return_trace (false);
+    return_trace (അസത്യം);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
-  protected:
+  സംരക്ഷിത:
   HBUINT16	format;		/* Format identifier — set to 1. */
   HBUINT16	axisIndex;	/* Zero-base index into the axis record array
 				 * identifying the axis of design variation
 				 * to which the axis value record applies.
 				 * Must be less than designAxisCount. */
   HBUINT16	flags;		/* Flags — see below for details. */
-  NameID	valueNameID;	/* The name ID for entries in the 'name' table
+  NameID	മൂല്യം_Name_ID;	/* The name ID for entries in the 'name' table
 				 * that provide a display string for this
 				 * attribute value. */
   F16DOT16	value;		/* A numeric value for this attribute value. */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (12);
 };
 
-struct AxisValueFormat2
+ഘടന Axis_മൂല്യം_Format2
 {
-  unsigned int get_axis_index () const { return axisIndex; }
-  float get_value ()             const { return nominalValue.to_float (); }
+  unsigned പൂർണ്ണസംഖ്യ get_axis_index () സ്ഥിരം { തിരികെ axisIndex; }
+  ദശാംശം get_മൂല്യം ()             സ്ഥിരം { തിരികെ nominal_മൂല്യം.to_float (); }
 
-  hb_ot_name_id_t get_value_name_id () const { return valueNameID; }
+  hb_ot_name_id_t get_മൂല്യം_name_id () സ്ഥിരം { തിരികെ മൂല്യം_Name_ID; }
 
-  hb_tag_t get_axis_tag (const hb_array_t<const StatAxisRecord> axis_records) const
+  hb_tag_t get_axis_tag (സ്ഥിരം hb_array_t<സ്ഥിരം StatAxisRecord> axis_records) സ്ഥിരം
   {
     unsigned axis_idx = get_axis_index ();
-    return axis_records[axis_idx].get_axis_tag ();
+    തിരികെ axis_records[axis_idx].get_axis_tag ();
   }
 
-  bool keep_axis_value (const hb_array_t<const StatAxisRecord> axis_records,
-                        const hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) const
+  തർക്കം keep_axis_മൂല്യം (സ്ഥിരം hb_array_t<സ്ഥിരം StatAxisRecord> axis_records,
+                        സ്ഥിരം hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) സ്ഥിരം
   {
     hb_tag_t axis_tag = get_axis_tag (axis_records);
-    float axis_value = get_value ();
+    ദശാംശം axis_മൂല്യം = get_മൂല്യം ();
 
-    return !axis_value_is_outside_axis_range (axis_tag, axis_value, user_axes_location);
+    തിരികെ !axis_മൂല്യം_is_outside_axis_range (axis_tag, axis_മൂല്യം, user_axes_location);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const hb_array_t<const StatAxisRecord> axis_records) const
+  തർക്കം subset (hb_subset_context_t *c,
+               സ്ഥിരം hb_array_t<സ്ഥിരം StatAxisRecord> axis_records) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    const hb_hashmap_t<hb_tag_t, Triple>* user_axes_location = &c->plan->user_axes_location;
+    TRACE_SUBSET (ഇത്);
+    സ്ഥിരം hb_hashmap_t<hb_tag_t, Triple>* user_axes_location = &c->plan->user_axes_location;
 
-    if (keep_axis_value (axis_records, user_axes_location))
-      return_trace (c->serializer->embed (this));
+    എങ്കിൽ (keep_axis_മൂല്യം (axis_records, user_axes_location))
+      return_trace (c->serializer->embed (ഇത്));
 
-    return_trace (false);
+    return_trace (അസത്യം);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
-  protected:
+  സംരക്ഷിത:
   HBUINT16	format;		/* Format identifier — set to 2. */
   HBUINT16	axisIndex;	/* Zero-base index into the axis record array
 				 * identifying the axis of design variation
 				 * to which the axis value record applies.
 				 * Must be less than designAxisCount. */
   HBUINT16	flags;		/* Flags — see below for details. */
-  NameID	valueNameID;	/* The name ID for entries in the 'name' table
+  NameID	മൂല്യം_Name_ID;	/* The name ID for entries in the 'name' table
 				 * that provide a display string for this
 				 * attribute value. */
-  F16DOT16	nominalValue;	/* A numeric value for this attribute value. */
-  F16DOT16	rangeMinValue;	/* The minimum value for a range associated
+  F16DOT16	nominal_മൂല്യം;	/* A numeric value for this attribute value. */
+  F16DOT16	range_Min_മൂല്യം;	/* The minimum value for a range associated
 				 * with the specified name ID. */
-  F16DOT16	rangeMaxValue;	/* The maximum value for a range associated
+  F16DOT16	range_Max_മൂല്യം;	/* The maximum value for a range associated
 				 * with the specified name ID. */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (20);
 };
 
-struct AxisValueFormat3
+ഘടന Axis_മൂല്യം_Format3
 {
-  unsigned int get_axis_index () const { return axisIndex; }
-  float get_value ()             const { return value.to_float (); }
+  unsigned പൂർണ്ണസംഖ്യ get_axis_index () സ്ഥിരം { തിരികെ axisIndex; }
+  ദശാംശം get_മൂല്യം ()             സ്ഥിരം { തിരികെ value.to_float (); }
 
-  hb_ot_name_id_t get_value_name_id () const { return valueNameID; }
+  hb_ot_name_id_t get_മൂല്യം_name_id () സ്ഥിരം { തിരികെ മൂല്യം_Name_ID; }
 
-  hb_tag_t get_axis_tag (const hb_array_t<const StatAxisRecord> axis_records) const
+  hb_tag_t get_axis_tag (സ്ഥിരം hb_array_t<സ്ഥിരം StatAxisRecord> axis_records) സ്ഥിരം
   {
     unsigned axis_idx = get_axis_index ();
-    return axis_records[axis_idx].get_axis_tag ();
+    തിരികെ axis_records[axis_idx].get_axis_tag ();
   }
 
-  bool keep_axis_value (const hb_array_t<const StatAxisRecord> axis_records,
-                        const hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) const
+  തർക്കം keep_axis_മൂല്യം (സ്ഥിരം hb_array_t<സ്ഥിരം StatAxisRecord> axis_records,
+                        സ്ഥിരം hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) സ്ഥിരം
   {
     hb_tag_t axis_tag = get_axis_tag (axis_records);
-    float axis_value = get_value ();
+    ദശാംശം axis_മൂല്യം = get_മൂല്യം ();
 
-    return !axis_value_is_outside_axis_range (axis_tag, axis_value, user_axes_location);
+    തിരികെ !axis_മൂല്യം_is_outside_axis_range (axis_tag, axis_മൂല്യം, user_axes_location);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const hb_array_t<const StatAxisRecord> axis_records) const
+  തർക്കം subset (hb_subset_context_t *c,
+               സ്ഥിരം hb_array_t<സ്ഥിരം StatAxisRecord> axis_records) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    const hb_hashmap_t<hb_tag_t, Triple>* user_axes_location = &c->plan->user_axes_location;
+    TRACE_SUBSET (ഇത്);
+    സ്ഥിരം hb_hashmap_t<hb_tag_t, Triple>* user_axes_location = &c->plan->user_axes_location;
 
-    if (keep_axis_value (axis_records, user_axes_location))
-      return_trace (c->serializer->embed (this));
+    എങ്കിൽ (keep_axis_മൂല്യം (axis_records, user_axes_location))
+      return_trace (c->serializer->embed (ഇത്));
 
-    return_trace (false);
+    return_trace (അസത്യം);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
-  protected:
+  സംരക്ഷിത:
   HBUINT16	format;		/* Format identifier — set to 3. */
   HBUINT16	axisIndex;	/* Zero-base index into the axis record array
 				 * identifying the axis of design variation
 				 * to which the axis value record applies.
 				 * Must be less than designAxisCount. */
   HBUINT16	flags;		/* Flags — see below for details. */
-  NameID	valueNameID;	/* The name ID for entries in the 'name' table
+  NameID	മൂല്യം_Name_ID;	/* The name ID for entries in the 'name' table
 				 * that provide a display string for this
 				 * attribute value. */
   F16DOT16	value;		/* A numeric value for this attribute value. */
-  F16DOT16	linkedValue;	/* The numeric value for a style-linked mapping
+  F16DOT16	linked_മൂല്യം;	/* The numeric value for a style-linked mapping
 				 * from this value. */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (16);
 };
 
-struct AxisValueRecord
+ഘടന Axis_മൂല്യം_Record
 {
-  unsigned int get_axis_index () const { return axisIndex; }
-  float get_value ()             const { return value.to_float (); }
+  unsigned പൂർണ്ണസംഖ്യ get_axis_index () സ്ഥിരം { തിരികെ axisIndex; }
+  ദശാംശം get_മൂല്യം ()             സ്ഥിരം { തിരികെ value.to_float (); }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
-  protected:
+  സംരക്ഷിത:
   HBUINT16	axisIndex;	/* Zero-base index into the axis record array
 				 * identifying the axis to which this value
 				 * applies. Must be less than designAxisCount. */
   F16DOT16	value;		/* A numeric value for this attribute value. */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (6);
 };
 
-struct AxisValueFormat4
+ഘടന Axis_മൂല്യം_Format4
 {
-  const AxisValueRecord &get_axis_record (unsigned int axis_index) const
-  { return axisValues.as_array (axisCount)[axis_index]; }
+  സ്ഥിരം Axis_മൂല്യം_Record &get_axis_record (unsigned പൂർണ്ണസംഖ്യ axis_index) സ്ഥിരം
+  { തിരികെ axis_മൂല്യങ്ങൾ_2.as_array (axis_എണ്ണം_2)[axis_index]; }
 
-  bool keep_axis_value (const hb_array_t<const StatAxisRecord> axis_records,
-                        const hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) const
+  തർക്കം keep_axis_മൂല്യം (സ്ഥിരം hb_array_t<സ്ഥിരം StatAxisRecord> axis_records,
+                        സ്ഥിരം hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) സ്ഥിരം
   {
-    hb_array_t<const AxisValueRecord> axis_value_records = axisValues.as_array (axisCount);
+    hb_array_t<സ്ഥിരം Axis_മൂല്യം_Record> axis_മൂല്യം_records = axis_മൂല്യങ്ങൾ_2.as_array (axis_എണ്ണം_2);
 
-    for (const auto& rec : axis_value_records)
+    വേണ്ടി (സ്ഥിരം auto& rec : axis_മൂല്യം_records)
     {
       unsigned axis_idx = rec.get_axis_index ();
-      float axis_value = rec.get_value ();
+      ദശാംശം axis_മൂല്യം = rec.get_മൂല്യം ();
       hb_tag_t axis_tag = axis_records[axis_idx].get_axis_tag ();
 
-      if (axis_value_is_outside_axis_range (axis_tag, axis_value, user_axes_location))
-        return false;
+      എങ്കിൽ (axis_മൂല്യം_is_outside_axis_range (axis_tag, axis_മൂല്യം, user_axes_location))
+        തിരികെ അസത്യം;
     }
 
-    return true;
+    തിരികെ സത്യം;
   }
 
-  bool subset (hb_subset_context_t *c,
-               const hb_array_t<const StatAxisRecord> axis_records) const
+  തർക്കം subset (hb_subset_context_t *c,
+               സ്ഥിരം hb_array_t<സ്ഥിരം StatAxisRecord> axis_records) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    const hb_hashmap_t<hb_tag_t, Triple> *user_axes_location = &c->plan->user_axes_location;
-    if (!keep_axis_value (axis_records, user_axes_location))
-      return_trace (false);
+    TRACE_SUBSET (ഇത്);
+    സ്ഥിരം hb_hashmap_t<hb_tag_t, Triple> *user_axes_location = &c->plan->user_axes_location;
+    എങ്കിൽ (!keep_axis_മൂല്യം (axis_records, user_axes_location))
+      return_trace (അസത്യം);
 
-    unsigned total_size = min_size + axisCount * AxisValueRecord::static_size;
-    auto *out = c->serializer->allocate_size<AxisValueFormat4> (total_size);
-    if (unlikely (!out)) return_trace (false);
-    hb_memcpy (out, this, total_size);
-    return_trace (true);
+    unsigned total_size = min_size + axis_എണ്ണം_2 * Axis_മൂല്യം_Record::static_size;
+    auto *out = c->serializer->allocate_size<Axis_മൂല്യം_Format4> (total_size);
+    എങ്കിൽ (unlikely (!out)) return_trace (അസത്യം);
+    hb_memcpy (out, ഇത്, total_size);
+    return_trace (സത്യം);
   }
 
-  hb_ot_name_id_t get_value_name_id () const { return valueNameID; }
+  hb_ot_name_id_t get_മൂല്യം_name_id () സ്ഥിരം { തിരികെ മൂല്യം_Name_ID; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (ഇത്);
+    return_trace (likely (c->check_struct (ഇത്) &&
 			  hb_barrier () &&
-                          axisValues.sanitize (c, axisCount)));
+                          axis_മൂല്യങ്ങൾ_2.sanitize (c, axis_എണ്ണം_2)));
   }
 
-  protected:
+  സംരക്ഷിത:
   HBUINT16	format;		/* Format identifier — set to 4. */
-  HBUINT16	axisCount;	/* The total number of axes contributing to
+  HBUINT16	axis_എണ്ണം_2;	/* The total number of axes contributing to
 				 * this axis-values combination. */
   HBUINT16	flags;		/* Flags — see below for details. */
-  NameID	valueNameID;	/* The name ID for entries in the 'name' table
+  NameID	മൂല്യം_Name_ID;	/* The name ID for entries in the 'name' table
 				 * that provide a display string for this
 				 * attribute value. */
-  UnsizedArrayOf<AxisValueRecord>
-		axisValues;	/* Array of AxisValue records that provide the
+  UnsizedArrayOf<Axis_മൂല്യം_Record>
+		axis_മൂല്യങ്ങൾ_2;	/* Array of AxisValue records that provide the
 				 * combination of axis values, one for each
 				 * contributing axis. */
-  public:
-  DEFINE_SIZE_ARRAY (8, axisValues);
+  പൊതു:
+  DEFINE_SIZE_ARRAY (8, axis_മൂല്യങ്ങൾ_2);
 };
 
-struct AxisValue
+ഘടന Axis_മൂല്യം
 {
-  float get_value (unsigned int axis_index) const
+  ദശാംശം get_മൂല്യം (unsigned പൂർണ്ണസംഖ്യ axis_index) സ്ഥിരം
   {
-    switch (u.format.v)
+    തിരഞ്ഞെടുപ്പ് (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.get_value ();
-    case 2: hb_barrier (); return u.format2.get_value ();
-    case 3: hb_barrier (); return u.format3.get_value ();
-    case 4: hb_barrier (); return u.format4.get_axis_record (axis_index).get_value ();
-    default:return 0.f;
+    അവസ്ഥ 1: hb_barrier (); തിരികെ u.format1.get_മൂല്യം ();
+    അവസ്ഥ 2: hb_barrier (); തിരികെ u.format2.get_മൂല്യം ();
+    അവസ്ഥ 3: hb_barrier (); തിരികെ u.format3.get_മൂല്യം ();
+    അവസ്ഥ 4: hb_barrier (); തിരികെ u.format4.get_axis_record (axis_index).get_മൂല്യം ();
+    സ്ഥിരസ്ഥിതി:തിരികെ 0.f;
     }
   }
 
-  unsigned int get_axis_index () const
+  unsigned പൂർണ്ണസംഖ്യ get_axis_index () സ്ഥിരം
   {
-    switch (u.format.v)
+    തിരഞ്ഞെടുപ്പ് (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.get_axis_index ();
-    case 2: hb_barrier (); return u.format2.get_axis_index ();
-    case 3: hb_barrier (); return u.format3.get_axis_index ();
+    അവസ്ഥ 1: hb_barrier (); തിരികെ u.format1.get_axis_index ();
+    അവസ്ഥ 2: hb_barrier (); തിരികെ u.format2.get_axis_index ();
+    അവസ്ഥ 3: hb_barrier (); തിരികെ u.format3.get_axis_index ();
     /* case 4: Makes more sense for variable fonts which are handled by fvar in hb-style */
-    default:return -1;
+    സ്ഥിരസ്ഥിതി:തിരികെ -1;
     }
   }
 
-  hb_ot_name_id_t get_value_name_id () const
+  hb_ot_name_id_t get_മൂല്യം_name_id () സ്ഥിരം
   {
-    switch (u.format.v)
+    തിരഞ്ഞെടുപ്പ് (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.get_value_name_id ();
-    case 2: hb_barrier (); return u.format2.get_value_name_id ();
-    case 3: hb_barrier (); return u.format3.get_value_name_id ();
-    case 4: hb_barrier (); return u.format4.get_value_name_id ();
-    default:return HB_OT_NAME_ID_INVALID;
+    അവസ്ഥ 1: hb_barrier (); തിരികെ u.format1.get_മൂല്യം_name_id ();
+    അവസ്ഥ 2: hb_barrier (); തിരികെ u.format2.get_മൂല്യം_name_id ();
+    അവസ്ഥ 3: hb_barrier (); തിരികെ u.format3.get_മൂല്യം_name_id ();
+    അവസ്ഥ 4: hb_barrier (); തിരികെ u.format4.get_മൂല്യം_name_id ();
+    സ്ഥിരസ്ഥിതി:തിരികെ HB_OT_NAME_ID_INVALID;
     }
   }
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) സ്ഥിരം
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-    case 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
-    case 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
-    default:return_trace (c->default_return_value ());
+    എങ്കിൽ (unlikely (!c->may_dispatch (ഇത്, &u.format.v))) തിരികെ c->no_dispatch_return_മൂല്യം ();
+    TRACE_DISPATCH (ഇത്, u.format.v);
+    തിരഞ്ഞെടുപ്പ് (u.format.v) {
+    അവസ്ഥ 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    അവസ്ഥ 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    അവസ്ഥ 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
+    അവസ്ഥ 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
+    സ്ഥിരസ്ഥിതി:return_trace (c->default_return_മൂല്യം ());
     }
   }
 
-  bool keep_axis_value (const hb_array_t<const StatAxisRecord> axis_records,
-                        hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) const
+  തർക്കം keep_axis_മൂല്യം (സ്ഥിരം hb_array_t<സ്ഥിരം StatAxisRecord> axis_records,
+                        hb_hashmap_t<hb_tag_t, Triple> *user_axes_location) സ്ഥിരം
   {
-    switch (u.format.v)
+    തിരഞ്ഞെടുപ്പ് (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.keep_axis_value (axis_records, user_axes_location);
-    case 2: hb_barrier (); return u.format2.keep_axis_value (axis_records, user_axes_location);
-    case 3: hb_barrier (); return u.format3.keep_axis_value (axis_records, user_axes_location);
-    case 4: hb_barrier (); return u.format4.keep_axis_value (axis_records, user_axes_location);
-    default:return false;
+    അവസ്ഥ 1: hb_barrier (); തിരികെ u.format1.keep_axis_മൂല്യം (axis_records, user_axes_location);
+    അവസ്ഥ 2: hb_barrier (); തിരികെ u.format2.keep_axis_മൂല്യം (axis_records, user_axes_location);
+    അവസ്ഥ 3: hb_barrier (); തിരികെ u.format3.keep_axis_മൂല്യം (axis_records, user_axes_location);
+    അവസ്ഥ 4: hb_barrier (); തിരികെ u.format4.keep_axis_മൂല്യം (axis_records, user_axes_location);
+    സ്ഥിരസ്ഥിതി:തിരികെ അസത്യം;
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
-      return_trace (false);
+    TRACE_SANITIZE (ഇത്);
+    എങ്കിൽ (unlikely (!c->check_struct (ഇത്)))
+      return_trace (അസത്യം);
     hb_barrier ();
 
-    switch (u.format.v)
+    തിരഞ്ഞെടുപ്പ് (u.format.v)
     {
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c));
-    case 2: hb_barrier (); return_trace (u.format2.sanitize (c));
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c));
-    case 4: hb_barrier (); return_trace (u.format4.sanitize (c));
-    default:return_trace (true);
+    അവസ്ഥ 1: hb_barrier (); return_trace (u.format1.sanitize (c));
+    അവസ്ഥ 2: hb_barrier (); return_trace (u.format2.sanitize (c));
+    അവസ്ഥ 3: hb_barrier (); return_trace (u.format3.sanitize (c));
+    അവസ്ഥ 4: hb_barrier (); return_trace (u.format4.sanitize (c));
+    സ്ഥിരസ്ഥിതി:return_trace (സത്യം);
     }
   }
 
-  protected:
-  union
+  സംരക്ഷിത:
+  സംഘം
   {
-  struct { HBUINT16 v; }	format;
-  AxisValueFormat1	format1;
-  AxisValueFormat2	format2;
-  AxisValueFormat3	format3;
-  AxisValueFormat4	format4;
+  ഘടന { HBUINT16 v; }	format;
+  Axis_മൂല്യം_Format1	format1;
+  Axis_മൂല്യം_Format2	format2;
+  Axis_മൂല്യം_Format3	format3;
+  Axis_മൂല്യം_Format4	format4;
   } u;
-  public:
+  പൊതു:
   DEFINE_SIZE_UNION (2, format.v);
 };
 
-struct AxisValueOffsetArray: UnsizedArrayOf<Offset16To<AxisValue>>
+ഘടന Axis_മൂല്യം_Offset_Array: UnsizedArrayOf<Offset16To<Axis_മൂല്യം>>
 {
-  bool subset (hb_subset_context_t *c,
-               unsigned axisValueCount,
-               unsigned& count,
-               const hb_array_t<const StatAxisRecord> axis_records) const
+  തർക്കം subset (hb_subset_context_t *c,
+               unsigned axis_മൂല്യം_എണ്ണം,
+               unsigned& എണ്ണം,
+               സ്ഥിരം hb_array_t<സ്ഥിരം StatAxisRecord> axis_records) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (ഇത്);
 
-    auto axisValueOffsets = as_array (axisValueCount);
-    count = 0;
-    for (const auto& offset : axisValueOffsets)
+    auto axis_മൂല്യം_Offsets = as_array (axis_മൂല്യം_എണ്ണം);
+    എണ്ണം = 0;
+    വേണ്ടി (സ്ഥിരം auto& offset : axis_മൂല്യം_Offsets)
     {
-      if (!offset) continue;
+      എങ്കിൽ (!offset) തുടരുക;
       auto o_snap = c->serializer->snapshot ();
       auto *o = c->serializer->embed (offset);
-      if (!o) return_trace (false);
-      if (!o->serialize_subset (c, offset, this, axis_records))
+      എങ്കിൽ (!o) return_trace (അസത്യം);
+      എങ്കിൽ (!o->serialize_subset (c, offset, ഇത്, axis_records))
       {
         c->serializer->revert (o_snap);
-        continue;
+        തുടരുക;
       }
-      count++;
+      എണ്ണം++;
     }
 
-    return_trace (count);
+    return_trace (എണ്ണം);
   }
 };
 
-struct STAT
+ഘടന STAT
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_STAT;
+  സ്ഥിതം constexpr hb_tag_t tableTag = HB_OT_TAG_STAT;
 
-  bool has_data () const { return version.to_int (); }
+  തർക്കം has_data () സ്ഥിരം { തിരികെ version.to_int (); }
 
-  bool get_value (hb_tag_t tag, float *value) const
+  തർക്കം get_മൂല്യം (hb_tag_t tag, ദശാംശം *value) സ്ഥിരം
   {
-    unsigned int axis_index;
-    if (!get_design_axes ().lfind (tag, &axis_index)) return false;
+    unsigned പൂർണ്ണസംഖ്യ axis_index;
+    എങ്കിൽ (!get_design_axes ().lfind (tag, &axis_index)) തിരികെ അസത്യം;
 
-    hb_array_t<const Offset16To<AxisValue>> axis_values = get_axis_value_offsets ();
-    for (unsigned int i = 0; i < axis_values.length; i++)
+    hb_array_t<സ്ഥിരം Offset16To<Axis_മൂല്യം>> axis_മൂല്യങ്ങൾ = get_axis_മൂല്യം_offsets ();
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < axis_മൂല്യങ്ങൾ.length; i++)
     {
-      const AxisValue& axis_value = this+offsetToAxisValueOffsets+axis_values[i];
-      if (axis_value.get_axis_index () == axis_index)
+      സ്ഥിരം Axis_മൂല്യം& axis_മൂല്യം = ഇത്+offset_To_Axis_മൂല്യം_Offsets+axis_മൂല്യങ്ങൾ[i];
+      എങ്കിൽ (axis_മൂല്യം.get_axis_index () == axis_index)
       {
-	if (value)
-	  *value = axis_value.get_value (axis_index);
-	return true;
+	എങ്കിൽ (value)
+	  *value = axis_മൂല്യം.get_മൂല്യം (axis_index);
+	തിരികെ സത്യം;
       }
     }
-    return false;
+    തിരികെ അസത്യം;
   }
 
-  unsigned get_design_axis_count () const { return designAxisCount; }
+  unsigned get_design_axis_എണ്ണം () സ്ഥിരം { തിരികെ design_Axis_എണ്ണം; }
 
-  hb_ot_name_id_t get_axis_record_name_id (unsigned axis_record_index) const
+  hb_ot_name_id_t get_axis_record_name_id (unsigned axis_record_index) സ്ഥിരം
   {
-    if (unlikely (axis_record_index >= designAxisCount)) return HB_OT_NAME_ID_INVALID;
-    const StatAxisRecord &axis_record = get_design_axes ()[axis_record_index];
-    return axis_record.get_name_id ();
+    എങ്കിൽ (unlikely (axis_record_index >= design_Axis_എണ്ണം)) തിരികെ HB_OT_NAME_ID_INVALID;
+    സ്ഥിരം StatAxisRecord &axis_record = get_design_axes ()[axis_record_index];
+    തിരികെ axis_record.get_name_id ();
   }
 
-  unsigned get_axis_value_count () const { return axisValueCount; }
+  unsigned get_axis_മൂല്യം_എണ്ണം () സ്ഥിരം { തിരികെ axis_മൂല്യം_എണ്ണം; }
 
-  hb_ot_name_id_t get_axis_value_name_id (unsigned axis_value_index) const
+  hb_ot_name_id_t get_axis_മൂല്യം_name_id (unsigned axis_മൂല്യം_index) സ്ഥിരം
   {
-    if (unlikely (axis_value_index >= axisValueCount)) return HB_OT_NAME_ID_INVALID;
-    const AxisValue &axis_value = (this + get_axis_value_offsets ()[axis_value_index]);
-    return axis_value.get_value_name_id ();
+    എങ്കിൽ (unlikely (axis_മൂല്യം_index >= axis_മൂല്യം_എണ്ണം)) തിരികെ HB_OT_NAME_ID_INVALID;
+    സ്ഥിരം Axis_മൂല്യം &axis_മൂല്യം = (ഇത് + get_axis_മൂല്യം_offsets ()[axis_മൂല്യം_index]);
+    തിരികെ axis_മൂല്യം.get_മൂല്യം_name_id ();
   }
 
-  void collect_name_ids (hb_hashmap_t<hb_tag_t, Triple> *user_axes_location,
-                         hb_set_t *nameids_to_retain /* OUT */) const
+  ശൂന്യം collect_name_ids (hb_hashmap_t<hb_tag_t, Triple> *user_axes_location,
+                         hb_set_t *nameids_to_retain /* OUT */) സ്ഥിരം
   {
-    if (!has_data ()) return;
+    എങ്കിൽ (!has_data ()) തിരികെ;
 
     + get_design_axes ()
     | hb_map (&StatAxisRecord::get_name_id)
@@ -526,62 +526,62 @@ struct STAT
 
     auto designAxes = get_design_axes ();
 
-    + get_axis_value_offsets ()
-    | hb_map (hb_add (&(this + offsetToAxisValueOffsets)))
-    | hb_filter ([&] (const AxisValue& _)
-                 { return _.keep_axis_value (designAxes, user_axes_location); })
-    | hb_map (&AxisValue::get_value_name_id)
+    + get_axis_മൂല്യം_offsets ()
+    | hb_map (hb_add (&(ഇത് + offset_To_Axis_മൂല്യം_Offsets)))
+    | hb_filter ([&] (സ്ഥിരം Axis_മൂല്യം& _)
+                 { തിരികെ _.keep_axis_മൂല്യം (designAxes, user_axes_location); })
+    | hb_map (&Axis_മൂല്യം::get_മൂല്യം_name_id)
     | hb_sink (nameids_to_retain)
     ;
 
     nameids_to_retain->add (elidedFallbackNameID);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  തർക്കം subset (hb_subset_context_t *c) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    STAT *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ഇത്);
+    STAT *out = c->serializer->embed (ഇത്);
+    എങ്കിൽ (unlikely (!out)) return_trace (അസത്യം);
 
     auto designAxes = get_design_axes ();
-    for (unsigned i = 0; i < (unsigned)designAxisCount; i++)
-      if (unlikely (!c->serializer->embed (designAxes[i])))
-          return_trace (false);
+    വേണ്ടി (unsigned i = 0; i < (unsigned)design_Axis_എണ്ണം; i++)
+      എങ്കിൽ (unlikely (!c->serializer->embed (designAxes[i])))
+          return_trace (അസത്യം);
 
-    if (designAxisCount)
-      c->serializer->check_assign (out->designAxesOffset, this->get_size (),
+    എങ്കിൽ (design_Axis_എണ്ണം)
+      c->serializer->check_assign (out->designAxesOffset, ഇത്->get_size (),
                                    HB_SERIALIZE_ERROR_INT_OVERFLOW);
 
-    unsigned count = 0;
-    out->offsetToAxisValueOffsets.serialize_subset (c, offsetToAxisValueOffsets, this,
-                                                    axisValueCount, count, designAxes);
-    return_trace (c->serializer->check_assign (out->axisValueCount, count, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    unsigned എണ്ണം = 0;
+    out->offset_To_Axis_മൂല്യം_Offsets.serialize_subset (c, offset_To_Axis_മൂല്യം_Offsets, ഇത്,
+                                                    axis_മൂല്യം_എണ്ണം, എണ്ണം, designAxes);
+    return_trace (c->serializer->check_assign (out->axis_മൂല്യം_എണ്ണം, എണ്ണം, HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (ഇത്);
+    return_trace (likely (c->check_struct (ഇത്) &&
 			  hb_barrier () &&
 			  version.major == 1 &&
 			  version.minor > 0 &&
-			  designAxesOffset.sanitize (c, this, designAxisCount) &&
-			  offsetToAxisValueOffsets.sanitize (c, this, axisValueCount, &(this+offsetToAxisValueOffsets))));
+			  designAxesOffset.sanitize (c, ഇത്, design_Axis_എണ്ണം) &&
+			  offset_To_Axis_മൂല്യം_Offsets.sanitize (c, ഇത്, axis_മൂല്യം_എണ്ണം, &(ഇത്+offset_To_Axis_മൂല്യം_Offsets))));
   }
 
-  protected:
-  hb_array_t<const StatAxisRecord> const get_design_axes () const
-  { return (this+designAxesOffset).as_array (designAxisCount); }
+  സംരക്ഷിത:
+  hb_array_t<സ്ഥിരം StatAxisRecord> സ്ഥിരം get_design_axes () സ്ഥിരം
+  { തിരികെ (ഇത്+designAxesOffset).as_array (design_Axis_എണ്ണം); }
 
-  hb_array_t<const Offset16To<AxisValue>> const get_axis_value_offsets () const
-  { return (this+offsetToAxisValueOffsets).as_array (axisValueCount); }
+  hb_array_t<സ്ഥിരം Offset16To<Axis_മൂല്യം>> സ്ഥിരം get_axis_മൂല്യം_offsets () സ്ഥിരം
+  { തിരികെ (ഇത്+offset_To_Axis_മൂല്യം_Offsets).as_array (axis_മൂല്യം_എണ്ണം); }
 
 
-  protected:
+  സംരക്ഷിത:
   FixedVersion<>version;	/* Version of the stat table
 				 * initially set to 0x00010002u */
   HBUINT16	designAxisSize;	/* The size in bytes of each axis record. */
-  HBUINT16	designAxisCount;/* The number of design axis records. In a
+  HBUINT16	design_Axis_എണ്ണം;/* The number of design axis records. In a
 				 * font with an 'fvar' table, this value must be
 				 * greater than or equal to the axisCount value
 				 * in the 'fvar' table. In all fonts, must
@@ -594,9 +594,9 @@ struct STAT
 				 * axes array. If designAxisCount is zero,
 				 * set to zero; if designAxisCount is greater
 				 * than zero, must be greater than zero. */
-  HBUINT16	axisValueCount;	/* The number of axis value tables. */
-  NNOffset32To<AxisValueOffsetArray>
-		offsetToAxisValueOffsets;
+  HBUINT16	axis_മൂല്യം_എണ്ണം;	/* The number of axis value tables. */
+  NNOffset32To<Axis_മൂല്യം_Offset_Array>
+		offset_To_Axis_മൂല്യം_Offsets;
 				/* Offset in bytes from the beginning of
 				 * the STAT table to the start of the design
 				 * axes value offsets array. If axisValueCount
@@ -607,7 +607,7 @@ struct STAT
 				 * names into a particular font model produces
 				 * a subfamily name containing only elidable
 				 * elements. */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (20);
 };
 

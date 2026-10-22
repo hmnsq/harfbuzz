@@ -25,14 +25,14 @@
 #ifndef OT_COLOR_SVG_SVG_HH
 #define OT_COLOR_SVG_SVG_HH
 
-#include "../../../hb-open-type.hh"
-#include "../../../hb-blob.hh"
-#include "../../../hb-limits.hh"
-#include "../../../hb-map.hh"
-#include "../../../hb-paint.hh"
-#include "../../../hb-zlib.hh"
-#include <ctype.h>
-#include <string.h>
+#അന്തര്ഭാവ "../../../hb-open-type.hh"
+#അന്തര്ഭാവ "../../../hb-blob.hh"
+#അന്തര്ഭാവ "../../../hb-limits.hh"
+#അന്തര്ഭാവ "../../../hb-map.hh"
+#അന്തര്ഭാവ "../../../hb-paint.hh"
+#അന്തര്ഭാവ "../../../hb-zlib.hh"
+#അന്തര്ഭാവ <ctype.h>
+#അന്തര്ഭാവ <string.h>
 
 /*
  * SVG -- SVG (Scalable Vector Graphics)
@@ -42,80 +42,80 @@
 #define HB_OT_TAG_SVG HB_TAG('S','V','G',' ')
 
 
-namespace OT {
+നാമാകാശ OT {
 
-static inline hb_blob_t *
+സ്ഥിതം വരിയിൽ hb_blob_t *
 hb_ot_svg_reference_normalized_blob (hb_blob_t *image,
-                                     const char **svg,
+                                     സ്ഥിരം അക്ഷരം **svg,
                                      unsigned *len)
 {
   hb_blob_t *blob = hb_blob_reference (image);
   unsigned data_len = 0;
-  const char *data = hb_blob_get_data (blob, &data_len);
+  സ്ഥിരം അക്ഷരം *data = hb_blob_get_data (blob, &data_len);
 
-  if (!data || !data_len)
-    goto fail;
+  എങ്കിൽ (!data || !data_len)
+    പോകുക fail;
 
-  if (hb_blob_is_gzip (data, data_len))
+  എങ്കിൽ (hb_blob_is_gzip (data, data_len))
   {
     uint32_t expected_size = 0;
-    if (hb_gzip_get_uncompressed_size (data, data_len, &expected_size) &&
+    എങ്കിൽ (hb_gzip_get_uncompressed_size (data, data_len, &expected_size) &&
         unlikely ((size_t) expected_size > (size_t) HB_SVG_MAX_DOCUMENT_SIZE))
-      goto fail;
+      പോകുക fail;
 
     hb_blob_t *uncompressed = hb_blob_decompress_gzip (blob,
                                                        HB_SVG_MAX_DOCUMENT_SIZE);
-    if (!uncompressed)
-      goto fail;
+    എങ്കിൽ (!uncompressed)
+      പോകുക fail;
 
     hb_blob_destroy (blob);
     blob = uncompressed;
     data = hb_blob_get_data (blob, &data_len);
-    if (!data || !data_len)
-      goto fail;
+    എങ്കിൽ (!data || !data_len)
+      പോകുക fail;
   }
 
-  if (unlikely ((size_t) data_len > (size_t) HB_SVG_MAX_DOCUMENT_SIZE))
-    goto fail;
+  എങ്കിൽ (unlikely ((size_t) data_len > (size_t) HB_SVG_MAX_DOCUMENT_SIZE))
+    പോകുക fail;
 
-  if (svg) *svg = data;
-  if (len) *len = data_len;
-  return blob;
+  എങ്കിൽ (svg) *svg = data;
+  എങ്കിൽ (len) *len = data_len;
+  തിരികെ blob;
 
 fail:
   hb_blob_destroy (blob);
-  if (svg) *svg = nullptr;
-  if (len) *len = 0;
-  return nullptr;
+  എങ്കിൽ (svg) *svg = nullptr;
+  എങ്കിൽ (len) *len = 0;
+  തിരികെ nullptr;
 }
 
-struct SVGDocumentIndexEntry
+ഘടന SVGDocumentIndexEntry
 {
-  int cmp (hb_codepoint_t g) const
-  { return g < startGlyphID ? -1 : g > endGlyphID ? 1 : 0; }
+  പൂർണ്ണസംഖ്യ cmp (hb_codepoint_t g) സ്ഥിരം
+  { തിരികെ g < startGlyphID ? -1 : g > endGlyphID ? 1 : 0; }
 
-  hb_codepoint_t get_start_glyph () const
-  { return startGlyphID; }
+  hb_codepoint_t get_start_glyph () സ്ഥിരം
+  { തിരികെ startGlyphID; }
 
-  hb_codepoint_t get_end_glyph () const
-  { return endGlyphID; }
+  hb_codepoint_t get_end_glyph () സ്ഥിരം
+  { തിരികെ endGlyphID; }
 
-  hb_blob_t *reference_blob (hb_blob_t *svg_blob, unsigned int index_offset) const
+  hb_blob_t *reference_blob (hb_blob_t *svg_blob, unsigned പൂർണ്ണസംഖ്യ index_offset) സ്ഥിരം
   {
-    return hb_blob_create_sub_blob (svg_blob,
-				    index_offset + (unsigned int) svgDoc,
+    തിരികെ hb_blob_create_sub_blob (svg_blob,
+				    index_offset + (unsigned പൂർണ്ണസംഖ്യ) svgDoc,
 				    svgDocLength);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  തർക്കം sanitize (hb_sanitize_context_t *c, സ്ഥിരം ശൂന്യം *base) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) &&
 		  hb_barrier () &&
 		  svgDoc.sanitize (c, base, svgDocLength));
   }
 
-  protected:
+  സംരക്ഷിത:
   HBUINT16	startGlyphID;	/* The first glyph ID in the range described by
 				 * this index entry. */
   HBUINT16	endGlyphID;	/* The last glyph ID in the range described by
@@ -125,44 +125,44 @@ struct SVGDocumentIndexEntry
 				 * to an SVG document. Must be non-zero. */
   HBUINT32	svgDocLength;	/* Length of the SVG document.
 				 * Must be non-zero. */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (12);
 };
 
-struct SVG
+ഘടന SVG
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_SVG;
+  സ്ഥിതം constexpr hb_tag_t tableTag = HB_OT_TAG_SVG;
 
-  struct svg_id_span_t
+  ഘടന svg_id_span_t
   {
-    const char *p;
+    സ്ഥിരം അക്ഷരം *p;
     unsigned len;
 
-    bool operator == (const svg_id_span_t &o) const
+    തർക്കം operator == (സ്ഥിരം svg_id_span_t &o) സ്ഥിരം
     {
-      return len == o.len && !memcmp (p, o.p, len);
+      തിരികെ len == o.len && !memcmp (p, o.p, len);
     }
 
-    uint32_t hash () const
+    uint32_t hash () സ്ഥിരം
     {
       uint32_t h = hb_hash (len);
-      for (unsigned i = 0; i < len; i++)
-        h = h * 33u + (unsigned char) p[i];
-      return h;
+      വേണ്ടി (unsigned i = 0; i < len; i++)
+        h = h * 33u + (unsigned അക്ഷരം) p[i];
+      തിരികെ h;
     }
   };
 
-  struct svg_defs_entry_t
+  ഘടന svg_defs_entry_t
   {
     svg_id_span_t id;
     unsigned start;
     unsigned end;
   };
 
-  struct svg_doc_cache_t
+  ഘടന svg_doc_cache_t
   {
     hb_blob_t *blob = nullptr;
-    const char *svg = nullptr;
+    സ്ഥിരം അക്ഷരം *svg = nullptr;
     unsigned len = 0;
     hb_vector_t<svg_defs_entry_t> defs_entries;
     hb_codepoint_t start_glyph = HB_CODEPOINT_INVALID;
@@ -171,76 +171,76 @@ struct SVG
     hb_hashmap_t<svg_id_span_t, hb_pair_t<uint32_t, uint32_t>> id_spans;
   };
 
-  bool has_data () const { return svgDocEntries; }
+  തർക്കം has_data () സ്ഥിരം { തിരികെ svgDocEntries; }
 
-  struct accelerator_t
+  ഘടന accelerator_t
   {
     accelerator_t (hb_face_t *face);
     ~accelerator_t ();
 
-    hb_blob_t *reference_blob_for_glyph (hb_codepoint_t glyph_id) const
+    hb_blob_t *reference_blob_for_glyph (hb_codepoint_t glyph_id) സ്ഥിരം
     {
-      return table->get_glyph_entry (glyph_id).reference_blob (table.get_blob (),
+      തിരികെ table->get_glyph_entry (glyph_id).reference_blob (table.get_blob (),
 							       table->svgDocEntries);
     }
 
-    unsigned get_document_count () const
-    { return table->get_document_count (); }
+    unsigned get_document_എണ്ണം () സ്ഥിരം
+    { തിരികെ table->get_document_എണ്ണം (); }
 
-    bool get_glyph_document_index (hb_codepoint_t glyph_id, unsigned *index) const
-    { return table->get_glyph_document_index (glyph_id, index); }
+    തർക്കം get_glyph_document_index (hb_codepoint_t glyph_id, unsigned *index) സ്ഥിരം
+    { തിരികെ table->get_glyph_document_index (glyph_id, index); }
 
-    bool get_document_glyph_range (unsigned index,
+    തർക്കം get_document_glyph_range (unsigned index,
                                    hb_codepoint_t *start_glyph,
-                                   hb_codepoint_t *end_glyph) const
-    { return table->get_document_glyph_range (index, start_glyph, end_glyph); }
+                                   hb_codepoint_t *end_glyph) സ്ഥിരം
+    { തിരികെ table->get_document_glyph_range (index, start_glyph, end_glyph); }
 
-    bool has_data () const { return table->has_data (); }
+    തർക്കം has_data () സ്ഥിരം { തിരികെ table->has_data (); }
 
-    const svg_doc_cache_t *
+    സ്ഥിരം svg_doc_cache_t *
     get_or_create_doc_cache (hb_blob_t *image,
-                             const char *svg,
+                             സ്ഥിരം അക്ഷരം *svg,
                              unsigned len,
                              unsigned doc_index,
                              hb_codepoint_t start_glyph,
-                             hb_codepoint_t end_glyph) const;
+                             hb_codepoint_t end_glyph) സ്ഥിരം;
 
-    const char *
-    doc_cache_get_svg (const svg_doc_cache_t *doc,
-                       unsigned *len) const;
+    സ്ഥിരം അക്ഷരം *
+    doc_cache_get_svg (സ്ഥിരം svg_doc_cache_t *doc,
+                       unsigned *len) സ്ഥിരം;
 
-    const hb_vector_t<svg_defs_entry_t> *
-    doc_cache_get_defs_entries (const svg_doc_cache_t *doc) const;
+    സ്ഥിരം hb_vector_t<svg_defs_entry_t> *
+    doc_cache_get_defs_entries (സ്ഥിരം svg_doc_cache_t *doc) സ്ഥിരം;
 
-    bool
-    doc_cache_get_glyph_span (const svg_doc_cache_t *doc,
+    തർക്കം
+    doc_cache_get_glyph_span (സ്ഥിരം svg_doc_cache_t *doc,
                               hb_codepoint_t glyph,
                               unsigned *start,
-                              unsigned *end) const;
+                              unsigned *end) സ്ഥിരം;
 
-    bool
-    doc_cache_find_id_span (const svg_doc_cache_t *doc,
+    തർക്കം
+    doc_cache_find_id_span (സ്ഥിരം svg_doc_cache_t *doc,
                             svg_id_span_t id,
                             unsigned *start,
-                            unsigned *end) const;
+                            unsigned *end) സ്ഥിരം;
 
-    bool
-    doc_cache_find_id_cstr (const svg_doc_cache_t *doc,
-                            const char *id,
+    തർക്കം
+    doc_cache_find_id_cstr (സ്ഥിരം svg_doc_cache_t *doc,
+                            സ്ഥിരം അക്ഷരം *id,
                             unsigned *start,
-                            unsigned *end) const;
+                            unsigned *end) സ്ഥിരം;
 
-    bool paint_glyph (hb_font_t *font HB_UNUSED, hb_codepoint_t glyph, hb_paint_funcs_t *funcs, void *data) const
+    തർക്കം paint_glyph (hb_font_t *font HB_UNUSED, hb_codepoint_t glyph, hb_paint_funcs_t *funcs, ശൂന്യം *data) സ്ഥിരം
     {
-      if (!has_data ())
-        return false;
+      എങ്കിൽ (!has_data ())
+        തിരികെ അസത്യം;
 
       hb_blob_t *blob = reference_blob_for_glyph (glyph);
 
-      if (blob == hb_blob_get_empty ())
-        return false;
+      എങ്കിൽ (blob == hb_blob_get_empty ())
+        തിരികെ അസത്യം;
 
-      bool ret = funcs->image (data,
+      തർക്കം ret = funcs->image (data,
 			       blob,
 			       0, 0,
 			       HB_PAINT_IMAGE_FORMAT_SVG,
@@ -249,282 +249,282 @@ struct SVG
 
       hb_blob_destroy (blob);
 
-      return ret;
+      തിരികെ ret;
     }
 
-    private:
+    സ്വകാര്യ:
     svg_doc_cache_t *
     make_doc_cache (hb_blob_t *image,
-                    const char *svg,
+                    സ്ഥിരം അക്ഷരം *svg,
                     unsigned len,
                     hb_codepoint_t start_glyph,
-                    hb_codepoint_t end_glyph) const;
+                    hb_codepoint_t end_glyph) സ്ഥിരം;
 
-    static void destroy_doc_cache (svg_doc_cache_t *doc);
+    സ്ഥിതം ശൂന്യം destroy_doc_cache (svg_doc_cache_t *doc);
 
     hb_blob_ptr_t<SVG> table;
     mutable hb_vector_t<hb_atomic_t<svg_doc_cache_t *>> doc_caches;
-    public:
-    DEFINE_SIZE_STATIC (sizeof (hb_blob_ptr_t<SVG>) +
-                        sizeof (hb_vector_t<hb_atomic_t<svg_doc_cache_t *>>));
+    പൊതു:
+    DEFINE_SIZE_STATIC (വലുപ്പം (hb_blob_ptr_t<SVG>) +
+                        വലുപ്പം (hb_vector_t<hb_atomic_t<svg_doc_cache_t *>>));
   };
 
-  const SVGDocumentIndexEntry &get_glyph_entry (hb_codepoint_t glyph_id) const
-  { return (this+svgDocEntries).bsearch (glyph_id); }
+  സ്ഥിരം SVGDocumentIndexEntry &get_glyph_entry (hb_codepoint_t glyph_id) സ്ഥിരം
+  { തിരികെ (ഇത്+svgDocEntries).bsearch (glyph_id); }
 
-  unsigned get_document_count () const
+  unsigned get_document_എണ്ണം () സ്ഥിരം
   {
-    if (!has_data ())
-      return 0;
-    return (this + svgDocEntries).len;
+    എങ്കിൽ (!has_data ())
+      തിരികെ 0;
+    തിരികെ (ഇത് + svgDocEntries).len;
   }
 
-  bool get_glyph_document_index (hb_codepoint_t glyph_id, unsigned *index) const
+  തർക്കം get_glyph_document_index (hb_codepoint_t glyph_id, unsigned *index) സ്ഥിരം
   {
-    if (!has_data ())
-      return false;
-    return (this + svgDocEntries).bfind (glyph_id, index);
+    എങ്കിൽ (!has_data ())
+      തിരികെ അസത്യം;
+    തിരികെ (ഇത് + svgDocEntries).bfind (glyph_id, index);
   }
 
-  bool get_document_glyph_range (unsigned index,
+  തർക്കം get_document_glyph_range (unsigned index,
                                  hb_codepoint_t *start_glyph,
-                                 hb_codepoint_t *end_glyph) const
+                                 hb_codepoint_t *end_glyph) സ്ഥിരം
   {
-    if (!has_data ())
-      return false;
+    എങ്കിൽ (!has_data ())
+      തിരികെ അസത്യം;
 
-    const auto &entries = this + svgDocEntries;
-    if (index >= entries.len)
-      return false;
+    സ്ഥിരം auto &entries = ഇത് + svgDocEntries;
+    എങ്കിൽ (index >= entries.len)
+      തിരികെ അസത്യം;
 
-    const auto &entry = entries.arrayZ[index];
-    if (start_glyph) *start_glyph = entry.get_start_glyph ();
-    if (end_glyph) *end_glyph = entry.get_end_glyph ();
-    return true;
+    സ്ഥിരം auto &entry = entries.arrayZ[index];
+    എങ്കിൽ (start_glyph) *start_glyph = entry.get_start_glyph ();
+    എങ്കിൽ (end_glyph) *end_glyph = entry.get_end_glyph ();
+    തിരികെ സത്യം;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  (this+svgDocEntries).sanitize_shallow (c)));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (likely (c->check_struct (ഇത്) &&
+			  (ഇത്+svgDocEntries).sanitize_shallow (c)));
   }
 
-  protected:
+  സംരക്ഷിത:
   HBUINT16	version;	/* Table version (starting at 0). */
   Offset32To<SortedArray16Of<SVGDocumentIndexEntry>>
 		svgDocEntries;	/* Offset (relative to the start of the SVG table) to the
 				 * SVG Documents Index. Must be non-zero. */
 				/* Array of SVG Document Index Entries. */
   HBUINT32	reserved;	/* Set to 0. */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (10);
 };
 
-namespace _hb_svg_cache_impl {
+നാമാകാശ _hb_svg_cache_impl {
 
-struct glyph_entry_t
+ഘടന glyph_entry_t
 {
   hb_codepoint_t glyph;
   uint32_t start;
   uint32_t end;
 };
 
-struct id_entry_t
+ഘടന id_entry_t
 {
   SVG::svg_id_span_t id;
   uint32_t start;
   uint32_t end;
 };
 
-struct open_elem_t
+ഘടന open_elem_t
 {
   unsigned start;
   SVG::svg_id_span_t id;
-  bool in_defs_content;
-  bool is_defs;
+  തർക്കം in_defs_content;
+  തർക്കം is_defs;
 };
 
-static const unsigned MAX_DEPTH = 128;
+സ്ഥിതം സ്ഥിരം unsigned MAX_DEPTH = 128;
 
-static inline int
-find_substr (const char *s,
+സ്ഥിതം വരിയിൽ പൂർണ്ണസംഖ്യ
+find_substr (സ്ഥിരം അക്ഷരം *s,
              unsigned n,
              unsigned from,
-             const char *needle,
+             സ്ഥിരം അക്ഷരം *needle,
              unsigned needle_len)
 {
-  if (!needle_len || from >= n || needle_len > n)
-    return -1;
-  for (unsigned i = from; i + needle_len <= n; i++)
-    if (s[i] == needle[0] && !memcmp (s + i, needle, needle_len))
-      return (int) i;
-  return -1;
+  എങ്കിൽ (!needle_len || from >= n || needle_len > n)
+    തിരികെ -1;
+  വേണ്ടി (unsigned i = from; i + needle_len <= n; i++)
+    എങ്കിൽ (s[i] == needle[0] && !memcmp (s + i, needle, needle_len))
+      തിരികെ (പൂർണ്ണസംഖ്യ) i;
+  തിരികെ -1;
 }
 
-static inline bool
-parse_id_in_start_tag (const char *svg,
+സ്ഥിതം വരിയിൽ തർക്കം
+parse_id_in_start_tag (സ്ഥിരം അക്ഷരം *svg,
                        unsigned tag_start,
                        unsigned tag_end,
                        SVG::svg_id_span_t *id)
 {
   unsigned p = tag_start;
-  while (p + 4 <= tag_end)
+  ആകുമ്പോൾ (p + 4 <= tag_end)
   {
-    if (!memcmp (svg + p, "id=\"", 4))
+    എങ്കിൽ (!memcmp (svg + p, "id=\"", 4))
     {
       unsigned b = p + 4;
       unsigned e = b;
-      while (e < tag_end && svg[e] != '"') e++;
-      if (e <= tag_end && e > b)
+      ആകുമ്പോൾ (e < tag_end && svg[e] != '"') e++;
+      എങ്കിൽ (e <= tag_end && e > b)
       {
         *id = {svg + b, e - b};
-        return true;
+        തിരികെ സത്യം;
       }
     }
-    if (!memcmp (svg + p, "id='", 4))
+    എങ്കിൽ (!memcmp (svg + p, "id='", 4))
     {
       unsigned b = p + 4;
       unsigned e = b;
-      while (e < tag_end && svg[e] != '\'') e++;
-      if (e <= tag_end && e > b)
+      ആകുമ്പോൾ (e < tag_end && svg[e] != '\'') e++;
+      എങ്കിൽ (e <= tag_end && e > b)
       {
         *id = {svg + b, e - b};
-        return true;
+        തിരികെ സത്യം;
       }
     }
     p++;
   }
-  return false;
+  തിരികെ അസത്യം;
 }
 
-static inline bool
-parse_glyph_id_span (const SVG::svg_id_span_t &id,
+സ്ഥിതം വരിയിൽ തർക്കം
+parse_glyph_id_span (സ്ഥിരം SVG::svg_id_span_t &id,
                      hb_codepoint_t *glyph)
 {
-  if (id.len <= 5 || memcmp (id.p, "glyph", 5))
-    return false;
+  എങ്കിൽ (id.len <= 5 || memcmp (id.p, "glyph", 5))
+    തിരികെ അസത്യം;
 
   hb_codepoint_t gid = 0;
-  for (unsigned i = 5; i < id.len; i++)
+  വേണ്ടി (unsigned i = 5; i < id.len; i++)
   {
-    unsigned char c = (unsigned char) id.p[i];
-    if (c < '0' || c > '9')
-      return false;
+    unsigned അക്ഷരം c = (unsigned അക്ഷരം) id.p[i];
+    എങ്കിൽ (c < '0' || c > '9')
+      തിരികെ അസത്യം;
     hb_codepoint_t digit = (hb_codepoint_t) (c - '0');
-    if (unlikely (gid > HB_CODEPOINT_INVALID / 10 ||
+    എങ്കിൽ (unlikely (gid > HB_CODEPOINT_INVALID / 10 ||
                   (gid == HB_CODEPOINT_INVALID / 10 &&
                    digit > HB_CODEPOINT_INVALID % 10)))
-      return false;
+      തിരികെ അസത്യം;
     gid = (hb_codepoint_t) (gid * 10 + digit);
   }
 
   *glyph = gid;
-  return true;
+  തിരികെ സത്യം;
 }
 
-static inline bool
-parse_cache_entries_linear (const char *svg,
+സ്ഥിതം വരിയിൽ തർക്കം
+parse_cache_entries_linear (സ്ഥിരം അക്ഷരം *svg,
                             unsigned len,
                             hb_vector_t<SVG::svg_defs_entry_t> *defs_entries,
                             hb_vector_t<glyph_entry_t> *glyph_spans,
                             hb_vector_t<id_entry_t> *id_entries)
 {
-  open_elem_t stack[MAX_DEPTH] = {};
+  open_elem_t അട്ടി[MAX_DEPTH] = {};
   unsigned depth = 0;
-  if (unlikely (!defs_entries->alloc (256) ||
+  എങ്കിൽ (unlikely (!defs_entries->alloc (256) ||
                 !glyph_spans->alloc (256) ||
                 !id_entries->alloc (256)))
-    return false;
+    തിരികെ അസത്യം;
 
   unsigned defs_depth = 0;
   unsigned i = 0;
-  while (i < len)
+  ആകുമ്പോൾ (i < len)
   {
-    if (svg[i] != '<')
+    എങ്കിൽ (svg[i] != '<')
     {
       i++;
-      continue;
+      തുടരുക;
     }
 
-    if (i + 4 <= len && !memcmp (svg + i, "<!--", 4))
+    എങ്കിൽ (i + 4 <= len && !memcmp (svg + i, "<!--", 4))
     {
-      int cend = find_substr (svg, len, i + 4, "-->", 3);
-      if (cend < 0) return false;
+      പൂർണ്ണസംഖ്യ cend = find_substr (svg, len, i + 4, "-->", 3);
+      എങ്കിൽ (cend < 0) തിരികെ അസത്യം;
       i = (unsigned) cend + 3;
-      continue;
+      തുടരുക;
     }
-    if (i + 9 <= len && !memcmp (svg + i, "<![CDATA[", 9))
+    എങ്കിൽ (i + 9 <= len && !memcmp (svg + i, "<![CDATA[", 9))
     {
-      int cend = find_substr (svg, len, i + 9, "]]>", 3);
-      if (cend < 0) return false;
+      പൂർണ്ണസംഖ്യ cend = find_substr (svg, len, i + 9, "]]>", 3);
+      എങ്കിൽ (cend < 0) തിരികെ അസത്യം;
       i = (unsigned) cend + 3;
-      continue;
+      തുടരുക;
     }
 
-    bool closing = (i + 1 < len && svg[i + 1] == '/');
-    bool special = (i + 1 < len && (svg[i + 1] == '!' || svg[i + 1] == '?'));
+    തർക്കം closing = (i + 1 < len && svg[i + 1] == '/');
+    തർക്കം special = (i + 1 < len && (svg[i + 1] == '!' || svg[i + 1] == '?'));
 
     unsigned gt = i + 1;
-    char quote = 0;
-    while (gt < len)
+    അക്ഷരം quote = 0;
+    ആകുമ്പോൾ (gt < len)
     {
-      char c = svg[gt];
-      if (quote)
+      അക്ഷരം c = svg[gt];
+      എങ്കിൽ (quote)
       {
-        if (c == quote) quote = 0;
+        എങ്കിൽ (c == quote) quote = 0;
       }
-      else
+      അല്ലെങ്കിൽ
       {
-        if (c == '"' || c == '\'')
+        എങ്കിൽ (c == '"' || c == '\'')
           quote = c;
-        else if (c == '>')
-          break;
+        അല്ലെങ്കിൽ എങ്കിൽ (c == '>')
+          നിർത്തുക;
       }
       gt++;
     }
-    if (gt >= len)
-      return false;
+    എങ്കിൽ (gt >= len)
+      തിരികെ അസത്യം;
 
-    if (special)
+    എങ്കിൽ (special)
     {
       i = gt + 1;
-      continue;
+      തുടരുക;
     }
 
     unsigned p = i + (closing ? 2 : 1);
-    while (p < gt && isspace ((unsigned char) svg[p])) p++;
-    const char *name = svg + p;
+    ആകുമ്പോൾ (p < gt && isspace ((unsigned അക്ഷരം) svg[p])) p++;
+    സ്ഥിരം അക്ഷരം *name = svg + p;
     unsigned name_len = 0;
-    while (p + name_len < gt)
+    ആകുമ്പോൾ (p + name_len < gt)
     {
-      unsigned char c = (unsigned char) name[name_len];
-      if (!(ISALNUM (c) || c == '_' || c == '-' || c == ':'))
-        break;
+      unsigned അക്ഷരം c = (unsigned അക്ഷരം) name[name_len];
+      എങ്കിൽ (!(ISALNUM (c) || c == '_' || c == '-' || c == ':'))
+        നിർത്തുക;
       name_len++;
     }
-    bool is_defs = (name_len == 4 && !memcmp (name, "defs", 4));
+    തർക്കം is_defs = (name_len == 4 && !memcmp (name, "defs", 4));
 
-    if (closing)
+    എങ്കിൽ (closing)
     {
-      if (!depth)
+      എങ്കിൽ (!depth)
       {
         i = gt + 1;
-        continue;
+        തുടരുക;
       }
 
-      open_elem_t e = stack[--depth];
+      open_elem_t e = അട്ടി[--depth];
       unsigned end = gt + 1;
 
-      if (e.id.len)
+      എങ്കിൽ (e.id.len)
       {
-        if (unlikely (!id_entries->push_or_fail (id_entry_t {e.id, (uint32_t) e.start, (uint32_t) end})))
-          return false;
+        എങ്കിൽ (unlikely (!id_entries->തള്ളുക_or_fail (id_entry_t {e.id, (uint32_t) e.start, (uint32_t) end})))
+          തിരികെ അസത്യം;
 
-        if (e.in_defs_content)
+        എങ്കിൽ (e.in_defs_content)
         {
-          if (unlikely (!defs_entries->push_or_fail ()))
-            return false;
+          എങ്കിൽ (unlikely (!defs_entries->തള്ളുക_or_fail ()))
+            തിരികെ അസത്യം;
           auto &slot = defs_entries->tail ();
           slot.id = e.id;
           slot.start = e.start;
@@ -532,26 +532,26 @@ parse_cache_entries_linear (const char *svg,
         }
 
         hb_codepoint_t gid;
-        if (parse_glyph_id_span (e.id, &gid))
+        എങ്കിൽ (parse_glyph_id_span (e.id, &gid))
         {
-          if (unlikely (!glyph_spans->push_or_fail (glyph_entry_t {gid, (uint32_t) e.start, (uint32_t) end})))
-            return false;
+          എങ്കിൽ (unlikely (!glyph_spans->തള്ളുക_or_fail (glyph_entry_t {gid, (uint32_t) e.start, (uint32_t) end})))
+            തിരികെ അസത്യം;
         }
       }
 
-      if (e.is_defs && defs_depth)
+      എങ്കിൽ (e.is_defs && defs_depth)
         defs_depth--;
 
       i = end;
-      continue;
+      തുടരുക;
     }
 
     SVG::svg_id_span_t id = {};
     parse_id_in_start_tag (svg, i, gt, &id);
 
     unsigned r = gt;
-    while (r > i && isspace ((unsigned char) svg[r - 1])) r--;
-    bool self_closing = (r > i && svg[r - 1] == '/');
+    ആകുമ്പോൾ (r > i && isspace ((unsigned അക്ഷരം) svg[r - 1])) r--;
+    തർക്കം self_closing = (r > i && svg[r - 1] == '/');
 
     open_elem_t e = {};
     e.start = i;
@@ -559,18 +559,18 @@ parse_cache_entries_linear (const char *svg,
     e.in_defs_content = defs_depth > 0;
     e.is_defs = is_defs;
 
-    if (self_closing)
+    എങ്കിൽ (self_closing)
     {
       unsigned end = gt + 1;
-      if (e.id.len)
+      എങ്കിൽ (e.id.len)
       {
-        if (unlikely (!id_entries->push_or_fail (id_entry_t {e.id, (uint32_t) e.start, (uint32_t) end})))
-          return false;
+        എങ്കിൽ (unlikely (!id_entries->തള്ളുക_or_fail (id_entry_t {e.id, (uint32_t) e.start, (uint32_t) end})))
+          തിരികെ അസത്യം;
 
-        if (e.in_defs_content)
+        എങ്കിൽ (e.in_defs_content)
         {
-          if (unlikely (!defs_entries->push_or_fail ()))
-            return false;
+          എങ്കിൽ (unlikely (!defs_entries->തള്ളുക_or_fail ()))
+            തിരികെ അസത്യം;
           auto &slot = defs_entries->tail ();
           slot.id = e.id;
           slot.start = e.start;
@@ -578,56 +578,56 @@ parse_cache_entries_linear (const char *svg,
         }
 
         hb_codepoint_t gid;
-        if (parse_glyph_id_span (e.id, &gid))
+        എങ്കിൽ (parse_glyph_id_span (e.id, &gid))
         {
-          if (unlikely (!glyph_spans->push_or_fail (glyph_entry_t {gid, (uint32_t) e.start, (uint32_t) end})))
-            return false;
+          എങ്കിൽ (unlikely (!glyph_spans->തള്ളുക_or_fail (glyph_entry_t {gid, (uint32_t) e.start, (uint32_t) end})))
+            തിരികെ അസത്യം;
         }
       }
     }
-    else
+    അല്ലെങ്കിൽ
     {
-      if (unlikely (depth >= MAX_DEPTH))
-        return false;
-      stack[depth++] = e;
-      if (is_defs)
+      എങ്കിൽ (unlikely (depth >= MAX_DEPTH))
+        തിരികെ അസത്യം;
+      അട്ടി[depth++] = e;
+      എങ്കിൽ (is_defs)
         defs_depth++;
     }
 
     i = gt + 1;
   }
 
-  return true;
+  തിരികെ സത്യം;
 }
 
 } /* namespace _hb_svg_cache_impl */
 
-inline
+വരിയിൽ
 SVG::accelerator_t::accelerator_t (hb_face_t *face)
 {
   table = hb_sanitize_context_t ().reference_table<SVG> (face);
   doc_caches.init ();
-  unsigned doc_count = table->get_document_count ();
-  if (doc_count && unlikely (!doc_caches.resize (doc_count)))
+  unsigned doc_എണ്ണം = table->get_document_എണ്ണം ();
+  എങ്കിൽ (doc_എണ്ണം && unlikely (!doc_caches.resize (doc_എണ്ണം)))
     doc_caches.clear ();
-  for (unsigned i = 0; i < doc_caches.length; i++)
+  വേണ്ടി (unsigned i = 0; i < doc_caches.length; i++)
     doc_caches.arrayZ[i].set_relaxed (nullptr);
 }
 
-inline
+വരിയിൽ
 SVG::accelerator_t::~accelerator_t ()
 {
-  for (unsigned i = 0; i < doc_caches.length; i++)
+  വേണ്ടി (unsigned i = 0; i < doc_caches.length; i++)
     destroy_doc_cache (doc_caches.arrayZ[i].get_relaxed ());
   doc_caches.fini ();
   table.destroy ();
 }
 
-inline void
+വരിയിൽ ശൂന്യം
 SVG::accelerator_t::destroy_doc_cache (svg_doc_cache_t *doc)
 {
-  if (!doc)
-    return;
+  എങ്കിൽ (!doc)
+    തിരികെ;
   doc->glyph_spans.fini ();
   doc->defs_entries.fini ();
   doc->id_spans.fini ();
@@ -635,18 +635,18 @@ SVG::accelerator_t::destroy_doc_cache (svg_doc_cache_t *doc)
   hb_free (doc);
 }
 
-inline SVG::svg_doc_cache_t *
+വരിയിൽ SVG::svg_doc_cache_t *
 SVG::accelerator_t::make_doc_cache (hb_blob_t *image,
-                                    const char *svg,
+                                    സ്ഥിരം അക്ഷരം *svg,
                                     unsigned len,
                                     hb_codepoint_t start_glyph,
-                                    hb_codepoint_t end_glyph) const
+                                    hb_codepoint_t end_glyph) സ്ഥിരം
 {
-  static const uint32_t INVALID_SPAN = 0xFFFFFFFFu;
+  സ്ഥിതം സ്ഥിരം uint32_t INVALID_SPAN = 0xFFFFFFFFu;
 
-  auto *doc = (svg_doc_cache_t *) hb_malloc (sizeof (svg_doc_cache_t));
-  if (!doc)
-    return nullptr;
+  auto *doc = (svg_doc_cache_t *) hb_malloc (വലുപ്പം (svg_doc_cache_t));
+  എങ്കിൽ (!doc)
+    തിരികെ nullptr;
 
   doc->blob = nullptr;
   doc->svg = nullptr;
@@ -663,26 +663,26 @@ SVG::accelerator_t::make_doc_cache (hb_blob_t *image,
   doc->start_glyph = start_glyph;
   doc->end_glyph = end_glyph;
 
-  if (unlikely (start_glyph == HB_CODEPOINT_INVALID || end_glyph < start_glyph))
+  എങ്കിൽ (unlikely (start_glyph == HB_CODEPOINT_INVALID || end_glyph < start_glyph))
   {
     destroy_doc_cache (doc);
-    return nullptr;
+    തിരികെ nullptr;
   }
 
-  unsigned glyph_count = end_glyph - start_glyph + 1;
-  if (!doc->glyph_spans.resize ((int) glyph_count))
+  unsigned glyph_എണ്ണം = end_glyph - start_glyph + 1;
+  എങ്കിൽ (!doc->glyph_spans.resize ((പൂർണ്ണസംഖ്യ) glyph_എണ്ണം))
   {
     destroy_doc_cache (doc);
-    return nullptr;
+    തിരികെ nullptr;
   }
-  for (unsigned i = 0; i < glyph_count; i++)
+  വേണ്ടി (unsigned i = 0; i < glyph_എണ്ണം; i++)
     doc->glyph_spans.arrayZ[i] = hb_pair_t<uint32_t, uint32_t> (INVALID_SPAN, INVALID_SPAN);
 
   hb_vector_t<_hb_svg_cache_impl::glyph_entry_t> glyph_spans;
   glyph_spans.init ();
   hb_vector_t<_hb_svg_cache_impl::id_entry_t> id_entries;
   id_entries.init ();
-  if (!_hb_svg_cache_impl::parse_cache_entries_linear (svg, len,
+  എങ്കിൽ (!_hb_svg_cache_impl::parse_cache_entries_linear (svg, len,
                                                        &doc->defs_entries,
                                                        &glyph_spans,
                                                        &id_entries))
@@ -690,136 +690,136 @@ SVG::accelerator_t::make_doc_cache (hb_blob_t *image,
     id_entries.fini ();
     glyph_spans.fini ();
     destroy_doc_cache (doc);
-    return nullptr;
+    തിരികെ nullptr;
   }
 
-  for (unsigned i = 0; i < glyph_spans.length; i++)
+  വേണ്ടി (unsigned i = 0; i < glyph_spans.length; i++)
   {
-    const auto &span = glyph_spans.arrayZ[i];
-    if (unlikely (span.glyph < start_glyph || span.glyph > end_glyph))
-      continue;
+    സ്ഥിരം auto &span = glyph_spans.arrayZ[i];
+    എങ്കിൽ (unlikely (span.glyph < start_glyph || span.glyph > end_glyph))
+      തുടരുക;
     doc->glyph_spans.arrayZ[span.glyph - start_glyph] = hb_pair_t<uint32_t, uint32_t> (span.start, span.end);
   }
 
-  for (unsigned i = 0; i < id_entries.length; i++)
+  വേണ്ടി (unsigned i = 0; i < id_entries.length; i++)
   {
-    const auto &e = id_entries.arrayZ[i];
+    സ്ഥിരം auto &e = id_entries.arrayZ[i];
     hb_pair_t<uint32_t, uint32_t> *out = nullptr;
-    if (doc->id_spans.has (e.id, &out))
-      continue;
-    if (unlikely (!doc->id_spans.set (e.id, hb_pair_t<uint32_t, uint32_t> (e.start, e.end))))
+    എങ്കിൽ (doc->id_spans.has (e.id, &out))
+      തുടരുക;
+    എങ്കിൽ (unlikely (!doc->id_spans.set (e.id, hb_pair_t<uint32_t, uint32_t> (e.start, e.end))))
     {
       id_entries.fini ();
       glyph_spans.fini ();
       destroy_doc_cache (doc);
-      return nullptr;
+      തിരികെ nullptr;
     }
   }
 
   id_entries.fini ();
   glyph_spans.fini ();
-  return doc;
+  തിരികെ doc;
 }
 
-inline const SVG::svg_doc_cache_t *
+വരിയിൽ സ്ഥിരം SVG::svg_doc_cache_t *
 SVG::accelerator_t::get_or_create_doc_cache (hb_blob_t *image,
-                                              const char *svg,
+                                              സ്ഥിരം അക്ഷരം *svg,
                                               unsigned len,
                                               unsigned doc_index,
                                               hb_codepoint_t start_glyph,
-                                              hb_codepoint_t end_glyph) const
+                                              hb_codepoint_t end_glyph) സ്ഥിരം
 {
-  if (doc_index >= doc_caches.length)
-    return nullptr;
+  എങ്കിൽ (doc_index >= doc_caches.length)
+    തിരികെ nullptr;
 
   auto &slot = doc_caches.arrayZ[doc_index];
   auto *doc = slot.get_acquire ();
-  if (doc)
-    return doc;
+  എങ്കിൽ (doc)
+    തിരികെ doc;
 
   auto *fresh = make_doc_cache (image, svg, len, start_glyph, end_glyph);
-  if (!fresh)
-    return nullptr;
+  എങ്കിൽ (!fresh)
+    തിരികെ nullptr;
 
   auto *expected = (svg_doc_cache_t *) nullptr;
-  if (slot.cmpexch (expected, fresh))
-    return fresh;
+  എങ്കിൽ (slot.cmpexch (expected, fresh))
+    തിരികെ fresh;
 
   destroy_doc_cache (fresh);
-  return expected;
+  തിരികെ expected;
 }
 
-inline const char *
-SVG::accelerator_t::doc_cache_get_svg (const svg_doc_cache_t *doc,
-                                       unsigned *len) const
+വരിയിൽ സ്ഥിരം അക്ഷരം *
+SVG::accelerator_t::doc_cache_get_svg (സ്ഥിരം svg_doc_cache_t *doc,
+                                       unsigned *len) സ്ഥിരം
 {
-  if (!doc)
+  എങ്കിൽ (!doc)
   {
-    if (len) *len = 0;
-    return nullptr;
+    എങ്കിൽ (len) *len = 0;
+    തിരികെ nullptr;
   }
-  if (len) *len = doc->len;
-  return doc->svg;
+  എങ്കിൽ (len) *len = doc->len;
+  തിരികെ doc->svg;
 }
 
-inline const hb_vector_t<SVG::svg_defs_entry_t> *
-SVG::accelerator_t::doc_cache_get_defs_entries (const svg_doc_cache_t *doc) const
+വരിയിൽ സ്ഥിരം hb_vector_t<SVG::svg_defs_entry_t> *
+SVG::accelerator_t::doc_cache_get_defs_entries (സ്ഥിരം svg_doc_cache_t *doc) സ്ഥിരം
 {
-  return doc ? &doc->defs_entries : nullptr;
+  തിരികെ doc ? &doc->defs_entries : nullptr;
 }
 
-inline bool
-SVG::accelerator_t::doc_cache_get_glyph_span (const svg_doc_cache_t *doc,
+വരിയിൽ തർക്കം
+SVG::accelerator_t::doc_cache_get_glyph_span (സ്ഥിരം svg_doc_cache_t *doc,
                                               hb_codepoint_t glyph,
                                               unsigned *start,
-                                              unsigned *end) const
+                                              unsigned *end) സ്ഥിരം
 {
-  static const uint32_t INVALID_SPAN = 0xFFFFFFFFu;
-  if (!doc || doc->start_glyph == HB_CODEPOINT_INVALID ||
+  സ്ഥിതം സ്ഥിരം uint32_t INVALID_SPAN = 0xFFFFFFFFu;
+  എങ്കിൽ (!doc || doc->start_glyph == HB_CODEPOINT_INVALID ||
       glyph < doc->start_glyph || glyph > doc->end_glyph)
-    return false;
+    തിരികെ അസത്യം;
 
-  const auto &span = doc->glyph_spans.arrayZ[glyph - doc->start_glyph];
-  if (span.first == INVALID_SPAN)
-    return false;
-  if (unlikely (span.first > span.second || span.second > doc->len))
-    return false;
+  സ്ഥിരം auto &span = doc->glyph_spans.arrayZ[glyph - doc->start_glyph];
+  എങ്കിൽ (span.first == INVALID_SPAN)
+    തിരികെ അസത്യം;
+  എങ്കിൽ (unlikely (span.first > span.second || span.second > doc->len))
+    തിരികെ അസത്യം;
 
-  if (start) *start = span.first;
-  if (end) *end = span.second;
-  return true;
+  എങ്കിൽ (start) *start = span.first;
+  എങ്കിൽ (end) *end = span.second;
+  തിരികെ സത്യം;
 }
 
-inline bool
-SVG::accelerator_t::doc_cache_find_id_span (const svg_doc_cache_t *doc,
+വരിയിൽ തർക്കം
+SVG::accelerator_t::doc_cache_find_id_span (സ്ഥിരം svg_doc_cache_t *doc,
                                             svg_id_span_t id,
                                             unsigned *start,
-                                            unsigned *end) const
+                                            unsigned *end) സ്ഥിരം
 {
-  if (!doc || !id.p || !id.len)
-    return false;
+  എങ്കിൽ (!doc || !id.p || !id.len)
+    തിരികെ അസത്യം;
   hb_pair_t<uint32_t, uint32_t> *span = nullptr;
-  if (!doc->id_spans.has (id, &span))
-    return false;
-  if (unlikely (span->first > span->second || span->second > doc->len))
-    return false;
-  if (start) *start = span->first;
-  if (end) *end = span->second;
-  return true;
+  എങ്കിൽ (!doc->id_spans.has (id, &span))
+    തിരികെ അസത്യം;
+  എങ്കിൽ (unlikely (span->first > span->second || span->second > doc->len))
+    തിരികെ അസത്യം;
+  എങ്കിൽ (start) *start = span->first;
+  എങ്കിൽ (end) *end = span->second;
+  തിരികെ സത്യം;
 }
 
-inline bool
-SVG::accelerator_t::doc_cache_find_id_cstr (const svg_doc_cache_t *doc,
-                                            const char *id,
+വരിയിൽ തർക്കം
+SVG::accelerator_t::doc_cache_find_id_cstr (സ്ഥിരം svg_doc_cache_t *doc,
+                                            സ്ഥിരം അക്ഷരം *id,
                                             unsigned *start,
-                                            unsigned *end) const
+                                            unsigned *end) സ്ഥിരം
 {
-  if (!id) return false;
+  എങ്കിൽ (!id) തിരികെ അസത്യം;
   svg_id_span_t key = {id, (unsigned) strlen (id)};
-  return doc_cache_find_id_span (doc, key, start, end);
+  തിരികെ doc_cache_find_id_span (doc, key, start, end);
 }
 
-struct SVG_accelerator_t : SVG::accelerator_t {
+ഘടന SVG_accelerator_t : SVG::accelerator_t {
   SVG_accelerator_t (hb_face_t *face) : SVG::accelerator_t (face) {}
 };
 

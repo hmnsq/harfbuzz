@@ -28,10 +28,10 @@
 #define HB_GOBJECT_H
 #define HB_GOBJECT_H_IN
 
-#include "hb.h"
+#അന്തര്ഭാവ "hb.h"
 
-#include "hb-gobject-enums.h"
-#include "hb-gobject-structs.h"
+#അന്തര്ഭാവ "hb-gobject-enums.h"
+#അന്തര്ഭാവ "hb-gobject-structs.h"
 
 HB_BEGIN_DECLS
 HB_END_DECLS

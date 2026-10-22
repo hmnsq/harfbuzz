@@ -2,71 +2,71 @@
 #define OT_GLYF_SUBSETGLYPH_HH
 
 
-#include "../../hb-open-type.hh"
+#അന്തര്ഭാവ "../../hb-open-type.hh"
 
 
-namespace OT {
+നാമാകാശ OT {
 
-struct glyf_accelerator_t;
+ഘടന glyf_accelerator_t;
 
-namespace glyf_impl {
+നാമാകാശ glyf_impl {
 
 
-struct SubsetGlyph
+ഘടന SubsetGlyph
 {
   hb_codepoint_t old_gid;
   Glyph source_glyph;
   hb_bytes_t dest_start;  /* region of source_glyph to copy first */
   hb_bytes_t dest_end;    /* region of source_glyph to copy second */
-  bool allocated;
+  തർക്കം allocated;
 
-  bool serialize (hb_serialize_context_t *c,
-		  bool use_short_loca,
-		  const hb_subset_plan_t *plan) const
+  തർക്കം serialize (hb_serialize_context_t *c,
+		  തർക്കം use_short_loca,
+		  സ്ഥിരം hb_subset_plan_t *plan) സ്ഥിരം
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ഇത്);
 
     hb_bytes_t dest_glyph = dest_start.copy (c);
     hb_bytes_t end_copy = dest_end.copy (c);
-    if (!end_copy.arrayZ || !dest_glyph.arrayZ) {
-      return false;
+    എങ്കിൽ (!end_copy.arrayZ || !dest_glyph.arrayZ) {
+      തിരികെ അസത്യം;
     }
 
     dest_glyph = hb_bytes_t (&dest_glyph, dest_glyph.length + end_copy.length);
-    unsigned int pad_length = use_short_loca ? padding () : 0;
-    DEBUG_MSG (SUBSET, nullptr, "serialize %u byte glyph, width %u pad %u", dest_glyph.length, dest_glyph.length + pad_length, pad_length);
+    unsigned പൂർണ്ണസംഖ്യ pad_length = use_short_loca ? padding () : 0;
+    DEBUG_സന്ദേശം (SUBSET, nullptr, "serialize %u byte glyph, width %u pad %u", dest_glyph.length, dest_glyph.length + pad_length, pad_length);
 
     HBUINT8 pad;
     pad = 0;
-    while (pad_length > 0)
+    ആകുമ്പോൾ (pad_length > 0)
     {
-      (void) c->embed (pad);
+      (ശൂന്യം) c->embed (pad);
       pad_length--;
     }
 
-    if (unlikely (!dest_glyph.length)) return_trace (true);
+    എങ്കിൽ (unlikely (!dest_glyph.length)) return_trace (സത്യം);
 
-    bool extended = source_glyph.is_extended ();
+    തർക്കം extended = source_glyph.is_extended ();
 
     /* update components gids. */
-    for (auto &_ : Glyph (dest_glyph, old_gid, extended).get_composite_iterator ())
+    വേണ്ടി (auto &_ : Glyph (dest_glyph, old_gid, extended).get_composite_iterator ())
     {
       hb_codepoint_t new_gid;
-      if (plan->new_gid_for_old_gid (_.get_gid (extended), &new_gid))
+      എങ്കിൽ (plan->new_gid_for_old_gid (_.get_gid (extended), &new_gid))
 	const_cast<CompositeGlyphRecord &> (_).set_gid (new_gid, extended);
     }
 
 #ifndef HB_NO_BEYOND_64K
-    if (extended)
+    എങ്കിൽ (extended)
     {
       auto it = Glyph (dest_glyph, old_gid, extended).get_composite_iterator ();
-      if (it)
+      എങ്കിൽ (it)
       {
 	/* lower GID24 to GID16 in components if possible. */
-	char *p = it ? (char *) &*it : nullptr;
-	char *q = p;
-	const char *end = dest_glyph.arrayZ + dest_glyph.length;
-	while (it)
+	അക്ഷരം *p = it ? (അക്ഷരം *) &*it : nullptr;
+	അക്ഷരം *q = p;
+	സ്ഥിരം അക്ഷരം *end = dest_glyph.arrayZ + dest_glyph.length;
+	ആകുമ്പോൾ (it)
 	{
 	  auto &rec = const_cast<CompositeGlyphRecord &> (*it);
 	  ++it;
@@ -95,7 +95,7 @@ struct SubsetGlyph
 
 	hb_memset (p, 0x7A /* TrueType instruction ROFF; harmless */, end - p);
 	p += end - p;
-	dest_glyph = hb_bytes_t (dest_glyph.arrayZ, p - (char *) dest_glyph.arrayZ);
+	dest_glyph = hb_bytes_t (dest_glyph.arrayZ, p - (അക്ഷരം *) dest_glyph.arrayZ);
 
 	// TODO: Padding; & trim serialized bytes.
 	// TODO: Update length in loca. Ugh.
@@ -103,39 +103,39 @@ struct SubsetGlyph
     }
 #endif
 
-    if (plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
+    എങ്കിൽ (plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
       Glyph (dest_glyph, old_gid, extended).drop_hints ();
 
-    if (plan->flags & HB_SUBSET_FLAGS_SET_OVERLAPS_FLAG)
+    എങ്കിൽ (plan->flags & HB_SUBSET_FLAGS_SET_OVERLAPS_FLAG)
       Glyph (dest_glyph, old_gid, extended).set_overlaps_flag ();
 
-    return_trace (true);
+    return_trace (സത്യം);
   }
 
-  bool compile_bytes_with_deltas (const hb_subset_plan_t *plan,
+  തർക്കം compile_bytes_with_deltas (സ്ഥിരം hb_subset_plan_t *plan,
                                   hb_font_t *font,
-                                  const glyf_accelerator_t &glyf)
+                                  സ്ഥിരം glyf_accelerator_t &glyf)
   {
     allocated = source_glyph.compile_bytes_with_deltas (plan, font, glyf, dest_start, dest_end);
-    return allocated;
+    തിരികെ allocated;
   }
 
-  void free_compiled_bytes ()
+  ശൂന്യം free_compiled_bytes ()
   {
-    if (likely (allocated)) {
-      allocated = false;
+    എങ്കിൽ (likely (allocated)) {
+      allocated = അസത്യം;
       dest_start.fini ();
       dest_end.fini ();
     }
   }
 
-  void drop_hints_bytes ()
+  ശൂന്യം drop_hints_bytes ()
   { source_glyph.drop_hints_bytes (dest_start, dest_end); }
 
-  unsigned int      length () const { return dest_start.length + dest_end.length; }
+  unsigned പൂർണ്ണസംഖ്യ      length () സ്ഥിരം { തിരികെ dest_start.length + dest_end.length; }
   /* pad to 2 to ensure 2-byte loca will be ok */
-  unsigned int     padding () const { return length () % 2; }
-  unsigned int padded_size () const { return length () + padding (); }
+  unsigned പൂർണ്ണസംഖ്യ     padding () സ്ഥിരം { തിരികെ length () % 2; }
+  unsigned പൂർണ്ണസംഖ്യ padded_size () സ്ഥിരം { തിരികെ length () + padding (); }
 };
 
 

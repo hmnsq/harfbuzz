@@ -24,23 +24,23 @@
  * Red Hat Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#എങ്കിൽ !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
 #ifndef HB_FACE_H
 #define HB_FACE_H
 
-#include "hb-common.h"
-#include "hb-blob.h"
-#include "hb-map.h"
-#include "hb-set.h"
+#അന്തര്ഭാവ "hb-common.h"
+#അന്തര്ഭാവ "hb-blob.h"
+#അന്തര്ഭാവ "hb-map.h"
+#അന്തര്ഭാവ "hb-set.h"
 
 HB_BEGIN_DECLS
 
 
-HB_EXTERN unsigned int
-hb_face_count (hb_blob_t *blob);
+HB_EXTERN unsigned പൂർണ്ണസംഖ്യ
+hb_face_എണ്ണം (hb_blob_t *blob);
 
 
 /*
@@ -53,32 +53,32 @@ hb_face_count (hb_blob_t *blob);
  * Data type for holding font faces.
  *
  **/
-typedef struct hb_face_t hb_face_t;
+തരനിർവചനം ഘടന hb_face_t hb_face_t;
 
 HB_EXTERN hb_face_t *
 hb_face_create (hb_blob_t    *blob,
-		unsigned int  index);
+		unsigned പൂർണ്ണസംഖ്യ  index);
 
 HB_EXTERN hb_face_t *
 hb_face_create_or_fail (hb_blob_t    *blob,
-			unsigned int  index);
+			unsigned പൂർണ്ണസംഖ്യ  index);
 
 HB_EXTERN hb_face_t *
 hb_face_create_or_fail_using (hb_blob_t    *blob,
-			      unsigned int  index,
-			      const char   *loader_name);
+			      unsigned പൂർണ്ണസംഖ്യ  index,
+			      സ്ഥിരം അക്ഷരം   *loader_name);
 
 HB_EXTERN hb_face_t *
-hb_face_create_from_file_or_fail (const char   *file_name,
-				  unsigned int  index);
+hb_face_create_from_file_or_fail (സ്ഥിരം അക്ഷരം   *file_name,
+				  unsigned പൂർണ്ണസംഖ്യ  index);
 
 HB_EXTERN hb_face_t *
-hb_face_create_from_file_or_fail_using (const char   *file_name,
-					unsigned int  index,
-					const char   *loader_name);
+hb_face_create_from_file_or_fail_using (സ്ഥിരം അക്ഷരം   *file_name,
+					unsigned പൂർണ്ണസംഖ്യ  index,
+					സ്ഥിരം അക്ഷരം   *loader_name);
 
-HB_EXTERN const char **
-hb_face_list_loaders (void);
+HB_EXTERN സ്ഥിരം അക്ഷരം **
+hb_face_list_loaders (ശൂന്യം);
 
 
 /**
@@ -99,35 +99,35 @@ hb_face_list_loaders (void);
  * Since: 0.9.2
  */
 
-typedef hb_blob_t * (*hb_reference_table_func_t)  (hb_face_t *face, hb_tag_t tag, void *user_data);
+തരനിർവചനം hb_blob_t * (*hb_reference_table_func_t)  (hb_face_t *face, hb_tag_t tag, ശൂന്യം *user_data);
 
 /* calls destroy() when not needing user_data anymore */
 HB_EXTERN hb_face_t *
 hb_face_create_for_tables (hb_reference_table_func_t  reference_table_func,
-			   void                      *user_data,
+			   ശൂന്യം                      *user_data,
 			   hb_destroy_func_t          destroy);
 
 HB_EXTERN hb_face_t *
-hb_face_get_empty (void);
+hb_face_get_empty (ശൂന്യം);
 
 HB_EXTERN hb_face_t *
 hb_face_reference (hb_face_t *face);
 
-HB_EXTERN void
+HB_EXTERN ശൂന്യം
 hb_face_destroy (hb_face_t *face);
 
 HB_EXTERN hb_bool_t
 hb_face_set_user_data (hb_face_t          *face,
-		       hb_user_data_key_t *key,
-		       void *              data,
+		       hb_user_data_താക്കോൽ_t *താക്കോൽ_2,
+		       ശൂന്യം *              data,
 		       hb_destroy_func_t   destroy,
 		       hb_bool_t           replace);
 
-HB_EXTERN void *
-hb_face_get_user_data (const hb_face_t    *face,
-		       hb_user_data_key_t *key);
+HB_EXTERN ശൂന്യം *
+hb_face_get_user_data (സ്ഥിരം hb_face_t    *face,
+		       hb_user_data_താക്കോൽ_t *താക്കോൽ_2);
 
-HB_EXTERN void
+HB_EXTERN ശൂന്യം
 hb_face_make_immutable (hb_face_t *face);
 
 HB_EXTERN hb_bool_t
@@ -135,32 +135,32 @@ hb_face_is_immutable (hb_face_t *face);
 
 
 HB_EXTERN hb_blob_t *
-hb_face_reference_table (const hb_face_t *face,
+hb_face_reference_table (സ്ഥിരം hb_face_t *face,
 			 hb_tag_t tag);
 
 HB_EXTERN hb_blob_t *
 hb_face_reference_blob (hb_face_t *face);
 
-HB_EXTERN void
+HB_EXTERN ശൂന്യം
 hb_face_set_index (hb_face_t    *face,
-		   unsigned int  index);
+		   unsigned പൂർണ്ണസംഖ്യ  index);
 
-HB_EXTERN unsigned int
-hb_face_get_index (const hb_face_t *face);
+HB_EXTERN unsigned പൂർണ്ണസംഖ്യ
+hb_face_get_index (സ്ഥിരം hb_face_t *face);
 
-HB_EXTERN void
+HB_EXTERN ശൂന്യം
 hb_face_set_upem (hb_face_t    *face,
-		  unsigned int  upem);
+		  unsigned പൂർണ്ണസംഖ്യ  upem);
 
-HB_EXTERN unsigned int
-hb_face_get_upem (const hb_face_t *face);
+HB_EXTERN unsigned പൂർണ്ണസംഖ്യ
+hb_face_get_upem (സ്ഥിരം hb_face_t *face);
 
-HB_EXTERN void
-hb_face_set_glyph_count (hb_face_t    *face,
-			 unsigned int  glyph_count);
+HB_EXTERN ശൂന്യം
+hb_face_set_glyph_എണ്ണം (hb_face_t    *face,
+			 unsigned പൂർണ്ണസംഖ്യ  glyph_എണ്ണം);
 
-HB_EXTERN unsigned int
-hb_face_get_glyph_count (const hb_face_t *face);
+HB_EXTERN unsigned പൂർണ്ണസംഖ്യ
+hb_face_get_glyph_എണ്ണം (സ്ഥിരം hb_face_t *face);
 
 
 /**
@@ -178,22 +178,22 @@ hb_face_get_glyph_count (const hb_face_t *face);
  *
  * Since: 10.0.0
  */
-typedef unsigned int (*hb_get_table_tags_func_t) (const hb_face_t *face,
-						  unsigned int  start_offset,
-						  unsigned int *table_count, /* IN/OUT */
+തരനിർവചനം unsigned പൂർണ്ണസംഖ്യ (*hb_get_table_tags_func_t) (സ്ഥിരം hb_face_t *face,
+						  unsigned പൂർണ്ണസംഖ്യ  start_offset,
+						  unsigned പൂർണ്ണസംഖ്യ *table_എണ്ണം_2, /* IN/OUT */
 						  hb_tag_t     *table_tags /* OUT */,
-						  void         *user_data);
+						  ശൂന്യം         *user_data);
 
-HB_EXTERN void
+HB_EXTERN ശൂന്യം
 hb_face_set_get_table_tags_func (hb_face_t *face,
 				 hb_get_table_tags_func_t func,
-				 void                    *user_data,
+				 ശൂന്യം                    *user_data,
 				 hb_destroy_func_t        destroy);
 
-HB_EXTERN unsigned int
-hb_face_get_table_tags (const hb_face_t *face,
-			unsigned int  start_offset,
-			unsigned int *table_count, /* IN/OUT */
+HB_EXTERN unsigned പൂർണ്ണസംഖ്യ
+hb_face_get_table_tags (സ്ഥിരം hb_face_t *face,
+			unsigned പൂർണ്ണസംഖ്യ  start_offset,
+			unsigned പൂർണ്ണസംഖ്യ *table_എണ്ണം_2, /* IN/OUT */
 			hb_tag_t     *table_tags /* OUT */);
 
 
@@ -201,20 +201,20 @@ hb_face_get_table_tags (const hb_face_t *face,
  * Character set.
  */
 
-HB_EXTERN void
+HB_EXTERN ശൂന്യം
 hb_face_collect_unicodes (hb_face_t *face,
 			  hb_set_t  *out);
 
-HB_EXTERN void
+HB_EXTERN ശൂന്യം
 hb_face_collect_nominal_glyph_mapping (hb_face_t *face,
 				       hb_map_t  *mapping,
 				       hb_set_t  *unicodes);
 
-HB_EXTERN void
+HB_EXTERN ശൂന്യം
 hb_face_collect_variation_selectors (hb_face_t *face,
 				     hb_set_t  *out);
 
-HB_EXTERN void
+HB_EXTERN ശൂന്യം
 hb_face_collect_variation_unicodes (hb_face_t *face,
 				    hb_codepoint_t variation_selector,
 				    hb_set_t  *out);
@@ -225,16 +225,16 @@ hb_face_collect_variation_unicodes (hb_face_t *face,
  */
 
 HB_EXTERN hb_face_t *
-hb_face_builder_create (void);
+hb_face_builder_create (ശൂന്യം);
 
 HB_EXTERN hb_bool_t
 hb_face_builder_add_table (hb_face_t *face,
 			   hb_tag_t   tag,
 			   hb_blob_t *blob);
 
-HB_EXTERN void
+HB_EXTERN ശൂന്യം
 hb_face_builder_sort_tables (hb_face_t *face,
-                             const hb_tag_t  *tags);
+                             സ്ഥിരം hb_tag_t  *tags);
 
 
 HB_END_DECLS

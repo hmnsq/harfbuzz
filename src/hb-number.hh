@@ -23,19 +23,19 @@
  *
  */
 
-#ifndef HB_NUMBER_HH
-#define HB_NUMBER_HH
+#ifndef HB_സംഖ്യ_HH
+#define HB_സംഖ്യ_HH
 
-HB_INTERNAL bool
-hb_parse_int (const char **pp, const char *end, int *pv,
-	      bool whole_buffer = false);
+HB_INTERNAL തർക്കം
+hb_parse_int (സ്ഥിരം അക്ഷരം **pp, സ്ഥിരം അക്ഷരം *end, പൂർണ്ണസംഖ്യ *pv,
+	      തർക്കം whole_buffer = അസത്യം);
 
-HB_INTERNAL bool
-hb_parse_uint (const char **pp, const char *end, unsigned int *pv,
-	       bool whole_buffer = false, int base = 10);
+HB_INTERNAL തർക്കം
+hb_parse_uint (സ്ഥിരം അക്ഷരം **pp, സ്ഥിരം അക്ഷരം *end, unsigned പൂർണ്ണസംഖ്യ *pv,
+	       തർക്കം whole_buffer = അസത്യം, പൂർണ്ണസംഖ്യ base = 10);
 
-HB_INTERNAL bool
-hb_parse_double (const char **pp, const char *end, double *pv,
-		 bool whole_buffer = false);
+HB_INTERNAL തർക്കം
+hb_parse_double (സ്ഥിരം അക്ഷരം **pp, സ്ഥിരം അക്ഷരം *end, ഇരട്ട *pv,
+		 തർക്കം whole_buffer = അസത്യം);
 
 #endif /* HB_NUMBER_HH */

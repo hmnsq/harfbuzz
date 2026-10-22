@@ -24,19 +24,19 @@
  * Google Author(s): Garret Rieger, Rod Sheeter, Behdad Esfahbod
  */
 
-#include "hb-subset-instancer-solver.hh"
-#include "hb-subset.hh"
-#include "hb-set.hh"
-#include "hb-utf.hh"
+#അന്തര്ഭാവ "hb-subset-instancer-solver.hh"
+#അന്തര്ഭാവ "hb-subset.hh"
+#അന്തര്ഭാവ "hb-set.hh"
+#അന്തര്ഭാവ "hb-utf.hh"
 
 
-hb_subset_input_t::hb_subset_input_t ()
+hb_subset_നിവേശം_t::hb_subset_നിവേശം_t ()
 {
-  for (auto& set : sets_iter ())
+  വേണ്ടി (auto& set : sets_iter ())
     set = hb::shared_ptr<hb_set_t> (hb_set_create ());
 
-  if (in_error ())
-    return;
+  എങ്കിൽ (in_error ())
+    തിരികെ;
 
   flags = HB_SUBSET_FLAGS_DEFAULT;
 
@@ -200,21 +200,21 @@ hb_subset_input_t::hb_subset_input_t ()
  *
  * Since: 1.8.0
  **/
-hb_subset_input_t *
-hb_subset_input_create_or_fail (void)
+hb_subset_നിവേശം_t *
+hb_subset_നിവേശം_create_or_fail (ശൂന്യം)
 {
-  hb_subset_input_t *input = hb_object_create<hb_subset_input_t>();
+  hb_subset_നിവേശം_t *നിവേശം = hb_object_create<hb_subset_നിവേശം_t>();
 
-  if (unlikely (!input))
-    return nullptr;
+  എങ്കിൽ (unlikely (!നിവേശം))
+    തിരികെ nullptr;
 
-  if (input->in_error ())
+  എങ്കിൽ (നിവേശം->in_error ())
   {
-    hb_subset_input_destroy (input);
-    return nullptr;
+    hb_subset_നിവേശം_destroy (നിവേശം);
+    തിരികെ nullptr;
   }
 
-  return input;
+  തിരികെ നിവേശം;
 }
 
 /**
@@ -227,10 +227,10 @@ hb_subset_input_create_or_fail (void)
  *
  * Since: 1.8.0
  **/
-hb_subset_input_t *
-hb_subset_input_reference (hb_subset_input_t *input)
+hb_subset_നിവേശം_t *
+hb_subset_നിവേശം_reference (hb_subset_നിവേശം_t *നിവേശം)
 {
-  return hb_object_reference (input);
+  തിരികെ hb_object_reference (നിവേശം);
 }
 
 /**
@@ -242,12 +242,12 @@ hb_subset_input_reference (hb_subset_input_t *input)
  *
  * Since: 1.8.0
  **/
-void
-hb_subset_input_destroy (hb_subset_input_t *input)
+ശൂന്യം
+hb_subset_നിവേശം_destroy (hb_subset_നിവേശം_t *നിവേശം)
 {
-  if (!hb_object_destroy (input)) return;
+  എങ്കിൽ (!hb_object_destroy (നിവേശം)) തിരികെ;
 
-  hb_free (input);
+  hb_free (നിവേശം);
 }
 
 /**
@@ -263,9 +263,9 @@ hb_subset_input_destroy (hb_subset_input_t *input)
  * Since: 1.8.0
  **/
 HB_EXTERN hb_set_t *
-hb_subset_input_unicode_set (hb_subset_input_t *input)
+hb_subset_നിവേശം_unicode_set (hb_subset_നിവേശം_t *നിവേശം)
 {
-  return input->sets.unicodes;
+  തിരികെ നിവേശം->sets.unicodes;
 }
 
 /**
@@ -280,9 +280,9 @@ hb_subset_input_unicode_set (hb_subset_input_t *input)
  * Since: 1.8.0
  **/
 HB_EXTERN hb_set_t *
-hb_subset_input_glyph_set (hb_subset_input_t *input)
+hb_subset_നിവേശം_glyph_set (hb_subset_നിവേശം_t *നിവേശം)
 {
-  return input->sets.glyphs;
+  തിരികെ നിവേശം->sets.glyphs;
 }
 
 /**
@@ -297,9 +297,9 @@ hb_subset_input_glyph_set (hb_subset_input_t *input)
  * Since: 2.9.1
  **/
 HB_EXTERN hb_set_t *
-hb_subset_input_set (hb_subset_input_t *input, hb_subset_sets_t set_type)
+hb_subset_നിവേശം_set (hb_subset_നിവേശം_t *നിവേശം, hb_subset_sets_t set_type)
 {
-  return input->sets_iter () [set_type];
+  തിരികെ നിവേശം->sets_iter () [set_type];
 }
 
 /**
@@ -313,9 +313,9 @@ hb_subset_input_set (hb_subset_input_t *input, hb_subset_sets_t set_type)
  * Since: 2.9.0
  **/
 HB_EXTERN hb_subset_flags_t
-hb_subset_input_get_flags (hb_subset_input_t *input)
+hb_subset_നിവേശം_get_flags (hb_subset_നിവേശം_t *നിവേശം)
 {
-  return (hb_subset_flags_t) input->flags;
+  തിരികെ (hb_subset_flags_t) നിവേശം->flags;
 }
 
 /**
@@ -328,11 +328,11 @@ hb_subset_input_get_flags (hb_subset_input_t *input)
  *
  * Since: 2.9.0
  **/
-HB_EXTERN void
-hb_subset_input_set_flags (hb_subset_input_t *input,
+HB_EXTERN ശൂന്യം
+hb_subset_നിവേശം_set_flags (hb_subset_നിവേശം_t *നിവേശം,
 			   unsigned value)
 {
-  input->flags = (hb_subset_flags_t) value;
+  നിവേശം->flags = (hb_subset_flags_t) value;
 }
 
 /**
@@ -350,13 +350,13 @@ hb_subset_input_set_flags (hb_subset_input_t *input,
  * Since: 2.9.0
  **/
 hb_bool_t
-hb_subset_input_set_user_data (hb_subset_input_t  *input,
-			       hb_user_data_key_t *key,
-			       void *		   data,
+hb_subset_നിവേശം_set_user_data (hb_subset_നിവേശം_t  *നിവേശം,
+			       hb_user_data_താക്കോൽ_t *key,
+			       ശൂന്യം *		   data,
 			       hb_destroy_func_t   destroy,
 			       hb_bool_t	   replace)
 {
-  return hb_object_set_user_data (input, key, data, destroy, replace);
+  തിരികെ hb_object_set_user_data (നിവേശം, key, data, destroy, replace);
 }
 
 /**
@@ -371,11 +371,11 @@ hb_subset_input_set_user_data (hb_subset_input_t  *input,
  *
  * Since: 2.9.0
  **/
-void *
-hb_subset_input_get_user_data (const hb_subset_input_t *input,
-			       hb_user_data_key_t     *key)
+ശൂന്യം *
+hb_subset_നിവേശം_get_user_data (സ്ഥിരം hb_subset_നിവേശം_t *നിവേശം,
+			       hb_user_data_താക്കോൽ_t     *key)
 {
-  return hb_object_get_user_data (input, key);
+  തിരികെ hb_object_get_user_data (നിവേശം, key);
 }
 
 /**
@@ -390,27 +390,27 @@ hb_subset_input_get_user_data (const hb_subset_input_t *input,
  *
  * Since: 7.0.0
  */
-void
-hb_subset_input_keep_everything (hb_subset_input_t *input)
+ശൂന്യം
+hb_subset_നിവേശം_keep_everything (hb_subset_നിവേശം_t *നിവേശം)
 {
-  const hb_subset_sets_t indices[] = {HB_SUBSET_SETS_UNICODE,
+  സ്ഥിരം hb_subset_sets_t indices[] = {HB_SUBSET_SETS_UNICODE,
 				      HB_SUBSET_SETS_GLYPH_INDEX,
 				      HB_SUBSET_SETS_NAME_ID,
 				      HB_SUBSET_SETS_NAME_LANG_ID,
 				      HB_SUBSET_SETS_LAYOUT_FEATURE_TAG,
 				      HB_SUBSET_SETS_LAYOUT_SCRIPT_TAG};
 
-  for (auto idx : hb_iter (indices))
+  വേണ്ടി (auto idx : hb_iter (indices))
   {
-    hb_set_t *set = hb_subset_input_set (input, idx);
+    hb_set_t *set = hb_subset_നിവേശം_set (നിവേശം, idx);
     hb_set_clear (set);
     hb_set_invert (set);
   }
 
   // Don't drop any tables
-  hb_set_clear (hb_subset_input_set (input, HB_SUBSET_SETS_DROP_TABLE_TAG));
+  hb_set_clear (hb_subset_നിവേശം_set (നിവേശം, HB_SUBSET_SETS_DROP_TABLE_TAG));
 
-  hb_subset_input_set_flags (input,
+  hb_subset_നിവേശം_set_flags (നിവേശം,
 			     HB_SUBSET_FLAGS_NOTDEF_OUTLINE |
 			     HB_SUBSET_FLAGS_GLYPH_NAMES |
 			     HB_SUBSET_FLAGS_NAME_LEGACY |
@@ -433,29 +433,29 @@ hb_subset_input_keep_everything (hb_subset_input_t *input)
  * Since: 8.3.1
  **/
 HB_EXTERN hb_bool_t
-hb_subset_input_pin_all_axes_to_default (hb_subset_input_t  *input,
+hb_subset_നിവേശം_pin_all_axes_to_default (hb_subset_നിവേശം_t  *നിവേശം,
                                          hb_face_t          *face)
 {
-  unsigned axis_count = hb_ot_var_get_axis_count (face);
-  if (!axis_count) return false;
+  unsigned axis_എണ്ണം = hb_ot_var_get_axis_എണ്ണം (face);
+  എങ്കിൽ (!axis_എണ്ണം) തിരികെ അസത്യം;
 
-  hb_ot_var_axis_info_t *axis_infos = (hb_ot_var_axis_info_t *) hb_calloc (axis_count, sizeof (hb_ot_var_axis_info_t));
-  if (unlikely (!axis_infos)) return false;
+  hb_ot_var_axis_info_t *axis_infos = (hb_ot_var_axis_info_t *) hb_calloc (axis_എണ്ണം, വലുപ്പം (hb_ot_var_axis_info_t));
+  എങ്കിൽ (unlikely (!axis_infos)) തിരികെ അസത്യം;
 
-  (void) hb_ot_var_get_axis_infos (face, 0, &axis_count, axis_infos);
+  (ശൂന്യം) hb_ot_var_get_axis_infos (face, 0, &axis_എണ്ണം, axis_infos);
 
-  for (unsigned i = 0; i < axis_count; i++)
+  വേണ്ടി (unsigned i = 0; i < axis_എണ്ണം; i++)
   {
     hb_tag_t axis_tag = axis_infos[i].tag;
-    double default_val = (double) axis_infos[i].default_value;
-    if (!input->axes_location.set (axis_tag, Triple (default_val, default_val, default_val)))
+    ഇരട്ട default_val = (ഇരട്ട) axis_infos[i].default_മൂല്യം;
+    എങ്കിൽ (!നിവേശം->axes_location.set (axis_tag, Triple (default_val, default_val, default_val)))
     {
       hb_free (axis_infos);
-      return false;
+      തിരികെ അസത്യം;
     }
   }
   hb_free (axis_infos);
-  return true;
+  തിരികെ സത്യം;
 }
 
 /**
@@ -473,16 +473,16 @@ hb_subset_input_pin_all_axes_to_default (hb_subset_input_t  *input,
  * Since: 6.0.0
  **/
 HB_EXTERN hb_bool_t
-hb_subset_input_pin_axis_to_default (hb_subset_input_t  *input,
+hb_subset_നിവേശം_pin_axis_to_default (hb_subset_നിവേശം_t  *നിവേശം,
                                      hb_face_t          *face,
                                      hb_tag_t            axis_tag)
 {
   hb_ot_var_axis_info_t axis_info;
-  if (!hb_ot_var_find_axis_info (face, axis_tag, &axis_info))
-    return false;
+  എങ്കിൽ (!hb_ot_var_find_axis_info (face, axis_tag, &axis_info))
+    തിരികെ അസത്യം;
 
-  double default_val = (double) axis_info.default_value;
-  return input->axes_location.set (axis_tag, Triple (default_val, default_val, default_val));
+  ഇരട്ട default_val = (ഇരട്ട) axis_info.default_മൂല്യം;
+  തിരികെ നിവേശം->axes_location.set (axis_tag, Triple (default_val, default_val, default_val));
 }
 
 /**
@@ -501,17 +501,17 @@ hb_subset_input_pin_axis_to_default (hb_subset_input_t  *input,
  * Since: 6.0.0
  **/
 HB_EXTERN hb_bool_t
-hb_subset_input_pin_axis_location (hb_subset_input_t  *input,
+hb_subset_നിവേശം_pin_axis_location (hb_subset_നിവേശം_t  *നിവേശം,
                                    hb_face_t          *face,
                                    hb_tag_t            axis_tag,
-                                   float               axis_value)
+                                   ദശാംശം               axis_മൂല്യം)
 {
   hb_ot_var_axis_info_t axis_info;
-  if (!hb_ot_var_find_axis_info (face, axis_tag, &axis_info))
-    return false;
+  എങ്കിൽ (!hb_ot_var_find_axis_info (face, axis_tag, &axis_info))
+    തിരികെ അസത്യം;
 
-  double val = hb_clamp((double) axis_value, (double) axis_info.min_value, (double) axis_info.max_value);
-  return input->axes_location.set (axis_tag, Triple (val, val, val));
+  ഇരട്ട val = hb_clamp((ഇരട്ട) axis_മൂല്യം, (ഇരട്ട) axis_info.min_മൂല്യം, (ഇരട്ട) axis_info.max_മൂല്യം);
+  തിരികെ നിവേശം->axes_location.set (axis_tag, Triple (val, val, val));
 }
 
 /**
@@ -538,28 +538,28 @@ hb_subset_input_pin_axis_location (hb_subset_input_t  *input,
  * Since: 8.5.0
  **/
 HB_EXTERN hb_bool_t
-hb_subset_input_set_axis_range (hb_subset_input_t  *input,
+hb_subset_നിവേശം_set_axis_range (hb_subset_നിവേശം_t  *നിവേശം,
                                 hb_face_t          *face,
                                 hb_tag_t            axis_tag,
-                                float               axis_min_value,
-                                float               axis_max_value,
-                                float               axis_def_value)
+                                ദശാംശം               axis_min_മൂല്യം,
+                                ദശാംശം               axis_max_മൂല്യം,
+                                ദശാംശം               axis_def_മൂല്യം)
 {
   hb_ot_var_axis_info_t axis_info;
-  if (!hb_ot_var_find_axis_info (face, axis_tag, &axis_info))
-    return false;
+  എങ്കിൽ (!hb_ot_var_find_axis_info (face, axis_tag, &axis_info))
+    തിരികെ അസത്യം;
 
-  float min = !std::isnan(axis_min_value) ? axis_min_value : axis_info.min_value;
-  float max = !std::isnan(axis_max_value) ? axis_max_value : axis_info.max_value;
-  float def = !std::isnan(axis_def_value) ? axis_def_value : axis_info.default_value;
+  ദശാംശം min = !std::isnan(axis_min_മൂല്യം) ? axis_min_മൂല്യം : axis_info.min_മൂല്യം;
+  ദശാംശം max = !std::isnan(axis_max_മൂല്യം) ? axis_max_മൂല്യം : axis_info.max_മൂല്യം;
+  ദശാംശം def = !std::isnan(axis_def_മൂല്യം) ? axis_def_മൂല്യം : axis_info.default_മൂല്യം;
 
-  if (min > max)
-    return false;
+  എങ്കിൽ (min > max)
+    തിരികെ അസത്യം;
 
-  float new_min_val = hb_clamp(min, axis_info.min_value, axis_info.max_value);
-  float new_max_val = hb_clamp(max, axis_info.min_value, axis_info.max_value);
-  float new_default_val = hb_clamp(def, new_min_val, new_max_val);
-  return input->axes_location.set (axis_tag, Triple ((double) new_min_val, (double) new_default_val, (double) new_max_val));
+  ദശാംശം new_min_val = hb_clamp(min, axis_info.min_മൂല്യം, axis_info.max_മൂല്യം);
+  ദശാംശം new_max_val = hb_clamp(max, axis_info.min_മൂല്യം, axis_info.max_മൂല്യം);
+  ദശാംശം new_default_val = hb_clamp(def, new_min_val, new_max_val);
+  തിരികെ നിവേശം->axes_location.set (axis_tag, Triple ((ഇരട്ട) new_min_val, (ഇരട്ട) new_default_val, (ഇരട്ട) new_max_val));
 }
 
 /**
@@ -577,22 +577,22 @@ hb_subset_input_set_axis_range (hb_subset_input_t  *input,
  * Since: 8.5.0
  **/
 HB_EXTERN hb_bool_t
-hb_subset_input_get_axis_range (hb_subset_input_t  *input,
+hb_subset_നിവേശം_get_axis_range (hb_subset_നിവേശം_t  *നിവേശം,
 				hb_tag_t            axis_tag,
-				float              *axis_min_value,
-				float              *axis_max_value,
-				float              *axis_def_value)
+				ദശാംശം              *axis_min_മൂല്യം,
+				ദശാംശം              *axis_max_മൂല്യം,
+				ദശാംശം              *axis_def_മൂല്യം)
 
 {
   Triple* triple;
-  if (!input->axes_location.has(axis_tag, &triple)) {
-    return false;
+  എങ്കിൽ (!നിവേശം->axes_location.has(axis_tag, &triple)) {
+    തിരികെ അസത്യം;
   }
 
-  *axis_min_value = triple->minimum;
-  *axis_def_value = triple->middle;
-  *axis_max_value = triple->maximum;
-  return true;
+  *axis_min_മൂല്യം = triple->minimum;
+  *axis_def_മൂല്യം = triple->നടുവ്;
+  *axis_max_മൂല്യം = triple->maximum;
+  തിരികെ സത്യം;
 }
 
 /**
@@ -618,75 +618,75 @@ hb_subset_input_get_axis_range (hb_subset_input_t  *input,
  * Since: 10.2.0
  */
 HB_EXTERN hb_bool_t
-hb_subset_axis_range_from_string (const char *str, int len,
-                                  float *axis_min_value,
-                                  float *axis_max_value,
-                                  float *axis_def_value)
+hb_subset_axis_range_from_string (സ്ഥിരം അക്ഷരം *str, പൂർണ്ണസംഖ്യ len,
+                                  ദശാംശം *axis_min_മൂല്യം,
+                                  ദശാംശം *axis_max_മൂല്യം,
+                                  ദശാംശം *axis_def_മൂല്യം)
 {
-  if (len < 0)
+  എങ്കിൽ (len < 0)
     len = strlen (str);
 
-  const char *end = str + len;
-  const char* part = strpbrk (str, ":");
-  if (!part)
+  സ്ഥിരം അക്ഷരം *end = str + len;
+  സ്ഥിരം അക്ഷരം* part = strpbrk (str, ":");
+  എങ്കിൽ (!part)
   {
     // Single value.
-    if (strcmp (str, "drop") == 0)
+    എങ്കിൽ (strcmp (str, "drop") == 0)
     {
-      *axis_min_value = NAN;
-      *axis_def_value = NAN;
-      *axis_max_value = NAN;
-      return true;
+      *axis_min_മൂല്യം = NAN;
+      *axis_def_മൂല്യം = NAN;
+      *axis_max_മൂല്യം = NAN;
+      തിരികെ സത്യം;
     }
 
-    double v;
-    if (!hb_parse_double (&str, end, &v)) return false;
+    ഇരട്ട v;
+    എങ്കിൽ (!hb_parse_double (&str, end, &v)) തിരികെ അസത്യം;
 
-    *axis_min_value = v;
-    *axis_def_value = v;
-    *axis_max_value = v;
-    return true;
+    *axis_min_മൂല്യം = v;
+    *axis_def_മൂല്യം = v;
+    *axis_max_മൂല്യം = v;
+    തിരികെ സത്യം;
   }
 
-  float values[3];
-  int count = 0;
-  for (int i = 0; i < 3; i++) {
-    count++;
-    if (!*str || part == str)
+  ദശാംശം values[3];
+  പൂർണ്ണസംഖ്യ എണ്ണം = 0;
+  വേണ്ടി (പൂർണ്ണസംഖ്യ i = 0; i < 3; i++) {
+    എണ്ണം++;
+    എങ്കിൽ (!*str || part == str)
     {
       values[i] = NAN;
 
-      if (part == NULL) break;
+      എങ്കിൽ (part == ശൂന്യ) നിർത്തുക;
       str = part + 1;
       part = strpbrk (str, ":");
-      continue;
+      തുടരുക;
     }
 
-    double v;
-    const char *piece_end = part ? part : end;
-    if (!hb_parse_double (&str, piece_end, &v)) return false;
+    ഇരട്ട v;
+    സ്ഥിരം അക്ഷരം *piece_end = part ? part : end;
+    എങ്കിൽ (!hb_parse_double (&str, piece_end, &v)) തിരികെ അസത്യം;
     values[i] = v;
 
-    if (part == NULL) break;
+    എങ്കിൽ (part == ശൂന്യ) നിർത്തുക;
     str = part + 1;
     part = strpbrk (str, ":");
   }
 
-  if (count == 2)
+  എങ്കിൽ (എണ്ണം == 2)
   {
-    *axis_min_value = values[0];
-    *axis_def_value = NAN;
-    *axis_max_value = values[1];
-    return true;
+    *axis_min_മൂല്യം = values[0];
+    *axis_def_മൂല്യം = NAN;
+    *axis_max_മൂല്യം = values[1];
+    തിരികെ സത്യം;
   }
-  else if (count == 3)
+  അല്ലെങ്കിൽ എങ്കിൽ (എണ്ണം == 3)
   {
-    *axis_min_value = values[0];
-    *axis_def_value = values[1];
-    *axis_max_value = values[2];
-    return true;
+    *axis_min_മൂല്യം = values[0];
+    *axis_def_മൂല്യം = values[1];
+    *axis_max_മൂല്യം = values[2];
+    തിരികെ സത്യം;
   }
-  return false;
+  തിരികെ അസത്യം;
 }
 
 /**
@@ -702,33 +702,33 @@ hb_subset_axis_range_from_string (const char *str, int len,
  *
  * Since: 10.2.0
  */
-HB_EXTERN void
-hb_subset_axis_range_to_string (hb_subset_input_t *input,
+HB_EXTERN ശൂന്യം
+hb_subset_axis_range_to_string (hb_subset_നിവേശം_t *നിവേശം,
                                 hb_tag_t axis_tag,
-                                char *buf, unsigned size)
+                                അക്ഷരം *buf, unsigned size)
 {
-  if (unlikely (!size)) return;
+  എങ്കിൽ (unlikely (!size)) തിരികെ;
   Triple* triple;
-  if (!input->axes_location.has(axis_tag, &triple)) {
-    return;
+  എങ്കിൽ (!നിവേശം->axes_location.has(axis_tag, &triple)) {
+    തിരികെ;
   }
 
-  char s[128];
+  അക്ഷരം s[128];
   unsigned len = 0;
 
   hb_locale_t clocale HB_UNUSED;
   hb_locale_t oldlocale HB_UNUSED;
-  oldlocale = hb_uselocale (clocale = newlocale (LC_ALL_MASK, "C", NULL));
-  len += hb_max (0, snprintf (s, ARRAY_LENGTH (s) - len, "%g", (double) triple->minimum));
+  oldlocale = hb_uselocale (clocale = newlocale (LC_ALL_MASK, "C", ശൂന്യ));
+  len += hb_max (0, snprintf (s, ARRAY_LENGTH (s) - len, "%g", (ഇരട്ട) triple->minimum));
   s[len++] = ':';
 
-  len += hb_max (0, snprintf (s + len, ARRAY_LENGTH (s) - len, "%g", (double) triple->middle));
+  len += hb_max (0, snprintf (s + len, ARRAY_LENGTH (s) - len, "%g", (ഇരട്ട) triple->നടുവ്));
   s[len++] = ':';
 
-  len += hb_max (0, snprintf (s + len, ARRAY_LENGTH (s) - len, "%g", (double) triple->maximum));
-  (void) hb_uselocale (((void) freelocale (clocale), oldlocale));
+  len += hb_max (0, snprintf (s + len, ARRAY_LENGTH (s) - len, "%g", (ഇരട്ട) triple->maximum));
+  (ശൂന്യം) hb_uselocale (((ശൂന്യം) freelocale (clocale), oldlocale));
 
-  assert (len < ARRAY_LENGTH (s));
+  പ്രതിജ്ഞാ (len < ARRAY_LENGTH (s));
   len = hb_min (len, size - 1);
   hb_memcpy (buf, s, len);
   buf[len] = '\0';
@@ -736,64 +736,64 @@ hb_subset_axis_range_to_string (hb_subset_input_t *input,
 #endif
 
 #ifdef HB_EXPERIMENTAL_API
-static void
-_append_arg (hb_vector_t<char> &sb, const char *arg)
+സ്ഥിതം ശൂന്യം
+_append_arg (hb_vector_t<അക്ഷരം> &sb, സ്ഥിരം അക്ഷരം *arg)
 {
-  if (sb.in_error ()) return;
-  if (sb.length)
+  എങ്കിൽ (sb.in_error ()) തിരികെ;
+  എങ്കിൽ (sb.length)
     sb.push (' ');
   unsigned len = strlen (arg);
   sb.extend (hb_bytes_t (arg, len));
 }
-static void
-_format_number_set (const hb_set_t *set, hb_vector_t<char> &out, unsigned base = 10)
+സ്ഥിതം ശൂന്യം
+format_സംഖ്യ_set (സ്ഥിരം hb_set_t *set, hb_vector_t<അക്ഷരം> &out, unsigned base = 10)
 {
-  assert (base == 10 || base == 16);
-  if (unlikely (base != 10 && base != 16)) return;
+  പ്രതിജ്ഞാ (base == 10 || base == 16);
+  എങ്കിൽ (unlikely (base != 10 && base != 16)) തിരികെ;
 
-  hb_codepoint_t first = HB_SET_VALUE_INVALID, last = HB_SET_VALUE_INVALID;
-  bool first_range = true;
-  while (hb_set_next_range (set, &first, &last))
+  hb_codepoint_t first = HB_SET_മൂല്യം_INVALID, last = HB_SET_മൂല്യം_INVALID;
+  തർക്കം first_range = സത്യം;
+  ആകുമ്പോൾ (hb_set_next_range (set, &first, &last))
   {
-    if (!first_range)
+    എങ്കിൽ (!first_range)
       out.push (',');
-    first_range = false;
+    first_range = അസത്യം;
 
-    char buf[64];
-    int len;
-    if (first == last)
+    അക്ഷരം buf[64];
+    പൂർണ്ണസംഖ്യ len;
+    എങ്കിൽ (first == last)
     {
-      if (base == 16)
-        len = snprintf (buf, sizeof (buf), "%X", first);
-      else
-        len = snprintf (buf, sizeof (buf), "%u", first);
+      എങ്കിൽ (base == 16)
+        len = snprintf (buf, വലുപ്പം (buf), "%X", first);
+      അല്ലെങ്കിൽ
+        len = snprintf (buf, വലുപ്പം (buf), "%u", first);
     }
-    else
+    അല്ലെങ്കിൽ
     {
-      if (base == 16)
-        len = snprintf (buf, sizeof (buf), "%X-%X", first, last);
-      else
-        len = snprintf (buf, sizeof (buf), "%u-%u", first, last);
+      എങ്കിൽ (base == 16)
+        len = snprintf (buf, വലുപ്പം (buf), "%X-%X", first, last);
+      അല്ലെങ്കിൽ
+        len = snprintf (buf, വലുപ്പം (buf), "%u-%u", first, last);
     }
-    if (unlikely (len < 0 || (size_t) len >= sizeof (buf))) return;
+    എങ്കിൽ (unlikely (len < 0 || (size_t) len >= വലുപ്പം (buf))) തിരികെ;
     out.extend (hb_bytes_t (buf, len));
   }
 }
 
-static void
-_format_tag (hb_tag_t tag, hb_vector_t<char> &out)
+സ്ഥിതം ശൂന്യം
+_format_tag (hb_tag_t tag, hb_vector_t<അക്ഷരം> &out)
 {
-  char buf[4];
+  അക്ഷരം buf[4];
   hb_tag_to_string (tag, buf);
 
   unsigned len = 4;
-  while (len > 0 && buf[len - 1] == ' ')
+  ആകുമ്പോൾ (len > 0 && buf[len - 1] == ' ')
     len--;
 
-  for (unsigned i = 0; i < len; i++)
+  വേണ്ടി (unsigned i = 0; i < len; i++)
   {
-    char c = buf[i];
-    if (!((c >= 'a' && c <= 'z') ||
+    അക്ഷരം c = buf[i];
+    എങ്കിൽ (!((c >= 'a' && c <= 'z') ||
           (c >= 'A' && c <= 'Z') ||
           (c >= '0' && c <= '9') ||
           c == '-' || c == '_'))
@@ -804,192 +804,192 @@ _format_tag (hb_tag_t tag, hb_vector_t<char> &out)
   }
 }
 
-static void
-_format_tag_set (const hb_set_t *set, hb_vector_t<char> &out)
+സ്ഥിതം ശൂന്യം
+_format_tag_set (സ്ഥിരം hb_set_t *set, hb_vector_t<അക്ഷരം> &out)
 {
-  bool first_tag = true;
-  for (hb_codepoint_t tag : *set)
+  തർക്കം first_tag = സത്യം;
+  വേണ്ടി (hb_codepoint_t tag : *set)
   {
-    if (!first_tag)
+    എങ്കിൽ (!first_tag)
       out.push (',');
-    first_tag = false;
+    first_tag = അസത്യം;
 
     _format_tag (tag, out);
   }
 }
 
-static bool
-_is_set_default (const hb_set_t *set, const hb_set_t *default_set)
+സ്ഥിതം തർക്കം
+_is_set_default (സ്ഥിരം hb_set_t *set, സ്ഥിരം hb_set_t *default_set)
 {
-  return hb_set_is_inverted (set) == hb_set_is_inverted (default_set) &&
+  തിരികെ hb_set_is_inverted (set) == hb_set_is_inverted (default_set) &&
          hb_set_is_equal (set, default_set);
 }
 
 template <typename Formatter>
-static void
-_format_set_arg (const hb_set_t *set,
-                 const char *opt_name,
+സ്ഥിതം ശൂന്യം
+_format_set_arg (സ്ഥിരം hb_set_t *set,
+                 സ്ഥിരം അക്ഷരം *opt_name,
                  Formatter &&formatter,
-                 hb_vector_t<char> &sb)
+                 hb_vector_t<അക്ഷരം> &sb)
 {
-  if (hb_set_is_inverted (set))
+  എങ്കിൽ (hb_set_is_inverted (set))
   {
     hb_set_t *excluded = hb_set_copy (set);
     hb_set_invert (excluded);
 
-    hb_vector_t<char> opt;
+    hb_vector_t<അക്ഷരം> opt;
     opt.extend (hb_bytes_t ("--", 2));
     opt.extend (hb_bytes_t (opt_name, strlen (opt_name)));
     opt.extend (hb_bytes_t ("=*", 2));
     opt.push ('\0');
-    if (opt.arrayZ) _append_arg (sb, opt.arrayZ);
+    എങ്കിൽ (opt.arrayZ) _append_arg (sb, opt.arrayZ);
 
-    if (!hb_set_is_empty (excluded))
+    എങ്കിൽ (!hb_set_is_empty (excluded))
     {
-      hb_vector_t<char> formatted;
+      hb_vector_t<അക്ഷരം> formatted;
       formatter (excluded, formatted);
-      if (formatted.length)
+      എങ്കിൽ (formatted.length)
       {
-        hb_vector_t<char> opt2;
+        hb_vector_t<അക്ഷരം> opt2;
         opt2.extend (hb_bytes_t ("--", 2));
         opt2.extend (hb_bytes_t (opt_name, strlen (opt_name)));
         opt2.extend (hb_bytes_t ("-=", 2));
         opt2.extend (formatted.as_array ());
         opt2.push ('\0');
-        if (opt2.arrayZ) _append_arg (sb, opt2.arrayZ);
+        എങ്കിൽ (opt2.arrayZ) _append_arg (sb, opt2.arrayZ);
       }
     }
     hb_set_destroy (excluded);
   }
-  else if (hb_set_is_empty (set))
+  അല്ലെങ്കിൽ എങ്കിൽ (hb_set_is_empty (set))
   {
-    hb_vector_t<char> opt;
+    hb_vector_t<അക്ഷരം> opt;
     opt.extend (hb_bytes_t ("--", 2));
     opt.extend (hb_bytes_t (opt_name, strlen (opt_name)));
     opt.extend (hb_bytes_t ("-=*", 3));
     opt.push ('\0');
-    if (opt.arrayZ) _append_arg (sb, opt.arrayZ);
+    എങ്കിൽ (opt.arrayZ) _append_arg (sb, opt.arrayZ);
   }
-  else
+  അല്ലെങ്കിൽ
   {
-    hb_vector_t<char> formatted;
+    hb_vector_t<അക്ഷരം> formatted;
     formatter (set, formatted);
-    if (formatted.length)
+    എങ്കിൽ (formatted.length)
     {
-      hb_vector_t<char> opt;
+      hb_vector_t<അക്ഷരം> opt;
       opt.extend (hb_bytes_t ("--", 2));
       opt.extend (hb_bytes_t (opt_name, strlen (opt_name)));
       opt.extend (hb_bytes_t ("=", 1));
       opt.extend (formatted.as_array ());
       opt.push ('\0');
-      if (opt.arrayZ) _append_arg (sb, opt.arrayZ);
+      എങ്കിൽ (opt.arrayZ) _append_arg (sb, opt.arrayZ);
     }
   }
 }
 
-static void
-_format_number_set_arg (const hb_set_t *set,
-                        const char *opt_name,
-                        hb_vector_t<char> &sb,
+സ്ഥിതം ശൂന്യം
+format_സംഖ്യ_set_arg (സ്ഥിരം hb_set_t *set,
+                        സ്ഥിരം അക്ഷരം *opt_name,
+                        hb_vector_t<അക്ഷരം> &sb,
                         unsigned base = 10)
 {
-  _format_set_arg (set, opt_name, [base] (const hb_set_t *s, hb_vector_t<char> &out) {
-    _format_number_set (s, out, base);
+  _format_set_arg (set, opt_name, [base] (സ്ഥിരം hb_set_t *s, hb_vector_t<അക്ഷരം> &out) {
+    format_സംഖ്യ_set (s, out, base);
   }, sb);
 }
 
-static void
-_format_tag_set_arg (const hb_set_t *set,
-                     const char *opt_name,
-                     hb_vector_t<char> &sb)
+സ്ഥിതം ശൂന്യം
+_format_tag_set_arg (സ്ഥിരം hb_set_t *set,
+                     സ്ഥിരം അക്ഷരം *opt_name,
+                     hb_vector_t<അക്ഷരം> &sb)
 {
   _format_set_arg (set, opt_name, _format_tag_set, sb);
 }
 
-static bool
-_format_glyph_map_arg (const hb_map_t &glyph_map,
-                       hb_vector_t<char> &sb)
+സ്ഥിതം തർക്കം
+_format_glyph_map_arg (സ്ഥിരം hb_map_t &glyph_map,
+                       hb_vector_t<അക്ഷരം> &sb)
 {
-  if (glyph_map.is_empty ())
-    return true;
+  എങ്കിൽ (glyph_map.is_empty ())
+    തിരികെ സത്യം;
 
-  hb_set_t keys;
-  hb_map_keys (&glyph_map, &keys);
-  hb_vector_t<char> pairs;
-  bool first = true;
-  for (hb_codepoint_t key : keys)
+  hb_set_t താക്കോലുകൾ;
+  hb_map_താക്കോലുകൾ (&glyph_map, &താക്കോലുകൾ);
+  hb_vector_t<അക്ഷരം> pairs;
+  തർക്കം first = സത്യം;
+  വേണ്ടി (hb_codepoint_t key : താക്കോലുകൾ)
   {
-    if (!first)
+    എങ്കിൽ (!first)
       pairs.push (',');
-    first = false;
+    first = അസത്യം;
     hb_codepoint_t val = hb_map_get (&glyph_map, key);
-    char buf[64];
-    int len = snprintf (buf, sizeof (buf), "%u:%u", key, val);
-    if (unlikely (len < 0 || (size_t) len >= sizeof (buf))) return false;
+    അക്ഷരം buf[64];
+    പൂർണ്ണസംഖ്യ len = snprintf (buf, വലുപ്പം (buf), "%u:%u", key, val);
+    എങ്കിൽ (unlikely (len < 0 || (size_t) len >= വലുപ്പം (buf))) തിരികെ അസത്യം;
     pairs.extend (hb_bytes_t (buf, len));
   }
-  if (pairs.length)
+  എങ്കിൽ (pairs.length)
   {
-    hb_vector_t<char> opt;
+    hb_vector_t<അക്ഷരം> opt;
     opt.extend (hb_bytes_t ("--gid-map=", 10));
     opt.extend (pairs.as_array ());
     opt.push ('\0');
-    if (opt.arrayZ) _append_arg (sb, opt.arrayZ);
+    എങ്കിൽ (opt.arrayZ) _append_arg (sb, opt.arrayZ);
   }
-  return true;
+  തിരികെ സത്യം;
 }
 
-static bool
-_format_axes_location_arg (const hb_hashmap_t<hb_tag_t, Triple> &axes_location,
-                           hb_vector_t<char> &sb)
+സ്ഥിതം തർക്കം
+_format_axes_location_arg (സ്ഥിരം hb_hashmap_t<hb_tag_t, Triple> &axes_location,
+                           hb_vector_t<അക്ഷരം> &sb)
 {
-  if (axes_location.is_empty ())
-    return true;
+  എങ്കിൽ (axes_location.is_empty ())
+    തിരികെ സത്യം;
 
   hb_vector_t<hb_tag_t> axis_tags;
-  for (auto tag : axes_location.keys ())
+  വേണ്ടി (auto tag : axes_location.താക്കോലുകൾ ())
     axis_tags.push (tag);
-  axis_tags.qsort ([] (const hb_tag_t &a, const hb_tag_t &b) { return a < b ? -1 : a > b ? 1 : 0; });
+  axis_tags.qsort ([] (സ്ഥിരം hb_tag_t &a, സ്ഥിരം hb_tag_t &b) { തിരികെ a < b ? -1 : a > b ? 1 : 0; });
 
-  hb_vector_t<char> specs;
-  bool first = true;
-  for (hb_tag_t tag : axis_tags)
+  hb_vector_t<അക്ഷരം> specs;
+  തർക്കം first = സത്യം;
+  വേണ്ടി (hb_tag_t tag : axis_tags)
   {
     Triple triple = axes_location.get (tag);
-    if (!first)
+    എങ്കിൽ (!first)
       specs.push (',');
-    first = false;
+    first = അസത്യം;
 
-    hb_vector_t<char> tag_buf;
+    hb_vector_t<അക്ഷരം> tag_buf;
     _format_tag (tag, tag_buf);
 
-    char buf[128];
-    int len;
-    if (triple.minimum == triple.middle && triple.middle == triple.maximum)
+    അക്ഷരം buf[128];
+    പൂർണ്ണസംഖ്യ len;
+    എങ്കിൽ (triple.minimum == triple.നടുവ് && triple.നടുവ് == triple.maximum)
     {
-      len = snprintf (buf, sizeof (buf), "%.*s=%g", (int) tag_buf.length, tag_buf.arrayZ, (double) triple.middle);
+      len = snprintf (buf, വലുപ്പം (buf), "%.*s=%g", (പൂർണ്ണസംഖ്യ) tag_buf.length, tag_buf.arrayZ, (ഇരട്ട) triple.നടുവ്);
     }
-    else if (std::isnan (triple.minimum) && std::isnan (triple.middle) && std::isnan (triple.maximum))
+    അല്ലെങ്കിൽ എങ്കിൽ (std::isnan (triple.minimum) && std::isnan (triple.നടുവ്) && std::isnan (triple.maximum))
     {
-      len = snprintf (buf, sizeof (buf), "%.*s=drop", (int) tag_buf.length, tag_buf.arrayZ);
+      len = snprintf (buf, വലുപ്പം (buf), "%.*s=drop", (പൂർണ്ണസംഖ്യ) tag_buf.length, tag_buf.arrayZ);
     }
-    else
+    അല്ലെങ്കിൽ
     {
-      len = snprintf (buf, sizeof (buf), "%.*s=%g:%g:%g", (int) tag_buf.length, tag_buf.arrayZ,
-                      (double) triple.minimum, (double) triple.middle, (double) triple.maximum);
+      len = snprintf (buf, വലുപ്പം (buf), "%.*s=%g:%g:%g", (പൂർണ്ണസംഖ്യ) tag_buf.length, tag_buf.arrayZ,
+                      (ഇരട്ട) triple.minimum, (ഇരട്ട) triple.നടുവ്, (ഇരട്ട) triple.maximum);
     }
-    if (unlikely (len < 0 || (size_t) len >= sizeof (buf))) return false;
+    എങ്കിൽ (unlikely (len < 0 || (size_t) len >= വലുപ്പം (buf))) തിരികെ അസത്യം;
     specs.extend (hb_bytes_t (buf, len));
   }
-  if (specs.length)
+  എങ്കിൽ (specs.length)
   {
-    hb_vector_t<char> opt;
+    hb_vector_t<അക്ഷരം> opt;
     opt.extend (hb_bytes_t ("--variations=", 13));
     opt.extend (specs.as_array ());
     opt.push ('\0');
-    if (opt.arrayZ) _append_arg (sb, opt.arrayZ);
+    എങ്കിൽ (opt.arrayZ) _append_arg (sb, opt.arrayZ);
   }
-  return true;
+  തിരികെ സത്യം;
 }
 
 /**
@@ -1005,18 +1005,18 @@ _format_axes_location_arg (const hb_hashmap_t<hb_tag_t, Triple> &axes_location,
  * XSince: EXPERIMENTAL
  **/
 hb_blob_t *
-hb_subset_input_to_string_or_fail (hb_subset_input_t *input)
+hb_subset_നിവേശം_to_string_or_fail (hb_subset_നിവേശം_t *നിവേശം)
 {
-  if (unlikely (!input || input->in_error ()))
-    return nullptr;
+  എങ്കിൽ (unlikely (!നിവേശം || നിവേശം->in_error ()))
+    തിരികെ nullptr;
 
-  hb_vector_t<char> sb;
+  hb_vector_t<അക്ഷരം> sb;
 
-  struct flag_option_t {
+  ഘടന flag_option_t {
     hb_subset_flags_t flag;
-    char option[32];
+    അക്ഷരം option[32];
   };
-  static const flag_option_t flag_options[] = {
+  സ്ഥിതം സ്ഥിരം flag_option_t flag_options[] = {
     { HB_SUBSET_FLAGS_NO_HINTING, "no-hinting" },
     { HB_SUBSET_FLAGS_RETAIN_GIDS, "retain-gids" },
     { HB_SUBSET_FLAGS_DESUBROUTINIZE, "desubroutinize" },
@@ -1031,75 +1031,75 @@ hb_subset_input_to_string_or_fail (hb_subset_input_t *input)
     { HB_SUBSET_FLAGS_NO_BIDI_CLOSURE, "no-bidi-closure" },
 #ifdef HB_EXPERIMENTAL_API
     { HB_SUBSET_FLAGS_IFTB_REQUIREMENTS, "iftb-requirements" },
-    { HB_SUBSET_FLAGS_RETAIN_NUM_GLYPHS, "retain-num-glyphs" },
+    { HB_SUBSET_FLAGS_RETAIN_അക്കം_GLYPHS, "retain-num-glyphs" },
 #endif
     { HB_SUBSET_FLAGS_DOWNGRADE_CFF2, "downgrade-cff2" },
   };
 
 #ifdef HB_EXPERIMENTAL_API
-  static_assert (sizeof (flag_options) / sizeof (flag_options[0]) == 15,
+  static_assert (വലുപ്പം (flag_options) / വലുപ്പം (flag_options[0]) == 15,
                  "Check all flags in hb_subset_flags_t are handled here.");
-#else
-  static_assert (sizeof (flag_options) / sizeof (flag_options[0]) == 13,
+#അല്ലെങ്കിൽ
+  static_assert (വലുപ്പം (flag_options) / വലുപ്പം (flag_options[0]) == 13,
                  "Check all flags in hb_subset_flags_t are handled here.");
 #endif
 
-  for (const auto &fo : flag_options)
+  വേണ്ടി (സ്ഥിരം auto &fo : flag_options)
   {
-    if (input->flags & fo.flag)
+    എങ്കിൽ (നിവേശം->flags & fo.flag)
     {
-      char buf[36];
-      snprintf (buf, sizeof (buf), "--%s", fo.option);
+      അക്ഷരം buf[36];
+      snprintf (buf, വലുപ്പം (buf), "--%s", fo.option);
       _append_arg (sb, buf);
     }
   }
 
-  hb_subset_input_t *default_input = hb_subset_input_create_or_fail ();
-  if (unlikely (!default_input))
-    return nullptr;
+  hb_subset_നിവേശം_t *default_നിവേശം = hb_subset_നിവേശം_create_or_fail ();
+  എങ്കിൽ (unlikely (!default_നിവേശം))
+    തിരികെ nullptr;
 
   // Serialize all sets if they are not equal to their default setting:
-#define PROCESS_NUMBER_SET(field, opt_name, ...) \
-  if (!_is_set_default (input->sets.field, default_input->sets.field)) \
-    _format_number_set_arg (input->sets.field, opt_name, sb, ##__VA_ARGS__)
+#define PROCESS_സംഖ്യ_SET(field, opt_name, ...) \
+  എങ്കിൽ (!_is_set_default (നിവേശം->sets.field, default_നിവേശം->sets.field)) \
+    format_സംഖ്യ_set_arg (നിവേശം->sets.field, opt_name, sb, ##__VA_ARGS__)
 
 #define PROCESS_TAG_SET(field, opt_name) \
-  if (!_is_set_default (input->sets.field, default_input->sets.field)) \
-    _format_tag_set_arg (input->sets.field, opt_name, sb)
+  എങ്കിൽ (!_is_set_default (നിവേശം->sets.field, default_നിവേശം->sets.field)) \
+    _format_tag_set_arg (നിവേശം->sets.field, opt_name, sb)
 
-  PROCESS_NUMBER_SET (unicodes, "unicodes", 16);
-  PROCESS_NUMBER_SET (glyphs, "gids");
-  PROCESS_NUMBER_SET (name_ids, "name-IDs");
-  PROCESS_NUMBER_SET (name_languages, "name-languages");
+  PROCESS_സംഖ്യ_SET (unicodes, "unicodes", 16);
+  PROCESS_സംഖ്യ_SET (glyphs, "gids");
+  PROCESS_സംഖ്യ_SET (name_ids, "name-IDs");
+  PROCESS_സംഖ്യ_SET (name_languages, "name-languages");
   PROCESS_TAG_SET (layout_features, "layout-features");
   PROCESS_TAG_SET (layout_scripts, "layout-scripts");
   PROCESS_TAG_SET (drop_tables, "drop-tables");
   PROCESS_TAG_SET (no_subset_tables, "passthrough-tables");
 
-#undef PROCESS_NUMBER_SET
+#undef PROCESS_സംഖ്യ_SET
 #undef PROCESS_TAG_SET
 
-  hb_subset_input_destroy (default_input);
+  hb_subset_നിവേശം_destroy (default_നിവേശം);
 
-  static_assert (sizeof (input->sets) / sizeof (hb_set_t*) == 8,
+  static_assert (വലുപ്പം (നിവേശം->sets) / വലുപ്പം (hb_set_t*) == 8,
                  "Check all sets in hb_subset_input_t::sets_t are handled here.");
 
-  if (unlikely (!_format_glyph_map_arg (input->glyph_map, sb)))
-    return nullptr;
+  എങ്കിൽ (unlikely (!_format_glyph_map_arg (നിവേശം->glyph_map, sb)))
+    തിരികെ nullptr;
 
-  if (unlikely (!_format_axes_location_arg (input->axes_location, sb)))
-    return nullptr;
+  എങ്കിൽ (unlikely (!_format_axes_location_arg (നിവേശം->axes_location, sb)))
+    തിരികെ nullptr;
 
   sb.push ('\0');
-  if (unlikely (sb.in_error ()))
-    return nullptr;
+  എങ്കിൽ (unlikely (sb.in_error ()))
+    തിരികെ nullptr;
 
   unsigned len = 0;
-  char *buf = sb.steal (&len);
-  if (unlikely (!buf))
-    return nullptr;
+  അക്ഷരം *buf = sb.steal (&len);
+  എങ്കിൽ (unlikely (!buf))
+    തിരികെ nullptr;
 
-  return hb_blob_create_or_fail (buf, len, HB_MEMORY_MODE_WRITABLE, buf, hb_free);
+  തിരികെ hb_blob_create_or_fail (buf, len, HB_MEMORY_MODE_WRITABLE, buf, hb_free);
 }
 #endif
 
@@ -1127,28 +1127,28 @@ hb_subset_input_to_string_or_fail (hb_subset_input_t *input)
 HB_EXTERN hb_face_t *
 hb_subset_preprocess (hb_face_t *source)
 {
-  hb_subset_input_t* input = hb_subset_input_create_or_fail ();
-  if (!input)
-    return hb_face_reference (source);
+  hb_subset_നിവേശം_t* നിവേശം = hb_subset_നിവേശം_create_or_fail ();
+  എങ്കിൽ (!നിവേശം)
+    തിരികെ hb_face_reference (source);
 
-  hb_subset_input_keep_everything (input);
+  hb_subset_നിവേശം_keep_everything (നിവേശം);
 
-  input->attach_accelerator_data = true;
+  നിവേശം->attach_accelerator_data = സത്യം;
 
   // Always use long loca in the preprocessed version. This allows
   // us to store the glyph bytes unpadded which allows the future subset
   // operation to run faster by skipping the trim padding step.
-  input->force_long_loca = true;
+  നിവേശം->force_long_loca = സത്യം;
 
-  hb_face_t* new_source = hb_subset_or_fail (source, input);
-  hb_subset_input_destroy (input);
+  hb_face_t* new_source = hb_subset_or_fail (source, നിവേശം);
+  hb_subset_നിവേശം_destroy (നിവേശം);
 
-  if (!new_source) {
-    DEBUG_MSG (SUBSET, nullptr, "Preprocessing failed due to subset failure.");
-    return hb_face_reference (source);
+  എങ്കിൽ (!new_source) {
+    DEBUG_സന്ദേശം (SUBSET, nullptr, "Preprocessing failed due to subset failure.");
+    തിരികെ hb_face_reference (source);
   }
 
-  return new_source;
+  തിരികെ new_source;
 }
 
 /**
@@ -1177,9 +1177,9 @@ hb_subset_preprocess (hb_face_t *source)
  * Since: 7.3.0
  **/
 HB_EXTERN hb_map_t*
-hb_subset_input_old_to_new_glyph_mapping (hb_subset_input_t *input)
+hb_subset_നിവേശം_old_to_new_glyph_mapping (hb_subset_നിവേശം_t *നിവേശം)
 {
-  return &input->glyph_map;
+  തിരികെ &നിവേശം->glyph_map;
 }
 
 #ifdef HB_EXPERIMENTAL_API
@@ -1203,50 +1203,50 @@ hb_subset_input_old_to_new_glyph_mapping (hb_subset_input_t *input)
  * XSince: EXPERIMENTAL
  **/
 HB_EXTERN hb_bool_t
-hb_subset_input_override_name_table (hb_subset_input_t  *input,
+hb_subset_നിവേശം_override_name_table (hb_subset_നിവേശം_t  *നിവേശം,
                                      hb_ot_name_id_t     name_id,
                                      unsigned            platform_id,
                                      unsigned            encoding_id,
                                      unsigned            language_id,
-                                     const char         *name_str,
-                                     int                 str_len /* -1 means nul-terminated */)
+                                     സ്ഥിരം അക്ഷരം         *name_str,
+                                     പൂർണ്ണസംഖ്യ                 str_len /* -1 means nul-terminated */)
 {
-  if (!name_str)
+  എങ്കിൽ (!name_str)
   {
     str_len = 0;
   }
-  else if (str_len == -1)
+  അല്ലെങ്കിൽ എങ്കിൽ (str_len == -1)
   {
       str_len = strlen (name_str);
   }
 
   hb_bytes_t name_bytes (nullptr, 0);
-  if (str_len)
+  എങ്കിൽ (str_len)
   {
-    if (platform_id == 1)
+    എങ്കിൽ (platform_id == 1)
     {
-      const uint8_t *src = reinterpret_cast<const uint8_t*> (name_str);
-      const uint8_t *src_end = src + str_len;
+      സ്ഥിരം uint8_t *src = reinterpret_cast<സ്ഥിരം uint8_t*> (name_str);
+      സ്ഥിരം uint8_t *src_end = src + str_len;
 
       hb_codepoint_t unicode;
-      const hb_codepoint_t replacement = HB_BUFFER_REPLACEMENT_CODEPOINT_DEFAULT;
-      while (src < src_end)
+      സ്ഥിരം hb_codepoint_t replacement = HB_BUFFER_REPLACEMENT_CODEPOINT_DEFAULT;
+      ആകുമ്പോൾ (src < src_end)
       {
         src = hb_utf8_t::next (src, src_end, &unicode, replacement);
-        if (unicode >= 0x0080u)
+        എങ്കിൽ (unicode >= 0x0080u)
         {
           // Non-ascii character detected, ignored...
-          return false;
+          തിരികെ അസത്യം;
         }
       }
     }
-    char *override_name = (char *) hb_malloc (str_len);
-    if (unlikely (!override_name)) return false;
+    അക്ഷരം *override_name = (അക്ഷരം *) hb_malloc (str_len);
+    എങ്കിൽ (unlikely (!override_name)) തിരികെ അസത്യം;
 
     hb_memcpy (override_name, name_str, str_len);
     name_bytes = hb_bytes_t (override_name, str_len);
   }
-  input->name_table_overrides.set (hb_ot_name_record_ids_t (platform_id, encoding_id, language_id, name_id), name_bytes);
-  return true;
+  നിവേശം->name_table_overrides.set (hb_ot_name_record_ids_t (platform_id, encoding_id, language_id, name_id), name_bytes);
+  തിരികെ സത്യം;
 }
 #endif

@@ -22,17 +22,17 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#അന്തര്ഭാവ "hb.hh"
 
 #ifndef HB_NO_STYLE
 
-#include "hb-ot-var-avar-table.hh"
-#include "hb-ot-var-fvar-table.hh"
-#include "hb-ot-stat-table.hh"
-#include "hb-ot-os2-table.hh"
-#include "hb-ot-head-table.hh"
-#include "hb-ot-post-table.hh"
-#include "hb-ot-face.hh"
+#അന്തര്ഭാവ "hb-ot-var-avar-table.hh"
+#അന്തര്ഭാവ "hb-ot-var-fvar-table.hh"
+#അന്തര്ഭാവ "hb-ot-stat-table.hh"
+#അന്തര്ഭാവ "hb-ot-os2-table.hh"
+#അന്തര്ഭാവ "hb-ot-head-table.hh"
+#അന്തര്ഭാവ "hb-ot-post-table.hh"
+#അന്തര്ഭാവ "hb-ot-face.hh"
 
 /**
  * SECTION:hb-style
@@ -43,16 +43,16 @@
  * Functions for fetching style information from fonts.
  **/
 
-static inline float
-_hb_angle_to_ratio (float a)
+സ്ഥിതം വരിയിൽ ദശാംശം
+_hb_angle_to_ratio (ദശാംശം a)
 {
-  return tanf (a * -HB_PI / 180.f);
+  തിരികെ tanf (a * -HB_PI / 180.f);
 }
 
-static inline float
-_hb_ratio_to_angle (float r)
+സ്ഥിതം വരിയിൽ ദശാംശം
+_hb_ratio_to_angle (ദശാംശം r)
 {
-  return atanf (r) * -180.f / HB_PI;
+  തിരികെ atanf (r) * -180.f / HB_PI;
 }
 
 /**
@@ -68,66 +68,66 @@ _hb_ratio_to_angle (float r)
  *
  * Since: 3.0.0
  **/
-float
-hb_style_get_value (hb_font_t *font, hb_style_tag_t style_tag)
+ദശാംശം
+hb_style_get_മൂല്യം (hb_font_t *font, hb_style_tag_t style_tag)
 {
-  if (unlikely (style_tag == HB_STYLE_TAG_SLANT_RATIO))
-    return _hb_angle_to_ratio (hb_style_get_value (font, HB_STYLE_TAG_SLANT_ANGLE));
+  എങ്കിൽ (unlikely (style_tag == HB_STYLE_TAG_SLANT_RATIO))
+    തിരികെ _hb_angle_to_ratio (hb_style_get_മൂല്യം (font, HB_STYLE_TAG_SLANT_ANGLE));
 
   hb_face_t *face = font->face;
 
 #ifndef HB_NO_VAR
   hb_ot_var_axis_info_t axis;
-  if (hb_ot_var_find_axis_info (face, style_tag, &axis))
+  എങ്കിൽ (hb_ot_var_find_axis_info (face, style_tag, &axis))
   {
-    if (axis.axis_index < font->num_coords) return font->design_coords[axis.axis_index];
+    എങ്കിൽ (axis.axis_index < font->അക്കം_coords) തിരികെ font->design_coords[axis.axis_index];
     /* If a face is variable, fvar's default_value is better than STAT records */
-    return axis.default_value;
+    തിരികെ axis.default_മൂല്യം;
   }
 #endif
 
-  if (style_tag == HB_STYLE_TAG_OPTICAL_SIZE && font->ptem)
-    return font->ptem;
+  എങ്കിൽ (style_tag == HB_STYLE_TAG_OPTICAL_SIZE && font->ptem)
+    തിരികെ font->ptem;
 
   /* STAT */
-  float value;
-  if (face->table.STAT->get_value (style_tag, &value))
-    return value;
+  ദശാംശം value;
+  എങ്കിൽ (face->table.STAT->get_മൂല്യം (style_tag, &value))
+    തിരികെ value;
 
-  switch ((unsigned) style_tag)
+  തിരഞ്ഞെടുപ്പ് ((unsigned) style_tag)
   {
-  case HB_STYLE_TAG_ITALIC:
-    return face->table.OS2->is_italic () || face->table.head->is_italic () ? 1 : 0;
-  case HB_STYLE_TAG_OPTICAL_SIZE:
+  അവസ്ഥ HB_STYLE_TAG_ITALIC:
+    തിരികെ face->table.OS2->is_italic () || face->table.head->is_italic () ? 1 : 0;
+  അവസ്ഥ HB_STYLE_TAG_OPTICAL_SIZE:
   {
-    unsigned int lower, design, upper;
-    return face->table.OS2->v5 ().get_optical_size (&lower, &upper)
-	   ? (float) (lower + upper) / 2.f
+    unsigned പൂർണ്ണസംഖ്യ lower, design, upper;
+    തിരികെ face->table.OS2->v5 ().get_optical_size (&lower, &upper)
+	   ? (ദശാംശം) (lower + upper) / 2.f
 	   : hb_ot_layout_get_size_params (face, &design, nullptr, nullptr, nullptr, nullptr)
 	   ? design / 10.f
 	   : 12.f;
   }
-  case HB_STYLE_TAG_SLANT_ANGLE:
+  അവസ്ഥ HB_STYLE_TAG_SLANT_ANGLE:
   {
-    float angle = face->table.post->table->italicAngle.to_float ();
+    ദശാംശം angle = face->table.post->table->italicAngle.to_float ();
 
-    if (font->slant)
+    എങ്കിൽ (font->slant)
       angle = _hb_ratio_to_angle (font->slant + _hb_angle_to_ratio (angle));
 
-    return angle;
+    തിരികെ angle;
   }
-  case HB_STYLE_TAG_WIDTH:
-    return face->table.OS2->has_data ()
+  അവസ്ഥ HB_STYLE_TAG_WIDTH:
+    തിരികെ face->table.OS2->has_data ()
 	   ? face->table.OS2->get_width ()
 	   : (face->table.head->is_condensed () ? 75 :
 	      face->table.head->is_expanded () ? 125 :
 	      100);
-  case HB_STYLE_TAG_WEIGHT:
-    return face->table.OS2->has_data ()
+  അവസ്ഥ HB_STYLE_TAG_WEIGHT:
+    തിരികെ face->table.OS2->has_data ()
 	   ? face->table.OS2->usWeightClass
 	   : (face->table.head->is_bold () ? 700 : 400);
-  default:
-    return 0;
+  സ്ഥിരസ്ഥിതി:
+    തിരികെ 0;
   }
 }
 

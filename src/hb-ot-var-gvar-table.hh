@@ -28,10 +28,10 @@
 #ifndef HB_OT_VAR_GVAR_TABLE_HH
 #define HB_OT_VAR_GVAR_TABLE_HH
 
-#include "hb-decycler.hh"
-#include "hb-open-type.hh"
-#include "hb-ot-dual.hh"
-#include "hb-ot-var-common.hh"
+#അന്തര്ഭാവ "hb-decycler.hh"
+#അന്തര്ഭാവ "hb-open-type.hh"
+#അന്തര്ഭാവ "hb-ot-dual.hh"
+#അന്തര്ഭാവ "hb-ot-var-common.hh"
 
 /*
  * gvar -- Glyph Variation Table
@@ -40,7 +40,7 @@
 #define HB_OT_TAG_gvar HB_TAG('g','v','a','r')
 #define HB_OT_TAG_GVAR HB_TAG('G','V','A','R')
 
-struct hb_glyf_scratch_t
+ഘടന hb_glyf_scratch_t
 {
   // glyf
   contour_point_vector_t all_points;
@@ -49,17 +49,17 @@ struct hb_glyf_scratch_t
 
   // gvar
   contour_point_vector_t orig_points;
-  hb_vector_t<int> x_deltas;
-  hb_vector_t<int> y_deltas;
+  hb_vector_t<പൂർണ്ണസംഖ്യ> x_deltas;
+  hb_vector_t<പൂർണ്ണസംഖ്യ> y_deltas;
   contour_point_vector_t deltas;
-  hb_vector_t<unsigned int> shared_indices;
-  hb_vector_t<unsigned int> private_indices;
+  hb_vector_t<unsigned പൂർണ്ണസംഖ്യ> shared_indices;
+  hb_vector_t<unsigned പൂർണ്ണസംഖ്യ> private_indices;
 };
 
-namespace OT {
+നാമാകാശ OT {
 
 template <typename OffsetType>
-struct glyph_variations_t
+ഘടന glyph_variations_t
 {
   // TODO: Move tuple_variations_t to outside of TupleVariationData
   using tuple_variations_t = typename TupleVariationData<OffsetType>::tuple_variations_t;
@@ -68,46 +68,46 @@ struct glyph_variations_t
   hb_vector_t<tuple_variations_t> glyph_variations;
 
   hb_vector_t<F2DOT14> compiled_shared_tuples;
-  private:
-  unsigned shared_tuples_count = 0;
+  സ്വകാര്യ:
+  unsigned shared_tuples_എണ്ണം = 0;
 
   /* shared coords-> index map after instantiation */
-  hb_hashmap_t<const hb_vector_t<F2DOT14>*, unsigned> shared_tuples_idx_map;
+  hb_hashmap_t<സ്ഥിരം hb_vector_t<F2DOT14>*, unsigned> shared_tuples_idx_map;
 
   hb_alloc_pool_t pool;
 
-  public:
-  unsigned compiled_shared_tuples_count () const
-  { return shared_tuples_count; }
+  പൊതു:
+  unsigned compiled_shared_tuples_എണ്ണം () സ്ഥിരം
+  { തിരികെ shared_tuples_എണ്ണം; }
 
-  unsigned compiled_byte_size () const
+  unsigned compiled_byte_size () സ്ഥിരം
   {
     unsigned byte_size = 0;
-    for (const auto& _ : glyph_variations)
+    വേണ്ടി (സ്ഥിരം auto& _ : glyph_variations)
       byte_size += _.get_compiled_byte_size ();
 
-    return byte_size;
+    തിരികെ byte_size;
   }
 
-  bool create_from_glyphs_var_data (unsigned axis_count,
-                                    const hb_array_t<const F2DOT14> shared_tuples,
-                                    const hb_subset_plan_t *plan,
-                                    const hb_hashmap_t<hb_codepoint_t, hb_bytes_t>& new_gid_var_data_map)
+  തർക്കം create_from_glyphs_var_data (unsigned axis_എണ്ണം,
+                                    സ്ഥിരം hb_array_t<സ്ഥിരം F2DOT14> shared_tuples,
+                                    സ്ഥിരം hb_subset_plan_t *plan,
+                                    സ്ഥിരം hb_hashmap_t<hb_codepoint_t, hb_bytes_t>& new_gid_var_data_map)
   {
-    if (unlikely (!glyph_variations.alloc_exact (plan->new_to_old_gid_list.length)))
-      return false;
+    എങ്കിൽ (unlikely (!glyph_variations.alloc_exact (plan->new_to_old_gid_list.length)))
+      തിരികെ അസത്യം;
 
     auto it = hb_iter (plan->new_to_old_gid_list);
-    for (auto &_ : it)
+    വേണ്ടി (auto &_ : it)
     {
       hb_codepoint_t new_gid = _.first;
       contour_point_vector_t *all_contour_points;
-      if (!new_gid_var_data_map.has (new_gid) ||
+      എങ്കിൽ (!new_gid_var_data_map.has (new_gid) ||
           !plan->new_gid_contour_points_map.has (new_gid, &all_contour_points))
-        return false;
+        തിരികെ അസത്യം;
       hb_bytes_t var_data = new_gid_var_data_map.get (new_gid);
 
-      const GlyphVariationData* p = reinterpret_cast<const GlyphVariationData*> (var_data.arrayZ);
+      സ്ഥിരം GlyphVariationData* p = reinterpret_cast<സ്ഥിരം GlyphVariationData*> (var_data.arrayZ);
       typename GlyphVariationData::tuple_iterator_t iterator;
       tuple_variations_t tuple_vars;
 
@@ -115,160 +115,160 @@ struct glyph_variations_t
 
       /* in case variation data is empty, push an empty struct into the vector,
        * keep the vector in sync with the new_to_old_gid_list */
-      if (!var_data || ! p->has_data () || !all_contour_points->length ||
-          !GlyphVariationData::get_tuple_iterator (var_data, axis_count,
+      എങ്കിൽ (!var_data || ! p->has_data () || !all_contour_points->length ||
+          !GlyphVariationData::get_tuple_iterator (var_data, axis_എണ്ണം,
                                                    var_data.arrayZ,
                                                    shared_indices, &iterator))
       {
         glyph_variations.push (std::move (tuple_vars));
-        continue;
+        തുടരുക;
       }
 
-      bool is_composite_glyph = false;
+      തർക്കം is_composite_glyph = അസത്യം;
       is_composite_glyph = plan->composite_new_gids.has (new_gid);
 
-      if (!p->decompile_tuple_variations (all_contour_points->length, true /* is_gvar */,
+      എങ്കിൽ (!p->decompile_tuple_variations (all_contour_points->length, സത്യം /* is_gvar */,
                                           iterator, &(plan->axes_old_index_tag_map),
                                           shared_indices, shared_tuples,
                                           tuple_vars, /* OUT */
 					  &pool,
                                           is_composite_glyph))
-        return false;
+        തിരികെ അസത്യം;
       glyph_variations.push (std::move (tuple_vars));
     }
-    return !glyph_variations.in_error () && glyph_variations.length == plan->new_to_old_gid_list.length;
+    തിരികെ !glyph_variations.in_error () && glyph_variations.length == plan->new_to_old_gid_list.length;
   }
 
-  bool instantiate (const hb_subset_plan_t *plan)
+  തർക്കം instantiate (സ്ഥിരം hb_subset_plan_t *plan)
   {
-    unsigned count = plan->new_to_old_gid_list.length;
-    bool iup_optimize = false;
+    unsigned എണ്ണം = plan->new_to_old_gid_list.length;
+    തർക്കം iup_optimize = അസത്യം;
     optimize_scratch_t scratch;
     iup_optimize = plan->flags & HB_SUBSET_FLAGS_OPTIMIZE_IUP_DELTAS;
-    for (unsigned i = 0; i < count; i++)
+    വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++)
     {
       hb_codepoint_t new_gid = plan->new_to_old_gid_list[i].first;
       contour_point_vector_t *all_points;
-      if (!plan->new_gid_contour_points_map.has (new_gid, &all_points))
-        return false;
+      എങ്കിൽ (!plan->new_gid_contour_points_map.has (new_gid, &all_points))
+        തിരികെ അസത്യം;
       /* IUP adds rebased constant deltas to the contour coordinates. Keep
        * the plan's original points intact across serialization retries. */
       contour_point_vector_t points;
-      if (iup_optimize)
+      എങ്കിൽ (iup_optimize)
       {
         points = *all_points;
-        if (unlikely (points.in_error ())) return false;
+        എങ്കിൽ (unlikely (points.in_error ())) തിരികെ അസത്യം;
         all_points = &points;
       }
       /* avar2 partial instancing: cull unreachable tuples. */
-      if (plan->has_avar2 && plan->avar2_reachable_ranges.get_population ())
+      എങ്കിൽ (plan->has_avar2 && plan->avar2_reachable_ranges.get_population ())
 	glyph_variations[i].cull_unreachable (plan->avar2_reachable_ranges);
-      if (!glyph_variations[i].instantiate (plan->axes_location, plan->axes_triple_distances, scratch, &pool, all_points, iup_optimize))
-        return false;
+      എങ്കിൽ (!glyph_variations[i].instantiate (plan->axes_location, plan->axes_triple_distances, scratch, &pool, all_points, iup_optimize))
+        തിരികെ അസത്യം;
     }
-    return true;
+    തിരികെ സത്യം;
   }
 
-  bool compile_bytes (const hb_map_t& axes_index_map,
-                      const hb_map_t& axes_old_index_tag_map)
+  തർക്കം compile_bytes (സ്ഥിരം hb_map_t& axes_index_map,
+                      സ്ഥിരം hb_map_t& axes_old_index_tag_map)
   {
-    if (!compile_shared_tuples (axes_index_map, axes_old_index_tag_map))
-      return false;
-    for (tuple_variations_t& vars: glyph_variations)
-      if (!vars.compile_bytes (axes_index_map, axes_old_index_tag_map,
-                               true, /* use shared points*/
-                               true,
+    എങ്കിൽ (!compile_shared_tuples (axes_index_map, axes_old_index_tag_map))
+      തിരികെ അസത്യം;
+    വേണ്ടി (tuple_variations_t& vars: glyph_variations)
+      എങ്കിൽ (!vars.compile_bytes (axes_index_map, axes_old_index_tag_map,
+                               സത്യം, /* use shared points*/
+                               സത്യം,
                                &shared_tuples_idx_map,
 			       &pool))
-        return false;
+        തിരികെ അസത്യം;
 
-    return true;
+    തിരികെ സത്യം;
   }
 
-  bool compile_shared_tuples (const hb_map_t& axes_index_map,
-                              const hb_map_t& axes_old_index_tag_map)
+  തർക്കം compile_shared_tuples (സ്ഥിരം hb_map_t& axes_index_map,
+                              സ്ഥിരം hb_map_t& axes_old_index_tag_map)
   {
     /* key is pointer to compiled_peak_coords inside each tuple, hashing
      * function will always deref pointers first */
-    hb_hashmap_t<const hb_vector_t<F2DOT14>*, unsigned> coords_count_map;
+    hb_hashmap_t<സ്ഥിരം hb_vector_t<F2DOT14>*, unsigned> coords_എണ്ണം_map;
 
     /* count the num of shared coords */
-    for (tuple_variations_t& vars: glyph_variations)
+    വേണ്ടി (tuple_variations_t& vars: glyph_variations)
     {
-      for (tuple_delta_t& var : vars.tuple_vars)
+      വേണ്ടി (tuple_delta_t& var : vars.tuple_vars)
       {
-        if (!var.compile_coords (axes_index_map, axes_old_index_tag_map, &pool))
-          return false;
-        unsigned *count;
+        എങ്കിൽ (!var.compile_coords (axes_index_map, axes_old_index_tag_map, &pool))
+          തിരികെ അസത്യം;
+        unsigned *എണ്ണം;
 	unsigned hash = hb_hash (&var.compiled_peak_coords);
-        if (coords_count_map.has_with_hash (&(var.compiled_peak_coords), hash, &count))
-	  (*count)++;
-        else
-          coords_count_map.set_with_hash (&(var.compiled_peak_coords), hash, 1);
+        എങ്കിൽ (coords_എണ്ണം_map.has_with_hash (&(var.compiled_peak_coords), hash, &എണ്ണം))
+	  (*എണ്ണം)++;
+        അല്ലെങ്കിൽ
+          coords_എണ്ണം_map.set_with_hash (&(var.compiled_peak_coords), hash, 1);
       }
     }
 
-    if (!coords_count_map || coords_count_map.in_error ())
-      return false;
+    എങ്കിൽ (!coords_എണ്ണം_map || coords_എണ്ണം_map.in_error ())
+      തിരികെ അസത്യം;
 
     /* add only those coords that are used more than once into the vector and sort */
-    hb_vector_t<hb_pair_t<const hb_vector_t<F2DOT14>*, unsigned>> shared_coords {
-      + hb_iter (coords_count_map)
-      | hb_filter ([] (const hb_pair_t<const hb_vector_t<F2DOT14>*, unsigned>& p) { return p.second > 1; })
+    hb_vector_t<hb_pair_t<സ്ഥിരം hb_vector_t<F2DOT14>*, unsigned>> shared_coords {
+      + hb_iter (coords_എണ്ണം_map)
+      | hb_filter ([] (സ്ഥിരം hb_pair_t<സ്ഥിരം hb_vector_t<F2DOT14>*, unsigned>& p) { തിരികെ p.second > 1; })
     };
-    if (unlikely (shared_coords.in_error ())) return false;
+    എങ്കിൽ (unlikely (shared_coords.in_error ())) തിരികെ അസത്യം;
 
     /* no shared tuples: no coords are used more than once */
-    if (!shared_coords) return true;
+    എങ്കിൽ (!shared_coords) തിരികെ സത്യം;
     /* sorting based on the coords frequency first (high to low), then compare
      * the coords bytes */
     shared_coords.qsort (_cmp_coords);
 
     /* build shared_coords->idx map and shared tuples byte array */
 
-    shared_tuples_count = hb_min (0xFFFu + 1, shared_coords.length);
-    unsigned len = shared_tuples_count * (shared_coords[0].first->length);
-    if (unlikely (!compiled_shared_tuples.alloc (len)))
-      return false;
+    shared_tuples_എണ്ണം = hb_min (0xFFFu + 1, shared_coords.length);
+    unsigned len = shared_tuples_എണ്ണം * (shared_coords[0].first->length);
+    എങ്കിൽ (unlikely (!compiled_shared_tuples.alloc (len)))
+      തിരികെ അസത്യം;
 
-    for (unsigned i = 0; i < shared_tuples_count; i++)
+    വേണ്ടി (unsigned i = 0; i < shared_tuples_എണ്ണം; i++)
     {
       shared_tuples_idx_map.set (shared_coords[i].first, i);
       /* add a concat() in hb_vector_t? */
-      for (auto c : shared_coords[i].first->iter ())
+      വേണ്ടി (auto c : shared_coords[i].first->iter ())
         compiled_shared_tuples.push (c);
     }
 
-    return true;
+    തിരികെ സത്യം;
   }
 
-  static int _cmp_coords (const void *pa, const void *pb)
+  സ്ഥിതം പൂർണ്ണസംഖ്യ _cmp_coords (സ്ഥിരം ശൂന്യം *pa, സ്ഥിരം ശൂന്യം *pb)
   {
-    const hb_pair_t<hb_vector_t<F2DOT14> *, unsigned> *a = (const hb_pair_t<hb_vector_t<F2DOT14> *, unsigned> *) pa;
-    const hb_pair_t<hb_vector_t<F2DOT14> *, unsigned> *b = (const hb_pair_t<hb_vector_t<F2DOT14> *, unsigned> *) pb;
+    സ്ഥിരം hb_pair_t<hb_vector_t<F2DOT14> *, unsigned> *a = (സ്ഥിരം hb_pair_t<hb_vector_t<F2DOT14> *, unsigned> *) pa;
+    സ്ഥിരം hb_pair_t<hb_vector_t<F2DOT14> *, unsigned> *b = (സ്ഥിരം hb_pair_t<hb_vector_t<F2DOT14> *, unsigned> *) pb;
 
-    if (a->second != b->second)
-      return b->second - a->second; // high to low
+    എങ്കിൽ (a->second != b->second)
+      തിരികെ b->second - a->second; // high to low
 
-    return b->first->as_array().cmp (a->first->as_array ());
+    തിരികെ b->first->as_array().cmp (a->first->as_array ());
   }
 
   template<typename Iterator,
            hb_requires (hb_is_iterator (Iterator))>
-  bool serialize_glyph_var_data (hb_serialize_context_t *c,
+  തർക്കം serialize_glyph_var_data (hb_serialize_context_t *c,
                                  Iterator it,
-                                 bool long_offset,
-                                 unsigned num_glyphs,
-                                 char* glyph_var_data_offsets /* OUT: glyph var data offsets array */) const
+                                 തർക്കം long_offset,
+                                 unsigned അക്കം_glyphs,
+                                 അക്ഷരം* glyph_var_data_offsets /* OUT: glyph var data offsets array */) സ്ഥിരം
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ഇത്);
 
-    if (long_offset)
+    എങ്കിൽ (long_offset)
     {
       ((HBUINT32 *) glyph_var_data_offsets)[0] = 0;
       glyph_var_data_offsets += 4;
     }
-    else
+    അല്ലെങ്കിൽ
     {
       ((HBUINT16 *) glyph_var_data_offsets)[0] = 0;
       glyph_var_data_offsets += 2;
@@ -278,25 +278,25 @@ struct glyph_variations_t
     unsigned idx = 0;
 
     GlyphVariationData* cur_glyph = c->start_embed<GlyphVariationData> ();
-    if (!cur_glyph) return_trace (false);
-    for (auto &_ : it)
+    എങ്കിൽ (!cur_glyph) return_trace (അസത്യം);
+    വേണ്ടി (auto &_ : it)
     {
       hb_codepoint_t gid = _.first;
-      if (long_offset)
-        for (; last_gid < gid; last_gid++)
+      എങ്കിൽ (long_offset)
+        വേണ്ടി (; last_gid < gid; last_gid++)
           ((HBUINT32 *) glyph_var_data_offsets)[last_gid] = glyph_offset;
-      else
-        for (; last_gid < gid; last_gid++)
+      അല്ലെങ്കിൽ
+        വേണ്ടി (; last_gid < gid; last_gid++)
           ((HBUINT16 *) glyph_var_data_offsets)[last_gid] = glyph_offset / 2;
 
-      if (idx >= glyph_variations.length) return_trace (false);
-      if (!cur_glyph->serialize (c, true, glyph_variations[idx])) return_trace (false);
+      എങ്കിൽ (idx >= glyph_variations.length) return_trace (അസത്യം);
+      എങ്കിൽ (!cur_glyph->serialize (c, സത്യം, glyph_variations[idx])) return_trace (അസത്യം);
       GlyphVariationData* next_glyph = c->start_embed<GlyphVariationData> ();
-      glyph_offset += (char *) next_glyph - (char *) cur_glyph;
+      glyph_offset += (അക്ഷരം *) next_glyph - (അക്ഷരം *) cur_glyph;
 
-      if (long_offset)
+      എങ്കിൽ (long_offset)
         ((HBUINT32 *) glyph_var_data_offsets)[gid] = glyph_offset;
-      else
+      അല്ലെങ്കിൽ
         ((HBUINT16 *) glyph_var_data_offsets)[gid] = glyph_offset / 2;
 
       last_gid++;
@@ -304,280 +304,280 @@ struct glyph_variations_t
       cur_glyph = next_glyph;
     }
 
-    if (long_offset)
-      for (; last_gid < num_glyphs; last_gid++)
+    എങ്കിൽ (long_offset)
+      വേണ്ടി (; last_gid < അക്കം_glyphs; last_gid++)
         ((HBUINT32 *) glyph_var_data_offsets)[last_gid] = glyph_offset;
-    else
-      for (; last_gid < num_glyphs; last_gid++)
+    അല്ലെങ്കിൽ
+      വേണ്ടി (; last_gid < അക്കം_glyphs; last_gid++)
         ((HBUINT16 *) glyph_var_data_offsets)[last_gid] = glyph_offset / 2;
-    return_trace (true);
+    return_trace (സത്യം);
   }
 };
 
 template <typename T, typename Types>
-struct gvar_GVAR
+ഘടന gvar_GVAR
 {
-  using GlyphCountType = typename Types::HBUINT;
+  using Glyph_എണ്ണം_Type = typename Types::HBUINT;
 
-  using GlyphVariationData = TupleVariationData<GlyphCountType>;
-  static constexpr unsigned glyph_count_max ()
-  { return (1u << (8 * GlyphCountType::static_size)) - 1; }
+  using GlyphVariationData = TupleVariationData<Glyph_എണ്ണം_Type>;
+  സ്ഥിതം constexpr unsigned glyph_എണ്ണം_max ()
+  { തിരികെ (1u << (8 * Glyph_എണ്ണം_Type::static_size)) - 1; }
 
-  bool has_data () const { return version.to_int () != 0; }
+  തർക്കം has_data () സ്ഥിരം { തിരികെ version.to_int () != 0; }
 
-  bool sanitize_shallow (hb_sanitize_context_t *c) const
+  തർക്കം sanitize_shallow (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) &&
 		  hb_barrier () &&
 		  (version.major == 1) &&
-		  sharedTuples.sanitize (c, this, axisCount * sharedTupleCount) &&
+		  sharedTuples.sanitize (c, ഇത്, axis_എണ്ണം_2 * shared_Tuple_എണ്ണം) &&
 		  (is_long_offset () ?
-		     c->check_array (get_long_offset_array (), c->get_num_glyphs () + 1) :
-		     c->check_array (get_short_offset_array (), c->get_num_glyphs () + 1)));
+		     c->check_array (get_long_offset_array (), c->get_അക്കം_glyphs () + 1) :
+		     c->check_array (get_short_offset_array (), c->get_അക്കം_glyphs () + 1)));
   }
 
   /* GlyphVariationData not sanitized here; must be checked while accessing each glyph variation data */
-  bool sanitize (hb_sanitize_context_t *c) const
-  { return sanitize_shallow (c); }
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
+  { തിരികെ sanitize_shallow (c); }
 
-  bool decompile_glyph_variations (hb_subset_context_t *c,
-                                   glyph_variations_t<GlyphCountType>& glyph_vars /* OUT */) const
+  തർക്കം decompile_glyph_variations (hb_subset_context_t *c,
+                                   glyph_variations_t<Glyph_എണ്ണം_Type>& glyph_vars /* OUT */) സ്ഥിരം
   {
     hb_hashmap_t<hb_codepoint_t, hb_bytes_t> new_gid_var_data_map;
     auto it = hb_iter (c->plan->new_to_old_gid_list);
-    if (it->first == 0 && !(c->plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
+    എങ്കിൽ (it->first == 0 && !(c->plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
     {
       new_gid_var_data_map.set (0, hb_bytes_t ());
       it++;
     }
 
-    for (auto &_ : it)
+    വേണ്ടി (auto &_ : it)
     {
       hb_codepoint_t new_gid = _.first;
       hb_codepoint_t old_gid = _.second;
-      hb_bytes_t var_data_bytes = get_glyph_var_data_bytes (c->source_blob, glyphCountX, old_gid);
+      hb_bytes_t var_data_bytes = get_glyph_var_data_bytes (c->source_blob, glyph_എണ്ണം_X, old_gid);
       new_gid_var_data_map.set (new_gid, var_data_bytes);
     }
 
-    if (new_gid_var_data_map.in_error ()) return false;
+    എങ്കിൽ (new_gid_var_data_map.in_error ()) തിരികെ അസത്യം;
 
-    hb_array_t<const F2DOT14> shared_tuples = (this+sharedTuples).as_array ((unsigned) sharedTupleCount * (unsigned) axisCount);
-    return glyph_vars.create_from_glyphs_var_data (axisCount, shared_tuples, c->plan, new_gid_var_data_map);
+    hb_array_t<സ്ഥിരം F2DOT14> shared_tuples = (ഇത്+sharedTuples).as_array ((unsigned) shared_Tuple_എണ്ണം * (unsigned) axis_എണ്ണം_2);
+    തിരികെ glyph_vars.create_from_glyphs_var_data (axis_എണ്ണം_2, shared_tuples, c->plan, new_gid_var_data_map);
   }
 
   template<typename Iterator,
            hb_requires (hb_is_iterator (Iterator))>
-  bool serialize (hb_serialize_context_t *c,
-                  const glyph_variations_t<GlyphCountType>& glyph_vars,
+  തർക്കം serialize (hb_serialize_context_t *c,
+                  സ്ഥിരം glyph_variations_t<Glyph_എണ്ണം_Type>& glyph_vars,
                   Iterator it,
-                  unsigned axis_count,
-                  unsigned num_glyphs,
-                  bool force_long_offsets) const
+                  unsigned axis_എണ്ണം,
+                  unsigned അക്കം_glyphs,
+                  തർക്കം force_long_offsets) സ്ഥിരം
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ഇത്);
     gvar_GVAR *out = c->allocate_min<gvar_GVAR> ();
-    if (unlikely (!out)) return_trace (false);
+    എങ്കിൽ (unlikely (!out)) return_trace (അസത്യം);
 
     out->version.major = 1;
     out->version.minor = 0;
-    out->axisCount = axis_count;
-    out->glyphCountX = hb_min (glyph_count_max (), num_glyphs);
+    out->axis_എണ്ണം_2 = axis_എണ്ണം;
+    out->glyph_എണ്ണം_X = hb_min (glyph_എണ്ണം_max (), അക്കം_glyphs);
 
     unsigned glyph_var_data_size = glyph_vars.compiled_byte_size ();
     /* According to the spec: If the short format (Offset16) is used for offsets,
      * the value stored is the offset divided by 2, so the maximum data size should
      * be 2 * 0xFFFFu, which is 0x1FFFEu */
-    bool long_offset = glyph_var_data_size > 0x1FFFEu || force_long_offsets;
+    തർക്കം long_offset = glyph_var_data_size > 0x1FFFEu || force_long_offsets;
     out->flags = long_offset ? 1 : 0;
 
-    unsigned glyph_var_data_offsets_size = (long_offset ? 4 : 2) * (num_glyphs + 1);
-    HBUINT8 *glyph_var_data_offsets = c->allocate_size<HBUINT8> (glyph_var_data_offsets_size, false);
-    if (!glyph_var_data_offsets) return_trace (false);
+    unsigned glyph_var_data_offsets_size = (long_offset ? 4 : 2) * (അക്കം_glyphs + 1);
+    HBUINT8 *glyph_var_data_offsets = c->allocate_size<HBUINT8> (glyph_var_data_offsets_size, അസത്യം);
+    എങ്കിൽ (!glyph_var_data_offsets) return_trace (അസത്യം);
 
     /* shared tuples */
-    unsigned shared_tuple_count = glyph_vars.compiled_shared_tuples_count ();
-    out->sharedTupleCount = shared_tuple_count;
+    unsigned shared_tuple_എണ്ണം = glyph_vars.compiled_shared_tuples_എണ്ണം ();
+    out->shared_Tuple_എണ്ണം = shared_tuple_എണ്ണം;
 
-    if (!shared_tuple_count)
-      out->sharedTuples = (char *) glyph_var_data_offsets + glyph_var_data_offsets_size - (char *) out;
-    else
+    എങ്കിൽ (!shared_tuple_എണ്ണം)
+      out->sharedTuples = (അക്ഷരം *) glyph_var_data_offsets + glyph_var_data_offsets_size - (അക്ഷരം *) out;
+    അല്ലെങ്കിൽ
     {
-      hb_array_t<const F2DOT14> shared_tuples = glyph_vars.compiled_shared_tuples.as_array ().copy (c);
-      if (!shared_tuples.arrayZ) return_trace (false);
-      out->sharedTuples = (const char *) shared_tuples.arrayZ - (char *) out;
+      hb_array_t<സ്ഥിരം F2DOT14> shared_tuples = glyph_vars.compiled_shared_tuples.as_array ().copy (c);
+      എങ്കിൽ (!shared_tuples.arrayZ) return_trace (അസത്യം);
+      out->sharedTuples = (സ്ഥിരം അക്ഷരം *) shared_tuples.arrayZ - (അക്ഷരം *) out;
     }
 
-    char *glyph_var_data = c->start_embed<char> ();
-    if (!glyph_var_data) return_trace (false);
-    out->dataZ = glyph_var_data - (char *) out;
+    അക്ഷരം *glyph_var_data = c->start_embed<അക്ഷരം> ();
+    എങ്കിൽ (!glyph_var_data) return_trace (അസത്യം);
+    out->dataZ = glyph_var_data - (അക്ഷരം *) out;
 
-    return_trace (glyph_vars.serialize_glyph_var_data (c, it, long_offset, num_glyphs,
-                                                       (char *) glyph_var_data_offsets));
+    return_trace (glyph_vars.serialize_glyph_var_data (c, it, long_offset, അക്കം_glyphs,
+                                                       (അക്ഷരം *) glyph_var_data_offsets));
   }
 
-  bool instantiate (hb_subset_context_t *c) const
+  തർക്കം instantiate (hb_subset_context_t *c) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    glyph_variations_t<GlyphCountType> glyph_vars;
-    if (!decompile_glyph_variations (c, glyph_vars))
-      return_trace (false);
+    TRACE_SUBSET (ഇത്);
+    glyph_variations_t<Glyph_എണ്ണം_Type> glyph_vars;
+    എങ്കിൽ (!decompile_glyph_variations (c, glyph_vars))
+      return_trace (അസത്യം);
 
-    if (!glyph_vars.instantiate (c->plan)) return_trace (false);
-    if (!glyph_vars.compile_bytes (c->plan->axes_index_map, c->plan->axes_old_index_tag_map))
-      return_trace (false);
+    എങ്കിൽ (!glyph_vars.instantiate (c->plan)) return_trace (അസത്യം);
+    എങ്കിൽ (!glyph_vars.compile_bytes (c->plan->axes_index_map, c->plan->axes_old_index_tag_map))
+      return_trace (അസത്യം);
 
-    unsigned axis_count = c->plan->axes_index_map.get_population ();
-    unsigned num_glyphs = c->plan->num_output_glyphs ();
+    unsigned axis_എണ്ണം = c->plan->axes_index_map.get_population ();
+    unsigned അക്കം_glyphs = c->plan->അക്കം_output_glyphs ();
     auto it = hb_iter (c->plan->new_to_old_gid_list);
 
-    bool force_long_offsets = false;
+    തർക്കം force_long_offsets = അസത്യം;
 #ifdef HB_EXPERIMENTAL_API
     force_long_offsets = c->plan->flags & HB_SUBSET_FLAGS_IFTB_REQUIREMENTS;
 #endif
-    return_trace (serialize (c->serializer, glyph_vars, it, axis_count, num_glyphs, force_long_offsets));
+    return_trace (serialize (c->serializer, glyph_vars, it, axis_എണ്ണം, അക്കം_glyphs, force_long_offsets));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  തർക്കം subset (hb_subset_context_t *c) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    if (c->plan->all_axes_pinned)
-      return_trace (false);
+    TRACE_SUBSET (ഇത്);
+    എങ്കിൽ (c->plan->all_axes_pinned)
+      return_trace (അസത്യം);
 
-    if (c->plan->normalized_coords)
+    എങ്കിൽ (c->plan->normalized_coords)
       return_trace (instantiate (c));
 
-    unsigned glyph_count = version.to_int () ? c->plan->source->get_num_glyphs () : 0;
+    unsigned glyph_എണ്ണം = version.to_int () ? c->plan->source->get_അക്കം_glyphs () : 0;
 
     gvar_GVAR *out = c->serializer->allocate_min<gvar_GVAR> ();
-    if (unlikely (!out)) return_trace (false);
+    എങ്കിൽ (unlikely (!out)) return_trace (അസത്യം);
 
     out->version.major = 1;
     out->version.minor = 0;
-    out->axisCount = axisCount;
-    out->sharedTupleCount = sharedTupleCount;
+    out->axis_എണ്ണം_2 = axis_എണ്ണം_2;
+    out->shared_Tuple_എണ്ണം = shared_Tuple_എണ്ണം;
 
-    unsigned int num_glyphs = c->plan->num_output_glyphs ();
-    out->glyphCountX = hb_min (glyph_count_max (), num_glyphs);
+    unsigned പൂർണ്ണസംഖ്യ അക്കം_glyphs = c->plan->അക്കം_output_glyphs ();
+    out->glyph_എണ്ണം_X = hb_min (glyph_എണ്ണം_max (), അക്കം_glyphs);
 
     /* avar2 partial instancing: cull tuple variations whose region falls
      * outside the reachable old-space final-coord ranges. Rewritten glyph
      * data is cached per new gid; untouched glyphs are copied verbatim. */
-    hb_vector_t<hb_vector_t<char>> culled_vars;
+    hb_vector_t<hb_vector_t<അക്ഷരം>> culled_vars;
     hb_set_t culled_gids;
-    if (c->plan->has_avar2 && c->plan->avar2_reachable_ranges.get_population ())
+    എങ്കിൽ (c->plan->has_avar2 && c->plan->avar2_reachable_ranges.get_population ())
     {
-      hb_array_t<const F2DOT14> shared_tuples_array =
-	  (this+sharedTuples).as_array ((unsigned) sharedTupleCount * (unsigned) axisCount);
-      if (unlikely (!culled_vars.resize (num_glyphs))) return_trace (false);
+      hb_array_t<സ്ഥിരം F2DOT14> shared_tuples_array =
+	  (ഇത്+sharedTuples).as_array ((unsigned) shared_Tuple_എണ്ണം * (unsigned) axis_എണ്ണം_2);
+      എങ്കിൽ (unlikely (!culled_vars.resize (അക്കം_glyphs))) return_trace (അസത്യം);
       auto cull_it = hb_iter (c->plan->new_to_old_gid_list);
-      if (cull_it->first == 0 && !(c->plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
+      എങ്കിൽ (cull_it->first == 0 && !(c->plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
 	cull_it++;
-      for (auto &_ : cull_it)
+      വേണ്ടി (auto &_ : cull_it)
       {
-	hb_bytes_t var_data_bytes = get_glyph_var_data_bytes (c->source_blob, glyph_count, _.second);
-	if (var_data_bytes.length < GlyphVariationData::min_size) continue;
-	bool changed = false;
-	if (unlikely (!var_data_bytes.as<GlyphVariationData> ()
-		      ->cull_tuple_variations (var_data_bytes, axisCount,
+	hb_bytes_t var_data_bytes = get_glyph_var_data_bytes (c->source_blob, glyph_എണ്ണം, _.second);
+	എങ്കിൽ (var_data_bytes.length < GlyphVariationData::min_size) തുടരുക;
+	തർക്കം changed = അസത്യം;
+	എങ്കിൽ (unlikely (!var_data_bytes.as<GlyphVariationData> ()
+		      ->cull_tuple_variations (var_data_bytes, axis_എണ്ണം_2,
 					       shared_tuples_array,
 					       &c->plan->axes_old_index_tag_map,
 					       c->plan->avar2_reachable_ranges,
 					       culled_vars[_.first], &changed)))
-	  return_trace (false);
-	if (changed) culled_gids.add (_.first);
+	  return_trace (അസത്യം);
+	എങ്കിൽ (changed) culled_gids.add (_.first);
       }
-      if (unlikely (culled_gids.in_error ())) return_trace (false);
+      എങ്കിൽ (unlikely (culled_gids.in_error ())) return_trace (അസത്യം);
     }
 
     auto it = hb_iter (c->plan->new_to_old_gid_list);
-    if (it->first == 0 && !(c->plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
+    എങ്കിൽ (it->first == 0 && !(c->plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
       it++;
     unsigned subset_data_size = 0;
     unsigned padding_size = 0;
-    for (auto &_ : it)
+    വേണ്ടി (auto &_ : it)
     {
       hb_codepoint_t old_gid = _.second;
       unsigned glyph_data_size = culled_gids.has (_.first)
 				 ? culled_vars[_.first].length
-				 : get_glyph_var_data_bytes (c->source_blob, glyph_count, old_gid).length;
-      if (glyph_data_size % 2)
+				 : get_glyph_var_data_bytes (c->source_blob, glyph_എണ്ണം, old_gid).length;
+      എങ്കിൽ (glyph_data_size % 2)
       {
         glyph_data_size++;
         padding_size++;
       }
 
-      if (unlikely (hb_unsigned_add_overflows (subset_data_size, glyph_data_size, &subset_data_size)))
-	return_trace (false);
+      എങ്കിൽ (unlikely (hb_unsigned_add_overflows (subset_data_size, glyph_data_size, &subset_data_size)))
+	return_trace (അസത്യം);
     }
 
     /* According to the spec: If the short format (Offset16) is used for offsets,
      * the value stored is the offset divided by 2, so the maximum data size should
      * be 2 * 0xFFFFu, which is 0x1FFFEu */
-    bool long_offset = subset_data_size > 0x1FFFEu;
+    തർക്കം long_offset = subset_data_size > 0x1FFFEu;
 #ifdef HB_EXPERIMENTAL_API
     long_offset = long_offset || (c->plan->flags & HB_SUBSET_FLAGS_IFTB_REQUIREMENTS);
 #endif
     out->flags = long_offset ? 1 : 0;
 
-    unsigned subset_offsets_size = (long_offset ? 4 : 2) * (num_glyphs + 1);
-    HBUINT8 *subset_offsets = c->serializer->allocate_size<HBUINT8> (subset_offsets_size, false);
-    if (!subset_offsets) return_trace (false);
+    unsigned subset_offsets_size = (long_offset ? 4 : 2) * (അക്കം_glyphs + 1);
+    HBUINT8 *subset_offsets = c->serializer->allocate_size<HBUINT8> (subset_offsets_size, അസത്യം);
+    എങ്കിൽ (!subset_offsets) return_trace (അസത്യം);
 
     /* shared tuples */
-    if (!sharedTupleCount || !sharedTuples)
-      out->sharedTuples = (char *) subset_offsets + subset_offsets_size - (char *) out;
-    else
+    എങ്കിൽ (!shared_Tuple_എണ്ണം || !sharedTuples)
+      out->sharedTuples = (അക്ഷരം *) subset_offsets + subset_offsets_size - (അക്ഷരം *) out;
+    അല്ലെങ്കിൽ
     {
-      unsigned int shared_tuple_size = F2DOT14::static_size * axisCount * sharedTupleCount;
+      unsigned പൂർണ്ണസംഖ്യ shared_tuple_size = F2DOT14::static_size * axis_എണ്ണം_2 * shared_Tuple_എണ്ണം;
       F2DOT14 *tuples = c->serializer->allocate_size<F2DOT14> (shared_tuple_size);
-      if (!tuples) return_trace (false);
-      out->sharedTuples = (char *) tuples - (char *) out;
-      hb_memcpy (tuples, this+sharedTuples, shared_tuple_size);
+      എങ്കിൽ (!tuples) return_trace (അസത്യം);
+      out->sharedTuples = (അക്ഷരം *) tuples - (അക്ഷരം *) out;
+      hb_memcpy (tuples, ഇത്+sharedTuples, shared_tuple_size);
     }
 
     /* This ordering relative to the shared tuples array, which puts the glyphVariationData
        last in the table, is required when HB_SUBSET_FLAGS_IFTB_REQUIREMENTS is set */
-    if (long_offset)
+    എങ്കിൽ (long_offset)
       subset_data_size -= padding_size;
-    char *subset_data = c->serializer->allocate_size<char> (subset_data_size, false);
-    if (!subset_data) return_trace (false);
-    out->dataZ = subset_data - (char *) out;
+    അക്ഷരം *subset_data = c->serializer->allocate_size<അക്ഷരം> (subset_data_size, അസത്യം);
+    എങ്കിൽ (!subset_data) return_trace (അസത്യം);
+    out->dataZ = subset_data - (അക്ഷരം *) out;
 
 
-    if (long_offset)
+    എങ്കിൽ (long_offset)
     {
       ((HBUINT32 *) subset_offsets)[0] = 0;
       subset_offsets += 4;
     }
-    else
+    അല്ലെങ്കിൽ
     {
       ((HBUINT16 *) subset_offsets)[0] = 0;
       subset_offsets += 2;
     }
-    unsigned int glyph_offset = 0;
+    unsigned പൂർണ്ണസംഖ്യ glyph_offset = 0;
 
     hb_codepoint_t last = 0;
     it = hb_iter (c->plan->new_to_old_gid_list);
-    if (it->first == 0 && !(c->plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
+    എങ്കിൽ (it->first == 0 && !(c->plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
       it++;
-    for (auto &_ : it)
+    വേണ്ടി (auto &_ : it)
     {
       hb_codepoint_t gid = _.first;
       hb_codepoint_t old_gid = _.second;
 
-      if (long_offset)
-	for (; last < gid; last++)
+      എങ്കിൽ (long_offset)
+	വേണ്ടി (; last < gid; last++)
 	  ((HBUINT32 *) subset_offsets)[last] = glyph_offset;
-      else
-	for (; last < gid; last++)
+      അല്ലെങ്കിൽ
+	വേണ്ടി (; last < gid; last++)
 	  ((HBUINT16 *) subset_offsets)[last] = glyph_offset / 2;
 
       hb_bytes_t var_data_bytes = culled_gids.has (gid)
 				  ? hb_bytes_t (culled_vars[gid].arrayZ,
 						culled_vars[gid].length)
 				  : get_glyph_var_data_bytes (c->source_blob,
-							      glyph_count,
+							      glyph_എണ്ണം,
 							      old_gid);
 
       hb_memcpy (subset_data, var_data_bytes.arrayZ, var_data_bytes.length);
@@ -585,214 +585,214 @@ struct gvar_GVAR
       subset_data += glyph_data_size;
       glyph_offset += glyph_data_size;
 
-      if (!long_offset && (glyph_data_size % 2))
+      എങ്കിൽ (!long_offset && (glyph_data_size % 2))
       {
         *subset_data = 0;
         subset_data++;
         glyph_offset++;
       }
 
-      if (long_offset)
+      എങ്കിൽ (long_offset)
 	((HBUINT32 *) subset_offsets)[gid] = glyph_offset;
-      else
+      അല്ലെങ്കിൽ
 	((HBUINT16 *) subset_offsets)[gid] = glyph_offset / 2;
 
       last++; // Skip over gid
     }
 
-    if (long_offset)
-      for (; last < num_glyphs; last++)
+    എങ്കിൽ (long_offset)
+      വേണ്ടി (; last < അക്കം_glyphs; last++)
 	((HBUINT32 *) subset_offsets)[last] = glyph_offset;
-    else
-      for (; last < num_glyphs; last++)
+    അല്ലെങ്കിൽ
+      വേണ്ടി (; last < അക്കം_glyphs; last++)
 	((HBUINT16 *) subset_offsets)[last] = glyph_offset / 2;
 
-    return_trace (true);
+    return_trace (സത്യം);
   }
 
-  protected:
-  const hb_bytes_t get_glyph_var_data_bytes (hb_blob_t *blob,
-					     unsigned glyph_count,
-					     hb_codepoint_t glyph) const
+  സംരക്ഷിത:
+  സ്ഥിരം hb_bytes_t get_glyph_var_data_bytes (hb_blob_t *blob,
+					     unsigned glyph_എണ്ണം,
+					     hb_codepoint_t glyph) സ്ഥിരം
   {
-    unsigned start_offset = get_offset (glyph_count, glyph);
-    unsigned end_offset = get_offset (glyph_count, glyph+1);
-    if (unlikely (end_offset < start_offset)) return hb_bytes_t ();
+    unsigned start_offset = get_offset (glyph_എണ്ണം, glyph);
+    unsigned end_offset = get_offset (glyph_എണ്ണം, glyph+1);
+    എങ്കിൽ (unlikely (end_offset < start_offset)) തിരികെ hb_bytes_t ();
     unsigned length = end_offset - start_offset;
     hb_bytes_t var_data = blob->as_bytes ().sub_array (((unsigned) dataZ) + start_offset, length);
-    return likely (var_data.length >= GlyphVariationData::min_size) ? var_data : hb_bytes_t ();
+    തിരികെ likely (var_data.length >= GlyphVariationData::min_size) ? var_data : hb_bytes_t ();
   }
 
-  bool is_long_offset () const { return flags & 1; }
+  തർക്കം is_long_offset () സ്ഥിരം { തിരികെ flags & 1; }
 
-  unsigned get_offset (unsigned glyph_count, unsigned i) const
+  unsigned get_offset (unsigned glyph_എണ്ണം, unsigned i) സ്ഥിരം
   {
-    if (unlikely (i > glyph_count)) return 0;
+    എങ്കിൽ (unlikely (i > glyph_എണ്ണം)) തിരികെ 0;
     hb_barrier ();
-    return is_long_offset () ? get_long_offset_array ()[i] : get_short_offset_array ()[i] * 2;
+    തിരികെ is_long_offset () ? get_long_offset_array ()[i] : get_short_offset_array ()[i] * 2;
   }
 
-  const HBUINT32 * get_long_offset_array () const { return (const HBUINT32 *) &offsetZ; }
-  const HBUINT16 *get_short_offset_array () const { return (const HBUINT16 *) &offsetZ; }
+  സ്ഥിരം HBUINT32 * get_long_offset_array () സ്ഥിരം { തിരികെ (സ്ഥിരം HBUINT32 *) &offsetZ; }
+  സ്ഥിരം HBUINT16 *get_short_offset_array () സ്ഥിരം { തിരികെ (സ്ഥിരം HBUINT16 *) &offsetZ; }
 
-  public:
-  struct accelerator_t
+  പൊതു:
+  ഘടന accelerator_t
   {
 
-    hb_scalar_cache_t *create_cache () const
+    hb_scalar_cache_t *create_cache () സ്ഥിരം
     {
-      return hb_scalar_cache_t::create (hb_min ((unsigned) table->sharedTupleCount,
-						+TupleVariationHeader::max_shared_tuple_count));
+      തിരികെ hb_scalar_cache_t::create (hb_min ((unsigned) table->shared_Tuple_എണ്ണം,
+						+TupleVariationHeader::max_shared_tuple_എണ്ണം));
     }
 
-    static void destroy_cache (hb_scalar_cache_t *cache)
+    സ്ഥിതം ശൂന്യം destroy_cache (hb_scalar_cache_t *cache)
     {
       hb_scalar_cache_t::destroy (cache);
     }
 
-    bool has_data () const { return table->has_data (); }
+    തർക്കം has_data () സ്ഥിരം { തിരികെ table->has_data (); }
 
     accelerator_t (hb_face_t *face)
     {
       table = hb_sanitize_context_t ().reference_table<gvar_GVAR> (face, T::tableTag);
       /* If sanitize failed, set glyphCount to 0. */
-      glyphCount = table->version.to_int () ? face->get_num_glyphs () : 0;
+      glyph_എണ്ണം_2 = table->version.to_int () ? face->get_അക്കം_glyphs () : 0;
     }
     ~accelerator_t () { table.destroy (); }
 
-    private:
+    സ്വകാര്യ:
 
-    static float infer_delta (const hb_array_t<contour_point_t> points,
-			      const hb_array_t<contour_point_t> deltas,
-			      unsigned int target, unsigned int prev, unsigned int next,
-			      float contour_point_t::*m)
+    സ്ഥിതം ദശാംശം infer_delta (സ്ഥിരം hb_array_t<contour_point_t> points,
+			      സ്ഥിരം hb_array_t<contour_point_t> deltas,
+			      unsigned പൂർണ്ണസംഖ്യ target, unsigned പൂർണ്ണസംഖ്യ prev, unsigned പൂർണ്ണസംഖ്യ next,
+			      ദശാംശം contour_point_t::*m)
     {
-      float target_val = points.arrayZ[target].*m;
-      float prev_val = points.arrayZ[prev].*m;
-      float next_val = points.arrayZ[next].*m;
-      float prev_delta =  deltas.arrayZ[prev].*m;
-      float next_delta =  deltas.arrayZ[next].*m;
+      ദശാംശം target_val = points.arrayZ[target].*m;
+      ദശാംശം prev_val = points.arrayZ[prev].*m;
+      ദശാംശം next_val = points.arrayZ[next].*m;
+      ദശാംശം prev_delta =  deltas.arrayZ[prev].*m;
+      ദശാംശം next_delta =  deltas.arrayZ[next].*m;
 
-      if (prev_val == next_val)
-	return (prev_delta == next_delta) ? prev_delta : 0.f;
-      else if (target_val <= hb_min (prev_val, next_val))
-	return (prev_val < next_val) ? prev_delta : next_delta;
-      else if (target_val >= hb_max (prev_val, next_val))
-	return (prev_val > next_val) ? prev_delta : next_delta;
+      എങ്കിൽ (prev_val == next_val)
+	തിരികെ (prev_delta == next_delta) ? prev_delta : 0.f;
+      അല്ലെങ്കിൽ എങ്കിൽ (target_val <= hb_min (prev_val, next_val))
+	തിരികെ (prev_val < next_val) ? prev_delta : next_delta;
+      അല്ലെങ്കിൽ എങ്കിൽ (target_val >= hb_max (prev_val, next_val))
+	തിരികെ (prev_val > next_val) ? prev_delta : next_delta;
 
       /* linear interpolation */
-      float r = (target_val - prev_val) / (next_val - prev_val);
-      return prev_delta + r * (next_delta - prev_delta);
+      ദശാംശം r = (target_val - prev_val) / (next_val - prev_val);
+      തിരികെ prev_delta + r * (next_delta - prev_delta);
     }
 
-    static unsigned int next_index (unsigned int i, unsigned int start, unsigned int end)
-    { return (i >= end) ? start : (i + 1); }
+    സ്ഥിതം unsigned പൂർണ്ണസംഖ്യ next_index (unsigned പൂർണ്ണസംഖ്യ i, unsigned പൂർണ്ണസംഖ്യ start, unsigned പൂർണ്ണസംഖ്യ end)
+    { തിരികെ (i >= end) ? start : (i + 1); }
 
 #ifndef HB_OPTIMIZE_SIZE
-    template <bool is_x>
+    template <തർക്കം is_x>
 #endif
-    static bool decompile_deltas_add_to_points (const HBUINT8 *&p /* IN/OUT */,
+    സ്ഥിതം തർക്കം decompile_deltas_add_to_points (സ്ഥിരം HBUINT8 *&p /* IN/OUT */,
 						hb_array_t<contour_point_t> points,
-						float scalar,
-						const HBUINT8 *end,
+						ദശാംശം scalar,
+						സ്ഥിരം HBUINT8 *end,
 						unsigned start
 #ifdef HB_OPTIMIZE_SIZE
-						, bool is_x
+						, തർക്കം is_x
 #endif
 						)
     {
       unsigned i = 0;
-      unsigned count = points.length;
-      while (i < count)
+      unsigned എണ്ണം = points.length;
+      ആകുമ്പോൾ (i < എണ്ണം)
       {
-	if (unlikely (p + 1 > end)) return false;
+	എങ്കിൽ (unlikely (p + 1 > end)) തിരികെ അസത്യം;
 	unsigned control = *p++;
-	unsigned run_count = (control & TupleValues::VALUE_RUN_COUNT_MASK) + 1;
-	unsigned stop = i + run_count;
-	if (unlikely (stop > count)) return false;
+	unsigned run_എണ്ണം = (control & Tuple_മൂല്യങ്ങൾ::മൂല്യം_RUN_എണ്ണം_MASK) + 1;
+	unsigned stop = i + run_എണ്ണം;
+	എങ്കിൽ (unlikely (stop > എണ്ണം)) തിരികെ അസത്യം;
 
-	unsigned skip = i < start ? hb_min (start - i, run_count) : 0;
+	unsigned skip = i < start ? hb_min (start - i, run_എണ്ണം) : 0;
 	i += skip;
 
-	switch (control & TupleValues::VALUES_SIZE_MASK)
+	തിരഞ്ഞെടുപ്പ് (control & Tuple_മൂല്യങ്ങൾ::മൂല്യങ്ങൾ_SIZE_MASK)
 	{
-	  case TupleValues::VALUES_ARE_ZEROS:
+	  അവസ്ഥ Tuple_മൂല്യങ്ങൾ::മൂല്യങ്ങൾ_ARE_ZEROS:
 	    i = stop;
-	    break;
-	  case TupleValues::VALUES_ARE_WORDS:
+	    നിർത്തുക;
+	  അവസ്ഥ Tuple_മൂല്യങ്ങൾ::മൂല്യങ്ങൾ_ARE_വാക്കുകൾ:
 	  {
-	    if (unlikely (p + run_count * HBINT16::static_size > end)) return false;
+	    എങ്കിൽ (unlikely (p + run_എണ്ണം * HBINT16::static_size > end)) തിരികെ അസത്യം;
 	    p += skip * HBINT16::static_size;
-	    const auto *pp = (const HBINT16 *) p;
-	    for (; i < stop; i++)
+	    സ്ഥിരം auto *pp = (സ്ഥിരം HBINT16 *) p;
+	    വേണ്ടി (; i < stop; i++)
 	    {
-	      float v = *pp++ * scalar;
-	      if (is_x) points.arrayZ[i].x += v;
-	      else points.arrayZ[i].y += v;
+	      ദശാംശം v = *pp++ * scalar;
+	      എങ്കിൽ (is_x) points.arrayZ[i].x += v;
+	      അല്ലെങ്കിൽ points.arrayZ[i].y += v;
 	    }
-	    p = (const HBUINT8 *) pp;
+	    p = (സ്ഥിരം HBUINT8 *) pp;
 	  }
-	  break;
-	  case TupleValues::VALUES_ARE_LONGS:
+	  നിർത്തുക;
+	  അവസ്ഥ Tuple_മൂല്യങ്ങൾ::മൂല്യങ്ങൾ_ARE_LONGS:
 	  {
-	    if (unlikely (p + run_count * HBINT32::static_size > end)) return false;
+	    എങ്കിൽ (unlikely (p + run_എണ്ണം * HBINT32::static_size > end)) തിരികെ അസത്യം;
 	    p += skip * HBINT32::static_size;
-	    const auto *pp = (const HBINT32 *) p;
-	    for (; i < stop; i++)
+	    സ്ഥിരം auto *pp = (സ്ഥിരം HBINT32 *) p;
+	    വേണ്ടി (; i < stop; i++)
 	    {
-	      float v = *pp++ * scalar;
-	      if (is_x) points.arrayZ[i].x += v;
-	      else points.arrayZ[i].y += v;
+	      ദശാംശം v = *pp++ * scalar;
+	      എങ്കിൽ (is_x) points.arrayZ[i].x += v;
+	      അല്ലെങ്കിൽ points.arrayZ[i].y += v;
 	    }
-	    p = (const HBUINT8 *) pp;
+	    p = (സ്ഥിരം HBUINT8 *) pp;
 	  }
-	  break;
-	  case TupleValues::VALUES_ARE_BYTES:
+	  നിർത്തുക;
+	  അവസ്ഥ Tuple_മൂല്യങ്ങൾ::മൂല്യങ്ങൾ_ARE_BYTES:
 	  {
-	    if (unlikely (p + run_count > end)) return false;
+	    എങ്കിൽ (unlikely (p + run_എണ്ണം > end)) തിരികെ അസത്യം;
 	    p += skip * HBINT8::static_size;
-	    const auto *pp = (const HBINT8 *) p;
-	    for (; i < stop; i++)
+	    സ്ഥിരം auto *pp = (സ്ഥിരം HBINT8 *) p;
+	    വേണ്ടി (; i < stop; i++)
 	    {
-	      float v = *pp++ * scalar;
-	      if (is_x) points.arrayZ[i].x += v;
-	      else points.arrayZ[i].y += v;
+	      ദശാംശം v = *pp++ * scalar;
+	      എങ്കിൽ (is_x) points.arrayZ[i].x += v;
+	      അല്ലെങ്കിൽ points.arrayZ[i].y += v;
 	    }
-	    p = (const HBUINT8 *) pp;
+	    p = (സ്ഥിരം HBUINT8 *) pp;
 	  }
-	  break;
+	  നിർത്തുക;
 	}
       }
-      return true;
+      തിരികെ സത്യം;
     }
-    public:
-    bool apply_deltas_to_points (hb_codepoint_t glyph,
-				 hb_array_t<const int> coords,
-				 const hb_array_t<contour_point_t> points,
+    പൊതു:
+    തർക്കം apply_deltas_to_points (hb_codepoint_t glyph,
+				 hb_array_t<സ്ഥിരം പൂർണ്ണസംഖ്യ> coords,
+				 സ്ഥിരം hb_array_t<contour_point_t> points,
 				 hb_glyf_scratch_t &scratch,
 				 hb_scalar_cache_t *gvar_cache = nullptr,
-				 bool phantom_only = false,
-				 int64_t *budget = nullptr) const
+				 തർക്കം phantom_only = അസത്യം,
+				 int64_t *budget = nullptr) സ്ഥിരം
     {
-      if (unlikely (glyph >= glyphCount)) return true;
+      എങ്കിൽ (unlikely (glyph >= glyph_എണ്ണം_2)) തിരികെ സത്യം;
       hb_scalar_cache_t *scalar_cache = gvar_cache ?
 					gvar_cache :
 					(hb_scalar_cache_t *) &Null(hb_scalar_cache_t);
 
-      hb_bytes_t var_data_bytes = table->get_glyph_var_data_bytes (table.get_blob (), glyphCount, glyph);
-      if (!var_data_bytes.as<GlyphVariationData> ()->has_data ()) return true;
+      hb_bytes_t var_data_bytes = table->get_glyph_var_data_bytes (table.get_blob (), glyph_എണ്ണം_2, glyph);
+      എങ്കിൽ (!var_data_bytes.as<GlyphVariationData> ()->has_data ()) തിരികെ സത്യം;
 
       auto &shared_indices = scratch.shared_indices;
       shared_indices.clear ();
 
       typename GlyphVariationData::tuple_iterator_t iterator;
-      if (!GlyphVariationData::get_tuple_iterator (var_data_bytes, table->axisCount,
+      എങ്കിൽ (!GlyphVariationData::get_tuple_iterator (var_data_bytes, table->axis_എണ്ണം_2,
 						   var_data_bytes.arrayZ,
 						   shared_indices, &iterator))
-	return true; /* so isn't applied at all */
+	തിരികെ സത്യം; /* so isn't applied at all */
 
-      bool any_private_points = false;
-      bool private_points_checked = false;
+      തർക്കം any_private_points = അസത്യം;
+      തർക്കം private_points_checked = അസത്യം;
 
       /* Save original points for inferred delta calculation */
       auto &orig_points_vec = scratch.orig_points;
@@ -804,159 +804,159 @@ struct gvar_GVAR
       deltas_vec.clear (); // Populated lazily
       auto deltas = deltas_vec.as_array ();
 
-      unsigned num_coords = table->axisCount;
-      hb_array_t<const F2DOT14> shared_tuples = (table+table->sharedTuples).as_array (table->sharedTupleCount * num_coords);
+      unsigned അക്കം_coords = table->axis_എണ്ണം_2;
+      hb_array_t<സ്ഥിരം F2DOT14> shared_tuples = (table+table->sharedTuples).as_array (table->shared_Tuple_എണ്ണം * അക്കം_coords);
 
       auto &private_indices = scratch.private_indices;
       auto &x_deltas = scratch.x_deltas;
       auto &y_deltas = scratch.y_deltas;
 
-      unsigned count = points.length;
-      bool flush = false;
+      unsigned എണ്ണം = points.length;
+      തർക്കം flush = അസത്യം;
 
-      do
+      ചെയ്യുക
       {
-	float scalar = iterator.current_tuple->calculate_scalar (coords, num_coords, shared_tuples,
+	ദശാംശം scalar = iterator.current_tuple->calculate_scalar (coords, അക്കം_coords, shared_tuples,
 								 scalar_cache);
 
-	if (scalar == 0.f) continue;
+	എങ്കിൽ (scalar == 0.f) തുടരുക;
 
-	if (budget &&
+	എങ്കിൽ (budget &&
 	    unlikely (!hb_budget_spend (*budget, HB_BUDGET_1,
-					 phantom_only && count >= 4 ? 4 : count)))
-	  return false;
+					 phantom_only && എണ്ണം >= 4 ? 4 : എണ്ണം)))
+	  തിരികെ അസത്യം;
 
-	if (!private_points_checked)
+	എങ്കിൽ (!private_points_checked)
 	{
 	  auto scan = iterator;
-	  do
+	  ചെയ്യുക
 	  {
-	    if (scan.current_tuple->has_private_points ())
+	    എങ്കിൽ (scan.current_tuple->has_private_points ())
 	    {
-	      any_private_points = true;
-	      break;
+	      any_private_points = സത്യം;
+	      നിർത്തുക;
 	    }
-	  } while (scan.move_to_next ());
-	  private_points_checked = true;
+	  } ആകുമ്പോൾ (scan.move_to_next ());
+	  private_points_checked = സത്യം;
 	}
-	const HBUINT8 *p = iterator.get_serialized_data ();
-	unsigned int length = iterator.current_tuple->get_data_size ();
-	if (unlikely (!iterator.var_data_bytes.check_range (p, length)))
-	  return false;
+	സ്ഥിരം HBUINT8 *p = iterator.get_serialized_data ();
+	unsigned പൂർണ്ണസംഖ്യ length = iterator.current_tuple->get_data_size ();
+	എങ്കിൽ (unlikely (!iterator.var_data_bytes.check_range (p, length)))
+	  തിരികെ അസത്യം;
 
-	if (!deltas)
+	എങ്കിൽ (!deltas)
 	{
-	  if (unlikely (!deltas_vec.resize_dirty  (count))) return false;
+	  എങ്കിൽ (unlikely (!deltas_vec.resize_dirty  (എണ്ണം))) തിരികെ അസത്യം;
 	  deltas = deltas_vec.as_array ();
-	  hb_memset (deltas.arrayZ + (phantom_only ? count - 4 : 0), 0,
-		     (phantom_only ? 4 : count) * sizeof (deltas[0]));
+	  hb_memset (deltas.arrayZ + (phantom_only ? എണ്ണം - 4 : 0), 0,
+		     (phantom_only ? 4 : എണ്ണം) * വലുപ്പം (deltas[0]));
 	}
 
-	const HBUINT8 *end = p + length;
+	സ്ഥിരം HBUINT8 *end = p + length;
 
-	bool has_private_points = iterator.current_tuple->has_private_points ();
-	if (has_private_points &&
+	തർക്കം has_private_points = iterator.current_tuple->has_private_points ();
+	എങ്കിൽ (has_private_points &&
 	    !GlyphVariationData::decompile_points (p, private_indices, end))
-	  return false;
-	const hb_array_t<unsigned int> &indices = has_private_points ? private_indices : shared_indices;
+	  തിരികെ അസത്യം;
+	സ്ഥിരം hb_array_t<unsigned പൂർണ്ണസംഖ്യ> &indices = has_private_points ? private_indices : shared_indices;
 
-	bool apply_to_all = (indices.length == 0);
-	unsigned num_deltas = apply_to_all ? points.length : indices.length;
-	unsigned start_deltas = (apply_to_all && phantom_only && num_deltas >= 4 ? num_deltas - 4 : 0);
+	തർക്കം apply_to_all = (indices.length == 0);
+	unsigned അക്കം_deltas = apply_to_all ? points.length : indices.length;
+	unsigned start_deltas = (apply_to_all && phantom_only && അക്കം_deltas >= 4 ? അക്കം_deltas - 4 : 0);
 
-	if (apply_to_all && !any_private_points)
+	എങ്കിൽ (apply_to_all && !any_private_points)
 	{
 #ifdef HB_OPTIMIZE_SIZE
-	  if (unlikely (!decompile_deltas_add_to_points (p, points, scalar, end, start_deltas, true))) return false;
-	  if (unlikely (!decompile_deltas_add_to_points (p, points, scalar, end, start_deltas, false))) return false;
-#else
-	  if (unlikely (!decompile_deltas_add_to_points<true> (p, points, scalar, end, start_deltas))) return false;
-	  if (unlikely (!decompile_deltas_add_to_points<false> (p, points, scalar, end, start_deltas))) return false;
+	  എങ്കിൽ (unlikely (!decompile_deltas_add_to_points (p, points, scalar, end, start_deltas, സത്യം))) തിരികെ അസത്യം;
+	  എങ്കിൽ (unlikely (!decompile_deltas_add_to_points (p, points, scalar, end, start_deltas, അസത്യം))) തിരികെ അസത്യം;
+#അല്ലെങ്കിൽ
+	  എങ്കിൽ (unlikely (!decompile_deltas_add_to_points<സത്യം> (p, points, scalar, end, start_deltas))) തിരികെ അസത്യം;
+	  എങ്കിൽ (unlikely (!decompile_deltas_add_to_points<അസത്യം> (p, points, scalar, end, start_deltas))) തിരികെ അസത്യം;
 #endif
-	  continue;
+	  തുടരുക;
 	}
 
-	if (unlikely (!x_deltas.resize_dirty  (num_deltas))) return false;
-	if (unlikely (!GlyphVariationData::decompile_deltas (p, x_deltas, end, false, start_deltas))) return false;
-	if (unlikely (!y_deltas.resize_dirty  (num_deltas))) return false;
-	if (unlikely (!GlyphVariationData::decompile_deltas (p, y_deltas, end, false, start_deltas))) return false;
+	എങ്കിൽ (unlikely (!x_deltas.resize_dirty  (അക്കം_deltas))) തിരികെ അസത്യം;
+	എങ്കിൽ (unlikely (!GlyphVariationData::decompile_deltas (p, x_deltas, end, അസത്യം, start_deltas))) തിരികെ അസത്യം;
+	എങ്കിൽ (unlikely (!y_deltas.resize_dirty  (അക്കം_deltas))) തിരികെ അസത്യം;
+	എങ്കിൽ (unlikely (!GlyphVariationData::decompile_deltas (p, y_deltas, end, അസത്യം, start_deltas))) തിരികെ അസത്യം;
 
-	if (!apply_to_all)
+	എങ്കിൽ (!apply_to_all)
 	{
-	  if (!orig_points && !phantom_only)
+	  എങ്കിൽ (!orig_points && !phantom_only)
 	  {
 	    orig_points_vec.extend (points);
-	    if (unlikely (orig_points_vec.in_error ())) return false;
+	    എങ്കിൽ (unlikely (orig_points_vec.in_error ())) തിരികെ അസത്യം;
 	    orig_points = orig_points_vec.as_array ();
 	  }
 
-	  if (flush)
+	  എങ്കിൽ (flush)
 	  {
-	    for (unsigned int i = phantom_only ? count - 4 : 0; i < count; i++)
+	    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = phantom_only ? എണ്ണം - 4 : 0; i < എണ്ണം; i++)
 	      points.arrayZ[i].translate (deltas.arrayZ[i]);
 	  }
-	  hb_memset (deltas.arrayZ + (phantom_only ? count - 4 : 0), 0,
-		     (phantom_only ? 4 : count) * sizeof (deltas[0]));
+	  hb_memset (deltas.arrayZ + (phantom_only ? എണ്ണം - 4 : 0), 0,
+		     (phantom_only ? 4 : എണ്ണം) * വലുപ്പം (deltas[0]));
 	}
 
-	if (HB_OPTIMIZE_SIZE_VAL)
+	എങ്കിൽ (HB_OPTIMIZE_SIZE_VAL)
 	{
-	  for (unsigned int i = 0; i < num_deltas; i++)
+	  വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < അക്കം_deltas; i++)
 	  {
-	    unsigned int pt_index;
-	    if (apply_to_all)
+	    unsigned പൂർണ്ണസംഖ്യ pt_index;
+	    എങ്കിൽ (apply_to_all)
 	      pt_index = i;
-	    else
+	    അല്ലെങ്കിൽ
 	    {
 	      pt_index = indices[i];
-	      if (unlikely (pt_index >= deltas.length)) continue;
+	      എങ്കിൽ (unlikely (pt_index >= deltas.length)) തുടരുക;
 	    }
-	    if (phantom_only && pt_index < count - 4) continue;
+	    എങ്കിൽ (phantom_only && pt_index < എണ്ണം - 4) തുടരുക;
 	    auto &delta = deltas.arrayZ[pt_index];
 	    delta.flag = 1;	/* this point is referenced, i.e., explicit deltas specified */
 	    delta.add_delta (x_deltas.arrayZ[i] * scalar,
 			     y_deltas.arrayZ[i] * scalar);
 	  }
 	}
-	else
+	അല്ലെങ്കിൽ
 	{
 	  /* Ouch. Four cases... for optimization. */
-	  if (scalar != 1.0f)
+	  എങ്കിൽ (scalar != 1.0f)
 	  {
-	    if (apply_to_all)
-	      for (unsigned int i = phantom_only ? count - 4 : 0; i < count; i++)
+	    എങ്കിൽ (apply_to_all)
+	      വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = phantom_only ? എണ്ണം - 4 : 0; i < എണ്ണം; i++)
 	      {
 		auto &delta = deltas.arrayZ[i];
 		delta.add_delta (x_deltas.arrayZ[i] * scalar,
 				 y_deltas.arrayZ[i] * scalar);
 	      }
-	    else
-	      for (unsigned int i = 0; i < num_deltas; i++)
+	    അല്ലെങ്കിൽ
+	      വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < അക്കം_deltas; i++)
 	      {
-		unsigned int pt_index = indices[i];
-		if (unlikely (pt_index >= deltas.length)) continue;
-		if (phantom_only && pt_index < count - 4) continue;
+		unsigned പൂർണ്ണസംഖ്യ pt_index = indices[i];
+		എങ്കിൽ (unlikely (pt_index >= deltas.length)) തുടരുക;
+		എങ്കിൽ (phantom_only && pt_index < എണ്ണം - 4) തുടരുക;
 		auto &delta = deltas.arrayZ[pt_index];
 		delta.flag = 1;	/* this point is referenced, i.e., explicit deltas specified */
 		delta.add_delta (x_deltas.arrayZ[i] * scalar,
 				 y_deltas.arrayZ[i] * scalar);
 	      }
 	  }
-	  else
+	  അല്ലെങ്കിൽ
 	  {
-	    if (apply_to_all)
-	      for (unsigned int i = phantom_only ? count - 4 : 0; i < count; i++)
+	    എങ്കിൽ (apply_to_all)
+	      വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = phantom_only ? എണ്ണം - 4 : 0; i < എണ്ണം; i++)
 	      {
 		auto &delta = deltas.arrayZ[i];
 		delta.add_delta (x_deltas.arrayZ[i],
 				 y_deltas.arrayZ[i]);
 	      }
-	    else
-	      for (unsigned int i = 0; i < num_deltas; i++)
+	    അല്ലെങ്കിൽ
+	      വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < അക്കം_deltas; i++)
 	      {
-		unsigned int pt_index = indices[i];
-		if (unlikely (pt_index >= deltas.length)) continue;
-		if (phantom_only && pt_index < count - 4) continue;
+		unsigned പൂർണ്ണസംഖ്യ pt_index = indices[i];
+		എങ്കിൽ (unlikely (pt_index >= deltas.length)) തുടരുക;
+		എങ്കിൽ (phantom_only && pt_index < എണ്ണം - 4) തുടരുക;
 		auto &delta = deltas.arrayZ[pt_index];
 		delta.flag = 1;	/* this point is referenced, i.e., explicit deltas specified */
 		delta.add_delta (x_deltas.arrayZ[i],
@@ -966,55 +966,55 @@ struct gvar_GVAR
 	}
 
 	/* infer deltas for unreferenced points */
-	if (!apply_to_all && !phantom_only)
+	എങ്കിൽ (!apply_to_all && !phantom_only)
 	{
 	  unsigned start_point = 0;
 	  unsigned end_point = 0;
-	  while (true)
+	  ആകുമ്പോൾ (സത്യം)
 	  {
-	    while (end_point < count && !points.arrayZ[end_point].is_end_point)
+	    ആകുമ്പോൾ (end_point < എണ്ണം && !points.arrayZ[end_point].is_end_point)
 	      end_point++;
-	    if (unlikely (end_point == count)) break;
+	    എങ്കിൽ (unlikely (end_point == എണ്ണം)) നിർത്തുക;
 
 	    /* Check the number of unreferenced points in a contour. If no unref points or no ref points, nothing to do. */
-	    unsigned unref_count = 0;
-	    for (unsigned i = start_point; i < end_point + 1; i++)
-	      unref_count += deltas.arrayZ[i].flag;
-	    unref_count = (end_point - start_point + 1) - unref_count;
+	    unsigned unref_എണ്ണം = 0;
+	    വേണ്ടി (unsigned i = start_point; i < end_point + 1; i++)
+	      unref_എണ്ണം += deltas.arrayZ[i].flag;
+	    unref_എണ്ണം = (end_point - start_point + 1) - unref_എണ്ണം;
 
 	    unsigned j = start_point;
-	    if (unref_count == 0 || unref_count > end_point - start_point)
-	      goto no_more_gaps;
+	    എങ്കിൽ (unref_എണ്ണം == 0 || unref_എണ്ണം > end_point - start_point)
+	      പോകുക no_more_gaps;
 
-	    for (;;)
+	    വേണ്ടി (;;)
 	    {
 	      /* Locate the next gap of unreferenced points between two referenced points prev and next.
 	       * Note that a gap may wrap around at left (start_point) and/or at right (end_point).
 	       */
-	      unsigned int prev, next, i;
-	      for (;;)
+	      unsigned പൂർണ്ണസംഖ്യ prev, next, i;
+	      വേണ്ടി (;;)
 	      {
 		i = j;
 		j = next_index (i, start_point, end_point);
-		if (deltas.arrayZ[i].flag && !deltas.arrayZ[j].flag) break;
+		എങ്കിൽ (deltas.arrayZ[i].flag && !deltas.arrayZ[j].flag) നിർത്തുക;
 	      }
 	      prev = j = i;
-	      for (;;)
+	      വേണ്ടി (;;)
 	      {
 		i = j;
 		j = next_index (i, start_point, end_point);
-		if (!deltas.arrayZ[i].flag && deltas.arrayZ[j].flag) break;
+		എങ്കിൽ (!deltas.arrayZ[i].flag && deltas.arrayZ[j].flag) നിർത്തുക;
 	      }
 	      next = j;
 	      /* Infer deltas for all unref points in the gap between prev and next */
 	      i = prev;
-	      for (;;)
+	      വേണ്ടി (;;)
 	      {
 		i = next_index (i, start_point, end_point);
-		if (i == next) break;
+		എങ്കിൽ (i == next) നിർത്തുക;
 		deltas.arrayZ[i].x = infer_delta (orig_points, deltas, i, prev, next, &contour_point_t::x);
 		deltas.arrayZ[i].y = infer_delta (orig_points, deltas, i, prev, next, &contour_point_t::y);
-		if (--unref_count == 0) goto no_more_gaps;
+		എങ്കിൽ (--unref_എണ്ണം == 0) പോകുക no_more_gaps;
 	      }
 	    }
 	  no_more_gaps:
@@ -1022,32 +1022,32 @@ struct gvar_GVAR
 	  }
 	}
 
-	flush = true;
+	flush = സത്യം;
 
-      } while (iterator.move_to_next ());
+      } ആകുമ്പോൾ (iterator.move_to_next ());
 
-      if (flush)
+      എങ്കിൽ (flush)
       {
-	for (unsigned int i = phantom_only ? count - 4 : 0; i < count; i++)
+	വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = phantom_only ? എണ്ണം - 4 : 0; i < എണ്ണം; i++)
 	  points.arrayZ[i].translate (deltas.arrayZ[i]);
       }
 
-      return true;
+      തിരികെ സത്യം;
     }
 
-    unsigned int get_axis_count () const { return table->axisCount; }
+    unsigned പൂർണ്ണസംഖ്യ get_axis_എണ്ണം () സ്ഥിരം { തിരികെ table->axis_എണ്ണം_2; }
 
-    private:
+    സ്വകാര്യ:
     hb_blob_ptr_t<gvar_GVAR> table;
-    unsigned glyphCount;
+    unsigned glyph_എണ്ണം_2;
   };
 
-  protected:
+  സംരക്ഷിത:
   FixedVersion<>version;	/* Version number of the glyph variations table
 				 * Set to 0x00010000u. */
-  HBUINT16	axisCount;	/* The number of variation axes for this font. This must be
+  HBUINT16	axis_എണ്ണം_2;	/* The number of variation axes for this font. This must be
 				 * the same number as axisCount in the 'fvar' table. */
-  HBUINT16	sharedTupleCount;
+  HBUINT16	shared_Tuple_എണ്ണം;
 				/* The number of shared tuple records. Shared tuple records
 				 * can be referenced within glyph variation data tables for
 				 * multiple glyphs, as opposed to other tuple records stored
@@ -1055,8 +1055,8 @@ struct gvar_GVAR
   NNOffset32To<UnsizedArrayOf<F2DOT14>>
 		sharedTuples;	/* Offset from the start of this table to the shared tuple records.
 				 * Array of tuple records shared across all glyph variation data tables. */
-  GlyphCountType
-		glyphCountX;	/* The number of glyphs in this font. This must match the number of
+  Glyph_എണ്ണം_Type
+		glyph_എണ്ണം_X;	/* The number of glyphs in this font. This must match the number of
 				 * glyphs stored elsewhere in the font. */
   HBUINT16	flags;		/* Bit-field that gives the format of the offset array that follows.
 				 * If bit 0 is clear, the offsets are uint16; if bit 0 is set, the
@@ -1067,54 +1067,54 @@ struct gvar_GVAR
   UnsizedArrayOf<HBUINT8>
 		offsetZ;	/* Offsets from the start of the GlyphVariationData array
 				 * to each GlyphVariationData table. */
-  public:
-  DEFINE_SIZE_ARRAY (18 + GlyphCountType::static_size, offsetZ);
+  പൊതു:
+  DEFINE_SIZE_ARRAY (18 + Glyph_എണ്ണം_Type::static_size, offsetZ);
 };
 
-struct gvar : gvar_GVAR<gvar, SmallTypes>
+ഘടന gvar : gvar_GVAR<gvar, SmallTypes>
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_gvar;
+  സ്ഥിതം constexpr hb_tag_t tableTag = HB_OT_TAG_gvar;
 };
 
-struct GVAR : gvar_GVAR<GVAR, MediumTypes>
+ഘടന GVAR : gvar_GVAR<GVAR, MediumTypes>
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_GVAR;
+  സ്ഥിതം constexpr hb_tag_t tableTag = HB_OT_TAG_GVAR;
 };
 
-struct gvar_accelerator_t : hb_dual_accelerator_t<gvar::accelerator_t,
+ഘടന gvar_accelerator_t : hb_dual_accelerator_t<gvar::accelerator_t,
 						  GVAR::accelerator_t>
 {
   gvar_accelerator_t (hb_face_t *face) :
     hb_dual_accelerator_t<gvar::accelerator_t, GVAR::accelerator_t> (face) {}
 
-  hb_scalar_cache_t *create_cache () const
+  hb_scalar_cache_t *create_cache () സ്ഥിരം
   {
-    if (has_data ()) return HB_DUAL_GET (*this, create_cache ());
-    return nullptr;
+    എങ്കിൽ (has_data ()) തിരികെ HB_DUAL_GET (*ഇത്, create_cache ());
+    തിരികെ nullptr;
   }
 
-  static void destroy_cache (hb_scalar_cache_t *cache)
+  സ്ഥിതം ശൂന്യം destroy_cache (hb_scalar_cache_t *cache)
   {
     hb_scalar_cache_t::destroy (cache);
   }
 
-  bool apply_deltas_to_points (hb_codepoint_t glyph,
-			       hb_array_t<const int> coords,
-			       const hb_array_t<contour_point_t> points,
+  തർക്കം apply_deltas_to_points (hb_codepoint_t glyph,
+			       hb_array_t<സ്ഥിരം പൂർണ്ണസംഖ്യ> coords,
+			       സ്ഥിരം hb_array_t<contour_point_t> points,
 			       hb_glyf_scratch_t &scratch,
 			       hb_scalar_cache_t *gvar_cache = nullptr,
-			       bool phantom_only = false,
-			       int64_t *budget = nullptr) const
+			       തർക്കം phantom_only = അസത്യം,
+			       int64_t *budget = nullptr) സ്ഥിരം
   {
-    return HB_DUAL_GET (*this, apply_deltas_to_points (glyph, coords, points,
+    തിരികെ HB_DUAL_GET (*ഇത്, apply_deltas_to_points (glyph, coords, points,
 						       scratch, gvar_cache,
 						       phantom_only, budget));
   }
 
-  unsigned int get_axis_count () const
+  unsigned പൂർണ്ണസംഖ്യ get_axis_എണ്ണം () സ്ഥിരം
   {
-    if (has_data ()) return HB_DUAL_GET (*this, get_axis_count ());
-    return 0;
+    എങ്കിൽ (has_data ()) തിരികെ HB_DUAL_GET (*ഇത്, get_axis_എണ്ണം ());
+    തിരികെ 0;
   }
 };
 

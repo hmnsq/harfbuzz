@@ -23,19 +23,19 @@
  *
  */
 
-#ifndef HB_NUMBER_PARSER_HH
-#define HB_NUMBER_PARSER_HH
+#ifndef HB_സംഖ്യ_PARSER_HH
+#define HB_സംഖ്യ_PARSER_HH
 
-#include "hb.hh"
+#അന്തര്ഭാവ "hb.hh"
 
 // Handles 0..308; anything larger overflows double and returns HUGE_VAL.
-static inline double
+സ്ഥിതം വരിയിൽ ഇരട്ട
 _pow10 (unsigned exponent)
 {
   // DBL_MAX is between 10^308 and 10^309
-  if (unlikely (exponent > 308)) return HUGE_VAL;
+  എങ്കിൽ (unlikely (exponent > 308)) തിരികെ HUGE_VAL;
 
-  static const double _powers_of_10[] =
+  സ്ഥിതം സ്ഥിരം ഇരട്ട _powers_of_10[] =
   {
     1.0e+256,
     1.0e+128,
@@ -48,42 +48,42 @@ _pow10 (unsigned exponent)
     10.
   };
   unsigned mask = 1 << (ARRAY_LENGTH (_powers_of_10) - 1);
-  double result = 1;
-  for (const double *power = _powers_of_10; mask; ++power, mask >>= 1)
-    if (exponent & mask) result *= *power;
-  return result;
+  ഇരട്ട result = 1;
+  വേണ്ടി (സ്ഥിരം ഇരട്ട *power = _powers_of_10; mask; ++power, mask >>= 1)
+    എങ്കിൽ (exponent & mask) result *= *power;
+  തിരികെ result;
 }
 
-struct _hb_fraction
+ഘടന _hb_fraction
 {
-  void add (int digit)
+  ശൂന്യം add (പൂർണ്ണസംഖ്യ digit)
   {
-    if (likely (fraction <= MAX_FRACT / 10))
+    എങ്കിൽ (likely (fraction <= MAX_FRACT / 10))
     {
       fraction = fraction * 10. + digit;
-      ++count;
+      ++എണ്ണം;
     }
-    else if (drop < 0) drop = digit;
-    else if (digit != 0) sticky = true;
+    അല്ലെങ്കിൽ എങ്കിൽ (drop < 0) drop = digit;
+    അല്ലെങ്കിൽ എങ്കിൽ (digit != 0) sticky = സത്യം;
   }
 
-  double get_value () const
+  ഇരട്ട get_മൂല്യം () സ്ഥിരം
   {
-    double result = fraction;
+    ഇരട്ട result = fraction;
     // Round-to-nearest-even using the recorded tail
-    if (drop > 5 || (drop == 5 && ((((uint64_t) fraction) & 1) || sticky)))
+    എങ്കിൽ (drop > 5 || (drop == 5 && ((((uint64_t) fraction) & 1) || sticky)))
       result += 1;
-    return result / _pow10 (count);
+    തിരികെ result / _pow10 (എണ്ണം);
   }
 
-  bool is_empty () const { return !count; }
+  തർക്കം is_empty () സ്ഥിരം { തിരികെ !എണ്ണം; }
 
-private:
-  unsigned count = 0;
-  double fraction = 0;
-  int drop = -1; // drop is the first digit we couldn't accumulate
-  bool sticky = false; // sticky is set when any later digit was nonzero.
-  static constexpr uint64_t MAX_FRACT = 0xFFFFFFFFFFFFFull; /* 2^52-1 */
+സ്വകാര്യ:
+  unsigned എണ്ണം = 0;
+  ഇരട്ട fraction = 0;
+  പൂർണ്ണസംഖ്യ drop = -1; // drop is the first digit we couldn't accumulate
+  തർക്കം sticky = അസത്യം; // sticky is set when any later digit was nonzero.
+  സ്ഥിതം constexpr uint64_t MAX_FRACT = 0xFFFFFFFFFFFFFull; /* 2^52-1 */
 };
 
 // A variant of strtod that also gets end of buffer in its second argument.
@@ -99,103 +99,103 @@ private:
 // On success, *end_ptr is set just past the longest well-formed prefix.
 // On no match, *end_ptr is left at the original p (matching strtod's
 // "no conversion performed" behavior, so the caller's pointer is unchanged).
-static inline double
-hb_strtod (const char *p, const char **end_ptr /* IN/OUT */)
+സ്ഥിതം വരിയിൽ ഇരട്ട
+hb_strtod (സ്ഥിരം അക്ഷരം *p, സ്ഥിരം അക്ഷരം **end_ptr /* IN/OUT */)
 {
-  const char *p_original = p;
-  const char *pe = *end_ptr;
+  സ്ഥിരം അക്ഷരം *p_original = p;
+  സ്ഥിരം അക്ഷരം *pe = *end_ptr;
 
   // Skip leading whitespace
-  while (p < pe && ISSPACE (*p))
+  ആകുമ്പോൾ (p < pe && ISSPACE (*p))
     p++;
 
   // Sign
-  bool neg = false;
-  if (p < pe && (*p == '+' || *p == '-'))
+  തർക്കം neg = അസത്യം;
+  എങ്കിൽ (p < pe && (*p == '+' || *p == '-'))
   {
     neg = (*p == '-');
     p++;
   }
 
-  double value = 0;
+  ഇരട്ട value = 0;
 
   // Integer and fraction
   {
-    const char *int_start = p;
-    while (p < pe && '0' <= *p && *p <= '9')
+    സ്ഥിരം അക്ഷരം *int_start = p;
+    ആകുമ്പോൾ (p < pe && '0' <= *p && *p <= '9')
     {
       value = value * 10. + (*p - '0');
       p++;
     }
-    bool has_int = p > int_start;
+    തർക്കം has_int = p > int_start;
 
     _hb_fraction frac;
-    if (p < pe && *p == '.')
+    എങ്കിൽ (p < pe && *p == '.')
     {
       p++;
-      while (p < pe && '0' <= *p && *p <= '9')
+      ആകുമ്പോൾ (p < pe && '0' <= *p && *p <= '9')
       {
 	frac.add (*p - '0');
 	p++;
       }
     }
 
-    if (!frac.is_empty ()) value += frac.get_value ();
-    else if (!has_int)
+    എങ്കിൽ (!frac.is_empty ()) value += frac.get_മൂല്യം ();
+    അല്ലെങ്കിൽ എങ്കിൽ (!has_int)
     {
       // Nothing could be parsed
       *end_ptr = p_original;
-      return .0;
+      തിരികെ .0;
     }
   }
 
   // Exponent
   unsigned exp = 0;
-  bool exp_neg = false, exp_overflow = false;
-  if (p < pe && (*p == 'e' || *p == 'E'))
+  തർക്കം exp_neg = അസത്യം, exp_overflow = അസത്യം;
+  എങ്കിൽ (p < pe && (*p == 'e' || *p == 'E'))
   {
     constexpr unsigned MAX_EXP = 0x7FFu; /* 2^11-1 */
-    const char *before_exponent = p;
+    സ്ഥിരം അക്ഷരം *before_exponent = p;
     p++;
-    if (p < pe && (*p == '+' || *p == '-'))
+    എങ്കിൽ (p < pe && (*p == '+' || *p == '-'))
     {
       exp_neg = (*p == '-');
       p++;
     }
 
-    if (p < pe && '0' <= *p && *p <= '9')
-      do
+    എങ്കിൽ (p < pe && '0' <= *p && *p <= '9')
+      ചെയ്യുക
       {
-	if (likely (exp * 10 + (*p - '0') <= MAX_EXP))
+	എങ്കിൽ (likely (exp * 10 + (*p - '0') <= MAX_EXP))
 	  exp = exp * 10 + (*p - '0');
-	else
-	  exp_overflow = true;
+	അല്ലെങ്കിൽ
+	  exp_overflow = സത്യം;
 	p++;
-      } while (p < pe && '0' <= *p && *p <= '9');
-    else
+      } ആകുമ്പോൾ (p < pe && '0' <= *p && *p <= '9');
+    അല്ലെങ്കിൽ
       p = before_exponent; // rewind
   }
   *end_ptr = p;
 
-  if (neg) value *= -1.;
+  എങ്കിൽ (neg) value *= -1.;
 
-  if (unlikely (exp_overflow))
+  എങ്കിൽ (unlikely (exp_overflow))
   {
-    if (value == 0) return value;
-    if (exp_neg)    return neg ? -.0 : .0;
-    else            return neg ? -DBL_MAX : DBL_MAX;
+    എങ്കിൽ (value == 0) തിരികെ value;
+    എങ്കിൽ (exp_neg)    തിരികെ neg ? -.0 : .0;
+    അല്ലെങ്കിൽ            തിരികെ neg ? -DBL_MAX : DBL_MAX;
   }
 
-  if (exp)
+  എങ്കിൽ (exp)
   {
-    if (exp_neg)
+    എങ്കിൽ (exp_neg)
     {
       // 10^308 is the largest finite power of ten, so two reductions of 308 suffice.
-      if (unlikely (exp > 308))
+      എങ്കിൽ (unlikely (exp > 308))
       {
 	value /= 1e308;
 	exp -= 308;
-	if (unlikely (exp > 308))
+	എങ്കിൽ (unlikely (exp > 308))
 	{
 	  value /= 1e308;
 	  exp -= 308;
@@ -203,11 +203,11 @@ hb_strtod (const char *p, const char **end_ptr /* IN/OUT */)
       }
       value /= _pow10 (exp);
     }
-    else
+    അല്ലെങ്കിൽ
       value *= _pow10 (exp);
   }
 
-  return value;
+  തിരികെ value;
 }
 
 #endif /* HB_NUMBER_PARSER_HH */

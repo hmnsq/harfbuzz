@@ -25,11 +25,11 @@
 #ifndef HB_AAT_LAYOUT_JUST_TABLE_HH
 #define HB_AAT_LAYOUT_JUST_TABLE_HH
 
-#include "hb-aat-layout-common.hh"
-#include "hb-ot-layout.hh"
-#include "hb-open-type.hh"
+#അന്തര്ഭാവ "hb-aat-layout-common.hh"
+#അന്തര്ഭാവ "hb-ot-layout.hh"
+#അന്തര്ഭാവ "hb-open-type.hh"
 
-#include "hb-aat-layout-morx-table.hh"
+#അന്തര്ഭാവ "hb-aat-layout-morx-table.hh"
 
 /*
  * just -- Justification
@@ -38,17 +38,17 @@
 #define HB_AAT_TAG_just HB_TAG('j','u','s','t')
 
 
-namespace AAT {
+നാമാകാശ AAT {
 
-using namespace OT;
+using നാമാകാശ OT;
 
 
-struct ActionSubrecordHeader
+ഘടന ActionSubrecordHeader
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
   HBUINT16	actionClass;	/* The JustClass value associated with this
@@ -56,16 +56,16 @@ struct ActionSubrecordHeader
   HBUINT16	actionType;	/* The type of postcompensation action. */
   HBUINT16	actionLength;	/* Length of this ActionSubrecord record, which
 				 * must be a multiple of 4. */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (6);
 };
 
-struct DecompositionAction
+ഘടന DecompositionAction
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
   ActionSubrecordHeader
@@ -85,37 +85,37 @@ struct DecompositionAction
 				 * the ligature will be decomposed into these glyphs.
 				 *
 				 * Array of decomposed glyphs. */
-  public:
+  പൊതു:
   DEFINE_SIZE_ARRAY (18, decomposedglyphs);
 };
 
-struct UnconditionalAddGlyphAction
+ഘടന UnconditionalAddGlyphAction
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
-  protected:
+  സംരക്ഷിത:
   ActionSubrecordHeader
 		header;
   HBGlyphID16	addGlyph;	/* Glyph that should be added if the distance factor
 				 * is growing. */
 
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (8);
 };
 
-struct ConditionalAddGlyphAction
+ഘടന ConditionalAddGlyphAction
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
-  protected:
+  സംരക്ഷിത:
   ActionSubrecordHeader
 		header;
   F16DOT16	substThreshold; /* Distance growth factor (in ems) at which
@@ -128,19 +128,19 @@ struct ConditionalAddGlyphAction
   HBGlyphID16	substGlyph;	/* Glyph to be substituted for this glyph if the
 				 * growth factor equals or exceeds the value of
 				 * substThreshold. */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (14);
 };
 
-struct DuctileGlyphAction
+ഘടന DuctileGlyphAction
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
-  protected:
+  സംരക്ഷിത:
   ActionSubrecordHeader
 		header;
   HBUINT32	variationAxis;	/* The 4-byte tag identifying the ductile axis.
@@ -149,58 +149,58 @@ struct DuctileGlyphAction
   F16DOT16	minimumLimit;	/* The lowest value for the ductility axis that
 				 * still yields an acceptable appearance. Normally
 				 * this will be 1.0. */
-  F16DOT16	noStretchValue; /* This is the default value that corresponds to
+  F16DOT16	no_Stretch_മൂല്യം; /* This is the default value that corresponds to
 				 * no change in appearance. Normally, this will
 				 * be 1.0. */
   F16DOT16	maximumLimit;	/* The highest value for the ductility axis that
 				 * still yields an acceptable appearance. */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (22);
 };
 
-struct RepeatedAddGlyphAction
+ഘടന RepeatedAddGlyphAction
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
-  protected:
+  സംരക്ഷിത:
   ActionSubrecordHeader
 		header;
   HBUINT16	flags;		/* Currently unused; set to 0. */
   HBGlyphID16	glyph;		/* Glyph that should be added if the distance factor
 				 * is growing. */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (10);
 };
 
-struct ActionSubrecord
+ഘടന ActionSubrecord
 {
-  unsigned int get_length () const { return u.header.actionLength; }
+  unsigned പൂർണ്ണസംഖ്യ get_length () സ്ഥിരം { തിരികെ u.header.actionLength; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
-      return_trace (false);
+    TRACE_SANITIZE (ഇത്);
+    എങ്കിൽ (unlikely (!c->check_struct (ഇത്)))
+      return_trace (അസത്യം);
     hb_barrier ();
 
-    switch (u.header.actionType)
+    തിരഞ്ഞെടുപ്പ് (u.header.actionType)
     {
-    case 0: hb_barrier ();  return_trace (u.decompositionAction.sanitize (c));
-    case 1: hb_barrier ();  return_trace (u.unconditionalAddGlyphAction.sanitize (c));
-    case 2: hb_barrier ();  return_trace (u.conditionalAddGlyphAction.sanitize (c));
+    അവസ്ഥ 0: hb_barrier ();  return_trace (u.decompositionAction.sanitize (c));
+    അവസ്ഥ 1: hb_barrier ();  return_trace (u.unconditionalAddGlyphAction.sanitize (c));
+    അവസ്ഥ 2: hb_barrier ();  return_trace (u.conditionalAddGlyphAction.sanitize (c));
     // case 3: hb_barrier (); return_trace (u.stretchGlyphAction.sanitize (c));
-    case 4: hb_barrier ();  return_trace (u.decompositionAction.sanitize (c));
-    case 5: hb_barrier ();  return_trace (u.decompositionAction.sanitize (c));
-    default: return_trace (true);
+    അവസ്ഥ 4: hb_barrier ();  return_trace (u.decompositionAction.sanitize (c));
+    അവസ്ഥ 5: hb_barrier ();  return_trace (u.decompositionAction.sanitize (c));
+    സ്ഥിരസ്ഥിതി: return_trace (സത്യം);
     }
   }
 
-  protected:
-  union	{
+  സംരക്ഷിത:
+  സംഘം	{
   ActionSubrecordHeader		header;
   DecompositionAction		decompositionAction;
   UnconditionalAddGlyphAction	unconditionalAddGlyphAction;
@@ -210,40 +210,40 @@ struct ActionSubrecord
   RepeatedAddGlyphAction	repeatedAddGlyphAction;
   } u;				/* Data. The format of this data depends on
 				 * the value of the actionType field. */
-  public:
+  പൊതു:
   DEFINE_SIZE_UNION (6, header);
 };
 
-struct PostcompensationActionChain
+ഘടന PostcompensationActionChain
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
-      return_trace (false);
+    TRACE_SANITIZE (ഇത്);
+    എങ്കിൽ (unlikely (!c->check_struct (ഇത്)))
+      return_trace (അസത്യം);
     hb_barrier ();
 
-    unsigned int offset = min_size;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned പൂർണ്ണസംഖ്യ offset = min_size;
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
     {
-      const ActionSubrecord& subrecord = StructAtOffset<ActionSubrecord> (this, offset);
-      if (unlikely (!subrecord.sanitize (c))) return_trace (false);
+      സ്ഥിരം ActionSubrecord& subrecord = StructAtOffset<ActionSubrecord> (ഇത്, offset);
+      എങ്കിൽ (unlikely (!subrecord.sanitize (c))) return_trace (അസത്യം);
       offset += subrecord.get_length ();
     }
 
-    return_trace (true);
+    return_trace (സത്യം);
   }
 
-  protected:
-  HBUINT32	count;
+  സംരക്ഷിത:
+  HBUINT32	എണ്ണം;
 
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (4);
 };
 
-struct JustWidthDeltaEntry
+ഘടന JustWidthDeltaEntry
 {
-  enum Flags
+  എണ്ണൽ Flags
   {
     Reserved1		=0xE000,/* Reserved. You should set these bits to zero. */
     UnlimiteGap		=0x1000,/* The glyph can take unlimited gap. When this
@@ -254,7 +254,7 @@ struct JustWidthDeltaEntry
     Priority		=0x000F /* The justification priority of the glyph. */
   };
 
-  enum Priority
+  എണ്ണൽ Priority
   {
     Kashida		= 0,	/* Kashida priority. This is the highest priority
 				 * during justification. */
@@ -272,7 +272,7 @@ struct JustWidthDeltaEntry
 				 * you may instead assign it to the null priority. */
   };
 
-  protected:
+  സംരക്ഷിത:
   F16DOT16	beforeGrowLimit;/* The ratio by which the advance width of the
 				 * glyph is permitted to grow on the left or top side. */
   F16DOT16	beforeShrinkLimit;
@@ -287,19 +287,19 @@ struct JustWidthDeltaEntry
   HBUINT16	growFlags;	/* Flags controlling the grow case. */
   HBUINT16	shrinkFlags;	/* Flags controlling the shrink case. */
 
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (20);
 };
 
-struct WidthDeltaPair
+ഘടന WidthDeltaPair
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
-  protected:
+  സംരക്ഷിത:
   HBUINT32	justClass;	/* The justification category associated
 				 * with the wdRecord field. Only 7 bits of
 				 * this field are used. (The other bits are
@@ -308,17 +308,17 @@ struct WidthDeltaPair
   JustWidthDeltaEntry
 		wdRecord;	/* The actual width delta record. */
 
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (24);
 };
 
-typedef OT::Array32Of<WidthDeltaPair> WidthDeltaCluster;
+തരനിർവചനം OT::Array32Of<WidthDeltaPair> WidthDeltaCluster;
 
-struct JustificationCategory
+ഘടന JustificationCategory
 {
-  typedef void EntryData;
+  തരനിർവചനം ശൂന്യം EntryData;
 
-  enum Flags
+  എണ്ണൽ Flags
   {
     SetMark		=0x8000,/* If set, make the current glyph the marked
 				 * glyph. */
@@ -330,36 +330,36 @@ struct JustificationCategory
 				 * glyph if nonzero. */
   };
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  തർക്കം sanitize (hb_sanitize_context_t *c, സ്ഥിരം ശൂന്യം *base) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (ഇത്);
+    return_trace (likely (c->check_struct (ഇത്) &&
 			  morphHeader.sanitize (c) &&
 			  stHeader.sanitize (c)));
   }
 
-  protected:
+  സംരക്ഷിത:
   ChainSubtable<ObsoleteTypes>
 		morphHeader;	/* Metamorphosis-style subtable header. */
   StateTable<ObsoleteTypes, EntryData>
 		stHeader;	/* The justification insertion state table header */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (30);
 };
 
-struct JustificationHeader
+ഘടന JustificationHeader
 {
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  തർക്കം sanitize (hb_sanitize_context_t *c, സ്ഥിരം ശൂന്യം *base) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (ഇത്);
+    return_trace (likely (c->check_struct (ഇത്) &&
 			  justClassTable.sanitize (c, base, base) &&
 			  wdcTable.sanitize (c, base) &&
 			  pcTable.sanitize (c, base) &&
 			  lookupTable.sanitize (c, base)));
   }
 
-  protected:
+  സംരക്ഷിത:
   Offset16To<JustificationCategory>
 		justClassTable;	/* Offset to the justification category state table. */
   Offset16To<WidthDeltaCluster>
@@ -378,26 +378,26 @@ struct JustificationHeader
 				 * clusters. See the description of Width Delta Clusters
 				 * table for details on how to interpret the lookup values. */
 
-  public:
+  പൊതു:
   DEFINE_SIZE_MIN (8);
 };
 
-struct just
+ഘടന just
 {
-  static constexpr hb_tag_t tableTag = HB_AAT_TAG_just;
+  സ്ഥിതം constexpr hb_tag_t tableTag = HB_AAT_TAG_just;
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ഇത്);
 
-    return_trace (likely (c->check_struct (this) &&
+    return_trace (likely (c->check_struct (ഇത്) &&
 			  hb_barrier () &&
 			  version.major == 1 &&
-			  horizData.sanitize (c, this, this) &&
-			  vertData.sanitize (c, this, this)));
+			  horizData.sanitize (c, ഇത്, ഇത്) &&
+			  vertData.sanitize (c, ഇത്, ഇത്)));
   }
 
-  protected:
+  സംരക്ഷിത:
   FixedVersion<>version;	/* Version of the justification table
 				 * (0x00010000u for version 1.0). */
   HBUINT16	format;		/* Format of the justification table (set to 0). */
@@ -410,7 +410,7 @@ struct just
   Offset16To<JustificationHeader>
 		vertData;	/* ditto, vertical */
 
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (10);
 };
 

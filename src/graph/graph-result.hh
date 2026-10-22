@@ -27,11 +27,11 @@
 #ifndef GRAPH_GRAPH_RESULT_HH
 #define GRAPH_GRAPH_RESULT_HH
 
-#include "../hb-result.hh"
+#അന്തര്ഭാവ "../hb-result.hh"
 
-namespace graph {
+നാമാകാശ graph {
 
-enum graph_error_t {
+എണ്ണൽ graph_error_t {
   ALLOCATION_FAILURE,
   LIMIT_EXCEEDED,
   INVALID_ARGUMENT,
@@ -43,19 +43,19 @@ enum graph_error_t {
   UNKNOWN,
 };
 
-static inline const char* to_string(graph_error_t e) {
-  switch (e) {
-    case ALLOCATION_FAILURE: return "Memory Allocation Failed";
-    case LIMIT_EXCEEDED: return "Limit Exceeded";
-    case INVALID_ARGUMENT: return "Invalid Argument";
-    case CYCLE_DETECTED: return "Cycle in Graph";
-    case SANITIZE_FAILURE: return "Failed Sanitization";
-    case OUT_OF_BOUNDS: return "Out of Bounds";
-    case ORPHANED_NODES: return "Graph is not fully connected";
-    case OVERFLOW_RESOLUTION_FAILED: return "Overflows are not able to be resolved";
-    case UNKNOWN:
-    default:
-      return "Unknown Error";
+സ്ഥിതം വരിയിൽ സ്ഥിരം അക്ഷരം* to_string(graph_error_t e) {
+  തിരഞ്ഞെടുപ്പ് (e) {
+    അവസ്ഥ ALLOCATION_FAILURE: തിരികെ "Memory Allocation Failed";
+    അവസ്ഥ LIMIT_EXCEEDED: തിരികെ "Limit Exceeded";
+    അവസ്ഥ INVALID_ARGUMENT: തിരികെ "Invalid Argument";
+    അവസ്ഥ CYCLE_DETECTED: തിരികെ "Cycle in Graph";
+    അവസ്ഥ SANITIZE_FAILURE: തിരികെ "Failed Sanitization";
+    അവസ്ഥ OUT_OF_BOUNDS: തിരികെ "Out of Bounds";
+    അവസ്ഥ ORPHANED_NODES: തിരികെ "Graph is not fully connected";
+    അവസ്ഥ OVERFLOW_RESOLUTION_FAILED: തിരികെ "Overflows are not able to be resolved";
+    അവസ്ഥ UNKNOWN:
+    സ്ഥിരസ്ഥിതി:
+      തിരികെ "Unknown Error";
   }
 }
 

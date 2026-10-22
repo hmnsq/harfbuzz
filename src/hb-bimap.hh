@@ -27,92 +27,92 @@
 #ifndef HB_BIMAP_HH
 #define HB_BIMAP_HH
 
-#include "hb.hh"
-#include "hb-map.hh"
+#അന്തര്ഭാവ "hb.hh"
+#അന്തര്ഭാവ "hb-map.hh"
 
 /* Bi-directional map */
-struct hb_bimap_t
+ഘടന hb_bimap_t
 {
-  void reset ()
+  ശൂന്യം reset ()
   {
     forw_map.reset ();
     back_map.reset ();
   }
 
-  void alloc (unsigned pop)
+  ശൂന്യം alloc (unsigned എടുക്കുക)
   {
-    forw_map.alloc (pop);
-    back_map.alloc (pop);
+    forw_map.alloc (എടുക്കുക);
+    back_map.alloc (എടുക്കുക);
   }
 
-  bool in_error () const { return forw_map.in_error () || back_map.in_error (); }
+  തർക്കം in_error () സ്ഥിരം { തിരികെ forw_map.in_error () || back_map.in_error (); }
 
-  void set (hb_codepoint_t lhs, hb_codepoint_t rhs)
+  ശൂന്യം set (hb_codepoint_t lhs, hb_codepoint_t rhs)
   {
-    if (in_error ()) return;
-    if (unlikely (lhs == HB_MAP_VALUE_INVALID)) return;
-    if (unlikely (rhs == HB_MAP_VALUE_INVALID)) { del (lhs); return; }
+    എങ്കിൽ (in_error ()) തിരികെ;
+    എങ്കിൽ (unlikely (lhs == HB_MAP_മൂല്യം_INVALID)) തിരികെ;
+    എങ്കിൽ (unlikely (rhs == HB_MAP_മൂല്യം_INVALID)) { del (lhs); തിരികെ; }
 
     forw_map.set (lhs, rhs);
-    if (unlikely (in_error ())) return;
+    എങ്കിൽ (unlikely (in_error ())) തിരികെ;
 
     back_map.set (rhs, lhs);
-    if (unlikely (in_error ())) forw_map.del (lhs);
+    എങ്കിൽ (unlikely (in_error ())) forw_map.del (lhs);
   }
 
-  hb_codepoint_t get (hb_codepoint_t lhs) const { return forw_map.get (lhs); }
-  hb_codepoint_t backward (hb_codepoint_t rhs) const { return back_map.get (rhs); }
+  hb_codepoint_t get (hb_codepoint_t lhs) സ്ഥിരം { തിരികെ forw_map.get (lhs); }
+  hb_codepoint_t backward (hb_codepoint_t rhs) സ്ഥിരം { തിരികെ back_map.get (rhs); }
 
-  hb_codepoint_t operator [] (hb_codepoint_t lhs) const { return get (lhs); }
-  bool has (hb_codepoint_t lhs) const { return forw_map.has (lhs); }
+  hb_codepoint_t operator [] (hb_codepoint_t lhs) സ്ഥിരം { തിരികെ get (lhs); }
+  തർക്കം has (hb_codepoint_t lhs) സ്ഥിരം { തിരികെ forw_map.has (lhs); }
 
 
-  void del (hb_codepoint_t lhs)
+  ശൂന്യം del (hb_codepoint_t lhs)
   {
     back_map.del (get (lhs));
     forw_map.del (lhs);
   }
 
-  void clear ()
+  ശൂന്യം clear ()
   {
     forw_map.clear ();
     back_map.clear ();
   }
 
-  bool is_empty () const { return forw_map.is_empty (); }
+  തർക്കം is_empty () സ്ഥിരം { തിരികെ forw_map.is_empty (); }
 
-  unsigned int get_population () const { return forw_map.get_population (); }
+  unsigned പൂർണ്ണസംഖ്യ get_population () സ്ഥിരം { തിരികെ forw_map.get_population (); }
 
-  protected:
+  സംരക്ഷിത:
   hb_map_t  forw_map;
   hb_map_t  back_map;
 
-  public:
-  auto keys () const HB_AUTO_RETURN (+ forw_map.keys())
-  auto values () const HB_AUTO_RETURN (+ forw_map.values())
-  auto iter () const HB_AUTO_RETURN (+ forw_map.iter())
+  പൊതു:
+  auto താക്കോലുകൾ () സ്ഥിരം HB_AUTO_RETURN (+ forw_map.താക്കോലുകൾ())
+  auto values () സ്ഥിരം HB_AUTO_RETURN (+ forw_map.values())
+  auto iter () സ്ഥിരം HB_AUTO_RETURN (+ forw_map.iter())
 };
 
 /* Incremental bimap: only lhs is given, rhs is incrementally assigned */
-struct hb_inc_bimap_t
+ഘടന hb_inc_bimap_t
 {
-  bool in_error () const { return forw_map.in_error () || back_map.in_error (); }
+  തർക്കം in_error () സ്ഥിരം { തിരികെ forw_map.in_error () || back_map.in_error (); }
 
-  unsigned int get_population () const { return forw_map.get_population (); }
+  unsigned പൂർണ്ണസംഖ്യ get_population () സ്ഥിരം { തിരികെ forw_map.get_population (); }
 
-  void reset ()
+  ശൂന്യം reset ()
   {
     forw_map.reset ();
     back_map.reset ();
   }
 
-  void alloc (unsigned pop)
+  ശൂന്യം alloc (unsigned എടുക്കുക)
   {
-    forw_map.alloc (pop);
-    back_map.alloc (pop);
+    forw_map.alloc (എടുക്കുക);
+    back_map.alloc (എടുക്കുക);
   }
 
-  void clear ()
+  ശൂന്യം clear ()
   {
     forw_map.clear ();
     back_map.clear ();
@@ -124,82 +124,82 @@ struct hb_inc_bimap_t
   hb_codepoint_t add (hb_codepoint_t lhs)
   {
     hb_codepoint_t  rhs = forw_map[lhs];
-    if (rhs == HB_MAP_VALUE_INVALID)
+    എങ്കിൽ (rhs == HB_MAP_മൂല്യം_INVALID)
     {
       rhs = back_map.length;
       forw_map.set (lhs, rhs);
       back_map.push (lhs);
     }
-    return rhs;
+    തിരികെ rhs;
   }
 
   hb_codepoint_t skip ()
   {
     hb_codepoint_t start = back_map.length;
-    back_map.push (HB_MAP_VALUE_INVALID);
-    return start;
+    back_map.push (HB_MAP_മൂല്യം_INVALID);
+    തിരികെ start;
   }
 
-  hb_codepoint_t skip (unsigned count)
+  hb_codepoint_t skip (unsigned എണ്ണം)
   {
     hb_codepoint_t start = back_map.length;
-    back_map.alloc (back_map.length + count);
-    for (unsigned i = 0; i < count; i++)
-      back_map.push (HB_MAP_VALUE_INVALID);
-    return start;
+    back_map.alloc (back_map.length + എണ്ണം);
+    വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++)
+      back_map.push (HB_MAP_മൂല്യം_INVALID);
+    തിരികെ start;
   }
 
-  hb_codepoint_t get_next_value () const
-  { return back_map.length; }
+  hb_codepoint_t get_next_മൂല്യം () സ്ഥിരം
+  { തിരികെ back_map.length; }
 
-  void add_set (const hb_set_t *set)
+  ശൂന്യം add_set (സ്ഥിരം hb_set_t *set)
   {
-    for (auto i : *set) add (i);
+    വേണ്ടി (auto i : *set) add (i);
   }
 
   /* Create an identity map. */
-  bool identity (unsigned int size)
+  തർക്കം identity (unsigned പൂർണ്ണസംഖ്യ size)
   {
     clear ();
-    for (hb_codepoint_t i = 0; i < size; i++) add (i);
-    return !in_error ();
+    വേണ്ടി (hb_codepoint_t i = 0; i < size; i++) add (i);
+    തിരികെ !in_error ();
   }
 
-  protected:
-  static int cmp_id (const void* a, const void* b)
-  { return (int)*(const hb_codepoint_t *)a - (int)*(const hb_codepoint_t *)b; }
+  സംരക്ഷിത:
+  സ്ഥിതം പൂർണ്ണസംഖ്യ cmp_id (സ്ഥിരം ശൂന്യം* a, സ്ഥിരം ശൂന്യം* b)
+  { തിരികെ (പൂർണ്ണസംഖ്യ)*(സ്ഥിരം hb_codepoint_t *)a - (പൂർണ്ണസംഖ്യ)*(സ്ഥിരം hb_codepoint_t *)b; }
 
-  public:
+  പൊതു:
   /* Optional: after finished adding all mappings in a random order,
    * reassign rhs to lhs so that they are in the same order. */
-  void sort ()
+  ശൂന്യം sort ()
   {
-    hb_codepoint_t  count = get_population ();
+    hb_codepoint_t  എണ്ണം = get_population ();
     hb_vector_t <hb_codepoint_t> work;
-    if (unlikely (!work.resize_dirty  (count))) return;
+    എങ്കിൽ (unlikely (!work.resize_dirty  (എണ്ണം))) തിരികെ;
 
-    for (hb_codepoint_t rhs = 0; rhs < count; rhs++)
+    വേണ്ടി (hb_codepoint_t rhs = 0; rhs < എണ്ണം; rhs++)
       work.arrayZ[rhs] = back_map[rhs];
 
     work.qsort (cmp_id);
 
     clear ();
-    for (hb_codepoint_t rhs = 0; rhs < count; rhs++)
+    വേണ്ടി (hb_codepoint_t rhs = 0; rhs < എണ്ണം; rhs++)
       add (work.arrayZ[rhs]);
   }
 
-  hb_codepoint_t get (hb_codepoint_t lhs) const { return forw_map.get (lhs); }
-  hb_codepoint_t backward (hb_codepoint_t rhs) const { return back_map[rhs]; }
+  hb_codepoint_t get (hb_codepoint_t lhs) സ്ഥിരം { തിരികെ forw_map.get (lhs); }
+  hb_codepoint_t backward (hb_codepoint_t rhs) സ്ഥിരം { തിരികെ back_map[rhs]; }
 
-  hb_codepoint_t operator [] (hb_codepoint_t lhs) const { return get (lhs); }
-  bool has (hb_codepoint_t lhs) const { return forw_map.has (lhs); }
+  hb_codepoint_t operator [] (hb_codepoint_t lhs) സ്ഥിരം { തിരികെ get (lhs); }
+  തർക്കം has (hb_codepoint_t lhs) സ്ഥിരം { തിരികെ forw_map.has (lhs); }
 
-  protected:
+  സംരക്ഷിത:
   hb_map_t forw_map;
   hb_vector_t<hb_codepoint_t> back_map;
 
-  public:
-  auto keys () const HB_AUTO_RETURN (+ back_map.iter())
+  പൊതു:
+  auto താക്കോലുകൾ () സ്ഥിരം HB_AUTO_RETURN (+ back_map.iter())
 };
 
 #endif /* HB_BIMAP_HH */

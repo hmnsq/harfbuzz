@@ -27,13 +27,13 @@
 #ifndef HB_CORETEXT_H
 #define HB_CORETEXT_H
 
-#include "hb.h"
+#അന്തര്ഭാവ "hb.h"
 
-#include <TargetConditionals.h>
-#if TARGET_OS_IPHONE
+#അന്തര്ഭാവ <TargetConditionals.h>
+#എങ്കിൽ TARGET_OS_IPHONE
 #  include <CoreText/CoreText.h>
 #  include <CoreGraphics/CoreGraphics.h>
-#else
+#അല്ലെങ്കിൽ
 #  include <ApplicationServices/ApplicationServices.h>
 #endif
 
@@ -81,12 +81,12 @@ HB_EXTERN hb_face_t *
 hb_coretext_face_create (CGFontRef cg_font);
 
 HB_EXTERN hb_face_t *
-hb_coretext_face_create_from_file_or_fail (const char   *file_name,
-					   unsigned int  index);
+hb_coretext_face_create_from_file_or_fail (സ്ഥിരം അക്ഷരം   *file_name,
+					   unsigned പൂർണ്ണസംഖ്യ  index);
 
 HB_EXTERN hb_face_t *
 hb_coretext_face_create_from_blob_or_fail (hb_blob_t    *blob,
-					   unsigned int  index);
+					   unsigned പൂർണ്ണസംഖ്യ  index);
 
 HB_EXTERN hb_font_t *
 hb_coretext_font_create (CTFontRef ct_font);
@@ -98,7 +98,7 @@ hb_coretext_face_get_cg_font (hb_face_t *face);
 HB_EXTERN CTFontRef
 hb_coretext_font_get_ct_font (hb_font_t *font);
 
-HB_EXTERN void
+HB_EXTERN ശൂന്യം
 hb_coretext_font_set_funcs (hb_font_t *font);
 
 

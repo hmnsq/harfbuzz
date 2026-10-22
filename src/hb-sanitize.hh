@@ -29,9 +29,9 @@
 #ifndef HB_SANITIZE_HH
 #define HB_SANITIZE_HH
 
-#include "hb.hh"
-#include "hb-blob.hh"
-#include "hb-dispatch.hh"
+#അന്തര്ഭാവ "hb.hh"
+#അന്തര്ഭാവ "hb-blob.hh"
+#അന്തര്ഭാവ "hb-dispatch.hh"
 
 
 /*
@@ -120,355 +120,355 @@
 #define HB_SANITIZE_MAX_SUBTABLES 0x4000
 #endif
 
-struct hb_sanitize_context_t :
-       hb_dispatch_context_t<hb_sanitize_context_t, bool, HB_DEBUG_SANITIZE>
+ഘടന hb_sanitize_context_t :
+       hb_dispatch_context_t<hb_sanitize_context_t, തർക്കം, HB_DEBUG_SANITIZE>
 {
-  hb_sanitize_context_t (const char *start_ = nullptr, const char *end_ = nullptr) :
+  hb_sanitize_context_t (സ്ഥിരം അക്ഷരം *start_ = nullptr, സ്ഥിരം അക്ഷരം *end_ = nullptr) :
 	start (start_), end (end_),
 	length (0),
 	max_ops (0), max_subtables (0),
         recursion_depth (0),
-	writable (false),
+	writable (അസത്യം),
 	blob (nullptr),
-	num_glyphs (65536),
-	num_glyphs_set (false),
-	lazy_some_gpos (false) {}
+	അക്കം_glyphs (65536),
+	അക്കം_glyphs_set (അസത്യം),
+	lazy_some_gpos (അസത്യം) {}
 
-  const char *get_name () { return "SANITIZE"; }
+  സ്ഥിരം അക്ഷരം *get_name () { തിരികെ "SANITIZE"; }
   template <typename T, typename F>
-  bool may_dispatch (const T *obj HB_UNUSED, const F *format)
+  തർക്കം may_dispatch (സ്ഥിരം T *obj HB_UNUSED, സ്ഥിരം F *format)
   {
-    return format->sanitize (this) &&
+    തിരികെ format->sanitize (ഇത്) &&
 	   hb_barrier ();
   }
-  static return_t default_return_value () { return true; }
-  static return_t no_dispatch_return_value () { return false; }
-  bool stop_sublookup_iteration (const return_t r) const { return !r; }
+  സ്ഥിതം return_t default_return_മൂല്യം () { തിരികെ സത്യം; }
+  സ്ഥിതം return_t no_dispatch_return_മൂല്യം () { തിരികെ അസത്യം; }
+  തർക്കം stop_sublookup_iteration (സ്ഥിരം return_t r) സ്ഥിരം { തിരികെ !r; }
 
-  bool visit_subtables (unsigned count)
+  തർക്കം visit_subtables (unsigned എണ്ണം)
   {
-    max_subtables += count;
-    return max_subtables < HB_SANITIZE_MAX_SUBTABLES;
+    max_subtables += എണ്ണം;
+    തിരികെ max_subtables < HB_SANITIZE_MAX_SUBTABLES;
   }
 
-  private:
+  സ്വകാര്യ:
   template <typename T, typename ...Ts> auto
-  _dispatch (const T &obj, hb_priority<1>, Ts&&... ds) HB_AUTO_RETURN
-  ( obj.sanitize (this, std::forward<Ts> (ds)...) )
+  _dispatch (സ്ഥിരം T &obj, hb_priority<1>, Ts&&... ds) HB_AUTO_RETURN
+  ( obj.sanitize (ഇത്, std::forward<Ts> (ds)...) )
   template <typename T, typename ...Ts> auto
-  _dispatch (const T &obj, hb_priority<0>, Ts&&... ds) HB_AUTO_RETURN
-  ( obj.dispatch (this, std::forward<Ts> (ds)...) )
-  public:
+  _dispatch (സ്ഥിരം T &obj, hb_priority<0>, Ts&&... ds) HB_AUTO_RETURN
+  ( obj.dispatch (ഇത്, std::forward<Ts> (ds)...) )
+  പൊതു:
   template <typename T, typename ...Ts> auto
-  dispatch (const T &obj, Ts&&... ds) HB_AUTO_RETURN
+  dispatch (സ്ഥിരം T &obj, Ts&&... ds) HB_AUTO_RETURN
   ( _dispatch (obj, hb_prioritize, std::forward<Ts> (ds)...) )
 
   hb_sanitize_context_t (hb_blob_t *b) : hb_sanitize_context_t ()
   {
     init (b);
 
-    if (blob)
+    എങ്കിൽ (blob)
       start_processing ();
   }
 
   ~hb_sanitize_context_t ()
   {
-    if (blob)
+    എങ്കിൽ (blob)
       end_processing ();
   }
 
-  void init (hb_blob_t *b)
+  ശൂന്യം init (hb_blob_t *b)
   {
-    this->blob = hb_blob_reference (b);
-    this->writable = false;
+    ഇത്->blob = hb_blob_reference (b);
+    ഇത്->writable = അസത്യം;
   }
 
-  void set_num_glyphs (unsigned int num_glyphs_)
+  ശൂന്യം set_അക്കം_glyphs (unsigned പൂർണ്ണസംഖ്യ അക്കം_glyphs_2)
   {
-    num_glyphs = num_glyphs_;
-    num_glyphs_set = true;
+    അക്കം_glyphs = അക്കം_glyphs_2;
+    അക്കം_glyphs_set = സത്യം;
   }
-  unsigned int get_num_glyphs () { return num_glyphs; }
+  unsigned പൂർണ്ണസംഖ്യ get_അക്കം_glyphs () { തിരികെ അക്കം_glyphs; }
 
-  void set_max_ops (int max_ops_) { max_ops = max_ops_; }
+  ശൂന്യം set_max_ops (പൂർണ്ണസംഖ്യ max_ops_) { max_ops = max_ops_; }
 
   template <typename T>
-  void set_object (const T *obj)
+  ശൂന്യം set_object (സ്ഥിരം T *obj)
   {
     reset_object ();
 
-    if (!obj) return;
+    എങ്കിൽ (!obj) തിരികെ;
 
-    const char *obj_start = (const char *) obj;
-    if (unlikely (obj_start < this->start || this->end <= obj_start))
+    സ്ഥിരം അക്ഷരം *obj_start = (സ്ഥിരം അക്ഷരം *) obj;
+    എങ്കിൽ (unlikely (obj_start < ഇത്->start || ഇത്->end <= obj_start))
     {
-      this->start = this->end = nullptr;
-      this->length = 0;
+      ഇത്->start = ഇത്->end = nullptr;
+      ഇത്->length = 0;
     }
-    else
+    അല്ലെങ്കിൽ
     {
-      this->start = obj_start;
-      this->end   = obj_start + hb_min (size_t (this->end - obj_start), obj->get_size ());
-      this->length = this->end - this->start;
+      ഇത്->start = obj_start;
+      ഇത്->end   = obj_start + hb_min (size_t (ഇത്->end - obj_start), obj->get_size ());
+      ഇത്->length = ഇത്->end - ഇത്->start;
     }
   }
 
-  void reset_object ()
+  ശൂന്യം reset_object ()
   {
-    if (this->blob)
+    എങ്കിൽ (ഇത്->blob)
     {
-      this->start = this->blob->data;
-      this->end = this->start + this->blob->length;
+      ഇത്->start = ഇത്->blob->data;
+      ഇത്->end = ഇത്->start + ഇത്->blob->length;
     }
-    this->length = this->end - this->start;
-    assert (this->start <= this->end); /* Must not overflow. */
+    ഇത്->length = ഇത്->end - ഇത്->start;
+    പ്രതിജ്ഞാ (ഇത്->start <= ഇത്->end); /* Must not overflow. */
   }
 
-  void start_processing (const char *start_ = nullptr, const char *end_ = nullptr)
+  ശൂന്യം start_processing (സ്ഥിരം അക്ഷരം *start_ = nullptr, സ്ഥിരം അക്ഷരം *end_ = nullptr)
   {
-    if (start_)
+    എങ്കിൽ (start_)
     {
-      this->start = start_;
-      this->end = end_;
+      ഇത്->start = start_;
+      ഇത്->end = end_;
     }
     reset_object ();
     unsigned m;
-    if (unlikely (hb_unsigned_mul_overflows (this->end - this->start, HB_SANITIZE_MAX_OPS_FACTOR, &m)))
-      this->max_ops = HB_SANITIZE_MAX_OPS_MAX;
-    else
-      this->max_ops = hb_clamp (m,
+    എങ്കിൽ (unlikely (hb_unsigned_mul_overflows (ഇത്->end - ഇത്->start, HB_SANITIZE_MAX_OPS_FACTOR, &m)))
+      ഇത്->max_ops = HB_SANITIZE_MAX_OPS_MAX;
+    അല്ലെങ്കിൽ
+      ഇത്->max_ops = hb_clamp (m,
 				(unsigned) HB_SANITIZE_MAX_OPS_MIN,
 				(unsigned) HB_SANITIZE_MAX_OPS_MAX);
-    this->debug_depth = 0;
-    this->recursion_depth = 0;
+    ഇത്->debug_depth = 0;
+    ഇത്->recursion_depth = 0;
 
-    DEBUG_MSG_LEVEL (SANITIZE, start, 0, +1,
+    DEBUG_സന്ദേശം_LEVEL (SANITIZE, start, 0, +1,
 		     "start [%p..%p] (%lu bytes)",
-		     this->start, this->end,
-		     (unsigned long) (this->end - this->start));
+		     ഇത്->start, ഇത്->end,
+		     (unsigned long) (ഇത്->end - ഇത്->start));
   }
 
-  void end_processing ()
+  ശൂന്യം end_processing ()
   {
-    DEBUG_MSG_LEVEL (SANITIZE, this->start, 0, -1,
+    DEBUG_സന്ദേശം_LEVEL (SANITIZE, ഇത്->start, 0, -1,
 		     "end [%p..%p]",
-		     this->start, this->end);
+		     ഇത്->start, ഇത്->end);
 
-    hb_blob_destroy (this->blob);
-    this->blob = nullptr;
-    this->start = this->end = nullptr;
-    this->length = 0;
+    hb_blob_destroy (ഇത്->blob);
+    ഇത്->blob = nullptr;
+    ഇത്->start = ഇത്->end = nullptr;
+    ഇത്->length = 0;
   }
 
-  bool check_ops(unsigned count)
+  തർക്കം check_ops(unsigned എണ്ണം)
   {
     /* Avoid underflow */
-    if (unlikely (this->max_ops < 0 || count >= (unsigned) this->max_ops))
+    എങ്കിൽ (unlikely (ഇത്->max_ops < 0 || എണ്ണം >= (unsigned) ഇത്->max_ops))
     {
-      this->max_ops = -1;
-      return false;
+      ഇത്->max_ops = -1;
+      തിരികെ അസത്യം;
     }
-    this->max_ops -= (int) count;
-    return true;
+    ഇത്->max_ops -= (പൂർണ്ണസംഖ്യ) എണ്ണം;
+    തിരികെ സത്യം;
   }
 
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  bool check_range (const void *base,
-		    unsigned int len) const
+  തർക്കം check_range (സ്ഥിരം ശൂന്യം *base,
+		    unsigned പൂർണ്ണസംഖ്യ len) സ്ഥിരം
   {
-    const char *p = (const char *) base;
-    bool ok = (uintptr_t) (p - this->start) <= this->length &&
-	      (unsigned int) (this->end - p) >= len &&
-	      ((this->max_ops -= len) > 0);
+    സ്ഥിരം അക്ഷരം *p = (സ്ഥിരം അക്ഷരം *) base;
+    തർക്കം ok = (uintptr_t) (p - ഇത്->start) <= ഇത്->length &&
+	      (unsigned പൂർണ്ണസംഖ്യ) (ഇത്->end - p) >= len &&
+	      ((ഇത്->max_ops -= len) > 0);
 
-    DEBUG_MSG_LEVEL (SANITIZE, p, this->debug_depth+1, 0,
+    DEBUG_സന്ദേശം_LEVEL (SANITIZE, p, ഇത്->debug_depth+1, 0,
 		     "check_range [%p..%p]"
 		     " (%u bytes) in [%p..%p] -> %s",
 		     p, p + len, len,
-		     this->start, this->end,
+		     ഇത്->start, ഇത്->end,
 		     ok ? "OK" : "OUT-OF-RANGE");
 
-    return likely (ok);
+    തിരികെ likely (ok);
   }
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  bool check_range_fast (const void *base,
-			 unsigned int len) const
+  തർക്കം check_range_fast (സ്ഥിരം ശൂന്യം *base,
+			 unsigned പൂർണ്ണസംഖ്യ len) സ്ഥിരം
   {
-    const char *p = (const char *) base;
-    bool ok = ((uintptr_t) (p - this->start) <= this->length &&
-	       (unsigned int) (this->end - p) >= len);
+    സ്ഥിരം അക്ഷരം *p = (സ്ഥിരം അക്ഷരം *) base;
+    തർക്കം ok = ((uintptr_t) (p - ഇത്->start) <= ഇത്->length &&
+	       (unsigned പൂർണ്ണസംഖ്യ) (ഇത്->end - p) >= len);
 
-    DEBUG_MSG_LEVEL (SANITIZE, p, this->debug_depth+1, 0,
+    DEBUG_സന്ദേശം_LEVEL (SANITIZE, p, ഇത്->debug_depth+1, 0,
 		     "check_range_fast [%p..%p]"
 		     " (%u bytes) in [%p..%p] -> %s",
 		     p, p + len, len,
-		     this->start, this->end,
+		     ഇത്->start, ഇത്->end,
 		     ok ? "OK" : "OUT-OF-RANGE");
 
-    return likely (ok);
+    തിരികെ likely (ok);
   }
 
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  bool check_point (const void *base) const
+  തർക്കം check_point (സ്ഥിരം ശൂന്യം *base) സ്ഥിരം
   {
-    const char *p = (const char *) base;
-    bool ok = (uintptr_t) (p - this->start) <= this->length;
+    സ്ഥിരം അക്ഷരം *p = (സ്ഥിരം അക്ഷരം *) base;
+    തർക്കം ok = (uintptr_t) (p - ഇത്->start) <= ഇത്->length;
 
-    DEBUG_MSG_LEVEL (SANITIZE, p, this->debug_depth+1, 0,
+    DEBUG_സന്ദേശം_LEVEL (SANITIZE, p, ഇത്->debug_depth+1, 0,
 		     "check_point [%p]"
 		     " in [%p..%p] -> %s",
 		     p,
-		     this->start, this->end,
+		     ഇത്->start, ഇത്->end,
 		     ok ? "OK" : "OUT-OF-RANGE");
 
-    return likely (ok);
+    തിരികെ likely (ok);
   }
 
   template <typename T>
-  bool check_range (const T *base,
-		    unsigned int a,
-		    unsigned int b) const
+  തർക്കം check_range (സ്ഥിരം T *base,
+		    unsigned പൂർണ്ണസംഖ്യ a,
+		    unsigned പൂർണ്ണസംഖ്യ b) സ്ഥിരം
   {
     unsigned m;
-    return !hb_unsigned_mul_overflows (a, b, &m) &&
-	   this->check_range (base, m);
+    തിരികെ !hb_unsigned_mul_overflows (a, b, &m) &&
+	   ഇത്->check_range (base, m);
   }
 
   template <typename T>
-  bool check_range (const T *base,
-		    unsigned int a,
-		    unsigned int b,
-		    unsigned int c) const
+  തർക്കം check_range (സ്ഥിരം T *base,
+		    unsigned പൂർണ്ണസംഖ്യ a,
+		    unsigned പൂർണ്ണസംഖ്യ b,
+		    unsigned പൂർണ്ണസംഖ്യ c) സ്ഥിരം
   {
     unsigned m;
-    return !hb_unsigned_mul_overflows (a, b, &m) &&
-	   this->check_range (base, m, c);
+    തിരികെ !hb_unsigned_mul_overflows (a, b, &m) &&
+	   ഇത്->check_range (base, m, c);
   }
 
   template <typename T>
   HB_ALWAYS_INLINE
-  bool check_array_sized (const T *base, unsigned int len, unsigned len_size) const
+  തർക്കം check_array_sized (സ്ഥിരം T *base, unsigned പൂർണ്ണസംഖ്യ len, unsigned len_size) സ്ഥിരം
   {
-    if (len_size >= 4)
+    എങ്കിൽ (len_size >= 4)
     {
-      if (unlikely (hb_unsigned_mul_overflows (len, hb_static_size (T), &len)))
-	return false;
+      എങ്കിൽ (unlikely (hb_unsigned_mul_overflows (len, hb_static_size (T), &len)))
+	തിരികെ അസത്യം;
     }
-    else
+    അല്ലെങ്കിൽ
       len = len * hb_static_size (T);
-    return this->check_range (base, len);
+    തിരികെ ഇത്->check_range (base, len);
   }
 
   template <typename T>
-  bool check_array (const T *base, unsigned int len) const
+  തർക്കം check_array (സ്ഥിരം T *base, unsigned പൂർണ്ണസംഖ്യ len) സ്ഥിരം
   {
-    return this->check_range (base, len, hb_static_size (T));
+    തിരികെ ഇത്->check_range (base, len, hb_static_size (T));
   }
 
   template <typename T>
-  bool check_array (const T *base,
-		    unsigned int a,
-		    unsigned int b) const
+  തർക്കം check_array (സ്ഥിരം T *base,
+		    unsigned പൂർണ്ണസംഖ്യ a,
+		    unsigned പൂർണ്ണസംഖ്യ b) സ്ഥിരം
   {
-    return this->check_range (base, hb_static_size (T), a, b);
+    തിരികെ ഇത്->check_range (base, hb_static_size (T), a, b);
   }
 
-  bool check_start_recursion (int max_depth)
+  തർക്കം check_start_recursion (പൂർണ്ണസംഖ്യ max_depth)
   {
-    if (unlikely (recursion_depth >= max_depth)) return false;
-    return ++recursion_depth;
+    എങ്കിൽ (unlikely (recursion_depth >= max_depth)) തിരികെ അസത്യം;
+    തിരികെ ++recursion_depth;
   }
 
-  bool end_recursion (bool result)
+  തർക്കം end_recursion (തർക്കം result)
   {
     recursion_depth--;
-    return result;
+    തിരികെ result;
   }
 
   template <typename Type>
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  bool check_struct (const Type *obj) const
+  തർക്കം check_struct (സ്ഥിരം Type *obj) സ്ഥിരം
   {
-    if (sizeof (uintptr_t) == sizeof (uint32_t))
-      return likely (this->check_range_fast (obj, obj->min_size));
-    else
-      return likely (this->check_point ((const char *) obj + obj->min_size));
+    എങ്കിൽ (വലുപ്പം (uintptr_t) == വലുപ്പം (uint32_t))
+      തിരികെ likely (ഇത്->check_range_fast (obj, obj->min_size));
+    അല്ലെങ്കിൽ
+      തിരികെ likely (ഇത്->check_point ((സ്ഥിരം അക്ഷരം *) obj + obj->min_size));
   }
 
   template <typename Type>
   hb_blob_t *sanitize_blob (hb_blob_t *blob)
   {
-    bool sane;
+    തർക്കം sane;
 
     init (blob);
 
-    DEBUG_MSG_FUNC (SANITIZE, start, "start");
+    DEBUG_സന്ദേശം_FUNC (SANITIZE, start, "start");
 
     start_processing ();
 
-    if (unlikely (!start))
+    എങ്കിൽ (unlikely (!start))
     {
       end_processing ();
-      return blob;
+      തിരികെ blob;
     }
 
-    Type *t = reinterpret_cast<Type *> (const_cast<char *> (start));
+    Type *t = reinterpret_cast<Type *> (const_cast<അക്ഷരം *> (start));
 
-    sane = t->sanitize (this);
+    sane = t->sanitize (ഇത്);
 
     end_processing ();
 
-    DEBUG_MSG_FUNC (SANITIZE, start, sane ? "PASSED" : "FAILED");
-    if (sane)
+    DEBUG_സന്ദേശം_FUNC (SANITIZE, start, sane ? "PASSED" : "FAILED");
+    എങ്കിൽ (sane)
     {
       hb_blob_make_immutable (blob);
-      return blob;
+      തിരികെ blob;
     }
-    else
+    അല്ലെങ്കിൽ
     {
       hb_blob_destroy (blob);
-      return hb_blob_get_empty ();
+      തിരികെ hb_blob_get_empty ();
     }
   }
 
   template <typename Type>
-  hb_blob_t *reference_table (const hb_face_t *face, hb_tag_t tableTag = Type::tableTag)
+  hb_blob_t *reference_table (സ്ഥിരം hb_face_t *face, hb_tag_t tableTag = Type::tableTag)
   {
-    if (!num_glyphs_set)
-      set_num_glyphs (hb_face_get_glyph_count (face));
-    return sanitize_blob<Type> (hb_face_reference_table (face, tableTag));
+    എങ്കിൽ (!അക്കം_glyphs_set)
+      set_അക്കം_glyphs (hb_face_get_glyph_എണ്ണം (face));
+    തിരികെ sanitize_blob<Type> (hb_face_reference_table (face, tableTag));
   }
 
-  const char *start, *end;
+  സ്ഥിരം അക്ഷരം *start, *end;
   unsigned length;
-  mutable int max_ops, max_subtables;
-  private:
-  int recursion_depth;
-  bool writable;
+  mutable പൂർണ്ണസംഖ്യ max_ops, max_subtables;
+  സ്വകാര്യ:
+  പൂർണ്ണസംഖ്യ recursion_depth;
+  തർക്കം writable;
   hb_blob_t *blob;
-  unsigned int num_glyphs;
-  bool  num_glyphs_set;
-  public:
-  bool lazy_some_gpos;
+  unsigned പൂർണ്ണസംഖ്യ അക്കം_glyphs;
+  തർക്കം  അക്കം_glyphs_set;
+  പൊതു:
+  തർക്കം lazy_some_gpos;
 };
 
-struct hb_sanitize_with_object_t
+ഘടന hb_sanitize_with_object_t
 {
   template <typename T>
-  hb_sanitize_with_object_t (hb_sanitize_context_t *c, const T& obj) : c (c)
+  hb_sanitize_with_object_t (hb_sanitize_context_t *c, സ്ഥിരം T& obj) : c (c)
   { c->set_object (obj); }
   ~hb_sanitize_with_object_t ()
   { c->reset_object (); }
 
-  private:
+  സ്വകാര്യ:
   hb_sanitize_context_t *c;
 };
 

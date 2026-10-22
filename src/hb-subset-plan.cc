@@ -24,31 +24,31 @@
  * Google Author(s): Garret Rieger, Roderick Sheeter
  */
 
-#include "hb-subset-plan.hh"
-#include "hb-subset-accelerator.hh"
-#include "hb-map.hh"
-#include "hb-multimap.hh"
-#include "hb-set.hh"
-#include "hb-subset.h"
-#include "hb-unicode.h"
+#അന്തര്ഭാവ "hb-subset-plan.hh"
+#അന്തര്ഭാവ "hb-subset-accelerator.hh"
+#അന്തര്ഭാവ "hb-map.hh"
+#അന്തര്ഭാവ "hb-multimap.hh"
+#അന്തര്ഭാവ "hb-set.hh"
+#അന്തര്ഭാവ "hb-subset.h"
+#അന്തര്ഭാവ "hb-unicode.h"
 
-#include "hb-ot-cmap-table.hh"
-#include "hb-ot-glyf-table.hh"
-#include "hb-ot-layout-base-table.hh"
-#include "hb-ot-cff1-table.hh"
-#include "hb-ot-cff2-table.hh"
-#include "OT/Color/COLR/COLR.hh"
-#include "OT/Color/COLR/colrv1-closure.hh"
-#include "OT/Color/CPAL/CPAL.hh"
-#include "hb-ot-var-fvar-table.hh"
-#include "hb-ot-var-varc-table.hh"
-#include "hb-ot-stat-table.hh"
-#include "hb-ot-math-table.hh"
+#അന്തര്ഭാവ "hb-ot-cmap-table.hh"
+#അന്തര്ഭാവ "hb-ot-glyf-table.hh"
+#അന്തര്ഭാവ "hb-ot-layout-base-table.hh"
+#അന്തര്ഭാവ "hb-ot-cff1-table.hh"
+#അന്തര്ഭാവ "hb-ot-cff2-table.hh"
+#അന്തര്ഭാവ "OT/Color/COLR/COLR.hh"
+#അന്തര്ഭാവ "OT/Color/COLR/colrv1-closure.hh"
+#അന്തര്ഭാവ "OT/Color/CPAL/CPAL.hh"
+#അന്തര്ഭാവ "hb-ot-var-fvar-table.hh"
+#അന്തര്ഭാവ "hb-ot-var-varc-table.hh"
+#അന്തര്ഭാവ "hb-ot-stat-table.hh"
+#അന്തര്ഭാവ "hb-ot-math-table.hh"
 
 hb_subset_accelerator_t::~hb_subset_accelerator_t ()
 {
-  if (cmap_cache && destroy_cmap_cache)
-    destroy_cmap_cache ((void*) cmap_cache);
+  എങ്കിൽ (cmap_cache && destroy_cmap_cache)
+    destroy_cmap_cache ((ശൂന്യം*) cmap_cache);
 
 #ifndef HB_NO_SUBSET_CFF
   cff1_accel.fini ();
@@ -59,66 +59,66 @@ hb_subset_accelerator_t::~hb_subset_accelerator_t ()
 
 
 #ifndef HB_NO_SUBSET_CFF
-static inline bool
-_add_cff_seac_components (const OT::cff1::accelerator_subset_t &cff,
+സ്ഥിതം വരിയിൽ തർക്കം
+_add_cff_seac_components (സ്ഥിരം OT::cff1::accelerator_subset_t &cff,
 			  hb_codepoint_t gid,
 			  hb_set_t *gids_to_retain)
 {
   hb_codepoint_t base_gid, accent_gid;
-  if (cff.get_seac_components (gid, &base_gid, &accent_gid))
+  എങ്കിൽ (cff.get_seac_components (gid, &base_gid, &accent_gid))
   {
     gids_to_retain->add (base_gid);
     gids_to_retain->add (accent_gid);
-    return true;
+    തിരികെ സത്യം;
   }
-  return false;
+  തിരികെ അസത്യം;
 }
 #endif
 
-static void
-_remap_palette_indexes (const hb_set_t *palette_indexes,
+സ്ഥിതം ശൂന്യം
+_remap_palette_indexes (സ്ഥിരം hb_set_t *palette_indexes,
 			hb_map_t       *mapping /* OUT */)
 {
   unsigned new_idx = 0;
-  for (unsigned palette_index : palette_indexes->iter ())
+  വേണ്ടി (unsigned palette_index : palette_indexes->iter ())
   {
-    if (palette_index == 0xFFFF)
+    എങ്കിൽ (palette_index == 0xFFFF)
     {
       mapping->set (palette_index, palette_index);
-      continue;
+      തുടരുക;
     }
     mapping->set (palette_index, new_idx);
     new_idx++;
   }
 }
 
-void
-remap_indexes (const hb_set_t *indexes,
+ശൂന്യം
+remap_indexes (സ്ഥിരം hb_set_t *indexes,
                hb_map_t       *mapping /* OUT */)
 {
-  for (auto _ : + hb_enumerate (indexes->iter ()))
+  വേണ്ടി (auto _ : + hb_enumerate (indexes->iter ()))
     mapping->set (_.second, _.first);
 }
 
-static inline void
+സ്ഥിതം വരിയിൽ ശൂന്യം
 _cmap_closure (hb_face_t	   *face,
-	       const hb_set_t	   *unicodes,
+	       സ്ഥിരം hb_set_t	   *unicodes,
 	       hb_set_t		   *glyphset)
 {
   OT::cmap_accelerator_t cmap (face);
   cmap.closure_glyphs (unicodes, glyphset);
 }
 
-static void _colr_closure (hb_subset_plan_t* plan,
+സ്ഥിതം ശൂന്യം _colr_closure (hb_subset_plan_t* plan,
                            hb_set_t *glyphs_colred)
 {
   OT::COLR::accelerator_t colr (plan->source);
-  if (!colr.is_valid ()) return;
+  എങ്കിൽ (!colr.is_valid ()) തിരികെ;
 
   hb_set_t palette_indices, layer_indices;
   // Collect all glyphs referenced by COLRv0
   hb_set_t glyphset_colrv0;
-  for (hb_codepoint_t gid : *glyphs_colred)
+  വേണ്ടി (hb_codepoint_t gid : *glyphs_colred)
     colr.closure_glyphs (gid, &glyphset_colrv0);
 
   glyphs_colred->union_ (glyphset_colrv0);
@@ -140,25 +140,25 @@ static void _colr_closure (hb_subset_plan_t* plan,
    * Besides, we need to generate a delta set idx-> new var_idx map for updating
    * delta set index map if exists. This map will be updated again after
    * instancing. */
-  if (colr.has_var_store () && variation_indices)
+  എങ്കിൽ (colr.has_var_store () && variation_indices)
   {
-    const OT::ItemVariationStore &var_store = colr.get_var_store ();
+    സ്ഥിരം OT::ItemVariationStore &var_store = colr.get_var_store ();
     // generated inner_maps is used by ItemVariationStore serialize(), which is subset only
-    unsigned subtable_count = var_store.get_sub_table_count ();
-    generate_varstore_inner_maps (variation_indices, subtable_count, plan->colrv1_varstore_inner_maps);
+    unsigned subtable_എണ്ണം = var_store.get_sub_table_എണ്ണം ();
+    generate_varstore_inner_maps (variation_indices, subtable_എണ്ണം, plan->colrv1_varstore_inner_maps);
 
-    if (!plan->all_axes_pinned)
+    എങ്കിൽ (!plan->all_axes_pinned)
       remap_variation_indices (var_store,
                               variation_indices,
                               plan->normalized_coords,
-                              false, /* no need to calculate delta for COLR during planning */
+                              അസത്യം, /* no need to calculate delta for COLR during planning */
                               plan->all_axes_pinned,
                               plan->colrv1_variation_idx_delta_map);
   }
 
   /* Sentinel-only maps still need their delta-set indices remapped, even
    * when there are no live variation rows or no variation store. */
-  if (!plan->all_axes_pinned && colr.has_delta_set_index_map ())
+  എങ്കിൽ (!plan->all_axes_pinned && colr.has_delta_set_index_map ())
     remap_colrv1_delta_set_index_indices (colr.get_delta_set_index_map (),
                                          delta_set_indices,
                                          plan->colrv1_variation_idx_delta_map,
@@ -166,37 +166,37 @@ static void _colr_closure (hb_subset_plan_t* plan,
 #endif
 }
 
-static inline void
+സ്ഥിതം വരിയിൽ ശൂന്യം
 _math_closure (hb_subset_plan_t *plan,
                hb_set_t         *glyphset)
 {
   hb_blob_ptr_t<OT::MATH> math = plan->source_table<OT::MATH> ();
-  if (math->has_data ())
+  എങ്കിൽ (math->has_data ())
     math->closure_glyphs (glyphset);
   math.destroy ();
 }
 
-static inline void
+സ്ഥിതം വരിയിൽ ശൂന്യം
 _remove_invalid_gids (hb_set_t *glyphs,
-		      unsigned int num_glyphs)
+		      unsigned പൂർണ്ണസംഖ്യ അക്കം_glyphs)
 {
-  glyphs->del_range (num_glyphs, HB_SET_VALUE_INVALID);
+  glyphs->del_range (അക്കം_glyphs, HB_SET_മൂല്യം_INVALID);
 }
 
-template<bool GID_ALWAYS_EXISTS = false, typename I, typename F, typename G, hb_requires (hb_is_iterator (I))>
-static void
+template<തർക്കം GID_ALWAYS_EXISTS = അസത്യം, typename I, typename F, typename G, hb_requires (hb_is_iterator (I))>
+സ്ഥിതം ശൂന്യം
 _fill_unicode_and_glyph_map(hb_subset_plan_t *plan,
                             I unicode_iterator,
                             F unicode_to_gid_for_iterator,
                             G unicode_to_gid_general)
 {
-  for (hb_codepoint_t cp : unicode_iterator)
+  വേണ്ടി (hb_codepoint_t cp : unicode_iterator)
   {
     hb_codepoint_t gid = unicode_to_gid_for_iterator(cp);
-    if (!GID_ALWAYS_EXISTS && gid == HB_MAP_VALUE_INVALID)
+    എങ്കിൽ (!GID_ALWAYS_EXISTS && gid == HB_MAP_മൂല്യം_INVALID)
     {
-      DEBUG_MSG(SUBSET, nullptr, "Drop U+%04X; no gid", cp);
-      continue;
+      DEBUG_സന്ദേശം(SUBSET, nullptr, "Drop U+%04X; no gid", cp);
+      തുടരുക;
     }
 
     plan->codepoint_to_glyph->set (cp, gid);
@@ -204,8 +204,8 @@ _fill_unicode_and_glyph_map(hb_subset_plan_t *plan,
   }
 }
 
-template<bool GID_ALWAYS_EXISTS = false, typename I, typename F, hb_requires (hb_is_iterator (I))>
-static void
+template<തർക്കം GID_ALWAYS_EXISTS = അസത്യം, typename I, typename F, hb_requires (hb_is_iterator (I))>
+സ്ഥിതം ശൂന്യം
 _fill_unicode_and_glyph_map(hb_subset_plan_t *plan,
                             I unicode_iterator,
                             F unicode_to_gid_for_iterator)
@@ -217,91 +217,91 @@ _fill_unicode_and_glyph_map(hb_subset_plan_t *plan,
  * Finds additional unicode codepoints which are reachable from the input unicode set.
  * Currently this adds in mirrored variants (needed for bidi) of any input unicodes.
  */
-static hb_set_t
-_unicode_closure (const hb_set_t* unicodes, bool bidi_closure) {
+സ്ഥിതം hb_set_t
+_unicode_closure (സ്ഥിരം hb_set_t* unicodes, തർക്കം bidi_closure) {
   // TODO: we may want to also consider pulling in reachable unicode composition and decompositions.
   //       see: https://github.com/harfbuzz/harfbuzz/issues/2283
   hb_set_t out = *unicodes;
-  if (!bidi_closure) return out;
+  എങ്കിൽ (!bidi_closure) തിരികെ out;
 
-  if (out.is_inverted()) {
+  എങ്കിൽ (out.is_inverted()) {
     // don't closure inverted sets, they are asking to specifically exclude certain codepoints.
     // otherwise everything is already included.
-    return out;
+    തിരികെ out;
   }
 
   auto unicode_funcs = hb_unicode_funcs_get_default ();
-  for (hb_codepoint_t cp : *unicodes) {
+  വേണ്ടി (hb_codepoint_t cp : *unicodes) {
    hb_codepoint_t mirror = hb_unicode_mirroring(unicode_funcs, cp);
-   if (unlikely (mirror != cp)) {
+   എങ്കിൽ (unlikely (mirror != cp)) {
      out.add(mirror);
    }
   }
 
-  return out;
+  തിരികെ out;
 }
 
-static void
-_populate_unicodes_to_retain (const hb_set_t *unicodes_in,
-                              const hb_set_t *glyphs,
+സ്ഥിതം ശൂന്യം
+_populate_unicodes_to_retain (സ്ഥിരം hb_set_t *unicodes_in,
+                              സ്ഥിരം hb_set_t *glyphs,
                               hb_subset_plan_t *plan)
 {
   hb_set_t unicodes = _unicode_closure(unicodes_in,
     !(plan->flags & HB_SUBSET_FLAGS_NO_BIDI_CLOSURE));
 
   OT::cmap_accelerator_t cmap (plan->source);
-  unsigned size_threshold = plan->source->get_num_glyphs ();
+  unsigned size_threshold = plan->source->get_അക്കം_glyphs ();
 
-  if (glyphs->is_empty () && unicodes.get_population () < size_threshold)
+  എങ്കിൽ (glyphs->is_empty () && unicodes.get_population () < size_threshold)
   {
 
-    const hb_map_t* unicode_to_gid = nullptr;
-    if (plan->accelerator)
+    സ്ഥിരം hb_map_t* unicode_to_gid = nullptr;
+    എങ്കിൽ (plan->accelerator)
       unicode_to_gid = &plan->accelerator->unicode_to_gid;
 
     // This is approach to collection is faster, but can only be used  if glyphs
     // are not being explicitly added to the subset and the input unicodes set is
     // not excessively large (eg. an inverted set).
     plan->unicode_to_new_gid_list.alloc (unicodes.get_population ());
-    if (!unicode_to_gid) {
+    എങ്കിൽ (!unicode_to_gid) {
       _fill_unicode_and_glyph_map(plan, unicodes.iter(), [&] (hb_codepoint_t cp) {
         hb_codepoint_t gid;
-        if (!cmap.get_nominal_glyph (cp, &gid)) {
-          return HB_MAP_VALUE_INVALID;
+        എങ്കിൽ (!cmap.get_nominal_glyph (cp, &gid)) {
+          തിരികെ HB_MAP_മൂല്യം_INVALID;
         }
-        return gid;
+        തിരികെ gid;
       });
-    } else {
+    } അല്ലെങ്കിൽ {
       // Use in memory unicode to gid map it's faster then looking up from
       // the map. This code is mostly duplicated from above to avoid doing
       // conditionals on the presence of the unicode_to_gid map each
       // iteration.
       _fill_unicode_and_glyph_map(plan, unicodes.iter(), [&] (hb_codepoint_t cp) {
-        return unicode_to_gid->get (cp);
+        തിരികെ unicode_to_gid->get (cp);
       });
     }
   }
-  else
+  അല്ലെങ്കിൽ
   {
     // This approach is slower, but can handle adding in glyphs to the subset and will match
     // them with cmap entries.
 
     hb_map_t unicode_glyphid_map_storage;
     hb_set_t cmap_unicodes_storage;
-    const hb_map_t* unicode_glyphid_map = &unicode_glyphid_map_storage;
-    const hb_set_t* cmap_unicodes = &cmap_unicodes_storage;
+    സ്ഥിരം hb_map_t* unicode_glyphid_map = &unicode_glyphid_map_storage;
+    സ്ഥിരം hb_set_t* cmap_unicodes = &cmap_unicodes_storage;
 
-    if (!plan->accelerator) {
+    എങ്കിൽ (!plan->accelerator) {
       cmap.collect_mapping (&cmap_unicodes_storage, &unicode_glyphid_map_storage);
       plan->unicode_to_new_gid_list.alloc (hb_min(unicodes.get_population ()
                                                   + glyphs->get_population (),
                                                   cmap_unicodes->get_population ()));
-    } else {
+    } അല്ലെങ്കിൽ {
       unicode_glyphid_map = &plan->accelerator->unicode_to_gid;
       cmap_unicodes = &plan->accelerator->unicodes;
     }
 
-    if (plan->accelerator &&
+    എങ്കിൽ (plan->accelerator &&
 	unicodes.get_population () < cmap_unicodes->get_population () &&
 	glyphs->get_population () < cmap_unicodes->get_population ())
     {
@@ -309,66 +309,66 @@ _populate_unicodes_to_retain (const hb_set_t *unicodes_in,
 
       auto &gid_to_unicodes = plan->accelerator->gid_to_unicodes;
 
-      for (hb_codepoint_t gid : *glyphs)
+      വേണ്ടി (hb_codepoint_t gid : *glyphs)
       {
         auto unicodes = gid_to_unicodes.get (gid);
-        _fill_unicode_and_glyph_map<true>(plan, unicodes, [&] (hb_codepoint_t cp) {
-          return gid;
+        _fill_unicode_and_glyph_map<സത്യം>(plan, unicodes, [&] (hb_codepoint_t cp) {
+          തിരികെ gid;
         },
         [&] (hb_codepoint_t cp) {
-          return unicode_glyphid_map->get(cp);
+          തിരികെ unicode_glyphid_map->get(cp);
         });
       }
 
       _fill_unicode_and_glyph_map(plan, unicodes.iter(), [&] (hb_codepoint_t cp) {
           /* Don't double-add entry. */
-	if (plan->codepoint_to_glyph->has (cp))
-          return HB_MAP_VALUE_INVALID;
+	എങ്കിൽ (plan->codepoint_to_glyph->has (cp))
+          തിരികെ HB_MAP_മൂല്യം_INVALID;
 
-        return unicode_glyphid_map->get(cp);
+        തിരികെ unicode_glyphid_map->get(cp);
       },
       [&] (hb_codepoint_t cp) {
-          return unicode_glyphid_map->get(cp);
+          തിരികെ unicode_glyphid_map->get(cp);
       });
 
       plan->unicode_to_new_gid_list.qsort ();
     }
-    else
+    അല്ലെങ്കിൽ
     {
       plan->codepoint_to_glyph->alloc (cmap_unicodes->get_population ());
-      hb_codepoint_t first = HB_SET_VALUE_INVALID, last = HB_SET_VALUE_INVALID;
-      for (; cmap_unicodes->next_range (&first, &last); )
+      hb_codepoint_t first = HB_SET_മൂല്യം_INVALID, last = HB_SET_മൂല്യം_INVALID;
+      വേണ്ടി (; cmap_unicodes->next_range (&first, &last); )
       {
         _fill_unicode_and_glyph_map(plan, hb_range(first, last + 1), [&] (hb_codepoint_t cp) {
           hb_codepoint_t gid = (*unicode_glyphid_map)[cp];
-	  if (!unicodes.has (cp) && !glyphs->has (gid))
-	    return HB_MAP_VALUE_INVALID;
-          return gid;
+	  എങ്കിൽ (!unicodes.has (cp) && !glyphs->has (gid))
+	    തിരികെ HB_MAP_മൂല്യം_INVALID;
+          തിരികെ gid;
         },
         [&] (hb_codepoint_t cp) {
-          return unicode_glyphid_map->get(cp);
+          തിരികെ unicode_glyphid_map->get(cp);
         });
       }
     }
 
     /* Add gids which where requested, but not mapped in cmap */
-    unsigned num_glyphs = plan->source->get_num_glyphs ();
-    hb_codepoint_t first = HB_SET_VALUE_INVALID, last = HB_SET_VALUE_INVALID;
-    for (; glyphs->next_range (&first, &last); )
+    unsigned അക്കം_glyphs = plan->source->get_അക്കം_glyphs ();
+    hb_codepoint_t first = HB_SET_മൂല്യം_INVALID, last = HB_SET_മൂല്യം_INVALID;
+    വേണ്ടി (; glyphs->next_range (&first, &last); )
     {
-      if (first >= num_glyphs)
-	break;
-      if (last >= num_glyphs)
-        last = num_glyphs - 1;
+      എങ്കിൽ (first >= അക്കം_glyphs)
+	നിർത്തുക;
+      എങ്കിൽ (last >= അക്കം_glyphs)
+        last = അക്കം_glyphs - 1;
       plan->_glyphset_gsub.add_range (first, last);
     }
   }
 
   auto &arr = plan->unicode_to_new_gid_list;
-  if (arr.length)
+  എങ്കിൽ (arr.length)
   {
-    plan->unicodes.add_sorted_array (&arr.arrayZ->first, arr.length, sizeof (*arr.arrayZ));
-    plan->_glyphset_gsub.add_array (&arr.arrayZ->second, arr.length, sizeof (*arr.arrayZ));
+    plan->unicodes.add_sorted_array (&arr.arrayZ->first, arr.length, വലുപ്പം (*arr.arrayZ));
+    plan->_glyphset_gsub.add_array (&arr.arrayZ->second, arr.length, വലുപ്പം (*arr.arrayZ));
   }
 
   // Variation selectors don't have glyphs associated with them in the cmap so they will have been filtered out above
@@ -387,48 +387,48 @@ _populate_unicodes_to_retain (const hb_set_t *unicodes_in,
   ;
 }
 
-static unsigned
-_glyf_add_gid_and_children (const OT::glyf_accelerator_t &glyf,
+സ്ഥിതം unsigned
+_glyf_add_gid_and_children (സ്ഥിരം OT::glyf_accelerator_t &glyf,
 			    hb_codepoint_t gid,
 			    hb_set_t *gids_to_retain,
-			    int operation_count,
+			    പൂർണ്ണസംഖ്യ operation_എണ്ണം,
 			    unsigned depth = 0)
 {
   /* Check if is already visited */
-  if (gids_to_retain->has (gid)) return operation_count;
+  എങ്കിൽ (gids_to_retain->has (gid)) തിരികെ operation_എണ്ണം;
 
   gids_to_retain->add (gid);
 
-  if (unlikely (depth++ > HB_MAX_NESTING_LEVEL)) return operation_count;
-  if (unlikely (--operation_count < 0)) return operation_count;
+  എങ്കിൽ (unlikely (depth++ > HB_MAX_NESTING_LEVEL)) തിരികെ operation_എണ്ണം;
+  എങ്കിൽ (unlikely (--operation_എണ്ണം < 0)) തിരികെ operation_എണ്ണം;
 
   auto glyph = glyf.glyph_for_gid (gid);
 
-  for (auto &item : glyph.get_composite_iterator ())
-    operation_count =
+  വേണ്ടി (auto &item : glyph.get_composite_iterator ())
+    operation_എണ്ണം =
       _glyf_add_gid_and_children (glyf,
 				  item.get_gid (glyph.is_extended ()),
 				  gids_to_retain,
-				  operation_count,
+				  operation_എണ്ണം,
 				  depth);
 
-  return operation_count;
+  തിരികെ operation_എണ്ണം;
 }
 
-static void
+സ്ഥിതം ശൂന്യം
 _nameid_closure (hb_subset_plan_t* plan,
 		 hb_set_t* drop_tables)
 {
 #ifndef HB_NO_STYLE
-  if (!drop_tables->has (HB_OT_TAG_STAT))
+  എങ്കിൽ (!drop_tables->has (HB_OT_TAG_STAT))
     plan->source->table.STAT->collect_name_ids (&plan->user_axes_location, &plan->name_ids);
 #endif
 #ifndef HB_NO_VAR
-  if (!plan->all_axes_pinned)
+  എങ്കിൽ (!plan->all_axes_pinned)
     plan->source->table.fvar->collect_name_ids (&plan->user_axes_location, &plan->axes_old_index_tag_map, &plan->name_ids);
 #endif
 #ifndef HB_NO_COLOR
-  if (!drop_tables->has (HB_OT_TAG_CPAL))
+  എങ്കിൽ (!drop_tables->has (HB_OT_TAG_CPAL))
     plan->source->table.CPAL->collect_name_ids (&plan->colr_palettes, &plan->name_ids);
 #endif
 
@@ -437,7 +437,7 @@ _nameid_closure (hb_subset_plan_t* plan,
 #endif
 }
 
-static void
+സ്ഥിതം ശൂന്യം
 _populate_gids_to_retain (hb_subset_plan_t* plan,
 		          hb_set_t* drop_tables)
 {
@@ -446,8 +446,8 @@ _populate_gids_to_retain (hb_subset_plan_t* plan,
   // Note: we cannot use inprogress_accelerator here, since it has not been
   // created yet. So in case of preprocessed-face (and otherwise), we do an
   // extra sanitize pass here, which is not ideal.
-  OT::cff1::accelerator_subset_t stack_cff (plan->accelerator ? nullptr : plan->source);
-  const OT::cff1::accelerator_subset_t *cff (plan->accelerator ? plan->accelerator->cff1_accel.get () : &stack_cff);
+  OT::cff1::accelerator_subset_t അട്ടി_cff (plan->accelerator ? nullptr : plan->source);
+  സ്ഥിരം OT::cff1::accelerator_subset_t *cff (plan->accelerator ? plan->accelerator->cff1_accel.get () : &അട്ടി_cff);
 #endif
 
   plan->_glyphset_gsub.add (0); // Not-def
@@ -455,10 +455,10 @@ _populate_gids_to_retain (hb_subset_plan_t* plan,
   _cmap_closure (plan->source, &plan->unicodes, &plan->_glyphset_gsub);
   plan->_glyphset_cmaped = plan->_glyphset_gsub;
 
-  if (!drop_tables->has (HB_OT_TAG_MATH))
+  എങ്കിൽ (!drop_tables->has (HB_OT_TAG_MATH))
   {
     _math_closure (plan, &plan->_glyphset_gsub);
-    _remove_invalid_gids (&plan->_glyphset_gsub, plan->source->get_num_glyphs ());
+    _remove_invalid_gids (&plan->_glyphset_gsub, plan->source->get_അക്കം_glyphs ());
   }
   plan->_glyphset_mathed = plan->_glyphset_gsub;
 
@@ -466,26 +466,26 @@ _populate_gids_to_retain (hb_subset_plan_t* plan,
   layout_populate_gids_to_retain(plan, drop_tables);
 #endif
 
-  _remove_invalid_gids (&plan->_glyphset_gsub, plan->source->get_num_glyphs ());
+  _remove_invalid_gids (&plan->_glyphset_gsub, plan->source->get_അക്കം_glyphs ());
 
   hb_set_t cur_glyphset = plan->_glyphset_gsub;
-  if (!drop_tables->has (HB_OT_TAG_COLR))
+  എങ്കിൽ (!drop_tables->has (HB_OT_TAG_COLR))
   {
     _colr_closure (plan, &cur_glyphset);
-    _remove_invalid_gids (&cur_glyphset, plan->source->get_num_glyphs ());
+    _remove_invalid_gids (&cur_glyphset, plan->source->get_അക്കം_glyphs ());
   }
 
   plan->_glyphset_colred = cur_glyphset;
 
 #ifndef HB_NO_VAR_COMPOSITES
-  if (!drop_tables->has (OT::VARC::tableTag))
+  എങ്കിൽ (!drop_tables->has (OT::VARC::tableTag))
   {
-    if (unlikely (!plan->source->table.VARC->closure_glyphs (&cur_glyphset)))
+    എങ്കിൽ (unlikely (!plan->source->table.VARC->closure_glyphs (&cur_glyphset)))
     {
-      plan->check_success (false);
-      return;
+      plan->check_success (അസത്യം);
+      തിരികെ;
     }
-    _remove_invalid_gids (&cur_glyphset, plan->source->get_num_glyphs ());
+    _remove_invalid_gids (&cur_glyphset, plan->source->get_അക്കം_glyphs ());
   }
 #endif
 
@@ -494,109 +494,109 @@ _populate_gids_to_retain (hb_subset_plan_t* plan,
   _nameid_closure (plan, drop_tables);
   /* Populate a full set of glyphs to retain by adding all referenced
    * composite glyphs. */
-  if (glyf.has_data ())
-    for (hb_codepoint_t gid : cur_glyphset)
+  എങ്കിൽ (glyf.has_data ())
+    വേണ്ടി (hb_codepoint_t gid : cur_glyphset)
       _glyf_add_gid_and_children (glyf, gid, &plan->_glyphset,
 				  cur_glyphset.get_population () * HB_MAX_COMPOSITE_OPERATIONS_PER_GLYPH);
-  else
+  അല്ലെങ്കിൽ
     plan->_glyphset.union_ (cur_glyphset);
 #ifndef HB_NO_SUBSET_CFF
-  if (!plan->accelerator || plan->accelerator->has_seac)
+  എങ്കിൽ (!plan->accelerator || plan->accelerator->has_seac)
   {
-    bool has_seac = false;
-    if (cff->is_valid ())
-      for (hb_codepoint_t gid : cur_glyphset)
-	if (_add_cff_seac_components (*cff, gid, &plan->_glyphset))
-	  has_seac = true;
+    തർക്കം has_seac = അസത്യം;
+    എങ്കിൽ (cff->is_valid ())
+      വേണ്ടി (hb_codepoint_t gid : cur_glyphset)
+	എങ്കിൽ (_add_cff_seac_components (*cff, gid, &plan->_glyphset))
+	  has_seac = സത്യം;
     plan->has_seac = has_seac;
   }
 #endif
 
-  _remove_invalid_gids (&plan->_glyphset, plan->source->get_num_glyphs ());
+  _remove_invalid_gids (&plan->_glyphset, plan->source->get_അക്കം_glyphs ());
 
 #ifndef HB_NO_VAR
 #ifndef HB_NO_SUBSET_LAYOUT
-  if (!drop_tables->has (HB_OT_TAG_GDEF))
+  എങ്കിൽ (!drop_tables->has (HB_OT_TAG_GDEF))
     collect_layout_variation_indices (plan);
 #endif
 #endif
 }
 
-static bool
-_create_glyph_map_gsub (const hb_set_t* glyph_set_gsub,
-                        const hb_map_t* glyph_map,
+സ്ഥിതം തർക്കം
+_create_glyph_map_gsub (സ്ഥിരം hb_set_t* glyph_set_gsub,
+                        സ്ഥിരം hb_map_t* glyph_map,
                         hb_map_t* out,
                         hb_vector_t<hb_codepoint_t>* out_flat)
 {
-  if (unlikely (glyph_set_gsub->in_error ()))
-    return false;
+  എങ്കിൽ (unlikely (glyph_set_gsub->in_error ()))
+    തിരികെ അസത്യം;
 
-  hb_codepoint_t max_gid = HB_SET_VALUE_INVALID;
+  hb_codepoint_t max_gid = HB_SET_മൂല്യം_INVALID;
   hb_set_previous (glyph_set_gsub, &max_gid);
-  unsigned flat_size = max_gid == HB_SET_VALUE_INVALID ? 0 : max_gid + 1;
-  if (unlikely (!out_flat->resize_dirty (flat_size)))
-    return false;
-  hb_memset (out_flat->arrayZ, 0xFF, flat_size * sizeof (hb_codepoint_t));
+  unsigned flat_size = max_gid == HB_SET_മൂല്യം_INVALID ? 0 : max_gid + 1;
+  എങ്കിൽ (unlikely (!out_flat->resize_dirty (flat_size)))
+    തിരികെ അസത്യം;
+  hb_memset (out_flat->arrayZ, 0xFF, flat_size * വലുപ്പം (hb_codepoint_t));
 
   out->alloc (glyph_set_gsub->get_population ());
-  for (auto gid : *glyph_set_gsub)
+  വേണ്ടി (auto gid : *glyph_set_gsub)
   {
     hb_codepoint_t new_gid = glyph_map->get (gid);
     out->set (gid, new_gid);
     out_flat->arrayZ[gid] = new_gid;
   }
-  return !out->in_error ();
+  തിരികെ !out->in_error ();
 }
 
-static bool
-_create_old_gid_to_new_gid_map (const hb_face_t *face,
-				bool		 retain_gids,
-				const hb_set_t	*all_gids_to_retain,
-                                const hb_map_t  *requested_glyph_map,
+സ്ഥിതം തർക്കം
+_create_old_gid_to_new_gid_map (സ്ഥിരം hb_face_t *face,
+				തർക്കം		 retain_gids,
+				സ്ഥിരം hb_set_t	*all_gids_to_retain,
+                                സ്ഥിരം hb_map_t  *requested_glyph_map,
 				hb_map_t	*glyph_map, /* OUT */
 				hb_map_t	*reverse_glyph_map, /* OUT */
 				hb_sorted_vector_t<hb_codepoint_pair_t> *new_to_old_gid_list /* OUT */,
-				unsigned int	*num_glyphs /* OUT */)
+				unsigned പൂർണ്ണസംഖ്യ	*അക്കം_glyphs /* OUT */)
 {
-  unsigned pop = all_gids_to_retain->get_population ();
-  reverse_glyph_map->alloc (pop);
-  glyph_map->alloc (pop);
-  new_to_old_gid_list->alloc (pop);
+  unsigned എടുക്കുക = all_gids_to_retain->get_population ();
+  reverse_glyph_map->alloc (എടുക്കുക);
+  glyph_map->alloc (എടുക്കുക);
+  new_to_old_gid_list->alloc (എടുക്കുക);
 
-  if (*requested_glyph_map)
+  എങ്കിൽ (*requested_glyph_map)
   {
     hb_set_t new_gids(requested_glyph_map->values());
-    if (new_gids.get_population() != requested_glyph_map->get_population())
+    എങ്കിൽ (new_gids.get_population() != requested_glyph_map->get_population())
     {
-      DEBUG_MSG (SUBSET, nullptr, "The provided custom glyph mapping is not unique.");
-      return false;
+      DEBUG_സന്ദേശം (SUBSET, nullptr, "The provided custom glyph mapping is not unique.");
+      തിരികെ അസത്യം;
     }
 
-    if (retain_gids)
+    എങ്കിൽ (retain_gids)
     {
-      DEBUG_MSG (SUBSET, nullptr,
+      DEBUG_സന്ദേശം (SUBSET, nullptr,
         "HB_SUBSET_FLAGS_RETAIN_GIDS cannot be set if "
         "a custom glyph mapping has been provided.");
-      return false;
+      തിരികെ അസത്യം;
     }
 
     hb_codepoint_t max_glyph = 0;
     hb_set_t remaining;
-    for (auto old_gid : all_gids_to_retain->iter ())
+    വേണ്ടി (auto old_gid : all_gids_to_retain->iter ())
     {
-      if (old_gid == 0) {
+      എങ്കിൽ (old_gid == 0) {
 	new_to_old_gid_list->push (hb_pair<hb_codepoint_t, hb_codepoint_t> (0u, 0u));
-        continue;
+        തുടരുക;
       }
 
       hb_codepoint_t* new_gid;
-      if (!requested_glyph_map->has (old_gid, &new_gid))
+      എങ്കിൽ (!requested_glyph_map->has (old_gid, &new_gid))
       {
         remaining.add(old_gid);
-        continue;
+        തുടരുക;
       }
 
-      if (*new_gid > max_glyph)
+      എങ്കിൽ (*new_gid > max_glyph)
         max_glyph = *new_gid;
       new_to_old_gid_list->push (hb_pair (*new_gid, old_gid));
     }
@@ -604,31 +604,31 @@ _create_old_gid_to_new_gid_map (const hb_face_t *face,
 
     // Anything that wasn't mapped by the requested mapping should
     // be placed after the requested mapping.
-    for (auto old_gid : remaining)
+    വേണ്ടി (auto old_gid : remaining)
       new_to_old_gid_list->push (hb_pair (++max_glyph, old_gid));
 
-    *num_glyphs = max_glyph + 1;
+    *അക്കം_glyphs = max_glyph + 1;
   }
-  else if (!retain_gids)
+  അല്ലെങ്കിൽ എങ്കിൽ (!retain_gids)
   {
     + hb_enumerate (hb_iter (all_gids_to_retain), (hb_codepoint_t) 0)
     | hb_sink (new_to_old_gid_list)
     ;
-    *num_glyphs = new_to_old_gid_list->length;
+    *അക്കം_glyphs = new_to_old_gid_list->length;
   }
-  else
+  അല്ലെങ്കിൽ
   {
     + hb_iter (all_gids_to_retain)
     | hb_map ([] (hb_codepoint_t _) {
-		return hb_codepoint_pair_t (_, _);
+		തിരികെ hb_codepoint_pair_t (_, _);
 	      })
     | hb_sink (new_to_old_gid_list)
     ;
 
-    hb_codepoint_t max_glyph = HB_SET_VALUE_INVALID;
+    hb_codepoint_t max_glyph = HB_SET_മൂല്യം_INVALID;
     hb_set_previous (all_gids_to_retain, &max_glyph);
 
-    *num_glyphs = max_glyph + 1;
+    *അക്കം_glyphs = max_glyph + 1;
   }
 
   reverse_glyph_map->alloc (reverse_glyph_map->get_population () + new_to_old_gid_list->length);
@@ -641,24 +641,24 @@ _create_old_gid_to_new_gid_map (const hb_face_t *face,
   | hb_sink (glyph_map)
   ;
 
-  return true;
+  തിരികെ സത്യം;
 }
 
 hb_subset_plan_t::hb_subset_plan_t (hb_face_t *face,
-				    const hb_subset_input_t *input)
+				    സ്ഥിരം hb_subset_നിവേശം_t *നിവേശം)
 {
-  successful = true;
-  flags = input->flags;
+  successful = സത്യം;
+  flags = നിവേശം->flags;
 
   unicode_to_new_gid_list.init ();
 
-  name_ids = *input->sets.name_ids;
-  name_languages = *input->sets.name_languages;
-  layout_features = *input->sets.layout_features;
-  layout_scripts = *input->sets.layout_scripts;
-  glyphs_requested = *input->sets.glyphs;
-  drop_tables = *input->sets.drop_tables;
-  no_subset_tables = *input->sets.no_subset_tables;
+  name_ids = *നിവേശം->sets.name_ids;
+  name_languages = *നിവേശം->sets.name_languages;
+  layout_features = *നിവേശം->sets.layout_features;
+  layout_scripts = *നിവേശം->sets.layout_scripts;
+  glyphs_requested = *നിവേശം->sets.glyphs;
+  drop_tables = *നിവേശം->sets.drop_tables;
+  no_subset_tables = *നിവേശം->sets.no_subset_tables;
   source = hb_face_reference (face);
   dest = hb_face_builder_create ();
 
@@ -666,143 +666,143 @@ hb_subset_plan_t::hb_subset_plan_t (hb_face_t *face,
   glyph_map = hb_map_create ();
   reverse_glyph_map = hb_map_create ();
 
-  gsub_insert_catch_all_feature_variation_rec = false;
-  gpos_insert_catch_all_feature_variation_rec = false;
+  gsub_തിരുകുക_catch_all_feature_variation_rec = അസത്യം;
+  gpos_തിരുകുക_catch_all_feature_variation_rec = അസത്യം;
   gdef_varstore_inner_maps.init ();
 
-  user_axes_location = input->axes_location;
-  all_axes_pinned = false;
-  pinned_at_default = true;
-  has_gdef_varstore = false;
-  has_avar2 = false;
+  user_axes_location = നിവേശം->axes_location;
+  all_axes_pinned = അസത്യം;
+  pinned_at_default = സത്യം;
+  has_gdef_varstore = അസത്യം;
+  has_avar2 = അസത്യം;
 
 #ifdef HB_EXPERIMENTAL_API
-  for (auto _ : input->name_table_overrides)
+  വേണ്ടി (auto _ : നിവേശം->name_table_overrides)
   {
     hb_bytes_t name_bytes = _.second;
     unsigned len = name_bytes.length;
-    char *name_str = (char *) hb_malloc (len);
-    if (unlikely (!check_success (name_str)))
-      break;
+    അക്ഷരം *name_str = (അക്ഷരം *) hb_malloc (len);
+    എങ്കിൽ (unlikely (!check_success (name_str)))
+      നിർത്തുക;
 
     hb_memcpy (name_str, name_bytes.arrayZ, len);
     name_table_overrides.set (_.first, hb_bytes_t (name_str, len));
   }
 #endif
 
-  void* accel = hb_face_get_user_data(face, hb_subset_accelerator_t::user_data_key());
+  ശൂന്യം* accel = hb_face_get_user_data(face, hb_subset_accelerator_t::user_data_താക്കോൽ());
 
-  attach_accelerator_data = input->attach_accelerator_data;
-  force_long_loca = input->force_long_loca;
+  attach_accelerator_data = നിവേശം->attach_accelerator_data;
+  force_long_loca = നിവേശം->force_long_loca;
 #ifdef HB_EXPERIMENTAL_API
   force_long_loca = force_long_loca || (flags & HB_SUBSET_FLAGS_IFTB_REQUIREMENTS);
 #endif
 
-  if (accel)
+  എങ്കിൽ (accel)
     accelerator = (hb_subset_accelerator_t*) accel;
 
-  if (unlikely (in_error ()))
-    return;
+  എങ്കിൽ (unlikely (in_error ()))
+    തിരികെ;
 
 #ifndef HB_NO_VAR_COMPOSITES
-  if (!input->sets.drop_tables->has (OT::VARC::tableTag) &&
-      input->sets.no_subset_tables->has (OT::VARC::tableTag) &&
-      !(input->flags & HB_SUBSET_FLAGS_RETAIN_GIDS) &&
+  എങ്കിൽ (!നിവേശം->sets.drop_tables->has (OT::VARC::tableTag) &&
+      നിവേശം->sets.no_subset_tables->has (OT::VARC::tableTag) &&
+      !(നിവേശം->flags & HB_SUBSET_FLAGS_RETAIN_GIDS) &&
       face->table.VARC->has_data ())
   {
-    check_success (false);
-    return;
+    check_success (അസത്യം);
+    തിരികെ;
   }
 #endif
 
 #ifndef HB_NO_VAR
-  if (!check_success (normalize_axes_location (face, this)))
-      return;
+  എങ്കിൽ (!check_success (normalize_axes_location (face, ഇത്)))
+      തിരികെ;
 #endif
 #ifndef HB_NO_VAR_COMPOSITES
-  if (!user_axes_location.is_empty () &&
-      !input->sets.drop_tables->has (OT::VARC::tableTag) &&
-      input->sets.no_subset_tables->has (OT::VARC::tableTag) &&
+  എങ്കിൽ (!user_axes_location.is_empty () &&
+      !നിവേശം->sets.drop_tables->has (OT::VARC::tableTag) &&
+      നിവേശം->sets.no_subset_tables->has (OT::VARC::tableTag) &&
       face->table.VARC->has_data ())
   {
-    check_success (false);
-    return;
+    check_success (അസത്യം);
+    തിരികെ;
   }
 #endif
 
-  _populate_unicodes_to_retain (input->sets.unicodes, input->sets.glyphs, this);
+  _populate_unicodes_to_retain (നിവേശം->sets.unicodes, നിവേശം->sets.glyphs, ഇത്);
 
-  _populate_gids_to_retain (this, input->sets.drop_tables);
-  if (unlikely (in_error ()))
-    return;
+  _populate_gids_to_retain (ഇത്, നിവേശം->sets.drop_tables);
+  എങ്കിൽ (unlikely (in_error ()))
+    തിരികെ;
 
-  if (!check_success(_create_old_gid_to_new_gid_map(
+  എങ്കിൽ (!check_success(_create_old_gid_to_new_gid_map(
           face,
-          input->flags & HB_SUBSET_FLAGS_RETAIN_GIDS,
+          നിവേശം->flags & HB_SUBSET_FLAGS_RETAIN_GIDS,
           &_glyphset,
-          &input->glyph_map,
+          &നിവേശം->glyph_map,
           glyph_map,
           reverse_glyph_map,
 	  &new_to_old_gid_list,
-          &_num_output_glyphs))) {
-    return;
+          &അക്കം_output_glyphs_2))) {
+    തിരികെ;
   }
 
 #ifdef HB_EXPERIMENTAL_API  
-  if ((input->flags & HB_SUBSET_FLAGS_RETAIN_GIDS) &&
-      (input->flags & HB_SUBSET_FLAGS_RETAIN_NUM_GLYPHS)) {
+  എങ്കിൽ ((നിവേശം->flags & HB_SUBSET_FLAGS_RETAIN_GIDS) &&
+      (നിവേശം->flags & HB_SUBSET_FLAGS_RETAIN_അക്കം_GLYPHS)) {
     // We've been requested to maintain the num glyphs count from the
     // input face.
-    _num_output_glyphs = source->get_num_glyphs ();
+    അക്കം_output_glyphs_2 = source->get_അക്കം_glyphs ();
   }
 #endif
 
-  if (!check_success (_create_glyph_map_gsub (
+  എങ്കിൽ (!check_success (_create_glyph_map_gsub (
       &_glyphset_gsub,
       glyph_map,
       &glyph_map_gsub,
       &glyph_map_gsub_flat)))
-    return;
+    തിരികെ;
 
   // Now that we have old to new gid map update the unicode to new gid list.
-  for (unsigned i = 0; i < unicode_to_new_gid_list.length; i++)
+  വേണ്ടി (unsigned i = 0; i < unicode_to_new_gid_list.length; i++)
   {
     // Use raw array access for performance.
     unicode_to_new_gid_list.arrayZ[i].second =
         glyph_map->get(unicode_to_new_gid_list.arrayZ[i].second);
   }
 
-  bounds_width_vec.resize_dirty  (_num_output_glyphs);
-  for (auto &v : bounds_width_vec)
+  bounds_width_vec.resize_dirty  (അക്കം_output_glyphs_2);
+  വേണ്ടി (auto &v : bounds_width_vec)
     v = 0xFFFFFFFF;
-  bounds_height_vec.resize_dirty  (_num_output_glyphs);
-  for (auto &v : bounds_height_vec)
+  bounds_height_vec.resize_dirty  (അക്കം_output_glyphs_2);
+  വേണ്ടി (auto &v : bounds_height_vec)
     v = 0xFFFFFFFF;
 
 #ifndef HB_NO_SUBSET_LAYOUT    
-  if (!drop_tables.has (HB_OT_TAG_GDEF))
-    remap_used_mark_sets (this, used_mark_sets_map);
+  എങ്കിൽ (!drop_tables.has (HB_OT_TAG_GDEF))
+    remap_used_mark_sets (ഇത്, used_mark_sets_map);
 #endif
 
 #ifndef HB_NO_VAR
 #ifndef HB_NO_BASE
-  if (!drop_tables.has (HB_OT_TAG_BASE))
-    collect_base_variation_indices (this);
+  എങ്കിൽ (!drop_tables.has (HB_OT_TAG_BASE))
+    collect_base_variation_indices (ഇത്);
 #endif
 #endif
 
-  if (unlikely (in_error ()))
-    return;
+  എങ്കിൽ (unlikely (in_error ()))
+    തിരികെ;
 
-#if !defined(HB_NO_VAR) && !defined(HB_NO_OT_FONT_CFF)
-  update_instance_metrics_map_from_cff2 (this);
+#എങ്കിൽ !defined(HB_NO_VAR) && !defined(HB_NO_OT_FONT_CFF)
+  update_instance_metrics_map_from_cff2 (ഇത്);
 #endif
 #ifndef HB_NO_VAR
-  if (!check_success (get_instance_glyphs_contour_points (this)))
-      return;
+  എങ്കിൽ (!check_success (get_instance_glyphs_contour_points (ഇത്)))
+      തിരികെ;
 #endif
 
-  if (attach_accelerator_data)
+  എങ്കിൽ (attach_accelerator_data)
   {
     inprogress_accelerator =
       hb_subset_accelerator_t::create (source,
@@ -814,7 +814,7 @@ hb_subset_plan_t::hb_subset_plan_t (hb_face_t *face,
   }
 
 #define HB_SUBSET_PLAN_MEMBER(Type, Name) check_success (!Name.in_error ());
-#include "hb-subset-plan-member-list.hh"
+#അന്തര്ഭാവ "hb-subset-plan-member-list.hh"
 #undef HB_SUBSET_PLAN_MEMBER
 }
 
@@ -832,12 +832,12 @@ hb_subset_plan_t::~hb_subset_plan_t()
   hb_face_destroy (source);
 
 #ifdef HB_EXPERIMENTAL_API
-  for (auto _ : name_table_overrides.iter_ref ())
+  വേണ്ടി (auto _ : name_table_overrides.iter_ref ())
     _.second.fini ();
 #endif
 
-  if (inprogress_accelerator)
-    hb_subset_accelerator_t::destroy ((void*) inprogress_accelerator);
+  എങ്കിൽ (inprogress_accelerator)
+    hb_subset_accelerator_t::destroy ((ശൂന്യം*) inprogress_accelerator);
 }
 
 
@@ -858,19 +858,19 @@ hb_subset_plan_t::~hb_subset_plan_t()
  **/
 hb_subset_plan_t *
 hb_subset_plan_create_or_fail (hb_face_t	 *face,
-                               const hb_subset_input_t *input)
+                               സ്ഥിരം hb_subset_നിവേശം_t *നിവേശം)
 {
   hb_subset_plan_t *plan;
-  if (unlikely (!(plan = hb_object_create<hb_subset_plan_t> (face, input))))
-    return nullptr;
+  എങ്കിൽ (unlikely (!(plan = hb_object_create<hb_subset_plan_t> (face, നിവേശം))))
+    തിരികെ nullptr;
 
-  if (unlikely (plan->in_error ()))
+  എങ്കിൽ (unlikely (plan->in_error ()))
   {
     hb_subset_plan_destroy (plan);
-    return nullptr;
+    തിരികെ nullptr;
   }
 
-  return plan;
+  തിരികെ plan;
 }
 
 /**
@@ -882,10 +882,10 @@ hb_subset_plan_create_or_fail (hb_face_t	 *face,
  *
  * Since: 4.0.0
  **/
-void
+ശൂന്യം
 hb_subset_plan_destroy (hb_subset_plan_t *plan)
 {
-  if (!hb_object_destroy (plan)) return;
+  എങ്കിൽ (!hb_object_destroy (plan)) തിരികെ;
 
   hb_free (plan);
 }
@@ -903,9 +903,9 @@ hb_subset_plan_destroy (hb_subset_plan_t *plan)
  * Since: 4.0.0
  **/
 hb_map_t *
-hb_subset_plan_old_to_new_glyph_mapping (const hb_subset_plan_t *plan)
+hb_subset_plan_old_to_new_glyph_mapping (സ്ഥിരം hb_subset_plan_t *plan)
 {
-  return plan->glyph_map;
+  തിരികെ plan->glyph_map;
 }
 
 /**
@@ -921,9 +921,9 @@ hb_subset_plan_old_to_new_glyph_mapping (const hb_subset_plan_t *plan)
  * Since: 4.0.0
  **/
 hb_map_t *
-hb_subset_plan_new_to_old_glyph_mapping (const hb_subset_plan_t *plan)
+hb_subset_plan_new_to_old_glyph_mapping (സ്ഥിരം hb_subset_plan_t *plan)
 {
-  return plan->reverse_glyph_map;
+  തിരികെ plan->reverse_glyph_map;
 }
 
 /**
@@ -939,9 +939,9 @@ hb_subset_plan_new_to_old_glyph_mapping (const hb_subset_plan_t *plan)
  * Since: 4.0.0
  **/
 hb_map_t *
-hb_subset_plan_unicode_to_old_glyph_mapping (const hb_subset_plan_t *plan)
+hb_subset_plan_unicode_to_old_glyph_mapping (സ്ഥിരം hb_subset_plan_t *plan)
 {
-  return plan->codepoint_to_glyph;
+  തിരികെ plan->codepoint_to_glyph;
 }
 
 /**
@@ -957,7 +957,7 @@ hb_subset_plan_unicode_to_old_glyph_mapping (const hb_subset_plan_t *plan)
 hb_subset_plan_t *
 hb_subset_plan_reference (hb_subset_plan_t *plan)
 {
-  return hb_object_reference (plan);
+  തിരികെ hb_object_reference (plan);
 }
 
 /**
@@ -976,12 +976,12 @@ hb_subset_plan_reference (hb_subset_plan_t *plan)
  **/
 hb_bool_t
 hb_subset_plan_set_user_data (hb_subset_plan_t   *plan,
-                              hb_user_data_key_t *key,
-                              void               *data,
+                              hb_user_data_താക്കോൽ_t *key,
+                              ശൂന്യം               *data,
                               hb_destroy_func_t   destroy,
                               hb_bool_t	          replace)
 {
-  return hb_object_set_user_data (plan, key, data, destroy, replace);
+  തിരികെ hb_object_set_user_data (plan, key, data, destroy, replace);
 }
 
 /**
@@ -996,9 +996,9 @@ hb_subset_plan_set_user_data (hb_subset_plan_t   *plan,
  *
  * Since: 4.0.0
  **/
-void *
-hb_subset_plan_get_user_data (const hb_subset_plan_t *plan,
-                              hb_user_data_key_t     *key)
+ശൂന്യം *
+hb_subset_plan_get_user_data (സ്ഥിരം hb_subset_plan_t *plan,
+                              hb_user_data_താക്കോൽ_t     *key)
 {
-  return hb_object_get_user_data (plan, key);
+  തിരികെ hb_object_get_user_data (plan, key);
 }

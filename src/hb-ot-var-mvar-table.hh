@@ -27,26 +27,26 @@
 #ifndef HB_OT_VAR_MVAR_TABLE_HH
 #define HB_OT_VAR_MVAR_TABLE_HH
 
-#include "hb-ot-var-common.hh"
+#അന്തര്ഭാവ "hb-ot-var-common.hh"
 
 
-namespace OT {
+നാമാകാശ OT {
 
 
-struct VariationValueRecord
+ഘടന Variation_മൂല്യം_Record
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
-  bool subset (hb_subset_context_t *c,
-               const hb_map_t& varidx_map) const
+  തർക്കം subset (hb_subset_context_t *c,
+               സ്ഥിരം hb_map_t& varidx_map) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (ഇത്);
+    auto *out = c->serializer->embed (*ഇത്);
+    എങ്കിൽ (unlikely (!out)) return_trace (അസത്യം);
 
     hb_codepoint_t *new_idx;
     return_trace (c->serializer->check_assign (out->varIdx,
@@ -54,11 +54,11 @@ struct VariationValueRecord
                                                HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  public:
-  Tag		valueTag;	/* Four-byte tag identifying a font-wide measure. */
+  പൊതു:
+  Tag		മൂല്യം_Tag;	/* Four-byte tag identifying a font-wide measure. */
   VarIdx	varIdx;		/* Outer/inner index into ItemVariationStore item. */
 
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (8);
 };
 
@@ -69,104 +69,104 @@ struct VariationValueRecord
  */
 #define HB_OT_TAG_MVAR HB_TAG('M','V','A','R')
 
-struct MVAR
+ഘടന MVAR
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_MVAR;
+  സ്ഥിതം constexpr hb_tag_t tableTag = HB_OT_TAG_MVAR;
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ഇത്);
     return_trace (version.sanitize (c) &&
 		  hb_barrier () &&
 		  likely (version.major == 1) &&
-		  c->check_struct (this) &&
+		  c->check_struct (ഇത്) &&
 		  hb_barrier () &&
-		  valueRecordSize >= VariationValueRecord::static_size &&
-		  varStore.sanitize (c, this) &&
-		  c->check_range (valuesZ.arrayZ,
-				  valueRecordCount,
-				  valueRecordSize));
+		  മൂല്യം_Record_Size >= Variation_മൂല്യം_Record::static_size &&
+		  varStore.sanitize (c, ഇത്) &&
+		  c->check_range (മൂല്യങ്ങൾ_Z.arrayZ,
+				  മൂല്യം_Record_എണ്ണം,
+				  മൂല്യം_Record_Size));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  തർക്കം subset (hb_subset_context_t *c) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (ഇത്);
 #ifdef HB_NO_VAR
-    return_trace (false);
+    return_trace (അസത്യം);
 #endif
 
-    if (c->plan->all_axes_pinned)
-      return_trace (false);
+    എങ്കിൽ (c->plan->all_axes_pinned)
+      return_trace (അസത്യം);
 
-    MVAR *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    MVAR *out = c->serializer->start_embed (*ഇത്);
+    എങ്കിൽ (unlikely (!c->serializer->extend_min (out))) return_trace (അസത്യം);
     out->version = version;
     out->reserved = reserved;
-    out->valueRecordSize = valueRecordSize;
-    out->valueRecordCount = valueRecordCount;
+    out->മൂല്യം_Record_Size = മൂല്യം_Record_Size;
+    out->മൂല്യം_Record_എണ്ണം = മൂല്യം_Record_എണ്ണം;
 
     item_variations_t item_vars;
-    const ItemVariationStore& src_var_store = this+varStore;
+    സ്ഥിരം ItemVariationStore& src_var_store = ഇത്+varStore;
 
-    if (!item_vars.instantiate (src_var_store, c->plan))
-      return_trace (false);
+    എങ്കിൽ (!item_vars.instantiate (src_var_store, c->plan))
+      return_trace (അസത്യം);
 
     /* serialize varstore */
-    if (!out->varStore.serialize_serialize (c->serializer, item_vars.has_long_word (),
+    എങ്കിൽ (!out->varStore.serialize_serialize (c->serializer, item_vars.has_long_word (),
                                             c->plan->axis_tags,
                                             item_vars.get_region_list (),
                                             item_vars.get_vardata_encodings ()))
-      return_trace (false);
+      return_trace (അസത്യം);
 
     /* serialize value records array */
-    unsigned value_rec_count = valueRecordCount;
-    const VariationValueRecord *record = reinterpret_cast<const VariationValueRecord*> (valuesZ.arrayZ);
-    for (unsigned i = 0; i < value_rec_count; i++)
+    unsigned മൂല്യം_rec_എണ്ണം = മൂല്യം_Record_എണ്ണം;
+    സ്ഥിരം Variation_മൂല്യം_Record *record = reinterpret_cast<സ്ഥിരം Variation_മൂല്യം_Record*> (മൂല്യങ്ങൾ_Z.arrayZ);
+    വേണ്ടി (unsigned i = 0; i < മൂല്യം_rec_എണ്ണം; i++)
     {
-      if (!record->subset (c, item_vars.get_varidx_map ())) return_trace (false);
+      എങ്കിൽ (!record->subset (c, item_vars.get_varidx_map ())) return_trace (അസത്യം);
       record++;
     }
-    return_trace (true);
+    return_trace (സത്യം);
   }
 
-  float get_var (hb_tag_t tag,
-		 const int *coords, unsigned int coord_count) const
+  ദശാംശം get_var (hb_tag_t tag,
+		 സ്ഥിരം പൂർണ്ണസംഖ്യ *coords, unsigned പൂർണ്ണസംഖ്യ coord_എണ്ണം) സ്ഥിരം
   {
-    const VariationValueRecord *record;
-    record = (VariationValueRecord *) hb_bsearch (tag,
-						  (const VariationValueRecord *)
-						    (const HBUINT8 *) valuesZ,
-						  valueRecordCount, valueRecordSize,
+    സ്ഥിരം Variation_മൂല്യം_Record *record;
+    record = (Variation_മൂല്യം_Record *) hb_bsearch (tag,
+						  (സ്ഥിരം Variation_മൂല്യം_Record *)
+						    (സ്ഥിരം HBUINT8 *) മൂല്യങ്ങൾ_Z,
+						  മൂല്യം_Record_എണ്ണം, മൂല്യം_Record_Size,
 						  tag_compare);
-    if (!record)
-      return 0.;
+    എങ്കിൽ (!record)
+      തിരികെ 0.;
 
-    return (this+varStore).get_delta (record->varIdx, coords, coord_count);
+    തിരികെ (ഇത്+varStore).get_delta (record->varIdx, coords, coord_എണ്ണം);
   }
 
-protected:
-  static int tag_compare (const void *pa, const void *pb)
+സംരക്ഷിത:
+  സ്ഥിതം പൂർണ്ണസംഖ്യ tag_compare (സ്ഥിരം ശൂന്യം *pa, സ്ഥിരം ശൂന്യം *pb)
   {
-    const hb_tag_t *a = (const hb_tag_t *) pa;
-    const Tag *b = (const Tag *) pb;
-    return b->cmp (*a);
+    സ്ഥിരം hb_tag_t *a = (സ്ഥിരം hb_tag_t *) pa;
+    സ്ഥിരം Tag *b = (സ്ഥിരം Tag *) pb;
+    തിരികെ b->cmp (*a);
   }
 
-  protected:
+  സംരക്ഷിത:
   FixedVersion<>version;	/* Version of the metrics variation table
 				 * initially set to 0x00010000u */
   HBUINT16	reserved;	/* Not used; set to 0. */
-  HBUINT16	valueRecordSize;/* The size in bytes of each value record —
+  HBUINT16	മൂല്യം_Record_Size;/* The size in bytes of each value record —
 				 * must be greater than zero. */
-  HBUINT16	valueRecordCount;/* The number of value records — may be zero. */
+  HBUINT16	മൂല്യം_Record_എണ്ണം;/* The number of value records — may be zero. */
   Offset16To<ItemVariationStore>
 		varStore;	/* Offset to item variation store table. */
   UnsizedArrayOf<HBUINT8>
-		valuesZ;	/* Array of value records. The records must be
+		മൂല്യങ്ങൾ_Z;	/* Array of value records. The records must be
 				 * in binary order of their valueTag field. */
 
-  public:
-  DEFINE_SIZE_ARRAY (12, valuesZ);
+  പൊതു:
+  DEFINE_SIZE_ARRAY (12, മൂല്യങ്ങൾ_Z);
 };
 
 } /* namespace OT */

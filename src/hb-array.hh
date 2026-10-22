@@ -27,16 +27,16 @@
 #ifndef HB_ARRAY_HH
 #define HB_ARRAY_HH
 
-#include "hb.hh"
-#include "hb-algs.hh"
-#include "hb-iter.hh"
-#include "hb-null.hh"
+#അന്തര്ഭാവ "hb.hh"
+#അന്തര്ഭാവ "hb-algs.hh"
+#അന്തര്ഭാവ "hb-iter.hh"
+#അന്തര്ഭാവ "hb-null.hh"
 
 
 template <typename Type>
-struct hb_sorted_array_t;
+ഘടന hb_sorted_array_t;
 
-enum hb_not_found_t
+എണ്ണൽ hb_not_found_t
 {
   HB_NOT_FOUND_DONT_STORE,
   HB_NOT_FOUND_STORE,
@@ -45,82 +45,82 @@ enum hb_not_found_t
 
 
 template <typename Type>
-struct hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
+ഘടന hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
 {
-  static constexpr bool realloc_move = true;
+  സ്ഥിതം constexpr തർക്കം realloc_move = സത്യം;
 
   /*
    * Constructors.
    */
-  hb_array_t () = default;
-  hb_array_t (const hb_array_t&) = default;
-  ~hb_array_t () = default;
-  hb_array_t& operator= (const hb_array_t&) = default;
-  hb_array_t& operator= (hb_array_t&&) = default;
+  hb_array_t () = സ്ഥിരസ്ഥിതി;
+  hb_array_t (സ്ഥിരം hb_array_t&) = സ്ഥിരസ്ഥിതി;
+  ~hb_array_t () = സ്ഥിരസ്ഥിതി;
+  hb_array_t& operator= (സ്ഥിരം hb_array_t&) = സ്ഥിരസ്ഥിതി;
+  hb_array_t& operator= (hb_array_t&&) = സ്ഥിരസ്ഥിതി;
 
-  constexpr hb_array_t (Type *array_, unsigned int length_) : arrayZ (array_), length (length_) {}
-  template <unsigned int length_>
+  constexpr hb_array_t (Type *array_, unsigned പൂർണ്ണസംഖ്യ length_) : arrayZ (array_), length (length_) {}
+  template <unsigned പൂർണ്ണസംഖ്യ length_>
   constexpr hb_array_t (Type (&array_)[length_]) : hb_array_t (array_, length_) {}
 
   template <typename U,
 	    hb_enable_if (hb_is_cr_convertible(U, Type))>
-  constexpr hb_array_t (const hb_array_t<U> &o) :
+  constexpr hb_array_t (സ്ഥിരം hb_array_t<U> &o) :
     hb_iter_with_fallback_t<hb_array_t, Type&> (),
     arrayZ (o.arrayZ), length (o.length), backwards_length (o.backwards_length) {}
   template <typename U,
 	    hb_enable_if (hb_is_cr_convertible(U, Type))>
-  hb_array_t& operator = (const hb_array_t<U> &o)
-  { arrayZ = o.arrayZ; length = o.length; backwards_length = o.backwards_length; return *this; }
+  hb_array_t& operator = (സ്ഥിരം hb_array_t<U> &o)
+  { arrayZ = o.arrayZ; length = o.length; backwards_length = o.backwards_length; തിരികെ *ഇത്; }
 
   /*
    * Iterator implementation.
    */
-  typedef Type& __item_t__;
-  static constexpr bool is_random_access_iterator = true;
-  static constexpr bool has_fast_len = true;
-  Type& __item__ () const
+  തരനിർവചനം Type& __item_t__;
+  സ്ഥിതം constexpr തർക്കം is_random_access_iterator = സത്യം;
+  സ്ഥിതം constexpr തർക്കം has_fast_len = സത്യം;
+  Type& __item__ () സ്ഥിരം
   {
-    if (unlikely (!length)) return CrapOrNull (Type);
-    return *arrayZ;
+    എങ്കിൽ (unlikely (!length)) തിരികെ CrapOrNull (Type);
+    തിരികെ *arrayZ;
   }
-  Type& __item_at__ (unsigned i) const
+  Type& __item_at__ (unsigned i) സ്ഥിരം
   {
-    if (unlikely (i >= length)) return CrapOrNull (Type);
-    return arrayZ[i];
+    എങ്കിൽ (unlikely (i >= length)) തിരികെ CrapOrNull (Type);
+    തിരികെ arrayZ[i];
   }
-  void __next__ ()
+  ശൂന്യം __next__ ()
   {
-    if (unlikely (!length))
-      return;
+    എങ്കിൽ (unlikely (!length))
+      തിരികെ;
     length--;
     backwards_length++;
     arrayZ++;
   }
-  void __forward__ (unsigned n)
+  ശൂന്യം __forward__ (unsigned n)
   {
-    if (unlikely (n > length))
+    എങ്കിൽ (unlikely (n > length))
       n = length;
     length -= n;
     backwards_length += n;
     arrayZ += n;
   }
-  void __prev__ ()
+  ശൂന്യം __prev__ ()
   {
-    if (unlikely (!backwards_length))
-      return;
+    എങ്കിൽ (unlikely (!backwards_length))
+      തിരികെ;
     length++;
     backwards_length--;
     arrayZ--;
   }
-  void __rewind__ (unsigned n)
+  ശൂന്യം __rewind__ (unsigned n)
   {
-    if (unlikely (n > backwards_length))
+    എങ്കിൽ (unlikely (n > backwards_length))
       n = backwards_length;
     length += n;
     backwards_length -= n;
     arrayZ -= n;
   }
-  unsigned __len__ () const { return length; }
+  unsigned __len__ () സ്ഥിരം { തിരികെ length; }
   /* Ouch. The operator== compares the contents of the array.  For range-based for loops,
    * it's best if we can just compare arrayZ, though comparing contents is still fast,
    * but also would require that Type has operator==.  As such, we optimize this operator
@@ -128,33 +128,33 @@ struct hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
    *
    * The above comment is outdated now because we implemented separate begin/end to
    * objects that were using hb_array_t for range-based loop before. */
-  bool operator != (const hb_array_t& o) const
-  { return this->arrayZ != o.arrayZ || this->length != o.length; }
+  തർക്കം operator != (സ്ഥിരം hb_array_t& o) സ്ഥിരം
+  { തിരികെ ഇത്->arrayZ != o.arrayZ || ഇത്->length != o.length; }
 
   /* Faster range-based for loop without bounds-check. */
-  Type *begin () const { return arrayZ; }
-  Type *end () const { return arrayZ + length; }
+  Type *begin () സ്ഥിരം { തിരികെ arrayZ; }
+  Type *end () സ്ഥിരം { തിരികെ arrayZ + length; }
 
 
   /* Extra operators.
    */
-  Type * operator & () const { return arrayZ; }
-  operator hb_array_t<const Type> () { return hb_array_t<const Type> (arrayZ, length); }
-  template <typename T> operator T * () const { return arrayZ; }
+  Type * operator & () സ്ഥിരം { തിരികെ arrayZ; }
+  operator hb_array_t<സ്ഥിരം Type> () { തിരികെ hb_array_t<സ്ഥിരം Type> (arrayZ, length); }
+  template <typename T> operator T * () സ്ഥിരം { തിരികെ arrayZ; }
 
-  HB_INTERNAL bool operator == (const hb_array_t &o) const;
+  HB_INTERNAL തർക്കം operator == (സ്ഥിരം hb_array_t &o) സ്ഥിരം;
 
-  uint32_t hash () const
+  uint32_t hash () സ്ഥിരം
   {
     // FNV-1a hash function
     // https://github.com/harfbuzz/harfbuzz/pull/4228
     uint32_t current = /*cbf29ce4*/0x84222325;
-    for (auto &v : *this)
+    വേണ്ടി (auto &v : *ഇത്)
     {
       current = current ^ hb_hash (v);
       current = current * 16777619;
     }
-    return current;
+    തിരികെ current;
   }
 
   /*
@@ -162,68 +162,68 @@ struct hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
    */
 
   /* Note: our compare is NOT lexicographic; it also does NOT call Type::cmp. */
-  int cmp (const hb_array_t &a) const
+  പൂർണ്ണസംഖ്യ cmp (സ്ഥിരം hb_array_t &a) സ്ഥിരം
   {
-    if (length != a.length)
-      return (int) a.length - (int) length;
-    return hb_memcmp (a.arrayZ, arrayZ, get_size ());
+    എങ്കിൽ (length != a.length)
+      തിരികെ (പൂർണ്ണസംഖ്യ) a.length - (പൂർണ്ണസംഖ്യ) length;
+    തിരികെ hb_memcmp (a.arrayZ, arrayZ, get_size ());
   }
-  HB_INTERNAL static int cmp (const void *pa, const void *pb)
+  HB_INTERNAL സ്ഥിതം പൂർണ്ണസംഖ്യ cmp (സ്ഥിരം ശൂന്യം *pa, സ്ഥിരം ശൂന്യം *pb)
   {
     hb_array_t *a = (hb_array_t *) pa;
     hb_array_t *b = (hb_array_t *) pb;
-    return b->cmp (*a);
+    തിരികെ b->cmp (*a);
   }
 
   template <typename T>
-  Type *lsearch (const T &x, Type *not_found = nullptr)
+  Type *lsearch (സ്ഥിരം T &x, Type *not_found = nullptr)
   {
     unsigned i;
-    return lfind (x, &i) ? &this->arrayZ[i] : not_found;
+    തിരികെ lfind (x, &i) ? &ഇത്->arrayZ[i] : not_found;
   }
   template <typename T>
-  const Type *lsearch (const T &x, const Type *not_found = nullptr) const
+  സ്ഥിരം Type *lsearch (സ്ഥിരം T &x, സ്ഥിരം Type *not_found = nullptr) സ്ഥിരം
   {
     unsigned i;
-    return lfind (x, &i) ? &this->arrayZ[i] : not_found;
+    തിരികെ lfind (x, &i) ? &ഇത്->arrayZ[i] : not_found;
   }
   template <typename T>
-  bool lfind (const T &x, unsigned *pos = nullptr,
+  തർക്കം lfind (സ്ഥിരം T &x, unsigned *pos = nullptr,
 	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
+	      unsigned പൂർണ്ണസംഖ്യ to_store = (unsigned പൂർണ്ണസംഖ്യ) -1) സ്ഥിരം
   {
-    for (unsigned i = 0; i < length; ++i)
-      if (hb_equal (x, this->arrayZ[i]))
+    വേണ്ടി (unsigned i = 0; i < length; ++i)
+      എങ്കിൽ (hb_equal (x, ഇത്->arrayZ[i]))
       {
-	if (pos)
+	എങ്കിൽ (pos)
 	  *pos = i;
-	return true;
+	തിരികെ സത്യം;
       }
 
-    if (pos)
+    എങ്കിൽ (pos)
     {
-      switch (not_found)
+      തിരഞ്ഞെടുപ്പ് (not_found)
       {
-	case HB_NOT_FOUND_DONT_STORE:
-	  break;
+	അവസ്ഥ HB_NOT_FOUND_DONT_STORE:
+	  നിർത്തുക;
 
-	case HB_NOT_FOUND_STORE:
+	അവസ്ഥ HB_NOT_FOUND_STORE:
 	  *pos = to_store;
-	  break;
+	  നിർത്തുക;
 
-	case HB_NOT_FOUND_STORE_CLOSEST:
+	അവസ്ഥ HB_NOT_FOUND_STORE_CLOSEST:
 	  *pos = length;
-	  break;
+	  നിർത്തുക;
       }
     }
-    return false;
+    തിരികെ അസത്യം;
   }
 
-  hb_sorted_array_t<Type> qsort (int (*cmp)(const void*, const void*))
+  hb_sorted_array_t<Type> qsort (പൂർണ്ണസംഖ്യ (*cmp)(സ്ഥിരം ശൂന്യം*, സ്ഥിരം ശൂന്യം*))
   {
-    if (likely (length))
-      hb_qsort (arrayZ, length, this->get_item_size (), cmp);
-    return hb_sorted_array_t<Type> (*this);
+    എങ്കിൽ (likely (length))
+      hb_qsort (arrayZ, length, ഇത്->get_item_size (), cmp);
+    തിരികെ hb_sorted_array_t<Type> (*ഇത്);
   }
 
   /* Comparator follows the C qsort convention: returns
@@ -231,277 +231,277 @@ struct hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
   template <typename Compar>
   hb_sorted_array_t<Type> qsort (Compar compar)
   {
-    if (likely (length))
+    എങ്കിൽ (likely (length))
       hb_qsort_inline (arrayZ, length, compar);
-    return hb_sorted_array_t<Type> (*this);
+    തിരികെ hb_sorted_array_t<Type> (*ഇത്);
   }
 
-  private:
+  സ്വകാര്യ:
   template <typename T = Type,
 	    hb_enable_if (std::is_move_assignable<T>::value)>
   hb_sorted_array_t<Type> _qsort (hb_priority<1>)
   {
-    return qsort ([] (const Type &a, const Type &b) { return Type::cmp (&a, &b); });
+    തിരികെ qsort ([] (സ്ഥിരം Type &a, സ്ഥിരം Type &b) { തിരികെ Type::cmp (&a, &b); });
   }
   hb_sorted_array_t<Type> _qsort (hb_priority<0>)
   {
-    return qsort ((int(*)(const void*, const void*)) Type::cmp);
+    തിരികെ qsort ((പൂർണ്ണസംഖ്യ(*)(സ്ഥിരം ശൂന്യം*, സ്ഥിരം ശൂന്യം*)) Type::cmp);
   }
-  public:
+  പൊതു:
 
   hb_sorted_array_t<Type> qsort ()
   {
-    return _qsort (hb_prioritize);
+    തിരികെ _qsort (hb_prioritize);
   }
 
   /*
    * Other methods.
    */
 
-  size_t get_size () const { return length * this->get_item_size (); }
+  size_t get_size () സ്ഥിരം { തിരികെ length * ഇത്->get_item_size (); }
 
   /*
    * Reverse the order of items in this array in the range [start, end).
    */
-  void reverse (unsigned start = 0, unsigned end = -1)
+  ശൂന്യം reverse (unsigned start = 0, unsigned end = -1)
   {
     start = hb_min (start, length);
     end = hb_min (end, length);
 
-    if (end < start + 2)
-      return;
+    എങ്കിൽ (end < start + 2)
+      തിരികെ;
 
     unsigned stop = start + (end - start) / 2;
-    for (unsigned lhs = start, rhs = end - 1; lhs < stop; lhs++, rhs--)
+    വേണ്ടി (unsigned lhs = start, rhs = end - 1; lhs < stop; lhs++, rhs--)
       hb_swap (arrayZ[rhs], arrayZ[lhs]);
   }
 
-  hb_array_t sub_array (unsigned int start_offset = 0, unsigned int *seg_count = nullptr /* IN/OUT */) const
+  hb_array_t sub_array (unsigned പൂർണ്ണസംഖ്യ start_offset = 0, unsigned പൂർണ്ണസംഖ്യ *seg_എണ്ണം = nullptr /* IN/OUT */) സ്ഥിരം
   {
-    if (!start_offset && !seg_count)
-      return *this;
+    എങ്കിൽ (!start_offset && !seg_എണ്ണം)
+      തിരികെ *ഇത്;
 
-    unsigned int count = length;
-    if (unlikely (start_offset > count))
-      count = 0;
-    else
-      count -= start_offset;
-    if (seg_count)
-      count = *seg_count = hb_min (count, *seg_count);
-    return hb_array_t (arrayZ + start_offset, count);
+    unsigned പൂർണ്ണസംഖ്യ എണ്ണം = length;
+    എങ്കിൽ (unlikely (start_offset > എണ്ണം))
+      എണ്ണം = 0;
+    അല്ലെങ്കിൽ
+      എണ്ണം -= start_offset;
+    എങ്കിൽ (seg_എണ്ണം)
+      എണ്ണം = *seg_എണ്ണം = hb_min (എണ്ണം, *seg_എണ്ണം);
+    തിരികെ hb_array_t (arrayZ + start_offset, എണ്ണം);
   }
-  hb_array_t sub_array (unsigned int start_offset, unsigned int seg_count) const
-  { return sub_array (start_offset, &seg_count); }
+  hb_array_t sub_array (unsigned പൂർണ്ണസംഖ്യ start_offset, unsigned പൂർണ്ണസംഖ്യ seg_എണ്ണം) സ്ഥിരം
+  { തിരികെ sub_array (start_offset, &seg_എണ്ണം); }
 
-  hb_array_t truncate (unsigned length) const { return sub_array (0, length); }
+  hb_array_t truncate (unsigned length) സ്ഥിരം { തിരികെ sub_array (0, length); }
 
   template <typename T,
-	    unsigned P = sizeof (Type),
+	    unsigned P = വലുപ്പം (Type),
 	    hb_enable_if (P == 1)>
-  const T *as () const
-  { return length < hb_min_size (T) ? &Null (T) : reinterpret_cast<const T *> (arrayZ); }
+  സ്ഥിരം T *as () സ്ഥിരം
+  { തിരികെ length < hb_min_size (T) ? &Null (T) : reinterpret_cast<സ്ഥിരം T *> (arrayZ); }
 
   template <typename T,
-	    unsigned P = sizeof (Type),
+	    unsigned P = വലുപ്പം (Type),
 	    hb_enable_if (P == 1)>
-  bool check_range (const T *p, unsigned int size = T::static_size) const
+  തർക്കം check_range (സ്ഥിരം T *p, unsigned പൂർണ്ണസംഖ്യ size = T::static_size) സ്ഥിരം
   {
-    return arrayZ <= ((const char *) p)
-	&& ((const char *) p) <= arrayZ + length
-	&& (unsigned int) (arrayZ + length - (const char *) p) >= size;
+    തിരികെ arrayZ <= ((സ്ഥിരം അക്ഷരം *) p)
+	&& ((സ്ഥിരം അക്ഷരം *) p) <= arrayZ + length
+	&& (unsigned പൂർണ്ണസംഖ്യ) (arrayZ + length - (സ്ഥിരം അക്ഷരം *) p) >= size;
   }
 
-  template <unsigned P = sizeof (Type),
+  template <unsigned P = വലുപ്പം (Type),
 	    hb_enable_if (P == 1)>
-  bool check_end (const void *p) const
+  തർക്കം check_end (സ്ഥിരം ശൂന്യം *p) സ്ഥിരം
   {
-    return (uintptr_t) (((const char *) p) - arrayZ) <= length;
+    തിരികെ (uintptr_t) (((സ്ഥിരം അക്ഷരം *) p) - arrayZ) <= length;
   }
 
   /* Only call if you allocated the underlying array using hb_malloc() or similar. */
-  void fini ()
-  { hb_free ((void *) arrayZ); arrayZ = nullptr; length = 0; }
+  ശൂന്യം fini ()
+  { hb_free ((ശൂന്യം *) arrayZ); arrayZ = nullptr; length = 0; }
 
   template <typename hb_serialize_context_t,
 	    typename U = Type,
-	    hb_enable_if (!(sizeof (U) < sizeof (long long) && hb_is_trivially_copy_assignable(hb_decay<Type>)))>
-  hb_array_t copy (hb_serialize_context_t *c) const
+	    hb_enable_if (!(വലുപ്പം (U) < വലുപ്പം (long long) && hb_is_trivially_copy_assignable(hb_decay<Type>)))>
+  hb_array_t copy (hb_serialize_context_t *c) സ്ഥിരം
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ഇത്);
     auto* out = c->start_embed (arrayZ);
-    if (unlikely (!c->extend_size (out, get_size (), false))) return_trace (hb_array_t ());
-    for (unsigned i = 0; i < length; i++)
+    എങ്കിൽ (unlikely (!c->extend_size (out, get_size (), അസത്യം))) return_trace (hb_array_t ());
+    വേണ്ടി (unsigned i = 0; i < length; i++)
       out[i] = arrayZ[i]; /* TODO: add version that calls c->copy() */
     return_trace (hb_array_t (out, length));
   }
 
   template <typename hb_serialize_context_t,
 	    typename U = Type,
-	    hb_enable_if (sizeof (U) < sizeof (long long) && hb_is_trivially_copy_assignable(hb_decay<Type>))>
-  hb_array_t copy (hb_serialize_context_t *c) const
+	    hb_enable_if (വലുപ്പം (U) < വലുപ്പം (long long) && hb_is_trivially_copy_assignable(hb_decay<Type>))>
+  hb_array_t copy (hb_serialize_context_t *c) സ്ഥിരം
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ഇത്);
     auto* out = c->start_embed (arrayZ);
-    if (unlikely (!c->extend_size (out, get_size (), false))) return_trace (hb_array_t ());
+    എങ്കിൽ (unlikely (!c->extend_size (out, get_size (), അസത്യം))) return_trace (hb_array_t ());
     hb_memcpy (out, arrayZ, get_size ());
     return_trace (hb_array_t (out, length));
   }
 
   template <typename hb_sanitize_context_t>
-  bool sanitize (hb_sanitize_context_t *c) const
-  { return c->check_array (arrayZ, length); }
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
+  { തിരികെ c->check_array (arrayZ, length); }
 
   /*
    * Members
    */
 
-  public:
+  പൊതു:
   Type *arrayZ = nullptr;
-  unsigned int length = 0;
-  unsigned int backwards_length = 0;
+  unsigned പൂർണ്ണസംഖ്യ length = 0;
+  unsigned പൂർണ്ണസംഖ്യ backwards_length = 0;
 };
-template <typename T> inline hb_array_t<T>
+template <typename T> വരിയിൽ hb_array_t<T>
 hb_array ()
-{ return hb_array_t<T> (); }
-template <typename T> inline hb_array_t<T>
-hb_array (T *array, unsigned int length)
-{ return hb_array_t<T> (array, length); }
-template <typename T, unsigned int length_> inline hb_array_t<T>
+{ തിരികെ hb_array_t<T> (); }
+template <typename T> വരിയിൽ hb_array_t<T>
+hb_array (T *array, unsigned പൂർണ്ണസംഖ്യ length)
+{ തിരികെ hb_array_t<T> (array, length); }
+template <typename T, unsigned പൂർണ്ണസംഖ്യ length_> വരിയിൽ hb_array_t<T>
 hb_array (T (&array_)[length_])
-{ return hb_array_t<T> (array_); }
+{ തിരികെ hb_array_t<T> (array_); }
 
 template <typename Type>
-struct hb_sorted_array_t :
+ഘടന hb_sorted_array_t :
 	hb_array_t<Type>,
 	hb_iter_t<hb_sorted_array_t<Type>, Type&>
 {
-  typedef hb_iter_t<hb_sorted_array_t, Type&> iter_base_t;
+  തരനിർവചനം hb_iter_t<hb_sorted_array_t, Type&> iter_base_t;
   HB_ITER_USING (iter_base_t);
-  static constexpr bool is_random_access_iterator = true;
-  static constexpr bool is_sorted_iterator = true;
-  static constexpr bool has_fast_len = true;
+  സ്ഥിതം constexpr തർക്കം is_random_access_iterator = സത്യം;
+  സ്ഥിതം constexpr തർക്കം is_sorted_iterator = സത്യം;
+  സ്ഥിതം constexpr തർക്കം has_fast_len = സത്യം;
 
-  hb_sorted_array_t () = default;
-  hb_sorted_array_t (const hb_sorted_array_t&) = default;
-  ~hb_sorted_array_t () = default;
-  hb_sorted_array_t& operator= (const hb_sorted_array_t&) = default;
-  hb_sorted_array_t& operator= (hb_sorted_array_t&&) = default;
+  hb_sorted_array_t () = സ്ഥിരസ്ഥിതി;
+  hb_sorted_array_t (സ്ഥിരം hb_sorted_array_t&) = സ്ഥിരസ്ഥിതി;
+  ~hb_sorted_array_t () = സ്ഥിരസ്ഥിതി;
+  hb_sorted_array_t& operator= (സ്ഥിരം hb_sorted_array_t&) = സ്ഥിരസ്ഥിതി;
+  hb_sorted_array_t& operator= (hb_sorted_array_t&&) = സ്ഥിരസ്ഥിതി;
 
-  constexpr hb_sorted_array_t (Type *array_, unsigned int length_) : hb_array_t<Type> (array_, length_) {}
-  template <unsigned int length_>
+  constexpr hb_sorted_array_t (Type *array_, unsigned പൂർണ്ണസംഖ്യ length_) : hb_array_t<Type> (array_, length_) {}
+  template <unsigned പൂർണ്ണസംഖ്യ length_>
   constexpr hb_sorted_array_t (Type (&array_)[length_]) : hb_array_t<Type> (array_) {}
 
   template <typename U,
 	    hb_enable_if (hb_is_cr_convertible(U, Type))>
-  constexpr hb_sorted_array_t (const hb_array_t<U> &o) :
+  constexpr hb_sorted_array_t (സ്ഥിരം hb_array_t<U> &o) :
     hb_array_t<Type> (o),
     hb_iter_t<hb_sorted_array_t, Type&> () {}
   template <typename U,
 	    hb_enable_if (hb_is_cr_convertible(U, Type))>
-  hb_sorted_array_t& operator = (const hb_array_t<U> &o)
-  { hb_array_t<Type> (*this) = o; return *this; }
+  hb_sorted_array_t& operator = (സ്ഥിരം hb_array_t<U> &o)
+  { hb_array_t<Type> (*ഇത്) = o; തിരികെ *ഇത്; }
 
   /* Iterator implementation. */
 
   /* See comment in hb_array_of::operator != */
-  bool operator != (const hb_sorted_array_t& o) const
-  { return this->arrayZ != o.arrayZ || this->length != o.length; }
+  തർക്കം operator != (സ്ഥിരം hb_sorted_array_t& o) സ്ഥിരം
+  { തിരികെ ഇത്->arrayZ != o.arrayZ || ഇത്->length != o.length; }
 
   /* Faster range-based for loop without bounds-check. */
-  Type *begin () const { return this->arrayZ; }
-  Type *end () const { return this->arrayZ + this->length; }
+  Type *begin () സ്ഥിരം { തിരികെ ഇത്->arrayZ; }
+  Type *end () സ്ഥിരം { തിരികെ ഇത്->arrayZ + ഇത്->length; }
 
 
-  hb_sorted_array_t sub_array (unsigned int start_offset, unsigned int *seg_count /* IN/OUT */) const
-  { return hb_sorted_array_t (((const hb_array_t<Type> *) (this))->sub_array (start_offset, seg_count)); }
-  hb_sorted_array_t sub_array (unsigned int start_offset, unsigned int seg_count) const
-  { return sub_array (start_offset, &seg_count); }
+  hb_sorted_array_t sub_array (unsigned പൂർണ്ണസംഖ്യ start_offset, unsigned പൂർണ്ണസംഖ്യ *seg_എണ്ണം /* IN/OUT */) സ്ഥിരം
+  { തിരികെ hb_sorted_array_t (((സ്ഥിരം hb_array_t<Type> *) (ഇത്))->sub_array (start_offset, seg_എണ്ണം)); }
+  hb_sorted_array_t sub_array (unsigned പൂർണ്ണസംഖ്യ start_offset, unsigned പൂർണ്ണസംഖ്യ seg_എണ്ണം) സ്ഥിരം
+  { തിരികെ sub_array (start_offset, &seg_എണ്ണം); }
 
-  hb_sorted_array_t truncate (unsigned length) const { return sub_array (0, length); }
+  hb_sorted_array_t truncate (unsigned length) സ്ഥിരം { തിരികെ sub_array (0, length); }
 
   template <typename T>
-  Type *bsearch (const T &x, Type *not_found = nullptr)
+  Type *bsearch (സ്ഥിരം T &x, Type *not_found = nullptr)
   {
-    unsigned int i;
-    return bfind (x, &i) ? &this->arrayZ[i] : not_found;
+    unsigned പൂർണ്ണസംഖ്യ i;
+    തിരികെ bfind (x, &i) ? &ഇത്->arrayZ[i] : not_found;
   }
   template <typename T>
-  const Type *bsearch (const T &x, const Type *not_found = nullptr) const
+  സ്ഥിരം Type *bsearch (സ്ഥിരം T &x, സ്ഥിരം Type *not_found = nullptr) സ്ഥിരം
   {
-    unsigned int i;
-    return bfind (x, &i) ? &this->arrayZ[i] : not_found;
+    unsigned പൂർണ്ണസംഖ്യ i;
+    തിരികെ bfind (x, &i) ? &ഇത്->arrayZ[i] : not_found;
   }
   template <typename T>
-  bool bfind (const T &x, unsigned int *i = nullptr,
+  തർക്കം bfind (സ്ഥിരം T &x, unsigned പൂർണ്ണസംഖ്യ *i = nullptr,
 	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
+	      unsigned പൂർണ്ണസംഖ്യ to_store = (unsigned പൂർണ്ണസംഖ്യ) -1) സ്ഥിരം
   {
     unsigned pos;
 
-    if (bsearch_impl (x, &pos))
+    എങ്കിൽ (bsearch_impl (x, &pos))
     {
-      if (i)
+      എങ്കിൽ (i)
 	*i = pos;
-      return true;
+      തിരികെ സത്യം;
     }
 
-    if (i)
+    എങ്കിൽ (i)
     {
-      switch (not_found)
+      തിരഞ്ഞെടുപ്പ് (not_found)
       {
-	case HB_NOT_FOUND_DONT_STORE:
-	  break;
+	അവസ്ഥ HB_NOT_FOUND_DONT_STORE:
+	  നിർത്തുക;
 
-	case HB_NOT_FOUND_STORE:
+	അവസ്ഥ HB_NOT_FOUND_STORE:
 	  *i = to_store;
-	  break;
+	  നിർത്തുക;
 
-	case HB_NOT_FOUND_STORE_CLOSEST:
+	അവസ്ഥ HB_NOT_FOUND_STORE_CLOSEST:
 	  *i = pos;
-	  break;
+	  നിർത്തുക;
       }
     }
-    return false;
+    തിരികെ അസത്യം;
   }
   template <typename T, typename ...Ts>
-  bool bsearch_impl (const T &x, unsigned *pos, Ts... ds) const
+  തർക്കം bsearch_impl (സ്ഥിരം T &x, unsigned *pos, Ts... ds) സ്ഥിരം
   {
-    return hb_bsearch_impl (pos,
+    തിരികെ hb_bsearch_impl (pos,
 			    x,
-			    this->arrayZ,
-			    this->length,
-			    sizeof (Type),
+			    ഇത്->arrayZ,
+			    ഇത്->length,
+			    വലുപ്പം (Type),
 			    _hb_cmp_method<T, Type, Ts...>,
 			    std::forward<Ts> (ds)...);
   }
 };
-template <typename T> inline hb_sorted_array_t<T>
-hb_sorted_array (T *array, unsigned int length)
-{ return hb_sorted_array_t<T> (array, length); }
-template <typename T, unsigned int length_> inline hb_sorted_array_t<T>
+template <typename T> വരിയിൽ hb_sorted_array_t<T>
+hb_sorted_array (T *array, unsigned പൂർണ്ണസംഖ്യ length)
+{ തിരികെ hb_sorted_array_t<T> (array, length); }
+template <typename T, unsigned പൂർണ്ണസംഖ്യ length_> വരിയിൽ hb_sorted_array_t<T>
 hb_sorted_array (T (&array_)[length_])
-{ return hb_sorted_array_t<T> (array_); }
+{ തിരികെ hb_sorted_array_t<T> (array_); }
 
 template <typename T>
-inline bool hb_array_t<T>::operator == (const hb_array_t<T> &o) const
+വരിയിൽ തർക്കം hb_array_t<T>::operator == (സ്ഥിരം hb_array_t<T> &o) സ്ഥിരം
 {
-  if (o.length != this->length) return false;
-  for (unsigned int i = 0; i < this->length; i++) {
-    if (this->arrayZ[i] != o.arrayZ[i]) return false;
+  എങ്കിൽ (o.length != ഇത്->length) തിരികെ അസത്യം;
+  വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < ഇത്->length; i++) {
+    എങ്കിൽ (ഇത്->arrayZ[i] != o.arrayZ[i]) തിരികെ അസത്യം;
   }
-  return true;
+  തിരികെ സത്യം;
 }
 template <>
-inline bool hb_array_t<const char>::operator == (const hb_array_t<const char> &o) const
+വരിയിൽ തർക്കം hb_array_t<സ്ഥിരം അക്ഷരം>::operator == (സ്ഥിരം hb_array_t<സ്ഥിരം അക്ഷരം> &o) സ്ഥിരം
 {
-  if (o.length != this->length) return false;
-  return 0 == hb_memcmp (arrayZ, o.arrayZ, length);
+  എങ്കിൽ (o.length != ഇത്->length) തിരികെ അസത്യം;
+  തിരികെ 0 == hb_memcmp (arrayZ, o.arrayZ, length);
 }
 template <>
-inline bool hb_array_t<const unsigned char>::operator == (const hb_array_t<const unsigned char> &o) const
+വരിയിൽ തർക്കം hb_array_t<സ്ഥിരം unsigned അക്ഷരം>::operator == (സ്ഥിരം hb_array_t<സ്ഥിരം unsigned അക്ഷരം> &o) സ്ഥിരം
 {
-  if (o.length != this->length) return false;
-  return 0 == hb_memcmp (arrayZ, o.arrayZ, length);
+  എങ്കിൽ (o.length != ഇത്->length) തിരികെ അസത്യം;
+  തിരികെ 0 == hb_memcmp (arrayZ, o.arrayZ, length);
 }
 
 
@@ -509,23 +509,23 @@ inline bool hb_array_t<const unsigned char>::operator == (const hb_array_t<const
 
 #ifndef HB_OPTIMIZE_SIZE_MORE
 template <>
-inline uint32_t hb_array_t<const char>::hash () const
+വരിയിൽ uint32_t hb_array_t<സ്ഥിരം അക്ഷരം>::hash () സ്ഥിരം
 {
   // https://github.com/harfbuzz/harfbuzz/pull/4228
-  return fasthash32(arrayZ, length, 0xf437ffe6 /* magic? */);
+  തിരികെ fasthash32(arrayZ, length, 0xf437ffe6 /* magic? */);
 }
 
 template <>
-inline uint32_t hb_array_t<const unsigned char>::hash () const
+വരിയിൽ uint32_t hb_array_t<സ്ഥിരം unsigned അക്ഷരം>::hash () സ്ഥിരം
 {
   // https://github.com/harfbuzz/harfbuzz/pull/4228
-  return fasthash32(arrayZ, length, 0xf437ffe6 /* magic? */);
+  തിരികെ fasthash32(arrayZ, length, 0xf437ffe6 /* magic? */);
 }
 #endif
 
 
-typedef hb_array_t<const char> hb_bytes_t;
-typedef hb_array_t<const unsigned char> hb_ubytes_t;
+തരനിർവചനം hb_array_t<സ്ഥിരം അക്ഷരം> hb_bytes_t;
+തരനിർവചനം hb_array_t<സ്ഥിരം unsigned അക്ഷരം> hb_ubytes_t;
 
 
 

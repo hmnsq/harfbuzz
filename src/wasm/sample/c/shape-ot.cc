@@ -1,18 +1,18 @@
 #define HB_WASM_INTERFACE(ret_t, name) __attribute__((export_name(#name))) ret_t name
 
-#include <hb-wasm-api.h>
+#അന്തര്ഭാവ <hb-wasm-api.h>
 
-extern "C" {
-void debugprint1 (const char *s, int32_t);
-void debugprint2 (const char *s, int32_t, int32_t);
+ബാഹ്യ "C" {
+ശൂന്യം debugprint1 (സ്ഥിരം അക്ഷരം *s, int32_t);
+ശൂന്യം debugprint2 (സ്ഥിരം അക്ഷരം *s, int32_t, int32_t);
 }
 
 bool_t
-shape (void *shape_plan,
+shape (ശൂന്യം *shape_plan,
        font_t *font,
        buffer_t *buffer,
-       const feature_t *features,
-       uint32_t num_features)
+       സ്ഥിരം feature_t *features,
+       uint32_t അക്കം_features)
 {
-  return shape_with (font, buffer, features, num_features, "ot");
+  തിരികെ shape_with (font, buffer, features, അക്കം_features, "ot");
 }

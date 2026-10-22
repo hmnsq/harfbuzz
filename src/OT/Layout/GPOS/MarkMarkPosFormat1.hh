@@ -1,16 +1,16 @@
 #ifndef OT_LAYOUT_GPOS_MARKMARKPOSFORMAT1_HH
 #define OT_LAYOUT_GPOS_MARKMARKPOSFORMAT1_HH
 
-#include "MarkMarkPosFormat1.hh"
+#അന്തര്ഭാവ "MarkMarkPosFormat1.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+നാമാകാശ OT {
+നാമാകാശ Layout {
+നാമാകാശ GPOS_impl {
 
 template <typename Types>
-struct MarkMarkPosFormat1_2
+ഘടന MarkMarkPosFormat1_2
 {
-  protected:
+  സംരക്ഷിത:
   HBUINT16      format;                 /* Format identifier--format = 1 */
   typename Types::template LOffsetTo<Coverage>
                 mark1Coverage;          /* Offset to Combining Mark1 Coverage
@@ -20,139 +20,139 @@ struct MarkMarkPosFormat1_2
                 mark2Coverage;          /* Offset to Combining Mark2 Coverage
                                          * table--from beginning of MarkMarkPos
                                          * subtable */
-  HBUINT16      classCount;             /* Number of defined mark classes */
+  HBUINT16      class_എണ്ണം_2;             /* Number of defined mark classes */
   typename Types::template LOffsetTo<MarkArray<Types>>
                 mark1Array;             /* Offset to Mark1Array table--from
                                          * beginning of MarkMarkPos subtable */
   typename Types::template LOffsetTo<AnchorMatrix<Types, HBUINT16>>
                 mark2Array;             /* Offset to Mark2Array table--from
                                          * beginning of MarkMarkPos subtable */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (4 + 4 * Types::LOffset::static_size);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-                  mark1Coverage.sanitize (c, this) &&
-                  mark2Coverage.sanitize (c, this) &&
-                  mark1Array.sanitize (c, this) &&
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) &&
+                  mark1Coverage.sanitize (c, ഇത്) &&
+                  mark2Coverage.sanitize (c, ഇത്) &&
+                  mark1Array.sanitize (c, ഇത്) &&
 		  hb_barrier () &&
-                  mark2Array.sanitize (c, this, (unsigned int) classCount));
+                  mark2Array.sanitize (c, ഇത്, (unsigned പൂർണ്ണസംഖ്യ) class_എണ്ണം_2));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  തർക്കം intersects (സ്ഥിരം hb_set_t *glyphs) സ്ഥിരം
   {
-    return (this+mark1Coverage).intersects (glyphs) &&
-           (this+mark2Coverage).intersects (glyphs);
+    തിരികെ (ഇത്+mark1Coverage).intersects (glyphs) &&
+           (ഇത്+mark2Coverage).intersects (glyphs);
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const {}
+  ശൂന്യം closure_lookups (hb_closure_lookups_context_t *c) സ്ഥിരം {}
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  ശൂന്യം collect_variation_indices (hb_collect_variation_indices_context_t *c) സ്ഥിരം
   {
-    (this+mark1Array).collect_variation_indices (c, this+mark1Coverage);
+    (ഇത്+mark1Array).collect_variation_indices (c, ഇത്+mark1Coverage);
 
     hb_map_t klass_mapping;
-    Markclass_closure_and_remap_indexes (this+mark1Coverage, this+mark1Array, *c->glyph_set, &klass_mapping);
+    Markclass_closure_and_remap_indexes (ഇത്+mark1Coverage, ഇത്+mark1Array, *c->glyph_set, &klass_mapping);
 
     hb_sorted_vector_t<unsigned> mark2_indexes;
-    collect_anchor_indexes (this+mark2Coverage, (this+mark2Array).rows,
-                            classCount, *c->glyph_set, klass_mapping,
+    collect_anchor_indexes (ഇത്+mark2Coverage, (ഇത്+mark2Array).rows,
+                            class_എണ്ണം_2, *c->glyph_set, klass_mapping,
                             mark2_indexes);
-    (this+mark2Array).collect_variation_indices (c, mark2_indexes.iter ());
+    (ഇത്+mark2Array).collect_variation_indices (c, mark2_indexes.iter ());
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  ശൂന്യം collect_glyphs (hb_collect_glyphs_context_t *c) സ്ഥിരം
   {
-    if (unlikely (!(this+mark1Coverage).collect_coverage (c->input))) return;
-    if (unlikely (!(this+mark2Coverage).collect_coverage (c->input))) return;
+    എങ്കിൽ (unlikely (!(ഇത്+mark1Coverage).collect_coverage (c->നിവേശം))) തിരികെ;
+    എങ്കിൽ (unlikely (!(ഇത്+mark2Coverage).collect_coverage (c->നിവേശം))) തിരികെ;
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest) const
-  { (this+mark2Coverage).collect_coverage (digest); }
+  ശൂന്യം collect_second_glyphs (hb_set_digest_t *digest) സ്ഥിരം
+  { (ഇത്+mark2Coverage).collect_coverage (digest); }
 
-  const Coverage &get_coverage () const { return this+mark1Coverage; }
+  സ്ഥിരം Coverage &get_coverage () സ്ഥിരം { തിരികെ ഇത്+mark1Coverage; }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  തർക്കം apply (hb_ot_apply_context_t *c) സ്ഥിരം
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (ഇത്);
     hb_buffer_t *buffer = c->buffer;
-    unsigned int mark1_index = (this+mark1Coverage).get_coverage  (buffer->cur().codepoint);
-    if (likely (mark1_index == NOT_COVERED)) return_trace (false);
+    unsigned പൂർണ്ണസംഖ്യ mark1_index = (ഇത്+mark1Coverage).get_coverage  (buffer->cur().codepoint);
+    എങ്കിൽ (likely (mark1_index == NOT_COVERED)) return_trace (അസത്യം);
 
     /* now we search backwards for a suitable mark glyph until a non-mark glyph */
-    auto &skippy_iter = c->iter_input;
+    auto &skippy_iter = c->iter_നിവേശം;
     skippy_iter.reset_fast (buffer->idx);
     skippy_iter.set_lookup_props (c->lookup_props & ~(uint32_t)LookupFlag::IgnoreFlags);
     unsigned unsafe_from;
-    if (unlikely (!skippy_iter.prev (&unsafe_from)))
+    എങ്കിൽ (unlikely (!skippy_iter.prev (&unsafe_from)))
     {
       buffer->unsafe_to_concat_from_outbuffer (unsafe_from, buffer->idx + 1);
-      return_trace (false);
+      return_trace (അസത്യം);
     }
 
-    if (likely (!_hb_glyph_info_is_mark (&buffer->info[skippy_iter.idx])))
+    എങ്കിൽ (likely (!_hb_glyph_info_is_mark (&buffer->info[skippy_iter.idx])))
     {
       buffer->unsafe_to_concat_from_outbuffer (skippy_iter.idx, buffer->idx + 1);
-      return_trace (false);
+      return_trace (അസത്യം);
     }
 
-    unsigned int j = skippy_iter.idx;
+    unsigned പൂർണ്ണസംഖ്യ j = skippy_iter.idx;
 
-    unsigned int id1 = _hb_glyph_info_get_lig_id (&buffer->cur());
-    unsigned int id2 = _hb_glyph_info_get_lig_id (&buffer->info[j]);
-    unsigned int comp1 = _hb_glyph_info_get_lig_comp (&buffer->cur());
-    unsigned int comp2 = _hb_glyph_info_get_lig_comp (&buffer->info[j]);
+    unsigned പൂർണ്ണസംഖ്യ id1 = _hb_glyph_info_get_lig_id (&buffer->cur());
+    unsigned പൂർണ്ണസംഖ്യ id2 = _hb_glyph_info_get_lig_id (&buffer->info[j]);
+    unsigned പൂർണ്ണസംഖ്യ comp1 = _hb_glyph_info_get_lig_comp (&buffer->cur());
+    unsigned പൂർണ്ണസംഖ്യ comp2 = _hb_glyph_info_get_lig_comp (&buffer->info[j]);
 
-    if (likely (id1 == id2))
+    എങ്കിൽ (likely (id1 == id2))
     {
-      if (id1 == 0) /* Marks belonging to the same base. */
-        goto good;
-      else if (comp1 == comp2) /* Marks belonging to the same ligature component. */
-        goto good;
+      എങ്കിൽ (id1 == 0) /* Marks belonging to the same base. */
+        പോകുക good;
+      അല്ലെങ്കിൽ എങ്കിൽ (comp1 == comp2) /* Marks belonging to the same ligature component. */
+        പോകുക good;
     }
-    else
+    അല്ലെങ്കിൽ
     {
       /* If ligature ids don't match, it may be the case that one of the marks
        * itself is a ligature.  In which case match. */
-      if ((id1 > 0 && !comp1) || (id2 > 0 && !comp2))
-        goto good;
+      എങ്കിൽ ((id1 > 0 && !comp1) || (id2 > 0 && !comp2))
+        പോകുക good;
     }
 
     /* Didn't match. */
     buffer->unsafe_to_concat_from_outbuffer (skippy_iter.idx, buffer->idx + 1);
-    return_trace (false);
+    return_trace (അസത്യം);
 
     good:
-    unsigned int mark2_index = (this+mark2Coverage).get_coverage  (buffer->info[j].codepoint);
-    if (mark2_index == NOT_COVERED)
+    unsigned പൂർണ്ണസംഖ്യ mark2_index = (ഇത്+mark2Coverage).get_coverage  (buffer->info[j].codepoint);
+    എങ്കിൽ (mark2_index == NOT_COVERED)
     {
       buffer->unsafe_to_concat_from_outbuffer (skippy_iter.idx, buffer->idx + 1);
-      return_trace (false);
+      return_trace (അസത്യം);
     }
 
-    return_trace ((this+mark1Array).apply (c, mark1_index, mark2_index, this+mark2Array, classCount, j));
+    return_trace ((ഇത്+mark1Array).apply (c, mark1_index, mark2_index, ഇത്+mark2Array, class_എണ്ണം_2, j));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  തർക്കം subset (hb_subset_context_t *c) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (ഇത്);
+    സ്ഥിരം hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+    സ്ഥിരം hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (*ഇത്);
+    എങ്കിൽ (unlikely (!c->serializer->extend_min (out))) return_trace (അസത്യം);
     out->format = format;
 
     hb_map_t klass_mapping;
-    Markclass_closure_and_remap_indexes (this+mark1Coverage, this+mark1Array, glyphset, &klass_mapping);
+    Markclass_closure_and_remap_indexes (ഇത്+mark1Coverage, ഇത്+mark1Array, glyphset, &klass_mapping);
 
-    if (!klass_mapping.get_population ()) return_trace (false);
-    out->classCount = klass_mapping.get_population ();
+    എങ്കിൽ (!klass_mapping.get_population ()) return_trace (അസത്യം);
+    out->class_എണ്ണം_2 = klass_mapping.get_population ();
 
     auto mark1_iter =
-    + hb_zip (this+mark1Coverage, this+mark1Array)
+    + hb_zip (ഇത്+mark1Coverage, ഇത്+mark1Array)
     | hb_filter (glyphset, hb_first)
     ;
 
@@ -163,27 +163,27 @@ struct MarkMarkPosFormat1_2
     | hb_sink (new_coverage)
     ;
 
-    if (!out->mark1Coverage.serialize_serialize (c->serializer, new_coverage.iter ()))
-      return_trace (false);
+    എങ്കിൽ (!out->mark1Coverage.serialize_serialize (c->serializer, new_coverage.iter ()))
+      return_trace (അസത്യം);
 
-    if (unlikely (!out->mark1Array.serialize_subset (c, mark1Array, this,
-						     (this+mark1Coverage).iter (),
+    എങ്കിൽ (unlikely (!out->mark1Array.serialize_subset (c, mark1Array, ഇത്,
+						     (ഇത്+mark1Coverage).iter (),
 						     &klass_mapping)))
-      return_trace (false);
+      return_trace (അസത്യം);
 
     new_coverage.reset ();
     hb_sorted_vector_t<unsigned> mark2_indexes;
-    const auto &mark2_array = this+mark2Array;
-    collect_subset_anchor_indexes (this+mark2Coverage, mark2_array.rows,
-                                   classCount, mark2_array.matrixZ.arrayZ,
+    സ്ഥിരം auto &mark2_array = ഇത്+mark2Array;
+    collect_subset_anchor_indexes (ഇത്+mark2Coverage, mark2_array.rows,
+                                   class_എണ്ണം_2, mark2_array.matrixZ.arrayZ,
                                    glyphset, glyph_map, klass_mapping,
                                    new_coverage, mark2_indexes);
 
-    if (!new_coverage) return_trace (false);
-    if (!out->mark2Coverage.serialize_serialize (c->serializer, new_coverage.iter ()))
-      return_trace (false);
+    എങ്കിൽ (!new_coverage) return_trace (അസത്യം);
+    എങ്കിൽ (!out->mark2Coverage.serialize_serialize (c->serializer, new_coverage.iter ()))
+      return_trace (അസത്യം);
 
-    return_trace (out->mark2Array.serialize_subset (c, mark2Array, this,
+    return_trace (out->mark2Array.serialize_subset (c, mark2Array, ഇത്,
 						    new_coverage.length,
 						    mark2_indexes.iter ()));
 

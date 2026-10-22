@@ -14,36 +14,36 @@
  * # Date: 2026-06-29, 15:25:26 GMT
  */
 
-#include "hb.hh"
+#അന്തര്ഭാവ "hb.hh"
 
 #ifndef HB_NO_OT_SHAPE
 
-#include "hb-ot-shaper-vowel-constraints.hh"
+#അന്തര്ഭാവ "hb-ot-shaper-vowel-constraints.hh"
 
-static void
+സ്ഥിതം ശൂന്യം
 _output_dotted_circle (hb_buffer_t *buffer)
 {
-  (void) buffer->output_glyph (0x25CCu);
+  (ശൂന്യം) buffer->output_glyph (0x25CCu);
   _hb_glyph_info_clear_continuation (&buffer->prev());
 }
 
-static void
+സ്ഥിതം ശൂന്യം
 _output_with_dotted_circle (hb_buffer_t *buffer)
 {
   _output_dotted_circle (buffer);
-  (void) buffer->next_glyph ();
+  (ശൂന്യം) buffer->next_glyph ();
 }
 
-void
-_hb_preprocess_text_vowel_constraints (const hb_ot_shape_plan_t *plan HB_UNUSED,
+ശൂന്യം
+_hb_preprocess_text_vowel_constraints (സ്ഥിരം hb_ot_shape_plan_t *plan HB_UNUSED,
 				       hb_buffer_t              *buffer,
 				       hb_font_t                *font HB_UNUSED)
 {
 #ifdef HB_NO_OT_SHAPER_VOWEL_CONSTRAINTS
-  return;
+  തിരികെ;
 #endif
-  if (buffer->flags & HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE)
-    return;
+  എങ്കിൽ (buffer->flags & HB_BUFFER_FLAG_DO_NOT_തിരുകുക_DOTTED_CIRCLE)
+    തിരികെ;
 
   /* UGLY UGLY UGLY business of adding dotted-circle in the middle of
    * vowel-sequences that look like another vowel.  Data for each script
@@ -52,424 +52,424 @@ _hb_preprocess_text_vowel_constraints (const hb_ot_shape_plan_t *plan HB_UNUSED,
    * https://github.com/harfbuzz/harfbuzz/issues/1019
    */
   buffer->clear_output ();
-  unsigned int count = buffer->len;
-  switch ((unsigned) buffer->props.script)
+  unsigned പൂർണ്ണസംഖ്യ എണ്ണം = buffer->len;
+  തിരഞ്ഞെടുപ്പ് ((unsigned) buffer->props.script)
   {
-    case HB_SCRIPT_DEVANAGARI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    അവസ്ഥ HB_SCRIPT_DEVANAGARI:
+      വേണ്ടി (buffer->idx = 0; buffer->idx + 1 < എണ്ണം && buffer->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	തർക്കം matched = അസത്യം;
+	തിരഞ്ഞെടുപ്പ് (buffer->cur ().codepoint)
 	{
-	  case 0x0905u:
-	    switch (buffer->cur (1).codepoint)
+	  അവസ്ഥ 0x0905u:
+	    തിരഞ്ഞെടുപ്പ് (buffer->cur (1).codepoint)
 	    {
-	      case 0x093Au: case 0x093Bu: case 0x093Eu: case 0x0945u:
-	      case 0x0946u: case 0x0949u: case 0x094Au: case 0x094Bu:
-	      case 0x094Cu: case 0x094Fu: case 0x0956u: case 0x0957u:
-		matched = true;
-		break;
+	      അവസ്ഥ 0x093Au: അവസ്ഥ 0x093Bu: അവസ്ഥ 0x093Eu: അവസ്ഥ 0x0945u:
+	      അവസ്ഥ 0x0946u: അവസ്ഥ 0x0949u: അവസ്ഥ 0x094Au: അവസ്ഥ 0x094Bu:
+	      അവസ്ഥ 0x094Cu: അവസ്ഥ 0x094Fu: അവസ്ഥ 0x0956u: അവസ്ഥ 0x0957u:
+		matched = സത്യം;
+		നിർത്തുക;
 	    }
-	    break;
-	  case 0x0906u:
-	    switch (buffer->cur (1).codepoint)
+	    നിർത്തുക;
+	  അവസ്ഥ 0x0906u:
+	    തിരഞ്ഞെടുപ്പ് (buffer->cur (1).codepoint)
 	    {
-	      case 0x093Au: case 0x0945u: case 0x0946u: case 0x0947u:
-	      case 0x0948u:
-		matched = true;
-		break;
+	      അവസ്ഥ 0x093Au: അവസ്ഥ 0x0945u: അവസ്ഥ 0x0946u: അവസ്ഥ 0x0947u:
+	      അവസ്ഥ 0x0948u:
+		matched = സത്യം;
+		നിർത്തുക;
 	    }
-	    break;
-	  case 0x0909u:
+	    നിർത്തുക;
+	  അവസ്ഥ 0x0909u:
 	    matched = 0x0941u == buffer->cur (1).codepoint;
-	    break;
-	  case 0x090Fu:
-	    switch (buffer->cur (1).codepoint)
+	    നിർത്തുക;
+	  അവസ്ഥ 0x090Fu:
+	    തിരഞ്ഞെടുപ്പ് (buffer->cur (1).codepoint)
 	    {
-	      case 0x0945u: case 0x0946u: case 0x0947u:
-		matched = true;
-		break;
+	      അവസ്ഥ 0x0945u: അവസ്ഥ 0x0946u: അവസ്ഥ 0x0947u:
+		matched = സത്യം;
+		നിർത്തുക;
 	    }
-	    break;
-	  case 0x0930u:
-	    if (0x094Du == buffer->cur (1).codepoint &&
-		buffer->idx + 2 < count &&
+	    നിർത്തുക;
+	  അവസ്ഥ 0x0930u:
+	    എങ്കിൽ (0x094Du == buffer->cur (1).codepoint &&
+		buffer->idx + 2 < എണ്ണം &&
 		0x0907u == buffer->cur (2).codepoint)
 	    {
-	      (void) buffer->next_glyph ();
-	      matched = true;
+	      (ശൂന്യം) buffer->next_glyph ();
+	      matched = സത്യം;
 	    }
-	    break;
+	    നിർത്തുക;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(ശൂന്യം) buffer->next_glyph ();
+	എങ്കിൽ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      നിർത്തുക;
 
-    case HB_SCRIPT_BENGALI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    അവസ്ഥ HB_SCRIPT_BENGALI:
+      വേണ്ടി (buffer->idx = 0; buffer->idx + 1 < എണ്ണം && buffer->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	തർക്കം matched = അസത്യം;
+	തിരഞ്ഞെടുപ്പ് (buffer->cur ().codepoint)
 	{
-	  case 0x0985u:
+	  അവസ്ഥ 0x0985u:
 	    matched = 0x09BEu == buffer->cur (1).codepoint;
-	    break;
-	  case 0x098Bu:
+	    നിർത്തുക;
+	  അവസ്ഥ 0x098Bu:
 	    matched = 0x09C3u == buffer->cur (1).codepoint;
-	    break;
-	  case 0x098Cu:
+	    നിർത്തുക;
+	  അവസ്ഥ 0x098Cu:
 	    matched = 0x09E2u == buffer->cur (1).codepoint;
-	    break;
+	    നിർത്തുക;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(ശൂന്യം) buffer->next_glyph ();
+	എങ്കിൽ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      നിർത്തുക;
 
-    case HB_SCRIPT_GURMUKHI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    അവസ്ഥ HB_SCRIPT_GURMUKHI:
+      വേണ്ടി (buffer->idx = 0; buffer->idx + 1 < എണ്ണം && buffer->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	തർക്കം matched = അസത്യം;
+	തിരഞ്ഞെടുപ്പ് (buffer->cur ().codepoint)
 	{
-	  case 0x0A05u:
-	    switch (buffer->cur (1).codepoint)
+	  അവസ്ഥ 0x0A05u:
+	    തിരഞ്ഞെടുപ്പ് (buffer->cur (1).codepoint)
 	    {
-	      case 0x0A3Eu: case 0x0A48u: case 0x0A4Cu:
-		matched = true;
-		break;
+	      അവസ്ഥ 0x0A3Eu: അവസ്ഥ 0x0A48u: അവസ്ഥ 0x0A4Cu:
+		matched = സത്യം;
+		നിർത്തുക;
 	    }
-	    break;
-	  case 0x0A72u:
-	    switch (buffer->cur (1).codepoint)
+	    നിർത്തുക;
+	  അവസ്ഥ 0x0A72u:
+	    തിരഞ്ഞെടുപ്പ് (buffer->cur (1).codepoint)
 	    {
-	      case 0x0A3Fu: case 0x0A40u: case 0x0A47u:
-		matched = true;
-		break;
+	      അവസ്ഥ 0x0A3Fu: അവസ്ഥ 0x0A40u: അവസ്ഥ 0x0A47u:
+		matched = സത്യം;
+		നിർത്തുക;
 	    }
-	    break;
-	  case 0x0A73u:
-	    switch (buffer->cur (1).codepoint)
+	    നിർത്തുക;
+	  അവസ്ഥ 0x0A73u:
+	    തിരഞ്ഞെടുപ്പ് (buffer->cur (1).codepoint)
 	    {
-	      case 0x0A41u: case 0x0A42u: case 0x0A4Bu:
-		matched = true;
-		break;
+	      അവസ്ഥ 0x0A41u: അവസ്ഥ 0x0A42u: അവസ്ഥ 0x0A4Bu:
+		matched = സത്യം;
+		നിർത്തുക;
 	    }
-	    break;
+	    നിർത്തുക;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(ശൂന്യം) buffer->next_glyph ();
+	എങ്കിൽ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      നിർത്തുക;
 
-    case HB_SCRIPT_GUJARATI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    അവസ്ഥ HB_SCRIPT_GUJARATI:
+      വേണ്ടി (buffer->idx = 0; buffer->idx + 1 < എണ്ണം && buffer->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	തർക്കം matched = അസത്യം;
+	തിരഞ്ഞെടുപ്പ് (buffer->cur ().codepoint)
 	{
-	  case 0x0A85u:
-	    switch (buffer->cur (1).codepoint)
+	  അവസ്ഥ 0x0A85u:
+	    തിരഞ്ഞെടുപ്പ് (buffer->cur (1).codepoint)
 	    {
-	      case 0x0ABEu: case 0x0AC5u: case 0x0AC7u: case 0x0AC8u:
-	      case 0x0AC9u: case 0x0ACBu: case 0x0ACCu:
-		matched = true;
-		break;
+	      അവസ്ഥ 0x0ABEu: അവസ്ഥ 0x0AC5u: അവസ്ഥ 0x0AC7u: അവസ്ഥ 0x0AC8u:
+	      അവസ്ഥ 0x0AC9u: അവസ്ഥ 0x0ACBu: അവസ്ഥ 0x0ACCu:
+		matched = സത്യം;
+		നിർത്തുക;
 	    }
-	    break;
-	  case 0x0AC5u:
+	    നിർത്തുക;
+	  അവസ്ഥ 0x0AC5u:
 	    matched = 0x0ABEu == buffer->cur (1).codepoint;
-	    break;
+	    നിർത്തുക;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(ശൂന്യം) buffer->next_glyph ();
+	എങ്കിൽ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      നിർത്തുക;
 
-    case HB_SCRIPT_ORIYA:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    അവസ്ഥ HB_SCRIPT_ORIYA:
+      വേണ്ടി (buffer->idx = 0; buffer->idx + 1 < എണ്ണം && buffer->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	തർക്കം matched = അസത്യം;
+	തിരഞ്ഞെടുപ്പ് (buffer->cur ().codepoint)
 	{
-	  case 0x0B05u:
+	  അവസ്ഥ 0x0B05u:
 	    matched = 0x0B3Eu == buffer->cur (1).codepoint;
-	    break;
-	  case 0x0B0Fu: case 0x0B13u:
+	    നിർത്തുക;
+	  അവസ്ഥ 0x0B0Fu: അവസ്ഥ 0x0B13u:
 	    matched = 0x0B57u == buffer->cur (1).codepoint;
-	    break;
+	    നിർത്തുക;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(ശൂന്യം) buffer->next_glyph ();
+	എങ്കിൽ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      നിർത്തുക;
 
-    case HB_SCRIPT_TAMIL:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    അവസ്ഥ HB_SCRIPT_TAMIL:
+      വേണ്ടി (buffer->idx = 0; buffer->idx + 1 < എണ്ണം && buffer->successful;)
       {
-	bool matched = false;
-	if (0x0B85u == buffer->cur ().codepoint &&
+	തർക്കം matched = അസത്യം;
+	എങ്കിൽ (0x0B85u == buffer->cur ().codepoint &&
 	    0x0BC2u == buffer->cur (1).codepoint)
 	{
-	  matched = true;
+	  matched = സത്യം;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(ശൂന്യം) buffer->next_glyph ();
+	എങ്കിൽ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      നിർത്തുക;
 
-    case HB_SCRIPT_TELUGU:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    അവസ്ഥ HB_SCRIPT_TELUGU:
+      വേണ്ടി (buffer->idx = 0; buffer->idx + 1 < എണ്ണം && buffer->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	തർക്കം matched = അസത്യം;
+	തിരഞ്ഞെടുപ്പ് (buffer->cur ().codepoint)
 	{
-	  case 0x0C12u:
-	    switch (buffer->cur (1).codepoint)
+	  അവസ്ഥ 0x0C12u:
+	    തിരഞ്ഞെടുപ്പ് (buffer->cur (1).codepoint)
 	    {
-	      case 0x0C4Cu: case 0x0C55u:
-		matched = true;
-		break;
+	      അവസ്ഥ 0x0C4Cu: അവസ്ഥ 0x0C55u:
+		matched = സത്യം;
+		നിർത്തുക;
 	    }
-	    break;
-	  case 0x0C3Fu: case 0x0C46u: case 0x0C4Au:
+	    നിർത്തുക;
+	  അവസ്ഥ 0x0C3Fu: അവസ്ഥ 0x0C46u: അവസ്ഥ 0x0C4Au:
 	    matched = 0x0C55u == buffer->cur (1).codepoint;
-	    break;
+	    നിർത്തുക;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(ശൂന്യം) buffer->next_glyph ();
+	എങ്കിൽ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      നിർത്തുക;
 
-    case HB_SCRIPT_KANNADA:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    അവസ്ഥ HB_SCRIPT_KANNADA:
+      വേണ്ടി (buffer->idx = 0; buffer->idx + 1 < എണ്ണം && buffer->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	തർക്കം matched = അസത്യം;
+	തിരഞ്ഞെടുപ്പ് (buffer->cur ().codepoint)
 	{
-	  case 0x0C89u: case 0x0C8Bu:
+	  അവസ്ഥ 0x0C89u: അവസ്ഥ 0x0C8Bu:
 	    matched = 0x0CBEu == buffer->cur (1).codepoint;
-	    break;
-	  case 0x0C92u:
+	    നിർത്തുക;
+	  അവസ്ഥ 0x0C92u:
 	    matched = 0x0CCCu == buffer->cur (1).codepoint;
-	    break;
+	    നിർത്തുക;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(ശൂന്യം) buffer->next_glyph ();
+	എങ്കിൽ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      നിർത്തുക;
 
-    case HB_SCRIPT_MALAYALAM:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    അവസ്ഥ HB_SCRIPT_MALAYALAM:
+      വേണ്ടി (buffer->idx = 0; buffer->idx + 1 < എണ്ണം && buffer->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	തർക്കം matched = അസത്യം;
+	തിരഞ്ഞെടുപ്പ് (buffer->cur ().codepoint)
 	{
-	  case 0x0D07u: case 0x0D09u:
+	  അവസ്ഥ 0x0D07u: അവസ്ഥ 0x0D09u:
 	    matched = 0x0D57u == buffer->cur (1).codepoint;
-	    break;
-	  case 0x0D0Eu:
+	    നിർത്തുക;
+	  അവസ്ഥ 0x0D0Eu:
 	    matched = 0x0D46u == buffer->cur (1).codepoint;
-	    break;
-	  case 0x0D12u:
-	    switch (buffer->cur (1).codepoint)
+	    നിർത്തുക;
+	  അവസ്ഥ 0x0D12u:
+	    തിരഞ്ഞെടുപ്പ് (buffer->cur (1).codepoint)
 	    {
-	      case 0x0D3Eu: case 0x0D57u:
-		matched = true;
-		break;
+	      അവസ്ഥ 0x0D3Eu: അവസ്ഥ 0x0D57u:
+		matched = സത്യം;
+		നിർത്തുക;
 	    }
-	    break;
+	    നിർത്തുക;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(ശൂന്യം) buffer->next_glyph ();
+	എങ്കിൽ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      നിർത്തുക;
 
-    case HB_SCRIPT_SINHALA:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    അവസ്ഥ HB_SCRIPT_SINHALA:
+      വേണ്ടി (buffer->idx = 0; buffer->idx + 1 < എണ്ണം && buffer->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	തർക്കം matched = അസത്യം;
+	തിരഞ്ഞെടുപ്പ് (buffer->cur ().codepoint)
 	{
-	  case 0x0D85u:
-	    switch (buffer->cur (1).codepoint)
+	  അവസ്ഥ 0x0D85u:
+	    തിരഞ്ഞെടുപ്പ് (buffer->cur (1).codepoint)
 	    {
-	      case 0x0DCFu: case 0x0DD0u: case 0x0DD1u:
-		matched = true;
-		break;
+	      അവസ്ഥ 0x0DCFu: അവസ്ഥ 0x0DD0u: അവസ്ഥ 0x0DD1u:
+		matched = സത്യം;
+		നിർത്തുക;
 	    }
-	    break;
-	  case 0x0D8Bu: case 0x0D8Fu: case 0x0D94u:
+	    നിർത്തുക;
+	  അവസ്ഥ 0x0D8Bu: അവസ്ഥ 0x0D8Fu: അവസ്ഥ 0x0D94u:
 	    matched = 0x0DDFu == buffer->cur (1).codepoint;
-	    break;
-	  case 0x0D8Du:
+	    നിർത്തുക;
+	  അവസ്ഥ 0x0D8Du:
 	    matched = 0x0DD8u == buffer->cur (1).codepoint;
-	    break;
-	  case 0x0D91u:
-	    switch (buffer->cur (1).codepoint)
+	    നിർത്തുക;
+	  അവസ്ഥ 0x0D91u:
+	    തിരഞ്ഞെടുപ്പ് (buffer->cur (1).codepoint)
 	    {
-	      case 0x0DCAu: case 0x0DD9u: case 0x0DDAu: case 0x0DDCu:
-	      case 0x0DDDu: case 0x0DDEu:
-		matched = true;
-		break;
+	      അവസ്ഥ 0x0DCAu: അവസ്ഥ 0x0DD9u: അവസ്ഥ 0x0DDAu: അവസ്ഥ 0x0DDCu:
+	      അവസ്ഥ 0x0DDDu: അവസ്ഥ 0x0DDEu:
+		matched = സത്യം;
+		നിർത്തുക;
 	    }
-	    break;
+	    നിർത്തുക;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(ശൂന്യം) buffer->next_glyph ();
+	എങ്കിൽ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      നിർത്തുക;
 
-    case HB_SCRIPT_BRAHMI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    അവസ്ഥ HB_SCRIPT_BRAHMI:
+      വേണ്ടി (buffer->idx = 0; buffer->idx + 1 < എണ്ണം && buffer->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	തർക്കം matched = അസത്യം;
+	തിരഞ്ഞെടുപ്പ് (buffer->cur ().codepoint)
 	{
-	  case 0x11005u:
+	  അവസ്ഥ 0x11005u:
 	    matched = 0x11038u == buffer->cur (1).codepoint;
-	    break;
-	  case 0x1100Bu:
+	    നിർത്തുക;
+	  അവസ്ഥ 0x1100Bu:
 	    matched = 0x1103Eu == buffer->cur (1).codepoint;
-	    break;
-	  case 0x1100Fu:
+	    നിർത്തുക;
+	  അവസ്ഥ 0x1100Fu:
 	    matched = 0x11042u == buffer->cur (1).codepoint;
-	    break;
+	    നിർത്തുക;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(ശൂന്യം) buffer->next_glyph ();
+	എങ്കിൽ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      നിർത്തുക;
 
-    case HB_SCRIPT_KHOJKI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    അവസ്ഥ HB_SCRIPT_KHOJKI:
+      വേണ്ടി (buffer->idx = 0; buffer->idx + 1 < എണ്ണം && buffer->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	തർക്കം matched = അസത്യം;
+	തിരഞ്ഞെടുപ്പ് (buffer->cur ().codepoint)
 	{
-	  case 0x11200u:
-	    switch (buffer->cur (1).codepoint)
+	  അവസ്ഥ 0x11200u:
+	    തിരഞ്ഞെടുപ്പ് (buffer->cur (1).codepoint)
 	    {
-	      case 0x1122Cu: case 0x11231u: case 0x11233u:
-		matched = true;
-		break;
+	      അവസ്ഥ 0x1122Cu: അവസ്ഥ 0x11231u: അവസ്ഥ 0x11233u:
+		matched = സത്യം;
+		നിർത്തുക;
 	    }
-	    break;
-	  case 0x11206u:
+	    നിർത്തുക;
+	  അവസ്ഥ 0x11206u:
 	    matched = 0x1122Cu == buffer->cur (1).codepoint;
-	    break;
-	  case 0x1122Cu:
-	    switch (buffer->cur (1).codepoint)
+	    നിർത്തുക;
+	  അവസ്ഥ 0x1122Cu:
+	    തിരഞ്ഞെടുപ്പ് (buffer->cur (1).codepoint)
 	    {
-	      case 0x11230u: case 0x11231u:
-		matched = true;
-		break;
+	      അവസ്ഥ 0x11230u: അവസ്ഥ 0x11231u:
+		matched = സത്യം;
+		നിർത്തുക;
 	    }
-	    break;
-	  case 0x11240u:
+	    നിർത്തുക;
+	  അവസ്ഥ 0x11240u:
 	    matched = 0x1122Eu == buffer->cur (1).codepoint;
-	    break;
+	    നിർത്തുക;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(ശൂന്യം) buffer->next_glyph ();
+	എങ്കിൽ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      നിർത്തുക;
 
-    case HB_SCRIPT_KHUDAWADI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    അവസ്ഥ HB_SCRIPT_KHUDAWADI:
+      വേണ്ടി (buffer->idx = 0; buffer->idx + 1 < എണ്ണം && buffer->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	തർക്കം matched = അസത്യം;
+	തിരഞ്ഞെടുപ്പ് (buffer->cur ().codepoint)
 	{
-	  case 0x112B0u:
-	    switch (buffer->cur (1).codepoint)
+	  അവസ്ഥ 0x112B0u:
+	    തിരഞ്ഞെടുപ്പ് (buffer->cur (1).codepoint)
 	    {
-	      case 0x112E0u: case 0x112E5u: case 0x112E6u: case 0x112E7u:
-	      case 0x112E8u:
-		matched = true;
-		break;
+	      അവസ്ഥ 0x112E0u: അവസ്ഥ 0x112E5u: അവസ്ഥ 0x112E6u: അവസ്ഥ 0x112E7u:
+	      അവസ്ഥ 0x112E8u:
+		matched = സത്യം;
+		നിർത്തുക;
 	    }
-	    break;
+	    നിർത്തുക;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(ശൂന്യം) buffer->next_glyph ();
+	എങ്കിൽ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      നിർത്തുക;
 
-    case HB_SCRIPT_TIRHUTA:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    അവസ്ഥ HB_SCRIPT_TIRHUTA:
+      വേണ്ടി (buffer->idx = 0; buffer->idx + 1 < എണ്ണം && buffer->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	തർക്കം matched = അസത്യം;
+	തിരഞ്ഞെടുപ്പ് (buffer->cur ().codepoint)
 	{
-	  case 0x11481u:
+	  അവസ്ഥ 0x11481u:
 	    matched = 0x114B0u == buffer->cur (1).codepoint;
-	    break;
-	  case 0x1148Bu: case 0x1148Du:
+	    നിർത്തുക;
+	  അവസ്ഥ 0x1148Bu: അവസ്ഥ 0x1148Du:
 	    matched = 0x114BAu == buffer->cur (1).codepoint;
-	    break;
-	  case 0x114AAu:
-	    switch (buffer->cur (1).codepoint)
+	    നിർത്തുക;
+	  അവസ്ഥ 0x114AAu:
+	    തിരഞ്ഞെടുപ്പ് (buffer->cur (1).codepoint)
 	    {
-	      case 0x114B5u: case 0x114B6u:
-		matched = true;
-		break;
+	      അവസ്ഥ 0x114B5u: അവസ്ഥ 0x114B6u:
+		matched = സത്യം;
+		നിർത്തുക;
 	    }
-	    break;
+	    നിർത്തുക;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(ശൂന്യം) buffer->next_glyph ();
+	എങ്കിൽ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      നിർത്തുക;
 
-    case HB_SCRIPT_MODI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    അവസ്ഥ HB_SCRIPT_MODI:
+      വേണ്ടി (buffer->idx = 0; buffer->idx + 1 < എണ്ണം && buffer->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	തർക്കം matched = അസത്യം;
+	തിരഞ്ഞെടുപ്പ് (buffer->cur ().codepoint)
 	{
-	  case 0x11600u: case 0x11601u:
-	    switch (buffer->cur (1).codepoint)
+	  അവസ്ഥ 0x11600u: അവസ്ഥ 0x11601u:
+	    തിരഞ്ഞെടുപ്പ് (buffer->cur (1).codepoint)
 	    {
-	      case 0x11639u: case 0x1163Au:
-		matched = true;
-		break;
+	      അവസ്ഥ 0x11639u: അവസ്ഥ 0x1163Au:
+		matched = സത്യം;
+		നിർത്തുക;
 	    }
-	    break;
+	    നിർത്തുക;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(ശൂന്യം) buffer->next_glyph ();
+	എങ്കിൽ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      നിർത്തുക;
 
-    case HB_SCRIPT_TAKRI:
-      for (buffer->idx = 0; buffer->idx + 1 < count && buffer->successful;)
+    അവസ്ഥ HB_SCRIPT_TAKRI:
+      വേണ്ടി (buffer->idx = 0; buffer->idx + 1 < എണ്ണം && buffer->successful;)
       {
-	bool matched = false;
-	switch (buffer->cur ().codepoint)
+	തർക്കം matched = അസത്യം;
+	തിരഞ്ഞെടുപ്പ് (buffer->cur ().codepoint)
 	{
-	  case 0x11680u:
-	    switch (buffer->cur (1).codepoint)
+	  അവസ്ഥ 0x11680u:
+	    തിരഞ്ഞെടുപ്പ് (buffer->cur (1).codepoint)
 	    {
-	      case 0x116ADu: case 0x116B4u: case 0x116B5u:
-		matched = true;
-		break;
+	      അവസ്ഥ 0x116ADu: അവസ്ഥ 0x116B4u: അവസ്ഥ 0x116B5u:
+		matched = സത്യം;
+		നിർത്തുക;
 	    }
-	    break;
-	  case 0x11686u:
+	    നിർത്തുക;
+	  അവസ്ഥ 0x11686u:
 	    matched = 0x116B2u == buffer->cur (1).codepoint;
-	    break;
+	    നിർത്തുക;
 	}
-	(void) buffer->next_glyph ();
-	if (matched) _output_with_dotted_circle (buffer);
+	(ശൂന്യം) buffer->next_glyph ();
+	എങ്കിൽ (matched) _output_with_dotted_circle (buffer);
       }
-      break;
+      നിർത്തുക;
 
-    default:
-      break;
+    സ്ഥിരസ്ഥിതി:
+      നിർത്തുക;
   }
-  buffer->sync ();
+  buffer->സമന്വയം ();
 }
 
 

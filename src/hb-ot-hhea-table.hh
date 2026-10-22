@@ -27,8 +27,8 @@
 #ifndef HB_OT_HHEA_TABLE_HH
 #define HB_OT_HHEA_TABLE_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-dual.hh"
+#അന്തര്ഭാവ "hb-open-type.hh"
+#അന്തര്ഭാവ "hb-ot-dual.hh"
 
 /*
  * hhea -- Horizontal Header
@@ -42,32 +42,32 @@
 #define HB_OT_TAG_VHEA HB_TAG('V','H','E','A')
 
 
-namespace OT {
+നാമാകാശ OT {
 
 
 template <typename T, typename Types>
-struct _hea
+ഘടന _hea
 {
-  using LongMetricCount = typename Types::HBLUINT;
+  using Long_Metric_എണ്ണം = typename Types::HBLUINT;
 
-  static constexpr unsigned long_metric_count_max ()
-  { return LongMetricCount::static_size == 4 ? 0xFFFFFFFFu : 0xFFFFu; }
+  സ്ഥിതം constexpr unsigned long_metric_എണ്ണം_max ()
+  { തിരികെ Long_Metric_എണ്ണം::static_size == 4 ? 0xFFFFFFFFu : 0xFFFFu; }
 
-  bool has_data () const { return version.major; }
+  തർക്കം has_data () സ്ഥിരം { തിരികെ version.major; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്) &&
 		  hb_barrier () &&
 		  likely (version.major == 1));
   }
 
-  public:
+  പൊതു:
   FixedVersion<>version;	/* 0x00010000u for version 1.0. */
   FWORD		ascender;	/* Typographic ascent. */
   FWORD		descender;	/* Typographic descent. */
-  FWORD		lineGap;	/* Typographic line gap. */
+  FWORD		വരി_Gap;	/* Typographic line gap. */
   UFWORD	advanceMax;	/* Maximum advance width/height value in
 				 * metrics table. */
   FWORD		minLeadingBearing;
@@ -93,34 +93,34 @@ struct _hea
   HBINT16	reserved3;	/* Set to 0. */
   HBINT16	reserved4;	/* Set to 0. */
   HBINT16	metricDataFormat;/* 0 for current format. */
-  LongMetricCount
-		numberOfLongMetrics;
+  Long_Metric_എണ്ണം
+		സംഖ്യ_Of_Long_Metrics;
 				/* Number of LongMetric entries in metric
 				 * table. */
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (34 + Types::HBLUINT::static_size);
 };
 
-struct hhea : _hea<hhea, Layout::SmallTypes> {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_hhea;
+ഘടന hhea : _hea<hhea, Layout::SmallTypes> {
+  സ്ഥിതം constexpr hb_tag_t tableTag = HB_OT_TAG_hhea;
 };
-struct HHEA : _hea<HHEA, Layout::MediumTypes> {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_HHEA;
+ഘടന HHEA : _hea<HHEA, Layout::MediumTypes> {
+  സ്ഥിതം constexpr hb_tag_t tableTag = HB_OT_TAG_HHEA;
 };
-struct vhea : _hea<vhea, Layout::SmallTypes> {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_vhea;
+ഘടന vhea : _hea<vhea, Layout::SmallTypes> {
+  സ്ഥിതം constexpr hb_tag_t tableTag = HB_OT_TAG_vhea;
 };
-struct VHEA : _hea<VHEA, Layout::MediumTypes> {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_VHEA;
+ഘടന VHEA : _hea<VHEA, Layout::MediumTypes> {
+  സ്ഥിതം constexpr hb_tag_t tableTag = HB_OT_TAG_VHEA;
 };
 
-struct hhea_accelerator_t : hb_dual_table_t<hhea, HHEA>
+ഘടന hhea_accelerator_t : hb_dual_table_t<hhea, HHEA>
 {
   hhea_accelerator_t (hb_face_t *face) :
     hb_dual_table_t<hhea, HHEA> (face) {}
 };
 
-struct vhea_accelerator_t : hb_dual_table_t<vhea, VHEA>
+ഘടന vhea_accelerator_t : hb_dual_table_t<vhea, VHEA>
 {
   vhea_accelerator_t (hb_face_t *face) :
     hb_dual_table_t<vhea, VHEA> (face) {}

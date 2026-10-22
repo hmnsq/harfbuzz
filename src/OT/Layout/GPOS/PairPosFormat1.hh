@@ -1,25 +1,25 @@
 #ifndef OT_LAYOUT_GPOS_PAIRPOSFORMAT1_HH
 #define OT_LAYOUT_GPOS_PAIRPOSFORMAT1_HH
 
-#include "PairSet.hh"
+#അന്തര്ഭാവ "PairSet.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+നാമാകാശ OT {
+നാമാകാശ Layout {
+നാമാകാശ GPOS_impl {
 
 
 template <typename Types>
-struct PairPosFormat1_3
+ഘടന PairPosFormat1_3
 {
   using PairSet = GPOS_impl::PairSet<Types>;
-  using PairValueRecord = GPOS_impl::PairValueRecord<Types>;
+  using Pair_മൂല്യം_Record = GPOS_impl::Pair_മൂല്യം_Record<Types>;
 
-  protected:
+  സംരക്ഷിത:
   HBUINT16      format;                 /* Format identifier--format = 1 */
   typename Types::template LOffsetTo<Coverage>
                 coverage;               /* Offset to Coverage table--from
                                          * beginning of subtable */
-  ValueFormat   valueFormat[2];         /* [0] Defines the types of data in
+  മൂല്യം_Format   മൂല്യം_Format_2[2];         /* [0] Defines the types of data in
                                          * ValueRecord1--for the first glyph
                                          * in the pair--may be zero (0) */
                                         /* [1] Defines the types of data in
@@ -28,202 +28,202 @@ struct PairPosFormat1_3
   typename Types::template ArrayOf<typename Types::template OffsetTo<PairSet>>
                 pairSet;                /* Array of PairSet tables ordered by
                                          * Coverage Index */
-  public:
-  DEFINE_SIZE_ARRAY (2 + Types::LOffset::static_size + 2 * ValueFormat::static_size + Types::HBUINT::static_size, pairSet);
+  പൊതു:
+  DEFINE_SIZE_ARRAY (2 + Types::LOffset::static_size + 2 * മൂല്യം_Format::static_size + Types::HBUINT::static_size, pairSet);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (ഇത്);
 
-    if (!c->check_struct (this)) return_trace (false);
+    എങ്കിൽ (!c->check_struct (ഇത്)) return_trace (അസത്യം);
     hb_barrier ();
 
-    unsigned int len1 = valueFormat[0].get_len ();
-    unsigned int len2 = valueFormat[1].get_len ();
+    unsigned പൂർണ്ണസംഖ്യ len1 = മൂല്യം_Format_2[0].get_len ();
+    unsigned പൂർണ്ണസംഖ്യ len2 = മൂല്യം_Format_2[1].get_len ();
     typename PairSet::sanitize_closure_t closure =
     {
-      valueFormat,
+      മൂല്യം_Format_2,
       len1,
       PairSet::get_size (len1, len2)
     };
 
-    return_trace (coverage.sanitize (c, this) && pairSet.sanitize (c, this, &closure));
+    return_trace (coverage.sanitize (c, ഇത്) && pairSet.sanitize (c, ഇത്, &closure));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  തർക്കം intersects (സ്ഥിരം hb_set_t *glyphs) സ്ഥിരം
   {
-    auto &cov = this+coverage;
+    auto &cov = ഇത്+coverage;
 
-    if (pairSet.len > glyphs->get_population () * hb_bit_storage ((unsigned) pairSet.len))
+    എങ്കിൽ (pairSet.len > glyphs->get_population () * hb_bit_storage ((unsigned) pairSet.len))
     {
-      for (hb_codepoint_t g : glyphs->iter ())
+      വേണ്ടി (hb_codepoint_t g : glyphs->iter ())
       {
 	unsigned i = cov.get_coverage (g);
-	if ((this+pairSet[i]).intersects (glyphs, valueFormat))
-	  return true;
+	എങ്കിൽ ((ഇത്+pairSet[i]).intersects (glyphs, മൂല്യം_Format_2))
+	  തിരികെ സത്യം;
       }
-      return false;
+      തിരികെ അസത്യം;
     }
 
-    return
+    തിരികെ
     + hb_zip (cov, pairSet)
     | hb_filter (*glyphs, hb_first)
     | hb_map (hb_second)
-    | hb_map ([glyphs, this] (const typename Types::template OffsetTo<PairSet> &_)
-              { return (this+_).intersects (glyphs, valueFormat); })
+    | hb_map ([glyphs, ഇത്] (സ്ഥിരം typename Types::template OffsetTo<PairSet> &_)
+              { തിരികെ (ഇത്+_).intersects (glyphs, മൂല്യം_Format_2); })
     | hb_any
     ;
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const {}
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  ശൂന്യം closure_lookups (hb_closure_lookups_context_t *c) സ്ഥിരം {}
+  ശൂന്യം collect_variation_indices (hb_collect_variation_indices_context_t *c) സ്ഥിരം
   {
-    if ((!valueFormat[0].has_device ()) && (!valueFormat[1].has_device ())) return;
+    എങ്കിൽ ((!മൂല്യം_Format_2[0].has_device ()) && (!മൂല്യം_Format_2[1].has_device ())) തിരികെ;
 
     auto it =
-    + hb_zip (this+coverage, pairSet)
+    + hb_zip (ഇത്+coverage, pairSet)
     | hb_filter (c->glyph_set, hb_first)
     | hb_map (hb_second)
     ;
 
-    if (!it) return;
+    എങ്കിൽ (!it) തിരികെ;
     + it
-    | hb_map (hb_add (this))
-    | hb_apply ([&] (const PairSet& _) { _.collect_variation_indices (c, valueFormat); })
+    | hb_map (hb_add (ഇത്))
+    | hb_apply ([&] (സ്ഥിരം PairSet& _) { _.collect_variation_indices (c, മൂല്യം_Format_2); })
     ;
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  ശൂന്യം collect_glyphs (hb_collect_glyphs_context_t *c) സ്ഥിരം
   {
-    if (unlikely (!(this+coverage).collect_coverage (c->input))) return;
-    unsigned int count = pairSet.len;
-    for (unsigned int i = 0; i < count; i++)
-      (this+pairSet[i]).collect_glyphs (c, valueFormat);
+    എങ്കിൽ (unlikely (!(ഇത്+coverage).collect_coverage (c->നിവേശം))) തിരികെ;
+    unsigned പൂർണ്ണസംഖ്യ എണ്ണം = pairSet.len;
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
+      (ഇത്+pairSet[i]).collect_glyphs (c, മൂല്യം_Format_2);
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest) const
+  ശൂന്യം collect_second_glyphs (hb_set_digest_t *digest) സ്ഥിരം
   {
-    unsigned count = pairSet.len;
-    for (unsigned i = 0; i < count; i++)
-      (this+pairSet[i]).collect_second_glyphs (digest, valueFormat);
+    unsigned എണ്ണം = pairSet.len;
+    വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++)
+      (ഇത്+pairSet[i]).collect_second_glyphs (digest, മൂല്യം_Format_2);
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  സ്ഥിരം Coverage &get_coverage () സ്ഥിരം { തിരികെ ഇത്+coverage; }
 
-  struct external_cache_t
+  ഘടന external_cache_t
   {
     hb_ot_layout_mapping_cache_t coverage;
     hb_set_digest_t pair_sets[HB_VAR_ARRAY];
   };
-  void *external_cache_create () const
+  ശൂന്യം *external_cache_create () സ്ഥിരം
   {
-    unsigned count = pairSet.len;
-    unsigned size = sizeof (external_cache_t) -
-		    HB_VAR_ARRAY * sizeof (hb_set_digest_t) +
-		    count * sizeof (hb_set_digest_t);
+    unsigned എണ്ണം = pairSet.len;
+    unsigned size = വലുപ്പം (external_cache_t) -
+		    HB_VAR_ARRAY * വലുപ്പം (hb_set_digest_t) +
+		    എണ്ണം * വലുപ്പം (hb_set_digest_t);
     external_cache_t *cache = (external_cache_t *) hb_malloc (size);
-    if (likely (cache))
+    എങ്കിൽ (likely (cache))
     {
       cache->coverage.clear ();
-      for (unsigned i = 0; i < count; i++)
+      വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++)
       {
 	cache->pair_sets[i].init ();
-	(this+pairSet[i]).collect_second_glyphs (&cache->pair_sets[i], valueFormat);
+	(ഇത്+pairSet[i]).collect_second_glyphs (&cache->pair_sets[i], മൂല്യം_Format_2);
       }
     }
-    return cache;
+    തിരികെ cache;
   }
 
-  bool apply (hb_ot_apply_context_t *c, void *external_cache) const
+  തർക്കം apply (hb_ot_apply_context_t *c, ശൂന്യം *external_cache) സ്ഥിരം
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (ഇത്);
 
     hb_buffer_t *buffer = c->buffer;
 
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
     external_cache_t *cache = (external_cache_t *) external_cache;
-    unsigned int index = (this+coverage).get_coverage  (buffer->cur().codepoint, cache ? &cache->coverage : nullptr);
-#else
-    unsigned int index = (this+coverage).get_coverage  (buffer->cur().codepoint);
+    unsigned പൂർണ്ണസംഖ്യ index = (ഇത്+coverage).get_coverage  (buffer->cur().codepoint, cache ? &cache->coverage : nullptr);
+#അല്ലെങ്കിൽ
+    unsigned പൂർണ്ണസംഖ്യ index = (ഇത്+coverage).get_coverage  (buffer->cur().codepoint);
 #endif
-    if (index == NOT_COVERED) return_trace (false);
+    എങ്കിൽ (index == NOT_COVERED) return_trace (അസത്യം);
 
-    auto &skippy_iter = c->iter_input;
+    auto &skippy_iter = c->iter_നിവേശം;
     skippy_iter.reset_fast (buffer->idx);
     unsigned unsafe_to;
-    if (unlikely (!skippy_iter.next (&unsafe_to)))
+    എങ്കിൽ (unlikely (!skippy_iter.next (&unsafe_to)))
     {
       buffer->unsafe_to_concat (buffer->idx, unsafe_to);
-      return_trace (false);
+      return_trace (അസത്യം);
     }
 
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
-    if (cache &&
+    എങ്കിൽ (cache &&
 	index < pairSet.len &&
 	!cache->pair_sets[index].may_have (buffer->info[skippy_iter.idx].codepoint))
     {
       buffer->unsafe_to_concat (buffer->idx, skippy_iter.idx + 1);
-      return_trace (false);
+      return_trace (അസത്യം);
     }
 #endif
 
-    return_trace ((this+pairSet[index]).apply (c, valueFormat, skippy_iter.idx));
+    return_trace ((ഇത്+pairSet[index]).apply (c, മൂല്യം_Format_2, skippy_iter.idx));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  തർക്കം subset (hb_subset_context_t *c) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (ഇത്);
 
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    സ്ഥിരം hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+    സ്ഥിരം hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (*ഇത്);
+    എങ്കിൽ (unlikely (!c->serializer->extend_min (out))) return_trace (അസത്യം);
     out->format = format;
 
-    hb_pair_t<unsigned, unsigned> newFormats = hb_pair (valueFormat[0], valueFormat[1]);
+    hb_pair_t<unsigned, unsigned> newFormats = hb_pair (മൂല്യം_Format_2[0], മൂല്യം_Format_2[1]);
 
-    if (c->plan->normalized_coords)
+    എങ്കിൽ (c->plan->normalized_coords)
     {
       /* all device flags will be dropped when full instancing, no need to strip
        * hints, also do not strip emtpy cause we don't compute the new default
        * value during stripping */
-      newFormats = compute_effective_value_formats (glyphset, false, false, &c->plan->layout_variation_idx_delta_map);
+      newFormats = compute_effective_മൂല്യം_formats (glyphset, അസത്യം, അസത്യം, &c->plan->layout_variation_idx_delta_map);
     }
     /* do not strip hints for VF */
-    else if (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
+    അല്ലെങ്കിൽ എങ്കിൽ (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
     {
       hb_blob_t* blob = hb_face_reference_table (c->plan->source, HB_TAG ('f','v','a','r'));
-      bool has_fvar = (blob != hb_blob_get_empty ());
+      തർക്കം has_fvar = (blob != hb_blob_get_empty ());
       hb_blob_destroy (blob);
 
-      bool strip = !has_fvar;
+      തർക്കം strip = !has_fvar;
       /* special case: strip hints when a VF has no GDEF varstore after
        * subsetting*/
-      if (has_fvar && !c->plan->has_gdef_varstore)
-        strip = true;
-      newFormats = compute_effective_value_formats (glyphset, strip, true);
+      എങ്കിൽ (has_fvar && !c->plan->has_gdef_varstore)
+        strip = സത്യം;
+      newFormats = compute_effective_മൂല്യം_formats (glyphset, strip, സത്യം);
     }
 
-    out->valueFormat[0] = newFormats.first;
-    out->valueFormat[1] = newFormats.second;
+    out->മൂല്യം_Format_2[0] = newFormats.first;
+    out->മൂല്യം_Format_2[1] = newFormats.second;
 
     hb_sorted_vector_t<hb_codepoint_t> new_coverage;
 
-    + hb_zip (this+coverage, pairSet)
+    + hb_zip (ഇത്+coverage, pairSet)
     | hb_filter (glyphset, hb_first)
-    | hb_filter ([this, c, out] (const typename Types::template OffsetTo<PairSet>& _)
+    | hb_filter ([ഇത്, c, out] (സ്ഥിരം typename Types::template OffsetTo<PairSet>& _)
                  {
                    auto snap = c->serializer->snapshot ();
                    auto *o = out->pairSet.serialize_append (c->serializer);
-                   if (unlikely (!o)) return false;
-                   bool ret = o->serialize_subset (c, _, this, valueFormat, out->valueFormat);
-                   if (!ret)
+                   എങ്കിൽ (unlikely (!o)) തിരികെ അസത്യം;
+                   തർക്കം ret = o->serialize_subset (c, _, ഇത്, മൂല്യം_Format_2, out->മൂല്യം_Format_2);
+                   എങ്കിൽ (!ret)
                    {
-                     out->pairSet.pop ();
+                     out->pairSet.എടുക്കുക ();
                      c->serializer->revert (snap);
                    }
-                   return ret;
+                   തിരികെ ret;
                  },
                  hb_second)
     | hb_map (hb_first)
@@ -233,34 +233,34 @@ struct PairPosFormat1_3
 
     out->coverage.serialize_serialize (c->serializer, new_coverage.iter ());
 
-    return_trace (bool (new_coverage));
+    return_trace (തർക്കം (new_coverage));
   }
 
 
-  hb_pair_t<unsigned, unsigned> compute_effective_value_formats (const hb_set_t& glyphset,
-                                                                 bool strip_hints, bool strip_empty,
-                                                                 const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map = nullptr) const
+  hb_pair_t<unsigned, unsigned> compute_effective_മൂല്യം_formats (സ്ഥിരം hb_set_t& glyphset,
+                                                                 തർക്കം strip_hints, തർക്കം strip_empty,
+                                                                 സ്ഥിരം hb_hashmap_t<unsigned, hb_pair_t<unsigned, പൂർണ്ണസംഖ്യ>> *varidx_delta_map = nullptr) സ്ഥിരം
   {
     unsigned format1 = 0;
     unsigned format2 = 0;
-    for (const auto & _ :
-	  + hb_zip (this+coverage, pairSet)
+    വേണ്ടി (സ്ഥിരം auto & _ :
+	  + hb_zip (ഇത്+coverage, pairSet)
 	  | hb_filter (glyphset, hb_first)
 	  | hb_map (hb_second)
 	)
     {
-      const PairSet& set = (this + _);
-      auto formats = set.get_values_view (valueFormat).compute_effective_value_formats (
-          glyphset, valueFormat, strip_hints, strip_empty, varidx_delta_map);
+      സ്ഥിരം PairSet& set = (ഇത് + _);
+      auto formats = set.get_മൂല്യങ്ങൾ_view (മൂല്യം_Format_2).compute_effective_മൂല്യം_formats (
+          glyphset, മൂല്യം_Format_2, strip_hints, strip_empty, varidx_delta_map);
       format1 |= formats.first;
       format2 |= formats.second;
 
-      if (!varidx_delta_map &&
-          format1 == valueFormat[0] && format2 == valueFormat[1])
-        break;
+      എങ്കിൽ (!varidx_delta_map &&
+          format1 == മൂല്യം_Format_2[0] && format2 == മൂല്യം_Format_2[1])
+        നിർത്തുക;
     }
 
-    return hb_pair (format1, format2);
+    തിരികെ hb_pair (format1, format2);
   }
 };
 

@@ -24,10 +24,10 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
-#include "hb-vector-paint.hh"
-#include "hb-vector-path.hh"
-#include "hb-font.hh"
+#അന്തര്ഭാവ "hb.hh"
+#അന്തര്ഭാവ "hb-vector-paint.hh"
+#അന്തര്ഭാവ "hb-vector-path.hh"
+#അന്തര്ഭാവ "hb-font.hh"
 
 /**
  * hb_vector_paint_create_or_fail:
@@ -42,18 +42,18 @@
 hb_vector_paint_t *
 hb_vector_paint_create_or_fail (hb_vector_format_t format)
 {
-  switch (format)
+  തിരഞ്ഞെടുപ്പ് (format)
   {
-    case HB_VECTOR_FORMAT_SVG:
-    case HB_VECTOR_FORMAT_PDF:
-      break;
-    case HB_VECTOR_FORMAT_INVALID: default:
-      return nullptr;
+    അവസ്ഥ HB_VECTOR_FORMAT_SVG:
+    അവസ്ഥ HB_VECTOR_FORMAT_PDF:
+      നിർത്തുക;
+    അവസ്ഥ HB_VECTOR_FORMAT_INVALID: സ്ഥിരസ്ഥിതി:
+      തിരികെ nullptr;
   }
 
   hb_vector_paint_t *paint = hb_object_create<hb_vector_paint_t> ();
-  if (unlikely (!paint))
-    return nullptr;
+  എങ്കിൽ (unlikely (!paint))
+    തിരികെ nullptr;
   paint->format = format;
 
   paint->active_color_glyphs = hb_set_create ();
@@ -62,7 +62,7 @@ hb_vector_paint_create_or_fail (hb_vector_format_t format)
   paint->captured_scratch.alloc (4096);
   paint->color_stops_scratch.alloc (16);
 
-  return paint;
+  തിരികെ paint;
 }
 
 /**
@@ -78,7 +78,7 @@ hb_vector_paint_create_or_fail (hb_vector_format_t format)
 hb_vector_paint_t *
 hb_vector_paint_reference (hb_vector_paint_t *paint)
 {
-  return hb_object_reference (paint);
+  തിരികെ hb_object_reference (paint);
 }
 
 /**
@@ -89,13 +89,13 @@ hb_vector_paint_reference (hb_vector_paint_t *paint)
  *
  * Since: 13.0.0
  */
-void
+ശൂന്യം
 hb_vector_paint_destroy (hb_vector_paint_t *paint)
 {
-  if (!hb_object_should_destroy (paint))
-    return;
+  എങ്കിൽ (!hb_object_should_destroy (paint))
+    തിരികെ;
 
-  if (paint->format == HB_VECTOR_FORMAT_PDF)
+  എങ്കിൽ (paint->format == HB_VECTOR_FORMAT_PDF)
     hb_vector_paint_pdf_free_resources (paint);
   hb_blob_destroy (paint->recycled_blob);
   hb_set_destroy (paint->active_color_glyphs);
@@ -120,12 +120,12 @@ hb_vector_paint_destroy (hb_vector_paint_t *paint)
  */
 hb_bool_t
 hb_vector_paint_set_user_data (hb_vector_paint_t  *paint,
-                               hb_user_data_key_t *key,
-                               void               *data,
+                               hb_user_data_താക്കോൽ_t *key,
+                               ശൂന്യം               *data,
                                hb_destroy_func_t   destroy,
                                hb_bool_t           replace)
 {
-  return hb_object_set_user_data (paint, key, data, destroy, replace);
+  തിരികെ hb_object_set_user_data (paint, key, data, destroy, replace);
 }
 
 /**
@@ -139,11 +139,11 @@ hb_vector_paint_set_user_data (hb_vector_paint_t  *paint,
  *
  * Since: 13.0.0
  */
-void *
-hb_vector_paint_get_user_data (const hb_vector_paint_t  *paint,
-                               hb_user_data_key_t *key)
+ശൂന്യം *
+hb_vector_paint_get_user_data (സ്ഥിരം hb_vector_paint_t  *paint,
+                               hb_user_data_താക്കോൽ_t *key)
 {
-  return hb_object_get_user_data (paint, key);
+  തിരികെ hb_object_get_user_data (paint, key);
 }
 
 /**
@@ -160,11 +160,11 @@ hb_vector_paint_get_user_data (const hb_vector_paint_t  *paint,
  *
  * Since: 13.0.0
  */
-void
+ശൂന്യം
 hb_vector_paint_set_transform (hb_vector_paint_t *paint,
-                               float xx, float yx,
-                               float xy, float yy,
-                               float dx, float dy)
+                               ദശാംശം xx, ദശാംശം yx,
+                               ദശാംശം xy, ദശാംശം yy,
+                               ദശാംശം dx, ദശാംശം dy)
 {
   paint->transform = {xx, yx, xy, yy, dx, dy};
 }
@@ -183,18 +183,18 @@ hb_vector_paint_set_transform (hb_vector_paint_t *paint,
  *
  * Since: 13.0.0
  */
-void
-hb_vector_paint_get_transform (const hb_vector_paint_t *paint,
-                               float *xx, float *yx,
-                               float *xy, float *yy,
-                               float *dx, float *dy)
+ശൂന്യം
+hb_vector_paint_get_transform (സ്ഥിരം hb_vector_paint_t *paint,
+                               ദശാംശം *xx, ദശാംശം *yx,
+                               ദശാംശം *xy, ദശാംശം *yy,
+                               ദശാംശം *dx, ദശാംശം *dy)
 {
-  if (xx) *xx = paint->transform.xx;
-  if (yx) *yx = paint->transform.yx;
-  if (xy) *xy = paint->transform.xy;
-  if (yy) *yy = paint->transform.yy;
-  if (dx) *dx = paint->transform.x0;
-  if (dy) *dy = paint->transform.y0;
+  എങ്കിൽ (xx) *xx = paint->transform.xx;
+  എങ്കിൽ (yx) *yx = paint->transform.yx;
+  എങ്കിൽ (xy) *xy = paint->transform.xy;
+  എങ്കിൽ (yy) *yy = paint->transform.yy;
+  എങ്കിൽ (dx) *dx = paint->transform.x0;
+  എങ്കിൽ (dy) *dy = paint->transform.y0;
 }
 
 /**
@@ -207,10 +207,10 @@ hb_vector_paint_get_transform (const hb_vector_paint_t *paint,
  *
  * Since: 13.0.0
  */
-void
+ശൂന്യം
 hb_vector_paint_set_scale_factor (hb_vector_paint_t *paint,
-                                  float x_scale_factor,
-                                  float y_scale_factor)
+                                  ദശാംശം x_scale_factor,
+                                  ദശാംശം y_scale_factor)
 {
   paint->x_scale_factor = x_scale_factor > 0.f ? x_scale_factor : 1.f;
   paint->y_scale_factor = y_scale_factor > 0.f ? y_scale_factor : 1.f;
@@ -226,13 +226,13 @@ hb_vector_paint_set_scale_factor (hb_vector_paint_t *paint,
  *
  * Since: 13.0.0
  */
-void
-hb_vector_paint_get_scale_factor (const hb_vector_paint_t *paint,
-                                  float *x_scale_factor,
-                                  float *y_scale_factor)
+ശൂന്യം
+hb_vector_paint_get_scale_factor (സ്ഥിരം hb_vector_paint_t *paint,
+                                  ദശാംശം *x_scale_factor,
+                                  ദശാംശം *y_scale_factor)
 {
-  if (x_scale_factor) *x_scale_factor = paint->x_scale_factor;
-  if (y_scale_factor) *y_scale_factor = paint->y_scale_factor;
+  എങ്കിൽ (x_scale_factor) *x_scale_factor = paint->x_scale_factor;
+  എങ്കിൽ (y_scale_factor) *y_scale_factor = paint->y_scale_factor;
 }
 
 /**
@@ -244,19 +244,19 @@ hb_vector_paint_get_scale_factor (const hb_vector_paint_t *paint,
  *
  * Since: 13.0.0
  */
-void
+ശൂന്യം
 hb_vector_paint_set_extents (hb_vector_paint_t *paint,
-                             const hb_vector_extents_t *extents)
+                             സ്ഥിരം hb_vector_extents_t *extents)
 {
-  if (!extents)
+  എങ്കിൽ (!extents)
   {
     paint->extents = {0, 0, 0, 0};
-    paint->has_extents = false;
-    return;
+    paint->has_extents = അസത്യം;
+    തിരികെ;
   }
 
-  if (extents->width == 0.f || extents->height == 0.f)
-    return;
+  എങ്കിൽ (extents->width == 0.f || extents->height == 0.f)
+    തിരികെ;
 
   /* Caller-supplied extents are in input-space; divide by
    * scale_factor so they end up in output-space, matching
@@ -265,29 +265,29 @@ hb_vector_paint_set_extents (hb_vector_paint_t *paint,
    * same divide).  Normalize so origin is the min corner and
    * width/height are positive — callers may pass a
    * glyph-extents-style box with negative height. */
-  float x0 = extents->x / paint->x_scale_factor;
-  float y0 = extents->y / paint->y_scale_factor;
-  float x1 = x0 + extents->width  / paint->x_scale_factor;
-  float y1 = y0 + extents->height / paint->y_scale_factor;
+  ദശാംശം x0 = extents->x / paint->x_scale_factor;
+  ദശാംശം y0 = extents->y / paint->y_scale_factor;
+  ദശാംശം x1 = x0 + extents->width  / paint->x_scale_factor;
+  ദശാംശം y1 = y0 + extents->height / paint->y_scale_factor;
   hb_vector_extents_t e = {
     hb_min (x0, x1), hb_min (y0, y1),
     fabsf (x1 - x0), fabsf (y1 - y0),
   };
 
-  if (paint->has_extents)
+  എങ്കിൽ (paint->has_extents)
   {
-    float x0 = hb_min (paint->extents.x, e.x);
-    float y0 = hb_min (paint->extents.y, e.y);
-    float x1 = hb_max (paint->extents.x + paint->extents.width,
+    ദശാംശം x0 = hb_min (paint->extents.x, e.x);
+    ദശാംശം y0 = hb_min (paint->extents.y, e.y);
+    ദശാംശം x1 = hb_max (paint->extents.x + paint->extents.width,
 		       e.x + e.width);
-    float y1 = hb_max (paint->extents.y + paint->extents.height,
+    ദശാംശം y1 = hb_max (paint->extents.y + paint->extents.height,
 		       e.y + e.height);
     paint->extents = {x0, y0, x1 - x0, y1 - y0};
   }
-  else
+  അല്ലെങ്കിൽ
   {
     paint->extents = e;
-    paint->has_extents = true;
+    paint->has_extents = സത്യം;
   }
 }
 
@@ -303,15 +303,15 @@ hb_vector_paint_set_extents (hb_vector_paint_t *paint,
  * Since: 13.0.0
  */
 hb_bool_t
-hb_vector_paint_get_extents (const hb_vector_paint_t *paint,
+hb_vector_paint_get_extents (സ്ഥിരം hb_vector_paint_t *paint,
                              hb_vector_extents_t *extents)
 {
-  if (!paint->has_extents)
-    return false;
+  എങ്കിൽ (!paint->has_extents)
+    തിരികെ അസത്യം;
 
-  if (extents)
+  എങ്കിൽ (extents)
     *extents = paint->extents;
-  return true;
+  തിരികെ സത്യം;
 }
 
 /**
@@ -327,7 +327,7 @@ hb_vector_paint_get_extents (const hb_vector_paint_t *paint,
  */
 hb_bool_t
 hb_vector_paint_set_glyph_extents (hb_vector_paint_t *paint,
-                                   const hb_glyph_extents_t *glyph_extents)
+                                   സ്ഥിരം hb_glyph_extents_t *glyph_extents)
 {
   hb_bool_t has_extents = paint->has_extents;
   hb_bool_t ret = hb_vector_set_glyph_extents_common (paint->transform,
@@ -337,7 +337,7 @@ hb_vector_paint_set_glyph_extents (hb_vector_paint_t *paint,
 						   &paint->extents,
 						   &has_extents);
   paint->has_extents = has_extents;
-  return ret;
+  തിരികെ ret;
 }
 
 /**
@@ -349,7 +349,7 @@ hb_vector_paint_set_glyph_extents (hb_vector_paint_t *paint,
  *
  * Since: 13.0.0
  */
-void
+ശൂന്യം
 hb_vector_paint_set_foreground (hb_vector_paint_t *paint,
                                 hb_color_t foreground)
 {
@@ -368,9 +368,9 @@ hb_vector_paint_set_foreground (hb_vector_paint_t *paint,
  * Since: 14.2.0
  */
 hb_color_t
-hb_vector_paint_get_foreground (const hb_vector_paint_t *paint)
+hb_vector_paint_get_foreground (സ്ഥിരം hb_vector_paint_t *paint)
 {
-  return paint->foreground;
+  തിരികെ paint->foreground;
 }
 
 /**
@@ -384,7 +384,7 @@ hb_vector_paint_get_foreground (const hb_vector_paint_t *paint)
  *
  * Since: 14.2.0
  */
-void
+ശൂന്യം
 hb_vector_paint_set_background (hb_vector_paint_t *paint,
                                 hb_color_t background)
 {
@@ -403,9 +403,9 @@ hb_vector_paint_set_background (hb_vector_paint_t *paint,
  * Since: 14.2.0
  */
 hb_color_t
-hb_vector_paint_get_background (const hb_vector_paint_t *paint)
+hb_vector_paint_get_background (സ്ഥിരം hb_vector_paint_t *paint)
 {
-  return paint->background;
+  തിരികെ paint->background;
 }
 
 /**
@@ -417,9 +417,9 @@ hb_vector_paint_get_background (const hb_vector_paint_t *paint)
  *
  * Since: 13.0.0
  */
-void
+ശൂന്യം
 hb_vector_paint_set_palette (hb_vector_paint_t *paint,
-                             int palette)
+                             പൂർണ്ണസംഖ്യ palette)
 {
   paint->palette = palette;
 }
@@ -435,10 +435,10 @@ hb_vector_paint_set_palette (hb_vector_paint_t *paint,
  *
  * Since: 14.2.0
  */
-int
-hb_vector_paint_get_palette (const hb_vector_paint_t *paint)
+പൂർണ്ണസംഖ്യ
+hb_vector_paint_get_palette (സ്ഥിരം hb_vector_paint_t *paint)
 {
-  return paint->palette;
+  തിരികെ paint->palette;
 }
 
 /**
@@ -456,7 +456,7 @@ hb_vector_paint_get_palette (const hb_vector_paint_t *paint)
  *
  * Since: 13.0.0
  */
-void
+ശൂന്യം
 hb_vector_paint_set_custom_palette_color (hb_vector_paint_t *paint,
                                           unsigned color_index,
                                           hb_color_t color)
@@ -475,7 +475,7 @@ hb_vector_paint_set_custom_palette_color (hb_vector_paint_t *paint,
  *
  * Since: 13.0.0
  */
-void
+ശൂന്യം
 hb_vector_paint_clear_custom_palette_colors (hb_vector_paint_t *paint)
 {
   paint->custom_palette_colors.clear ();
@@ -492,9 +492,9 @@ hb_vector_paint_clear_custom_palette_colors (hb_vector_paint_t *paint)
  * Since: 14.2.0
  */
 hb_vector_format_t
-hb_vector_paint_get_format (const hb_vector_paint_t *paint)
+hb_vector_paint_get_format (സ്ഥിരം hb_vector_paint_t *paint)
 {
-  return paint->format;
+  തിരികെ paint->format;
 }
 
 /**
@@ -509,32 +509,32 @@ hb_vector_paint_get_format (const hb_vector_paint_t *paint)
  * Since: 14.2.0
  */
 hb_paint_funcs_t *
-hb_vector_paint_get_funcs (const hb_vector_paint_t *paint)
+hb_vector_paint_get_funcs (സ്ഥിരം hb_vector_paint_t *paint)
 {
-  switch (paint ? paint->format : HB_VECTOR_FORMAT_INVALID)
+  തിരഞ്ഞെടുപ്പ് (paint ? paint->format : HB_VECTOR_FORMAT_INVALID)
   {
-    case HB_VECTOR_FORMAT_PDF:
-      return hb_vector_paint_pdf_funcs_get ();
-    case HB_VECTOR_FORMAT_SVG:
-      return hb_vector_paint_svg_funcs_get ();
-    case HB_VECTOR_FORMAT_INVALID:
-    default:
-      return nullptr;
+    അവസ്ഥ HB_VECTOR_FORMAT_PDF:
+      തിരികെ hb_vector_paint_pdf_funcs_get ();
+    അവസ്ഥ HB_VECTOR_FORMAT_SVG:
+      തിരികെ hb_vector_paint_svg_funcs_get ();
+    അവസ്ഥ HB_VECTOR_FORMAT_INVALID:
+    സ്ഥിരസ്ഥിതി:
+      തിരികെ nullptr;
   }
 }
 
 
-static hb_bool_t
+സ്ഥിതം hb_bool_t
 hb_vector_paint_glyph_impl (hb_vector_paint_t *paint,
 			    hb_font_t         *font,
 			    hb_codepoint_t     glyph,
 			    hb_vector_extents_mode_t extents_mode,
 			    hb_bool_t          fallible)
 {
-  if (extents_mode == HB_VECTOR_EXTENTS_MODE_EXPAND)
+  എങ്കിൽ (extents_mode == HB_VECTOR_EXTENTS_MODE_EXPAND)
   {
     hb_glyph_extents_t ge;
-    if (hb_font_get_glyph_extents (font, glyph, &ge))
+    എങ്കിൽ (hb_font_get_glyph_extents (font, glyph, &ge))
     {
       hb_bool_t has_extents = paint->has_extents;
       hb_vector_set_glyph_extents_common (paint->transform,
@@ -548,25 +548,25 @@ hb_vector_paint_glyph_impl (hb_vector_paint_t *paint,
   }
 
   hb_paint_funcs_t *funcs = hb_vector_paint_get_funcs (paint);
-  hb_paint_push_transform (funcs, paint,
+  hb_paint_തള്ളുക_transform (funcs, paint,
 			   paint->transform.xx, paint->transform.yx,
 			   paint->transform.xy, paint->transform.yy,
 			   paint->transform.x0, paint->transform.y0);
 
-  hb_bool_t ret = true;
-  if (fallible)
+  hb_bool_t ret = സത്യം;
+  എങ്കിൽ (fallible)
     ret = hb_font_paint_glyph_or_fail (font, glyph,
 				       funcs, paint,
 				       (unsigned) paint->palette,
 				       paint->foreground);
-  else
+  അല്ലെങ്കിൽ
     hb_font_paint_glyph (font, glyph,
 			 funcs, paint,
 			 (unsigned) paint->palette,
 			 paint->foreground);
 
-  hb_paint_pop_transform (funcs, paint);
-  return ret;
+  hb_paint_എടുക്കുക_transform (funcs, paint);
+  തിരികെ ret;
 }
 
 /**
@@ -598,8 +598,8 @@ hb_vector_paint_glyph_or_fail (hb_vector_paint_t *paint,
 			       hb_codepoint_t     glyph,
 			       hb_vector_extents_mode_t extents_mode)
 {
-  return hb_vector_paint_glyph_impl (paint, font, glyph,
-				     extents_mode, true);
+  തിരികെ hb_vector_paint_glyph_impl (paint, font, glyph,
+				     extents_mode, സത്യം);
 }
 
 /**
@@ -616,14 +616,14 @@ hb_vector_paint_glyph_or_fail (hb_vector_paint_t *paint,
  *
  * Since: 14.2.0
  */
-void
+ശൂന്യം
 hb_vector_paint_glyph (hb_vector_paint_t *paint,
 		       hb_font_t         *font,
 		       hb_codepoint_t     glyph,
 		       hb_vector_extents_mode_t extents_mode)
 {
   hb_vector_paint_glyph_impl (paint, font, glyph,
-			      extents_mode, false);
+			      extents_mode, അസത്യം);
 }
 
 /**
@@ -642,18 +642,18 @@ hb_vector_paint_glyph (hb_vector_paint_t *paint,
  *
  * Since: 14.2.0
  */
-void
+ശൂന്യം
 hb_vector_paint_set_svg_prefix (hb_vector_paint_t *paint,
-                                const char *prefix)
+                                സ്ഥിരം അക്ഷരം *prefix)
 {
-  char *old = paint->id_prefix;
+  അക്ഷരം *old = paint->id_prefix;
   paint->id_prefix = nullptr;
   paint->id_prefix_length = 0;
-  if (prefix && *prefix)
+  എങ്കിൽ (prefix && *prefix)
   {
     unsigned len = strlen (prefix);
-    char *copy = (char *) hb_malloc (len + 1);
-    if (likely (copy))
+    അക്ഷരം *copy = (അക്ഷരം *) hb_malloc (len + 1);
+    എങ്കിൽ (likely (copy))
     {
       hb_memcpy (copy, prefix, len);
       copy[len] = '\0';
@@ -677,10 +677,10 @@ hb_vector_paint_set_svg_prefix (hb_vector_paint_t *paint,
  *
  * Since: 14.2.0
  */
-const char *
-hb_vector_paint_get_svg_prefix (const hb_vector_paint_t *paint)
+സ്ഥിരം അക്ഷരം *
+hb_vector_paint_get_svg_prefix (സ്ഥിരം hb_vector_paint_t *paint)
 {
-  return paint->id_prefix ? paint->id_prefix : "";
+  തിരികെ paint->id_prefix ? paint->id_prefix : "";
 }
 
 /**
@@ -692,7 +692,7 @@ hb_vector_paint_get_svg_prefix (const hb_vector_paint_t *paint)
  *
  * Since: 14.2.0
  */
-void
+ശൂന്യം
 hb_vector_paint_set_precision (hb_vector_paint_t *paint,
                                    unsigned precision)
 {
@@ -711,9 +711,9 @@ hb_vector_paint_set_precision (hb_vector_paint_t *paint,
  * Since: 14.2.0
  */
 unsigned
-hb_vector_paint_get_precision (const hb_vector_paint_t *paint)
+hb_vector_paint_get_precision (സ്ഥിരം hb_vector_paint_t *paint)
 {
-  return paint->get_precision ();
+  തിരികെ paint->get_precision ();
 }
 
 /**
@@ -728,17 +728,17 @@ hb_vector_paint_get_precision (const hb_vector_paint_t *paint)
  *
  * Since: 14.2.0
  */
-void
+ശൂന്യം
 hb_vector_paint_clear (hb_vector_paint_t *paint)
 {
   paint->extents = {0, 0, 0, 0};
-  paint->has_extents = false;
+  paint->has_extents = അസത്യം;
 
-  if (paint->format == HB_VECTOR_FORMAT_PDF)
+  എങ്കിൽ (paint->format == HB_VECTOR_FORMAT_PDF)
     hb_vector_paint_pdf_free_resources (paint);
   paint->defs.clear ();
   paint->path.clear ();
-  paint->group_stack.clear ();
+  paint->group_അട്ടി.clear ();
   paint->transform_group_open_mask = 0;
   paint->transform_group_depth = 0;
   paint->transform_group_overflow_depth = 0;
@@ -747,7 +747,7 @@ hb_vector_paint_clear (hb_vector_paint_t *paint)
   paint->recharge_budget ();
   paint->gradient_counter = 0;
   paint->color_glyph_depth = 0;
-  paint->path_def_count = 0;
+  paint->path_def_എണ്ണം = 0;
   hb_set_clear (paint->active_color_glyphs);
   paint->color_stops_scratch.clear ();
   paint->captured_scratch.clear ();
@@ -770,16 +770,16 @@ hb_blob_t *
 hb_vector_paint_render (hb_vector_paint_t *paint)
 {
   HB_SCOPE_GUARD (hb_vector_paint_clear (paint));
-  switch (paint->format)
+  തിരഞ്ഞെടുപ്പ് (paint->format)
   {
-    case HB_VECTOR_FORMAT_SVG:
-      return hb_vector_paint_render_svg (paint);
+    അവസ്ഥ HB_VECTOR_FORMAT_SVG:
+      തിരികെ hb_vector_paint_render_svg (paint);
 
-    case HB_VECTOR_FORMAT_PDF:
-      return hb_vector_paint_render_pdf (paint);
+    അവസ്ഥ HB_VECTOR_FORMAT_PDF:
+      തിരികെ hb_vector_paint_render_pdf (paint);
 
-    case HB_VECTOR_FORMAT_INVALID: default:
-      return nullptr;
+    അവസ്ഥ HB_VECTOR_FORMAT_INVALID: സ്ഥിരസ്ഥിതി:
+      തിരികെ nullptr;
   }
 }
 
@@ -792,7 +792,7 @@ hb_vector_paint_render (hb_vector_paint_t *paint)
  *
  * Since: 13.0.0
  */
-void
+ശൂന്യം
 hb_vector_paint_reset (hb_vector_paint_t *paint)
 {
   paint->transform = {1, 0, 0, 1, 0, 0};
@@ -821,13 +821,13 @@ hb_vector_paint_reset (hb_vector_paint_t *paint)
  *
  * Since: 13.0.0
  */
-void
+ശൂന്യം
 hb_vector_paint_recycle_blob (hb_vector_paint_t *paint,
                               hb_blob_t *blob)
 {
   hb_blob_destroy (paint->recycled_blob);
   paint->recycled_blob = nullptr;
-  if (!blob || blob == hb_blob_get_empty ())
-    return;
+  എങ്കിൽ (!blob || blob == hb_blob_get_empty ())
+    തിരികെ;
   paint->recycled_blob = blob;
 }

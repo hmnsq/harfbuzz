@@ -1,16 +1,16 @@
 #ifndef OT_LAYOUT_GSUB_SINGLESUBSTFORMAT2_HH
 #define OT_LAYOUT_GSUB_SINGLESUBSTFORMAT2_HH
 
-#include "Common.hh"
+#അന്തര്ഭാവ "Common.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+നാമാകാശ OT {
+നാമാകാശ Layout {
+നാമാകാശ GSUB_impl {
 
 template <typename Types>
-struct SingleSubstFormat2_4
+ഘടന SingleSubstFormat2_4
 {
-  protected:
+  സംരക്ഷിത:
   HBUINT16      format;                 /* Format identifier--format = 2 */
   typename Types::template LOffsetTo<Coverage>
                 coverage;               /* Offset to Coverage table--from
@@ -19,62 +19,62 @@ struct SingleSubstFormat2_4
                 substitute;             /* Array of substitute
                                          * GlyphIDs--ordered by Coverage Index */
 
-  public:
+  പൊതു:
   DEFINE_SIZE_ARRAY (2 + Types::LOffset::static_size + Types::HBUINT::static_size, substitute);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (coverage.sanitize (c, this) && substitute.sanitize (c));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (coverage.sanitize (c, ഇത്) && substitute.sanitize (c));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
-  { return (this+coverage).intersects (glyphs); }
+  തർക്കം intersects (സ്ഥിരം hb_set_t *glyphs) സ്ഥിരം
+  { തിരികെ (ഇത്+coverage).intersects (glyphs); }
 
-  bool may_have_non_1to1 () const
-  { return false; }
+  തർക്കം may_have_non_1to1 () സ്ഥിരം
+  { തിരികെ അസത്യം; }
 
-  void depend (hb_depend_context_t *c) const
+  ശൂന്യം depend (hb_depend_context_t *c) സ്ഥിരം
   {
-    auto &cov = this+coverage;
+    auto &cov = ഇത്+coverage;
     auto &glyph_set = c->parent_active_glyphs ();
 
     // Filter by active glyphs like closure does
-    if (substitute.len > glyph_set.get_population () * 4)
+    എങ്കിൽ (substitute.len > glyph_set.get_population () * 4)
     {
-      for (auto g : glyph_set)
+      വേണ്ടി (auto g : glyph_set)
       {
 	unsigned i = cov.get_coverage (g);
-	if (i == NOT_COVERED || i >= substitute.len)
-	  continue;
+	എങ്കിൽ (i == NOT_COVERED || i >= substitute.len)
+	  തുടരുക;
 	c->depend_data->add_gsub_lookup (g, c->lookup_index, substitute.arrayZ[i]);
       }
 
-      return;
+      തിരികെ;
     }
 
     + hb_zip (cov, substitute)
     | hb_filter (glyph_set, hb_first)
-    | hb_apply ([&] (const hb_codepoint_pair_t &_) { c->depend_data->add_gsub_lookup (_.first, c->lookup_index, _.second); })
+    | hb_apply ([&] (സ്ഥിരം hb_codepoint_pair_t &_) { c->depend_data->add_gsub_lookup (_.first, c->lookup_index, _.second); })
     ;
   }
 
-  void closure (hb_closure_context_t *c) const
+  ശൂന്യം closure (hb_closure_context_t *c) സ്ഥിരം
   {
-    auto &cov = this+coverage;
+    auto &cov = ഇത്+coverage;
     auto &glyph_set = c->parent_active_glyphs ();
 
-    if (substitute.len > glyph_set.get_population () * 4)
+    എങ്കിൽ (substitute.len > glyph_set.get_population () * 4)
     {
-      for (auto g : glyph_set)
+      വേണ്ടി (auto g : glyph_set)
       {
 	unsigned i = cov.get_coverage (g);
-	if (i == NOT_COVERED || i >= substitute.len)
-	  continue;
+	എങ്കിൽ (i == NOT_COVERED || i >= substitute.len)
+	  തുടരുക;
 	c->output->add (substitute.arrayZ[i]);
       }
 
-      return;
+      തിരികെ;
     }
 
     + hb_zip (cov, substitute)
@@ -84,67 +84,67 @@ struct SingleSubstFormat2_4
     ;
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const {}
+  ശൂന്യം closure_lookups (hb_closure_lookups_context_t *c) സ്ഥിരം {}
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  ശൂന്യം collect_glyphs (hb_collect_glyphs_context_t *c) സ്ഥിരം
   {
-    if (unlikely (!(this+coverage).collect_coverage (c->input))) return;
-    + hb_zip (this+coverage, substitute)
+    എങ്കിൽ (unlikely (!(ഇത്+coverage).collect_coverage (c->നിവേശം))) തിരികെ;
+    + hb_zip (ഇത്+coverage, substitute)
     | hb_map (hb_second)
     | hb_sink (c->output)
     ;
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  സ്ഥിരം Coverage &get_coverage () സ്ഥിരം { തിരികെ ഇത്+coverage; }
 
-  bool would_apply (hb_would_apply_context_t *c) const
-  { return c->len == 1 && (this+coverage).get_coverage (c->glyphs[0]) != NOT_COVERED; }
+  തർക്കം would_apply (hb_would_apply_context_t *c) സ്ഥിരം
+  { തിരികെ c->len == 1 && (ഇത്+coverage).get_coverage (c->glyphs[0]) != NOT_COVERED; }
 
   unsigned
   get_glyph_alternates (hb_codepoint_t  glyph_id,
                         unsigned        start_offset,
-                        unsigned       *alternate_count  /* IN/OUT.  May be NULL. */,
-                        hb_codepoint_t *alternate_glyphs /* OUT.     May be NULL. */) const
+                        unsigned       *alternate_എണ്ണം  /* IN/OUT.  May be NULL. */,
+                        hb_codepoint_t *alternate_glyphs /* OUT.     May be NULL. */) സ്ഥിരം
   {
-    unsigned int index = (this+coverage).get_coverage (glyph_id);
-    if (likely (index == NOT_COVERED))
+    unsigned പൂർണ്ണസംഖ്യ index = (ഇത്+coverage).get_coverage (glyph_id);
+    എങ്കിൽ (likely (index == NOT_COVERED))
     {
-      if (alternate_count)
-        *alternate_count = 0;
-      return 0;
+      എങ്കിൽ (alternate_എണ്ണം)
+        *alternate_എണ്ണം = 0;
+      തിരികെ 0;
     }
 
-    if (alternate_count && *alternate_count && alternate_glyphs)
+    എങ്കിൽ (alternate_എണ്ണം && *alternate_എണ്ണം && alternate_glyphs)
     {
       glyph_id = substitute[index];
 
       *alternate_glyphs = glyph_id;
-      *alternate_count = 1;
+      *alternate_എണ്ണം = 1;
     }
 
-    return 1;
+    തിരികെ 1;
   }
 
-  void
-  collect_glyph_alternates (hb_map_t  *alternate_count /* IN/OUT */,
-			    hb_map_t  *alternate_glyphs /* IN/OUT */) const
+  ശൂന്യം
+  collect_glyph_alternates (hb_map_t  *alternate_എണ്ണം /* IN/OUT */,
+			    hb_map_t  *alternate_glyphs /* IN/OUT */) സ്ഥിരം
   {
-    + hb_zip (this+coverage, substitute)
-    | hb_apply ([&] (const hb_pair_t<hb_codepoint_t, hb_codepoint_t> &p) -> void
+    + hb_zip (ഇത്+coverage, substitute)
+    | hb_apply ([&] (സ്ഥിരം hb_pair_t<hb_codepoint_t, hb_codepoint_t> &p) -> ശൂന്യം
 		{ _hb_collect_glyph_alternates_add (p.first, p.second,
-						    alternate_count, alternate_glyphs); })
+						    alternate_എണ്ണം, alternate_glyphs); })
     ;
   }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  തർക്കം apply (hb_ot_apply_context_t *c) സ്ഥിരം
   {
-    TRACE_APPLY (this);
-    unsigned int index = (this+coverage).get_coverage (c->buffer->cur().codepoint);
-    if (index == NOT_COVERED) return_trace (false);
+    TRACE_APPLY (ഇത്);
+    unsigned പൂർണ്ണസംഖ്യ index = (ഇത്+coverage).get_coverage (c->buffer->cur().codepoint);
+    എങ്കിൽ (index == NOT_COVERED) return_trace (അസത്യം);
 
-    if (unlikely (index >= substitute.len)) return_trace (false);
+    എങ്കിൽ (unlikely (index >= substitute.len)) return_trace (അസത്യം);
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    എങ്കിൽ (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
       c->buffer->sync_so_far ();
       c->buffer->message (c->font,
@@ -154,23 +154,23 @@ struct SingleSubstFormat2_4
 
     c->replace_glyph (substitute[index]);
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    എങ്കിൽ (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
       c->buffer->message (c->font,
 			  "replaced glyph at %u (single substitution)",
 			  c->buffer->idx - 1u);
     }
 
-    return_trace (true);
+    return_trace (സത്യം);
   }
 
   template<typename Iterator,
            hb_requires (hb_is_sorted_source_of (Iterator,
                                                 hb_codepoint_pair_t))>
-  bool serialize (hb_serialize_context_t *c,
+  തർക്കം serialize (hb_serialize_context_t *c,
                   Iterator it)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ഇത്);
     auto substitutes =
       + it
       | hb_map (hb_second)
@@ -179,27 +179,27 @@ struct SingleSubstFormat2_4
       + it
       | hb_map_retains_sorting (hb_first)
       ;
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    if (unlikely (!substitute.serialize (c, substitutes))) return_trace (false);
-    if (unlikely (!coverage.serialize_serialize (c, glyphs))) return_trace (false);
-    return_trace (true);
+    എങ്കിൽ (unlikely (!c->extend_min (ഇത്))) return_trace (അസത്യം);
+    എങ്കിൽ (unlikely (!substitute.serialize (c, substitutes))) return_trace (അസത്യം);
+    എങ്കിൽ (unlikely (!coverage.serialize_serialize (c, glyphs))) return_trace (അസത്യം);
+    return_trace (സത്യം);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  തർക്കം subset (hb_subset_context_t *c) സ്ഥിരം
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (ഇത്);
+    സ്ഥിരം hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+    സ്ഥിരം hb_map_t &glyph_map = *c->plan->glyph_map;
 
     auto it =
-    + hb_zip (this+coverage, substitute)
+    + hb_zip (ഇത്+coverage, substitute)
     | hb_filter (glyphset, hb_first)
     | hb_filter (glyphset, hb_second)
-    | hb_map_retains_sorting ([&] (hb_pair_t<hb_codepoint_t, const typename Types::HBGlyphID &> p) -> hb_codepoint_pair_t
-                              { return hb_pair (glyph_map[p.first], glyph_map[p.second]); })
+    | hb_map_retains_sorting ([&] (hb_pair_t<hb_codepoint_t, സ്ഥിരം typename Types::HBGlyphID &> p) -> hb_codepoint_pair_t
+                              { തിരികെ hb_pair (glyph_map[p.first], glyph_map[p.second]); })
     ;
 
-    bool ret = bool (it);
+    തർക്കം ret = തർക്കം (it);
     SingleSubst_serialize (c->serializer, it);
     return_trace (ret);
   }

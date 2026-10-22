@@ -1,4 +1,4 @@
-static const char *hb_gpu_paint_fragment_hlsl =
+സ്ഥിതം സ്ഥിരം അക്ഷരം *hb_gpu_paint_fragment_hlsl =
 "/*\n"
 " * Copyright (C) 2026  Behdad Esfahbod\n"
 " *\n"

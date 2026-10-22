@@ -28,79 +28,79 @@
 #ifndef HB_BIT_SET_HH
 #define HB_BIT_SET_HH
 
-#include "hb.hh"
-#include "hb-bit-page.hh"
+#അന്തര്ഭാവ "hb.hh"
+#അന്തര്ഭാവ "hb-bit-page.hh"
 
-struct hb_bit_set_t
+ഘടന hb_bit_set_t
 {
-  hb_bit_set_t () = default;
-  ~hb_bit_set_t () = default;
+  hb_bit_set_t () = സ്ഥിരസ്ഥിതി;
+  ~hb_bit_set_t () = സ്ഥിരസ്ഥിതി;
 
-  hb_bit_set_t (const hb_bit_set_t& other) : hb_bit_set_t () { set (other, true); }
-  hb_bit_set_t ( hb_bit_set_t&& other)  noexcept : hb_bit_set_t () { hb_swap (*this, other); }
-  hb_bit_set_t& operator= (const hb_bit_set_t& other) { set (other); return *this; }
-  hb_bit_set_t& operator= (hb_bit_set_t&& other)  noexcept { hb_swap (*this, other); return *this; }
-  friend void swap (hb_bit_set_t &a, hb_bit_set_t &b) noexcept
+  hb_bit_set_t (സ്ഥിരം hb_bit_set_t& other) : hb_bit_set_t () { set (other, സത്യം); }
+  hb_bit_set_t ( hb_bit_set_t&& other)  noexcept : hb_bit_set_t () { hb_swap (*ഇത്, other); }
+  hb_bit_set_t& operator= (സ്ഥിരം hb_bit_set_t& other) { set (other); തിരികെ *ഇത്; }
+  hb_bit_set_t& operator= (hb_bit_set_t&& other)  noexcept { hb_swap (*ഇത്, other); തിരികെ *ഇത്; }
+  friend ശൂന്യം swap (hb_bit_set_t &a, hb_bit_set_t &b) noexcept
   {
-    if (likely (!a.successful || !b.successful))
-      return;
+    എങ്കിൽ (likely (!a.successful || !b.successful))
+      തിരികെ;
     hb_swap (a.population, b.population);
     hb_swap (a.last_page_lookup, b.last_page_lookup);
     hb_swap (a.page_map, b.page_map);
     hb_swap (a.pages, b.pages);
   }
 
-  void init ()
+  ശൂന്യം init ()
   {
-    successful = true;
+    successful = സത്യം;
     population = 0;
     last_page_lookup = 0;
     page_map.init ();
     pages.init ();
   }
-  void fini ()
+  ശൂന്യം fini ()
   {
     page_map.fini ();
     pages.fini ();
   }
 
   using page_t = hb_bit_page_t;
-  struct page_map_t
+  ഘടന page_map_t
   {
-    int cmp (const page_map_t &o) const { return cmp (o.major); }
-    int cmp (uint32_t o_major) const { return (int) o_major - (int) major; }
+    പൂർണ്ണസംഖ്യ cmp (സ്ഥിരം page_map_t &o) സ്ഥിരം { തിരികെ cmp (o.major); }
+    പൂർണ്ണസംഖ്യ cmp (uint32_t o_major) സ്ഥിരം { തിരികെ (പൂർണ്ണസംഖ്യ) o_major - (പൂർണ്ണസംഖ്യ) major; }
 
     uint32_t major;
     uint32_t index;
   };
 
-  bool successful = true; /* Allocations successful */
-  mutable unsigned int population = 0;
+  തർക്കം successful = സത്യം; /* Allocations successful */
+  mutable unsigned പൂർണ്ണസംഖ്യ population = 0;
   mutable hb_atomic_t<unsigned> last_page_lookup = 0;
   hb_sorted_vector_t<page_map_t> page_map;
   hb_vector_t<page_t> pages;
 
-  void err () { if (successful) successful = false; } /* TODO Remove */
-  bool in_error () const { return !successful; }
+  ശൂന്യം err () { എങ്കിൽ (successful) successful = അസത്യം; } /* TODO Remove */
+  തർക്കം in_error () സ്ഥിരം { തിരികെ !successful; }
 
-  bool resize (unsigned int count, bool clear = true, bool exact_size = false)
+  തർക്കം resize (unsigned പൂർണ്ണസംഖ്യ എണ്ണം, തർക്കം clear = സത്യം, തർക്കം exact_size = അസത്യം)
   {
-    if (unlikely (!successful)) return false;
+    എങ്കിൽ (unlikely (!successful)) തിരികെ അസത്യം;
 
-    if (pages.length < count && (unsigned) pages.allocated < count && count <= 2)
-      exact_size = true; // Most sets are small and local
+    എങ്കിൽ (pages.length < എണ്ണം && (unsigned) pages.allocated < എണ്ണം && എണ്ണം <= 2)
+      exact_size = സത്യം; // Most sets are small and local
 
-    if (unlikely (!pages.resize_full (count, clear, exact_size) ||
-	!page_map.resize_full (count, clear, false)))
+    എങ്കിൽ (unlikely (!pages.resize_full (എണ്ണം, clear, exact_size) ||
+	!page_map.resize_full (എണ്ണം, clear, അസത്യം)))
     {
       pages.resize_full (page_map.length, clear, exact_size);
-      successful = false;
-      return false;
+      successful = അസത്യം;
+      തിരികെ അസത്യം;
     }
-    return true;
+    തിരികെ സത്യം;
   }
 
-  void alloc (unsigned sz)
+  ശൂന്യം alloc (unsigned sz)
   {
     sz >>= (page_t::PAGE_BITS_LOG_2 - 1);
     pages.alloc (sz);
@@ -109,221 +109,221 @@ struct hb_bit_set_t
 
   hb_bit_set_t& reset ()
   {
-    successful = true;
+    successful = സത്യം;
     clear ();
-    return *this;
+    തിരികെ *ഇത്;
   }
 
-  void clear ()
+  ശൂന്യം clear ()
   {
     /* Early-out on already-empty.  Protects the Null singleton
      * (which is zero-initialized) from any writes.  Any non-empty
      * instance is a real heap object with writable storage, so
      * clearing through the vector's always-safe clear() is fine
      * even if we entered error state. */
-    if (!pages.length && !population) return;
+    എങ്കിൽ (!pages.length && !population) തിരികെ;
     pages.clear ();
     page_map.clear ();
     population = 0;
   }
-  bool is_empty () const
+  തർക്കം is_empty () സ്ഥിരം
   {
-    unsigned int count = pages.length;
-    for (unsigned int i = 0; i < count; i++)
-      if (!pages[i].is_empty ())
-	return false;
-    return true;
+    unsigned പൂർണ്ണസംഖ്യ എണ്ണം = pages.length;
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
+      എങ്കിൽ (!pages[i].is_empty ())
+	തിരികെ അസത്യം;
+    തിരികെ സത്യം;
   }
-  explicit operator bool () const { return !is_empty (); }
+  explicit operator തർക്കം () സ്ഥിരം { തിരികെ !is_empty (); }
 
-  uint32_t hash () const
+  uint32_t hash () സ്ഥിരം
   {
     uint32_t h = 0;
-    for (auto &map : page_map)
+    വേണ്ടി (auto &map : page_map)
     {
       auto &page = pages.arrayZ[map.index];
-      if (unlikely (page.is_empty ())) continue;
+      എങ്കിൽ (unlikely (page.is_empty ())) തുടരുക;
       h = h * 31 + hb_hash (map.major) + hb_hash (page);
     }
-    return h;
+    തിരികെ h;
   }
 
-  private:
-  void dirty () { population = UINT_MAX; }
-  public:
+  സ്വകാര്യ:
+  ശൂന്യം dirty () { population = UINT_MAX; }
+  പൊതു:
 
-  void add (hb_codepoint_t g)
+  ശൂന്യം add (hb_codepoint_t g)
   {
-    if (unlikely (!successful)) return;
-    if (unlikely (g == INVALID)) return;
+    എങ്കിൽ (unlikely (!successful)) തിരികെ;
+    എങ്കിൽ (unlikely (g == INVALID)) തിരികെ;
     dirty ();
-    page_t *page = page_for (g, true); if (unlikely (!page)) return;
+    page_t *page = page_for (g, സത്യം); എങ്കിൽ (unlikely (!page)) തിരികെ;
     page->add (g);
   }
-  void add_bits (hb_codepoint_t g, uint64_t bits)
+  ശൂന്യം add_bits (hb_codepoint_t g, uint64_t bits)
   {
-    if (unlikely (!successful) || unlikely (!bits)) return;
-    assert (!(g & (page_t::ELT_BITS - 1)));
+    എങ്കിൽ (unlikely (!successful) || unlikely (!bits)) തിരികെ;
+    പ്രതിജ്ഞാ (!(g & (page_t::ELT_BITS - 1)));
     dirty ();
-    page_t *page = page_for (g, true); if (unlikely (!page)) return;
+    page_t *page = page_for (g, സത്യം); എങ്കിൽ (unlikely (!page)) തിരികെ;
     page->add_bits (g, bits);
   }
-  bool add_range (hb_codepoint_t a, hb_codepoint_t b)
+  തർക്കം add_range (hb_codepoint_t a, hb_codepoint_t b)
   {
-    if (unlikely (!successful)) return true; /* https://github.com/harfbuzz/harfbuzz/issues/657 */
-    if (unlikely (a > b || a == INVALID || b == INVALID)) return false;
+    എങ്കിൽ (unlikely (!successful)) തിരികെ സത്യം; /* https://github.com/harfbuzz/harfbuzz/issues/657 */
+    എങ്കിൽ (unlikely (a > b || a == INVALID || b == INVALID)) തിരികെ അസത്യം;
     dirty ();
-    unsigned int ma = get_major (a);
-    unsigned int mb = get_major (b);
-    if (ma == mb)
+    unsigned പൂർണ്ണസംഖ്യ ma = get_major (a);
+    unsigned പൂർണ്ണസംഖ്യ mb = get_major (b);
+    എങ്കിൽ (ma == mb)
     {
-      page_t *page = page_for (a, true); if (unlikely (!page)) return false;
+      page_t *page = page_for (a, സത്യം); എങ്കിൽ (unlikely (!page)) തിരികെ അസത്യം;
       page->add_range (a, b);
     }
-    else
+    അല്ലെങ്കിൽ
     {
-      page_t *page = page_for (a, true); if (unlikely (!page)) return false;
+      page_t *page = page_for (a, സത്യം); എങ്കിൽ (unlikely (!page)) തിരികെ അസത്യം;
       page->add_range (a, major_start (ma + 1) - 1);
 
-      for (unsigned int m = ma + 1; m < mb; m++)
+      വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ m = ma + 1; m < mb; m++)
       {
-	page = page_for (major_start (m), true); if (unlikely (!page)) return false;
+	page = page_for (major_start (m), സത്യം); എങ്കിൽ (unlikely (!page)) തിരികെ അസത്യം;
 	page->init1 ();
       }
 
-      page = page_for (b, true); if (unlikely (!page)) return false;
+      page = page_for (b, സത്യം); എങ്കിൽ (unlikely (!page)) തിരികെ അസത്യം;
       page->add_range (major_start (mb), b);
     }
-    return true;
+    തിരികെ സത്യം;
   }
 
   /* Duplicated here from hb-machinery.hh to avoid including it. */
   template<typename Type>
-  static inline const Type& StructAtOffsetUnaligned(const void *P, unsigned int offset)
+  സ്ഥിതം വരിയിൽ സ്ഥിരം Type& StructAtOffsetUnaligned(സ്ഥിരം ശൂന്യം *P, unsigned പൂർണ്ണസംഖ്യ offset)
   {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcast-align"
-    return * reinterpret_cast<const Type*> ((const char *) P + offset);
-#pragma GCC diagnostic pop
+    തിരികെ * reinterpret_cast<സ്ഥിരം Type*> ((സ്ഥിരം അക്ഷരം *) P + offset);
+#pragma GCC diagnostic എടുക്കുക
   }
 
   template <typename T>
-  void set_array (bool v, const T *array, unsigned int count, unsigned int stride=sizeof(T))
+  ശൂന്യം set_array (തർക്കം v, സ്ഥിരം T *array, unsigned പൂർണ്ണസംഖ്യ എണ്ണം, unsigned പൂർണ്ണസംഖ്യ stride=വലുപ്പം(T))
   {
-    if (unlikely (!successful)) return;
-    if (!count) return;
+    എങ്കിൽ (unlikely (!successful)) തിരികെ;
+    എങ്കിൽ (!എണ്ണം) തിരികെ;
     dirty ();
     hb_codepoint_t g = *array;
-    while (count)
+    ആകുമ്പോൾ (എണ്ണം)
     {
-      unsigned int m = get_major (g);
-      page_t *page = page_for (g, v); if (unlikely (v && !page)) return;
-      unsigned int start = major_start (m);
-      unsigned int end = major_start (m + 1);
-      do
+      unsigned പൂർണ്ണസംഖ്യ m = get_major (g);
+      page_t *page = page_for (g, v); എങ്കിൽ (unlikely (v && !page)) തിരികെ;
+      unsigned പൂർണ്ണസംഖ്യ start = major_start (m);
+      unsigned പൂർണ്ണസംഖ്യ end = major_start (m + 1);
+      ചെയ്യുക
       {
-        if (g != INVALID && (v || page)) /* The v check is to optimize out the page check if v is true. */
+        എങ്കിൽ (g != INVALID && (v || page)) /* The v check is to optimize out the page check if v is true. */
 	  page->set (g, v);
 
 	array = &StructAtOffsetUnaligned<T> (array, stride);
-	count--;
+	എണ്ണം--;
       }
-      while (count && (g = *array, start <= g && g < end));
+      ആകുമ്പോൾ (എണ്ണം && (g = *array, start <= g && g < end));
     }
   }
 
   template <typename T>
-  void add_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { set_array (true, array, count, stride); }
+  ശൂന്യം add_array (സ്ഥിരം T *array, unsigned പൂർണ്ണസംഖ്യ എണ്ണം, unsigned പൂർണ്ണസംഖ്യ stride=വലുപ്പം(T))
+  { set_array (സത്യം, array, എണ്ണം, stride); }
   template <typename T>
-  void add_array (const hb_array_t<const T>& arr) { add_array (&arr, arr.len ()); }
+  ശൂന്യം add_array (സ്ഥിരം hb_array_t<സ്ഥിരം T>& arr) { add_array (&arr, arr.len ()); }
 
   template <typename T>
-  void del_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { set_array (false, array, count, stride); }
+  ശൂന്യം del_array (സ്ഥിരം T *array, unsigned പൂർണ്ണസംഖ്യ എണ്ണം, unsigned പൂർണ്ണസംഖ്യ stride=വലുപ്പം(T))
+  { set_array (അസത്യം, array, എണ്ണം, stride); }
   template <typename T>
-  void del_array (const hb_array_t<const T>& arr) { del_array (&arr, arr.len ()); }
+  ശൂന്യം del_array (സ്ഥിരം hb_array_t<സ്ഥിരം T>& arr) { del_array (&arr, arr.len ()); }
 
   /* Might return false if array looks unsorted.
    * Used for faster rejection of corrupt data. */
   template <typename T>
-  bool set_sorted_array (bool v, const T *array, unsigned int count, unsigned int stride=sizeof(T))
+  തർക്കം set_sorted_array (തർക്കം v, സ്ഥിരം T *array, unsigned പൂർണ്ണസംഖ്യ എണ്ണം, unsigned പൂർണ്ണസംഖ്യ stride=വലുപ്പം(T))
   {
-    if (unlikely (!successful)) return true; /* https://github.com/harfbuzz/harfbuzz/issues/657 */
-    if (unlikely (!count)) return true;
+    എങ്കിൽ (unlikely (!successful)) തിരികെ സത്യം; /* https://github.com/harfbuzz/harfbuzz/issues/657 */
+    എങ്കിൽ (unlikely (!എണ്ണം)) തിരികെ സത്യം;
     dirty ();
     hb_codepoint_t g = *array;
     hb_codepoint_t last_g = g;
-    while (count)
+    ആകുമ്പോൾ (എണ്ണം)
     {
-      unsigned int m = get_major (g);
-      page_t *page = page_for (g, v); if (unlikely (v && !page)) return false;
-      unsigned int end = major_start (m + 1);
-      do
+      unsigned പൂർണ്ണസംഖ്യ m = get_major (g);
+      page_t *page = page_for (g, v); എങ്കിൽ (unlikely (v && !page)) തിരികെ അസത്യം;
+      unsigned പൂർണ്ണസംഖ്യ end = major_start (m + 1);
+      ചെയ്യുക
       {
 	/* If we try harder we can change the following comparison to <=;
 	 * Not sure if it's worth it. */
-	if (g < last_g) return false;
+	എങ്കിൽ (g < last_g) തിരികെ അസത്യം;
 	last_g = g;
 
-        if (g != INVALID && (v || page)) /* The v check is to optimize out the page check if v is true. */
+        എങ്കിൽ (g != INVALID && (v || page)) /* The v check is to optimize out the page check if v is true. */
 	  page->set (g, v);
 
 	array = &StructAtOffsetUnaligned<T> (array, stride);
-	count--;
+	എണ്ണം--;
       }
-      while (count && (g = *array, g < end));
+      ആകുമ്പോൾ (എണ്ണം && (g = *array, g < end));
     }
-    return true;
+    തിരികെ സത്യം;
   }
 
   template <typename T>
-  bool add_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { return set_sorted_array (true, array, count, stride); }
+  തർക്കം add_sorted_array (സ്ഥിരം T *array, unsigned പൂർണ്ണസംഖ്യ എണ്ണം, unsigned പൂർണ്ണസംഖ്യ stride=വലുപ്പം(T))
+  { തിരികെ set_sorted_array (സത്യം, array, എണ്ണം, stride); }
   template <typename T>
-  bool add_sorted_array (const hb_sorted_array_t<const T>& arr) { return add_sorted_array (&arr, arr.len ()); }
+  തർക്കം add_sorted_array (സ്ഥിരം hb_sorted_array_t<സ്ഥിരം T>& arr) { തിരികെ add_sorted_array (&arr, arr.len ()); }
 
   template <typename T>
-  bool del_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { return set_sorted_array (false, array, count, stride); }
+  തർക്കം del_sorted_array (സ്ഥിരം T *array, unsigned പൂർണ്ണസംഖ്യ എണ്ണം, unsigned പൂർണ്ണസംഖ്യ stride=വലുപ്പം(T))
+  { തിരികെ set_sorted_array (അസത്യം, array, എണ്ണം, stride); }
   template <typename T>
-  bool del_sorted_array (const hb_sorted_array_t<const T>& arr) { return del_sorted_array (&arr, arr.len ()); }
+  തർക്കം del_sorted_array (സ്ഥിരം hb_sorted_array_t<സ്ഥിരം T>& arr) { തിരികെ del_sorted_array (&arr, arr.len ()); }
 
-  void del (hb_codepoint_t g)
+  ശൂന്യം del (hb_codepoint_t g)
   {
-    if (unlikely (!successful)) return;
+    എങ്കിൽ (unlikely (!successful)) തിരികെ;
     page_t *page = page_for (g);
-    if (!page)
-      return;
+    എങ്കിൽ (!page)
+      തിരികെ;
     dirty ();
     page->del (g);
   }
-  void del_bits (hb_codepoint_t g, uint64_t bits)
+  ശൂന്യം del_bits (hb_codepoint_t g, uint64_t bits)
   {
-    if (unlikely (!successful) || unlikely (!bits)) return;
-    assert (!(g & (page_t::ELT_BITS - 1)));
+    എങ്കിൽ (unlikely (!successful) || unlikely (!bits)) തിരികെ;
+    പ്രതിജ്ഞാ (!(g & (page_t::ELT_BITS - 1)));
     page_t *page = page_for (g);
-    if (!page)
-      return;
+    എങ്കിൽ (!page)
+      തിരികെ;
     dirty ();
     page->del_bits (g, bits);
   }
 
-  private:
-  void del_pages (int ds, int de)
+  സ്വകാര്യ:
+  ശൂന്യം del_pages (പൂർണ്ണസംഖ്യ ds, പൂർണ്ണസംഖ്യ de)
   {
-    if (ds <= de)
+    എങ്കിൽ (ds <= de)
     {
       // Pre-allocate the workspace that compact() will need so we can bail on allocation failure
       // before attempting to rewrite the page map.
       hb_vector_t<unsigned> compact_workspace;
-      if (unlikely (!allocate_compact_workspace (compact_workspace))) return;
+      എങ്കിൽ (unlikely (!allocate_compact_workspace (compact_workspace))) തിരികെ;
 
-      unsigned int write_index = 0;
-      for (unsigned int i = 0; i < page_map.length; i++)
+      unsigned പൂർണ്ണസംഖ്യ write_index = 0;
+      വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < page_map.length; i++)
       {
-	int m = (int) page_map.arrayZ[i].major;
-	if (m < ds || de < m)
+	പൂർണ്ണസംഖ്യ m = (പൂർണ്ണസംഖ്യ) page_map.arrayZ[i].major;
+	എങ്കിൽ (m < ds || de < m)
 	  page_map.arrayZ[write_index++] = page_map.arrayZ[i];
       }
       compact (compact_workspace, write_index);
@@ -332,549 +332,549 @@ struct hb_bit_set_t
   }
 
 
-  public:
-  void del_range (hb_codepoint_t a, hb_codepoint_t b)
+  പൊതു:
+  ശൂന്യം del_range (hb_codepoint_t a, hb_codepoint_t b)
   {
-    if (unlikely (!successful)) return;
-    if (unlikely (a > b || a == INVALID)) return;
+    എങ്കിൽ (unlikely (!successful)) തിരികെ;
+    എങ്കിൽ (unlikely (a > b || a == INVALID)) തിരികെ;
     dirty ();
-    unsigned int ma = get_major (a);
-    unsigned int mb = get_major (b);
+    unsigned പൂർണ്ണസംഖ്യ ma = get_major (a);
+    unsigned പൂർണ്ണസംഖ്യ mb = get_major (b);
     /* Delete pages from ds through de if ds <= de. */
-    int ds = (a == major_start (ma))? (int) ma: (int) (ma + 1);
-    int de = (b + 1 == major_start (mb + 1))? (int) mb: ((int) mb - 1);
-    if (ds > de || (int) ma < ds)
+    പൂർണ്ണസംഖ്യ ds = (a == major_start (ma))? (പൂർണ്ണസംഖ്യ) ma: (പൂർണ്ണസംഖ്യ) (ma + 1);
+    പൂർണ്ണസംഖ്യ de = (b + 1 == major_start (mb + 1))? (പൂർണ്ണസംഖ്യ) mb: ((പൂർണ്ണസംഖ്യ) mb - 1);
+    എങ്കിൽ (ds > de || (പൂർണ്ണസംഖ്യ) ma < ds)
     {
       page_t *page = page_for (a);
-      if (page)
+      എങ്കിൽ (page)
       {
-	if (ma == mb)
+	എങ്കിൽ (ma == mb)
 	  page->del_range (a, b);
-	else
+	അല്ലെങ്കിൽ
 	  page->del_range (a, major_start (ma + 1) - 1);
       }
     }
-    if (de < (int) mb && ma != mb)
+    എങ്കിൽ (de < (പൂർണ്ണസംഖ്യ) mb && ma != mb)
     {
       page_t *page = page_for (b);
-      if (page)
+      എങ്കിൽ (page)
 	page->del_range (major_start (mb), b);
     }
     del_pages (ds, de);
   }
 
-  bool get (hb_codepoint_t g) const
+  തർക്കം get (hb_codepoint_t g) സ്ഥിരം
   {
-    const page_t *page = page_for (g);
-    if (!page)
-      return false;
-    return page->get (g);
+    സ്ഥിരം page_t *page = page_for (g);
+    എങ്കിൽ (!page)
+      തിരികെ അസത്യം;
+    തിരികെ page->get (g);
   }
-  bool may_have (hb_codepoint_t g) const { return get (g); }
+  തർക്കം may_have (hb_codepoint_t g) സ്ഥിരം { തിരികെ get (g); }
 
   /* Has interface. */
-  bool operator [] (hb_codepoint_t k) const { return get (k); }
-  bool has (hb_codepoint_t k) const { return (*this)[k]; }
+  തർക്കം operator [] (hb_codepoint_t k) സ്ഥിരം { തിരികെ get (k); }
+  തർക്കം has (hb_codepoint_t k) സ്ഥിരം { തിരികെ (*ഇത്)[k]; }
   /* Predicate. */
-  bool operator () (hb_codepoint_t k) const { return has (k); }
+  തർക്കം operator () (hb_codepoint_t k) സ്ഥിരം { തിരികെ has (k); }
 
   /* Sink interface. */
   hb_bit_set_t& operator << (hb_codepoint_t v)
-  { add (v); return *this; }
-  hb_bit_set_t& operator << (const hb_codepoint_pair_t& range)
-  { add_range (range.first, range.second); return *this; }
+  { add (v); തിരികെ *ഇത്; }
+  hb_bit_set_t& operator << (സ്ഥിരം hb_codepoint_pair_t& range)
+  { add_range (range.first, range.second); തിരികെ *ഇത്; }
 
-  bool intersects (const hb_bit_set_t &other) const
+  തർക്കം intersects (സ്ഥിരം hb_bit_set_t &other) സ്ഥിരം
   {
-    unsigned int na = pages.length;
-    unsigned int nb = other.pages.length;
+    unsigned പൂർണ്ണസംഖ്യ na = pages.length;
+    unsigned പൂർണ്ണസംഖ്യ nb = other.pages.length;
 
-    unsigned int a = 0, b = 0;
-    for (; a < na && b < nb; )
+    unsigned പൂർണ്ണസംഖ്യ a = 0, b = 0;
+    വേണ്ടി (; a < na && b < nb; )
     {
-      if (page_map.arrayZ[a].major == other.page_map.arrayZ[b].major)
+      എങ്കിൽ (page_map.arrayZ[a].major == other.page_map.arrayZ[b].major)
       {
-	if (page_at (a).intersects (other.page_at (b)))
-	  return true;
+	എങ്കിൽ (page_at (a).intersects (other.page_at (b)))
+	  തിരികെ സത്യം;
 	a++;
 	b++;
       }
-      else if (page_map.arrayZ[a].major < other.page_map.arrayZ[b].major)
+      അല്ലെങ്കിൽ എങ്കിൽ (page_map.arrayZ[a].major < other.page_map.arrayZ[b].major)
 	a++;
-      else
+      അല്ലെങ്കിൽ
 	b++;
     }
-    return false;
+    തിരികെ അസത്യം;
   }
-  bool may_intersect (const hb_bit_set_t &other) const
-  { return intersects (other); }
+  തർക്കം may_intersect (സ്ഥിരം hb_bit_set_t &other) സ്ഥിരം
+  { തിരികെ intersects (other); }
 
-  bool intersects (hb_codepoint_t first, hb_codepoint_t last) const
+  തർക്കം intersects (hb_codepoint_t first, hb_codepoint_t last) സ്ഥിരം
   {
     hb_codepoint_t c = first - 1;
-    return next (&c) && c <= last;
+    തിരികെ next (&c) && c <= last;
   }
-  void set (const hb_bit_set_t &other, bool exact_size = false)
+  ശൂന്യം set (സ്ഥിരം hb_bit_set_t &other, തർക്കം exact_size = അസത്യം)
   {
-    if (unlikely (!successful)) return;
-    unsigned int count = other.pages.length;
-    if (unlikely (!resize  (count, false, exact_size)))
-      return;
+    എങ്കിൽ (unlikely (!successful)) തിരികെ;
+    unsigned പൂർണ്ണസംഖ്യ എണ്ണം = other.pages.length;
+    എങ്കിൽ (unlikely (!resize  (എണ്ണം, അസത്യം, exact_size)))
+      തിരികെ;
     population = other.population;
 
     page_map = other.page_map;
     pages = other.pages;
   }
 
-  bool is_equal (const hb_bit_set_t &other) const
+  തർക്കം is_equal (സ്ഥിരം hb_bit_set_t &other) സ്ഥിരം
   {
-    if (has_population () && other.has_population () &&
+    എങ്കിൽ (has_population () && other.has_population () &&
 	population != other.population)
-      return false;
+      തിരികെ അസത്യം;
 
-    unsigned int na = pages.length;
-    unsigned int nb = other.pages.length;
+    unsigned പൂർണ്ണസംഖ്യ na = pages.length;
+    unsigned പൂർണ്ണസംഖ്യ nb = other.pages.length;
 
-    unsigned int a = 0, b = 0;
-    for (; a < na && b < nb; )
+    unsigned പൂർണ്ണസംഖ്യ a = 0, b = 0;
+    വേണ്ടി (; a < na && b < nb; )
     {
-      if (page_at (a).is_empty ()) { a++; continue; }
-      if (other.page_at (b).is_empty ()) { b++; continue; }
-      if (page_map.arrayZ[a].major != other.page_map.arrayZ[b].major ||
+      എങ്കിൽ (page_at (a).is_empty ()) { a++; തുടരുക; }
+      എങ്കിൽ (other.page_at (b).is_empty ()) { b++; തുടരുക; }
+      എങ്കിൽ (page_map.arrayZ[a].major != other.page_map.arrayZ[b].major ||
 	  !page_at (a).is_equal (other.page_at (b)))
-	return false;
+	തിരികെ അസത്യം;
       a++;
       b++;
     }
-    for (; a < na; a++)
-      if (!page_at (a).is_empty ()) { return false; }
-    for (; b < nb; b++)
-      if (!other.page_at (b).is_empty ()) { return false; }
+    വേണ്ടി (; a < na; a++)
+      എങ്കിൽ (!page_at (a).is_empty ()) { തിരികെ അസത്യം; }
+    വേണ്ടി (; b < nb; b++)
+      എങ്കിൽ (!other.page_at (b).is_empty ()) { തിരികെ അസത്യം; }
 
-    return true;
+    തിരികെ സത്യം;
   }
 
-  bool is_subset (const hb_bit_set_t &larger_set) const
+  തർക്കം is_subset (സ്ഥിരം hb_bit_set_t &larger_set) സ്ഥിരം
   {
-    if (has_population () && larger_set.has_population () &&
+    എങ്കിൽ (has_population () && larger_set.has_population () &&
 	population > larger_set.population)
-      return false;
+      തിരികെ അസത്യം;
 
     uint32_t spi = 0;
     uint32_t lpi = 0;
-    while (spi < page_map.length && lpi < larger_set.page_map.length)
+    ആകുമ്പോൾ (spi < page_map.length && lpi < larger_set.page_map.length)
     {
       uint32_t spm = page_map.arrayZ[spi].major;
       uint32_t lpm = larger_set.page_map.arrayZ[lpi].major;
       auto sp = page_at (spi);
 
-      if (spm < lpm) {
-        if (!sp.is_empty ())
-          return false;
+      എങ്കിൽ (spm < lpm) {
+        എങ്കിൽ (!sp.is_empty ())
+          തിരികെ അസത്യം;
         spi++;
-        continue;
+        തുടരുക;
       }
 
-      if (lpm < spm) {
+      എങ്കിൽ (lpm < spm) {
         lpi++;
-        continue;
+        തുടരുക;
       }
 
       auto lp = larger_set.page_at (lpi);
-      if (!sp.is_subset (lp))
-        return false;
+      എങ്കിൽ (!sp.is_subset (lp))
+        തിരികെ അസത്യം;
 
       spi++;
       lpi++;
     }
 
-    while (spi < page_map.length)
-      if (!page_at (spi++).is_empty ())
-        return false;
+    ആകുമ്പോൾ (spi < page_map.length)
+      എങ്കിൽ (!page_at (spi++).is_empty ())
+        തിരികെ അസത്യം;
 
-    return true;
+    തിരികെ സത്യം;
   }
 
-  private:
-  bool allocate_compact_workspace (hb_vector_t<unsigned>& workspace)
+  സ്വകാര്യ:
+  തർക്കം allocate_compact_workspace (hb_vector_t<unsigned>& workspace)
   {
-    if (unlikely (!workspace.resize_exact (pages.length)))
+    എങ്കിൽ (unlikely (!workspace.resize_exact (pages.length)))
     {
-      successful = false;
-      return false;
+      successful = അസത്യം;
+      തിരികെ അസത്യം;
     }
 
-    return true;
+    തിരികെ സത്യം;
   }
 
   /*
    * workspace should be a pre-sized vector allocated to hold at exactly pages.length
    * elements.
    */
-  void compact (hb_vector_t<unsigned>& workspace,
-                unsigned int length)
+  ശൂന്യം compact (hb_vector_t<unsigned>& workspace,
+                unsigned പൂർണ്ണസംഖ്യ length)
   {
-    assert(workspace.length == pages.length);
+    പ്രതിജ്ഞാ(workspace.length == pages.length);
     hb_vector_t<unsigned>& old_index_to_page_map_index = workspace;
 
     hb_fill (old_index_to_page_map_index.writer(), 0xFFFFFFFF);
-    for (unsigned i = 0; i < length; i++)
+    വേണ്ടി (unsigned i = 0; i < length; i++)
       old_index_to_page_map_index[page_map[i].index] =  i;
 
     compact_pages (old_index_to_page_map_index);
   }
-  void compact_pages (const hb_vector_t<unsigned>& old_index_to_page_map_index)
+  ശൂന്യം compact_pages (സ്ഥിരം hb_vector_t<unsigned>& old_index_to_page_map_index)
   {
-    unsigned int write_index = 0;
-    for (unsigned int i = 0; i < pages.length; i++)
+    unsigned പൂർണ്ണസംഖ്യ write_index = 0;
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < pages.length; i++)
     {
-      if (old_index_to_page_map_index[i] == 0xFFFFFFFF) continue;
+      എങ്കിൽ (old_index_to_page_map_index[i] == 0xFFFFFFFF) തുടരുക;
 
-      if (write_index < i)
+      എങ്കിൽ (write_index < i)
 	pages[write_index] = pages[i];
 
       page_map[old_index_to_page_map_index[i]].index = write_index;
       write_index++;
     }
   }
-  public:
+  പൊതു:
 
-  void process_ (hb_bit_page_t::vector_t (*op) (const hb_bit_page_t::vector_t &, const hb_bit_page_t::vector_t &),
-		 bool passthru_left, bool passthru_right,
-		 const hb_bit_set_t &other,
+  ശൂന്യം process_ (hb_bit_page_t::vector_t (*op) (സ്ഥിരം hb_bit_page_t::vector_t &, സ്ഥിരം hb_bit_page_t::vector_t &),
+		 തർക്കം passthru_ഇടത്, തർക്കം passthru_വലത്,
+		 സ്ഥിരം hb_bit_set_t &other,
 		 hb_vector_t<unsigned> *workspace = nullptr)
   {
-    if (unlikely (!successful)) return;
+    എങ്കിൽ (unlikely (!successful)) തിരികെ;
 
     dirty ();
 
-    unsigned int na = pages.length;
-    unsigned int nb = other.pages.length;
-    unsigned int next_page = na;
+    unsigned പൂർണ്ണസംഖ്യ na = pages.length;
+    unsigned പൂർണ്ണസംഖ്യ nb = other.pages.length;
+    unsigned പൂർണ്ണസംഖ്യ next_page = na;
 
-    unsigned int count = 0, newCount = 0;
-    unsigned int a = 0, b = 0;
-    unsigned int write_index = 0;
+    unsigned പൂർണ്ണസംഖ്യ എണ്ണം = 0, new_എണ്ണം = 0;
+    unsigned പൂർണ്ണസംഖ്യ a = 0, b = 0;
+    unsigned പൂർണ്ണസംഖ്യ write_index = 0;
 
     // Pre-allocate the workspace that compact() will need so we can bail on allocation failure
     // before attempting to rewrite the page map.
     hb_vector_t<unsigned> local_workspace;
     hb_vector_t<unsigned> &compact_workspace = workspace ? *workspace : local_workspace;
-    if (!passthru_left)
+    എങ്കിൽ (!passthru_ഇടത്)
     {
-      bool allocated = workspace ? compact_workspace.resize (pages.length)
+      തർക്കം allocated = workspace ? compact_workspace.resize (pages.length)
 				 : allocate_compact_workspace (compact_workspace);
-      if (unlikely (!allocated))
+      എങ്കിൽ (unlikely (!allocated))
       {
-	successful = false;
-	return;
+	successful = അസത്യം;
+	തിരികെ;
       }
     }
 
-    for (; a < na && b < nb; )
+    വേണ്ടി (; a < na && b < nb; )
     {
-      if (page_map.arrayZ[a].major == other.page_map.arrayZ[b].major)
+      എങ്കിൽ (page_map.arrayZ[a].major == other.page_map.arrayZ[b].major)
       {
-	if (!passthru_left)
+	എങ്കിൽ (!passthru_ഇടത്)
 	{
 	  // Move page_map entries that we're keeping from the left side set
 	  // to the front of the page_map vector. This isn't necessary if
 	  // passthru_left is set since no left side pages will be removed
 	  // in that case.
-	  if (write_index < a)
+	  എങ്കിൽ (write_index < a)
 	    page_map.arrayZ[write_index] = page_map.arrayZ[a];
 	  write_index++;
 	}
 
-	count++;
+	എണ്ണം++;
 	a++;
 	b++;
       }
-      else if (page_map.arrayZ[a].major < other.page_map.arrayZ[b].major)
+      അല്ലെങ്കിൽ എങ്കിൽ (page_map.arrayZ[a].major < other.page_map.arrayZ[b].major)
       {
-	if (passthru_left)
-	  count++;
+	എങ്കിൽ (passthru_ഇടത്)
+	  എണ്ണം++;
 	a++;
       }
-      else
+      അല്ലെങ്കിൽ
       {
-	if (passthru_right)
-	  count++;
+	എങ്കിൽ (passthru_വലത്)
+	  എണ്ണം++;
 	b++;
       }
     }
-    if (passthru_left)
-      count += na - a;
-    if (passthru_right)
-      count += nb - b;
+    എങ്കിൽ (passthru_ഇടത്)
+      എണ്ണം += na - a;
+    എങ്കിൽ (passthru_വലത്)
+      എണ്ണം += nb - b;
 
-    if (!passthru_left)
+    എങ്കിൽ (!passthru_ഇടത്)
     {
       na  = write_index;
       next_page = write_index;
       compact (compact_workspace, write_index);
     }
 
-    if (unlikely (!resize (count)))
-      return;
+    എങ്കിൽ (unlikely (!resize (എണ്ണം)))
+      തിരികെ;
 
-    newCount = count;
+    new_എണ്ണം = എണ്ണം;
 
     /* Process in-place backward. */
     a = na;
     b = nb;
-    for (; a && b; )
+    വേണ്ടി (; a && b; )
     {
-      if (page_map.arrayZ[a - 1].major == other.page_map.arrayZ[b - 1].major)
+      എങ്കിൽ (page_map.arrayZ[a - 1].major == other.page_map.arrayZ[b - 1].major)
       {
 	a--;
 	b--;
-	count--;
-	page_map.arrayZ[count] = page_map.arrayZ[a];
-	page_at (count).v = op (page_at (a).v, other.page_at (b).v);
-	page_at (count).dirty ();
+	എണ്ണം--;
+	page_map.arrayZ[എണ്ണം] = page_map.arrayZ[a];
+	page_at (എണ്ണം).v = op (page_at (a).v, other.page_at (b).v);
+	page_at (എണ്ണം).dirty ();
       }
-      else if (page_map.arrayZ[a - 1].major > other.page_map.arrayZ[b - 1].major)
+      അല്ലെങ്കിൽ എങ്കിൽ (page_map.arrayZ[a - 1].major > other.page_map.arrayZ[b - 1].major)
       {
 	a--;
-	if (passthru_left)
+	എങ്കിൽ (passthru_ഇടത്)
 	{
-	  count--;
-	  page_map.arrayZ[count] = page_map.arrayZ[a];
+	  എണ്ണം--;
+	  page_map.arrayZ[എണ്ണം] = page_map.arrayZ[a];
 	}
       }
-      else
+      അല്ലെങ്കിൽ
       {
 	b--;
-	if (passthru_right)
+	എങ്കിൽ (passthru_വലത്)
 	{
-	  count--;
-	  page_map.arrayZ[count].major = other.page_map.arrayZ[b].major;
-	  page_map.arrayZ[count].index = next_page++;
-	  page_at (count) = other.page_at (b);
+	  എണ്ണം--;
+	  page_map.arrayZ[എണ്ണം].major = other.page_map.arrayZ[b].major;
+	  page_map.arrayZ[എണ്ണം].index = next_page++;
+	  page_at (എണ്ണം) = other.page_at (b);
 	}
       }
     }
-    if (passthru_left)
-      while (a)
+    എങ്കിൽ (passthru_ഇടത്)
+      ആകുമ്പോൾ (a)
       {
 	a--;
-	count--;
-	page_map.arrayZ[count] = page_map.arrayZ[a];
+	എണ്ണം--;
+	page_map.arrayZ[എണ്ണം] = page_map.arrayZ[a];
       }
-    if (passthru_right)
-      while (b)
+    എങ്കിൽ (passthru_വലത്)
+      ആകുമ്പോൾ (b)
       {
 	b--;
-	count--;
-	page_map.arrayZ[count].major = other.page_map.arrayZ[b].major;
-	page_map.arrayZ[count].index = next_page++;
-	page_at (count) = other.page_at (b);
+	എണ്ണം--;
+	page_map.arrayZ[എണ്ണം].major = other.page_map.arrayZ[b].major;
+	page_map.arrayZ[എണ്ണം].index = next_page++;
+	page_at (എണ്ണം) = other.page_at (b);
       }
-    assert (!count);
-    resize (newCount);
+    പ്രതിജ്ഞാ (!എണ്ണം);
+    resize (new_എണ്ണം);
   }
   template <typename Op>
-  static hb_bit_page_t::vector_t
-  op_ (const hb_bit_page_t::vector_t &a, const hb_bit_page_t::vector_t &b)
-  { return Op{} (a, b); }
+  സ്ഥിതം hb_bit_page_t::vector_t
+  op_ (സ്ഥിരം hb_bit_page_t::vector_t &a, സ്ഥിരം hb_bit_page_t::vector_t &b)
+  { തിരികെ Op{} (a, b); }
   template <typename Op>
-  void process (const Op& op,
-		const hb_bit_set_t &other,
+  ശൂന്യം process (സ്ഥിരം Op& op,
+		സ്ഥിരം hb_bit_set_t &other,
 		hb_vector_t<unsigned> *workspace = nullptr)
   {
     process_ (op_<Op>, op (1, 0), op (0, 1), other, workspace);
   }
 
-  void union_ (const hb_bit_set_t &other) { process (hb_bitwise_or, other); }
-  void intersect (const hb_bit_set_t &other,
+  ശൂന്യം union_ (സ്ഥിരം hb_bit_set_t &other) { process (hb_bitwise_or, other); }
+  ശൂന്യം intersect (സ്ഥിരം hb_bit_set_t &other,
 		  hb_vector_t<unsigned> *workspace = nullptr)
   { process (hb_bitwise_and, other, workspace); }
-  void subtract (const hb_bit_set_t &other) { process (hb_bitwise_gt, other); }
-  void symmetric_difference (const hb_bit_set_t &other) { process (hb_bitwise_xor, other); }
+  ശൂന്യം subtract (സ്ഥിരം hb_bit_set_t &other) { process (hb_bitwise_gt, other); }
+  ശൂന്യം symmetric_difference (സ്ഥിരം hb_bit_set_t &other) { process (hb_bitwise_xor, other); }
 
-  bool next (hb_codepoint_t *codepoint) const
+  തർക്കം next (hb_codepoint_t *codepoint) സ്ഥിരം
   {
-    if (unlikely (*codepoint == INVALID)) {
+    എങ്കിൽ (unlikely (*codepoint == INVALID)) {
       *codepoint = get_min ();
-      return *codepoint != INVALID;
+      തിരികെ *codepoint != INVALID;
     }
 
-    const auto* page_map_array = page_map.arrayZ;
-    unsigned int major = get_major (*codepoint);
-    unsigned int i = last_page_lookup;
+    സ്ഥിരം auto* page_map_array = page_map.arrayZ;
+    unsigned പൂർണ്ണസംഖ്യ major = get_major (*codepoint);
+    unsigned പൂർണ്ണസംഖ്യ i = last_page_lookup;
 
-    if (unlikely (i >= page_map.length || page_map_array[i].major != major))
+    എങ്കിൽ (unlikely (i >= page_map.length || page_map_array[i].major != major))
     {
       page_map.bfind (major, &i, HB_NOT_FOUND_STORE_CLOSEST);
-      if (i >= page_map.length) {
+      എങ്കിൽ (i >= page_map.length) {
         *codepoint = INVALID;
-        return false;
+        തിരികെ അസത്യം;
       }
       last_page_lookup = i;
     }
 
-    const auto* pages_array = pages.arrayZ;
-    const page_map_t &current = page_map_array[i];
-    if (likely (current.major == major))
+    സ്ഥിരം auto* pages_array = pages.arrayZ;
+    സ്ഥിരം page_map_t &current = page_map_array[i];
+    എങ്കിൽ (likely (current.major == major))
     {
-      if (pages_array[current.index].next (codepoint))
+      എങ്കിൽ (pages_array[current.index].next (codepoint))
       {
         *codepoint += current.major * page_t::PAGE_BITS;
-        return true;
+        തിരികെ സത്യം;
       }
       i++;
     }
 
-    for (; i < page_map.length; i++)
+    വേണ്ടി (; i < page_map.length; i++)
     {
-      const page_map_t &current = page_map_array[i];
+      സ്ഥിരം page_map_t &current = page_map_array[i];
       hb_codepoint_t m = pages_array[current.index].get_min ();
-      if (m != INVALID)
+      എങ്കിൽ (m != INVALID)
       {
 	*codepoint = current.major * page_t::PAGE_BITS + m;
         last_page_lookup = i;
-	return true;
+	തിരികെ സത്യം;
       }
     }
     *codepoint = INVALID;
-    return false;
+    തിരികെ അസത്യം;
   }
-  bool next_bits (hb_codepoint_t *codepoint, uint64_t *bits) const
+  തർക്കം next_bits (hb_codepoint_t *codepoint, uint64_t *bits) സ്ഥിരം
   {
     static_assert (page_t::ELT_BITS == 64, "");
 
-    unsigned int i = 0;
-    unsigned int elt = 0;
-    if (likely (*codepoint != INVALID))
+    unsigned പൂർണ്ണസംഖ്യ i = 0;
+    unsigned പൂർണ്ണസംഖ്യ elt = 0;
+    എങ്കിൽ (likely (*codepoint != INVALID))
     {
       hb_codepoint_t base = *codepoint & ~page_t::ELT_MASK;
-      if (unlikely (base >= INVALID - page_t::ELT_BITS + 1))
-        goto done;
+      എങ്കിൽ (unlikely (base >= INVALID - page_t::ELT_BITS + 1))
+        പോകുക done;
       base += page_t::ELT_BITS;
 
-      unsigned int major = get_major (base);
+      unsigned പൂർണ്ണസംഖ്യ major = get_major (base);
       i = last_page_lookup;
-      if (unlikely (i >= page_map.length || page_map.arrayZ[i].major != major))
+      എങ്കിൽ (unlikely (i >= page_map.length || page_map.arrayZ[i].major != major))
       {
 	page_map.bfind (major, &i, HB_NOT_FOUND_STORE_CLOSEST);
-	if (i >= page_map.length)
-	  goto done;
+	എങ്കിൽ (i >= page_map.length)
+	  പോകുക done;
       }
-      if (page_map.arrayZ[i].major == major)
+      എങ്കിൽ (page_map.arrayZ[i].major == major)
 	elt = page_remainder (base) / page_t::ELT_BITS;
     }
 
-    for (; i < page_map.length; i++, elt = 0)
+    വേണ്ടി (; i < page_map.length; i++, elt = 0)
     {
-      const page_map_t &map = page_map.arrayZ[i];
-      const page_t &page = pages.arrayZ[map.index];
-      for (; elt < page_t::len (); elt++)
-	if (page.v[elt])
+      സ്ഥിരം page_map_t &map = page_map.arrayZ[i];
+      സ്ഥിരം page_t &page = pages.arrayZ[map.index];
+      വേണ്ടി (; elt < page_t::len (); elt++)
+	എങ്കിൽ (page.v[elt])
 	{
 	  *codepoint = major_start (map.major) + elt * page_t::ELT_BITS;
 	  *bits = page.v[elt];
 	  last_page_lookup = i;
-	  return true;
+	  തിരികെ സത്യം;
 	}
     }
 
   done:
     *codepoint = INVALID;
     *bits = 0;
-    return false;
+    തിരികെ അസത്യം;
   }
-  bool previous (hb_codepoint_t *codepoint) const
+  തർക്കം previous (hb_codepoint_t *codepoint) സ്ഥിരം
   {
-    if (unlikely (*codepoint == INVALID)) {
+    എങ്കിൽ (unlikely (*codepoint == INVALID)) {
       *codepoint = get_max ();
-      return *codepoint != INVALID;
+      തിരികെ *codepoint != INVALID;
     }
 
     page_map_t map = {get_major (*codepoint), 0};
-    unsigned int i;
+    unsigned പൂർണ്ണസംഖ്യ i;
     page_map.bfind (map, &i, HB_NOT_FOUND_STORE_CLOSEST);
-    if (i < page_map.length && page_map.arrayZ[i].major == map.major)
+    എങ്കിൽ (i < page_map.length && page_map.arrayZ[i].major == map.major)
     {
-      if (pages[page_map.arrayZ[i].index].previous (codepoint))
+      എങ്കിൽ (pages[page_map.arrayZ[i].index].previous (codepoint))
       {
 	*codepoint += page_map.arrayZ[i].major * page_t::PAGE_BITS;
-	return true;
+	തിരികെ സത്യം;
       }
     }
     i--;
-    for (; (int) i >= 0; i--)
+    വേണ്ടി (; (പൂർണ്ണസംഖ്യ) i >= 0; i--)
     {
       hb_codepoint_t m = pages.arrayZ[page_map.arrayZ[i].index].get_max ();
-      if (m != INVALID)
+      എങ്കിൽ (m != INVALID)
       {
 	*codepoint = page_map.arrayZ[i].major * page_t::PAGE_BITS + m;
-	return true;
+	തിരികെ സത്യം;
       }
     }
     *codepoint = INVALID;
-    return false;
+    തിരികെ അസത്യം;
   }
-  bool next_range (hb_codepoint_t *first, hb_codepoint_t *last) const
+  തർക്കം next_range (hb_codepoint_t *first, hb_codepoint_t *last) സ്ഥിരം
   {
     hb_codepoint_t i;
 
     i = *last;
-    if (!next (&i))
+    എങ്കിൽ (!next (&i))
     {
       *last = *first = INVALID;
-      return false;
+      തിരികെ അസത്യം;
     }
 
     *last = *first = i;
 
-    const auto* page_map_array = page_map.arrayZ;
-    const auto* pages_array = pages.arrayZ;
-    unsigned int major = get_major (*last);
-    unsigned int p_index = last_page_lookup;
+    സ്ഥിരം auto* page_map_array = page_map.arrayZ;
+    സ്ഥിരം auto* pages_array = pages.arrayZ;
+    unsigned പൂർണ്ണസംഖ്യ major = get_major (*last);
+    unsigned പൂർണ്ണസംഖ്യ p_index = last_page_lookup;
 
-    if (unlikely (p_index >= page_map.length || page_map_array[p_index].major != major))
+    എങ്കിൽ (unlikely (p_index >= page_map.length || page_map_array[p_index].major != major))
     {
       page_map.bfind (major, &p_index, HB_NOT_FOUND_STORE_CLOSEST);
       // The above next() call gaurantees the page we're looking for exists.
-      assert(p_index < page_map.length && page_map_array[p_index].major == major);
+      പ്രതിജ്ഞാ(p_index < page_map.length && page_map_array[p_index].major == major);
       last_page_lookup = p_index;
     }
 
-    unsigned int rem = page_remainder (*last);
-    unsigned int elt = rem / page_t::ELT_BITS;
-    unsigned int bit = rem & page_t::ELT_MASK;
+    unsigned പൂർണ്ണസംഖ്യ rem = page_remainder (*last);
+    unsigned പൂർണ്ണസംഖ്യ elt = rem / page_t::ELT_BITS;
+    unsigned പൂർണ്ണസംഖ്യ bit = rem & page_t::ELT_MASK;
 
-    const page_t *page = &pages_array[page_map_array[p_index].index];
-    unsigned int run = hb_ctz (~(page->v[elt] >> bit));
+    സ്ഥിരം page_t *page = &pages_array[page_map_array[p_index].index];
+    unsigned പൂർണ്ണസംഖ്യ run = hb_ctz (~(page->v[elt] >> bit));
     *last += run - 1;
-    if (run < page_t::ELT_BITS - bit)
-      return true;
+    എങ്കിൽ (run < page_t::ELT_BITS - bit)
+      തിരികെ സത്യം;
 
     elt++;
 
-    while (true)
+    ആകുമ്പോൾ (സത്യം)
     {
-      for (; elt < page_t::len (); elt++)
+      വേണ്ടി (; elt < page_t::len (); elt++)
       {
         uint64_t w = page->v[elt];
-        if (w == (uint64_t) -1)
+        എങ്കിൽ (w == (uint64_t) -1)
         {
           *last += page_t::ELT_BITS;
-          continue;
+          തുടരുക;
         }
         uint64_t inv = ~w;
         *last += hb_ctz (inv);
-        return true;
+        തിരികെ സത്യം;
       }
 
       p_index++;
 
 
-      if (p_index >= page_map.length || page_map_array[p_index].major != major + 1)
-        return true;
+      എങ്കിൽ (p_index >= page_map.length || page_map_array[p_index].major != major + 1)
+        തിരികെ സത്യം;
 
-      const auto& entry = page_map_array[p_index];
+      സ്ഥിരം auto& entry = page_map_array[p_index];
       major = entry.major;
       last_page_lookup = p_index;
       page = &pages_array[entry.index];
@@ -882,67 +882,67 @@ struct hb_bit_set_t
     }
   }
 
-  bool previous_range (hb_codepoint_t *first, hb_codepoint_t *last) const
+  തർക്കം previous_range (hb_codepoint_t *first, hb_codepoint_t *last) സ്ഥിരം
   {
     hb_codepoint_t i;
 
     i = *first;
-    if (!previous (&i))
+    എങ്കിൽ (!previous (&i))
     {
       *last = *first = INVALID;
-      return false;
+      തിരികെ അസത്യം;
     }
 
     *last = *first = i;
 
-    const auto* page_map_array = page_map.arrayZ;
-    const auto* pages_array = pages.arrayZ;
-    unsigned int major = get_major (*first);
-    unsigned int p_index = last_page_lookup;
+    സ്ഥിരം auto* page_map_array = page_map.arrayZ;
+    സ്ഥിരം auto* pages_array = pages.arrayZ;
+    unsigned പൂർണ്ണസംഖ്യ major = get_major (*first);
+    unsigned പൂർണ്ണസംഖ്യ p_index = last_page_lookup;
 
-    if (unlikely (p_index >= page_map.length || page_map_array[p_index].major != major))
+    എങ്കിൽ (unlikely (p_index >= page_map.length || page_map_array[p_index].major != major))
     {
       page_map.bfind (major, &p_index, HB_NOT_FOUND_STORE_CLOSEST);
       // The above previous() call gaurantees the page we're looking for exists.
-      assert(p_index < page_map.length && page_map_array[p_index].major == major);
+      പ്രതിജ്ഞാ(p_index < page_map.length && page_map_array[p_index].major == major);
       last_page_lookup = p_index;
     }
 
-    unsigned int rem = page_remainder (*first);
-    int elt = rem / page_t::ELT_BITS;
-    unsigned int bit = rem & page_t::ELT_MASK;
+    unsigned പൂർണ്ണസംഖ്യ rem = page_remainder (*first);
+    പൂർണ്ണസംഖ്യ elt = rem / page_t::ELT_BITS;
+    unsigned പൂർണ്ണസംഖ്യ bit = rem & page_t::ELT_MASK;
 
-    const page_t *page = &pages_array[page_map_array[p_index].index];
+    സ്ഥിരം page_t *page = &pages_array[page_map_array[p_index].index];
     uint64_t inv = ~(page->v[elt] << (63 - bit));
-    unsigned int run = hb_bit_storage (inv) ? (page_t::ELT_BITS - hb_bit_storage (inv)) : page_t::ELT_BITS;
+    unsigned പൂർണ്ണസംഖ്യ run = hb_bit_storage (inv) ? (page_t::ELT_BITS - hb_bit_storage (inv)) : page_t::ELT_BITS;
     *first -= run - 1;
-    if (run < bit + 1)
-      return true;
+    എങ്കിൽ (run < bit + 1)
+      തിരികെ സത്യം;
 
     elt--;
 
-    while (true)
+    ആകുമ്പോൾ (സത്യം)
     {
-      for (; elt >= 0; elt--)
+      വേണ്ടി (; elt >= 0; elt--)
       {
         uint64_t w = page->v[elt];
-        if (w == (uint64_t) -1)
+        എങ്കിൽ (w == (uint64_t) -1)
         {
           *first -= page_t::ELT_BITS;
-          continue;
+          തുടരുക;
         }
         uint64_t inv = ~w;
-        unsigned int zeros = hb_bit_storage (inv) ? (page_t::ELT_BITS - hb_bit_storage (inv)) : page_t::ELT_BITS;
+        unsigned പൂർണ്ണസംഖ്യ zeros = hb_bit_storage (inv) ? (page_t::ELT_BITS - hb_bit_storage (inv)) : page_t::ELT_BITS;
         *first -= zeros;
-        return true;
+        തിരികെ സത്യം;
       }
 
 
-      if (p_index == 0 || page_map_array[p_index - 1].major != major - 1)
-        return true;
+      എങ്കിൽ (p_index == 0 || page_map_array[p_index - 1].major != major - 1)
+        തിരികെ സത്യം;
 
       p_index--;
-      const auto& entry = page_map_array[p_index];
+      സ്ഥിരം auto& entry = page_map_array[p_index];
 
       major = entry.major;
       last_page_lookup = p_index;
@@ -951,219 +951,219 @@ struct hb_bit_set_t
     }
   }
 
-  unsigned int next_many (hb_codepoint_t  codepoint,
+  unsigned പൂർണ്ണസംഖ്യ next_many (hb_codepoint_t  codepoint,
 			  hb_codepoint_t *out,
-			  unsigned int    size) const
+			  unsigned പൂർണ്ണസംഖ്യ    size) സ്ഥിരം
   {
     // By default, start at the first bit of the first page of values.
-    unsigned int start_page = 0;
-    unsigned int start_page_value = 0;
-    if (unlikely (codepoint != INVALID))
+    unsigned പൂർണ്ണസംഖ്യ start_page = 0;
+    unsigned പൂർണ്ണസംഖ്യ start_page_മൂല്യം = 0;
+    എങ്കിൽ (unlikely (codepoint != INVALID))
     {
-      const auto* page_map_array = page_map.arrayZ;
-      unsigned int major = get_major (codepoint);
-      unsigned int i = last_page_lookup;
-      if (unlikely (i >= page_map.length || page_map_array[i].major != major))
+      സ്ഥിരം auto* page_map_array = page_map.arrayZ;
+      unsigned പൂർണ്ണസംഖ്യ major = get_major (codepoint);
+      unsigned പൂർണ്ണസംഖ്യ i = last_page_lookup;
+      എങ്കിൽ (unlikely (i >= page_map.length || page_map_array[i].major != major))
       {
 	page_map.bfind (major, &i, HB_NOT_FOUND_STORE_CLOSEST);
-	if (i >= page_map.length)
-	  return 0;  // codepoint is greater than our max element.
+	എങ്കിൽ (i >= page_map.length)
+	  തിരികെ 0;  // codepoint is greater than our max element.
       }
       start_page = i;
-      if (page_map_array[i].major == major)
+      എങ്കിൽ (page_map_array[i].major == major)
       {
-        start_page_value = page_remainder (codepoint + 1);
-        if (unlikely (start_page_value == 0))
+        start_page_മൂല്യം = page_remainder (codepoint + 1);
+        എങ്കിൽ (unlikely (start_page_മൂല്യം == 0))
         {
           // The export-after value was last in the page. Start on next page.
           start_page++;
-          start_page_value = 0;
+          start_page_മൂല്യം = 0;
         }
       }
     }
 
-    unsigned int initial_size = size;
-    for (unsigned int i = start_page; i < page_map.length && size; i++)
+    unsigned പൂർണ്ണസംഖ്യ initial_size = size;
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = start_page; i < page_map.length && size; i++)
     {
       uint32_t base = major_start (page_map.arrayZ[i].major);
-      unsigned int n = pages[page_map.arrayZ[i].index].write (base, start_page_value, out, size);
+      unsigned പൂർണ്ണസംഖ്യ n = pages[page_map.arrayZ[i].index].ലിഖ (base, start_page_മൂല്യം, out, size);
       out += n;
       size -= n;
-      start_page_value = 0;
+      start_page_മൂല്യം = 0;
     }
-    return initial_size - size;
+    തിരികെ initial_size - size;
   }
 
-  unsigned int next_many_inverted (hb_codepoint_t  codepoint,
+  unsigned പൂർണ്ണസംഖ്യ next_many_inverted (hb_codepoint_t  codepoint,
 				   hb_codepoint_t *out,
-				   unsigned int    size) const
+				   unsigned പൂർണ്ണസംഖ്യ    size) സ്ഥിരം
   {
-    unsigned int initial_size = size;
+    unsigned പൂർണ്ണസംഖ്യ initial_size = size;
     // By default, start at the first bit of the first page of values.
-    unsigned int start_page = 0;
-    unsigned int start_page_value = 0;
-    if (unlikely (codepoint != INVALID))
+    unsigned പൂർണ്ണസംഖ്യ start_page = 0;
+    unsigned പൂർണ്ണസംഖ്യ start_page_മൂല്യം = 0;
+    എങ്കിൽ (unlikely (codepoint != INVALID))
     {
-      const auto* page_map_array = page_map.arrayZ;
-      unsigned int major = get_major (codepoint);
-      unsigned int i = last_page_lookup;
-      if (unlikely (i >= page_map.length || page_map_array[i].major != major))
+      സ്ഥിരം auto* page_map_array = page_map.arrayZ;
+      unsigned പൂർണ്ണസംഖ്യ major = get_major (codepoint);
+      unsigned പൂർണ്ണസംഖ്യ i = last_page_lookup;
+      എങ്കിൽ (unlikely (i >= page_map.length || page_map_array[i].major != major))
       {
         page_map.bfind(major, &i, HB_NOT_FOUND_STORE_CLOSEST);
-        if (unlikely (i >= page_map.length))
+        എങ്കിൽ (unlikely (i >= page_map.length))
         {
           // codepoint is greater than our max element.
-          while (++codepoint != INVALID && size)
+          ആകുമ്പോൾ (++codepoint != INVALID && size)
           {
             *out++ = codepoint;
             size--;
           }
-          return initial_size - size;
+          തിരികെ initial_size - size;
         }
       }
       start_page = i;
-      if (page_map_array[i].major == major)
+      എങ്കിൽ (page_map_array[i].major == major)
       {
-        start_page_value = page_remainder (codepoint + 1);
-        if (unlikely (start_page_value == 0))
+        start_page_മൂല്യം = page_remainder (codepoint + 1);
+        എങ്കിൽ (unlikely (start_page_മൂല്യം == 0))
         {
           // The export-after value was last in the page. Start on next page.
           start_page++;
-          start_page_value = 0;
+          start_page_മൂല്യം = 0;
         }
       }
     }
 
-    hb_codepoint_t next_value = codepoint + 1;
-    for (unsigned int i=start_page; i<page_map.length && size; i++)
+    hb_codepoint_t next_മൂല്യം = codepoint + 1;
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i=start_page; i<page_map.length && size; i++)
     {
       uint32_t base = major_start (page_map.arrayZ[i].major);
-      unsigned int n = pages[page_map.arrayZ[i].index].write_inverted (base, start_page_value, out, size, &next_value);
+      unsigned പൂർണ്ണസംഖ്യ n = pages[page_map.arrayZ[i].index].write_inverted (base, start_page_മൂല്യം, out, size, &next_മൂല്യം);
       out += n;
       size -= n;
-      start_page_value = 0;
+      start_page_മൂല്യം = 0;
     }
-    while (next_value < HB_SET_VALUE_INVALID && size) {
-      *out++ = next_value++;
+    ആകുമ്പോൾ (next_മൂല്യം < HB_SET_മൂല്യം_INVALID && size) {
+      *out++ = next_മൂല്യം++;
       size--;
     }
-    return initial_size - size;
+    തിരികെ initial_size - size;
   }
 
-  bool has_population () const { return population != UINT_MAX; }
-  unsigned int get_population () const
+  തർക്കം has_population () സ്ഥിരം { തിരികെ population != UINT_MAX; }
+  unsigned പൂർണ്ണസംഖ്യ get_population () സ്ഥിരം
   {
-    if (has_population ())
-      return population;
+    എങ്കിൽ (has_population ())
+      തിരികെ population;
 
-    unsigned int pop = 0;
-    unsigned int count = pages.length;
-    for (unsigned int i = 0; i < count; i++)
-      pop += pages[i].get_population ();
+    unsigned പൂർണ്ണസംഖ്യ എടുക്കുക = 0;
+    unsigned പൂർണ്ണസംഖ്യ എണ്ണം = pages.length;
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
+      എടുക്കുക += pages[i].get_population ();
 
-    population = pop;
-    return pop;
+    population = എടുക്കുക;
+    തിരികെ എടുക്കുക;
   }
-  bool get_singleton (hb_codepoint_t *codepoint) const
+  തർക്കം get_singleton (hb_codepoint_t *codepoint) സ്ഥിരം
   {
-    if (has_population ())
+    എങ്കിൽ (has_population ())
     {
-      if (population != 1) return false;
+      എങ്കിൽ (population != 1) തിരികെ അസത്യം;
       *codepoint = get_min ();
-      return true;
+      തിരികെ സത്യം;
     }
 
     hb_codepoint_t singleton = INVALID;
-    for (const auto &map : page_map)
+    വേണ്ടി (സ്ഥിരം auto &map : page_map)
     {
-      const auto &page = pages.arrayZ[map.index];
-      for (unsigned i = 0; i < page_t::len (); i++)
+      സ്ഥിരം auto &page = pages.arrayZ[map.index];
+      വേണ്ടി (unsigned i = 0; i < page_t::len (); i++)
       {
 	page_t::elt_t bits = page.v[i];
-	if (!bits) continue;
-	if (singleton != INVALID || (bits & (bits - 1)))
-	  return false;
+	എങ്കിൽ (!bits) തുടരുക;
+	എങ്കിൽ (singleton != INVALID || (bits & (bits - 1)))
+	  തിരികെ അസത്യം;
 	singleton = map.major * page_t::PAGE_BITS +
 		    i * page_t::ELT_BITS + hb_ctz (bits);
       }
     }
 
-    if (singleton == INVALID)
+    എങ്കിൽ (singleton == INVALID)
     {
       population = 0;
-      return false;
+      തിരികെ അസത്യം;
     }
     population = 1;
     *codepoint = singleton;
-    return true;
+    തിരികെ സത്യം;
   }
-  hb_codepoint_t get_min () const
+  hb_codepoint_t get_min () സ്ഥിരം
   {
-    unsigned count = pages.length;
-    for (unsigned i = 0; i < count; i++)
+    unsigned എണ്ണം = pages.length;
+    വേണ്ടി (unsigned i = 0; i < എണ്ണം; i++)
     {
-      const auto& map = page_map.arrayZ[i];
-      const auto& page = pages.arrayZ[map.index];
+      സ്ഥിരം auto& map = page_map.arrayZ[i];
+      സ്ഥിരം auto& page = pages.arrayZ[map.index];
 
-      if (!page.is_empty ())
-	return map.major * page_t::PAGE_BITS + page.get_min ();
+      എങ്കിൽ (!page.is_empty ())
+	തിരികെ map.major * page_t::PAGE_BITS + page.get_min ();
     }
-    return INVALID;
+    തിരികെ INVALID;
   }
-  hb_codepoint_t get_max () const
+  hb_codepoint_t get_max () സ്ഥിരം
   {
-    unsigned count = pages.length;
-    for (signed i = count - 1; i >= 0; i--)
+    unsigned എണ്ണം = pages.length;
+    വേണ്ടി (signed i = എണ്ണം - 1; i >= 0; i--)
     {
-      const auto& map = page_map.arrayZ[(unsigned) i];
-      const auto& page = pages.arrayZ[map.index];
+      സ്ഥിരം auto& map = page_map.arrayZ[(unsigned) i];
+      സ്ഥിരം auto& page = pages.arrayZ[map.index];
 
-      if (!page.is_empty ())
-	return map.major * page_t::PAGE_BITS + page.get_max ();
+      എങ്കിൽ (!page.is_empty ())
+	തിരികെ map.major * page_t::PAGE_BITS + page.get_max ();
     }
-    return INVALID;
+    തിരികെ INVALID;
   }
 
-  static constexpr hb_codepoint_t INVALID = page_t::INVALID;
+  സ്ഥിതം constexpr hb_codepoint_t INVALID = page_t::INVALID;
 
   /*
    * Iterator implementation.
    */
-  struct iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
+  ഘടന iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
   {
-    static constexpr bool is_sorted_iterator = true;
-    static constexpr bool has_fast_len = true;
-    iter_t (const hb_bit_set_t &s_ = Null (hb_bit_set_t),
-	    bool init = true) : s (&s_), v (INVALID), l(0)
+    സ്ഥിതം constexpr തർക്കം is_sorted_iterator = സത്യം;
+    സ്ഥിതം constexpr തർക്കം has_fast_len = സത്യം;
+    iter_t (സ്ഥിരം hb_bit_set_t &s_ = Null (hb_bit_set_t),
+	    തർക്കം init = സത്യം) : s (&s_), v (INVALID), l(0)
     {
-      if (init)
+      എങ്കിൽ (init)
       {
 	l = s->get_population () + 1;
 	__next__ ();
       }
     }
 
-    typedef hb_codepoint_t __item_t__;
-    hb_codepoint_t __item__ () const { return v; }
-    bool __more__ () const { return v != INVALID; }
-    void __next__ () { s->next (&v); if (l) l--; }
-    void __prev__ () { s->previous (&v); }
-    unsigned __len__ () const { return l; }
-    iter_t end () const { return iter_t (*s, false); }
-    bool operator != (const iter_t& o) const
-    { return v != o.v; }
+    തരനിർവചനം hb_codepoint_t __item_t__;
+    hb_codepoint_t __item__ () സ്ഥിരം { തിരികെ v; }
+    തർക്കം __more__ () സ്ഥിരം { തിരികെ v != INVALID; }
+    ശൂന്യം __next__ () { s->next (&v); എങ്കിൽ (l) l--; }
+    ശൂന്യം __prev__ () { s->previous (&v); }
+    unsigned __len__ () സ്ഥിരം { തിരികെ l; }
+    iter_t end () സ്ഥിരം { തിരികെ iter_t (*s, അസത്യം); }
+    തർക്കം operator != (സ്ഥിരം iter_t& o) സ്ഥിരം
+    { തിരികെ v != o.v; }
 
-    protected:
-    const hb_bit_set_t *s;
+    സംരക്ഷിത:
+    സ്ഥിരം hb_bit_set_t *s;
     hb_codepoint_t v;
     unsigned l;
   };
-  iter_t iter () const { return iter_t (*this); }
-  operator iter_t () const { return iter (); }
+  iter_t iter () സ്ഥിരം { തിരികെ iter_t (*ഇത്); }
+  operator iter_t () സ്ഥിരം { തിരികെ iter (); }
 
-  protected:
+  സംരക്ഷിത:
 
-  page_t *page_for (hb_codepoint_t g, bool insert = false)
+  page_t *page_for (hb_codepoint_t g, തർക്കം insert = അസത്യം)
   {
     unsigned major = get_major (g);
 
@@ -1171,21 +1171,21 @@ struct hb_bit_set_t
      * since the next check would be tricked because a null page also has
      * major==0, which we can't distinguish from an actually major==0 page... */
     unsigned i = last_page_lookup;
-    if (likely (i < page_map.length))
+    എങ്കിൽ (likely (i < page_map.length))
     {
       auto &cached_page = page_map.arrayZ[i];
-      if (cached_page.major == major)
-	return &pages.arrayZ[cached_page.index];
+      എങ്കിൽ (cached_page.major == major)
+	തിരികെ &pages.arrayZ[cached_page.index];
     }
 
     page_map_t map = {major, pages.length};
-    if (!page_map.bfind (map, &i, HB_NOT_FOUND_STORE_CLOSEST))
+    എങ്കിൽ (!page_map.bfind (map, &i, HB_NOT_FOUND_STORE_CLOSEST))
     {
-      if (!insert)
-        return nullptr;
+      എങ്കിൽ (!insert)
+        തിരികെ nullptr;
 
-      if (unlikely (!resize (pages.length + 1)))
-	return nullptr;
+      എങ്കിൽ (unlikely (!resize (pages.length + 1)))
+	തിരികെ nullptr;
 
       pages.arrayZ[map.index].init0 ();
       memmove (page_map.arrayZ + i + 1,
@@ -1195,9 +1195,9 @@ struct hb_bit_set_t
     }
 
     last_page_lookup = i;
-    return &pages.arrayZ[page_map.arrayZ[i].index];
+    തിരികെ &pages.arrayZ[page_map.arrayZ[i].index];
   }
-  const page_t *page_for (hb_codepoint_t g) const
+  സ്ഥിരം page_t *page_for (hb_codepoint_t g) സ്ഥിരം
   {
     unsigned major = get_major (g);
 
@@ -1205,33 +1205,33 @@ struct hb_bit_set_t
      * since the next check would be tricked because a null page also has
      * major==0, which we can't distinguish from an actually major==0 page... */
     unsigned i = last_page_lookup;
-    if (likely (i < page_map.length))
+    എങ്കിൽ (likely (i < page_map.length))
     {
       auto &cached_page = page_map.arrayZ[i];
-      if (cached_page.major == major)
-	return &pages.arrayZ[cached_page.index];
+      എങ്കിൽ (cached_page.major == major)
+	തിരികെ &pages.arrayZ[cached_page.index];
     }
 
     page_map_t key = {major};
-    if (!page_map.bfind (key, &i))
-      return nullptr;
+    എങ്കിൽ (!page_map.bfind (key, &i))
+      തിരികെ nullptr;
 
     last_page_lookup = i;
-    return &pages.arrayZ[page_map.arrayZ[i].index];
+    തിരികെ &pages.arrayZ[page_map.arrayZ[i].index];
   }
-  page_t &page_at (unsigned int i)
+  page_t &page_at (unsigned പൂർണ്ണസംഖ്യ i)
   {
-    assert (i < page_map.length);
-    return pages.arrayZ[page_map.arrayZ[i].index];
+    പ്രതിജ്ഞാ (i < page_map.length);
+    തിരികെ pages.arrayZ[page_map.arrayZ[i].index];
   }
-  const page_t &page_at (unsigned int i) const
+  സ്ഥിരം page_t &page_at (unsigned പൂർണ്ണസംഖ്യ i) സ്ഥിരം
   {
-    assert (i < page_map.length);
-    return pages.arrayZ[page_map.arrayZ[i].index];
+    പ്രതിജ്ഞാ (i < page_map.length);
+    തിരികെ pages.arrayZ[page_map.arrayZ[i].index];
   }
-  unsigned int get_major (hb_codepoint_t g) const { return g >> page_t::PAGE_BITS_LOG_2; }
-  unsigned int page_remainder (hb_codepoint_t g) const { return g & page_t::PAGE_BITMASK; }
-  hb_codepoint_t major_start (unsigned int major) const { return major << page_t::PAGE_BITS_LOG_2; }
+  unsigned പൂർണ്ണസംഖ്യ get_major (hb_codepoint_t g) സ്ഥിരം { തിരികെ g >> page_t::PAGE_BITS_LOG_2; }
+  unsigned പൂർണ്ണസംഖ്യ page_remainder (hb_codepoint_t g) സ്ഥിരം { തിരികെ g & page_t::PAGE_BITMASK; }
+  hb_codepoint_t major_start (unsigned പൂർണ്ണസംഖ്യ major) സ്ഥിരം { തിരികെ major << page_t::PAGE_BITS_LOG_2; }
 };
 
 

@@ -27,7 +27,7 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#അന്തര്ഭാവ "hb.hh"
 
 #ifdef HAVE_ICU
 
@@ -36,18 +36,18 @@
 // https://github.com/harfbuzz/harfbuzz/issues/4915
 #pragma GCC diagnostic ignored "-Wredundant-decls"
 
-#include "hb-icu.h"
+#അന്തര്ഭാവ "hb-icu.h"
 
-#include "hb-machinery.hh"
+#അന്തര്ഭാവ "hb-machinery.hh"
 
-#include <unicode/uchar.h>
-#include <unicode/unorm2.h>
-#include <unicode/ustring.h>
-#include <unicode/utf16.h>
-#include <unicode/uversion.h>
+#അന്തര്ഭാവ <unicode/uchar.h>
+#അന്തര്ഭാവ <unicode/unorm2.h>
+#അന്തര്ഭാവ <unicode/ustring.h>
+#അന്തര്ഭാവ <unicode/utf16.h>
+#അന്തര്ഭാവ <unicode/uversion.h>
 
 /* ICU extra semicolon, fixed since 65, https://github.com/unicode-org/icu/commit/480bec3 */
-#if U_ICU_VERSION_MAJOR_NUM < 65 && (defined(__GNUC__) || defined(__clang__))
+#എങ്കിൽ U_ICU_VERSION_MAJOR_അക്കം < 65 && (defined(__GNUC__) || defined(__clang__))
 #define HB_ICU_EXTRA_SEMI_IGNORED
 #pragma GCC diagnostic ignored "-Wextra-semi-stmt"
 #endif
@@ -78,10 +78,10 @@
 hb_script_t
 hb_icu_script_to_script (UScriptCode script)
 {
-  if (unlikely (script == USCRIPT_INVALID_CODE))
-    return HB_SCRIPT_INVALID;
+  എങ്കിൽ (unlikely (script == USCRIPT_INVALID_CODE))
+    തിരികെ HB_SCRIPT_INVALID;
 
-  return hb_script_from_string (uscript_getShortName (script), -1);
+  തിരികെ hb_script_from_string (uscript_getShortName (script), -1);
 }
 
 /**
@@ -99,155 +99,155 @@ hb_icu_script_from_script (hb_script_t script)
 {
   UScriptCode out = USCRIPT_INVALID_CODE;
 
-  if (unlikely (script == HB_SCRIPT_INVALID))
-    return out;
+  എങ്കിൽ (unlikely (script == HB_SCRIPT_INVALID))
+    തിരികെ out;
 
   UErrorCode icu_err = U_ZERO_ERROR;
-  const unsigned char buf[5] = {HB_UNTAG (script), 0};
-  uscript_getCode ((const char *) buf, &out, 1, &icu_err);
+  സ്ഥിരം unsigned അക്ഷരം buf[5] = {HB_UNTAG (script), 0};
+  uscript_getCode ((സ്ഥിരം അക്ഷരം *) buf, &out, 1, &icu_err);
 
-  return out;
+  തിരികെ out;
 }
 
 
-static hb_unicode_combining_class_t
+സ്ഥിതം hb_unicode_combining_class_t
 hb_icu_unicode_combining_class (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 				hb_codepoint_t      unicode,
-				void               *user_data HB_UNUSED)
+				ശൂന്യം               *user_data HB_UNUSED)
 
 {
-  return (hb_unicode_combining_class_t) u_getCombiningClass (unicode);
+  തിരികെ (hb_unicode_combining_class_t) u_getCombiningClass (unicode);
 }
 
-static hb_unicode_general_category_t
+സ്ഥിതം hb_unicode_general_category_t
 hb_icu_unicode_general_category (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 				 hb_codepoint_t      unicode,
-				 void               *user_data HB_UNUSED)
+				 ശൂന്യം               *user_data HB_UNUSED)
 {
-  switch (u_getIntPropertyValue(unicode, UCHAR_GENERAL_CATEGORY))
+  തിരഞ്ഞെടുപ്പ് (u_get_Int_Property_മൂല്യം(unicode, UCHAR_GENERAL_CATEGORY))
   {
-  case U_UNASSIGNED:			return HB_UNICODE_GENERAL_CATEGORY_UNASSIGNED;
+  അവസ്ഥ U_UNASSIGNED:			തിരികെ HB_UNICODE_GENERAL_CATEGORY_UNASSIGNED;
 
-  case U_UPPERCASE_LETTER:		return HB_UNICODE_GENERAL_CATEGORY_UPPERCASE_LETTER;
-  case U_LOWERCASE_LETTER:		return HB_UNICODE_GENERAL_CATEGORY_LOWERCASE_LETTER;
-  case U_TITLECASE_LETTER:		return HB_UNICODE_GENERAL_CATEGORY_TITLECASE_LETTER;
-  case U_MODIFIER_LETTER:		return HB_UNICODE_GENERAL_CATEGORY_MODIFIER_LETTER;
-  case U_OTHER_LETTER:			return HB_UNICODE_GENERAL_CATEGORY_OTHER_LETTER;
+  അവസ്ഥ U_UPPERCASE_LETTER:		തിരികെ HB_UNICODE_GENERAL_CATEGORY_UPPERCASE_LETTER;
+  അവസ്ഥ U_LOWERCASE_LETTER:		തിരികെ HB_UNICODE_GENERAL_CATEGORY_LOWERCASE_LETTER;
+  അവസ്ഥ U_TITLECASE_LETTER:		തിരികെ HB_UNICODE_GENERAL_CATEGORY_TITLECASE_LETTER;
+  അവസ്ഥ U_MODIFIER_LETTER:		തിരികെ HB_UNICODE_GENERAL_CATEGORY_MODIFIER_LETTER;
+  അവസ്ഥ U_OTHER_LETTER:			തിരികെ HB_UNICODE_GENERAL_CATEGORY_OTHER_LETTER;
 
-  case U_NON_SPACING_MARK:		return HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK;
-  case U_ENCLOSING_MARK:		return HB_UNICODE_GENERAL_CATEGORY_ENCLOSING_MARK;
-  case U_COMBINING_SPACING_MARK:	return HB_UNICODE_GENERAL_CATEGORY_SPACING_MARK;
+  അവസ്ഥ U_NON_SPACING_MARK:		തിരികെ HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK;
+  അവസ്ഥ U_ENCLOSING_MARK:		തിരികെ HB_UNICODE_GENERAL_CATEGORY_ENCLOSING_MARK;
+  അവസ്ഥ U_COMBINING_SPACING_MARK:	തിരികെ HB_UNICODE_GENERAL_CATEGORY_SPACING_MARK;
 
-  case U_DECIMAL_DIGIT_NUMBER:		return HB_UNICODE_GENERAL_CATEGORY_DECIMAL_NUMBER;
-  case U_LETTER_NUMBER:			return HB_UNICODE_GENERAL_CATEGORY_LETTER_NUMBER;
-  case U_OTHER_NUMBER:			return HB_UNICODE_GENERAL_CATEGORY_OTHER_NUMBER;
+  അവസ്ഥ U_DECIMAL_DIGIT_സംഖ്യ:		തിരികെ HB_UNICODE_GENERAL_CATEGORY_DECIMAL_സംഖ്യ;
+  അവസ്ഥ U_LETTER_സംഖ്യ:			തിരികെ HB_UNICODE_GENERAL_CATEGORY_LETTER_സംഖ്യ;
+  അവസ്ഥ U_OTHER_സംഖ്യ:			തിരികെ HB_UNICODE_GENERAL_CATEGORY_OTHER_സംഖ്യ;
 
-  case U_SPACE_SEPARATOR:		return HB_UNICODE_GENERAL_CATEGORY_SPACE_SEPARATOR;
-  case U_LINE_SEPARATOR:		return HB_UNICODE_GENERAL_CATEGORY_LINE_SEPARATOR;
-  case U_PARAGRAPH_SEPARATOR:		return HB_UNICODE_GENERAL_CATEGORY_PARAGRAPH_SEPARATOR;
+  അവസ്ഥ U_SPACE_SEPARATOR:		തിരികെ HB_UNICODE_GENERAL_CATEGORY_SPACE_SEPARATOR;
+  അവസ്ഥ U_വരി_SEPARATOR:		തിരികെ HB_UNICODE_GENERAL_CATEGORY_വരി_SEPARATOR;
+  അവസ്ഥ U_PARAGRAPH_SEPARATOR:		തിരികെ HB_UNICODE_GENERAL_CATEGORY_PARAGRAPH_SEPARATOR;
 
-  case U_CONTROL_CHAR:			return HB_UNICODE_GENERAL_CATEGORY_CONTROL;
-  case U_FORMAT_CHAR:			return HB_UNICODE_GENERAL_CATEGORY_FORMAT;
-  case U_PRIVATE_USE_CHAR:		return HB_UNICODE_GENERAL_CATEGORY_PRIVATE_USE;
-  case U_SURROGATE:			return HB_UNICODE_GENERAL_CATEGORY_SURROGATE;
+  അവസ്ഥ U_CONTROL_CHAR:			തിരികെ HB_UNICODE_GENERAL_CATEGORY_CONTROL;
+  അവസ്ഥ U_FORMAT_CHAR:			തിരികെ HB_UNICODE_GENERAL_CATEGORY_FORMAT;
+  അവസ്ഥ U_PRIVATE_USE_CHAR:		തിരികെ HB_UNICODE_GENERAL_CATEGORY_PRIVATE_USE;
+  അവസ്ഥ U_SURROGATE:			തിരികെ HB_UNICODE_GENERAL_CATEGORY_SURROGATE;
 
 
-  case U_DASH_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_DASH_PUNCTUATION;
-  case U_START_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_OPEN_PUNCTUATION;
-  case U_END_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_CLOSE_PUNCTUATION;
-  case U_CONNECTOR_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_CONNECT_PUNCTUATION;
-  case U_OTHER_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_OTHER_PUNCTUATION;
+  അവസ്ഥ U_DASH_PUNCTUATION:		തിരികെ HB_UNICODE_GENERAL_CATEGORY_DASH_PUNCTUATION;
+  അവസ്ഥ U_START_PUNCTUATION:		തിരികെ HB_UNICODE_GENERAL_CATEGORY_OPEN_PUNCTUATION;
+  അവസ്ഥ U_END_PUNCTUATION:		തിരികെ HB_UNICODE_GENERAL_CATEGORY_CLOSE_PUNCTUATION;
+  അവസ്ഥ U_CONNECTOR_PUNCTUATION:		തിരികെ HB_UNICODE_GENERAL_CATEGORY_CONNECT_PUNCTUATION;
+  അവസ്ഥ U_OTHER_PUNCTUATION:		തിരികെ HB_UNICODE_GENERAL_CATEGORY_OTHER_PUNCTUATION;
 
-  case U_MATH_SYMBOL:			return HB_UNICODE_GENERAL_CATEGORY_MATH_SYMBOL;
-  case U_CURRENCY_SYMBOL:		return HB_UNICODE_GENERAL_CATEGORY_CURRENCY_SYMBOL;
-  case U_MODIFIER_SYMBOL:		return HB_UNICODE_GENERAL_CATEGORY_MODIFIER_SYMBOL;
-  case U_OTHER_SYMBOL:			return HB_UNICODE_GENERAL_CATEGORY_OTHER_SYMBOL;
+  അവസ്ഥ U_MATH_ചിഹ്നം:			തിരികെ HB_UNICODE_GENERAL_CATEGORY_MATH_ചിഹ്നം;
+  അവസ്ഥ U_CURRENCY_ചിഹ്നം:		തിരികെ HB_UNICODE_GENERAL_CATEGORY_CURRENCY_ചിഹ്നം;
+  അവസ്ഥ U_MODIFIER_ചിഹ്നം:		തിരികെ HB_UNICODE_GENERAL_CATEGORY_MODIFIER_ചിഹ്നം;
+  അവസ്ഥ U_OTHER_ചിഹ്നം:			തിരികെ HB_UNICODE_GENERAL_CATEGORY_OTHER_ചിഹ്നം;
 
-  case U_INITIAL_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_INITIAL_PUNCTUATION;
-  case U_FINAL_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_FINAL_PUNCTUATION;
+  അവസ്ഥ U_INITIAL_PUNCTUATION:		തിരികെ HB_UNICODE_GENERAL_CATEGORY_INITIAL_PUNCTUATION;
+  അവസ്ഥ U_FINAL_PUNCTUATION:		തിരികെ HB_UNICODE_GENERAL_CATEGORY_FINAL_PUNCTUATION;
   }
 
-  return HB_UNICODE_GENERAL_CATEGORY_UNASSIGNED;
+  തിരികെ HB_UNICODE_GENERAL_CATEGORY_UNASSIGNED;
 }
 
-static hb_codepoint_t
+സ്ഥിതം hb_codepoint_t
 hb_icu_unicode_mirroring (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 			  hb_codepoint_t      unicode,
-			  void               *user_data HB_UNUSED)
+			  ശൂന്യം               *user_data HB_UNUSED)
 {
-  return u_charMirror(unicode);
+  തിരികെ u_charMirror(unicode);
 }
 
-static hb_script_t
+സ്ഥിതം hb_script_t
 hb_icu_unicode_script (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 		       hb_codepoint_t      unicode,
-		       void               *user_data HB_UNUSED)
+		       ശൂന്യം               *user_data HB_UNUSED)
 {
   UErrorCode status = U_ZERO_ERROR;
   UScriptCode scriptCode = uscript_getScript(unicode, &status);
 
-  if (unlikely (U_FAILURE (status)))
-    return HB_SCRIPT_UNKNOWN;
+  എങ്കിൽ (unlikely (U_FAILURE (status)))
+    തിരികെ HB_SCRIPT_UNKNOWN;
 
-  return hb_icu_script_to_script (scriptCode);
+  തിരികെ hb_icu_script_to_script (scriptCode);
 }
 
-static hb_bool_t
+സ്ഥിതം hb_bool_t
 hb_icu_unicode_compose (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 			hb_codepoint_t      a,
 			hb_codepoint_t      b,
 			hb_codepoint_t     *ab,
-			void               *user_data)
+			ശൂന്യം               *user_data)
 {
-  const UNormalizer2 *normalizer = (const UNormalizer2 *) user_data;
+  സ്ഥിരം UNormalizer2 *normalizer = (സ്ഥിരം UNormalizer2 *) user_data;
   UChar32 ret = unorm2_composePair (normalizer, a, b);
-  if (ret < 0) return false;
+  എങ്കിൽ (ret < 0) തിരികെ അസത്യം;
   *ab = ret;
-  return true;
+  തിരികെ സത്യം;
 }
 
-static hb_bool_t
+സ്ഥിതം hb_bool_t
 hb_icu_unicode_decompose (hb_unicode_funcs_t *ufuncs HB_UNUSED,
 			  hb_codepoint_t      ab,
 			  hb_codepoint_t     *a,
 			  hb_codepoint_t     *b,
-			  void               *user_data)
+			  ശൂന്യം               *user_data)
 {
-  const UNormalizer2 *normalizer = (const UNormalizer2 *) user_data;
+  സ്ഥിരം UNormalizer2 *normalizer = (സ്ഥിരം UNormalizer2 *) user_data;
   UChar decomposed[4];
-  int len;
+  പൂർണ്ണസംഖ്യ len;
   UErrorCode icu_err = U_ZERO_ERROR;
   len = unorm2_getRawDecomposition (normalizer, ab, decomposed,
 				    ARRAY_LENGTH (decomposed), &icu_err);
-  if (U_FAILURE (icu_err) || len < 0) return false;
+  എങ്കിൽ (U_FAILURE (icu_err) || len < 0) തിരികെ അസത്യം;
 
-  len = u_countChar32 (decomposed, len);
-  if (len == 1)
+  len = u_എണ്ണം_Char32 (decomposed, len);
+  എങ്കിൽ (len == 1)
   {
     U16_GET_UNSAFE (decomposed, 0, *a);
     *b = 0;
-    return *a != ab;
+    തിരികെ *a != ab;
   }
-  else if (len == 2)
+  അല്ലെങ്കിൽ എങ്കിൽ (len == 2)
   {
     len = 0;
     U16_NEXT_UNSAFE (decomposed, len, *a);
     U16_NEXT_UNSAFE (decomposed, len, *b);
   }
-  return true;
+  തിരികെ സത്യം;
 }
 
 
-static inline void free_static_icu_funcs ();
+സ്ഥിതം വരിയിൽ ശൂന്യം free_static_icu_funcs ();
 
-static struct hb_icu_unicode_funcs_lazy_loader_t : hb_unicode_funcs_lazy_loader_t<hb_icu_unicode_funcs_lazy_loader_t>
+സ്ഥിതം ഘടന hb_icu_unicode_funcs_lazy_loader_t : hb_unicode_funcs_lazy_loader_t<hb_icu_unicode_funcs_lazy_loader_t>
 {
-  static hb_unicode_funcs_t *create ()
+  സ്ഥിതം hb_unicode_funcs_t *create ()
   {
-    void *user_data = nullptr;
+    ശൂന്യം *user_data = nullptr;
     UErrorCode icu_err = U_ZERO_ERROR;
-    user_data = (void *) unorm2_getNFCInstance (&icu_err);
-    assert (user_data);
+    user_data = (ശൂന്യം *) unorm2_getNFCInstance (&icu_err);
+    പ്രതിജ്ഞാ (user_data);
 
     hb_unicode_funcs_t *funcs = hb_unicode_funcs_create (nullptr);
 
@@ -262,12 +262,12 @@ static struct hb_icu_unicode_funcs_lazy_loader_t : hb_unicode_funcs_lazy_loader_
 
     hb_atexit (free_static_icu_funcs);
 
-    return funcs;
+    തിരികെ funcs;
   }
 } static_icu_funcs;
 
-static inline
-void free_static_icu_funcs ()
+സ്ഥിതം വരിയിൽ
+ശൂന്യം free_static_icu_funcs ()
 {
   static_icu_funcs.free_instance ();
 }
@@ -285,9 +285,9 @@ void free_static_icu_funcs ()
 hb_unicode_funcs_t *
 hb_icu_get_unicode_funcs ()
 {
-  return static_icu_funcs.get_unconst ();
+  തിരികെ static_icu_funcs.get_unconst ();
 }
 
-#pragma GCC diagnostic pop
+#pragma GCC diagnostic എടുക്കുക
 
 #endif

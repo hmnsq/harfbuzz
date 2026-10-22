@@ -27,63 +27,63 @@
 #ifndef HB_SUBSET_CFF_COMMON_HH
 #define HB_SUBSET_CFF_COMMON_HH
 
-#include "hb.hh"
+#അന്തര്ഭാവ "hb.hh"
 
-#include "hb-subset-plan.hh"
-#include "hb-cff-interp-cs-common.hh"
+#അന്തര്ഭാവ "hb-subset-plan.hh"
+#അന്തര്ഭാവ "hb-cff-interp-cs-common.hh"
 
-namespace CFF {
+നാമാകാശ CFF {
 
 /* CFF2 CharStrings may omit a tail of glyphs provided by VARC, in which
  * case FDSelect only covers the CharStrings glyphs.  Use FD 0 for glyphs
  * beyond that. */
 template <typename ACC>
-static inline unsigned
-subset_get_fd (const ACC &acc, hb_codepoint_t glyph)
+സ്ഥിതം വരിയിൽ unsigned
+subset_get_fd (സ്ഥിരം ACC &acc, hb_codepoint_t glyph)
 {
-  return likely (glyph < acc.num_glyphs) ? acc.fdSelect->get_fd (glyph) : 0;
+  തിരികെ likely (glyph < acc.അക്കം_glyphs) ? acc.fdSelect->get_fd (glyph) : 0;
 }
 
 /* Used for writing a temporary charstring */
-struct str_encoder_t
+ഘടന str_encoder_t
 {
   str_encoder_t (str_buff_t &buff_)
     : buff (buff_) {}
 
-  void reset () { buff.reset (); }
+  ശൂന്യം reset () { buff.reset (); }
 
-  void encode_byte (unsigned char b)
+  ശൂന്യം encode_byte (unsigned അക്ഷരം b)
   {
-    if (likely ((signed) buff.length < buff.allocated))
+    എങ്കിൽ (likely ((signed) buff.length < buff.allocated))
       buff.arrayZ[buff.length++] = b;
-    else
+    അല്ലെങ്കിൽ
       buff.push (b);
   }
 
-  void encode_int (int v)
+  ശൂന്യം encode_int (പൂർണ്ണസംഖ്യ v)
   {
-    if ((-1131 <= v) && (v <= 1131))
+    എങ്കിൽ ((-1131 <= v) && (v <= 1131))
     {
-      if ((-107 <= v) && (v <= 107))
+      എങ്കിൽ ((-107 <= v) && (v <= 107))
 	encode_byte (v + 139);
-      else if (v > 0)
+      അല്ലെങ്കിൽ എങ്കിൽ (v > 0)
       {
 	v -= 108;
 	encode_byte ((v >> 8) + OpCode_TwoBytePosInt0);
 	encode_byte (v & 0xFF);
       }
-      else
+      അല്ലെങ്കിൽ
       {
 	v = -v - 108;
 	encode_byte ((v >> 8) + OpCode_TwoByteNegInt0);
 	encode_byte (v & 0xFF);
       }
     }
-    else
+    അല്ലെങ്കിൽ
     {
-      if (unlikely (v < -32768))
+      എങ്കിൽ (unlikely (v < -32768))
 	v = -32768;
-      else if (unlikely (v > 32767))
+      അല്ലെങ്കിൽ എങ്കിൽ (unlikely (v > 32767))
 	v = 32767;
       encode_byte (OpCode_shortint);
       encode_byte ((v >> 8) & 0xFF);
@@ -92,13 +92,13 @@ struct str_encoder_t
   }
 
   // Encode number for CharString
-  void encode_num_cs (const number_t& n)
+  ശൂന്യം encode_അക്കം_cs (സ്ഥിരം സംഖ്യ_t& n)
   {
-    if (n.in_int_range ())
+    എങ്കിൽ (n.in_int_range ())
     {
       encode_int (n.to_int ());
     }
-    else
+    അല്ലെങ്കിൽ
     {
       int32_t v = n.to_fixed ();
       encode_byte (OpCode_fixedcs);
@@ -110,24 +110,24 @@ struct str_encoder_t
   }
 
   // Encode number for TopDict / Private
-  void encode_num_tp (const number_t& n)
+  ശൂന്യം encode_അക്കം_tp (സ്ഥിരം സംഖ്യ_t& n)
   {
-    if (n.in_int_range ())
+    എങ്കിൽ (n.in_int_range ())
     {
       // TODO longint
       encode_int (n.to_int ());
     }
-    else
+    അല്ലെങ്കിൽ
     {
       // Sigh. BCD
       // https://learn.microsoft.com/en-us/typography/opentype/spec/cff2#table-5-nibble-definitions
-      double v = n.to_real ();
+      ഇരട്ട v = n.to_real ();
       encode_byte (OpCode_BCD);
 
       // Based on:
       // https://github.com/fonttools/fonttools/blob/0738c41dfbcbc213ab9263f486ef0cccc6eb5ce5/Lib/fontTools/misc/psCharStrings.py#L267-L316
 
-      char buf[16];
+      അക്ഷരം buf[16];
       /* FontTools has the following comment:
        *
        * # Note: 14 decimal digits seems to be the limitation for CFF real numbers
@@ -138,133 +138,133 @@ struct str_encoder_t
 
       hb_locale_t clocale HB_UNUSED;
       hb_locale_t oldlocale HB_UNUSED;
-      oldlocale = hb_uselocale (clocale = newlocale (LC_ALL_MASK, "C", NULL));
-      snprintf (buf, sizeof (buf), "%.8G", v);
-      (void) hb_uselocale (((void) freelocale (clocale), oldlocale));
+      oldlocale = hb_uselocale (clocale = newlocale (LC_ALL_MASK, "C", ശൂന്യ));
+      snprintf (buf, വലുപ്പം (buf), "%.8G", v);
+      (ശൂന്യം) hb_uselocale (((ശൂന്യം) freelocale (clocale), oldlocale));
 
-      char *s = buf;
+      അക്ഷരം *s = buf;
       size_t len;
-      char *comma = strchr (s, ',');
-      if (comma) // Comma for some European locales in case no uselocale available.
+      അക്ഷരം *comma = strchr (s, ',');
+      എങ്കിൽ (comma) // Comma for some European locales in case no uselocale available.
 	*comma = '.';
-      if (s[0] == '0' && s[1] == '.')
+      എങ്കിൽ (s[0] == '0' && s[1] == '.')
 	s++;
-      else if (s[0] == '-' && s[1] == '0' && s[2] == '.')
+      അല്ലെങ്കിൽ എങ്കിൽ (s[0] == '-' && s[1] == '0' && s[2] == '.')
       {
 	s[1] = '-';
 	s++;
       }
-      else if ((len = strlen (s)) > 3 && !strcmp (s + len - 3, "000"))
+      അല്ലെങ്കിൽ എങ്കിൽ ((len = strlen (s)) > 3 && !strcmp (s + len - 3, "000"))
       {
 	unsigned exponent = len - 3;
-	char *s2 = s + exponent - 1;
-	while (*s2 == '0' && exponent > 1)
+	അക്ഷരം *s2 = s + exponent - 1;
+	ആകുമ്പോൾ (*s2 == '0' && exponent > 1)
 	{
 	  s2--;
 	  exponent++;
 	}
-	snprintf (s2 + 1, sizeof (buf) - (s2 + 1 - buf), "E%u", exponent);
+	snprintf (s2 + 1, വലുപ്പം (buf) - (s2 + 1 - buf), "E%u", exponent);
       }
-      else
+      അല്ലെങ്കിൽ
       {
-	char *dot = strchr (s, '.');
-	char *e = strchr (s, 'E');
-	if (dot && e)
+	അക്ഷരം *dot = strchr (s, '.');
+	അക്ഷരം *e = strchr (s, 'E');
+	എങ്കിൽ (dot && e)
 	{
 	  memmove (dot, dot + 1, e - (dot + 1));
-	  int exponent = atoi (e + 1);
-	  int new_exponent = exponent - (e - (dot + 1));
-	  if (new_exponent == 1)
+	  പൂർണ്ണസംഖ്യ exponent = atoi (e + 1);
+	  പൂർണ്ണസംഖ്യ new_exponent = exponent - (e - (dot + 1));
+	  എങ്കിൽ (new_exponent == 1)
 	  {
 	    e[-1] = '0';
 	    e[0] = '\0';
 	  }
-	  else
-	    snprintf (e - 1, sizeof (buf) - (e - 1 - buf), "E%d", new_exponent);
+	  അല്ലെങ്കിൽ
+	    snprintf (e - 1, വലുപ്പം (buf) - (e - 1 - buf), "E%d", new_exponent);
 	}
       }
-      if ((s[0] == '.' && s[1] == '0') || (s[0] == '-' && s[1] == '.' && s[2] == '0'))
+      എങ്കിൽ ((s[0] == '.' && s[1] == '0') || (s[0] == '-' && s[1] == '.' && s[2] == '0'))
       {
-	int sign = s[0] == '-';
-	char *s2 = s + sign + 1;
-	while (*s2 == '0')
+	പൂർണ്ണസംഖ്യ sign = s[0] == '-';
+	അക്ഷരം *s2 = s + sign + 1;
+	ആകുമ്പോൾ (*s2 == '0')
 	  s2++;
 	len = strlen (s2);
 	memmove (s + sign, s2, len);
-	snprintf (s + sign + len, sizeof (buf) - (s + sign + len - buf), "E-%u", (unsigned) (strlen (s + sign) - 1));
+	snprintf (s + sign + len, വലുപ്പം (buf) - (s + sign + len - buf), "E-%u", (unsigned) (strlen (s + sign) - 1));
       }
-      hb_vector_t<char> nibbles;
-      while (*s)
+      hb_vector_t<അക്ഷരം> nibbles;
+      ആകുമ്പോൾ (*s)
       {
-	char c = s[0];
+	അക്ഷരം c = s[0];
 	s++;
 
-	switch (c)
+	തിരഞ്ഞെടുപ്പ് (c)
 	{
-	  case 'E':
+	  അവസ്ഥ 'E':
 	  {
-	    char c2 = *s;
-	    if (c2 == '-')
+	    അക്ഷരം c2 = *s;
+	    എങ്കിൽ (c2 == '-')
 	    {
 	      s++;
 	      nibbles.push (0x0C); // E-
-	    } else {
-	      if (c2 == '+')
+	    } അല്ലെങ്കിൽ {
+	      എങ്കിൽ (c2 == '+')
 		s++;
 	      nibbles.push (0x0B); // E
 	    }
-	    if (*s == '0')
+	    എങ്കിൽ (*s == '0')
 	      s++;
-	    continue;
+	    തുടരുക;
 	  }
 
-	  case '.':
+	  അവസ്ഥ '.':
 	    nibbles.push (0x0A); // .
-	    continue;
+	    തുടരുക;
 
-	  case '-':
+	  അവസ്ഥ '-':
 	    nibbles.push (0x0E); // -
-	    continue;
+	    തുടരുക;
 	}
 
 	nibbles.push (c - '0');
       }
       nibbles.push (0x0F);
-      if (nibbles.length % 2)
+      എങ്കിൽ (nibbles.length % 2)
 	nibbles.push (0x0F);
 
-      unsigned count = nibbles.length;
-      for (unsigned i = 0; i < count; i += 2)
+      unsigned എണ്ണം = nibbles.length;
+      വേണ്ടി (unsigned i = 0; i < എണ്ണം; i += 2)
         encode_byte ((nibbles[i] << 4) | nibbles[i+1]);
     }
   }
 
-  void encode_op (op_code_t op)
+  ശൂന്യം encode_op (op_code_t op)
   {
-    if (Is_OpCode_ESC (op))
+    എങ്കിൽ (Is_OpCode_ESC (op))
     {
       encode_byte (OpCode_escape);
       encode_byte (Unmake_OpCode_ESC (op));
     }
-    else
+    അല്ലെങ്കിൽ
       encode_byte (op);
   }
 
-  void copy_str (const unsigned char *str, unsigned length)
+  ശൂന്യം copy_str (സ്ഥിരം unsigned അക്ഷരം *str, unsigned length)
   {
-    assert ((signed) (buff.length + length) <= buff.allocated);
+    പ്രതിജ്ഞാ ((signed) (buff.length + length) <= buff.allocated);
     hb_memcpy (buff.arrayZ + buff.length, str, length);
     buff.length += length;
   }
 
-  bool in_error () const { return buff.in_error (); }
+  തർക്കം in_error () സ്ഥിരം { തിരികെ buff.in_error (); }
 
-  protected:
+  സംരക്ഷിത:
 
   str_buff_t &buff;
 };
 
-struct cff_sub_table_info_t {
+ഘടന cff_sub_table_info_t {
   cff_sub_table_info_t ()
     : fd_array_link (0),
       char_strings_link (0)
@@ -278,119 +278,119 @@ struct cff_sub_table_info_t {
 };
 
 template <typename OPSTR=op_str_t>
-struct cff_top_dict_op_serializer_t : op_serializer_t
+ഘടന cff_മുകൾ_dict_op_serializer_t : op_serializer_t
 {
-  bool serialize (hb_serialize_context_t *c,
-		  const OPSTR &opstr,
-		  const cff_sub_table_info_t &info) const
+  തർക്കം serialize (hb_serialize_context_t *c,
+		  സ്ഥിരം OPSTR &opstr,
+		  സ്ഥിരം cff_sub_table_info_t &info) സ്ഥിരം
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ഇത്);
 
-    switch (opstr.op)
+    തിരഞ്ഞെടുപ്പ് (opstr.op)
     {
-      case OpCode_CharStrings:
+      അവസ്ഥ OpCode_CharStrings:
 	return_trace (FontDict::serialize_link4_op(c, opstr.op, info.char_strings_link, whence_t::Absolute));
 
-      case OpCode_FDArray:
+      അവസ്ഥ OpCode_FDArray:
 	return_trace (FontDict::serialize_link4_op(c, opstr.op, info.fd_array_link, whence_t::Absolute));
 
-      case OpCode_FDSelect:
+      അവസ്ഥ OpCode_FDSelect:
 	return_trace (FontDict::serialize_link4_op(c, opstr.op, info.fd_select.link, whence_t::Absolute));
 
-      default:
+      സ്ഥിരസ്ഥിതി:
 	return_trace (copy_opstr (c, opstr));
     }
-    return_trace (true);
+    return_trace (സത്യം);
   }
 };
 
-struct cff_font_dict_op_serializer_t : op_serializer_t
+ഘടന cff_font_dict_op_serializer_t : op_serializer_t
 {
-  bool serialize (hb_serialize_context_t *c,
-		  const op_str_t &opstr,
-		  const table_info_t &privateDictInfo) const
+  തർക്കം serialize (hb_serialize_context_t *c,
+		  സ്ഥിരം op_str_t &opstr,
+		  സ്ഥിരം table_info_t &privateDictInfo) സ്ഥിരം
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (ഇത്);
 
-    if (opstr.op == OpCode_Private)
+    എങ്കിൽ (opstr.op == OpCode_Private)
     {
       /* serialize the private dict size & offset as 2-byte & 4-byte integers */
       return_trace (UnsizedByteStr::serialize_int2 (c, privateDictInfo.size) &&
 		    Dict::serialize_link4_op (c, opstr.op, privateDictInfo.link, whence_t::Absolute));
     }
-    else
+    അല്ലെങ്കിൽ
     {
-      unsigned char *d = c->allocate_size<unsigned char> (opstr.length);
-      if (unlikely (!d)) return_trace (false);
+      unsigned അക്ഷരം *d = c->allocate_size<unsigned അക്ഷരം> (opstr.length);
+      എങ്കിൽ (unlikely (!d)) return_trace (അസത്യം);
       /* Faster than hb_memcpy for small strings. */
-      for (unsigned i = 0; i < opstr.length; i++)
+      വേണ്ടി (unsigned i = 0; i < opstr.length; i++)
 	d[i] = opstr.ptr[i];
       //hb_memcpy (d, opstr.ptr, opstr.length);
     }
-    return_trace (true);
+    return_trace (സത്യം);
   }
 };
 
 /* CharString command for specialization */
-struct cs_command_t
+ഘടന cs_command_t
 {
-  hb_vector_t<number_t> args;
-  hb_vector_t<unsigned char> mask_bytes; /* For hintmask/cntrmask payload bytes. */
+  hb_vector_t<സംഖ്യ_t> args;
+  hb_vector_t<unsigned അക്ഷരം> mask_bytes; /* For hintmask/cntrmask payload bytes. */
   op_code_t op;
 
   cs_command_t () : op (OpCode_Invalid) {}
   cs_command_t (op_code_t op_) : op (op_) {}
 };
 
-typedef hb_vector_t<cs_command_t> *cs_command_vec_t;
+തരനിർവചനം hb_vector_t<cs_command_t> *cs_command_vec_t;
 
-struct cff2_instancing_plan_t;
+ഘടന cff2_instancing_plan_t;
 
-struct flatten_param_t
+ഘടന flatten_param_t
 {
   flatten_param_t (str_buff_t &flatStr_,
-                   bool drop_hints_,
-                   const hb_subset_plan_t *plan_,
+                   തർക്കം drop_hints_,
+                   സ്ഥിരം hb_subset_plan_t *plan_,
                    cs_command_vec_t commands_ = nullptr)
     : flatStr (flatStr_), drop_hints (drop_hints_), plan (plan_), commands (commands_) {}
 
   str_buff_t     &flatStr;
-  bool	drop_hints;
-  const hb_subset_plan_t *plan;
+  തർക്കം	drop_hints;
+  സ്ഥിരം hb_subset_plan_t *plan;
   cs_command_vec_t commands; /* Optional: capture parsed commands for specialization */
 
   /* CFF2 partial instancing: when set, blends are rewritten against the
    * instanced variation store instead of being copied or flattened. */
-  const cff2_instancing_plan_t *instancer = nullptr;
-  bool emitted_blend = false;
+  സ്ഥിരം cff2_instancing_plan_t *instancer = nullptr;
+  തർക്കം emitted_blend = അസത്യം;
 };
 
 template <typename ACC, typename ENV, typename OPSET, op_code_t endchar_op=OpCode_Invalid>
-struct subr_flattener_t
+ഘടന subr_flattener_t
 {
-  subr_flattener_t (const ACC &acc_,
-		    const hb_subset_plan_t *plan_)
+  subr_flattener_t (സ്ഥിരം ACC &acc_,
+		    സ്ഥിരം hb_subset_plan_t *plan_)
 		   : acc (acc_), plan (plan_) {}
 
-  bool flatten (str_buff_vec_t &flat_charstrings,
+  തർക്കം flatten (str_buff_vec_t &flat_charstrings,
                 hb_vector_t<hb_vector_t<cs_command_t>> *command_capture = nullptr)
   {
-    unsigned count = plan->num_output_glyphs ();
-    if (!flat_charstrings.resize_exact (count))
-      return false;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned എണ്ണം = plan->അക്കം_output_glyphs ();
+    എങ്കിൽ (!flat_charstrings.resize_exact (എണ്ണം))
+      തിരികെ അസത്യം;
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
     {
       hb_codepoint_t  glyph;
-      if (!plan->old_gid_for_new_gid (i, &glyph))
+      എങ്കിൽ (!plan->old_gid_for_new_gid (i, &glyph))
       {
 	/* add an endchar only charstring for a missing glyph if CFF1 */
-	if (endchar_op != OpCode_Invalid) flat_charstrings[i].push (endchar_op);
-	continue;
+	എങ്കിൽ (endchar_op != OpCode_Invalid) flat_charstrings[i].push (endchar_op);
+	തുടരുക;
       }
-      const hb_ubytes_t str = (*acc.charStrings)[glyph];
-      unsigned int fd = subset_get_fd (acc, glyph);
-      if (unlikely (fd >= acc.fdCount))
-	return false;
+      സ്ഥിരം hb_ubytes_t str = (*acc.charStrings)[glyph];
+      unsigned പൂർണ്ണസംഖ്യ fd = subset_get_fd (acc, glyph);
+      എങ്കിൽ (unlikely (fd >= acc.fd_എണ്ണം))
+	തിരികെ അസത്യം;
 
 
       ENV env (str, acc, fd,
@@ -398,74 +398,74 @@ struct subr_flattener_t
       cs_interpreter_t<ENV, OPSET, flatten_param_t> interp (env);
       flatten_param_t  param = {
         flat_charstrings.arrayZ[i],
-        (bool) (plan->flags & HB_SUBSET_FLAGS_NO_HINTING),
+        (തർക്കം) (plan->flags & HB_SUBSET_FLAGS_NO_HINTING),
 	plan,
 	command_capture ? &(*command_capture)[i] : nullptr
       };
-      if (unlikely (!interp.interpret (param)))
-	return false;
+      എങ്കിൽ (unlikely (!interp.interpret (param)))
+	തിരികെ അസത്യം;
     }
-    return true;
+    തിരികെ സത്യം;
   }
 
-  const ACC &acc;
-  const hb_subset_plan_t *plan;
+  സ്ഥിരം ACC &acc;
+  സ്ഥിരം hb_subset_plan_t *plan;
 };
 
-struct subr_closures_t
+ഘടന subr_closures_t
 {
-  subr_closures_t (unsigned int fd_count) : global_closure (), local_closures ()
+  subr_closures_t (unsigned പൂർണ്ണസംഖ്യ fd_എണ്ണം_2) : global_closure (), local_closures ()
   {
-    local_closures.resize_exact (fd_count);
+    local_closures.resize_exact (fd_എണ്ണം_2);
   }
 
-  void reset ()
+  ശൂന്യം reset ()
   {
     global_closure.clear();
-    for (unsigned int i = 0; i < local_closures.length; i++)
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < local_closures.length; i++)
       local_closures[i].clear();
   }
 
-  bool in_error () const { return local_closures.in_error (); }
+  തർക്കം in_error () സ്ഥിരം { തിരികെ local_closures.in_error (); }
   hb_set_t  global_closure;
   hb_vector_t<hb_set_t> local_closures;
 };
 
-struct parsed_cs_op_t : op_str_t
+ഘടന parsed_cs_op_t : op_str_t
 {
-  parsed_cs_op_t (unsigned int subr_num_ = 0) :
-    subr_num (subr_num_) {}
+  parsed_cs_op_t (unsigned പൂർണ്ണസംഖ്യ subr_അക്കം = 0) :
+    subr_അക്കം_2 (subr_അക്കം) {}
 
-  bool is_hinting () const { return hinting_flag; }
-  void set_hinting ()       { hinting_flag = true; }
+  തർക്കം is_hinting () സ്ഥിരം { തിരികെ hinting_flag; }
+  ശൂന്യം set_hinting ()       { hinting_flag = സത്യം; }
 
   /* The layout of this struct is designed to fit within the
    * padding of op_str_t! */
 
-  protected:
-  bool	  hinting_flag = false;
+  സംരക്ഷിത:
+  തർക്കം	  hinting_flag = അസത്യം;
 
-  public:
-  uint16_t subr_num;
+  പൊതു:
+  uint16_t subr_അക്കം_2;
 };
 
-struct parsed_cs_str_t : parsed_values_t<parsed_cs_op_t>
+ഘടന parsed_cs_str_t : parsed_മൂല്യങ്ങൾ_t<parsed_cs_op_t>
 {
   parsed_cs_str_t () :
-    parsed (false),
-    hint_dropped (false),
-    has_prefix_ (false),
-    has_calls_ (false),
-    coalescing_ (false)
+    parsed (അസത്യം),
+    hint_dropped (അസത്യം),
+    has_prefix_ (അസത്യം),
+    has_calls_ (അസത്യം),
+    coalescing_ (അസത്യം)
   {
     SUPER::init ();
   }
 
   HB_ALWAYS_INLINE
-  void add_op (op_code_t op, const byte_str_ref_t& str_ref)
+  ശൂന്യം add_op (op_code_t op, സ്ഥിരം byte_str_ref_t& str_ref)
   {
-    if (is_parsed ()) return;
-    if (coalescing_)
+    എങ്കിൽ (is_parsed ()) തിരികെ;
+    എങ്കിൽ (coalescing_)
     {
       /* Do not record individual tokens; only note their boundaries.
        * Bytes are flushed as verbatim segments at call sites and at
@@ -473,44 +473,44 @@ struct parsed_cs_str_t : parsed_values_t<parsed_cs_op_t>
        * is not needed later for hint analysis. */
       penultimate_end_ = last_end_;
       last_end_ = str_ref.get_offset ();
-      if (unlikely (op == OpCode_return || op == OpCode_endchar))
+      എങ്കിൽ (unlikely (op == OpCode_return || op == OpCode_endchar))
 	flush_segment (str_ref, last_end_);
-      return;
+      തിരികെ;
     }
     SUPER::add_op (op, str_ref);
   }
 
-  void add_call_op (op_code_t op, const byte_str_ref_t& str_ref, unsigned int subr_num)
+  ശൂന്യം add_call_op (op_code_t op, സ്ഥിരം byte_str_ref_t& str_ref, unsigned പൂർണ്ണസംഖ്യ subr_അക്കം_2)
   {
-    if (is_parsed ()) return;
-    has_calls_ = true;
+    എങ്കിൽ (is_parsed ()) തിരികെ;
+    has_calls_ = സത്യം;
 
-    if (coalescing_)
+    എങ്കിൽ (coalescing_)
     {
       /* Flush bytes preceding the subroutine-number token, then skip
        * over the number: it is re-encoded with the new bias. */
       flush_segment (str_ref, penultimate_end_);
       opStart = last_end_;
-      SUPER::add_op (op, str_ref, {subr_num});
+      SUPER::add_op (op, str_ref, {subr_അക്കം_2});
       penultimate_end_ = last_end_ = str_ref.get_offset ();
-      return;
+      തിരികെ;
     }
 
     /* Pop the subroutine number. */
-    values.pop ();
+    values.എടുക്കുക ();
 
-    SUPER::add_op (op, str_ref, {subr_num});
+    SUPER::add_op (op, str_ref, {subr_അക്കം_2});
   }
 
   /* Flush pending bytes [opStart, end) as verbatim segment entries. */
-  void flush_segment (const byte_str_ref_t& str_ref, unsigned end)
+  ശൂന്യം flush_segment (സ്ഥിരം byte_str_ref_t& str_ref, unsigned end)
   {
     unsigned start = opStart;
-    if (end <= start) return;
-    while (start < end)
+    എങ്കിൽ (end <= start) തിരികെ;
+    ആകുമ്പോൾ (start < end)
     {
       auto arr = str_ref.sub_array (start, hb_min (end - start, 255u));
-      if (unlikely (!arr.length)) break;
+      എങ്കിൽ (unlikely (!arr.length)) നിർത്തുക;
       parsed_cs_op_t *val = values.push ();
       val->ptr = arr.arrayZ;
       val->length = arr.length;
@@ -522,65 +522,65 @@ struct parsed_cs_str_t : parsed_values_t<parsed_cs_op_t>
   /* For coalescing mode: flush any pending bytes through the current
    * position; used where the string ends without an explicit
    * return/endchar op (CFF2). */
-  void flush_coalesced (const byte_str_ref_t& str_ref)
+  ശൂന്യം flush_coalesced (സ്ഥിരം byte_str_ref_t& str_ref)
   {
-    if (coalescing_ && !is_parsed ())
+    എങ്കിൽ (coalescing_ && !is_parsed ())
       flush_segment (str_ref, str_ref.get_offset ());
   }
 
-  void enable_coalescing () { coalescing_ = true; }
-  bool is_coalescing () const { return coalescing_; }
+  ശൂന്യം enable_coalescing () { coalescing_ = സത്യം; }
+  തർക്കം is_coalescing () സ്ഥിരം { തിരികെ coalescing_; }
 
-  void set_prefix (const number_t &num, op_code_t op = OpCode_Invalid)
+  ശൂന്യം set_prefix (സ്ഥിരം സംഖ്യ_t &അക്കം, op_code_t op = OpCode_Invalid)
   {
-    has_prefix_ = true;
+    has_prefix_ = സത്യം;
     prefix_op_ = op;
-    prefix_num_ = num;
+    prefix_അക്കം = അക്കം;
   }
 
-  bool at_end (unsigned int pos) const
+  തർക്കം at_end (unsigned പൂർണ്ണസംഖ്യ pos) സ്ഥിരം
   {
-    return ((pos + 1 >= values.length) /* CFF2 */
+    തിരികെ ((pos + 1 >= values.length) /* CFF2 */
 	|| (values[pos + 1].op == OpCode_return));
   }
 
-  bool is_parsed () const { return parsed; }
-  void set_parsed ()      { parsed = true; }
+  തർക്കം is_parsed () സ്ഥിരം { തിരികെ parsed; }
+  ശൂന്യം set_parsed ()      { parsed = സത്യം; }
 
-  bool is_hint_dropped () const { return hint_dropped; }
-  void set_hint_dropped ()      { hint_dropped = true; }
+  തർക്കം is_hint_dropped () സ്ഥിരം { തിരികെ hint_dropped; }
+  ശൂന്യം set_hint_dropped ()      { hint_dropped = സത്യം; }
 
-  bool is_vsindex_dropped () const { return vsindex_dropped; }
-  void set_vsindex_dropped ()      { vsindex_dropped = true; }
+  തർക്കം is_vsindex_dropped () സ്ഥിരം { തിരികെ vsindex_dropped; }
+  ശൂന്യം set_vsindex_dropped ()      { vsindex_dropped = സത്യം; }
 
-  bool has_prefix () const          { return has_prefix_; }
-  op_code_t prefix_op () const         { return prefix_op_; }
-  const number_t &prefix_num () const { return prefix_num_; }
+  തർക്കം has_prefix () സ്ഥിരം          { തിരികെ has_prefix_; }
+  op_code_t prefix_op () സ്ഥിരം         { തിരികെ prefix_op_; }
+  സ്ഥിരം സംഖ്യ_t &prefix_അക്കം_2 () സ്ഥിരം { തിരികെ prefix_അക്കം; }
 
-  bool has_calls () const          { return has_calls_; }
+  തർക്കം has_calls () സ്ഥിരം          { തിരികെ has_calls_; }
 
-  void compact ()
+  ശൂന്യം compact ()
   {
-    unsigned count = values.length;
-    if (!count) return;
+    unsigned എണ്ണം = values.length;
+    എങ്കിൽ (!എണ്ണം) തിരികെ;
     auto &opstr = values.arrayZ;
     unsigned j = 0;
-    for (unsigned i = 1; i < count; i++)
+    വേണ്ടി (unsigned i = 1; i < എണ്ണം; i++)
     {
       /* See if we can combine op j and op i. */
-      bool combine =
+      തർക്കം combine =
         (opstr[j].op != OpCode_callsubr && opstr[j].op != OpCode_callgsubr) &&
         (opstr[i].op != OpCode_callsubr && opstr[i].op != OpCode_callgsubr) &&
         (opstr[j].is_hinting () == opstr[i].is_hinting ()) &&
         (opstr[j].ptr + opstr[j].length == opstr[i].ptr) &&
         (opstr[j].length + opstr[i].length <= 255);
 
-      if (combine)
+      എങ്കിൽ (combine)
       {
 	opstr[j].length += opstr[i].length;
 	opstr[j].op = OpCode_Invalid;
       }
-      else
+      അല്ലെങ്കിൽ
       {
 	opstr[++j] = opstr[i];
       }
@@ -588,51 +588,51 @@ struct parsed_cs_str_t : parsed_values_t<parsed_cs_op_t>
     values.shrink (j + 1);
   }
 
-  protected:
-  bool    parsed : 1;
-  bool    hint_dropped : 1;
-  bool    vsindex_dropped : 1;
-  bool    has_prefix_ : 1;
-  bool    has_calls_ : 1;
+  സംരക്ഷിത:
+  തർക്കം    parsed : 1;
+  തർക്കം    hint_dropped : 1;
+  തർക്കം    vsindex_dropped : 1;
+  തർക്കം    has_prefix_ : 1;
+  തർക്കം    has_calls_ : 1;
   /* Record verbatim byte segments instead of individual tokens,
    * making a separate compact() pass unnecessary; incompatible with
    * hint analysis. */
-  bool    coalescing_ : 1;
+  തർക്കം    coalescing_ : 1;
   /* End offsets of the last two tokens seen (coalescing mode). */
   unsigned penultimate_end_ = 0;
   unsigned last_end_ = 0;
   op_code_t	prefix_op_;
-  number_t	prefix_num_;
+  സംഖ്യ_t	prefix_അക്കം;
 
-  private:
-  typedef parsed_values_t<parsed_cs_op_t> SUPER;
+  സ്വകാര്യ:
+  തരനിർവചനം parsed_മൂല്യങ്ങൾ_t<parsed_cs_op_t> SUPER;
 };
 
-struct parsed_cs_str_vec_t : hb_vector_t<parsed_cs_str_t>
+ഘടന parsed_cs_str_vec_t : hb_vector_t<parsed_cs_str_t>
 {
-  private:
-  typedef hb_vector_t<parsed_cs_str_t> SUPER;
+  സ്വകാര്യ:
+  തരനിർവചനം hb_vector_t<parsed_cs_str_t> SUPER;
 };
 
-struct cff_subset_accelerator_t
+ഘടന cff_subset_accelerator_t
 {
-  static cff_subset_accelerator_t* create (
+  സ്ഥിതം cff_subset_accelerator_t* create (
       hb_blob_t* original_blob,
-      const parsed_cs_str_vec_t& parsed_charstrings,
-      const parsed_cs_str_vec_t& parsed_global_subrs,
-      const hb_vector_t<parsed_cs_str_vec_t>& parsed_local_subrs) {
+      സ്ഥിരം parsed_cs_str_vec_t& parsed_charstrings,
+      സ്ഥിരം parsed_cs_str_vec_t& parsed_global_subrs,
+      സ്ഥിരം hb_vector_t<parsed_cs_str_vec_t>& parsed_local_subrs) {
     cff_subset_accelerator_t* accel =
-        (cff_subset_accelerator_t*) hb_malloc (sizeof(cff_subset_accelerator_t));
-    if (unlikely (!accel)) return nullptr;
-    new (accel) cff_subset_accelerator_t (original_blob,
+        (cff_subset_accelerator_t*) hb_malloc (വലുപ്പം(cff_subset_accelerator_t));
+    എങ്കിൽ (unlikely (!accel)) തിരികെ nullptr;
+    പുതിയ (accel) cff_subset_accelerator_t (original_blob,
                                           parsed_charstrings,
                                           parsed_global_subrs,
                                           parsed_local_subrs);
-    return accel;
+    തിരികെ accel;
   }
 
-  static void destroy (void* value) {
-    if (!value) return;
+  സ്ഥിതം ശൂന്യം destroy (ശൂന്യം* value) {
+    എങ്കിൽ (!value) തിരികെ;
 
     cff_subset_accelerator_t* accel = (cff_subset_accelerator_t*) value;
     accel->~cff_subset_accelerator_t ();
@@ -641,9 +641,9 @@ struct cff_subset_accelerator_t
 
   cff_subset_accelerator_t(
       hb_blob_t* original_blob_,
-      const parsed_cs_str_vec_t& parsed_charstrings_,
-      const parsed_cs_str_vec_t& parsed_global_subrs_,
-      const hb_vector_t<parsed_cs_str_vec_t>& parsed_local_subrs_)
+      സ്ഥിരം parsed_cs_str_vec_t& parsed_charstrings_,
+      സ്ഥിരം parsed_cs_str_vec_t& parsed_global_subrs_,
+      സ്ഥിരം hb_vector_t<parsed_cs_str_vec_t>& parsed_local_subrs_)
   {
     parsed_charstrings = parsed_charstrings_;
     parsed_global_subrs = parsed_global_subrs_;
@@ -658,7 +658,7 @@ struct cff_subset_accelerator_t
   {
     hb_blob_destroy (original_blob);
     auto *mapping = glyph_to_sid_map.get_relaxed ();
-    if (mapping)
+    എങ്കിൽ (mapping)
     {
       mapping->~glyph_to_sid_map_t ();
       hb_free (mapping);
@@ -670,19 +670,19 @@ struct cff_subset_accelerator_t
   hb_vector_t<parsed_cs_str_vec_t> parsed_local_subrs;
   mutable hb_atomic_t<glyph_to_sid_map_t *> glyph_to_sid_map;
 
- private:
+ സ്വകാര്യ:
   hb_blob_t* original_blob;
 };
 
-struct subr_subset_param_t
+ഘടന subr_subset_param_t
 {
   subr_subset_param_t (parsed_cs_str_t *parsed_charstring_,
 		       parsed_cs_str_vec_t *parsed_global_subrs_,
 		       parsed_cs_str_vec_t *parsed_local_subrs_,
 		       hb_set_t *global_closure_,
 		       hb_set_t *local_closure_,
-		       bool drop_hints_,
-		       bool coalesce_ = false) :
+		       തർക്കം drop_hints_,
+		       തർക്കം coalesce_ = അസത്യം) :
       current_parsed_str (parsed_charstring_),
       parsed_charstring (parsed_charstring_),
       parsed_global_subrs (parsed_global_subrs_),
@@ -692,49 +692,49 @@ struct subr_subset_param_t
       drop_hints (drop_hints_),
       coalesce (coalesce_)
   {
-    if (coalesce) parsed_charstring->enable_coalescing ();
+    എങ്കിൽ (coalesce) parsed_charstring->enable_coalescing ();
   }
 
   parsed_cs_str_t *get_parsed_str_for_context (call_context_t &context)
   {
-    switch (context.type)
+    തിരഞ്ഞെടുപ്പ് (context.type)
     {
-      case CSType_CharString:
-	return parsed_charstring;
+      അവസ്ഥ CSType_CharString:
+	തിരികെ parsed_charstring;
 
-      case CSType_LocalSubr:
-	if (likely (context.subr_num < parsed_local_subrs->length))
-	  return &(*parsed_local_subrs)[context.subr_num];
-	break;
+      അവസ്ഥ CSType_LocalSubr:
+	എങ്കിൽ (likely (context.subr_അക്കം_2 < parsed_local_subrs->length))
+	  തിരികെ &(*parsed_local_subrs)[context.subr_അക്കം_2];
+	നിർത്തുക;
 
-      case CSType_GlobalSubr:
-	if (likely (context.subr_num < parsed_global_subrs->length))
-	  return &(*parsed_global_subrs)[context.subr_num];
-	break;
+      അവസ്ഥ CSType_GlobalSubr:
+	എങ്കിൽ (likely (context.subr_അക്കം_2 < parsed_global_subrs->length))
+	  തിരികെ &(*parsed_global_subrs)[context.subr_അക്കം_2];
+	നിർത്തുക;
     }
-    return nullptr;
+    തിരികെ nullptr;
   }
 
   template <typename ENV>
-  void set_current_str (ENV &env, bool calling)
+  ശൂന്യം set_current_str (ENV &env, തർക്കം calling)
   {
     parsed_cs_str_t *parsed_str = get_parsed_str_for_context (env.context);
-    if (unlikely (!parsed_str))
+    എങ്കിൽ (unlikely (!parsed_str))
     {
       env.set_error ();
-      return;
+      തിരികെ;
     }
     /* If the called subroutine is parsed partially but not completely yet,
      * it must be because we are calling it recursively.
      * Handle it as an error. */
-    if (unlikely (calling && !parsed_str->is_parsed () && (parsed_str->values.length > 0)))
+    എങ്കിൽ (unlikely (calling && !parsed_str->is_parsed () && (parsed_str->values.length > 0)))
       env.set_error ();
-    else
+    അല്ലെങ്കിൽ
     {
-      if (!parsed_str->is_parsed ())
+      എങ്കിൽ (!parsed_str->is_parsed ())
       {
         parsed_str->alloc (env.str_ref.total_size ());
-        if (coalesce) parsed_str->enable_coalescing ();
+        എങ്കിൽ (coalesce) parsed_str->enable_coalescing ();
       }
       current_parsed_str = parsed_str;
     }
@@ -747,56 +747,56 @@ struct subr_subset_param_t
   parsed_cs_str_vec_t	*parsed_local_subrs;
   hb_set_t      *global_closure;
   hb_set_t      *local_closure;
-  bool	  drop_hints;
-  bool	  coalesce;
+  തർക്കം	  drop_hints;
+  തർക്കം	  coalesce;
 };
 
-struct subr_remap_t : hb_inc_bimap_t
+ഘടന subr_remap_t : hb_inc_bimap_t
 {
-  void create (const hb_set_t *closure)
+  ശൂന്യം create (സ്ഥിരം hb_set_t *closure)
   {
     /* create a remapping of subroutine numbers from old to new.
      * no optimization based on usage counts. fonttools doesn't appear doing that either.
      */
 
     alloc (closure->get_population ());
-    for (auto old_num : *closure)
-      add (old_num);
+    വേണ്ടി (auto old_അക്കം : *closure)
+      add (old_അക്കം);
 
-    if (get_population () < 1240)
+    എങ്കിൽ (get_population () < 1240)
       bias = 107;
-    else if (get_population () < 33900)
+    അല്ലെങ്കിൽ എങ്കിൽ (get_population () < 33900)
       bias = 1131;
-    else
+    അല്ലെങ്കിൽ
       bias = 32768;
   }
 
-  int biased_num (unsigned int old_num) const
+  പൂർണ്ണസംഖ്യ biased_അക്കം (unsigned പൂർണ്ണസംഖ്യ old_അക്കം) സ്ഥിരം
   {
-    hb_codepoint_t new_num = get (old_num);
-    return (int)new_num - bias;
+    hb_codepoint_t new_അക്കം = get (old_അക്കം);
+    തിരികെ (പൂർണ്ണസംഖ്യ)new_അക്കം - bias;
   }
 
-  protected:
-  int bias;
+  സംരക്ഷിത:
+  പൂർണ്ണസംഖ്യ bias;
 };
 
-struct subr_remaps_t
+ഘടന subr_remaps_t
 {
-  subr_remaps_t (unsigned int fdCount)
+  subr_remaps_t (unsigned പൂർണ്ണസംഖ്യ fd_എണ്ണം)
   {
-    local_remaps.resize (fdCount);
+    local_remaps.resize (fd_എണ്ണം);
   }
 
-  bool in_error()
+  തർക്കം in_error()
   {
-    return local_remaps.in_error ();
+    തിരികെ local_remaps.in_error ();
   }
 
-  void create (subr_closures_t& closures)
+  ശൂന്യം create (subr_closures_t& closures)
   {
     global_remap.create (&closures.global_closure);
-    for (unsigned int i = 0; i < local_remaps.length; i++)
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < local_remaps.length; i++)
       local_remaps.arrayZ[i].create (&closures.local_closures[i]);
   }
 
@@ -805,11 +805,11 @@ struct subr_remaps_t
 };
 
 template <typename SUBSETTER, typename SUBRS, typename ACC, typename ENV, typename OPSET, op_code_t endchar_op=OpCode_Invalid>
-struct subr_subsetter_t
+ഘടന subr_subsetter_t
 {
-  subr_subsetter_t (ACC &acc_, const hb_subset_plan_t *plan_)
-      : acc (acc_), plan (plan_), closures(acc_.fdCount),
-        remaps(acc_.fdCount)
+  subr_subsetter_t (ACC &acc_, സ്ഥിരം hb_subset_plan_t *plan_)
+      : acc (acc_), plan (plan_), closures(acc_.fd_എണ്ണം),
+        remaps(acc_.fd_എണ്ണം)
   {}
 
   /* Subroutine subsetting with --no-desubroutinize runs in phases:
@@ -826,73 +826,73 @@ struct subr_subsetter_t
    * Assumption: a callsubr/callgsubr operator must immediately follow a (biased) subroutine number
    * within the same charstring/subroutine, e.g., not split across a charstring and a subroutine.
    */
-  bool subset (void)
+  തർക്കം subset (ശൂന്യം)
   {
-    unsigned fd_count = acc.fdCount;
-    const cff_subset_accelerator_t* cff_accelerator = nullptr;
-    if (acc.cff_accelerator) {
+    unsigned fd_എണ്ണം_2 = acc.fd_എണ്ണം;
+    സ്ഥിരം cff_subset_accelerator_t* cff_accelerator = nullptr;
+    എങ്കിൽ (acc.cff_accelerator) {
       cff_accelerator = acc.cff_accelerator;
-      fd_count = cff_accelerator->parsed_local_subrs.length;
+      fd_എണ്ണം_2 = cff_accelerator->parsed_local_subrs.length;
     }
 
-    if (cff_accelerator) {
+    എങ്കിൽ (cff_accelerator) {
       // If we are not dropping hinting then charstrings are not modified so we can
       // just use a reference to the cached copies.
-      cached_charstrings.resize_exact (plan->num_output_glyphs ());
+      cached_charstrings.resize_exact (plan->അക്കം_output_glyphs ());
       parsed_global_subrs = &cff_accelerator->parsed_global_subrs;
       parsed_local_subrs = &cff_accelerator->parsed_local_subrs;
-    } else {
-      parsed_charstrings.resize_exact (plan->num_output_glyphs ());
-      parsed_global_subrs_storage.resize_exact (acc.globalSubrs->count);
+    } അല്ലെങ്കിൽ {
+      parsed_charstrings.resize_exact (plan->അക്കം_output_glyphs ());
+      parsed_global_subrs_storage.resize_exact (acc.globalSubrs->എണ്ണം);
 
-      if (unlikely (!parsed_local_subrs_storage.resize (fd_count))) return false;
+      എങ്കിൽ (unlikely (!parsed_local_subrs_storage.resize (fd_എണ്ണം_2))) തിരികെ അസത്യം;
 
-      for (unsigned int i = 0; i < acc.fdCount; i++)
+      വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < acc.fd_എണ്ണം; i++)
       {
-        unsigned count = acc.privateDicts[i].localSubrs->count;
-        parsed_local_subrs_storage[i].resize (count);
-        if (unlikely (parsed_local_subrs_storage[i].in_error ())) return false;
+        unsigned എണ്ണം = acc.privateDicts[i].localSubrs->എണ്ണം;
+        parsed_local_subrs_storage[i].resize (എണ്ണം);
+        എങ്കിൽ (unlikely (parsed_local_subrs_storage[i].in_error ())) തിരികെ അസത്യം;
       }
 
       parsed_global_subrs = &parsed_global_subrs_storage;
       parsed_local_subrs = &parsed_local_subrs_storage;
     }
 
-    if (unlikely (remaps.in_error()
+    എങ്കിൽ (unlikely (remaps.in_error()
                   || cached_charstrings.in_error ()
                   || parsed_charstrings.in_error ()
                   || parsed_global_subrs->in_error ()
                   || closures.in_error ())) {
-      return false;
+      തിരികെ അസത്യം;
     }
 
     /* When hints are not analyzed (not dropping hints, not populating
      * the accelerator), coalesce parsed tokens as they are added,
      * instead of a separate compact() pass. */
-    bool coalesce = !(plan->flags & HB_SUBSET_FLAGS_NO_HINTING) &&
+    തർക്കം coalesce = !(plan->flags & HB_SUBSET_FLAGS_NO_HINTING) &&
 		    !plan->inprogress_accelerator;
 
     /* phase 1 & 2 */
-    for (auto _ : plan->new_to_old_gid_list)
+    വേണ്ടി (auto _ : plan->new_to_old_gid_list)
     {
       hb_codepoint_t new_glyph = _.first;
       hb_codepoint_t old_glyph = _.second;
 
-      const hb_ubytes_t str = (*acc.charStrings)[old_glyph];
-      unsigned int fd = subset_get_fd (acc, old_glyph);
-      if (unlikely (fd >= acc.fdCount))
-        return false;
+      സ്ഥിരം hb_ubytes_t str = (*acc.charStrings)[old_glyph];
+      unsigned പൂർണ്ണസംഖ്യ fd = subset_get_fd (acc, old_glyph);
+      എങ്കിൽ (unlikely (fd >= acc.fd_എണ്ണം))
+        തിരികെ അസത്യം;
 
-      if (cff_accelerator)
+      എങ്കിൽ (cff_accelerator)
       {
         // parsed string already exists in accelerator, copy it and move
         // on.
-        if (cached_charstrings)
+        എങ്കിൽ (cached_charstrings)
           cached_charstrings[new_glyph] = &cff_accelerator->parsed_charstrings[old_glyph];
-        else
+        അല്ലെങ്കിൽ
           parsed_charstrings[new_glyph] = cff_accelerator->parsed_charstrings[old_glyph];
 
-        continue;
+        തുടരുക;
       }
 
       ENV env (str, acc, fd);
@@ -907,14 +907,14 @@ struct subr_subsetter_t
                                   plan->flags & HB_SUBSET_FLAGS_NO_HINTING,
                                   coalesce);
 
-      if (unlikely (!interp.interpret (param)))
-        return false;
+      എങ്കിൽ (unlikely (!interp.interpret (param)))
+        തിരികെ അസത്യം;
 
       /* complete parsed string esp. copy CFF1 width or CFF2 vsindex to the parsed charstring for encoding */
       SUBSETTER::complete_parsed_str (interp.env, param, parsed_charstrings[new_glyph]);
 
       /* mark hint ops and arguments for drop */
-      if ((plan->flags & HB_SUBSET_FLAGS_NO_HINTING) || plan->inprogress_accelerator)
+      എങ്കിൽ ((plan->flags & HB_SUBSET_FLAGS_NO_HINTING) || plan->inprogress_accelerator)
       {
 	subr_subset_param_t  param (&parsed_charstrings[new_glyph],
 				    &parsed_global_subrs_storage,
@@ -924,10 +924,10 @@ struct subr_subsetter_t
 				    plan->flags & HB_SUBSET_FLAGS_NO_HINTING);
 
 	drop_hints_param_t  drop;
-	if (drop_hints_in_str (parsed_charstrings[new_glyph], param, drop))
+	എങ്കിൽ (drop_hints_in_str (parsed_charstrings[new_glyph], param, drop))
 	{
 	  parsed_charstrings[new_glyph].set_hint_dropped ();
-	  if (drop.vsindex_dropped)
+	  എങ്കിൽ (drop.vsindex_dropped)
 	    parsed_charstrings[new_glyph].set_vsindex_dropped ();
 	}
       }
@@ -940,7 +940,7 @@ struct subr_subsetter_t
        *
        * Not needed when tokens were coalesced during parsing.
        */
-      if (!coalesce)
+      എങ്കിൽ (!coalesce)
 	parsed_charstrings[new_glyph].compact ();
     }
 
@@ -950,189 +950,189 @@ struct subr_subsetter_t
      *
      * Or if we are dropping hinting, redo closure to get actually used subrs.
      */
-    if ((cff_accelerator ||
+    എങ്കിൽ ((cff_accelerator ||
 	(!cff_accelerator && plan->flags & HB_SUBSET_FLAGS_NO_HINTING)) &&
         !closure_subroutines(*parsed_global_subrs,
                              *parsed_local_subrs))
-      return false;
+      തിരികെ അസത്യം;
 
     remaps.create (closures);
 
     populate_subset_accelerator ();
-    return true;
+    തിരികെ സത്യം;
   }
 
-  bool encode_charstrings (str_buff_vec_t &buffArray, bool encode_prefix = true) const
+  തർക്കം encode_charstrings (str_buff_vec_t &buffArray, തർക്കം encode_prefix = സത്യം) സ്ഥിരം
   {
-    unsigned num_glyphs = plan->num_output_glyphs ();
-    if (unlikely (!buffArray.resize_exact (num_glyphs)))
-      return false;
+    unsigned അക്കം_glyphs = plan->അക്കം_output_glyphs ();
+    എങ്കിൽ (unlikely (!buffArray.resize_exact (അക്കം_glyphs)))
+      തിരികെ അസത്യം;
     hb_codepoint_t last = 0;
-    for (auto _ : plan->new_to_old_gid_list)
+    വേണ്ടി (auto _ : plan->new_to_old_gid_list)
     {
       hb_codepoint_t gid = _.first;
       hb_codepoint_t old_glyph = _.second;
 
-      if (endchar_op != OpCode_Invalid)
-        for (; last < gid; last++)
+      എങ്കിൽ (endchar_op != OpCode_Invalid)
+        വേണ്ടി (; last < gid; last++)
 	{
 	  // Hack to point vector to static string.
 	  auto &b = buffArray.arrayZ[last];
-	  b.set_storage (const_cast<unsigned char *>(endchar_str), 1);
+	  b.set_storage (const_cast<unsigned അക്ഷരം *>(endchar_str), 1);
 	}
 
       last++; // Skip over gid
-      unsigned int  fd = subset_get_fd (acc, old_glyph);
-      if (unlikely (fd >= acc.fdCount))
-	return false;
-      if (unlikely (!encode_str (get_parsed_charstring (gid), fd, buffArray.arrayZ[gid], encode_prefix)))
-	return false;
+      unsigned പൂർണ്ണസംഖ്യ  fd = subset_get_fd (acc, old_glyph);
+      എങ്കിൽ (unlikely (fd >= acc.fd_എണ്ണം))
+	തിരികെ അസത്യം;
+      എങ്കിൽ (unlikely (!encode_str (get_parsed_charstring (gid), fd, buffArray.arrayZ[gid], encode_prefix)))
+	തിരികെ അസത്യം;
     }
-    if (endchar_op != OpCode_Invalid)
-      for (; last < num_glyphs; last++)
+    എങ്കിൽ (endchar_op != OpCode_Invalid)
+      വേണ്ടി (; last < അക്കം_glyphs; last++)
       {
 	// Hack to point vector to static string.
 	auto &b = buffArray.arrayZ[last];
-	b.set_storage (const_cast<unsigned char *>(endchar_str), 1);
+	b.set_storage (const_cast<unsigned അക്ഷരം *>(endchar_str), 1);
       }
 
-    return true;
+    തിരികെ സത്യം;
   }
 
-  bool encode_subrs (const parsed_cs_str_vec_t &subrs, const subr_remap_t& remap, unsigned int fd, str_buff_vec_t &buffArray) const
+  തർക്കം encode_subrs (സ്ഥിരം parsed_cs_str_vec_t &subrs, സ്ഥിരം subr_remap_t& remap, unsigned പൂർണ്ണസംഖ്യ fd, str_buff_vec_t &buffArray) സ്ഥിരം
   {
-    unsigned int  count = remap.get_population ();
+    unsigned പൂർണ്ണസംഖ്യ  എണ്ണം = remap.get_population ();
 
-    if (unlikely (!buffArray.resize_exact (count)))
-      return false;
-    for (unsigned int new_num = 0; new_num < count; new_num++)
+    എങ്കിൽ (unlikely (!buffArray.resize_exact (എണ്ണം)))
+      തിരികെ അസത്യം;
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ new_അക്കം = 0; new_അക്കം < എണ്ണം; new_അക്കം++)
     {
-      hb_codepoint_t old_num = remap.backward (new_num);
-      assert (old_num != CFF_UNDEF_CODE);
+      hb_codepoint_t old_അക്കം = remap.backward (new_അക്കം);
+      പ്രതിജ്ഞാ (old_അക്കം != CFF_UNDEF_CODE);
 
-      if (unlikely (!encode_str (subrs[old_num], fd, buffArray[new_num])))
-	return false;
+      എങ്കിൽ (unlikely (!encode_str (subrs[old_അക്കം], fd, buffArray[new_അക്കം])))
+	തിരികെ അസത്യം;
     }
-    return true;
+    തിരികെ സത്യം;
   }
 
-  bool encode_globalsubrs (str_buff_vec_t &buffArray)
+  തർക്കം encode_globalsubrs (str_buff_vec_t &buffArray)
   {
-    return encode_subrs (*parsed_global_subrs, remaps.global_remap, 0, buffArray);
+    തിരികെ encode_subrs (*parsed_global_subrs, remaps.global_remap, 0, buffArray);
   }
 
-  bool encode_localsubrs (unsigned int fd, str_buff_vec_t &buffArray) const
+  തർക്കം encode_localsubrs (unsigned പൂർണ്ണസംഖ്യ fd, str_buff_vec_t &buffArray) സ്ഥിരം
   {
-    return encode_subrs ((*parsed_local_subrs)[fd], remaps.local_remaps[fd], fd, buffArray);
+    തിരികെ encode_subrs ((*parsed_local_subrs)[fd], remaps.local_remaps[fd], fd, buffArray);
   }
 
-  protected:
-  struct drop_hints_param_t
+  സംരക്ഷിത:
+  ഘടന drop_hints_param_t
   {
     drop_hints_param_t ()
-      : seen_moveto (false),
-	ends_in_hint (false),
-	all_dropped (false),
-	vsindex_dropped (false) {}
+      : seen_moveto (അസത്യം),
+	ends_in_hint (അസത്യം),
+	all_dropped (അസത്യം),
+	vsindex_dropped (അസത്യം) {}
 
-    bool  seen_moveto;
-    bool  ends_in_hint;
-    bool  all_dropped;
-    bool  vsindex_dropped;
+    തർക്കം  seen_moveto;
+    തർക്കം  ends_in_hint;
+    തർക്കം  all_dropped;
+    തർക്കം  vsindex_dropped;
   };
 
-  bool drop_hints_in_subr (parsed_cs_str_t &str, unsigned int pos,
-			   parsed_cs_str_vec_t &subrs, unsigned int subr_num,
-			   const subr_subset_param_t &param, drop_hints_param_t &drop)
+  തർക്കം drop_hints_in_subr (parsed_cs_str_t &str, unsigned പൂർണ്ണസംഖ്യ pos,
+			   parsed_cs_str_vec_t &subrs, unsigned പൂർണ്ണസംഖ്യ subr_അക്കം_2,
+			   സ്ഥിരം subr_subset_param_t &param, drop_hints_param_t &drop)
   {
-    drop.ends_in_hint = false;
-    bool has_hint = drop_hints_in_str (subrs[subr_num], param, drop);
+    drop.ends_in_hint = അസത്യം;
+    തർക്കം has_hint = drop_hints_in_str (subrs[subr_അക്കം_2], param, drop);
 
     /* if this subr ends with a stem hint (i.e., not a number; potential argument for moveto),
      * then this entire subroutine must be a hint. drop its call. */
-    if (drop.ends_in_hint)
+    എങ്കിൽ (drop.ends_in_hint)
     {
       str.values[pos].set_hinting ();
       /* if this subr call is at the end of the parent subr, propagate the flag
        * otherwise reset the flag */
-      if (!str.at_end (pos))
-	drop.ends_in_hint = false;
+      എങ്കിൽ (!str.at_end (pos))
+	drop.ends_in_hint = അസത്യം;
     }
-    else if (drop.all_dropped)
+    അല്ലെങ്കിൽ എങ്കിൽ (drop.all_dropped)
     {
       str.values[pos].set_hinting ();
     }
 
-    return has_hint;
+    തിരികെ has_hint;
   }
 
   /* returns true if it sees a hint op before the first moveto */
-  bool drop_hints_in_str (parsed_cs_str_t &str, const subr_subset_param_t &param, drop_hints_param_t &drop)
+  തർക്കം drop_hints_in_str (parsed_cs_str_t &str, സ്ഥിരം subr_subset_param_t &param, drop_hints_param_t &drop)
   {
-    bool  seen_hint = false;
+    തർക്കം  seen_hint = അസത്യം;
 
-    unsigned count = str.values.length;
+    unsigned എണ്ണം = str.values.length;
     auto *values = str.values.arrayZ;
-    for (unsigned int pos = 0; pos < count; pos++)
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ pos = 0; pos < എണ്ണം; pos++)
     {
-      bool  has_hint = false;
-      switch (values[pos].op)
+      തർക്കം  has_hint = അസത്യം;
+      തിരഞ്ഞെടുപ്പ് (values[pos].op)
       {
-	case OpCode_callsubr:
+	അവസ്ഥ OpCode_callsubr:
 	  has_hint = drop_hints_in_subr (str, pos,
-					*param.parsed_local_subrs, values[pos].subr_num,
+					*param.parsed_local_subrs, values[pos].subr_അക്കം_2,
 					param, drop);
-	  break;
+	  നിർത്തുക;
 
-	case OpCode_callgsubr:
+	അവസ്ഥ OpCode_callgsubr:
 	  has_hint = drop_hints_in_subr (str, pos,
-					*param.parsed_global_subrs, values[pos].subr_num,
+					*param.parsed_global_subrs, values[pos].subr_അക്കം_2,
 					param, drop);
-	  break;
+	  നിർത്തുക;
 
-	case OpCode_rmoveto:
-	case OpCode_hmoveto:
-	case OpCode_vmoveto:
-	  drop.seen_moveto = true;
-	  break;
+	അവസ്ഥ OpCode_rmoveto:
+	അവസ്ഥ OpCode_hmoveto:
+	അവസ്ഥ OpCode_vmoveto:
+	  drop.seen_moveto = സത്യം;
+	  നിർത്തുക;
 
-	case OpCode_hintmask:
-	case OpCode_cntrmask:
-	  if (drop.seen_moveto)
+	അവസ്ഥ OpCode_hintmask:
+	അവസ്ഥ OpCode_cntrmask:
+	  എങ്കിൽ (drop.seen_moveto)
 	  {
 	    values[pos].set_hinting ();
-	    break;
+	    നിർത്തുക;
 	  }
 	  HB_FALLTHROUGH;
 
-	case OpCode_hstemhm:
-	case OpCode_vstemhm:
-	case OpCode_hstem:
-	case OpCode_vstem:
-	  has_hint = true;
+	അവസ്ഥ OpCode_hstemhm:
+	അവസ്ഥ OpCode_vstemhm:
+	അവസ്ഥ OpCode_hstem:
+	അവസ്ഥ OpCode_vstem:
+	  has_hint = സത്യം;
 	  values[pos].set_hinting ();
-	  if (str.at_end (pos))
-	    drop.ends_in_hint = true;
-	  break;
+	  എങ്കിൽ (str.at_end (pos))
+	    drop.ends_in_hint = സത്യം;
+	  നിർത്തുക;
 
-	case OpCode_dotsection:
+	അവസ്ഥ OpCode_dotsection:
 	  values[pos].set_hinting ();
-	  break;
+	  നിർത്തുക;
 
-	default:
+	സ്ഥിരസ്ഥിതി:
 	  /* NONE */
-	  break;
+	  നിർത്തുക;
       }
-      if (has_hint)
+      എങ്കിൽ (has_hint)
       {
-	for (int i = pos - 1; i >= 0; i--)
+	വേണ്ടി (പൂർണ്ണസംഖ്യ i = pos - 1; i >= 0; i--)
 	{
 	  parsed_cs_op_t  &csop = values[(unsigned)i];
-	  if (csop.is_hinting ())
-	    break;
+	  എങ്കിൽ (csop.is_hinting ())
+	    നിർത്തുക;
 	  csop.set_hinting ();
-	  if (csop.op == OpCode_vsindexcs)
-	    drop.vsindex_dropped = true;
+	  എങ്കിൽ (csop.op == OpCode_vsindexcs)
+	    drop.vsindex_dropped = സത്യം;
 	}
 	seen_hint |= has_hint;
       }
@@ -1142,33 +1142,33 @@ struct subr_subsetter_t
      * It may happen even after seeing the first moveto if a subr contains
      * only (usually one) hintmask operator, then calls to this subr can be dropped.
      */
-    drop.all_dropped = true;
-    for (unsigned int pos = 0; pos < count; pos++)
+    drop.all_dropped = സത്യം;
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ pos = 0; pos < എണ്ണം; pos++)
     {
       parsed_cs_op_t  &csop = values[pos];
-      if (csop.op == OpCode_return)
-	break;
-      if (!csop.is_hinting ())
+      എങ്കിൽ (csop.op == OpCode_return)
+	നിർത്തുക;
+      എങ്കിൽ (!csop.is_hinting ())
       {
-	drop.all_dropped = false;
-	break;
+	drop.all_dropped = അസത്യം;
+	നിർത്തുക;
       }
     }
 
-    return seen_hint;
+    തിരികെ seen_hint;
   }
 
-  bool closure_subroutines (const parsed_cs_str_vec_t& global_subrs,
-                            const hb_vector_t<parsed_cs_str_vec_t>& local_subrs)
+  തർക്കം closure_subroutines (സ്ഥിരം parsed_cs_str_vec_t& global_subrs,
+                            സ്ഥിരം hb_vector_t<parsed_cs_str_vec_t>& local_subrs)
   {
     closures.reset ();
-    for (auto _ : plan->new_to_old_gid_list)
+    വേണ്ടി (auto _ : plan->new_to_old_gid_list)
     {
       hb_codepoint_t new_glyph = _.first;
       hb_codepoint_t old_glyph = _.second;
-      unsigned int fd = subset_get_fd (acc, old_glyph);
-      if (unlikely (fd >= acc.fdCount))
-        return false;
+      unsigned പൂർണ്ണസംഖ്യ fd = subset_get_fd (acc, old_glyph);
+      എങ്കിൽ (unlikely (fd >= acc.fd_എണ്ണം))
+        തിരികെ അസത്യം;
 
       // Note: const cast is safe here because the collect_subr_refs_in_str only performs a
       //       closure and does not modify any of the charstrings.
@@ -1181,108 +1181,108 @@ struct subr_subsetter_t
       collect_subr_refs_in_str (get_parsed_charstring (new_glyph), param);
     }
 
-    return true;
+    തിരികെ സത്യം;
   }
 
-  void collect_subr_refs_in_subr (unsigned int subr_num, parsed_cs_str_vec_t &subrs,
+  ശൂന്യം collect_subr_refs_in_subr (unsigned പൂർണ്ണസംഖ്യ subr_അക്കം_2, parsed_cs_str_vec_t &subrs,
 				  hb_set_t *closure,
-				  const subr_subset_param_t &param)
+				  സ്ഥിരം subr_subset_param_t &param)
   {
-    if (closure->has (subr_num))
-      return;
-    closure->add (subr_num);
-    collect_subr_refs_in_str (subrs[subr_num], param);
+    എങ്കിൽ (closure->has (subr_അക്കം_2))
+      തിരികെ;
+    closure->add (subr_അക്കം_2);
+    collect_subr_refs_in_str (subrs[subr_അക്കം_2], param);
   }
 
-  void collect_subr_refs_in_str (const parsed_cs_str_t &str,
-                                 const subr_subset_param_t &param)
+  ശൂന്യം collect_subr_refs_in_str (സ്ഥിരം parsed_cs_str_t &str,
+                                 സ്ഥിരം subr_subset_param_t &param)
   {
-    if (!str.has_calls ())
-      return;
+    എങ്കിൽ (!str.has_calls ())
+      തിരികെ;
 
-    for (auto &opstr : str.values)
+    വേണ്ടി (auto &opstr : str.values)
     {
-      if (!param.drop_hints || !opstr.is_hinting ())
+      എങ്കിൽ (!param.drop_hints || !opstr.is_hinting ())
       {
-	switch (opstr.op)
+	തിരഞ്ഞെടുപ്പ് (opstr.op)
 	{
-	  case OpCode_callsubr:
-	    collect_subr_refs_in_subr (opstr.subr_num, *param.parsed_local_subrs,
+	  അവസ്ഥ OpCode_callsubr:
+	    collect_subr_refs_in_subr (opstr.subr_അക്കം_2, *param.parsed_local_subrs,
 				       param.local_closure, param);
-	    break;
+	    നിർത്തുക;
 
-	  case OpCode_callgsubr:
-	    collect_subr_refs_in_subr (opstr.subr_num, *param.parsed_global_subrs,
+	  അവസ്ഥ OpCode_callgsubr:
+	    collect_subr_refs_in_subr (opstr.subr_അക്കം_2, *param.parsed_global_subrs,
 				       param.global_closure, param);
-	    break;
+	    നിർത്തുക;
 
-	  default: break;
+	  സ്ഥിരസ്ഥിതി: നിർത്തുക;
 	}
       }
     }
   }
 
-  bool encode_str (const parsed_cs_str_t &str, const unsigned int fd, str_buff_t &buff, bool encode_prefix = true) const
+  തർക്കം encode_str (സ്ഥിരം parsed_cs_str_t &str, സ്ഥിരം unsigned പൂർണ്ണസംഖ്യ fd, str_buff_t &buff, തർക്കം encode_prefix = സത്യം) സ്ഥിരം
   {
     str_encoder_t  encoder (buff);
     encoder.reset ();
-    bool hinting = !(plan->flags & HB_SUBSET_FLAGS_NO_HINTING);
+    തർക്കം hinting = !(plan->flags & HB_SUBSET_FLAGS_NO_HINTING);
     /* if a prefix (CFF1 width or CFF2 vsindex) has been removed along with hints,
      * re-insert it at the beginning of charstreing */
-    if (encode_prefix && str.has_prefix () && !hinting && str.is_hint_dropped ())
+    എങ്കിൽ (encode_prefix && str.has_prefix () && !hinting && str.is_hint_dropped ())
     {
-      encoder.encode_num_cs (str.prefix_num ());
-      if (str.prefix_op () != OpCode_Invalid)
+      encoder.encode_അക്കം_cs (str.prefix_അക്കം_2 ());
+      എങ്കിൽ (str.prefix_op () != OpCode_Invalid)
 	encoder.encode_op (str.prefix_op ());
     }
 
     unsigned size = 0;
-    for (auto &opstr : str.values)
+    വേണ്ടി (auto &opstr : str.values)
     {
       size += opstr.length;
-      if (opstr.op == OpCode_callsubr || opstr.op == OpCode_callgsubr)
+      എങ്കിൽ (opstr.op == OpCode_callsubr || opstr.op == OpCode_callgsubr)
         size += 3;
     }
-    if (!buff.alloc_exact (buff.length + size))
-      return false;
+    എങ്കിൽ (!buff.alloc_exact (buff.length + size))
+      തിരികെ അസത്യം;
 
-    for (auto &opstr : str.values)
+    വേണ്ടി (auto &opstr : str.values)
     {
-      if (hinting || !opstr.is_hinting ())
+      എങ്കിൽ (hinting || !opstr.is_hinting ())
       {
-	switch (opstr.op)
+	തിരഞ്ഞെടുപ്പ് (opstr.op)
 	{
-	  case OpCode_callsubr:
-	    encoder.encode_int (remaps.local_remaps[fd].biased_num (opstr.subr_num));
+	  അവസ്ഥ OpCode_callsubr:
+	    encoder.encode_int (remaps.local_remaps[fd].biased_അക്കം (opstr.subr_അക്കം_2));
 	    encoder.copy_str (opstr.ptr, opstr.length);
-	    break;
+	    നിർത്തുക;
 
-	  case OpCode_callgsubr:
-	    encoder.encode_int (remaps.global_remap.biased_num (opstr.subr_num));
+	  അവസ്ഥ OpCode_callgsubr:
+	    encoder.encode_int (remaps.global_remap.biased_അക്കം (opstr.subr_അക്കം_2));
 	    encoder.copy_str (opstr.ptr, opstr.length);
-	    break;
+	    നിർത്തുക;
 
-	  default:
+	  സ്ഥിരസ്ഥിതി:
 	    encoder.copy_str (opstr.ptr, opstr.length);
-	    break;
+	    നിർത്തുക;
 	}
       }
     }
-    return !encoder.in_error ();
+    തിരികെ !encoder.in_error ();
   }
 
-  void compact_parsed_subrs () const
+  ശൂന്യം compact_parsed_subrs () സ്ഥിരം
   {
-    for (auto &cs : parsed_global_subrs_storage)
+    വേണ്ടി (auto &cs : parsed_global_subrs_storage)
       cs.compact ();
-    for (auto &vec : parsed_local_subrs_storage)
-      for (auto &cs : vec)
+    വേണ്ടി (auto &vec : parsed_local_subrs_storage)
+      വേണ്ടി (auto &cs : vec)
 	cs.compact ();
   }
 
-  void populate_subset_accelerator () const
+  ശൂന്യം populate_subset_accelerator () സ്ഥിരം
   {
-    if (!plan->inprogress_accelerator) return;
+    എങ്കിൽ (!plan->inprogress_accelerator) തിരികെ;
 
     compact_parsed_subrs ();
 
@@ -1293,52 +1293,52 @@ struct subr_subsetter_t
                                          parsed_local_subrs_storage);
   }
 
-  const parsed_cs_str_t& get_parsed_charstring (unsigned i) const
+  സ്ഥിരം parsed_cs_str_t& get_parsed_charstring (unsigned i) സ്ഥിരം
   {
-    if (cached_charstrings) return *(cached_charstrings[i]);
-    return parsed_charstrings[i];
+    എങ്കിൽ (cached_charstrings) തിരികെ *(cached_charstrings[i]);
+    തിരികെ parsed_charstrings[i];
   }
 
-  protected:
-  const ACC			&acc;
-  const hb_subset_plan_t	*plan;
+  സംരക്ഷിത:
+  സ്ഥിരം ACC			&acc;
+  സ്ഥിരം hb_subset_plan_t	*plan;
 
   subr_closures_t		closures;
 
-  hb_vector_t<const parsed_cs_str_t*>     cached_charstrings;
-  const parsed_cs_str_vec_t*              parsed_global_subrs;
-  const hb_vector_t<parsed_cs_str_vec_t>* parsed_local_subrs;
+  hb_vector_t<സ്ഥിരം parsed_cs_str_t*>     cached_charstrings;
+  സ്ഥിരം parsed_cs_str_vec_t*              parsed_global_subrs;
+  സ്ഥിരം hb_vector_t<parsed_cs_str_vec_t>* parsed_local_subrs;
 
   subr_remaps_t			remaps;
 
-  private:
+  സ്വകാര്യ:
 
   parsed_cs_str_vec_t		parsed_charstrings;
   parsed_cs_str_vec_t		parsed_global_subrs_storage;
   hb_vector_t<parsed_cs_str_vec_t>  parsed_local_subrs_storage;
-  typedef typename SUBRS::count_type subr_count_type;
+  തരനിർവചനം typename SUBRS::എണ്ണം_type subr_എണ്ണം_type;
 };
 
 } /* namespace CFF */
 
-HB_INTERNAL bool
-hb_plan_subset_cff_fdselect (const hb_subset_plan_t *plan,
-			    unsigned int fdCount,
-			    const CFF::FDSelect &src, /* IN */
-			    unsigned int src_num_glyphs,
-			    unsigned int &subset_fd_count /* OUT */,
-			    unsigned int &subset_fdselect_size /* OUT */,
-			    unsigned int &subset_fdselect_format /* OUT */,
+HB_INTERNAL തർക്കം
+hb_plan_subset_cff_fdselect (സ്ഥിരം hb_subset_plan_t *plan,
+			    unsigned പൂർണ്ണസംഖ്യ fd_എണ്ണം,
+			    സ്ഥിരം CFF::FDSelect &src, /* IN */
+			    unsigned പൂർണ്ണസംഖ്യ src_അക്കം_glyphs,
+			    unsigned പൂർണ്ണസംഖ്യ &subset_fd_എണ്ണം /* OUT */,
+			    unsigned പൂർണ്ണസംഖ്യ &subset_fdselect_size /* OUT */,
+			    unsigned പൂർണ്ണസംഖ്യ &subset_fdselect_format /* OUT */,
 			    hb_vector_t<CFF::code_pair_t> &fdselect_ranges /* OUT */,
 			    hb_inc_bimap_t &fdmap /* OUT */);
 
-HB_INTERNAL bool
+HB_INTERNAL തർക്കം
 hb_serialize_cff_fdselect (hb_serialize_context_t *c,
-			  unsigned int num_glyphs,
-			  const CFF::FDSelect &src,
-			  unsigned int fd_count,
-			  unsigned int fdselect_format,
-			  unsigned int size,
-			  const hb_vector_t<CFF::code_pair_t> &fdselect_ranges);
+			  unsigned പൂർണ്ണസംഖ്യ അക്കം_glyphs,
+			  സ്ഥിരം CFF::FDSelect &src,
+			  unsigned പൂർണ്ണസംഖ്യ fd_എണ്ണം_2,
+			  unsigned പൂർണ്ണസംഖ്യ fdselect_format,
+			  unsigned പൂർണ്ണസംഖ്യ size,
+			  സ്ഥിരം hb_vector_t<CFF::code_pair_t> &fdselect_ranges);
 
 #endif /* HB_SUBSET_CFF_COMMON_HH */

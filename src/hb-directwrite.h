@@ -25,9 +25,9 @@
 #ifndef HB_DIRECTWRITE_H
 #define HB_DIRECTWRITE_H
 
-#include "hb.h"
+#അന്തര്ഭാവ "hb.h"
 
-#include <dwrite_3.h>
+#അന്തര്ഭാവ <dwrite_3.h>
 
 HB_BEGIN_DECLS
 
@@ -35,12 +35,12 @@ HB_EXTERN hb_face_t *
 hb_directwrite_face_create (IDWriteFontFace *dw_face);
 
 HB_EXTERN hb_face_t *
-hb_directwrite_face_create_from_file_or_fail (const char   *file_name,
-					      unsigned int  index);
+hb_directwrite_face_create_from_file_or_fail (സ്ഥിരം അക്ഷരം   *file_name,
+					      unsigned പൂർണ്ണസംഖ്യ  index);
 
 HB_EXTERN hb_face_t *
 hb_directwrite_face_create_from_blob_or_fail (hb_blob_t    *blob,
-					      unsigned int  index);
+					      unsigned പൂർണ്ണസംഖ്യ  index);
 
 HB_EXTERN IDWriteFontFace *
 hb_directwrite_face_get_dw_font_face (hb_face_t *face);
@@ -51,7 +51,7 @@ hb_directwrite_font_create (IDWriteFontFace *dw_face);
 HB_EXTERN IDWriteFontFace *
 hb_directwrite_font_get_dw_font_face (hb_font_t *font);
 
-HB_EXTERN void
+HB_EXTERN ശൂന്യം
 hb_directwrite_font_set_funcs (hb_font_t *font);
 
 #ifndef HB_DISABLE_DEPRECATED

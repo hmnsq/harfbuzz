@@ -29,9 +29,9 @@
 #ifndef HB_ITER_HH
 #define HB_ITER_HH
 
-#include "hb.hh"
-#include "hb-algs.hh"
-#include "hb-meta.hh"
+#അന്തര്ഭാവ "hb.hh"
+#അന്തര്ഭാവ "hb-algs.hh"
+#അന്തര്ഭാവ "hb-meta.hh"
 
 
 /* Unified iterator object.
@@ -56,67 +56,67 @@
 
 /* Base class for all iterators. */
 template <typename iter_t, typename Item = typename iter_t::__item_t__>
-struct hb_iter_t
+ഘടന hb_iter_t
 {
-  typedef Item item_t;
-  constexpr unsigned get_item_size () const { return hb_static_size (Item); }
-  static constexpr bool is_iterator = true;
-  static constexpr bool is_random_access_iterator = false;
-  static constexpr bool is_sorted_iterator = false;
-  static constexpr bool has_fast_len = false; // Should be checked in combination with is_random_access_iterator.
+  തരനിർവചനം Item item_t;
+  constexpr unsigned get_item_size () സ്ഥിരം { തിരികെ hb_static_size (Item); }
+  സ്ഥിതം constexpr തർക്കം is_iterator = സത്യം;
+  സ്ഥിതം constexpr തർക്കം is_random_access_iterator = അസത്യം;
+  സ്ഥിതം constexpr തർക്കം is_sorted_iterator = അസത്യം;
+  സ്ഥിതം constexpr തർക്കം has_fast_len = അസത്യം; // Should be checked in combination with is_random_access_iterator.
 
-  private:
+  സ്വകാര്യ:
   /* https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern */
-  const iter_t* thiz () const { return static_cast<const iter_t *> (this); }
-	iter_t* thiz ()       { return static_cast<      iter_t *> (this); }
-  public:
+  സ്ഥിരം iter_t* thiz () സ്ഥിരം { തിരികെ static_cast<സ്ഥിരം iter_t *> (ഇത്); }
+	iter_t* thiz ()       { തിരികെ static_cast<      iter_t *> (ഇത്); }
+  പൊതു:
 
   /* Operators. */
-  iter_t iter () const { return *thiz(); }
-  iter_t operator + () const { return *thiz(); }
-  iter_t _begin () const { return *thiz(); }
-  iter_t begin () const { return _begin (); }
-  iter_t _end () const { return thiz()->__end__ (); }
-  iter_t end () const { return _end (); }
-  explicit operator bool () const { return thiz()->__more__ (); }
-  unsigned len () const { return thiz()->__len__ (); }
+  iter_t iter () സ്ഥിരം { തിരികെ *thiz(); }
+  iter_t operator + () സ്ഥിരം { തിരികെ *thiz(); }
+  iter_t _begin () സ്ഥിരം { തിരികെ *thiz(); }
+  iter_t begin () സ്ഥിരം { തിരികെ _begin (); }
+  iter_t _end () സ്ഥിരം { തിരികെ thiz()->__end__ (); }
+  iter_t end () സ്ഥിരം { തിരികെ _end (); }
+  explicit operator തർക്കം () സ്ഥിരം { തിരികെ thiz()->__more__ (); }
+  unsigned len () സ്ഥിരം { തിരികെ thiz()->__len__ (); }
   /* The following can only be enabled if item_t is reference type.  Otherwise
    * it will be returning pointer to temporary rvalue. */
   template <typename T = item_t,
 	    hb_enable_if (std::is_reference<T>::value)>
-  hb_remove_reference<item_t>* operator -> () const { return std::addressof (**thiz()); }
-  item_t operator * () const { return thiz()->__item__ (); }
-  item_t operator * () { return thiz()->__item__ (); }
-  item_t operator [] (unsigned i) const { return thiz()->__item_at__ (i); }
-  item_t operator [] (unsigned i) { return thiz()->__item_at__ (i); }
-  iter_t& operator += (unsigned count) &  { thiz()->__forward__ (count); return *thiz(); }
-  iter_t  operator += (unsigned count) && { thiz()->__forward__ (count); return *thiz(); }
-  iter_t& operator ++ () &  { thiz()->__next__ (); return *thiz(); }
-  iter_t  operator ++ () && { thiz()->__next__ (); return *thiz(); }
-  iter_t& operator -= (unsigned count) &  { thiz()->__rewind__ (count); return *thiz(); }
-  iter_t  operator -= (unsigned count) && { thiz()->__rewind__ (count); return *thiz(); }
-  iter_t& operator -- () &  { thiz()->__prev__ (); return *thiz(); }
-  iter_t  operator -- () && { thiz()->__prev__ (); return *thiz(); }
-  iter_t operator + (unsigned count) const { auto c = thiz()->iter (); c += count; return c; }
-  friend iter_t operator + (unsigned count, const iter_t &it) { return it + count; }
-  iter_t operator ++ (int) { iter_t c (*thiz()); ++*thiz(); return c; }
-  iter_t operator - (unsigned count) const { auto c = thiz()->iter (); c -= count; return c; }
-  iter_t operator -- (int) { iter_t c (*thiz()); --*thiz(); return c; }
+  hb_remove_reference<item_t>* operator -> () സ്ഥിരം { തിരികെ std::addressof (**thiz()); }
+  item_t operator * () സ്ഥിരം { തിരികെ thiz()->__item__ (); }
+  item_t operator * () { തിരികെ thiz()->__item__ (); }
+  item_t operator [] (unsigned i) സ്ഥിരം { തിരികെ thiz()->__item_at__ (i); }
+  item_t operator [] (unsigned i) { തിരികെ thiz()->__item_at__ (i); }
+  iter_t& operator += (unsigned എണ്ണം) &  { thiz()->__forward__ (എണ്ണം); തിരികെ *thiz(); }
+  iter_t  operator += (unsigned എണ്ണം) && { thiz()->__forward__ (എണ്ണം); തിരികെ *thiz(); }
+  iter_t& operator ++ () &  { thiz()->__next__ (); തിരികെ *thiz(); }
+  iter_t  operator ++ () && { thiz()->__next__ (); തിരികെ *thiz(); }
+  iter_t& operator -= (unsigned എണ്ണം) &  { thiz()->__rewind__ (എണ്ണം); തിരികെ *thiz(); }
+  iter_t  operator -= (unsigned എണ്ണം) && { thiz()->__rewind__ (എണ്ണം); തിരികെ *thiz(); }
+  iter_t& operator -- () &  { thiz()->__prev__ (); തിരികെ *thiz(); }
+  iter_t  operator -- () && { thiz()->__prev__ (); തിരികെ *thiz(); }
+  iter_t operator + (unsigned എണ്ണം) സ്ഥിരം { auto c = thiz()->iter (); c += എണ്ണം; തിരികെ c; }
+  friend iter_t operator + (unsigned എണ്ണം, സ്ഥിരം iter_t &it) { തിരികെ it + എണ്ണം; }
+  iter_t operator ++ (പൂർണ്ണസംഖ്യ) { iter_t c (*thiz()); ++*thiz(); തിരികെ c; }
+  iter_t operator - (unsigned എണ്ണം) സ്ഥിരം { auto c = thiz()->iter (); c -= എണ്ണം; തിരികെ c; }
+  iter_t operator -- (പൂർണ്ണസംഖ്യ) { iter_t c (*thiz()); --*thiz(); തിരികെ c; }
   template <typename T>
-  iter_t& operator >> (T &v) &  { v = **thiz(); ++*thiz(); return *thiz(); }
+  iter_t& operator >> (T &v) &  { v = **thiz(); ++*thiz(); തിരികെ *thiz(); }
   template <typename T>
-  iter_t  operator >> (T &v) && { v = **thiz(); ++*thiz(); return *thiz(); }
+  iter_t  operator >> (T &v) && { v = **thiz(); ++*thiz(); തിരികെ *thiz(); }
   template <typename T>
-  iter_t& operator << (const T v) &  { **thiz() = v; ++*thiz(); return *thiz(); }
+  iter_t& operator << (സ്ഥിരം T v) &  { **thiz() = v; ++*thiz(); തിരികെ *thiz(); }
   template <typename T>
-  iter_t  operator << (const T v) && { **thiz() = v; ++*thiz(); return *thiz(); }
+  iter_t  operator << (സ്ഥിരം T v) && { **thiz() = v; ++*thiz(); തിരികെ *thiz(); }
 
-  protected:
-  hb_iter_t () = default;
-  hb_iter_t (const hb_iter_t &o HB_UNUSED) = default;
-  hb_iter_t (hb_iter_t &&o HB_UNUSED) = default;
-  hb_iter_t& operator = (const hb_iter_t &o HB_UNUSED) = default;
-  hb_iter_t& operator = (hb_iter_t &&o HB_UNUSED) = default;
+  സംരക്ഷിത:
+  hb_iter_t () = സ്ഥിരസ്ഥിതി;
+  hb_iter_t (സ്ഥിരം hb_iter_t &o HB_UNUSED) = സ്ഥിരസ്ഥിതി;
+  hb_iter_t (hb_iter_t &&o HB_UNUSED) = സ്ഥിരസ്ഥിതി;
+  hb_iter_t& operator = (സ്ഥിരം hb_iter_t &o HB_UNUSED) = സ്ഥിരസ്ഥിതി;
+  hb_iter_t& operator = (hb_iter_t &&o HB_UNUSED) = സ്ഥിരസ്ഥിതി;
 };
 
 #define HB_ITER_USING(Name) \
@@ -128,7 +128,7 @@ struct hb_iter_t
   using Name::get_item_size; \
   using Name::is_iterator; \
   using Name::iter; \
-  using Name::operator bool; \
+  using Name::operator തർക്കം; \
   using Name::len; \
   using Name::operator ->; \
   using Name::operator *; \
@@ -141,7 +141,7 @@ struct hb_iter_t
   using Name::operator -; \
   using Name::operator >>; \
   using Name::operator <<; \
-  static_assert (true, "")
+  static_assert (സത്യം, "")
 
 /* Returns iterator / item type of a type. */
 template <typename Iterable>
@@ -150,100 +150,100 @@ template <typename Iterable>
 using hb_item_type = decltype (*hb_deref (hb_declval (Iterable)).iter ());
 
 
-template <typename> struct hb_array_t;
-template <typename> struct hb_sorted_array_t;
+template <typename> ഘടന hb_array_t;
+template <typename> ഘടന hb_sorted_array_t;
 
-struct
+ഘടന
 {
   template <typename T> hb_iter_type<T>
-  operator () (T&& c) const
-  { return hb_deref (std::forward<T> (c)).iter (); }
+  operator () (T&& c) സ്ഥിരം
+  { തിരികെ hb_deref (std::forward<T> (c)).iter (); }
 
   /* Specialization for C arrays. */
 
-  template <typename Type> inline hb_array_t<Type>
-  operator () (Type *array, unsigned int length) const
-  { return hb_array_t<Type> (array, length); }
+  template <typename Type> വരിയിൽ hb_array_t<Type>
+  operator () (Type *array, unsigned പൂർണ്ണസംഖ്യ length) സ്ഥിരം
+  { തിരികെ hb_array_t<Type> (array, length); }
 
-  template <typename Type, unsigned int length> hb_array_t<Type>
-  operator () (Type (&array)[length]) const
-  { return hb_array_t<Type> (array, length); }
+  template <typename Type, unsigned പൂർണ്ണസംഖ്യ length> hb_array_t<Type>
+  operator () (Type (&array)[length]) സ്ഥിരം
+  { തിരികെ hb_array_t<Type> (array, length); }
 
 }
 HB_FUNCOBJ (hb_iter);
-struct
+ഘടന
 {
   template <typename T> auto
-  impl (T&& c, hb_priority<1>) const HB_RETURN (unsigned, c.len ())
+  impl (T&& c, hb_priority<1>) സ്ഥിരം HB_RETURN (unsigned, c.len ())
 
   template <typename T> auto
-  impl (T&& c, hb_priority<0>) const HB_RETURN (unsigned, c.len)
+  impl (T&& c, hb_priority<0>) സ്ഥിരം HB_RETURN (unsigned, c.len)
 
-  public:
+  പൊതു:
 
   template <typename T> auto
-  operator () (T&& c) const HB_RETURN (unsigned, impl (std::forward<T> (c), hb_prioritize))
+  operator () (T&& c) സ്ഥിരം HB_RETURN (unsigned, impl (std::forward<T> (c), hb_prioritize))
 }
 HB_FUNCOBJ (hb_len);
 
 /* Mixin to fill in what the subclass doesn't provide. */
 template <typename iter_t, typename item_t = typename iter_t::__item_t__>
-struct hb_iter_fallback_mixin_t
+ഘടന hb_iter_fallback_mixin_t
 {
-  private:
+  സ്വകാര്യ:
   /* https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern */
-  const iter_t* thiz () const { return static_cast<const iter_t *> (this); }
-	iter_t* thiz ()       { return static_cast<      iter_t *> (this); }
-  public:
+  സ്ഥിരം iter_t* thiz () സ്ഥിരം { തിരികെ static_cast<സ്ഥിരം iter_t *> (ഇത്); }
+	iter_t* thiz ()       { തിരികെ static_cast<      iter_t *> (ഇത്); }
+  പൊതു:
 
   /* Access: Implement __item__(), or __item_at__() if random-access. */
-  item_t __item__ () const { return (*thiz())[0]; }
-  item_t __item_at__ (unsigned i) const { return *(*thiz() + i); }
+  item_t __item__ () സ്ഥിരം { തിരികെ (*thiz())[0]; }
+  item_t __item_at__ (unsigned i) സ്ഥിരം { തിരികെ *(*thiz() + i); }
 
   /* Termination: Implement __more__(), or __len__() if random-access. */
-  bool __more__ () const { return bool (thiz()->len ()); }
-  unsigned __len__ () const
-  { iter_t c (*thiz()); unsigned l = 0; while (c) { c++; l++; } return l; }
+  തർക്കം __more__ () സ്ഥിരം { തിരികെ തർക്കം (thiz()->len ()); }
+  unsigned __len__ () സ്ഥിരം
+  { iter_t c (*thiz()); unsigned l = 0; ആകുമ്പോൾ (c) { c++; l++; } തിരികെ l; }
 
   /* Advancing: Implement __next__(), or __forward__() if random-access. */
-  void __next__ () { *thiz() += 1; }
-  void __forward__ (unsigned n) { while (*thiz() && n--) ++*thiz(); }
+  ശൂന്യം __next__ () { *thiz() += 1; }
+  ശൂന്യം __forward__ (unsigned n) { ആകുമ്പോൾ (*thiz() && n--) ++*thiz(); }
 
   /* Rewinding: Implement __prev__() or __rewind__() if bidirectional. */
-  void __prev__ () { *thiz() -= 1; }
-  void __rewind__ (unsigned n) { while (*thiz() && n--) --*thiz(); }
+  ശൂന്യം __prev__ () { *thiz() -= 1; }
+  ശൂന്യം __rewind__ (unsigned n) { ആകുമ്പോൾ (*thiz() && n--) --*thiz(); }
 
   /* Range-based for: Implement __end__() if can be done faster,
    * and operator!=. */
-  iter_t __end__ () const
+  iter_t __end__ () സ്ഥിരം
   {
-    if (thiz()->is_random_access_iterator)
-      return *thiz() + thiz()->len ();
+    എങ്കിൽ (thiz()->is_random_access_iterator)
+      തിരികെ *thiz() + thiz()->len ();
     /* Above expression loops twice. Following loops once. */
     auto it = *thiz();
-    while (it) ++it;
-    return it;
+    ആകുമ്പോൾ (it) ++it;
+    തിരികെ it;
   }
 
-  protected:
-  hb_iter_fallback_mixin_t () = default;
-  hb_iter_fallback_mixin_t (const hb_iter_fallback_mixin_t &o HB_UNUSED) = default;
-  hb_iter_fallback_mixin_t (hb_iter_fallback_mixin_t &&o HB_UNUSED) = default;
-  hb_iter_fallback_mixin_t& operator = (const hb_iter_fallback_mixin_t &o HB_UNUSED) = default;
-  hb_iter_fallback_mixin_t& operator = (hb_iter_fallback_mixin_t &&o HB_UNUSED) = default;
+  സംരക്ഷിത:
+  hb_iter_fallback_mixin_t () = സ്ഥിരസ്ഥിതി;
+  hb_iter_fallback_mixin_t (സ്ഥിരം hb_iter_fallback_mixin_t &o HB_UNUSED) = സ്ഥിരസ്ഥിതി;
+  hb_iter_fallback_mixin_t (hb_iter_fallback_mixin_t &&o HB_UNUSED) = സ്ഥിരസ്ഥിതി;
+  hb_iter_fallback_mixin_t& operator = (സ്ഥിരം hb_iter_fallback_mixin_t &o HB_UNUSED) = സ്ഥിരസ്ഥിതി;
+  hb_iter_fallback_mixin_t& operator = (hb_iter_fallback_mixin_t &&o HB_UNUSED) = സ്ഥിരസ്ഥിതി;
 };
 
 template <typename iter_t, typename item_t = typename iter_t::__item_t__>
-struct hb_iter_with_fallback_t :
+ഘടന hb_iter_with_fallback_t :
   hb_iter_t<iter_t, item_t>,
   hb_iter_fallback_mixin_t<iter_t, item_t>
 {
-  protected:
-  hb_iter_with_fallback_t () = default;
-  hb_iter_with_fallback_t (const hb_iter_with_fallback_t &o HB_UNUSED) = default;
-  hb_iter_with_fallback_t (hb_iter_with_fallback_t &&o HB_UNUSED) = default;
-  hb_iter_with_fallback_t& operator = (const hb_iter_with_fallback_t &o HB_UNUSED) = default;
-  hb_iter_with_fallback_t& operator = (hb_iter_with_fallback_t &&o HB_UNUSED) = default;
+  സംരക്ഷിത:
+  hb_iter_with_fallback_t () = സ്ഥിരസ്ഥിതി;
+  hb_iter_with_fallback_t (സ്ഥിരം hb_iter_with_fallback_t &o HB_UNUSED) = സ്ഥിരസ്ഥിതി;
+  hb_iter_with_fallback_t (hb_iter_with_fallback_t &&o HB_UNUSED) = സ്ഥിരസ്ഥിതി;
+  hb_iter_with_fallback_t& operator = (സ്ഥിരം hb_iter_with_fallback_t &o HB_UNUSED) = സ്ഥിരസ്ഥിതി;
+  hb_iter_with_fallback_t& operator = (hb_iter_with_fallback_t &&o HB_UNUSED) = സ്ഥിരസ്ഥിതി;
 };
 
 /*
@@ -253,14 +253,14 @@ struct hb_iter_with_fallback_t :
 /* hb_is_iterator() / hb_is_iterator_of() */
 
 template<typename Iter, typename Item>
-struct hb_is_iterator_of
+ഘടന hb_is_iterator_of
 {
   template <typename Item2 = Item>
-  static hb_true_type impl (hb_priority<2>, hb_iter_t<Iter, hb_type_identity<Item2>> *);
-  static hb_false_type impl (hb_priority<0>, const void *);
+  സ്ഥിതം hb_true_type impl (hb_priority<2>, hb_iter_t<Iter, hb_type_identity<Item2>> *);
+  സ്ഥിതം hb_false_type impl (hb_priority<0>, സ്ഥിരം ശൂന്യം *);
 
-  public:
-  static constexpr bool value = decltype (impl (hb_prioritize, hb_declval (Iter*)))::value;
+  പൊതു:
+  സ്ഥിതം constexpr തർക്കം value = decltype (impl (hb_prioritize, hb_declval (Iter*)))::value;
 };
 #define hb_is_iterator_of(Iter, Item) hb_is_iterator_of<Iter, Item>::value
 #define hb_is_iterator(Iter) hb_is_iterator_of (Iter, typename Iter::item_t)
@@ -270,52 +270,52 @@ struct hb_is_iterator_of
 /* hb_is_iterable() */
 
 template <typename T>
-struct hb_is_iterable
+ഘടന hb_is_iterable
 {
-  private:
+  സ്വകാര്യ:
 
   template <typename U>
-  static auto impl (hb_priority<1>) -> decltype (hb_declval (U).iter (), hb_true_type ());
+  സ്ഥിതം auto impl (hb_priority<1>) -> decltype (hb_declval (U).iter (), hb_true_type ());
 
   template <typename>
-  static hb_false_type impl (hb_priority<0>);
+  സ്ഥിതം hb_false_type impl (hb_priority<0>);
 
-  public:
-  static constexpr bool value = decltype (impl<T> (hb_prioritize))::value;
+  പൊതു:
+  സ്ഥിതം constexpr തർക്കം value = decltype (impl<T> (hb_prioritize))::value;
 };
 #define hb_is_iterable(Iterable) hb_is_iterable<Iterable>::value
 
 /* hb_is_source_of() / hb_is_sink_of() */
 
 template<typename Iter, typename Item>
-struct hb_is_source_of
+ഘടന hb_is_source_of
 {
-  private:
+  സ്വകാര്യ:
   template <typename Iter2 = Iter,
-	    hb_enable_if (hb_is_convertible (typename Iter2::item_t, hb_add_lvalue_reference<const Item>))>
-  static hb_true_type impl (hb_priority<2>);
+	    hb_enable_if (hb_is_convertible (typename Iter2::item_t, hb_add_lvalue_reference<സ്ഥിരം Item>))>
+  സ്ഥിതം hb_true_type impl (hb_priority<2>);
   template <typename Iter2 = Iter>
-  static auto impl (hb_priority<1>) -> decltype (hb_declval (Iter2) >> hb_declval (Item &), hb_true_type ());
-  static hb_false_type impl (hb_priority<0>);
+  സ്ഥിതം auto impl (hb_priority<1>) -> decltype (hb_declval (Iter2) >> hb_declval (Item &), hb_true_type ());
+  സ്ഥിതം hb_false_type impl (hb_priority<0>);
 
-  public:
-  static constexpr bool value = decltype (impl (hb_prioritize))::value;
+  പൊതു:
+  സ്ഥിതം constexpr തർക്കം value = decltype (impl (hb_prioritize))::value;
 };
 #define hb_is_source_of(Iter, Item) hb_is_source_of<Iter, Item>::value
 
 template<typename Iter, typename Item>
-struct hb_is_sink_of
+ഘടന hb_is_sink_of
 {
-  private:
+  സ്വകാര്യ:
   template <typename Iter2 = Iter,
 	    hb_enable_if (hb_is_convertible (typename Iter2::item_t, hb_add_lvalue_reference<Item>))>
-  static hb_true_type impl (hb_priority<2>);
+  സ്ഥിതം hb_true_type impl (hb_priority<2>);
   template <typename Iter2 = Iter>
-  static auto impl (hb_priority<1>) -> decltype (hb_declval (Iter2) << hb_declval (Item), hb_true_type ());
-  static hb_false_type impl (hb_priority<0>);
+  സ്ഥിതം auto impl (hb_priority<1>) -> decltype (hb_declval (Iter2) << hb_declval (Item), hb_true_type ());
+  സ്ഥിതം hb_false_type impl (hb_priority<0>);
 
-  public:
-  static constexpr bool value = decltype (impl (hb_prioritize))::value;
+  പൊതു:
+  സ്ഥിതം constexpr തർക്കം value = decltype (impl (hb_prioritize))::value;
 };
 #define hb_is_sink_of(Iter, Item) hb_is_sink_of<Iter, Item>::value
 
@@ -324,13 +324,13 @@ struct hb_is_sink_of
 	(hb_is_source_of(Iter, Item) && Iter::is_sorted_iterator)
 
 
-struct
+ഘടന
 {
   template <typename Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  unsigned operator () (const Iterable &_) const { return hb_len (hb_iter (_)); }
+  unsigned operator () (സ്ഥിരം Iterable &_) സ്ഥിരം { തിരികെ hb_len (hb_iter (_)); }
 
-  unsigned operator () (unsigned _) const { return _; }
+  unsigned operator () (unsigned _) സ്ഥിരം { തിരികെ _; }
 }
 HB_FUNCOBJ (hb_len_of);
 
@@ -338,23 +338,23 @@ HB_FUNCOBJ (hb_len_of);
 
 template <typename Iterable,
 	  hb_requires (hb_is_iterable (Iterable))>
-static inline auto begin (Iterable&& iterable) HB_AUTO_RETURN (hb_iter (iterable).begin ())
+സ്ഥിതം വരിയിൽ auto begin (Iterable&& iterable) HB_AUTO_RETURN (hb_iter (iterable).begin ())
 
 template <typename Iterable,
 	  hb_requires (hb_is_iterable (Iterable))>
-static inline auto end (Iterable&& iterable) HB_AUTO_RETURN (hb_iter (iterable).end ())
+സ്ഥിതം വരിയിൽ auto end (Iterable&& iterable) HB_AUTO_RETURN (hb_iter (iterable).end ())
 
 /* begin()/end() are NOT looked up non-ADL.  So each namespace must declare them.
  * Do it for namespace OT. */
-namespace OT {
+നാമാകാശ OT {
 
 template <typename Iterable,
 	  hb_requires (hb_is_iterable (Iterable))>
-static inline auto begin (Iterable&& iterable) HB_AUTO_RETURN (hb_iter (iterable).begin ())
+സ്ഥിതം വരിയിൽ auto begin (Iterable&& iterable) HB_AUTO_RETURN (hb_iter (iterable).begin ())
 
 template <typename Iterable,
 	  hb_requires (hb_is_iterable (Iterable))>
-static inline auto end (Iterable&& iterable) HB_AUTO_RETURN (hb_iter (iterable).end ())
+സ്ഥിതം വരിയിൽ auto end (Iterable&& iterable) HB_AUTO_RETURN (hb_iter (iterable).end ())
 
 }
 
@@ -365,12 +365,12 @@ static inline auto end (Iterable&& iterable) HB_AUTO_RETURN (hb_iter (iterable).
 
 template <typename Lhs, typename Rhs,
 	  hb_requires (hb_is_iterator (Lhs))>
-static inline auto
+സ്ഥിതം വരിയിൽ auto
 operator | (Lhs&& lhs, Rhs&& rhs) HB_AUTO_RETURN (std::forward<Rhs> (rhs) (std::forward<Lhs> (lhs)))
 
 /* hb_map(), hb_filter(), hb_reduce() */
 
-enum  class hb_function_sortedness_t {
+എണ്ണൽ  വർഗ്ഗം hb_function_sortedness_t {
   NOT_SORTED,
   RETAINS_SORTING,
   SORTED,
@@ -378,37 +378,37 @@ enum  class hb_function_sortedness_t {
 
 template <typename Iter, typename Proj, hb_function_sortedness_t Sorted,
 	 hb_requires (hb_is_iterator (Iter))>
-struct hb_map_iter_t :
+ഘടന hb_map_iter_t :
   hb_iter_t<hb_map_iter_t<Iter, Proj, Sorted>,
 	    decltype (hb_get (hb_declval (Proj), *hb_declval (Iter)))>
 {
-  hb_map_iter_t (const Iter& it, Proj f_) : it (it), f (f_) {}
+  hb_map_iter_t (സ്ഥിരം Iter& it, Proj f_) : it (it), f (f_) {}
 
-  typedef decltype (hb_get (hb_declval (Proj), *hb_declval (Iter))) __item_t__;
-  static constexpr bool is_random_access_iterator = Iter::is_random_access_iterator;
-  static constexpr bool is_sorted_iterator =
-    Sorted == hb_function_sortedness_t::SORTED ? true :
+  തരനിർവചനം decltype (hb_get (hb_declval (Proj), *hb_declval (Iter))) __item_t__;
+  സ്ഥിതം constexpr തർക്കം is_random_access_iterator = Iter::is_random_access_iterator;
+  സ്ഥിതം constexpr തർക്കം is_sorted_iterator =
+    Sorted == hb_function_sortedness_t::SORTED ? സത്യം :
     Sorted == hb_function_sortedness_t::RETAINS_SORTING ? Iter::is_sorted_iterator :
-    false;
-  __item_t__ __item__ () const { return hb_get (f.get (), *it); }
-  __item_t__ __item_at__ (unsigned i) const { return hb_get (f.get (), it[i]); }
-  bool __more__ () const { return bool (it); }
-  unsigned __len__ () const { return it.len (); }
-  void __next__ () { ++it; }
-  void __forward__ (unsigned n) { it += n; }
-  void __prev__ () { --it; }
-  void __rewind__ (unsigned n) { it -= n; }
-  hb_map_iter_t __end__ () const { return hb_map_iter_t (it._end (), f); }
-  bool operator != (const hb_map_iter_t& o) const
-  { return it != o.it; }
+    അസത്യം;
+  __item_t__ __item__ () സ്ഥിരം { തിരികെ hb_get (f.get (), *it); }
+  __item_t__ __item_at__ (unsigned i) സ്ഥിരം { തിരികെ hb_get (f.get (), it[i]); }
+  തർക്കം __more__ () സ്ഥിരം { തിരികെ തർക്കം (it); }
+  unsigned __len__ () സ്ഥിരം { തിരികെ it.len (); }
+  ശൂന്യം __next__ () { ++it; }
+  ശൂന്യം __forward__ (unsigned n) { it += n; }
+  ശൂന്യം __prev__ () { --it; }
+  ശൂന്യം __rewind__ (unsigned n) { it -= n; }
+  hb_map_iter_t __end__ () സ്ഥിരം { തിരികെ hb_map_iter_t (it._end (), f); }
+  തർക്കം operator != (സ്ഥിരം hb_map_iter_t& o) സ്ഥിരം
+  { തിരികെ it != o.it; }
 
-  private:
+  സ്വകാര്യ:
   Iter it;
   mutable hb_reference_wrapper<Proj> f;
 };
 
 template <typename Proj, hb_function_sortedness_t Sorted>
-struct hb_map_iter_factory_t
+ഘടന hb_map_iter_factory_t
 {
   hb_map_iter_factory_t (Proj f) : f (f) {}
 
@@ -416,77 +416,77 @@ struct hb_map_iter_factory_t
 	    hb_requires (hb_is_iterator (Iter))>
   hb_map_iter_t<Iter, Proj, Sorted>
   operator () (Iter it)
-  { return hb_map_iter_t<Iter, Proj, Sorted> (it, f); }
+  { തിരികെ hb_map_iter_t<Iter, Proj, Sorted> (it, f); }
 
-  private:
+  സ്വകാര്യ:
   Proj f;
 };
-struct
+ഘടന
 {
   template <typename Proj>
   hb_map_iter_factory_t<Proj, hb_function_sortedness_t::NOT_SORTED>
-  operator () (Proj&& f) const
-  { return hb_map_iter_factory_t<Proj, hb_function_sortedness_t::NOT_SORTED> (f); }
+  operator () (Proj&& f) സ്ഥിരം
+  { തിരികെ hb_map_iter_factory_t<Proj, hb_function_sortedness_t::NOT_SORTED> (f); }
 }
 HB_FUNCOBJ (hb_map);
-struct
+ഘടന
 {
   template <typename Proj>
   hb_map_iter_factory_t<Proj, hb_function_sortedness_t::RETAINS_SORTING>
-  operator () (Proj&& f) const
-  { return hb_map_iter_factory_t<Proj, hb_function_sortedness_t::RETAINS_SORTING> (f); }
+  operator () (Proj&& f) സ്ഥിരം
+  { തിരികെ hb_map_iter_factory_t<Proj, hb_function_sortedness_t::RETAINS_SORTING> (f); }
 }
 HB_FUNCOBJ (hb_map_retains_sorting);
-struct
+ഘടന
 {
   template <typename Proj>
   hb_map_iter_factory_t<Proj, hb_function_sortedness_t::SORTED>
-  operator () (Proj&& f) const
-  { return hb_map_iter_factory_t<Proj, hb_function_sortedness_t::SORTED> (f); }
+  operator () (Proj&& f) സ്ഥിരം
+  { തിരികെ hb_map_iter_factory_t<Proj, hb_function_sortedness_t::SORTED> (f); }
 }
 HB_FUNCOBJ (hb_map_sorted);
 
 template <typename Iter, typename Pred, typename Proj,
 	 hb_requires (hb_is_iterator (Iter))>
-struct hb_filter_iter_t :
+ഘടന hb_filter_iter_t :
   hb_iter_with_fallback_t<hb_filter_iter_t<Iter, Pred, Proj>,
 			  typename Iter::item_t>
 {
-  hb_filter_iter_t (const Iter& it_, Pred p_, Proj f_) : it (it_), p (p_), f (f_)
-  { while (it && !hb_has (p.get (), hb_get (f.get (), *it))) ++it; }
+  hb_filter_iter_t (സ്ഥിരം Iter& it_, Pred p_, Proj f_) : it (it_), p (p_), f (f_)
+  { ആകുമ്പോൾ (it && !hb_has (p.get (), hb_get (f.get (), *it))) ++it; }
 
-  typedef typename Iter::item_t __item_t__;
-  static constexpr bool is_sorted_iterator = Iter::is_sorted_iterator;
-  __item_t__ __item__ () const { return *it; }
-  bool __more__ () const { return bool (it); }
-  void __next__ () { do ++it; while (it && !hb_has (p.get (), hb_get (f.get (), *it))); }
-  void __prev__ ()
+  തരനിർവചനം typename Iter::item_t __item_t__;
+  സ്ഥിതം constexpr തർക്കം is_sorted_iterator = Iter::is_sorted_iterator;
+  __item_t__ __item__ () സ്ഥിരം { തിരികെ *it; }
+  തർക്കം __more__ () സ്ഥിരം { തിരികെ തർക്കം (it); }
+  ശൂന്യം __next__ () { ചെയ്യുക ++it; ആകുമ്പോൾ (it && !hb_has (p.get (), hb_get (f.get (), *it))); }
+  ശൂന്യം __prev__ ()
   {
-    unsigned count = 0;
-    do
+    unsigned എണ്ണം = 0;
+    ചെയ്യുക
     {
       Iter old = it;
       --it;
-      if (!(it != old))
+      എങ്കിൽ (!(it != old))
       {
-	it += count;
-	return;
+	it += എണ്ണം;
+	തിരികെ;
       }
-      count++;
+      എണ്ണം++;
     }
-    while (!hb_has (p.get (), hb_get (f.get (), *it)));
+    ആകുമ്പോൾ (!hb_has (p.get (), hb_get (f.get (), *it)));
   }
-  hb_filter_iter_t __end__ () const { return hb_filter_iter_t (it._end (), p, f); }
-  bool operator != (const hb_filter_iter_t& o) const
-  { return it != o.it; }
+  hb_filter_iter_t __end__ () സ്ഥിരം { തിരികെ hb_filter_iter_t (it._end (), p, f); }
+  തർക്കം operator != (സ്ഥിരം hb_filter_iter_t& o) സ്ഥിരം
+  { തിരികെ it != o.it; }
 
-  private:
+  സ്വകാര്യ:
   Iter it;
   mutable hb_reference_wrapper<Pred> p;
   mutable hb_reference_wrapper<Proj> f;
 };
 template <typename Pred, typename Proj>
-struct hb_filter_iter_factory_t
+ഘടന hb_filter_iter_factory_t
 {
   hb_filter_iter_factory_t (Pred p, Proj f) : p (p), f (f) {}
 
@@ -494,26 +494,26 @@ struct hb_filter_iter_factory_t
 	    hb_requires (hb_is_iterator (Iter))>
   hb_filter_iter_t<Iter, Pred, Proj>
   operator () (Iter it)
-  { return hb_filter_iter_t<Iter, Pred, Proj> (it, p, f); }
+  { തിരികെ hb_filter_iter_t<Iter, Pred, Proj> (it, p, f); }
 
-  private:
+  സ്വകാര്യ:
   Pred p;
   Proj f;
 };
-struct
+ഘടന
 {
   template <typename Pred = decltype ((hb_identity)),
 	    typename Proj = decltype ((hb_identity))>
   hb_filter_iter_factory_t<Pred, Proj>
-  operator () (Pred&& p = hb_identity, Proj&& f = hb_identity) const
-  { return hb_filter_iter_factory_t<Pred, Proj> (p, f); }
+  operator () (Pred&& p = hb_identity, Proj&& f = hb_identity) സ്ഥിരം
+  { തിരികെ hb_filter_iter_factory_t<Pred, Proj> (p, f); }
 }
 HB_FUNCOBJ (hb_filter);
 
 template <typename Redu, typename InitT>
-struct hb_reduce_t
+ഘടന hb_reduce_t
 {
-  hb_reduce_t (Redu r, InitT init_value) : r (r), init_value (init_value) {}
+  hb_reduce_t (Redu r, InitT init_മൂല്യം) : r (r), init_മൂല്യം (init_മൂല്യം) {}
 
   template <typename Iter,
 	    hb_requires (hb_is_iterator (Iter)),
@@ -521,22 +521,22 @@ struct hb_reduce_t
   AccuT
   operator () (Iter it)
   {
-    AccuT value = init_value;
-    for (; it; ++it)
+    AccuT value = init_മൂല്യം;
+    വേണ്ടി (; it; ++it)
       value = r (value, *it);
-    return value;
+    തിരികെ value;
   }
 
-  private:
+  സ്വകാര്യ:
   Redu r;
-  InitT init_value;
+  InitT init_മൂല്യം;
 };
-struct
+ഘടന
 {
   template <typename Redu, typename InitT>
   hb_reduce_t<Redu, InitT>
-  operator () (Redu&& r, InitT init_value) const
-  { return hb_reduce_t<Redu, InitT> (r, init_value); }
+  operator () (Redu&& r, InitT init_മൂല്യം) സ്ഥിരം
+  { തിരികെ hb_reduce_t<Redu, InitT> (r, init_മൂല്യം); }
 }
 HB_FUNCOBJ (hb_reduce);
 
@@ -544,15 +544,15 @@ HB_FUNCOBJ (hb_reduce);
 /* hb_zip() */
 
 template <typename A, typename B>
-struct hb_zip_iter_t :
+ഘടന hb_zip_iter_t :
   hb_iter_t<hb_zip_iter_t<A, B>,
 	    hb_pair_t<typename A::item_t, typename B::item_t>>
 {
   hb_zip_iter_t () {}
-  hb_zip_iter_t (const A& a, const B& b) : a (a), b (b) {}
+  hb_zip_iter_t (സ്ഥിരം A& a, സ്ഥിരം B& b) : a (a), b (b) {}
 
-  typedef hb_pair_t<typename A::item_t, typename B::item_t> __item_t__;
-  static constexpr bool is_random_access_iterator =
+  തരനിർവചനം hb_pair_t<typename A::item_t, typename B::item_t> __item_t__;
+  സ്ഥിതം constexpr തർക്കം is_random_access_iterator =
     A::is_random_access_iterator &&
     B::is_random_access_iterator;
   /* Note.  The following categorization is only valid if A is strictly sorted,
@@ -579,210 +579,210 @@ struct hb_zip_iter_t :
    * This semantical limitation does NOT affect logic in any other place I
    * know of as of this writing.
    */
-  static constexpr bool is_sorted_iterator = A::is_sorted_iterator;
+  സ്ഥിതം constexpr തർക്കം is_sorted_iterator = A::is_sorted_iterator;
 
-  __item_t__ __item__ () const { return __item_t__ (*a, *b); }
-  __item_t__ __item_at__ (unsigned i) const { return __item_t__ (a[i], b[i]); }
-  bool __more__ () const { return bool (a) && bool (b); }
-  unsigned __len__ () const { return hb_min (a.len (), b.len ()); }
-  void __next__ () { ++a; ++b; }
-  void __forward__ (unsigned n) { a += n; b += n; }
-  void __prev__ () { --a; --b; }
-  void __rewind__ (unsigned n) { a -= n; b -= n; }
-  hb_zip_iter_t __end__ () const { return hb_zip_iter_t (a._end (), b._end ()); }
+  __item_t__ __item__ () സ്ഥിരം { തിരികെ __item_t__ (*a, *b); }
+  __item_t__ __item_at__ (unsigned i) സ്ഥിരം { തിരികെ __item_t__ (a[i], b[i]); }
+  തർക്കം __more__ () സ്ഥിരം { തിരികെ തർക്കം (a) && തർക്കം (b); }
+  unsigned __len__ () സ്ഥിരം { തിരികെ hb_min (a.len (), b.len ()); }
+  ശൂന്യം __next__ () { ++a; ++b; }
+  ശൂന്യം __forward__ (unsigned n) { a += n; b += n; }
+  ശൂന്യം __prev__ () { --a; --b; }
+  ശൂന്യം __rewind__ (unsigned n) { a -= n; b -= n; }
+  hb_zip_iter_t __end__ () സ്ഥിരം { തിരികെ hb_zip_iter_t (a._end (), b._end ()); }
   /* Note, we should stop if ANY of the iters reaches end.  As such two compare
    * unequal if both items are unequal, NOT if either is unequal. */
-  bool operator != (const hb_zip_iter_t& o) const
-  { return a != o.a && b != o.b; }
+  തർക്കം operator != (സ്ഥിരം hb_zip_iter_t& o) സ്ഥിരം
+  { തിരികെ a != o.a && b != o.b; }
 
-  private:
+  സ്വകാര്യ:
   A a;
   B b;
 };
-struct
+ഘടന
 { HB_PARTIALIZE(2);
   template <typename A, typename B,
 	    hb_requires (hb_is_iterable (A) && hb_is_iterable (B))>
   hb_zip_iter_t<hb_iter_type<A>, hb_iter_type<B>>
-  operator () (A&& a, B&& b) const
-  { return hb_zip_iter_t<hb_iter_type<A>, hb_iter_type<B>> (hb_iter (a), hb_iter (b)); }
+  operator () (A&& a, B&& b) സ്ഥിരം
+  { തിരികെ hb_zip_iter_t<hb_iter_type<A>, hb_iter_type<B>> (hb_iter (a), hb_iter (b)); }
 }
 HB_FUNCOBJ (hb_zip);
 
 /* hb_concat() */
 
 template <typename A, typename B>
-struct hb_concat_iter_t :
+ഘടന hb_concat_iter_t :
     hb_iter_t<hb_concat_iter_t<A, B>, typename A::item_t>
 {
   hb_concat_iter_t () {}
   hb_concat_iter_t (A& a, B& b) : a (a), b (b) {}
-  hb_concat_iter_t (const A& a, const B& b) : a (a), b (b) {}
+  hb_concat_iter_t (സ്ഥിരം A& a, സ്ഥിരം B& b) : a (a), b (b) {}
 
 
-  typedef typename A::item_t __item_t__;
-  static constexpr bool is_random_access_iterator =
+  തരനിർവചനം typename A::item_t __item_t__;
+  സ്ഥിതം constexpr തർക്കം is_random_access_iterator =
     A::is_random_access_iterator &&
     B::is_random_access_iterator;
-  static constexpr bool is_sorted_iterator = false;
+  സ്ഥിതം constexpr തർക്കം is_sorted_iterator = അസത്യം;
 
-  __item_t__ __item__ () const
+  __item_t__ __item__ () സ്ഥിരം
   {
-    if (!a)
-      return *b;
-    return *a;
+    എങ്കിൽ (!a)
+      തിരികെ *b;
+    തിരികെ *a;
   }
 
-  __item_t__ __item_at__ (unsigned i) const
+  __item_t__ __item_at__ (unsigned i) സ്ഥിരം
   {
     unsigned a_len = a.len ();
-    if (i < a_len)
-      return a[i];
-    return b[i - a_len];
+    എങ്കിൽ (i < a_len)
+      തിരികെ a[i];
+    തിരികെ b[i - a_len];
   }
 
-  bool __more__ () const { return bool (a) || bool (b); }
+  തർക്കം __more__ () സ്ഥിരം { തിരികെ തർക്കം (a) || തർക്കം (b); }
 
-  unsigned __len__ () const { return a.len () + b.len (); }
+  unsigned __len__ () സ്ഥിരം { തിരികെ a.len () + b.len (); }
 
-  void __next__ ()
+  ശൂന്യം __next__ ()
   {
-    if (a)
+    എങ്കിൽ (a)
       ++a;
-    else
+    അല്ലെങ്കിൽ
       ++b;
   }
 
-  void __forward__ (unsigned n)
+  ശൂന്യം __forward__ (unsigned n)
   {
-    if (!n) return;
-    if (!is_random_access_iterator) {
-      while (n-- && *this) {
-        (*this)++;
+    എങ്കിൽ (!n) തിരികെ;
+    എങ്കിൽ (!is_random_access_iterator) {
+      ആകുമ്പോൾ (n-- && *ഇത്) {
+        (*ഇത്)++;
       }
-      return;
+      തിരികെ;
     }
 
     unsigned a_len = a.len ();
-    if (n > a_len) {
+    എങ്കിൽ (n > a_len) {
       n -= a_len;
       a.__forward__ (a_len);
       b.__forward__ (n);
-    } else {
+    } അല്ലെങ്കിൽ {
       a.__forward__ (n);
     }
   }
 
-  hb_concat_iter_t __end__ () const { return hb_concat_iter_t (a._end (), b._end ()); }
-  bool operator != (const hb_concat_iter_t& o) const
+  hb_concat_iter_t __end__ () സ്ഥിരം { തിരികെ hb_concat_iter_t (a._end (), b._end ()); }
+  തർക്കം operator != (സ്ഥിരം hb_concat_iter_t& o) സ്ഥിരം
   {
-    return a != o.a
+    തിരികെ a != o.a
         || b != o.b;
   }
 
-  private:
+  സ്വകാര്യ:
   A a;
   B b;
 };
-struct
+ഘടന
 { HB_PARTIALIZE(2);
   template <typename A, typename B,
 	    hb_requires (hb_is_iterable (A) && hb_is_iterable (B))>
   hb_concat_iter_t<hb_iter_type<A>, hb_iter_type<B>>
-  operator () (A&& a, B&& b) const
-  { return hb_concat_iter_t<hb_iter_type<A>, hb_iter_type<B>> (hb_iter (a), hb_iter (b)); }
+  operator () (A&& a, B&& b) സ്ഥിരം
+  { തിരികെ hb_concat_iter_t<hb_iter_type<A>, hb_iter_type<B>> (hb_iter (a), hb_iter (b)); }
 }
 HB_FUNCOBJ (hb_concat);
 
 /* hb_apply() */
 
 template <typename Appl>
-struct hb_apply_t
+ഘടന hb_apply_t
 {
   hb_apply_t (Appl a) : a (a) {}
 
   template <typename Iter,
 	    hb_requires (hb_is_iterator (Iter))>
-  void operator () (Iter it)
+  ശൂന്യം operator () (Iter it)
   {
-    for (; it; ++it)
-      (void) hb_invoke (a, *it);
+    വേണ്ടി (; it; ++it)
+      (ശൂന്യം) hb_invoke (a, *it);
   }
 
-  private:
+  സ്വകാര്യ:
   Appl a;
 };
-struct
+ഘടന
 {
   template <typename Appl> hb_apply_t<Appl>
-  operator () (Appl&& a) const
-  { return hb_apply_t<Appl> (a); }
+  operator () (Appl&& a) സ്ഥിരം
+  { തിരികെ hb_apply_t<Appl> (a); }
 
   template <typename Appl> hb_apply_t<Appl&>
-  operator () (Appl *a) const
-  { return hb_apply_t<Appl&> (*a); }
+  operator () (Appl *a) സ്ഥിരം
+  { തിരികെ hb_apply_t<Appl&> (*a); }
 }
 HB_FUNCOBJ (hb_apply);
 
 /* hb_range()/hb_iota()/hb_repeat() */
 
 template <typename T, typename S>
-struct hb_range_iter_t :
+ഘടന hb_range_iter_t :
   hb_iter_t<hb_range_iter_t<T, S>, T>
 {
   hb_range_iter_t (T start, T end_, S step) : v (start), end_ (end_for (start, end_, step)), step (step) {}
 
-  typedef T __item_t__;
-  static constexpr bool is_random_access_iterator = true;
-  static constexpr bool is_sorted_iterator = true;
-  __item_t__ __item__ () const { return hb_ridentity (v); }
-  __item_t__ __item_at__ (unsigned j) const { return v + j * step; }
-  bool __more__ () const { return v != end_; }
-  unsigned __len__ () const { return !step ? UINT_MAX : (end_ - v) / step; }
-  void __next__ () { v += step; }
-  void __forward__ (unsigned n) { v += n * step; }
-  void __prev__ () { v -= step; }
-  void __rewind__ (unsigned n) { v -= n * step; }
-  hb_range_iter_t __end__ () const { return hb_range_iter_t (end_, end_, step); }
-  bool operator != (const hb_range_iter_t& o) const
-  { return v != o.v; }
+  തരനിർവചനം T __item_t__;
+  സ്ഥിതം constexpr തർക്കം is_random_access_iterator = സത്യം;
+  സ്ഥിതം constexpr തർക്കം is_sorted_iterator = സത്യം;
+  __item_t__ __item__ () സ്ഥിരം { തിരികെ hb_ridentity (v); }
+  __item_t__ __item_at__ (unsigned j) സ്ഥിരം { തിരികെ v + j * step; }
+  തർക്കം __more__ () സ്ഥിരം { തിരികെ v != end_; }
+  unsigned __len__ () സ്ഥിരം { തിരികെ !step ? UINT_MAX : (end_ - v) / step; }
+  ശൂന്യം __next__ () { v += step; }
+  ശൂന്യം __forward__ (unsigned n) { v += n * step; }
+  ശൂന്യം __prev__ () { v -= step; }
+  ശൂന്യം __rewind__ (unsigned n) { v -= n * step; }
+  hb_range_iter_t __end__ () സ്ഥിരം { തിരികെ hb_range_iter_t (end_, end_, step); }
+  തർക്കം operator != (സ്ഥിരം hb_range_iter_t& o) സ്ഥിരം
+  { തിരികെ v != o.v; }
 
-  private:
-  static inline T end_for (T start, T end_, S step)
+  സ്വകാര്യ:
+  സ്ഥിതം വരിയിൽ T end_for (T start, T end_, S step)
   {
-    if (!step)
-      return end_;
+    എങ്കിൽ (!step)
+      തിരികെ end_;
     auto res = (end_ - start) % step;
-    if (!res)
-      return end_;
+    എങ്കിൽ (!res)
+      തിരികെ end_;
     end_ += step - res;
-    return end_;
+    തിരികെ end_;
   }
 
-  private:
+  സ്വകാര്യ:
   T v;
   T end_;
   S step;
 };
-struct
+ഘടന
 {
   template <typename T = unsigned> hb_range_iter_t<T, unsigned>
-  operator () (T end = (unsigned) -1) const
-  { return hb_range_iter_t<T, unsigned> (0, end, 1u); }
+  operator () (T end = (unsigned) -1) സ്ഥിരം
+  { തിരികെ hb_range_iter_t<T, unsigned> (0, end, 1u); }
 
   template <typename T, typename S = unsigned> hb_range_iter_t<T, S>
-  operator () (T start, T end, S step = 1u) const
-  { return hb_range_iter_t<T, S> (start, end, step); }
+  operator () (T start, T end, S step = 1u) സ്ഥിരം
+  { തിരികെ hb_range_iter_t<T, S> (start, end, step); }
 }
 HB_FUNCOBJ (hb_range);
 
 template <typename T, typename S>
-struct hb_iota_iter_t :
+ഘടന hb_iota_iter_t :
   hb_iter_with_fallback_t<hb_iota_iter_t<T, S>, T>
 {
   hb_iota_iter_t (T start, S step) : v (start), step (step) {}
 
-  private:
+  സ്വകാര്യ:
 
   template <typename S2 = S>
   auto
@@ -791,106 +791,106 @@ struct hb_iota_iter_t :
                                       hb_declval<T&> ()))>
   { v = hb_invoke (std::forward<hb_type_identity<S2>> (s), v); }
 
-  void
+  ശൂന്യം
   inc (S s, hb_priority<0>)
   { v += s; }
 
-  public:
+  പൊതു:
 
-  typedef T __item_t__;
-  static constexpr bool is_random_access_iterator = true;
-  static constexpr bool is_sorted_iterator = true;
-  __item_t__ __item__ () const { return hb_ridentity (v); }
-  bool __more__ () const { return true; }
-  unsigned __len__ () const { return UINT_MAX; }
-  void __next__ () { inc (step, hb_prioritize); }
-  void __prev__ () { v -= step; }
-  hb_iota_iter_t __end__ () const { return *this; }
-  bool operator != (const hb_iota_iter_t& o) const { return true; }
+  തരനിർവചനം T __item_t__;
+  സ്ഥിതം constexpr തർക്കം is_random_access_iterator = സത്യം;
+  സ്ഥിതം constexpr തർക്കം is_sorted_iterator = സത്യം;
+  __item_t__ __item__ () സ്ഥിരം { തിരികെ hb_ridentity (v); }
+  തർക്കം __more__ () സ്ഥിരം { തിരികെ സത്യം; }
+  unsigned __len__ () സ്ഥിരം { തിരികെ UINT_MAX; }
+  ശൂന്യം __next__ () { inc (step, hb_prioritize); }
+  ശൂന്യം __prev__ () { v -= step; }
+  hb_iota_iter_t __end__ () സ്ഥിരം { തിരികെ *ഇത്; }
+  തർക്കം operator != (സ്ഥിരം hb_iota_iter_t& o) സ്ഥിരം { തിരികെ സത്യം; }
 
-  private:
+  സ്വകാര്യ:
   T v;
   S step;
 };
-struct
+ഘടന
 {
   template <typename T = unsigned, typename S = unsigned> hb_iota_iter_t<T, S>
-  operator () (T start = 0u, S step = 1u) const
-  { return hb_iota_iter_t<T, S> (start, step); }
+  operator () (T start = 0u, S step = 1u) സ്ഥിരം
+  { തിരികെ hb_iota_iter_t<T, S> (start, step); }
 }
 HB_FUNCOBJ (hb_iota);
 
 template <typename T>
-struct hb_repeat_iter_t :
+ഘടന hb_repeat_iter_t :
   hb_iter_t<hb_repeat_iter_t<T>, T>
 {
   hb_repeat_iter_t (T value) : v (value) {}
 
-  typedef T __item_t__;
-  static constexpr bool is_random_access_iterator = true;
-  static constexpr bool is_sorted_iterator = true;
-  __item_t__ __item__ () const { return v; }
-  __item_t__ __item_at__ (unsigned j) const { return v; }
-  bool __more__ () const { return true; }
-  unsigned __len__ () const { return UINT_MAX; }
-  void __next__ () {}
-  void __forward__ (unsigned) {}
-  void __prev__ () {}
-  void __rewind__ (unsigned) {}
-  hb_repeat_iter_t __end__ () const { return *this; }
-  bool operator != (const hb_repeat_iter_t& o) const { return true; }
+  തരനിർവചനം T __item_t__;
+  സ്ഥിതം constexpr തർക്കം is_random_access_iterator = സത്യം;
+  സ്ഥിതം constexpr തർക്കം is_sorted_iterator = സത്യം;
+  __item_t__ __item__ () സ്ഥിരം { തിരികെ v; }
+  __item_t__ __item_at__ (unsigned j) സ്ഥിരം { തിരികെ v; }
+  തർക്കം __more__ () സ്ഥിരം { തിരികെ സത്യം; }
+  unsigned __len__ () സ്ഥിരം { തിരികെ UINT_MAX; }
+  ശൂന്യം __next__ () {}
+  ശൂന്യം __forward__ (unsigned) {}
+  ശൂന്യം __prev__ () {}
+  ശൂന്യം __rewind__ (unsigned) {}
+  hb_repeat_iter_t __end__ () സ്ഥിരം { തിരികെ *ഇത്; }
+  തർക്കം operator != (സ്ഥിരം hb_repeat_iter_t& o) സ്ഥിരം { തിരികെ സത്യം; }
 
-  private:
+  സ്വകാര്യ:
   T v;
 };
-struct
+ഘടന
 {
   template <typename T> hb_repeat_iter_t<T>
-  operator () (T value) const
-  { return hb_repeat_iter_t<T> (value); }
+  operator () (T value) സ്ഥിരം
+  { തിരികെ hb_repeat_iter_t<T> (value); }
 }
 HB_FUNCOBJ (hb_repeat);
 
 /* hb_enumerate()/hb_take() */
 
-struct
+ഘടന
 {
   template <typename Iterable,
 	    typename Index = unsigned,
 	    hb_requires (hb_is_iterable (Iterable))>
-  auto operator () (Iterable&& it, Index start = 0u) const HB_AUTO_RETURN
+  auto operator () (Iterable&& it, Index start = 0u) സ്ഥിരം HB_AUTO_RETURN
   ( hb_zip (hb_iota (start), it) )
 }
 HB_FUNCOBJ (hb_enumerate);
 
-struct
+ഘടന
 { HB_PARTIALIZE(2);
   template <typename Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  auto operator () (Iterable&& it, unsigned count) const HB_AUTO_RETURN
-  ( hb_zip (hb_range (count), it) | hb_map_retains_sorting (hb_second) )
+  auto operator () (Iterable&& it, unsigned എണ്ണം) സ്ഥിരം HB_AUTO_RETURN
+  ( hb_zip (hb_range (എണ്ണം), it) | hb_map_retains_sorting (hb_second) )
 
   /* Specialization arrays. */
 
-  template <typename Type> inline hb_array_t<Type>
-  operator () (hb_array_t<Type> array, unsigned count) const
-  { return array.sub_array (0, count); }
+  template <typename Type> വരിയിൽ hb_array_t<Type>
+  operator () (hb_array_t<Type> array, unsigned എണ്ണം) സ്ഥിരം
+  { തിരികെ array.sub_array (0, എണ്ണം); }
 
-  template <typename Type> inline hb_sorted_array_t<Type>
-  operator () (hb_sorted_array_t<Type> array, unsigned count) const
-  { return array.sub_array (0, count); }
+  template <typename Type> വരിയിൽ hb_sorted_array_t<Type>
+  operator () (hb_sorted_array_t<Type> array, unsigned എണ്ണം) സ്ഥിരം
+  { തിരികെ array.sub_array (0, എണ്ണം); }
 }
 HB_FUNCOBJ (hb_take);
 
-struct
+ഘടന
 { HB_PARTIALIZE(2);
   template <typename Iter,
 	    hb_requires (hb_is_iterator (Iter))>
-  auto operator () (Iter it, unsigned count) const HB_AUTO_RETURN
+  auto operator () (Iter it, unsigned എണ്ണം) സ്ഥിരം HB_AUTO_RETURN
   (
-    + hb_iota (it, hb_add (count))
-    | hb_map (hb_take (count))
-    | hb_take ((hb_len (it) + count - 1) / count)
+    + hb_iota (it, hb_add (എണ്ണം))
+    | hb_map (hb_take (എണ്ണം))
+    | hb_take ((hb_len (it) + എണ്ണം - 1) / എണ്ണം)
   )
 }
 HB_FUNCOBJ (hb_chop);
@@ -898,43 +898,43 @@ HB_FUNCOBJ (hb_chop);
 /* hb_sink() */
 
 template <typename Sink>
-struct hb_sink_t
+ഘടന hb_sink_t
 {
   hb_sink_t (Sink s) : s (s) {}
 
   template <typename Iter,
 	    hb_requires (hb_is_iterator (Iter))>
-  void operator () (Iter it)
+  ശൂന്യം operator () (Iter it)
   {
-    for (; it; ++it)
+    വേണ്ടി (; it; ++it)
       s << *it;
   }
 
-  private:
+  സ്വകാര്യ:
   Sink s;
 };
-struct
+ഘടന
 {
   template <typename Sink> hb_sink_t<Sink>
-  operator () (Sink&& s) const
-  { return hb_sink_t<Sink> (s); }
+  operator () (Sink&& s) സ്ഥിരം
+  { തിരികെ hb_sink_t<Sink> (s); }
 
   template <typename Sink> hb_sink_t<Sink&>
-  operator () (Sink *s) const
-  { return hb_sink_t<Sink&> (*s); }
+  operator () (Sink *s) സ്ഥിരം
+  { തിരികെ hb_sink_t<Sink&> (*s); }
 }
 HB_FUNCOBJ (hb_sink);
 
 /* hb-drain: hb_sink to void / blackhole / /dev/null. */
 
-struct
+ഘടന
 {
   template <typename Iter,
 	    hb_requires (hb_is_iterator (Iter))>
-  void operator () (Iter it) const
+  ശൂന്യം operator () (Iter it) സ്ഥിരം
   {
-    for (; it; ++it)
-      (void) *it;
+    വേണ്ടി (; it; ++it)
+      (ശൂന്യം) *it;
   }
 }
 HB_FUNCOBJ (hb_drain);
@@ -942,89 +942,89 @@ HB_FUNCOBJ (hb_drain);
 /* hb_unzip(): unzip and sink to two sinks. */
 
 template <typename Sink1, typename Sink2>
-struct hb_unzip_t
+ഘടന hb_unzip_t
 {
   hb_unzip_t (Sink1 s1, Sink2 s2) : s1 (s1), s2 (s2) {}
 
   template <typename Iter,
 	    hb_requires (hb_is_iterator (Iter))>
-  void operator () (Iter it)
+  ശൂന്യം operator () (Iter it)
   {
-    for (; it; ++it)
+    വേണ്ടി (; it; ++it)
     {
-      const auto &v = *it;
+      സ്ഥിരം auto &v = *it;
       s1 << v.first;
       s2 << v.second;
     }
   }
 
-  private:
+  സ്വകാര്യ:
   Sink1 s1;
   Sink2 s2;
 };
-struct
+ഘടന
 {
   template <typename Sink1, typename Sink2> hb_unzip_t<Sink1, Sink2>
-  operator () (Sink1&& s1, Sink2&& s2) const
-  { return hb_unzip_t<Sink1, Sink2> (s1, s2); }
+  operator () (Sink1&& s1, Sink2&& s2) സ്ഥിരം
+  { തിരികെ hb_unzip_t<Sink1, Sink2> (s1, s2); }
 
   template <typename Sink1, typename Sink2> hb_unzip_t<Sink1&, Sink2&>
-  operator () (Sink1 *s1, Sink2 *s2) const
-  { return hb_unzip_t<Sink1&, Sink2&> (*s1, *s2); }
+  operator () (Sink1 *s1, Sink2 *s2) സ്ഥിരം
+  { തിരികെ hb_unzip_t<Sink1&, Sink2&> (*s1, *s2); }
 }
 HB_FUNCOBJ (hb_unzip);
 
 
 /* hb-all, hb-any, hb-none. */
 
-struct
+ഘടന
 {
   template <typename Iterable,
 	    typename Pred = decltype ((hb_identity)),
 	    typename Proj = decltype ((hb_identity)),
 	    hb_requires (hb_is_iterable (Iterable))>
-  bool operator () (Iterable&& c,
+  തർക്കം operator () (Iterable&& c,
 		    Pred&& p = hb_identity,
-		    Proj&& f = hb_identity) const
+		    Proj&& f = hb_identity) സ്ഥിരം
   {
-    for (auto it = hb_iter (c); it; ++it)
-      if (!hb_match (p, hb_get (f, *it)))
-	return false;
-    return true;
+    വേണ്ടി (auto it = hb_iter (c); it; ++it)
+      എങ്കിൽ (!hb_match (p, hb_get (f, *it)))
+	തിരികെ അസത്യം;
+    തിരികെ സത്യം;
   }
 }
 HB_FUNCOBJ (hb_all);
-struct
+ഘടന
 {
   template <typename Iterable,
 	    typename Pred = decltype ((hb_identity)),
 	    typename Proj = decltype ((hb_identity)),
 	    hb_requires (hb_is_iterable (Iterable))>
-  bool operator () (Iterable&& c,
+  തർക്കം operator () (Iterable&& c,
 		    Pred&& p = hb_identity,
-		    Proj&& f = hb_identity) const
+		    Proj&& f = hb_identity) സ്ഥിരം
   {
-    for (auto it = hb_iter (c); it; ++it)
-      if (hb_match (p, hb_get (f, *it)))
-	return true;
-    return false;
+    വേണ്ടി (auto it = hb_iter (c); it; ++it)
+      എങ്കിൽ (hb_match (p, hb_get (f, *it)))
+	തിരികെ സത്യം;
+    തിരികെ അസത്യം;
   }
 }
 HB_FUNCOBJ (hb_any);
-struct
+ഘടന
 {
   template <typename Iterable,
 	    typename Pred = decltype ((hb_identity)),
 	    typename Proj = decltype ((hb_identity)),
 	    hb_requires (hb_is_iterable (Iterable))>
-  bool operator () (Iterable&& c,
+  തർക്കം operator () (Iterable&& c,
 		    Pred&& p = hb_identity,
-		    Proj&& f = hb_identity) const
+		    Proj&& f = hb_identity) സ്ഥിരം
   {
-    for (auto it = hb_iter (c); it; ++it)
-      if (hb_match (p, hb_get (f, *it)))
-	return false;
-    return true;
+    വേണ്ടി (auto it = hb_iter (c); it; ++it)
+      എങ്കിൽ (hb_match (p, hb_get (f, *it)))
+	തിരികെ അസത്യം;
+    തിരികെ സത്യം;
   }
 }
 HB_FUNCOBJ (hb_none);
@@ -1035,15 +1035,15 @@ HB_FUNCOBJ (hb_none);
 
 template <typename C, typename V,
 	  hb_requires (hb_is_iterable (C))>
-inline void
-hb_fill (C&& c, const V &v)
+വരിയിൽ ശൂന്യം
+hb_fill (C&& c, സ്ഥിരം V &v)
 {
-  for (auto i = hb_iter (c); i; i++)
+  വേണ്ടി (auto i = hb_iter (c); i; i++)
     *i = v;
 }
 
 template <typename S, typename D>
-inline void
+വരിയിൽ ശൂന്യം
 hb_copy (S&& is, D&& id)
 {
   hb_iter (is) | hb_sink (id);

@@ -27,8 +27,8 @@
 #ifndef HB_SET_DIGEST_HH
 #define HB_SET_DIGEST_HH
 
-#include "hb.hh"
-#include "hb-machinery.hh"
+#അന്തര്ഭാവ "hb.hh"
+#അന്തര്ഭാവ "hb-machinery.hh"
 
 /*
  * The set-digests implement "filters" that support "approximate
@@ -63,110 +63,110 @@
  * check is done using four bitwise operations only.
  */
 
-static constexpr unsigned hb_set_digest_shifts[] = {4, 0, 6};
+സ്ഥിതം constexpr unsigned hb_set_digest_shifts[] = {4, 0, 6};
 
-struct hb_set_digest_t
+ഘടന hb_set_digest_t
 {
   // No science in these. Intuition and testing only.
   using mask_t = uint64_t;
 
-  static constexpr unsigned n = ARRAY_LENGTH_CONST (hb_set_digest_shifts);
-  static constexpr unsigned mask_bytes = sizeof (mask_t);
-  static constexpr unsigned mask_bits = sizeof (mask_t) * 8;
-  static constexpr hb_codepoint_t mb1 = mask_bits - 1;
-  static constexpr mask_t one = 1;
-  static constexpr mask_t all = (mask_t) -1;
+  സ്ഥിതം constexpr unsigned n = ARRAY_LENGTH_CONST (hb_set_digest_shifts);
+  സ്ഥിതം constexpr unsigned mask_bytes = വലുപ്പം (mask_t);
+  സ്ഥിതം constexpr unsigned mask_bits = വലുപ്പം (mask_t) * 8;
+  സ്ഥിതം constexpr hb_codepoint_t mb1 = mask_bits - 1;
+  സ്ഥിതം constexpr mask_t one = 1;
+  സ്ഥിതം constexpr mask_t all = (mask_t) -1;
 
-  void init ()
-  { for (unsigned i = 0; i < n; i++) masks[i] = 0; }
+  ശൂന്യം init ()
+  { വേണ്ടി (unsigned i = 0; i < n; i++) masks[i] = 0; }
 
-  void clear () { init (); }
+  ശൂന്യം clear () { init (); }
 
-  static hb_set_digest_t full ()
+  സ്ഥിതം hb_set_digest_t full ()
   {
     hb_set_digest_t d;
-    for (unsigned i = 0; i < n; i++) d.masks[i] = all;
-    return d;
+    വേണ്ടി (unsigned i = 0; i < n; i++) d.masks[i] = all;
+    തിരികെ d;
   }
 
-  void union_ (const hb_set_digest_t &o)
-  { for (unsigned i = 0; i < n; i++) masks[i] |= o.masks[i]; }
+  ശൂന്യം union_ (സ്ഥിരം hb_set_digest_t &o)
+  { വേണ്ടി (unsigned i = 0; i < n; i++) masks[i] |= o.masks[i]; }
 
-  bool add_range (hb_codepoint_t a, hb_codepoint_t b)
+  തർക്കം add_range (hb_codepoint_t a, hb_codepoint_t b)
   {
-    bool ret;
+    തർക്കം ret;
 
-    ret = false;
-    for (unsigned i = 0; i < n; i++)
-      if (masks[i] != all)
-	ret = true;
-    if (!ret) return false;
+    ret = അസത്യം;
+    വേണ്ടി (unsigned i = 0; i < n; i++)
+      എങ്കിൽ (masks[i] != all)
+	ret = സത്യം;
+    എങ്കിൽ (!ret) തിരികെ അസത്യം;
 
-    ret = false;
-    for (unsigned i = 0; i < n; i++)
+    ret = അസത്യം;
+    വേണ്ടി (unsigned i = 0; i < n; i++)
     {
       mask_t shift = hb_set_digest_shifts[i];
-      if ((b >> shift) - (a >> shift) >= mb1)
+      എങ്കിൽ ((b >> shift) - (a >> shift) >= mb1)
 	masks[i] = all;
-      else
+      അല്ലെങ്കിൽ
       {
 	mask_t ma = one << ((a >> shift) & mb1);
 	mask_t mb = one << ((b >> shift) & mb1);
 	masks[i] |= mb + (mb - ma) - (mb < ma);
-	ret = true;
+	ret = സത്യം;
       }
     }
-    return ret;
+    തിരികെ ret;
   }
 
   template <typename T>
-  void add_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
+  ശൂന്യം add_array (സ്ഥിരം T *array, unsigned പൂർണ്ണസംഖ്യ എണ്ണം, unsigned പൂർണ്ണസംഖ്യ stride=വലുപ്പം(T))
   {
-    for (unsigned int i = 0; i < count; i++)
+    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < എണ്ണം; i++)
     {
       add (*array);
-      array = &StructAtOffsetUnaligned<T> ((const void *) array, stride);
+      array = &StructAtOffsetUnaligned<T> ((സ്ഥിരം ശൂന്യം *) array, stride);
     }
   }
   template <typename T>
-  void add_array (const hb_array_t<const T>& arr) { add_array (&arr, arr.len ()); }
+  ശൂന്യം add_array (സ്ഥിരം hb_array_t<സ്ഥിരം T>& arr) { add_array (&arr, arr.len ()); }
   template <typename T>
-  bool add_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
+  തർക്കം add_sorted_array (സ്ഥിരം T *array, unsigned പൂർണ്ണസംഖ്യ എണ്ണം, unsigned പൂർണ്ണസംഖ്യ stride=വലുപ്പം(T))
   {
-    add_array (array, count, stride);
-    return true;
+    add_array (array, എണ്ണം, stride);
+    തിരികെ സത്യം;
   }
   template <typename T>
-  bool add_sorted_array (const hb_sorted_array_t<const T>& arr) { return add_sorted_array (&arr, arr.len ()); }
+  തർക്കം add_sorted_array (സ്ഥിരം hb_sorted_array_t<സ്ഥിരം T>& arr) { തിരികെ add_sorted_array (&arr, arr.len ()); }
 
-  bool operator [] (hb_codepoint_t g) const
-  { return may_have (g); }
+  തർക്കം operator [] (hb_codepoint_t g) സ്ഥിരം
+  { തിരികെ may_have (g); }
 
 
-  void add (hb_codepoint_t g)
+  ശൂന്യം add (hb_codepoint_t g)
   {
-    for (unsigned i = 0; i < n; i++)
+    വേണ്ടി (unsigned i = 0; i < n; i++)
       masks[i] |= one << ((g >> hb_set_digest_shifts[i]) & mb1);
   }
 
   HB_ALWAYS_INLINE
-  bool may_have (hb_codepoint_t g) const
+  തർക്കം may_have (hb_codepoint_t g) സ്ഥിരം
   {
-    for (unsigned i = 0; i < n; i++)
-      if (!(masks[i] & (one << ((g >> hb_set_digest_shifts[i]) & mb1))))
-	return false;
-    return true;
+    വേണ്ടി (unsigned i = 0; i < n; i++)
+      എങ്കിൽ (!(masks[i] & (one << ((g >> hb_set_digest_shifts[i]) & mb1))))
+	തിരികെ അസത്യം;
+    തിരികെ സത്യം;
   }
 
-  bool may_intersect (const hb_set_digest_t &o) const
+  തർക്കം may_intersect (സ്ഥിരം hb_set_digest_t &o) സ്ഥിരം
   {
-    for (unsigned i = 0; i < n; i++)
-      if (!(masks[i] & o.masks[i]))
-	return false;
-    return true;
+    വേണ്ടി (unsigned i = 0; i < n; i++)
+      എങ്കിൽ (!(masks[i] & o.masks[i]))
+	തിരികെ അസത്യം;
+    തിരികെ സത്യം;
   }
 
-  private:
+  സ്വകാര്യ:
 
   mask_t masks[n] = {};
 };

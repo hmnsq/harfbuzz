@@ -25,8 +25,8 @@
 #ifndef HB_AAT_LAYOUT_OPBD_TABLE_HH
 #define HB_AAT_LAYOUT_OPBD_TABLE_HH
 
-#include "hb-aat-layout-common.hh"
-#include "hb-open-type.hh"
+#അന്തര്ഭാവ "hb-aat-layout-common.hh"
+#അന്തര്ഭാവ "hb-open-type.hh"
 
 /*
  * opbd -- Optical Bounds
@@ -35,136 +35,136 @@
 #define HB_AAT_TAG_opbd HB_TAG('o','p','b','d')
 
 
-namespace AAT {
+നാമാകാശ AAT {
 
-struct OpticalBounds
+ഘടന OpticalBounds
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (c->check_struct (ഇത്));
   }
 
-  FWORD		leftSide;
-  FWORD		topSide;
-  FWORD		rightSide;
+  FWORD		ഇടത്_Side;
+  FWORD		മുകൾ_Side;
+  FWORD		വലത്_Side;
   FWORD		bottomSide;
-  public:
+  പൊതു:
   DEFINE_SIZE_STATIC (8);
 };
 
-struct opbdFormat0
+ഘടന opbdFormat0
 {
-  bool get_bounds (hb_font_t *font, hb_codepoint_t glyph_id,
-		   hb_glyph_extents_t *extents, const void *base) const
+  തർക്കം get_bounds (hb_font_t *font, hb_codepoint_t glyph_id,
+		   hb_glyph_extents_t *extents, സ്ഥിരം ശൂന്യം *base) സ്ഥിരം
   {
-    const Offset16To<OpticalBounds> *bounds_offset = lookupTable.get_value (glyph_id, font->face->get_num_glyphs ());
-    if (!bounds_offset) return false;
-    const OpticalBounds &bounds = base+*bounds_offset;
+    സ്ഥിരം Offset16To<OpticalBounds> *bounds_offset = lookupTable.get_മൂല്യം (glyph_id, font->face->get_അക്കം_glyphs ());
+    എങ്കിൽ (!bounds_offset) തിരികെ അസത്യം;
+    സ്ഥിരം OpticalBounds &bounds = base+*bounds_offset;
 
-    if (extents)
+    എങ്കിൽ (extents)
       *extents = {
-	font->em_scale_x (bounds.leftSide),
-	font->em_scale_y (bounds.topSide),
-	font->em_scale_x (bounds.rightSide),
+	font->em_scale_x (bounds.ഇടത്_Side),
+	font->em_scale_y (bounds.മുകൾ_Side),
+	font->em_scale_x (bounds.വലത്_Side),
 	font->em_scale_y (bounds.bottomSide)
       };
-    return true;
+    തിരികെ സത്യം;
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  തർക്കം sanitize (hb_sanitize_context_t *c, സ്ഥിരം ശൂന്യം *base) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) && lookupTable.sanitize (c, base)));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (likely (c->check_struct (ഇത്) && lookupTable.sanitize (c, base)));
   }
 
-  protected:
+  സംരക്ഷിത:
   Lookup<Offset16To<OpticalBounds>>
 		lookupTable;	/* Lookup table associating glyphs with the four
 				 * int16 values for the left-side, top-side,
 				 * right-side, and bottom-side optical bounds. */
-  public:
+  പൊതു:
   DEFINE_SIZE_MIN (2);
 };
 
-struct opbdFormat1
+ഘടന opbdFormat1
 {
-  bool get_bounds (hb_font_t *font, hb_codepoint_t glyph_id,
-		   hb_glyph_extents_t *extents, const void *base) const
+  തർക്കം get_bounds (hb_font_t *font, hb_codepoint_t glyph_id,
+		   hb_glyph_extents_t *extents, സ്ഥിരം ശൂന്യം *base) സ്ഥിരം
   {
-    const Offset16To<OpticalBounds> *bounds_offset = lookupTable.get_value (glyph_id, font->face->get_num_glyphs ());
-    if (!bounds_offset) return false;
-    const OpticalBounds &bounds = base+*bounds_offset;
+    സ്ഥിരം Offset16To<OpticalBounds> *bounds_offset = lookupTable.get_മൂല്യം (glyph_id, font->face->get_അക്കം_glyphs ());
+    എങ്കിൽ (!bounds_offset) തിരികെ അസത്യം;
+    സ്ഥിരം OpticalBounds &bounds = base+*bounds_offset;
 
-    hb_position_t left = 0, top = 0, right = 0, bottom = 0, ignore;
-    if (font->get_glyph_contour_point (glyph_id, bounds.leftSide, &left, &ignore) ||
-	font->get_glyph_contour_point (glyph_id, bounds.topSide, &ignore, &top) ||
-	font->get_glyph_contour_point (glyph_id, bounds.rightSide, &right, &ignore) ||
+    hb_position_t left = 0, മുകൾ_2 = 0, വലത് = 0, bottom = 0, ignore;
+    എങ്കിൽ (font->get_glyph_contour_point (glyph_id, bounds.ഇടത്_Side, &left, &ignore) ||
+	font->get_glyph_contour_point (glyph_id, bounds.മുകൾ_Side, &ignore, &മുകൾ_2) ||
+	font->get_glyph_contour_point (glyph_id, bounds.വലത്_Side, &വലത്, &ignore) ||
 	font->get_glyph_contour_point (glyph_id, bounds.bottomSide, &ignore, &bottom))
     {
-      if (extents)
-	*extents = {left, top, right, bottom};
-      return true;
+      എങ്കിൽ (extents)
+	*extents = {left, മുകൾ_2, വലത്, bottom};
+      തിരികെ സത്യം;
     }
-    return false;
+    തിരികെ അസത്യം;
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  തർക്കം sanitize (hb_sanitize_context_t *c, സ്ഥിരം ശൂന്യം *base) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) && lookupTable.sanitize (c, base)));
+    TRACE_SANITIZE (ഇത്);
+    return_trace (likely (c->check_struct (ഇത്) && lookupTable.sanitize (c, base)));
   }
 
-  protected:
+  സംരക്ഷിത:
   Lookup<Offset16To<OpticalBounds>>
 		lookupTable;	/* Lookup table associating glyphs with the four
 				 * int16 values for the left-side, top-side,
 				 * right-side, and bottom-side optical bounds. */
-  public:
+  പൊതു:
   DEFINE_SIZE_MIN (2);
 };
 
-struct opbd
+ഘടന opbd
 {
-  static constexpr hb_tag_t tableTag = HB_AAT_TAG_opbd;
+  സ്ഥിതം constexpr hb_tag_t tableTag = HB_AAT_TAG_opbd;
 
-  bool get_bounds (hb_font_t *font, hb_codepoint_t glyph_id,
-		   hb_glyph_extents_t *extents) const
+  തർക്കം get_bounds (hb_font_t *font, hb_codepoint_t glyph_id,
+		   hb_glyph_extents_t *extents) സ്ഥിരം
   {
-    switch (format)
+    തിരഞ്ഞെടുപ്പ് (format)
     {
-    case 0: hb_barrier (); return u.format0.get_bounds (font, glyph_id, extents, this);
-    case 1: hb_barrier (); return u.format1.get_bounds (font, glyph_id, extents, this);
-    default:return false;
+    അവസ്ഥ 0: hb_barrier (); തിരികെ u.format0.get_bounds (font, glyph_id, extents, ഇത്);
+    അവസ്ഥ 1: hb_barrier (); തിരികെ u.format1.get_bounds (font, glyph_id, extents, ഇത്);
+    സ്ഥിരസ്ഥിതി:തിരികെ അസത്യം;
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  തർക്കം sanitize (hb_sanitize_context_t *c) സ്ഥിരം
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this) || version.major != 1))
-      return_trace (false);
+    TRACE_SANITIZE (ഇത്);
+    എങ്കിൽ (unlikely (!c->check_struct (ഇത്) || version.major != 1))
+      return_trace (അസത്യം);
     hb_barrier ();
 
-    switch (format)
+    തിരഞ്ഞെടുപ്പ് (format)
     {
-    case 0: hb_barrier (); return_trace (u.format0.sanitize (c, this));
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c, this));
-    default:return_trace (true);
+    അവസ്ഥ 0: hb_barrier (); return_trace (u.format0.sanitize (c, ഇത്));
+    അവസ്ഥ 1: hb_barrier (); return_trace (u.format1.sanitize (c, ഇത്));
+    സ്ഥിരസ്ഥിതി:return_trace (സത്യം);
     }
   }
 
-  protected:
+  സംരക്ഷിത:
   FixedVersion<>version;	/* Version number of the optical bounds
 				 * table (0x00010000 for the current version). */
   HBUINT16	format;		/* Format of the optical bounds table.
 				 * Format 0 indicates distance and Format 1 indicates
 				 * control point. */
-  union {
+  സംഘം {
   opbdFormat0	format0;
   opbdFormat1	format1;
   } u;
-  public:
+  പൊതു:
   DEFINE_SIZE_MIN (8);
 };
 

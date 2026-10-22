@@ -25,7 +25,7 @@
 #ifndef HB_DRAW_HH
 #define HB_DRAW_HH
 
-#include "hb.hh"
+#അന്തര്ഭാവ "hb.hh"
 
 
 /*
@@ -34,7 +34,7 @@
 
 #define HB_DRAW_FUNCS_IMPLEMENT_CALLBACKS \
   HB_DRAW_FUNC_IMPLEMENT (move_to) \
-  HB_DRAW_FUNC_IMPLEMENT (line_to) \
+  HB_DRAW_FUNC_IMPLEMENT (വരി_to) \
   HB_DRAW_FUNC_IMPLEMENT (quadratic_to) \
   HB_DRAW_FUNC_IMPLEMENT (cubic_to) \
   HB_DRAW_FUNC_IMPLEMENT (close_path) \
@@ -43,104 +43,104 @@
   HB_DRAW_FUNC_IMPLEMENT (get_budget_remaining) \
   /* ^--- Add new callbacks here */
 
-struct hb_draw_funcs_t
+ഘടന hb_draw_funcs_t
 {
   hb_object_header_t header;
 
-  struct {
+  ഘടന {
 #define HB_DRAW_FUNC_IMPLEMENT(name) hb_draw_##name##_func_t name;
     HB_DRAW_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_DRAW_FUNC_IMPLEMENT
   } func;
 
-  struct {
-#define HB_DRAW_FUNC_IMPLEMENT(name) void *name;
+  ഘടന {
+#define HB_DRAW_FUNC_IMPLEMENT(name) ശൂന്യം *name;
     HB_DRAW_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_DRAW_FUNC_IMPLEMENT
   } *user_data;
 
-  struct {
+  ഘടന {
 #define HB_DRAW_FUNC_IMPLEMENT(name) hb_destroy_func_t name;
     HB_DRAW_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_DRAW_FUNC_IMPLEMENT
   } *destroy;
 
-  void emit_move_to (void *draw_data, hb_draw_state_t &st,
-		     float to_x, float to_y)
-  { func.move_to (this, draw_data, &st,
+  ശൂന്യം emit_move_to (ശൂന്യം *draw_data, hb_draw_state_t &st,
+		     ദശാംശം to_x, ദശാംശം to_y)
+  { func.move_to (ഇത്, draw_data, &st,
 		  to_x, to_y,
 		  !user_data ? nullptr : user_data->move_to); }
-  void emit_line_to (void *draw_data, hb_draw_state_t &st,
-		     float to_x, float to_y)
-  { func.line_to (this, draw_data, &st,
+  ശൂന്യം emit_വരി_to (ശൂന്യം *draw_data, hb_draw_state_t &st,
+		     ദശാംശം to_x, ദശാംശം to_y)
+  { func.വരി_to (ഇത്, draw_data, &st,
 		  to_x, to_y,
-		  !user_data ? nullptr : user_data->line_to); }
-  void emit_quadratic_to (void *draw_data, hb_draw_state_t &st,
-			  float control_x, float control_y,
-			  float to_x, float to_y)
-  { func.quadratic_to (this, draw_data, &st,
+		  !user_data ? nullptr : user_data->വരി_to); }
+  ശൂന്യം emit_quadratic_to (ശൂന്യം *draw_data, hb_draw_state_t &st,
+			  ദശാംശം control_x, ദശാംശം control_y,
+			  ദശാംശം to_x, ദശാംശം to_y)
+  { func.quadratic_to (ഇത്, draw_data, &st,
 		       control_x, control_y,
 		       to_x, to_y,
 		       !user_data ? nullptr : user_data->quadratic_to); }
-  void emit_cubic_to (void *draw_data, hb_draw_state_t &st,
-		      float control1_x, float control1_y,
-		      float control2_x, float control2_y,
-		      float to_x, float to_y)
-  { func.cubic_to (this, draw_data, &st,
+  ശൂന്യം emit_cubic_to (ശൂന്യം *draw_data, hb_draw_state_t &st,
+		      ദശാംശം control1_x, ദശാംശം control1_y,
+		      ദശാംശം control2_x, ദശാംശം control2_y,
+		      ദശാംശം to_x, ദശാംശം to_y)
+  { func.cubic_to (ഇത്, draw_data, &st,
 		   control1_x, control1_y,
 		   control2_x, control2_y,
 		   to_x, to_y,
 		   !user_data ? nullptr : user_data->cubic_to); }
-  void emit_close_path (void *draw_data, hb_draw_state_t &st)
-  { func.close_path (this, draw_data, &st,
+  ശൂന്യം emit_close_path (ശൂന്യം *draw_data, hb_draw_state_t &st)
+  { func.close_path (ഇത്, draw_data, &st,
 		     !user_data ? nullptr : user_data->close_path); }
 
-  bool set_budget (void *draw_data, int64_t budget)
+  തർക്കം set_budget (ശൂന്യം *draw_data, int64_t budget)
   {
-    if (budget < 0 && budget != HB_BUDGET_DEFAULT)
+    എങ്കിൽ (budget < 0 && budget != HB_BUDGET_DEFAULT)
       budget = 0;
-    return func.set_budget (this, draw_data, budget,
+    തിരികെ func.set_budget (ഇത്, draw_data, budget,
 			    !user_data ? nullptr : user_data->set_budget);
   }
-  int64_t get_budget (void *draw_data)
-  { return func.get_budget (this, draw_data,
+  int64_t get_budget (ശൂന്യം *draw_data)
+  { തിരികെ func.get_budget (ഇത്, draw_data,
 			    !user_data ? nullptr : user_data->get_budget); }
-  int64_t *get_budget_remaining_ptr (void *draw_data)
-  { return func.get_budget_remaining (this, draw_data,
+  int64_t *get_budget_remaining_ptr (ശൂന്യം *draw_data)
+  { തിരികെ func.get_budget_remaining (ഇത്, draw_data,
 				      !user_data ? nullptr : user_data->get_budget_remaining); }
 
 
-  void
+  ശൂന്യം
   HB_ALWAYS_INLINE
-  move_to (void *draw_data, hb_draw_state_t &st,
-	   float to_x, float to_y)
+  move_to (ശൂന്യം *draw_data, hb_draw_state_t &st,
+	   ദശാംശം to_x, ദശാംശം to_y)
   {
-    if (unlikely (st.path_open)) close_path (draw_data, st);
+    എങ്കിൽ (unlikely (st.path_open)) close_path (draw_data, st);
 
     st.current_x = to_x;
     st.current_y = to_y;
   }
 
-  void
+  ശൂന്യം
   HB_ALWAYS_INLINE
-  line_to (void *draw_data, hb_draw_state_t &st,
-	   float to_x, float to_y)
+  വരി_to (ശൂന്യം *draw_data, hb_draw_state_t &st,
+	   ദശാംശം to_x, ദശാംശം to_y)
   {
-    if (unlikely (!st.path_open)) start_path (draw_data, st);
+    എങ്കിൽ (unlikely (!st.path_open)) start_path (draw_data, st);
 
-    emit_line_to (draw_data, st, to_x, to_y);
+    emit_വരി_to (draw_data, st, to_x, to_y);
 
     st.current_x = to_x;
     st.current_y = to_y;
   }
 
-  void
+  ശൂന്യം
   HB_ALWAYS_INLINE
-  quadratic_to (void *draw_data, hb_draw_state_t &st,
-		float control_x, float control_y,
-		float to_x, float to_y)
+  quadratic_to (ശൂന്യം *draw_data, hb_draw_state_t &st,
+		ദശാംശം control_x, ദശാംശം control_y,
+		ദശാംശം to_x, ദശാംശം to_y)
   {
-    if (unlikely (!st.path_open)) start_path (draw_data, st);
+    എങ്കിൽ (unlikely (!st.path_open)) start_path (draw_data, st);
 
     emit_quadratic_to (draw_data, st, control_x, control_y, to_x, to_y);
 
@@ -148,14 +148,14 @@ struct hb_draw_funcs_t
     st.current_y = to_y;
   }
 
-  void
+  ശൂന്യം
   HB_ALWAYS_INLINE
-  cubic_to (void *draw_data, hb_draw_state_t &st,
-	    float control1_x, float control1_y,
-	    float control2_x, float control2_y,
-	    float to_x, float to_y)
+  cubic_to (ശൂന്യം *draw_data, hb_draw_state_t &st,
+	    ദശാംശം control1_x, ദശാംശം control1_y,
+	    ദശാംശം control2_x, ദശാംശം control2_y,
+	    ദശാംശം to_x, ദശാംശം to_y)
   {
-    if (unlikely (!st.path_open)) start_path (draw_data, st);
+    എങ്കിൽ (unlikely (!st.path_open)) start_path (draw_data, st);
 
     emit_cubic_to (draw_data, st, control1_x, control1_y, control2_x, control2_y, to_x, to_y);
 
@@ -163,71 +163,71 @@ struct hb_draw_funcs_t
     st.current_y = to_y;
   }
 
-  void
+  ശൂന്യം
   HB_ALWAYS_INLINE
-  close_path (void *draw_data, hb_draw_state_t &st)
+  close_path (ശൂന്യം *draw_data, hb_draw_state_t &st)
   {
-    if (likely (st.path_open))
+    എങ്കിൽ (likely (st.path_open))
     {
-      if ((st.path_start_x != st.current_x) || (st.path_start_y != st.current_y))
-	emit_line_to (draw_data, st, st.path_start_x, st.path_start_y);
+      എങ്കിൽ ((st.path_start_x != st.current_x) || (st.path_start_y != st.current_y))
+	emit_വരി_to (draw_data, st, st.path_start_x, st.path_start_y);
       emit_close_path (draw_data, st);
     }
-    st.path_open = false;
+    st.path_open = അസത്യം;
     st.path_start_x = st.current_x = st.path_start_y = st.current_y = 0;
   }
 
-  protected:
+  സംരക്ഷിത:
 
-  void start_path (void *draw_data, hb_draw_state_t &st)
+  ശൂന്യം start_path (ശൂന്യം *draw_data, hb_draw_state_t &st)
   {
-    assert (!st.path_open);
+    പ്രതിജ്ഞാ (!st.path_open);
     emit_move_to (draw_data, st, st.current_x, st.current_y);
-    st.path_open = true;
+    st.path_open = സത്യം;
     st.path_start_x = st.current_x;
     st.path_start_y = st.current_y;
   }
 };
 DECLARE_NULL_INSTANCE (hb_draw_funcs_t);
 
-struct hb_draw_session_t
+ഘടന hb_draw_session_t
 {
-  hb_draw_session_t (hb_draw_funcs_t *funcs_, void *draw_data_)
+  hb_draw_session_t (hb_draw_funcs_t *funcs_, ശൂന്യം *draw_data_)
     : funcs {funcs_}, draw_data {draw_data_}, st HB_DRAW_STATE_DEFAULT,
       local_budget {HB_BUDGET_GLYPH}, budget {funcs->get_budget_remaining_ptr (draw_data)}
   {
-    if (!budget)
+    എങ്കിൽ (!budget)
       budget = &local_budget;
   }
 
   ~hb_draw_session_t () { close_path (); }
 
   HB_ALWAYS_INLINE
-  void move_to (float to_x, float to_y)
+  ശൂന്യം move_to (ദശാംശം to_x, ദശാംശം to_y)
   {
     funcs->move_to (draw_data, st,
 		    to_x, to_y);
   }
   HB_ALWAYS_INLINE
-  void line_to (float to_x, float to_y)
+  ശൂന്യം വരി_to (ദശാംശം to_x, ദശാംശം to_y)
   {
-    funcs->line_to (draw_data, st,
+    funcs->വരി_to (draw_data, st,
 		    to_x, to_y);
   }
-  void
+  ശൂന്യം
   HB_ALWAYS_INLINE
-  quadratic_to (float control_x, float control_y,
-		float to_x, float to_y)
+  quadratic_to (ദശാംശം control_x, ദശാംശം control_y,
+		ദശാംശം to_x, ദശാംശം to_y)
   {
     funcs->quadratic_to (draw_data, st,
 			 control_x, control_y,
 			 to_x, to_y);
   }
-  void
+  ശൂന്യം
   HB_ALWAYS_INLINE
-  cubic_to (float control1_x, float control1_y,
-	    float control2_x, float control2_y,
-	    float to_x, float to_y)
+  cubic_to (ദശാംശം control1_x, ദശാംശം control1_y,
+	    ദശാംശം control2_x, ദശാംശം control2_y,
+	    ദശാംശം to_x, ദശാംശം to_y)
   {
     funcs->cubic_to (draw_data, st,
 		     control1_x, control1_y,
@@ -235,16 +235,16 @@ struct hb_draw_session_t
 		     to_x, to_y);
   }
   HB_ALWAYS_INLINE
-  void close_path ()
+  ശൂന്യം close_path ()
   {
     funcs->close_path (draw_data, st);
   }
 
-  int64_t &get_budget () { return *budget; }
+  int64_t &get_budget () { തിരികെ *budget; }
 
-  public:
+  പൊതു:
   hb_draw_funcs_t *funcs;
-  void *draw_data;
+  ശൂന്യം *draw_data;
   hb_draw_state_t st;
   int64_t local_budget;
   int64_t *budget;

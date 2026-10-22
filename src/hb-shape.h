@@ -26,49 +26,49 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#എങ്കിൽ !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
 #ifndef HB_SHAPE_H
 #define HB_SHAPE_H
 
-#include "hb-common.h"
-#include "hb-buffer.h"
-#include "hb-font.h"
+#അന്തര്ഭാവ "hb-common.h"
+#അന്തര്ഭാവ "hb-buffer.h"
+#അന്തര്ഭാവ "hb-font.h"
 
 HB_BEGIN_DECLS
 
 
-HB_EXTERN void
+HB_EXTERN ശൂന്യം
 hb_shape (hb_font_t           *font,
 	  hb_buffer_t         *buffer,
-	  const hb_feature_t  *features,
-	  unsigned int         num_features);
+	  സ്ഥിരം hb_feature_t  *features,
+	  unsigned പൂർണ്ണസംഖ്യ         അക്കം_features);
 
 HB_EXTERN hb_bool_t
 hb_shape_full (hb_font_t          *font,
 	       hb_buffer_t        *buffer,
-	       const hb_feature_t *features,
-	       unsigned int        num_features,
-	       const char * const *shaper_list);
+	       സ്ഥിരം hb_feature_t *features,
+	       unsigned പൂർണ്ണസംഖ്യ        അക്കം_features,
+	       സ്ഥിരം അക്ഷരം * സ്ഥിരം *shaper_list);
 
 #ifdef HB_EXPERIMENTAL_API
 HB_EXTERN hb_bool_t
 hb_shape_justify (hb_font_t          *font,
 		  hb_buffer_t        *buffer,
-		  const hb_feature_t *features,
-		  unsigned int        num_features,
-		  const char * const *shaper_list,
-		  float               min_target_advance,
-		  float               max_target_advance,
-		  float              *advance, /* IN/OUT */
+		  സ്ഥിരം hb_feature_t *features,
+		  unsigned പൂർണ്ണസംഖ്യ        അക്കം_features,
+		  സ്ഥിരം അക്ഷരം * സ്ഥിരം *shaper_list,
+		  ദശാംശം               min_target_advance,
+		  ദശാംശം               max_target_advance,
+		  ദശാംശം              *advance, /* IN/OUT */
 		  hb_tag_t           *var_tag, /* OUT */
-		  float              *var_value /* OUT */);
+		  ദശാംശം              *var_മൂല്യം /* OUT */);
 #endif
 
-HB_EXTERN const char **
-hb_shape_list_shapers (void);
+HB_EXTERN സ്ഥിരം അക്ഷരം **
+hb_shape_list_shapers (ശൂന്യം);
 
 
 HB_END_DECLS

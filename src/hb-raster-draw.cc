@@ -24,17 +24,17 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#അന്തര്ഭാവ "hb.hh"
 
-#include "hb-raster-image.hh"
-#include "hb-geometry.hh"
-#include "hb-machinery.hh"
+#അന്തര്ഭാവ "hb-raster-image.hh"
+#അന്തര്ഭാവ "hb-geometry.hh"
+#അന്തര്ഭാവ "hb-machinery.hh"
 
-#if defined(__aarch64__) || defined(_M_ARM64)
-#include <arm_neon.h>
+#എങ്കിൽ defined(__aarch64__) || defined(_M_ARM64)
+#അന്തര്ഭാവ <arm_neon.h>
 #define HB_RASTER_NEON 1
-#elif defined(__SSE2__) || defined(_M_X64) || defined(_M_AMD64)
-#include <emmintrin.h>
+#അല്ലെങ്കിലെങ്കിൽ defined(__SSE2__) || defined(_M_X64) || defined(_M_AMD64)
+#അന്തര്ഭാവ <emmintrin.h>
 #define HB_RASTER_SSE2 1
 #endif
 
@@ -51,7 +51,7 @@
 
 
 /* Normalized edge: yH > yL always */
-struct hb_raster_edge_t
+ഘടന hb_raster_edge_t
 {
   int32_t xL, yL;   /* lower endpoint (fixed-point) */
   int32_t xH, yH;   /* upper endpoint (fixed-point) */
@@ -60,28 +60,28 @@ struct hb_raster_edge_t
 };
 
 /* hb_raster_draw_t — outline rasterizer */
-struct hb_raster_draw_t
+ഘടന hb_raster_draw_t
 {
   hb_object_header_t header;
 
   /* Configuration */
   hb_transform_t<>    transform         = {1, 0, 0, 1, 0, 0};
-  float               x_scale_factor    = 1.f;
-  float               y_scale_factor    = 1.f;
+  ദശാംശം               x_scale_factor    = 1.f;
+  ദശാംശം               y_scale_factor    = 1.f;
   hb_raster_extents_t fixed_extents     = {};
-  bool                has_extents = false;
+  തർക്കം                has_extents = അസത്യം;
 
   /* Visibility clip box for curve flattening (device pixels); set
      internally by raster-paint so invisible curves collapse to their
      chord.  See hb_raster_draw_set_clip_box(). */
-  bool  has_clip_box = false;
-  float clip_x0 = 0.f, clip_y0 = 0.f, clip_x1 = 0.f, clip_y1 = 0.f;
+  തർക്കം  has_clip_box = അസത്യം;
+  ദശാംശം clip_x0 = 0.f, clip_y0 = 0.f, clip_x1 = 0.f, clip_y1 = 0.f;
 
   /* Flattening clip resolved from the above (or from fixed extents),
      expanded by one pixel; kept in sync by hb_raster_draw_update_flatten_clip(). */
-  bool  flatten_clip_active = false;
-  float flatten_clip_x0 = 0.f, flatten_clip_y0 = 0.f;
-  float flatten_clip_x1 = 0.f, flatten_clip_y1 = 0.f;
+  തർക്കം  flatten_clip_active = അസത്യം;
+  ദശാംശം flatten_clip_x0 = 0.f, flatten_clip_y0 = 0.f;
+  ദശാംശം flatten_clip_x1 = 0.f, flatten_clip_y1 = 0.f;
 
   /* Work budget for outline traversal and curve flattening.  A paint
      backend seeds this through the public draw-budget API before drawing
@@ -90,17 +90,17 @@ struct hb_raster_draw_t
   int64_t  budget = HB_BUDGET_DEFAULT;
   int64_t  budget_remaining = HB_BUDGET_GLYPH;
 
-  void recharge_budget ()
+  ശൂന്യം recharge_budget ()
   {
     budget_remaining = budget == HB_BUDGET_DEFAULT ?
 		       HB_BUDGET_GLYPH : budget;
   }
 
   int64_t *get_budget_remaining ()
-  { return &budget_remaining; }
+  { തിരികെ &budget_remaining; }
 
   /* Accumulated geometry */
-  int64_t edges_left = HB_RASTER_MAX_DRAW_EDGES;
+  int64_t edges_ഇടത് = HB_RASTER_MAX_DRAW_EDGES;
   hb_vector_t<hb_raster_edge_t> edges;
 
   /* Scratch — reused across render() calls */
@@ -115,10 +115,10 @@ struct hb_raster_draw_t
   hb_raster_image_t *recycled_image = nullptr;
 };
 
-static HB_ALWAYS_INLINE void
-hb_raster_draw_transform_point (const hb_raster_draw_t *draw,
-				float x, float y,
-				float &tx, float &ty)
+സ്ഥിതം HB_ALWAYS_INLINE ശൂന്യം
+hb_raster_draw_transform_point (സ്ഥിരം hb_raster_draw_t *draw,
+				ദശാംശം x, ദശാംശം y,
+				ദശാംശം &tx, ദശാംശം &ty)
 {
   tx = x; ty = y;
   draw->transform.transform_point (tx, ty);
@@ -143,10 +143,10 @@ hb_raster_draw_transform_point (const hb_raster_draw_t *draw,
  * Since: 13.0.0
  **/
 hb_raster_draw_t *
-hb_raster_draw_create_or_fail (void)
+hb_raster_draw_create_or_fail (ശൂന്യം)
 {
   hb_raster_draw_t *draw = hb_object_create<hb_raster_draw_t> ();
-  return draw;
+  തിരികെ draw;
 }
 
 /**
@@ -166,7 +166,7 @@ hb_raster_draw_create_or_fail (void)
 hb_raster_draw_t *
 hb_raster_draw_reference (hb_raster_draw_t *draw)
 {
-  return hb_object_reference (draw);
+  തിരികെ hb_object_reference (draw);
 }
 
 /**
@@ -178,11 +178,11 @@ hb_raster_draw_reference (hb_raster_draw_t *draw)
  *
  * Since: 13.0.0
  **/
-void
+ശൂന്യം
 hb_raster_draw_destroy (hb_raster_draw_t *draw)
 {
-  if (!hb_object_should_destroy (draw))
-    return;
+  എങ്കിൽ (!hb_object_should_destroy (draw))
+    തിരികെ;
 
   hb_raster_image_destroy (draw->recycled_image);
   hb_object_actually_destroy (draw);
@@ -205,12 +205,12 @@ hb_raster_draw_destroy (hb_raster_draw_t *draw)
  **/
 hb_bool_t
 hb_raster_draw_set_user_data (hb_raster_draw_t   *draw,
-			      hb_user_data_key_t *key,
-			      void               *data,
+			      hb_user_data_താക്കോൽ_t *key,
+			      ശൂന്യം               *data,
 			      hb_destroy_func_t   destroy,
 			      hb_bool_t           replace)
 {
-  return hb_object_set_user_data (draw, key, data, destroy, replace);
+  തിരികെ hb_object_set_user_data (draw, key, data, destroy, replace);
 }
 
 /**
@@ -226,11 +226,11 @@ hb_raster_draw_set_user_data (hb_raster_draw_t   *draw,
  *
  * Since: 13.0.0
  **/
-void *
-hb_raster_draw_get_user_data (const hb_raster_draw_t   *draw,
-			      hb_user_data_key_t *key)
+ശൂന്യം *
+hb_raster_draw_get_user_data (സ്ഥിരം hb_raster_draw_t   *draw,
+			      hb_user_data_താക്കോൽ_t *key)
 {
-  return hb_object_get_user_data (draw, key);
+  തിരികെ hb_object_get_user_data (draw, key);
 }
 
 /**
@@ -248,11 +248,11 @@ hb_raster_draw_get_user_data (const hb_raster_draw_t   *draw,
  *
  * Since: 13.0.0
  **/
-void
+ശൂന്യം
 hb_raster_draw_set_transform (hb_raster_draw_t *draw,
-			      float xx, float yx,
-			      float xy, float yy,
-			      float dx, float dy)
+			      ദശാംശം xx, ദശാംശം yx,
+			      ദശാംശം xy, ദശാംശം yy,
+			      ദശാംശം dx, ദശാംശം dy)
 {
   draw->transform = {xx, yx, xy, yy, dx, dy};
 }
@@ -268,10 +268,10 @@ hb_raster_draw_set_transform (hb_raster_draw_t *draw,
  *
  * Since: 13.0.0
  **/
-void
+ശൂന്യം
 hb_raster_draw_set_scale_factor (hb_raster_draw_t *draw,
-				 float x_scale_factor,
-				 float y_scale_factor)
+				 ദശാംശം x_scale_factor,
+				 ദശാംശം y_scale_factor)
 {
   draw->x_scale_factor = x_scale_factor > 0.f ? x_scale_factor : 1.f;
   draw->y_scale_factor = y_scale_factor > 0.f ? y_scale_factor : 1.f;
@@ -287,13 +287,13 @@ hb_raster_draw_set_scale_factor (hb_raster_draw_t *draw,
  *
  * Since: 13.0.0
  **/
-void
-hb_raster_draw_get_scale_factor (const hb_raster_draw_t *draw,
-				 float *x_scale_factor,
-				 float *y_scale_factor)
+ശൂന്യം
+hb_raster_draw_get_scale_factor (സ്ഥിരം hb_raster_draw_t *draw,
+				 ദശാംശം *x_scale_factor,
+				 ദശാംശം *y_scale_factor)
 {
-  if (x_scale_factor) *x_scale_factor = draw->x_scale_factor;
-  if (y_scale_factor) *y_scale_factor = draw->y_scale_factor;
+  എങ്കിൽ (x_scale_factor) *x_scale_factor = draw->x_scale_factor;
+  എങ്കിൽ (y_scale_factor) *y_scale_factor = draw->y_scale_factor;
 }
 
 /**
@@ -310,18 +310,18 @@ hb_raster_draw_get_scale_factor (const hb_raster_draw_t *draw,
  *
  * Since: 13.0.0
  **/
-void
-hb_raster_draw_get_transform (const hb_raster_draw_t *draw,
-			      float *xx, float *yx,
-			      float *xy, float *yy,
-			      float *dx, float *dy)
+ശൂന്യം
+hb_raster_draw_get_transform (സ്ഥിരം hb_raster_draw_t *draw,
+			      ദശാംശം *xx, ദശാംശം *yx,
+			      ദശാംശം *xy, ദശാംശം *yy,
+			      ദശാംശം *dx, ദശാംശം *dy)
 {
-  if (xx) *xx = draw->transform.xx;
-  if (yx) *yx = draw->transform.yx;
-  if (xy) *xy = draw->transform.xy;
-  if (yy) *yy = draw->transform.yy;
-  if (dx) *dx = draw->transform.x0;
-  if (dy) *dy = draw->transform.y0;
+  എങ്കിൽ (xx) *xx = draw->transform.xx;
+  എങ്കിൽ (yx) *yx = draw->transform.yx;
+  എങ്കിൽ (xy) *xy = draw->transform.xy;
+  എങ്കിൽ (yy) *yy = draw->transform.yy;
+  എങ്കിൽ (dx) *dx = draw->transform.x0;
+  എങ്കിൽ (dy) *dy = draw->transform.y0;
 }
 
 /* Recompute the resolved flattening clip box: the internal clip box
@@ -333,27 +333,27 @@ hb_raster_draw_get_transform (const hb_raster_draw_t *draw,
    curve's endpoints (intermediate scanline crossings cancel in pairs,
    and crossings right of the box never reach visible pixels), so the
    replacement is exact for rendering. */
-static void
+സ്ഥിതം ശൂന്യം
 hb_raster_draw_update_flatten_clip (hb_raster_draw_t *draw)
 {
-  if (draw->has_clip_box)
+  എങ്കിൽ (draw->has_clip_box)
   {
-    draw->flatten_clip_active = true;
+    draw->flatten_clip_active = സത്യം;
     draw->flatten_clip_x0 = draw->clip_x0 - 1.f;
     draw->flatten_clip_y0 = draw->clip_y0 - 1.f;
     draw->flatten_clip_x1 = draw->clip_x1 + 1.f;
     draw->flatten_clip_y1 = draw->clip_y1 + 1.f;
   }
-  else if (draw->has_extents)
+  അല്ലെങ്കിൽ എങ്കിൽ (draw->has_extents)
   {
-    draw->flatten_clip_active = true;
-    draw->flatten_clip_x0 = (float) draw->fixed_extents.x_origin - 1.f;
-    draw->flatten_clip_y0 = (float) draw->fixed_extents.y_origin - 1.f;
-    draw->flatten_clip_x1 = (float) draw->fixed_extents.x_origin + (float) draw->fixed_extents.width + 1.f;
-    draw->flatten_clip_y1 = (float) draw->fixed_extents.y_origin + (float) draw->fixed_extents.height + 1.f;
+    draw->flatten_clip_active = സത്യം;
+    draw->flatten_clip_x0 = (ദശാംശം) draw->fixed_extents.x_origin - 1.f;
+    draw->flatten_clip_y0 = (ദശാംശം) draw->fixed_extents.y_origin - 1.f;
+    draw->flatten_clip_x1 = (ദശാംശം) draw->fixed_extents.x_origin + (ദശാംശം) draw->fixed_extents.width + 1.f;
+    draw->flatten_clip_y1 = (ദശാംശം) draw->fixed_extents.y_origin + (ദശാംശം) draw->fixed_extents.height + 1.f;
   }
-  else
-    draw->flatten_clip_active = false;
+  അല്ലെങ്കിൽ
+    draw->flatten_clip_active = അസത്യം;
 }
 
 /**
@@ -367,12 +367,12 @@ hb_raster_draw_update_flatten_clip (hb_raster_draw_t *draw)
  *
  * Since: 13.0.0
  **/
-void
+ശൂന്യം
 hb_raster_draw_set_extents (hb_raster_draw_t          *draw,
-			    const hb_raster_extents_t *extents)
+			    സ്ഥിരം hb_raster_extents_t *extents)
 {
   draw->fixed_extents     = *extents;
-  draw->has_extents = true;
+  draw->has_extents = സത്യം;
   hb_raster_draw_update_flatten_clip (draw);
 }
 
@@ -388,15 +388,15 @@ hb_raster_draw_set_extents (hb_raster_draw_t          *draw,
  * Since: 13.0.0
  **/
 hb_bool_t
-hb_raster_draw_get_extents (const hb_raster_draw_t    *draw,
+hb_raster_draw_get_extents (സ്ഥിരം hb_raster_draw_t    *draw,
 			    hb_raster_extents_t *extents)
 {
-  if (!draw->has_extents)
-    return false;
+  എങ്കിൽ (!draw->has_extents)
+    തിരികെ അസത്യം;
 
-  if (extents)
+  എങ്കിൽ (extents)
     *extents = draw->fixed_extents;
-  return true;
+  തിരികെ സത്യം;
 }
 
 /**
@@ -419,27 +419,27 @@ hb_raster_draw_get_extents (const hb_raster_draw_t    *draw,
  **/
 hb_bool_t
 hb_raster_draw_set_glyph_extents (hb_raster_draw_t         *draw,
-				  const hb_glyph_extents_t *glyph_extents)
+				  സ്ഥിരം hb_glyph_extents_t *glyph_extents)
 {
-  float x0 = (float) glyph_extents->x_bearing;
-  float y0 = (float) glyph_extents->y_bearing;
-  float x1 = (float) glyph_extents->x_bearing + glyph_extents->width;
-  float y1 = (float) glyph_extents->y_bearing + glyph_extents->height;
+  ദശാംശം x0 = (ദശാംശം) glyph_extents->x_bearing;
+  ദശാംശം y0 = (ദശാംശം) glyph_extents->y_bearing;
+  ദശാംശം x1 = (ദശാംശം) glyph_extents->x_bearing + glyph_extents->width;
+  ദശാംശം y1 = (ദശാംശം) glyph_extents->y_bearing + glyph_extents->height;
 
-  float xmin = hb_min (x0, x1);
-  float xmax = hb_max (x0, x1);
-  float ymin = hb_min (y0, y1);
-  float ymax = hb_max (y0, y1);
+  ദശാംശം xmin = hb_min (x0, x1);
+  ദശാംശം xmax = hb_max (x0, x1);
+  ദശാംശം ymin = hb_min (y0, y1);
+  ദശാംശം ymax = hb_max (y0, y1);
 
-  float px[4] = {xmin, xmin, xmax, xmax};
-  float py[4] = {ymin, ymax, ymin, ymax};
+  ദശാംശം px[4] = {xmin, xmin, xmax, xmax};
+  ദശാംശം py[4] = {ymin, ymax, ymin, ymax};
 
-  float tx, ty;
+  ദശാംശം tx, ty;
   hb_raster_draw_transform_point (draw, px[0], py[0], tx, ty);
-  float tx_min = tx, tx_max = tx;
-  float ty_min = ty, ty_max = ty;
+  ദശാംശം tx_min = tx, tx_max = tx;
+  ദശാംശം ty_min = ty, ty_max = ty;
 
-  for (unsigned i = 1; i < 4; i++)
+  വേണ്ടി (unsigned i = 1; i < 4; i++)
   {
     hb_raster_draw_transform_point (draw, px[i], py[i], tx, ty);
     tx_min = hb_min (tx_min, tx);
@@ -453,12 +453,12 @@ hb_raster_draw_set_glyph_extents (hb_raster_draw_t         *draw,
   int32_t ex1 = hb_clamp_to<int32_t> (ceilf  (tx_max));
   int32_t ey1 = hb_clamp_to<int32_t> (ceilf  (ty_max));
 
-  if (ex1 <= ex0 || ey1 <= ey0)
+  എങ്കിൽ (ex1 <= ex0 || ey1 <= ey0)
   {
     draw->fixed_extents = {};
-    draw->has_extents = false;
+    draw->has_extents = അസത്യം;
     hb_raster_draw_update_flatten_clip (draw);
-    return false;
+    തിരികെ അസത്യം;
   }
 
   draw->fixed_extents = {
@@ -467,9 +467,9 @@ hb_raster_draw_set_glyph_extents (hb_raster_draw_t         *draw,
     (unsigned) hb_min ((int64_t) ey1 - ey0, (int64_t) HB_RASTER_MAX_AUTO_DIMENSION),
     0
   };
-  draw->has_extents = true;
+  draw->has_extents = സത്യം;
   hb_raster_draw_update_flatten_clip (draw);
-  return true;
+  തിരികെ സത്യം;
 }
 
 /**
@@ -483,15 +483,15 @@ hb_raster_draw_set_glyph_extents (hb_raster_draw_t         *draw,
  *
  * Since: 14.2.0
  **/
-void
+ശൂന്യം
 hb_raster_draw_clear (hb_raster_draw_t *draw)
 {
   draw->fixed_extents     = {};
-  draw->has_extents = false;
-  draw->has_clip_box = false;
-  draw->flatten_clip_active = false;
+  draw->has_extents = അസത്യം;
+  draw->has_clip_box = അസത്യം;
+  draw->flatten_clip_active = അസത്യം;
   draw->recharge_budget ();
-  draw->edges_left = HB_RASTER_MAX_DRAW_EDGES;
+  draw->edges_ഇടത് = HB_RASTER_MAX_DRAW_EDGES;
   draw->edges.clear ();
   draw->active_edges.clear ();
 }
@@ -506,7 +506,7 @@ hb_raster_draw_clear (hb_raster_draw_t *draw)
  *
  * Since: 13.0.0
  **/
-void
+ശൂന്യം
 hb_raster_draw_reset (hb_raster_draw_t *draw)
 {
   draw->transform         = {1, 0, 0, 1, 0, 0};
@@ -516,12 +516,12 @@ hb_raster_draw_reset (hb_raster_draw_t *draw)
   hb_raster_draw_clear (draw);
 }
 
-void
+ശൂന്യം
 hb_raster_draw_set_clip_box (hb_raster_draw_t *draw,
-			     float x0, float y0,
-			     float x1, float y1)
+			     ദശാംശം x0, ദശാംശം y0,
+			     ദശാംശം x1, ദശാംശം y1)
 {
-  draw->has_clip_box = true;
+  draw->has_clip_box = സത്യം;
   draw->clip_x0 = x0;
   draw->clip_y0 = y0;
   draw->clip_x1 = x1;
@@ -530,21 +530,21 @@ hb_raster_draw_set_clip_box (hb_raster_draw_t *draw,
 }
 
 int64_t
-hb_raster_draw_get_pixel_work (const hb_raster_draw_t *draw,
-			       unsigned int max_rows,
-			       unsigned int max_cols)
+hb_raster_draw_get_pixel_work (സ്ഥിരം hb_raster_draw_t *draw,
+			       unsigned പൂർണ്ണസംഖ്യ max_rows,
+			       unsigned പൂർണ്ണസംഖ്യ max_cols)
 {
   int64_t work = 0;
-  for (const auto &edge : draw->edges)
+  വേണ്ടി (സ്ഥിരം auto &edge : draw->edges)
   {
     int64_t dx = (int64_t) edge.xH - edge.xL;
-    if (dx < 0) dx = -dx;
+    എങ്കിൽ (dx < 0) dx = -dx;
     work += 1 + hb_min (((int64_t) edge.yH - edge.yL) >> HB_RASTER_PIXEL_BITS,
 			(int64_t) max_rows)
 	      + hb_min (dx >> HB_RASTER_PIXEL_BITS,
 			(int64_t) max_cols);
   }
-  return work;
+  തിരികെ work;
 }
 
 /**
@@ -561,7 +561,7 @@ hb_raster_draw_get_pixel_work (const hb_raster_draw_t *draw,
  *
  * Since: 13.0.0
  **/
-void
+ശൂന്യം
 hb_raster_draw_recycle_image (hb_raster_draw_t  *draw,
 			      hb_raster_image_t *image)
 {
@@ -574,112 +574,112 @@ hb_raster_draw_recycle_image (hb_raster_draw_t  *draw,
  * Draw callbacks — flatten on the fly into hb_raster_edge_t
  */
 
-static inline void
-transform_point (const hb_raster_draw_t *draw,
-		 float  x,  float  y,
-		 float &tx, float &ty)
+സ്ഥിതം വരിയിൽ ശൂന്യം
+transform_point (സ്ഥിരം hb_raster_draw_t *draw,
+		 ദശാംശം  x,  ദശാംശം  y,
+		 ദശാംശം &tx, ദശാംശം &ty)
 {
   hb_raster_draw_transform_point (draw, x, y, tx, ty);
 }
 
-static void
+സ്ഥിതം ശൂന്യം
 emit_segment (hb_raster_draw_t *draw,
-	      float x0, float y0,
-	      float x1, float y1)
+	      ദശാംശം x0, ദശാംശം y0,
+	      ദശാംശം x1, ദശാംശം y1)
 {
-  if (unlikely (draw->edges_left <= 0))
-    return;
+  എങ്കിൽ (unlikely (draw->edges_ഇടത് <= 0))
+    തിരികെ;
 
   int32_t X0 = hb_clamp_to<int32_t> (roundf (x0 * HB_RASTER_ONE_PIXEL));
   int32_t Y0 = hb_clamp_to<int32_t> (roundf (y0 * HB_RASTER_ONE_PIXEL));
   int32_t X1 = hb_clamp_to<int32_t> (roundf (x1 * HB_RASTER_ONE_PIXEL));
   int32_t Y1 = hb_clamp_to<int32_t> (roundf (y1 * HB_RASTER_ONE_PIXEL));
 
-  if (Y0 == Y1) return; /* horizontal — skip */
+  എങ്കിൽ (Y0 == Y1) തിരികെ; /* horizontal — skip */
 
   hb_raster_edge_t e;
-  if (Y0 < Y1) {
+  എങ്കിൽ (Y0 < Y1) {
     e.xL = X0; e.yL = Y0; e.xH = X1; e.yH = Y1; e.wind = +1;
-  } else {
+  } അല്ലെങ്കിൽ {
     e.xL = X1; e.yL = Y1; e.xH = X0; e.yH = Y0; e.wind = -1;
   }
   e.slope = (((int64_t) e.xH - (int64_t) e.xL) * (int64_t) 65536) /
 	    ((int64_t) e.yH - (int64_t) e.yL);
 
-  if (likely (draw->edges.push_or_fail (e)))
-    draw->edges_left--;
-  else
-    draw->edges_left = 0;
+  എങ്കിൽ (likely (draw->edges.തള്ളുക_or_fail (e)))
+    draw->edges_ഇടത്--;
+  അല്ലെങ്കിൽ
+    draw->edges_ഇടത് = 0;
 }
 
 
 /* Quadratic Bézier flattener — iterative de Casteljau at t=0.5. */
-static inline void
+സ്ഥിതം വരിയിൽ ശൂന്യം
 flatten_quadratic_recursive (hb_raster_draw_t *draw,
-			     float x0, float y0,
-			     float x1, float y1,
-			     float x2, float y2,
-			     int depth = 0)
+			     ദശാംശം x0, ദശാംശം y0,
+			     ദശാംശം x1, ദശാംശം y1,
+			     ദശാംശം x2, ദശാംശം y2,
+			     പൂർണ്ണസംഖ്യ depth = 0)
 {
-  struct quad_node_t
+  ഘടന quad_കണ്ണി_t
   {
-    float x0, y0, x1, y1, x2, y2;
-    int depth;
-    bool check_clip;
+    ദശാംശം x0, y0, x1, y1, x2, y2;
+    പൂർണ്ണസംഖ്യ depth;
+    തർക്കം check_clip;
   };
 
-  quad_node_t stack[16];
-  unsigned top = 0;
+  quad_കണ്ണി_t അട്ടി[16];
+  unsigned മുകൾ_2 = 0;
 
-  bool check_clip = draw->flatten_clip_active;
+  തർക്കം check_clip = draw->flatten_clip_active;
   int64_t *work = draw->get_budget_remaining ();
-  int64_t work_left = *work;
+  int64_t work_ഇടത് = *work;
 
-  while (true)
+  ആകുമ്പോൾ (സത്യം)
   {
-    bool emit_chord = depth >= 16;
+    തർക്കം emit_chord = depth >= 16;
 
     /* Entirely outside the clip box: the chord is exact for coverage.
        Subdivided control points are convex combinations of their
        parent's, so once a node is entirely inside the box no
        descendant can leave it and the test is skipped below. */
-    if (!emit_chord && check_clip)
+    എങ്കിൽ (!emit_chord && check_clip)
     {
-      float bx0 = hb_min (x0, hb_min (x1, x2));
-      float bx1 = hb_max (x0, hb_max (x1, x2));
-      float by0 = hb_min (y0, hb_min (y1, y2));
-      float by1 = hb_max (y0, hb_max (y1, y2));
-      if (bx1 < draw->flatten_clip_x0 || bx0 > draw->flatten_clip_x1 ||
+      ദശാംശം bx0 = hb_min (x0, hb_min (x1, x2));
+      ദശാംശം bx1 = hb_max (x0, hb_max (x1, x2));
+      ദശാംശം by0 = hb_min (y0, hb_min (y1, y2));
+      ദശാംശം by1 = hb_max (y0, hb_max (y1, y2));
+      എങ്കിൽ (bx1 < draw->flatten_clip_x0 || bx0 > draw->flatten_clip_x1 ||
 	  by1 < draw->flatten_clip_y0 || by0 > draw->flatten_clip_y1)
-	emit_chord = true;
-      else if (bx0 >= draw->flatten_clip_x0 && bx1 <= draw->flatten_clip_x1 &&
+	emit_chord = സത്യം;
+      അല്ലെങ്കിൽ എങ്കിൽ (bx0 >= draw->flatten_clip_x0 && bx1 <= draw->flatten_clip_x1 &&
 	       by0 >= draw->flatten_clip_y0 && by1 <= draw->flatten_clip_y1)
-	check_clip = false;
+	check_clip = അസത്യം;
     }
 
-    if (!emit_chord)
+    എങ്കിൽ (!emit_chord)
     {
-      bool is_flat;
-      if (false)
+      തർക്കം is_flat;
+      എങ്കിൽ (അസത്യം)
       {
 	/* Old behavior: midpoint deviation from chord midpoint. */
-	float mx = x0 * 0.25f + x1 * 0.5f + x2 * 0.25f;
-	float my = y0 * 0.25f + y1 * 0.5f + y2 * 0.25f;
-	float chord_mx = (x0 + x2) * 0.5f;
-	float chord_my = (y0 + y2) * 0.5f;
-	float dx = mx - chord_mx;
-	float dy = my - chord_my;
-	static const float flat_thresh = HB_RASTER_FLAT_THRESH * HB_RASTER_FLAT_THRESH;
+	ദശാംശം mx = x0 * 0.25f + x1 * 0.5f + x2 * 0.25f;
+	ദശാംശം my = y0 * 0.25f + y1 * 0.5f + y2 * 0.25f;
+	ദശാംശം chord_mx = (x0 + x2) * 0.5f;
+	ദശാംശം chord_my = (y0 + y2) * 0.5f;
+	ദശാംശം dx = mx - chord_mx;
+	ദശാംശം dy = my - chord_my;
+	സ്ഥിതം സ്ഥിരം ദശാംശം flat_thresh = HB_RASTER_FLAT_THRESH * HB_RASTER_FLAT_THRESH;
 	is_flat = (dx * dx + dy * dy) <= flat_thresh;
       }
-      else
+      അല്ലെങ്കിൽ
       {
 	/* FreeType behavior: control-point deviation from chord center. */
-	const float flat_thresh = 0.25f;
-	float dx = x0 + x2 - 2.f * x1;
-	float dy = y0 + y2 - 2.f * y1;
-	if (dx < 0) dx = -dx;
-	if (dy < 0) dy = -dy;
+	സ്ഥിരം ദശാംശം flat_thresh = 0.25f;
+	ദശാംശം dx = x0 + x2 - 2.f * x1;
+	ദശാംശം dy = y0 + y2 - 2.f * y1;
+	എങ്കിൽ (dx < 0) dx = -dx;
+	എങ്കിൽ (dy < 0) dy = -dy;
 	is_flat = dx <= flat_thresh && dy <= flat_thresh;
       }
       emit_chord = is_flat;
@@ -687,37 +687,37 @@ flatten_quadratic_recursive (hb_raster_draw_t *draw,
 
     /* Charge one unit per subdivision; degrade to the chord when the
        session work budget is spent. */
-    if (!emit_chord)
+    എങ്കിൽ (!emit_chord)
     {
-      if (unlikely (work_left <= 0))
-	emit_chord = true;
-      else
-	work_left--;
+      എങ്കിൽ (unlikely (work_ഇടത് <= 0))
+	emit_chord = സത്യം;
+      അല്ലെങ്കിൽ
+	work_ഇടത്--;
     }
 
-    if (emit_chord)
+    എങ്കിൽ (emit_chord)
     {
       emit_segment (draw, x0, y0, x2, y2);
-      if (!top)
+      എങ്കിൽ (!മുകൾ_2)
       {
-	*work = work_left;
-	return;
+	*work = work_ഇടത്;
+	തിരികെ;
       }
-      const quad_node_t &n = stack[--top];
+      സ്ഥിരം quad_കണ്ണി_t &n = അട്ടി[--മുകൾ_2];
       x0 = n.x0; y0 = n.y0;
       x1 = n.x1; y1 = n.y1;
       x2 = n.x2; y2 = n.y2;
       depth = n.depth;
       check_clip = n.check_clip;
-      continue;
+      തുടരുക;
     }
 
-    float x01 = (x0 + x1) * 0.5f, y01 = (y0 + y1) * 0.5f;
-    float x12 = (x1 + x2) * 0.5f, y12 = (y1 + y2) * 0.5f;
-    float xm  = (x01 + x12) * 0.5f, ym  = (y01 + y12) * 0.5f;
+    ദശാംശം x01 = (x0 + x1) * 0.5f, y01 = (y0 + y1) * 0.5f;
+    ദശാംശം x12 = (x1 + x2) * 0.5f, y12 = (y1 + y2) * 0.5f;
+    ദശാംശം xm  = (x01 + x12) * 0.5f, ym  = (y01 + y12) * 0.5f;
 
     /* Depth is capped at 16, so stack capacity 16 is sufficient. */
-    stack[top++] = {xm, ym, x12, y12, x2, y2, depth + 1, check_clip};
+    അട്ടി[മുകൾ_2++] = {xm, ym, x12, y12, x2, y2, depth + 1, check_clip};
     x2 = xm; y2 = ym;
     x1 = x01; y1 = y01;
     depth++;
@@ -728,57 +728,57 @@ flatten_quadratic_recursive (hb_raster_draw_t *draw,
    The error (midpoint deviation) shrinks exactly 4× per de Casteljau
    subdivision, so we compute the subdivision count upfront and iterate
    with constant-cost additions instead of recursive branching. */
-static inline void
+സ്ഥിതം വരിയിൽ ശൂന്യം
 flatten_quadratic_fd (hb_raster_draw_t *draw,
-		      float x0, float y0,
-		      float x1, float y1,
-		      float x2, float y2)
+		      ദശാംശം x0, ദശാംശം y0,
+		      ദശാംശം x1, ദശാംശം y1,
+		      ദശാംശം x2, ദശാംശം y2)
 {
   /* Deviation of curve midpoint from chord midpoint (squared). */
-  float devx = (x0 - 2 * x1 + x2) * 0.25f;
-  float devy = (y0 - 2 * y1 + y2) * 0.25f;
-  float err2 = devx * devx + devy * devy;
+  ദശാംശം devx = (x0 - 2 * x1 + x2) * 0.25f;
+  ദശാംശം devy = (y0 - 2 * y1 + y2) * 0.25f;
+  ദശാംശം err2 = devx * devx + devy * devy;
 
-  static const float flat_thresh = HB_RASTER_FLAT_THRESH * HB_RASTER_FLAT_THRESH;
+  സ്ഥിതം സ്ഥിരം ദശാംശം flat_thresh = HB_RASTER_FLAT_THRESH * HB_RASTER_FLAT_THRESH;
 
-  if (err2 <= flat_thresh)
+  എങ്കിൽ (err2 <= flat_thresh)
   {
     emit_segment (draw, x0, y0, x2, y2);
-    return;
+    തിരികെ;
   }
 
   /* err² shrinks 16× per subdivision level.  Find n such that
      err2 / 16^n <= flat_thresh, i.e. n = ceil(log₁₆(err2/flat_thresh)). */
   unsigned n = 1;
   {
-    float ratio = err2 / flat_thresh;
-    while (ratio > 16.f) { ratio *= (1.f / 16.f); n++; }
-    if (n > 16) n = 16;
+    ദശാംശം ratio = err2 / flat_thresh;
+    ആകുമ്പോൾ (ratio > 16.f) { ratio *= (1.f / 16.f); n++; }
+    എങ്കിൽ (n > 16) n = 16;
   }
   unsigned N = 1u << n;   /* number of line segments */
-  float h = 1.f / N;
+  ദശാംശം h = 1.f / N;
 
   /* Quadratic: B(t) = a·t² + b·t + c
      Forward differences with step h:
        d²f = 2·a·h²   (constant)
        df₀ = a·h² + b·h
        f₀  = c = P₀                     */
-  float ax = x0 - 2 * x1 + x2;
-  float ay = y0 - 2 * y1 + y2;
-  float bx = 2 * (x1 - x0);
-  float by = 2 * (y1 - y0);
+  ദശാംശം ax = x0 - 2 * x1 + x2;
+  ദശാംശം ay = y0 - 2 * y1 + y2;
+  ദശാംശം bx = 2 * (x1 - x0);
+  ദശാംശം by = 2 * (y1 - y0);
 
-  float d2fx = 2 * ax * h * h;
-  float d2fy = 2 * ay * h * h;
-  float dfx  = ax * h * h + bx * h;
-  float dfy  = ay * h * h + by * h;
-  float fx   = x0;
-  float fy   = y0;
+  ദശാംശം d2fx = 2 * ax * h * h;
+  ദശാംശം d2fy = 2 * ay * h * h;
+  ദശാംശം dfx  = ax * h * h + bx * h;
+  ദശാംശം dfy  = ay * h * h + by * h;
+  ദശാംശം fx   = x0;
+  ദശാംശം fy   = y0;
 
-  for (unsigned i = 1; i < N; i++)
+  വേണ്ടി (unsigned i = 1; i < N; i++)
   {
-    float nx = fx + dfx;
-    float ny = fy + dfy;
+    ദശാംശം nx = fx + dfx;
+    ദശാംശം ny = fy + dfy;
     emit_segment (draw, fx, fy, nx, ny);
     fx = nx;
     fy = ny;
@@ -789,15 +789,15 @@ flatten_quadratic_fd (hb_raster_draw_t *draw,
   emit_segment (draw, fx, fy, x2, y2);
 }
 
-static void
+സ്ഥിതം ശൂന്യം
 flatten_quadratic (hb_raster_draw_t *draw,
-		   float x0, float y0,
-		   float x1, float y1,
-		   float x2, float y2)
+		   ദശാംശം x0, ദശാംശം y0,
+		   ദശാംശം x1, ദശാംശം y1,
+		   ദശാംശം x2, ദശാംശം y2)
 {
-  if (false)
+  എങ്കിൽ (അസത്യം)
     flatten_quadratic_fd (draw, x0, y0, x1, y1, x2, y2);
-  else
+  അല്ലെങ്കിൽ
     flatten_quadratic_recursive (draw, x0, y0, x1, y1, x2, y2);
 }
 
@@ -805,92 +805,92 @@ flatten_quadratic (hb_raster_draw_t *draw,
      max||B(t)-L(t)|| <= max_t ||B''(t)|| / 8.
    B''(t) is linear, so max norm is attained at t=0 or t=1:
      B''(0)=6*(P0-2P1+P2), B''(1)=6*(P1-2P2+P3). */
-static inline float
-cubic_chord_error_bound2 (float x0, float y0,
-			  float x1, float y1,
-			  float x2, float y2,
-			  float x3, float y3)
+സ്ഥിതം വരിയിൽ ദശാംശം
+cubic_chord_error_bound2 (ദശാംശം x0, ദശാംശം y0,
+			  ദശാംശം x1, ദശാംശം y1,
+			  ദശാംശം x2, ദശാംശം y2,
+			  ദശാംശം x3, ദശാംശം y3)
 {
-  float d20x = x0 - 2 * x1 + x2;
-  float d20y = y0 - 2 * y1 + y2;
-  float d21x = x1 - 2 * x2 + x3;
-  float d21y = y1 - 2 * y2 + y3;
-  float m0 = d20x * d20x + d20y * d20y;
-  float m1 = d21x * d21x + d21y * d21y;
-  float m = m0 > m1 ? m0 : m1;
+  ദശാംശം d20x = x0 - 2 * x1 + x2;
+  ദശാംശം d20y = y0 - 2 * y1 + y2;
+  ദശാംശം d21x = x1 - 2 * x2 + x3;
+  ദശാംശം d21y = y1 - 2 * y2 + y3;
+  ദശാംശം m0 = d20x * d20x + d20y * d20y;
+  ദശാംശം m1 = d21x * d21x + d21y * d21y;
+  ദശാംശം m = m0 > m1 ? m0 : m1;
   /* (max||B''||/8)^2 = (6/8)^2 * max||d2||^2 = (3/4)^2 * m. */
-  return m * (9.f / 16.f);
+  തിരികെ m * (9.f / 16.f);
 }
 
 /* Cubic Bézier flattener — iterative de Casteljau at t=0.5. */
-static inline void
+സ്ഥിതം വരിയിൽ ശൂന്യം
 flatten_cubic_recursive (hb_raster_draw_t *draw,
-			 float x0, float y0,
-			 float x1, float y1,
-			 float x2, float y2,
-			 float x3, float y3,
-			 int depth = 0)
+			 ദശാംശം x0, ദശാംശം y0,
+			 ദശാംശം x1, ദശാംശം y1,
+			 ദശാംശം x2, ദശാംശം y2,
+			 ദശാംശം x3, ദശാംശം y3,
+			 പൂർണ്ണസംഖ്യ depth = 0)
 {
-  struct cubic_node_t
+  ഘടന cubic_കണ്ണി_t
   {
-    float x0, y0, x1, y1, x2, y2, x3, y3;
-    int depth;
-    bool check_clip;
+    ദശാംശം x0, y0, x1, y1, x2, y2, x3, y3;
+    പൂർണ്ണസംഖ്യ depth;
+    തർക്കം check_clip;
   };
 
-  cubic_node_t stack[16];
-  unsigned top = 0;
+  cubic_കണ്ണി_t അട്ടി[16];
+  unsigned മുകൾ_2 = 0;
 
-  bool check_clip = draw->flatten_clip_active;
+  തർക്കം check_clip = draw->flatten_clip_active;
   int64_t *work = draw->get_budget_remaining ();
-  int64_t work_left = *work;
+  int64_t work_ഇടത് = *work;
 
-  while (true)
+  ആകുമ്പോൾ (സത്യം)
   {
-    bool emit_chord = depth >= 16;
+    തർക്കം emit_chord = depth >= 16;
 
     /* Entirely outside the clip box: the chord is exact for coverage.
        Subdivided control points are convex combinations of their
        parent's, so once a node is entirely inside the box no
        descendant can leave it and the test is skipped below. */
-    if (!emit_chord && check_clip)
+    എങ്കിൽ (!emit_chord && check_clip)
     {
-      float bx0 = hb_min (hb_min (x0, x1), hb_min (x2, x3));
-      float bx1 = hb_max (hb_max (x0, x1), hb_max (x2, x3));
-      float by0 = hb_min (hb_min (y0, y1), hb_min (y2, y3));
-      float by1 = hb_max (hb_max (y0, y1), hb_max (y2, y3));
-      if (bx1 < draw->flatten_clip_x0 || bx0 > draw->flatten_clip_x1 ||
+      ദശാംശം bx0 = hb_min (hb_min (x0, x1), hb_min (x2, x3));
+      ദശാംശം bx1 = hb_max (hb_max (x0, x1), hb_max (x2, x3));
+      ദശാംശം by0 = hb_min (hb_min (y0, y1), hb_min (y2, y3));
+      ദശാംശം by1 = hb_max (hb_max (y0, y1), hb_max (y2, y3));
+      എങ്കിൽ (bx1 < draw->flatten_clip_x0 || bx0 > draw->flatten_clip_x1 ||
 	  by1 < draw->flatten_clip_y0 || by0 > draw->flatten_clip_y1)
-	emit_chord = true;
-      else if (bx0 >= draw->flatten_clip_x0 && bx1 <= draw->flatten_clip_x1 &&
+	emit_chord = സത്യം;
+      അല്ലെങ്കിൽ എങ്കിൽ (bx0 >= draw->flatten_clip_x0 && bx1 <= draw->flatten_clip_x1 &&
 	       by0 >= draw->flatten_clip_y0 && by1 <= draw->flatten_clip_y1)
-	check_clip = false;
+	check_clip = അസത്യം;
     }
 
-    if (!emit_chord)
+    എങ്കിൽ (!emit_chord)
     {
-      bool is_flat;
-      if (false)
+      തർക്കം is_flat;
+      എങ്കിൽ (അസത്യം)
       {
 	/* Old behavior: curvature/chord-error bound. */
-	float err2 = cubic_chord_error_bound2 (x0, y0, x1, y1, x2, y2, x3, y3);
-	static const float flat_thresh = HB_RASTER_FLAT_THRESH * HB_RASTER_FLAT_THRESH;
+	ദശാംശം err2 = cubic_chord_error_bound2 (x0, y0, x1, y1, x2, y2, x3, y3);
+	സ്ഥിതം സ്ഥിരം ദശാംശം flat_thresh = HB_RASTER_FLAT_THRESH * HB_RASTER_FLAT_THRESH;
 	is_flat = err2 <= flat_thresh;
       }
-      else
+      അല്ലെങ്കിൽ
       {
 	/* FreeType behavior: chord-trisection distance test. */
-	const float flat_thresh = 0.5f;
+	സ്ഥിരം ദശാംശം flat_thresh = 0.5f;
 
-	float d10x = 2.f * x0 - 3.f * x1 + x3;
-	float d10y = 2.f * y0 - 3.f * y1 + y3;
-	float d20x = x0 - 3.f * x2 + 2.f * x3;
-	float d20y = y0 - 3.f * y2 + 2.f * y3;
+	ദശാംശം d10x = 2.f * x0 - 3.f * x1 + x3;
+	ദശാംശം d10y = 2.f * y0 - 3.f * y1 + y3;
+	ദശാംശം d20x = x0 - 3.f * x2 + 2.f * x3;
+	ദശാംശം d20y = y0 - 3.f * y2 + 2.f * y3;
 
-	if (d10x < 0) d10x = -d10x;
-	if (d10y < 0) d10y = -d10y;
-	if (d20x < 0) d20x = -d20x;
-	if (d20y < 0) d20y = -d20y;
+	എങ്കിൽ (d10x < 0) d10x = -d10x;
+	എങ്കിൽ (d10y < 0) d10y = -d10y;
+	എങ്കിൽ (d20x < 0) d20x = -d20x;
+	എങ്കിൽ (d20y < 0) d20y = -d20y;
 
 	is_flat = d10x <= flat_thresh &&
 		  d10y <= flat_thresh &&
@@ -902,41 +902,41 @@ flatten_cubic_recursive (hb_raster_draw_t *draw,
 
     /* Charge one unit per subdivision; degrade to the chord when the
        session work budget is spent. */
-    if (!emit_chord)
+    എങ്കിൽ (!emit_chord)
     {
-      if (unlikely (work_left <= 0))
-	emit_chord = true;
-      else
-	work_left--;
+      എങ്കിൽ (unlikely (work_ഇടത് <= 0))
+	emit_chord = സത്യം;
+      അല്ലെങ്കിൽ
+	work_ഇടത്--;
     }
 
-    if (emit_chord)
+    എങ്കിൽ (emit_chord)
     {
       emit_segment (draw, x0, y0, x3, y3);
-      if (!top)
+      എങ്കിൽ (!മുകൾ_2)
       {
-	*work = work_left;
-	return;
+	*work = work_ഇടത്;
+	തിരികെ;
       }
-      const cubic_node_t &n = stack[--top];
+      സ്ഥിരം cubic_കണ്ണി_t &n = അട്ടി[--മുകൾ_2];
       x0 = n.x0; y0 = n.y0;
       x1 = n.x1; y1 = n.y1;
       x2 = n.x2; y2 = n.y2;
       x3 = n.x3; y3 = n.y3;
       depth = n.depth;
       check_clip = n.check_clip;
-      continue;
+      തുടരുക;
     }
 
-    float x01  = (x0 + x1) * 0.5f, y01  = (y0 + y1) * 0.5f;
-    float x12  = (x1 + x2) * 0.5f, y12  = (y1 + y2) * 0.5f;
-    float x23  = (x2 + x3) * 0.5f, y23  = (y2 + y3) * 0.5f;
-    float x012 = (x01 + x12) * 0.5f, y012 = (y01 + y12) * 0.5f;
-    float x123 = (x12 + x23) * 0.5f, y123 = (y12 + y23) * 0.5f;
-    float xm   = (x012 + x123) * 0.5f, ym   = (y012 + y123) * 0.5f;
+    ദശാംശം x01  = (x0 + x1) * 0.5f, y01  = (y0 + y1) * 0.5f;
+    ദശാംശം x12  = (x1 + x2) * 0.5f, y12  = (y1 + y2) * 0.5f;
+    ദശാംശം x23  = (x2 + x3) * 0.5f, y23  = (y2 + y3) * 0.5f;
+    ദശാംശം x012 = (x01 + x12) * 0.5f, y012 = (y01 + y12) * 0.5f;
+    ദശാംശം x123 = (x12 + x23) * 0.5f, y123 = (y12 + y23) * 0.5f;
+    ദശാംശം xm   = (x012 + x123) * 0.5f, ym   = (y012 + y123) * 0.5f;
 
     /* Depth is capped at 16, so stack capacity 16 is sufficient. */
-    stack[top++] = {xm, ym, x123, y123, x23, y23, x3, y3, depth + 1, check_clip};
+    അട്ടി[മുകൾ_2++] = {xm, ym, x123, y123, x23, y23, x3, y3, depth + 1, check_clip};
     x3 = xm; y3 = ym;
     x2 = x012; y2 = y012;
     x1 = x01; y1 = y01;
@@ -948,32 +948,32 @@ flatten_cubic_recursive (hb_raster_draw_t *draw,
    Use a curvature-based chord-error bound (max||B''||/8), then choose a
    uniform subdivision count n such that the bound drops below threshold.
    The cubic adds a constant third difference d³f = 6·a·h³. */
-static inline void
+സ്ഥിതം വരിയിൽ ശൂന്യം
 flatten_cubic_fd (hb_raster_draw_t *draw,
-		  float x0, float y0,
-		  float x1, float y1,
-		  float x2, float y2,
-		  float x3, float y3)
+		  ദശാംശം x0, ദശാംശം y0,
+		  ദശാംശം x1, ദശാംശം y1,
+		  ദശാംശം x2, ദശാംശം y2,
+		  ദശാംശം x3, ദശാംശം y3)
 {
-  float err2 = cubic_chord_error_bound2 (x0, y0, x1, y1, x2, y2, x3, y3);
+  ദശാംശം err2 = cubic_chord_error_bound2 (x0, y0, x1, y1, x2, y2, x3, y3);
 
-  static const float flat_thresh = HB_RASTER_FLAT_THRESH * HB_RASTER_FLAT_THRESH;
+  സ്ഥിതം സ്ഥിരം ദശാംശം flat_thresh = HB_RASTER_FLAT_THRESH * HB_RASTER_FLAT_THRESH;
 
-  if (err2 <= flat_thresh)
+  എങ്കിൽ (err2 <= flat_thresh)
   {
     emit_segment (draw, x0, y0, x3, y3);
-    return;
+    തിരികെ;
   }
 
   /* The bound scales with h², so err² shrinks 16× per subdivision level. */
   unsigned n = 1;
   {
-    float ratio = err2 / flat_thresh;
-    while (ratio > 16.f) { ratio *= (1.f / 16.f); n++; }
-    if (n > 16) n = 16;
+    ദശാംശം ratio = err2 / flat_thresh;
+    ആകുമ്പോൾ (ratio > 16.f) { ratio *= (1.f / 16.f); n++; }
+    എങ്കിൽ (n > 16) n = 16;
   }
   unsigned N = 1u << n;
-  float h = 1.f / N;
+  ദശാംശം h = 1.f / N;
 
   /* Cubic: B(t) = a·t³ + b·t² + c·t + d
      a = -P₀ + 3P₁ - 3P₂ + P₃
@@ -985,27 +985,27 @@ flatten_cubic_fd (hb_raster_draw_t *draw,
        d²f₀ = 6·a·h³ + 2·b·h²
        d¹f₀ = a·h³ + b·h² + c·h
        f₀   = d = P₀              */
-  float ax = -x0 + 3*x1 - 3*x2 + x3;
-  float ay = -y0 + 3*y1 - 3*y2 + y3;
-  float bx =  3*x0 - 6*x1 + 3*x2;
-  float by =  3*y0 - 6*y1 + 3*y2;
-  float cx =  3*(x1 - x0);
-  float cy =  3*(y1 - y0);
+  ദശാംശം ax = -x0 + 3*x1 - 3*x2 + x3;
+  ദശാംശം ay = -y0 + 3*y1 - 3*y2 + y3;
+  ദശാംശം bx =  3*x0 - 6*x1 + 3*x2;
+  ദശാംശം by =  3*y0 - 6*y1 + 3*y2;
+  ദശാംശം cx =  3*(x1 - x0);
+  ദശാംശം cy =  3*(y1 - y0);
 
-  float h2 = h * h, h3 = h2 * h;
-  float d3fx = 6 * ax * h3;
-  float d3fy = 6 * ay * h3;
-  float d2fx = d3fx + 2 * bx * h2;
-  float d2fy = d3fy + 2 * by * h2;
-  float dfx  = ax * h3 + bx * h2 + cx * h;
-  float dfy  = ay * h3 + by * h2 + cy * h;
-  float fx   = x0;
-  float fy   = y0;
+  ദശാംശം h2 = h * h, h3 = h2 * h;
+  ദശാംശം d3fx = 6 * ax * h3;
+  ദശാംശം d3fy = 6 * ay * h3;
+  ദശാംശം d2fx = d3fx + 2 * bx * h2;
+  ദശാംശം d2fy = d3fy + 2 * by * h2;
+  ദശാംശം dfx  = ax * h3 + bx * h2 + cx * h;
+  ദശാംശം dfy  = ay * h3 + by * h2 + cy * h;
+  ദശാംശം fx   = x0;
+  ദശാംശം fy   = y0;
 
-  for (unsigned i = 1; i < N; i++)
+  വേണ്ടി (unsigned i = 1; i < N; i++)
   {
-    float nx = fx + dfx;
-    float ny = fy + dfy;
+    ദശാംശം nx = fx + dfx;
+    ദശാംശം ny = fy + dfy;
     emit_segment (draw, fx, fy, nx, ny);
     fx = nx;  fy = ny;
     dfx += d2fx;  dfy += d2fy;
@@ -1015,79 +1015,79 @@ flatten_cubic_fd (hb_raster_draw_t *draw,
   emit_segment (draw, fx, fy, x3, y3);
 }
 
-static void
+സ്ഥിതം ശൂന്യം
 flatten_cubic (hb_raster_draw_t *draw,
-	       float x0, float y0,
-	       float x1, float y1,
-	       float x2, float y2,
-	       float x3, float y3)
+	       ദശാംശം x0, ദശാംശം y0,
+	       ദശാംശം x1, ദശാംശം y1,
+	       ദശാംശം x2, ദശാംശം y2,
+	       ദശാംശം x3, ദശാംശം y3)
 {
-  if (false)
+  എങ്കിൽ (അസത്യം)
     flatten_cubic_fd (draw, x0, y0, x1, y1, x2, y2, x3, y3);
-  else
+  അല്ലെങ്കിൽ
     flatten_cubic_recursive (draw, x0, y0, x1, y1, x2, y2, x3, y3);
 }
 
 
 /* Draw callback implementations */
 
-static void
+സ്ഥിതം ശൂന്യം
 hb_raster_move_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-		   void *draw_data,
+		   ശൂന്യം *draw_data,
 		   hb_draw_state_t *st HB_UNUSED,
-		   float to_x HB_UNUSED, float to_y HB_UNUSED,
-		   void *user_data HB_UNUSED)
+		   ദശാംശം to_x HB_UNUSED, ദശാംശം to_y HB_UNUSED,
+		   ശൂന്യം *user_data HB_UNUSED)
 {
   /* no-op: state tracked by hb_draw_state_t */
 }
 
-static void
-hb_raster_line_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-		   void *draw_data,
+സ്ഥിതം ശൂന്യം
+hb_raster_വരി_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
+		   ശൂന്യം *draw_data,
 		   hb_draw_state_t *st,
-		   float to_x, float to_y,
-		   void *user_data HB_UNUSED)
+		   ദശാംശം to_x, ദശാംശം to_y,
+		   ശൂന്യം *user_data HB_UNUSED)
 {
   hb_raster_draw_t *draw = (hb_raster_draw_t *) draw_data;
-  if (unlikely (draw->edges_left <= 0)) return;
+  എങ്കിൽ (unlikely (draw->edges_ഇടത് <= 0)) തിരികെ;
 
-  float tx0, ty0, tx1, ty1;
+  ദശാംശം tx0, ty0, tx1, ty1;
   transform_point (draw, st->current_x, st->current_y, tx0, ty0);
   transform_point (draw, to_x,          to_y,           tx1, ty1);
   emit_segment (draw, tx0, ty0, tx1, ty1);
 }
 
-static void
+സ്ഥിതം ശൂന്യം
 hb_raster_quadratic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			void *draw_data,
+			ശൂന്യം *draw_data,
 			hb_draw_state_t *st,
-			float control_x, float control_y,
-			float to_x, float to_y,
-			void *user_data HB_UNUSED)
+			ദശാംശം control_x, ദശാംശം control_y,
+			ദശാംശം to_x, ദശാംശം to_y,
+			ശൂന്യം *user_data HB_UNUSED)
 {
   hb_raster_draw_t *draw = (hb_raster_draw_t *) draw_data;
-  if (unlikely (draw->edges_left <= 0)) return;
+  എങ്കിൽ (unlikely (draw->edges_ഇടത് <= 0)) തിരികെ;
 
-  float tx0, ty0, tx1, ty1, tx2, ty2;
+  ദശാംശം tx0, ty0, tx1, ty1, tx2, ty2;
   transform_point (draw, st->current_x, st->current_y, tx0, ty0);
   transform_point (draw, control_x,     control_y,      tx1, ty1);
   transform_point (draw, to_x,          to_y,           tx2, ty2);
   flatten_quadratic (draw, tx0, ty0, tx1, ty1, tx2, ty2);
 }
 
-static void
+സ്ഥിതം ശൂന്യം
 hb_raster_cubic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-		    void *draw_data,
+		    ശൂന്യം *draw_data,
 		    hb_draw_state_t *st,
-		    float control1_x, float control1_y,
-		    float control2_x, float control2_y,
-		    float to_x, float to_y,
-		    void *user_data HB_UNUSED)
+		    ദശാംശം control1_x, ദശാംശം control1_y,
+		    ദശാംശം control2_x, ദശാംശം control2_y,
+		    ദശാംശം to_x, ദശാംശം to_y,
+		    ശൂന്യം *user_data HB_UNUSED)
 {
   hb_raster_draw_t *draw = (hb_raster_draw_t *) draw_data;
-  if (unlikely (draw->edges_left <= 0)) return;
+  എങ്കിൽ (unlikely (draw->edges_ഇടത് <= 0)) തിരികെ;
 
-  float tx0, ty0, tx1, ty1, tx2, ty2, tx3, ty3;
+  ദശാംശം tx0, ty0, tx1, ty1, tx2, ty2, tx3, ty3;
   transform_point (draw, st->current_x, st->current_y, tx0, ty0);
   transform_point (draw, control1_x,    control1_y,     tx1, ty1);
   transform_point (draw, control2_x,    control2_y,     tx2, ty2);
@@ -1095,50 +1095,50 @@ hb_raster_cubic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
   flatten_cubic (draw, tx0, ty0, tx1, ty1, tx2, ty2, tx3, ty3);
 }
 
-static void
+സ്ഥിതം ശൂന്യം
 hb_raster_close_path (hb_draw_funcs_t *dfuncs HB_UNUSED,
-		      void *draw_data HB_UNUSED,
+		      ശൂന്യം *draw_data HB_UNUSED,
 		      hb_draw_state_t *st HB_UNUSED,
-		      void *user_data HB_UNUSED)
+		      ശൂന്യം *user_data HB_UNUSED)
 {
   /* no-op: hb_draw_funcs_t already emits closing line_to before us */
 }
 
-static hb_bool_t
-hb_raster_draw_set_budget (hb_draw_funcs_t *, void *draw_data,
-			   int64_t budget, void *)
+സ്ഥിതം hb_bool_t
+hb_raster_draw_set_budget (hb_draw_funcs_t *, ശൂന്യം *draw_data,
+			   int64_t budget, ശൂന്യം *)
 {
   auto *draw = (hb_raster_draw_t *) draw_data;
   draw->budget = budget;
   draw->recharge_budget ();
-  return true;
+  തിരികെ സത്യം;
 }
 
-static int64_t
-hb_raster_draw_get_budget (hb_draw_funcs_t *, void *draw_data, void *)
+സ്ഥിതം int64_t
+hb_raster_draw_get_budget (hb_draw_funcs_t *, ശൂന്യം *draw_data, ശൂന്യം *)
 {
-  return ((hb_raster_draw_t *) draw_data)->budget;
+  തിരികെ ((hb_raster_draw_t *) draw_data)->budget;
 }
 
-static int64_t *
-hb_raster_draw_get_budget_remaining (hb_draw_funcs_t *, void *draw_data, void *)
+സ്ഥിതം int64_t *
+hb_raster_draw_get_budget_remaining (hb_draw_funcs_t *, ശൂന്യം *draw_data, ശൂന്യം *)
 {
-  return ((hb_raster_draw_t *) draw_data)->get_budget_remaining ();
+  തിരികെ ((hb_raster_draw_t *) draw_data)->get_budget_remaining ();
 }
 
 
 /* Lazy-loader singleton for draw funcs */
 
-static inline void free_static_raster_draw_funcs ();
+സ്ഥിതം വരിയിൽ ശൂന്യം free_static_raster_draw_funcs ();
 
-static struct hb_raster_draw_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_raster_draw_funcs_lazy_loader_t>
+സ്ഥിതം ഘടന hb_raster_draw_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_raster_draw_funcs_lazy_loader_t>
 {
-  static hb_draw_funcs_t *create ()
+  സ്ഥിതം hb_draw_funcs_t *create ()
   {
     hb_draw_funcs_t *funcs = hb_draw_funcs_create ();
 
     hb_draw_funcs_set_move_to_func      (funcs, hb_raster_move_to,      nullptr, nullptr);
-    hb_draw_funcs_set_line_to_func      (funcs, hb_raster_line_to,      nullptr, nullptr);
+    hb_draw_funcs_set_വരി_to_func      (funcs, hb_raster_വരി_to,      nullptr, nullptr);
     hb_draw_funcs_set_quadratic_to_func (funcs, hb_raster_quadratic_to, nullptr, nullptr);
     hb_draw_funcs_set_cubic_to_func     (funcs, hb_raster_cubic_to,     nullptr, nullptr);
     hb_draw_funcs_set_close_path_func   (funcs, hb_raster_close_path,   nullptr, nullptr);
@@ -1150,11 +1150,11 @@ static struct hb_raster_draw_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<h
 
     hb_atexit (free_static_raster_draw_funcs);
 
-    return funcs;
+    തിരികെ funcs;
   }
 } static_raster_draw_funcs;
 
-static inline void
+സ്ഥിതം വരിയിൽ ശൂന്യം
 free_static_raster_draw_funcs ()
 {
   static_raster_draw_funcs.free_instance ();
@@ -1174,9 +1174,9 @@ free_static_raster_draw_funcs ()
  * Since: 14.2.0
  **/
 hb_draw_funcs_t *
-hb_raster_draw_get_funcs (const hb_raster_draw_t *draw HB_UNUSED)
+hb_raster_draw_get_funcs (സ്ഥിരം hb_raster_draw_t *draw HB_UNUSED)
 {
-  return static_raster_draw_funcs.get_unconst ();
+  തിരികെ static_raster_draw_funcs.get_unconst ();
 }
 
 /**
@@ -1202,7 +1202,7 @@ hb_raster_draw_glyph_or_fail (hb_raster_draw_t *draw,
 			      hb_font_t       *font,
 			      hb_codepoint_t   glyph)
 {
-  return hb_font_draw_glyph_or_fail (font, glyph,
+  തിരികെ hb_font_draw_glyph_or_fail (font, glyph,
 				     hb_raster_draw_get_funcs (draw), draw);
 }
 
@@ -1218,7 +1218,7 @@ hb_raster_draw_glyph_or_fail (hb_raster_draw_t *draw,
  *
  * Since: 14.2.0
  **/
-void
+ശൂന്യം
 hb_raster_draw_glyph (hb_raster_draw_t *draw,
 		      hb_font_t       *font,
 		      hb_codepoint_t   glyph)
@@ -1247,19 +1247,19 @@ hb_raster_draw_glyph (hb_raster_draw_t *draw,
 
 /* Each edge contributes at most ONE_PIXEL to a cell's cover, so the
  * compact accumulators are exact up to this many active edges. */
-static constexpr unsigned HB_RASTER_NARROW_MAX_ACTIVE_EDGES =
+സ്ഥിതം constexpr unsigned HB_RASTER_NARROW_MAX_ACTIVE_EDGES =
   INT16_MAX / HB_RASTER_ONE_PIXEL;
 
 /* Add one edge piece's area/cover into a single cell. */
 template <typename Area, typename Cover>
-static HB_ALWAYS_INLINE void
-cell_add (Area *area, Cover *cover, unsigned width, int col,
+സ്ഥിതം HB_ALWAYS_INLINE ശൂന്യം
+cell_add (Area *area, Cover *cover, unsigned width, പൂർണ്ണസംഖ്യ col,
 	  int32_t fx0, int32_t fy0, int32_t fx1, int32_t fy1, int32_t wind,
 	  unsigned &x_min, unsigned &x_max)
 {
-  if (unlikely ((unsigned) col >= width))
+  എങ്കിൽ (unlikely ((unsigned) col >= width))
   {
-    if (unlikely (col < 0))
+    എങ്കിൽ (unlikely (col < 0))
     {
       /* Edge is to the left of the surface.  The winding contribution
        * still carries into the visible region, so add the cover delta
@@ -1270,7 +1270,7 @@ cell_add (Area *area, Cover *cover, unsigned width, int col,
       x_min = hb_min (x_min, 0u);
       x_max = hb_max (x_max, 0u);
     }
-    return;
+    തിരികെ;
   }
   int32_t dy = fy1 - fy0;
   area[col]  += (Area) (fx0 + fx1) * dy * wind;
@@ -1282,24 +1282,24 @@ cell_add (Area *area, Cover *cover, unsigned width, int col,
 /* Walk one edge through the pixel cells of a single pixel row,
    accumulating area/cover.  py is the integer pixel-row index. */
 template <typename Area, typename Cover>
-static HB_ALWAYS_INLINE void
+സ്ഥിതം HB_ALWAYS_INLINE ശൂന്യം
 edge_sweep_row (Area                   *area,
 		Cover                  *cover,
 		unsigned                width,
-		int                     x_org,
-		int32_t                 y_top,
-		const hb_raster_edge_t &edge,
+		പൂർണ്ണസംഖ്യ                     x_org,
+		int32_t                 y_മുകൾ,
+		സ്ഥിരം hb_raster_edge_t &edge,
 		unsigned               &x_min,
 		unsigned               &x_max)
 {
   /* Saturate: y_top can be within ONE_PIXEL of INT32_MAX when the surface
    * sits at the extreme of the fixed-point coordinate space.  Edges are
    * int32-clamped too, so no coverage exists beyond INT32_MAX anyway. */
-  int32_t y_bot = (int32_t) hb_min ((int64_t) y_top + HB_RASTER_ONE_PIXEL, (int64_t) INT32_MAX);
+  int32_t y_bot = (int32_t) hb_min ((int64_t) y_മുകൾ + HB_RASTER_ONE_PIXEL, (int64_t) INT32_MAX);
 
-  int32_t ey0 = hb_max (edge.yL, y_top);
+  int32_t ey0 = hb_max (edge.yL, y_മുകൾ);
   int32_t ey1 = hb_min (edge.yH, y_bot);
-  if (ey0 >= ey1) return;
+  എങ്കിൽ (ey0 >= ey1) തിരികെ;
 
   /* X at clipped endpoints (fixed-point). Keep the interpolation in 64-bit
    * so extreme y values do not overflow before the slope multiply. */
@@ -1311,8 +1311,8 @@ edge_sweep_row (Area                   *area,
   int32_t x1 = (int32_t) hb_clamp (x1_64, (int64_t) INT32_MIN, (int64_t) INT32_MAX);
 
   /* Fractional y within this pixel row [0, ONE_PIXEL] */
-  int32_t fy0 = ey0 - y_top;
-  int32_t fy1 = ey1 - y_top;
+  int32_t fy0 = ey0 - y_മുകൾ;
+  int32_t fy1 = ey1 - y_മുകൾ;
 
   int32_t cx0 = x0 >> HB_RASTER_PIXEL_BITS;
   int32_t fx0 = x0 & HB_RASTER_PIXEL_MASK;
@@ -1321,10 +1321,10 @@ edge_sweep_row (Area                   *area,
   int32_t wind = edge.wind;
 
   /* Fast path: both endpoints in the same pixel column. */
-  if (cx0 == cx1)
+  എങ്കിൽ (cx0 == cx1)
   {
     cell_add (area, cover, width, cx0 - x_org, fx0, fy0, fx1, fy1, wind, x_min, x_max);
-    return;
+    തിരികെ;
   }
 
   int64_t total_dx = (int64_t) x1 - (int64_t) x0;
@@ -1333,10 +1333,10 @@ edge_sweep_row (Area                   *area,
   /* fy increment per pixel column (constant since x_b advances by ONE_PIXEL). */
   int32_t delta_fy = (int32_t) ((int64_t) HB_RASTER_ONE_PIXEL * total_dy / total_dx);
 
-  if (total_dx > 0)
+  എങ്കിൽ (total_dx > 0)
   {
     /* Left-to-right edge. */
-    if (likely ((unsigned) (cx0 - x_org) < width && (unsigned) (cx1 - x_org) < width))
+    എങ്കിൽ (likely ((unsigned) (cx0 - x_org) < width && (unsigned) (cx1 - x_org) < width))
     {
       /* Entirely inside the surface: unclipped walk. */
       int32_t x_b = (int32_t) hb_clamp (((int64_t) cx0 + 1) * HB_RASTER_ONE_PIXEL,
@@ -1345,7 +1345,7 @@ edge_sweep_row (Area                   *area,
       cell_add (area, cover, width, cx0 - x_org, fx0, fy0, HB_RASTER_ONE_PIXEL, fy_b, wind, x_min, x_max);
 
       int32_t fy_prev = fy_b;
-      for (int32_t cx = cx0 + 1; cx < cx1; cx++)
+      വേണ്ടി (int32_t cx = cx0 + 1; cx < cx1; cx++)
       {
 	fy_b = fy_prev + delta_fy;
 	cell_add (area, cover, width, cx - x_org, 0, fy_prev, HB_RASTER_ONE_PIXEL, fy_b, wind, x_min, x_max);
@@ -1353,7 +1353,7 @@ edge_sweep_row (Area                   *area,
       }
 
       cell_add (area, cover, width, cx1 - x_org, 0, fy_prev, fx1, fy1, wind, x_min, x_max);
-      return;
+      തിരികെ;
     }
 
     /* Visible column window.  Columns left of it only contribute their
@@ -1365,14 +1365,14 @@ edge_sweep_row (Area                   *area,
     int64_t col_min = (int64_t) x_org;
     int64_t col_max = (int64_t) x_org + (int64_t) width - 1;
 
-    if (unlikely (cx1 < col_min))
+    എങ്കിൽ (unlikely (cx1 < col_min))
     {
       /* Entirely left of the surface. */
       cell_add (area, cover, width, -1, 0, fy0, 0, fy1, wind, x_min, x_max);
-      return;
+      തിരികെ;
     }
-    if (unlikely (cx0 > col_max))
-      return; /* Entirely right of the surface. */
+    എങ്കിൽ (unlikely (cx0 > col_max))
+      തിരികെ; /* Entirely right of the surface. */
 
     int32_t x_b = (int32_t) hb_clamp (((int64_t) cx0 + 1) * HB_RASTER_ONE_PIXEL,
 				      (int64_t) INT32_MIN, (int64_t) INT32_MAX);
@@ -1380,9 +1380,9 @@ edge_sweep_row (Area                   *area,
 
     int32_t cx = cx0 + 1;
     int32_t fy_prev = fy_b;
-    if (likely (cx0 >= col_min))
+    എങ്കിൽ (likely (cx0 >= col_min))
       cell_add (area, cover, width, cx0 - x_org, fx0, fy0, HB_RASTER_ONE_PIXEL, fy_b, wind, x_min, x_max);
-    else
+    അല്ലെങ്കിൽ
     {
       /* Fold the first cell and the mid columns left of the surface
        * into one column-0 cover update. */
@@ -1393,20 +1393,20 @@ edge_sweep_row (Area                   *area,
     }
 
     int32_t cx_end = (int32_t) hb_min ((int64_t) cx1, col_max + 1);
-    for (; cx < cx_end; cx++)
+    വേണ്ടി (; cx < cx_end; cx++)
     {
       fy_b = fy_prev + delta_fy;
       cell_add (area, cover, width, cx - x_org, 0, fy_prev, HB_RASTER_ONE_PIXEL, fy_b, wind, x_min, x_max);
       fy_prev = fy_b;
     }
 
-    if (likely (cx1 <= col_max))
+    എങ്കിൽ (likely (cx1 <= col_max))
       cell_add (area, cover, width, cx1 - x_org, 0, fy_prev, fx1, fy1, wind, x_min, x_max);
   }
-  else
+  അല്ലെങ്കിൽ
   {
     /* Right-to-left edge. */
-    if (likely ((unsigned) (cx0 - x_org) < width && (unsigned) (cx1 - x_org) < width))
+    എങ്കിൽ (likely ((unsigned) (cx0 - x_org) < width && (unsigned) (cx1 - x_org) < width))
     {
       /* Entirely inside the surface: unclipped walk. */
       int32_t x_b = (int32_t) hb_clamp ((int64_t) cx0 * HB_RASTER_ONE_PIXEL,
@@ -1415,7 +1415,7 @@ edge_sweep_row (Area                   *area,
       cell_add (area, cover, width, cx0 - x_org, fx0, fy0, 0, fy_b, wind, x_min, x_max);
 
       int32_t fy_prev = fy_b;
-      for (int32_t cx = cx0 - 1; cx > cx1; cx--)
+      വേണ്ടി (int32_t cx = cx0 - 1; cx > cx1; cx--)
       {
 	fy_b = fy_prev - delta_fy;
 	cell_add (area, cover, width, cx - x_org, HB_RASTER_ONE_PIXEL, fy_prev, 0, fy_b, wind, x_min, x_max);
@@ -1423,20 +1423,20 @@ edge_sweep_row (Area                   *area,
       }
 
       cell_add (area, cover, width, cx1 - x_org, HB_RASTER_ONE_PIXEL, fy_prev, fx1, fy1, wind, x_min, x_max);
-      return;
+      തിരികെ;
     }
 
     int64_t col_min = (int64_t) x_org;
     int64_t col_max = (int64_t) x_org + (int64_t) width - 1;
 
-    if (unlikely (cx0 < col_min))
+    എങ്കിൽ (unlikely (cx0 < col_min))
     {
       /* Entirely left of the surface. */
       cell_add (area, cover, width, -1, 0, fy0, 0, fy1, wind, x_min, x_max);
-      return;
+      തിരികെ;
     }
-    if (unlikely (cx1 > col_max))
-      return; /* Entirely right of the surface. */
+    എങ്കിൽ (unlikely (cx1 > col_max))
+      തിരികെ; /* Entirely right of the surface. */
 
     int32_t x_b = (int32_t) hb_clamp ((int64_t) cx0 * HB_RASTER_ONE_PIXEL,
 				      (int64_t) INT32_MIN, (int64_t) INT32_MAX);
@@ -1445,7 +1445,7 @@ edge_sweep_row (Area                   *area,
 
     int32_t cx = cx0 - 1;
     int32_t fy_prev = fy_b;
-    if (unlikely (cx > col_max))
+    എങ്കിൽ (unlikely (cx > col_max))
     {
       /* Mid columns right of the surface contribute nothing. */
       int32_t cx_skip = (int32_t) col_max; /* ≥ cx1, so it fits */
@@ -1454,16 +1454,16 @@ edge_sweep_row (Area                   *area,
     }
 
     int32_t cx_stop = (int32_t) hb_max ((int64_t) cx1, col_min - 1);
-    for (; cx > cx_stop; cx--)
+    വേണ്ടി (; cx > cx_stop; cx--)
     {
       fy_b = fy_prev - delta_fy;
       cell_add (area, cover, width, cx - x_org, HB_RASTER_ONE_PIXEL, fy_prev, 0, fy_b, wind, x_min, x_max);
       fy_prev = fy_b;
     }
 
-    if (likely (cx1 >= col_min))
+    എങ്കിൽ (likely (cx1 >= col_min))
       cell_add (area, cover, width, cx1 - x_org, HB_RASTER_ONE_PIXEL, fy_prev, fx1, fy1, wind, x_min, x_max);
-    else
+    അല്ലെങ്കിൽ
       /* Fold the mid columns left of the surface and the last cell
        * into one column-0 cover update. */
       cell_add (area, cover, width, -1, 0, fy_prev, 0, fy1, wind, x_min, x_max);
@@ -1472,14 +1472,14 @@ edge_sweep_row (Area                   *area,
 
 /* Convert cover-delta + area to alpha bytes, then clear.
    Returns final cover accumulator over [x_min, x_max]. */
-static int32_t
+സ്ഥിതം int32_t
 sweep_row_to_alpha (uint8_t *__restrict row_buf,
 		    int32_t *__restrict area,
 		    int16_t *__restrict cover,
 		    unsigned x_min,
 		    unsigned x_max)
 {
-  const int32_t cover_scale = 2 * HB_RASTER_ONE_PIXEL;
+  സ്ഥിരം int32_t cover_scale = 2 * HB_RASTER_ONE_PIXEL;
   int32_t cover_accum = 0;
   unsigned x = x_min;
 
@@ -1488,10 +1488,10 @@ sweep_row_to_alpha (uint8_t *__restrict row_buf,
   int32x4_t bias_v  = vdupq_n_s32 (HB_RASTER_FULL_COVERAGE / 2);
   int32x4_t zero32  = vdupq_n_s32 (0);
   int16x8_t zero16  = vdupq_n_s16 (0);
-  for (; x + 7 <= x_max; x += 8)
+  വേണ്ടി (; x + 7 <= x_max; x += 8)
   {
     int32_t ctmp[8];
-    for (unsigned i = 0; i < 8; i++)
+    വേണ്ടി (unsigned i = 0; i < 8; i++)
     {
       cover_accum += cover[x + i];
       ctmp[i] = cover_accum * cover_scale;
@@ -1521,23 +1521,23 @@ sweep_row_to_alpha (uint8_t *__restrict row_buf,
     vst1q_s32 (area + x + 4, zero32);
     vst1q_s16 (cover + x,    zero16);
   }
-#elif defined(HB_RASTER_SSE2)
+#അല്ലെങ്കിലെങ്കിൽ defined(HB_RASTER_SSE2)
   __m128i clamp_v = _mm_set1_epi32 (HB_RASTER_FULL_COVERAGE);
   __m128i bias_v  = _mm_set1_epi32 (HB_RASTER_FULL_COVERAGE / 2);
   __m128i zero_v  = _mm_setzero_si128 ();
-  for (; x + 7 <= x_max; x += 8)
+  വേണ്ടി (; x + 7 <= x_max; x += 8)
   {
     int32_t ctmp[8];
-    for (unsigned i = 0; i < 8; i++)
+    വേണ്ടി (unsigned i = 0; i < 8; i++)
     {
       cover_accum += cover[x + i];
       ctmp[i] = cover_accum * cover_scale;
     }
 
-    __m128i c0  = _mm_loadu_si128 ((__m128i *) (void *) (ctmp + 0));
-    __m128i c1  = _mm_loadu_si128 ((__m128i *) (void *) (ctmp + 4));
-    __m128i a0  = _mm_loadu_si128 ((__m128i *) (void *) (area + x));
-    __m128i a1  = _mm_loadu_si128 ((__m128i *) (void *) (area + x + 4));
+    __m128i c0  = _mm_loadu_si128 ((__m128i *) (ശൂന്യം *) (ctmp + 0));
+    __m128i c1  = _mm_loadu_si128 ((__m128i *) (ശൂന്യം *) (ctmp + 4));
+    __m128i a0  = _mm_loadu_si128 ((__m128i *) (ശൂന്യം *) (area + x));
+    __m128i a1  = _mm_loadu_si128 ((__m128i *) (ശൂന്യം *) (area + x + 4));
 
     __m128i v0 = _mm_sub_epi32 (c0, a0);
     __m128i v1 = _mm_sub_epi32 (c1, a1);
@@ -1557,50 +1557,50 @@ sweep_row_to_alpha (uint8_t *__restrict row_buf,
 
     __m128i h = _mm_packs_epi32 (r0, r1);
     __m128i b = _mm_packus_epi16 (h, h);
-    _mm_storel_epi64 ((__m128i *) (void *) (row_buf + x), b);
+    _mm_storel_epi64 ((__m128i *) (ശൂന്യം *) (row_buf + x), b);
 
-    _mm_storeu_si128 ((__m128i *) (void *) (area + x),     zero_v);
-    _mm_storeu_si128 ((__m128i *) (void *) (area + x + 4), zero_v);
-    _mm_storeu_si128 ((__m128i *) (void *) (cover + x),    zero_v);
+    _mm_storeu_si128 ((__m128i *) (ശൂന്യം *) (area + x),     zero_v);
+    _mm_storeu_si128 ((__m128i *) (ശൂന്യം *) (area + x + 4), zero_v);
+    _mm_storeu_si128 ((__m128i *) (ശൂന്യം *) (cover + x),    zero_v);
   }
 #endif
 
-  for (; x <= x_max; x++)
+  വേണ്ടി (; x <= x_max; x++)
   {
     cover_accum += cover[x];
     int32_t val   = cover_accum * cover_scale - area[x];
     int32_t alpha = val < 0 ? -val : val;
-    if (alpha > HB_RASTER_FULL_COVERAGE) alpha = HB_RASTER_FULL_COVERAGE;
+    എങ്കിൽ (alpha > HB_RASTER_FULL_COVERAGE) alpha = HB_RASTER_FULL_COVERAGE;
     row_buf[x] = (uint8_t) (((unsigned) alpha * 255 + HB_RASTER_FULL_COVERAGE / 2) >> (2 * HB_RASTER_PIXEL_BITS + 1));
     area[x]  = 0;
     cover[x] = 0;
   }
 
-  return cover_accum;
+  തിരികെ cover_accum;
 }
 
-static int64_t
+സ്ഥിതം int64_t
 sweep_row_to_alpha_wide (uint8_t *__restrict row_buf,
 			 int64_t *__restrict area,
 			 int64_t *__restrict cover,
 			 unsigned x_min,
 			 unsigned x_max)
 {
-  const int32_t cover_scale = 2 * HB_RASTER_ONE_PIXEL;
+  സ്ഥിരം int32_t cover_scale = 2 * HB_RASTER_ONE_PIXEL;
   int64_t cover_accum = 0;
 
-  for (unsigned x = x_min; x <= x_max; x++)
+  വേണ്ടി (unsigned x = x_min; x <= x_max; x++)
   {
     cover_accum += cover[x];
     int64_t val = cover_accum * cover_scale - area[x];
     int64_t alpha = val < 0 ? -val : val;
-    if (alpha > HB_RASTER_FULL_COVERAGE) alpha = HB_RASTER_FULL_COVERAGE;
+    എങ്കിൽ (alpha > HB_RASTER_FULL_COVERAGE) alpha = HB_RASTER_FULL_COVERAGE;
     row_buf[x] = (uint8_t) (((unsigned) alpha * 255 + HB_RASTER_FULL_COVERAGE / 2) >> (2 * HB_RASTER_PIXEL_BITS + 1));
     area[x] = 0;
     cover[x] = 0;
   }
 
-  return cover_accum;
+  തിരികെ cover_accum;
 }
 
 
@@ -1625,24 +1625,24 @@ hb_raster_draw_render (hb_raster_draw_t *draw)
   /* ── 1. Compute result extents ─────────────────────────────────── */
   hb_raster_extents_t ext;
 
-  if (draw->has_extents)
+  എങ്കിൽ (draw->has_extents)
   {
     ext = draw->fixed_extents;
   }
-  else
+  അല്ലെങ്കിൽ
   {
     /* Auto-size from edge bounding box */
-    if (draw->edges.length == 0)
+    എങ്കിൽ (draw->edges.length == 0)
     {
       /* No edges: produce 0×0 image */
       ext = { 0, 0, 0, 0, 0 };
     }
-    else
+    അല്ലെങ്കിൽ
     {
       int32_t xmin = draw->edges.arrayZ[0].xL, xmax = draw->edges.arrayZ[0].xL;
       int32_t ymin = draw->edges.arrayZ[0].yL, ymax = draw->edges.arrayZ[0].yH;
 
-      for (const auto &e : draw->edges)
+      വേണ്ടി (സ്ഥിരം auto &e : draw->edges)
       {
 	xmin = hb_min (xmin, hb_min (e.xL, e.xH));
 	xmax = hb_max (xmax, hb_max (e.xL, e.xH));
@@ -1653,10 +1653,10 @@ hb_raster_draw_render (hb_raster_draw_t *draw)
       /* Convert fixed-point → pixels (floor for min, ceil for max).  Edge
 	 coordinates are saturated to int32 range in emit_segment, so the
 	 +MASK ceil step must be widened to avoid signed overflow. */
-      int x0 = xmin >> HB_RASTER_PIXEL_BITS;
-      int y0 = ymin >> HB_RASTER_PIXEL_BITS;
-      int x1 = (int) (((int64_t) xmax + HB_RASTER_PIXEL_MASK) >> HB_RASTER_PIXEL_BITS);
-      int y1 = (int) (((int64_t) ymax + HB_RASTER_PIXEL_MASK) >> HB_RASTER_PIXEL_BITS);
+      പൂർണ്ണസംഖ്യ x0 = xmin >> HB_RASTER_PIXEL_BITS;
+      പൂർണ്ണസംഖ്യ y0 = ymin >> HB_RASTER_PIXEL_BITS;
+      പൂർണ്ണസംഖ്യ x1 = (പൂർണ്ണസംഖ്യ) (((int64_t) xmax + HB_RASTER_PIXEL_MASK) >> HB_RASTER_PIXEL_BITS);
+      പൂർണ്ണസംഖ്യ y1 = (പൂർണ്ണസംഖ്യ) (((int64_t) ymax + HB_RASTER_PIXEL_MASK) >> HB_RASTER_PIXEL_BITS);
 
       ext.x_origin = x0;
       ext.y_origin = y0;
@@ -1667,7 +1667,7 @@ hb_raster_draw_render (hb_raster_draw_t *draw)
   }
 
   /* ── 2. Compute stride ─────────────────────────────────────────── */
-  if (ext.stride == 0)
+  എങ്കിൽ (ext.stride == 0)
     ext.stride = (ext.width + 3u) & ~3u;
 
   /* ── 3. Allocate or reuse image ─────────────────────────────────── */
@@ -1675,94 +1675,94 @@ hb_raster_draw_render (hb_raster_draw_t *draw)
   HB_SCOPE_GUARD (hb_raster_draw_clear (draw));
 
   hb_unique_ptr_t<hb_raster_image_t> image;
-  if (draw->recycled_image)
+  എങ്കിൽ (draw->recycled_image)
   {
     image = hb_unique_ptr_t<hb_raster_image_t> (draw->recycled_image);
     draw->recycled_image = nullptr;
   }
-  else
+  അല്ലെങ്കിൽ
   {
     image = hb_unique_ptr_t<hb_raster_image_t> (hb_raster_image_create_or_fail ());
-    if (unlikely (!image)) return nullptr;
+    എങ്കിൽ (unlikely (!image)) തിരികെ nullptr;
   }
 
-  if (unlikely (!image->configure (HB_RASTER_FORMAT_A8, ext)))
-    return nullptr;
+  എങ്കിൽ (unlikely (!image->configure (HB_RASTER_FORMAT_A8, ext)))
+    തിരികെ nullptr;
   image->clear ();
 
   /* ── 4. Bucket edges by starting row and rasterize scanlines ──── */
-  if (draw->edges.length && ext.width && ext.height)
+  എങ്കിൽ (draw->edges.length && ext.width && ext.height)
   {
-    if (unlikely (!draw->row_area.resize_dirty (ext.width) ||
+    എങ്കിൽ (unlikely (!draw->row_area.resize_dirty (ext.width) ||
 		  !draw->row_cover.resize_dirty (ext.width)))
-      return nullptr;
-    hb_memset (draw->row_area.arrayZ,  0, ext.width * sizeof (int32_t));
-    hb_memset (draw->row_cover.arrayZ, 0, ext.width * sizeof (int16_t));
+      തിരികെ nullptr;
+    hb_memset (draw->row_area.arrayZ,  0, ext.width * വലുപ്പം (int32_t));
+    hb_memset (draw->row_cover.arrayZ, 0, ext.width * വലുപ്പം (int16_t));
 
     /* Bucket edges by their starting pixel row.
        Only grow the outer vector; clear inner vectors without freeing. */
     unsigned old_buckets = draw->edge_buckets.length;
-    if (ext.height > old_buckets)
+    എങ്കിൽ (ext.height > old_buckets)
     {
-      if (unlikely (!draw->edge_buckets.resize (ext.height)))
-	return nullptr;
+      എങ്കിൽ (unlikely (!draw->edge_buckets.resize (ext.height)))
+	തിരികെ nullptr;
     }
-    for (unsigned i = 0; i < hb_min (ext.height, old_buckets); i++)
+    വേണ്ടി (unsigned i = 0; i < hb_min (ext.height, old_buckets); i++)
       draw->edge_buckets.arrayZ[i].clear ();
     /* New buckets (if any) are already empty from resize's zero-init. */
 
-    for (unsigned i = 0; i < draw->edges.length; i++)
+    വേണ്ടി (unsigned i = 0; i < draw->edges.length; i++)
     {
-      int row = (draw->edges.arrayZ[i].yL >> HB_RASTER_PIXEL_BITS) - ext.y_origin;
-      if (row < 0) row = 0;
-      if ((unsigned) row >= ext.height) continue;
+      പൂർണ്ണസംഖ്യ row = (draw->edges.arrayZ[i].yL >> HB_RASTER_PIXEL_BITS) - ext.y_origin;
+      എങ്കിൽ (row < 0) row = 0;
+      എങ്കിൽ ((unsigned) row >= ext.height) തുടരുക;
       draw->edge_buckets.arrayZ[row].push (i);
     }
 
     /* Scanline loop with active edge list. */
     draw->active_edges.clear ();
-    bool wide_initialized = false;
+    തർക്കം wide_initialized = അസത്യം;
 
-    for (unsigned row = 0; row < ext.height; row++)
+    വേണ്ടി (unsigned row = 0; row < ext.height; row++)
     {
-      int64_t y_top_64 = ((int64_t) ext.y_origin + (int64_t) row) * HB_RASTER_ONE_PIXEL;
-      int32_t y_top = (int32_t) hb_clamp (y_top_64, (int64_t) INT32_MIN, (int64_t) INT32_MAX);
+      int64_t y_മുകൾ_64 = ((int64_t) ext.y_origin + (int64_t) row) * HB_RASTER_ONE_PIXEL;
+      int32_t y_മുകൾ = (int32_t) hb_clamp (y_മുകൾ_64, (int64_t) INT32_MIN, (int64_t) INT32_MAX);
 
       /* Add new edges from this row's bucket. */
       draw->active_edges.extend (draw->edge_buckets.arrayZ[row]);
 
       /* Process active edges and compact live ones in one linear pass. */
       unsigned x_min = ext.width, x_max = 0;
-      unsigned write = 0;
+      unsigned ലിഖ = 0;
       unsigned active_len = draw->active_edges.length;
-      bool use_wide = active_len > HB_RASTER_NARROW_MAX_ACTIVE_EDGES;
-      if (unlikely (use_wide && !wide_initialized))
+      തർക്കം use_wide = active_len > HB_RASTER_NARROW_MAX_ACTIVE_EDGES;
+      എങ്കിൽ (unlikely (use_wide && !wide_initialized))
       {
-	if (unlikely (!draw->row_area_wide.resize_dirty (ext.width) ||
+	എങ്കിൽ (unlikely (!draw->row_area_wide.resize_dirty (ext.width) ||
 		      !draw->row_cover_wide.resize_dirty (ext.width)))
-	  return nullptr;
-	hb_memset (draw->row_area_wide.arrayZ,  0, ext.width * sizeof (int64_t));
-	hb_memset (draw->row_cover_wide.arrayZ, 0, ext.width * sizeof (int64_t));
-	wide_initialized = true;
+	  തിരികെ nullptr;
+	hb_memset (draw->row_area_wide.arrayZ,  0, ext.width * വലുപ്പം (int64_t));
+	hb_memset (draw->row_cover_wide.arrayZ, 0, ext.width * വലുപ്പം (int64_t));
+	wide_initialized = സത്യം;
       }
-      for (unsigned j = 0; j < active_len; j++)
+      വേണ്ടി (unsigned j = 0; j < active_len; j++)
       {
 	unsigned edge_idx = draw->active_edges.arrayZ[j];
-	const auto &e = draw->edges.arrayZ[edge_idx];
-	if (e.yH <= y_top)
-	  continue;
+	സ്ഥിരം auto &e = draw->edges.arrayZ[edge_idx];
+	എങ്കിൽ (e.yH <= y_മുകൾ)
+	  തുടരുക;
 
-	if (unlikely (use_wide))
+	എങ്കിൽ (unlikely (use_wide))
 	  edge_sweep_row (draw->row_area_wide.arrayZ, draw->row_cover_wide.arrayZ,
-			  ext.width, ext.x_origin, y_top, e, x_min, x_max);
-	else
+			  ext.width, ext.x_origin, y_മുകൾ, e, x_min, x_max);
+	അല്ലെങ്കിൽ
 	  edge_sweep_row (draw->row_area.arrayZ, draw->row_cover.arrayZ,
-			  ext.width, ext.x_origin, y_top, e, x_min, x_max);
-	draw->active_edges.arrayZ[write++] = edge_idx;
+			  ext.width, ext.x_origin, y_മുകൾ, e, x_min, x_max);
+	draw->active_edges.arrayZ[ലിഖ++] = edge_idx;
       }
-      draw->active_edges.resize (write);
+      draw->active_edges.resize (ലിഖ);
 
-      if (x_min <= x_max)
+      എങ്കിൽ (x_min <= x_max)
       {
 	int64_t cover_accum = use_wide ?
 	  sweep_row_to_alpha_wide (image->buffer.arrayZ + row * ext.stride,
@@ -1773,11 +1773,11 @@ hb_raster_draw_render (hb_raster_draw_t *draw)
 			      x_min, x_max);
 
 	/* If cover doesn't cancel, memset the constant-alpha tail. */
-	if (cover_accum != 0)
+	എങ്കിൽ (cover_accum != 0)
 	{
 	  int64_t alpha = cover_accum * (2 * HB_RASTER_ONE_PIXEL);
 	  alpha = alpha < 0 ? -alpha : alpha;
-	  if (alpha > HB_RASTER_FULL_COVERAGE) alpha = HB_RASTER_FULL_COVERAGE;
+	  എങ്കിൽ (alpha > HB_RASTER_FULL_COVERAGE) alpha = HB_RASTER_FULL_COVERAGE;
 	  uint8_t byte = (uint8_t) (((unsigned) alpha * 255 + HB_RASTER_FULL_COVERAGE / 2) >> (2 * HB_RASTER_PIXEL_BITS + 1));
 
 	  uint8_t *row_buf = image->buffer.arrayZ + row * ext.stride;
@@ -1787,5 +1787,5 @@ hb_raster_draw_render (hb_raster_draw_t *draw)
     }
   }
 
-  return image.release ();
+  തിരികെ image.release ();
 }

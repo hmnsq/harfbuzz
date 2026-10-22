@@ -32,10 +32,10 @@
 #ifndef HB_OBJECT_HH
 #define HB_OBJECT_HH
 
-#include "hb.hh"
-#include "hb-atomic.hh"
-#include "hb-mutex.hh"
-#include "hb-vector.hh"
+#അന്തര്ഭാവ "hb.hh"
+#അന്തര്ഭാവ "hb-atomic.hh"
+#അന്തര്ഭാവ "hb-mutex.hh"
+#അന്തര്ഭാവ "hb-vector.hh"
 
 
 /*
@@ -43,93 +43,93 @@
  */
 
 template <typename item_t, typename lock_t>
-struct hb_lockable_set_t
+ഘടന hb_lockable_set_t
 {
-  hb_vector_t<item_t> items;
+  hb_vector_t<item_t> ഇനങ്ങൾ;
 
-  void init () { items.init (); }
+  ശൂന്യം init () { ഇനങ്ങൾ.init (); }
 
   template <typename T>
-  item_t *replace_or_insert (T v, lock_t &l, bool replace)
+  item_t *replace_or_തിരുകുക (T v, lock_t &l, തർക്കം replace)
   {
     l.lock ();
-    item_t *item = items.lsearch (v);
-    if (item) {
-      if (replace) {
+    item_t *item = ഇനങ്ങൾ.lsearch (v);
+    എങ്കിൽ (item) {
+      എങ്കിൽ (replace) {
 	item_t old = *item;
 	*item = v;
 	l.unlock ();
 	old.fini ();
       }
-      else {
+      അല്ലെങ്കിൽ {
 	item = nullptr;
 	l.unlock ();
       }
-    } else {
-      item = items.push (v);
+    } അല്ലെങ്കിൽ {
+      item = ഇനങ്ങൾ.push (v);
       l.unlock ();
     }
-    return items.in_error () ? nullptr : item;
+    തിരികെ ഇനങ്ങൾ.in_error () ? nullptr : item;
   }
 
   template <typename T>
-  void remove (T v, lock_t &l)
+  ശൂന്യം remove (T v, lock_t &l)
   {
     l.lock ();
-    item_t *item = items.lsearch (v);
-    if (item)
+    item_t *item = ഇനങ്ങൾ.lsearch (v);
+    എങ്കിൽ (item)
     {
       item_t old = *item;
-      *item = std::move (items.tail ());
-      items.pop ();
+      *item = std::move (ഇനങ്ങൾ.tail ());
+      ഇനങ്ങൾ.എടുക്കുക ();
       l.unlock ();
       old.fini ();
-    } else {
+    } അല്ലെങ്കിൽ {
       l.unlock ();
     }
   }
 
   template <typename T>
-  bool find (T v, item_t *i, lock_t &l)
+  തർക്കം find (T v, item_t *i, lock_t &l)
   {
     l.lock ();
-    item_t *item = items.lsearch (v);
-    if (item)
+    item_t *item = ഇനങ്ങൾ.lsearch (v);
+    എങ്കിൽ (item)
       *i = *item;
     l.unlock ();
-    return !!item;
+    തിരികെ !!item;
   }
 
   template <typename T>
-  item_t *find_or_insert (T v, lock_t &l)
+  item_t *find_or_തിരുകുക (T v, lock_t &l)
   {
     l.lock ();
-    item_t *item = items.find (v);
-    if (!item) {
-      item = items.push (v);
+    item_t *item = ഇനങ്ങൾ.find (v);
+    എങ്കിൽ (!item) {
+      item = ഇനങ്ങൾ.push (v);
     }
     l.unlock ();
-    return item;
+    തിരികെ item;
   }
 
-  void fini (lock_t &l)
+  ശൂന്യം fini (lock_t &l)
   {
-    if (!items.length)
+    എങ്കിൽ (!ഇനങ്ങൾ.length)
     {
       /* No need to lock. */
-      items.fini ();
-      return;
+      ഇനങ്ങൾ.fini ();
+      തിരികെ;
     }
     l.lock ();
-    while (items.length)
+    ആകുമ്പോൾ (ഇനങ്ങൾ.length)
     {
-      item_t old = items.tail ();
-      items.pop ();
+      item_t old = ഇനങ്ങൾ.tail ();
+      ഇനങ്ങൾ.എടുക്കുക ();
       l.unlock ();
       old.fini ();
       l.lock ();
     }
-    items.fini ();
+    ഇനങ്ങൾ.fini ();
     l.unlock ();
   }
 
@@ -140,68 +140,68 @@ struct hb_lockable_set_t
  * Reference-count.
  */
 
-struct hb_reference_count_t
+ഘടന hb_reference_എണ്ണം_t
 {
-  mutable hb_atomic_t<int> ref_count;
+  mutable hb_atomic_t<പൂർണ്ണസംഖ്യ> ref_എണ്ണം_2;
 
-  void init (int v = 1) { ref_count = v; }
-  int get_relaxed () const { return ref_count; }
-  int inc () const { return ref_count.inc (); }
-  int dec () const { return ref_count.dec (); }
-  void fini () { ref_count = -0x0000DEAD; }
+  ശൂന്യം init (പൂർണ്ണസംഖ്യ v = 1) { ref_എണ്ണം_2 = v; }
+  പൂർണ്ണസംഖ്യ get_relaxed () സ്ഥിരം { തിരികെ ref_എണ്ണം_2; }
+  പൂർണ്ണസംഖ്യ inc () സ്ഥിരം { തിരികെ ref_എണ്ണം_2.inc (); }
+  പൂർണ്ണസംഖ്യ dec () സ്ഥിരം { തിരികെ ref_എണ്ണം_2.dec (); }
+  ശൂന്യം fini () { ref_എണ്ണം_2 = -0x0000DEAD; }
 
-  bool is_inert () const { return !ref_count; }
-  bool is_valid () const { return ref_count > 0; }
+  തർക്കം is_inert () സ്ഥിരം { തിരികെ !ref_എണ്ണം_2; }
+  തർക്കം is_valid () സ്ഥിരം { തിരികെ ref_എണ്ണം_2 > 0; }
 };
 
 
 /* user_data */
 
-struct hb_user_data_array_t
+ഘടന hb_user_data_array_t
 {
-  struct hb_user_data_item_t {
-    hb_user_data_key_t *key;
-    void *data;
+  ഘടന hb_user_data_item_t {
+    hb_user_data_താക്കോൽ_t *key;
+    ശൂന്യം *data;
     hb_destroy_func_t destroy;
 
-    bool operator == (const hb_user_data_key_t *other_key) const { return key == other_key; }
-    bool operator == (const hb_user_data_item_t &other) const { return key == other.key; }
+    തർക്കം operator == (സ്ഥിരം hb_user_data_താക്കോൽ_t *other_താക്കോൽ) സ്ഥിരം { തിരികെ key == other_താക്കോൽ; }
+    തർക്കം operator == (സ്ഥിരം hb_user_data_item_t &other) സ്ഥിരം { തിരികെ key == other.key; }
 
-    void fini () { if (destroy) destroy (data); }
+    ശൂന്യം fini () { എങ്കിൽ (destroy) destroy (data); }
   };
 
   hb_mutex_t lock;
-  hb_lockable_set_t<hb_user_data_item_t, hb_mutex_t> items;
+  hb_lockable_set_t<hb_user_data_item_t, hb_mutex_t> ഇനങ്ങൾ;
 
-  void init () { lock.init (); items.init (); }
+  ശൂന്യം init () { lock.init (); ഇനങ്ങൾ.init (); }
 
-  void fini () { items.fini (lock); lock.fini (); }
+  ശൂന്യം fini () { ഇനങ്ങൾ.fini (lock); lock.fini (); }
 
-  bool set (hb_user_data_key_t *key,
-	    void *              data,
+  തർക്കം set (hb_user_data_താക്കോൽ_t *key,
+	    ശൂന്യം *              data,
 	    hb_destroy_func_t   destroy,
 	    hb_bool_t           replace)
   {
-    if (!key)
-      return false;
+    എങ്കിൽ (!key)
+      തിരികെ അസത്യം;
 
-    if (replace) {
-      if (!data && !destroy) {
-	items.remove (key, lock);
-	return true;
+    എങ്കിൽ (replace) {
+      എങ്കിൽ (!data && !destroy) {
+	ഇനങ്ങൾ.remove (key, lock);
+	തിരികെ സത്യം;
       }
     }
     hb_user_data_item_t item = {key, data, destroy};
-    bool ret = !!items.replace_or_insert (item, lock, (bool) replace);
+    തർക്കം ret = !!ഇനങ്ങൾ.replace_or_തിരുകുക (item, lock, (തർക്കം) replace);
 
-    return ret;
+    തിരികെ ret;
   }
 
-  void *get (hb_user_data_key_t *key)
+  ശൂന്യം *get (hb_user_data_താക്കോൽ_t *key)
   {
     hb_user_data_item_t item = {nullptr, nullptr, nullptr};
 
-    return items.find (key, &item, lock) ? item.data : nullptr;
+    തിരികെ ഇനങ്ങൾ.find (key, &item, lock) ? item.data : nullptr;
   }
 };
 
@@ -210,13 +210,13 @@ struct hb_user_data_array_t
  * Object header
  */
 
-struct hb_object_header_t
+ഘടന hb_object_header_t
 {
-  hb_reference_count_t ref_count;
-  mutable hb_atomic_t<bool> writable = false;
+  hb_reference_എണ്ണം_t ref_എണ്ണം_2;
+  mutable hb_atomic_t<തർക്കം> writable = അസത്യം;
   hb_atomic_t<hb_user_data_array_t *> user_data;
 
-  bool is_inert () const { return !ref_count.get_relaxed (); }
+  തർക്കം is_inert () സ്ഥിരം { തിരികെ !ref_എണ്ണം_2.get_relaxed (); }
 };
 #define HB_OBJECT_HEADER_STATIC {}
 
@@ -226,99 +226,99 @@ struct hb_object_header_t
  */
 
 template <typename Type>
-static inline void hb_object_trace (const Type *obj, const char *function)
+സ്ഥിതം വരിയിൽ ശൂന്യം hb_object_trace (സ്ഥിരം Type *obj, സ്ഥിരം അക്ഷരം *function)
 {
-  DEBUG_MSG (OBJECT, (void *) obj,
+  DEBUG_സന്ദേശം (OBJECT, (ശൂന്യം *) obj,
 	     "%s refcount=%d",
 	     function,
-	     obj ? obj->header.ref_count.get_relaxed () : 0);
+	     obj ? obj->header.ref_എണ്ണം_2.get_relaxed () : 0);
 }
 
 template <typename Type, typename ...Ts>
-static inline Type *hb_object_create (Ts... ds)
+സ്ഥിതം വരിയിൽ Type *hb_object_create (Ts... ds)
 {
-  Type *obj = (Type *) hb_calloc (1, sizeof (Type));
+  Type *obj = (Type *) hb_calloc (1, വലുപ്പം (Type));
 
-  if (unlikely (!obj))
-    return obj;
+  എങ്കിൽ (unlikely (!obj))
+    തിരികെ obj;
 
-  new (obj) Type (std::forward<Ts> (ds)...);
+  പുതിയ (obj) Type (std::forward<Ts> (ds)...);
 
   hb_object_init (obj);
   hb_object_trace (obj, HB_FUNC);
 
-  return obj;
+  തിരികെ obj;
 }
 template <typename Type>
-static inline void hb_object_init (Type *obj)
+സ്ഥിതം വരിയിൽ ശൂന്യം hb_object_init (Type *obj)
 {
-  obj->header.ref_count.init ();
-  obj->header.writable = true;
+  obj->header.ref_എണ്ണം_2.init ();
+  obj->header.writable = സത്യം;
   obj->header.user_data.init ();
 }
 template <typename Type>
-static inline bool hb_object_is_valid (const Type *obj)
+സ്ഥിതം വരിയിൽ തർക്കം hb_object_is_valid (സ്ഥിരം Type *obj)
 {
-  return likely (obj->header.ref_count.is_valid ());
+  തിരികെ likely (obj->header.ref_എണ്ണം_2.is_valid ());
 }
 template <typename Type>
-static inline bool hb_object_is_immutable (const Type *obj)
+സ്ഥിതം വരിയിൽ തർക്കം hb_object_is_immutable (സ്ഥിരം Type *obj)
 {
-  return !obj->header.writable;
+  തിരികെ !obj->header.writable;
 }
 template <typename Type>
-static inline void hb_object_make_immutable (const Type *obj)
+സ്ഥിതം വരിയിൽ ശൂന്യം hb_object_make_immutable (സ്ഥിരം Type *obj)
 {
-  obj->header.writable = false;
+  obj->header.writable = അസത്യം;
 }
 template <typename Type>
-static inline void hb_object_fini (Type *obj);
+സ്ഥിതം വരിയിൽ ശൂന്യം hb_object_fini (Type *obj);
 template <typename Type>
-static inline Type *hb_object_reference (Type *obj)
+സ്ഥിതം വരിയിൽ Type *hb_object_reference (Type *obj)
 {
   hb_object_trace (obj, HB_FUNC);
-  if (unlikely (!obj || obj->header.is_inert ()))
-    return obj;
-  assert (hb_object_is_valid (obj));
-  obj->header.ref_count.inc ();
-  return obj;
+  എങ്കിൽ (unlikely (!obj || obj->header.is_inert ()))
+    തിരികെ obj;
+  പ്രതിജ്ഞാ (hb_object_is_valid (obj));
+  obj->header.ref_എണ്ണം_2.inc ();
+  തിരികെ obj;
 }
 template <typename Type>
-static inline bool hb_object_should_destroy (Type *obj)
+സ്ഥിതം വരിയിൽ തർക്കം hb_object_should_destroy (Type *obj)
 {
   hb_object_trace (obj, HB_FUNC);
-  if (unlikely (!obj || obj->header.is_inert ()))
-    return false;
-  assert (hb_object_is_valid (obj));
-  if (obj->header.ref_count.dec () != 1)
-    return false;
-  return true;
+  എങ്കിൽ (unlikely (!obj || obj->header.is_inert ()))
+    തിരികെ അസത്യം;
+  പ്രതിജ്ഞാ (hb_object_is_valid (obj));
+  എങ്കിൽ (obj->header.ref_എണ്ണം_2.dec () != 1)
+    തിരികെ അസത്യം;
+  തിരികെ സത്യം;
 }
 
 template <typename Type>
-static inline void hb_object_actually_destroy (Type *obj)
+സ്ഥിതം വരിയിൽ ശൂന്യം hb_object_actually_destroy (Type *obj)
 {
   hb_object_fini (obj);
 
-  if (!std::is_trivially_destructible<Type>::value)
+  എങ്കിൽ (!std::is_trivially_destructible<Type>::value)
     obj->~Type ();
 }
 
 template <typename Type>
-static inline bool hb_object_destroy (Type *obj)
+സ്ഥിതം വരിയിൽ തർക്കം hb_object_destroy (Type *obj)
 {
-  if (!hb_object_should_destroy (obj))
-    return false;
+  എങ്കിൽ (!hb_object_should_destroy (obj))
+    തിരികെ അസത്യം;
 
   hb_object_actually_destroy (obj);
-  return true;
+  തിരികെ സത്യം;
 }
 template <typename Type>
-static inline void hb_object_fini (Type *obj)
+സ്ഥിതം വരിയിൽ ശൂന്യം hb_object_fini (Type *obj)
 {
-  obj->header.ref_count.fini (); /* Do this before user_data */
+  obj->header.ref_എണ്ണം_2.fini (); /* Do this before user_data */
   hb_user_data_array_t *user_data = obj->header.user_data.get_acquire ();
-  if (user_data)
+  എങ്കിൽ (user_data)
   {
     user_data->fini ();
     hb_free (user_data);
@@ -326,46 +326,46 @@ static inline void hb_object_fini (Type *obj)
   }
 }
 template <typename Type>
-static inline bool hb_object_set_user_data (Type               *obj,
-					    hb_user_data_key_t *key,
-					    void *              data,
+സ്ഥിതം വരിയിൽ തർക്കം hb_object_set_user_data (Type               *obj,
+					    hb_user_data_താക്കോൽ_t *key,
+					    ശൂന്യം *              data,
 					    hb_destroy_func_t   destroy,
 					    hb_bool_t           replace)
 {
-  if (unlikely (!obj || obj->header.is_inert ()))
-    return false;
-  assert (hb_object_is_valid (obj));
+  എങ്കിൽ (unlikely (!obj || obj->header.is_inert ()))
+    തിരികെ അസത്യം;
+  പ്രതിജ്ഞാ (hb_object_is_valid (obj));
 
 retry:
   hb_user_data_array_t *user_data = obj->header.user_data.get_acquire ();
-  if (unlikely (!user_data))
+  എങ്കിൽ (unlikely (!user_data))
   {
-    user_data = (hb_user_data_array_t *) hb_calloc (1, sizeof (hb_user_data_array_t));
-    if (unlikely (!user_data))
-      return false;
+    user_data = (hb_user_data_array_t *) hb_calloc (1, വലുപ്പം (hb_user_data_array_t));
+    എങ്കിൽ (unlikely (!user_data))
+      തിരികെ അസത്യം;
     user_data->init ();
-    if (unlikely (!obj->header.user_data.cmpexch (nullptr, user_data)))
+    എങ്കിൽ (unlikely (!obj->header.user_data.cmpexch (nullptr, user_data)))
     {
       user_data->fini ();
       hb_free (user_data);
-      goto retry;
+      പോകുക retry;
     }
   }
 
-  return user_data->set (key, data, destroy, replace);
+  തിരികെ user_data->set (key, data, destroy, replace);
 }
 
 template <typename Type>
-static inline void *hb_object_get_user_data (Type               *obj,
-					     hb_user_data_key_t *key)
+സ്ഥിതം വരിയിൽ ശൂന്യം *hb_object_get_user_data (Type               *obj,
+					     hb_user_data_താക്കോൽ_t *key)
 {
-  if (unlikely (!obj || obj->header.is_inert ()))
-    return nullptr;
-  assert (hb_object_is_valid (obj));
+  എങ്കിൽ (unlikely (!obj || obj->header.is_inert ()))
+    തിരികെ nullptr;
+  പ്രതിജ്ഞാ (hb_object_is_valid (obj));
   hb_user_data_array_t *user_data = obj->header.user_data.get_acquire ();
-  if (!user_data)
-    return nullptr;
-  return user_data->get (key);
+  എങ്കിൽ (!user_data)
+    തിരികെ nullptr;
+  തിരികെ user_data->get (key);
 }
 
 
