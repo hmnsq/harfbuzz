@@ -28,61 +28,61 @@
 #ifndef HB_MS_FEATURE_RANGES_HH
 #define HB_MS_FEATURE_RANGES_HH
 
-#include "hb.hh"
+#अन्तर्भाव "hb.hh"
 
 /* Variations of this code exist in hb-coretext-shape.cc as well
  * as hb-aat-map.cc... */
 
-typedef struct hb_ms_feature_t {
+प्रकारनिर्देश संरचना hb_ms_feature_t {
   uint32_t tag_le;
   uint32_t value;
 } hb_ms_feature_t;
 
-typedef struct hb_ms_features_t {
+प्रकारनिर्देश संरचना hb_ms_features_t {
   hb_ms_feature_t *features;
-  uint32_t         num_features;
+  uint32_t         अंक_features;
 } hb_ms_features_t;
 
-struct hb_ms_active_feature_t {
+संरचना hb_ms_active_feature_t {
   hb_ms_feature_t fea;
-  unsigned int order;
+  unsigned पूर्णाङ्क order;
 
-  HB_INTERNAL static int cmp (const void *pa, const void *pb) {
-    const auto *a = (const hb_ms_active_feature_t *) pa;
-    const auto *b = (const hb_ms_active_feature_t *) pb;
-    return a->fea.tag_le < b->fea.tag_le ? -1 : a->fea.tag_le > b->fea.tag_le ? 1 :
+  HB_INTERNAL स्थिर पूर्णाङ्क cmp (ध्रुव शून्य *pa, ध्रुव शून्य *pb) {
+    ध्रुव auto *a = (ध्रुव hb_ms_active_feature_t *) pa;
+    ध्रुव auto *b = (ध्रुव hb_ms_active_feature_t *) pb;
+    प्रत्यागम a->fea.tag_le < b->fea.tag_le ? -1 : a->fea.tag_le > b->fea.tag_le ? 1 :
 	   a->order < b->order ? -1 : a->order > b->order ? 1 :
 	   a->fea.value < b->fea.value ? -1 : a->fea.value > b->fea.value ? 1 :
 	   0;
   }
-  bool operator== (const hb_ms_active_feature_t& f) const
-  { return cmp (this, &f) == 0; }
+  तार्किक operator== (ध्रुव hb_ms_active_feature_t& f) ध्रुव
+  { प्रत्यागम cmp (एतत्, &f) == 0; }
 };
 
-struct hb_ms_feature_event_t {
-  unsigned int index;
-  bool start;
+संरचना hb_ms_feature_event_t {
+  unsigned पूर्णाङ्क index;
+  तार्किक start;
   hb_ms_active_feature_t feature;
 
-  HB_INTERNAL static int cmp (const void *pa, const void *pb)
+  HB_INTERNAL स्थिर पूर्णाङ्क cmp (ध्रुव शून्य *pa, ध्रुव शून्य *pb)
   {
-    const auto *a = (const hb_ms_feature_event_t *) pa;
-    const auto *b = (const hb_ms_feature_event_t *) pb;
-    return a->index < b->index ? -1 : a->index > b->index ? 1 :
+    ध्रुव auto *a = (ध्रुव hb_ms_feature_event_t *) pa;
+    ध्रुव auto *b = (ध्रुव hb_ms_feature_event_t *) pb;
+    प्रत्यागम a->index < b->index ? -1 : a->index > b->index ? 1 :
 	   a->start < b->start ? -1 : a->start > b->start ? 1 :
 	   hb_ms_active_feature_t::cmp (&a->feature, &b->feature);
   }
 };
 
-struct hb_ms_range_record_t {
+संरचना hb_ms_range_record_t {
   hb_ms_features_t features;
-  unsigned int index_first; /* == start */
-  unsigned int index_last;  /* == end - 1 */
+  unsigned पूर्णाङ्क index_first; /* == start */
+  unsigned पूर्णाङ्क index_last;  /* == end - 1 */
 };
 
-static inline bool
-hb_ms_setup_features (const hb_feature_t                *features,
-		      unsigned int                       num_features,
+स्थिर अन्तःस्थ तार्किक
+hb_ms_setup_features (ध्रुव hb_feature_t                *features,
+		      unsigned पूर्णाङ्क                       अंक_features,
 		      hb_vector_t<hb_ms_feature_t>      &feature_records, /* OUT */
 		      hb_vector_t<hb_ms_range_record_t> &range_records /* OUT */)
 {
@@ -91,7 +91,7 @@ hb_ms_setup_features (const hb_feature_t                *features,
 
   /* Sort features by start/end events. */
   hb_vector_t<hb_ms_feature_event_t> feature_events;
-  for (unsigned int i = 0; i < num_features; i++)
+  प्रति (unsigned पूर्णाङ्क i = 0; i < अंक_features; i++)
   {
     hb_ms_active_feature_t feature;
     feature.fea.tag_le = hb_uint32_swap (features[i].tag);
@@ -102,12 +102,12 @@ hb_ms_setup_features (const hb_feature_t                *features,
 
     event = feature_events.push ();
     event->index = features[i].start;
-    event->start = true;
+    event->start = सत्य;
     event->feature = feature;
 
     event = feature_events.push ();
     event->index = features[i].end;
-    event->start = false;
+    event->start = असत्य;
     event->feature = feature;
   }
   feature_events.qsort ();
@@ -116,35 +116,35 @@ hb_ms_setup_features (const hb_feature_t                *features,
     hb_ms_active_feature_t feature;
     feature.fea.tag_le = 0;
     feature.fea.value = 0;
-    feature.order = num_features + 1;
+    feature.order = अंक_features + 1;
 
     auto *event = feature_events.push ();
     event->index = 0; /* This value does magic. */
-    event->start = false;
+    event->start = असत्य;
     event->feature = feature;
   }
 
   /* Scan events and save features for each range. */
   hb_vector_t<hb_ms_active_feature_t> active_features;
-  unsigned int last_index = 0;
-  for (unsigned int i = 0; i < feature_events.length; i++)
+  unsigned पूर्णाङ्क last_index = 0;
+  प्रति (unsigned पूर्णाङ्क i = 0; i < feature_events.length; i++)
   {
     auto *event = &feature_events[i];
 
-    if (event->index != last_index)
+    यदि (event->index != last_index)
     {
       /* Save a snapshot of active features and the range. */
       auto *range = range_records.push ();
       auto offset = feature_records.length;
 
       active_features.qsort ();
-      for (unsigned int j = 0; j < active_features.length; j++)
+      प्रति (unsigned पूर्णाङ्क j = 0; j < active_features.length; j++)
       {
-        if (!j || active_features[j].fea.tag_le != feature_records[feature_records.length - 1].tag_le)
+        यदि (!j || active_features[j].fea.tag_le != feature_records[feature_records.length - 1].tag_le)
         {
           feature_records.push (active_features[j].fea);
         }
-        else
+        अन्यथा
         {
           /* Overrides value for existing feature. */
           feature_records[feature_records.length - 1].value = active_features[j].fea.value;
@@ -154,43 +154,43 @@ hb_ms_setup_features (const hb_feature_t                *features,
       /* Will convert to pointer after all is ready, since feature_records.array
        * may move as we grow it. */
       range->features.features = reinterpret_cast<hb_ms_feature_t *> (offset);
-      range->features.num_features = feature_records.length - offset;
+      range->features.अंक_features = feature_records.length - offset;
       range->index_first = last_index;
       range->index_last  = event->index - 1;
 
       last_index = event->index;
     }
 
-    if (event->start)
+    यदि (event->start)
     {
       active_features.push (event->feature);
     }
-    else
+    अन्यथा
     {
       auto *feature = active_features.lsearch (event->feature);
-      if (feature)
+      यदि (feature)
         active_features.remove_ordered (feature - active_features.arrayZ);
     }
   }
 
-  if (!range_records.length) /* No active feature found. */
-    num_features = 0;
+  यदि (!range_records.length) /* No active feature found. */
+    अंक_features = 0;
 
   /* Fixup the pointers. */
-  for (unsigned int i = 0; i < range_records.length; i++)
+  प्रति (unsigned पूर्णाङ्क i = 0; i < range_records.length; i++)
   {
     auto *range = &range_records[i];
     range->features.features = (hb_ms_feature_t *) feature_records + reinterpret_cast<uintptr_t> (range->features.features);
   }
 
-  return !!num_features;
+  प्रत्यागम !!अंक_features;
 }
 
-static inline void
+स्थिर अन्तःस्थ शून्य
 hb_ms_make_feature_ranges (hb_vector_t<hb_ms_feature_t>      &feature_records,
 			   hb_vector_t<hb_ms_range_record_t> &range_records,
-			   unsigned int                       chars_offset,
-			   unsigned int                       chars_len,
+			   unsigned पूर्णाङ्क                       chars_offset,
+			   unsigned पूर्णाङ्क                       chars_len,
 			   uint16_t                          *log_clusters,
 			   hb_vector_t<hb_ms_features_t*>    &range_features, /* OUT */
 			   hb_vector_t<uint32_t>             &range_counts /* OUT */)
@@ -199,28 +199,28 @@ hb_ms_make_feature_ranges (hb_vector_t<hb_ms_feature_t>      &feature_records,
   range_counts.clear ();
 
   auto *last_range = &range_records[0];
-  for (unsigned int i = chars_offset; i < chars_len; i++)
+  प्रति (unsigned पूर्णाङ्क i = chars_offset; i < chars_len; i++)
   {
     auto *range = last_range;
-    while (log_clusters[i] < range->index_first)
+    यावत् (log_clusters[i] < range->index_first)
       range--;
-    while (log_clusters[i] > range->index_last)
+    यावत् (log_clusters[i] > range->index_last)
       range++;
-    if (!range_features.length ||
+    यदि (!range_features.length ||
         &range->features != range_features[range_features.length - 1])
     {
       auto **features = range_features.push ();
       auto *c = range_counts.push ();
-      if (unlikely (!features || !c))
+      यदि (unlikely (!features || !c))
       {
         range_features.clear ();
         range_counts.clear ();
-        break;
+        भङ्ग;
       }
       *features = &range->features;
       *c = 1;
     }
-    else
+    अन्यथा
     {
       range_counts[range_counts.length - 1]++;
     }
