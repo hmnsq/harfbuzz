@@ -29,11 +29,11 @@
 #ifndef HB_OPEN_FILE_HH
 #define HB_OPEN_FILE_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-head-table.hh"
+#شامل "hb-open-type.hh"
+#شامل "hb-ot-head-table.hh"
 
 
-namespace OT {
+فضاینام OT {
 
 /*
  *
@@ -46,26 +46,26 @@ namespace OT {
  * Organization of an OpenType Font
  */
 
-struct OpenTypeFontFile;
-struct OpenTypeOffsetTable;
-struct TTCHeader;
+ساختار OpenTypeFontFile;
+ساختار OpenTypeOffsetTable;
+ساختار TTCHeader;
 
 
-typedef struct TableRecord
+تعریفنوع ساختار TableRecord
 {
-  int cmp (Tag t) const { return -t.cmp (tag); }
+  صحیح cmp (Tag t) ثابت { بازگشت -t.cmp (tag); }
 
-  HB_INTERNAL static int cmp (const void *pa, const void *pb)
+  HB_INTERNAL ایستا صحیح cmp (ثابت تهی *pa, ثابت تهی *pb)
   {
-    const TableRecord *a = (const TableRecord *) pa;
-    const TableRecord *b = (const TableRecord *) pb;
-    return b->cmp (a->tag);
+    ثابت TableRecord *a = (ثابت TableRecord *) pa;
+    ثابت TableRecord *b = (ثابت TableRecord *) pb;
+    بازگشت b->cmp (a->tag);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این));
   }
 
   Tag		tag;		/* 4-byte identifier. */
@@ -73,98 +73,98 @@ typedef struct TableRecord
   Offset32	offset;		/* Offset from beginning of TrueType font
 				 * file. */
   HBUINT32	length;		/* Length of this table. */
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (16);
 } OpenTypeTable;
 
-typedef struct OpenTypeOffsetTable
+تعریفنوع ساختار OpenTypeOffsetTable
 {
-  friend struct OpenTypeFontFile;
+  friend ساختار OpenTypeFontFile;
 
-  unsigned int get_table_count () const { return tables.len; }
-  const TableRecord& get_table (unsigned int i) const
-  { return tables[i]; }
-  unsigned int get_table_tags (unsigned int  start_offset,
-			       unsigned int *table_count, /* IN/OUT */
-			       hb_tag_t     *table_tags /* OUT */) const
+  unsigned صحیح get_table_شمار () ثابت { بازگشت tables.len; }
+  ثابت TableRecord& get_table (unsigned صحیح i) ثابت
+  { بازگشت tables[i]; }
+  unsigned صحیح get_table_tags (unsigned صحیح  start_offset,
+			       unsigned صحیح *table_شمار_2, /* IN/OUT */
+			       hb_tag_t     *table_tags /* OUT */) ثابت
   {
-    if (table_count && table_tags)
+    اگر (table_شمار_2 && table_tags)
     {
-      + tables.as_array ().sub_array (start_offset, table_count)
+      + tables.as_array ().sub_array (start_offset, table_شمار_2)
       | hb_map (&TableRecord::tag)
-      | hb_sink (hb_array (table_tags, *table_count))
+      | hb_sink (hb_array (table_tags, *table_شمار_2))
       ;
     }
-    return tables.len;
+    بازگشت tables.len;
   }
-  bool find_table_index (hb_tag_t tag, unsigned int *table_index) const
+  منطقی find_table_index (hb_tag_t tag, unsigned صحیح *table_index) ثابت
   {
     Tag t;
     t = tag;
     /* Use lfind for small fonts; there are fonts that have unsorted table entries;
      * those tend to work in other tools, so tolerate them.
      * https://github.com/harfbuzz/harfbuzz/issues/3065 */
-    if (tables.len < 16)
-      return tables.lfind (t, table_index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
-    else
-      return tables.bfind (t, table_index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
+    اگر (tables.len < 16)
+      بازگشت tables.lfind (t, table_index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
+    وگرنه
+      بازگشت tables.bfind (t, table_index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
   }
-  const TableRecord& get_table_by_tag (hb_tag_t tag) const
+  ثابت TableRecord& get_table_by_tag (hb_tag_t tag) ثابت
   {
-    unsigned int table_index;
+    unsigned صحیح table_index;
     find_table_index (tag, &table_index);
-    return get_table (table_index);
+    بازگشت get_table (table_index);
   }
 
-  public:
+  عمومی:
 
   template <typename Iterator,
 	    hb_requires ((hb_is_source_of<Iterator, hb_pair_t<hb_tag_t, hb_blob_t *>>::value))>
-  bool serialize (hb_serialize_context_t *c,
+  منطقی serialize (hb_serialize_context_t *c,
 		  hb_tag_t sfnt_tag,
 		  Iterator it)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (این);
     /* Alloc 12 for the OTHeader. */
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    اگر (unlikely (!c->extend_min (این))) return_trace (نادرست);
     /* Write sfntVersion (bytes 0..3). */
     sfnt_version = sfnt_tag;
     /* Take space for numTables, searchRange, entrySelector, RangeShift
      * and the TableRecords themselves.  */
-    unsigned num_items = hb_len (it);
-    if (unlikely (!tables.serialize (c, num_items))) return_trace (false);
+    unsigned رقم_اقلام = hb_len (it);
+    اگر (unlikely (!tables.serialize (c, رقم_اقلام))) return_trace (نادرست);
 
-    const char *dir_end = (const char *) c->head;
+    ثابت نویسه *dir_end = (ثابت نویسه *) c->head;
     HBUINT32 *checksum_adjustment = nullptr;
 
     /* Write OffsetTables, alloc for and write actual table blobs. */
     unsigned i = 0;
-    for (hb_pair_t<hb_tag_t, hb_blob_t*> entry : it)
+    برای (hb_pair_t<hb_tag_t, hb_blob_t*> entry : it)
     {
       hb_blob_t *blob = entry.second;
       unsigned len = blob->length;
 
       /* Allocate room for the table and copy it. */
-      char *start = (char *) c->allocate_size<void> (len, false);
-      if (unlikely (!start)) return false;
+      نویسه *start = (نویسه *) c->allocate_size<تهی> (len, نادرست);
+      اگر (unlikely (!start)) بازگشت نادرست;
 
       TableRecord &rec = tables.arrayZ[i];
       rec.tag = entry.first;
       rec.length = len;
       rec.offset = 0;
-      if (unlikely (!c->check_assign (rec.offset,
-				      (unsigned) ((char *) start - (char *) this),
+      اگر (unlikely (!c->check_assign (rec.offset,
+				      (unsigned) ((نویسه *) start - (نویسه *) این),
 				      HB_SERIALIZE_ERROR_OFFSET_OVERFLOW)))
-        return_trace (false);
+        return_trace (نادرست);
 
-      if (likely (len))
+      اگر (likely (len))
 	hb_memcpy (start, blob->data, len);
 
       /* 4-byte alignment. */
       c->align (4);
-      const char *end = (const char *) c->head;
+      ثابت نویسه *end = (ثابت نویسه *) c->head;
 
-      if (entry.first == HB_OT_TAG_head &&
+      اگر (entry.first == HB_OT_TAG_head &&
 	  (unsigned) (end - start) >= head::static_size)
       {
 	head *h = (head *) start;
@@ -178,14 +178,14 @@ typedef struct OpenTypeOffsetTable
 
     tables.qsort ();
 
-    if (checksum_adjustment)
+    اگر (checksum_adjustment)
     {
       CheckSum checksum;
 
       /* The following line is a slower version of the following block. */
       //checksum.set_for_data (this, (const char *) c->head - (const char *) this);
-      checksum.set_for_data (this, dir_end - (const char *) this);
-      for (unsigned int i = 0; i < num_items; i++)
+      checksum.set_for_data (این, dir_end - (ثابت نویسه *) این);
+      برای (unsigned صحیح i = 0; i < رقم_اقلام; i++)
       {
 	TableRecord &rec = tables.arrayZ[i];
 	checksum = checksum + rec.checkSum;
@@ -194,20 +194,20 @@ typedef struct OpenTypeOffsetTable
       *checksum_adjustment = 0xB1B0AFBAu - checksum;
     }
 
-    return_trace (true);
+    return_trace (درست);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && tables.sanitize (c));
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این) && tables.sanitize (c));
   }
 
-  protected:
+  محافظتشده:
   Tag		sfnt_version;	/* '\0\001\0\00' if TrueType / 'OTTO' if CFF */
-  BinSearchArrayOf<TableRecord>
+  Bin_جستجو_Array_Of<TableRecord>
 		tables;
-  public:
+  عمومی:
   DEFINE_SIZE_ARRAY (12, tables);
 } OpenTypeFontFace;
 
@@ -216,96 +216,96 @@ typedef struct OpenTypeOffsetTable
  * TrueType Collections
  */
 
-struct TTCHeaderVersion1
+ساختار TTCHeaderVersion1
 {
-  friend struct TTCHeader;
+  friend ساختار TTCHeader;
 
   using DirectoryList = Array32Of<Offset32To<OpenTypeOffsetTable>>;
 
-  unsigned int get_face_count () const { return get_directory_list ().len; }
-  const OpenTypeFontFace& get_face (unsigned int i) const
-  { return this+get_directory_list ()[i]; }
+  unsigned صحیح get_face_شمار () ثابت { بازگشت get_directory_list ().len; }
+  ثابت OpenTypeFontFace& get_face (unsigned صحیح i) ثابت
+  { بازگشت این+get_directory_list ()[i]; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (این);
 #ifndef HB_NO_BEYOND_64K
-    if (version.minor >= 1)
+    اگر (version.minor >= 1)
     {
-      if (unlikely (!table.sanitize_shallow (c)))
-	return_trace (false);
+      اگر (unlikely (!table.sanitize_shallow (c)))
+	return_trace (نادرست);
       unsigned extra_size = version.major == 2 ? 12 : 0;
-      if (unlikely (!c->check_range (&table, table.get_size () + extra_size)))
-	return_trace (false);
-      const DirectoryList &table2 = StructAtOffset<DirectoryList> (&table,
+      اگر (unlikely (!c->check_range (&table, table.get_size () + extra_size)))
+	return_trace (نادرست);
+      ثابت DirectoryList &table2 = StructAtOffset<DirectoryList> (&table,
 								   table.get_size () + extra_size);
-      return_trace (table2.sanitize (c, this));
+      return_trace (table2.sanitize (c, این));
     }
 #endif
-    return_trace (table.sanitize (c, this));
+    return_trace (table.sanitize (c, این));
   }
 
-  private:
-  const DirectoryList& get_directory_list () const
+  خصوصی:
+  ثابت DirectoryList& get_directory_list () ثابت
   {
 #ifndef HB_NO_BEYOND_64K
-    if (version.minor >= 1)
+    اگر (version.minor >= 1)
     {
       unsigned extra_size = version.major == 2 ? 12 : 0;
-      return StructAtOffset<DirectoryList> (&table, table.get_size () + extra_size);
+      بازگشت StructAtOffset<DirectoryList> (&table, table.get_size () + extra_size);
     }
 #endif
-    return table;
+    بازگشت table;
   }
 
-  protected:
+  محافظتشده:
   Tag		ttcTag;		/* TrueType Collection ID string: 'ttcf' */
   FixedVersion<>version;	/* Version of the TTC Header. */
   DirectoryList
 		table;		/* Array of offsets to the OffsetTable for each font
 				 * from the beginning of the file */
-  public:
+  عمومی:
   DEFINE_SIZE_ARRAY (12, table);
 };
 
-struct TTCHeader
+ساختار TTCHeader
 {
-  friend struct OpenTypeFontFile;
+  friend ساختار OpenTypeFontFile;
 
-  private:
+  خصوصی:
 
-  unsigned int get_face_count () const
+  unsigned صحیح get_face_شمار () ثابت
   {
-    switch (u.header.version.major) {
-    case 2: /* version 2 is compatible with version 1 */
-    case 1: hb_barrier (); return u.version1.get_face_count ();
-    default:return 0;
+    انتخاب (u.header.version.major) {
+    حالت 2: /* version 2 is compatible with version 1 */
+    حالت 1: hb_barrier (); بازگشت u.version1.get_face_شمار ();
+    پیشفرض:بازگشت 0;
     }
   }
-  const OpenTypeFontFace& get_face (unsigned int i) const
+  ثابت OpenTypeFontFace& get_face (unsigned صحیح i) ثابت
   {
-    switch (u.header.version.major) {
-    case 2: /* version 2 is compatible with version 1 */
-    case 1: hb_barrier (); return u.version1.get_face (i);
-    default:return Null (OpenTypeFontFace);
+    انتخاب (u.header.version.major) {
+    حالت 2: /* version 2 is compatible with version 1 */
+    حالت 1: hb_barrier (); بازگشت u.version1.get_face (i);
+    پیشفرض:بازگشت Null (OpenTypeFontFace);
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!u.header.version.sanitize (c))) return_trace (false);
+    TRACE_SANITIZE (این);
+    اگر (unlikely (!u.header.version.sanitize (c))) return_trace (نادرست);
     hb_barrier ();
-    switch (u.header.version.major) {
-    case 2: /* version 2 is compatible with version 1 */
-    case 1: hb_barrier (); return_trace (u.version1.sanitize (c));
-    default:return_trace (true);
+    انتخاب (u.header.version.major) {
+    حالت 2: /* version 2 is compatible with version 1 */
+    حالت 1: hb_barrier (); return_trace (u.version1.sanitize (c));
+    پیشفرض:return_trace (درست);
     }
   }
 
-  protected:
-  union {
-  struct {
+  محافظتشده:
+  اجتماع {
+  ساختار {
   Tag		ttcTag;		/* TrueType Collection ID string: 'ttcf' */
   FixedVersion<>version;	/* Version of the TTC Header (1.0 or 2.0),
 				 * 0x00010000u or 0x00020000u */
@@ -320,22 +320,22 @@ struct TTCHeader
  * http://mirror.informatimago.com/next/developer.apple.com/documentation/mac/MoreToolbox/MoreToolbox-99.html
  */
 
-struct ResourceRecord
+ساختار ResourceRecord
 {
-  const OpenTypeFontFace & get_face (const void *data_base) const
-  { return * reinterpret_cast<const OpenTypeFontFace *> ((data_base+offset).arrayZ); }
+  ثابت OpenTypeFontFace & get_face (ثابت تهی *data_base) ثابت
+  { بازگشت * reinterpret_cast<ثابت OpenTypeFontFace *> ((data_base+offset).arrayZ); }
 
-  bool sanitize (hb_sanitize_context_t *c,
-		 const void *data_base) const
+  منطقی sanitize (hb_sanitize_context_t *c,
+		 ثابت تهی *data_base) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این) &&
 		  offset.sanitize (c, data_base) &&
 		  hb_barrier () &&
 		  get_face (data_base).sanitize (c));
   }
 
-  protected:
+  محافظتشده:
   HBUINT16	id;		/* Resource ID. */
   HBINT16	nameOffset;	/* Offset from beginning of resource name list
 				 * to resource name, -1 means there is none. */
@@ -344,91 +344,91 @@ struct ResourceRecord
 		offset;		/* Offset from beginning of data block to
 				 * data for this resource */
   HBUINT32	reserved;	/* Reserved for handle to resource */
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (12);
 };
 
 #define HB_TAG_sfnt HB_TAG ('s','f','n','t')
 
-struct ResourceTypeRecord
+ساختار ResourceTypeRecord
 {
-  unsigned int get_resource_count () const
-  { return tag == HB_TAG_sfnt ? resCountM1 + 1 : 0; }
+  unsigned صحیح get_resource_شمار () ثابت
+  { بازگشت tag == HB_TAG_sfnt ? res_شمار_M1 + 1 : 0; }
 
-  bool is_sfnt () const { return tag == HB_TAG_sfnt; }
+  منطقی is_sfnt () ثابت { بازگشت tag == HB_TAG_sfnt; }
 
-  const ResourceRecord& get_resource_record (unsigned int i,
-					     const void *type_base) const
-  { return (type_base+resourcesZ).as_array (get_resource_count ())[i]; }
+  ثابت ResourceRecord& get_resource_record (unsigned صحیح i,
+					     ثابت تهی *type_base) ثابت
+  { بازگشت (type_base+resourcesZ).as_array (get_resource_شمار ())[i]; }
 
-  bool sanitize (hb_sanitize_context_t *c,
-		 const void *type_base,
-		 const void *data_base) const
+  منطقی sanitize (hb_sanitize_context_t *c,
+		 ثابت تهی *type_base,
+		 ثابت تهی *data_base) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این) &&
 		  hb_barrier () &&
 		  resourcesZ.sanitize (c, type_base,
-				       get_resource_count (),
+				       get_resource_شمار (),
 				       data_base));
   }
 
-  protected:
+  محافظتشده:
   Tag		tag;		/* Resource type. */
-  HBUINT16	resCountM1;	/* Number of resources minus 1. */
+  HBUINT16	res_شمار_M1;	/* Number of resources minus 1. */
   NNOffset16To<UnsizedArrayOf<ResourceRecord>>
 		resourcesZ;	/* Offset from beginning of resource type list
 				 * to reference item list for this type. */
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (8);
 };
 
-struct ResourceMap
+ساختار ResourceMap
 {
-  unsigned int get_face_count () const
+  unsigned صحیح get_face_شمار () ثابت
   {
-    unsigned int count = get_type_count ();
-    for (unsigned int i = 0; i < count; i++)
+    unsigned صحیح شمار = get_type_شمار ();
+    برای (unsigned صحیح i = 0; i < شمار; i++)
     {
-      const ResourceTypeRecord& type = get_type_record (i);
-      if (type.is_sfnt ())
-	return type.get_resource_count ();
+      ثابت ResourceTypeRecord& type = get_type_record (i);
+      اگر (type.is_sfnt ())
+	بازگشت type.get_resource_شمار ();
     }
-    return 0;
+    بازگشت 0;
   }
 
-  const OpenTypeFontFace& get_face (unsigned int idx,
-				    const void *data_base) const
+  ثابت OpenTypeFontFace& get_face (unsigned صحیح idx,
+				    ثابت تهی *data_base) ثابت
   {
-    unsigned int count = get_type_count ();
-    for (unsigned int i = 0; i < count; i++)
+    unsigned صحیح شمار = get_type_شمار ();
+    برای (unsigned صحیح i = 0; i < شمار; i++)
     {
-      const ResourceTypeRecord& type = get_type_record (i);
+      ثابت ResourceTypeRecord& type = get_type_record (i);
       /* The check for idx < count is here because ResourceRecord is NOT null-safe.
        * Because an offset of 0 there does NOT mean null. */
-      if (type.is_sfnt () && idx < type.get_resource_count ())
-	return type.get_resource_record (idx, &(this+typeList)).get_face (data_base);
+      اگر (type.is_sfnt () && idx < type.get_resource_شمار ())
+	بازگشت type.get_resource_record (idx, &(این+typeList)).get_face (data_base);
     }
-    return Null (OpenTypeFontFace);
+    بازگشت Null (OpenTypeFontFace);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *data_base) const
+  منطقی sanitize (hb_sanitize_context_t *c, ثابت تهی *data_base) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این) &&
 		  hb_barrier () &&
-		  typeList.sanitize (c, this,
-				     &(this+typeList),
+		  typeList.sanitize (c, این,
+				     &(این+typeList),
 				     data_base));
   }
 
-  private:
-  unsigned int get_type_count () const { return (this+typeList).lenM1 + 1; }
+  خصوصی:
+  unsigned صحیح get_type_شمار () ثابت { بازگشت (این+typeList).lenM1 + 1; }
 
-  const ResourceTypeRecord& get_type_record (unsigned int i) const
-  { return (this+typeList)[i]; }
+  ثابت ResourceTypeRecord& get_type_record (unsigned صحیح i) ثابت
+  { بازگشت (این+typeList)[i]; }
 
-  protected:
+  محافظتشده:
   HBUINT8	reserved0[16];	/* Reserved for copy of resource header */
   HBUINT32	reserved1;	/* Reserved for handle to next resource map */
   HBUINT16	resreved2;	/* Reserved for file reference number */
@@ -438,34 +438,34 @@ struct ResourceMap
 				 * resource type list */
   Offset16	nameList;	/* Offset from beginning of map to
 				 * resource name list */
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (28);
 };
 
-struct ResourceForkHeader
+ساختار ResourceForkHeader
 {
-  unsigned int get_face_count () const
-  { return (this+map).get_face_count (); }
+  unsigned صحیح get_face_شمار () ثابت
+  { بازگشت (این+map).get_face_شمار (); }
 
-  const OpenTypeFontFace& get_face (unsigned int idx,
-				    unsigned int *base_offset = nullptr) const
+  ثابت OpenTypeFontFace& get_face (unsigned صحیح idx,
+				    unsigned صحیح *base_offset = nullptr) ثابت
   {
-    const OpenTypeFontFace &face = (this+map).get_face (idx, &(this+data));
-    if (base_offset)
-      *base_offset = (const char *) &face - (const char *) this;
-    return face;
+    ثابت OpenTypeFontFace &face = (این+map).get_face (idx, &(این+data));
+    اگر (base_offset)
+      *base_offset = (ثابت نویسه *) &face - (ثابت نویسه *) این;
+    بازگشت face;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این) &&
 		  hb_barrier () &&
-		  data.sanitize (c, this, dataLen) &&
-		  map.sanitize (c, this, &(this+data)));
+		  data.sanitize (c, این, dataLen) &&
+		  map.sanitize (c, این, &(این+data)));
   }
 
-  protected:
+  محافظتشده:
   NNOffset32To<UnsizedArrayOf<HBUINT8>>
 		data;		/* Offset from beginning of resource fork
 				 * to resource data */
@@ -474,7 +474,7 @@ struct ResourceForkHeader
 				 * to resource map */
   HBUINT32	dataLen;	/* Length of resource data */
   HBUINT32	mapLen;		/* Length of resource map */
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (16);
 };
 
@@ -482,9 +482,9 @@ struct ResourceForkHeader
  * OpenType Font File
  */
 
-struct OpenTypeFontFile
+ساختار OpenTypeFontFile
 {
-  enum {
+  شمارش {
     CFFTag		= HB_TAG ('O','T','T','O'), /* OpenType with Postscript outlines */
     TrueTypeTag		= HB_TAG ( 0 , 1 , 0 , 0 ), /* OpenType with TrueType outlines */
     TTCTag		= HB_TAG ('t','t','c','f'), /* TrueType Collection */
@@ -493,74 +493,74 @@ struct OpenTypeFontFile
     Typ1Tag		= HB_TAG ('t','y','p','1')  /* Obsolete Apple Type1 font in SFNT container */
   };
 
-  hb_tag_t get_tag () const { return u.tag.v; }
+  hb_tag_t get_tag () ثابت { بازگشت u.tag.v; }
 
-  unsigned int get_face_count () const
+  unsigned صحیح get_face_شمار () ثابت
   {
-    switch (u.tag.v) {
-    case CFFTag:	/* All the non-collection tags */
-    case TrueTag:
-    case Typ1Tag:
-    case TrueTypeTag:	return 1;
-    case TTCTag:	hb_barrier (); return u.ttcHeader.get_face_count ();
-    case DFontTag:	hb_barrier (); return u.rfHeader.get_face_count ();
-    default:		return 0;
+    انتخاب (u.tag.v) {
+    حالت CFFTag:	/* All the non-collection tags */
+    حالت TrueTag:
+    حالت Typ1Tag:
+    حالت TrueTypeTag:	بازگشت 1;
+    حالت TTCTag:	hb_barrier (); بازگشت u.ttcHeader.get_face_شمار ();
+    حالت DFontTag:	hb_barrier (); بازگشت u.rfHeader.get_face_شمار ();
+    پیشفرض:		بازگشت 0;
     }
   }
-  const OpenTypeFontFace& get_face (unsigned int i, unsigned int *base_offset = nullptr) const
+  ثابت OpenTypeFontFace& get_face (unsigned صحیح i, unsigned صحیح *base_offset = nullptr) ثابت
   {
-    if (base_offset)
+    اگر (base_offset)
       *base_offset = 0;
-    switch (u.tag.v) {
+    انتخاب (u.tag.v) {
     /* Note: for non-collection SFNT data we ignore index.  This is because
      * Apple dfont container is a container of SFNT's.  So each SFNT is a
      * non-TTC, but the index is more than zero. */
-    case CFFTag:	/* All the non-collection tags */
-    case TrueTag:
-    case Typ1Tag:
-    case TrueTypeTag:	hb_barrier (); return u.fontFace;
-    case TTCTag:	hb_barrier (); return u.ttcHeader.get_face (i);
-    case DFontTag:	hb_barrier (); return u.rfHeader.get_face (i, base_offset);
-    default:		return Null (OpenTypeFontFace);
+    حالت CFFTag:	/* All the non-collection tags */
+    حالت TrueTag:
+    حالت Typ1Tag:
+    حالت TrueTypeTag:	hb_barrier (); بازگشت u.fontFace;
+    حالت TTCTag:	hb_barrier (); بازگشت u.ttcHeader.get_face (i);
+    حالت DFontTag:	hb_barrier (); بازگشت u.rfHeader.get_face (i, base_offset);
+    پیشفرض:		بازگشت Null (OpenTypeFontFace);
     }
   }
 
   template <typename Iterator,
 	    hb_requires ((hb_is_source_of<Iterator, hb_pair_t<hb_tag_t, hb_blob_t *>>::value))>
-  bool serialize_single (hb_serialize_context_t *c,
+  منطقی serialize_single (hb_serialize_context_t *c,
 			 hb_tag_t sfnt_tag,
-			 Iterator items)
+			 Iterator اقلام)
   {
-    TRACE_SERIALIZE (this);
-    assert (sfnt_tag != TTCTag);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    return_trace (u.fontFace.serialize (c, sfnt_tag, items));
+    TRACE_SERIALIZE (این);
+    أكد (sfnt_tag != TTCTag);
+    اگر (unlikely (!c->extend_min (این))) return_trace (نادرست);
+    return_trace (u.fontFace.serialize (c, sfnt_tag, اقلام));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!u.tag.v.sanitize (c))) return_trace (false);
+    TRACE_SANITIZE (این);
+    اگر (unlikely (!u.tag.v.sanitize (c))) return_trace (نادرست);
     hb_barrier ();
-    switch (u.tag.v) {
-    case CFFTag:	/* All the non-collection tags */
-    case TrueTag:
-    case Typ1Tag:
-    case TrueTypeTag:	hb_barrier (); return_trace (u.fontFace.sanitize (c));
-    case TTCTag:	hb_barrier (); return_trace (u.ttcHeader.sanitize (c));
-    case DFontTag:	hb_barrier (); return_trace (u.rfHeader.sanitize (c));
-    default:		return_trace (true);
+    انتخاب (u.tag.v) {
+    حالت CFFTag:	/* All the non-collection tags */
+    حالت TrueTag:
+    حالت Typ1Tag:
+    حالت TrueTypeTag:	hb_barrier (); return_trace (u.fontFace.sanitize (c));
+    حالت TTCTag:	hb_barrier (); return_trace (u.ttcHeader.sanitize (c));
+    حالت DFontTag:	hb_barrier (); return_trace (u.rfHeader.sanitize (c));
+    پیشفرض:		return_trace (درست);
     }
   }
 
-  protected:
-  union {
-  struct { Tag v; }	tag;		/* 4-byte identifier. */
+  محافظتشده:
+  اجتماع {
+  ساختار { Tag v; }	tag;		/* 4-byte identifier. */
   OpenTypeFontFace	fontFace;
   TTCHeader		ttcHeader;
   ResourceForkHeader	rfHeader;
   } u;
-  public:
+  عمومی:
   DEFINE_SIZE_UNION (4, tag.v);
 };
 

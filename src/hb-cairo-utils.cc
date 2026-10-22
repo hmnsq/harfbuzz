@@ -25,12 +25,12 @@
  * Google Author(s): Matthias Clasen
  */
 
-#include "hb.hh"
+#شامل "hb.hh"
 
 #ifdef HAVE_CAIRO
 
-#include "hb-cairo-utils.hh"
-#include "hb-paint.hh"
+#شامل "hb-cairo-utils.hh"
+#شامل "hb-paint.hh"
 
 /* Some routines in this file were ported from BlackRenderer by Black Foundry.
  * Used by permission to relicense to HarfBuzz license.
@@ -40,79 +40,79 @@
 
 #define PREALLOCATED_COLOR_STOPS 16
 
-typedef struct {
-  float r, g, b, a;
+تعریفنوع ساختار {
+  اعشاری r, g, b, a;
 } hb_cairo_color_t;
 
-static inline cairo_extend_t
+ایستا درونخطی cairo_extend_t
 hb_cairo_extend (hb_paint_extend_t extend)
 {
-  switch (extend)
+  انتخاب (extend)
     {
-    case HB_PAINT_EXTEND_PAD: return CAIRO_EXTEND_PAD;
-    case HB_PAINT_EXTEND_REPEAT: return CAIRO_EXTEND_REPEAT;
-    case HB_PAINT_EXTEND_REFLECT: return CAIRO_EXTEND_REFLECT;
-    default: break;
+    حالت HB_PAINT_EXTEND_PAD: بازگشت CAIRO_EXTEND_PAD;
+    حالت HB_PAINT_EXTEND_REPEAT: بازگشت CAIRO_EXTEND_REPEAT;
+    حالت HB_PAINT_EXTEND_REFLECT: بازگشت CAIRO_EXTEND_REFLECT;
+    پیشفرض: بشکن;
     }
 
-  return CAIRO_EXTEND_PAD;
+  بازگشت CAIRO_EXTEND_PAD;
 }
 
 #ifdef CAIRO_HAS_PNG_FUNCTIONS
-typedef struct
+تعریفنوع ساختار
 {
   hb_blob_t *blob;
-  unsigned int offset;
+  unsigned صحیح offset;
 } hb_cairo_read_blob_data_t;
 
-static cairo_status_t
-hb_cairo_read_blob (void *closure,
-		    unsigned char *data,
-		    unsigned int length)
+ایستا cairo_status_t
+hb_cairo_read_blob (تهی *closure,
+		    unsigned نویسه *data,
+		    unsigned صحیح length)
 {
   hb_cairo_read_blob_data_t *r = (hb_cairo_read_blob_data_t *) closure;
-  const char *d;
-  unsigned int size;
+  ثابت نویسه *d;
+  unsigned صحیح size;
 
   d = hb_blob_get_data (r->blob, &size);
 
-  if (r->offset + length > size)
-    return CAIRO_STATUS_READ_ERROR;
+  اگر (r->offset + length > size)
+    بازگشت CAIRO_STATUS_READ_ERROR;
 
   hb_memcpy (data, d + r->offset, length);
   r->offset += length;
 
-  return CAIRO_STATUS_SUCCESS;
+  بازگشت CAIRO_STATUS_SUCCESS;
 }
 #endif
 
-static const cairo_user_data_key_t *_hb_cairo_surface_blob_user_data_key = {0};
+ایستا ثابت cairo_user_data_کلید_t *hb_cairo_surface_blob_user_data_کلید = {0};
 
-static void
-_hb_cairo_destroy_blob (void *p)
+ایستا تهی
+_hb_cairo_destroy_blob (تهی *p)
 {
   hb_blob_destroy ((hb_blob_t *) p);
 }
 
-void
+تهی
 _hb_cairo_set_source_color (hb_cairo_context_t *c,
 			    hb_bool_t use_foreground,
 			    hb_color_t color)
 {
   cairo_t *cr = c->cr;
 
-  if (use_foreground)
+  اگر (use_foreground)
   {
 #ifdef HAVE_CAIRO_USER_SCALED_FONT_GET_FOREGROUND_SOURCE
-    double r, g, b, a;
+    دوگانه r, g, b, a;
     cairo_pattern_t *foreground = cairo_user_scaled_font_get_foreground_source (c->scaled_font);
-    if (cairo_pattern_get_rgba (foreground, &r, &g, &b, &a) == CAIRO_STATUS_SUCCESS)
+    اگر (cairo_pattern_get_rgba (foreground, &r, &g, &b, &a) == CAIRO_STATUS_SUCCESS)
       cairo_set_source_rgba (cr, r, g, b, a * hb_color_get_alpha (color) / 255.);
-    else
+    وگرنه
 #endif
       cairo_set_source_rgba (cr, 0, 0, 0, hb_color_get_alpha (color) / 255.);
   }
-  else
+  وگرنه
     cairo_set_source_rgba (cr,
 			   hb_color_get_red (color) / 255.,
 			   hb_color_get_green (color) / 255.,
@@ -126,18 +126,18 @@ _hb_cairo_paint_glyph_image (hb_cairo_context_t *c,
 			     unsigned width,
 			     unsigned height,
 			     hb_tag_t format,
-			     HB_UNUSED float slant_deprecated,
+			     HB_UNUSED اعشاری slant_deprecated,
 			     hb_glyph_extents_t *extents)
 {
   cairo_t *cr = c->cr;
 
-  if (!extents) /* SVG currently. */
-    return false;
+  اگر (!extents) /* SVG currently. */
+    بازگشت نادرست;
 
   cairo_surface_t *surface = nullptr;
 
 #ifdef CAIRO_HAS_PNG_FUNCTIONS
-  if (format == HB_PAINT_IMAGE_FORMAT_PNG)
+  اگر (format == HB_PAINT_IMAGE_FORMAT_PNG)
   {
     hb_cairo_read_blob_data_t r;
     r.blob = blob;
@@ -149,27 +149,27 @@ _hb_cairo_paint_glyph_image (hb_cairo_context_t *c,
     width = cairo_image_surface_get_width (surface);
     height = cairo_image_surface_get_width (surface);
   }
-  else
+  وگرنه
 #endif
-  if (format == HB_PAINT_IMAGE_FORMAT_BGRA)
+  اگر (format == HB_PAINT_IMAGE_FORMAT_BGRA)
   {
     /* Byte-endian conversion. */
     unsigned data_size = hb_blob_get_length (blob);
-    if (data_size < width * height * 4)
-      return false;
+    اگر (data_size < width * height * 4)
+      بازگشت نادرست;
 
-    unsigned char *data;
+    unsigned نویسه *data;
 #ifdef __BYTE_ORDER
-    if (__BYTE_ORDER == __BIG_ENDIAN)
+    اگر (__BYTE_ORDER == __BIG_ENDIAN)
     {
-      data = (unsigned char *) hb_blob_get_data_writable (blob, nullptr);
-      if (!data)
-        return false;
+      data = (unsigned نویسه *) hb_blob_get_data_writable (blob, nullptr);
+      اگر (!data)
+        بازگشت نادرست;
 
-      unsigned count = width * height * 4;
-      for (unsigned i = 0; i < count; i += 4)
+      unsigned شمار = width * height * 4;
+      برای (unsigned i = 0; i < شمار; i += 4)
       {
-        unsigned char b;
+        unsigned نویسه b;
 	b = data[i];
 	data[i] = data[i+3];
 	data[i+3] = b;
@@ -178,9 +178,9 @@ _hb_cairo_paint_glyph_image (hb_cairo_context_t *c,
 	data[i+2] = b;
       }
     }
-    else
+    وگرنه
 #endif
-      data = (unsigned char *) hb_blob_get_data (blob, nullptr);
+      data = (unsigned نویسه *) hb_blob_get_data (blob, nullptr);
 
     surface = cairo_image_surface_create_for_data (data,
 						   CAIRO_FORMAT_ARGB32,
@@ -188,13 +188,13 @@ _hb_cairo_paint_glyph_image (hb_cairo_context_t *c,
 						   width * 4);
 
     cairo_surface_set_user_data (surface,
-				 _hb_cairo_surface_blob_user_data_key,
+				 hb_cairo_surface_blob_user_data_کلید,
 				 hb_blob_reference (blob),
 				 _hb_cairo_destroy_blob);
   }
 
-  if (!surface)
-    return false;
+  اگر (!surface)
+    بازگشت نادرست;
 
   cairo_save (cr);
   /* this clip is here to work around recording surface limitations */
@@ -208,7 +208,7 @@ _hb_cairo_paint_glyph_image (hb_cairo_context_t *c,
   cairo_pattern_t *pattern = cairo_pattern_create_for_surface (surface);
   cairo_pattern_set_extend (pattern, CAIRO_EXTEND_PAD);
 
-  cairo_matrix_t matrix = {(double) width, 0, 0, (double) height, 0, 0};
+  cairo_matrix_t matrix = {(دوگانه) width, 0, 0, (دوگانه) height, 0, 0};
   cairo_pattern_set_matrix (pattern, &matrix);
 
   cairo_translate (cr, extents->x_bearing, extents->y_bearing);
@@ -222,74 +222,74 @@ _hb_cairo_paint_glyph_image (hb_cairo_context_t *c,
 
   cairo_restore (cr);
 
-  return true;
+  بازگشت درست;
 }
 
-static bool
+ایستا منطقی
 _hb_cairo_get_color_stops (hb_cairo_context_t *c,
-			   hb_color_line_t *color_line,
-			   unsigned *count,
+			   hb_color_سطر_t *color_سطر,
+			   unsigned *شمار,
 			   hb_color_stop_t **stops)
 {
-  unsigned len = hb_color_line_get_color_stops (color_line, 0, nullptr, nullptr);
-  bool allocated = false;
-  if (unlikely (!len))
-    return false;
-  if (len > *count)
+  unsigned len = hb_color_سطر_get_color_stops (color_سطر, 0, nullptr, nullptr);
+  منطقی allocated = نادرست;
+  اگر (unlikely (!len))
+    بازگشت نادرست;
+  اگر (len > *شمار)
   {
-    *stops = (hb_color_stop_t *) hb_malloc2 (len, sizeof (hb_color_stop_t));
-    if (unlikely (!*stops))
-      return false;
-    allocated = true;
+    *stops = (hb_color_stop_t *) hb_malloc2 (len, اندازه (hb_color_stop_t));
+    اگر (unlikely (!*stops))
+      بازگشت نادرست;
+    allocated = درست;
   }
-  hb_color_line_get_color_stops (color_line, 0, &len, *stops);
-  if (unlikely (!len))
+  hb_color_سطر_get_color_stops (color_سطر, 0, &len, *stops);
+  اگر (unlikely (!len))
   {
-    if (allocated)
+    اگر (allocated)
     {
       hb_free (*stops);
       *stops = nullptr;
     }
-    return false;
+    بازگشت نادرست;
   }
-  for (unsigned i = 0; i < len; i++)
-    if ((*stops)[i].is_foreground)
+  برای (unsigned i = 0; i < len; i++)
+    اگر ((*stops)[i].is_foreground)
     {
 #ifdef HAVE_CAIRO_USER_SCALED_FONT_GET_FOREGROUND_SOURCE
-      double r, g, b, a;
+      دوگانه r, g, b, a;
       cairo_pattern_t *foreground = cairo_user_scaled_font_get_foreground_source (c->scaled_font);
-      if (cairo_pattern_get_rgba (foreground, &r, &g, &b, &a) == CAIRO_STATUS_SUCCESS)
+      اگر (cairo_pattern_get_rgba (foreground, &r, &g, &b, &a) == CAIRO_STATUS_SUCCESS)
         (*stops)[i].color = HB_COLOR (round (b * 255.), round (g * 255.), round (r * 255.),
                                       round (a * hb_color_get_alpha ((*stops)[i].color)));
-      else
+      وگرنه
 #endif
         (*stops)[i].color = HB_COLOR (0, 0, 0, hb_color_get_alpha ((*stops)[i].color));
     }
 
-  *count = len;
-  return true;
+  *شمار = len;
+  بازگشت درست;
 }
 
-void
+تهی
 _hb_cairo_paint_linear_gradient (hb_cairo_context_t *c,
-				 hb_color_line_t *color_line,
-				 float x0, float y0,
-				 float x1, float y1,
-				 float x2, float y2)
+				 hb_color_سطر_t *color_سطر,
+				 اعشاری x0, اعشاری y0,
+				 اعشاری x1, اعشاری y1,
+				 اعشاری x2, اعشاری y2)
 {
   cairo_t *cr = c->cr;
 
-  unsigned int len = PREALLOCATED_COLOR_STOPS;
+  unsigned صحیح len = PREALLOCATED_COLOR_STOPS;
   hb_color_stop_t stops_[PREALLOCATED_COLOR_STOPS];
   hb_color_stop_t *stops = stops_;
-  float xx0, yy0, xx1, yy1;
-  float xxx0, yyy0, xxx1, yyy1;
-  float min, max;
+  اعشاری xx0, yy0, xx1, yy1;
+  اعشاری xxx0, yyy0, xxx1, yyy1;
+  اعشاری min, max;
   cairo_pattern_t *pattern;
 
-  if (unlikely (!_hb_cairo_get_color_stops (c, color_line, &len, &stops)))
-    return;
-  hb_paint_normalize_color_line (stops, len, &min, &max);
+  اگر (unlikely (!_hb_cairo_get_color_stops (c, color_سطر, &len, &stops)))
+    بازگشت;
+  hb_paint_normalize_color_سطر (stops, len, &min, &max);
 
   hb_paint_reduce_linear_anchors (x0, y0, x1, y1, x2, y2, &xx0, &yy0, &xx1, &yy1);
 
@@ -298,16 +298,16 @@ _hb_cairo_paint_linear_gradient (hb_cairo_context_t *c,
   xxx1 = xx0 + max * (xx1 - xx0);
   yyy1 = yy0 + max * (yy1 - yy0);
 
-  pattern = cairo_pattern_create_linear ((double) xxx0, (double) yyy0, (double) xxx1, (double) yyy1);
-  cairo_pattern_set_extend (pattern, hb_cairo_extend (hb_color_line_get_extend (color_line)));
-  for (unsigned int i = 0; i < len; i++)
+  pattern = cairo_pattern_create_linear ((دوگانه) xxx0, (دوگانه) yyy0, (دوگانه) xxx1, (دوگانه) yyy1);
+  cairo_pattern_set_extend (pattern, hb_cairo_extend (hb_color_سطر_get_extend (color_سطر)));
+  برای (unsigned صحیح i = 0; i < len; i++)
     {
-      double r, g, b, a;
+      دوگانه r, g, b, a;
       r = hb_color_get_red (stops[i].color) / 255.;
       g = hb_color_get_green (stops[i].color) / 255.;
       b = hb_color_get_blue (stops[i].color) / 255.;
       a = hb_color_get_alpha (stops[i].color) / 255.;
-      cairo_pattern_add_color_stop_rgba (pattern, (double) stops[i].offset, r, g, b, a);
+      cairo_pattern_add_color_stop_rgba (pattern, (دوگانه) stops[i].offset, r, g, b, a);
     }
 
   cairo_set_source (cr, pattern);
@@ -315,29 +315,29 @@ _hb_cairo_paint_linear_gradient (hb_cairo_context_t *c,
 
   cairo_pattern_destroy (pattern);
 
-  if (stops != stops_)
+  اگر (stops != stops_)
     hb_free (stops);
 }
 
-void
+تهی
 _hb_cairo_paint_radial_gradient (hb_cairo_context_t *c,
-				 hb_color_line_t *color_line,
-				 float x0, float y0, float r0,
-				 float x1, float y1, float r1)
+				 hb_color_سطر_t *color_سطر,
+				 اعشاری x0, اعشاری y0, اعشاری r0,
+				 اعشاری x1, اعشاری y1, اعشاری r1)
 {
   cairo_t *cr = c->cr;
 
-  unsigned int len = PREALLOCATED_COLOR_STOPS;
+  unsigned صحیح len = PREALLOCATED_COLOR_STOPS;
   hb_color_stop_t stops_[PREALLOCATED_COLOR_STOPS];
   hb_color_stop_t *stops = stops_;
-  float min, max;
-  float xx0, yy0, xx1, yy1;
-  float rr0, rr1;
+  اعشاری min, max;
+  اعشاری xx0, yy0, xx1, yy1;
+  اعشاری rr0, rr1;
   cairo_pattern_t *pattern;
 
-  if (unlikely (!_hb_cairo_get_color_stops (c, color_line, &len, &stops)))
-    return;
-  hb_paint_normalize_color_line (stops, len, &min, &max);
+  اگر (unlikely (!_hb_cairo_get_color_stops (c, color_سطر, &len, &stops)))
+    بازگشت;
+  hb_paint_normalize_color_سطر (stops, len, &min, &max);
 
   xx0 = x0 + min * (x1 - x0);
   yy0 = y0 + min * (y1 - y0);
@@ -346,17 +346,17 @@ _hb_cairo_paint_radial_gradient (hb_cairo_context_t *c,
   rr0 = r0 + min * (r1 - r0);
   rr1 = r0 + max * (r1 - r0);
 
-  pattern = cairo_pattern_create_radial ((double) xx0, (double) yy0, (double) rr0, (double) xx1, (double) yy1, (double) rr1);
-  cairo_pattern_set_extend (pattern, hb_cairo_extend (hb_color_line_get_extend (color_line)));
+  pattern = cairo_pattern_create_radial ((دوگانه) xx0, (دوگانه) yy0, (دوگانه) rr0, (دوگانه) xx1, (دوگانه) yy1, (دوگانه) rr1);
+  cairo_pattern_set_extend (pattern, hb_cairo_extend (hb_color_سطر_get_extend (color_سطر)));
 
-  for (unsigned int i = 0; i < len; i++)
+  برای (unsigned صحیح i = 0; i < len; i++)
     {
-      double r, g, b, a;
+      دوگانه r, g, b, a;
       r = hb_color_get_red (stops[i].color) / 255.;
       g = hb_color_get_green (stops[i].color) / 255.;
       b = hb_color_get_blue (stops[i].color) / 255.;
       a = hb_color_get_alpha (stops[i].color) / 255.;
-      cairo_pattern_add_color_stop_rgba (pattern, (double) stops[i].offset, r, g, b, a);
+      cairo_pattern_add_color_stop_rgba (pattern, (دوگانه) stops[i].offset, r, g, b, a);
     }
 
   cairo_set_source (cr, pattern);
@@ -364,21 +364,21 @@ _hb_cairo_paint_radial_gradient (hb_cairo_context_t *c,
 
   cairo_pattern_destroy (pattern);
 
-  if (stops != stops_)
+  اگر (stops != stops_)
     hb_free (stops);
 }
 
-typedef struct {
-  float x, y;
+تعریفنوع ساختار {
+  اعشاری x, y;
 } hb_cairo_point_t;
 
-static inline float
-_hb_cairo_interpolate (float f0, float f1, float f)
+ایستا درونخطی اعشاری
+_hb_cairo_interpolate (اعشاری f0, اعشاری f1, اعشاری f)
 {
-  return f0 + f * (f1 - f0);
+  بازگشت f0 + f * (f1 - f0);
 }
 
-static inline void
+ایستا درونخطی تهی
 _hb_cairo_premultiply (hb_cairo_color_t *c)
 {
   c->r *= c->a;
@@ -386,10 +386,10 @@ _hb_cairo_premultiply (hb_cairo_color_t *c)
   c->b *= c->a;
 }
 
-static inline void
+ایستا درونخطی تهی
 _hb_cairo_unpremultiply (hb_cairo_color_t *c)
 {
-  if (c->a != 0.f)
+  اگر (c->a != 0.f)
   {
      c->r /= c->a;
      c->g /= c->a;
@@ -397,8 +397,8 @@ _hb_cairo_unpremultiply (hb_cairo_color_t *c)
   }
 }
 
-static void
-_hb_cairo_interpolate_colors (hb_cairo_color_t *c0, hb_cairo_color_t *c1, float k, hb_cairo_color_t *c)
+ایستا تهی
+_hb_cairo_interpolate_colors (hb_cairo_color_t *c0, hb_cairo_color_t *c1, اعشاری k, hb_cairo_color_t *c)
 {
   // According to the COLR specification, gradients
   // should be interpolated in premultiplied form
@@ -411,98 +411,98 @@ _hb_cairo_interpolate_colors (hb_cairo_color_t *c0, hb_cairo_color_t *c1, float 
   _hb_cairo_unpremultiply (c);
 }
 
-static inline float
+ایستا درونخطی اعشاری
 _hb_cairo_dot (hb_cairo_point_t p, hb_cairo_point_t q)
 {
-  return p.x * q.x + p.y * q.y;
+  بازگشت p.x * q.x + p.y * q.y;
 }
 
-static inline hb_cairo_point_t
+ایستا درونخطی hb_cairo_point_t
 _hb_cairo_normalize (hb_cairo_point_t p)
 {
-  float len = sqrtf (_hb_cairo_dot (p, p));
+  اعشاری len = sqrtf (_hb_cairo_dot (p, p));
 
-  return hb_cairo_point_t { p.x / len, p.y / len };
+  بازگشت hb_cairo_point_t { p.x / len, p.y / len };
 }
 
-static inline hb_cairo_point_t
+ایستا درونخطی hb_cairo_point_t
 _hb_cairo_sum (hb_cairo_point_t p, hb_cairo_point_t q)
 {
-  return hb_cairo_point_t { p.x + q.x, p.y + q.y };
+  بازگشت hb_cairo_point_t { p.x + q.x, p.y + q.y };
 }
 
-static inline hb_cairo_point_t
+ایستا درونخطی hb_cairo_point_t
 _hb_cairo_difference (hb_cairo_point_t p, hb_cairo_point_t q)
 {
-  return hb_cairo_point_t { p.x - q.x, p.y - q.y };
+  بازگشت hb_cairo_point_t { p.x - q.x, p.y - q.y };
 }
 
-static inline hb_cairo_point_t
-_hb_cairo_scale (hb_cairo_point_t p, float f)
+ایستا درونخطی hb_cairo_point_t
+_hb_cairo_scale (hb_cairo_point_t p, اعشاری f)
 {
-  return hb_cairo_point_t { p.x * f, p.y * f };
+  بازگشت hb_cairo_point_t { p.x * f, p.y * f };
 }
 
-typedef struct {
+تعریفنوع ساختار {
   hb_cairo_point_t center, p0, c0, c1, p1;
   hb_cairo_color_t color0, color1;
 } hb_cairo_patch_t;
 
-static void
+ایستا تهی
 _hb_cairo_add_patch (cairo_pattern_t *pattern, hb_cairo_point_t *center, hb_cairo_patch_t *p)
 {
   cairo_mesh_pattern_begin_patch (pattern);
-  cairo_mesh_pattern_move_to (pattern, (double) center->x, (double) center->y);
-  cairo_mesh_pattern_line_to (pattern, (double) p->p0.x, (double) p->p0.y);
+  cairo_mesh_pattern_move_to (pattern, (دوگانه) center->x, (دوگانه) center->y);
+  cairo_mesh_pattern_سطر_to (pattern, (دوگانه) p->p0.x, (دوگانه) p->p0.y);
   cairo_mesh_pattern_curve_to (pattern,
-                               (double) p->c0.x, (double) p->c0.y,
-                               (double) p->c1.x, (double) p->c1.y,
-                               (double) p->p1.x, (double) p->p1.y);
-  cairo_mesh_pattern_line_to (pattern, (double) center->x, (double) center->y);
+                               (دوگانه) p->c0.x, (دوگانه) p->c0.y,
+                               (دوگانه) p->c1.x, (دوگانه) p->c1.y,
+                               (دوگانه) p->p1.x, (دوگانه) p->p1.y);
+  cairo_mesh_pattern_سطر_to (pattern, (دوگانه) center->x, (دوگانه) center->y);
   cairo_mesh_pattern_set_corner_color_rgba (pattern, 0,
-                                            (double) p->color0.r,
-                                            (double) p->color0.g,
-                                            (double) p->color0.b,
-                                            (double) p->color0.a);
+                                            (دوگانه) p->color0.r,
+                                            (دوگانه) p->color0.g,
+                                            (دوگانه) p->color0.b,
+                                            (دوگانه) p->color0.a);
   cairo_mesh_pattern_set_corner_color_rgba (pattern, 1,
-                                            (double) p->color0.r,
-                                            (double) p->color0.g,
-                                            (double) p->color0.b,
-                                            (double) p->color0.a);
+                                            (دوگانه) p->color0.r,
+                                            (دوگانه) p->color0.g,
+                                            (دوگانه) p->color0.b,
+                                            (دوگانه) p->color0.a);
   cairo_mesh_pattern_set_corner_color_rgba (pattern, 2,
-                                            (double) p->color1.r,
-                                            (double) p->color1.g,
-                                            (double) p->color1.b,
-                                            (double) p->color1.a);
+                                            (دوگانه) p->color1.r,
+                                            (دوگانه) p->color1.g,
+                                            (دوگانه) p->color1.b,
+                                            (دوگانه) p->color1.a);
   cairo_mesh_pattern_set_corner_color_rgba (pattern, 3,
-                                            (double) p->color1.r,
-                                            (double) p->color1.g,
-                                            (double) p->color1.b,
-                                            (double) p->color1.a);
+                                            (دوگانه) p->color1.r,
+                                            (دوگانه) p->color1.g,
+                                            (دوگانه) p->color1.b,
+                                            (دوگانه) p->color1.a);
   cairo_mesh_pattern_end_patch (pattern);
 }
 
 #define MAX_ANGLE (HB_PI / 8.f)
 
-static void
-_hb_cairo_add_sweep_gradient_patches1 (float cx, float cy, float radius,
-				       float a0, hb_cairo_color_t *c0,
-				       float a1, hb_cairo_color_t *c1,
+ایستا تهی
+_hb_cairo_add_sweep_gradient_patches1 (اعشاری cx, اعشاری cy, اعشاری radius,
+				       اعشاری a0, hb_cairo_color_t *c0,
+				       اعشاری a1, hb_cairo_color_t *c1,
 				       cairo_pattern_t *pattern)
 {
   hb_cairo_point_t center = hb_cairo_point_t { cx, cy };
-  int num_splits;
+  صحیح رقم_splits;
   hb_cairo_point_t p0;
   hb_cairo_color_t color0, color1;
 
-  num_splits = ceilf (fabsf (a1 - a0) / MAX_ANGLE);
+  رقم_splits = ceilf (fabsf (a1 - a0) / MAX_ANGLE);
   p0 = hb_cairo_point_t { cosf (a0), sinf (a0) };
   color0 = *c0;
 
-  for (int a = 0; a < num_splits; a++)
+  برای (صحیح a = 0; a < رقم_splits; a++)
     {
-      float k = (a + 1.) / num_splits;
-      float angle1;
+      اعشاری k = (a + 1.) / رقم_splits;
+      اعشاری angle1;
       hb_cairo_point_t p1;
       hb_cairo_point_t A, U;
       hb_cairo_point_t C0, C1;
@@ -533,10 +533,10 @@ _hb_cairo_add_sweep_gradient_patches1 (float cx, float cy, float radius,
     }
 }
 
-static inline hb_cairo_color_t
+ایستا درونخطی hb_cairo_color_t
 _hb_cairo_color_from_hb_color (hb_color_t c)
 {
-  return {
+  بازگشت {
     hb_color_get_red   (c) / 255.f,
     hb_color_get_green (c) / 255.f,
     hb_color_get_blue  (c) / 255.f,
@@ -544,15 +544,15 @@ _hb_cairo_color_from_hb_color (hb_color_t c)
   };
 }
 
-struct _hb_cairo_sweep_patch_ctx {
-  float cx, cy, radius;
+ساختار _hb_cairo_sweep_patch_ctx {
+  اعشاری cx, cy, radius;
   cairo_pattern_t *pattern;
 };
 
-static void
-_hb_cairo_sweep_emit_patch (float a0, hb_color_t c0,
-			    float a1, hb_color_t c1,
-			    void *user_data)
+ایستا تهی
+_hb_cairo_sweep_emit_patch (اعشاری a0, hb_color_t c0,
+			    اعشاری a1, hb_color_t c1,
+			    تهی *user_data)
 {
   auto *ctx = (_hb_cairo_sweep_patch_ctx *) user_data;
   hb_cairo_color_t cc0 = _hb_cairo_color_from_hb_color (c0);
@@ -562,14 +562,14 @@ _hb_cairo_sweep_emit_patch (float a0, hb_color_t c0,
 					 ctx->pattern);
 }
 
-static void
+ایستا تهی
 _hb_cairo_add_sweep_gradient_patches (hb_color_stop_t *stops,
-				      unsigned int n_stops,
+				      unsigned صحیح n_stops,
 				      cairo_extend_t extend,
-				      float cx, float cy,
-				      float radius,
-				      float start_angle,
-				      float end_angle,
+				      اعشاری cx, اعشاری cy,
+				      اعشاری radius,
+				      اعشاری start_angle,
+				      اعشاری end_angle,
 				      cairo_pattern_t *pattern)
 {
   hb_paint_extend_t hb_extend =
@@ -583,37 +583,37 @@ _hb_cairo_add_sweep_gradient_patches (hb_color_stop_t *stops,
 				 _hb_cairo_sweep_emit_patch, &ctx);
 }
 
-void
+تهی
 _hb_cairo_paint_sweep_gradient (hb_cairo_context_t *c,
-				hb_color_line_t *color_line,
-				float cx, float cy,
-				float start_angle,
-				float end_angle)
+				hb_color_سطر_t *color_سطر,
+				اعشاری cx, اعشاری cy,
+				اعشاری start_angle,
+				اعشاری end_angle)
 {
   cairo_t *cr = c->cr;
 
-  unsigned int len = PREALLOCATED_COLOR_STOPS;
+  unsigned صحیح len = PREALLOCATED_COLOR_STOPS;
   hb_color_stop_t stops_[PREALLOCATED_COLOR_STOPS];
   hb_color_stop_t *stops = stops_;
   cairo_extend_t extend;
-  double x1, y1, x2, y2;
-  float max_x, max_y, radius;
+  دوگانه x1, y1, x2, y2;
+  اعشاری max_x, max_y, radius;
   cairo_pattern_t *pattern;
 
-  if (unlikely (!_hb_cairo_get_color_stops (c, color_line, &len, &stops)))
-    return;
+  اگر (unlikely (!_hb_cairo_get_color_stops (c, color_سطر, &len, &stops)))
+    بازگشت;
 
   hb_array_t<hb_color_stop_t> (stops, len)
-    .qsort ([] (const hb_color_stop_t &a, const hb_color_stop_t &b) {
-      return (a.offset > b.offset) - (a.offset < b.offset);
+    .qsort ([] (ثابت hb_color_stop_t &a, ثابت hb_color_stop_t &b) {
+      بازگشت (a.offset > b.offset) - (a.offset < b.offset);
     });
 
   cairo_clip_extents (cr, &x1, &y1, &x2, &y2);
-  max_x = (float) hb_max ((x1 - (double) cx) * (x1 - (double) cx), (x2 - (double) cx) * (x2 - (double) cx));
-  max_y = (float) hb_max ((y1 - (double) cy) * (y1 - (double) cy), (y2 - (double) cy) * (y2 - (double) cy));
+  max_x = (اعشاری) hb_max ((x1 - (دوگانه) cx) * (x1 - (دوگانه) cx), (x2 - (دوگانه) cx) * (x2 - (دوگانه) cx));
+  max_y = (اعشاری) hb_max ((y1 - (دوگانه) cy) * (y1 - (دوگانه) cy), (y2 - (دوگانه) cy) * (y2 - (دوگانه) cy));
   radius = sqrtf (max_x + max_y);
 
-  extend = hb_cairo_extend (hb_color_line_get_extend (color_line));
+  extend = hb_cairo_extend (hb_color_سطر_get_extend (color_سطر));
   pattern = cairo_pattern_create_mesh ();
 
   _hb_cairo_add_sweep_gradient_patches (stops, len, extend, cx, cy,
@@ -624,7 +624,7 @@ _hb_cairo_paint_sweep_gradient (hb_cairo_context_t *c,
 
   cairo_pattern_destroy (pattern);
 
-  if (stops != stops_)
+  اگر (stops != stops_)
     hb_free (stops);
 }
 

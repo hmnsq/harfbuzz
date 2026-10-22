@@ -25,14 +25,14 @@
  * Red Hat Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
-#include "hb-blob.hh"
+#شامل "hb.hh"
+#شامل "hb-blob.hh"
 
 #ifdef HAVE_SYS_MMAN_H
 #ifdef HAVE_UNISTD_H
-#include <unistd.h>
+#شامل <unistd.h>
 #endif /* HAVE_UNISTD_H */
-#include <sys/mman.h>
+#شامل <sys/mman.h>
 #endif /* HAVE_SYS_MMAN_H */
 
 
@@ -66,22 +66,22 @@
  * Since: 0.9.2
  **/
 hb_blob_t *
-hb_blob_create (const char        *data,
-		unsigned int       length,
+hb_blob_create (ثابت نویسه        *data,
+		unsigned صحیح       length,
 		hb_memory_mode_t   mode,
-		void              *user_data,
+		تهی              *user_data,
 		hb_destroy_func_t  destroy)
 {
-  if (!length)
+  اگر (!length)
   {
-    if (destroy)
+    اگر (destroy)
       destroy (user_data);
-    return hb_blob_get_empty ();
+    بازگشت hb_blob_get_empty ();
   }
 
   hb_blob_t *blob = hb_blob_create_or_fail (data, length, mode,
 					    user_data, destroy);
-  return likely (blob) ? blob : hb_blob_get_empty ();
+  بازگشت likely (blob) ? blob : hb_blob_get_empty ();
 }
 
 /**
@@ -104,20 +104,20 @@ hb_blob_create (const char        *data,
  * Since: 2.8.2
  **/
 hb_blob_t *
-hb_blob_create_or_fail (const char        *data,
-			unsigned int       length,
+hb_blob_create_or_fail (ثابت نویسه        *data,
+			unsigned صحیح       length,
 			hb_memory_mode_t   mode,
-			void              *user_data,
+			تهی              *user_data,
 			hb_destroy_func_t  destroy)
 {
   hb_blob_t *blob;
 
-  if (length >= 1u << 31 ||
+  اگر (length >= 1u << 31 ||
       !(blob = hb_object_create<hb_blob_t> ()))
   {
-    if (destroy)
+    اگر (destroy)
       destroy (user_data);
-    return nullptr;
+    بازگشت nullptr;
   }
 
   blob->data = data;
@@ -127,20 +127,20 @@ hb_blob_create_or_fail (const char        *data,
   blob->user_data = user_data;
   blob->destroy = destroy;
 
-  if (blob->mode == HB_MEMORY_MODE_DUPLICATE) {
+  اگر (blob->mode == HB_MEMORY_MODE_DUPLICATE) {
     blob->mode = HB_MEMORY_MODE_READONLY;
-    if (!blob->try_make_writable ())
+    اگر (!blob->try_make_writable ())
     {
       hb_blob_destroy (blob);
-      return nullptr;
+      بازگشت nullptr;
     }
   }
 
-  return blob;
+  بازگشت blob;
 }
 
-static void
-_hb_blob_destroy (void *data)
+ایستا تهی
+_hb_blob_destroy (تهی *data)
 {
   hb_blob_destroy ((hb_blob_t *) data);
 }
@@ -167,13 +167,13 @@ _hb_blob_destroy (void *data)
  **/
 hb_blob_t *
 hb_blob_create_sub_blob (hb_blob_t    *parent,
-			 unsigned int  offset,
-			 unsigned int  length)
+			 unsigned صحیح  offset,
+			 unsigned صحیح  length)
 {
   hb_blob_t *blob;
 
-  if (!length || !parent || offset >= parent->length)
-    return hb_blob_get_empty ();
+  اگر (!length || !parent || offset >= parent->length)
+    بازگشت hb_blob_get_empty ();
 
   hb_blob_make_immutable (parent);
 
@@ -183,7 +183,7 @@ hb_blob_create_sub_blob (hb_blob_t    *parent,
 			 hb_blob_reference (parent),
 			 _hb_blob_destroy);
 
-  return blob;
+  بازگشت blob;
 }
 
 /**
@@ -205,10 +205,10 @@ hb_blob_copy_writable_or_fail (hb_blob_t *blob)
 			 nullptr,
 			 nullptr);
 
-  if (unlikely (blob == hb_blob_get_empty ()))
+  اگر (unlikely (blob == hb_blob_get_empty ()))
     blob = nullptr;
 
-  return blob;
+  بازگشت blob;
 }
 
 /**
@@ -225,7 +225,7 @@ hb_blob_copy_writable_or_fail (hb_blob_t *blob)
 hb_blob_t *
 hb_blob_get_empty ()
 {
-  return const_cast<hb_blob_t *> (&Null (hb_blob_t));
+  بازگشت const_cast<hb_blob_t *> (&Null (hb_blob_t));
 }
 
 /**
@@ -243,7 +243,7 @@ hb_blob_get_empty ()
 hb_blob_t *
 hb_blob_reference (hb_blob_t *blob)
 {
-  return hb_object_reference (blob);
+  بازگشت hb_object_reference (blob);
 }
 
 /**
@@ -258,10 +258,10 @@ hb_blob_reference (hb_blob_t *blob)
  *
  * Since: 0.9.2
  **/
-void
+تهی
 hb_blob_destroy (hb_blob_t *blob)
 {
-  if (!hb_object_destroy (blob)) return;
+  اگر (!hb_object_destroy (blob)) بازگشت;
 
   hb_free (blob);
 }
@@ -282,12 +282,12 @@ hb_blob_destroy (hb_blob_t *blob)
  **/
 hb_bool_t
 hb_blob_set_user_data (hb_blob_t          *blob,
-		       hb_user_data_key_t *key,
-		       void *              data,
+		       hb_user_data_کلید_t *key,
+		       تهی *              data,
 		       hb_destroy_func_t   destroy,
 		       hb_bool_t           replace)
 {
-  return hb_object_set_user_data (blob, key, data, destroy, replace);
+  بازگشت hb_object_set_user_data (blob, key, data, destroy, replace);
 }
 
 /**
@@ -302,11 +302,11 @@ hb_blob_set_user_data (hb_blob_t          *blob,
  *
  * Since: 0.9.2
  **/
-void *
-hb_blob_get_user_data (const hb_blob_t    *blob,
-		       hb_user_data_key_t *key)
+تهی *
+hb_blob_get_user_data (ثابت hb_blob_t    *blob,
+		       hb_user_data_کلید_t *key)
 {
-  return hb_object_get_user_data (blob, key);
+  بازگشت hb_object_get_user_data (blob, key);
 }
 
 
@@ -318,11 +318,11 @@ hb_blob_get_user_data (const hb_blob_t    *blob,
  *
  * Since: 0.9.2
  **/
-void
+تهی
 hb_blob_make_immutable (hb_blob_t *blob)
 {
-  if (hb_object_is_immutable (blob))
-    return;
+  اگر (hb_object_is_immutable (blob))
+    بازگشت;
 
   hb_object_make_immutable (blob);
 }
@@ -340,7 +340,7 @@ hb_blob_make_immutable (hb_blob_t *blob)
 hb_bool_t
 hb_blob_is_immutable (hb_blob_t *blob)
 {
-  return hb_object_is_immutable (blob);
+  بازگشت hb_object_is_immutable (blob);
 }
 
 
@@ -354,10 +354,10 @@ hb_blob_is_immutable (hb_blob_t *blob)
  *
  * Since: 0.9.2
  **/
-unsigned int
+unsigned صحیح
 hb_blob_get_length (hb_blob_t *blob)
 {
-  return blob->length;
+  بازگشت blob->length;
 }
 
 /**
@@ -371,13 +371,13 @@ hb_blob_get_length (hb_blob_t *blob)
  *
  * Since: 0.9.2
  **/
-const char *
-hb_blob_get_data (hb_blob_t *blob, unsigned int *length)
+ثابت نویسه *
+hb_blob_get_data (hb_blob_t *blob, unsigned صحیح *length)
 {
-  if (length)
+  اگر (length)
     *length = blob->length;
 
-  return blob->data;
+  بازگشت blob->data;
 }
 
 /**
@@ -396,113 +396,113 @@ hb_blob_get_data (hb_blob_t *blob, unsigned int *length)
  *
  * Since: 0.9.2
  **/
-char *
-hb_blob_get_data_writable (hb_blob_t *blob, unsigned int *length)
+نویسه *
+hb_blob_get_data_writable (hb_blob_t *blob, unsigned صحیح *length)
 {
-  if (hb_object_is_immutable (blob) ||
+  اگر (hb_object_is_immutable (blob) ||
      !blob->try_make_writable ())
   {
-    if (length) *length = 0;
-    return nullptr;
+    اگر (length) *length = 0;
+    بازگشت nullptr;
   }
 
-  if (length) *length = blob->length;
-  return const_cast<char *> (blob->data);
+  اگر (length) *length = blob->length;
+  بازگشت const_cast<نویسه *> (blob->data);
 }
 
 
-bool
+منطقی
 hb_blob_t::try_make_writable_inplace_unix ()
 {
-#if defined(HAVE_SYS_MMAN_H) && defined(HAVE_MPROTECT)
+#اگر defined(HAVE_SYS_MMAN_H) && defined(HAVE_MPROTECT)
   uintptr_t pagesize = -1, mask, length;
-  const char *addr;
+  ثابت نویسه *addr;
 
-#if defined(HAVE_SYSCONF) && defined(_SC_PAGE_SIZE)
+#اگر defined(HAVE_SYSCONF) && defined(_SC_PAGE_SIZE)
   pagesize = (uintptr_t) sysconf (_SC_PAGE_SIZE);
-#elif defined(HAVE_SYSCONF) && defined(_SC_PAGESIZE)
+#وگرنهاگر defined(HAVE_SYSCONF) && defined(_SC_PAGESIZE)
   pagesize = (uintptr_t) sysconf (_SC_PAGESIZE);
-#elif defined(HAVE_GETPAGESIZE)
+#وگرنهاگر defined(HAVE_GETPAGESIZE)
   pagesize = (uintptr_t) getpagesize ();
 #endif
 
-  if ((uintptr_t) -1L == pagesize) {
-    DEBUG_MSG_FUNC (BLOB, this, "failed to get pagesize: %s", strerror (errno));
-    return false;
+  اگر ((uintptr_t) -1L == pagesize) {
+    DEBUG_پیام_FUNC (BLOB, این, "failed to get pagesize: %s", strerror (errno));
+    بازگشت نادرست;
   }
-  DEBUG_MSG_FUNC (BLOB, this, "pagesize is %lu", (unsigned long) pagesize);
+  DEBUG_پیام_FUNC (BLOB, این, "pagesize is %lu", (unsigned long) pagesize);
 
   mask = ~(pagesize-1);
-  addr = (const char *) (((uintptr_t) this->data) & mask);
-  length = (const char *) (((uintptr_t) this->data + this->length + pagesize-1) & mask)  - addr;
-  DEBUG_MSG_FUNC (BLOB, this,
+  addr = (ثابت نویسه *) (((uintptr_t) این->data) & mask);
+  length = (ثابت نویسه *) (((uintptr_t) این->data + این->length + pagesize-1) & mask)  - addr;
+  DEBUG_پیام_FUNC (BLOB, این,
 		  "calling mprotect on [%p..%p] (%lu bytes)",
 		  addr, addr+length, (unsigned long) length);
-  if (-1 == mprotect ((void *) addr, length, PROT_READ | PROT_WRITE)) {
-    DEBUG_MSG_FUNC (BLOB, this, "mprotect failed: %s", strerror (errno));
-    return false;
+  اگر (-1 == mprotect ((تهی *) addr, length, PROT_READ | PROT_WRITE)) {
+    DEBUG_پیام_FUNC (BLOB, این, "mprotect failed: %s", strerror (errno));
+    بازگشت نادرست;
   }
 
-  this->mode = HB_MEMORY_MODE_WRITABLE;
+  این->mode = HB_MEMORY_MODE_WRITABLE;
 
-  DEBUG_MSG_FUNC (BLOB, this,
+  DEBUG_پیام_FUNC (BLOB, این,
 		  "successfully made [%p..%p] (%lu bytes) writable\n",
 		  addr, addr+length, (unsigned long) length);
-  return true;
-#else
-  return false;
+  بازگشت درست;
+#وگرنه
+  بازگشت نادرست;
 #endif
 }
 
-bool
+منطقی
 hb_blob_t::try_make_writable_inplace ()
 {
-  DEBUG_MSG_FUNC (BLOB, this, "making writable inplace\n");
+  DEBUG_پیام_FUNC (BLOB, این, "making writable inplace\n");
 
-  if (this->try_make_writable_inplace_unix ())
-    return true;
+  اگر (این->try_make_writable_inplace_unix ())
+    بازگشت درست;
 
-  DEBUG_MSG_FUNC (BLOB, this, "making writable -> FAILED\n");
+  DEBUG_پیام_FUNC (BLOB, این, "making writable -> FAILED\n");
 
   /* Failed to make writable inplace, mark that */
-  this->mode = HB_MEMORY_MODE_READONLY;
-  return false;
+  این->mode = HB_MEMORY_MODE_READONLY;
+  بازگشت نادرست;
 }
 
-bool
+منطقی
 hb_blob_t::try_make_writable ()
 {
-  if (unlikely (!length))
+  اگر (unlikely (!length))
     mode = HB_MEMORY_MODE_WRITABLE;
 
-  if (this->mode == HB_MEMORY_MODE_WRITABLE)
-    return true;
+  اگر (این->mode == HB_MEMORY_MODE_WRITABLE)
+    بازگشت درست;
 
-  if (this->mode == HB_MEMORY_MODE_READONLY_MAY_MAKE_WRITABLE && this->try_make_writable_inplace ())
-    return true;
+  اگر (این->mode == HB_MEMORY_MODE_READONLY_MAY_MAKE_WRITABLE && این->try_make_writable_inplace ())
+    بازگشت درست;
 
-  if (this->mode == HB_MEMORY_MODE_WRITABLE)
-    return true;
+  اگر (این->mode == HB_MEMORY_MODE_WRITABLE)
+    بازگشت درست;
 
 
-  DEBUG_MSG_FUNC (BLOB, this, "current data is -> %p\n", this->data);
+  DEBUG_پیام_FUNC (BLOB, این, "current data is -> %p\n", این->data);
 
-  char *new_data;
+  نویسه *new_data;
 
-  new_data = (char *) hb_malloc (this->length);
-  if (unlikely (!new_data))
-    return false;
+  new_data = (نویسه *) hb_malloc (این->length);
+  اگر (unlikely (!new_data))
+    بازگشت نادرست;
 
-  DEBUG_MSG_FUNC (BLOB, this, "dupped successfully -> %p\n", this->data);
+  DEBUG_پیام_FUNC (BLOB, این, "dupped successfully -> %p\n", این->data);
 
-  hb_memcpy (new_data, this->data, this->length);
-  this->destroy_user_data ();
-  this->mode = HB_MEMORY_MODE_WRITABLE;
-  this->data = new_data;
-  this->user_data = new_data;
-  this->destroy = hb_free;
+  hb_memcpy (new_data, این->data, این->length);
+  این->destroy_user_data ();
+  این->mode = HB_MEMORY_MODE_WRITABLE;
+  این->data = new_data;
+  این->user_data = new_data;
+  این->destroy = hb_free;
 
-  return true;
+  بازگشت درست;
 }
 
 /*
@@ -511,7 +511,7 @@ hb_blob_t::try_make_writable ()
 
 #ifndef HB_NO_OPEN
 #ifdef HAVE_MMAP
-# if !defined(HB_NO_RESOURCE_FORK) && defined(__APPLE__)
+# اگر !defined(HB_NO_RESOURCE_FORK) && defined(__APPLE__)
 #  include <sys/paths.h>
 # endif
 # include <sys/types.h>
@@ -521,9 +521,9 @@ hb_blob_t::try_make_writable ()
 
 #ifdef _WIN32
 # include <windows.h>
-#else
-# ifndef O_BINARY
-#  define O_BINARY 0
+#وگرنه
+# ifndef O_دودویی
+#  define O_دودویی 0
 # endif
 #endif
 
@@ -531,27 +531,27 @@ hb_blob_t::try_make_writable ()
 # define MAP_NORESERVE 0
 #endif
 
-struct hb_mapped_file_t
+ساختار hb_mapped_file_t
 {
-  char *contents;
+  نویسه *contents;
   unsigned long length;
 #ifdef _WIN32
   HANDLE mapping;
 #endif
 };
 
-#if (defined(HAVE_MMAP) || defined(_WIN32)) && !defined(HB_NO_MMAP)
-static void
-_hb_mapped_file_destroy (void *file_)
+#اگر (defined(HAVE_MMAP) || defined(_WIN32)) && !defined(HB_NO_MMAP)
+ایستا تهی
+_hb_mapped_file_destroy (تهی *file_)
 {
   hb_mapped_file_t *file = (hb_mapped_file_t *) file_;
 #ifdef HAVE_MMAP
   munmap (file->contents, file->length);
-#elif defined(_WIN32)
+#وگرنهاگر defined(_WIN32)
   UnmapViewOfFile (file->contents);
   CloseHandle (file->mapping);
-#else
-  assert (0); // If we don't have mmap we shouldn't reach here
+#وگرنه
+  أكد (0); // If we don't have mmap we shouldn't reach here
 #endif
 
   hb_free (file);
@@ -559,35 +559,35 @@ _hb_mapped_file_destroy (void *file_)
 #endif
 
 #ifdef _PATH_RSRCFORKSPEC
-static int
-_open_resource_fork (const char *file_name, hb_mapped_file_t *file)
+ایستا صحیح
+_open_resource_fork (ثابت نویسه *file_name, hb_mapped_file_t *file)
 {
   size_t name_len = strlen (file_name);
-  size_t len = name_len + sizeof (_PATH_RSRCFORKSPEC);
+  size_t len = name_len + اندازه (_PATH_RSRCFORKSPEC);
 
-  char *rsrc_name = (char *) hb_malloc (len);
-  if (unlikely (!rsrc_name)) return -1;
+  نویسه *rsrc_name = (نویسه *) hb_malloc (len);
+  اگر (unlikely (!rsrc_name)) بازگشت -1;
 
   strncpy (rsrc_name, file_name, name_len);
   strncpy (rsrc_name + name_len, _PATH_RSRCFORKSPEC,
-	   sizeof (_PATH_RSRCFORKSPEC));
+	   اندازه (_PATH_RSRCFORKSPEC));
 
-  int fd = open (rsrc_name, O_RDONLY | O_BINARY, 0);
+  صحیح fd = open (rsrc_name, O_RDONLY | O_دودویی, 0);
   hb_free (rsrc_name);
 
-  if (fd != -1)
+  اگر (fd != -1)
   {
-    struct stat st;
-    if (fstat (fd, &st) != -1)
+    ساختار stat st;
+    اگر (fstat (fd, &st) != -1)
       file->length = (unsigned long) st.st_size;
-    else
+    وگرنه
     {
       close (fd);
       fd = -1;
     }
   }
 
-  return fd;
+  بازگشت fd;
 }
 #endif
 
@@ -609,34 +609,34 @@ _open_resource_fork (const char *file_name, hb_mapped_file_t *file)
  * Since: 1.7.7
  **/
 hb_blob_t *
-hb_blob_create_from_file (const char *file_name)
+hb_blob_create_from_file (ثابت نویسه *file_name)
 {
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (file_name);
-  return likely (blob) ? blob : hb_blob_get_empty ();
+  بازگشت likely (blob) ? blob : hb_blob_get_empty ();
 }
 
-#if defined(HAVE_MMAP) && !defined(HB_NO_MMAP)
-static hb_blob_t *
-_hb_blob_try_mmap (const char *file_name)
+#اگر defined(HAVE_MMAP) && !defined(HB_NO_MMAP)
+ایستا hb_blob_t *
+_hb_blob_try_mmap (ثابت نویسه *file_name)
 {
-  hb_mapped_file_t *file = (hb_mapped_file_t *) hb_calloc (1, sizeof (hb_mapped_file_t));
-  if (unlikely (!file)) return nullptr;
+  hb_mapped_file_t *file = (hb_mapped_file_t *) hb_calloc (1, اندازه (hb_mapped_file_t));
+  اگر (unlikely (!file)) بازگشت nullptr;
   auto file_guard = hb_make_scope_guard ([&]() { hb_free (file); });
 
-  int fd = open (file_name, O_RDONLY | O_BINARY, 0);
-  if (unlikely (fd == -1)) return nullptr;
+  صحیح fd = open (file_name, O_RDONLY | O_دودویی, 0);
+  اگر (unlikely (fd == -1)) بازگشت nullptr;
   auto fd_guard = hb_make_scope_guard ([&]() { close (fd); });
 
-  struct stat st;
-  if (unlikely (fstat (fd, &st) == -1)) return nullptr;
+  ساختار stat st;
+  اگر (unlikely (fstat (fd, &st) == -1)) بازگشت nullptr;
 
   file->length = (unsigned long) st.st_size;
 
 #ifdef _PATH_RSRCFORKSPEC
-  if (unlikely (file->length == 0))
+  اگر (unlikely (file->length == 0))
   {
-    int rfd = _open_resource_fork (file_name, file);
-    if (rfd != -1)
+    صحیح rfd = _open_resource_fork (file_name, file);
+    اگر (rfd != -1)
     {
       close (fd);
       fd = rfd;
@@ -644,31 +644,31 @@ _hb_blob_try_mmap (const char *file_name)
   }
 #endif
 
-  file->contents = (char *) mmap (nullptr, file->length, PROT_READ,
+  file->contents = (نویسه *) mmap (nullptr, file->length, PROT_READ,
 				  MAP_PRIVATE | MAP_NORESERVE, fd, 0);
-  if (unlikely (file->contents == MAP_FAILED)) return nullptr;
+  اگر (unlikely (file->contents == MAP_FAILED)) بازگشت nullptr;
 
   file_guard.release ();
   /* fd_guard closes fd on return (ownership ends after mmap). */
-  return hb_blob_create_or_fail (file->contents, file->length,
-				 HB_MEMORY_MODE_READONLY_MAY_MAKE_WRITABLE, (void *) file,
+  بازگشت hb_blob_create_or_fail (file->contents, file->length,
+				 HB_MEMORY_MODE_READONLY_MAY_MAKE_WRITABLE, (تهی *) file,
 				 (hb_destroy_func_t) _hb_mapped_file_destroy);
 }
-#elif defined(_WIN32) && !defined(HB_NO_MMAP)
-static hb_blob_t *
-_hb_blob_try_mmap (const char *file_name)
+#وگرنهاگر defined(_WIN32) && !defined(HB_NO_MMAP)
+ایستا hb_blob_t *
+_hb_blob_try_mmap (ثابت نویسه *file_name)
 {
-  hb_mapped_file_t *file = (hb_mapped_file_t *) hb_calloc (1, sizeof (hb_mapped_file_t));
-  if (unlikely (!file)) return nullptr;
+  hb_mapped_file_t *file = (hb_mapped_file_t *) hb_calloc (1, اندازه (hb_mapped_file_t));
+  اگر (unlikely (!file)) بازگشت nullptr;
   auto file_guard = hb_make_scope_guard ([&]() { hb_free (file); });
 
   size_t size = strlen (file_name) + 1;
-  wchar_t *wchar_file_name = (wchar_t *) hb_malloc (sizeof (wchar_t) * size);
-  if (unlikely (!wchar_file_name)) return nullptr;
+  wchar_t *wchar_file_name = (wchar_t *) hb_malloc (اندازه (wchar_t) * size);
+  اگر (unlikely (!wchar_file_name)) بازگشت nullptr;
 
   /* Assume file name is given in UTF-8 encoding */
-  int conversion = MultiByteToWideChar (CP_UTF8, MB_ERR_INVALID_CHARS, file_name, -1, wchar_file_name, size);
-  if (conversion <= 0)
+  صحیح conversion = MultiByteToWideChar (CP_UTF8, MB_ERR_INVALID_CHARS, file_name, -1, wchar_file_name, size);
+  اگر (conversion <= 0)
   {
     /* Conversion failed due to invalid UTF-8 characters,
        Repeat conversion based on system code page */
@@ -676,10 +676,10 @@ _hb_blob_try_mmap (const char *file_name)
   }
 
   HANDLE fd;
-#if !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
+#اگر !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
   {
     CREATEFILE2_EXTENDED_PARAMETERS ceparams = { 0 };
-    ceparams.dwSize = sizeof(CREATEFILE2_EXTENDED_PARAMETERS);
+    ceparams.dwSize = اندازه(CREATEFILE2_EXTENDED_PARAMETERS);
     ceparams.dwFileAttributes = FILE_ATTRIBUTE_NORMAL | FILE_FLAG_OVERLAPPED & 0xFFFF;
     ceparams.dwFileFlags = FILE_ATTRIBUTE_NORMAL | FILE_FLAG_OVERLAPPED & 0xFFF00000;
     ceparams.dwSecurityQosFlags = FILE_ATTRIBUTE_NORMAL | FILE_FLAG_OVERLAPPED & 0x000F0000;
@@ -688,84 +688,84 @@ _hb_blob_try_mmap (const char *file_name)
     fd = CreateFile2 (wchar_file_name, GENERIC_READ, FILE_SHARE_READ,
 		      OPEN_EXISTING, &ceparams);
   }
-#else
+#وگرنه
   fd = CreateFileW (wchar_file_name, GENERIC_READ, FILE_SHARE_READ, nullptr,
 		    OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL|FILE_FLAG_OVERLAPPED,
 		    nullptr);
 #endif
   hb_free (wchar_file_name);
 
-  if (unlikely (fd == INVALID_HANDLE_VALUE)) return nullptr;
+  اگر (unlikely (fd == INVALID_HANDLE_مقدار)) بازگشت nullptr;
   auto fd_guard = hb_make_scope_guard ([&]() { CloseHandle (fd); });
 
-#if !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
+#اگر !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
   {
     LARGE_INTEGER length;
     GetFileSizeEx (fd, &length);
-    file->length = length.LowPart;
+    file->length = length.کم_Part;
     file->mapping = CreateFileMappingFromApp (fd, nullptr, PAGE_READONLY, length.QuadPart, nullptr);
   }
-#else
+#وگرنه
   file->length = (unsigned long) GetFileSize (fd, nullptr);
   file->mapping = CreateFileMapping (fd, nullptr, PAGE_READONLY, 0, 0, nullptr);
 #endif
-  if (unlikely (!file->mapping)) return nullptr;
+  اگر (unlikely (!file->mapping)) بازگشت nullptr;
 
-#if !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
-  file->contents = (char *) MapViewOfFileFromApp (file->mapping, FILE_MAP_READ, 0, 0);
-#else
-  file->contents = (char *) MapViewOfFile (file->mapping, FILE_MAP_READ, 0, 0, 0);
+#اگر !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
+  file->contents = (نویسه *) MapViewOfFileFromApp (file->mapping, FILE_MAP_READ, 0, 0);
+#وگرنه
+  file->contents = (نویسه *) MapViewOfFile (file->mapping, FILE_MAP_READ, 0, 0, 0);
 #endif
-  if (unlikely (!file->contents)) return nullptr;
+  اگر (unlikely (!file->contents)) بازگشت nullptr;
 
   file_guard.release ();
   /* fd_guard closes fd on return. */
-  return hb_blob_create_or_fail (file->contents, file->length,
-				 HB_MEMORY_MODE_READONLY_MAY_MAKE_WRITABLE, (void *) file,
+  بازگشت hb_blob_create_or_fail (file->contents, file->length,
+				 HB_MEMORY_MODE_READONLY_MAY_MAKE_WRITABLE, (تهی *) file,
 				 (hb_destroy_func_t) _hb_mapped_file_destroy);
 }
 #endif
 
 /* Read a file without knowing its size beforehand.  Used as a fallback
  * for systems without mmap or to read from pipes. */
-static hb_blob_t *
-_hb_blob_read_file (const char *file_name)
+ایستا hb_blob_t *
+_hb_blob_read_file (ثابت نویسه *file_name)
 {
   unsigned long len = 0, allocated = BUFSIZ * 16;
-  char *data = (char *) hb_malloc (allocated);
-  if (unlikely (!data)) return nullptr;
+  نویسه *data = (نویسه *) hb_malloc (allocated);
+  اگر (unlikely (!data)) بازگشت nullptr;
   auto data_guard = hb_make_scope_guard ([&]() { hb_free (data); });
 
   FILE *fp = fopen (file_name, "rb");
-  if (unlikely (!fp)) return nullptr;
+  اگر (unlikely (!fp)) بازگشت nullptr;
   HB_SCOPE_GUARD (fclose (fp));
 
-  while (!feof (fp))
+  وقتی (!feof (fp))
   {
-    if (allocated - len < BUFSIZ)
+    اگر (allocated - len < BUFSIZ)
     {
       allocated *= 2;
       /* Don't allocate and go more than ~536MB, our mmap reader still
 	 can cover files like that but lets limit our fallback reader */
-      if (unlikely (allocated > (2 << 28))) return nullptr;
-      char *new_data = (char *) hb_realloc (data, allocated);
-      if (unlikely (!new_data)) return nullptr;
+      اگر (unlikely (allocated > (2 << 28))) بازگشت nullptr;
+      نویسه *new_data = (نویسه *) hb_realloc (data, allocated);
+      اگر (unlikely (!new_data)) بازگشت nullptr;
       data = new_data;
     }
 
     unsigned long addition = fread (data + len, 1, allocated - len, fp);
 
-    int err = ferror (fp);
+    صحیح err = ferror (fp);
 #ifdef EINTR // armcc doesn't have it
-    if (unlikely (err == EINTR)) continue;
+    اگر (unlikely (err == EINTR)) ادامه;
 #endif
-    if (unlikely (err)) return nullptr;
+    اگر (unlikely (err)) بازگشت nullptr;
 
     len += addition;
   }
 
   data_guard.release ();
-  return hb_blob_create_or_fail (data, len, HB_MEMORY_MODE_WRITABLE, data,
+  بازگشت hb_blob_create_or_fail (data, len, HB_MEMORY_MODE_WRITABLE, data,
 				 (hb_destroy_func_t) hb_free);
 }
 
@@ -786,14 +786,14 @@ _hb_blob_read_file (const char *file_name)
  * Since: 2.8.2
  **/
 hb_blob_t *
-hb_blob_create_from_file_or_fail (const char *file_name)
+hb_blob_create_from_file_or_fail (ثابت نویسه *file_name)
 {
   /* Adopted from glib's gmappedfile.c with Matthias Clasen and
      Allison Lortie permission but changed a lot to suit our need. */
-#if (defined(HAVE_MMAP) || defined(_WIN32)) && !defined(HB_NO_MMAP)
-  if (hb_blob_t *blob = _hb_blob_try_mmap (file_name))
-    return blob;
+#اگر (defined(HAVE_MMAP) || defined(_WIN32)) && !defined(HB_NO_MMAP)
+  اگر (hb_blob_t *blob = _hb_blob_try_mmap (file_name))
+    بازگشت blob;
 #endif
-  return _hb_blob_read_file (file_name);
+  بازگشت _hb_blob_read_file (file_name);
 }
 #endif /* !HB_NO_OPEN */

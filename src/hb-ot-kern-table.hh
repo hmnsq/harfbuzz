@@ -27,8 +27,8 @@
 #ifndef HB_OT_KERN_TABLE_HH
 #define HB_OT_KERN_TABLE_HH
 
-#include "hb-aat-layout-common.hh"
-#include "hb-aat-layout-kerx-table.hh"
+#شامل "hb-aat-layout-common.hh"
+#شامل "hb-aat-layout-kerx-table.hh"
 
 
 /*
@@ -39,153 +39,153 @@
 #define HB_OT_TAG_kern HB_TAG('k','e','r','n')
 
 
-namespace OT {
+فضاینام OT {
 
 
 template <typename KernSubTableHeader>
-struct KernSubTableFormat3
+ساختار KernSubTableFormat3
 {
-  int get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+  صحیح get_kerning (hb_codepoint_t left, hb_codepoint_t راست) ثابت
   {
-    hb_array_t<const FWORD> kernValue = kernValueZ.as_array (kernValueCount);
-    hb_array_t<const HBUINT8> leftClass = StructAfter<const UnsizedArrayOf<HBUINT8>> (kernValue).as_array (glyphCount);
-    hb_array_t<const HBUINT8> rightClass = StructAfter<const UnsizedArrayOf<HBUINT8>> (leftClass).as_array (glyphCount);
-    hb_array_t<const HBUINT8> kernIndex = StructAfter<const UnsizedArrayOf<HBUINT8>> (rightClass).as_array (leftClassCount * rightClassCount);
+    hb_array_t<ثابت FWORD> kern_مقدار = kern_مقدار_Z.as_array (kern_مقدار_شمار);
+    hb_array_t<ثابت HBUINT8> چپ_Class = StructAfter<ثابت UnsizedArrayOf<HBUINT8>> (kern_مقدار).as_array (glyph_شمار_2);
+    hb_array_t<ثابت HBUINT8> راست_Class = StructAfter<ثابت UnsizedArrayOf<HBUINT8>> (چپ_Class).as_array (glyph_شمار_2);
+    hb_array_t<ثابت HBUINT8> kernIndex = StructAfter<ثابت UnsizedArrayOf<HBUINT8>> (راست_Class).as_array (چپ_Class_شمار * راست_Class_شمار);
 
-    unsigned int leftC = leftClass[left];
-    unsigned int rightC = rightClass[right];
-    if (unlikely (leftC >= leftClassCount || rightC >= rightClassCount))
-      return 0;
-    unsigned int i = leftC * rightClassCount + rightC;
-    return kernValue[kernIndex[i]];
+    unsigned صحیح چپ_C = چپ_Class[left];
+    unsigned صحیح راست_C = راست_Class[راست];
+    اگر (unlikely (چپ_C >= چپ_Class_شمار || راست_C >= راست_Class_شمار))
+      بازگشت 0;
+    unsigned صحیح i = چپ_C * راست_Class_شمار + راست_C;
+    بازگشت kern_مقدار[kernIndex[i]];
   }
 
-  bool apply (AAT::hb_aat_apply_context_t *c) const
+  منطقی apply (AAT::hb_aat_apply_context_t *c) ثابت
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (این);
 
-    if (!c->plan->requested_kerning)
-      return false;
+    اگر (!c->plan->requested_kerning)
+      بازگشت نادرست;
 
-    if (header.coverage & header.Backwards)
-      return false;
+    اگر (header.coverage & header.Backwards)
+      بازگشت نادرست;
 
-    hb_kern_machine_t<KernSubTableFormat3> machine (*this, header.coverage & header.CrossStream);
+    hb_kern_machine_t<KernSubTableFormat3> machine (*این, header.coverage & header.CrossStream);
     machine.kern (c->font, c->buffer, c->plan->kern_mask);
 
-    return_trace (true);
+    return_trace (درست);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این) &&
 		  hb_barrier () &&
-		  c->check_range (kernValueZ,
-				  kernValueCount * sizeof (FWORD) +
-				  glyphCount * 2 +
-				  leftClassCount * rightClassCount));
+		  c->check_range (kern_مقدار_Z,
+				  kern_مقدار_شمار * اندازه (FWORD) +
+				  glyph_شمار_2 * 2 +
+				  چپ_Class_شمار * راست_Class_شمار));
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &left_set, set_t &right_set, unsigned num_glyphs) const
+  تهی collect_glyphs (set_t &چپ_set, set_t &راست_set, unsigned رقم_glyphs) ثابت
   {
-    if (likely (glyphCount))
+    اگر (likely (glyph_شمار_2))
     {
-      left_set.add_range (0, num_glyphs - 1);
-      right_set.add_range (0, num_glyphs - 1);
+      چپ_set.add_range (0, رقم_glyphs - 1);
+      راست_set.add_range (0, رقم_glyphs - 1);
     }
   }
 
-  protected:
+  محافظتشده:
   KernSubTableHeader
 		header;
-  HBUINT16	glyphCount;	/* The number of glyphs in this font. */
-  HBUINT8	kernValueCount;	/* The number of kerning values. */
-  HBUINT8	leftClassCount;	/* The number of left-hand classes. */
-  HBUINT8	rightClassCount;/* The number of right-hand classes. */
+  HBUINT16	glyph_شمار_2;	/* The number of glyphs in this font. */
+  HBUINT8	kern_مقدار_شمار;	/* The number of kerning values. */
+  HBUINT8	چپ_Class_شمار;	/* The number of left-hand classes. */
+  HBUINT8	راست_Class_شمار;/* The number of right-hand classes. */
   HBUINT8	flags;		/* Set to zero (reserved for future use). */
   UnsizedArrayOf<FWORD>
-		kernValueZ;	/* The kerning values.
+		kern_مقدار_Z;	/* The kerning values.
 				 * Length kernValueCount. */
-#if 0
+#اگر 0
   UnsizedArrayOf<HBUINT8>
-		leftClass;	/* The left-hand classes.
+		چپ_Class;	/* The left-hand classes.
 				 * Length glyphCount. */
   UnsizedArrayOf<HBUINT8>
-		rightClass;	/* The right-hand classes.
+		راست_Class;	/* The right-hand classes.
 				 * Length glyphCount. */
   UnsizedArrayOf<HBUINT8>kernIndex;
 				/* The indices into the kernValue array.
 				 * Length leftClassCount * rightClassCount */
 #endif
-  public:
-  DEFINE_SIZE_ARRAY (KernSubTableHeader::static_size + 6, kernValueZ);
+  عمومی:
+  DEFINE_SIZE_ARRAY (KernSubTableHeader::static_size + 6, kern_مقدار_Z);
 };
 
 template <typename KernSubTableHeader>
-struct KernSubTable
+ساختار KernSubTable
 {
-  size_t get_size () const { return u.header.length; }
-  unsigned int get_type () const { return u.header.format; }
+  size_t get_size () ثابت { بازگشت u.header.length; }
+  unsigned صحیح get_type () ثابت { بازگشت u.header.format; }
 
-  int get_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+  صحیح get_kerning (hb_codepoint_t left, hb_codepoint_t راست) ثابت
   {
-    switch (get_type ()) {
+    انتخاب (get_type ()) {
     /* This method hooks up to hb_font_t's get_h_kerning.  Only support Format0. */
-    case 0: hb_barrier (); return u.format0.get_kerning (left, right);
-    default:return 0;
+    حالت 0: hb_barrier (); بازگشت u.format0.get_kerning (left, راست);
+    پیشفرض:بازگشت 0;
     }
   }
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) ثابت
   {
-    unsigned int subtable_type = get_type ();
-    TRACE_DISPATCH (this, subtable_type);
-    switch (subtable_type) {
-    case 0:	hb_barrier (); return_trace (c->dispatch (u.format0));
+    unsigned صحیح subtable_type = get_type ();
+    TRACE_DISPATCH (این, subtable_type);
+    انتخاب (subtable_type) {
+    حالت 0:	hb_barrier (); return_trace (c->dispatch (u.format0));
 #ifndef HB_NO_AAT_SHAPE
-    case 1:	hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    حالت 1:	hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
 #endif
-    case 2:	hb_barrier (); return_trace (c->dispatch (u.format2));
+    حالت 2:	hb_barrier (); return_trace (c->dispatch (u.format2));
 #ifndef HB_NO_AAT_SHAPE
-    case 3:	hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
+    حالت 3:	hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
 #endif
-    default:	return_trace (c->default_return_value ());
+    پیشفرض:	return_trace (c->default_return_مقدار ());
     }
   }
 
   template <typename set_t>
-  void collect_glyphs (set_t &left_set, set_t &right_set, unsigned num_glyphs) const
+  تهی collect_glyphs (set_t &چپ_set, set_t &راست_set, unsigned رقم_glyphs) ثابت
   {
-    unsigned int subtable_type = get_type ();
-    switch (subtable_type) {
-    case 0:	hb_barrier (); u.format0.collect_glyphs (left_set, right_set, num_glyphs); return;
+    unsigned صحیح subtable_type = get_type ();
+    انتخاب (subtable_type) {
+    حالت 0:	hb_barrier (); u.format0.collect_glyphs (چپ_set, راست_set, رقم_glyphs); بازگشت;
 #ifndef HB_NO_AAT_SHAPE
-    case 1:	hb_barrier (); u.format1.collect_glyphs (left_set, right_set, num_glyphs); return;
+    حالت 1:	hb_barrier (); u.format1.collect_glyphs (چپ_set, راست_set, رقم_glyphs); بازگشت;
 #endif
-    case 2:	hb_barrier (); u.format2.collect_glyphs (left_set, right_set, num_glyphs); return;
+    حالت 2:	hb_barrier (); u.format2.collect_glyphs (چپ_set, راست_set, رقم_glyphs); بازگشت;
 #ifndef HB_NO_AAT_SHAPE
-    case 3:	hb_barrier (); u.format3.collect_glyphs (left_set, right_set, num_glyphs); return;
+    حالت 3:	hb_barrier (); u.format3.collect_glyphs (چپ_set, راست_set, رقم_glyphs); بازگشت;
 #endif
-    default:	return;
+    پیشفرض:	بازگشت;
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!(u.header.sanitize (c) &&
+    TRACE_SANITIZE (این);
+    اگر (unlikely (!(u.header.sanitize (c) &&
 		    hb_barrier () &&
 		    u.header.length >= u.header.min_size &&
-		    c->check_range (this, u.header.length)))) return_trace (false);
+		    c->check_range (این, u.header.length)))) return_trace (نادرست);
 
     return_trace (dispatch (c));
   }
 
-  public:
-  union {
+  عمومی:
+  اجتماع {
   KernSubTableHeader				header;
   AAT::KerxSubTableFormat0<KernSubTableHeader>	format0;
 #ifndef HB_NO_AAT_SHAPE
@@ -196,20 +196,20 @@ struct KernSubTable
   KernSubTableFormat3<KernSubTableHeader>	format3;
 #endif
   } u;
-  public:
+  عمومی:
   DEFINE_SIZE_MIN (KernSubTableHeader::static_size);
 };
 
 
-struct KernOTSubTableHeader
+ساختار KernOTSubTableHeader
 {
-  static constexpr bool apple = false;
-  typedef AAT::ObsoleteTypes Types;
+  ایستا constexpr منطقی apple = نادرست;
+  تعریفنوع AAT::ObsoleteTypes Types;
 
-  unsigned   tuple_count () const { return 0; }
-  bool     is_horizontal () const { return (coverage & Horizontal); }
+  unsigned   tuple_شمار_2 () ثابت { بازگشت 0; }
+  منطقی     is_horizontal () ثابت { بازگشت (coverage & Horizontal); }
 
-  enum Coverage
+  شمارش Coverage
   {
     Horizontal	= 0x01u,
     Minimum	= 0x02u,
@@ -221,50 +221,50 @@ struct KernOTSubTableHeader
     Variation	= 0x00u,
   };
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این));
   }
 
-  public:
+  عمومی:
   HBUINT16	versionZ;	/* Unused. */
   HBUINT16	length;		/* Length of the subtable (including this header). */
   HBUINT8	format;		/* Subtable format. */
   HBUINT8	coverage;	/* Coverage bits. */
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (6);
 };
 
-struct KernOT : AAT::KerxTable<KernOT>
+ساختار KernOT : AAT::KerxTable<KernOT>
 {
-  friend struct AAT::KerxTable<KernOT>;
+  friend ساختار AAT::KerxTable<KernOT>;
 
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_kern;
-  static constexpr unsigned minVersion = 0u;
+  ایستا constexpr hb_tag_t tableTag = HB_OT_TAG_kern;
+  ایستا constexpr unsigned minVersion = 0u;
 
-  typedef KernOTSubTableHeader SubTableHeader;
-  typedef SubTableHeader::Types Types;
-  typedef KernSubTable<SubTableHeader> SubTable;
+  تعریفنوع KernOTSubTableHeader SubTableHeader;
+  تعریفنوع SubTableHeader::Types Types;
+  تعریفنوع KernSubTable<SubTableHeader> SubTable;
 
-  protected:
+  محافظتشده:
   HBUINT16	version;	/* Version--0x0000u */
-  HBUINT16	tableCount;	/* Number of subtables in the kerning table. */
+  HBUINT16	table_شمار;	/* Number of subtables in the kerning table. */
   SubTable	firstSubTable;	/* Subtables. */
-  public:
+  عمومی:
   DEFINE_SIZE_MIN (4);
 };
 
 
-struct KernAATSubTableHeader
+ساختار KernAATSubTableHeader
 {
-  static constexpr bool apple = true;
-  typedef AAT::ObsoleteTypes Types;
+  ایستا constexpr منطقی apple = درست;
+  تعریفنوع AAT::ObsoleteTypes Types;
 
-  unsigned   tuple_count () const { return 0; }
-  bool     is_horizontal () const { return !(coverage & Vertical); }
+  unsigned   tuple_شمار_2 () ثابت { بازگشت 0; }
+  منطقی     is_horizontal () ثابت { بازگشت !(coverage & Vertical); }
 
-  enum Coverage
+  شمارش Coverage
   {
     Vertical	= 0x80u,
     CrossStream	= 0x40u,
@@ -274,137 +274,137 @@ struct KernAATSubTableHeader
     Backwards	= 0x00u,
   };
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این));
   }
 
-  public:
+  عمومی:
   HBUINT32	length;		/* Length of the subtable (including this header). */
   HBUINT8	coverage;	/* Coverage bits. */
   HBUINT8	format;		/* Subtable format. */
   HBUINT16	tupleIndex;	/* The tuple index (used for variations fonts).
 				 * This value specifies which tuple this subtable covers.
 				 * Note: We don't implement. */
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (8);
 };
 
-struct KernAAT : AAT::KerxTable<KernAAT>
+ساختار KernAAT : AAT::KerxTable<KernAAT>
 {
-  friend struct AAT::KerxTable<KernAAT>;
+  friend ساختار AAT::KerxTable<KernAAT>;
 
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_kern;
-  static constexpr unsigned minVersion = 0x00010000u;
+  ایستا constexpr hb_tag_t tableTag = HB_OT_TAG_kern;
+  ایستا constexpr unsigned minVersion = 0x00010000u;
 
-  typedef KernAATSubTableHeader SubTableHeader;
-  typedef SubTableHeader::Types Types;
-  typedef KernSubTable<SubTableHeader> SubTable;
+  تعریفنوع KernAATSubTableHeader SubTableHeader;
+  تعریفنوع SubTableHeader::Types Types;
+  تعریفنوع KernSubTable<SubTableHeader> SubTable;
 
-  protected:
+  محافظتشده:
   HBUINT32	version;	/* Version--0x00010000u */
-  HBUINT32	tableCount;	/* Number of subtables in the kerning table. */
+  HBUINT32	table_شمار;	/* Number of subtables in the kerning table. */
   SubTable	firstSubTable;	/* Subtables. */
-  public:
+  عمومی:
   DEFINE_SIZE_MIN (8);
 };
 
-struct kern
+ساختار kern
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_kern;
+  ایستا constexpr hb_tag_t tableTag = HB_OT_TAG_kern;
 
-  bool     has_data () const { return u.version32.v; }
-  unsigned get_type () const { return u.major.v; }
+  منطقی     has_data () ثابت { بازگشت u.version32.v; }
+  unsigned get_type () ثابت { بازگشت u.major.v; }
 
-  bool has_state_machine () const
+  منطقی has_state_machine () ثابت
   {
-    switch (get_type ()) {
-    case 0: hb_barrier (); return u.ot.has_state_machine ();
+    انتخاب (get_type ()) {
+    حالت 0: hb_barrier (); بازگشت u.ot.has_state_machine ();
 #ifndef HB_NO_AAT_SHAPE
-    case 1: hb_barrier (); return u.aat.has_state_machine ();
+    حالت 1: hb_barrier (); بازگشت u.aat.has_state_machine ();
 #endif
-    default:return false;
+    پیشفرض:بازگشت نادرست;
     }
   }
 
-  bool has_cross_stream () const
+  منطقی has_cross_stream () ثابت
   {
-    switch (get_type ()) {
-    case 0: hb_barrier (); return u.ot.has_cross_stream ();
+    انتخاب (get_type ()) {
+    حالت 0: hb_barrier (); بازگشت u.ot.has_cross_stream ();
 #ifndef HB_NO_AAT_SHAPE
-    case 1: hb_barrier (); return u.aat.has_cross_stream ();
+    حالت 1: hb_barrier (); بازگشت u.aat.has_cross_stream ();
 #endif
-    default:return false;
+    پیشفرض:بازگشت نادرست;
     }
   }
 
-  int get_h_kerning (hb_codepoint_t left, hb_codepoint_t right) const
+  صحیح get_h_kerning (hb_codepoint_t left, hb_codepoint_t راست) ثابت
   {
-    switch (get_type ()) {
-    case 0: hb_barrier (); return u.ot.get_h_kerning (left, right);
+    انتخاب (get_type ()) {
+    حالت 0: hb_barrier (); بازگشت u.ot.get_h_kerning (left, راست);
 #ifndef HB_NO_AAT_SHAPE
-    case 1: hb_barrier (); return u.aat.get_h_kerning (left, right);
+    حالت 1: hb_barrier (); بازگشت u.aat.get_h_kerning (left, راست);
 #endif
-    default:return 0;
+    پیشفرض:بازگشت 0;
     }
   }
 
-  bool apply (AAT::hb_aat_apply_context_t *c,
-	      const AAT::kern_accelerator_data_t &accel_data) const
-  { return dispatch (c, accel_data); }
+  منطقی apply (AAT::hb_aat_apply_context_t *c,
+	      ثابت AAT::kern_accelerator_data_t &accel_data) ثابت
+  { بازگشت dispatch (c, accel_data); }
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) ثابت
   {
-    unsigned int subtable_type = get_type ();
-    TRACE_DISPATCH (this, subtable_type);
-    switch (subtable_type) {
-    case 0:	hb_barrier (); return_trace (c->dispatch (u.ot, std::forward<Ts> (ds)...));
+    unsigned صحیح subtable_type = get_type ();
+    TRACE_DISPATCH (این, subtable_type);
+    انتخاب (subtable_type) {
+    حالت 0:	hb_barrier (); return_trace (c->dispatch (u.ot, std::forward<Ts> (ds)...));
 #ifndef HB_NO_AAT_SHAPE
-    case 1:	hb_barrier (); return_trace (c->dispatch (u.aat, std::forward<Ts> (ds)...));
+    حالت 1:	hb_barrier (); return_trace (c->dispatch (u.aat, std::forward<Ts> (ds)...));
 #endif
-    default:	return_trace (c->default_return_value ());
+    پیشفرض:	return_trace (c->default_return_مقدار ());
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (!u.version32.v.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (این);
+    اگر (!u.version32.v.sanitize (c)) return_trace (نادرست);
     hb_barrier ();
     return_trace (dispatch (c));
   }
 
-  AAT::kern_accelerator_data_t create_accelerator_data (unsigned num_glyphs) const
+  AAT::kern_accelerator_data_t create_accelerator_data (unsigned رقم_glyphs) ثابت
   {
-    switch (get_type ()) {
-    case 0: hb_barrier (); return u.ot.create_accelerator_data (num_glyphs);
+    انتخاب (get_type ()) {
+    حالت 0: hb_barrier (); بازگشت u.ot.create_accelerator_data (رقم_glyphs);
 #ifndef HB_NO_AAT_SHAPE
-    case 1: hb_barrier (); return u.aat.create_accelerator_data (num_glyphs);
+    حالت 1: hb_barrier (); بازگشت u.aat.create_accelerator_data (رقم_glyphs);
 #endif
-    default:return AAT::kern_accelerator_data_t ();
+    پیشفرض:بازگشت AAT::kern_accelerator_data_t ();
     }
   }
 
-  struct accelerator_t
+  ساختار accelerator_t
   {
     accelerator_t (hb_face_t *face)
     {
       hb_sanitize_context_t sc;
-      this->table = sc.reference_table<kern> (face);
-      this->accel_data = this->table->create_accelerator_data (face->get_num_glyphs ());
+      این->table = sc.reference_table<kern> (face);
+      این->accel_data = این->table->create_accelerator_data (face->get_رقم_glyphs ());
     }
     ~accelerator_t ()
     {
-      this->table.destroy ();
+      این->table.destroy ();
     }
 
-    hb_blob_t *get_blob () const { return table.get_blob (); }
+    hb_blob_t *get_blob () ثابت { بازگشت table.get_blob (); }
 
-    bool apply (AAT::hb_aat_apply_context_t *c) const
+    منطقی apply (AAT::hb_aat_apply_context_t *c) ثابت
     {
-      return table->apply (c, accel_data);
+      بازگشت table->apply (c, accel_data);
     }
 
     hb_blob_ptr_t<kern> table;
@@ -412,20 +412,20 @@ struct kern
     AAT::hb_aat_scratch_t scratch;
   };
 
-  protected:
-  union {
-  struct { HBUINT32 v; }	version32;
-  struct { HBUINT16 v; }	major;
+  محافظتشده:
+  اجتماع {
+  ساختار { HBUINT32 v; }	version32;
+  ساختار { HBUINT16 v; }	major;
   KernOT		ot;
 #ifndef HB_NO_AAT_SHAPE
   KernAAT		aat;
 #endif
   } u;
-  public:
+  عمومی:
   DEFINE_SIZE_UNION (4, version32.v);
 };
 
-struct kern_accelerator_t : kern::accelerator_t {
+ساختار kern_accelerator_t : kern::accelerator_t {
   kern_accelerator_t (hb_face_t *face) : kern::accelerator_t (face) {}
 };
 

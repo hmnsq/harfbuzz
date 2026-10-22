@@ -1,19 +1,19 @@
 #ifndef OT_VAR_VARC_VARC_SUBSET_HH
 #define OT_VAR_VARC_VARC_SUBSET_HH
 
-#include "VARC.hh"
+#شامل "VARC.hh"
 
-namespace OT {
+فضاینام OT {
 
-struct varc_subset_plan_t
+ساختار varc_subset_plan_t
 {
-  varc_subset_plan_t (const VARC &source_,
+  varc_subset_plan_t (ثابت VARC &source_,
 		      hb_subset_context_t *subset_context_,
-		      const Coverage &source_coverage_,
-		      const CFF2Index &source_records_,
-		      const ConditionList &source_conditions_,
-		      const CFF2Index &source_axis_indices_,
-		      const MultiItemVariationStore &source_var_store_) :
+		      ثابت Coverage &source_coverage_,
+		      ثابت CFF2Index &source_records_,
+		      ثابت ConditionList &source_conditions_,
+		      ثابت CFF2Index &source_axis_indices_,
+		      ثابت MultiItemVariationStore &source_var_store_) :
     source (source_),
     subset_context (subset_context_),
     source_coverage (source_coverage_),
@@ -23,20 +23,20 @@ struct varc_subset_plan_t
     source_var_store (source_var_store_)
   {}
 
-  bool collect_glyphs ()
+  منطقی collect_glyphs ()
   {
-    const hb_set_t &glyphset = subset_context->plan->_glyphset_varced;
-    for (auto _ : + hb_zip (source_coverage,
-			    hb_range ((unsigned) source_records.count)))
+    ثابت hb_set_t &glyphset = subset_context->plan->_glyphset_varced;
+    برای (auto _ : + hb_zip (source_coverage,
+			    hb_range ((unsigned) source_records.شمار)))
     {
       hb_codepoint_t old_gid = _.first;
       unsigned index = _.second;
-      if (glyphset.has (old_gid))
+      اگر (glyphset.has (old_gid))
       {
 	hb_codepoint_t new_gid;
-	if (unlikely (!subset_context->plan->new_gid_for_old_gid (old_gid,
+	اگر (unlikely (!subset_context->plan->new_gid_for_old_gid (old_gid,
 								 &new_gid)))
-	  return false;
+	  بازگشت نادرست;
 	old_indices.push (index);
 	new_gids.push (new_gid);
 	data_size = hb_unsigned_add_saturate (data_size,
@@ -44,39 +44,39 @@ struct varc_subset_plan_t
       }
     }
 
-    return !old_indices.in_error () && !new_gids.in_error () &&
+    بازگشت !old_indices.in_error () && !new_gids.in_error () &&
 	   data_size != UINT_MAX;
   }
 
-  bool collect_indices ()
+  منطقی collect_indices ()
   {
-    for (unsigned old_index : old_indices)
+    برای (unsigned old_index : old_indices)
     {
       hb_ubytes_t remaining = source_records[old_index];
-      while (remaining)
+      وقتی (remaining)
       {
 	VarComponent::record_t component;
-	if (unlikely (!VarComponent::decompile_record (source, remaining,
+	اگر (unlikely (!VarComponent::decompile_record (source, remaining,
 						       nullptr, nullptr,
 						       &component)))
-	  return false;
+	  بازگشت نادرست;
 
-	if (component.flags & (unsigned) VarComponent::flags_t::HAVE_CONDITION)
+	اگر (component.flags & (unsigned) VarComponent::flags_t::HAVE_CONDITION)
 	{
-	  if (unlikely (component.condition_index >= source_conditions.get_count ()))
-	    return false;
+	  اگر (unlikely (component.condition_index >= source_conditions.get_شمار ()))
+	    بازگشت نادرست;
 	  condition_indices.add (component.condition_index);
 	}
-	if (component.flags & (unsigned) VarComponent::flags_t::HAVE_AXES)
+	اگر (component.flags & (unsigned) VarComponent::flags_t::HAVE_AXES)
 	{
-	  if (unlikely (component.axis_indices_index >= source_axis_indices.count))
-	    return false;
+	  اگر (unlikely (component.axis_indices_index >= source_axis_indices.شمار))
+	    بازگشت نادرست;
 	  axis_indices.add (component.axis_indices_index);
 	}
-	if ((component.flags & (unsigned) VarComponent::flags_t::AXIS_VALUES_HAVE_VARIATION) &&
-	    component.axis_values_var_idx != VarIdx::NO_VARIATION)
-	  var_indices.add (component.axis_values_var_idx);
-	if ((component.flags & (unsigned) VarComponent::flags_t::TRANSFORM_HAS_VARIATION) &&
+	اگر ((component.flags & (unsigned) VarComponent::flags_t::AXIS_مقادیر_HAVE_VARIATION) &&
+	    component.axis_مقادیر_var_idx != VarIdx::NO_VARIATION)
+	  var_indices.add (component.axis_مقادیر_var_idx);
+	اگر ((component.flags & (unsigned) VarComponent::flags_t::TRANSFORM_HAS_VARIATION) &&
 	    component.transform_var_idx != VarIdx::NO_VARIATION)
 	  var_indices.add (component.transform_var_idx);
 
@@ -84,103 +84,103 @@ struct varc_subset_plan_t
       }
     }
 
-    if (unlikely (condition_indices.in_error () || axis_indices.in_error () ||
+    اگر (unlikely (condition_indices.in_error () || axis_indices.in_error () ||
 		  var_indices.in_error ()))
-      return false;
+      بازگشت نادرست;
 
-    for (hb_codepoint_t condition_index : condition_indices)
-      if (unlikely (!source_conditions[condition_index].collect_var_indices (&var_indices)))
-	return false;
+    برای (hb_codepoint_t condition_index : condition_indices)
+      اگر (unlikely (!source_conditions[condition_index].collect_var_indices (&var_indices)))
+	بازگشت نادرست;
 
-    return true;
+    بازگشت درست;
   }
 
-  bool create_maps ()
+  منطقی create_maps ()
   {
-    const auto *plan = subset_context->plan;
-    if (!plan->user_axes_location.is_empty ())
+    ثابت auto *plan = subset_context->plan;
+    اگر (!plan->user_axes_location.is_empty ())
     {
       /* Instancing axes referenced by VARC is not supported. Keep this
        * restriction for avar2 as well; component coordinate overrides
        * and their variation data need special handling. */
       axis_map = &axes_index_map;
-      for (auto _ : plan->axes_index_map)
-	if (!plan->user_axes_location.has (plan->axes_old_index_tag_map.get (_.first)))
+      برای (auto _ : plan->axes_index_map)
+	اگر (!plan->user_axes_location.has (plan->axes_old_index_tag_map.get (_.first)))
 	  axes_index_map.set (_.first, _.second);
-      if (unlikely (axes_index_map.in_error ())) return false;
+      اگر (unlikely (axes_index_map.in_error ())) بازگشت نادرست;
     }
     condition_map.add_set (&condition_indices);
     axis_indices_map.add_set (&axis_indices);
-    return !condition_map.in_error () && !axis_indices_map.in_error () &&
+    بازگشت !condition_map.in_error () && !axis_indices_map.in_error () &&
 	   source_var_store.create_subset_plan (var_indices,
 						&var_inner_maps,
 						&varidx_map);
   }
 
-  bool compile_records ()
+  منطقی compile_records ()
   {
-    if (unlikely (!records.alloc_exact (old_indices.length)))
-      return false;
+    اگر (unlikely (!records.alloc_exact (old_indices.length)))
+      بازگشت نادرست;
 
-    bool retain_gids = subset_context->plan->flags & HB_SUBSET_FLAGS_RETAIN_GIDS;
-    if (retain_gids && auxiliary_indices_unchanged ())
+    منطقی retain_gids = subset_context->plan->flags & HB_SUBSET_FLAGS_RETAIN_GIDS;
+    اگر (retain_gids && auxiliary_indices_unchanged ())
     {
       /* The records reference the same indices, so retain them byte-for-byte. */
-      for (unsigned old_index : old_indices)
+      برای (unsigned old_index : old_indices)
 	records.push (source_records[old_index]);
     }
-    else
+    وگرنه
     {
       hb_vector_t<unsigned> record_offsets;
       record_data.alloc (data_size);
-      if (unlikely (!record_offsets.alloc_exact (old_indices.length + 1)))
-	return false;
+      اگر (unlikely (!record_offsets.alloc_exact (old_indices.length + 1)))
+	بازگشت نادرست;
 
-      for (unsigned old_index : old_indices)
+      برای (unsigned old_index : old_indices)
       {
 	record_offsets.push (record_data.length);
-	if (unlikely (!compile_record (source_records[old_index], retain_gids)))
-	  return false;
+	اگر (unlikely (!compile_record (source_records[old_index], retain_gids)))
+	  بازگشت نادرست;
       }
       record_offsets.push (record_data.length);
 
-      if (unlikely (record_data.in_error () || record_offsets.in_error ()))
-	return false;
-      for (unsigned i = 0; i < old_indices.length; i++)
+      اگر (unlikely (record_data.in_error () || record_offsets.in_error ()))
+	بازگشت نادرست;
+      برای (unsigned i = 0; i < old_indices.length; i++)
 	records.push (hb_ubytes_t (record_data.arrayZ + record_offsets[i],
 				  record_offsets[i + 1] - record_offsets[i]));
       data_size = record_data.length;
     }
 
-    return !records.in_error ();
+    بازگشت !records.in_error ();
   }
 
-  bool select_axis_indices ()
+  منطقی select_axis_indices ()
   {
-    if (unlikely (!selected_axis_indices.alloc_exact (
+    اگر (unlikely (!selected_axis_indices.alloc_exact (
 					  axis_indices_map.get_population ()) ||
 		  (axis_map && !axis_indices_data.resize (
 					  axis_indices_map.get_population ()))))
-      return false;
-    for (unsigned i = 0; i < axis_indices_map.get_population (); i++)
+      بازگشت نادرست;
+    برای (unsigned i = 0; i < axis_indices_map.get_population (); i++)
     {
       hb_ubytes_t bytes = source_axis_indices[axis_indices_map.backward (i)];
-      if (axis_map)
+      اگر (axis_map)
       {
-	hb_vector_t<int> indices;
-	const HBUINT8 *p = (const HBUINT8 *) bytes.arrayZ;
-	if (unlikely (!TupleValues::decompile (p, indices, p + bytes.length, true)))
-	  return false;
-	for (int &index : indices)
+	hb_vector_t<صحیح> indices;
+	ثابت HBUINT8 *p = (ثابت HBUINT8 *) bytes.arrayZ;
+	اگر (unlikely (!Tuple_مقادیر::decompile (p, indices, p + bytes.length, درست)))
+	  بازگشت نادرست;
+	برای (صحیح &index : indices)
 	{
-	  if (unlikely (!axis_map->has (index))) return false;
+	  اگر (unlikely (!axis_map->has (index))) بازگشت نادرست;
 	  index = axis_map->get (index);
 	}
 	auto &data = axis_indices_data[i];
 	/* One control byte and at most four data bytes per value. */
 	unsigned size = hb_unsigned_mul_saturate (indices.length, 5u);
-	if (unlikely (size == UINT_MAX || !data.resize_dirty (size))) return false;
-	data.shrink (TupleValues::compile_unsafe (indices.as_array (), data.arrayZ));
+	اگر (unlikely (size == UINT_MAX || !data.resize_dirty (size))) بازگشت نادرست;
+	data.shrink (Tuple_مقادیر::compile_unsafe (indices.as_array (), data.arrayZ));
 	bytes = data.as_array ();
       }
       axis_indices_data_size = hb_unsigned_add_saturate (axis_indices_data_size,
@@ -188,17 +188,17 @@ struct varc_subset_plan_t
       selected_axis_indices.push (bytes);
     }
 
-    return axis_indices_data_size != UINT_MAX &&
+    بازگشت axis_indices_data_size != UINT_MAX &&
 	   !selected_axis_indices.in_error ();
   }
 
-  const VARC &source;
+  ثابت VARC &source;
   hb_subset_context_t *subset_context;
-  const Coverage &source_coverage;
-  const CFF2Index &source_records;
-  const ConditionList &source_conditions;
-  const CFF2Index &source_axis_indices;
-  const MultiItemVariationStore &source_var_store;
+  ثابت Coverage &source_coverage;
+  ثابت CFF2Index &source_records;
+  ثابت ConditionList &source_conditions;
+  ثابت CFF2Index &source_axis_indices;
+  ثابت MultiItemVariationStore &source_var_store;
 
   hb_vector_t<unsigned> old_indices;
   hb_sorted_vector_t<hb_codepoint_t> new_gids;
@@ -212,191 +212,191 @@ struct varc_subset_plan_t
   hb_vector_t<hb_inc_bimap_t> var_inner_maps;
   hb_map_t varidx_map;
 
-  hb_vector_t<unsigned char> record_data;
+  hb_vector_t<unsigned نویسه> record_data;
   hb_vector_t<hb_ubytes_t> records;
 
   hb_vector_t<hb_ubytes_t> selected_axis_indices;
-  hb_vector_t<hb_vector_t<unsigned char>> axis_indices_data;
+  hb_vector_t<hb_vector_t<unsigned نویسه>> axis_indices_data;
   unsigned axis_indices_data_size = 0;
   hb_map_t axes_index_map;
-  const hb_map_t *axis_map = nullptr;
+  ثابت hb_map_t *axis_map = nullptr;
 
-  private:
-  bool auxiliary_indices_unchanged () const
+  خصوصی:
+  منطقی auxiliary_indices_unchanged () ثابت
   {
-    for (hb_codepoint_t old_index : condition_indices)
-      if (condition_map.get (old_index) != old_index)
-	return false;
-    for (hb_codepoint_t old_index : axis_indices)
-      if (axis_indices_map.get (old_index) != old_index)
-	return false;
-    for (hb_codepoint_t old_index : var_indices)
-      if (varidx_map.get (old_index) != old_index)
-	return false;
-    return true;
+    برای (hb_codepoint_t old_index : condition_indices)
+      اگر (condition_map.get (old_index) != old_index)
+	بازگشت نادرست;
+    برای (hb_codepoint_t old_index : axis_indices)
+      اگر (axis_indices_map.get (old_index) != old_index)
+	بازگشت نادرست;
+    برای (hb_codepoint_t old_index : var_indices)
+      اگر (varidx_map.get (old_index) != old_index)
+	بازگشت نادرست;
+    بازگشت درست;
   }
 
-  bool append_varint (uint32_t value)
+  منطقی append_varint (uint32_t value)
   {
     unsigned size = HBUINT32VAR::get_size (value);
     unsigned offset = record_data.length;
     unsigned new_length = hb_unsigned_add_saturate (offset, size);
-    if (unlikely (new_length == UINT_MAX ||
+    اگر (unlikely (new_length == UINT_MAX ||
 		  !record_data.resize_dirty (new_length)))
-      return false;
+      بازگشت نادرست;
     HBUINT32VAR::serialize_unsafe (record_data.arrayZ + offset, value);
-    return true;
+    بازگشت درست;
   }
 
-  bool append_bytes (hb_ubytes_t record,
+  منطقی append_bytes (hb_ubytes_t record,
 		     unsigned component_size,
 		     unsigned start,
 		     unsigned end)
   {
-    if (unlikely (start > end || end > component_size)) return false;
+    اگر (unlikely (start > end || end > component_size)) بازگشت نادرست;
     unsigned offset = record_data.length;
     unsigned size = end - start;
     unsigned new_length = hb_unsigned_add_saturate (offset, size);
-    if (unlikely (new_length == UINT_MAX ||
+    اگر (unlikely (new_length == UINT_MAX ||
 		  !record_data.resize_dirty (new_length)))
-      return false;
+      بازگشت نادرست;
     hb_memcpy (record_data.arrayZ + offset, record.arrayZ + start, size);
-    return true;
+    بازگشت درست;
   }
 
-  bool compile_record (hb_ubytes_t record, bool retain_gids)
+  منطقی compile_record (hb_ubytes_t record, منطقی retain_gids)
   {
     hb_ubytes_t remaining = record;
-    while (remaining)
+    وقتی (remaining)
     {
       VarComponent::record_t component;
-      if (unlikely (!VarComponent::decompile_record (source, remaining,
+      اگر (unlikely (!VarComponent::decompile_record (source, remaining,
 						     nullptr, nullptr,
 						     &component) ||
 		    !compile_component (remaining, component, retain_gids)))
-	return false;
+	بازگشت نادرست;
       remaining = remaining.sub_array (component.size);
     }
-    return true;
+    بازگشت درست;
   }
 
-  bool compile_component (hb_ubytes_t record,
-			  const VarComponent::record_t &component,
-			  bool retain_gids)
+  منطقی compile_component (hb_ubytes_t record,
+			  ثابت VarComponent::record_t &component,
+			  منطقی retain_gids)
   {
     hb_codepoint_t new_gid = component.gid;
-    if (unlikely ((!retain_gids &&
+    اگر (unlikely ((!retain_gids &&
 		   !subset_context->plan->new_gid_for_old_gid (component.gid,
 								 &new_gid)) ||
 		  new_gid > 0xFFFFFFu))
-      return false;
+      بازگشت نادرست;
 
     uint32_t flags = component.flags;
     unsigned gid_size = component.gid_size;
-    if (new_gid > 0xFFFFu)
+    اگر (new_gid > 0xFFFFu)
     {
       flags |= (unsigned) VarComponent::flags_t::GID_IS_24BIT;
       gid_size = HBGlyphID24::static_size;
     }
 
-    if (unlikely (!append_varint (flags))) return false;
+    اگر (unlikely (!append_varint (flags))) بازگشت نادرست;
     unsigned gid_offset = record_data.length;
     unsigned gid_end = hb_unsigned_add_saturate (gid_offset, gid_size);
-    if (unlikely (gid_end == UINT_MAX ||
+    اگر (unlikely (gid_end == UINT_MAX ||
 		  !record_data.resize_dirty (gid_end)))
-      return false;
-    unsigned char *out = record_data.arrayZ + gid_offset;
-    if (gid_size == HBGlyphID16::static_size)
+      بازگشت نادرست;
+    unsigned نویسه *out = record_data.arrayZ + gid_offset;
+    اگر (gid_size == HBGlyphID16::static_size)
       * (HBGlyphID16 *) out = new_gid;
-    else
+    وگرنه
       * (HBGlyphID24 *) out = new_gid;
 
     unsigned cursor = component.gid_offset + component.gid_size;
-    if (flags & (unsigned) VarComponent::flags_t::HAVE_CONDITION)
+    اگر (flags & (unsigned) VarComponent::flags_t::HAVE_CONDITION)
     {
-      if (unlikely (!condition_map.has (component.condition_index) ||
+      اگر (unlikely (!condition_map.has (component.condition_index) ||
 		    !append_bytes (record, component.size,
 				   cursor, component.condition_offset) ||
 		    !append_varint (condition_map.get (component.condition_index))))
-	return false;
+	بازگشت نادرست;
       cursor = component.condition_offset + component.condition_size;
     }
-    if (flags & (unsigned) VarComponent::flags_t::HAVE_AXES)
+    اگر (flags & (unsigned) VarComponent::flags_t::HAVE_AXES)
     {
-      if (unlikely (!axis_indices_map.has (component.axis_indices_index) ||
+      اگر (unlikely (!axis_indices_map.has (component.axis_indices_index) ||
 		    !append_bytes (record, component.size,
 				   cursor, component.axis_indices_offset) ||
 		    !append_varint (axis_indices_map.get (component.axis_indices_index))))
-	return false;
+	بازگشت نادرست;
       cursor = component.axis_indices_offset + component.axis_indices_size;
     }
-    if (flags & (unsigned) VarComponent::flags_t::AXIS_VALUES_HAVE_VARIATION)
+    اگر (flags & (unsigned) VarComponent::flags_t::AXIS_مقادیر_HAVE_VARIATION)
     {
-      uint32_t var_idx = component.axis_values_var_idx;
-      if (unlikely ((var_idx != VarIdx::NO_VARIATION && !varidx_map.has (var_idx)) ||
+      uint32_t var_idx = component.axis_مقادیر_var_idx;
+      اگر (unlikely ((var_idx != VarIdx::NO_VARIATION && !varidx_map.has (var_idx)) ||
 		    !append_bytes (record, component.size,
-				   cursor, component.axis_values_var_offset) ||
+				   cursor, component.axis_مقادیر_var_offset) ||
 		    !append_varint (var_idx == VarIdx::NO_VARIATION ?
 				    var_idx : varidx_map.get (var_idx))))
-	return false;
-      cursor = component.axis_values_var_offset + component.axis_values_var_size;
+	بازگشت نادرست;
+      cursor = component.axis_مقادیر_var_offset + component.axis_مقادیر_var_size;
     }
-    if (flags & (unsigned) VarComponent::flags_t::TRANSFORM_HAS_VARIATION)
+    اگر (flags & (unsigned) VarComponent::flags_t::TRANSFORM_HAS_VARIATION)
     {
       uint32_t var_idx = component.transform_var_idx;
-      if (unlikely ((var_idx != VarIdx::NO_VARIATION && !varidx_map.has (var_idx)) ||
+      اگر (unlikely ((var_idx != VarIdx::NO_VARIATION && !varidx_map.has (var_idx)) ||
 		    !append_bytes (record, component.size,
 				   cursor, component.transform_var_offset) ||
 		    !append_varint (var_idx == VarIdx::NO_VARIATION ?
 				    var_idx : varidx_map.get (var_idx))))
-	return false;
+	بازگشت نادرست;
       cursor = component.transform_var_offset + component.transform_var_size;
     }
 
-    return append_bytes (record, component.size, cursor, component.size);
+    بازگشت append_bytes (record, component.size, cursor, component.size);
   }
 };
 
-bool
-VARC::subset (hb_subset_context_t *c) const
+منطقی
+VARC::subset (hb_subset_context_t *c) ثابت
 {
-  TRACE_SUBSET (this);
+  TRACE_SUBSET (این);
   auto fail = [&] ()
   {
     c->serializer->err (HB_SERIALIZE_ERROR_OTHER);
-    return false;
+    بازگشت نادرست;
   };
 
-  const Coverage &source_coverage = this+coverage;
-  const CFF2Index &source_records = this+glyphRecords;
-  const ConditionList &source_conditions = this+conditionList;
-  const TupleList &source_axis_indices = this+axisIndicesList;
-  const CFF2Index &source_axis_indices_index = source_axis_indices;
-  const MultiItemVariationStore &source_var_store = this+varStore;
-  varc_subset_plan_t subset_plan (*this, c,
+  ثابت Coverage &source_coverage = این+coverage;
+  ثابت CFF2Index &source_records = این+glyphRecords;
+  ثابت ConditionList &source_conditions = این+conditionList;
+  ثابت TupleList &source_axis_indices = این+axisIndicesList;
+  ثابت CFF2Index &source_axis_indices_index = source_axis_indices;
+  ثابت MultiItemVariationStore &source_var_store = این+varStore;
+  varc_subset_plan_t subset_plan (*این, c,
 				  source_coverage,
 				  source_records,
 				  source_conditions,
 				  source_axis_indices_index,
 				  source_var_store);
-  if (unlikely (!subset_plan.collect_glyphs ()))
+  اگر (unlikely (!subset_plan.collect_glyphs ()))
     return_trace (fail ());
-  if (!subset_plan.old_indices)
-    return_trace (false);
-  if (unlikely (!subset_plan.collect_indices () ||
+  اگر (!subset_plan.old_indices)
+    return_trace (نادرست);
+  اگر (unlikely (!subset_plan.collect_indices () ||
 		!subset_plan.create_maps () ||
 		!subset_plan.compile_records ()))
     return_trace (fail ());
 
   VARC *out = c->serializer->start_embed<VARC> ();
-  if (unlikely (!out || !c->serializer->extend_min (out)))
-    return_trace (false);
+  اگر (unlikely (!out || !c->serializer->extend_min (out)))
+    return_trace (نادرست);
   out->version = version;
 
-  if (unlikely (!subset_plan.select_axis_indices ()))
+  اگر (unlikely (!subset_plan.select_axis_indices ()))
     return_trace (fail ());
 
-  if (unlikely (!out->coverage.serialize_serialize (c->serializer,
+  اگر (unlikely (!out->coverage.serialize_serialize (c->serializer,
 						     subset_plan.new_gids.iter ()) ||
 		(subset_plan.condition_map.get_population () &&
 		 !out->conditionList.serialize_serialize (c->serializer,
@@ -416,9 +416,9 @@ VARC::subset (hb_subset_context_t *c) const
 		!out->glyphRecords.serialize_serialize (c->serializer,
 						 subset_plan.records.iter (),
 						 &subset_plan.data_size)))
-    return_trace (false);
+    return_trace (نادرست);
 
-  return_trace (true);
+  return_trace (درست);
 }
 
 } /* namespace OT */

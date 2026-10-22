@@ -25,28 +25,28 @@
 #ifndef HB_SUBSET_INSTANCER_IUP_HH
 #define HB_SUBSET_INSTANCER_IUP_HH
 
-#include "hb-subset-plan.hh"
+#شامل "hb-subset-plan.hh"
 
-struct iup_scratch_t
+ساختار iup_scratch_t
 {
   hb_vector_t<unsigned> end_points;
-  hb_vector_t<double> interp_x_deltas;
-  hb_vector_t<double> interp_y_deltas;
+  hb_vector_t<دوگانه> interp_x_deltas;
+  hb_vector_t<دوگانه> interp_y_deltas;
   hb_vector_t<unsigned> costs;
-  hb_vector_t<int> chain;
-  hb_vector_t<bool> rot_indices;
-  hb_vector_t<int> rot_x_deltas;
-  hb_vector_t<int> rot_y_deltas;
+  hb_vector_t<صحیح> chain;
+  hb_vector_t<منطقی> rot_indices;
+  hb_vector_t<صحیح> rot_x_deltas;
+  hb_vector_t<صحیح> rot_y_deltas;
   contour_point_vector_t rot_points;
 };
 
 /* given contour points and deltas, optimize a set of referenced points within error
  * tolerance. Returns optimized referenced point indices */
-HB_INTERNAL bool iup_delta_optimize (const contour_point_vector_t& contour_points,
-                                     const hb_vector_t<int>& x_deltas,
-                                     const hb_vector_t<int>& y_deltas,
-                                     hb_vector_t<bool>& opt_indices, /* OUT */
+HB_INTERNAL منطقی iup_delta_optimize (ثابت contour_point_vector_t& contour_points,
+                                     ثابت hb_vector_t<صحیح>& x_deltas,
+                                     ثابت hb_vector_t<صحیح>& y_deltas,
+                                     hb_vector_t<منطقی>& opt_indices, /* OUT */
 				     iup_scratch_t &scratch,
-                                     double tolerance = 0.0);
+                                     دوگانه tolerance = 0.0);
 
 #endif /* HB_SUBSET_INSTANCER_IUP_HH */

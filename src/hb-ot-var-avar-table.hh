@@ -27,9 +27,9 @@
 #ifndef HB_OT_VAR_AVAR_TABLE_HH
 #define HB_OT_VAR_AVAR_TABLE_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-var-common.hh"
-#include "hb-ot-var-fvar-table.hh"
+#شامل "hb-open-type.hh"
+#شامل "hb-ot-var-common.hh"
+#شامل "hb-ot-var-fvar-table.hh"
 
 
 /*
@@ -40,69 +40,69 @@
 #define HB_OT_TAG_avar HB_TAG('a','v','a','r')
 
 
-namespace OT {
+فضاینام OT {
 
 
 /* "Spec": https://github.com/be-fonts/boring-expansion-spec/issues/14 */
-struct avarV2Tail
+ساختار avarV2Tail
 {
-  friend struct avar;
+  friend ساختار avar;
 
-  bool sanitize (hb_sanitize_context_t *c,
-		 const void *base) const
+  منطقی sanitize (hb_sanitize_context_t *c,
+		 ثابت تهی *base) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (این);
     return_trace (varIdxMap.sanitize (c, base) &&
 		  varStore.sanitize (c, base));
   }
 
-  protected:
+  محافظتشده:
   Offset32To<DeltaSetIndexMap>	varIdxMap;	/* Offset from the beginning of 'avar' table. */
   Offset32To<ItemVariationStore>	varStore;	/* Offset from the beginning of 'avar' table. */
 
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (8);
 };
 
 
-struct AxisValueMap
+ساختار Axis_مقدار_Map
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این));
   }
 
-  void set_mapping (float from_coord, float to_coord)
+  تهی set_mapping (اعشاری from_coord, اعشاری to_coord)
   {
     coords[0].set_float (from_coord);
     coords[1].set_float (to_coord);
   }
 
-  bool is_outside_axis_range (const Triple& axis_range) const
+  منطقی is_outside_axis_range (ثابت Triple& axis_range) ثابت
   {
-    double from_coord = (double) coords[0].to_float ();
-    return !axis_range.contains (from_coord);
+    دوگانه from_coord = (دوگانه) coords[0].to_float ();
+    بازگشت !axis_range.contains (from_coord);
   }
 
-  bool must_include () const
+  منطقی must_include () ثابت
   {
-    float from_coord = coords[0].to_float ();
-    float to_coord = coords[1].to_float ();
-    return (from_coord == -1.f && to_coord == -1.f) ||
+    اعشاری from_coord = coords[0].to_float ();
+    اعشاری to_coord = coords[1].to_float ();
+    بازگشت (from_coord == -1.f && to_coord == -1.f) ||
            (from_coord == 0.f && to_coord == 0.f) ||
            (from_coord == 1.f && to_coord == 1.f);
   }
 
-  void instantiate (const Triple& axis_range,
-                    const Triple& unmapped_range,
-                    const TripleDistances& triple_distances)
+  تهی instantiate (ثابت Triple& axis_range,
+                    ثابت Triple& unmapped_range,
+                    ثابت TripleDistances& triple_distances)
   {
-    float from_coord = coords[0].to_float ();
-    float to_coord = coords[1].to_float ();
+    اعشاری from_coord = coords[0].to_float ();
+    اعشاری to_coord = coords[1].to_float ();
 
-    from_coord = renormalizeValue ((double) from_coord, unmapped_range, triple_distances);
-    to_coord = renormalizeValue ((double) to_coord, axis_range, triple_distances);
+    from_coord = renormalize_مقدار ((دوگانه) from_coord, unmapped_range, triple_distances);
+    to_coord = renormalize_مقدار ((دوگانه) to_coord, axis_range, triple_distances);
 
     /* Malformed input can renormalize outside [-1,1], which would
      * overflow F2DOT14. */
@@ -113,58 +113,58 @@ struct AxisValueMap
     coords[1].set_float (to_coord);
   }
 
-  HB_INTERNAL static int cmp (const void *pa, const void *pb)
+  HB_INTERNAL ایستا صحیح cmp (ثابت تهی *pa, ثابت تهی *pb)
   {
-    const AxisValueMap *a = (const AxisValueMap *) pa;
-    const AxisValueMap *b = (const AxisValueMap *) pb;
+    ثابت Axis_مقدار_Map *a = (ثابت Axis_مقدار_Map *) pa;
+    ثابت Axis_مقدار_Map *b = (ثابت Axis_مقدار_Map *) pb;
 
-    int a_from = a->coords[0].to_int ();
-    int b_from = b->coords[0].to_int ();
-    if (a_from != b_from)
-      return a_from - b_from;
+    صحیح a_from = a->coords[0].to_int ();
+    صحیح b_from = b->coords[0].to_int ();
+    اگر (a_from != b_from)
+      بازگشت a_from - b_from;
 
     /* this should never be reached. according to the spec, all of the axis
      * value map records for a given axis must have different fromCoord values
      * */
-    int a_to = a->coords[1].to_int ();
-    int b_to = b->coords[1].to_int ();
-    return a_to - b_to;
+    صحیح a_to = a->coords[1].to_int ();
+    صحیح b_to = b->coords[1].to_int ();
+    بازگشت a_to - b_to;
   }
 
-  bool serialize (hb_serialize_context_t *c) const
+  منطقی serialize (hb_serialize_context_t *c) ثابت
   {
-    TRACE_SERIALIZE (this);
-    return_trace (c->embed (this));
+    TRACE_SERIALIZE (این);
+    return_trace (c->embed (این));
   }
 
-  public:
+  عمومی:
   F2DOT14	coords[2];
 //   F2DOT14	fromCoord;	/* A normalized coordinate value obtained using
 //				 * default normalization. */
 //   F2DOT14	toCoord;	/* The modified, normalized coordinate value. */
 
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (4);
 };
 
-struct SegmentMaps : Array16Of<AxisValueMap>
+ساختار SegmentMaps : Array16Of<Axis_مقدار_Map>
 {
-  float map_float (float value, unsigned int from_offset = 0, unsigned int to_offset = 1) const
+  اعشاری map_float (اعشاری value, unsigned صحیح from_offset = 0, unsigned صحیح to_offset = 1) ثابت
   {
 #define fromCoord coords[from_offset].to_float ()
 #define toCoord coords[to_offset].to_float ()
 
-    const auto *map = arrayZ;
+    ثابت auto *map = arrayZ;
 
     /* The following special-cases are not part of OpenType, which requires
      * that at least -1, 0, and +1 must be mapped. But we include these as
      * part of a better error recovery scheme. */
-    if (len < 2)
+    اگر (len < 2)
     {
-      if (!len)
-	return value;
-      else /* len == 1*/
-	return value - map[0].fromCoord + map[0].toCoord;
+      اگر (!len)
+	بازگشت value;
+      وگرنه /* len == 1*/
+	بازگشت value - map[0].fromCoord + map[0].toCoord;
     }
 
     // At least two mappings now.
@@ -177,93 +177,93 @@ struct SegmentMaps : Array16Of<AxisValueMap>
 
     unsigned start = 0;
     unsigned end = len;
-    if (map[start].fromCoord == -1 && map[start].toCoord == -1 && map[start+1].fromCoord == -1)
+    اگر (map[start].fromCoord == -1 && map[start].toCoord == -1 && map[start+1].fromCoord == -1)
       start++;
-    if (map[end-1].fromCoord == +1 && map[end-1].toCoord == +1 && map[end-2].fromCoord == +1)
+    اگر (map[end-1].fromCoord == +1 && map[end-1].toCoord == +1 && map[end-2].fromCoord == +1)
       end--;
 
     /* Look for exact match first, and do lots of special-casing. */
     unsigned i;
-    for (i = start; i < end; i++)
-      if (value == map[i].fromCoord)
-	break;
-    if (i < end)
+    برای (i = start; i < end; i++)
+      اگر (value == map[i].fromCoord)
+	بشکن;
+    اگر (i < end)
     {
       // There's at least one exact match. See if there are more.
       unsigned j = i;
-      for (; j + 1 < end; j++)
-	if (value != map[j + 1].fromCoord)
-	  break;
+      برای (; j + 1 < end; j++)
+	اگر (value != map[j + 1].fromCoord)
+	  بشکن;
 
       // [i,j] inclusive are all exact matches:
 
       // If there's only one, return it. This is the only spec-compliant case.
-      if (i == j)
-	return map[i].toCoord;
+      اگر (i == j)
+	بازگشت map[i].toCoord;
       // If there's exactly three, return the middle one.
-      if (i + 2 == j)
-	return map[i + 1].toCoord;
+      اگر (i + 2 == j)
+	بازگشت map[i + 1].toCoord;
 
       // Ignore the middle ones. Return the one mapping closer to 0.
-      if (value < 0) return map[j].toCoord;
-      if (value > 0) return map[i].toCoord;
+      اگر (value < 0) بازگشت map[j].toCoord;
+      اگر (value > 0) بازگشت map[i].toCoord;
 
       // Mapping 0? CoreText seems confused. It seems to prefer 0 here...
       // So we'll just return the smallest one. lol
-      return fabsf (map[i].toCoord) < fabsf (map[j].toCoord) ? map[i].toCoord : map[j].toCoord;
+      بازگشت fabsf (map[i].toCoord) < fabsf (map[j].toCoord) ? map[i].toCoord : map[j].toCoord;
 
       // Mapping 0? Return one not mapping to 0.
-      if (map[i].toCoord == 0)
-	return map[j].toCoord;
-      else
-	return map[i].toCoord;
+      اگر (map[i].toCoord == 0)
+	بازگشت map[j].toCoord;
+      وگرنه
+	بازگشت map[i].toCoord;
     }
 
     /* There's at least two and we're not an exact match. Prepare to lerp. */
 
     // Find the segment we're in.
-    for (i = start; i < end; i++)
-      if (value < map[i].fromCoord)
-	break;
+    برای (i = start; i < end; i++)
+      اگر (value < map[i].fromCoord)
+	بشکن;
 
-    if (i == start)
+    اگر (i == start)
     {
       // Value before all segments; Shift.
-      return value - map[start].fromCoord + map[start].toCoord;
+      بازگشت value - map[start].fromCoord + map[start].toCoord;
     }
-    if (i == end)
+    اگر (i == end)
     {
       // Value after all segments; Shift.
-      return value - map[end - 1].fromCoord + map[end - 1].toCoord;
+      بازگشت value - map[end - 1].fromCoord + map[end - 1].toCoord;
     }
 
     // Actually interpolate.
     auto &before = map[i-1];
     auto &after = map[i];
-    float denom = after.fromCoord - before.fromCoord; // Can't be zero by now.
-    return before.toCoord + ((after.toCoord - before.toCoord) * (value - before.fromCoord)) / denom;
+    اعشاری denom = after.fromCoord - before.fromCoord; // Can't be zero by now.
+    بازگشت before.toCoord + ((after.toCoord - before.toCoord) * (value - before.fromCoord)) / denom;
 
 #undef toCoord
 #undef fromCoord
   }
 
-  float unmap_float (float value) const { return map_float (value, 1, 0); }
+  اعشاری unmap_float (اعشاری value) ثابت { بازگشت map_float (value, 1, 0); }
 
 
   // TODO Kill this.
-  Triple unmap_axis_range (const Triple& axis_range) const
+  Triple unmap_axis_range (ثابت Triple& axis_range) ثابت
   {
-    float unmapped_min = unmap_float (axis_range.minimum);
-    float unmapped_middle = unmap_float (axis_range.middle);
-    float unmapped_max = unmap_float (axis_range.maximum);
+    اعشاری unmapped_min = unmap_float (axis_range.minimum);
+    اعشاری unmapped_میانه = unmap_float (axis_range.میانه);
+    اعشاری unmapped_max = unmap_float (axis_range.maximum);
 
-    return Triple{unmapped_min, unmapped_middle, unmapped_max};
+    بازگشت Triple{unmapped_min, unmapped_میانه, unmapped_max};
   }
 
-  bool subset (hb_subset_context_t *c, hb_tag_t axis_tag,
-               hb_vector_t<AxisValueMap> *out_mappings = nullptr) const
+  منطقی subset (hb_subset_context_t *c, hb_tag_t axis_tag,
+               hb_vector_t<Axis_مقدار_Map> *out_mappings = nullptr) ثابت
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (این);
 
     /* This function cannot work on avar2 table (and currently doesn't).
      * We should instead keep the design coords in the shape plan and use
@@ -272,172 +272,172 @@ struct SegmentMaps : Array16Of<AxisValueMap>
     /* avar mapped normalized axis range. Under avar2, axes_location holds
      * only the self-contained pins for the other tables; avar itself uses
      * the intermediate-space ranges of all restricted axes. */
-    const auto &axes_location = c->plan->has_avar2
+    ثابت auto &axes_location = c->plan->has_avar2
 				? c->plan->old_intermediates
 				: c->plan->axes_location;
     Triple *axis_range;
-    if (!axes_location.has (axis_tag, &axis_range))
-      return c->serializer->embed (*this);
+    اگر (!axes_location.has (axis_tag, &axis_range))
+      بازگشت c->serializer->embed (*این);
 
     TripleDistances *axis_triple_distances;
-    if (!c->plan->axes_triple_distances.has (axis_tag, &axis_triple_distances))
-      return_trace (false);
+    اگر (!c->plan->axes_triple_distances.has (axis_tag, &axis_triple_distances))
+      return_trace (نادرست);
 
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (این);
+    اگر (unlikely (!c->serializer->extend_min (out))) return_trace (نادرست);
 
     Triple unmapped_range = unmap_axis_range (*axis_range);
 
     /* create a vector of retained mappings and sort */
-    hb_vector_t<AxisValueMap> value_mappings;
-    for (const auto& _ : as_array ())
+    hb_vector_t<Axis_مقدار_Map> مقدار_mappings;
+    برای (ثابت auto& _ : as_array ())
     {
-      if (_.is_outside_axis_range (unmapped_range))
-        continue;
-      AxisValueMap mapping;
+      اگر (_.is_outside_axis_range (unmapped_range))
+        ادامه;
+      Axis_مقدار_Map mapping;
       mapping = _;
       mapping.instantiate (*axis_range, unmapped_range, *axis_triple_distances);
       /* (-1, -1), (0, 0), (1, 1) mappings will be added later, so avoid
        * duplicates here */
-      if (mapping.must_include ())
-        continue;
-      value_mappings.push (mapping);
+      اگر (mapping.must_include ())
+        ادامه;
+      مقدار_mappings.push (mapping);
     }
 
-    AxisValueMap m;
+    Axis_مقدار_Map m;
     m.set_mapping (-1.f, -1.f);
-    value_mappings.push (m);
+    مقدار_mappings.push (m);
 
     m.set_mapping (0.f, 0.f);
-    value_mappings.push (m);
+    مقدار_mappings.push (m);
 
     m.set_mapping (1.f, 1.f);
-    value_mappings.push (m);
+    مقدار_mappings.push (m);
 
-    value_mappings.qsort ();
+    مقدار_mappings.qsort ();
 
-    if (unlikely (value_mappings.in_error ()))
-      return_trace (false);
+    اگر (unlikely (مقدار_mappings.in_error ()))
+      return_trace (نادرست);
 
-    for (const auto& _ : value_mappings)
+    برای (ثابت auto& _ : مقدار_mappings)
     {
-      if (!_.serialize (c->serializer))
-        return_trace (false);
+      اگر (!_.serialize (c->serializer))
+        return_trace (نادرست);
     }
-    if (!c->serializer->check_assign (out->len, value_mappings.length, HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
+    اگر (!c->serializer->check_assign (out->len, مقدار_mappings.length, HB_SERIALIZE_ERROR_INT_OVERFLOW))
+      return_trace (نادرست);
     /* Hand the instantiated mappings to the caller; avar2 offset
      * compensation needs them to locate the new mapping's kinks. */
-    if (out_mappings)
-      *out_mappings = std::move (value_mappings);
-    return_trace (true);
+    اگر (out_mappings)
+      *out_mappings = std::move (مقدار_mappings);
+    return_trace (درست);
   }
 
-  public:
-  DEFINE_SIZE_ARRAY (2, *this);
+  عمومی:
+  DEFINE_SIZE_ARRAY (2, *این);
 };
 
 /* One knot of the avar2 offset-compensation function
  * offset(z) = inv_renorm(z) - z, in new intermediate space. */
-struct avar2_offset_knot_t
+ساختار avar2_offset_knot_t
 {
-  double z;
-  double offset;
+  دوگانه z;
+  دوگانه offset;
 };
 
 /* Insert a knot keeping the vector sorted by z; first insertion wins on
  * duplicate z. */
-static inline void
-_avar2_add_knot (hb_vector_t<avar2_offset_knot_t> &knots, double z, double offset)
+ایستا درونخطی تهی
+_avar2_add_knot (hb_vector_t<avar2_offset_knot_t> &knots, دوگانه z, دوگانه offset)
 {
   unsigned i = 0;
-  while (i < knots.length && knots.arrayZ[i].z < z) i++;
-  if (i < knots.length && knots.arrayZ[i].z == z) return;
+  وقتی (i < knots.length && knots.arrayZ[i].z < z) i++;
+  اگر (i < knots.length && knots.arrayZ[i].z == z) بازگشت;
   knots.push (avar2_offset_knot_t {0.0, 0.0});
-  if (unlikely (knots.in_error ())) return;
-  for (unsigned j = knots.length - 1; j > i; j--)
+  اگر (unlikely (knots.in_error ())) بازگشت;
+  برای (unsigned j = knots.length - 1; j > i; j--)
     knots.arrayZ[j] = knots.arrayZ[j - 1];
   knots.arrayZ[i] = avar2_offset_knot_t {z, offset};
 }
 
 /* Piecewise-linear evaluation over the sorted knots. Inputs are always
  * within [-1, +1] and anchor knots at -1/0/+1 always exist. */
-static inline double
-_avar2_eval_offset (const hb_vector_t<avar2_offset_knot_t> &knots, double z)
+ایستا درونخطی دوگانه
+_avar2_eval_offset (ثابت hb_vector_t<avar2_offset_knot_t> &knots, دوگانه z)
 {
   unsigned len = knots.length;
-  for (unsigned i = 0; i < len; i++)
+  برای (unsigned i = 0; i < len; i++)
   {
-    if (z == knots.arrayZ[i].z) return knots.arrayZ[i].offset;
-    if (z < knots.arrayZ[i].z)
+    اگر (z == knots.arrayZ[i].z) بازگشت knots.arrayZ[i].offset;
+    اگر (z < knots.arrayZ[i].z)
     {
-      if (!i) return knots.arrayZ[0].offset;
-      const auto &before = knots.arrayZ[i - 1];
-      const auto &after = knots.arrayZ[i];
-      double denom = after.z - before.z;
-      return before.offset + (after.offset - before.offset) * (z - before.z) / denom;
+      اگر (!i) بازگشت knots.arrayZ[0].offset;
+      ثابت auto &before = knots.arrayZ[i - 1];
+      ثابت auto &after = knots.arrayZ[i];
+      دوگانه denom = after.z - before.z;
+      بازگشت before.offset + (after.offset - before.offset) * (z - before.z) / denom;
     }
   }
-  return len ? knots.arrayZ[len - 1].offset : 0.0;
+  بازگشت len ? knots.arrayZ[len - 1].offset : 0.0;
 }
 
 /* Piecewise-linear evaluation over instantiated avar v1 mappings, as
  * produced by SegmentMaps::subset (sorted, with -1/0/+1 anchors).
  * Matches SegmentMaps::map_float for such well-formed mappings. */
-static inline double
-_avar2_map_new_mapping (const hb_vector_t<AxisValueMap> &mappings, double v,
+ایستا درونخطی دوگانه
+_avar2_map_new_mapping (ثابت hb_vector_t<Axis_مقدار_Map> &mappings, دوگانه v,
 			unsigned from_offset = 0, unsigned to_offset = 1)
 {
   unsigned len = mappings.length;
-  if (!len) return v;
+  اگر (!len) بازگشت v;
 
-  for (unsigned i = 0; i < len; i++)
+  برای (unsigned i = 0; i < len; i++)
   {
-    double from = (double) mappings.arrayZ[i].coords[from_offset].to_float ();
-    if (v == from)
-      return (double) mappings.arrayZ[i].coords[to_offset].to_float ();
-    if (v < from)
+    دوگانه from = (دوگانه) mappings.arrayZ[i].coords[from_offset].to_float ();
+    اگر (v == from)
+      بازگشت (دوگانه) mappings.arrayZ[i].coords[to_offset].to_float ();
+    اگر (v < from)
     {
-      double to = (double) mappings.arrayZ[i].coords[to_offset].to_float ();
-      if (!i) return v - from + to;
-      double prev_from = (double) mappings.arrayZ[i - 1].coords[from_offset].to_float ();
-      double prev_to = (double) mappings.arrayZ[i - 1].coords[to_offset].to_float ();
-      double denom = from - prev_from;
-      if (denom == 0.0) return prev_to;
-      return prev_to + (to - prev_to) * (v - prev_from) / denom;
+      دوگانه to = (دوگانه) mappings.arrayZ[i].coords[to_offset].to_float ();
+      اگر (!i) بازگشت v - from + to;
+      دوگانه prev_from = (دوگانه) mappings.arrayZ[i - 1].coords[from_offset].to_float ();
+      دوگانه prev_to = (دوگانه) mappings.arrayZ[i - 1].coords[to_offset].to_float ();
+      دوگانه denom = from - prev_from;
+      اگر (denom == 0.0) بازگشت prev_to;
+      بازگشت prev_to + (to - prev_to) * (v - prev_from) / denom;
     }
   }
-  return v - (double) mappings.arrayZ[len - 1].coords[from_offset].to_float ()
-           + (double) mappings.arrayZ[len - 1].coords[to_offset].to_float ();
+  بازگشت v - (دوگانه) mappings.arrayZ[len - 1].coords[from_offset].to_float ()
+           + (دوگانه) mappings.arrayZ[len - 1].coords[to_offset].to_float ();
 }
 
 /* Inverse of _avar2_map_new_mapping: pull an output coordinate back to a
  * preimage input coordinate. For a non-strictly-monotone mapping this picks
  * one preimage, which is fine for its only use (augmenting the error
  * estimator's sample set). */
-static inline double
-_avar2_unmap_new_mapping (const hb_vector_t<AxisValueMap> &mappings, double v)
+ایستا درونخطی دوگانه
+_avar2_unmap_new_mapping (ثابت hb_vector_t<Axis_مقدار_Map> &mappings, دوگانه v)
 {
-  return _avar2_map_new_mapping (mappings, v, 1, 0);
+  بازگشت _avar2_map_new_mapping (mappings, v, 1, 0);
 }
 
 /* Plain (non-avar) fvar-style normalization of a user value against a
  * user-space (min, default, max) triple. */
-static inline double
-_avar2_normalize_value (double v, double min, double def, double max)
+ایستا درونخطی دوگانه
+avar2_normalize_مقدار (دوگانه v, دوگانه min, دوگانه def, دوگانه max)
 {
   v = hb_clamp (v, min, max);
-  if (v == def) return 0.0;
-  if (v < def) return def == min ? 0.0 : (v - def) / (def - min);
-  return def == max ? 0.0 : (v - def) / (max - def);
+  اگر (v == def) بازگشت 0.0;
+  اگر (v < def) بازگشت def == min ? 0.0 : (v - def) / (def - min);
+  بازگشت def == max ? 0.0 : (v - def) / (max - def);
 }
 
 /* Inverse of the above: map a normalized value back to user space. */
-static inline double
-_avar2_denormalize_value (double v, double min, double def, double max)
+ایستا درونخطی دوگانه
+avar2_denormalize_مقدار (دوگانه v, دوگانه min, دوگانه def, دوگانه max)
 {
-  if (v == 0.0) return def;
-  return v < 0.0 ? def + v * (def - min) : def + v * (max - def);
+  اگر (v == 0.0) بازگشت def;
+  بازگشت v < 0.0 ? def + v * (def - min) : def + v * (max - def);
 }
 
 /* Estimate the residual offset-compensation error for one restricted axis:
@@ -453,142 +453,142 @@ _avar2_denormalize_value (double v, double min, double def, double max)
  * knots), so the worst kink cannot fall between uniform samples. The
  * pointwise F2Dot14 rounding makes this an estimate rather than an exact
  * bound, but every piecewise-linear extremum is visited. */
-static inline unsigned
-_avar2_estimate_offset_error (const SegmentMaps &old_seg,
-                              const hb_vector_t<AxisValueMap> &new_mapping,
-                              double old_min, double old_def, double old_max,
-                              double new_min, double new_def, double new_max,
-                              const hb_vector_t<avar2_offset_knot_t> &knots)
+ایستا درونخطی unsigned
+_avar2_estimate_offset_error (ثابت SegmentMaps &old_seg,
+                              ثابت hb_vector_t<Axis_مقدار_Map> &new_mapping,
+                              دوگانه old_min, دوگانه old_def, دوگانه old_max,
+                              دوگانه new_min, دوگانه new_def, دوگانه new_max,
+                              ثابت hb_vector_t<avar2_offset_knot_t> &knots)
 {
   constexpr unsigned samples = 257;
-  hb_vector_t<double> us;
-  if (unlikely (!us.alloc (samples + old_seg.as_array ().length +
+  hb_vector_t<دوگانه> us;
+  اگر (unlikely (!us.alloc (samples + old_seg.as_array ().length +
                            new_mapping.length + knots.length)))
-    return UINT_MAX; /* estimator only; fail towards "worse" */
-  for (unsigned i = 0; i < samples; i++)
+    بازگشت UINT_MAX; /* estimator only; fail towards "worse" */
+  برای (unsigned i = 0; i < samples; i++)
     us.push (new_min + (new_max - new_min) * i / (samples - 1));
-  for (const auto &_ : old_seg.as_array ())
-    us.push (_avar2_denormalize_value ((double) _.coords[0].to_float (),
+  برای (ثابت auto &_ : old_seg.as_array ())
+    us.push (avar2_denormalize_مقدار ((دوگانه) _.coords[0].to_float (),
                                        old_min, old_def, old_max));
-  for (const auto &_ : new_mapping)
-    us.push (_avar2_denormalize_value ((double) _.coords[0].to_float (),
+  برای (ثابت auto &_ : new_mapping)
+    us.push (avar2_denormalize_مقدار ((دوگانه) _.coords[0].to_float (),
                                        new_min, new_def, new_max));
-  for (const auto &knot : knots)
-    us.push (_avar2_denormalize_value (
+  برای (ثابت auto &knot : knots)
+    us.push (avar2_denormalize_مقدار (
                _avar2_unmap_new_mapping (new_mapping, knot.z),
                new_min, new_def, new_max));
-  if (unlikely (us.in_error ())) return UINT_MAX;
+  اگر (unlikely (us.in_error ())) بازگشت UINT_MAX;
 
   unsigned max_err = 0;
-  for (double u : us)
+  برای (دوگانه u : us)
   {
-    if (u < new_min || u > new_max) continue;
-    double n_old = _avar2_normalize_value (u, old_min, old_def, old_max);
-    double old_final = (double) old_seg.map_float ((float) n_old);
-    double n_new = _avar2_normalize_value (u, new_min, new_def, new_max);
-    double z = _avar2_map_new_mapping (new_mapping, n_new);
-    double new_final = z + _avar2_eval_offset (knots, z);
-    int err = abs ((int) roundf ((float) (old_final * 16384.0)) -
-                   (int) roundf ((float) (new_final * 16384.0)));
-    if ((unsigned) err > max_err) max_err = err;
+    اگر (u < new_min || u > new_max) ادامه;
+    دوگانه n_old = avar2_normalize_مقدار (u, old_min, old_def, old_max);
+    دوگانه old_final = (دوگانه) old_seg.map_float ((اعشاری) n_old);
+    دوگانه n_new = avar2_normalize_مقدار (u, new_min, new_def, new_max);
+    دوگانه z = _avar2_map_new_mapping (new_mapping, n_new);
+    دوگانه new_final = z + _avar2_eval_offset (knots, z);
+    صحیح err = abs ((صحیح) roundf ((اعشاری) (old_final * 16384.0)) -
+                   (صحیح) roundf ((اعشاری) (new_final * 16384.0)));
+    اگر ((unsigned) err > max_err) max_err = err;
   }
-  return max_err;
+  بازگشت max_err;
 }
 
-struct avar
+ساختار avar
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_avar;
+  ایستا constexpr hb_tag_t tableTag = HB_OT_TAG_avar;
 
-  bool has_data () const { return version.to_int (); }
+  منطقی has_data () ثابت { بازگشت version.to_int (); }
 
-  const SegmentMaps* get_segment_maps () const
-  { return &firstAxisSegmentMaps; }
+  ثابت SegmentMaps* get_segment_maps () ثابت
+  { بازگشت &firstAxisSegmentMaps; }
 
-  unsigned get_axis_count () const
-  { return axisCount; }
+  unsigned get_axis_شمار () ثابت
+  { بازگشت axis_شمار_2; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (!(version.sanitize (c) &&
+    TRACE_SANITIZE (این);
+    اگر (!(version.sanitize (c) &&
 	  hb_barrier () &&
 	  (version.major == 1
 #ifndef HB_NO_AVAR2
 	   || version.major == 2
 #endif
 	   ) &&
-	  c->check_struct (this)))
-      return_trace (false);
+	  c->check_struct (این)))
+      return_trace (نادرست);
 
-    const SegmentMaps *map = &firstAxisSegmentMaps;
-    unsigned int count = axisCount;
-    for (unsigned int i = 0; i < count; i++)
+    ثابت SegmentMaps *map = &firstAxisSegmentMaps;
+    unsigned صحیح شمار = axis_شمار_2;
+    برای (unsigned صحیح i = 0; i < شمار; i++)
     {
-      if (unlikely (!map->sanitize (c)))
-	return_trace (false);
+      اگر (unlikely (!map->sanitize (c)))
+	return_trace (نادرست);
       map = &StructAfter<SegmentMaps> (*map);
     }
 
 #ifndef HB_NO_AVAR2
-    if (version.major < 2)
-      return_trace (true);
+    اگر (version.major < 2)
+      return_trace (درست);
     hb_barrier ();
 
-    const auto &v2 = * (const avarV2Tail *) map;
-    if (unlikely (!v2.sanitize (c, this)))
-      return_trace (false);
+    ثابت auto &v2 = * (ثابت avarV2Tail *) map;
+    اگر (unlikely (!v2.sanitize (c, این)))
+      return_trace (نادرست);
 #endif
 
-    return_trace (true);
+    return_trace (درست);
   }
 
-  void map_coords_16_16 (int *coords, unsigned int coords_length) const
+  تهی map_coords_16_16 (صحیح *coords, unsigned صحیح coords_length) ثابت
   {
-    unsigned int count = hb_min (coords_length, axisCount);
+    unsigned صحیح شمار = hb_min (coords_length, axis_شمار_2);
 
-    const SegmentMaps *map = &firstAxisSegmentMaps;
-    for (unsigned int i = 0; i < count; i++)
+    ثابت SegmentMaps *map = &firstAxisSegmentMaps;
+    برای (unsigned صحیح i = 0; i < شمار; i++)
     {
       coords[i] = roundf (map->map_float (coords[i] / 65536.f) * 65536.f);
       map = &StructAfter<SegmentMaps> (*map);
     }
 
 #ifndef HB_NO_AVAR2
-    if (version.major < 2)
-      return;
+    اگر (version.major < 2)
+      بازگشت;
     hb_barrier ();
 
-    for (; count < axisCount; count++)
+    برای (; شمار < axis_شمار_2; شمار++)
       map = &StructAfter<SegmentMaps> (*map);
 
-    const auto &v2 = * (const avarV2Tail *) map;
+    ثابت auto &v2 = * (ثابت avarV2Tail *) map;
 
-    const auto &varidx_map = this+v2.varIdxMap;
-    const auto &var_store = this+v2.varStore;
+    ثابت auto &varidx_map = این+v2.varIdxMap;
+    ثابت auto &var_store = این+v2.varStore;
     auto *var_store_cache = var_store.create_cache ();
 
-    hb_vector_t<int> coords_2_14;
+    hb_vector_t<صحیح> coords_2_14;
     coords_2_14.resize (coords_length);
-    for (unsigned i = 0; i < coords_length; i++)
+    برای (unsigned i = 0; i < coords_length; i++)
       coords_2_14[i] = roundf (coords[i] / 4.f); // 16.16 -> 2.14
 
-    hb_vector_t<int> out;
+    hb_vector_t<صحیح> out;
     out.alloc (coords_length);
-    for (unsigned i = 0; i < coords_length; i++)
+    برای (unsigned i = 0; i < coords_length; i++)
     {
-      int v = coords[i];
+      صحیح v = coords[i];
       uint32_t varidx = varidx_map.map (i);
-      float delta = var_store.get_delta (varidx, coords_2_14.arrayZ, coords_2_14.length, var_store_cache);
+      اعشاری delta = var_store.get_delta (varidx, coords_2_14.arrayZ, coords_2_14.length, var_store_cache);
       /* Apply the delta unclamped and clamp only the result to [-1, +1],
        * matching fontTools. Since inputs and results are in [-1, +1],
        * deltas beyond ±2 are equivalent to ±2; clamp to that range only
        * to keep the float->int conversion safe. */
-      float d = hb_clamp (delta * 4, -(float) (1<<17), +(float) (1<<17)); // 2.14 -> 16.16
-      v += (int) roundf (d);
+      اعشاری d = hb_clamp (delta * 4, -(اعشاری) (1<<17), +(اعشاری) (1<<17)); // 2.14 -> 16.16
+      v += (صحیح) roundf (d);
       v = hb_clamp (v, -(1<<16), +(1<<16));
       out.push (v);
     }
-    for (unsigned i = 0; i < coords_length; i++)
+    برای (unsigned i = 0; i < coords_length; i++)
       coords[i] = out[i];
 
     OT::ItemVariationStore::destroy_cache (var_store_cache);
@@ -599,116 +599,116 @@ struct avar
    * varStore offset (legal; maps like plain v1) the avar2 subsetting path
    * applies, with "no variation" semantics for rows that don't resolve —
    * offset compensation then creates delta rows on demand. */
-  bool has_v2_data () const { return version.major > 1; }
+  منطقی has_v2_data () ثابت { بازگشت version.major > 1; }
 
   /* Resolve the avar2 VarStore and VarIdxMap, for the subset planner.
    * Either pointer may be to the Null object (nullable offsets). */
-  bool get_v2_store_and_map (const ItemVariationStore **store,
-                             const DeltaSetIndexMap **varidx_map) const
+  منطقی get_v2_store_and_map (ثابت ItemVariationStore **store,
+                             ثابت DeltaSetIndexMap **varidx_map) ثابت
   {
 #ifndef HB_NO_AVAR2
-    if (version.major < 2) return false;
-    const SegmentMaps *map = &firstAxisSegmentMaps;
-    for (unsigned i = 0; i < axisCount; i++)
+    اگر (version.major < 2) بازگشت نادرست;
+    ثابت SegmentMaps *map = &firstAxisSegmentMaps;
+    برای (unsigned i = 0; i < axis_شمار_2; i++)
       map = &StructAfter<SegmentMaps> (*map);
-    const auto &v2 = * (const avarV2Tail *) map;
-    *store = &(this+v2.varStore);
-    *varidx_map = &(this+v2.varIdxMap);
-    return true;
-#else
-    return false;
+    ثابت auto &v2 = * (ثابت avarV2Tail *) map;
+    *store = &(این+v2.varStore);
+    *varidx_map = &(این+v2.varIdxMap);
+    بازگشت درست;
+#وگرنه
+    بازگشت نادرست;
 #endif
   }
 
   // axis normalization is done in 2.14 here
   // TODO: deprecate this API once fonttools is updated to use 16.16 normalization
-  bool map_coords_2_14 (float *coords, unsigned int coords_length,
-			bool v1_only = false) const
+  منطقی map_coords_2_14 (اعشاری *coords, unsigned صحیح coords_length,
+			منطقی v1_only = نادرست) ثابت
   {
-    hb_vector_t<int> coords_2_14;
-    if (!v1_only && !coords_2_14.resize (coords_length)) return false;
-    unsigned int count = hb_min (coords_length, axisCount);
+    hb_vector_t<صحیح> coords_2_14;
+    اگر (!v1_only && !coords_2_14.resize (coords_length)) بازگشت نادرست;
+    unsigned صحیح شمار = hb_min (coords_length, axis_شمار_2);
 
-    const SegmentMaps *map = &firstAxisSegmentMaps;
-    for (unsigned int i = 0; i < count; i++)
+    ثابت SegmentMaps *map = &firstAxisSegmentMaps;
+    برای (unsigned صحیح i = 0; i < شمار; i++)
     {
-      int v = roundf (map->map_float (coords[i]) * 16384.f);
-      if (!v1_only)
+      صحیح v = roundf (map->map_float (coords[i]) * 16384.f);
+      اگر (!v1_only)
 	coords_2_14[i] = v;
       coords[i] = v / 16384.f;
       map = &StructAfter<SegmentMaps> (*map);
     }
 
-    if (v1_only)
-      return true;
+    اگر (v1_only)
+      بازگشت درست;
 
 #ifndef HB_NO_AVAR2
-    if (version.major < 2)
-      return true;
+    اگر (version.major < 2)
+      بازگشت درست;
     hb_barrier ();
 
-    for (; count < axisCount; count++)
+    برای (; شمار < axis_شمار_2; شمار++)
       map = &StructAfter<SegmentMaps> (*map);
 
-    const auto &v2 = * (const avarV2Tail *) map;
+    ثابت auto &v2 = * (ثابت avarV2Tail *) map;
 
-    const auto &varidx_map = this+v2.varIdxMap;
-    const auto &var_store = this+v2.varStore;
+    ثابت auto &varidx_map = این+v2.varIdxMap;
+    ثابت auto &var_store = این+v2.varStore;
     auto *var_store_cache = var_store.create_cache ();
 
-    for (unsigned i = 0; i < coords_length; i++)
+    برای (unsigned i = 0; i < coords_length; i++)
     {
-      int v = coords_2_14[i];
+      صحیح v = coords_2_14[i];
       uint32_t varidx = varidx_map.map (i);
-      float delta = var_store.get_delta (varidx, coords_2_14.arrayZ, coords_2_14.length, var_store_cache);
+      اعشاری delta = var_store.get_delta (varidx, coords_2_14.arrayZ, coords_2_14.length, var_store_cache);
       /* As above: apply the delta unclamped (±2 covers every useful case)
        * and clamp the result to [-1, +1], matching fontTools. */
-      v += (int) hb_clamp (roundf (delta), -(float) (1<<15), +(float) (1<<15));
+      v += (صحیح) hb_clamp (roundf (delta), -(اعشاری) (1<<15), +(اعشاری) (1<<15));
       v = hb_clamp (v, -(1<<14), +(1<<14));
       coords[i] = v / 16384.f;
     }
 
     OT::ItemVariationStore::destroy_cache (var_store_cache);
-    return true;
-#else
-    return version.major < 2;
+    بازگشت درست;
+#وگرنه
+    بازگشت version.major < 2;
 #endif
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    unsigned retained_axis_count = c->plan->axes_index_map.get_population ();
-    if (!retained_axis_count) //all axes are pinned/dropped
-      return_trace (false);
+    TRACE_SUBSET (این);
+    unsigned retained_axis_شمار = c->plan->axes_index_map.get_population ();
+    اگر (!retained_axis_شمار) //all axes are pinned/dropped
+      return_trace (نادرست);
 
     avar *out = c->serializer->allocate_min<avar> ();
-    if (unlikely (!out)) return_trace (false);
+    اگر (unlikely (!out)) return_trace (نادرست);
 
     out->version.major = c->plan->has_avar2 ? 2 : 1;
     out->version.minor = 0;
-    if (!c->serializer->check_assign (out->axisCount, retained_axis_count, HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
+    اگر (!c->serializer->check_assign (out->axis_شمار_2, retained_axis_شمار, HB_SERIALIZE_ERROR_INT_OVERFLOW))
+      return_trace (نادرست);
 
     /* For avar2, keep the instantiated v1 mappings around; offset
      * compensation needs them to locate the new mappings' kinks. */
-    hb_vector_t<hb_vector_t<AxisValueMap>> new_mappings;
-    if (c->plan->has_avar2 && !new_mappings.resize (axisCount))
-      return_trace (false);
+    hb_vector_t<hb_vector_t<Axis_مقدار_Map>> new_mappings;
+    اگر (c->plan->has_avar2 && !new_mappings.resize (axis_شمار_2))
+      return_trace (نادرست);
 
-    const hb_map_t& axes_index_map = c->plan->axes_index_map;
-    const SegmentMaps *map = &firstAxisSegmentMaps;
-    unsigned count = axisCount;
-    for (unsigned int i = 0; i < count; i++)
+    ثابت hb_map_t& axes_index_map = c->plan->axes_index_map;
+    ثابت SegmentMaps *map = &firstAxisSegmentMaps;
+    unsigned شمار = axis_شمار_2;
+    برای (unsigned صحیح i = 0; i < شمار; i++)
     {
-      if (axes_index_map.has (i))
+      اگر (axes_index_map.has (i))
       {
         hb_tag_t *axis_tag;
-        if (!c->plan->axes_old_index_tag_map.has (i, &axis_tag))
-          return_trace (false);
+        اگر (!c->plan->axes_old_index_tag_map.has (i, &axis_tag))
+          return_trace (نادرست);
 
         Triple *axis_location;
-        if (c->plan->has_avar2 &&
+        اگر (c->plan->has_avar2 &&
             c->plan->user_axes_location.has (*axis_tag, &axis_location) &&
             axis_location->is_point ())
         {
@@ -716,142 +716,142 @@ struct avar
            * {-1->-1, 0->0, 1->1}. The axis is kept in fvar as hidden,
            * so avar needs a segment map entry for it. */
           auto *identity_map = c->serializer->start_embed<SegmentMaps> ();
-          if (unlikely (!c->serializer->extend_min (identity_map)))
-            return_trace (false);
-          AxisValueMap m;
+          اگر (unlikely (!c->serializer->extend_min (identity_map)))
+            return_trace (نادرست);
+          Axis_مقدار_Map m;
           m.set_mapping (-1.f, -1.f);
-          if (!m.serialize (c->serializer)) return_trace (false);
+          اگر (!m.serialize (c->serializer)) return_trace (نادرست);
           m.set_mapping (0.f, 0.f);
-          if (!m.serialize (c->serializer)) return_trace (false);
+          اگر (!m.serialize (c->serializer)) return_trace (نادرست);
           m.set_mapping (1.f, 1.f);
-          if (!m.serialize (c->serializer)) return_trace (false);
-          if (!c->serializer->check_assign (identity_map->len, 3u,
+          اگر (!m.serialize (c->serializer)) return_trace (نادرست);
+          اگر (!c->serializer->check_assign (identity_map->len, 3u,
                                             HB_SERIALIZE_ERROR_INT_OVERFLOW))
-            return_trace (false);
+            return_trace (نادرست);
         }
-        else
+        وگرنه
         {
           /* Restricted or free axis: use standard SegmentMaps::subset() */
-          if (!map->subset (c, *axis_tag,
+          اگر (!map->subset (c, *axis_tag,
                             c->plan->has_avar2 ? &new_mappings[i] : nullptr))
-            return_trace (false);
+            return_trace (نادرست);
         }
       }
       map = &StructAfter<SegmentMaps> (*map);
     }
 
-    if (c->plan->has_avar2)
+    اگر (c->plan->has_avar2)
       return_trace (_subset_avar2 (c, new_mappings));
 
-    return_trace (true);
+    return_trace (درست);
   }
 
-  private:
-  struct avar2_index_map_plan_t
+  خصوصی:
+  ساختار avar2_index_map_plan_t
   {
-    bool init (const hb_vector_t<uint32_t> &varidx_mapping,
-	       const hb_map_t &axes_index_map,
-	       unsigned axis_count)
+    منطقی init (ثابت hb_vector_t<uint32_t> &varidx_mapping,
+	       ثابت hb_map_t &axes_index_map,
+	       unsigned axis_شمار)
     {
-      if (!output_map.alloc (axes_index_map.get_population ()))
-	return false;
+      اگر (!output_map.alloc (axes_index_map.get_population ()))
+	بازگشت نادرست;
 
-      bool has_no_variation = false;
+      منطقی has_no_variation = نادرست;
       unsigned max_outer = 0, max_inner = 0;
-      for (unsigned i = 0; i < axis_count; i++)
+      برای (unsigned i = 0; i < axis_شمار; i++)
       {
-	if (!axes_index_map.has (i)) continue;
+	اگر (!axes_index_map.has (i)) ادامه;
 	uint32_t varidx = varidx_mapping[i];
 	output_map.push (varidx);
-	if (varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
+	اگر (varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
 	{
-	  has_no_variation = true;
-	  continue;
+	  has_no_variation = درست;
+	  ادامه;
 	}
 	max_outer = hb_max (max_outer, varidx >> 16);
 	max_inner = hb_max (max_inner, varidx & 0xFFFF);
       }
-      if (output_map.in_error () ||
+      اگر (output_map.in_error () ||
 	  output_map.length != axes_index_map.get_population ())
-	return false;
+	بازگشت نادرست;
 
-      if (has_no_variation)
+      اگر (has_no_variation)
       {
 	width = 4;
-	inner_bit_count = 16;
+	inner_bit_شمار = 16;
       }
-      else
+      وگرنه
       {
-	inner_bit_count = hb_max (1u, hb_bit_storage (max_inner));
-	unsigned outer_bit_count = hb_max (1u, hb_bit_storage (max_outer));
-	width = hb_clamp ((inner_bit_count + outer_bit_count + 7) / 8, 1u, 4u);
-	if (inner_bit_count + outer_bit_count > width * 8)
-	  inner_bit_count = width * 8 - outer_bit_count;
+	inner_bit_شمار = hb_max (1u, hb_bit_storage (max_inner));
+	unsigned outer_bit_شمار = hb_max (1u, hb_bit_storage (max_outer));
+	width = hb_clamp ((inner_bit_شمار + outer_bit_شمار + 7) / 8, 1u, 4u);
+	اگر (inner_bit_شمار + outer_bit_شمار > width * 8)
+	  inner_bit_شمار = width * 8 - outer_bit_شمار;
       }
-      return true;
+      بازگشت درست;
     }
 
-    unsigned get_inner_bit_count () const { return inner_bit_count; }
-    unsigned get_width () const { return width; }
-    hb_array_t<const uint32_t> get_output_map () const { return output_map.as_array (); }
+    unsigned get_inner_bit_شمار () ثابت { بازگشت inner_bit_شمار; }
+    unsigned get_width () ثابت { بازگشت width; }
+    hb_array_t<ثابت uint32_t> get_output_map () ثابت { بازگشت output_map.as_array (); }
 
-    unsigned inner_bit_count = 1;
+    unsigned inner_bit_شمار = 1;
     unsigned width = 1;
     hb_vector_t<uint32_t> output_map;
   };
 
-  bool _subset_avar2 (hb_subset_context_t *c,
-                      const hb_vector_t<hb_vector_t<AxisValueMap>> &new_mappings) const
+  منطقی _subset_avar2 (hb_subset_context_t *c,
+                      ثابت hb_vector_t<hb_vector_t<Axis_مقدار_Map>> &new_mappings) ثابت
   {
-#if defined (HB_NO_VAR) || defined (HB_NO_AVAR2)
+#اگر defined (HB_NO_VAR) || defined (HB_NO_AVAR2)
     /* Not reachable: the plan never sets has_avar2 in these configurations. */
-    return false;
-#else
+    بازگشت نادرست;
+#وگرنه
 
     /* 1. Locate original avar2 data, keeping per-axis old segment maps */
-    hb_vector_t<const SegmentMaps *> old_seg_maps;
-    if (!old_seg_maps.alloc (axisCount)) return false;
-    const SegmentMaps *map = &firstAxisSegmentMaps;
-    for (unsigned i = 0; i < axisCount; i++)
+    hb_vector_t<ثابت SegmentMaps *> old_seg_maps;
+    اگر (!old_seg_maps.alloc (axis_شمار_2)) بازگشت نادرست;
+    ثابت SegmentMaps *map = &firstAxisSegmentMaps;
+    برای (unsigned i = 0; i < axis_شمار_2; i++)
     {
       old_seg_maps.push (map);
       map = &StructAfter<SegmentMaps> (*map);
     }
 
-    const auto &v2 = * (const avarV2Tail *) map;
-    const auto &varidx_map = this+v2.varIdxMap;
-    const auto &var_store = this+v2.varStore;
+    ثابت auto &v2 = * (ثابت avarV2Tail *) map;
+    ثابت auto &varidx_map = این+v2.varIdxMap;
+    ثابت auto &var_store = این+v2.varStore;
 
     auto fvar_axes = c->plan->source->table.fvar->get_axes ();
 
     /* 2. Compute default deltas by evaluating VarStore at old defaults */
-    hb_vector_t<int> default_coords;
-    if (!default_coords.resize (axisCount)) return false;
-    for (unsigned i = 0; i < axisCount; i++)
+    hb_vector_t<صحیح> default_coords;
+    اگر (!default_coords.resize (axis_شمار_2)) بازگشت نادرست;
+    برای (unsigned i = 0; i < axis_شمار_2; i++)
     {
       hb_tag_t *axis_tag;
-      if (c->plan->axes_old_index_tag_map.has (i, &axis_tag) &&
+      اگر (c->plan->axes_old_index_tag_map.has (i, &axis_tag) &&
           c->plan->old_intermediates.has (*axis_tag))
       {
-        float d_i = (float) c->plan->old_intermediates.get (*axis_tag).middle;
+        اعشاری d_i = (اعشاری) c->plan->old_intermediates.get (*axis_tag).میانه;
         default_coords[i] = roundf (d_i * 16384.f);
       }
-      else
+      وگرنه
         default_coords[i] = 0;
     }
 
     auto *store_cache = var_store.create_cache ();
-    hb_vector_t<float> default_deltas;
-    if (!default_deltas.resize (axisCount)) {
+    hb_vector_t<اعشاری> default_deltas;
+    اگر (!default_deltas.resize (axis_شمار_2)) {
       ItemVariationStore::destroy_cache (store_cache);
-      return false;
+      بازگشت نادرست;
     }
-    for (unsigned i = 0; i < axisCount; i++)
+    برای (unsigned i = 0; i < axis_شمار_2; i++)
     {
       uint32_t varidx = varidx_map.map (i);
-      if (varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
+      اگر (varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
         default_deltas[i] = 0.f;
-      else
+      وگرنه
         default_deltas[i] = var_store.get_delta (varidx, default_coords.arrayZ,
                                                   default_coords.length, store_cache);
     }
@@ -859,12 +859,12 @@ struct avar
 
     /* 3. Rebase IVS regions */
     item_variations_t item_vars;
-    if (!item_vars.create_from_item_varstore (var_store, c->plan->axes_old_index_tag_map))
-      return false;
-    if (!item_vars.instantiate_tuple_vars (c->plan->old_intermediates,
+    اگر (!item_vars.create_from_item_varstore (var_store, c->plan->axes_old_index_tag_map))
+      بازگشت نادرست;
+    اگر (!item_vars.instantiate_tuple_vars (c->plan->old_intermediates,
                                            c->plan->axes_triple_distances,
-                                           false))
-      return false;
+                                           نادرست))
+      بازگشت نادرست;
 
     /* 4. Self-contained pinned axes (whose final coordinate is constant over
      * the retained box) were detected at plan time
@@ -880,11 +880,11 @@ struct avar
      * writing into nonexistent ones. This also covers a NULL VarStore
      * (never downgraded: rows are created on demand). */
     hb_vector_t<uint32_t> new_varidx_mapping;
-    if (!new_varidx_mapping.resize (axisCount)) return false;
-    for (unsigned i = 0; i < axisCount; i++)
+    اگر (!new_varidx_mapping.resize (axis_شمار_2)) بازگشت نادرست;
+    برای (unsigned i = 0; i < axis_شمار_2; i++)
     {
       uint32_t varidx = varidx_map.map (i);
-      if (varidx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX &&
+      اگر (varidx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX &&
 	  !var_store.has_delta_set (varidx))
 	varidx = HB_OT_LAYOUT_NO_VARIATIONS_INDEX;
       new_varidx_mapping[i] = varidx;
@@ -898,102 +898,102 @@ struct avar
      * the row (identical contents, preserving the rebased deltas), then
      * repoint its varIdx. Sharers keep the clean row; the varstore
      * optimization pass re-merges identical rows afterwards. */
-    hb_hashmap_t<uint32_t, unsigned> varidx_ref_count;
-    for (unsigned i = 0; i < axisCount; i++)
+    hb_hashmap_t<uint32_t, unsigned> varidx_ref_شمار;
+    برای (unsigned i = 0; i < axis_شمار_2; i++)
     {
-      if (!c->plan->axes_index_map.has (i)) continue; /* self-contained: dropped */
+      اگر (!c->plan->axes_index_map.has (i)) ادامه; /* self-contained: dropped */
       uint32_t varidx = new_varidx_mapping[i];
-      if (varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX) continue;
-      unsigned *count;
-      if (varidx_ref_count.has (varidx, &count))
-        (*count)++;
-      else if (!varidx_ref_count.set (varidx, 1))
-        return false;
+      اگر (varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX) ادامه;
+      unsigned *شمار;
+      اگر (varidx_ref_شمار.has (varidx, &شمار))
+        (*شمار)++;
+      وگرنه اگر (!varidx_ref_شمار.set (varidx, 1))
+        بازگشت نادرست;
     }
-    for (unsigned i = 0; i < axisCount; i++)
+    برای (unsigned i = 0; i < axis_شمار_2; i++)
     {
       hb_tag_t *axis_tag_ptr;
-      if (!c->plan->axes_old_index_tag_map.has (i, &axis_tag_ptr))
-        return false;
+      اگر (!c->plan->axes_old_index_tag_map.has (i, &axis_tag_ptr))
+        بازگشت نادرست;
       /* Only axes that will receive offset compensation (restricted or
        * pinned) can contaminate a shared row. */
-      if (!c->plan->axes_index_map.has (i) ||
+      اگر (!c->plan->axes_index_map.has (i) ||
           !c->plan->user_axes_location.has (*axis_tag_ptr))
-        continue;
+        ادامه;
       uint32_t varidx = new_varidx_mapping[i];
-      if (varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
-        continue; /* gets a fresh, private VarData in the offset loop below */
-      unsigned *count;
-      if (!varidx_ref_count.has (varidx, &count) || *count <= 1)
-        continue; /* sole owner: safe to write offsets in place */
+      اگر (varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
+        ادامه; /* gets a fresh, private VarData in the offset loop below */
+      unsigned *شمار;
+      اگر (!varidx_ref_شمار.has (varidx, &شمار) || *شمار <= 1)
+        ادامه; /* sole owner: safe to write offsets in place */
       unsigned outer = varidx >> 16;
       unsigned new_inner = item_vars.duplicate_row (outer, varidx & 0xFFFF);
-      if (unlikely (new_inner == (unsigned) -1)) return false;
+      اگر (unlikely (new_inner == (unsigned) -1)) بازگشت نادرست;
       new_varidx_mapping[i] = (outer << 16) | new_inner;
-      (*count)--;
+      (*شمار)--;
     }
 
     /* 6. Add offset compensation tuples.
      * Track processed (outer,inner) pairs to avoid adding duplicate biases
      * when multiple axes share the same varIdx. */
     hb_set_t processed_varidxes;
-    for (unsigned i = 0; i < axisCount; i++)
+    برای (unsigned i = 0; i < axis_شمار_2; i++)
     {
       hb_tag_t *axis_tag_ptr;
-      if (!c->plan->axes_old_index_tag_map.has (i, &axis_tag_ptr))
-        return false;
+      اگر (!c->plan->axes_old_index_tag_map.has (i, &axis_tag_ptr))
+        بازگشت نادرست;
       hb_tag_t axis_tag = *axis_tag_ptr;
 
       /* Self-contained pinned axes are removed from fvar/avar; their
        * contribution is baked into the variation tables instead. */
-      if (!c->plan->axes_index_map.has (i))
-        continue;
+      اگر (!c->plan->axes_index_map.has (i))
+        ادامه;
 
       Triple *new_user;
-      if (c->plan->user_axes_location.has (axis_tag, &new_user))
+      اگر (c->plan->user_axes_location.has (axis_tag, &new_user))
       {
         /* This axis is being restricted or pinned */
         Triple *old_int;
-        if (!c->plan->old_intermediates.has (axis_tag, &old_int))
-          return false;
+        اگر (!c->plan->old_intermediates.has (axis_tag, &old_int))
+          بازگشت نادرست;
 
-        float a_i = (float) old_int->minimum;
-        float d_i = (float) old_int->middle;
-        float b_i = (float) old_int->maximum;
+        اعشاری a_i = (اعشاری) old_int->minimum;
+        اعشاری d_i = (اعشاری) old_int->میانه;
+        اعشاری b_i = (اعشاری) old_int->maximum;
 
-        int d_int = roundf (d_i * 16384.f);
+        صحیح d_int = roundf (d_i * 16384.f);
 
-        bool is_pinned = new_user->is_point ();
+        منطقی is_pinned = new_user->is_point ();
 
         uint32_t varidx = new_varidx_mapping[i];
-        unsigned outer, inner, item_count;
+        unsigned outer, inner, item_شمار_2;
 
-        if (varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
+        اگر (varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
         {
           /* No existing avar2 mapping. Create new VarData. */
           outer = item_vars.add_vardata (1);
           inner = 0;
-          item_count = 1;
+          item_شمار_2 = 1;
           new_varidx_mapping[i] = (outer << 16) | inner;
           default_deltas[i] = 0.f; /* no prior default delta */
         }
-        else
+        وگرنه
         {
           outer = varidx >> 16;
           inner = varidx & 0xFFFF;
-          item_count = item_vars.get_item_count (outer);
+          item_شمار_2 = item_vars.get_item_شمار (outer);
         }
 
         /* Empty-region bias: d_int + round(defaultDelta) */
-        int bias = d_int + (int) roundf (default_deltas[i]);
-        if (bias != 0)
+        صحیح bias = d_int + (صحیح) roundf (default_deltas[i]);
+        اگر (bias != 0)
         {
           hb_hashmap_t<hb_tag_t, Triple> empty_region;
           item_vars.add_tuple (outer, std::move (empty_region),
-                               inner, bias, item_count);
+                               inner, bias, item_شمار_2);
         }
 
-        if (!is_pinned)
+        اگر (!is_pinned)
         {
           /* Offset compensation encodes, as avar2 deltas on this axis, the
            * piecewise-linear function offset(z) = inv_renorm(z) - z, where
@@ -1005,18 +1005,18 @@ struct avar
            *   z = +1  ->  b_i - 1   (new maximum)
            */
           hb_vector_t<avar2_offset_knot_t> knots;
-          _avar2_add_knot (knots, -1.0, (double) a_i + 1.0);
-          _avar2_add_knot (knots, 0.0, (double) d_i);
-          _avar2_add_knot (knots, 1.0, (double) b_i - 1.0);
+          _avar2_add_knot (knots, -1.0, (دوگانه) a_i + 1.0);
+          _avar2_add_knot (knots, 0.0, (دوگانه) d_i);
+          _avar2_add_knot (knots, 1.0, (دوگانه) b_i - 1.0);
 
-          const hb_vector_t<AxisValueMap> &new_mapping = new_mappings[i];
+          ثابت hb_vector_t<Axis_مقدار_Map> &new_mapping = new_mappings[i];
 
-          float min_f = 0.f, def_f = 0.f, max_f = 0.f;
-          if (likely (i < fvar_axes.length))
+          اعشاری min_f = 0.f, def_f = 0.f, max_f = 0.f;
+          اگر (likely (i < fvar_axes.length))
             fvar_axes[i].get_coordinates (min_f, def_f, max_f);
-          double old_min = (double) min_f;
-          double old_def = (double) def_f;
-          double old_max = (double) max_f;
+          دوگانه old_min = (دوگانه) min_f;
+          دوگانه old_def = (دوگانه) def_f;
+          دوگانه old_max = (دوگانه) max_f;
 
           /* If the axis default MOVED, inv_renorm also kinks where the OLD
            * default lands in the new space (the old intermediate coordinate
@@ -1024,13 +1024,13 @@ struct avar
            *   z = z_old  ->  -z_old
            * Omitting that knot (as a plain two-tent encoding would) makes
            * interior coordinates wrong. */
-          double z_old = _avar2_normalize_value ((double) old_def,
-                                                 (double) new_user->minimum,
-                                                 (double) new_user->middle,
-                                                 (double) new_user->maximum);
+          دوگانه z_old = avar2_normalize_مقدار ((دوگانه) old_def,
+                                                 (دوگانه) new_user->minimum,
+                                                 (دوگانه) new_user->میانه,
+                                                 (دوگانه) new_user->maximum);
           z_old = _avar2_map_new_mapping (new_mapping, z_old);
-          z_old = (double) roundf ((float) (z_old * 16384.0)) / 16384.0;
-          if (-1.0 < z_old && z_old < 1.0)
+          z_old = (دوگانه) roundf ((اعشاری) (z_old * 16384.0)) / 16384.0;
+          اگر (-1.0 < z_old && z_old < 1.0)
             _avar2_add_knot (knots, z_old, -z_old);
 
           /* Interior avar v1 breakpoints inside the retained range each put
@@ -1041,26 +1041,26 @@ struct avar
            * its old intermediate value so offset(z) is reproduced at every
            * kink. */
           hb_vector_t<avar2_offset_knot_t> with_breakpoints (knots);
-          for (const auto &m : new_mapping)
+          برای (ثابت auto &m : new_mapping)
           {
-            double from = (double) m.coords[0].to_float ();
-            if (from == -1.0 || from == 0.0 || from == 1.0)
-              continue; /* anchors already seeded */
-            double z = (double) m.coords[1].to_float ();
-            if (!(-1.0 < z && z < 1.0))
-              continue;
-            double user = _avar2_denormalize_value (from,
-                                                    (double) new_user->minimum,
-                                                    (double) new_user->middle,
-                                                    (double) new_user->maximum);
-            double n_old = _avar2_normalize_value (user, old_min, old_def, old_max);
-            double x_old = (double) old_seg_maps[i]->map_float ((float) n_old);
-            x_old = (double) roundf ((float) (x_old * 16384.0)) / 16384.0;
+            دوگانه from = (دوگانه) m.coords[0].to_float ();
+            اگر (from == -1.0 || from == 0.0 || from == 1.0)
+              ادامه; /* anchors already seeded */
+            دوگانه z = (دوگانه) m.coords[1].to_float ();
+            اگر (!(-1.0 < z && z < 1.0))
+              ادامه;
+            دوگانه user = avar2_denormalize_مقدار (from,
+                                                    (دوگانه) new_user->minimum,
+                                                    (دوگانه) new_user->میانه,
+                                                    (دوگانه) new_user->maximum);
+            دوگانه n_old = avar2_normalize_مقدار (user, old_min, old_def, old_max);
+            دوگانه x_old = (دوگانه) old_seg_maps[i]->map_float ((اعشاری) n_old);
+            x_old = (دوگانه) roundf ((اعشاری) (x_old * 16384.0)) / 16384.0;
             _avar2_add_knot (with_breakpoints, z, x_old - z);
           }
 
-          if (unlikely (knots.in_error () || with_breakpoints.in_error ()))
-            return false;
+          اگر (unlikely (knots.in_error () || with_breakpoints.in_error ()))
+            بازگشت نادرست;
 
           /* Extra tents cost F2Dot14 rounding, so for a steep segment they
            * can add more quantization noise than the structural error they
@@ -1071,26 +1071,26 @@ struct avar
            * steep retained segment that cannot be reproduced in F2Dot14). */
           unsigned err = _avar2_estimate_offset_error (*old_seg_maps[i], new_mapping,
                                                        old_min, old_def, old_max,
-                                                       (double) new_user->minimum,
-                                                       (double) new_user->middle,
-                                                       (double) new_user->maximum,
+                                                       (دوگانه) new_user->minimum,
+                                                       (دوگانه) new_user->میانه,
+                                                       (دوگانه) new_user->maximum,
                                                        knots);
-          if (with_breakpoints.length != knots.length)
+          اگر (with_breakpoints.length != knots.length)
           {
             unsigned err_with = _avar2_estimate_offset_error (*old_seg_maps[i], new_mapping,
                                                               old_min, old_def, old_max,
-                                                              (double) new_user->minimum,
-                                                              (double) new_user->middle,
-                                                              (double) new_user->maximum,
+                                                              (دوگانه) new_user->minimum,
+                                                              (دوگانه) new_user->میانه,
+                                                              (دوگانه) new_user->maximum,
                                                               with_breakpoints);
-            if (err_with <= err)
+            اگر (err_with <= err)
             {
               knots = std::move (with_breakpoints);
               err = err_with;
             }
           }
-          if (err > 8)
-            DEBUG_MSG (SUBSET, nullptr,
+          اگر (err > 8)
+            DEBUG_پیام (SUBSET, nullptr,
                        "avar2 offset compensation is approximate for axis %c%c%c%c: "
                        "max residual %u F2Dot14 units",
                        HB_UNTAG (axis_tag), err);
@@ -1101,110 +1101,110 @@ struct avar
            * bias above. This reduces to the classic pair of tents
            * (-1,-1,0) / (0,+1,+1) when the default is unchanged and there
            * are no interior knots. */
-          for (unsigned k = 0; k < knots.length; k++)
+          برای (unsigned k = 0; k < knots.length; k++)
           {
-            double z = knots.arrayZ[k].z;
-            if (z == 0.0) continue;
-            int delta = (int) roundf ((float) ((knots.arrayZ[k].offset - (double) d_i) * 16384.0));
-            if (!delta) continue;
-            double lower, upper;
-            if (z > 0.0)
+            دوگانه z = knots.arrayZ[k].z;
+            اگر (z == 0.0) ادامه;
+            صحیح delta = (صحیح) roundf ((اعشاری) ((knots.arrayZ[k].offset - (دوگانه) d_i) * 16384.0));
+            اگر (!delta) ادامه;
+            دوگانه lower, upper;
+            اگر (z > 0.0)
             {
               lower = knots.arrayZ[k - 1].z;
               upper = k + 1 < knots.length ? knots.arrayZ[k + 1].z : z;
             }
-            else
+            وگرنه
             {
               upper = knots.arrayZ[k + 1].z;
               lower = k > 0 ? knots.arrayZ[k - 1].z : z;
             }
             hb_hashmap_t<hb_tag_t, Triple> region;
-            if (unlikely (!region.set (axis_tag, Triple (lower, z, upper))))
-              return false;
+            اگر (unlikely (!region.set (axis_tag, Triple (lower, z, upper))))
+              بازگشت نادرست;
             item_vars.add_tuple (outer, std::move (region),
-                                 inner, delta, item_count);
+                                 inner, delta, item_شمار_2);
           }
         }
       }
-      else
+      وگرنه
       {
         /* Free or private axis — not being restricted.
          * If it has a non-zero default delta, add it back as a bias.
          * Skip if this (outer,inner) was already processed (shared varIdx). */
         uint32_t varidx = new_varidx_mapping[i];
-        if (varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
-          continue;
+        اگر (varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
+          ادامه;
 
-        if (processed_varidxes.has (varidx))
-          continue;
+        اگر (processed_varidxes.has (varidx))
+          ادامه;
         processed_varidxes.add (varidx);
 
         unsigned outer = varidx >> 16;
         unsigned inner = varidx & 0xFFFF;
-        int dd = (int) roundf (default_deltas[i]);
-        if (dd != 0)
+        صحیح dd = (صحیح) roundf (default_deltas[i]);
+        اگر (dd != 0)
         {
-          unsigned item_count = item_vars.get_item_count (outer);
+          unsigned item_شمار_2 = item_vars.get_item_شمار (outer);
           hb_hashmap_t<hb_tag_t, Triple> empty_region;
           item_vars.add_tuple (outer, std::move (empty_region),
-                               inner, dd, item_count);
+                               inner, dd, item_شمار_2);
         }
       }
     }
 
     /* 7. Finalize: build region list + convert to varstore */
-    if (!item_vars.build_region_list ()) return false;
-    if (!item_vars.as_item_varstore (true /* optimize */,
-                                     false /* use_no_variation_idx */))
-      return false;
+    اگر (!item_vars.build_region_list ()) بازگشت نادرست;
+    اگر (!item_vars.as_item_varstore (درست /* optimize */,
+                                     نادرست /* use_no_variation_idx */))
+      بازگشت نادرست;
 
     /* 8. Apply varidx_map optimization remapping */
-    const auto &opt_varidx_map = item_vars.get_varidx_map ();
-    for (unsigned i = 0; i < axisCount; i++)
+    ثابت auto &opt_varidx_map = item_vars.get_varidx_map ();
+    برای (unsigned i = 0; i < axis_شمار_2; i++)
     {
       uint32_t varidx = new_varidx_mapping[i];
-      if (varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
-        continue;
+      اگر (varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
+        ادامه;
       uint32_t *new_idx;
-      if (opt_varidx_map.has (varidx, &new_idx))
+      اگر (opt_varidx_map.has (varidx, &new_idx))
         new_varidx_mapping[i] = *new_idx;
     }
 
     /* 9. Serialize avarV2Tail. Entries cover the retained axes only;
      * self-contained pinned axes are removed from fvar. */
     avar2_index_map_plan_t index_map_plan;
-    if (!index_map_plan.init (new_varidx_mapping,
+    اگر (!index_map_plan.init (new_varidx_mapping,
 			      c->plan->axes_index_map,
-			      axisCount))
-      return false;
+			      axis_شمار_2))
+      بازگشت نادرست;
 
     auto *tail = c->serializer->allocate_size<avarV2Tail> (avarV2Tail::static_size);
-    if (unlikely (!tail)) return false;
-    if (!tail->varIdxMap.serialize_serialize (c->serializer, index_map_plan))
-      return false;
-    if (!tail->varStore.serialize_serialize (c->serializer,
+    اگر (unlikely (!tail)) بازگشت نادرست;
+    اگر (!tail->varIdxMap.serialize_serialize (c->serializer, index_map_plan))
+      بازگشت نادرست;
+    اگر (!tail->varStore.serialize_serialize (c->serializer,
 					     item_vars.has_long_word (),
 					     c->plan->axis_tags,
 					     item_vars.get_region_list (),
 					     item_vars.get_vardata_encodings ()))
-      return false;
+      بازگشت نادرست;
 
-    return true;
+    بازگشت درست;
 #endif
   }
 
-  public:
+  عمومی:
 
-  protected:
+  محافظتشده:
   FixedVersion<>version;	/* Version of the avar table
 				 * initially set to 0x00010000u */
   HBUINT16	reserved;	/* This field is permanently reserved. Set to 0. */
-  HBUINT16	axisCount;	/* The number of variation axes in the font. This
+  HBUINT16	axis_شمار_2;	/* The number of variation axes in the font. This
 				 * must be the same number as axisCount in the
 				 * 'fvar' table. */
   SegmentMaps	firstAxisSegmentMaps;
 
-  public:
+  عمومی:
   DEFINE_SIZE_MIN (8);
 };
 

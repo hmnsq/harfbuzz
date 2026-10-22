@@ -2,30 +2,30 @@
 #define OT_GLYF_PATH_BUILDER_HH
 
 
-#include "../../hb.hh"
+#شامل "../../hb.hh"
 
 
-namespace OT {
-namespace glyf_impl {
+فضاینام OT {
+فضاینام glyf_impl {
 
 
-struct path_builder_t
+ساختار path_builder_t
 {
   hb_font_t *font;
   hb_draw_session_t *draw_session;
 
-  struct optional_point_t
+  ساختار optional_point_t
   {
     optional_point_t () {}
-    optional_point_t (float x_, float y_) : has_data (true), x (x_), y (y_) {}
-    operator bool () const { return has_data; }
+    optional_point_t (اعشاری x_, اعشاری y_) : has_data (درست), x (x_), y (y_) {}
+    operator منطقی () ثابت { بازگشت has_data; }
 
-    bool has_data = false;
-    float x;
-    float y;
+    منطقی has_data = نادرست;
+    اعشاری x;
+    اعشاری y;
 
     optional_point_t mid (optional_point_t p)
-    { return optional_point_t ((x + p.x) * 0.5f, (y + p.y) * 0.5f); }
+    { بازگشت optional_point_t ((x + p.x) * 0.5f, (y + p.y) * 0.5f); }
   } first_oncurve, first_offcurve, first_offcurve2, last_offcurve, last_offcurve2;
 
   path_builder_t (hb_font_t *font_, hb_draw_session_t &draw_session_) :
@@ -38,135 +38,135 @@ struct path_builder_t
      *
      * Cubic support added. */
   HB_ALWAYS_INLINE
-  void consume_point (const contour_point_t &point)
+  تهی consume_point (ثابت contour_point_t &point)
   {
-    bool is_on_curve = point.flag & glyf_impl::SimpleGlyph::FLAG_ON_CURVE;
+    منطقی is_on_curve = point.flag & glyf_impl::SimpleGlyph::FLAG_ON_CURVE;
 #ifdef HB_NO_CUBIC_GLYF
-    constexpr bool is_cubic = false;
-#else
-    bool is_cubic = !is_on_curve && (point.flag & glyf_impl::SimpleGlyph::FLAG_CUBIC);
+    constexpr منطقی is_cubic = نادرست;
+#وگرنه
+    منطقی is_cubic = !is_on_curve && (point.flag & glyf_impl::SimpleGlyph::FLAG_CUBIC);
 #endif
     optional_point_t p (font->em_fscalef_x (point.x), font->em_fscalef_y (point.y));
-    if (unlikely (!first_oncurve))
+    اگر (unlikely (!first_oncurve))
     {
-      if (is_on_curve)
+      اگر (is_on_curve)
       {
 	first_oncurve = p;
 	draw_session->move_to (p.x, p.y);
       }
-      else
+      وگرنه
       {
-	if (is_cubic && !first_offcurve2)
+	اگر (is_cubic && !first_offcurve2)
 	{
 	  first_offcurve2 = first_offcurve;
 	  first_offcurve = p;
 	}
-	else if (first_offcurve)
+	وگرنه اگر (first_offcurve)
 	{
 	  optional_point_t mid = first_offcurve.mid (p);
 	  first_oncurve = mid;
 	  last_offcurve = p;
 	  draw_session->move_to (mid.x, mid.y);
 	}
-	else
+	وگرنه
 	  first_offcurve = p;
       }
     }
-    else
+    وگرنه
     {
-      if (last_offcurve)
+      اگر (last_offcurve)
       {
-	if (is_on_curve)
+	اگر (is_on_curve)
 	{
-	  if (last_offcurve2)
+	  اگر (last_offcurve2)
 	  {
 	    draw_session->cubic_to (last_offcurve2.x, last_offcurve2.y,
 				    last_offcurve.x, last_offcurve.y,
 				    p.x, p.y);
 	    last_offcurve2 = optional_point_t ();
 	  }
-	  else
+	  وگرنه
 	    draw_session->quadratic_to (last_offcurve.x, last_offcurve.y,
 				       p.x, p.y);
 	  last_offcurve = optional_point_t ();
 	}
-	else
+	وگرنه
 	{
-	  if (is_cubic && !last_offcurve2)
+	  اگر (is_cubic && !last_offcurve2)
 	  {
 	    last_offcurve2 = last_offcurve;
 	    last_offcurve = p;
 	  }
-	  else
+	  وگرنه
 	  {
 	    optional_point_t mid = last_offcurve.mid (p);
 
-	    if (is_cubic)
+	    اگر (is_cubic)
 	    {
 	      draw_session->cubic_to (last_offcurve2.x, last_offcurve2.y,
 				      last_offcurve.x, last_offcurve.y,
 				      mid.x, mid.y);
 	      last_offcurve2 = optional_point_t ();
 	    }
-	    else
+	    وگرنه
 	      draw_session->quadratic_to (last_offcurve.x, last_offcurve.y,
 					 mid.x, mid.y);
 	    last_offcurve = p;
 	  }
 	}
       }
-      else
+      وگرنه
       {
-	if (is_on_curve)
-	  draw_session->line_to (p.x, p.y);
-	else
+	اگر (is_on_curve)
+	  draw_session->سطر_to (p.x, p.y);
+	وگرنه
 	  last_offcurve = p;
       }
     }
 
   }
 
-  void contour_end ()
+  تهی contour_end ()
   {
-    if (first_offcurve && last_offcurve)
+    اگر (first_offcurve && last_offcurve)
     {
       optional_point_t mid = last_offcurve.mid (first_offcurve2 ?
 						first_offcurve2 :
 						first_offcurve);
-      if (last_offcurve2)
+      اگر (last_offcurve2)
 	draw_session->cubic_to (last_offcurve2.x, last_offcurve2.y,
 				last_offcurve.x, last_offcurve.y,
 				mid.x, mid.y);
-      else
+      وگرنه
 	draw_session->quadratic_to (last_offcurve.x, last_offcurve.y,
 				   mid.x, mid.y);
       last_offcurve = optional_point_t ();
     }
     /* now check the rest */
 
-    if (first_offcurve && first_oncurve)
+    اگر (first_offcurve && first_oncurve)
     {
-      if (first_offcurve2)
+      اگر (first_offcurve2)
 	draw_session->cubic_to (first_offcurve2.x, first_offcurve2.y,
 				first_offcurve.x, first_offcurve.y,
 				first_oncurve.x, first_oncurve.y);
-      else
+      وگرنه
 	draw_session->quadratic_to (first_offcurve.x, first_offcurve.y,
 				   first_oncurve.x, first_oncurve.y);
     }
-    else if (last_offcurve && first_oncurve)
+    وگرنه اگر (last_offcurve && first_oncurve)
     {
-      if (last_offcurve2)
+      اگر (last_offcurve2)
 	draw_session->cubic_to (last_offcurve2.x, last_offcurve2.y,
 				last_offcurve.x, last_offcurve.y,
 				first_oncurve.x, first_oncurve.y);
-      else
+      وگرنه
 	draw_session->quadratic_to (last_offcurve.x, last_offcurve.y,
 				   first_oncurve.x, first_oncurve.y);
     }
-    else if (first_oncurve)
-      draw_session->line_to (first_oncurve.x, first_oncurve.y);
-    else if (first_offcurve2)
+    وگرنه اگر (first_oncurve)
+      draw_session->سطر_to (first_oncurve.x, first_oncurve.y);
+    وگرنه اگر (first_offcurve2)
     {
       /* A contour with just two cubic controls closes at their midpoint. */
       optional_point_t mid = first_offcurve2.mid (first_offcurve);
@@ -175,9 +175,9 @@ struct path_builder_t
 			      first_offcurve.x, first_offcurve.y,
 			      mid.x, mid.y);
     }
-    else if (first_offcurve)
+    وگرنه اگر (first_offcurve)
     {
-      float x = first_offcurve.x, y = first_offcurve.y;
+      اعشاری x = first_offcurve.x, y = first_offcurve.y;
       draw_session->move_to (x, y);
       draw_session->quadratic_to (x, y, x, y);
     }
@@ -187,10 +187,10 @@ struct path_builder_t
     draw_session->close_path ();
   }
 
-  void points_end () {}
+  تهی points_end () {}
 
-  bool is_consuming_contour_points () { return true; }
-  contour_point_t *get_phantoms_sink () { return nullptr; }
+  منطقی is_consuming_contour_points () { بازگشت درست; }
+  contour_point_t *get_phantoms_sink () { بازگشت nullptr; }
 };
 
 

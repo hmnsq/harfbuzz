@@ -1,13 +1,13 @@
 #ifndef OT_LAYOUT_GPOS_EXTENSIONPOS_HH
 #define OT_LAYOUT_GPOS_EXTENSIONPOS_HH
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+فضاینام OT {
+فضاینام Layout {
+فضاینام GPOS_impl {
 
-struct ExtensionPos : Extension<ExtensionPos>
+ساختار ExtensionPos : Extension<ExtensionPos>
 {
-  typedef struct PosLookupSubTable SubTable;
+  تعریفنوع ساختار PosLookupSubTable SubTable;
 };
 
 }

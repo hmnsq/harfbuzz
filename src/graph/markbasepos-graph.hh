@@ -27,184 +27,184 @@
 #ifndef GRAPH_MARKBASEPOS_GRAPH_HH
 #define GRAPH_MARKBASEPOS_GRAPH_HH
 
-#include "split-helpers.hh"
-#include "coverage-graph.hh"
-#include "../OT/Layout/GPOS/MarkBasePos.hh"
-#include "../OT/Layout/GPOS/PosLookupSubTable.hh"
+#شامل "split-helpers.hh"
+#شامل "coverage-graph.hh"
+#شامل "../OT/Layout/GPOS/MarkBasePos.hh"
+#شامل "../OT/Layout/GPOS/PosLookupSubTable.hh"
 
-namespace graph {
+فضاینام graph {
 
-struct AnchorMatrix : public OT::Layout::GPOS_impl::AnchorMatrix<SmallTypes>
+ساختار AnchorMatrix : عمومی OT::Layout::GPOS_impl::AnchorMatrix<SmallTypes>
 {
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex, unsigned class_count) const
+  graph_result_t<تهی> sanitize (ثابت graph_t::vertex_t& vertex, unsigned class_شمار) ثابت
   {
     size_t vertex_len = vertex.table_size();
-    if (unlikely (vertex_len < AnchorMatrix::min_size)) return Err(SANITIZE_FAILURE);
+    اگر (unlikely (vertex_len < AnchorMatrix::min_size)) بازگشت Err(SANITIZE_FAILURE);
     hb_barrier ();
 
-    if (unlikely (vertex_len < AnchorMatrix::min_size +
-                  OT::Offset16::static_size * class_count * this->rows))
-      return Err(SANITIZE_FAILURE);
-    return Ok();
+    اگر (unlikely (vertex_len < AnchorMatrix::min_size +
+                  OT::Offset16::static_size * class_شمار * این->rows))
+      بازگشت Err(SANITIZE_FAILURE);
+    بازگشت Ok();
   }
 
-  graph_result_t<void> shrink (gsubgpos_graph_context_t& c,
+  graph_result_t<تهی> shrink (gsubgpos_graph_context_t& c,
                                unsigned this_index,
-                               unsigned old_class_count,
-                               unsigned new_class_count)
+                               unsigned old_class_شمار,
+                               unsigned new_class_شمار)
   {
-    if (unlikely (new_class_count >= old_class_count)) return Err(INVALID_ARGUMENT);
+    اگر (unlikely (new_class_شمار >= old_class_شمار)) بازگشت Err(INVALID_ARGUMENT);
     auto& v = c.graph.vertices_[this_index];
-    const auto& o = v.obj ();
-    unsigned base_count = rows;
+    ثابت auto& o = v.obj ();
+    unsigned base_شمار = rows;
     v.set_buffer (o.head,
       o.head +
       AnchorMatrix::min_size +
-      OT::Offset16::static_size * base_count * new_class_count);
+      OT::Offset16::static_size * base_شمار * new_class_شمار);
 
     // Reposition links into the new indexing scheme.
-    for (auto& link : v.real_links_writer ())
+    برای (auto& link : v.real_links_writer ())
     {
       unsigned index = (link.position - 2) / 2;
-      unsigned base = index / old_class_count;
-      unsigned klass = index % old_class_count;
-      if (unlikely (klass >= new_class_count))
+      unsigned base = index / old_class_شمار;
+      unsigned klass = index % old_class_شمار;
+      اگر (unlikely (klass >= new_class_شمار))
         // should have already been removed
-        return Err(INVALID_ARGUMENT);
+        بازگشت Err(INVALID_ARGUMENT);
 
-      unsigned new_index = base * new_class_count + klass;
+      unsigned new_index = base * new_class_شمار + klass;
 
-      link.position = (char*) &(this->matrixZ[new_index]) - (char*) this;
+      link.position = (نویسه*) &(این->matrixZ[new_index]) - (نویسه*) این;
     }
 
-    return Ok();
+    بازگشت Ok();
   }
 
   graph_result_t<unsigned> clone (gsubgpos_graph_context_t& c,
                                   unsigned this_index,
                                   unsigned start,
                                   unsigned end,
-                                  unsigned class_count)
+                                  unsigned class_شمار)
   {
-    unsigned base_count = rows;
-    unsigned new_class_count = end - start;
+    unsigned base_شمار = rows;
+    unsigned new_class_شمار = end - start;
     unsigned size = AnchorMatrix::min_size +
-                    OT::Offset16::static_size * new_class_count * rows;
-    TRY_ASSIGN (unsigned prime_id, c.create_node (size));
-    AnchorMatrix* prime = (AnchorMatrix*) c.graph.object (prime_id).head;
-    prime->rows = base_count;
+                    OT::Offset16::static_size * new_class_شمار * rows;
+    TRY_ASSIGN (unsigned اول_id, c.create_گره (size));
+    AnchorMatrix* اول = (AnchorMatrix*) c.graph.object (اول_id).head;
+    اول->rows = base_شمار;
 
     auto& v = c.graph.vertices_[this_index];
-    const auto& o = v.obj ();
+    ثابت auto& o = v.obj ();
 
-    int num_links = o.real_links.length;
-    for (int i = 0; i < num_links; i++)
+    صحیح رقم_links = o.real_links.length;
+    برای (صحیح i = 0; i < رقم_links; i++)
     {
-      const auto& link = o.real_links[i];
+      ثابت auto& link = o.real_links[i];
       unsigned old_index = (link.position - 2) / OT::Offset16::static_size;
-      unsigned klass = old_index % class_count;
-      if (klass < start || klass >= end) continue;
+      unsigned klass = old_index % class_شمار;
+      اگر (klass < start || klass >= end) ادامه;
 
-      unsigned base = old_index / class_count;
+      unsigned base = old_index / class_شمار;
       unsigned new_klass = klass - start;
-      unsigned new_index = base * new_class_count + new_klass;
+      unsigned new_index = base * new_class_شمار + new_klass;
 
 
       unsigned child_idx = link.objidx;
-      TRY (c.graph.add_link (&(prime->matrixZ[new_index]),
-                             prime_id,
+      TRY (c.graph.add_link (&(اول->matrixZ[new_index]),
+                             اول_id,
                              child_idx));
 
       auto& child = c.graph.vertices_[child_idx];
       child.remove_parent (this_index);
 
       v.remove_real_link_unordered (i);
-      num_links--;
+      رقم_links--;
       i--;
     }
 
     // Restore correct ordering after the above removes, which mess up link ordering.
     v.sort_real_links ();
 
-    return Ok(prime_id);
+    بازگشت Ok(اول_id);
   }
 };
 
-struct MarkArray : public OT::Layout::GPOS_impl::MarkArray<SmallTypes>
+ساختار MarkArray : عمومی OT::Layout::GPOS_impl::MarkArray<SmallTypes>
 {
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  graph_result_t<تهی> sanitize (ثابت graph_t::vertex_t& vertex) ثابت
   {
     size_t vertex_len = vertex.table_size();
     unsigned min_size = MarkArray::min_size;
-    if (unlikely (vertex_len < min_size)) return Err(SANITIZE_FAILURE);
+    اگر (unlikely (vertex_len < min_size)) بازگشت Err(SANITIZE_FAILURE);
     hb_barrier ();
 
-    if (unlikely (vertex_len < get_size ())) return Err(SANITIZE_FAILURE);
-    return Ok();
+    اگر (unlikely (vertex_len < get_size ())) بازگشت Err(SANITIZE_FAILURE);
+    بازگشت Ok();
   }
 
-  graph_result_t<void> shrink (gsubgpos_graph_context_t& c,
-                               const hb_hashmap_t<unsigned, unsigned>& mark_array_links,
+  graph_result_t<تهی> shrink (gsubgpos_graph_context_t& c,
+                               ثابت hb_hashmap_t<unsigned, unsigned>& mark_array_links,
                                unsigned this_index,
-                               unsigned new_class_count)
+                               unsigned new_class_شمار)
   {
     auto& v = c.graph.vertices_[this_index];
-    const auto& o = v.obj ();
-    for (const auto& link : o.real_links)
+    ثابت auto& o = v.obj ();
+    برای (ثابت auto& link : o.real_links)
       c.graph.vertices_[link.objidx].remove_parent (this_index);
     v.clear_real_links ();
 
     unsigned new_index = 0;
-    for (const auto& record : this->iter ())
+    برای (ثابت auto& record : این->iter ())
     {
       unsigned klass = record.klass;
-      if (klass >= new_class_count) continue;
+      اگر (klass >= new_class_شمار) ادامه;
 
-      (*this)[new_index].klass = klass;
-      unsigned position = (char*) &record.markAnchor - (char*) this;
+      (*این)[new_index].klass = klass;
+      unsigned position = (نویسه*) &record.markAnchor - (نویسه*) این;
       unsigned* objidx;
-      if (!mark_array_links.has (position, &objidx))
+      اگر (!mark_array_links.has (position, &objidx))
       {
         new_index++;
-        continue;
+        ادامه;
       }
 
-      TRY (c.graph.add_link (&(*this)[new_index].markAnchor, this_index, *objidx));
+      TRY (c.graph.add_link (&(*این)[new_index].markAnchor, this_index, *objidx));
       new_index++;
     }
 
-    this->len = new_index;
+    این->len = new_index;
     v.set_buffer (o.head, o.head + MarkArray::min_size +
                   OT::Layout::GPOS_impl::MarkRecord<SmallTypes>::static_size * new_index);
 
-    return Ok();
+    بازگشت Ok();
   }
 
   graph_result_t<unsigned> clone (gsubgpos_graph_context_t& c,
                                   unsigned this_index,
-                                  const hb_hashmap_t<unsigned, unsigned>& pos_to_index,
+                                  ثابت hb_hashmap_t<unsigned, unsigned>& pos_to_index,
                                   hb_set_t& marks,
                                   unsigned start_class)
   {
     unsigned size = MarkArray::min_size +
                     OT::Layout::GPOS_impl::MarkRecord<SmallTypes>::static_size *
                     marks.get_population ();
-    TRY_ASSIGN (unsigned prime_id, c.create_node (size));
-    MarkArray* prime = (MarkArray*) c.graph.object (prime_id).head;
-    prime->len = marks.get_population ();
+    TRY_ASSIGN (unsigned اول_id, c.create_گره (size));
+    MarkArray* اول = (MarkArray*) c.graph.object (اول_id).head;
+    اول->len = marks.get_population ();
 
 
     unsigned i = 0;
-    for (hb_codepoint_t mark : marks)
+    برای (hb_codepoint_t mark : marks)
     {
-      (*prime)[i].klass = (*this)[mark].klass - start_class;
-      unsigned offset_pos = (char*) &((*this)[mark].markAnchor) - (char*) this;
+      (*اول)[i].klass = (*این)[mark].klass - start_class;
+      unsigned offset_pos = (نویسه*) &((*این)[mark].markAnchor) - (نویسه*) این;
       unsigned* anchor_index;
-      if (pos_to_index.has (offset_pos, &anchor_index))
+      اگر (pos_to_index.has (offset_pos, &anchor_index))
         TRY (c.graph.move_child (this_index,
-                                 &((*this)[mark].markAnchor),
-                                 prime_id,
-                                 &((*prime)[i].markAnchor)));
+                                 &((*این)[mark].markAnchor),
+                                 اول_id,
+                                 &((*اول)[i].markAnchor)));
 
       i++;
     }
@@ -212,18 +212,18 @@ struct MarkArray : public OT::Layout::GPOS_impl::MarkArray<SmallTypes>
     // Restore correct ordering of the vertex links which are disturbed by move_child.
     c.graph.vertices_[this_index].sort_real_links ();
 
-    return Ok(prime_id);
+    بازگشت Ok(اول_id);
   }
 };
 
-struct MarkBasePosFormat1 : public OT::Layout::GPOS_impl::MarkBasePosFormat1_2<SmallTypes>
+ساختار MarkBasePosFormat1 : عمومی OT::Layout::GPOS_impl::MarkBasePosFormat1_2<SmallTypes>
 {
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  graph_result_t<تهی> sanitize (ثابت graph_t::vertex_t& vertex) ثابت
   {
     size_t vertex_len = vertex.table_size ();
-    if (unlikely (vertex_len < MarkBasePosFormat1::static_size))
-      return Err(SANITIZE_FAILURE);
-    return Ok();
+    اگر (unlikely (vertex_len < MarkBasePosFormat1::static_size))
+      بازگشت Err(SANITIZE_FAILURE);
+    بازگشت Ok();
   }
 
   graph_result_t<hb_vector_t<unsigned>> split_subtables (gsubgpos_graph_context_t& c,
@@ -231,9 +231,9 @@ struct MarkBasePosFormat1 : public OT::Layout::GPOS_impl::MarkBasePosFormat1_2<S
   {
     hb_set_t visited;
 
-    TRY_ASSIGN (const unsigned base_coverage_id, c.graph.index_for_offset (this_index, &baseCoverage));
+    TRY_ASSIGN (ثابت unsigned base_coverage_id, c.graph.index_for_offset (this_index, &baseCoverage));
 
-    const unsigned base_size =
+    ثابت unsigned base_size =
         OT::Layout::GPOS_impl::MarkBasePosFormat1_2<SmallTypes>::min_size +
         MarkArray::min_size +
         AnchorMatrix::min_size +
@@ -241,34 +241,34 @@ struct MarkBasePosFormat1 : public OT::Layout::GPOS_impl::MarkBasePosFormat1_2<S
 
     TRY_ASSIGN (hb_vector_t<class_info_t> class_to_info, get_class_info (c, this_index));
 
-    unsigned class_count = classCount;
+    unsigned class_شمار = class_شمار_2;
     TRY_ASSIGN (auto base_array, c.graph.as_table<AnchorMatrix> (this_index,
                                                           &baseArray,
-                                                          class_count));
-    unsigned base_count = base_array.table->rows;
+                                                          class_شمار));
+    unsigned base_شمار = base_array.table->rows;
 
     unsigned partial_coverage_size = 4;
     unsigned accumulated = base_size;
     hb_vector_t<unsigned> split_points;
 
-    for (unsigned klass = 0; klass < class_count; klass++)
+    برای (unsigned klass = 0; klass < class_شمار; klass++)
     {
       class_info_t& info = class_to_info[klass];
       partial_coverage_size += OT::HBUINT16::static_size * info.marks.get_population ();
       unsigned accumulated_delta =
           OT::Layout::GPOS_impl::MarkRecord<SmallTypes>::static_size * info.marks.get_population () +
-          OT::Offset16::static_size * base_count;
+          OT::Offset16::static_size * base_شمار;
 
-      for (unsigned objidx : info.child_indices)
-        accumulated_delta += c.graph.find_subgraph_size (objidx, visited).value_or (0);
+      برای (unsigned objidx : info.child_indices)
+        accumulated_delta += c.graph.find_subgraph_size (objidx, visited).مقدار_or (0);
 
       accumulated += accumulated_delta;
       unsigned total = accumulated + partial_coverage_size;
 
-      if (total >= (1 << 16))
+      اگر (total >= (1 << 16))
       {
         split_points.push (klass);
-        TRY (graph_result_t<void>::from (split_points, ALLOCATION_FAILURE));
+        TRY (graph_result_t<تهی>::from (split_points, ALLOCATION_FAILURE));
         accumulated = base_size + accumulated_delta;
         partial_coverage_size = 4 + OT::HBUINT16::static_size * info.marks.get_population ();
         visited.clear (); // node sharing isn't allowed between splits.
@@ -276,28 +276,28 @@ struct MarkBasePosFormat1 : public OT::Layout::GPOS_impl::MarkBasePosFormat1_2<S
     }
 
 
-    TRY_ASSIGN (const unsigned mark_array_id, c.graph.index_for_offset (this_index, &markArray));
+    TRY_ASSIGN (ثابت unsigned mark_array_id, c.graph.index_for_offset (this_index, &markArray));
     TRY_ASSIGN (auto mark_array_links, c.graph.vertices_[mark_array_id].position_to_index_map ());
 
     split_context_t split_context {
       c,
-      this,
+      این,
       this_index,
       std::move (class_to_info),
       std::move (mark_array_links),
     };
 
-    return actuate_subtable_split<split_context_t> (split_context, split_points);
+    بازگشت actuate_subtable_split<split_context_t> (split_context, split_points);
   }
 
- private:
+ خصوصی:
 
-  struct class_info_t {
+  ساختار class_info_t {
     hb_set_t marks;
     hb_vector_t<unsigned> child_indices;
   };
 
-  struct split_context_t {
+  ساختار split_context_t {
     gsubgpos_graph_context_t& c;
     MarkBasePosFormat1* thiz;
     unsigned this_index;
@@ -307,28 +307,28 @@ struct MarkBasePosFormat1 : public OT::Layout::GPOS_impl::MarkBasePosFormat1_2<S
     hb_set_t marks_for (unsigned start, unsigned end)
     {
       hb_set_t marks;
-      for (unsigned klass = start; klass < end; klass++)
+      برای (unsigned klass = start; klass < end; klass++)
       {
         + class_to_info[klass].marks.iter ()
         | hb_sink (marks)
         ;
       }
-      return marks;
+      بازگشت marks;
     }
 
-    unsigned original_count ()
+    unsigned original_شمار_2 ()
     {
-      return thiz->classCount;
+      بازگشت thiz->class_شمار_2;
     }
 
     graph_result_t<unsigned> clone_range (unsigned start, unsigned end)
     {
-      return thiz->clone_range (*this, this->this_index, start, end);
+      بازگشت thiz->clone_range (*این, این->this_index, start, end);
     }
 
-    graph_result_t<void> shrink (unsigned count)
+    graph_result_t<تهی> shrink (unsigned شمار)
     {
-      return thiz->shrink (*this, this->this_index, count);
+      بازگشت thiz->shrink (*این, این->this_index, شمار);
     }
   };
 
@@ -337,28 +337,28 @@ struct MarkBasePosFormat1 : public OT::Layout::GPOS_impl::MarkBasePosFormat1_2<S
   {
     hb_vector_t<class_info_t> class_to_info;
 
-    unsigned class_count = classCount;
-    if (!class_count) return class_to_info;
+    unsigned class_شمار = class_شمار_2;
+    اگر (!class_شمار) بازگشت class_to_info;
 
-    if (unlikely (!class_to_info.resize (class_count)))
-      return Err(ALLOCATION_FAILURE);
+    اگر (unlikely (!class_to_info.resize (class_شمار)))
+      بازگشت Err(ALLOCATION_FAILURE);
 
     TRY_ASSIGN (auto mark_array, c.graph.as_table<MarkArray> (this_index, &markArray));
 
-    unsigned mark_count = mark_array.table->len;
-    for (unsigned mark = 0; mark < mark_count; mark++)
+    unsigned mark_شمار = mark_array.table->len;
+    برای (unsigned mark = 0; mark < mark_شمار; mark++)
     {
       unsigned klass = (*mark_array.table)[mark].get_class ();
-      if (klass >= class_count) continue;
+      اگر (klass >= class_شمار) ادامه;
       class_to_info[klass].marks.add (mark);
     }
 
-    for (const auto& link : mark_array.vertex->obj ().real_links)
+    برای (ثابت auto& link : mark_array.vertex->obj ().real_links)
     {
       unsigned mark = (link.position - 2) /
                      OT::Layout::GPOS_impl::MarkRecord<SmallTypes>::static_size;
       unsigned klass = (*mark_array.table)[mark].get_class ();
-      if (klass >= class_count) continue;
+      اگر (klass >= class_شمار) ادامه;
       class_to_info[klass].child_indices.push (link.objidx);
     }
 
@@ -367,35 +367,35 @@ struct MarkBasePosFormat1 : public OT::Layout::GPOS_impl::MarkBasePosFormat1_2<S
 
     auto& base_array_v = c.graph.vertices_[base_array_id];
 
-    for (const auto& link : base_array_v.obj ().real_links)
+    برای (ثابت auto& link : base_array_v.obj ().real_links)
     {
       unsigned index = (link.position - 2) / OT::Offset16::static_size;
-      unsigned klass = index % class_count;
+      unsigned klass = index % class_شمار;
       class_to_info[klass].child_indices.push (link.objidx);
     }
 
-    return class_to_info;
+    بازگشت class_to_info;
   }
 
-  graph_result_t<void> shrink (split_context_t& sc,
+  graph_result_t<تهی> shrink (split_context_t& sc,
                                unsigned this_index,
-                               unsigned count)
+                               unsigned شمار)
   {
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
+    DEBUG_پیام (SUBSET_REPACK, nullptr,
                "  Shrinking MarkBasePosFormat1 (%u) to [0, %u).",
                this_index,
-               count);
+               شمار);
 
-    unsigned old_count = classCount;
-    if (count >= old_count)
-      return Ok();
+    unsigned old_شمار = class_شمار_2;
+    اگر (شمار >= old_شمار)
+      بازگشت Ok();
 
-    classCount = count;
+    class_شمار_2 = شمار;
 
     TRY_ASSIGN (auto mark_coverage, sc.c.graph.as_mutable_table<Coverage> (this_index,
                                                                     &markCoverage));
 
-    hb_set_t marks = sc.marks_for (0, count);
+    hb_set_t marks = sc.marks_for (0, شمار);
     auto new_coverage =
         + hb_enumerate (mark_coverage.table->iter ())
         | hb_filter (marks, hb_first)
@@ -408,12 +408,12 @@ struct MarkBasePosFormat1 : public OT::Layout::GPOS_impl::MarkBasePosFormat1_2<S
 
     TRY_ASSIGN (auto base_array, sc.c.graph.as_mutable_table<AnchorMatrix> (this_index,
                                                                      &baseArray,
-                                                                     old_count));
+                                                                     old_شمار));
 
     TRY (base_array.table->shrink (sc.c,
                                    base_array.index,
-                                   old_count,
-                                   count));
+                                   old_شمار,
+                                   شمار));
 
     TRY_ASSIGN (auto mark_array, sc.c.graph.as_mutable_table<MarkArray> (this_index,
                                                                   &markArray));
@@ -421,33 +421,33 @@ struct MarkBasePosFormat1 : public OT::Layout::GPOS_impl::MarkBasePosFormat1_2<S
     TRY (mark_array.table->shrink (sc.c,
                                    sc.mark_array_links,
                                    mark_array.index,
-                                   count));
+                                   شمار));
 
-    return Ok();
+    بازگشت Ok();
   }
 
   // Create a new MarkBasePos that has all of the data for classes from [start, end).
   graph_result_t<unsigned> clone_range (split_context_t& sc,
                                         unsigned this_index,
-                                        unsigned start, unsigned end) const
+                                        unsigned start, unsigned end) ثابت
   {
-    DEBUG_MSG (SUBSET_REPACK, nullptr,
+    DEBUG_پیام (SUBSET_REPACK, nullptr,
                "  Cloning MarkBasePosFormat1 (%u) range [%u, %u).", this_index, start, end);
 
     graph_t& graph = sc.c.graph;
-    unsigned prime_size = OT::Layout::GPOS_impl::MarkBasePosFormat1_2<SmallTypes>::static_size;
+    unsigned اول_size = OT::Layout::GPOS_impl::MarkBasePosFormat1_2<SmallTypes>::static_size;
 
-    TRY_ASSIGN (unsigned prime_id, sc.c.create_node (prime_size));
+    TRY_ASSIGN (unsigned اول_id, sc.c.create_گره (اول_size));
 
-    MarkBasePosFormat1* prime = (MarkBasePosFormat1*) graph.object (prime_id).head;
-    prime->format = this->format;
-    unsigned new_class_count = end - start;
-    prime->classCount = new_class_count;
+    MarkBasePosFormat1* اول = (MarkBasePosFormat1*) graph.object (اول_id).head;
+    اول->format = این->format;
+    unsigned new_class_شمار = end - start;
+    اول->class_شمار_2 = new_class_شمار;
 
     TRY_ASSIGN (unsigned base_coverage_id,
          graph.index_for_offset (sc.this_index, &baseCoverage));
 
-    TRY (graph.add_link (&(prime->baseCoverage), prime_id, base_coverage_id));
+    TRY (graph.add_link (&(اول->baseCoverage), اول_id, base_coverage_id));
 
     TRY_ASSIGN (auto mark_coverage, sc.c.graph.as_table<Coverage> (this_index,
                                                             &markCoverage));
@@ -459,7 +459,7 @@ struct MarkBasePosFormat1 : public OT::Layout::GPOS_impl::MarkBasePosFormat1_2<S
         | hb_map_retains_sorting (hb_second)
         ;
     TRY (Coverage::add_coverage (sc.c,
-                                 prime_id,
+                                 اول_id,
                                  2,
                                  + new_coverage,
                                  marks.get_population () * 2 + 4));
@@ -473,57 +473,57 @@ struct MarkBasePosFormat1 : public OT::Layout::GPOS_impl::MarkBasePosFormat1_2<S
                                   sc.mark_array_links,
                                   marks,
                                   start));
-    TRY (graph.add_link (&(prime->markArray), prime_id, new_mark_array));
+    TRY (graph.add_link (&(اول->markArray), اول_id, new_mark_array));
 
-    unsigned class_count = classCount;
+    unsigned class_شمار = class_شمار_2;
     TRY_ASSIGN (auto base_array,
-         graph.as_mutable_table<AnchorMatrix> (sc.this_index, &baseArray, class_count));
+         graph.as_mutable_table<AnchorMatrix> (sc.this_index, &baseArray, class_شمار));
 
     TRY_ASSIGN (unsigned new_base_array,
          base_array.table->clone (sc.c,
                                   base_array.index,
-                                  start, end, this->classCount));
-    TRY (graph.add_link (&(prime->baseArray), prime_id, new_base_array));
+                                  start, end, این->class_شمار_2));
+    TRY (graph.add_link (&(اول->baseArray), اول_id, new_base_array));
 
-    return Ok(prime_id);
+    بازگشت Ok(اول_id);
   }
 };
 
 
-struct MarkBasePos : public OT::Layout::GPOS_impl::MarkBasePos
+ساختار MarkBasePos : عمومی OT::Layout::GPOS_impl::MarkBasePos
 {
   graph_result_t<hb_vector_t<unsigned>> split_subtables (gsubgpos_graph_context_t& c,
                                                          unsigned this_index)
   {
-    switch (u.format.v) {
-    case 1:
+    انتخاب (u.format.v) {
+    حالت 1:
       hb_barrier ();
-      return ((MarkBasePosFormat1*)(&u.format1))->split_subtables (c, this_index);
+      بازگشت ((MarkBasePosFormat1*)(&u.format1))->split_subtables (c, this_index);
 #ifndef HB_NO_BEYOND_64K
-    case 2: HB_FALLTHROUGH;
+    حالت 2: HB_FALLTHROUGH;
       // 24-bit MarkBasePos already has widened offsets; leave it unsplit.
 #endif
-    default:
-      return Ok(hb_vector_t<unsigned> ());
+    پیشفرض:
+      بازگشت Ok(hb_vector_t<unsigned> ());
     }
   }
 
-  graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
+  graph_result_t<تهی> sanitize (ثابت graph_t::vertex_t& vertex) ثابت
   {
     size_t vertex_len = vertex.table_size ();
-    if (unlikely (vertex_len < u.format.v.get_size ())) return Err(SANITIZE_FAILURE);
+    اگر (unlikely (vertex_len < u.format.v.get_size ())) بازگشت Err(SANITIZE_FAILURE);
     hb_barrier ();
 
-    switch (u.format.v) {
-    case 1:
+    انتخاب (u.format.v) {
+    حالت 1:
       hb_barrier ();
-      return ((MarkBasePosFormat1*)(&u.format1))->sanitize (vertex);
+      بازگشت ((MarkBasePosFormat1*)(&u.format1))->sanitize (vertex);
 #ifndef HB_NO_BEYOND_64K
-    case 2: HB_FALLTHROUGH;
+    حالت 2: HB_FALLTHROUGH;
 #endif
-    default:
+    پیشفرض:
       // We don't handle format 3 and 4 here.
-      return Err(SANITIZE_FAILURE);
+      بازگشت Err(SANITIZE_FAILURE);
     }
   }
 };

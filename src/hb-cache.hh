@@ -27,7 +27,7 @@
 #ifndef HB_CACHE_HH
 #define HB_CACHE_HH
 
-#include "hb.hh"
+#شامل "hb.hh"
 
 
 /* Implements a lockfree and thread-safe cache for int->int functions,
@@ -57,64 +57,64 @@
  * arithmetic operations and a single memory access.
  */
 
-template <unsigned int key_bits=16,
-	 unsigned int value_bits=8 + 32 - key_bits,
-	 unsigned int cache_bits=8,
-	 bool thread_safe=true>
-struct hb_cache_t
+template <unsigned صحیح کلید_bits=16,
+	 unsigned صحیح مقدار_bits=8 + 32 - کلید_bits,
+	 unsigned صحیح cache_bits=8,
+	 منطقی thread_safe=درست>
+ساختار hb_cache_t
 {
   using item_t = typename std::conditional<thread_safe,
-					   typename std::conditional<key_bits + value_bits - cache_bits <= 8,
-								     hb_atomic_t<unsigned char>,
-								     typename std::conditional<key_bits + value_bits - cache_bits <= 16,
+					   typename std::conditional<کلید_bits + مقدار_bits - cache_bits <= 8,
+								     hb_atomic_t<unsigned نویسه>,
+								     typename std::conditional<کلید_bits + مقدار_bits - cache_bits <= 16,
 											       hb_atomic_t<unsigned short>,
-											       hb_atomic_t<unsigned int>>::type>::type,
-					   typename std::conditional<key_bits + value_bits - cache_bits <= 8,
-								     unsigned char,
-								     typename std::conditional<key_bits + value_bits - cache_bits <= 16,
+											       hb_atomic_t<unsigned صحیح>>::type>::type,
+					   typename std::conditional<کلید_bits + مقدار_bits - cache_bits <= 8,
+								     unsigned نویسه,
+								     typename std::conditional<کلید_bits + مقدار_bits - cache_bits <= 16,
 											       unsigned short,
-											       unsigned int>::type>::type
+											       unsigned صحیح>::type>::type
 					  >::type;
 
-  static_assert ((key_bits >= cache_bits), "");
-  static_assert ((key_bits + value_bits <= cache_bits + 8 * sizeof (item_t)), "");
+  static_assert ((کلید_bits >= cache_bits), "");
+  static_assert ((کلید_bits + مقدار_bits <= cache_bits + 8 * اندازه (item_t)), "");
 
-  static constexpr unsigned MAX_VALUE = (1u << value_bits) - 1;
+  ایستا constexpr unsigned MAX_مقدار = (1u << مقدار_bits) - 1;
 
   hb_cache_t () { clear (); }
 
-  void clear ()
+  تهی clear ()
   {
-    for (auto &v : values)
+    برای (auto &v : values)
       v = -1;
   }
 
   HB_HOT
-  bool get (unsigned int key, unsigned int *value) const
+  منطقی get (unsigned صحیح key, unsigned صحیح *value) ثابت
   {
-    unsigned int k = key & ((1u<<cache_bits)-1);
-    unsigned int v = values[k];
-    constexpr unsigned int empty = (1ULL << (8 * sizeof (item_t))) - 1;
+    unsigned صحیح k = key & ((1u<<cache_bits)-1);
+    unsigned صحیح v = values[k];
+    constexpr unsigned صحیح empty = (1ULL << (8 * اندازه (item_t))) - 1;
     /* Combine overflow, tag mismatch, and empty checks into one branch. */
-    if ((key >> key_bits) |
-	((v >> value_bits) ^ (key >> cache_bits)) |
-	((key_bits + value_bits - cache_bits == 8 * sizeof (item_t)) && (v == empty)))
-      return false;
-    *value = v & ((1u<<value_bits)-1);
-    return true;
+    اگر ((key >> کلید_bits) |
+	((v >> مقدار_bits) ^ (key >> cache_bits)) |
+	((کلید_bits + مقدار_bits - cache_bits == 8 * اندازه (item_t)) && (v == empty)))
+      بازگشت نادرست;
+    *value = v & ((1u<<مقدار_bits)-1);
+    بازگشت درست;
   }
 
   HB_HOT
-  void set (unsigned int key, unsigned int value)
+  تهی set (unsigned صحیح key, unsigned صحیح value)
   {
-    if (unlikely ((key >> key_bits) || (value >> value_bits)))
-      return; /* Overflows */
-    unsigned int k = key & ((1u<<cache_bits)-1);
-    unsigned int v = ((key>>cache_bits)<<value_bits) | value;
+    اگر (unlikely ((key >> کلید_bits) || (value >> مقدار_bits)))
+      بازگشت; /* Overflows */
+    unsigned صحیح k = key & ((1u<<cache_bits)-1);
+    unsigned صحیح v = ((key>>cache_bits)<<مقدار_bits) | value;
     values[k] = v;
   }
 
-  private:
+  خصوصی:
   item_t values[1u<<cache_bits];
 };
 

@@ -29,210 +29,210 @@
 #ifndef HB_OT_LAYOUT_BASE_TABLE_HH
 #define HB_OT_LAYOUT_BASE_TABLE_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-layout-common.hh"
+#شامل "hb-open-type.hh"
+#شامل "hb-ot-layout-common.hh"
 
-namespace OT {
+فضاینام OT {
 
 /*
  * BASE -- Baseline
  * https://docs.microsoft.com/en-us/typography/opentype/spec/base
  */
 
-struct BaseCoordFormat1
+ساختار BaseCoordFormat1
 {
-  hb_position_t get_coord (hb_font_t *font, hb_direction_t direction) const
+  hb_position_t get_coord (hb_font_t *font, hb_direction_t direction) ثابت
   {
-    return HB_DIRECTION_IS_HORIZONTAL (direction) ? font->em_scale_y (coordinate) : font->em_scale_x (coordinate);
+    بازگشت HB_DIRECTION_IS_HORIZONTAL (direction) ? font->em_scale_y (coordinate) : font->em_scale_x (coordinate);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    return_trace ((bool) c->serializer->embed (*this));
+    TRACE_SUBSET (این);
+    return_trace ((منطقی) c->serializer->embed (*این));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این));
   }
 
-  protected:
+  محافظتشده:
   HBUINT16	format;		/* Format identifier--format = 1 */
   FWORD		coordinate;	/* X or Y value, in design units */
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (4);
 };
 
 template <typename Types>
-struct BaseCoordFormat2_4
+ساختار BaseCoordFormat2_4
 {
-  hb_position_t get_coord (hb_font_t *font, hb_direction_t direction) const
+  hb_position_t get_coord (hb_font_t *font, hb_direction_t direction) ثابت
   {
     /* TODO */
-    return HB_DIRECTION_IS_HORIZONTAL (direction) ? font->em_scale_y (coordinate) : font->em_scale_x (coordinate);
+    بازگشت HB_DIRECTION_IS_HORIZONTAL (direction) ? font->em_scale_y (coordinate) : font->em_scale_x (coordinate);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (این);
+    auto *out = c->serializer->embed (*این);
+    اگر (unlikely (!out)) return_trace (نادرست);
 
     hb_codepoint_t *new_gid;
-    if (!c->plan->glyph_map->has (referenceGlyph, &new_gid))
-      return_trace (false);
+    اگر (!c->plan->glyph_map->has (referenceGlyph, &new_gid))
+      return_trace (نادرست);
 
     return_trace (c->serializer->check_assign (out->referenceGlyph,
                                                *new_gid,
                                                HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این));
   }
 
-  protected:
+  محافظتشده:
   HBUINT16	format;		/* Format identifier--format = 2 or 4 */
   FWORD		coordinate;	/* X or Y value, in design units */
   typename Types::HBGlyphID
 		referenceGlyph;	/* Glyph ID of control glyph */
   HBUINT16	coordPoint;	/* Index of contour point on the
 				 * reference glyph */
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (6 + Types::HBGlyphID::static_size);
 };
 
-struct BaseCoordFormat3
+ساختار BaseCoordFormat3
 {
   hb_position_t get_coord (hb_font_t *font,
-			   const ItemVariationStore &var_store,
-			   hb_direction_t direction) const
+			   ثابت ItemVariationStore &var_store,
+			   hb_direction_t direction) ثابت
   {
-    const Device &device = this+deviceTable;
+    ثابت Device &device = این+deviceTable;
 
-    return HB_DIRECTION_IS_HORIZONTAL (direction)
+    بازگشت HB_DIRECTION_IS_HORIZONTAL (direction)
 	 ? hb_saturate_add (font->em_scale_y (coordinate), device.get_y_delta (font, var_store))
 	 : hb_saturate_add (font->em_scale_x (coordinate), device.get_x_delta (font, var_store));
   }
 
-  void collect_variation_indices (hb_set_t& varidx_set /* OUT */) const
+  تهی collect_variation_indices (hb_set_t& varidx_set /* OUT */) ثابت
   {
-    unsigned varidx = (this+deviceTable).get_variation_index ();
+    unsigned varidx = (این+deviceTable).get_variation_index ();
     varidx_set.add (varidx);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (این);
+    auto *out = c->serializer->embed (*این);
+    اگر (unlikely (!out)) return_trace (نادرست);
 
-    if (!c->plan->pinned_at_default)
+    اگر (!c->plan->pinned_at_default)
     {
-      unsigned var_idx = (this+deviceTable).get_variation_index ();
-      if (var_idx != VarIdx::NO_VARIATION)
+      unsigned var_idx = (این+deviceTable).get_variation_index ();
+      اگر (var_idx != VarIdx::NO_VARIATION)
       {
-        hb_pair_t<unsigned, int> *v;
-        if (!c->plan->base_variation_idx_map.has (var_idx, &v))
-          return_trace (false);
+        hb_pair_t<unsigned, صحیح> *v;
+        اگر (!c->plan->base_variation_idx_map.has (var_idx, &v))
+          return_trace (نادرست);
         
-        if (unlikely (!c->serializer->check_assign (out->coordinate, coordinate + hb_second (*v),
+        اگر (unlikely (!c->serializer->check_assign (out->coordinate, coordinate + hb_second (*v),
                                                     HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-          return_trace (false);
+          return_trace (نادرست);
       }
     }
     
     out->deviceTable.serialize_copy (c->serializer, deviceTable,
-                                     this, 0,
+                                     این, 0,
                                      hb_serialize_context_t::Head,
                                      &c->plan->base_variation_idx_map);
-    return_trace (true);
+    return_trace (درست);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  deviceTable.sanitize (c, this)));
+    TRACE_SANITIZE (این);
+    return_trace (likely (c->check_struct (این) &&
+			  deviceTable.sanitize (c, این)));
   }
 
-  protected:
+  محافظتشده:
   HBUINT16	format;		/* Format identifier--format = 3 */
   FWORD		coordinate;	/* X or Y value, in design units */
   Offset16To<Device>
 		deviceTable;	/* Offset to Device table for X or
 				 * Y value, from beginning of
 				 * BaseCoord table (may be NULL). */
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (6);
 };
 
-struct BaseCoord
+ساختار BaseCoord
 {
-  bool has_data () const { return u.format.v; }
+  منطقی has_data () ثابت { بازگشت u.format.v; }
 
   hb_position_t get_coord (hb_font_t            *font,
-			   const ItemVariationStore &var_store,
-			   hb_direction_t        direction) const
+			   ثابت ItemVariationStore &var_store,
+			   hb_direction_t        direction) ثابت
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.get_coord (font, direction);
-    case 2: hb_barrier (); return u.format2.get_coord (font, direction);
-    case 3: hb_barrier (); return u.format3.get_coord (font, var_store, direction);
+    انتخاب (u.format.v) {
+    حالت 1: hb_barrier (); بازگشت u.format1.get_coord (font, direction);
+    حالت 2: hb_barrier (); بازگشت u.format2.get_coord (font, direction);
+    حالت 3: hb_barrier (); بازگشت u.format3.get_coord (font, var_store, direction);
 #ifndef HB_NO_BEYOND_64K
-    case 4: hb_barrier (); return u.format4.get_coord (font, direction);
+    حالت 4: hb_barrier (); بازگشت u.format4.get_coord (font, direction);
 #endif
-    default:return 0;
+    پیشفرض:بازگشت 0;
     }
   }
 
-  void collect_variation_indices (hb_set_t& varidx_set /* OUT */) const
+  تهی collect_variation_indices (hb_set_t& varidx_set /* OUT */) ثابت
   {
-    switch (u.format.v) {
-    case 3: hb_barrier (); u.format3.collect_variation_indices (varidx_set); return;
-    default:return;
+    انتخاب (u.format.v) {
+    حالت 3: hb_barrier (); u.format3.collect_variation_indices (varidx_set); بازگشت;
+    پیشفرض:بازگشت;
     }
   }
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) ثابت
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-    case 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
+    اگر (unlikely (!c->may_dispatch (این, &u.format.v))) بازگشت c->no_dispatch_return_مقدار ();
+    TRACE_DISPATCH (این, u.format.v);
+    انتخاب (u.format.v) {
+    حالت 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    حالت 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    حالت 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
 #ifndef HB_NO_BEYOND_64K
-    case 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
+    حالت 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
 #endif
-    default:return_trace (c->default_return_value ());
+    پیشفرض:return_trace (c->default_return_مقدار ());
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!u.format.v.sanitize (c))) return_trace (false);
+    TRACE_SANITIZE (این);
+    اگر (unlikely (!u.format.v.sanitize (c))) return_trace (نادرست);
     hb_barrier ();
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c));
-    case 2: hb_barrier (); return_trace (u.format2.sanitize (c));
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c));
+    انتخاب (u.format.v) {
+    حالت 1: hb_barrier (); return_trace (u.format1.sanitize (c));
+    حالت 2: hb_barrier (); return_trace (u.format2.sanitize (c));
+    حالت 3: hb_barrier (); return_trace (u.format3.sanitize (c));
 #ifndef HB_NO_BEYOND_64K
-    case 4: hb_barrier (); return_trace (u.format4.sanitize (c));
+    حالت 4: hb_barrier (); return_trace (u.format4.sanitize (c));
 #endif
-    default:return_trace (false);
+    پیشفرض:return_trace (نادرست);
     }
   }
 
-  protected:
-  union {
-  struct { HBUINT16 v; }	format;
+  محافظتشده:
+  اجتماع {
+  ساختار { HBUINT16 v; }	format;
   BaseCoordFormat1	format1;
   BaseCoordFormat2_4<Layout::SmallTypes>
 			format2;
@@ -242,56 +242,56 @@ struct BaseCoord
 			format4;
 #endif
   } u;
-  public:
+  عمومی:
   DEFINE_SIZE_UNION (2, format.v);
 };
 
-struct FeatMinMaxRecord
+ساختار FeatMinMaxRecord
 {
-  int cmp (hb_tag_t key) const { return tag.cmp (key); }
+  صحیح cmp (hb_tag_t key) ثابت { بازگشت tag.cmp (key); }
 
-  bool has_data () const { return tag; }
+  منطقی has_data () ثابت { بازگشت tag; }
 
-  hb_tag_t get_feature_tag () const { return tag; }
+  hb_tag_t get_feature_tag () ثابت { بازگشت tag; }
 
-  void get_min_max (const BaseCoord **min, const BaseCoord **max) const
+  تهی get_min_max (ثابت BaseCoord **min, ثابت BaseCoord **max) ثابت
   {
-    if (likely (min)) *min = &(this+minCoord);
-    if (likely (max)) *max = &(this+maxCoord);
+    اگر (likely (min)) *min = &(این+minCoord);
+    اگر (likely (max)) *max = &(این+maxCoord);
   }
 
-  void collect_variation_indices (const hb_subset_plan_t* plan,
-                                  const void *base,
-                                  hb_set_t& varidx_set /* OUT */) const
+  تهی collect_variation_indices (ثابت hb_subset_plan_t* plan,
+                                  ثابت تهی *base,
+                                  hb_set_t& varidx_set /* OUT */) ثابت
   {
-    if (!plan->layout_features.has (tag))
-      return;
+    اگر (!plan->layout_features.has (tag))
+      بازگشت;
 
     (base+minCoord).collect_variation_indices (varidx_set);
     (base+maxCoord).collect_variation_indices (varidx_set);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const void *base) const
+  منطقی subset (hb_subset_context_t *c,
+               ثابت تهی *base) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (این);
+    auto *out = c->serializer->embed (*این);
+    اگر (unlikely (!out)) return_trace (نادرست);
 
-    bool ret = out->minCoord.serialize_subset (c, minCoord, base);
+    منطقی ret = out->minCoord.serialize_subset (c, minCoord, base);
     ret |= out->maxCoord.serialize_subset (c, maxCoord, base);
     return_trace (ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  منطقی sanitize (hb_sanitize_context_t *c, ثابت تهی *base) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (این);
+    return_trace (likely (c->check_struct (این) &&
 			  minCoord.sanitize (c, base) &&
 			  maxCoord.sanitize (c, base)));
   }
 
-  protected:
+  محافظتشده:
   Tag		tag;		/* 4-byte feature identification tag--must
 				 * match feature tag in FeatureList */
   Offset16To<BaseCoord>
@@ -302,72 +302,72 @@ struct FeatMinMaxRecord
 		maxCoord;	/* Offset to BaseCoord table that defines
 				 * the maximum extent value, from beginning
 				 * of MinMax table (may be NULL) */
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (8);
 };
 
-struct MinMax
+ساختار MinMax
 {
-  void get_min_max (hb_tag_t          feature_tag,
-		    const BaseCoord **min,
-		    const BaseCoord **max) const
+  تهی get_min_max (hb_tag_t          feature_tag,
+		    ثابت BaseCoord **min,
+		    ثابت BaseCoord **max) ثابت
   {
-    const FeatMinMaxRecord &minMaxCoord = featMinMaxRecords.bsearch (feature_tag);
-    if (minMaxCoord.has_data ())
+    ثابت FeatMinMaxRecord &minMaxCoord = featMinMaxRecords.bsearch (feature_tag);
+    اگر (minMaxCoord.has_data ())
       minMaxCoord.get_min_max (min, max);
-    else
+    وگرنه
     {
-      if (likely (min)) *min = &(this+minCoord);
-      if (likely (max)) *max = &(this+maxCoord);
+      اگر (likely (min)) *min = &(این+minCoord);
+      اگر (likely (max)) *max = &(این+maxCoord);
     }
   }
 
-  void collect_variation_indices (const hb_subset_plan_t* plan,
-                                  hb_set_t& varidx_set /* OUT */) const
+  تهی collect_variation_indices (ثابت hb_subset_plan_t* plan,
+                                  hb_set_t& varidx_set /* OUT */) ثابت
   {
-    (this+minCoord).collect_variation_indices (varidx_set);
-    (this+maxCoord).collect_variation_indices (varidx_set);
-    for (const FeatMinMaxRecord& record : featMinMaxRecords)
-      record.collect_variation_indices (plan, this, varidx_set);
+    (این+minCoord).collect_variation_indices (varidx_set);
+    (این+maxCoord).collect_variation_indices (varidx_set);
+    برای (ثابت FeatMinMaxRecord& record : featMinMaxRecords)
+      record.collect_variation_indices (plan, این, varidx_set);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!out || !c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (این);
+    auto *out = c->serializer->start_embed (*این);
+    اگر (unlikely (!out || !c->serializer->extend_min (out))) return_trace (نادرست);
 
-    bool ret = out->minCoord.serialize_subset (c, minCoord, this);
-    ret |= out->maxCoord.serialize_subset (c, maxCoord, this);
+    منطقی ret = out->minCoord.serialize_subset (c, minCoord, این);
+    ret |= out->maxCoord.serialize_subset (c, maxCoord, این);
 
     unsigned len = 0;
-    for (const FeatMinMaxRecord& _ : featMinMaxRecords)
+    برای (ثابت FeatMinMaxRecord& _ : featMinMaxRecords)
     {
       hb_tag_t feature_tag = _.get_feature_tag ();
-      if (!c->plan->layout_features.has (feature_tag))
-        continue;
+      اگر (!c->plan->layout_features.has (feature_tag))
+        ادامه;
 
       auto snap = c->serializer->snapshot ();
-      if (!_.subset (c, this)) c->serializer->revert (snap);
-      else len++;
+      اگر (!_.subset (c, این)) c->serializer->revert (snap);
+      وگرنه len++;
     }
 
-    if (len > 0) ret = true;
-    if (!ret) return_trace (false);
+    اگر (len > 0) ret = درست;
+    اگر (!ret) return_trace (نادرست);
     return_trace (c->serializer->check_assign (out->featMinMaxRecords.len, len,
                                                HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  minCoord.sanitize (c, this) &&
-			  maxCoord.sanitize (c, this) &&
-			  featMinMaxRecords.sanitize (c, this)));
+    TRACE_SANITIZE (این);
+    return_trace (likely (c->check_struct (این) &&
+			  minCoord.sanitize (c, این) &&
+			  maxCoord.sanitize (c, این) &&
+			  featMinMaxRecords.sanitize (c, این)));
   }
 
-  protected:
+  محافظتشده:
   Offset16To<BaseCoord>
 		minCoord;	/* Offset to BaseCoord table that defines
 				 * minimum extent value, from the beginning
@@ -380,50 +380,50 @@ struct MinMax
 		featMinMaxRecords;
 				/* Array of FeatMinMaxRecords, in alphabetical
 				 * order by featureTableTag */
-  public:
+  عمومی:
   DEFINE_SIZE_ARRAY (6, featMinMaxRecords);
 };
 
-struct BaseValues
+ساختار Base_مقادیر
 {
-  const BaseCoord &get_base_coord (int baseline_tag_index) const
+  ثابت BaseCoord &get_base_coord (صحیح baseline_tag_index) ثابت
   {
-    if (baseline_tag_index == -1) baseline_tag_index = defaultIndex;
-    return this+baseCoords[baseline_tag_index];
+    اگر (baseline_tag_index == -1) baseline_tag_index = defaultIndex;
+    بازگشت این+baseCoords[baseline_tag_index];
   }
 
-  void collect_variation_indices (hb_set_t& varidx_set /* OUT */) const
+  تهی collect_variation_indices (hb_set_t& varidx_set /* OUT */) ثابت
   {
-    for (const auto& _ : baseCoords)
-      (this+_).collect_variation_indices (varidx_set);
+    برای (ثابت auto& _ : baseCoords)
+      (این+_).collect_variation_indices (varidx_set);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!out || !c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (این);
+    auto *out = c->serializer->start_embed (*این);
+    اگر (unlikely (!out || !c->serializer->extend_min (out))) return_trace (نادرست);
     out->defaultIndex = defaultIndex;
 
-    bool ret = false;
-    for (const auto& _ : baseCoords)
+    منطقی ret = نادرست;
+    برای (ثابت auto& _ : baseCoords)
     {
       auto *o = out->baseCoords.serialize_append (c->serializer);
-      if (unlikely (!o)) return_trace (false);
-       ret |= o->serialize_subset (c, _, this);
+      اگر (unlikely (!o)) return_trace (نادرست);
+       ret |= o->serialize_subset (c, _, این);
     }
 
     return_trace (ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  baseCoords.sanitize (c, this)));
+    TRACE_SANITIZE (این);
+    return_trace (likely (c->check_struct (این) &&
+			  baseCoords.sanitize (c, این)));
   }
 
-  protected:
+  محافظتشده:
   Index		defaultIndex;	/* Index number of default baseline for this
 				 * script — equals index position of baseline tag
 				 * in baselineTags array of the BaseTagList */
@@ -434,110 +434,110 @@ struct BaseValues
 				 * Array of offsets to BaseCoord tables, from beginning of
 				 * BaseValues table — order matches baselineTags array in
 				 * the BaseTagList */
-  public:
+  عمومی:
   DEFINE_SIZE_ARRAY (4, baseCoords);
 };
 
-struct BaseLangSysRecord
+ساختار BaseLangSysRecord
 {
-  int cmp (hb_tag_t key) const { return baseLangSysTag.cmp (key); }
+  صحیح cmp (hb_tag_t key) ثابت { بازگشت baseLangSysTag.cmp (key); }
 
-  bool has_data () const { return baseLangSysTag; }
+  منطقی has_data () ثابت { بازگشت baseLangSysTag; }
 
-  const MinMax &get_min_max (const void* base) const { return base+minMax; }
+  ثابت MinMax &get_min_max (ثابت تهی* base) ثابت { بازگشت base+minMax; }
 
-  void collect_variation_indices (const void* base,
-                                  const hb_subset_plan_t* plan,
-                                  hb_set_t& varidx_set /* OUT */) const
+  تهی collect_variation_indices (ثابت تهی* base,
+                                  ثابت hb_subset_plan_t* plan,
+                                  hb_set_t& varidx_set /* OUT */) ثابت
   { (base+minMax).collect_variation_indices (plan, varidx_set); }
 
-  bool subset (hb_subset_context_t *c,
-               const void *base) const
+  منطقی subset (hb_subset_context_t *c,
+               ثابت تهی *base) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (این);
+    auto *out = c->serializer->embed (*این);
+    اگر (unlikely (!out)) return_trace (نادرست);
 
     return_trace (out->minMax.serialize_subset (c, minMax, base));
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  منطقی sanitize (hb_sanitize_context_t *c, ثابت تهی *base) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (این);
+    return_trace (likely (c->check_struct (این) &&
 			  minMax.sanitize (c, base)));
   }
 
-  protected:
+  محافظتشده:
   Tag		baseLangSysTag;	/* 4-byte language system identification tag */
   Offset16To<MinMax>
 		minMax;		/* Offset to MinMax table, from beginning
 				 * of BaseScript table */
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (6);
 };
 
-struct BaseScript
+ساختار BaseScript
 {
-  const MinMax &get_min_max (hb_tag_t language_tag) const
+  ثابت MinMax &get_min_max (hb_tag_t language_tag) ثابت
   {
-    const BaseLangSysRecord& record = baseLangSysRecords.bsearch (language_tag);
-    return record.has_data () ? record.get_min_max (this) : this+defaultMinMax;
+    ثابت BaseLangSysRecord& record = baseLangSysRecords.bsearch (language_tag);
+    بازگشت record.has_data () ? record.get_min_max (این) : این+defaultMinMax;
   }
 
-  const BaseCoord &get_base_coord (int baseline_tag_index) const
-  { return (this+baseValues).get_base_coord (baseline_tag_index); }
+  ثابت BaseCoord &get_base_coord (صحیح baseline_tag_index) ثابت
+  { بازگشت (این+base_مقادیر).get_base_coord (baseline_tag_index); }
 
-  bool has_values () const { return baseValues; }
-  bool has_min_max () const { return defaultMinMax || baseLangSysRecords; }
+  منطقی has_مقادیر () ثابت { بازگشت base_مقادیر; }
+  منطقی has_min_max () ثابت { بازگشت defaultMinMax || baseLangSysRecords; }
 
-  void collect_variation_indices (const hb_subset_plan_t* plan,
-                                  hb_set_t& varidx_set /* OUT */) const
+  تهی collect_variation_indices (ثابت hb_subset_plan_t* plan,
+                                  hb_set_t& varidx_set /* OUT */) ثابت
   {
-    (this+baseValues).collect_variation_indices (varidx_set);
-    (this+defaultMinMax).collect_variation_indices (plan, varidx_set);
+    (این+base_مقادیر).collect_variation_indices (varidx_set);
+    (این+defaultMinMax).collect_variation_indices (plan, varidx_set);
     
-    for (const BaseLangSysRecord& _ : baseLangSysRecords)
-      _.collect_variation_indices (this, plan, varidx_set);
+    برای (ثابت BaseLangSysRecord& _ : baseLangSysRecords)
+      _.collect_variation_indices (این, plan, varidx_set);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!out || !c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (این);
+    auto *out = c->serializer->start_embed (*این);
+    اگر (unlikely (!out || !c->serializer->extend_min (out))) return_trace (نادرست);
 
-    bool ret = out->baseValues.serialize_subset (c, baseValues, this);
-    ret |= out->defaultMinMax.serialize_subset (c, defaultMinMax, this);
+    منطقی ret = out->base_مقادیر.serialize_subset (c, base_مقادیر, این);
+    ret |= out->defaultMinMax.serialize_subset (c, defaultMinMax, این);
 
     unsigned len = 0;
-    for (const auto& _ : baseLangSysRecords)
+    برای (ثابت auto& _ : baseLangSysRecords)
     {
       auto snap = c->serializer->snapshot ();
-      if (_.subset (c, this)) {
-        ret = true;
+      اگر (_.subset (c, این)) {
+        ret = درست;
         len++;
       }
-      else c->serializer->revert (snap);
+      وگرنه c->serializer->revert (snap);
     }
 
-    if (!ret) return_trace (false);
+    اگر (!ret) return_trace (نادرست);
     return_trace (c->serializer->check_assign (out->baseLangSysRecords.len, len,
                                                HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  baseValues.sanitize (c, this) &&
-			  defaultMinMax.sanitize (c, this) &&
-			  baseLangSysRecords.sanitize (c, this)));
+    TRACE_SANITIZE (این);
+    return_trace (likely (c->check_struct (این) &&
+			  base_مقادیر.sanitize (c, این) &&
+			  defaultMinMax.sanitize (c, این) &&
+			  baseLangSysRecords.sanitize (c, این)));
   }
 
-  protected:
-  Offset16To<BaseValues>
-		baseValues;	/* Offset to BaseValues table, from beginning
+  محافظتشده:
+  Offset16To<Base_مقادیر>
+		base_مقادیر;	/* Offset to BaseValues table, from beginning
 				 * of BaseScript table (may be NULL) */
   Offset16To<MinMax>
 		defaultMinMax;	/* Offset to MinMax table, from beginning of
@@ -547,183 +547,183 @@ struct BaseScript
 				/* Number of BaseLangSysRecords
 				 * defined — may be zero (0) */
 
-  public:
+  عمومی:
   DEFINE_SIZE_ARRAY (6, baseLangSysRecords);
 };
 
-struct BaseScriptList;
-struct BaseScriptRecord
+ساختار BaseScriptList;
+ساختار BaseScriptRecord
 {
-  int cmp (hb_tag_t key) const { return baseScriptTag.cmp (key); }
+  صحیح cmp (hb_tag_t key) ثابت { بازگشت baseScriptTag.cmp (key); }
 
-  bool has_data () const { return baseScriptTag; }
+  منطقی has_data () ثابت { بازگشت baseScriptTag; }
 
-  hb_tag_t get_script_tag () const { return baseScriptTag; }
+  hb_tag_t get_script_tag () ثابت { بازگشت baseScriptTag; }
 
-  const BaseScript &get_base_script (const BaseScriptList *list) const
-  { return list+baseScript; }
+  ثابت BaseScript &get_base_script (ثابت BaseScriptList *list) ثابت
+  { بازگشت list+baseScript; }
 
-  void collect_variation_indices (const hb_subset_plan_t* plan,
-                                  const void* list,
-                                  hb_set_t& varidx_set /* OUT */) const
+  تهی collect_variation_indices (ثابت hb_subset_plan_t* plan,
+                                  ثابت تهی* list,
+                                  hb_set_t& varidx_set /* OUT */) ثابت
   {
-    if (!plan->layout_scripts.has (baseScriptTag))
-      return;
+    اگر (!plan->layout_scripts.has (baseScriptTag))
+      بازگشت;
 
     (list+baseScript).collect_variation_indices (plan, varidx_set);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const void *base) const
+  منطقی subset (hb_subset_context_t *c,
+               ثابت تهی *base) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (این);
+    auto *out = c->serializer->embed (*این);
+    اگر (unlikely (!out)) return_trace (نادرست);
 
     return_trace (out->baseScript.serialize_subset (c, baseScript, base));
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  منطقی sanitize (hb_sanitize_context_t *c, ثابت تهی *base) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (این);
+    return_trace (likely (c->check_struct (این) &&
 			  baseScript.sanitize (c, base)));
   }
 
-  protected:
+  محافظتشده:
   Tag		baseScriptTag;	/* 4-byte script identification tag */
   Offset16To<BaseScript>
 		baseScript;	/* Offset to BaseScript table, from beginning
 				 * of BaseScriptList */
 
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (6);
 };
 
-struct BaseScriptList
+ساختار BaseScriptList
 {
-  const BaseScript &get_base_script (hb_tag_t script) const
+  ثابت BaseScript &get_base_script (hb_tag_t script) ثابت
   {
-    const BaseScriptRecord *record = &baseScriptRecords.bsearch (script);
-    if (!record->has_data ()) record = &baseScriptRecords.bsearch (HB_TAG ('D','F','L','T'));
-    return record->has_data () ? record->get_base_script (this) : Null (BaseScript);
+    ثابت BaseScriptRecord *record = &baseScriptRecords.bsearch (script);
+    اگر (!record->has_data ()) record = &baseScriptRecords.bsearch (HB_TAG ('D','F','L','T'));
+    بازگشت record->has_data () ? record->get_base_script (این) : Null (BaseScript);
   }
 
-  void collect_variation_indices (const hb_subset_plan_t* plan,
-                                  hb_set_t& varidx_set /* OUT */) const
+  تهی collect_variation_indices (ثابت hb_subset_plan_t* plan,
+                                  hb_set_t& varidx_set /* OUT */) ثابت
   {
-    for (const BaseScriptRecord& _ : baseScriptRecords)
-      _.collect_variation_indices (plan, this, varidx_set);
+    برای (ثابت BaseScriptRecord& _ : baseScriptRecords)
+      _.collect_variation_indices (plan, این, varidx_set);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!out || !c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (این);
+    auto *out = c->serializer->start_embed (*این);
+    اگر (unlikely (!out || !c->serializer->extend_min (out))) return_trace (نادرست);
 
     unsigned len = 0;
-    for (const BaseScriptRecord& _ : baseScriptRecords)
+    برای (ثابت BaseScriptRecord& _ : baseScriptRecords)
     {
       hb_tag_t script_tag = _.get_script_tag ();
-      if (!c->plan->layout_scripts.has (script_tag))
-        continue;
+      اگر (!c->plan->layout_scripts.has (script_tag))
+        ادامه;
 
       auto snap = c->serializer->snapshot ();
-      if (!_.subset (c, this)) c->serializer->revert (snap);
-      else len++;
+      اگر (!_.subset (c, این)) c->serializer->revert (snap);
+      وگرنه len++;
     }
 
-    if (!len) return_trace (false);
+    اگر (!len) return_trace (نادرست);
     return_trace (c->serializer->check_assign (out->baseScriptRecords.len, len,
                                                HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  baseScriptRecords.sanitize (c, this));
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این) &&
+		  baseScriptRecords.sanitize (c, این));
   }
 
-  protected:
+  محافظتشده:
   SortedArray16Of<BaseScriptRecord>
 			baseScriptRecords;
 
-  public:
+  عمومی:
   DEFINE_SIZE_ARRAY (2, baseScriptRecords);
 };
 
-struct Axis
+ساختار Axis
 {
-  bool get_baseline (hb_tag_t          baseline_tag,
+  منطقی get_baseline (hb_tag_t          baseline_tag,
 		     hb_tag_t          script_tag,
 		     hb_tag_t          language_tag,
-		     const BaseCoord **coord) const
+		     ثابت BaseCoord **coord) ثابت
   {
-    const BaseScript &base_script = (this+baseScriptList).get_base_script (script_tag);
-    if (!base_script.has_values ())
+    ثابت BaseScript &base_script = (این+baseScriptList).get_base_script (script_tag);
+    اگر (!base_script.has_مقادیر ())
     {
       *coord = nullptr;
-      return false;
+      بازگشت نادرست;
     }
 
-    if (likely (coord))
+    اگر (likely (coord))
     {
-      unsigned int tag_index = 0;
-      if (!(this+baseTagList).bfind (baseline_tag, &tag_index))
+      unsigned صحیح tag_index = 0;
+      اگر (!(این+baseTagList).bfind (baseline_tag, &tag_index))
       {
         *coord = nullptr;
-        return false;
+        بازگشت نادرست;
       }
       *coord = &base_script.get_base_coord (tag_index);
     }
 
-    return true;
+    بازگشت درست;
   }
 
-  bool get_min_max (hb_tag_t          script_tag,
+  منطقی get_min_max (hb_tag_t          script_tag,
 		    hb_tag_t          language_tag,
 		    hb_tag_t          feature_tag,
-		    const BaseCoord **min_coord,
-		    const BaseCoord **max_coord) const
+		    ثابت BaseCoord **min_coord,
+		    ثابت BaseCoord **max_coord) ثابت
   {
-    const BaseScript &base_script = (this+baseScriptList).get_base_script (script_tag);
-    if (!base_script.has_min_max ())
+    ثابت BaseScript &base_script = (این+baseScriptList).get_base_script (script_tag);
+    اگر (!base_script.has_min_max ())
     {
       *min_coord = *max_coord = nullptr;
-      return false;
+      بازگشت نادرست;
     }
 
     base_script.get_min_max (language_tag).get_min_max (feature_tag, min_coord, max_coord);
 
-    return true;
+    بازگشت درست;
   }
 
-  void collect_variation_indices (const hb_subset_plan_t* plan,
-                                  hb_set_t& varidx_set /* OUT */) const
-  { (this+baseScriptList).collect_variation_indices (plan, varidx_set); }
+  تهی collect_variation_indices (ثابت hb_subset_plan_t* plan,
+                                  hb_set_t& varidx_set /* OUT */) ثابت
+  { (این+baseScriptList).collect_variation_indices (plan, varidx_set); }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (این);
+    auto *out = c->serializer->embed (*این);
+    اگر (unlikely (!out)) return_trace (نادرست);
 
-    bool ret = out->baseTagList.serialize_copy (c->serializer, baseTagList, this);
-    ret |= out->baseScriptList.serialize_subset (c, baseScriptList, this);
+    منطقی ret = out->baseTagList.serialize_copy (c->serializer, baseTagList, این);
+    ret |= out->baseScriptList.serialize_subset (c, baseScriptList, این);
     return_trace (ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  baseTagList.sanitize (c, this) &&
-			  baseScriptList.sanitize (c, this)));
+    TRACE_SANITIZE (این);
+    return_trace (likely (c->check_struct (این) &&
+			  baseTagList.sanitize (c, این) &&
+			  baseScriptList.sanitize (c, این)));
   }
 
-  protected:
+  محافظتشده:
   Offset16To<SortedArray16Of<Tag>>
 		baseTagList;	/* Offset to BaseTagList table, from beginning
 				 * of Axis table (may be NULL)
@@ -735,135 +735,135 @@ struct Axis
 				 * Array of BaseScriptRecords, in alphabetical order
 				 * by baseScriptTag */
 
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (4);
 };
 
-struct BASE
+ساختار BASE
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_BASE;
+  ایستا constexpr hb_tag_t tableTag = HB_OT_TAG_BASE;
 
-  const Axis &get_axis (hb_direction_t direction) const
-  { return HB_DIRECTION_IS_VERTICAL (direction) ? this+vAxis : this+hAxis; }
+  ثابت Axis &get_axis (hb_direction_t direction) ثابت
+  { بازگشت HB_DIRECTION_IS_VERTICAL (direction) ? این+vAxis : این+hAxis; }
 
-  bool has_var_store () const
-  { return version.to_int () >= 0x00010001u && varStore != 0; }
+  منطقی has_var_store () ثابت
+  { بازگشت version.to_int () >= 0x00010001u && varStore != 0; }
 
-  const ItemVariationStore &get_var_store () const
-  { return version.to_int () < 0x00010001u ? Null (ItemVariationStore) : this+varStore; }
+  ثابت ItemVariationStore &get_var_store () ثابت
+  { بازگشت version.to_int () < 0x00010001u ? Null (ItemVariationStore) : این+varStore; }
 
-  void collect_variation_indices (const hb_subset_plan_t* plan,
-                                  hb_set_t& varidx_set /* OUT */) const
+  تهی collect_variation_indices (ثابت hb_subset_plan_t* plan,
+                                  hb_set_t& varidx_set /* OUT */) ثابت
   {
-    (this+hAxis).collect_variation_indices (plan, varidx_set);
-    (this+vAxis).collect_variation_indices (plan, varidx_set);
+    (این+hAxis).collect_variation_indices (plan, varidx_set);
+    (این+vAxis).collect_variation_indices (plan, varidx_set);
   }
 
-  bool subset_varstore (hb_subset_context_t *c,
-                        BASE *out /* OUT */) const
+  منطقی subset_varstore (hb_subset_context_t *c,
+                        BASE *out /* OUT */) ثابت
   {
-    TRACE_SUBSET (this);
-    if (!c->serializer->allocate_size<Offset32To<ItemVariationStore>> (Offset32To<ItemVariationStore>::static_size))
-        return_trace (false);
-    if (!c->plan->normalized_coords)
-      return_trace (out->varStore.serialize_subset (c, varStore, this, c->plan->base_varstore_inner_maps.as_array ()));
+    TRACE_SUBSET (این);
+    اگر (!c->serializer->allocate_size<Offset32To<ItemVariationStore>> (Offset32To<ItemVariationStore>::static_size))
+        return_trace (نادرست);
+    اگر (!c->plan->normalized_coords)
+      return_trace (out->varStore.serialize_subset (c, varStore, این, c->plan->base_varstore_inner_maps.as_array ()));
 
-    if (c->plan->all_axes_pinned)
-      return_trace (true);
+    اگر (c->plan->all_axes_pinned)
+      return_trace (درست);
 
     item_variations_t item_vars;
-    if (!item_vars.instantiate (this+varStore, c->plan, true, true,
+    اگر (!item_vars.instantiate (این+varStore, c->plan, درست, درست,
                                 c->plan->base_varstore_inner_maps.as_array ()))
-      return_trace (false);
+      return_trace (نادرست);
 
-    if (!out->varStore.serialize_serialize (c->serializer,
+    اگر (!out->varStore.serialize_serialize (c->serializer,
                                             item_vars.has_long_word (),
                                             c->plan->axis_tags,
                                             item_vars.get_region_list (),
                                             item_vars.get_vardata_encodings ()))
-      return_trace (false);
+      return_trace (نادرست);
 
-    const hb_map_t &varidx_map = item_vars.get_varidx_map ();
+    ثابت hb_map_t &varidx_map = item_vars.get_varidx_map ();
     /* base_variation_idx_map in the plan is old_varidx->(varidx, delta)
      * mapping, new varidx is generated for subsetting, we need to remap this
      * after instancing */
-    for (auto _ : c->plan->base_variation_idx_map.iter_ref ())
+    برای (auto _ : c->plan->base_variation_idx_map.iter_ref ())
     {
       uint32_t varidx = _.second.first;
       uint32_t *new_varidx;
-      if (varidx_map.has (varidx, &new_varidx))
+      اگر (varidx_map.has (varidx, &new_varidx))
         _.second.first = *new_varidx;
-      else
+      وگرنه
         _.second.first = HB_OT_LAYOUT_NO_VARIATIONS_INDEX;
     }
-    return_trace (true);
+    return_trace (درست);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!out || !c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (این);
+    auto *out = c->serializer->start_embed (*این);
+    اگر (unlikely (!out || !c->serializer->extend_min (out))) return_trace (نادرست);
 
     out->version = version;
-    bool ret = false;
-    if (version.to_int () >= 0x00010001u) ret |= subset_varstore (c, out);
+    منطقی ret = نادرست;
+    اگر (version.to_int () >= 0x00010001u) ret |= subset_varstore (c, out);
 
-    ret |= out->hAxis.serialize_subset (c, hAxis, this);
-    ret |= out->vAxis.serialize_subset (c, vAxis, this);
+    ret |= out->hAxis.serialize_subset (c, hAxis, این);
+    ret |= out->vAxis.serialize_subset (c, vAxis, این);
 
     return_trace (ret);
   }
 
-  bool get_baseline (hb_font_t      *font,
+  منطقی get_baseline (hb_font_t      *font,
 		     hb_tag_t        baseline_tag,
 		     hb_direction_t  direction,
 		     hb_tag_t        script_tag,
 		     hb_tag_t        language_tag,
-		     hb_position_t  *base) const
+		     hb_position_t  *base) ثابت
   {
-    const BaseCoord *base_coord = nullptr;
-    if (unlikely (!get_axis (direction).get_baseline (baseline_tag, script_tag, language_tag, &base_coord) ||
+    ثابت BaseCoord *base_coord = nullptr;
+    اگر (unlikely (!get_axis (direction).get_baseline (baseline_tag, script_tag, language_tag, &base_coord) ||
 		  !base_coord || !base_coord->has_data ()))
-      return false;
+      بازگشت نادرست;
 
-    if (likely (base))
+    اگر (likely (base))
       *base = base_coord->get_coord (font, get_var_store (), direction);
 
-    return true;
+    بازگشت درست;
   }
 
-  bool get_min_max (hb_font_t      *font,
+  منطقی get_min_max (hb_font_t      *font,
 		    hb_direction_t  direction,
 		    hb_tag_t        script_tag,
 		    hb_tag_t        language_tag,
 		    hb_tag_t        feature_tag,
 		    hb_position_t  *min,
-		    hb_position_t  *max) const
+		    hb_position_t  *max) ثابت
   {
-    const BaseCoord *min_coord, *max_coord;
-    if (!get_axis (direction).get_min_max (script_tag, language_tag, feature_tag,
+    ثابت BaseCoord *min_coord, *max_coord;
+    اگر (!get_axis (direction).get_min_max (script_tag, language_tag, feature_tag,
 					   &min_coord, &max_coord))
-      return false;
+      بازگشت نادرست;
 
-    const ItemVariationStore &var_store = get_var_store ();
-    if (likely (min && min_coord)) *min = min_coord->get_coord (font, var_store, direction);
-    if (likely (max && max_coord)) *max = max_coord->get_coord (font, var_store, direction);
-    return true;
+    ثابت ItemVariationStore &var_store = get_var_store ();
+    اگر (likely (min && min_coord)) *min = min_coord->get_coord (font, var_store, direction);
+    اگر (likely (max && max_coord)) *max = max_coord->get_coord (font, var_store, direction);
+    بازگشت درست;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (این);
+    return_trace (likely (c->check_struct (این) &&
 			  hb_barrier () &&
 			  likely (version.major == 1) &&
-			  hAxis.sanitize (c, this) &&
-			  vAxis.sanitize (c, this) &&
-			  (version.to_int () < 0x00010001u || varStore.sanitize (c, this))));
+			  hAxis.sanitize (c, این) &&
+			  vAxis.sanitize (c, این) &&
+			  (version.to_int () < 0x00010001u || varStore.sanitize (c, این))));
   }
 
-  protected:
+  محافظتشده:
   FixedVersion<>version;	/* Version of the BASE table */
   Offset16To<Axis>hAxis;		/* Offset to horizontal Axis table, from beginning
 				 * of BASE table (may be NULL) */
@@ -874,7 +874,7 @@ struct BASE
 				 * Store--from beginning of BASE
 				 * header (may be NULL).  Introduced
 				 * in version 0x00010001. */
-  public:
+  عمومی:
   DEFINE_SIZE_MIN (8);
 };
 

@@ -22,42 +22,42 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#شامل "hb.hh"
 
 #ifdef HAVE_HARFRUST
 
-#include "hb-shaper-impl.hh"
+#شامل "hb-shaper-impl.hh"
 
-#include "hb-utf.hh"
+#شامل "hb-utf.hh"
 
 
 /*
  * buffer
  */
-extern "C" void *
-_hb_harfrust_buffer_create_rs (void);
+بیرونی "C" تهی *
+_hb_harfrust_buffer_create_rs (تهی);
 
-extern "C" void
-_hb_harfrust_buffer_destroy_rs (void *data);
+بیرونی "C" تهی
+_hb_harfrust_buffer_destroy_rs (تهی *data);
 
 
 /*
  * shaper face data
  */
 
-extern "C" void *
+بیرونی "C" تهی *
 _hb_harfrust_shaper_face_data_create_rs (hb_face_t *face);
 
 hb_harfrust_face_data_t *
 _hb_harfrust_shaper_face_data_create (hb_face_t *face)
 {
-  return (hb_harfrust_face_data_t *) _hb_harfrust_shaper_face_data_create_rs (face);
+  بازگشت (hb_harfrust_face_data_t *) _hb_harfrust_shaper_face_data_create_rs (face);
 }
 
-extern "C" void
-_hb_harfrust_shaper_face_data_destroy_rs (void *data);
+بیرونی "C" تهی
+_hb_harfrust_shaper_face_data_destroy_rs (تهی *data);
 
-void
+تهی
 _hb_harfrust_shaper_face_data_destroy (hb_harfrust_face_data_t *data)
 {
   _hb_harfrust_shaper_face_data_destroy_rs (data);
@@ -68,20 +68,20 @@ _hb_harfrust_shaper_face_data_destroy (hb_harfrust_face_data_t *data)
  * shaper font data
  */
 
-extern "C" void *
-_hb_harfrust_shaper_font_data_create_rs (hb_font_t *font, const void *face_data);
+بیرونی "C" تهی *
+_hb_harfrust_shaper_font_data_create_rs (hb_font_t *font, ثابت تهی *face_data);
 
 hb_harfrust_font_data_t *
 _hb_harfrust_shaper_font_data_create (hb_font_t *font)
 {
-  const hb_harfrust_face_data_t *face_data = font->face->data.harfrust;
-  return (hb_harfrust_font_data_t *) _hb_harfrust_shaper_font_data_create_rs (font, face_data);
+  ثابت hb_harfrust_face_data_t *face_data = font->face->data.harfrust;
+  بازگشت (hb_harfrust_font_data_t *) _hb_harfrust_shaper_font_data_create_rs (font, face_data);
 }
 
-extern "C" void
-_hb_harfrust_shaper_font_data_destroy_rs (void *data);
+بیرونی "C" تهی
+_hb_harfrust_shaper_font_data_destroy_rs (تهی *data);
 
-void
+تهی
 _hb_harfrust_shaper_font_data_destroy (hb_harfrust_font_data_t *data)
 {
   _hb_harfrust_shaper_font_data_destroy_rs (data);
@@ -92,85 +92,85 @@ _hb_harfrust_shaper_font_data_destroy (hb_harfrust_font_data_t *data)
  * shape plan
  */
 
-extern "C" void *
-_hb_harfrust_shape_plan_create_rs (const void *font_data,
+بیرونی "C" تهی *
+_hb_harfrust_shape_plan_create_rs (ثابت تهی *font_data,
 				   hb_script_t script,
 				   hb_language_t language,
 				   hb_direction_t direction,
-				   const hb_feature_t *features,
-				   unsigned int        num_features);
+				   ثابت hb_feature_t *features,
+				   unsigned صحیح        رقم_features);
 
-extern "C" void
-_hb_harfrust_shape_plan_destroy_rs (void *data);
+بیرونی "C" تهی
+_hb_harfrust_shape_plan_destroy_rs (تهی *data);
 
 
 /*
  * shaper
  */
 
-extern "C" hb_bool_t
-_hb_harfrust_shape_rs (const void         *font_data,
-		       const void         *rs_shape_plan,
-		       const void         *rs_buffer,
+بیرونی "C" hb_bool_t
+_hb_harfrust_shape_rs (ثابت تهی         *font_data,
+		       ثابت تهی         *rs_shape_plan,
+		       ثابت تهی         *rs_buffer,
 		       hb_font_t          *font,
 		       hb_buffer_t        *buffer,
-		       const hb_codepoint_t *pre_context,
+		       ثابت hb_codepoint_t *pre_context,
 		       uint32_t            pre_context_len,
-		       const hb_codepoint_t *post_context,
+		       ثابت hb_codepoint_t *post_context,
 		       uint32_t            post_context_len,
-		       const hb_feature_t *features,
-		       unsigned int        num_features);
+		       ثابت hb_feature_t *features,
+		       unsigned صحیح        رقم_features);
 
-static hb_user_data_key_t hb_buffer_key = {0};
+ایستا hb_user_data_کلید_t hb_buffer_کلید = {0};
 
 hb_bool_t
 _hb_harfrust_shape (hb_shape_plan_t    *shape_plan,
 		    hb_font_t          *font,
 		    hb_buffer_t        *buffer,
-		    const hb_feature_t *features,
-		    unsigned int        num_features)
+		    ثابت hb_feature_t *features,
+		    unsigned صحیح        رقم_features)
 {
-  const hb_harfrust_font_data_t *font_data = font->data.harfrust;
+  ثابت hb_harfrust_font_data_t *font_data = font->data.harfrust;
 
 retry_buffer:
-  void *hr_buffer = hb_buffer_get_user_data (buffer, &hb_buffer_key);
-  if (unlikely (!hr_buffer))
+  تهی *hr_buffer = hb_buffer_get_user_data (buffer, &hb_buffer_کلید);
+  اگر (unlikely (!hr_buffer))
   {
     hr_buffer = _hb_harfrust_buffer_create_rs ();
-    if (unlikely (!hr_buffer))
-      return false;
+    اگر (unlikely (!hr_buffer))
+      بازگشت نادرست;
 
-    if (!hb_buffer_set_user_data (buffer,
-				  &hb_buffer_key,
+    اگر (!hb_buffer_set_user_data (buffer,
+				  &hb_buffer_کلید,
 				  hr_buffer,
 				  _hb_harfrust_buffer_destroy_rs,
-				  false))
+				  نادرست))
     {
       _hb_harfrust_buffer_destroy_rs (hr_buffer);
-      goto retry_buffer;
+      برو retry_buffer;
     }
   }
 
-  void *hr_shape_plan = nullptr;
+  تهی *hr_shape_plan = nullptr;
 
 retry_shape_plan:
   hr_shape_plan = shape_plan->harfrust_data.get_acquire ();
-  if (unlikely (!hr_shape_plan))
+  اگر (unlikely (!hr_shape_plan))
   {
     hr_shape_plan = _hb_harfrust_shape_plan_create_rs (font_data,
 						       shape_plan->key.props.script,
 						       shape_plan->key.props.language,
 						       shape_plan->key.props.direction,
-						       features, num_features);
-    if (hr_shape_plan &&
+						       features, رقم_features);
+    اگر (hr_shape_plan &&
 	!shape_plan->harfrust_data.cmpexch (nullptr, hr_shape_plan))
     {
       _hb_harfrust_shape_plan_destroy_rs (hr_shape_plan);
-      goto retry_shape_plan;
+      برو retry_shape_plan;
     }
   }
 
-  return _hb_harfrust_shape_rs (font_data,
+  بازگشت _hb_harfrust_shape_rs (font_data,
 				hr_shape_plan,
 				hr_buffer,
 				font,
@@ -180,7 +180,7 @@ retry_shape_plan:
 				buffer->context[1],
 				buffer->context_len[1],
 				features,
-				num_features);
+				رقم_features);
 }
 
 

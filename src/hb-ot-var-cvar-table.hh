@@ -26,169 +26,169 @@
 #ifndef HB_OT_VAR_CVAR_TABLE_HH
 #define HB_OT_VAR_CVAR_TABLE_HH
 
-#include "hb-ot-var-common.hh"
-#include "hb-ot-var-fvar-table.hh"
+#شامل "hb-ot-var-common.hh"
+#شامل "hb-ot-var-fvar-table.hh"
 
 
-namespace OT {
+فضاینام OT {
 /*
  * cvar -- control value table (CVT) Variations
  * https://docs.microsoft.com/en-us/typography/opentype/spec/cvar
  */
 #define HB_OT_TAG_cvar HB_TAG('c','v','a','r')
 
-struct cvar
+ساختار cvar
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_cvar;
+  ایستا constexpr hb_tag_t tableTag = HB_OT_TAG_cvar;
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این) &&
 		  hb_barrier () &&
 		  likely (version.major == 1) &&
 		  tupleVariationData.sanitize (c));
   }
 
-  const TupleVariationData<>* get_tuple_var_data (void) const
-  { return &tupleVariationData; }
+  ثابت TupleVariationData<>* get_tuple_var_data (تهی) ثابت
+  { بازگشت &tupleVariationData; }
 
-  bool decompile_tuple_variations (unsigned axis_count,
-                                   unsigned point_count,
+  منطقی decompile_tuple_variations (unsigned axis_شمار,
+                                   unsigned point_شمار,
                                    hb_blob_t *blob,
-                                   bool is_gvar,
-                                   const hb_map_t *axes_old_index_tag_map,
-                                   TupleVariationData<>::tuple_variations_t& tuple_variations /* OUT */) const
+                                   منطقی is_gvar,
+                                   ثابت hb_map_t *axes_old_index_tag_map,
+                                   TupleVariationData<>::tuple_variations_t& tuple_variations /* OUT */) ثابت
   {
     hb_vector_t<unsigned> shared_indices;
     TupleVariationData<>::tuple_iterator_t iterator;
     hb_bytes_t var_data_bytes = blob->as_bytes ().sub_array (4);
-    if (!TupleVariationData<>::get_tuple_iterator (var_data_bytes, axis_count, this,
+    اگر (!TupleVariationData<>::get_tuple_iterator (var_data_bytes, axis_شمار, این,
                                                  shared_indices, &iterator))
-      return false;
+      بازگشت نادرست;
 
-    return tupleVariationData.decompile_tuple_variations (point_count, is_gvar, iterator,
+    بازگشت tupleVariationData.decompile_tuple_variations (point_شمار, is_gvar, iterator,
                                                           axes_old_index_tag_map,
                                                           shared_indices,
-                                                          hb_array<const F2DOT14> (),
+                                                          hb_array<ثابت F2DOT14> (),
                                                           tuple_variations);
   }
 
-  static bool calculate_cvt_deltas (unsigned axis_count,
-                                    hb_array_t<int> coords,
-                                    unsigned num_cvt_item,
-                                    const TupleVariationData<> *tuple_var_data,
-                                    const void *base,
+  ایستا منطقی calculate_cvt_deltas (unsigned axis_شمار,
+                                    hb_array_t<صحیح> coords,
+                                    unsigned رقم_cvt_item,
+                                    ثابت TupleVariationData<> *tuple_var_data,
+                                    ثابت تهی *base,
                                     unsigned var_data_length,
-                                    hb_vector_t<float>& cvt_deltas /* OUT */)
+                                    hb_vector_t<اعشاری>& cvt_deltas /* OUT */)
   {
-    if (!coords) return true;
+    اگر (!coords) بازگشت درست;
     hb_vector_t<unsigned> shared_indices;
     TupleVariationData<>::tuple_iterator_t iterator;
-    hb_bytes_t var_data_bytes = hb_bytes_t (reinterpret_cast<const char*> (tuple_var_data), var_data_length);
-    if (!TupleVariationData<>::get_tuple_iterator (var_data_bytes, axis_count, base,
+    hb_bytes_t var_data_bytes = hb_bytes_t (reinterpret_cast<ثابت نویسه*> (tuple_var_data), var_data_length);
+    اگر (!TupleVariationData<>::get_tuple_iterator (var_data_bytes, axis_شمار, base,
                                                  shared_indices, &iterator))
-      return true; /* isn't applied at all */
+      بازگشت درست; /* isn't applied at all */
 
-    hb_array_t<const F2DOT14> shared_tuples = hb_array<F2DOT14> ();
+    hb_array_t<ثابت F2DOT14> shared_tuples = hb_array<F2DOT14> ();
     hb_vector_t<unsigned> private_indices;
-    hb_vector_t<int> unpacked_deltas;
+    hb_vector_t<صحیح> unpacked_deltas;
 
-    do
+    انجامبده
     {
-      float scalar = iterator.current_tuple->calculate_scalar (coords, axis_count, shared_tuples);
-      if (scalar == 0.f) continue;
-      const HBUINT8 *p = iterator.get_serialized_data ();
-      unsigned int length = iterator.current_tuple->get_data_size ();
-      if (unlikely (!iterator.var_data_bytes.check_range (p, length)))
-        return false;
+      اعشاری scalar = iterator.current_tuple->calculate_scalar (coords, axis_شمار, shared_tuples);
+      اگر (scalar == 0.f) ادامه;
+      ثابت HBUINT8 *p = iterator.get_serialized_data ();
+      unsigned صحیح length = iterator.current_tuple->get_data_size ();
+      اگر (unlikely (!iterator.var_data_bytes.check_range (p, length)))
+        بازگشت نادرست;
 
-      const HBUINT8 *end = p + length;
+      ثابت HBUINT8 *end = p + length;
 
-      bool has_private_points = iterator.current_tuple->has_private_points ();
-      if (has_private_points &&
+      منطقی has_private_points = iterator.current_tuple->has_private_points ();
+      اگر (has_private_points &&
           !TupleVariationData<>::decompile_points (p, private_indices, end))
-        return false;
-      const hb_vector_t<unsigned int> &indices = has_private_points ? private_indices : shared_indices;
+        بازگشت نادرست;
+      ثابت hb_vector_t<unsigned صحیح> &indices = has_private_points ? private_indices : shared_indices;
 
-      bool apply_to_all = (indices.length == 0);
-      unsigned num_deltas = apply_to_all ? num_cvt_item : indices.length;
-      if (unlikely (!unpacked_deltas.resize_dirty  (num_deltas))) return false;
-      if (unlikely (!TupleVariationData<>::decompile_deltas (p, unpacked_deltas, end))) return false;
+      منطقی apply_to_all = (indices.length == 0);
+      unsigned رقم_deltas = apply_to_all ? رقم_cvt_item : indices.length;
+      اگر (unlikely (!unpacked_deltas.resize_dirty  (رقم_deltas))) بازگشت نادرست;
+      اگر (unlikely (!TupleVariationData<>::decompile_deltas (p, unpacked_deltas, end))) بازگشت نادرست;
 
-      for (unsigned int i = 0; i < num_deltas; i++)
+      برای (unsigned صحیح i = 0; i < رقم_deltas; i++)
       {
-        unsigned int idx = apply_to_all ? i : indices[i];
-        if (unlikely (idx >= num_cvt_item)) continue;
-        if (scalar != 1.0f) cvt_deltas[idx] += unpacked_deltas[i] * scalar ;
-        else cvt_deltas[idx] += unpacked_deltas[i];
+        unsigned صحیح idx = apply_to_all ? i : indices[i];
+        اگر (unlikely (idx >= رقم_cvt_item)) ادامه;
+        اگر (scalar != 1.0f) cvt_deltas[idx] += unpacked_deltas[i] * scalar ;
+        وگرنه cvt_deltas[idx] += unpacked_deltas[i];
       }
-    } while (iterator.move_to_next ());
+    } وقتی (iterator.move_to_next ());
 
-    return true;
+    بازگشت درست;
   }
   
-  bool serialize (hb_serialize_context_t *c,
-                  TupleVariationData<>::tuple_variations_t& tuple_variations) const
+  منطقی serialize (hb_serialize_context_t *c,
+                  TupleVariationData<>::tuple_variations_t& tuple_variations) ثابت
   {
-    TRACE_SERIALIZE (this);
-    if (!tuple_variations) return_trace (false);
-    if (unlikely (!c->embed (version))) return_trace (false);
+    TRACE_SERIALIZE (این);
+    اگر (!tuple_variations) return_trace (نادرست);
+    اگر (unlikely (!c->embed (version))) return_trace (نادرست);
 
-    return_trace (tupleVariationData.serialize (c, false, tuple_variations));
+    return_trace (tupleVariationData.serialize (c, نادرست, tuple_variations));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    if (c->plan->all_axes_pinned)
-      return_trace (false);
+    TRACE_SUBSET (این);
+    اگر (c->plan->all_axes_pinned)
+      return_trace (نادرست);
 
     OT::TupleVariationData<>::tuple_variations_t tuple_variations;
-    unsigned axis_count = c->plan->axes_old_index_tag_map.get_population ();
+    unsigned axis_شمار = c->plan->axes_old_index_tag_map.get_population ();
 
-    const hb_tag_t cvt = HB_TAG('c','v','t',' ');
+    ثابت hb_tag_t cvt = HB_TAG('c','v','t',' ');
     hb_blob_t *cvt_blob = hb_face_reference_table (c->plan->source, cvt);
-    unsigned point_count = hb_blob_get_length (cvt_blob) / FWORD::static_size;
+    unsigned point_شمار = hb_blob_get_length (cvt_blob) / FWORD::static_size;
     hb_blob_destroy (cvt_blob);
 
-    if (!decompile_tuple_variations (axis_count, point_count,
-                                     c->source_blob, false,
+    اگر (!decompile_tuple_variations (axis_شمار, point_شمار,
+                                     c->source_blob, نادرست,
                                      &(c->plan->axes_old_index_tag_map),
                                      tuple_variations))
-      return_trace (false);
+      return_trace (نادرست);
 
     optimize_scratch_t scratch;
-    if (!tuple_variations.instantiate (c->plan->axes_location, c->plan->axes_triple_distances, scratch))
-      return_trace (false);
+    اگر (!tuple_variations.instantiate (c->plan->axes_location, c->plan->axes_triple_distances, scratch))
+      return_trace (نادرست);
 
-    if (!tuple_variations.compile_bytes (c->plan->axes_index_map, c->plan->axes_old_index_tag_map,
-                                         false /* do not use shared points */))
-      return_trace (false);
+    اگر (!tuple_variations.compile_bytes (c->plan->axes_index_map, c->plan->axes_old_index_tag_map,
+                                         نادرست /* do not use shared points */))
+      return_trace (نادرست);
 
     return_trace (serialize (c->serializer, tuple_variations));
   }
 
-  static bool add_cvt_and_apply_deltas (hb_subset_plan_t *plan,
-                                        const TupleVariationData<> *tuple_var_data,
-                                        const void *base)
+  ایستا منطقی add_cvt_and_apply_deltas (hb_subset_plan_t *plan,
+                                        ثابت TupleVariationData<> *tuple_var_data,
+                                        ثابت تهی *base)
   {
-    const hb_tag_t cvt = HB_TAG('c','v','t',' ');
+    ثابت hb_tag_t cvt = HB_TAG('c','v','t',' ');
     hb_blob_t *cvt_blob = hb_face_reference_table (plan->source, cvt);
-    hb_blob_t *cvt_prime_blob = hb_blob_copy_writable_or_fail (cvt_blob);
+    hb_blob_t *cvt_اول_blob = hb_blob_copy_writable_or_fail (cvt_blob);
     hb_blob_destroy (cvt_blob);
   
-    if (unlikely (!cvt_prime_blob))
-      return false;
+    اگر (unlikely (!cvt_اول_blob))
+      بازگشت نادرست;
  
-    unsigned cvt_blob_length = hb_blob_get_length (cvt_prime_blob);
-    unsigned num_cvt_item = cvt_blob_length / FWORD::static_size;
+    unsigned cvt_blob_length = hb_blob_get_length (cvt_اول_blob);
+    unsigned رقم_cvt_item = cvt_blob_length / FWORD::static_size;
 
-    hb_vector_t<float> cvt_deltas;
-    if (unlikely (!cvt_deltas.resize (num_cvt_item)))
+    hb_vector_t<اعشاری> cvt_deltas;
+    اگر (unlikely (!cvt_deltas.resize (رقم_cvt_item)))
     {
-      hb_blob_destroy (cvt_prime_blob);
-      return false;
+      hb_blob_destroy (cvt_اول_blob);
+      بازگشت نادرست;
     }
 
     /* Bound the tuple variation data by the actual cvar table length rather
@@ -197,30 +197,30 @@ struct cvar
     hb_blob_t *cvar_blob = hb_face_reference_table (plan->source, cvar::tableTag);
     unsigned cvar_length = hb_blob_get_length (cvar_blob);
     hb_blob_destroy (cvar_blob);
-    unsigned var_data_offset = (unsigned) ((const char *) tuple_var_data - (const char *) base);
+    unsigned var_data_offset = (unsigned) ((ثابت نویسه *) tuple_var_data - (ثابت نویسه *) base);
     unsigned var_data_length = var_data_offset < cvar_length ? cvar_length - var_data_offset : 0;
 
-    if (!calculate_cvt_deltas (plan->normalized_coords.length, plan->normalized_coords.as_array (),
-                               num_cvt_item, tuple_var_data, base, var_data_length, cvt_deltas))
+    اگر (!calculate_cvt_deltas (plan->normalized_coords.length, plan->normalized_coords.as_array (),
+                               رقم_cvt_item, tuple_var_data, base, var_data_length, cvt_deltas))
     {
-      hb_blob_destroy (cvt_prime_blob);
-      return false;
+      hb_blob_destroy (cvt_اول_blob);
+      بازگشت نادرست;
     }
 
-    FWORD *cvt_prime = (FWORD *) hb_blob_get_data_writable (cvt_prime_blob, nullptr);
-    for (unsigned i = 0; i < num_cvt_item; i++)
-      cvt_prime[i] += (int) roundf (cvt_deltas[i]);
+    FWORD *cvt_اول = (FWORD *) hb_blob_get_data_writable (cvt_اول_blob, nullptr);
+    برای (unsigned i = 0; i < رقم_cvt_item; i++)
+      cvt_اول[i] += (صحیح) roundf (cvt_deltas[i]);
     
-    bool success = plan->add_table (cvt, cvt_prime_blob);
-    hb_blob_destroy (cvt_prime_blob);
-    return success;
+    منطقی success = plan->add_table (cvt, cvt_اول_blob);
+    hb_blob_destroy (cvt_اول_blob);
+    بازگشت success;
   }
 
-  protected:
+  محافظتشده:
   FixedVersion<>version;		/* Version of the CVT variation table
 					 * initially set to 0x00010000u */
   TupleVariationData<> tupleVariationData; /* TupleVariationDate for cvar table */
-  public:
+  عمومی:
   DEFINE_SIZE_MIN (8);
 };
 

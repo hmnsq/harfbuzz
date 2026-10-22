@@ -2,21 +2,21 @@
 #define OT_GLYF_COMPOSITEGLYPH_HH
 
 
-#include "../../hb-open-type.hh"
-#include "composite-iter.hh"
+#شامل "../../hb-open-type.hh"
+#شامل "composite-iter.hh"
 
 
-namespace OT {
-namespace glyf_impl {
+فضاینام OT {
+فضاینام glyf_impl {
 
 
-struct CompositeGlyphRecord
+ساختار CompositeGlyphRecord
 {
-  protected:
-  enum composite_glyph_flag_t
+  محافظتشده:
+  شمارش composite_glyph_flag_t
   {
-    ARG_1_AND_2_ARE_WORDS	= 0x0001,
-    ARGS_ARE_XY_VALUES		= 0x0002,
+    ARG_1_AND_2_ARE_واژگان	= 0x0001,
+    ARGS_ARE_XY_مقادیر		= 0x0002,
     ROUND_XY_TO_GRID		= 0x0004,
     WE_HAVE_A_SCALE		= 0x0008,
     MORE_COMPONENTS		= 0x0020,
@@ -32,351 +32,351 @@ struct CompositeGlyphRecord
 #endif
   };
 
-  public:
-  size_t get_size (bool extended) const
+  عمومی:
+  size_t get_size (منطقی extended) ثابت
   {
-    unsigned int size = min_size;
+    unsigned صحیح size = min_size;
     /* glyphIndex is 24bit instead of 16bit */
 #ifndef HB_NO_BEYOND_64K
-    if (extended && (flags & GID_IS_24BIT)) size += HBGlyphID24::static_size - HBGlyphID16::static_size;
+    اگر (extended && (flags & GID_IS_24BIT)) size += HBGlyphID24::static_size - HBGlyphID16::static_size;
 #endif
     /* arg1 and 2 are int16 */
-    if (flags & ARG_1_AND_2_ARE_WORDS) size += 4;
+    اگر (flags & ARG_1_AND_2_ARE_واژگان) size += 4;
     /* arg1 and 2 are int8 */
-    else size += 2;
+    وگرنه size += 2;
 
     /* One x 16 bit (scale) */
-    if (flags & WE_HAVE_A_SCALE) size += 2;
+    اگر (flags & WE_HAVE_A_SCALE) size += 2;
     /* Two x 16 bit (xscale, yscale) */
-    else if (flags & WE_HAVE_AN_X_AND_Y_SCALE) size += 4;
+    وگرنه اگر (flags & WE_HAVE_AN_X_AND_Y_SCALE) size += 4;
     /* Four x 16 bit (xscale, scale01, scale10, yscale) */
-    else if (flags & WE_HAVE_A_TWO_BY_TWO) size += 8;
+    وگرنه اگر (flags & WE_HAVE_A_TWO_BY_TWO) size += 8;
 
-    return size;
+    بازگشت size;
   }
 
-  void drop_instructions_flag ()  { flags = (uint16_t) flags & ~WE_HAVE_INSTRUCTIONS; }
-  void set_overlaps_flag ()
+  تهی drop_instructions_flag ()  { flags = (uint16_t) flags & ~WE_HAVE_INSTRUCTIONS; }
+  تهی set_overlaps_flag ()
   {
     flags = (uint16_t) flags | OVERLAP_COMPOUND;
   }
 
-  bool has_instructions ()  const { return   flags & WE_HAVE_INSTRUCTIONS; }
+  منطقی has_instructions ()  ثابت { بازگشت   flags & WE_HAVE_INSTRUCTIONS; }
 
-  bool has_more ()          const { return   flags & MORE_COMPONENTS; }
-  bool is_use_my_metrics () const { return   flags & USE_MY_METRICS; }
-  bool is_anchored ()       const { return !(flags & ARGS_ARE_XY_VALUES); }
-  void get_anchor_points (unsigned int &point1, unsigned int &point2, bool extended) const
+  منطقی has_more ()          ثابت { بازگشت   flags & MORE_COMPONENTS; }
+  منطقی is_use_my_metrics () ثابت { بازگشت   flags & USE_MY_METRICS; }
+  منطقی is_anchored ()       ثابت { بازگشت !(flags & ARGS_ARE_XY_مقادیر); }
+  تهی get_anchor_points (unsigned صحیح &point1, unsigned صحیح &point2, منطقی extended) ثابت
   {
-    const auto *p = &StructAfter<const HBUINT8> (flags);
+    ثابت auto *p = &StructAfter<ثابت HBUINT8> (flags);
 #ifndef HB_NO_BEYOND_64K
-    if (extended && (flags & GID_IS_24BIT))
+    اگر (extended && (flags & GID_IS_24BIT))
       p += HBGlyphID24::static_size;
-    else
+    وگرنه
 #endif
       p += HBGlyphID16::static_size;
-    if (flags & ARG_1_AND_2_ARE_WORDS)
+    اگر (flags & ARG_1_AND_2_ARE_واژگان)
     {
-      point1 = ((const HBUINT16 *) p)[0];
-      point2 = ((const HBUINT16 *) p)[1];
+      point1 = ((ثابت HBUINT16 *) p)[0];
+      point2 = ((ثابت HBUINT16 *) p)[1];
     }
-    else
+    وگرنه
     {
       point1 = p[0];
       point2 = p[1];
     }
   }
 
-  static void transform (const float (&matrix)[4],
+  ایستا تهی transform (ثابت اعشاری (&matrix)[4],
 			 hb_array_t<contour_point_t> points)
   {
-    if (matrix[0] != 1.f || matrix[1] != 0.f ||
+    اگر (matrix[0] != 1.f || matrix[1] != 0.f ||
 	matrix[2] != 0.f || matrix[3] != 1.f)
-      for (auto &point : points)
+      برای (auto &point : points)
         point.transform (matrix);
   }
 
-  static void translate (const contour_point_t &trans,
+  ایستا تهی translate (ثابت contour_point_t &trans,
 			 hb_array_t<contour_point_t> points)
   {
-    if (HB_OPTIMIZE_SIZE_VAL)
+    اگر (HB_OPTIMIZE_SIZE_VAL)
     {
-      if (trans.x != 0.f || trans.y != 0.f)
-        for (auto &point : points)
+      اگر (trans.x != 0.f || trans.y != 0.f)
+        برای (auto &point : points)
 	  point.translate (trans);
     }
-    else
+    وگرنه
     {
-      if (trans.x != 0.f && trans.y != 0.f)
-        for (auto &point : points)
+      اگر (trans.x != 0.f && trans.y != 0.f)
+        برای (auto &point : points)
 	  point.translate (trans);
-      else
+      وگرنه
       {
-	if (trans.x != 0.f)
-	  for (auto &point : points)
+	اگر (trans.x != 0.f)
+	  برای (auto &point : points)
 	    point.x += trans.x;
-	else if (trans.y != 0.f)
-	  for (auto &point : points)
+	وگرنه اگر (trans.y != 0.f)
+	  برای (auto &point : points)
 	    point.y += trans.y;
       }
     }
   }
 
-  void transform_points (hb_array_t<contour_point_t> points,
-			 const float (&matrix)[4],
-			 const contour_point_t &trans) const
+  تهی transform_points (hb_array_t<contour_point_t> points,
+			 ثابت اعشاری (&matrix)[4],
+			 ثابت contour_point_t &trans) ثابت
   {
-    if (scaled_offsets ())
+    اگر (scaled_offsets ())
     {
       translate (trans, points);
       transform (matrix, points);
     }
-    else
+    وگرنه
     {
       transform (matrix, points);
       translate (trans, points);
     }
   }
 
-  bool get_points (contour_point_vector_t &points, bool extended) const
+  منطقی get_points (contour_point_vector_t &points, منطقی extended) ثابت
   {
-    float matrix[4];
+    اعشاری matrix[4];
     contour_point_t trans;
     get_transformation (matrix, trans, extended);
-    if (unlikely (!points.alloc (points.length + 1 + 4))) return false; // For phantom points
+    اگر (unlikely (!points.alloc (points.length + 1 + 4))) بازگشت نادرست; // For phantom points
     points.push (trans);
-    return true;
+    بازگشت درست;
   }
 
-  unsigned compile_with_point (const contour_point_t &point,
-                               char *out,
-			       bool extended) const
+  unsigned compile_with_point (ثابت contour_point_t &point,
+                               نویسه *out,
+			       منطقی extended) ثابت
   {
-    const HBINT8 *p = &StructAfter<const HBINT8> (flags);
+    ثابت HBINT8 *p = &StructAfter<ثابت HBINT8> (flags);
 #ifndef HB_NO_BEYOND_64K
-    if (extended && (flags & GID_IS_24BIT))
+    اگر (extended && (flags & GID_IS_24BIT))
       p += HBGlyphID24::static_size;
-    else
+    وگرنه
 #endif
       p += HBGlyphID16::static_size;
 
     unsigned len = get_size (extended);
-    unsigned len_before_val = (const char *)p - (const char *)this;
-    if (flags & ARG_1_AND_2_ARE_WORDS)
+    unsigned len_before_val = (ثابت نویسه *)p - (ثابت نویسه *)این;
+    اگر (flags & ARG_1_AND_2_ARE_واژگان)
     {
       // no overflow, copy value
-      hb_memcpy (out, this, len);
+      hb_memcpy (out, این, len);
 
       HBINT16 *o = reinterpret_cast<HBINT16 *> (out + len_before_val);
       o[0] = roundf (point.x);
       o[1] = roundf (point.y);
     }
-    else
+    وگرنه
     {
-      int new_x = roundf (point.x);
-      int new_y = roundf (point.y);
-      if (new_x <= 127 && new_x >= -128 &&
+      صحیح new_x = roundf (point.x);
+      صحیح new_y = roundf (point.y);
+      اگر (new_x <= 127 && new_x >= -128 &&
           new_y <= 127 && new_y >= -128)
       {
-        hb_memcpy (out, this, len);
+        hb_memcpy (out, این, len);
         HBINT8 *o = reinterpret_cast<HBINT8 *> (out + len_before_val);
         o[0] = new_x;
         o[1] = new_y;
       }
-      else
+      وگرنه
       {
         // new point value has an int8 overflow
-        hb_memcpy (out, this, len_before_val);
+        hb_memcpy (out, این, len_before_val);
         
         //update flags
         CompositeGlyphRecord *o = reinterpret_cast<CompositeGlyphRecord *> (out);
-        o->flags = flags | ARG_1_AND_2_ARE_WORDS;
+        o->flags = flags | ARG_1_AND_2_ARE_واژگان;
         out += len_before_val;
 
-        HBINT16 new_value;
-        new_value = new_x;
-        hb_memcpy (out, &new_value, HBINT16::static_size);
+        HBINT16 new_مقدار;
+        new_مقدار = new_x;
+        hb_memcpy (out, &new_مقدار, HBINT16::static_size);
         out += HBINT16::static_size;
 
-        new_value = new_y;
-        hb_memcpy (out, &new_value, HBINT16::static_size);
+        new_مقدار = new_y;
+        hb_memcpy (out, &new_مقدار, HBINT16::static_size);
         out += HBINT16::static_size;
 
         hb_memcpy (out, p+2, len - len_before_val - 2);
         len += 2;
       }
     }
-    return len;
+    بازگشت len;
   }
 
-  protected:
-  bool scaled_offsets () const
-  { return (flags & (SCALED_COMPONENT_OFFSET | UNSCALED_COMPONENT_OFFSET)) == SCALED_COMPONENT_OFFSET; }
+  محافظتشده:
+  منطقی scaled_offsets () ثابت
+  { بازگشت (flags & (SCALED_COMPONENT_OFFSET | UNSCALED_COMPONENT_OFFSET)) == SCALED_COMPONENT_OFFSET; }
 
-  public:
-  bool get_transformation (float (&matrix)[4], contour_point_t &trans, bool extended) const
+  عمومی:
+  منطقی get_transformation (اعشاری (&matrix)[4], contour_point_t &trans, منطقی extended) ثابت
   {
     matrix[0] = matrix[3] = 1.f;
     matrix[1] = matrix[2] = 0.f;
 
-    const auto *p = &StructAfter<const HBINT8> (flags);
+    ثابت auto *p = &StructAfter<ثابت HBINT8> (flags);
 #ifndef HB_NO_BEYOND_64K
-    if (extended && (flags & GID_IS_24BIT))
+    اگر (extended && (flags & GID_IS_24BIT))
       p += HBGlyphID24::static_size;
-    else
+    وگرنه
 #endif
       p += HBGlyphID16::static_size;
-    int tx, ty;
-    if (flags & ARG_1_AND_2_ARE_WORDS)
+    صحیح tx, ty;
+    اگر (flags & ARG_1_AND_2_ARE_واژگان)
     {
-      tx = *(const HBINT16 *) p;
+      tx = *(ثابت HBINT16 *) p;
       p += HBINT16::static_size;
-      ty = *(const HBINT16 *) p;
+      ty = *(ثابت HBINT16 *) p;
       p += HBINT16::static_size;
     }
-    else
+    وگرنه
     {
       tx = *p++;
       ty = *p++;
     }
-    if (is_anchored ()) tx = ty = 0;
+    اگر (is_anchored ()) tx = ty = 0;
 
     /* set is_end_point flag to true, used by IUP delta optimization */
-    trans.init ((float) tx, (float) ty, true);
+    trans.init ((اعشاری) tx, (اعشاری) ty, درست);
 
     {
-      const F2DOT14 *points = (const F2DOT14 *) p;
-      if (flags & WE_HAVE_A_SCALE)
+      ثابت F2DOT14 *points = (ثابت F2DOT14 *) p;
+      اگر (flags & WE_HAVE_A_SCALE)
       {
 	matrix[0] = matrix[3] = points[0].to_float ();
-	return true;
+	بازگشت درست;
       }
-      else if (flags & WE_HAVE_AN_X_AND_Y_SCALE)
+      وگرنه اگر (flags & WE_HAVE_AN_X_AND_Y_SCALE)
       {
 	matrix[0] = points[0].to_float ();
 	matrix[3] = points[1].to_float ();
-	return true;
+	بازگشت درست;
       }
-      else if (flags & WE_HAVE_A_TWO_BY_TWO)
+      وگرنه اگر (flags & WE_HAVE_A_TWO_BY_TWO)
       {
 	matrix[0] = points[0].to_float ();
 	matrix[1] = points[1].to_float ();
 	matrix[2] = points[2].to_float ();
 	matrix[3] = points[3].to_float ();
-	return true;
+	بازگشت درست;
       }
     }
-    return tx || ty;
+    بازگشت tx || ty;
   }
 
-  hb_codepoint_t get_gid (bool extended) const
+  hb_codepoint_t get_gid (منطقی extended) ثابت
   {
 #ifndef HB_NO_BEYOND_64K
-    if (extended && (flags & GID_IS_24BIT))
-      return StructAfter<const HBGlyphID24> (flags);
-    else
+    اگر (extended && (flags & GID_IS_24BIT))
+      بازگشت StructAfter<ثابت HBGlyphID24> (flags);
+    وگرنه
 #endif
-      return StructAfter<const HBGlyphID16> (flags);
+      بازگشت StructAfter<ثابت HBGlyphID16> (flags);
   }
-  void set_gid (hb_codepoint_t gid, bool extended)
+  تهی set_gid (hb_codepoint_t gid, منطقی extended)
   {
 #ifndef HB_NO_BEYOND_64K
-    if (extended && (flags & GID_IS_24BIT))
+    اگر (extended && (flags & GID_IS_24BIT))
       StructAfter<HBGlyphID24> (flags) = gid;
-    else
+    وگرنه
 #endif
       /* TODO assert? */
       StructAfter<HBGlyphID16> (flags) = gid;
   }
 
 #ifndef HB_NO_BEYOND_64K
-  void lower_gid_24_to_16 ()
+  تهی lower_gid_24_to_16 ()
   {
-    hb_codepoint_t gid = get_gid (true);
-    if (!(flags & GID_IS_24BIT) || gid > 0xFFFFu)
-      return;
+    hb_codepoint_t gid = get_gid (درست);
+    اگر (!(flags & GID_IS_24BIT) || gid > 0xFFFFu)
+      بازگشت;
 
     /* Lower the flag and move the rest of the struct down. */
 
-    unsigned size = get_size (true);
-    char *end = (char *) this + size;
-    char *p = &StructAfter<char> (flags);
+    unsigned size = get_size (درست);
+    نویسه *end = (نویسه *) این + size;
+    نویسه *p = &StructAfter<نویسه> (flags);
     p += HBGlyphID24::static_size;
 
     flags = flags & ~GID_IS_24BIT;
-    set_gid (gid, true);
+    set_gid (gid, درست);
 
     memmove (p - HBGlyphID24::static_size + HBGlyphID16::static_size, p, end - p);
   }
 #endif
 
-  protected:
+  محافظتشده:
   HBUINT16	flags;
   HBUINT24	pad;
-  public:
+  عمومی:
   DEFINE_SIZE_MIN (4);
 };
 
 using composite_iter_t = composite_iter_tmpl<CompositeGlyphRecord>;
 
-struct CompositeGlyph
+ساختار CompositeGlyph
 {
-  const GlyphHeader &header;
+  ثابت GlyphHeader &header;
   hb_bytes_t bytes;
-  bool extended;
-  CompositeGlyph (const GlyphHeader &header_, hb_bytes_t bytes_, bool extended_) :
+  منطقی extended;
+  CompositeGlyph (ثابت GlyphHeader &header_, hb_bytes_t bytes_, منطقی extended_) :
     header (header_), bytes (bytes_), extended (extended_) {}
 
-  composite_iter_t iter () const
-  { return composite_iter_t (bytes, &StructAfter<CompositeGlyphRecord, GlyphHeader> (header), extended); }
+  composite_iter_t iter () ثابت
+  { بازگشت composite_iter_t (bytes, &StructAfter<CompositeGlyphRecord, GlyphHeader> (header), extended); }
 
-  unsigned int instructions_length (hb_bytes_t bytes) const
+  unsigned صحیح instructions_length (hb_bytes_t bytes) ثابت
   {
-    unsigned int start = bytes.length;
-    unsigned int end = bytes.length;
-    const CompositeGlyphRecord *last = nullptr;
-    for (auto &item : iter ())
+    unsigned صحیح start = bytes.length;
+    unsigned صحیح end = bytes.length;
+    ثابت CompositeGlyphRecord *last = nullptr;
+    برای (auto &item : iter ())
       last = &item;
-    if (unlikely (!last)) return 0;
+    اگر (unlikely (!last)) بازگشت 0;
 
-    if (last->has_instructions ())
-      start = (char *) last - &bytes + last->get_size (extended);
-    if (unlikely (start > end)) return 0;
-    return end - start;
+    اگر (last->has_instructions ())
+      start = (نویسه *) last - &bytes + last->get_size (extended);
+    اگر (unlikely (start > end)) بازگشت 0;
+    بازگشت end - start;
   }
 
   /* Trimming for composites not implemented.
    * If removing hints it falls out of that. */
-  const hb_bytes_t trim_padding () const { return bytes; }
+  ثابت hb_bytes_t trim_padding () ثابت { بازگشت bytes; }
 
-  void drop_hints ()
+  تهی drop_hints ()
   {
-    for (const auto &_ : iter ())
+    برای (ثابت auto &_ : iter ())
       const_cast<CompositeGlyphRecord &> (_).drop_instructions_flag ();
   }
 
   /* Chop instructions off the end */
-  void drop_hints_bytes (hb_bytes_t &dest_start) const
+  تهی drop_hints_bytes (hb_bytes_t &dest_start) ثابت
   { dest_start = bytes.sub_array (0, bytes.length - instructions_length (bytes)); }
 
-  void set_overlaps_flag ()
+  تهی set_overlaps_flag ()
   {
     CompositeGlyphRecord& glyph_chain = const_cast<CompositeGlyphRecord &> (
 	StructAfter<CompositeGlyphRecord, GlyphHeader> (header));
-    if (!bytes.check_range(&glyph_chain, CompositeGlyphRecord::min_size))
-      return;
+    اگر (!bytes.check_range(&glyph_chain, CompositeGlyphRecord::min_size))
+      بازگشت;
     glyph_chain.set_overlaps_flag ();
   }
 
-  bool compile_bytes_with_deltas (const hb_bytes_t &source_bytes,
-                                  const contour_point_vector_t &points_with_deltas,
+  منطقی compile_bytes_with_deltas (ثابت hb_bytes_t &source_bytes,
+                                  ثابت contour_point_vector_t &points_with_deltas,
                                   hb_bytes_t &dest_bytes /* OUT */)
   {
-    if (source_bytes.length <= GlyphHeader::static_size ||
-        header.numberOfContours != -1)
+    اگر (source_bytes.length <= GlyphHeader::static_size ||
+        header.عدد_Of_Contours != -1)
     {
       dest_bytes = hb_bytes_t ();
-      return true;
+      بازگشت درست;
     }
 
     unsigned source_len = source_bytes.length - GlyphHeader::static_size;
@@ -384,29 +384,29 @@ struct CompositeGlyph
     /* try to allocate more memories than source glyph bytes
      * in case that there might be an overflow for int8 value
      * and we would need to use int16 instead */
-    char *o = (char *) hb_calloc (source_len * 2, sizeof (char));
-    if (unlikely (!o)) return false;
+    نویسه *o = (نویسه *) hb_calloc (source_len * 2, اندازه (نویسه));
+    اگر (unlikely (!o)) بازگشت نادرست;
 
-    const CompositeGlyphRecord *c = reinterpret_cast<const CompositeGlyphRecord *> (source_bytes.arrayZ + GlyphHeader::static_size);
-    auto it = composite_iter_t (hb_bytes_t ((const char *)c, source_len), c, extended);
+    ثابت CompositeGlyphRecord *c = reinterpret_cast<ثابت CompositeGlyphRecord *> (source_bytes.arrayZ + GlyphHeader::static_size);
+    auto it = composite_iter_t (hb_bytes_t ((ثابت نویسه *)c, source_len), c, extended);
 
-    char *p = o;
+    نویسه *p = o;
     unsigned i = 0, source_comp_len = 0;
-    for (const auto &component : it)
+    برای (ثابت auto &component : it)
     {
       /* last 4 points in points_with_deltas are phantom points and should not be included */
-      if (i >= points_with_deltas.length - 4) {
+      اگر (i >= points_with_deltas.length - 4) {
         hb_free (o);
-        return false;
+        بازگشت نادرست;
       }
 
       unsigned comp_len = component.get_size (extended);
-      if (component.is_anchored ())
+      اگر (component.is_anchored ())
       {
         hb_memcpy (p, &component, comp_len);
         p += comp_len;
       }
-      else
+      وگرنه
       {
         unsigned new_len = component.compile_with_point (points_with_deltas[i], p, extended);
         p += new_len;
@@ -416,16 +416,16 @@ struct CompositeGlyph
     }
 
     //copy instructions if any
-    if (source_len > source_comp_len)
+    اگر (source_len > source_comp_len)
     {
       unsigned instr_len = source_len - source_comp_len;
-      hb_memcpy (p, (const char *)c + source_comp_len, instr_len);
+      hb_memcpy (p, (ثابت نویسه *)c + source_comp_len, instr_len);
       p += instr_len;
     }
 
     unsigned len = p - o;
     dest_bytes = hb_bytes_t (o, len);
-    return true;
+    بازگشت درست;
   }
 };
 

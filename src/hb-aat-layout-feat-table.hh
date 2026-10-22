@@ -25,7 +25,7 @@
 #ifndef HB_AAT_LAYOUT_FEAT_TABLE_HH
 #define HB_AAT_LAYOUT_FEAT_TABLE_HH
 
-#include "hb-aat-layout-common.hh"
+#شامل "hb-aat-layout-common.hh"
 
 /*
  * feat -- Feature Name
@@ -34,24 +34,24 @@
 #define HB_AAT_TAG_feat HB_TAG('f','e','a','t')
 
 
-namespace AAT {
+فضاینام AAT {
 
 
-struct SettingName
+ساختار SettingName
 {
-  friend struct FeatureName;
+  friend ساختار FeatureName;
 
-  int cmp (hb_aat_layout_feature_selector_t key) const
-  { return (int) key - (int) setting; }
+  صحیح cmp (hb_aat_layout_feature_selector_t key) ثابت
+  { بازگشت (صحیح) key - (صحیح) setting; }
 
-  hb_aat_layout_feature_selector_t get_selector () const
-  { return (hb_aat_layout_feature_selector_t) (unsigned) setting; }
+  hb_aat_layout_feature_selector_t get_selector () ثابت
+  { بازگشت (hb_aat_layout_feature_selector_t) (unsigned) setting; }
 
-  hb_aat_layout_feature_selector_info_t get_info (hb_aat_layout_feature_selector_t default_selector) const
+  hb_aat_layout_feature_selector_info_t get_info (hb_aat_layout_feature_selector_t default_selector) ثابت
   {
-    return {
+    بازگشت {
       nameIndex,
-      (hb_aat_layout_feature_selector_t) (unsigned int) setting,
+      (hb_aat_layout_feature_selector_t) (unsigned صحیح) setting,
       default_selector == HB_AAT_LAYOUT_FEATURE_SELECTOR_INVALID
 	? (hb_aat_layout_feature_selector_t) (setting + 1)
 	: default_selector,
@@ -59,28 +59,28 @@ struct SettingName
     };
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این));
   }
 
-  protected:
+  محافظتشده:
   HBUINT16	setting;	/* The setting. */
   NameID	nameIndex;	/* The name table index for the setting's name. */
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (4);
 };
 DECLARE_NULL_NAMESPACE_BYTES (AAT, SettingName);
 
-struct feat;
+ساختار feat;
 
-struct FeatureName
+ساختار FeatureName
 {
-  int cmp (hb_aat_layout_feature_type_t key) const
-  { return (int) key - (int) feature; }
+  صحیح cmp (hb_aat_layout_feature_type_t key) ثابت
+  { بازگشت (صحیح) key - (صحیح) feature; }
 
-  enum {
+  شمارش {
     Exclusive	= 0x8000,	/* If set, the feature settings are mutually exclusive. */
     NotDefault	= 0x4000,	/* If clear, then the setting with an index of 0 in
 				 * the setting name array for this feature should
@@ -94,55 +94,55 @@ struct FeatureName
 				 * as the default. */
   };
 
-  unsigned int get_selector_infos (unsigned int                           start_offset,
-				   unsigned int                          *selectors_count, /* IN/OUT.  May be NULL. */
+  unsigned صحیح get_selector_infos (unsigned صحیح                           start_offset,
+				   unsigned صحیح                          *selectors_شمار, /* IN/OUT.  May be NULL. */
 				   hb_aat_layout_feature_selector_info_t *selectors,       /* OUT.     May be NULL. */
-				   unsigned int                          *pdefault_index,  /* OUT.     May be NULL. */
-				   const void *base) const
+				   unsigned صحیح                          *pdefault_index,  /* OUT.     May be NULL. */
+				   ثابت تهی *base) ثابت
   {
-    hb_array_t< const SettingName> settings_table = (base+settingTableZ).as_array (nSettings);
+    hb_array_t< ثابت SettingName> settings_table = (base+settingTableZ).as_array (nSettings);
 
     static_assert (Index::NOT_FOUND_INDEX == HB_AAT_LAYOUT_NO_SELECTOR_INDEX, "");
 
     hb_aat_layout_feature_selector_t default_selector = HB_AAT_LAYOUT_FEATURE_SELECTOR_INVALID;
-    unsigned int default_index = Index::NOT_FOUND_INDEX;
-    if (featureFlags & Exclusive)
+    unsigned صحیح default_index = Index::NOT_FOUND_INDEX;
+    اگر (featureFlags & Exclusive)
     {
       default_index = (featureFlags & NotDefault) ? featureFlags & IndexMask : 0;
       default_selector = settings_table[default_index].get_selector ();
     }
-    if (pdefault_index)
+    اگر (pdefault_index)
       *pdefault_index = default_index;
 
-    if (selectors_count && selectors)
+    اگر (selectors_شمار && selectors)
     {
-      + settings_table.sub_array (start_offset, selectors_count)
-      | hb_map ([=] (const SettingName& setting) { return setting.get_info (default_selector); })
-      | hb_sink (hb_array (selectors, *selectors_count))
+      + settings_table.sub_array (start_offset, selectors_شمار)
+      | hb_map ([=] (ثابت SettingName& setting) { بازگشت setting.get_info (default_selector); })
+      | hb_sink (hb_array (selectors, *selectors_شمار))
       ;
     }
-    return settings_table.length;
+    بازگشت settings_table.length;
   }
 
-  hb_aat_layout_feature_type_t get_feature_type () const
-  { return (hb_aat_layout_feature_type_t) (unsigned int) feature; }
+  hb_aat_layout_feature_type_t get_feature_type () ثابت
+  { بازگشت (hb_aat_layout_feature_type_t) (unsigned صحیح) feature; }
 
-  hb_ot_name_id_t get_feature_name_id () const { return nameIndex; }
+  hb_ot_name_id_t get_feature_name_id () ثابت { بازگشت nameIndex; }
 
-  bool is_exclusive () const { return featureFlags & Exclusive; }
+  منطقی is_exclusive () ثابت { بازگشت featureFlags & Exclusive; }
 
   /* A FeatureName with no settings is meaningless */
-  bool has_data () const { return nSettings; }
+  منطقی has_data () ثابت { بازگشت nSettings; }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  منطقی sanitize (hb_sanitize_context_t *c, ثابت تهی *base) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (این);
+    return_trace (likely (c->check_struct (این) &&
 			  hb_barrier () &&
 			  (base+settingTableZ).sanitize (c, nSettings)));
   }
 
-  protected:
+  محافظتشده:
   HBUINT16	feature;	/* Feature type. */
   HBUINT16	nSettings;	/* The number of records in the setting name array. */
   NNOffset32To<UnsizedArrayOf<SettingName>>
@@ -154,68 +154,68 @@ struct FeatureName
   HBINT16	nameIndex;	/* The name table index for the feature's name.
 				 * This index has values greater than 255 and
 				 * less than 32768. */
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (12);
 };
 
-struct feat
+ساختار feat
 {
-  static constexpr hb_tag_t tableTag = HB_AAT_TAG_feat;
+  ایستا constexpr hb_tag_t tableTag = HB_AAT_TAG_feat;
 
-  bool has_data () const { return version.to_int (); }
+  منطقی has_data () ثابت { بازگشت version.to_int (); }
 
-  unsigned int get_feature_types (unsigned int                  start_offset,
-				  unsigned int                 *count,
-				  hb_aat_layout_feature_type_t *features) const
+  unsigned صحیح get_feature_types (unsigned صحیح                  start_offset,
+				  unsigned صحیح                 *شمار,
+				  hb_aat_layout_feature_type_t *features) ثابت
   {
-    if (count && features)
+    اگر (شمار && features)
     {
-      + namesZ.as_array (featureNameCount).sub_array (start_offset, count)
+      + namesZ.as_array (feature_Name_شمار).sub_array (start_offset, شمار)
       | hb_map (&FeatureName::get_feature_type)
-      | hb_sink (hb_array (features, *count))
+      | hb_sink (hb_array (features, *شمار))
       ;
     }
-    return featureNameCount;
+    بازگشت feature_Name_شمار;
   }
 
-  bool exposes_feature (hb_aat_layout_feature_type_t feature_type) const
-  { return get_feature (feature_type).has_data (); }
+  منطقی exposes_feature (hb_aat_layout_feature_type_t feature_type) ثابت
+  { بازگشت get_feature (feature_type).has_data (); }
 
-  const FeatureName& get_feature (hb_aat_layout_feature_type_t feature_type) const
-  { return namesZ.bsearch (featureNameCount, feature_type); }
+  ثابت FeatureName& get_feature (hb_aat_layout_feature_type_t feature_type) ثابت
+  { بازگشت namesZ.bsearch (feature_Name_شمار, feature_type); }
 
-  hb_ot_name_id_t get_feature_name_id (hb_aat_layout_feature_type_t feature) const
-  { return get_feature (feature).get_feature_name_id (); }
+  hb_ot_name_id_t get_feature_name_id (hb_aat_layout_feature_type_t feature) ثابت
+  { بازگشت get_feature (feature).get_feature_name_id (); }
 
-  unsigned int get_selector_infos (hb_aat_layout_feature_type_t           feature_type,
-				   unsigned int                           start_offset,
-				   unsigned int                          *selectors_count, /* IN/OUT.  May be NULL. */
+  unsigned صحیح get_selector_infos (hb_aat_layout_feature_type_t           feature_type,
+				   unsigned صحیح                           start_offset,
+				   unsigned صحیح                          *selectors_شمار, /* IN/OUT.  May be NULL. */
 				   hb_aat_layout_feature_selector_info_t *selectors,       /* OUT.     May be NULL. */
-				   unsigned int                          *default_index    /* OUT.     May be NULL. */) const
+				   unsigned صحیح                          *default_index    /* OUT.     May be NULL. */) ثابت
   {
-    return get_feature (feature_type).get_selector_infos (start_offset, selectors_count, selectors,
-							  default_index, this);
+    بازگشت get_feature (feature_type).get_selector_infos (start_offset, selectors_شمار, selectors,
+							  default_index, این);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (این);
+    return_trace (likely (c->check_struct (این) &&
 			  hb_barrier () &&
 			  version.major == 1 &&
-			  namesZ.sanitize (c, featureNameCount, this)));
+			  namesZ.sanitize (c, feature_Name_شمار, این)));
   }
 
-  protected:
+  محافظتشده:
   FixedVersion<>version;	/* Version number of the feature name table
 				 * (0x00010000 for the current version). */
-  HBUINT16	featureNameCount;
+  HBUINT16	feature_Name_شمار;
 				/* The number of entries in the feature name array. */
   HBUINT16	reserved1;	/* Reserved (set to zero). */
   HBUINT32	reserved2;	/* Reserved (set to zero). */
   SortedUnsizedArrayOf<FeatureName>
 		namesZ;		/* The feature name array. */
-  public:
+  عمومی:
   DEFINE_SIZE_ARRAY (12, namesZ);
 };
 

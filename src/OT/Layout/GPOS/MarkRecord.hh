@@ -1,46 +1,46 @@
 #ifndef OT_LAYOUT_GPOS_MARKRECORD_HH
 #define OT_LAYOUT_GPOS_MARKRECORD_HH
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+فضاینام OT {
+فضاینام Layout {
+فضاینام GPOS_impl {
 
-template <typename Types> struct MarkArray;
+template <typename Types> ساختار MarkArray;
 
 template <typename Types>
-struct MarkRecord
+ساختار MarkRecord
 {
-  friend struct MarkArray<Types>;
+  friend ساختار MarkArray<Types>;
 
-  public:
+  عمومی:
   HBUINT16      klass;                  /* Class defined for this mark */
   typename Types::template OffsetTo<Anchor, MarkArray<Types>>
                 markAnchor;             /* Offset to Anchor table--from
                                          * beginning of MarkArray table */
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (2 + Types::size);
 
-  unsigned get_class () const { return (unsigned) klass; }
-  bool sanitize (hb_sanitize_context_t *c, const MarkArray<Types> *base) const
+  unsigned get_class () ثابت { بازگشت (unsigned) klass; }
+  منطقی sanitize (hb_sanitize_context_t *c, ثابت MarkArray<Types> *base) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && markAnchor.sanitize (c, base));
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این) && markAnchor.sanitize (c, base));
   }
 
-  bool subset (hb_subset_context_t    *c,
-	       const MarkArray<Types> *src_base,
-	       const hb_map_t         *klass_mapping) const
+  منطقی subset (hb_subset_context_t    *c,
+	       ثابت MarkArray<Types> *src_base,
+	       ثابت hb_map_t         *klass_mapping) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (این);
+    auto *out = c->serializer->embed (این);
+    اگر (unlikely (!out)) return_trace (نادرست);
 
     out->klass = klass_mapping->get (klass);
     return_trace (out->markAnchor.serialize_subset (c, markAnchor, src_base));
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const MarkArray<Types> *src_base) const
+  تهی collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  ثابت MarkArray<Types> *src_base) ثابت
   {
     (src_base+markAnchor).collect_variation_indices (c);
   }

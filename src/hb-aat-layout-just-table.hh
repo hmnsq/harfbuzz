@@ -25,11 +25,11 @@
 #ifndef HB_AAT_LAYOUT_JUST_TABLE_HH
 #define HB_AAT_LAYOUT_JUST_TABLE_HH
 
-#include "hb-aat-layout-common.hh"
-#include "hb-ot-layout.hh"
-#include "hb-open-type.hh"
+#شامل "hb-aat-layout-common.hh"
+#شامل "hb-ot-layout.hh"
+#شامل "hb-open-type.hh"
 
-#include "hb-aat-layout-morx-table.hh"
+#شامل "hb-aat-layout-morx-table.hh"
 
 /*
  * just -- Justification
@@ -38,17 +38,17 @@
 #define HB_AAT_TAG_just HB_TAG('j','u','s','t')
 
 
-namespace AAT {
+فضاینام AAT {
 
-using namespace OT;
+using فضاینام OT;
 
 
-struct ActionSubrecordHeader
+ساختار ActionSubrecordHeader
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این));
   }
 
   HBUINT16	actionClass;	/* The JustClass value associated with this
@@ -56,16 +56,16 @@ struct ActionSubrecordHeader
   HBUINT16	actionType;	/* The type of postcompensation action. */
   HBUINT16	actionLength;	/* Length of this ActionSubrecord record, which
 				 * must be a multiple of 4. */
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (6);
 };
 
-struct DecompositionAction
+ساختار DecompositionAction
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این));
   }
 
   ActionSubrecordHeader
@@ -85,37 +85,37 @@ struct DecompositionAction
 				 * the ligature will be decomposed into these glyphs.
 				 *
 				 * Array of decomposed glyphs. */
-  public:
+  عمومی:
   DEFINE_SIZE_ARRAY (18, decomposedglyphs);
 };
 
-struct UnconditionalAddGlyphAction
+ساختار UnconditionalAddGlyphAction
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این));
   }
 
-  protected:
+  محافظتشده:
   ActionSubrecordHeader
 		header;
   HBGlyphID16	addGlyph;	/* Glyph that should be added if the distance factor
 				 * is growing. */
 
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (8);
 };
 
-struct ConditionalAddGlyphAction
+ساختار ConditionalAddGlyphAction
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این));
   }
 
-  protected:
+  محافظتشده:
   ActionSubrecordHeader
 		header;
   F16DOT16	substThreshold; /* Distance growth factor (in ems) at which
@@ -128,19 +128,19 @@ struct ConditionalAddGlyphAction
   HBGlyphID16	substGlyph;	/* Glyph to be substituted for this glyph if the
 				 * growth factor equals or exceeds the value of
 				 * substThreshold. */
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (14);
 };
 
-struct DuctileGlyphAction
+ساختار DuctileGlyphAction
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این));
   }
 
-  protected:
+  محافظتشده:
   ActionSubrecordHeader
 		header;
   HBUINT32	variationAxis;	/* The 4-byte tag identifying the ductile axis.
@@ -149,58 +149,58 @@ struct DuctileGlyphAction
   F16DOT16	minimumLimit;	/* The lowest value for the ductility axis that
 				 * still yields an acceptable appearance. Normally
 				 * this will be 1.0. */
-  F16DOT16	noStretchValue; /* This is the default value that corresponds to
+  F16DOT16	no_Stretch_مقدار; /* This is the default value that corresponds to
 				 * no change in appearance. Normally, this will
 				 * be 1.0. */
   F16DOT16	maximumLimit;	/* The highest value for the ductility axis that
 				 * still yields an acceptable appearance. */
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (22);
 };
 
-struct RepeatedAddGlyphAction
+ساختار RepeatedAddGlyphAction
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این));
   }
 
-  protected:
+  محافظتشده:
   ActionSubrecordHeader
 		header;
   HBUINT16	flags;		/* Currently unused; set to 0. */
   HBGlyphID16	glyph;		/* Glyph that should be added if the distance factor
 				 * is growing. */
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (10);
 };
 
-struct ActionSubrecord
+ساختار ActionSubrecord
 {
-  unsigned int get_length () const { return u.header.actionLength; }
+  unsigned صحیح get_length () ثابت { بازگشت u.header.actionLength; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
-      return_trace (false);
+    TRACE_SANITIZE (این);
+    اگر (unlikely (!c->check_struct (این)))
+      return_trace (نادرست);
     hb_barrier ();
 
-    switch (u.header.actionType)
+    انتخاب (u.header.actionType)
     {
-    case 0: hb_barrier ();  return_trace (u.decompositionAction.sanitize (c));
-    case 1: hb_barrier ();  return_trace (u.unconditionalAddGlyphAction.sanitize (c));
-    case 2: hb_barrier ();  return_trace (u.conditionalAddGlyphAction.sanitize (c));
+    حالت 0: hb_barrier ();  return_trace (u.decompositionAction.sanitize (c));
+    حالت 1: hb_barrier ();  return_trace (u.unconditionalAddGlyphAction.sanitize (c));
+    حالت 2: hb_barrier ();  return_trace (u.conditionalAddGlyphAction.sanitize (c));
     // case 3: hb_barrier (); return_trace (u.stretchGlyphAction.sanitize (c));
-    case 4: hb_barrier ();  return_trace (u.decompositionAction.sanitize (c));
-    case 5: hb_barrier ();  return_trace (u.decompositionAction.sanitize (c));
-    default: return_trace (true);
+    حالت 4: hb_barrier ();  return_trace (u.decompositionAction.sanitize (c));
+    حالت 5: hb_barrier ();  return_trace (u.decompositionAction.sanitize (c));
+    پیشفرض: return_trace (درست);
     }
   }
 
-  protected:
-  union	{
+  محافظتشده:
+  اجتماع	{
   ActionSubrecordHeader		header;
   DecompositionAction		decompositionAction;
   UnconditionalAddGlyphAction	unconditionalAddGlyphAction;
@@ -210,40 +210,40 @@ struct ActionSubrecord
   RepeatedAddGlyphAction	repeatedAddGlyphAction;
   } u;				/* Data. The format of this data depends on
 				 * the value of the actionType field. */
-  public:
+  عمومی:
   DEFINE_SIZE_UNION (6, header);
 };
 
-struct PostcompensationActionChain
+ساختار PostcompensationActionChain
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
-      return_trace (false);
+    TRACE_SANITIZE (این);
+    اگر (unlikely (!c->check_struct (این)))
+      return_trace (نادرست);
     hb_barrier ();
 
-    unsigned int offset = min_size;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned صحیح offset = min_size;
+    برای (unsigned صحیح i = 0; i < شمار; i++)
     {
-      const ActionSubrecord& subrecord = StructAtOffset<ActionSubrecord> (this, offset);
-      if (unlikely (!subrecord.sanitize (c))) return_trace (false);
+      ثابت ActionSubrecord& subrecord = StructAtOffset<ActionSubrecord> (این, offset);
+      اگر (unlikely (!subrecord.sanitize (c))) return_trace (نادرست);
       offset += subrecord.get_length ();
     }
 
-    return_trace (true);
+    return_trace (درست);
   }
 
-  protected:
-  HBUINT32	count;
+  محافظتشده:
+  HBUINT32	شمار;
 
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (4);
 };
 
-struct JustWidthDeltaEntry
+ساختار JustWidthDeltaEntry
 {
-  enum Flags
+  شمارش Flags
   {
     Reserved1		=0xE000,/* Reserved. You should set these bits to zero. */
     UnlimiteGap		=0x1000,/* The glyph can take unlimited gap. When this
@@ -254,7 +254,7 @@ struct JustWidthDeltaEntry
     Priority		=0x000F /* The justification priority of the glyph. */
   };
 
-  enum Priority
+  شمارش Priority
   {
     Kashida		= 0,	/* Kashida priority. This is the highest priority
 				 * during justification. */
@@ -272,7 +272,7 @@ struct JustWidthDeltaEntry
 				 * you may instead assign it to the null priority. */
   };
 
-  protected:
+  محافظتشده:
   F16DOT16	beforeGrowLimit;/* The ratio by which the advance width of the
 				 * glyph is permitted to grow on the left or top side. */
   F16DOT16	beforeShrinkLimit;
@@ -287,19 +287,19 @@ struct JustWidthDeltaEntry
   HBUINT16	growFlags;	/* Flags controlling the grow case. */
   HBUINT16	shrinkFlags;	/* Flags controlling the shrink case. */
 
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (20);
 };
 
-struct WidthDeltaPair
+ساختار WidthDeltaPair
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این));
   }
 
-  protected:
+  محافظتشده:
   HBUINT32	justClass;	/* The justification category associated
 				 * with the wdRecord field. Only 7 bits of
 				 * this field are used. (The other bits are
@@ -308,17 +308,17 @@ struct WidthDeltaPair
   JustWidthDeltaEntry
 		wdRecord;	/* The actual width delta record. */
 
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (24);
 };
 
-typedef OT::Array32Of<WidthDeltaPair> WidthDeltaCluster;
+تعریفنوع OT::Array32Of<WidthDeltaPair> WidthDeltaCluster;
 
-struct JustificationCategory
+ساختار JustificationCategory
 {
-  typedef void EntryData;
+  تعریفنوع تهی EntryData;
 
-  enum Flags
+  شمارش Flags
   {
     SetMark		=0x8000,/* If set, make the current glyph the marked
 				 * glyph. */
@@ -330,36 +330,36 @@ struct JustificationCategory
 				 * glyph if nonzero. */
   };
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  منطقی sanitize (hb_sanitize_context_t *c, ثابت تهی *base) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (این);
+    return_trace (likely (c->check_struct (این) &&
 			  morphHeader.sanitize (c) &&
 			  stHeader.sanitize (c)));
   }
 
-  protected:
+  محافظتشده:
   ChainSubtable<ObsoleteTypes>
 		morphHeader;	/* Metamorphosis-style subtable header. */
   StateTable<ObsoleteTypes, EntryData>
 		stHeader;	/* The justification insertion state table header */
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (30);
 };
 
-struct JustificationHeader
+ساختار JustificationHeader
 {
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  منطقی sanitize (hb_sanitize_context_t *c, ثابت تهی *base) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (این);
+    return_trace (likely (c->check_struct (این) &&
 			  justClassTable.sanitize (c, base, base) &&
 			  wdcTable.sanitize (c, base) &&
 			  pcTable.sanitize (c, base) &&
 			  lookupTable.sanitize (c, base)));
   }
 
-  protected:
+  محافظتشده:
   Offset16To<JustificationCategory>
 		justClassTable;	/* Offset to the justification category state table. */
   Offset16To<WidthDeltaCluster>
@@ -378,26 +378,26 @@ struct JustificationHeader
 				 * clusters. See the description of Width Delta Clusters
 				 * table for details on how to interpret the lookup values. */
 
-  public:
+  عمومی:
   DEFINE_SIZE_MIN (8);
 };
 
-struct just
+ساختار just
 {
-  static constexpr hb_tag_t tableTag = HB_AAT_TAG_just;
+  ایستا constexpr hb_tag_t tableTag = HB_AAT_TAG_just;
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (این);
 
-    return_trace (likely (c->check_struct (this) &&
+    return_trace (likely (c->check_struct (این) &&
 			  hb_barrier () &&
 			  version.major == 1 &&
-			  horizData.sanitize (c, this, this) &&
-			  vertData.sanitize (c, this, this)));
+			  horizData.sanitize (c, این, این) &&
+			  vertData.sanitize (c, این, این)));
   }
 
-  protected:
+  محافظتشده:
   FixedVersion<>version;	/* Version of the justification table
 				 * (0x00010000u for version 1.0). */
   HBUINT16	format;		/* Format of the justification table (set to 0). */
@@ -410,7 +410,7 @@ struct just
   Offset16To<JustificationHeader>
 		vertData;	/* ditto, vertical */
 
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (10);
 };
 

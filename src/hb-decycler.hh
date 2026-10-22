@@ -27,7 +27,7 @@
 #ifndef HB_DECYCLER_HH
 #define HB_DECYCLER_HH
 
-#include "hb.hh"
+#شامل "hb.hh"
 
 /*
  * hb_decycler_t is an efficient cycle detector for graph traversal.
@@ -82,82 +82,82 @@
  * For usage examples see test-decycler.cc.
  */
 
-struct hb_decycler_node_t;
+ساختار hb_decycler_گره_t;
 
-struct hb_decycler_t
+ساختار hb_decycler_t
 {
-  friend struct hb_decycler_node_t;
+  friend ساختار hb_decycler_گره_t;
 
-  private:
-  bool tortoise_awake = false;
-  hb_decycler_node_t *tortoise = nullptr;
-  hb_decycler_node_t *hare = nullptr;
+  خصوصی:
+  منطقی tortoise_awake = نادرست;
+  hb_decycler_گره_t *tortoise = nullptr;
+  hb_decycler_گره_t *hare = nullptr;
 };
 
-struct hb_decycler_node_t
+ساختار hb_decycler_گره_t
 {
-  hb_decycler_node_t (hb_decycler_t &decycler)
+  hb_decycler_گره_t (hb_decycler_t &decycler)
   {
     u.decycler = &decycler;
 
     decycler.tortoise_awake = !decycler.tortoise_awake;
 
-    if (!decycler.tortoise)
+    اگر (!decycler.tortoise)
     {
       // First node.
-      assert (decycler.tortoise_awake);
-      assert (!decycler.hare);
-      decycler.tortoise = decycler.hare = this;
-      return;
+      أكد (decycler.tortoise_awake);
+      أكد (!decycler.hare);
+      decycler.tortoise = decycler.hare = این;
+      بازگشت;
     }
 
-    if (decycler.tortoise_awake)
+    اگر (decycler.tortoise_awake)
       decycler.tortoise = decycler.tortoise->u.next; // Time to move.
 
-    this->prev = decycler.hare;
-    decycler.hare->u.next = this;
-    decycler.hare = this;
+    این->prev = decycler.hare;
+    decycler.hare->u.next = این;
+    decycler.hare = این;
   }
 
-  ~hb_decycler_node_t ()
+  ~hb_decycler_گره_t ()
   {
     hb_decycler_t &decycler = *u.decycler;
 
     // Inverse of the constructor.
 
-    assert (decycler.hare == this);
+    أكد (decycler.hare == این);
     decycler.hare = prev;
-    if (prev)
+    اگر (prev)
       prev->u.decycler = &decycler;
 
-    assert (decycler.tortoise);
-    if (decycler.tortoise_awake)
+    أكد (decycler.tortoise);
+    اگر (decycler.tortoise_awake)
       decycler.tortoise = decycler.tortoise->prev;
 
     decycler.tortoise_awake = !decycler.tortoise_awake;
   }
 
-  bool visit (uintptr_t value_)
+  منطقی visit (uintptr_t مقدار_3)
   {
-    value = value_;
+    value = مقدار_3;
 
     hb_decycler_t &decycler = *u.decycler;
 
-    if (decycler.tortoise == this)
-      return true; // First node; not a cycle.
+    اگر (decycler.tortoise == این)
+      بازگشت درست; // First node; not a cycle.
 
-    if (decycler.tortoise->value == value)
-      return false; // Cycle detected.
+    اگر (decycler.tortoise->value == value)
+      بازگشت نادرست; // Cycle detected.
 
-    return true;
+    بازگشت درست;
   }
 
-  private:
-  union {
+  خصوصی:
+  اجتماع {
     hb_decycler_t *decycler;
-    hb_decycler_node_t *next;
+    hb_decycler_گره_t *next;
   } u = {nullptr};
-  hb_decycler_node_t *prev = nullptr;
+  hb_decycler_گره_t *prev = nullptr;
   uintptr_t value = 0;
 };
 

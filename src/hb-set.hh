@@ -28,15 +28,15 @@
 #ifndef HB_SET_HH
 #define HB_SET_HH
 
-#include "hb.hh"
-#include "hb-bit-set-invertible.hh"
-#include "hb-bit-vector.hh" // Just to include
+#شامل "hb.hh"
+#شامل "hb-bit-set-invertible.hh"
+#شامل "hb-bit-vector.hh" // Just to include
 
 
 template <typename impl_t>
-struct hb_sparseset_t
+ساختار hb_sparseset_t
 {
-  static constexpr bool realloc_move = true;
+  ایستا constexpr منطقی realloc_move = درست;
 
   hb_object_header_t header;
   impl_t s;
@@ -44,157 +44,157 @@ struct hb_sparseset_t
   hb_sparseset_t () { init (); }
   ~hb_sparseset_t () { fini (); }
 
-  hb_sparseset_t (const hb_sparseset_t& other) : hb_sparseset_t () { set (other); }
+  hb_sparseset_t (ثابت hb_sparseset_t& other) : hb_sparseset_t () { set (other); }
   hb_sparseset_t (hb_sparseset_t&& other)  noexcept : hb_sparseset_t () { s = std::move (other.s); }
-  hb_sparseset_t& operator = (const hb_sparseset_t& other) { set (other); return *this; }
-  hb_sparseset_t& operator = (hb_sparseset_t&& other)  noexcept { s = std::move (other.s); return *this; }
-  friend void swap (hb_sparseset_t& a, hb_sparseset_t& b)  noexcept { hb_swap (a.s, b.s); }
+  hb_sparseset_t& operator = (ثابت hb_sparseset_t& other) { set (other); بازگشت *این; }
+  hb_sparseset_t& operator = (hb_sparseset_t&& other)  noexcept { s = std::move (other.s); بازگشت *این; }
+  friend تهی swap (hb_sparseset_t& a, hb_sparseset_t& b)  noexcept { hb_swap (a.s, b.s); }
 
   hb_sparseset_t (std::initializer_list<hb_codepoint_t> lst) : hb_sparseset_t ()
   {
-    for (auto&& item : lst)
+    برای (auto&& item : lst)
       add (item);
   }
   template <typename Iterable,
            hb_requires (hb_is_iterable (Iterable))>
-  hb_sparseset_t (const Iterable &o) : hb_sparseset_t ()
+  hb_sparseset_t (ثابت Iterable &o) : hb_sparseset_t ()
   {
-    hb_copy (o, *this);
+    hb_copy (o, *این);
   }
 
-  void init ()
+  تهی init ()
   {
-    hb_object_init (this);
+    hb_object_init (این);
     s.init ();
   }
-  void fini ()
+  تهی fini ()
   {
-    hb_object_fini (this);
+    hb_object_fini (این);
     s.fini ();
   }
 
-  explicit operator bool () const { return !is_empty (); }
+  explicit operator منطقی () ثابت { بازگشت !is_empty (); }
 
-  void err () { s.err (); }
-  bool in_error () const { return s.in_error (); }
+  تهی err () { s.err (); }
+  منطقی in_error () ثابت { بازگشت s.in_error (); }
 
-  void alloc (unsigned sz) { s.alloc (sz); }
-  void reset () { s.reset (); }
-  void clear () { s.clear (); }
-  void invert () { s.invert (); }
-  bool is_inverted () const { return s.is_inverted (); }
-  bool is_empty () const { return s.is_empty (); }
-  uint32_t hash () const { return s.hash (); }
+  تهی alloc (unsigned sz) { s.alloc (sz); }
+  تهی reset () { s.reset (); }
+  تهی clear () { s.clear (); }
+  تهی invert () { s.invert (); }
+  منطقی is_inverted () ثابت { بازگشت s.is_inverted (); }
+  منطقی is_empty () ثابت { بازگشت s.is_empty (); }
+  uint32_t hash () ثابت { بازگشت s.hash (); }
 
-  void add (hb_codepoint_t g) { s.add (g); }
-  void add_bits (hb_codepoint_t g, uint64_t bits) { s.add_bits (g, bits); }
-  bool add_range (hb_codepoint_t first, hb_codepoint_t last) { return s.add_range (first, last); }
+  تهی add (hb_codepoint_t g) { s.add (g); }
+  تهی add_bits (hb_codepoint_t g, uint64_t bits) { s.add_bits (g, bits); }
+  منطقی add_range (hb_codepoint_t first, hb_codepoint_t last) { بازگشت s.add_range (first, last); }
 
   template <typename T>
-  void add_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { s.add_array (array, count, stride); }
+  تهی add_array (ثابت T *array, unsigned صحیح شمار, unsigned صحیح stride=اندازه(T))
+  { s.add_array (array, شمار, stride); }
   template <typename T>
-  void add_array (const hb_array_t<const T>& arr) { add_array (&arr, arr.len ()); }
+  تهی add_array (ثابت hb_array_t<ثابت T>& arr) { add_array (&arr, arr.len ()); }
 
   /* Might return false if array looks unsorted.
    * Used for faster rejection of corrupt data. */
   template <typename T>
-  bool add_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { return s.add_sorted_array (array, count, stride); }
+  منطقی add_sorted_array (ثابت T *array, unsigned صحیح شمار, unsigned صحیح stride=اندازه(T))
+  { بازگشت s.add_sorted_array (array, شمار, stride); }
   template <typename T>
-  bool add_sorted_array (const hb_sorted_array_t<const T>& arr) { return add_sorted_array (&arr, arr.len ()); }
+  منطقی add_sorted_array (ثابت hb_sorted_array_t<ثابت T>& arr) { بازگشت add_sorted_array (&arr, arr.len ()); }
 
-  void del (hb_codepoint_t g) { s.del (g); }
-  void del_range (hb_codepoint_t a, hb_codepoint_t b) { s.del_range (a, b); }
+  تهی del (hb_codepoint_t g) { s.del (g); }
+  تهی del_range (hb_codepoint_t a, hb_codepoint_t b) { s.del_range (a, b); }
 
-  bool get (hb_codepoint_t g) const { return s.get (g); }
-  bool may_have (hb_codepoint_t g) const { return get (g); }
+  منطقی get (hb_codepoint_t g) ثابت { بازگشت s.get (g); }
+  منطقی may_have (hb_codepoint_t g) ثابت { بازگشت get (g); }
 
   /* Has interface. */
-  bool operator [] (hb_codepoint_t k) const { return get (k); }
-  bool has (hb_codepoint_t k) const { return (*this)[k]; }
+  منطقی operator [] (hb_codepoint_t k) ثابت { بازگشت get (k); }
+  منطقی has (hb_codepoint_t k) ثابت { بازگشت (*این)[k]; }
 
   /* Predicate. */
-  bool operator () (hb_codepoint_t k) const { return has (k); }
+  منطقی operator () (hb_codepoint_t k) ثابت { بازگشت has (k); }
 
   /* Sink interface. */
   hb_sparseset_t& operator << (hb_codepoint_t v)
-  { add (v); return *this; }
-  hb_sparseset_t& operator << (const hb_codepoint_pair_t& range)
-  { add_range (range.first, range.second); return *this; }
+  { add (v); بازگشت *این; }
+  hb_sparseset_t& operator << (ثابت hb_codepoint_pair_t& range)
+  { add_range (range.first, range.second); بازگشت *این; }
 
-  bool may_intersect (const hb_sparseset_t &other) const
-  { return s.may_intersect (other.s); }
+  منطقی may_intersect (ثابت hb_sparseset_t &other) ثابت
+  { بازگشت s.may_intersect (other.s); }
 
-  bool intersects (const hb_sparseset_t &other) const
-  { return s.intersects (other.s); }
+  منطقی intersects (ثابت hb_sparseset_t &other) ثابت
+  { بازگشت s.intersects (other.s); }
 
-  bool intersects (hb_codepoint_t first, hb_codepoint_t last) const
-  { return s.intersects (first, last); }
+  منطقی intersects (hb_codepoint_t first, hb_codepoint_t last) ثابت
+  { بازگشت s.intersects (first, last); }
 
-  void set (const hb_sparseset_t &other) { s.set (other.s); }
+  تهی set (ثابت hb_sparseset_t &other) { s.set (other.s); }
 
-  bool is_equal (const hb_sparseset_t &other) const { return s.is_equal (other.s); }
-  bool operator == (const hb_set_t &other) const { return is_equal (other); }
-  bool operator != (const hb_set_t &other) const { return !is_equal (other); }
+  منطقی is_equal (ثابت hb_sparseset_t &other) ثابت { بازگشت s.is_equal (other.s); }
+  منطقی operator == (ثابت hb_set_t &other) ثابت { بازگشت is_equal (other); }
+  منطقی operator != (ثابت hb_set_t &other) ثابت { بازگشت !is_equal (other); }
 
-  bool is_subset (const hb_sparseset_t &larger_set) const { return s.is_subset (larger_set.s); }
+  منطقی is_subset (ثابت hb_sparseset_t &larger_set) ثابت { بازگشت s.is_subset (larger_set.s); }
 
-  void union_ (const hb_sparseset_t &other) { s.union_ (other.s); }
-  void intersect (const hb_sparseset_t &other,
+  تهی union_ (ثابت hb_sparseset_t &other) { s.union_ (other.s); }
+  تهی intersect (ثابت hb_sparseset_t &other,
 		  hb_vector_t<unsigned> *workspace = nullptr)
   { s.intersect (other.s, workspace); }
-  void subtract (const hb_sparseset_t &other) { s.subtract (other.s); }
-  void symmetric_difference (const hb_sparseset_t &other) { s.symmetric_difference (other.s); }
+  تهی subtract (ثابت hb_sparseset_t &other) { s.subtract (other.s); }
+  تهی symmetric_difference (ثابت hb_sparseset_t &other) { s.symmetric_difference (other.s); }
 
-  bool next (hb_codepoint_t *codepoint) const { return s.next (codepoint); }
-  bool next_bits (hb_codepoint_t *codepoint, uint64_t *bits) const
-  { return s.next_bits (codepoint, bits); }
-  bool previous (hb_codepoint_t *codepoint) const { return s.previous (codepoint); }
-  bool next_range (hb_codepoint_t *first, hb_codepoint_t *last) const
-  { return s.next_range (first, last); }
-  bool previous_range (hb_codepoint_t *first, hb_codepoint_t *last) const
-  { return s.previous_range (first, last); }
-  unsigned int next_many (hb_codepoint_t codepoint, hb_codepoint_t *out, unsigned int size) const
-  { return s.next_many (codepoint, out, size); }
+  منطقی next (hb_codepoint_t *codepoint) ثابت { بازگشت s.next (codepoint); }
+  منطقی next_bits (hb_codepoint_t *codepoint, uint64_t *bits) ثابت
+  { بازگشت s.next_bits (codepoint, bits); }
+  منطقی previous (hb_codepoint_t *codepoint) ثابت { بازگشت s.previous (codepoint); }
+  منطقی next_range (hb_codepoint_t *first, hb_codepoint_t *last) ثابت
+  { بازگشت s.next_range (first, last); }
+  منطقی previous_range (hb_codepoint_t *first, hb_codepoint_t *last) ثابت
+  { بازگشت s.previous_range (first, last); }
+  unsigned صحیح next_many (hb_codepoint_t codepoint, hb_codepoint_t *out, unsigned صحیح size) ثابت
+  { بازگشت s.next_many (codepoint, out, size); }
 
-  unsigned int get_population () const { return s.get_population (); }
-  bool get_singleton (hb_codepoint_t *codepoint) const { return s.get_singleton (codepoint); }
-  hb_codepoint_t get_min () const { return s.get_min (); }
-  hb_codepoint_t get_max () const { return s.get_max (); }
+  unsigned صحیح get_population () ثابت { بازگشت s.get_population (); }
+  منطقی get_singleton (hb_codepoint_t *codepoint) ثابت { بازگشت s.get_singleton (codepoint); }
+  hb_codepoint_t get_min () ثابت { بازگشت s.get_min (); }
+  hb_codepoint_t get_max () ثابت { بازگشت s.get_max (); }
 
-  static constexpr hb_codepoint_t INVALID = impl_t::INVALID;
+  ایستا constexpr hb_codepoint_t INVALID = impl_t::INVALID;
 
   /*
    * Iterator implementation.
    */
   using iter_t = typename impl_t::iter_t;
-  iter_t iter () const { return iter_t (this->s); }
-  operator iter_t () const { return iter (); }
+  iter_t iter () ثابت { بازگشت iter_t (این->s); }
+  operator iter_t () ثابت { بازگشت iter (); }
 };
 
-struct hb_set_t : hb_sparseset_t<hb_bit_set_invertible_t>
+ساختار hb_set_t : hb_sparseset_t<hb_bit_set_invertible_t>
 {
   using sparseset = hb_sparseset_t<hb_bit_set_invertible_t>;
 
-  ~hb_set_t () = default;
+  ~hb_set_t () = پیشفرض;
   hb_set_t () : sparseset () {};
-  hb_set_t (const hb_set_t &o) : sparseset ((sparseset &) o) {};
+  hb_set_t (ثابت hb_set_t &o) : sparseset ((sparseset &) o) {};
   hb_set_t (hb_set_t&& o)  noexcept : sparseset (std::move ((sparseset &) o)) {}
-  hb_set_t& operator = (const hb_set_t&) = default;
-  hb_set_t& operator = (hb_set_t&&) = default;
+  hb_set_t& operator = (ثابت hb_set_t&) = پیشفرض;
+  hb_set_t& operator = (hb_set_t&&) = پیشفرض;
   hb_set_t (std::initializer_list<hb_codepoint_t> lst) : sparseset (lst) {}
   template <typename Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  hb_set_t (const Iterable &o) : sparseset (o) {}
+  hb_set_t (ثابت Iterable &o) : sparseset (o) {}
 
   hb_set_t& operator << (hb_codepoint_t v)
-  { sparseset::operator<< (v); return *this; }
-  hb_set_t& operator << (const hb_codepoint_pair_t& range)
-  { sparseset::operator<< (range); return *this; }
+  { sparseset::operator<< (v); بازگشت *این; }
+  hb_set_t& operator << (ثابت hb_codepoint_pair_t& range)
+  { sparseset::operator<< (range); بازگشت *این; }
 };
 
-static_assert (hb_set_t::INVALID == HB_SET_VALUE_INVALID, "");
+static_assert (hb_set_t::INVALID == HB_SET_مقدار_INVALID, "");
 
 
 #endif /* HB_SET_HH */

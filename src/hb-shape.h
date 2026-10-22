@@ -26,49 +26,49 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#اگر !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
 #ifndef HB_SHAPE_H
 #define HB_SHAPE_H
 
-#include "hb-common.h"
-#include "hb-buffer.h"
-#include "hb-font.h"
+#شامل "hb-common.h"
+#شامل "hb-buffer.h"
+#شامل "hb-font.h"
 
 HB_BEGIN_DECLS
 
 
-HB_EXTERN void
+HB_EXTERN تهی
 hb_shape (hb_font_t           *font,
 	  hb_buffer_t         *buffer,
-	  const hb_feature_t  *features,
-	  unsigned int         num_features);
+	  ثابت hb_feature_t  *features,
+	  unsigned صحیح         رقم_features);
 
 HB_EXTERN hb_bool_t
 hb_shape_full (hb_font_t          *font,
 	       hb_buffer_t        *buffer,
-	       const hb_feature_t *features,
-	       unsigned int        num_features,
-	       const char * const *shaper_list);
+	       ثابت hb_feature_t *features,
+	       unsigned صحیح        رقم_features,
+	       ثابت نویسه * ثابت *shaper_list);
 
 #ifdef HB_EXPERIMENTAL_API
 HB_EXTERN hb_bool_t
 hb_shape_justify (hb_font_t          *font,
 		  hb_buffer_t        *buffer,
-		  const hb_feature_t *features,
-		  unsigned int        num_features,
-		  const char * const *shaper_list,
-		  float               min_target_advance,
-		  float               max_target_advance,
-		  float              *advance, /* IN/OUT */
+		  ثابت hb_feature_t *features,
+		  unsigned صحیح        رقم_features,
+		  ثابت نویسه * ثابت *shaper_list,
+		  اعشاری               min_target_advance,
+		  اعشاری               max_target_advance,
+		  اعشاری              *advance, /* IN/OUT */
 		  hb_tag_t           *var_tag, /* OUT */
-		  float              *var_value /* OUT */);
+		  اعشاری              *var_مقدار /* OUT */);
 #endif
 
-HB_EXTERN const char **
-hb_shape_list_shapers (void);
+HB_EXTERN ثابت نویسه **
+hb_shape_list_shapers (تهی);
 
 
 HB_END_DECLS

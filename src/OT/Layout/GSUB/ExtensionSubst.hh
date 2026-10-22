@@ -2,17 +2,17 @@
 #define OT_LAYOUT_GSUB_EXTENSIONSUBST_HH
 
 // TODO(garretrieger): move to new layout.
-#include "../../../hb-ot-layout-gsubgpos.hh"
-#include "Common.hh"
+#شامل "../../../hb-ot-layout-gsubgpos.hh"
+#شامل "Common.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+فضاینام OT {
+فضاینام Layout {
+فضاینام GSUB_impl {
 
-struct ExtensionSubst : Extension<ExtensionSubst>
+ساختار ExtensionSubst : Extension<ExtensionSubst>
 {
-  typedef struct SubstLookupSubTable SubTable;
-  bool is_reverse () const;
+  تعریفنوع ساختار SubstLookupSubTable SubTable;
+  منطقی is_reverse () ثابت;
 };
 
 }

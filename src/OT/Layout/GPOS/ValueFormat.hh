@@ -1,21 +1,21 @@
 #ifndef OT_LAYOUT_GPOS_VALUEFORMAT_HH
 #define OT_LAYOUT_GPOS_VALUEFORMAT_HH
 
-#include "../../../hb-ot-layout-gsubgpos.hh"
+#شامل "../../../hb-ot-layout-gsubgpos.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+فضاینام OT {
+فضاینام Layout {
+فضاینام GPOS_impl {
 
-typedef HBUINT16 Value;
+تعریفنوع HBUINT16 مقدار;
 
-struct ValueBase {}; // Dummy base class tag for OffsetTo<Value> bases.
+ساختار مقدار_Base {}; // Dummy base class tag for OffsetTo<Value> bases.
 
-typedef UnsizedArrayOf<Value> ValueRecord;
+تعریفنوع UnsizedArrayOf<مقدار> مقدار_Record;
 
-struct ValueFormat : HBUINT16
+ساختار مقدار_Format : HBUINT16
 {
-  enum Flags {
+  شمارش Flags {
     xPlacement  = 0x0001u,      /* Includes horizontal adjustment for placement */
     yPlacement  = 0x0002u,      /* Includes vertical adjustment for placement */
     xAdvance    = 0x0004u,      /* Includes horizontal adjustment for advance */
@@ -31,7 +31,7 @@ struct ValueFormat : HBUINT16
   };
 
 /* All fields are options.  Only those available advance the value pointer. */
-#if 0
+#اگر 0
   HBINT16               xPlacement;     /* Horizontal adjustment for
                                          * placement--in design units */
   HBINT16               yPlacement;     /* Vertical adjustment for
@@ -56,415 +56,415 @@ struct ValueFormat : HBUINT16
                                          * PosTable (may be NULL) */
 #endif
 
-  NumType& operator = (uint16_t i) { v = i; return *this; }
+  رقم_Type& operator = (uint16_t i) { v = i; بازگشت *این; }
 
   // Note: spec says skip 2 bytes per bit in the valueformat. But reports
   // from Microsoft developers indicate that only the fields that are
   // currently defined are counted. We don't expect any new fields to
   // be added to ValueFormat. As such, we use the faster hb_popcount8
   // that only processes the lowest 8 bits.
-  unsigned int get_len () const  { return hb_popcount8 ((uint8_t) *this); }
-  size_t get_size () const { return get_len () * Value::static_size; }
+  unsigned صحیح get_len () ثابت  { بازگشت hb_popcount8 ((uint8_t) *این); }
+  size_t get_size () ثابت { بازگشت get_len () * مقدار::static_size; }
 
-  hb_vector_t<unsigned> get_device_table_indices () const {
+  hb_vector_t<unsigned> get_device_table_indices () ثابت {
     unsigned i = 0;
     hb_vector_t<unsigned> result;
-    unsigned format = *this;
+    unsigned format = *این;
 
-    if (format & xPlacement) i++;
-    if (format & yPlacement) i++;
-    if (format & xAdvance)   i++;
-    if (format & yAdvance)   i++;
+    اگر (format & xPlacement) i++;
+    اگر (format & yPlacement) i++;
+    اگر (format & xAdvance)   i++;
+    اگر (format & yAdvance)   i++;
 
-    if (format & xPlaDevice) result.push (i++);
-    if (format & yPlaDevice) result.push (i++);
-    if (format & xAdvDevice) result.push (i++);
-    if (format & yAdvDevice) result.push (i++);
+    اگر (format & xPlaDevice) result.push (i++);
+    اگر (format & yPlaDevice) result.push (i++);
+    اگر (format & xAdvDevice) result.push (i++);
+    اگر (format & yAdvDevice) result.push (i++);
 
-    return result;
+    بازگشت result;
   }
 
-  bool apply_value (hb_ot_apply_context_t *c,
-                    const ValueBase       *base,
-                    const Value           *values,
-                    hb_glyph_position_t   &glyph_pos) const
+  منطقی apply_مقدار (hb_ot_apply_context_t *c,
+                    ثابت مقدار_Base       *base,
+                    ثابت مقدار           *values,
+                    hb_glyph_position_t   &glyph_pos) ثابت
   {
-    bool ret = false;
-    unsigned int format = *this;
-    if (!format) return ret;
+    منطقی ret = نادرست;
+    unsigned صحیح format = *این;
+    اگر (!format) بازگشت ret;
 
     hb_font_t *font = c->font;
-    bool horizontal =
+    منطقی horizontal =
 #ifndef HB_NO_VERTICAL
       HB_DIRECTION_IS_HORIZONTAL (c->direction)
-#else
-      true
+#وگرنه
+      درست
 #endif
       ;
 
-    if (format & xPlacement)
+    اگر (format & xPlacement)
       glyph_pos.x_offset = hb_saturate_add (glyph_pos.x_offset, font->em_scale_x (get_short (values++, &ret)));
-    if (format & yPlacement)
+    اگر (format & yPlacement)
       glyph_pos.y_offset = hb_saturate_add (glyph_pos.y_offset, font->em_scale_y (get_short (values++, &ret)));
-    if (format & xAdvance) {
-      if (likely (horizontal))
+    اگر (format & xAdvance) {
+      اگر (likely (horizontal))
 	glyph_pos.x_advance = hb_saturate_add (glyph_pos.x_advance, font->em_scale_x (get_short (values, &ret)));
       values++;
     }
     /* y_advance values grow downward but font-space grows upward, hence negation */
-    if (format & yAdvance) {
-      if (unlikely (!horizontal))
+    اگر (format & yAdvance) {
+      اگر (unlikely (!horizontal))
 	glyph_pos.y_advance = hb_saturate_sub (glyph_pos.y_advance, font->em_scale_y (get_short (values, &ret)));
       values++;
     }
 
-    if (!has_device ()) return ret;
+    اگر (!has_device ()) بازگشت ret;
 
-    bool use_x_device = font->x_ppem || font->has_nonzero_coords;
-    bool use_y_device = font->y_ppem || font->has_nonzero_coords;
+    منطقی use_x_device = font->x_ppem || font->has_nonzero_coords;
+    منطقی use_y_device = font->y_ppem || font->has_nonzero_coords;
 
-    if (!use_x_device && !use_y_device) return ret;
+    اگر (!use_x_device && !use_y_device) بازگشت ret;
 
-    const ItemVariationStore &store = c->var_store;
+    ثابت ItemVariationStore &store = c->var_store;
     auto *cache = c->var_store_cache;
 
     /* pixel -> fractional pixel */
-    if (format & xPlaDevice)
+    اگر (format & xPlaDevice)
     {
-      if (use_x_device)
+      اگر (use_x_device)
 	glyph_pos.x_offset = hb_saturate_add (glyph_pos.x_offset, get_device (values, &ret, base, c->sanitizer).get_x_delta (font, store, cache));
       values++;
     }
-    if (format & yPlaDevice)
+    اگر (format & yPlaDevice)
     {
-      if (use_y_device)
+      اگر (use_y_device)
 	glyph_pos.y_offset = hb_saturate_add (glyph_pos.y_offset, get_device (values, &ret, base, c->sanitizer).get_y_delta (font, store, cache));
       values++;
     }
-    if (format & xAdvDevice)
+    اگر (format & xAdvDevice)
     {
-      if (horizontal && use_x_device)
+      اگر (horizontal && use_x_device)
 	glyph_pos.x_advance = hb_saturate_add (glyph_pos.x_advance, get_device (values, &ret, base, c->sanitizer).get_x_delta (font, store, cache));
       values++;
     }
-    if (format & yAdvDevice)
+    اگر (format & yAdvDevice)
     {
       /* y_advance values grow downward but font-space grows upward, hence negation */
-      if (!horizontal && use_y_device)
+      اگر (!horizontal && use_y_device)
 	glyph_pos.y_advance = hb_saturate_sub (glyph_pos.y_advance, get_device (values, &ret, base, c->sanitizer).get_y_delta (font, store, cache));
       values++;
     }
-    return ret;
+    بازگشت ret;
   }
 
-  void position_single (hb_font_t *font,
+  تهی position_single (hb_font_t *font,
                         hb_blob_t *table_blob,
                         hb_direction_t direction,
-                        const ValueBase *base,
-                        const Value *values,
-                        hb_glyph_position_t &pos) const
+                        ثابت مقدار_Base *base,
+                        ثابت مقدار *values,
+                        hb_glyph_position_t &pos) ثابت
   {
     /* This is ugly... */
     hb_buffer_t buffer {};
     buffer.props.direction = direction;
     hb_ot_apply_context_t c (1, font, &buffer, table_blob);
 
-    apply_value (&c, base, values, pos);
+    apply_مقدار (&c, base, values, pos);
   }
 
-  unsigned int get_effective_format (const Value *values, bool strip_hints, bool strip_empty, const ValueBase *base,
-                                     const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map) const
+  unsigned صحیح get_effective_format (ثابت مقدار *values, منطقی strip_hints, منطقی strip_empty, ثابت مقدار_Base *base,
+                                     ثابت hb_hashmap_t<unsigned, hb_pair_t<unsigned, صحیح>> *varidx_delta_map) ثابت
   {
-    unsigned int format = *this;
-    for (unsigned flag = xPlacement; flag <= yAdvDevice; flag = flag << 1) {
-      if (format & flag)
+    unsigned صحیح format = *این;
+    برای (unsigned flag = xPlacement; flag <= yAdvDevice; flag = flag << 1) {
+      اگر (format & flag)
       {
-        if (strip_hints && flag >= xPlaDevice)
+        اگر (strip_hints && flag >= xPlaDevice)
         {
           format = format & ~flag;
           values++;
-          continue;
+          ادامه;
         }
-        if (varidx_delta_map && flag >= xPlaDevice)
+        اگر (varidx_delta_map && flag >= xPlaDevice)
         {
           update_var_flag (values++, (Flags) flag, &format, base, varidx_delta_map);
-          continue;
+          ادامه;
         }
         /* do not strip empty when instancing, cause we don't know whether the new
          * default value is 0 or not */
-        if (strip_empty) should_drop (*values, (Flags) flag, &format);
+        اگر (strip_empty) should_drop (*values, (Flags) flag, &format);
         values++;
       }
     }
 
-    return format;
+    بازگشت format;
   }
 
   template<typename Iterator,
       hb_requires (hb_is_iterator (Iterator))>
-  unsigned int get_effective_format (Iterator it, bool strip_hints, bool strip_empty, const ValueBase *base,
-                                     const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map) const {
-    unsigned int new_format = 0;
+  unsigned صحیح get_effective_format (Iterator it, منطقی strip_hints, منطقی strip_empty, ثابت مقدار_Base *base,
+                                     ثابت hb_hashmap_t<unsigned, hb_pair_t<unsigned, صحیح>> *varidx_delta_map) ثابت {
+    unsigned صحیح new_format = 0;
 
-    for (const hb_array_t<const Value>& values : it)
+    برای (ثابت hb_array_t<ثابت مقدار>& values : it)
       new_format = new_format | get_effective_format (&values, strip_hints, strip_empty, base, varidx_delta_map);
 
-    return new_format;
+    بازگشت new_format;
   }
 
-  void copy_values (hb_serialize_context_t *c,
-                    unsigned int new_format,
-                    const ValueBase *base,
-                    const Value *values,
-                    const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map) const
+  تهی copy_مقادیر (hb_serialize_context_t *c,
+                    unsigned صحیح new_format,
+                    ثابت مقدار_Base *base,
+                    ثابت مقدار *values,
+                    ثابت hb_hashmap_t<unsigned, hb_pair_t<unsigned, صحیح>> *layout_variation_idx_delta_map) ثابت
   {
-    unsigned int format = *this;
-    if (!format) return;
+    unsigned صحیح format = *این;
+    اگر (!format) بازگشت;
 
     HBINT16 *x_placement = nullptr, *y_placement = nullptr, *x_adv = nullptr, *y_adv = nullptr;
-    if ((format | new_format) & xPlacement)
-      x_placement = copy_value (c, new_format, xPlacement, format & xPlacement ? *values++ : Null (Value));
-    if ((format | new_format) & yPlacement)
-      y_placement = copy_value (c, new_format, yPlacement, format & yPlacement ? *values++ : Null (Value));
-    if ((format | new_format) & xAdvance)
-      x_adv = copy_value (c, new_format, xAdvance, format & xAdvance ? *values++ : Null (Value));
-    if ((format | new_format) & yAdvance)
-      y_adv = copy_value (c, new_format, yAdvance, format & yAdvance ? *values++ : Null (Value));
+    اگر ((format | new_format) & xPlacement)
+      x_placement = copy_مقدار (c, new_format, xPlacement, format & xPlacement ? *values++ : Null (مقدار));
+    اگر ((format | new_format) & yPlacement)
+      y_placement = copy_مقدار (c, new_format, yPlacement, format & yPlacement ? *values++ : Null (مقدار));
+    اگر ((format | new_format) & xAdvance)
+      x_adv = copy_مقدار (c, new_format, xAdvance, format & xAdvance ? *values++ : Null (مقدار));
+    اگر ((format | new_format) & yAdvance)
+      y_adv = copy_مقدار (c, new_format, yAdvance, format & yAdvance ? *values++ : Null (مقدار));
 
-    if (!has_device ())
-      return;
+    اگر (!has_device ())
+      بازگشت;
 
-    if (format & xPlaDevice)
+    اگر (format & xPlaDevice)
     {
-      add_delta_to_value (x_placement, base, values, layout_variation_idx_delta_map);
+      add_delta_to_مقدار (x_placement, base, values, layout_variation_idx_delta_map);
       copy_device (c, base, values++, layout_variation_idx_delta_map, new_format, xPlaDevice);
     }
 
-    if (format & yPlaDevice)
+    اگر (format & yPlaDevice)
     {
-      add_delta_to_value (y_placement, base, values, layout_variation_idx_delta_map);
+      add_delta_to_مقدار (y_placement, base, values, layout_variation_idx_delta_map);
       copy_device (c, base, values++, layout_variation_idx_delta_map, new_format, yPlaDevice);
     }
 
-    if (format & xAdvDevice)
+    اگر (format & xAdvDevice)
     {
-      add_delta_to_value (x_adv, base, values, layout_variation_idx_delta_map);
+      add_delta_to_مقدار (x_adv, base, values, layout_variation_idx_delta_map);
       copy_device (c, base, values++, layout_variation_idx_delta_map, new_format, xAdvDevice);
     }
 
-    if (format & yAdvDevice)
+    اگر (format & yAdvDevice)
     {
-      add_delta_to_value (y_adv, base, values, layout_variation_idx_delta_map);
+      add_delta_to_مقدار (y_adv, base, values, layout_variation_idx_delta_map);
       copy_device (c, base, values++, layout_variation_idx_delta_map, new_format, yAdvDevice);
     }
   }
 
-  HBINT16* copy_value (hb_serialize_context_t *c,
-                       unsigned int new_format,
+  HBINT16* copy_مقدار (hb_serialize_context_t *c,
+                       unsigned صحیح new_format,
                        Flags flag,
-                       Value value) const
+                       مقدار value) ثابت
   {
     // Filter by new format.
-    if (!(new_format & flag)) return nullptr;
-    return reinterpret_cast<HBINT16 *> (c->copy (value));
+    اگر (!(new_format & flag)) بازگشت nullptr;
+    بازگشت reinterpret_cast<HBINT16 *> (c->copy (value));
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const ValueBase *base,
-                                  const hb_array_t<const Value>& values) const
+  تهی collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  ثابت مقدار_Base *base,
+                                  ثابت hb_array_t<ثابت مقدار>& values) ثابت
   {
-    unsigned format = *this;
+    unsigned format = *این;
     unsigned i = 0;
-    if (format & xPlacement) i++;
-    if (format & yPlacement) i++;
-    if (format & xAdvance) i++;
-    if (format & yAdvance) i++;
-    if (format & xPlaDevice)
+    اگر (format & xPlacement) i++;
+    اگر (format & yPlacement) i++;
+    اگر (format & xAdvance) i++;
+    اگر (format & yAdvance) i++;
+    اگر (format & xPlaDevice)
     {
       (base + get_device (&(values[i]))).collect_variation_indices (c);
       i++;
     }
 
-    if (format & ValueFormat::yPlaDevice)
+    اگر (format & مقدار_Format::yPlaDevice)
     {
       (base + get_device (&(values[i]))).collect_variation_indices (c);
       i++;
     }
 
-    if (format & ValueFormat::xAdvDevice)
+    اگر (format & مقدار_Format::xAdvDevice)
     {
       (base + get_device (&(values[i]))).collect_variation_indices (c);
       i++;
     }
 
-    if (format & ValueFormat::yAdvDevice)
+    اگر (format & مقدار_Format::yAdvDevice)
     {
       (base + get_device (&(values[i]))).collect_variation_indices (c);
       i++;
     }
   }
 
-  private:
-  bool sanitize_value_devices (hb_sanitize_context_t *c, const ValueBase *base, const Value *values) const
+  خصوصی:
+  منطقی sanitize_مقدار_devices (hb_sanitize_context_t *c, ثابت مقدار_Base *base, ثابت مقدار *values) ثابت
   {
-    unsigned int format = *this;
+    unsigned صحیح format = *این;
 
-    if (format & xPlacement) values++;
-    if (format & yPlacement) values++;
-    if (format & xAdvance)   values++;
-    if (format & yAdvance)   values++;
+    اگر (format & xPlacement) values++;
+    اگر (format & yPlacement) values++;
+    اگر (format & xAdvance)   values++;
+    اگر (format & yAdvance)   values++;
 
-    if ((format & xPlaDevice) && !get_device (values++).sanitize (c, base)) return false;
-    if ((format & yPlaDevice) && !get_device (values++).sanitize (c, base)) return false;
-    if ((format & xAdvDevice) && !get_device (values++).sanitize (c, base)) return false;
-    if ((format & yAdvDevice) && !get_device (values++).sanitize (c, base)) return false;
+    اگر ((format & xPlaDevice) && !get_device (values++).sanitize (c, base)) بازگشت نادرست;
+    اگر ((format & yPlaDevice) && !get_device (values++).sanitize (c, base)) بازگشت نادرست;
+    اگر ((format & xAdvDevice) && !get_device (values++).sanitize (c, base)) بازگشت نادرست;
+    اگر ((format & yAdvDevice) && !get_device (values++).sanitize (c, base)) بازگشت نادرست;
 
-    return true;
+    بازگشت درست;
   }
 
-  static inline Offset16To<Device, ValueBase>& get_device (Value* value)
+  ایستا درونخطی Offset16To<Device, مقدار_Base>& get_device (مقدار* value)
   {
-    return *static_cast<Offset16To<Device, ValueBase> *> (value);
+    بازگشت *static_cast<Offset16To<Device, مقدار_Base> *> (value);
   }
-  static inline const Offset16To<Device, ValueBase>& get_device (const Value* value)
+  ایستا درونخطی ثابت Offset16To<Device, مقدار_Base>& get_device (ثابت مقدار* value)
   {
-    return *static_cast<const Offset16To<Device, ValueBase> *> (value);
+    بازگشت *static_cast<ثابت Offset16To<Device, مقدار_Base> *> (value);
   }
-  static inline const Device& get_device (const Value* value,
-					  bool *worked,
-					  const ValueBase *base,
+  ایستا درونخطی ثابت Device& get_device (ثابت مقدار* value,
+					  منطقی *worked,
+					  ثابت مقدار_Base *base,
 					  hb_sanitize_context_t &c)
   {
-    if (worked) *worked |= bool (*value);
-    auto &offset = *static_cast<const Offset16To<Device> *> (value);
+    اگر (worked) *worked |= منطقی (*value);
+    auto &offset = *static_cast<ثابت Offset16To<Device> *> (value);
 
-    if (unlikely (!offset.sanitize (&c, base)))
-      return Null(Device);
+    اگر (unlikely (!offset.sanitize (&c, base)))
+      بازگشت Null(Device);
     hb_barrier ();
 
-    return base + offset;
+    بازگشت base + offset;
   }
 
-  void add_delta_to_value (HBINT16 *value,
-                           const ValueBase *base,
-                           const Value *src_value,
-                           const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map) const
+  تهی add_delta_to_مقدار (HBINT16 *value,
+                           ثابت مقدار_Base *base,
+                           ثابت مقدار *src_مقدار,
+                           ثابت hb_hashmap_t<unsigned, hb_pair_t<unsigned, صحیح>> *layout_variation_idx_delta_map) ثابت
   {
-    if (!value) return;
-    unsigned varidx = (base + get_device (src_value)).get_variation_index ();
-    hb_pair_t<unsigned, int> *varidx_delta;
-    if (!layout_variation_idx_delta_map->has (varidx, &varidx_delta)) return;
+    اگر (!value) بازگشت;
+    unsigned varidx = (base + get_device (src_مقدار)).get_variation_index ();
+    hb_pair_t<unsigned, صحیح> *varidx_delta;
+    اگر (!layout_variation_idx_delta_map->has (varidx, &varidx_delta)) بازگشت;
 
     *value += hb_second (*varidx_delta);
   }
 
-  bool copy_device (hb_serialize_context_t *c,
-                    const ValueBase *base,
-                    const Value *src_value,
-                    const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map,
-                    unsigned int new_format, Flags flag) const
+  منطقی copy_device (hb_serialize_context_t *c,
+                    ثابت مقدار_Base *base,
+                    ثابت مقدار *src_مقدار,
+                    ثابت hb_hashmap_t<unsigned, hb_pair_t<unsigned, صحیح>> *layout_variation_idx_delta_map,
+                    unsigned صحیح new_format, Flags flag) ثابت
   {
     // Filter by new format.
-    if (!(new_format & flag)) return true;
+    اگر (!(new_format & flag)) بازگشت درست;
 
-    Value       *dst_value = c->copy (*src_value);
+    مقدار       *dst_مقدار = c->copy (*src_مقدار);
 
-    if (!dst_value) return false;
-    if (*dst_value == 0) return true;
+    اگر (!dst_مقدار) بازگشت نادرست;
+    اگر (*dst_مقدار == 0) بازگشت درست;
 
-    *dst_value = 0;
+    *dst_مقدار = 0;
     c->push ();
-    if ((base + get_device (src_value)).copy (c, layout_variation_idx_delta_map))
+    اگر ((base + get_device (src_مقدار)).copy (c, layout_variation_idx_delta_map))
     {
-      c->add_link (*dst_value, c->pop_pack ());
-      return true;
+      c->add_link (*dst_مقدار, c->برداشت_pack ());
+      بازگشت درست;
     }
-    else
+    وگرنه
     {
-      c->pop_discard ();
-      return false;
+      c->برداشت_discard ();
+      بازگشت نادرست;
     }
   }
 
-  static inline const HBINT16& get_short (const Value* value, bool *worked=nullptr)
+  ایستا درونخطی ثابت HBINT16& get_short (ثابت مقدار* value, منطقی *worked=nullptr)
   {
-    if (worked) *worked |= bool (*value);
-    return *reinterpret_cast<const HBINT16 *> (value);
+    اگر (worked) *worked |= منطقی (*value);
+    بازگشت *reinterpret_cast<ثابت HBINT16 *> (value);
   }
 
-  public:
+  عمومی:
 
-  bool has_device () const
+  منطقی has_device () ثابت
   {
-    unsigned int format = *this;
-    return (format & devices) != 0;
+    unsigned صحیح format = *این;
+    بازگشت (format & devices) != 0;
   }
 
-  bool sanitize_value (hb_sanitize_context_t *c, const ValueBase *base, const Value *values) const
+  منطقی sanitize_مقدار (hb_sanitize_context_t *c, ثابت مقدار_Base *base, ثابت مقدار *values) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (این);
 
-    if (unlikely (!c->check_range (values, get_size ()))) return_trace (false);
+    اگر (unlikely (!c->check_range (values, get_size ()))) return_trace (نادرست);
 
-    if (c->lazy_some_gpos)
-      return_trace (true);
+    اگر (c->lazy_some_gpos)
+      return_trace (درست);
 
-    return_trace (!has_device () || sanitize_value_devices (c, base, values));
+    return_trace (!has_device () || sanitize_مقدار_devices (c, base, values));
   }
 
-  bool sanitize_values (hb_sanitize_context_t *c, const ValueBase *base, const Value *values, unsigned int count) const
+  منطقی sanitize_مقادیر (hb_sanitize_context_t *c, ثابت مقدار_Base *base, ثابت مقدار *values, unsigned صحیح شمار) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (این);
     unsigned size = get_size ();
 
-    if (!c->check_range (values, count, size)) return_trace (false);
+    اگر (!c->check_range (values, شمار, size)) return_trace (نادرست);
 
-    if (c->lazy_some_gpos)
-      return_trace (true);
+    اگر (c->lazy_some_gpos)
+      return_trace (درست);
 
     hb_barrier ();
-    return_trace (sanitize_values_stride_unsafe (c, base, values, count, size));
+    return_trace (sanitize_مقادیر_stride_unsafe (c, base, values, شمار, size));
   }
 
   /* Just sanitize referenced Device tables.  Doesn't check the values themselves. */
-  bool sanitize_values_stride_unsafe (hb_sanitize_context_t *c, const ValueBase *base, const Value *values, unsigned int count, unsigned int stride) const
+  منطقی sanitize_مقادیر_stride_unsafe (hb_sanitize_context_t *c, ثابت مقدار_Base *base, ثابت مقدار *values, unsigned صحیح شمار, unsigned صحیح stride) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (این);
 
-    if (!has_device ()) return_trace (true);
+    اگر (!has_device ()) return_trace (درست);
 
-    for (unsigned int i = 0; i < count; i++) {
-      if (!sanitize_value_devices (c, base, values))
-        return_trace (false);
-      values = &StructAtOffset<const Value> (values, stride);
+    برای (unsigned صحیح i = 0; i < شمار; i++) {
+      اگر (!sanitize_مقدار_devices (c, base, values))
+        return_trace (نادرست);
+      values = &StructAtOffset<ثابت مقدار> (values, stride);
     }
 
-    return_trace (true);
+    return_trace (درست);
   }
 
- private:
+ خصوصی:
 
-  void should_drop (Value value, Flags flag, unsigned int* format) const
+  تهی should_drop (مقدار value, Flags flag, unsigned صحیح* format) ثابت
   {
-    if (value) return;
+    اگر (value) بازگشت;
     *format = *format & ~flag;
   }
 
-  void update_var_flag (const Value* value, Flags flag,
-                        unsigned int* format, const ValueBase *base,
-                        const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map) const
+  تهی update_var_flag (ثابت مقدار* value, Flags flag,
+                        unsigned صحیح* format, ثابت مقدار_Base *base,
+                        ثابت hb_hashmap_t<unsigned, hb_pair_t<unsigned, صحیح>> *varidx_delta_map) ثابت
   {
-    if (*value)
+    اگر (*value)
     {
       unsigned varidx = (base + get_device (value)).get_variation_index ();
-      hb_pair_t<unsigned, int> *varidx_delta;
-      if (varidx_delta_map->has (varidx, &varidx_delta))
+      hb_pair_t<unsigned, صحیح> *varidx_delta;
+      اگر (varidx_delta_map->has (varidx, &varidx_delta))
       {
         /* A device-only value needs a base field for its instanced delta. */
-        if (varidx_delta->second)
+        اگر (varidx_delta->second)
           *format |= flag >> 4;
-        if (varidx_delta->first != HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
-          return;
+        اگر (varidx_delta->first != HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
+          بازگشت;
       }
     }
     *format = *format & ~flag;

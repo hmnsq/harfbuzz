@@ -27,8 +27,8 @@
 #ifndef HB_SET_DIGEST_HH
 #define HB_SET_DIGEST_HH
 
-#include "hb.hh"
-#include "hb-machinery.hh"
+#شامل "hb.hh"
+#شامل "hb-machinery.hh"
 
 /*
  * The set-digests implement "filters" that support "approximate
@@ -63,110 +63,110 @@
  * check is done using four bitwise operations only.
  */
 
-static constexpr unsigned hb_set_digest_shifts[] = {4, 0, 6};
+ایستا constexpr unsigned hb_set_digest_shifts[] = {4, 0, 6};
 
-struct hb_set_digest_t
+ساختار hb_set_digest_t
 {
   // No science in these. Intuition and testing only.
   using mask_t = uint64_t;
 
-  static constexpr unsigned n = ARRAY_LENGTH_CONST (hb_set_digest_shifts);
-  static constexpr unsigned mask_bytes = sizeof (mask_t);
-  static constexpr unsigned mask_bits = sizeof (mask_t) * 8;
-  static constexpr hb_codepoint_t mb1 = mask_bits - 1;
-  static constexpr mask_t one = 1;
-  static constexpr mask_t all = (mask_t) -1;
+  ایستا constexpr unsigned n = ARRAY_LENGTH_CONST (hb_set_digest_shifts);
+  ایستا constexpr unsigned mask_bytes = اندازه (mask_t);
+  ایستا constexpr unsigned mask_bits = اندازه (mask_t) * 8;
+  ایستا constexpr hb_codepoint_t mb1 = mask_bits - 1;
+  ایستا constexpr mask_t one = 1;
+  ایستا constexpr mask_t all = (mask_t) -1;
 
-  void init ()
-  { for (unsigned i = 0; i < n; i++) masks[i] = 0; }
+  تهی init ()
+  { برای (unsigned i = 0; i < n; i++) masks[i] = 0; }
 
-  void clear () { init (); }
+  تهی clear () { init (); }
 
-  static hb_set_digest_t full ()
+  ایستا hb_set_digest_t full ()
   {
     hb_set_digest_t d;
-    for (unsigned i = 0; i < n; i++) d.masks[i] = all;
-    return d;
+    برای (unsigned i = 0; i < n; i++) d.masks[i] = all;
+    بازگشت d;
   }
 
-  void union_ (const hb_set_digest_t &o)
-  { for (unsigned i = 0; i < n; i++) masks[i] |= o.masks[i]; }
+  تهی union_ (ثابت hb_set_digest_t &o)
+  { برای (unsigned i = 0; i < n; i++) masks[i] |= o.masks[i]; }
 
-  bool add_range (hb_codepoint_t a, hb_codepoint_t b)
+  منطقی add_range (hb_codepoint_t a, hb_codepoint_t b)
   {
-    bool ret;
+    منطقی ret;
 
-    ret = false;
-    for (unsigned i = 0; i < n; i++)
-      if (masks[i] != all)
-	ret = true;
-    if (!ret) return false;
+    ret = نادرست;
+    برای (unsigned i = 0; i < n; i++)
+      اگر (masks[i] != all)
+	ret = درست;
+    اگر (!ret) بازگشت نادرست;
 
-    ret = false;
-    for (unsigned i = 0; i < n; i++)
+    ret = نادرست;
+    برای (unsigned i = 0; i < n; i++)
     {
       mask_t shift = hb_set_digest_shifts[i];
-      if ((b >> shift) - (a >> shift) >= mb1)
+      اگر ((b >> shift) - (a >> shift) >= mb1)
 	masks[i] = all;
-      else
+      وگرنه
       {
 	mask_t ma = one << ((a >> shift) & mb1);
 	mask_t mb = one << ((b >> shift) & mb1);
 	masks[i] |= mb + (mb - ma) - (mb < ma);
-	ret = true;
+	ret = درست;
       }
     }
-    return ret;
+    بازگشت ret;
   }
 
   template <typename T>
-  void add_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
+  تهی add_array (ثابت T *array, unsigned صحیح شمار, unsigned صحیح stride=اندازه(T))
   {
-    for (unsigned int i = 0; i < count; i++)
+    برای (unsigned صحیح i = 0; i < شمار; i++)
     {
       add (*array);
-      array = &StructAtOffsetUnaligned<T> ((const void *) array, stride);
+      array = &StructAtOffsetUnaligned<T> ((ثابت تهی *) array, stride);
     }
   }
   template <typename T>
-  void add_array (const hb_array_t<const T>& arr) { add_array (&arr, arr.len ()); }
+  تهی add_array (ثابت hb_array_t<ثابت T>& arr) { add_array (&arr, arr.len ()); }
   template <typename T>
-  bool add_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
+  منطقی add_sorted_array (ثابت T *array, unsigned صحیح شمار, unsigned صحیح stride=اندازه(T))
   {
-    add_array (array, count, stride);
-    return true;
+    add_array (array, شمار, stride);
+    بازگشت درست;
   }
   template <typename T>
-  bool add_sorted_array (const hb_sorted_array_t<const T>& arr) { return add_sorted_array (&arr, arr.len ()); }
+  منطقی add_sorted_array (ثابت hb_sorted_array_t<ثابت T>& arr) { بازگشت add_sorted_array (&arr, arr.len ()); }
 
-  bool operator [] (hb_codepoint_t g) const
-  { return may_have (g); }
+  منطقی operator [] (hb_codepoint_t g) ثابت
+  { بازگشت may_have (g); }
 
 
-  void add (hb_codepoint_t g)
+  تهی add (hb_codepoint_t g)
   {
-    for (unsigned i = 0; i < n; i++)
+    برای (unsigned i = 0; i < n; i++)
       masks[i] |= one << ((g >> hb_set_digest_shifts[i]) & mb1);
   }
 
   HB_ALWAYS_INLINE
-  bool may_have (hb_codepoint_t g) const
+  منطقی may_have (hb_codepoint_t g) ثابت
   {
-    for (unsigned i = 0; i < n; i++)
-      if (!(masks[i] & (one << ((g >> hb_set_digest_shifts[i]) & mb1))))
-	return false;
-    return true;
+    برای (unsigned i = 0; i < n; i++)
+      اگر (!(masks[i] & (one << ((g >> hb_set_digest_shifts[i]) & mb1))))
+	بازگشت نادرست;
+    بازگشت درست;
   }
 
-  bool may_intersect (const hb_set_digest_t &o) const
+  منطقی may_intersect (ثابت hb_set_digest_t &o) ثابت
   {
-    for (unsigned i = 0; i < n; i++)
-      if (!(masks[i] & o.masks[i]))
-	return false;
-    return true;
+    برای (unsigned i = 0; i < n; i++)
+      اگر (!(masks[i] & o.masks[i]))
+	بازگشت نادرست;
+    بازگشت درست;
   }
 
-  private:
+  خصوصی:
 
   mask_t masks[n] = {};
 };

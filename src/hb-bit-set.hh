@@ -28,79 +28,79 @@
 #ifndef HB_BIT_SET_HH
 #define HB_BIT_SET_HH
 
-#include "hb.hh"
-#include "hb-bit-page.hh"
+#شامل "hb.hh"
+#شامل "hb-bit-page.hh"
 
-struct hb_bit_set_t
+ساختار hb_bit_set_t
 {
-  hb_bit_set_t () = default;
-  ~hb_bit_set_t () = default;
+  hb_bit_set_t () = پیشفرض;
+  ~hb_bit_set_t () = پیشفرض;
 
-  hb_bit_set_t (const hb_bit_set_t& other) : hb_bit_set_t () { set (other, true); }
-  hb_bit_set_t ( hb_bit_set_t&& other)  noexcept : hb_bit_set_t () { hb_swap (*this, other); }
-  hb_bit_set_t& operator= (const hb_bit_set_t& other) { set (other); return *this; }
-  hb_bit_set_t& operator= (hb_bit_set_t&& other)  noexcept { hb_swap (*this, other); return *this; }
-  friend void swap (hb_bit_set_t &a, hb_bit_set_t &b) noexcept
+  hb_bit_set_t (ثابت hb_bit_set_t& other) : hb_bit_set_t () { set (other, درست); }
+  hb_bit_set_t ( hb_bit_set_t&& other)  noexcept : hb_bit_set_t () { hb_swap (*این, other); }
+  hb_bit_set_t& operator= (ثابت hb_bit_set_t& other) { set (other); بازگشت *این; }
+  hb_bit_set_t& operator= (hb_bit_set_t&& other)  noexcept { hb_swap (*این, other); بازگشت *این; }
+  friend تهی swap (hb_bit_set_t &a, hb_bit_set_t &b) noexcept
   {
-    if (likely (!a.successful || !b.successful))
-      return;
+    اگر (likely (!a.successful || !b.successful))
+      بازگشت;
     hb_swap (a.population, b.population);
     hb_swap (a.last_page_lookup, b.last_page_lookup);
     hb_swap (a.page_map, b.page_map);
     hb_swap (a.pages, b.pages);
   }
 
-  void init ()
+  تهی init ()
   {
-    successful = true;
+    successful = درست;
     population = 0;
     last_page_lookup = 0;
     page_map.init ();
     pages.init ();
   }
-  void fini ()
+  تهی fini ()
   {
     page_map.fini ();
     pages.fini ();
   }
 
   using page_t = hb_bit_page_t;
-  struct page_map_t
+  ساختار page_map_t
   {
-    int cmp (const page_map_t &o) const { return cmp (o.major); }
-    int cmp (uint32_t o_major) const { return (int) o_major - (int) major; }
+    صحیح cmp (ثابت page_map_t &o) ثابت { بازگشت cmp (o.major); }
+    صحیح cmp (uint32_t o_major) ثابت { بازگشت (صحیح) o_major - (صحیح) major; }
 
     uint32_t major;
     uint32_t index;
   };
 
-  bool successful = true; /* Allocations successful */
-  mutable unsigned int population = 0;
+  منطقی successful = درست; /* Allocations successful */
+  mutable unsigned صحیح population = 0;
   mutable hb_atomic_t<unsigned> last_page_lookup = 0;
   hb_sorted_vector_t<page_map_t> page_map;
   hb_vector_t<page_t> pages;
 
-  void err () { if (successful) successful = false; } /* TODO Remove */
-  bool in_error () const { return !successful; }
+  تهی err () { اگر (successful) successful = نادرست; } /* TODO Remove */
+  منطقی in_error () ثابت { بازگشت !successful; }
 
-  bool resize (unsigned int count, bool clear = true, bool exact_size = false)
+  منطقی resize (unsigned صحیح شمار, منطقی clear = درست, منطقی exact_size = نادرست)
   {
-    if (unlikely (!successful)) return false;
+    اگر (unlikely (!successful)) بازگشت نادرست;
 
-    if (pages.length < count && (unsigned) pages.allocated < count && count <= 2)
-      exact_size = true; // Most sets are small and local
+    اگر (pages.length < شمار && (unsigned) pages.allocated < شمار && شمار <= 2)
+      exact_size = درست; // Most sets are small and local
 
-    if (unlikely (!pages.resize_full (count, clear, exact_size) ||
-	!page_map.resize_full (count, clear, false)))
+    اگر (unlikely (!pages.resize_full (شمار, clear, exact_size) ||
+	!page_map.resize_full (شمار, clear, نادرست)))
     {
       pages.resize_full (page_map.length, clear, exact_size);
-      successful = false;
-      return false;
+      successful = نادرست;
+      بازگشت نادرست;
     }
-    return true;
+    بازگشت درست;
   }
 
-  void alloc (unsigned sz)
+  تهی alloc (unsigned sz)
   {
     sz >>= (page_t::PAGE_BITS_LOG_2 - 1);
     pages.alloc (sz);
@@ -109,221 +109,221 @@ struct hb_bit_set_t
 
   hb_bit_set_t& reset ()
   {
-    successful = true;
+    successful = درست;
     clear ();
-    return *this;
+    بازگشت *این;
   }
 
-  void clear ()
+  تهی clear ()
   {
     /* Early-out on already-empty.  Protects the Null singleton
      * (which is zero-initialized) from any writes.  Any non-empty
      * instance is a real heap object with writable storage, so
      * clearing through the vector's always-safe clear() is fine
      * even if we entered error state. */
-    if (!pages.length && !population) return;
+    اگر (!pages.length && !population) بازگشت;
     pages.clear ();
     page_map.clear ();
     population = 0;
   }
-  bool is_empty () const
+  منطقی is_empty () ثابت
   {
-    unsigned int count = pages.length;
-    for (unsigned int i = 0; i < count; i++)
-      if (!pages[i].is_empty ())
-	return false;
-    return true;
+    unsigned صحیح شمار = pages.length;
+    برای (unsigned صحیح i = 0; i < شمار; i++)
+      اگر (!pages[i].is_empty ())
+	بازگشت نادرست;
+    بازگشت درست;
   }
-  explicit operator bool () const { return !is_empty (); }
+  explicit operator منطقی () ثابت { بازگشت !is_empty (); }
 
-  uint32_t hash () const
+  uint32_t hash () ثابت
   {
     uint32_t h = 0;
-    for (auto &map : page_map)
+    برای (auto &map : page_map)
     {
       auto &page = pages.arrayZ[map.index];
-      if (unlikely (page.is_empty ())) continue;
+      اگر (unlikely (page.is_empty ())) ادامه;
       h = h * 31 + hb_hash (map.major) + hb_hash (page);
     }
-    return h;
+    بازگشت h;
   }
 
-  private:
-  void dirty () { population = UINT_MAX; }
-  public:
+  خصوصی:
+  تهی dirty () { population = UINT_MAX; }
+  عمومی:
 
-  void add (hb_codepoint_t g)
+  تهی add (hb_codepoint_t g)
   {
-    if (unlikely (!successful)) return;
-    if (unlikely (g == INVALID)) return;
+    اگر (unlikely (!successful)) بازگشت;
+    اگر (unlikely (g == INVALID)) بازگشت;
     dirty ();
-    page_t *page = page_for (g, true); if (unlikely (!page)) return;
+    page_t *page = page_for (g, درست); اگر (unlikely (!page)) بازگشت;
     page->add (g);
   }
-  void add_bits (hb_codepoint_t g, uint64_t bits)
+  تهی add_bits (hb_codepoint_t g, uint64_t bits)
   {
-    if (unlikely (!successful) || unlikely (!bits)) return;
-    assert (!(g & (page_t::ELT_BITS - 1)));
+    اگر (unlikely (!successful) || unlikely (!bits)) بازگشت;
+    أكد (!(g & (page_t::ELT_BITS - 1)));
     dirty ();
-    page_t *page = page_for (g, true); if (unlikely (!page)) return;
+    page_t *page = page_for (g, درست); اگر (unlikely (!page)) بازگشت;
     page->add_bits (g, bits);
   }
-  bool add_range (hb_codepoint_t a, hb_codepoint_t b)
+  منطقی add_range (hb_codepoint_t a, hb_codepoint_t b)
   {
-    if (unlikely (!successful)) return true; /* https://github.com/harfbuzz/harfbuzz/issues/657 */
-    if (unlikely (a > b || a == INVALID || b == INVALID)) return false;
+    اگر (unlikely (!successful)) بازگشت درست; /* https://github.com/harfbuzz/harfbuzz/issues/657 */
+    اگر (unlikely (a > b || a == INVALID || b == INVALID)) بازگشت نادرست;
     dirty ();
-    unsigned int ma = get_major (a);
-    unsigned int mb = get_major (b);
-    if (ma == mb)
+    unsigned صحیح ma = get_major (a);
+    unsigned صحیح mb = get_major (b);
+    اگر (ma == mb)
     {
-      page_t *page = page_for (a, true); if (unlikely (!page)) return false;
+      page_t *page = page_for (a, درست); اگر (unlikely (!page)) بازگشت نادرست;
       page->add_range (a, b);
     }
-    else
+    وگرنه
     {
-      page_t *page = page_for (a, true); if (unlikely (!page)) return false;
+      page_t *page = page_for (a, درست); اگر (unlikely (!page)) بازگشت نادرست;
       page->add_range (a, major_start (ma + 1) - 1);
 
-      for (unsigned int m = ma + 1; m < mb; m++)
+      برای (unsigned صحیح m = ma + 1; m < mb; m++)
       {
-	page = page_for (major_start (m), true); if (unlikely (!page)) return false;
+	page = page_for (major_start (m), درست); اگر (unlikely (!page)) بازگشت نادرست;
 	page->init1 ();
       }
 
-      page = page_for (b, true); if (unlikely (!page)) return false;
+      page = page_for (b, درست); اگر (unlikely (!page)) بازگشت نادرست;
       page->add_range (major_start (mb), b);
     }
-    return true;
+    بازگشت درست;
   }
 
   /* Duplicated here from hb-machinery.hh to avoid including it. */
   template<typename Type>
-  static inline const Type& StructAtOffsetUnaligned(const void *P, unsigned int offset)
+  ایستا درونخطی ثابت Type& StructAtOffsetUnaligned(ثابت تهی *P, unsigned صحیح offset)
   {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcast-align"
-    return * reinterpret_cast<const Type*> ((const char *) P + offset);
-#pragma GCC diagnostic pop
+    بازگشت * reinterpret_cast<ثابت Type*> ((ثابت نویسه *) P + offset);
+#pragma GCC diagnostic برداشت
   }
 
   template <typename T>
-  void set_array (bool v, const T *array, unsigned int count, unsigned int stride=sizeof(T))
+  تهی set_array (منطقی v, ثابت T *array, unsigned صحیح شمار, unsigned صحیح stride=اندازه(T))
   {
-    if (unlikely (!successful)) return;
-    if (!count) return;
+    اگر (unlikely (!successful)) بازگشت;
+    اگر (!شمار) بازگشت;
     dirty ();
     hb_codepoint_t g = *array;
-    while (count)
+    وقتی (شمار)
     {
-      unsigned int m = get_major (g);
-      page_t *page = page_for (g, v); if (unlikely (v && !page)) return;
-      unsigned int start = major_start (m);
-      unsigned int end = major_start (m + 1);
-      do
+      unsigned صحیح m = get_major (g);
+      page_t *page = page_for (g, v); اگر (unlikely (v && !page)) بازگشت;
+      unsigned صحیح start = major_start (m);
+      unsigned صحیح end = major_start (m + 1);
+      انجامبده
       {
-        if (g != INVALID && (v || page)) /* The v check is to optimize out the page check if v is true. */
+        اگر (g != INVALID && (v || page)) /* The v check is to optimize out the page check if v is true. */
 	  page->set (g, v);
 
 	array = &StructAtOffsetUnaligned<T> (array, stride);
-	count--;
+	شمار--;
       }
-      while (count && (g = *array, start <= g && g < end));
+      وقتی (شمار && (g = *array, start <= g && g < end));
     }
   }
 
   template <typename T>
-  void add_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { set_array (true, array, count, stride); }
+  تهی add_array (ثابت T *array, unsigned صحیح شمار, unsigned صحیح stride=اندازه(T))
+  { set_array (درست, array, شمار, stride); }
   template <typename T>
-  void add_array (const hb_array_t<const T>& arr) { add_array (&arr, arr.len ()); }
+  تهی add_array (ثابت hb_array_t<ثابت T>& arr) { add_array (&arr, arr.len ()); }
 
   template <typename T>
-  void del_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { set_array (false, array, count, stride); }
+  تهی del_array (ثابت T *array, unsigned صحیح شمار, unsigned صحیح stride=اندازه(T))
+  { set_array (نادرست, array, شمار, stride); }
   template <typename T>
-  void del_array (const hb_array_t<const T>& arr) { del_array (&arr, arr.len ()); }
+  تهی del_array (ثابت hb_array_t<ثابت T>& arr) { del_array (&arr, arr.len ()); }
 
   /* Might return false if array looks unsorted.
    * Used for faster rejection of corrupt data. */
   template <typename T>
-  bool set_sorted_array (bool v, const T *array, unsigned int count, unsigned int stride=sizeof(T))
+  منطقی set_sorted_array (منطقی v, ثابت T *array, unsigned صحیح شمار, unsigned صحیح stride=اندازه(T))
   {
-    if (unlikely (!successful)) return true; /* https://github.com/harfbuzz/harfbuzz/issues/657 */
-    if (unlikely (!count)) return true;
+    اگر (unlikely (!successful)) بازگشت درست; /* https://github.com/harfbuzz/harfbuzz/issues/657 */
+    اگر (unlikely (!شمار)) بازگشت درست;
     dirty ();
     hb_codepoint_t g = *array;
     hb_codepoint_t last_g = g;
-    while (count)
+    وقتی (شمار)
     {
-      unsigned int m = get_major (g);
-      page_t *page = page_for (g, v); if (unlikely (v && !page)) return false;
-      unsigned int end = major_start (m + 1);
-      do
+      unsigned صحیح m = get_major (g);
+      page_t *page = page_for (g, v); اگر (unlikely (v && !page)) بازگشت نادرست;
+      unsigned صحیح end = major_start (m + 1);
+      انجامبده
       {
 	/* If we try harder we can change the following comparison to <=;
 	 * Not sure if it's worth it. */
-	if (g < last_g) return false;
+	اگر (g < last_g) بازگشت نادرست;
 	last_g = g;
 
-        if (g != INVALID && (v || page)) /* The v check is to optimize out the page check if v is true. */
+        اگر (g != INVALID && (v || page)) /* The v check is to optimize out the page check if v is true. */
 	  page->set (g, v);
 
 	array = &StructAtOffsetUnaligned<T> (array, stride);
-	count--;
+	شمار--;
       }
-      while (count && (g = *array, g < end));
+      وقتی (شمار && (g = *array, g < end));
     }
-    return true;
+    بازگشت درست;
   }
 
   template <typename T>
-  bool add_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { return set_sorted_array (true, array, count, stride); }
+  منطقی add_sorted_array (ثابت T *array, unsigned صحیح شمار, unsigned صحیح stride=اندازه(T))
+  { بازگشت set_sorted_array (درست, array, شمار, stride); }
   template <typename T>
-  bool add_sorted_array (const hb_sorted_array_t<const T>& arr) { return add_sorted_array (&arr, arr.len ()); }
+  منطقی add_sorted_array (ثابت hb_sorted_array_t<ثابت T>& arr) { بازگشت add_sorted_array (&arr, arr.len ()); }
 
   template <typename T>
-  bool del_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { return set_sorted_array (false, array, count, stride); }
+  منطقی del_sorted_array (ثابت T *array, unsigned صحیح شمار, unsigned صحیح stride=اندازه(T))
+  { بازگشت set_sorted_array (نادرست, array, شمار, stride); }
   template <typename T>
-  bool del_sorted_array (const hb_sorted_array_t<const T>& arr) { return del_sorted_array (&arr, arr.len ()); }
+  منطقی del_sorted_array (ثابت hb_sorted_array_t<ثابت T>& arr) { بازگشت del_sorted_array (&arr, arr.len ()); }
 
-  void del (hb_codepoint_t g)
+  تهی del (hb_codepoint_t g)
   {
-    if (unlikely (!successful)) return;
+    اگر (unlikely (!successful)) بازگشت;
     page_t *page = page_for (g);
-    if (!page)
-      return;
+    اگر (!page)
+      بازگشت;
     dirty ();
     page->del (g);
   }
-  void del_bits (hb_codepoint_t g, uint64_t bits)
+  تهی del_bits (hb_codepoint_t g, uint64_t bits)
   {
-    if (unlikely (!successful) || unlikely (!bits)) return;
-    assert (!(g & (page_t::ELT_BITS - 1)));
+    اگر (unlikely (!successful) || unlikely (!bits)) بازگشت;
+    أكد (!(g & (page_t::ELT_BITS - 1)));
     page_t *page = page_for (g);
-    if (!page)
-      return;
+    اگر (!page)
+      بازگشت;
     dirty ();
     page->del_bits (g, bits);
   }
 
-  private:
-  void del_pages (int ds, int de)
+  خصوصی:
+  تهی del_pages (صحیح ds, صحیح de)
   {
-    if (ds <= de)
+    اگر (ds <= de)
     {
       // Pre-allocate the workspace that compact() will need so we can bail on allocation failure
       // before attempting to rewrite the page map.
       hb_vector_t<unsigned> compact_workspace;
-      if (unlikely (!allocate_compact_workspace (compact_workspace))) return;
+      اگر (unlikely (!allocate_compact_workspace (compact_workspace))) بازگشت;
 
-      unsigned int write_index = 0;
-      for (unsigned int i = 0; i < page_map.length; i++)
+      unsigned صحیح write_index = 0;
+      برای (unsigned صحیح i = 0; i < page_map.length; i++)
       {
-	int m = (int) page_map.arrayZ[i].major;
-	if (m < ds || de < m)
+	صحیح m = (صحیح) page_map.arrayZ[i].major;
+	اگر (m < ds || de < m)
 	  page_map.arrayZ[write_index++] = page_map.arrayZ[i];
       }
       compact (compact_workspace, write_index);
@@ -332,549 +332,549 @@ struct hb_bit_set_t
   }
 
 
-  public:
-  void del_range (hb_codepoint_t a, hb_codepoint_t b)
+  عمومی:
+  تهی del_range (hb_codepoint_t a, hb_codepoint_t b)
   {
-    if (unlikely (!successful)) return;
-    if (unlikely (a > b || a == INVALID)) return;
+    اگر (unlikely (!successful)) بازگشت;
+    اگر (unlikely (a > b || a == INVALID)) بازگشت;
     dirty ();
-    unsigned int ma = get_major (a);
-    unsigned int mb = get_major (b);
+    unsigned صحیح ma = get_major (a);
+    unsigned صحیح mb = get_major (b);
     /* Delete pages from ds through de if ds <= de. */
-    int ds = (a == major_start (ma))? (int) ma: (int) (ma + 1);
-    int de = (b + 1 == major_start (mb + 1))? (int) mb: ((int) mb - 1);
-    if (ds > de || (int) ma < ds)
+    صحیح ds = (a == major_start (ma))? (صحیح) ma: (صحیح) (ma + 1);
+    صحیح de = (b + 1 == major_start (mb + 1))? (صحیح) mb: ((صحیح) mb - 1);
+    اگر (ds > de || (صحیح) ma < ds)
     {
       page_t *page = page_for (a);
-      if (page)
+      اگر (page)
       {
-	if (ma == mb)
+	اگر (ma == mb)
 	  page->del_range (a, b);
-	else
+	وگرنه
 	  page->del_range (a, major_start (ma + 1) - 1);
       }
     }
-    if (de < (int) mb && ma != mb)
+    اگر (de < (صحیح) mb && ma != mb)
     {
       page_t *page = page_for (b);
-      if (page)
+      اگر (page)
 	page->del_range (major_start (mb), b);
     }
     del_pages (ds, de);
   }
 
-  bool get (hb_codepoint_t g) const
+  منطقی get (hb_codepoint_t g) ثابت
   {
-    const page_t *page = page_for (g);
-    if (!page)
-      return false;
-    return page->get (g);
+    ثابت page_t *page = page_for (g);
+    اگر (!page)
+      بازگشت نادرست;
+    بازگشت page->get (g);
   }
-  bool may_have (hb_codepoint_t g) const { return get (g); }
+  منطقی may_have (hb_codepoint_t g) ثابت { بازگشت get (g); }
 
   /* Has interface. */
-  bool operator [] (hb_codepoint_t k) const { return get (k); }
-  bool has (hb_codepoint_t k) const { return (*this)[k]; }
+  منطقی operator [] (hb_codepoint_t k) ثابت { بازگشت get (k); }
+  منطقی has (hb_codepoint_t k) ثابت { بازگشت (*این)[k]; }
   /* Predicate. */
-  bool operator () (hb_codepoint_t k) const { return has (k); }
+  منطقی operator () (hb_codepoint_t k) ثابت { بازگشت has (k); }
 
   /* Sink interface. */
   hb_bit_set_t& operator << (hb_codepoint_t v)
-  { add (v); return *this; }
-  hb_bit_set_t& operator << (const hb_codepoint_pair_t& range)
-  { add_range (range.first, range.second); return *this; }
+  { add (v); بازگشت *این; }
+  hb_bit_set_t& operator << (ثابت hb_codepoint_pair_t& range)
+  { add_range (range.first, range.second); بازگشت *این; }
 
-  bool intersects (const hb_bit_set_t &other) const
+  منطقی intersects (ثابت hb_bit_set_t &other) ثابت
   {
-    unsigned int na = pages.length;
-    unsigned int nb = other.pages.length;
+    unsigned صحیح na = pages.length;
+    unsigned صحیح nb = other.pages.length;
 
-    unsigned int a = 0, b = 0;
-    for (; a < na && b < nb; )
+    unsigned صحیح a = 0, b = 0;
+    برای (; a < na && b < nb; )
     {
-      if (page_map.arrayZ[a].major == other.page_map.arrayZ[b].major)
+      اگر (page_map.arrayZ[a].major == other.page_map.arrayZ[b].major)
       {
-	if (page_at (a).intersects (other.page_at (b)))
-	  return true;
+	اگر (page_at (a).intersects (other.page_at (b)))
+	  بازگشت درست;
 	a++;
 	b++;
       }
-      else if (page_map.arrayZ[a].major < other.page_map.arrayZ[b].major)
+      وگرنه اگر (page_map.arrayZ[a].major < other.page_map.arrayZ[b].major)
 	a++;
-      else
+      وگرنه
 	b++;
     }
-    return false;
+    بازگشت نادرست;
   }
-  bool may_intersect (const hb_bit_set_t &other) const
-  { return intersects (other); }
+  منطقی may_intersect (ثابت hb_bit_set_t &other) ثابت
+  { بازگشت intersects (other); }
 
-  bool intersects (hb_codepoint_t first, hb_codepoint_t last) const
+  منطقی intersects (hb_codepoint_t first, hb_codepoint_t last) ثابت
   {
     hb_codepoint_t c = first - 1;
-    return next (&c) && c <= last;
+    بازگشت next (&c) && c <= last;
   }
-  void set (const hb_bit_set_t &other, bool exact_size = false)
+  تهی set (ثابت hb_bit_set_t &other, منطقی exact_size = نادرست)
   {
-    if (unlikely (!successful)) return;
-    unsigned int count = other.pages.length;
-    if (unlikely (!resize  (count, false, exact_size)))
-      return;
+    اگر (unlikely (!successful)) بازگشت;
+    unsigned صحیح شمار = other.pages.length;
+    اگر (unlikely (!resize  (شمار, نادرست, exact_size)))
+      بازگشت;
     population = other.population;
 
     page_map = other.page_map;
     pages = other.pages;
   }
 
-  bool is_equal (const hb_bit_set_t &other) const
+  منطقی is_equal (ثابت hb_bit_set_t &other) ثابت
   {
-    if (has_population () && other.has_population () &&
+    اگر (has_population () && other.has_population () &&
 	population != other.population)
-      return false;
+      بازگشت نادرست;
 
-    unsigned int na = pages.length;
-    unsigned int nb = other.pages.length;
+    unsigned صحیح na = pages.length;
+    unsigned صحیح nb = other.pages.length;
 
-    unsigned int a = 0, b = 0;
-    for (; a < na && b < nb; )
+    unsigned صحیح a = 0, b = 0;
+    برای (; a < na && b < nb; )
     {
-      if (page_at (a).is_empty ()) { a++; continue; }
-      if (other.page_at (b).is_empty ()) { b++; continue; }
-      if (page_map.arrayZ[a].major != other.page_map.arrayZ[b].major ||
+      اگر (page_at (a).is_empty ()) { a++; ادامه; }
+      اگر (other.page_at (b).is_empty ()) { b++; ادامه; }
+      اگر (page_map.arrayZ[a].major != other.page_map.arrayZ[b].major ||
 	  !page_at (a).is_equal (other.page_at (b)))
-	return false;
+	بازگشت نادرست;
       a++;
       b++;
     }
-    for (; a < na; a++)
-      if (!page_at (a).is_empty ()) { return false; }
-    for (; b < nb; b++)
-      if (!other.page_at (b).is_empty ()) { return false; }
+    برای (; a < na; a++)
+      اگر (!page_at (a).is_empty ()) { بازگشت نادرست; }
+    برای (; b < nb; b++)
+      اگر (!other.page_at (b).is_empty ()) { بازگشت نادرست; }
 
-    return true;
+    بازگشت درست;
   }
 
-  bool is_subset (const hb_bit_set_t &larger_set) const
+  منطقی is_subset (ثابت hb_bit_set_t &larger_set) ثابت
   {
-    if (has_population () && larger_set.has_population () &&
+    اگر (has_population () && larger_set.has_population () &&
 	population > larger_set.population)
-      return false;
+      بازگشت نادرست;
 
     uint32_t spi = 0;
     uint32_t lpi = 0;
-    while (spi < page_map.length && lpi < larger_set.page_map.length)
+    وقتی (spi < page_map.length && lpi < larger_set.page_map.length)
     {
       uint32_t spm = page_map.arrayZ[spi].major;
       uint32_t lpm = larger_set.page_map.arrayZ[lpi].major;
       auto sp = page_at (spi);
 
-      if (spm < lpm) {
-        if (!sp.is_empty ())
-          return false;
+      اگر (spm < lpm) {
+        اگر (!sp.is_empty ())
+          بازگشت نادرست;
         spi++;
-        continue;
+        ادامه;
       }
 
-      if (lpm < spm) {
+      اگر (lpm < spm) {
         lpi++;
-        continue;
+        ادامه;
       }
 
       auto lp = larger_set.page_at (lpi);
-      if (!sp.is_subset (lp))
-        return false;
+      اگر (!sp.is_subset (lp))
+        بازگشت نادرست;
 
       spi++;
       lpi++;
     }
 
-    while (spi < page_map.length)
-      if (!page_at (spi++).is_empty ())
-        return false;
+    وقتی (spi < page_map.length)
+      اگر (!page_at (spi++).is_empty ())
+        بازگشت نادرست;
 
-    return true;
+    بازگشت درست;
   }
 
-  private:
-  bool allocate_compact_workspace (hb_vector_t<unsigned>& workspace)
+  خصوصی:
+  منطقی allocate_compact_workspace (hb_vector_t<unsigned>& workspace)
   {
-    if (unlikely (!workspace.resize_exact (pages.length)))
+    اگر (unlikely (!workspace.resize_exact (pages.length)))
     {
-      successful = false;
-      return false;
+      successful = نادرست;
+      بازگشت نادرست;
     }
 
-    return true;
+    بازگشت درست;
   }
 
   /*
    * workspace should be a pre-sized vector allocated to hold at exactly pages.length
    * elements.
    */
-  void compact (hb_vector_t<unsigned>& workspace,
-                unsigned int length)
+  تهی compact (hb_vector_t<unsigned>& workspace,
+                unsigned صحیح length)
   {
-    assert(workspace.length == pages.length);
+    أكد(workspace.length == pages.length);
     hb_vector_t<unsigned>& old_index_to_page_map_index = workspace;
 
     hb_fill (old_index_to_page_map_index.writer(), 0xFFFFFFFF);
-    for (unsigned i = 0; i < length; i++)
+    برای (unsigned i = 0; i < length; i++)
       old_index_to_page_map_index[page_map[i].index] =  i;
 
     compact_pages (old_index_to_page_map_index);
   }
-  void compact_pages (const hb_vector_t<unsigned>& old_index_to_page_map_index)
+  تهی compact_pages (ثابت hb_vector_t<unsigned>& old_index_to_page_map_index)
   {
-    unsigned int write_index = 0;
-    for (unsigned int i = 0; i < pages.length; i++)
+    unsigned صحیح write_index = 0;
+    برای (unsigned صحیح i = 0; i < pages.length; i++)
     {
-      if (old_index_to_page_map_index[i] == 0xFFFFFFFF) continue;
+      اگر (old_index_to_page_map_index[i] == 0xFFFFFFFF) ادامه;
 
-      if (write_index < i)
+      اگر (write_index < i)
 	pages[write_index] = pages[i];
 
       page_map[old_index_to_page_map_index[i]].index = write_index;
       write_index++;
     }
   }
-  public:
+  عمومی:
 
-  void process_ (hb_bit_page_t::vector_t (*op) (const hb_bit_page_t::vector_t &, const hb_bit_page_t::vector_t &),
-		 bool passthru_left, bool passthru_right,
-		 const hb_bit_set_t &other,
+  تهی process_ (hb_bit_page_t::vector_t (*op) (ثابت hb_bit_page_t::vector_t &, ثابت hb_bit_page_t::vector_t &),
+		 منطقی passthru_چپ, منطقی passthru_راست,
+		 ثابت hb_bit_set_t &other,
 		 hb_vector_t<unsigned> *workspace = nullptr)
   {
-    if (unlikely (!successful)) return;
+    اگر (unlikely (!successful)) بازگشت;
 
     dirty ();
 
-    unsigned int na = pages.length;
-    unsigned int nb = other.pages.length;
-    unsigned int next_page = na;
+    unsigned صحیح na = pages.length;
+    unsigned صحیح nb = other.pages.length;
+    unsigned صحیح next_page = na;
 
-    unsigned int count = 0, newCount = 0;
-    unsigned int a = 0, b = 0;
-    unsigned int write_index = 0;
+    unsigned صحیح شمار = 0, new_شمار = 0;
+    unsigned صحیح a = 0, b = 0;
+    unsigned صحیح write_index = 0;
 
     // Pre-allocate the workspace that compact() will need so we can bail on allocation failure
     // before attempting to rewrite the page map.
     hb_vector_t<unsigned> local_workspace;
     hb_vector_t<unsigned> &compact_workspace = workspace ? *workspace : local_workspace;
-    if (!passthru_left)
+    اگر (!passthru_چپ)
     {
-      bool allocated = workspace ? compact_workspace.resize (pages.length)
+      منطقی allocated = workspace ? compact_workspace.resize (pages.length)
 				 : allocate_compact_workspace (compact_workspace);
-      if (unlikely (!allocated))
+      اگر (unlikely (!allocated))
       {
-	successful = false;
-	return;
+	successful = نادرست;
+	بازگشت;
       }
     }
 
-    for (; a < na && b < nb; )
+    برای (; a < na && b < nb; )
     {
-      if (page_map.arrayZ[a].major == other.page_map.arrayZ[b].major)
+      اگر (page_map.arrayZ[a].major == other.page_map.arrayZ[b].major)
       {
-	if (!passthru_left)
+	اگر (!passthru_چپ)
 	{
 	  // Move page_map entries that we're keeping from the left side set
 	  // to the front of the page_map vector. This isn't necessary if
 	  // passthru_left is set since no left side pages will be removed
 	  // in that case.
-	  if (write_index < a)
+	  اگر (write_index < a)
 	    page_map.arrayZ[write_index] = page_map.arrayZ[a];
 	  write_index++;
 	}
 
-	count++;
+	شمار++;
 	a++;
 	b++;
       }
-      else if (page_map.arrayZ[a].major < other.page_map.arrayZ[b].major)
+      وگرنه اگر (page_map.arrayZ[a].major < other.page_map.arrayZ[b].major)
       {
-	if (passthru_left)
-	  count++;
+	اگر (passthru_چپ)
+	  شمار++;
 	a++;
       }
-      else
+      وگرنه
       {
-	if (passthru_right)
-	  count++;
+	اگر (passthru_راست)
+	  شمار++;
 	b++;
       }
     }
-    if (passthru_left)
-      count += na - a;
-    if (passthru_right)
-      count += nb - b;
+    اگر (passthru_چپ)
+      شمار += na - a;
+    اگر (passthru_راست)
+      شمار += nb - b;
 
-    if (!passthru_left)
+    اگر (!passthru_چپ)
     {
       na  = write_index;
       next_page = write_index;
       compact (compact_workspace, write_index);
     }
 
-    if (unlikely (!resize (count)))
-      return;
+    اگر (unlikely (!resize (شمار)))
+      بازگشت;
 
-    newCount = count;
+    new_شمار = شمار;
 
     /* Process in-place backward. */
     a = na;
     b = nb;
-    for (; a && b; )
+    برای (; a && b; )
     {
-      if (page_map.arrayZ[a - 1].major == other.page_map.arrayZ[b - 1].major)
+      اگر (page_map.arrayZ[a - 1].major == other.page_map.arrayZ[b - 1].major)
       {
 	a--;
 	b--;
-	count--;
-	page_map.arrayZ[count] = page_map.arrayZ[a];
-	page_at (count).v = op (page_at (a).v, other.page_at (b).v);
-	page_at (count).dirty ();
+	شمار--;
+	page_map.arrayZ[شمار] = page_map.arrayZ[a];
+	page_at (شمار).v = op (page_at (a).v, other.page_at (b).v);
+	page_at (شمار).dirty ();
       }
-      else if (page_map.arrayZ[a - 1].major > other.page_map.arrayZ[b - 1].major)
+      وگرنه اگر (page_map.arrayZ[a - 1].major > other.page_map.arrayZ[b - 1].major)
       {
 	a--;
-	if (passthru_left)
+	اگر (passthru_چپ)
 	{
-	  count--;
-	  page_map.arrayZ[count] = page_map.arrayZ[a];
+	  شمار--;
+	  page_map.arrayZ[شمار] = page_map.arrayZ[a];
 	}
       }
-      else
+      وگرنه
       {
 	b--;
-	if (passthru_right)
+	اگر (passthru_راست)
 	{
-	  count--;
-	  page_map.arrayZ[count].major = other.page_map.arrayZ[b].major;
-	  page_map.arrayZ[count].index = next_page++;
-	  page_at (count) = other.page_at (b);
+	  شمار--;
+	  page_map.arrayZ[شمار].major = other.page_map.arrayZ[b].major;
+	  page_map.arrayZ[شمار].index = next_page++;
+	  page_at (شمار) = other.page_at (b);
 	}
       }
     }
-    if (passthru_left)
-      while (a)
+    اگر (passthru_چپ)
+      وقتی (a)
       {
 	a--;
-	count--;
-	page_map.arrayZ[count] = page_map.arrayZ[a];
+	شمار--;
+	page_map.arrayZ[شمار] = page_map.arrayZ[a];
       }
-    if (passthru_right)
-      while (b)
+    اگر (passthru_راست)
+      وقتی (b)
       {
 	b--;
-	count--;
-	page_map.arrayZ[count].major = other.page_map.arrayZ[b].major;
-	page_map.arrayZ[count].index = next_page++;
-	page_at (count) = other.page_at (b);
+	شمار--;
+	page_map.arrayZ[شمار].major = other.page_map.arrayZ[b].major;
+	page_map.arrayZ[شمار].index = next_page++;
+	page_at (شمار) = other.page_at (b);
       }
-    assert (!count);
-    resize (newCount);
+    أكد (!شمار);
+    resize (new_شمار);
   }
   template <typename Op>
-  static hb_bit_page_t::vector_t
-  op_ (const hb_bit_page_t::vector_t &a, const hb_bit_page_t::vector_t &b)
-  { return Op{} (a, b); }
+  ایستا hb_bit_page_t::vector_t
+  op_ (ثابت hb_bit_page_t::vector_t &a, ثابت hb_bit_page_t::vector_t &b)
+  { بازگشت Op{} (a, b); }
   template <typename Op>
-  void process (const Op& op,
-		const hb_bit_set_t &other,
+  تهی process (ثابت Op& op,
+		ثابت hb_bit_set_t &other,
 		hb_vector_t<unsigned> *workspace = nullptr)
   {
     process_ (op_<Op>, op (1, 0), op (0, 1), other, workspace);
   }
 
-  void union_ (const hb_bit_set_t &other) { process (hb_bitwise_or, other); }
-  void intersect (const hb_bit_set_t &other,
+  تهی union_ (ثابت hb_bit_set_t &other) { process (hb_bitwise_or, other); }
+  تهی intersect (ثابت hb_bit_set_t &other,
 		  hb_vector_t<unsigned> *workspace = nullptr)
   { process (hb_bitwise_and, other, workspace); }
-  void subtract (const hb_bit_set_t &other) { process (hb_bitwise_gt, other); }
-  void symmetric_difference (const hb_bit_set_t &other) { process (hb_bitwise_xor, other); }
+  تهی subtract (ثابت hb_bit_set_t &other) { process (hb_bitwise_gt, other); }
+  تهی symmetric_difference (ثابت hb_bit_set_t &other) { process (hb_bitwise_xor, other); }
 
-  bool next (hb_codepoint_t *codepoint) const
+  منطقی next (hb_codepoint_t *codepoint) ثابت
   {
-    if (unlikely (*codepoint == INVALID)) {
+    اگر (unlikely (*codepoint == INVALID)) {
       *codepoint = get_min ();
-      return *codepoint != INVALID;
+      بازگشت *codepoint != INVALID;
     }
 
-    const auto* page_map_array = page_map.arrayZ;
-    unsigned int major = get_major (*codepoint);
-    unsigned int i = last_page_lookup;
+    ثابت auto* page_map_array = page_map.arrayZ;
+    unsigned صحیح major = get_major (*codepoint);
+    unsigned صحیح i = last_page_lookup;
 
-    if (unlikely (i >= page_map.length || page_map_array[i].major != major))
+    اگر (unlikely (i >= page_map.length || page_map_array[i].major != major))
     {
       page_map.bfind (major, &i, HB_NOT_FOUND_STORE_CLOSEST);
-      if (i >= page_map.length) {
+      اگر (i >= page_map.length) {
         *codepoint = INVALID;
-        return false;
+        بازگشت نادرست;
       }
       last_page_lookup = i;
     }
 
-    const auto* pages_array = pages.arrayZ;
-    const page_map_t &current = page_map_array[i];
-    if (likely (current.major == major))
+    ثابت auto* pages_array = pages.arrayZ;
+    ثابت page_map_t &current = page_map_array[i];
+    اگر (likely (current.major == major))
     {
-      if (pages_array[current.index].next (codepoint))
+      اگر (pages_array[current.index].next (codepoint))
       {
         *codepoint += current.major * page_t::PAGE_BITS;
-        return true;
+        بازگشت درست;
       }
       i++;
     }
 
-    for (; i < page_map.length; i++)
+    برای (; i < page_map.length; i++)
     {
-      const page_map_t &current = page_map_array[i];
+      ثابت page_map_t &current = page_map_array[i];
       hb_codepoint_t m = pages_array[current.index].get_min ();
-      if (m != INVALID)
+      اگر (m != INVALID)
       {
 	*codepoint = current.major * page_t::PAGE_BITS + m;
         last_page_lookup = i;
-	return true;
+	بازگشت درست;
       }
     }
     *codepoint = INVALID;
-    return false;
+    بازگشت نادرست;
   }
-  bool next_bits (hb_codepoint_t *codepoint, uint64_t *bits) const
+  منطقی next_bits (hb_codepoint_t *codepoint, uint64_t *bits) ثابت
   {
     static_assert (page_t::ELT_BITS == 64, "");
 
-    unsigned int i = 0;
-    unsigned int elt = 0;
-    if (likely (*codepoint != INVALID))
+    unsigned صحیح i = 0;
+    unsigned صحیح elt = 0;
+    اگر (likely (*codepoint != INVALID))
     {
       hb_codepoint_t base = *codepoint & ~page_t::ELT_MASK;
-      if (unlikely (base >= INVALID - page_t::ELT_BITS + 1))
-        goto done;
+      اگر (unlikely (base >= INVALID - page_t::ELT_BITS + 1))
+        برو done;
       base += page_t::ELT_BITS;
 
-      unsigned int major = get_major (base);
+      unsigned صحیح major = get_major (base);
       i = last_page_lookup;
-      if (unlikely (i >= page_map.length || page_map.arrayZ[i].major != major))
+      اگر (unlikely (i >= page_map.length || page_map.arrayZ[i].major != major))
       {
 	page_map.bfind (major, &i, HB_NOT_FOUND_STORE_CLOSEST);
-	if (i >= page_map.length)
-	  goto done;
+	اگر (i >= page_map.length)
+	  برو done;
       }
-      if (page_map.arrayZ[i].major == major)
+      اگر (page_map.arrayZ[i].major == major)
 	elt = page_remainder (base) / page_t::ELT_BITS;
     }
 
-    for (; i < page_map.length; i++, elt = 0)
+    برای (; i < page_map.length; i++, elt = 0)
     {
-      const page_map_t &map = page_map.arrayZ[i];
-      const page_t &page = pages.arrayZ[map.index];
-      for (; elt < page_t::len (); elt++)
-	if (page.v[elt])
+      ثابت page_map_t &map = page_map.arrayZ[i];
+      ثابت page_t &page = pages.arrayZ[map.index];
+      برای (; elt < page_t::len (); elt++)
+	اگر (page.v[elt])
 	{
 	  *codepoint = major_start (map.major) + elt * page_t::ELT_BITS;
 	  *bits = page.v[elt];
 	  last_page_lookup = i;
-	  return true;
+	  بازگشت درست;
 	}
     }
 
   done:
     *codepoint = INVALID;
     *bits = 0;
-    return false;
+    بازگشت نادرست;
   }
-  bool previous (hb_codepoint_t *codepoint) const
+  منطقی previous (hb_codepoint_t *codepoint) ثابت
   {
-    if (unlikely (*codepoint == INVALID)) {
+    اگر (unlikely (*codepoint == INVALID)) {
       *codepoint = get_max ();
-      return *codepoint != INVALID;
+      بازگشت *codepoint != INVALID;
     }
 
     page_map_t map = {get_major (*codepoint), 0};
-    unsigned int i;
+    unsigned صحیح i;
     page_map.bfind (map, &i, HB_NOT_FOUND_STORE_CLOSEST);
-    if (i < page_map.length && page_map.arrayZ[i].major == map.major)
+    اگر (i < page_map.length && page_map.arrayZ[i].major == map.major)
     {
-      if (pages[page_map.arrayZ[i].index].previous (codepoint))
+      اگر (pages[page_map.arrayZ[i].index].previous (codepoint))
       {
 	*codepoint += page_map.arrayZ[i].major * page_t::PAGE_BITS;
-	return true;
+	بازگشت درست;
       }
     }
     i--;
-    for (; (int) i >= 0; i--)
+    برای (; (صحیح) i >= 0; i--)
     {
       hb_codepoint_t m = pages.arrayZ[page_map.arrayZ[i].index].get_max ();
-      if (m != INVALID)
+      اگر (m != INVALID)
       {
 	*codepoint = page_map.arrayZ[i].major * page_t::PAGE_BITS + m;
-	return true;
+	بازگشت درست;
       }
     }
     *codepoint = INVALID;
-    return false;
+    بازگشت نادرست;
   }
-  bool next_range (hb_codepoint_t *first, hb_codepoint_t *last) const
+  منطقی next_range (hb_codepoint_t *first, hb_codepoint_t *last) ثابت
   {
     hb_codepoint_t i;
 
     i = *last;
-    if (!next (&i))
+    اگر (!next (&i))
     {
       *last = *first = INVALID;
-      return false;
+      بازگشت نادرست;
     }
 
     *last = *first = i;
 
-    const auto* page_map_array = page_map.arrayZ;
-    const auto* pages_array = pages.arrayZ;
-    unsigned int major = get_major (*last);
-    unsigned int p_index = last_page_lookup;
+    ثابت auto* page_map_array = page_map.arrayZ;
+    ثابت auto* pages_array = pages.arrayZ;
+    unsigned صحیح major = get_major (*last);
+    unsigned صحیح p_index = last_page_lookup;
 
-    if (unlikely (p_index >= page_map.length || page_map_array[p_index].major != major))
+    اگر (unlikely (p_index >= page_map.length || page_map_array[p_index].major != major))
     {
       page_map.bfind (major, &p_index, HB_NOT_FOUND_STORE_CLOSEST);
       // The above next() call gaurantees the page we're looking for exists.
-      assert(p_index < page_map.length && page_map_array[p_index].major == major);
+      أكد(p_index < page_map.length && page_map_array[p_index].major == major);
       last_page_lookup = p_index;
     }
 
-    unsigned int rem = page_remainder (*last);
-    unsigned int elt = rem / page_t::ELT_BITS;
-    unsigned int bit = rem & page_t::ELT_MASK;
+    unsigned صحیح rem = page_remainder (*last);
+    unsigned صحیح elt = rem / page_t::ELT_BITS;
+    unsigned صحیح bit = rem & page_t::ELT_MASK;
 
-    const page_t *page = &pages_array[page_map_array[p_index].index];
-    unsigned int run = hb_ctz (~(page->v[elt] >> bit));
+    ثابت page_t *page = &pages_array[page_map_array[p_index].index];
+    unsigned صحیح run = hb_ctz (~(page->v[elt] >> bit));
     *last += run - 1;
-    if (run < page_t::ELT_BITS - bit)
-      return true;
+    اگر (run < page_t::ELT_BITS - bit)
+      بازگشت درست;
 
     elt++;
 
-    while (true)
+    وقتی (درست)
     {
-      for (; elt < page_t::len (); elt++)
+      برای (; elt < page_t::len (); elt++)
       {
         uint64_t w = page->v[elt];
-        if (w == (uint64_t) -1)
+        اگر (w == (uint64_t) -1)
         {
           *last += page_t::ELT_BITS;
-          continue;
+          ادامه;
         }
         uint64_t inv = ~w;
         *last += hb_ctz (inv);
-        return true;
+        بازگشت درست;
       }
 
       p_index++;
 
 
-      if (p_index >= page_map.length || page_map_array[p_index].major != major + 1)
-        return true;
+      اگر (p_index >= page_map.length || page_map_array[p_index].major != major + 1)
+        بازگشت درست;
 
-      const auto& entry = page_map_array[p_index];
+      ثابت auto& entry = page_map_array[p_index];
       major = entry.major;
       last_page_lookup = p_index;
       page = &pages_array[entry.index];
@@ -882,67 +882,67 @@ struct hb_bit_set_t
     }
   }
 
-  bool previous_range (hb_codepoint_t *first, hb_codepoint_t *last) const
+  منطقی previous_range (hb_codepoint_t *first, hb_codepoint_t *last) ثابت
   {
     hb_codepoint_t i;
 
     i = *first;
-    if (!previous (&i))
+    اگر (!previous (&i))
     {
       *last = *first = INVALID;
-      return false;
+      بازگشت نادرست;
     }
 
     *last = *first = i;
 
-    const auto* page_map_array = page_map.arrayZ;
-    const auto* pages_array = pages.arrayZ;
-    unsigned int major = get_major (*first);
-    unsigned int p_index = last_page_lookup;
+    ثابت auto* page_map_array = page_map.arrayZ;
+    ثابت auto* pages_array = pages.arrayZ;
+    unsigned صحیح major = get_major (*first);
+    unsigned صحیح p_index = last_page_lookup;
 
-    if (unlikely (p_index >= page_map.length || page_map_array[p_index].major != major))
+    اگر (unlikely (p_index >= page_map.length || page_map_array[p_index].major != major))
     {
       page_map.bfind (major, &p_index, HB_NOT_FOUND_STORE_CLOSEST);
       // The above previous() call gaurantees the page we're looking for exists.
-      assert(p_index < page_map.length && page_map_array[p_index].major == major);
+      أكد(p_index < page_map.length && page_map_array[p_index].major == major);
       last_page_lookup = p_index;
     }
 
-    unsigned int rem = page_remainder (*first);
-    int elt = rem / page_t::ELT_BITS;
-    unsigned int bit = rem & page_t::ELT_MASK;
+    unsigned صحیح rem = page_remainder (*first);
+    صحیح elt = rem / page_t::ELT_BITS;
+    unsigned صحیح bit = rem & page_t::ELT_MASK;
 
-    const page_t *page = &pages_array[page_map_array[p_index].index];
+    ثابت page_t *page = &pages_array[page_map_array[p_index].index];
     uint64_t inv = ~(page->v[elt] << (63 - bit));
-    unsigned int run = hb_bit_storage (inv) ? (page_t::ELT_BITS - hb_bit_storage (inv)) : page_t::ELT_BITS;
+    unsigned صحیح run = hb_bit_storage (inv) ? (page_t::ELT_BITS - hb_bit_storage (inv)) : page_t::ELT_BITS;
     *first -= run - 1;
-    if (run < bit + 1)
-      return true;
+    اگر (run < bit + 1)
+      بازگشت درست;
 
     elt--;
 
-    while (true)
+    وقتی (درست)
     {
-      for (; elt >= 0; elt--)
+      برای (; elt >= 0; elt--)
       {
         uint64_t w = page->v[elt];
-        if (w == (uint64_t) -1)
+        اگر (w == (uint64_t) -1)
         {
           *first -= page_t::ELT_BITS;
-          continue;
+          ادامه;
         }
         uint64_t inv = ~w;
-        unsigned int zeros = hb_bit_storage (inv) ? (page_t::ELT_BITS - hb_bit_storage (inv)) : page_t::ELT_BITS;
+        unsigned صحیح zeros = hb_bit_storage (inv) ? (page_t::ELT_BITS - hb_bit_storage (inv)) : page_t::ELT_BITS;
         *first -= zeros;
-        return true;
+        بازگشت درست;
       }
 
 
-      if (p_index == 0 || page_map_array[p_index - 1].major != major - 1)
-        return true;
+      اگر (p_index == 0 || page_map_array[p_index - 1].major != major - 1)
+        بازگشت درست;
 
       p_index--;
-      const auto& entry = page_map_array[p_index];
+      ثابت auto& entry = page_map_array[p_index];
 
       major = entry.major;
       last_page_lookup = p_index;
@@ -951,219 +951,219 @@ struct hb_bit_set_t
     }
   }
 
-  unsigned int next_many (hb_codepoint_t  codepoint,
+  unsigned صحیح next_many (hb_codepoint_t  codepoint,
 			  hb_codepoint_t *out,
-			  unsigned int    size) const
+			  unsigned صحیح    size) ثابت
   {
     // By default, start at the first bit of the first page of values.
-    unsigned int start_page = 0;
-    unsigned int start_page_value = 0;
-    if (unlikely (codepoint != INVALID))
+    unsigned صحیح start_page = 0;
+    unsigned صحیح start_page_مقدار = 0;
+    اگر (unlikely (codepoint != INVALID))
     {
-      const auto* page_map_array = page_map.arrayZ;
-      unsigned int major = get_major (codepoint);
-      unsigned int i = last_page_lookup;
-      if (unlikely (i >= page_map.length || page_map_array[i].major != major))
+      ثابت auto* page_map_array = page_map.arrayZ;
+      unsigned صحیح major = get_major (codepoint);
+      unsigned صحیح i = last_page_lookup;
+      اگر (unlikely (i >= page_map.length || page_map_array[i].major != major))
       {
 	page_map.bfind (major, &i, HB_NOT_FOUND_STORE_CLOSEST);
-	if (i >= page_map.length)
-	  return 0;  // codepoint is greater than our max element.
+	اگر (i >= page_map.length)
+	  بازگشت 0;  // codepoint is greater than our max element.
       }
       start_page = i;
-      if (page_map_array[i].major == major)
+      اگر (page_map_array[i].major == major)
       {
-        start_page_value = page_remainder (codepoint + 1);
-        if (unlikely (start_page_value == 0))
+        start_page_مقدار = page_remainder (codepoint + 1);
+        اگر (unlikely (start_page_مقدار == 0))
         {
           // The export-after value was last in the page. Start on next page.
           start_page++;
-          start_page_value = 0;
+          start_page_مقدار = 0;
         }
       }
     }
 
-    unsigned int initial_size = size;
-    for (unsigned int i = start_page; i < page_map.length && size; i++)
+    unsigned صحیح initial_size = size;
+    برای (unsigned صحیح i = start_page; i < page_map.length && size; i++)
     {
       uint32_t base = major_start (page_map.arrayZ[i].major);
-      unsigned int n = pages[page_map.arrayZ[i].index].write (base, start_page_value, out, size);
+      unsigned صحیح n = pages[page_map.arrayZ[i].index].اكتب (base, start_page_مقدار, out, size);
       out += n;
       size -= n;
-      start_page_value = 0;
+      start_page_مقدار = 0;
     }
-    return initial_size - size;
+    بازگشت initial_size - size;
   }
 
-  unsigned int next_many_inverted (hb_codepoint_t  codepoint,
+  unsigned صحیح next_many_inverted (hb_codepoint_t  codepoint,
 				   hb_codepoint_t *out,
-				   unsigned int    size) const
+				   unsigned صحیح    size) ثابت
   {
-    unsigned int initial_size = size;
+    unsigned صحیح initial_size = size;
     // By default, start at the first bit of the first page of values.
-    unsigned int start_page = 0;
-    unsigned int start_page_value = 0;
-    if (unlikely (codepoint != INVALID))
+    unsigned صحیح start_page = 0;
+    unsigned صحیح start_page_مقدار = 0;
+    اگر (unlikely (codepoint != INVALID))
     {
-      const auto* page_map_array = page_map.arrayZ;
-      unsigned int major = get_major (codepoint);
-      unsigned int i = last_page_lookup;
-      if (unlikely (i >= page_map.length || page_map_array[i].major != major))
+      ثابت auto* page_map_array = page_map.arrayZ;
+      unsigned صحیح major = get_major (codepoint);
+      unsigned صحیح i = last_page_lookup;
+      اگر (unlikely (i >= page_map.length || page_map_array[i].major != major))
       {
         page_map.bfind(major, &i, HB_NOT_FOUND_STORE_CLOSEST);
-        if (unlikely (i >= page_map.length))
+        اگر (unlikely (i >= page_map.length))
         {
           // codepoint is greater than our max element.
-          while (++codepoint != INVALID && size)
+          وقتی (++codepoint != INVALID && size)
           {
             *out++ = codepoint;
             size--;
           }
-          return initial_size - size;
+          بازگشت initial_size - size;
         }
       }
       start_page = i;
-      if (page_map_array[i].major == major)
+      اگر (page_map_array[i].major == major)
       {
-        start_page_value = page_remainder (codepoint + 1);
-        if (unlikely (start_page_value == 0))
+        start_page_مقدار = page_remainder (codepoint + 1);
+        اگر (unlikely (start_page_مقدار == 0))
         {
           // The export-after value was last in the page. Start on next page.
           start_page++;
-          start_page_value = 0;
+          start_page_مقدار = 0;
         }
       }
     }
 
-    hb_codepoint_t next_value = codepoint + 1;
-    for (unsigned int i=start_page; i<page_map.length && size; i++)
+    hb_codepoint_t next_مقدار = codepoint + 1;
+    برای (unsigned صحیح i=start_page; i<page_map.length && size; i++)
     {
       uint32_t base = major_start (page_map.arrayZ[i].major);
-      unsigned int n = pages[page_map.arrayZ[i].index].write_inverted (base, start_page_value, out, size, &next_value);
+      unsigned صحیح n = pages[page_map.arrayZ[i].index].write_inverted (base, start_page_مقدار, out, size, &next_مقدار);
       out += n;
       size -= n;
-      start_page_value = 0;
+      start_page_مقدار = 0;
     }
-    while (next_value < HB_SET_VALUE_INVALID && size) {
-      *out++ = next_value++;
+    وقتی (next_مقدار < HB_SET_مقدار_INVALID && size) {
+      *out++ = next_مقدار++;
       size--;
     }
-    return initial_size - size;
+    بازگشت initial_size - size;
   }
 
-  bool has_population () const { return population != UINT_MAX; }
-  unsigned int get_population () const
+  منطقی has_population () ثابت { بازگشت population != UINT_MAX; }
+  unsigned صحیح get_population () ثابت
   {
-    if (has_population ())
-      return population;
+    اگر (has_population ())
+      بازگشت population;
 
-    unsigned int pop = 0;
-    unsigned int count = pages.length;
-    for (unsigned int i = 0; i < count; i++)
-      pop += pages[i].get_population ();
+    unsigned صحیح برداشت = 0;
+    unsigned صحیح شمار = pages.length;
+    برای (unsigned صحیح i = 0; i < شمار; i++)
+      برداشت += pages[i].get_population ();
 
-    population = pop;
-    return pop;
+    population = برداشت;
+    بازگشت برداشت;
   }
-  bool get_singleton (hb_codepoint_t *codepoint) const
+  منطقی get_singleton (hb_codepoint_t *codepoint) ثابت
   {
-    if (has_population ())
+    اگر (has_population ())
     {
-      if (population != 1) return false;
+      اگر (population != 1) بازگشت نادرست;
       *codepoint = get_min ();
-      return true;
+      بازگشت درست;
     }
 
     hb_codepoint_t singleton = INVALID;
-    for (const auto &map : page_map)
+    برای (ثابت auto &map : page_map)
     {
-      const auto &page = pages.arrayZ[map.index];
-      for (unsigned i = 0; i < page_t::len (); i++)
+      ثابت auto &page = pages.arrayZ[map.index];
+      برای (unsigned i = 0; i < page_t::len (); i++)
       {
 	page_t::elt_t bits = page.v[i];
-	if (!bits) continue;
-	if (singleton != INVALID || (bits & (bits - 1)))
-	  return false;
+	اگر (!bits) ادامه;
+	اگر (singleton != INVALID || (bits & (bits - 1)))
+	  بازگشت نادرست;
 	singleton = map.major * page_t::PAGE_BITS +
 		    i * page_t::ELT_BITS + hb_ctz (bits);
       }
     }
 
-    if (singleton == INVALID)
+    اگر (singleton == INVALID)
     {
       population = 0;
-      return false;
+      بازگشت نادرست;
     }
     population = 1;
     *codepoint = singleton;
-    return true;
+    بازگشت درست;
   }
-  hb_codepoint_t get_min () const
+  hb_codepoint_t get_min () ثابت
   {
-    unsigned count = pages.length;
-    for (unsigned i = 0; i < count; i++)
+    unsigned شمار = pages.length;
+    برای (unsigned i = 0; i < شمار; i++)
     {
-      const auto& map = page_map.arrayZ[i];
-      const auto& page = pages.arrayZ[map.index];
+      ثابت auto& map = page_map.arrayZ[i];
+      ثابت auto& page = pages.arrayZ[map.index];
 
-      if (!page.is_empty ())
-	return map.major * page_t::PAGE_BITS + page.get_min ();
+      اگر (!page.is_empty ())
+	بازگشت map.major * page_t::PAGE_BITS + page.get_min ();
     }
-    return INVALID;
+    بازگشت INVALID;
   }
-  hb_codepoint_t get_max () const
+  hb_codepoint_t get_max () ثابت
   {
-    unsigned count = pages.length;
-    for (signed i = count - 1; i >= 0; i--)
+    unsigned شمار = pages.length;
+    برای (signed i = شمار - 1; i >= 0; i--)
     {
-      const auto& map = page_map.arrayZ[(unsigned) i];
-      const auto& page = pages.arrayZ[map.index];
+      ثابت auto& map = page_map.arrayZ[(unsigned) i];
+      ثابت auto& page = pages.arrayZ[map.index];
 
-      if (!page.is_empty ())
-	return map.major * page_t::PAGE_BITS + page.get_max ();
+      اگر (!page.is_empty ())
+	بازگشت map.major * page_t::PAGE_BITS + page.get_max ();
     }
-    return INVALID;
+    بازگشت INVALID;
   }
 
-  static constexpr hb_codepoint_t INVALID = page_t::INVALID;
+  ایستا constexpr hb_codepoint_t INVALID = page_t::INVALID;
 
   /*
    * Iterator implementation.
    */
-  struct iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
+  ساختار iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
   {
-    static constexpr bool is_sorted_iterator = true;
-    static constexpr bool has_fast_len = true;
-    iter_t (const hb_bit_set_t &s_ = Null (hb_bit_set_t),
-	    bool init = true) : s (&s_), v (INVALID), l(0)
+    ایستا constexpr منطقی is_sorted_iterator = درست;
+    ایستا constexpr منطقی has_fast_len = درست;
+    iter_t (ثابت hb_bit_set_t &s_ = Null (hb_bit_set_t),
+	    منطقی init = درست) : s (&s_), v (INVALID), l(0)
     {
-      if (init)
+      اگر (init)
       {
 	l = s->get_population () + 1;
 	__next__ ();
       }
     }
 
-    typedef hb_codepoint_t __item_t__;
-    hb_codepoint_t __item__ () const { return v; }
-    bool __more__ () const { return v != INVALID; }
-    void __next__ () { s->next (&v); if (l) l--; }
-    void __prev__ () { s->previous (&v); }
-    unsigned __len__ () const { return l; }
-    iter_t end () const { return iter_t (*s, false); }
-    bool operator != (const iter_t& o) const
-    { return v != o.v; }
+    تعریفنوع hb_codepoint_t __item_t__;
+    hb_codepoint_t __item__ () ثابت { بازگشت v; }
+    منطقی __more__ () ثابت { بازگشت v != INVALID; }
+    تهی __next__ () { s->next (&v); اگر (l) l--; }
+    تهی __prev__ () { s->previous (&v); }
+    unsigned __len__ () ثابت { بازگشت l; }
+    iter_t end () ثابت { بازگشت iter_t (*s, نادرست); }
+    منطقی operator != (ثابت iter_t& o) ثابت
+    { بازگشت v != o.v; }
 
-    protected:
-    const hb_bit_set_t *s;
+    محافظتشده:
+    ثابت hb_bit_set_t *s;
     hb_codepoint_t v;
     unsigned l;
   };
-  iter_t iter () const { return iter_t (*this); }
-  operator iter_t () const { return iter (); }
+  iter_t iter () ثابت { بازگشت iter_t (*این); }
+  operator iter_t () ثابت { بازگشت iter (); }
 
-  protected:
+  محافظتشده:
 
-  page_t *page_for (hb_codepoint_t g, bool insert = false)
+  page_t *page_for (hb_codepoint_t g, منطقی insert = نادرست)
   {
     unsigned major = get_major (g);
 
@@ -1171,21 +1171,21 @@ struct hb_bit_set_t
      * since the next check would be tricked because a null page also has
      * major==0, which we can't distinguish from an actually major==0 page... */
     unsigned i = last_page_lookup;
-    if (likely (i < page_map.length))
+    اگر (likely (i < page_map.length))
     {
       auto &cached_page = page_map.arrayZ[i];
-      if (cached_page.major == major)
-	return &pages.arrayZ[cached_page.index];
+      اگر (cached_page.major == major)
+	بازگشت &pages.arrayZ[cached_page.index];
     }
 
     page_map_t map = {major, pages.length};
-    if (!page_map.bfind (map, &i, HB_NOT_FOUND_STORE_CLOSEST))
+    اگر (!page_map.bfind (map, &i, HB_NOT_FOUND_STORE_CLOSEST))
     {
-      if (!insert)
-        return nullptr;
+      اگر (!insert)
+        بازگشت nullptr;
 
-      if (unlikely (!resize (pages.length + 1)))
-	return nullptr;
+      اگر (unlikely (!resize (pages.length + 1)))
+	بازگشت nullptr;
 
       pages.arrayZ[map.index].init0 ();
       memmove (page_map.arrayZ + i + 1,
@@ -1195,9 +1195,9 @@ struct hb_bit_set_t
     }
 
     last_page_lookup = i;
-    return &pages.arrayZ[page_map.arrayZ[i].index];
+    بازگشت &pages.arrayZ[page_map.arrayZ[i].index];
   }
-  const page_t *page_for (hb_codepoint_t g) const
+  ثابت page_t *page_for (hb_codepoint_t g) ثابت
   {
     unsigned major = get_major (g);
 
@@ -1205,33 +1205,33 @@ struct hb_bit_set_t
      * since the next check would be tricked because a null page also has
      * major==0, which we can't distinguish from an actually major==0 page... */
     unsigned i = last_page_lookup;
-    if (likely (i < page_map.length))
+    اگر (likely (i < page_map.length))
     {
       auto &cached_page = page_map.arrayZ[i];
-      if (cached_page.major == major)
-	return &pages.arrayZ[cached_page.index];
+      اگر (cached_page.major == major)
+	بازگشت &pages.arrayZ[cached_page.index];
     }
 
     page_map_t key = {major};
-    if (!page_map.bfind (key, &i))
-      return nullptr;
+    اگر (!page_map.bfind (key, &i))
+      بازگشت nullptr;
 
     last_page_lookup = i;
-    return &pages.arrayZ[page_map.arrayZ[i].index];
+    بازگشت &pages.arrayZ[page_map.arrayZ[i].index];
   }
-  page_t &page_at (unsigned int i)
+  page_t &page_at (unsigned صحیح i)
   {
-    assert (i < page_map.length);
-    return pages.arrayZ[page_map.arrayZ[i].index];
+    أكد (i < page_map.length);
+    بازگشت pages.arrayZ[page_map.arrayZ[i].index];
   }
-  const page_t &page_at (unsigned int i) const
+  ثابت page_t &page_at (unsigned صحیح i) ثابت
   {
-    assert (i < page_map.length);
-    return pages.arrayZ[page_map.arrayZ[i].index];
+    أكد (i < page_map.length);
+    بازگشت pages.arrayZ[page_map.arrayZ[i].index];
   }
-  unsigned int get_major (hb_codepoint_t g) const { return g >> page_t::PAGE_BITS_LOG_2; }
-  unsigned int page_remainder (hb_codepoint_t g) const { return g & page_t::PAGE_BITMASK; }
-  hb_codepoint_t major_start (unsigned int major) const { return major << page_t::PAGE_BITS_LOG_2; }
+  unsigned صحیح get_major (hb_codepoint_t g) ثابت { بازگشت g >> page_t::PAGE_BITS_LOG_2; }
+  unsigned صحیح page_remainder (hb_codepoint_t g) ثابت { بازگشت g & page_t::PAGE_BITMASK; }
+  hb_codepoint_t major_start (unsigned صحیح major) ثابت { بازگشت major << page_t::PAGE_BITS_LOG_2; }
 };
 
 

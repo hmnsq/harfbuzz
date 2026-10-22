@@ -1,105 +1,105 @@
 #ifndef OT_LAYOUT_GPOS_SINGLEPOSFORMAT2_HH
 #define OT_LAYOUT_GPOS_SINGLEPOSFORMAT2_HH
 
-#include "Common.hh"
+#شامل "Common.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+فضاینام OT {
+فضاینام Layout {
+فضاینام GPOS_impl {
 
 /* Keep the iterator type independent of the source table width so
  * the output serializers can share their instantiations. */
-struct single_pos_value_mapper_t
+ساختار single_pos_مقدار_mapper_t
 {
-  const hb_map_t &glyph_map;
-  const hb_array_t<const Value> &values;
-  const unsigned &sub_length;
+  ثابت hb_map_t &glyph_map;
+  ثابت hb_array_t<ثابت مقدار> &values;
+  ثابت unsigned &sub_length;
 
-  hb_pair_t<hb_codepoint_t, hb_array_t<const Value>>
-  operator () (const hb_pair_t<hb_codepoint_t, unsigned> &_) const
+  hb_pair_t<hb_codepoint_t, hb_array_t<ثابت مقدار>>
+  operator () (ثابت hb_pair_t<hb_codepoint_t, unsigned> &_) ثابت
   {
-    return hb_pair (glyph_map[_.first],
+    بازگشت hb_pair (glyph_map[_.first],
                     values.sub_array (_.second * sub_length, sub_length));
   }
 };
 
 template <typename Types>
-struct SinglePosFormat2_4 : ValueBase
+ساختار SinglePosFormat2_4 : مقدار_Base
 {
-  protected:
+  محافظتشده:
   HBUINT16      format;                 /* Format identifier--format = 2 */
   typename Types::template LOffsetTo<Coverage>
                 coverage;               /* Offset to Coverage table--from
                                          * beginning of subtable */
-  ValueFormat   valueFormat;            /* Defines the types of data in the
+  مقدار_Format   مقدار_Format_2;            /* Defines the types of data in the
                                          * ValueRecord */
   typename Types::HBUINT
-                valueCount;             /* Number of ValueRecords */
-  ValueRecord   values;                 /* Array of ValueRecords--positioning
+                مقدار_شمار;             /* Number of ValueRecords */
+  مقدار_Record   values;                 /* Array of ValueRecords--positioning
                                          * values applied to glyphs */
-  public:
-  DEFINE_SIZE_ARRAY (2 + Types::LOffset::static_size + ValueFormat::static_size + Types::HBUINT::static_size, values);
+  عمومی:
+  DEFINE_SIZE_ARRAY (2 + Types::LOffset::static_size + مقدار_Format::static_size + Types::HBUINT::static_size, values);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-                  coverage.sanitize (c, this) &&
-                  valueFormat.sanitize_values (c, this, values, valueCount));
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این) &&
+                  coverage.sanitize (c, این) &&
+                  مقدار_Format_2.sanitize_مقادیر (c, این, values, مقدار_شمار));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
-  { return (this+coverage).intersects (glyphs); }
+  منطقی intersects (ثابت hb_set_t *glyphs) ثابت
+  { بازگشت (این+coverage).intersects (glyphs); }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const {}
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  تهی closure_lookups (hb_closure_lookups_context_t *c) ثابت {}
+  تهی collect_variation_indices (hb_collect_variation_indices_context_t *c) ثابت
   {
-    if (!valueFormat.has_device ()) return;
+    اگر (!مقدار_Format_2.has_device ()) بازگشت;
 
     auto it =
-    + hb_zip (this+coverage, hb_range ((unsigned) valueCount))
+    + hb_zip (این+coverage, hb_range ((unsigned) مقدار_شمار))
     | hb_filter (c->glyph_set, hb_first)
     ;
 
-    if (!it) return;
+    اگر (!it) بازگشت;
 
-    unsigned sub_length = valueFormat.get_len ();
-    const hb_array_t<const Value> values_array = values.as_array (valueCount * sub_length);
+    unsigned sub_length = مقدار_Format_2.get_len ();
+    ثابت hb_array_t<ثابت مقدار> مقادیر_array = values.as_array (مقدار_شمار * sub_length);
 
-    for (unsigned i : + it
+    برای (unsigned i : + it
                       | hb_map (hb_second))
-      valueFormat.collect_variation_indices (c, this, values_array.sub_array (i * sub_length, sub_length));
+      مقدار_Format_2.collect_variation_indices (c, این, مقادیر_array.sub_array (i * sub_length, sub_length));
 
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
-  { if (unlikely (!(this+coverage).collect_coverage (c->input))) return; }
+  تهی collect_glyphs (hb_collect_glyphs_context_t *c) ثابت
+  { اگر (unlikely (!(این+coverage).collect_coverage (c->درون_داد))) بازگشت; }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  ثابت Coverage &get_coverage () ثابت { بازگشت این+coverage; }
 
-  ValueFormat get_value_format () const { return valueFormat; }
+  مقدار_Format get_مقدار_format () ثابت { بازگشت مقدار_Format_2; }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  منطقی apply (hb_ot_apply_context_t *c) ثابت
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (این);
     hb_buffer_t *buffer = c->buffer;
-    unsigned int index = (this+coverage).get_coverage  (buffer->cur().codepoint);
-    if (index == NOT_COVERED) return_trace (false);
+    unsigned صحیح index = (این+coverage).get_coverage  (buffer->cur().codepoint);
+    اگر (index == NOT_COVERED) return_trace (نادرست);
 
-    if (unlikely (index >= valueCount)) return_trace (false);
+    اگر (unlikely (index >= مقدار_شمار)) return_trace (نادرست);
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    اگر (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
       c->buffer->message (c->font,
 			  "positioning glyph at %u",
 			  c->buffer->idx);
     }
 
-    valueFormat.apply_value (c, this,
-                             &values[index * valueFormat.get_len ()],
+    مقدار_Format_2.apply_مقدار (c, این,
+                             &values[index * مقدار_Format_2.get_len ()],
                              buffer->cur_pos());
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    اگر (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
       c->buffer->message (c->font,
 			  "positioned glyph at %u",
@@ -107,44 +107,44 @@ struct SinglePosFormat2_4 : ValueBase
     }
 
     buffer->idx++;
-    return_trace (true);
+    return_trace (درست);
   }
 
-  bool
+  منطقی
   position_single (hb_font_t           *font,
 		   hb_blob_t           *table_blob,
 		   hb_direction_t       direction,
 		   hb_codepoint_t       gid,
-		   hb_glyph_position_t &pos) const
+		   hb_glyph_position_t &pos) ثابت
   {
-    unsigned int index = (this+coverage).get_coverage  (gid);
-    if (likely (index == NOT_COVERED)) return false;
-    if (unlikely (index >= valueCount)) return false;
+    unsigned صحیح index = (این+coverage).get_coverage  (gid);
+    اگر (likely (index == NOT_COVERED)) بازگشت نادرست;
+    اگر (unlikely (index >= مقدار_شمار)) بازگشت نادرست;
 
-    valueFormat.position_single (font, table_blob, direction, this,
-                                 &values[index * valueFormat.get_len ()], pos);
-    return true;
+    مقدار_Format_2.position_single (font, table_blob, direction, این,
+                                 &values[index * مقدار_Format_2.get_len ()], pos);
+    بازگشت درست;
   }
 
 
   template<typename Iterator,
       hb_requires (hb_is_iterator (Iterator))>
-  void serialize (hb_serialize_context_t *c,
-                  const ValueBase *src,
-                  ValueFormat src_format,
+  تهی serialize (hb_serialize_context_t *c,
+                  ثابت مقدار_Base *src,
+                  مقدار_Format src_format,
                   Iterator it,
-                  ValueFormat newFormat,
-                  const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map)
+                  مقدار_Format newFormat,
+                  ثابت hb_hashmap_t<unsigned, hb_pair_t<unsigned, صحیح>> *layout_variation_idx_delta_map)
   {
-    auto out = c->extend_min (this);
-    if (unlikely (!out)) return;
-    if (unlikely (!c->check_assign (valueFormat, newFormat, HB_SERIALIZE_ERROR_INT_OVERFLOW))) return;
-    if (unlikely (!c->check_assign (valueCount, it.len (), HB_SERIALIZE_ERROR_ARRAY_OVERFLOW))) return;
+    auto out = c->extend_min (این);
+    اگر (unlikely (!out)) بازگشت;
+    اگر (unlikely (!c->check_assign (مقدار_Format_2, newFormat, HB_SERIALIZE_ERROR_INT_OVERFLOW))) بازگشت;
+    اگر (unlikely (!c->check_assign (مقدار_شمار, it.len (), HB_SERIALIZE_ERROR_ARRAY_OVERFLOW))) بازگشت;
 
     + it
     | hb_map (hb_second)
-    | hb_apply ([&] (hb_array_t<const Value> _)
-    { src_format.copy_values (c, newFormat, src, &_, layout_variation_idx_delta_map); })
+    | hb_apply ([&] (hb_array_t<ثابت مقدار> _)
+    { src_format.copy_مقادیر (c, newFormat, src, &_, layout_variation_idx_delta_map); })
     ;
 
     auto glyphs =
@@ -157,59 +157,59 @@ struct SinglePosFormat2_4 : ValueBase
 
   template<typename Iterator,
       hb_requires (hb_is_iterator (Iterator))>
-  unsigned compute_effective_format (const hb_face_t *face,
+  unsigned compute_effective_format (ثابت hb_face_t *face,
                                      Iterator it,
-                                     bool is_instancing, bool strip_hints,
-                                     bool has_gdef_varstore,
-                                     const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map) const
+                                     منطقی is_instancing, منطقی strip_hints,
+                                     منطقی has_gdef_varstore,
+                                     ثابت hb_hashmap_t<unsigned, hb_pair_t<unsigned, صحیح>> *varidx_delta_map) ثابت
   {
     hb_blob_t* blob = hb_face_reference_table (face, HB_TAG ('f','v','a','r'));
-    bool has_fvar = (blob != hb_blob_get_empty ());
+    منطقی has_fvar = (blob != hb_blob_get_empty ());
     hb_blob_destroy (blob);
 
     unsigned new_format = 0;
-    if (is_instancing)
+    اگر (is_instancing)
     {
-      new_format = new_format | valueFormat.get_effective_format (+ it | hb_map (hb_second), false, false, this, varidx_delta_map);
+      new_format = new_format | مقدار_Format_2.get_effective_format (+ it | hb_map (hb_second), نادرست, نادرست, این, varidx_delta_map);
     }
     /* do not strip hints for VF */
-    else if (strip_hints)
+    وگرنه اگر (strip_hints)
     {
-      bool strip = !has_fvar;
-      if (has_fvar && !has_gdef_varstore)
-        strip = true;
-      new_format = new_format | valueFormat.get_effective_format (+ it | hb_map (hb_second), strip, true, this, nullptr);
+      منطقی strip = !has_fvar;
+      اگر (has_fvar && !has_gdef_varstore)
+        strip = درست;
+      new_format = new_format | مقدار_Format_2.get_effective_format (+ it | hb_map (hb_second), strip, درست, این, nullptr);
     }
-    else
-      new_format = valueFormat;
+    وگرنه
+      new_format = مقدار_Format_2;
 
-    return new_format;
+    بازگشت new_format;
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (این);
+    ثابت hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+    ثابت hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    unsigned sub_length = valueFormat.get_len ();
-    auto values_array = values.as_array ((unsigned) valueCount * sub_length);
+    unsigned sub_length = مقدار_Format_2.get_len ();
+    auto مقادیر_array = values.as_array ((unsigned) مقدار_شمار * sub_length);
 
     auto it =
-    + hb_zip (this+coverage, hb_range ((unsigned) valueCount))
+    + hb_zip (این+coverage, hb_range ((unsigned) مقدار_شمار))
     | hb_filter (glyphset, hb_first)
-    | hb_map_retains_sorting (single_pos_value_mapper_t {glyph_map,
-                                                       values_array,
+    | hb_map_retains_sorting (single_pos_مقدار_mapper_t {glyph_map,
+                                                       مقادیر_array,
                                                        sub_length})
     ;
 
     unsigned new_format = compute_effective_format (c->plan->source, it,
-                                                    bool (c->plan->normalized_coords),
-                                                    bool (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING),
+                                                    منطقی (c->plan->normalized_coords),
+                                                    منطقی (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING),
                                                     c->plan->has_gdef_varstore,
                                                     &c->plan->layout_variation_idx_delta_map);
-    bool ret = bool (it);
-    SinglePos_serialize (c->serializer, this, valueFormat, it, &c->plan->layout_variation_idx_delta_map, new_format);
+    منطقی ret = منطقی (it);
+    SinglePos_serialize (c->serializer, این, مقدار_Format_2, it, &c->plan->layout_variation_idx_delta_map, new_format);
     return_trace (ret);
   }
 };

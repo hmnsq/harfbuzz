@@ -2,16 +2,16 @@
 #define OT_GLYF_SIMPLEGLYPH_HH
 
 
-#include "../../hb-open-type.hh"
+#شامل "../../hb-open-type.hh"
 
 
-namespace OT {
-namespace glyf_impl {
+فضاینام OT {
+فضاینام glyf_impl {
 
 
-struct SimpleGlyph
+ساختار SimpleGlyph
 {
-  enum simple_glyph_flag_t
+  شمارش simple_glyph_flag_t
   {
     FLAG_ON_CURVE       = 0x01,
     FLAG_X_SHORT        = 0x02,
@@ -23,226 +23,226 @@ struct SimpleGlyph
     FLAG_CUBIC          = 0x80
   };
 
-  const GlyphHeader &header;
+  ثابت GlyphHeader &header;
   hb_bytes_t bytes;
-  SimpleGlyph (const GlyphHeader &header_, hb_bytes_t bytes_) :
+  SimpleGlyph (ثابت GlyphHeader &header_, hb_bytes_t bytes_) :
     header (header_), bytes (bytes_) {}
 
-  unsigned int instruction_len_offset () const
-  { return GlyphHeader::static_size + 2 * header.numberOfContours; }
+  unsigned صحیح instruction_len_offset () ثابت
+  { بازگشت GlyphHeader::static_size + 2 * header.عدد_Of_Contours; }
 
-  unsigned int length (unsigned int instruction_len) const
-  { return instruction_len_offset () + 2 + instruction_len; }
+  unsigned صحیح length (unsigned صحیح instruction_len) ثابت
+  { بازگشت instruction_len_offset () + 2 + instruction_len; }
 
-  bool has_instructions_length () const
+  منطقی has_instructions_length () ثابت
   {
-    return instruction_len_offset () + 2 <= bytes.length;
+    بازگشت instruction_len_offset () + 2 <= bytes.length;
   }
 
-  unsigned int instructions_length () const
+  unsigned صحیح instructions_length () ثابت
   {
-    unsigned int instruction_length_offset = instruction_len_offset ();
-    if (unlikely (instruction_length_offset + 2 > bytes.length)) return 0;
+    unsigned صحیح instruction_length_offset = instruction_len_offset ();
+    اگر (unlikely (instruction_length_offset + 2 > bytes.length)) بازگشت 0;
 
-    const HBUINT16 &instructionLength = StructAtOffset<HBUINT16> (&bytes, instruction_length_offset);
+    ثابت HBUINT16 &instructionLength = StructAtOffset<HBUINT16> (&bytes, instruction_length_offset);
     /* Out of bounds of the current glyph */
-    if (unlikely (length (instructionLength) > bytes.length)) return 0;
-    return instructionLength;
+    اگر (unlikely (length (instructionLength) > bytes.length)) بازگشت 0;
+    بازگشت instructionLength;
   }
 
-  const hb_bytes_t trim_padding () const
+  ثابت hb_bytes_t trim_padding () ثابت
   {
     /* based on FontTools _g_l_y_f.py::trim */
-    const uint8_t *glyph = (uint8_t*) bytes.arrayZ;
-    const uint8_t *glyph_end = glyph + bytes.length;
+    ثابت uint8_t *glyph = (uint8_t*) bytes.arrayZ;
+    ثابت uint8_t *glyph_end = glyph + bytes.length;
     /* simple glyph w/contours, possibly trimmable */
     glyph += instruction_len_offset ();
 
-    if (unlikely (glyph + 2 >= glyph_end)) return hb_bytes_t ();
-    unsigned int num_coordinates = StructAtOffset<HBUINT16> (glyph - 2, 0) + 1;
-    unsigned int num_instructions = StructAtOffset<HBUINT16> (glyph, 0);
+    اگر (unlikely (glyph + 2 >= glyph_end)) بازگشت hb_bytes_t ();
+    unsigned صحیح رقم_coordinates = StructAtOffset<HBUINT16> (glyph - 2, 0) + 1;
+    unsigned صحیح رقم_instructions = StructAtOffset<HBUINT16> (glyph, 0);
 
-    glyph += 2 + num_instructions;
+    glyph += 2 + رقم_instructions;
 
-    unsigned int coord_bytes = 0;
-    unsigned int coords_with_flags = 0;
-    while (glyph < glyph_end)
+    unsigned صحیح coord_bytes = 0;
+    unsigned صحیح coords_with_flags = 0;
+    وقتی (glyph < glyph_end)
     {
       uint8_t flag = *glyph;
       glyph++;
 
-      unsigned int repeat = 1;
-      if (flag & FLAG_REPEAT)
+      unsigned صحیح repeat = 1;
+      اگر (flag & FLAG_REPEAT)
       {
-	if (unlikely (glyph >= glyph_end)) return hb_bytes_t ();
+	اگر (unlikely (glyph >= glyph_end)) بازگشت hb_bytes_t ();
 	repeat = *glyph + 1;
 	glyph++;
       }
 
-      unsigned int xBytes, yBytes;
+      unsigned صحیح xBytes, yBytes;
       xBytes = yBytes = 0;
-      if (flag & FLAG_X_SHORT) xBytes = 1;
-      else if ((flag & FLAG_X_SAME) == 0) xBytes = 2;
+      اگر (flag & FLAG_X_SHORT) xBytes = 1;
+      وگرنه اگر ((flag & FLAG_X_SAME) == 0) xBytes = 2;
 
-      if (flag & FLAG_Y_SHORT) yBytes = 1;
-      else if ((flag & FLAG_Y_SAME) == 0) yBytes = 2;
+      اگر (flag & FLAG_Y_SHORT) yBytes = 1;
+      وگرنه اگر ((flag & FLAG_Y_SAME) == 0) yBytes = 2;
 
       coord_bytes += (xBytes + yBytes) * repeat;
       coords_with_flags += repeat;
-      if (coords_with_flags >= num_coordinates) break;
+      اگر (coords_with_flags >= رقم_coordinates) بشکن;
     }
 
-    if (unlikely (coords_with_flags != num_coordinates)) return hb_bytes_t ();
-    return bytes.sub_array (0, bytes.length + coord_bytes - (glyph_end - glyph));
+    اگر (unlikely (coords_with_flags != رقم_coordinates)) بازگشت hb_bytes_t ();
+    بازگشت bytes.sub_array (0, bytes.length + coord_bytes - (glyph_end - glyph));
   }
 
   /* zero instruction length */
-  void drop_hints ()
+  تهی drop_hints ()
   {
-    if (!has_instructions_length ()) return;
+    اگر (!has_instructions_length ()) بازگشت;
     GlyphHeader &glyph_header = const_cast<GlyphHeader &> (header);
     (HBUINT16 &) StructAtOffset<HBUINT16> (&glyph_header, instruction_len_offset ()) = 0;
   }
 
-  void drop_hints_bytes (hb_bytes_t &dest_start, hb_bytes_t &dest_end) const
+  تهی drop_hints_bytes (hb_bytes_t &dest_start, hb_bytes_t &dest_end) ثابت
   {
-    unsigned int instructions_len = instructions_length ();
-    unsigned int glyph_length = length (instructions_len);
+    unsigned صحیح instructions_len = instructions_length ();
+    unsigned صحیح glyph_length = length (instructions_len);
     dest_start = bytes.sub_array (0, glyph_length - instructions_len);
     dest_end = bytes.sub_array (glyph_length, bytes.length - glyph_length);
   }
 
-  void set_overlaps_flag ()
+  تهی set_overlaps_flag ()
   {
-    if (unlikely (!header.numberOfContours)) return;
+    اگر (unlikely (!header.عدد_Of_Contours)) بازگشت;
 
     unsigned flags_offset = length (instructions_length ());
-    if (unlikely (flags_offset + 1 > bytes.length)) return;
+    اگر (unlikely (flags_offset + 1 > bytes.length)) بازگشت;
 
     HBUINT8 &first_flag = (HBUINT8 &) StructAtOffset<HBUINT16> (&bytes, flags_offset);
     first_flag = (uint8_t) first_flag | FLAG_OVERLAP_SIMPLE;
   }
 
-  static bool read_flags (const HBUINT8 *&p /* IN/OUT */,
+  ایستا منطقی read_flags (ثابت HBUINT8 *&p /* IN/OUT */,
 			  hb_array_t<contour_point_t> points_ /* IN/OUT */,
-			  const HBUINT8 *end,
-			  bool extended)
+			  ثابت HBUINT8 *end,
+			  منطقی extended)
   {
     auto *points = points_.arrayZ;
-    unsigned count = points_.length;
-    for (unsigned int i = 0; i < count;)
+    unsigned شمار = points_.length;
+    برای (unsigned صحیح i = 0; i < شمار;)
     {
-      if (unlikely (p + 1 > end)) return false;
+      اگر (unlikely (p + 1 > end)) بازگشت نادرست;
       uint8_t flag = *p++;
-      if (!extended)
+      اگر (!extended)
 	flag &= ~FLAG_CUBIC;
       points[i++].flag = flag;
-      if (flag & FLAG_REPEAT)
+      اگر (flag & FLAG_REPEAT)
       {
-	if (unlikely (p + 1 > end)) return false;
-	unsigned int repeat_count = *p++;
-	unsigned stop = hb_min (i + repeat_count, count);
-	for (; i < stop; i++)
+	اگر (unlikely (p + 1 > end)) بازگشت نادرست;
+	unsigned صحیح repeat_شمار = *p++;
+	unsigned stop = hb_min (i + repeat_شمار, شمار);
+	برای (; i < stop; i++)
 	  points[i].flag = flag;
       }
     }
-    return true;
+    بازگشت درست;
   }
 
-  static bool read_points (const HBUINT8 *&p /* IN/OUT */,
+  ایستا منطقی read_points (ثابت HBUINT8 *&p /* IN/OUT */,
 			   hb_array_t<contour_point_t> points_ /* IN/OUT */,
-			   const HBUINT8 *end,
-			   float contour_point_t::*m,
-			   const simple_glyph_flag_t short_flag,
-			   const simple_glyph_flag_t same_flag)
+			   ثابت HBUINT8 *end,
+			   اعشاری contour_point_t::*m,
+			   ثابت simple_glyph_flag_t short_flag,
+			   ثابت simple_glyph_flag_t same_flag)
   {
-    int v = 0;
+    صحیح v = 0;
 
-    for (auto &point : points_)
+    برای (auto &point : points_)
     {
       unsigned flag = point.flag;
-      if (flag & short_flag)
+      اگر (flag & short_flag)
       {
-	if (unlikely (p + 1 > end)) return false;
-	v += (bool(flag & same_flag) * 2 - 1) * *p++;
+	اگر (unlikely (p + 1 > end)) بازگشت نادرست;
+	v += (منطقی(flag & same_flag) * 2 - 1) * *p++;
       }
-      else
+      وگرنه
       {
-	if (!(flag & same_flag))
+	اگر (!(flag & same_flag))
 	{
-	  if (unlikely (p + HBINT16::static_size > end)) return false;
-	  v += *(const HBINT16 *) p;
+	  اگر (unlikely (p + HBINT16::static_size > end)) بازگشت نادرست;
+	  v += *(ثابت HBINT16 *) p;
 	  p += HBINT16::static_size;
 	}
       }
       point.*m = v;
     }
-    return true;
+    بازگشت درست;
   }
 
-  bool get_contour_points (contour_point_vector_t &points /* OUT */,
-			   bool extended,
-			   bool phantom_only = false,
-			   int64_t *budget = nullptr) const
+  منطقی get_contour_points (contour_point_vector_t &points /* OUT */,
+			   منطقی extended,
+			   منطقی phantom_only = نادرست,
+			   int64_t *budget = nullptr) ثابت
   {
-    const HBUINT16 *endPtsOfContours = &StructAfter<HBUINT16> (header);
-    int num_contours = header.numberOfContours;
-    assert (num_contours > 0);
+    ثابت HBUINT16 *endPtsOfContours = &StructAfter<HBUINT16> (header);
+    صحیح رقم_contours = header.عدد_Of_Contours;
+    أكد (رقم_contours > 0);
     /* One extra item at the end, for the instruction-count below. */
-    if (unlikely (!bytes.check_range (&endPtsOfContours[num_contours]))) return false;
-    unsigned int num_points = endPtsOfContours[num_contours - 1] + 1;
-    if (unlikely (num_points < (unsigned) num_contours)) return false;
+    اگر (unlikely (!bytes.check_range (&endPtsOfContours[رقم_contours]))) بازگشت نادرست;
+    unsigned صحیح رقم_points = endPtsOfContours[رقم_contours - 1] + 1;
+    اگر (unlikely (رقم_points < (unsigned) رقم_contours)) بازگشت نادرست;
 
     /* Charge before allocating and reading, so that glyphs that fail
      * later (truncated data, composite caps) still pay for this work. */
-    if (budget && unlikely (!hb_budget_spend (*budget, HB_BUDGET_1, num_points))) return false;
+    اگر (budget && unlikely (!hb_budget_spend (*budget, HB_BUDGET_1, رقم_points))) بازگشت نادرست;
 
     unsigned old_length = points.length;
-    points.alloc (points.length + num_points + 4); // Allocate for phantom points, to avoid a possible copy
-    if (unlikely (!points.resize_dirty (points.length + num_points))) return false;
+    points.alloc (points.length + رقم_points + 4); // Allocate for phantom points, to avoid a possible copy
+    اگر (unlikely (!points.resize_dirty (points.length + رقم_points))) بازگشت نادرست;
     auto points_ = points.as_array ().sub_array (old_length);
-    if (!phantom_only)
-      hb_memset (points_.arrayZ, 0, sizeof (contour_point_t) * num_points);
-    if (phantom_only) return true;
+    اگر (!phantom_only)
+      hb_memset (points_.arrayZ, 0, اندازه (contour_point_t) * رقم_points);
+    اگر (phantom_only) بازگشت درست;
 
-    for (int i = 0; i < num_contours; i++)
-      points_[endPtsOfContours[i]].is_end_point = true;
+    برای (صحیح i = 0; i < رقم_contours; i++)
+      points_[endPtsOfContours[i]].is_end_point = درست;
 
     /* Skip instructions */
-    const HBUINT8 *p = &StructAtOffset<HBUINT8> (&endPtsOfContours[num_contours + 1],
-						 endPtsOfContours[num_contours]);
+    ثابت HBUINT8 *p = &StructAtOffset<HBUINT8> (&endPtsOfContours[رقم_contours + 1],
+						 endPtsOfContours[رقم_contours]);
 
-    if (unlikely ((const char *) p < bytes.arrayZ)) return false; /* Unlikely overflow */
-    const HBUINT8 *end = (const HBUINT8 *) (bytes.arrayZ + bytes.length);
-    if (unlikely (p >= end)) return false;
+    اگر (unlikely ((ثابت نویسه *) p < bytes.arrayZ)) بازگشت نادرست; /* Unlikely overflow */
+    ثابت HBUINT8 *end = (ثابت HBUINT8 *) (bytes.arrayZ + bytes.length);
+    اگر (unlikely (p >= end)) بازگشت نادرست;
 
     /* Read x & y coordinates */
-    return read_flags (p, points_, end, extended)
+    بازگشت read_flags (p, points_, end, extended)
         && read_points (p, points_, end, &contour_point_t::x,
 			FLAG_X_SHORT, FLAG_X_SAME)
 	&& read_points (p, points_, end, &contour_point_t::y,
 			FLAG_Y_SHORT, FLAG_Y_SAME);
   }
 
-  static void encode_coord (int value,
+  ایستا تهی encode_coord (صحیح value,
                             unsigned &flag,
-                            const simple_glyph_flag_t short_flag,
-                            const simple_glyph_flag_t same_flag,
+                            ثابت simple_glyph_flag_t short_flag,
+                            ثابت simple_glyph_flag_t same_flag,
                             hb_vector_t<uint8_t> &coords /* OUT */)
   {
-    if (value == 0)
+    اگر (value == 0)
     {
       flag |= same_flag;
     }
-    else if (value >= -255 && value <= 255)
+    وگرنه اگر (value >= -255 && value <= 255)
     {
       flag |= short_flag;
-      if (value > 0) flag |= same_flag;
-      else value = -value;
+      اگر (value > 0) flag |= same_flag;
+      وگرنه value = -value;
 
       coords.arrayZ[coords.length++] = (uint8_t) value;
     }
-    else
+    وگرنه
     {
       int16_t val = value;
       coords.arrayZ[coords.length++] = val >> 8;
@@ -250,59 +250,59 @@ struct SimpleGlyph
     }
   }
 
-  static void encode_flag (unsigned flag,
+  ایستا تهی encode_flag (unsigned flag,
                            unsigned &repeat,
                            unsigned lastflag,
                            hb_vector_t<uint8_t> &flags /* OUT */)
   {
-    if (flag == lastflag && repeat != 255)
+    اگر (flag == lastflag && repeat != 255)
     {
       repeat++;
-      if (repeat == 1)
+      اگر (repeat == 1)
       {
         /* We know there's room. */
         flags.arrayZ[flags.length++] = flag;
       }
-      else
+      وگرنه
       {
         unsigned len = flags.length;
         flags.arrayZ[len-2] = flag | FLAG_REPEAT;
         flags.arrayZ[len-1] = repeat;
       }
     }
-    else
+    وگرنه
     {
       repeat = 0;
       flags.arrayZ[flags.length++] = flag;
     }
   }
 
-  bool compile_bytes_with_deltas (const contour_point_vector_t &all_points,
-                                  bool no_hinting,
+  منطقی compile_bytes_with_deltas (ثابت contour_point_vector_t &all_points,
+                                  منطقی no_hinting,
                                   hb_bytes_t &dest_bytes /* OUT */)
   {
-    if (header.numberOfContours == 0 || all_points.length <= 4)
+    اگر (header.عدد_Of_Contours == 0 || all_points.length <= 4)
     {
       dest_bytes = hb_bytes_t ();
-      return true;
+      بازگشت درست;
     }
-    unsigned num_points = all_points.length - 4;
+    unsigned رقم_points = all_points.length - 4;
 
     hb_vector_t<uint8_t> flags, x_coords, y_coords;
-    if (unlikely (!flags.alloc_exact (num_points))) return false;
-    if (unlikely (!x_coords.alloc_exact (2*num_points))) return false;
-    if (unlikely (!y_coords.alloc_exact (2*num_points))) return false;
+    اگر (unlikely (!flags.alloc_exact (رقم_points))) بازگشت نادرست;
+    اگر (unlikely (!x_coords.alloc_exact (2*رقم_points))) بازگشت نادرست;
+    اگر (unlikely (!y_coords.alloc_exact (2*رقم_points))) بازگشت نادرست;
 
     unsigned lastflag = 255, repeat = 0;
-    int prev_x = 0, prev_y = 0;
+    صحیح prev_x = 0, prev_y = 0;
 
-    for (unsigned i = 0; i < num_points; i++)
+    برای (unsigned i = 0; i < رقم_points; i++)
     {
       unsigned flag = all_points.arrayZ[i].flag;
       flag &= FLAG_ON_CURVE | FLAG_OVERLAP_SIMPLE | FLAG_CUBIC;
 
-      int cur_x = roundf (all_points.arrayZ[i].x);
-      int cur_y = roundf (all_points.arrayZ[i].y);
+      صحیح cur_x = roundf (all_points.arrayZ[i].x);
+      صحیح cur_y = roundf (all_points.arrayZ[i].y);
       encode_coord (cur_x - prev_x, flag, FLAG_X_SHORT, FLAG_X_SAME, x_coords);
       encode_coord (cur_y - prev_y, flag, FLAG_Y_SHORT, FLAG_Y_SAME, y_coords);
       encode_flag (flag, repeat, lastflag, flags);
@@ -312,24 +312,24 @@ struct SimpleGlyph
       lastflag = flag;
     }
 
-    unsigned len_before_instrs = 2 * header.numberOfContours + 2;
+    unsigned len_before_instrs = 2 * header.عدد_Of_Contours + 2;
     unsigned len_instrs = instructions_length ();
     unsigned total_len = len_before_instrs + flags.length + x_coords.length + y_coords.length;
 
-    if (!no_hinting)
+    اگر (!no_hinting)
       total_len += len_instrs;
 
-    char *p = (char *) hb_malloc (total_len);
-    if (unlikely (!p)) return false;
+    نویسه *p = (نویسه *) hb_malloc (total_len);
+    اگر (unlikely (!p)) بازگشت نادرست;
 
-    const char *src = bytes.arrayZ + GlyphHeader::static_size;
-    char *cur = p;
+    ثابت نویسه *src = bytes.arrayZ + GlyphHeader::static_size;
+    نویسه *cur = p;
     hb_memcpy (p, src, len_before_instrs);
 
     cur += len_before_instrs;
     src += len_before_instrs;
 
-    if (!no_hinting)
+    اگر (!no_hinting)
     {
       hb_memcpy (cur, src, len_instrs);
       cur += len_instrs;
@@ -344,7 +344,7 @@ struct SimpleGlyph
     hb_memcpy (cur, y_coords.arrayZ, y_coords.length);
 
     dest_bytes = hb_bytes_t (p, total_len);
-    return true;
+    بازگشت درست;
   }
 };
 

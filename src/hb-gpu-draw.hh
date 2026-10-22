@@ -27,35 +27,35 @@
 #ifndef HB_GPU_DRAW_HH
 #define HB_GPU_DRAW_HH
 
-#include "hb.hh"
-#include "hb-gpu.h"
-#include "hb-object.hh"
-#include "hb-vector.hh"
+#شامل "hb.hh"
+#شامل "hb-gpu.h"
+#شامل "hb-object.hh"
+#شامل "hb-vector.hh"
 
-#include <cmath>
+#شامل <cmath>
 
 
 #define HB_GPU_UNITS_PER_EM 4
 
 
-struct hb_gpu_curve_t
+ساختار hb_gpu_curve_t
 {
-  double p1x, p1y;
-  double p2x, p2y;
-  double p3x, p3y;
-  bool contour_start;
+  دوگانه p1x, p1y;
+  دوگانه p2x, p2y;
+  دوگانه p3x, p3y;
+  منطقی contour_start;
 };
 
-struct hb_gpu_encode_curve_info_t
+ساختار hb_gpu_encode_curve_info_t
 {
-  double min_x, max_x, min_y, max_y;
-  bool is_horizontal;
-  bool is_vertical;
-  int hband_lo, hband_hi;
-  int vband_lo, vband_hi;
+  دوگانه min_x, max_x, min_y, max_y;
+  منطقی is_horizontal;
+  منطقی is_vertical;
+  صحیح hband_lo, hband_hi;
+  صحیح vband_lo, vband_hi;
 };
 
-struct hb_gpu_encode_scratch_t
+ساختار hb_gpu_encode_scratch_t
 {
   hb_vector_t<hb_gpu_encode_curve_info_t> curve_infos;
   hb_vector_t<unsigned> hband_curve_counts;
@@ -70,7 +70,7 @@ struct hb_gpu_encode_scratch_t
   hb_vector_t<unsigned> vband_cursors;
   hb_vector_t<unsigned> curve_texel_offset;
 
-  void clear ()
+  تهی clear ()
   {
     curve_infos.clear ();
     hband_curve_counts.clear ();
@@ -87,28 +87,28 @@ struct hb_gpu_encode_scratch_t
   }
 };
 
-struct hb_gpu_draw_t
+ساختار hb_gpu_draw_t
 {
   hb_object_header_t header;
 
   /* Accumulator state */
-  double start_x = 0, start_y = 0;
-  double current_x = 0, current_y = 0;
-  bool need_moveto = true;
-  unsigned num_curves = 0;
-  bool success = true;
+  دوگانه start_x = 0, start_y = 0;
+  دوگانه current_x = 0, current_y = 0;
+  منطقی need_moveto = درست;
+  unsigned رقم_curves = 0;
+  منطقی success = درست;
 
   hb_vector_t<hb_gpu_curve_t> curves;
 
   /* Extents tracking (updated during accumulation) */
-  double ext_min_x =  HUGE_VAL;
-  double ext_min_y =  HUGE_VAL;
-  double ext_max_x = -HUGE_VAL;
-  double ext_max_y = -HUGE_VAL;
+  دوگانه ext_min_x =  HUGE_VAL;
+  دوگانه ext_min_y =  HUGE_VAL;
+  دوگانه ext_max_x = -HUGE_VAL;
+  دوگانه ext_max_y = -HUGE_VAL;
 
   /* Font scale (set by hb_gpu_draw_set_scale or hb_gpu_draw_glyph). */
-  int x_scale = 0;
-  int y_scale = 0;
+  صحیح x_scale = 0;
+  صحیح y_scale = 0;
 
   /* Work budget for outline traversal and generated curves.  A paint
    * backend seeds this through the public draw-budget API before drawing
@@ -117,14 +117,14 @@ struct hb_gpu_draw_t
   int64_t  budget = HB_BUDGET_DEFAULT;
   int64_t  budget_remaining = HB_BUDGET_GLYPH;
 
-  void recharge_budget ()
+  تهی recharge_budget ()
   {
     budget_remaining = budget == HB_BUDGET_DEFAULT ?
 		       HB_BUDGET_GLYPH : budget;
   }
 
   int64_t *get_budget_remaining ()
-  { return &budget_remaining; }
+  { بازگشت &budget_remaining; }
 
   /* Encode scratch (reused across calls) */
   hb_gpu_encode_scratch_t scratch;
@@ -133,13 +133,13 @@ struct hb_gpu_draw_t
   hb_blob_t *recycled_blob = nullptr;
 
   /* Internal accumulation methods */
-  HB_INTERNAL void acc_move_to (double x, double y);
-  HB_INTERNAL void acc_line_to (double x, double y);
-  HB_INTERNAL void acc_conic_to (double cx, double cy, double x, double y);
-  HB_INTERNAL void acc_cubic_to (double c1x, double c1y,
-				 double c2x, double c2y,
-				 double x, double y);
-  HB_INTERNAL void acc_close_path ();
+  HB_INTERNAL تهی acc_move_to (دوگانه x, دوگانه y);
+  HB_INTERNAL تهی acc_سطر_to (دوگانه x, دوگانه y);
+  HB_INTERNAL تهی acc_conic_to (دوگانه cx, دوگانه cy, دوگانه x, دوگانه y);
+  HB_INTERNAL تهی acc_cubic_to (دوگانه c1x, دوگانه c1y,
+				 دوگانه c2x, دوگانه c2y,
+				 دوگانه x, دوگانه y);
+  HB_INTERNAL تهی acc_close_path ();
 };
 
 

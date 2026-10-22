@@ -29,124 +29,124 @@
 #ifndef OT_LAYOUT_COMMON_COVERAGEFORMAT2_HH
 #define OT_LAYOUT_COMMON_COVERAGEFORMAT2_HH
 
-#include "RangeRecord.hh"
+#شامل "RangeRecord.hh"
 
-namespace OT {
-namespace Layout {
-namespace Common {
+فضاینام OT {
+فضاینام Layout {
+فضاینام Common {
 
 template <typename Types>
-struct CoverageFormat2_4
+ساختار CoverageFormat2_4
 {
-  friend struct Coverage;
+  friend ساختار Coverage;
   using CoverageRangeRecord = RangeRecord<Types, typename Types::HBUINT>;
 
-  public:
+  عمومی:
   HBUINT16      coverageFormat; /* Format identifier--format = 2 */
   typename Types::template SortedArrayOf<CoverageRangeRecord>
                 rangeRecord;    /* Array of glyph ranges--ordered by
                                  * Start GlyphID. rangeCount entries
                                  * long */
-  public:
+  عمومی:
   DEFINE_SIZE_ARRAY (2 + Types::HBUINT::static_size, rangeRecord);
 
-  private:
+  خصوصی:
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (این);
     return_trace (rangeRecord.sanitize (c));
   }
 
-  unsigned int get_coverage (hb_codepoint_t glyph_id) const
+  unsigned صحیح get_coverage (hb_codepoint_t glyph_id) ثابت
   {
-    const CoverageRangeRecord &range = rangeRecord.bsearch (glyph_id);
-    return likely (range.first <= range.last)
-         ? (unsigned int) range.value + (glyph_id - range.first)
+    ثابت CoverageRangeRecord &range = rangeRecord.bsearch (glyph_id);
+    بازگشت likely (range.first <= range.last)
+         ? (unsigned صحیح) range.value + (glyph_id - range.first)
          : NOT_COVERED;
   }
 
-  unsigned get_population () const
+  unsigned get_population () ثابت
   {
     typename Types::large_int ret = 0;
-    for (const auto &r : rangeRecord)
+    برای (ثابت auto &r : rangeRecord)
       ret += r.get_population ();
-    return ret > UINT_MAX ? UINT_MAX : (unsigned) ret;
+    بازگشت ret > UINT_MAX ? UINT_MAX : (unsigned) ret;
   }
 
   template <typename Iterator,
       hb_requires (hb_is_sorted_source_of (Iterator, hb_codepoint_t))>
-  bool serialize (hb_serialize_context_t *c, Iterator glyphs)
+  منطقی serialize (hb_serialize_context_t *c, Iterator glyphs)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (این);
+    اگر (unlikely (!c->extend_min (این))) return_trace (نادرست);
 
-    unsigned num_ranges = 0;
+    unsigned رقم_ranges = 0;
     hb_codepoint_t last = (hb_codepoint_t) -2;
-    for (auto g: glyphs)
+    برای (auto g: glyphs)
     {
-      if (last + 1 != g)
-        num_ranges++;
+      اگر (last + 1 != g)
+        رقم_ranges++;
       last = g;
     }
 
-    if (unlikely (!rangeRecord.serialize (c, num_ranges))) return_trace (false);
-    if (!num_ranges) return_trace (true);
+    اگر (unlikely (!rangeRecord.serialize (c, رقم_ranges))) return_trace (نادرست);
+    اگر (!رقم_ranges) return_trace (درست);
 
-    unsigned count = 0;
+    unsigned شمار = 0;
     unsigned range = (unsigned) -1;
     last = (hb_codepoint_t) -2;
-    unsigned unsorted = false;
-    for (auto g: glyphs)
+    unsigned unsorted = نادرست;
+    برای (auto g: glyphs)
     {
-      if (last + 1 != g)
+      اگر (last + 1 != g)
       {
-	if (unlikely (last != (hb_codepoint_t) -2 && last + 1 > g))
-	  unsorted = true;
+	اگر (unlikely (last != (hb_codepoint_t) -2 && last + 1 > g))
+	  unsorted = درست;
 
         range++;
         rangeRecord.arrayZ[range].first = g;
-        rangeRecord.arrayZ[range].value = count;
+        rangeRecord.arrayZ[range].value = شمار;
       }
       rangeRecord.arrayZ[range].last = g;
       last = g;
-      count++;
+      شمار++;
     }
 
-    if (unlikely (unsorted))
+    اگر (unlikely (unsorted))
       rangeRecord.as_array ().qsort (CoverageRangeRecord::cmp_range);
 
-    return_trace (true);
+    return_trace (درست);
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  منطقی intersects (ثابت hb_set_t *glyphs) ثابت
   {
-    if (rangeRecord.len > glyphs->get_population () * hb_bit_storage ((unsigned) rangeRecord.len))
+    اگر (rangeRecord.len > glyphs->get_population () * hb_bit_storage ((unsigned) rangeRecord.len))
     {
-      for (auto g : *glyphs)
-        if (get_coverage (g) != NOT_COVERED)
-	  return true;
-      return false;
+      برای (auto g : *glyphs)
+        اگر (get_coverage (g) != NOT_COVERED)
+	  بازگشت درست;
+      بازگشت نادرست;
     }
 
-    return hb_any (+ hb_iter (rangeRecord)
-                   | hb_map ([glyphs] (const CoverageRangeRecord &range) { return range.intersects (*glyphs); }));
+    بازگشت hb_any (+ hb_iter (rangeRecord)
+                   | hb_map ([glyphs] (ثابت CoverageRangeRecord &range) { بازگشت range.intersects (*glyphs); }));
   }
-  bool intersects_coverage (const hb_set_t *glyphs, unsigned int index) const
+  منطقی intersects_coverage (ثابت hb_set_t *glyphs, unsigned صحیح index) ثابت
   {
     auto *range = rangeRecord.as_array ().bsearch (index);
-    if (range)
-      return range->intersects (*glyphs);
-    return false;
+    اگر (range)
+      بازگشت range->intersects (*glyphs);
+    بازگشت نادرست;
   }
 
-  static void add_intersected_bits (hb_set_t &set, hb_codepoint_t base, uint64_t bits)
+  ایستا تهی add_intersected_bits (hb_set_t &set, hb_codepoint_t base, uint64_t bits)
   { set.add_bits (base, bits); }
 
   template <typename IterableOut>
-  static void add_intersected_bits (IterableOut&& out, hb_codepoint_t base, uint64_t bits)
+  ایستا تهی add_intersected_bits (IterableOut&& out, hb_codepoint_t base, uint64_t bits)
   {
-    while (bits)
+    وقتی (bits)
     {
       out << base + hb_ctz (bits);
       bits &= bits - 1;
@@ -155,71 +155,71 @@ struct CoverageFormat2_4
 
   template <typename IterableOut,
 	    hb_requires (hb_is_sink_of (IterableOut, hb_codepoint_t))>
-  void intersect_set (const hb_set_t &glyphs, IterableOut&& intersect_glyphs) const
+  تهی intersect_set (ثابت hb_set_t &glyphs, IterableOut&& intersect_glyphs) ثابت
   {
     /* Break out of loop for overlapping, broken, tables,
      * to avoid fuzzer timouts. */
     hb_codepoint_t last = 0;
-    for (const auto& range : rangeRecord)
+    برای (ثابت auto& range : rangeRecord)
     {
-      if (unlikely (range.first < last))
-        break;
+      اگر (unlikely (range.first < last))
+        بشکن;
       last = range.last;
       hb_codepoint_t cursor = range.first & ~hb_bit_page_t::ELT_MASK;
-      cursor = cursor ? cursor - 1 : HB_SET_VALUE_INVALID;
+      cursor = cursor ? cursor - 1 : HB_SET_مقدار_INVALID;
       uint64_t bits;
-      while (glyphs.next_bits (&cursor, &bits) && cursor <= last)
+      وقتی (glyphs.next_bits (&cursor, &bits) && cursor <= last)
       {
-	if (range.first > cursor)
+	اگر (range.first > cursor)
 	  bits &= UINT64_MAX << (range.first - cursor);
-	unsigned int end = last - cursor;
-	if (end < hb_bit_page_t::ELT_BITS - 1)
+	unsigned صحیح end = last - cursor;
+	اگر (end < hb_bit_page_t::ELT_BITS - 1)
 	  bits &= (uint64_t (1) << (end + 1)) - 1;
 	add_intersected_bits (intersect_glyphs, cursor, bits);
       }
     }
   }
 
-  unsigned cost () const { return hb_bit_storage ((unsigned) rangeRecord.len); /* bsearch cost */ }
+  unsigned cost () ثابت { بازگشت hb_bit_storage ((unsigned) rangeRecord.len); /* bsearch cost */ }
 
   template <typename set_t>
-  bool collect_coverage (set_t *glyphs) const
+  منطقی collect_coverage (set_t *glyphs) ثابت
   {
-    for (const auto& range: rangeRecord)
-      if (unlikely (!range.collect_coverage (glyphs)))
-        return false;
-    return true;
+    برای (ثابت auto& range: rangeRecord)
+      اگر (unlikely (!range.collect_coverage (glyphs)))
+        بازگشت نادرست;
+    بازگشت درست;
   }
 
-  public:
+  عمومی:
   /* Older compilers need this to be public. */
-  struct iter_t
+  ساختار iter_t
   {
-    void init (const CoverageFormat2_4 &c_)
+    تهی init (ثابت CoverageFormat2_4 &c_)
     {
       c = &c_;
       coverage = 0;
       i = 0;
       j = c->rangeRecord.len ? c->rangeRecord[0].first : 0;
-      if (unlikely (c->rangeRecord[0].first > c->rangeRecord[0].last))
+      اگر (unlikely (c->rangeRecord[0].first > c->rangeRecord[0].last))
       {
         /* Broken table. Skip. */
         i = c->rangeRecord.len;
         j = 0;
       }
     }
-    bool __more__ () const { return i < c->rangeRecord.len; }
-    void __next__ ()
+    منطقی __more__ () ثابت { بازگشت i < c->rangeRecord.len; }
+    تهی __next__ ()
     {
-      if (j >= c->rangeRecord[i].last)
+      اگر (j >= c->rangeRecord[i].last)
       {
         i++;
-        if (__more__ ())
+        اگر (__more__ ())
         {
-          unsigned int old = coverage;
+          unsigned صحیح old = coverage;
           j = c->rangeRecord.arrayZ[i].first;
           coverage = c->rangeRecord.arrayZ[i].value;
-          if (unlikely (coverage != old + 1))
+          اگر (unlikely (coverage != old + 1))
           {
             /* Broken table. Skip. Important to avoid DoS.
              * Also, our callers depend on coverage being
@@ -227,34 +227,34 @@ struct CoverageFormat2_4
              * ie. iota(). */
            i = c->rangeRecord.len;
            j = 0;
-           return;
+           بازگشت;
           }
         }
-        else
+        وگرنه
           j = 0;
-        return;
+        بازگشت;
       }
       coverage++;
       j++;
     }
-    hb_codepoint_t get_glyph () const { return j; }
-    bool operator != (const iter_t& o) const
-    { return i != o.i || j != o.j; }
-    iter_t __end__ () const
+    hb_codepoint_t get_glyph () ثابت { بازگشت j; }
+    منطقی operator != (ثابت iter_t& o) ثابت
+    { بازگشت i != o.i || j != o.j; }
+    iter_t __end__ () ثابت
     {
       iter_t it;
       it.init (*c);
       it.i = c->rangeRecord.len;
       it.j = 0;
-      return it;
+      بازگشت it;
     }
 
-    private:
-    const struct CoverageFormat2_4 *c;
-    unsigned int i, coverage;
+    خصوصی:
+    ثابت ساختار CoverageFormat2_4 *c;
+    unsigned صحیح i, coverage;
     hb_codepoint_t j;
   };
-  private:
+  خصوصی:
 };
 
 }

@@ -24,34 +24,34 @@
  * Red Hat Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#اگر !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb-ot.h> instead."
 #endif
 
 #ifndef HB_OT_SHAPE_H
 #define HB_OT_SHAPE_H
 
-#include "hb.h"
+#شامل "hb.h"
 
 HB_BEGIN_DECLS
 
 /* TODO port to shape-plan / set. */
-HB_EXTERN void
+HB_EXTERN تهی
 hb_ot_shape_glyphs_closure (hb_font_t          *font,
 			    hb_buffer_t        *buffer,
-			    const hb_feature_t *features,
-			    unsigned int        num_features,
+			    ثابت hb_feature_t *features,
+			    unsigned صحیح        رقم_features,
 			    hb_set_t           *glyphs);
 
-HB_EXTERN void
+HB_EXTERN تهی
 hb_ot_shape_plan_collect_lookups (hb_shape_plan_t *shape_plan,
 				  hb_tag_t         table_tag,
 				  hb_set_t        *lookup_indexes /* OUT */);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned صحیح
 hb_ot_shape_plan_get_feature_tags (hb_shape_plan_t *shape_plan,
-				   unsigned int     start_offset,
-				   unsigned int    *tag_count, /* IN/OUT */
+				   unsigned صحیح     start_offset,
+				   unsigned صحیح    *tag_شمار, /* IN/OUT */
 				   hb_tag_t        *tags /* OUT */);
 
 /**
@@ -66,8 +66,8 @@ hb_ot_shape_plan_get_feature_tags (hb_shape_plan_t *shape_plan,
  */
 #define HB_OT_SHAPE_BUFFER_FORMAT_SERIAL 1
 
-HB_EXTERN unsigned int
-hb_ot_shape_get_buffer_format_serial (void);
+HB_EXTERN unsigned صحیح
+hb_ot_shape_get_buffer_format_serial (تهی);
 
 HB_END_DECLS
 

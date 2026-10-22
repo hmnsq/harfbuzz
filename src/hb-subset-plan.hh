@@ -27,28 +27,28 @@
 #ifndef HB_SUBSET_PLAN_HH
 #define HB_SUBSET_PLAN_HH
 
-#include "hb.hh"
+#شامل "hb.hh"
 
-#include "hb-subset.h"
-#include "hb-subset-input.hh"
-#include "hb-subset-accelerator.hh"
+#شامل "hb-subset.h"
+#شامل "hb-subset-input.hh"
+#شامل "hb-subset-accelerator.hh"
 
-#include "hb-map.hh"
-#include "hb-bimap.hh"
-#include "hb-set.hh"
+#شامل "hb-map.hh"
+#شامل "hb-bimap.hh"
+#شامل "hb-set.hh"
 
-namespace OT {
-struct Feature;
+فضاینام OT {
+ساختار Feature;
 }
 
-struct os2_info_t {
+ساختار os2_info_t {
   hb_codepoint_t min_cmap_codepoint;
   hb_codepoint_t max_cmap_codepoint;
 };
 
-typedef struct os2_info_t os2_info_t;
+تعریفنوع ساختار os2_info_t os2_info_t;
 
-struct head_maxp_info_t
+ساختار head_maxp_info_t
 {
   head_maxp_info_t ()
       :xMin (0x7FFF), xMax (-0x7FFF), yMin (0x7FFF), yMax (-0x7FFF),
@@ -57,87 +57,87 @@ struct head_maxp_info_t
       maxCompositeContours (0),
       maxComponentElements (0),
       maxComponentDepth (0),
-      allXMinIsLsb (true) {}
+      allXMinIsLsb (درست) {}
 
-  int xMin;
-  int xMax;
-  int yMin;
-  int yMax;
+  صحیح xMin;
+  صحیح xMax;
+  صحیح yMin;
+  صحیح yMax;
   unsigned maxPoints;
   unsigned maxContours;
   unsigned maxCompositePoints;
   unsigned maxCompositeContours;
   unsigned maxComponentElements;
   unsigned maxComponentDepth;
-  bool allXMinIsLsb;
+  منطقی allXMinIsLsb;
 };
 
-typedef struct head_maxp_info_t head_maxp_info_t;
+تعریفنوع ساختار head_maxp_info_t head_maxp_info_t;
 
-struct contour_point_t
+ساختار contour_point_t
 {
-  void init (float x_ = 0.f, float y_ = 0.f, bool is_end_point_ = false)
+  تهی init (اعشاری x_ = 0.f, اعشاری y_ = 0.f, منطقی is_end_point_ = نادرست)
   { flag = 0; x = x_; y = y_; is_end_point = is_end_point_; }
 
-  void transform (const float (&matrix)[4])
+  تهی transform (ثابت اعشاری (&matrix)[4])
   {
-    float x_ = x * matrix[0] + y * matrix[2];
+    اعشاری x_ = x * matrix[0] + y * matrix[2];
 	  y  = x * matrix[1] + y * matrix[3];
     x  = x_;
   }
 
-  void add_delta (float delta_x, float delta_y)
+  تهی add_delta (اعشاری delta_x, اعشاری delta_y)
   {
     x += delta_x;
     y += delta_y;
   }
 
   HB_ALWAYS_INLINE
-  void translate (const contour_point_t &p) { x += p.x; y += p.y; }
+  تهی translate (ثابت contour_point_t &p) { x += p.x; y += p.y; }
 
-  float x;
-  float y;
+  اعشاری x;
+  اعشاری y;
   uint8_t flag;
-  bool is_end_point;
+  منطقی is_end_point;
 };
 
-struct contour_point_vector_t : hb_vector_t<contour_point_t>
+ساختار contour_point_vector_t : hb_vector_t<contour_point_t>
 {
-  bool add_deltas (hb_array_t<const float> deltas_x,
-                   hb_array_t<const float> deltas_y,
-                   hb_array_t<const bool> indices)
+  منطقی add_deltas (hb_array_t<ثابت اعشاری> deltas_x,
+                   hb_array_t<ثابت اعشاری> deltas_y,
+                   hb_array_t<ثابت منطقی> indices)
   {
-    if (indices.length != deltas_x.length ||
+    اگر (indices.length != deltas_x.length ||
         indices.length != deltas_y.length)
-      return false;
+      بازگشت نادرست;
 
-    for (unsigned i = 0; i < indices.length; i++)
+    برای (unsigned i = 0; i < indices.length; i++)
     {
-      if (!indices.arrayZ[i]) continue;
+      اگر (!indices.arrayZ[i]) ادامه;
       arrayZ[i].add_delta (deltas_x.arrayZ[i], deltas_y.arrayZ[i]);
     }
-    return true;
+    بازگشت درست;
   }
 };
 
-namespace OT {
-  struct cff1_subset_accelerator_t;
-  struct cff2_subset_accelerator_t;
+فضاینام OT {
+  ساختار cff1_subset_accelerator_t;
+  ساختار cff2_subset_accelerator_t;
 }
 
-struct hb_subset_plan_t
+ساختار hb_subset_plan_t
 {
   HB_INTERNAL hb_subset_plan_t (hb_face_t *,
-				const hb_subset_input_t *input);
+				ثابت hb_subset_درون_داد_t *درون_داد);
 
   HB_INTERNAL ~hb_subset_plan_t();
 
   hb_object_header_t header;
 
-  bool successful;
+  منطقی successful;
   unsigned flags;
-  bool attach_accelerator_data = false;
-  bool force_long_loca = false;
+  منطقی attach_accelerator_data = نادرست;
+  منطقی force_long_loca = نادرست;
 
   // The glyph subset
   hb_map_t *codepoint_to_glyph; // Needs to be heap-allocated
@@ -156,24 +156,24 @@ struct hb_subset_plan_t
 
   hb_face_t *dest;
 
-  unsigned int _num_output_glyphs;
+  unsigned صحیح رقم_output_glyphs_2;
 
-  bool all_axes_pinned;
-  bool pinned_at_default;
-  bool has_seac;
+  منطقی all_axes_pinned;
+  منطقی pinned_at_default;
+  منطقی has_seac;
 
   // whether to insert a catch-all FeatureVariationRecord
-  bool gsub_insert_catch_all_feature_variation_rec;
-  bool gpos_insert_catch_all_feature_variation_rec;
+  منطقی gsub_درج_catch_all_feature_variation_rec;
+  منطقی gpos_درج_catch_all_feature_variation_rec;
 
   // whether GDEF ItemVariationStore is retained
-  mutable bool has_gdef_varstore;
+  mutable منطقی has_gdef_varstore;
 
   // whether we're doing avar2 partial instancing
-  bool has_avar2;
+  منطقی has_avar2;
 
 #define HB_SUBSET_PLAN_MEMBER(Type, Name) Type Name;
-#include "hb-subset-plan-member-list.hh"
+#شامل "hb-subset-plan-member-list.hh"
 #undef HB_SUBSET_PLAN_MEMBER
 
   //recalculated head/maxp table info after instancing
@@ -181,46 +181,46 @@ struct hb_subset_plan_t
 
   os2_info_t os2_info;
 
-  const hb_subset_accelerator_t* accelerator = nullptr;
+  ثابت hb_subset_accelerator_t* accelerator = nullptr;
   hb_subset_accelerator_t* inprogress_accelerator = nullptr;
 
- public:
+ عمومی:
 
   template<typename T>
-  struct source_table_loader
+  ساختار source_table_loader
   {
     hb_blob_ptr_t<T> operator () (hb_subset_plan_t *plan)
     {
       hb_lock_t lock (plan->accelerator ? &plan->accelerator->sanitized_table_cache_lock : nullptr);
 
       auto *cache = plan->accelerator ? &plan->accelerator->sanitized_table_cache : &plan->sanitized_table_cache;
-      if (cache
+      اگر (cache
 	  && !cache->in_error ()
 	  && cache->has (+T::tableTag)) {
-	return hb_blob_reference (cache->get (+T::tableTag).get ());
+	بازگشت hb_blob_reference (cache->get (+T::tableTag).get ());
       }
 
       hb::unique_ptr<hb_blob_t> table_blob {hb_sanitize_context_t ().reference_table<T> (plan->source)};
       hb_blob_t* ret = hb_blob_reference (table_blob.get ());
 
-      if (likely (cache))
+      اگر (likely (cache))
 	cache->set (+T::tableTag, std::move (table_blob));
 
-      return ret;
+      بازگشت ret;
     }
   };
 
   template<typename T>
-  auto source_table() HB_AUTO_RETURN (source_table_loader<T> {} (this))
+  auto source_table() HB_AUTO_RETURN (source_table_loader<T> {} (این))
 
-  bool in_error () const { return !successful; }
+  منطقی in_error () ثابت { بازگشت !successful; }
 
-  HB_INTERNAL double layout_variation_delta (unsigned var_idx);
+  HB_INTERNAL دوگانه layout_variation_delta (unsigned var_idx);
 
-  bool check_success(bool success)
+  منطقی check_success(منطقی success)
   {
     successful = (successful && success);
-    return successful;
+    بازگشت successful;
   }
 
   /*
@@ -228,88 +228,88 @@ struct hb_subset_plan_t
    * Does NOT include ids kept due to retain_gids. You probably want to use
    * glyph_map/reverse_glyph_map.
    */
-  inline const hb_set_t *
-  glyphset () const
+  درونخطی ثابت hb_set_t *
+  glyphset () ثابت
   {
-    return &_glyphset;
+    بازگشت &_glyphset;
   }
 
   /*
    * The set of input glyph ids which will be retained in the subset.
    */
-  inline const hb_set_t *
-  glyphset_gsub () const
+  درونخطی ثابت hb_set_t *
+  glyphset_gsub () ثابت
   {
-    return &_glyphset_gsub;
+    بازگشت &_glyphset_gsub;
   }
 
   /*
    * Old-to-new glyph id mapping for GSUB glyphs, through the flat
    * array; returns HB_MAP_VALUE_INVALID for glyphs not retained.
    */
-  inline hb_codepoint_t
-  map_gsub_glyph (hb_codepoint_t old_gid) const
+  درونخطی hb_codepoint_t
+  map_gsub_glyph (hb_codepoint_t old_gid) ثابت
   {
-    return old_gid < glyph_map_gsub_flat.length
+    بازگشت old_gid < glyph_map_gsub_flat.length
 	 ? glyph_map_gsub_flat.arrayZ[old_gid]
-	 : HB_MAP_VALUE_INVALID;
+	 : HB_MAP_مقدار_INVALID;
   }
 
   /*
    * The total number of output glyphs in the final subset.
    */
-  inline unsigned int
-  num_output_glyphs () const
+  درونخطی unsigned صحیح
+  رقم_output_glyphs () ثابت
   {
-    return _num_output_glyphs;
+    بازگشت رقم_output_glyphs_2;
   }
 
-  inline bool new_gid_for_codepoint (hb_codepoint_t codepoint,
-				     hb_codepoint_t *new_gid) const
+  درونخطی منطقی new_gid_for_codepoint (hb_codepoint_t codepoint,
+				     hb_codepoint_t *new_gid) ثابت
   {
     hb_codepoint_t old_gid = codepoint_to_glyph->get (codepoint);
-    if (old_gid == HB_MAP_VALUE_INVALID)
-      return false;
+    اگر (old_gid == HB_MAP_مقدار_INVALID)
+      بازگشت نادرست;
 
-    return new_gid_for_old_gid (old_gid, new_gid);
+    بازگشت new_gid_for_old_gid (old_gid, new_gid);
   }
 
-  inline bool new_gid_for_old_gid (hb_codepoint_t old_gid,
-				   hb_codepoint_t *new_gid) const
+  درونخطی منطقی new_gid_for_old_gid (hb_codepoint_t old_gid,
+				   hb_codepoint_t *new_gid) ثابت
   {
     hb_codepoint_t gid = glyph_map->get (old_gid);
-    if (gid == HB_MAP_VALUE_INVALID)
-      return false;
+    اگر (gid == HB_MAP_مقدار_INVALID)
+      بازگشت نادرست;
 
     *new_gid = gid;
-    return true;
+    بازگشت درست;
   }
 
-  inline bool old_gid_for_new_gid (hb_codepoint_t  new_gid,
-				   hb_codepoint_t *old_gid) const
+  درونخطی منطقی old_gid_for_new_gid (hb_codepoint_t  new_gid,
+				   hb_codepoint_t *old_gid) ثابت
   {
     hb_codepoint_t gid = reverse_glyph_map->get (new_gid);
-    if (gid == HB_MAP_VALUE_INVALID)
-      return false;
+    اگر (gid == HB_MAP_مقدار_INVALID)
+      بازگشت نادرست;
 
     *old_gid = gid;
-    return true;
+    بازگشت درست;
   }
 
-  inline bool
+  درونخطی منطقی
   add_table (hb_tag_t tag,
 	     hb_blob_t *contents)
   {
-    if (HB_DEBUG_SUBSET)
+    اگر (HB_DEBUG_SUBSET)
     {
       hb_blob_t *source_blob = source->reference_table (tag);
-      DEBUG_MSG(SUBSET, nullptr, "add table %c%c%c%c, dest %u bytes, source %u bytes",
+      DEBUG_پیام(SUBSET, nullptr, "add table %c%c%c%c, dest %u bytes, source %u bytes",
 		HB_UNTAG(tag),
 		hb_blob_get_length (contents),
 		hb_blob_get_length (source_blob));
       hb_blob_destroy (source_blob);
     }
-    return hb_face_builder_add_table (dest, tag, contents);
+    بازگشت hb_face_builder_add_table (dest, tag, contents);
   }
 };
 
@@ -321,66 +321,66 @@ struct hb_subset_plan_t
 //
 // The functions below are those needed to connect the split files
 // above together.
-HB_INTERNAL void
-remap_indexes (const hb_set_t *indexes,
+HB_INTERNAL تهی
+remap_indexes (ثابت hb_set_t *indexes,
                hb_map_t       *mapping /* OUT */);
 
 
 #ifndef HB_NO_VAR
 template<typename ItemVarStore>
-HB_INTERNAL void
-remap_variation_indices (const ItemVarStore &var_store,
-                         const hb_set_t &variation_indices,
-                         const hb_vector_t<int>& normalized_coords,
-                         bool calculate_delta, /* not pinned at default */
-                         bool no_variations, /* all axes pinned */
-                         hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> &variation_idx_delta_map /* OUT */);
+HB_INTERNAL تهی
+remap_variation_indices (ثابت ItemVarStore &var_store,
+                         ثابت hb_set_t &variation_indices,
+                         ثابت hb_vector_t<صحیح>& normalized_coords,
+                         منطقی calculate_delta, /* not pinned at default */
+                         منطقی no_variations, /* all axes pinned */
+                         hb_hashmap_t<unsigned, hb_pair_t<unsigned, صحیح>> &variation_idx_delta_map /* OUT */);
 
 
 template<typename DeltaSetIndexMap>
-HB_INTERNAL void
-remap_colrv1_delta_set_index_indices (const DeltaSetIndexMap &index_map,
-                                      const hb_set_t &delta_set_idxes,
-                                      hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> &variation_idx_delta_map, /* IN/OUT */
+HB_INTERNAL تهی
+remap_colrv1_delta_set_index_indices (ثابت DeltaSetIndexMap &index_map,
+                                      ثابت hb_set_t &delta_set_idxes,
+                                      hb_hashmap_t<unsigned, hb_pair_t<unsigned, صحیح>> &variation_idx_delta_map, /* IN/OUT */
                                       hb_map_t &new_deltaset_idx_varidx_map /* OUT */);
 
 
-HB_INTERNAL void
-generate_varstore_inner_maps (const hb_set_t& varidx_set,
-                              unsigned subtable_count,
+HB_INTERNAL تهی
+generate_varstore_inner_maps (ثابت hb_set_t& varidx_set,
+                              unsigned subtable_شمار,
                               hb_vector_t<hb_inc_bimap_t> &inner_maps /* OUT */);
 
-HB_INTERNAL bool
+HB_INTERNAL منطقی
 normalize_axes_location (hb_face_t *face, hb_subset_plan_t *plan);
 
-HB_INTERNAL void
+HB_INTERNAL تهی
 update_instance_metrics_map_from_cff2 (hb_subset_plan_t *plan);
 
-HB_INTERNAL bool
+HB_INTERNAL منطقی
 get_instance_glyphs_contour_points (hb_subset_plan_t *plan);
 
 #ifndef HB_NO_BASE
-HB_INTERNAL void
+HB_INTERNAL تهی
 collect_base_variation_indices (hb_subset_plan_t* plan);
 #endif
 #endif
 
 #ifndef HB_NO_SUBSET_LAYOUT
-typedef hb_hashmap_t<unsigned, hb::unique_ptr<hb_set_t>> script_langsys_map;
+تعریفنوع hb_hashmap_t<unsigned, hb::unique_ptr<hb_set_t>> script_langsys_map;
 
-HB_INTERNAL void
+HB_INTERNAL تهی
 remap_used_mark_sets (hb_subset_plan_t *plan,
                       hb_map_t& used_mark_sets_map);
 
-HB_INTERNAL void
+HB_INTERNAL تهی
 layout_nameid_closure (hb_subset_plan_t* plan,
                        hb_set_t* drop_tables);
 
-HB_INTERNAL void
+HB_INTERNAL تهی
 layout_populate_gids_to_retain (hb_subset_plan_t* plan,
                                 hb_set_t* drop_tables);
 
-HB_INTERNAL void
+HB_INTERNAL تهی
 collect_layout_variation_indices (hb_subset_plan_t* plan);
 #endif
 

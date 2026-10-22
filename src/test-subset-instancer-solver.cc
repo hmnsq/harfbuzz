@@ -24,23 +24,23 @@
  * Google Author(s): Qunxin Liu
  */
 
-#include <math.h>
-#include "hb-subset-instancer-solver.hh"
+#شامل <math.h>
+#شامل "hb-subset-instancer-solver.hh"
 
-static inline bool approx (Triple a, Triple b)
+ایستا درونخطی منطقی approx (Triple a, Triple b)
 {
-  return abs (a.minimum - b.minimum) < 0.000001f &&
-         abs (a.middle - b.middle) < 0.000001f &&
+  بازگشت abs (a.minimum - b.minimum) < 0.000001f &&
+         abs (a.میانه - b.میانه) < 0.000001f &&
          abs (a.maximum - b.maximum) < 0.000001f;
 }
 
-static inline bool approx (float a, float b)
-{ return abs (a - b) < 0.000001f; }
+ایستا درونخطی منطقی approx (اعشاری a, اعشاری b)
+{ بازگشت abs (a - b) < 0.000001f; }
 
 /* tests ported from
  * https://github.com/fonttools/fonttools/blob/main/Tests/varLib/instancer/solver_test.py */
-int
-main (int argc, char **argv)
+صحیح
+اصلی (صحیح argc, نویسه **argv)
 {
   TripleDistances default_axis_distances{1.0f, 1.0f};
   /* Case 1 */
@@ -85,7 +85,7 @@ main (int argc, char **argv)
   {
     /* malformed triple should not abort in renormalization */
     Triple malformed_range (0.4f, 0.2f, 0.3f);
-    float normalized = renormalizeValue (0.25f, malformed_range, default_axis_distances, true);
+    اعشاری normalized = renormalize_مقدار (0.25f, malformed_range, default_axis_distances, درست);
     hb_always_assert (approx (normalized, 0.25f));
   }
 
@@ -436,13 +436,13 @@ main (int argc, char **argv)
     hb_always_assert (out[0].first == 1.0f);
     hb_always_assert (out[0].second == Triple ());
     hb_always_assert (out[1].first == -1.0f);
-    hb_always_assert (out[1].second == Triple (0.0f, 2/(double) (1 << 14), 1.0f));
+    hb_always_assert (out[1].second == Triple (0.0f, 2/(دوگانه) (1 << 14), 1.0f));
     hb_always_assert (out[2].first == -1.0f);
-    hb_always_assert (out[2].second == Triple (2/(double) (1 << 14), 1.0f, 1.0f));
+    hb_always_assert (out[2].second == Triple (2/(دوگانه) (1 << 14), 1.0f, 1.0f));
     hb_always_assert (out[3].first == -1.0f);
-    hb_always_assert (out[3].second == Triple (-1.0f, -2/(double) (1 << 14), 0.0f));
+    hb_always_assert (out[3].second == Triple (-1.0f, -2/(دوگانه) (1 << 14), 0.0f));
     hb_always_assert (out[4].first == -1.0f);
-    hb_always_assert (out[4].second == Triple (-1.0f, -1.0f, -2/(double) (1 << 14)));
+    hb_always_assert (out[4].second == Triple (-1.0f, -1.0f, -2/(دوگانه) (1 << 14)));
   }
 
   {

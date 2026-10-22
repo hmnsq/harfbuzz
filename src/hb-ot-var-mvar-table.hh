@@ -27,26 +27,26 @@
 #ifndef HB_OT_VAR_MVAR_TABLE_HH
 #define HB_OT_VAR_MVAR_TABLE_HH
 
-#include "hb-ot-var-common.hh"
+#شامل "hb-ot-var-common.hh"
 
 
-namespace OT {
+فضاینام OT {
 
 
-struct VariationValueRecord
+ساختار Variation_مقدار_Record
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این));
   }
 
-  bool subset (hb_subset_context_t *c,
-               const hb_map_t& varidx_map) const
+  منطقی subset (hb_subset_context_t *c,
+               ثابت hb_map_t& varidx_map) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (این);
+    auto *out = c->serializer->embed (*این);
+    اگر (unlikely (!out)) return_trace (نادرست);
 
     hb_codepoint_t *new_idx;
     return_trace (c->serializer->check_assign (out->varIdx,
@@ -54,11 +54,11 @@ struct VariationValueRecord
                                                HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  public:
-  Tag		valueTag;	/* Four-byte tag identifying a font-wide measure. */
+  عمومی:
+  Tag		مقدار_Tag;	/* Four-byte tag identifying a font-wide measure. */
   VarIdx	varIdx;		/* Outer/inner index into ItemVariationStore item. */
 
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (8);
 };
 
@@ -69,104 +69,104 @@ struct VariationValueRecord
  */
 #define HB_OT_TAG_MVAR HB_TAG('M','V','A','R')
 
-struct MVAR
+ساختار MVAR
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_MVAR;
+  ایستا constexpr hb_tag_t tableTag = HB_OT_TAG_MVAR;
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (این);
     return_trace (version.sanitize (c) &&
 		  hb_barrier () &&
 		  likely (version.major == 1) &&
-		  c->check_struct (this) &&
+		  c->check_struct (این) &&
 		  hb_barrier () &&
-		  valueRecordSize >= VariationValueRecord::static_size &&
-		  varStore.sanitize (c, this) &&
-		  c->check_range (valuesZ.arrayZ,
-				  valueRecordCount,
-				  valueRecordSize));
+		  مقدار_Record_Size >= Variation_مقدار_Record::static_size &&
+		  varStore.sanitize (c, این) &&
+		  c->check_range (مقادیر_Z.arrayZ,
+				  مقدار_Record_شمار,
+				  مقدار_Record_Size));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (این);
 #ifdef HB_NO_VAR
-    return_trace (false);
+    return_trace (نادرست);
 #endif
 
-    if (c->plan->all_axes_pinned)
-      return_trace (false);
+    اگر (c->plan->all_axes_pinned)
+      return_trace (نادرست);
 
-    MVAR *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    MVAR *out = c->serializer->start_embed (*این);
+    اگر (unlikely (!c->serializer->extend_min (out))) return_trace (نادرست);
     out->version = version;
     out->reserved = reserved;
-    out->valueRecordSize = valueRecordSize;
-    out->valueRecordCount = valueRecordCount;
+    out->مقدار_Record_Size = مقدار_Record_Size;
+    out->مقدار_Record_شمار = مقدار_Record_شمار;
 
     item_variations_t item_vars;
-    const ItemVariationStore& src_var_store = this+varStore;
+    ثابت ItemVariationStore& src_var_store = این+varStore;
 
-    if (!item_vars.instantiate (src_var_store, c->plan))
-      return_trace (false);
+    اگر (!item_vars.instantiate (src_var_store, c->plan))
+      return_trace (نادرست);
 
     /* serialize varstore */
-    if (!out->varStore.serialize_serialize (c->serializer, item_vars.has_long_word (),
+    اگر (!out->varStore.serialize_serialize (c->serializer, item_vars.has_long_word (),
                                             c->plan->axis_tags,
                                             item_vars.get_region_list (),
                                             item_vars.get_vardata_encodings ()))
-      return_trace (false);
+      return_trace (نادرست);
 
     /* serialize value records array */
-    unsigned value_rec_count = valueRecordCount;
-    const VariationValueRecord *record = reinterpret_cast<const VariationValueRecord*> (valuesZ.arrayZ);
-    for (unsigned i = 0; i < value_rec_count; i++)
+    unsigned مقدار_rec_شمار = مقدار_Record_شمار;
+    ثابت Variation_مقدار_Record *record = reinterpret_cast<ثابت Variation_مقدار_Record*> (مقادیر_Z.arrayZ);
+    برای (unsigned i = 0; i < مقدار_rec_شمار; i++)
     {
-      if (!record->subset (c, item_vars.get_varidx_map ())) return_trace (false);
+      اگر (!record->subset (c, item_vars.get_varidx_map ())) return_trace (نادرست);
       record++;
     }
-    return_trace (true);
+    return_trace (درست);
   }
 
-  float get_var (hb_tag_t tag,
-		 const int *coords, unsigned int coord_count) const
+  اعشاری get_var (hb_tag_t tag,
+		 ثابت صحیح *coords, unsigned صحیح coord_شمار) ثابت
   {
-    const VariationValueRecord *record;
-    record = (VariationValueRecord *) hb_bsearch (tag,
-						  (const VariationValueRecord *)
-						    (const HBUINT8 *) valuesZ,
-						  valueRecordCount, valueRecordSize,
+    ثابت Variation_مقدار_Record *record;
+    record = (Variation_مقدار_Record *) hb_bsearch (tag,
+						  (ثابت Variation_مقدار_Record *)
+						    (ثابت HBUINT8 *) مقادیر_Z,
+						  مقدار_Record_شمار, مقدار_Record_Size,
 						  tag_compare);
-    if (!record)
-      return 0.;
+    اگر (!record)
+      بازگشت 0.;
 
-    return (this+varStore).get_delta (record->varIdx, coords, coord_count);
+    بازگشت (این+varStore).get_delta (record->varIdx, coords, coord_شمار);
   }
 
-protected:
-  static int tag_compare (const void *pa, const void *pb)
+محافظتشده:
+  ایستا صحیح tag_compare (ثابت تهی *pa, ثابت تهی *pb)
   {
-    const hb_tag_t *a = (const hb_tag_t *) pa;
-    const Tag *b = (const Tag *) pb;
-    return b->cmp (*a);
+    ثابت hb_tag_t *a = (ثابت hb_tag_t *) pa;
+    ثابت Tag *b = (ثابت Tag *) pb;
+    بازگشت b->cmp (*a);
   }
 
-  protected:
+  محافظتشده:
   FixedVersion<>version;	/* Version of the metrics variation table
 				 * initially set to 0x00010000u */
   HBUINT16	reserved;	/* Not used; set to 0. */
-  HBUINT16	valueRecordSize;/* The size in bytes of each value record —
+  HBUINT16	مقدار_Record_Size;/* The size in bytes of each value record —
 				 * must be greater than zero. */
-  HBUINT16	valueRecordCount;/* The number of value records — may be zero. */
+  HBUINT16	مقدار_Record_شمار;/* The number of value records — may be zero. */
   Offset16To<ItemVariationStore>
 		varStore;	/* Offset to item variation store table. */
   UnsizedArrayOf<HBUINT8>
-		valuesZ;	/* Array of value records. The records must be
+		مقادیر_Z;	/* Array of value records. The records must be
 				 * in binary order of their valueTag field. */
 
-  public:
-  DEFINE_SIZE_ARRAY (12, valuesZ);
+  عمومی:
+  DEFINE_SIZE_ARRAY (12, مقادیر_Z);
 };
 
 } /* namespace OT */

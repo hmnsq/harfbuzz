@@ -25,54 +25,54 @@
 #ifndef HB_OUTLINE_HH
 #define HB_OUTLINE_HH
 
-#include "hb.hh"
+#شامل "hb.hh"
 
-#include "hb-draw.hh"
+#شامل "hb-draw.hh"
 
 
-struct hb_outline_point_t
+ساختار hb_outline_point_t
 {
-  enum class type_t
+  شمارش رده type_t
   {
     MOVE_TO,
-    LINE_TO,
+    سطر_TO,
     QUADRATIC_TO,
     CUBIC_TO,
   };
 
-  hb_outline_point_t (float x, float y, type_t type) :
+  hb_outline_point_t (اعشاری x, اعشاری y, type_t type) :
     x (x), y (y), type (type) {}
 
-  float x, y;
+  اعشاری x, y;
   type_t type;
 };
 
-struct hb_outline_vector_t
+ساختار hb_outline_vector_t
 {
-  float normalize_len ()
+  اعشاری normalize_len ()
   {
-    float len = hypotf (x, y);
-    if (len)
+    اعشاری len = hypotf (x, y);
+    اگر (len)
     {
       x /= len;
       y /= len;
     }
-    return len;
+    بازگشت len;
   }
 
-  float x, y;
+  اعشاری x, y;
 };
 
-struct hb_outline_t
+ساختار hb_outline_t
 {
-  void reset () { points.clear (); contours.clear (); }
+  تهی reset () { points.clear (); contours.clear (); }
 
-  HB_INTERNAL void replay (hb_draw_funcs_t *pen, void *pen_data) const;
-  HB_INTERNAL float control_area () const;
-  HB_INTERNAL void translate (float dx, float dy);
-  HB_INTERNAL void slant (float slant_xy);
-  HB_INTERNAL void embolden (float x_strength, float y_strength,
-			     float x_shift, float y_shift);
+  HB_INTERNAL تهی replay (hb_draw_funcs_t *pen, تهی *pen_data) ثابت;
+  HB_INTERNAL اعشاری control_area () ثابت;
+  HB_INTERNAL تهی translate (اعشاری dx, اعشاری dy);
+  HB_INTERNAL تهی slant (اعشاری slant_xy);
+  HB_INTERNAL تهی embolden (اعشاری x_strength, اعشاری y_strength,
+			     اعشاری x_shift, اعشاری y_shift);
 
   hb_vector_t<hb_outline_point_t> points;
   hb_vector_t<unsigned> contours;

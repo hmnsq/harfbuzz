@@ -29,11 +29,11 @@
 #ifndef HB_MACHINERY_HH
 #define HB_MACHINERY_HH
 
-#include "hb.hh"
-#include "hb-blob.hh"
+#شامل "hb.hh"
+#شامل "hb-blob.hh"
 
-#include "hb-dispatch.hh"
-#include "hb-sanitize.hh"
+#شامل "hb-dispatch.hh"
+#شامل "hb-sanitize.hh"
 
 
 /*
@@ -43,26 +43,26 @@
 /* StructAtOffset<T>(P,Ofs) returns the struct T& that is placed at memory
  * location pointed to by P plus Ofs bytes. */
 template<typename Type>
-static inline const Type& StructAtOffset(const void *P, unsigned int offset)
-{ return * reinterpret_cast<const Type*> ((const char *) P + offset); }
+ایستا درونخطی ثابت Type& StructAtOffset(ثابت تهی *P, unsigned صحیح offset)
+{ بازگشت * reinterpret_cast<ثابت Type*> ((ثابت نویسه *) P + offset); }
 template<typename Type>
-static inline Type& StructAtOffset(void *P, unsigned int offset)
-{ return * reinterpret_cast<Type*> ((char *) P + offset); }
+ایستا درونخطی Type& StructAtOffset(تهی *P, unsigned صحیح offset)
+{ بازگشت * reinterpret_cast<Type*> ((نویسه *) P + offset); }
 template<typename Type>
-static inline const Type& StructAtOffsetUnaligned(const void *P, unsigned int offset)
+ایستا درونخطی ثابت Type& StructAtOffsetUnaligned(ثابت تهی *P, unsigned صحیح offset)
 {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcast-align"
-  return * reinterpret_cast<const Type*> ((const char *) P + offset);
-#pragma GCC diagnostic pop
+  بازگشت * reinterpret_cast<ثابت Type*> ((ثابت نویسه *) P + offset);
+#pragma GCC diagnostic برداشت
 }
 template<typename Type>
-static inline Type& StructAtOffsetUnaligned(void *P, unsigned int offset)
+ایستا درونخطی Type& StructAtOffsetUnaligned(تهی *P, unsigned صحیح offset)
 {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcast-align"
-  return * reinterpret_cast<Type*> ((char *) P + offset);
-#pragma GCC diagnostic pop
+  بازگشت * reinterpret_cast<Type*> ((نویسه *) P + offset);
+#pragma GCC diagnostic برداشت
 }
 
 /* StructAfter<T>(X) returns the struct T& that is placed after X.
@@ -70,15 +70,15 @@ static inline Type& StructAtOffsetUnaligned(void *P, unsigned int offset)
  * Any extra arguments are forwarded to get_size, so for example
  * it can work with UnsizedArrayOf<> as well. */
 template <typename Type, typename TObject, typename ...Ts>
-static inline auto StructAfter(const TObject &X, Ts... args) HB_AUTO_RETURN((
+ایستا درونخطی auto StructAfter(ثابت TObject &X, Ts... args) HB_AUTO_RETURN((
   StructAtOffset<Type>(&X, X.get_size(std::forward<Ts> (args)...))
 ))
 /* The is_const shenanigans is to avoid ambiguous overload with gcc-8.
  * It disables this path when TObject is const.
  * See: https://github.com/harfbuzz/harfbuzz/issues/5429 */
 template <typename Type, typename TObject, typename ...Ts>
-static inline auto StructAfter(TObject &X, Ts... args) HB_AUTO_RETURN((
-  sizeof(int[std::is_const<TObject>::value ? -1 : +1]) > 0 ?
+ایستا درونخطی auto StructAfter(TObject &X, Ts... args) HB_AUTO_RETURN((
+  اندازه(صحیح[std::is_const<TObject>::value ? -1 : +1]) > 0 ?
   StructAtOffset<Type>(&X, X.get_size(std::forward<Ts> (args)...))
   : *reinterpret_cast<Type*> (0)
 ))
@@ -94,50 +94,50 @@ static inline auto StructAfter(TObject &X, Ts... args) HB_AUTO_RETURN((
 #endif
 
 /* Check _assertion in a method environment */
-#define _DEFINE_INSTANCE_ASSERTION1(_line, _assertion) \
-  void _instance_assertion_on_line_##_line () const \
+#define _DEFINE_INSTANCE_ASSERTION1(سطر_2, _assertion) \
+  تهی instance_assertion_on_سطر##_line () ثابت \
   { static_assert ((_assertion), ""); }
-# define _DEFINE_INSTANCE_ASSERTION0(_line, _assertion) _DEFINE_INSTANCE_ASSERTION1 (_line, _assertion)
+# define _DEFINE_INSTANCE_ASSERTION0(سطر_2, _assertion) _DEFINE_INSTANCE_ASSERTION1 (سطر_2, _assertion)
 # define DEFINE_INSTANCE_ASSERTION(_assertion) _DEFINE_INSTANCE_ASSERTION0 (__LINE__, _assertion)
 
 /* Check that _code compiles in a method environment */
-#define _DEFINE_COMPILES_ASSERTION1(_line, _code) \
-  void _compiles_assertion_on_line_##_line () const \
+#define _DEFINE_COMPILES_ASSERTION1(سطر_2, _code) \
+  تهی compiles_assertion_on_سطر##_line () ثابت \
   { _code; }
-# define _DEFINE_COMPILES_ASSERTION0(_line, _code) _DEFINE_COMPILES_ASSERTION1 (_line, _code)
+# define _DEFINE_COMPILES_ASSERTION0(سطر_2, _code) _DEFINE_COMPILES_ASSERTION1 (سطر_2, _code)
 # define DEFINE_COMPILES_ASSERTION(_code) _DEFINE_COMPILES_ASSERTION0 (__LINE__, _code)
 
 
 #define DEFINE_SIZE_STATIC(size) \
-  DEFINE_INSTANCE_ASSERTION (sizeof (*this) == (size)) \
-  size_t get_size () const { return (size); } \
-  static constexpr unsigned null_size = (size); \
-  static constexpr unsigned min_size = (size); \
-  static constexpr unsigned static_size = (size)
+  DEFINE_INSTANCE_ASSERTION (اندازه (*این) == (size)) \
+  size_t get_size () ثابت { بازگشت (size); } \
+  ایستا constexpr unsigned null_size = (size); \
+  ایستا constexpr unsigned min_size = (size); \
+  ایستا constexpr unsigned static_size = (size)
 
 #define DEFINE_SIZE_UNION(size, _member) \
-  DEFINE_COMPILES_ASSERTION ((void) this->u._member.static_size) \
-  DEFINE_INSTANCE_ASSERTION (sizeof(this->u._member) == (size)) \
-  static constexpr unsigned null_size = (size); \
-  static constexpr unsigned min_size = (size)
+  DEFINE_COMPILES_ASSERTION ((تهی) این->u._member.static_size) \
+  DEFINE_INSTANCE_ASSERTION (اندازه(این->u._member) == (size)) \
+  ایستا constexpr unsigned null_size = (size); \
+  ایستا constexpr unsigned min_size = (size)
 
 #define DEFINE_SIZE_MIN(size) \
-  DEFINE_INSTANCE_ASSERTION (sizeof (*this) >= (size)) \
-  static constexpr unsigned null_size = (size); \
-  static constexpr unsigned min_size = (size)
+  DEFINE_INSTANCE_ASSERTION (اندازه (*این) >= (size)) \
+  ایستا constexpr unsigned null_size = (size); \
+  ایستا constexpr unsigned min_size = (size)
 
 #define DEFINE_SIZE_UNBOUNDED(size) \
-  DEFINE_INSTANCE_ASSERTION (sizeof (*this) >= (size)) \
-  static constexpr unsigned min_size = (size)
+  DEFINE_INSTANCE_ASSERTION (اندازه (*این) >= (size)) \
+  ایستا constexpr unsigned min_size = (size)
 
 #define DEFINE_SIZE_ARRAY(size, array) \
-  DEFINE_COMPILES_ASSERTION ((void) (array)[0].static_size) \
-  DEFINE_INSTANCE_ASSERTION (sizeof (*this) == (size) + (HB_VAR_ARRAY+0) * sizeof ((array)[0])) \
-  static constexpr unsigned null_size = (size); \
-  static constexpr unsigned min_size = (size)
+  DEFINE_COMPILES_ASSERTION ((تهی) (array)[0].static_size) \
+  DEFINE_INSTANCE_ASSERTION (اندازه (*این) == (size) + (HB_VAR_ARRAY+0) * اندازه ((array)[0])) \
+  ایستا constexpr unsigned null_size = (size); \
+  ایستا constexpr unsigned min_size = (size)
 
 #define DEFINE_SIZE_ARRAY_SIZED(size, array) \
-  size_t get_size () const { return (size - (array).min_size + (array).get_size ()); } \
+  size_t get_size () ثابت { بازگشت (size - (array).min_size + (array).get_size ()); } \
   DEFINE_SIZE_ARRAY(size, array)
 
 
@@ -152,204 +152,204 @@ static inline auto StructAfter(TObject &X, Ts... args) HB_AUTO_RETURN((
  * for every lazy-loader.  Multiple lazy-loaders can access the same data.
  */
 
-template <typename Data, unsigned int WheresData>
-struct hb_data_wrapper_t
+template <typename Data, unsigned صحیح WheresData>
+ساختار hb_data_wrapper_t
 {
   static_assert (WheresData > 0, "");
 
-  Data * get_data () const
-  { return *(((Data **) (void *) this) - WheresData); }
+  Data * get_data () ثابت
+  { بازگشت *(((Data **) (تهی *) این) - WheresData); }
 
-  bool is_inert () const { return !get_data (); }
+  منطقی is_inert () ثابت { بازگشت !get_data (); }
 
   template <typename Stored, typename Subclass>
-  Stored * call_create () const { return Subclass::create (get_data ()); }
+  Stored * call_create () ثابت { بازگشت Subclass::create (get_data ()); }
 };
 template <>
-struct hb_data_wrapper_t<void, 0>
+ساختار hb_data_wrapper_t<تهی, 0>
 {
-  bool is_inert () const { return false; }
+  منطقی is_inert () ثابت { بازگشت نادرست; }
 
   template <typename Stored, typename Funcs>
-  Stored * call_create () const { return Funcs::create (); }
+  Stored * call_create () ثابت { بازگشت Funcs::create (); }
 };
 
-template <typename T1, typename T2> struct hb_non_void_t { typedef T1 value; };
-template <typename T2> struct hb_non_void_t<void, T2> { typedef T2 value; };
+template <typename T1, typename T2> ساختار hb_non_void_t { تعریفنوع T1 value; };
+template <typename T2> ساختار hb_non_void_t<تهی, T2> { تعریفنوع T2 value; };
 
 template <typename Returned,
-	  typename Subclass = void,
-	  typename Data = void,
-	  unsigned int WheresData = 0,
+	  typename Subclass = تهی,
+	  typename Data = تهی,
+	  unsigned صحیح WheresData = 0,
 	  typename Stored = Returned>
-struct hb_lazy_loader_t : hb_data_wrapper_t<Data, WheresData>
+ساختار hb_lazy_loader_t : hb_data_wrapper_t<Data, WheresData>
 {
-  typedef typename hb_non_void_t<Subclass,
+  تعریفنوع typename hb_non_void_t<Subclass,
 				 hb_lazy_loader_t<Returned,Subclass,Data,WheresData,Stored>
 				>::value Funcs;
 
-  hb_lazy_loader_t () = default;
-  hb_lazy_loader_t (const hb_lazy_loader_t &other) = delete;
+  hb_lazy_loader_t () = پیشفرض;
+  hb_lazy_loader_t (ثابت hb_lazy_loader_t &other) = delete;
 
-  void init0 () {} /* Init, when memory is already set to 0. No-op for us. */
-  void init ()  { instance.set_relaxed (nullptr); }
-  void fini ()  { do_destroy (instance.get_acquire ()); init (); }
+  تهی init0 () {} /* Init, when memory is already set to 0. No-op for us. */
+  تهی init ()  { instance.set_relaxed (nullptr); }
+  تهی fini ()  { do_destroy (instance.get_acquire ()); init (); }
 
-  void free_instance ()
+  تهی free_instance ()
   {
   retry:
     Stored *p = instance.get_acquire ();
-    if (unlikely (p && !cmpexch (p, nullptr)))
-      goto retry;
+    اگر (unlikely (p && !cmpexch (p, nullptr)))
+      برو retry;
     do_destroy (p);
   }
 
-  static void do_destroy (Stored *p)
+  ایستا تهی do_destroy (Stored *p)
   {
-    if (Funcs::tag_null ? !p || is_tagged_null (p) :
+    اگر (Funcs::tag_null ? !p || is_tagged_null (p) :
 			  !p || p == const_cast<Stored *> (Funcs::get_null ()))
-      return;
+      بازگشت;
     Funcs::destroy (p);
   }
 
-  const Returned * operator -> () const { return get (); }
-  template <typename U = Returned, hb_enable_if (!hb_is_same (U, void))>
-  const U & operator * () const  { return *get (); }
-  explicit operator bool () const
+  ثابت Returned * operator -> () ثابت { بازگشت get (); }
+  template <typename U = Returned, hb_enable_if (!hb_is_same (U, تهی))>
+  ثابت U & operator * () ثابت  { بازگشت *get (); }
+  explicit operator منطقی () ثابت
   {
     Stored *p = get_stored ();
-    if (Funcs::tag_null)
+    اگر (Funcs::tag_null)
     {
-      Stored *raw = this->instance.get_relaxed ();
-      return raw && !is_tagged_null (raw);
+      Stored *raw = این->instance.get_relaxed ();
+      بازگشت raw && !is_tagged_null (raw);
     }
-    return p != Funcs::get_null ();
+    بازگشت p != Funcs::get_null ();
   }
-  template <typename C> operator const C * () const { return get (); }
+  template <typename C> operator ثابت C * () ثابت { بازگشت get (); }
 
-  Stored * get_stored () const
+  Stored * get_stored () ثابت
   {
   retry:
-    Stored *p = this->instance.get_acquire ();
-    if (unlikely (!p))
+    Stored *p = این->instance.get_acquire ();
+    اگر (unlikely (!p))
     {
-      if (unlikely (this->is_inert ()))
-	return const_cast<Stored *> (Funcs::get_null ());
+      اگر (unlikely (این->is_inert ()))
+	بازگشت const_cast<Stored *> (Funcs::get_null ());
 
-      p = this->template call_create<Stored, Funcs> ();
-      if (unlikely (!p))
+      p = این->template call_create<Stored, Funcs> ();
+      اگر (unlikely (!p))
 	p = tagged_null (const_cast<Stored *> (Funcs::get_null ()));
 
-      if (unlikely (!cmpexch (nullptr, p)))
+      اگر (unlikely (!cmpexch (nullptr, p)))
       {
 	do_destroy (p);
-	goto retry;
+	برو retry;
       }
     }
-    return untagged (p);
+    بازگشت untagged (p);
   }
-  Stored * get_stored_relaxed () const
+  Stored * get_stored_relaxed () ثابت
   {
-    return untagged (this->instance.get_relaxed ());
+    بازگشت untagged (این->instance.get_relaxed ());
   }
 
-  bool cmpexch (Stored *current, Stored *value) const
+  منطقی cmpexch (Stored *current, Stored *value) ثابت
   {
     /* This function can only be safely called directly if no
      * other thread is accessing. */
-    return this->instance.cmpexch (current, value);
+    بازگشت این->instance.cmpexch (current, value);
   }
 
-  const Returned * get () const { return Funcs::convert (get_stored ()); }
-  const Returned * get_relaxed () const { return Funcs::convert (get_stored_relaxed ()); }
-  Returned * get_unconst () const { return const_cast<Returned *> (Funcs::convert (get_stored ())); }
+  ثابت Returned * get () ثابت { بازگشت Funcs::convert (get_stored ()); }
+  ثابت Returned * get_relaxed () ثابت { بازگشت Funcs::convert (get_stored_relaxed ()); }
+  Returned * get_unconst () ثابت { بازگشت const_cast<Returned *> (Funcs::convert (get_stored ())); }
 
   /* To be possibly overloaded by subclasses. */
-  static Returned* convert (Stored *p) { return p; }
+  ایستا Returned* convert (Stored *p) { بازگشت p; }
 
   /* By default null/init/fini the object. */
-  static const Stored* get_null () { return &Null (Stored); }
+  ایستا ثابت Stored* get_null () { بازگشت &Null (Stored); }
 
   /* When tag_null is set, a failed create () is cached as get_null () with
    * its low bit set, and destroy recognizes it by that bit rather than by
    * address.  Needed when get_null () is a per-library Null object: another
    * library sharing the object would not recognize its address. */
-  static constexpr bool tag_null = false;
-  static bool is_tagged_null (Stored *p)
-  { return Funcs::tag_null && ((uintptr_t) (void *) p & 1); }
-  static Stored *tagged_null (Stored *p)
-  { return Funcs::tag_null ? (Stored *) (void *) ((uintptr_t) (void *) p | 1) : p; }
-  static Stored *untagged (Stored *p)
-  { return Funcs::tag_null ? (Stored *) (void *) ((uintptr_t) (void *) p & ~(uintptr_t) 1) : p; }
-  static Stored *create (Data *data)
+  ایستا constexpr منطقی tag_null = نادرست;
+  ایستا منطقی is_tagged_null (Stored *p)
+  { بازگشت Funcs::tag_null && ((uintptr_t) (تهی *) p & 1); }
+  ایستا Stored *tagged_null (Stored *p)
+  { بازگشت Funcs::tag_null ? (Stored *) (تهی *) ((uintptr_t) (تهی *) p | 1) : p; }
+  ایستا Stored *untagged (Stored *p)
+  { بازگشت Funcs::tag_null ? (Stored *) (تهی *) ((uintptr_t) (تهی *) p & ~(uintptr_t) 1) : p; }
+  ایستا Stored *create (Data *data)
   {
-    Stored *p = (Stored *) hb_calloc (1, sizeof (Stored));
-    if (likely (p))
-      p = new (p) Stored (data);
-    return p;
+    Stored *p = (Stored *) hb_calloc (1, اندازه (Stored));
+    اگر (likely (p))
+      p = جدید (p) Stored (data);
+    بازگشت p;
   }
-  static Stored *create ()
+  ایستا Stored *create ()
   {
-    Stored *p = (Stored *) hb_calloc (1, sizeof (Stored));
-    if (likely (p))
-      p = new (p) Stored ();
-    return p;
+    Stored *p = (Stored *) hb_calloc (1, اندازه (Stored));
+    اگر (likely (p))
+      p = جدید (p) Stored ();
+    بازگشت p;
   }
-  static void destroy (Stored *p)
+  ایستا تهی destroy (Stored *p)
   {
     p->~Stored ();
     hb_free (p);
   }
 
-  private:
+  خصوصی:
   /* Must only have one pointer. */
   mutable hb_atomic_t<Stored *> instance;
 };
 
 /* Specializations. */
 
-template <typename T, unsigned int WheresFace>
-struct hb_face_lazy_loader_t : hb_lazy_loader_t<T,
+template <typename T, unsigned صحیح WheresFace>
+ساختار hb_face_lazy_loader_t : hb_lazy_loader_t<T,
 						hb_face_lazy_loader_t<T, WheresFace>,
 						hb_face_t, WheresFace>
 {
   /* get_null () is this library's Null object; see tag_null. */
-  static constexpr bool tag_null = true;
+  ایستا constexpr منطقی tag_null = درست;
 
   // Hack; have them here for API parity with hb_table_lazy_loader_t
-  hb_blob_t *get_blob () { return this->get ()->get_blob (); }
+  hb_blob_t *get_blob () { بازگشت این->get ()->get_blob (); }
 };
 
-template <typename T, unsigned int WheresFace>
-struct hb_table_lazy_loader_t : hb_lazy_loader_t<T,
+template <typename T, unsigned صحیح WheresFace>
+ساختار hb_table_lazy_loader_t : hb_lazy_loader_t<T,
 						 hb_table_lazy_loader_t<T, WheresFace>,
 						 hb_face_t, WheresFace,
 						 hb_blob_t>
 {
-  static hb_blob_t *create (hb_face_t *face)
+  ایستا hb_blob_t *create (hb_face_t *face)
   {
     hb_sanitize_context_t c;
-    return c.reference_table<T> (face);
+    بازگشت c.reference_table<T> (face);
   }
-  static void destroy (hb_blob_t *p) { hb_blob_destroy (p); }
+  ایستا تهی destroy (hb_blob_t *p) { hb_blob_destroy (p); }
 
-  static const hb_blob_t *get_null ()
-  { return hb_blob_get_empty (); }
+  ایستا ثابت hb_blob_t *get_null ()
+  { بازگشت hb_blob_get_empty (); }
 
-  static const T* convert (const hb_blob_t *blob)
-  { return blob->as<T> (); }
+  ایستا ثابت T* convert (ثابت hb_blob_t *blob)
+  { بازگشت blob->as<T> (); }
 
-  hb_blob_t* get_blob () const { return this->get_stored (); }
+  hb_blob_t* get_blob () ثابت { بازگشت این->get_stored (); }
 };
 
 #define HB_DEFINE_TYPE_FUNCS_LAZY_LOADER_T(Type) \
   template <typename Subclass> \
-  struct hb_##Type##_funcs_lazy_loader_t : hb_lazy_loader_t<hb_##Type##_funcs_t, Subclass> \
+  ساختار hb_##Type##_funcs_lazy_loader_t : hb_lazy_loader_t<hb_##Type##_funcs_t, Subclass> \
   { \
-    static void destroy (hb_##Type##_funcs_t *p) \
+    ایستا تهی destroy (hb_##Type##_funcs_t *p) \
     { hb_##Type##_funcs_destroy (p); } \
-    static const hb_##Type##_funcs_t *get_null () \
-    { return hb_##Type##_funcs_get_empty (); } \
+    ایستا ثابت hb_##Type##_funcs_t *get_null () \
+    { بازگشت hb_##Type##_funcs_get_empty (); } \
   }
 
 HB_DEFINE_TYPE_FUNCS_LAZY_LOADER_T (font);

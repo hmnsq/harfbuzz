@@ -27,8 +27,8 @@
 #ifndef HB_PRIORITY_QUEUE_HH
 #define HB_PRIORITY_QUEUE_HH
 
-#include "hb.hh"
-#include "hb-vector.hh"
+#شامل "hb.hh"
+#شامل "hb-vector.hh"
 
 /*
  * hb_priority_queue_t
@@ -43,140 +43,140 @@
  * children of node i stored at indices 2i + 1 and 2i + 2.
  */
 template <typename K>
-struct hb_priority_queue_t
+ساختار hb_priority_queue_t
 {
- public:
-  typedef hb_pair_t<K, unsigned> item_t;
+ عمومی:
+  تعریفنوع hb_pair_t<K, unsigned> item_t;
 
- private:
+ خصوصی:
   hb_vector_t<item_t> heap;
 
- public:
+ عمومی:
 
-  hb_priority_queue_t () = default;
+  hb_priority_queue_t () = پیشفرض;
   hb_priority_queue_t (hb_vector_t<item_t>&& other) : heap (std::move (other))
   {
     // Heapify the vector.
-    for (int i = (heap.length / 2) - 1; i >= 0; i--)
+    برای (صحیح i = (heap.length / 2) - 1; i >= 0; i--)
       bubble_down (i);
   }
 
-  void reset () { heap.clear (); }
+  تهی reset () { heap.clear (); }
 
-  bool in_error () const { return heap.in_error (); }
+  منطقی in_error () ثابت { بازگشت heap.in_error (); }
 
-  bool alloc (unsigned size)
-  { return heap.alloc (size); }
+  منطقی alloc (unsigned size)
+  { بازگشت heap.alloc (size); }
 
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  void insert (K priority, unsigned value)
+  تهی insert (K priority, unsigned value)
   {
     heap.push (item_t (priority, value));
-    if (unlikely (heap.in_error ())) return;
+    اگر (unlikely (heap.in_error ())) بازگشت;
     bubble_up (heap.length - 1);
   }
 
 #ifndef HB_OPTIMIZE_SIZE
   HB_ALWAYS_INLINE
 #endif
-  item_t pop_minimum ()
+  item_t برداشت_minimum ()
   {
-    assert (!is_empty ());
+    أكد (!is_empty ());
 
     item_t result = heap.arrayZ[0];
 
     heap.arrayZ[0] = heap.arrayZ[heap.length - 1];
     heap.resize (heap.length - 1);
 
-    if (!is_empty ())
+    اگر (!is_empty ())
       bubble_down (0);
 
-    return result;
+    بازگشت result;
   }
 
-  const item_t& minimum ()
+  ثابت item_t& minimum ()
   {
-    return heap[0];
+    بازگشت heap[0];
   }
 
-  bool is_empty () const { return heap.length == 0; }
-  explicit operator bool () const { return !is_empty (); }
-  unsigned int get_population () const { return heap.length; }
+  منطقی is_empty () ثابت { بازگشت heap.length == 0; }
+  explicit operator منطقی () ثابت { بازگشت !is_empty (); }
+  unsigned صحیح get_population () ثابت { بازگشت heap.length; }
 
   /* Sink interface. */
   hb_priority_queue_t& operator << (item_t item)
-  { insert (item.first, item.second); return *this; }
+  { insert (item.first, item.second); بازگشت *این; }
 
- private:
+ خصوصی:
 
-  static constexpr unsigned parent (unsigned index)
+  ایستا constexpr unsigned parent (unsigned index)
   {
-    return (index - 1) / 2;
+    بازگشت (index - 1) / 2;
   }
 
-  static constexpr unsigned left_child (unsigned index)
+  ایستا constexpr unsigned چپ_child (unsigned index)
   {
-    return 2 * index + 1;
+    بازگشت 2 * index + 1;
   }
 
-  static constexpr unsigned right_child (unsigned index)
+  ایستا constexpr unsigned راست_child (unsigned index)
   {
-    return 2 * index + 2;
+    بازگشت 2 * index + 2;
   }
 
   HB_ALWAYS_INLINE
-  void bubble_down (unsigned index)
+  تهی bubble_down (unsigned index)
   {
     repeat:
-    assert (index < heap.length);
+    أكد (index < heap.length);
 
-    unsigned left = left_child (index);
-    unsigned right = right_child (index);
+    unsigned left = چپ_child (index);
+    unsigned راست = راست_child (index);
 
-    bool has_left = left < heap.length;
-    if (!has_left)
+    منطقی has_چپ = left < heap.length;
+    اگر (!has_چپ)
       // If there's no left, then there's also no right.
-      return;
+      بازگشت;
 
-    bool has_right = right < heap.length;
-    if (heap.arrayZ[index].first <= heap.arrayZ[left].first
-        && (!has_right || heap.arrayZ[index].first <= heap.arrayZ[right].first))
-      return;
+    منطقی has_راست = راست < heap.length;
+    اگر (heap.arrayZ[index].first <= heap.arrayZ[left].first
+        && (!has_راست || heap.arrayZ[index].first <= heap.arrayZ[راست].first))
+      بازگشت;
 
     unsigned child;
-    if (!has_right || heap.arrayZ[left].first < heap.arrayZ[right].first)
+    اگر (!has_راست || heap.arrayZ[left].first < heap.arrayZ[راست].first)
       child = left;
-    else
-      child = right;
+    وگرنه
+      child = راست;
 
     swap (index, child);
     index = child;
-    goto repeat;
+    برو repeat;
   }
 
   HB_ALWAYS_INLINE
-  void bubble_up (unsigned index)
+  تهی bubble_up (unsigned index)
   {
     repeat:
-    assert (index < heap.length);
+    أكد (index < heap.length);
 
-    if (index == 0) return;
+    اگر (index == 0) بازگشت;
 
     unsigned parent_index = parent (index);
-    if (heap.arrayZ[parent_index].first <= heap.arrayZ[index].first)
-      return;
+    اگر (heap.arrayZ[parent_index].first <= heap.arrayZ[index].first)
+      بازگشت;
 
     swap (index, parent_index);
     index = parent_index;
-    goto repeat;
+    برو repeat;
   }
 
-  void swap (unsigned a, unsigned b) noexcept
+  تهی swap (unsigned a, unsigned b) noexcept
   {
-    assert (a < heap.length);
-    assert (b < heap.length);
+    أكد (a < heap.length);
+    أكد (b < heap.length);
     hb_swap (heap.arrayZ[a], heap.arrayZ[b]);
   }
 };

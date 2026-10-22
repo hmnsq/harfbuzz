@@ -25,10 +25,10 @@
 #ifndef HB_OT_GASP_TABLE_HH
 #define HB_OT_GASP_TABLE_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-hhea-table.hh"
-#include "hb-ot-os2-table.hh"
-#include "hb-ot-var-hvar-table.hh"
+#شامل "hb-open-type.hh"
+#شامل "hb-ot-hhea-table.hh"
+#شامل "hb-ot-os2-table.hh"
+#شامل "hb-ot-var-hvar-table.hh"
 
 /*
  * gasp -- Grid-fitting and Scan-conversion Procedure
@@ -37,44 +37,44 @@
 #define HB_OT_TAG_gasp HB_TAG('g','a','s','p')
 
 
-namespace OT {
+فضاینام OT {
 
-struct GaspRange
+ساختار GaspRange
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این));
   }
 
-  public:
+  عمومی:
   HBUINT16	rangeMaxPPEM;	/* Upper limit of range, in PPEM */
   HBUINT16	rangeGaspBehavior;
 				/* Flags describing desired rasterizer behavior. */
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (4);
 };
 
-struct gasp
+ساختار gasp
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_gasp;
+  ایستا constexpr hb_tag_t tableTag = HB_OT_TAG_gasp;
 
-  const GaspRange &get_gasp_range (unsigned int i) const
-  { return gaspRanges[i]; }
+  ثابت GaspRange &get_gasp_range (unsigned صحیح i) ثابت
+  { بازگشت gaspRanges[i]; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این) &&
 		  gaspRanges.sanitize (c));
   }
 
-  protected:
+  محافظتشده:
   HBUINT16	version;	/* Version number (set to 1) */
   Array16Of<GaspRange>
 		gaspRanges;	/* Number of records to follow
 				 * Sorted by ppem */
-  public:
+  عمومی:
   DEFINE_SIZE_ARRAY (4, gaspRanges);
 };
 

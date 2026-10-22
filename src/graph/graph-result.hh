@@ -27,11 +27,11 @@
 #ifndef GRAPH_GRAPH_RESULT_HH
 #define GRAPH_GRAPH_RESULT_HH
 
-#include "../hb-result.hh"
+#شامل "../hb-result.hh"
 
-namespace graph {
+فضاینام graph {
 
-enum graph_error_t {
+شمارش graph_error_t {
   ALLOCATION_FAILURE,
   LIMIT_EXCEEDED,
   INVALID_ARGUMENT,
@@ -43,19 +43,19 @@ enum graph_error_t {
   UNKNOWN,
 };
 
-static inline const char* to_string(graph_error_t e) {
-  switch (e) {
-    case ALLOCATION_FAILURE: return "Memory Allocation Failed";
-    case LIMIT_EXCEEDED: return "Limit Exceeded";
-    case INVALID_ARGUMENT: return "Invalid Argument";
-    case CYCLE_DETECTED: return "Cycle in Graph";
-    case SANITIZE_FAILURE: return "Failed Sanitization";
-    case OUT_OF_BOUNDS: return "Out of Bounds";
-    case ORPHANED_NODES: return "Graph is not fully connected";
-    case OVERFLOW_RESOLUTION_FAILED: return "Overflows are not able to be resolved";
-    case UNKNOWN:
-    default:
-      return "Unknown Error";
+ایستا درونخطی ثابت نویسه* to_string(graph_error_t e) {
+  انتخاب (e) {
+    حالت ALLOCATION_FAILURE: بازگشت "Memory Allocation Failed";
+    حالت LIMIT_EXCEEDED: بازگشت "Limit Exceeded";
+    حالت INVALID_ARGUMENT: بازگشت "Invalid Argument";
+    حالت CYCLE_DETECTED: بازگشت "Cycle in Graph";
+    حالت SANITIZE_FAILURE: بازگشت "Failed Sanitization";
+    حالت OUT_OF_BOUNDS: بازگشت "Out of Bounds";
+    حالت ORPHANED_NODES: بازگشت "Graph is not fully connected";
+    حالت OVERFLOW_RESOLUTION_FAILED: بازگشت "Overflows are not able to be resolved";
+    حالت UNKNOWN:
+    پیشفرض:
+      بازگشت "Unknown Error";
   }
 }
 

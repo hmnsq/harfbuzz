@@ -25,7 +25,7 @@
 #ifndef HB_AAT_LTAG_TABLE_HH
 #define HB_AAT_LTAG_TABLE_HH
 
-#include "hb-open-type.hh"
+#شامل "hb-open-type.hh"
 
 /*
  * ltag -- Language Tag
@@ -34,58 +34,58 @@
 #define HB_AAT_TAG_ltag HB_TAG('l','t','a','g')
 
 
-namespace AAT {
+فضاینام AAT {
 
-using namespace OT;
+using فضاینام OT;
 
 
-struct FTStringRange
+ساختار FTStringRange
 {
-  friend struct ltag;
+  friend ساختار ltag;
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  منطقی sanitize (hb_sanitize_context_t *c, ثابت تهی *base) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این) &&
 		  hb_barrier () &&
 		  (base+tag).sanitize (c, length));
   }
 
-  protected:
+  محافظتشده:
   NNOffset16To<UnsizedArrayOf<HBUINT8>>
 		tag;		/* Offset from the start of the table to
 				 * the beginning of the string */
   HBUINT16	length;		/* String length (in bytes) */
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (4);
 };
 
-struct ltag
+ساختار ltag
 {
-  static constexpr hb_tag_t tableTag = HB_AAT_TAG_ltag;
+  ایستا constexpr hb_tag_t tableTag = HB_AAT_TAG_ltag;
 
-  hb_language_t get_language (unsigned int i) const
+  hb_language_t get_language (unsigned صحیح i) ثابت
   {
-    const FTStringRange &range = tagRanges[i];
-    return hb_language_from_string ((const char *) (this+range.tag).arrayZ,
+    ثابت FTStringRange &range = tagRanges[i];
+    بازگشت hb_language_from_string ((ثابت نویسه *) (این+range.tag).arrayZ,
 				    range.length);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (این);
+    return_trace (likely (c->check_struct (این) &&
 			  hb_barrier () &&
 			  version >= 1 &&
-			  tagRanges.sanitize (c, this)));
+			  tagRanges.sanitize (c, این)));
   }
 
-  protected:
+  محافظتشده:
   HBUINT32	version;	/* Table version; currently 1 */
   HBUINT32	flags;		/* Table flags; currently none defined */
   Array32Of<FTStringRange>
 		tagRanges;	/* Range for each tag's string */
-  public:
+  عمومی:
   DEFINE_SIZE_ARRAY (12, tagRanges);
 };
 

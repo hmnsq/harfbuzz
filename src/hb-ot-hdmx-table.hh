@@ -27,7 +27,7 @@
 #ifndef HB_OT_HDMX_TABLE_HH
 #define HB_OT_HDMX_TABLE_HH
 
-#include "hb-open-type.hh"
+#شامل "hb-open-type.hh"
 
 /*
  * hdmx -- Horizontal Device Metrics
@@ -36,138 +36,138 @@
 #define HB_OT_TAG_hdmx HB_TAG('h','d','m','x')
 
 
-namespace OT {
+فضاینام OT {
 
 
-struct DeviceRecord
+ساختار DeviceRecord
 {
-  static size_t get_size (unsigned count)
-  { return hb_ceil_to_4 (hb_unsigned_mul_add_saturate (count, HBUINT8::static_size, min_size)); }
+  ایستا size_t get_size (unsigned شمار)
+  { بازگشت hb_ceil_to_4 (hb_unsigned_mul_add_saturate (شمار, HBUINT8::static_size, min_size)); }
 
   template<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  bool serialize (hb_serialize_context_t *c,
+  منطقی serialize (hb_serialize_context_t *c,
 		  unsigned pixelSize,
 		  Iterator it,
-		  const hb_vector_t<hb_codepoint_pair_t> new_to_old_gid_list,
-		  unsigned num_glyphs)
+		  ثابت hb_vector_t<hb_codepoint_pair_t> new_to_old_gid_list,
+		  unsigned رقم_glyphs)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (این);
 
-    if (unlikely (!c->extend (this, num_glyphs)))  return_trace (false);
+    اگر (unlikely (!c->extend (این, رقم_glyphs)))  return_trace (نادرست);
 
-    this->pixelSize = pixelSize;
-    this->maxWidth =
+    این->pixelSize = pixelSize;
+    این->maxWidth =
     + it
     | hb_reduce (hb_max, 0u);
 
-    for (auto &_ : new_to_old_gid_list)
+    برای (auto &_ : new_to_old_gid_list)
       widthsZ[_.first] = *it++;
 
-    return_trace (true);
+    return_trace (درست);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned sizeDeviceRecord) const
+  منطقی sanitize (hb_sanitize_context_t *c, unsigned sizeDeviceRecord) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (این);
+    return_trace (likely (c->check_struct (این) &&
 			  hb_barrier () &&
-			  c->check_range (this, sizeDeviceRecord)));
+			  c->check_range (این, sizeDeviceRecord)));
   }
 
   HBUINT8			pixelSize;	/* Pixel size for following widths (as ppem). */
   HBUINT8			maxWidth;	/* Maximum width. */
   UnsizedArrayOf<HBUINT8>	widthsZ;	/* Array of widths (numGlyphs is from the 'maxp' table). */
-  public:
+  عمومی:
   DEFINE_SIZE_UNBOUNDED (2);
 };
 
 
-struct hdmx
+ساختار hdmx
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_hdmx;
+  ایستا constexpr hb_tag_t tableTag = HB_OT_TAG_hdmx;
 
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (numRecords, sizeDeviceRecord, min_size); }
+  size_t get_size () ثابت
+  { بازگشت hb_unsigned_mul_add_saturate (رقم_Records, sizeDeviceRecord, min_size); }
 
   template<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  bool serialize (hb_serialize_context_t *c,
+  منطقی serialize (hb_serialize_context_t *c,
 		  unsigned version,
 		  Iterator it,
-		  hb_array_t<const hb_codepoint_pair_t> new_to_old_gid_list,
-		  unsigned num_glyphs)
+		  hb_array_t<ثابت hb_codepoint_pair_t> new_to_old_gid_list,
+		  unsigned رقم_glyphs)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (این);
 
-    if (unlikely (!c->extend_min ((*this))))  return_trace (false);
+    اگر (unlikely (!c->extend_min ((*این))))  return_trace (نادرست);
 
-    this->version = version;
-    this->numRecords = it.len ();
-    this->sizeDeviceRecord = DeviceRecord::get_size (num_glyphs);
+    این->version = version;
+    این->رقم_Records = it.len ();
+    این->sizeDeviceRecord = DeviceRecord::get_size (رقم_glyphs);
 
-    for (const hb_item_type<Iterator>& _ : +it)
-      c->start_embed<DeviceRecord> ()->serialize (c, _.first, _.second, new_to_old_gid_list, num_glyphs);
+    برای (ثابت hb_item_type<Iterator>& _ : +it)
+      c->start_embed<DeviceRecord> ()->serialize (c, _.first, _.second, new_to_old_gid_list, رقم_glyphs);
 
     return_trace (c->successful ());
   }
 
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (این);
 
-    auto *hdmx_prime = c->serializer->start_embed <hdmx> ();
+    auto *hdmx_اول = c->serializer->start_embed <hdmx> ();
 
-    unsigned num_input_glyphs = get_num_glyphs ();
+    unsigned رقم_درون_داد_glyphs = get_رقم_glyphs ();
     auto it =
-    + hb_range ((unsigned) numRecords)
-    | hb_map ([c, num_input_glyphs, this] (unsigned _)
+    + hb_range ((unsigned) رقم_Records)
+    | hb_map ([c, رقم_درون_داد_glyphs, این] (unsigned _)
 	{
-	  const DeviceRecord *device_record =
+	  ثابت DeviceRecord *device_record =
 	    &StructAtOffset<DeviceRecord> (&firstDeviceRecord,
 					   _ * sizeDeviceRecord);
 	  auto row =
 	    + hb_iter (c->plan->new_to_old_gid_list)
-	    | hb_map ([num_input_glyphs, device_record] (hb_codepoint_pair_t _)
+	    | hb_map ([رقم_درون_داد_glyphs, device_record] (hb_codepoint_pair_t _)
 		      {
-			return device_record->widthsZ.as_array (num_input_glyphs) [_.second];
+			بازگشت device_record->widthsZ.as_array (رقم_درون_داد_glyphs) [_.second];
 		      })
 	    ;
-	  return hb_pair ((unsigned) device_record->pixelSize, +row);
+	  بازگشت hb_pair ((unsigned) device_record->pixelSize, +row);
 	})
     ;
 
-    hdmx_prime->serialize (c->serializer, version, it,
+    hdmx_اول->serialize (c->serializer, version, it,
 			   c->plan->new_to_old_gid_list,
-			   c->plan->num_output_glyphs ());
-    return_trace (true);
+			   c->plan->رقم_output_glyphs ());
+    return_trace (درست);
   }
 
-  unsigned get_num_glyphs () const
+  unsigned get_رقم_glyphs () ثابت
   {
-    return sizeDeviceRecord - DeviceRecord::min_size;
+    بازگشت sizeDeviceRecord - DeviceRecord::min_size;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این) &&
 		  hb_barrier () &&
-		  !hb_unsigned_mul_overflows (numRecords, sizeDeviceRecord) &&
-                  min_size + numRecords * sizeDeviceRecord > numRecords * sizeDeviceRecord &&
+		  !hb_unsigned_mul_overflows (رقم_Records, sizeDeviceRecord) &&
+                  min_size + رقم_Records * sizeDeviceRecord > رقم_Records * sizeDeviceRecord &&
 		  sizeDeviceRecord >= DeviceRecord::min_size &&
-		  c->check_range (this, get_size ()));
+		  c->check_range (این, get_size ()));
   }
 
-  protected:
+  محافظتشده:
   HBUINT16	version;	/* Table version number (0) */
-  HBUINT16	numRecords;	/* Number of device records. */
+  HBUINT16	رقم_Records;	/* Number of device records. */
   HBUINT32	sizeDeviceRecord;
 				/* Size of a device record, 32-bit aligned. */
   DeviceRecord	firstDeviceRecord;
 				/* Array of device records. */
-  public:
+  عمومی:
   DEFINE_SIZE_MIN (8);
 };
 

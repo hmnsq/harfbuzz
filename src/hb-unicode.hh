@@ -31,10 +31,10 @@
 #ifndef HB_UNICODE_HH
 #define HB_UNICODE_HH
 
-#include "hb.hh"
+#شامل "hb.hh"
 
 
-extern HB_INTERNAL const uint8_t _hb_modified_combining_class[256];
+بیرونی HB_INTERNAL ثابت uint8_t _hb_modified_combining_class[256];
 
 /*
  * hb_unicode_funcs_t
@@ -54,20 +54,20 @@ extern HB_INTERNAL const uint8_t _hb_modified_combining_class[256];
 /* Simple callbacks are those taking a hb_codepoint_t and returning a hb_codepoint_t */
 #define HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS_SIMPLE \
   HB_UNICODE_FUNC_IMPLEMENT (hb_unicode_combining_class_t, combining_class) \
-  HB_IF_NOT_DEPRECATED (HB_UNICODE_FUNC_IMPLEMENT (unsigned int, eastasian_width)) \
+  HB_IF_NOT_DEPRECATED (HB_UNICODE_FUNC_IMPLEMENT (unsigned صحیح, eastasian_width)) \
   HB_UNICODE_FUNC_IMPLEMENT (hb_unicode_general_category_t, general_category) \
   HB_UNICODE_FUNC_IMPLEMENT (hb_codepoint_t, mirroring) \
   HB_UNICODE_FUNC_IMPLEMENT (hb_script_t, script) \
   /* ^--- Add new simple callbacks here */
 
-struct hb_unicode_funcs_t
+ساختار hb_unicode_funcs_t
 {
   hb_object_header_t header;
 
   hb_unicode_funcs_t *parent;
 
 #define HB_UNICODE_FUNC_IMPLEMENT(return_type, name) \
-  return_type name (hb_codepoint_t unicode) { return func.name (this, unicode, user_data.name); }
+  return_type name (hb_codepoint_t unicode) { بازگشت func.name (این, unicode, user_data.name); }
 HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS_SIMPLE
 #undef HB_UNICODE_FUNC_IMPLEMENT
 
@@ -75,52 +75,52 @@ HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS_SIMPLE
 		     hb_codepoint_t *ab)
   {
     *ab = 0;
-    if (unlikely (!a || !b)) return false;
-    return func.compose (this, a, b, ab, user_data.compose);
+    اگر (unlikely (!a || !b)) بازگشت نادرست;
+    بازگشت func.compose (این, a, b, ab, user_data.compose);
   }
 
   hb_bool_t decompose (hb_codepoint_t ab,
 		       hb_codepoint_t *a, hb_codepoint_t *b)
   {
     *a = ab; *b = 0;
-    return func.decompose (this, ab, a, b, user_data.decompose);
+    بازگشت func.decompose (این, ab, a, b, user_data.decompose);
   }
 
-  unsigned int decompose_compatibility (hb_codepoint_t  u,
+  unsigned صحیح decompose_compatibility (hb_codepoint_t  u,
 					hb_codepoint_t *decomposed)
   {
 #ifdef HB_DISABLE_DEPRECATED
-    unsigned int ret  = 0;
-#else
-    unsigned int ret = func.decompose_compatibility (this, u, decomposed, user_data.decompose_compatibility);
+    unsigned صحیح ret  = 0;
+#وگرنه
+    unsigned صحیح ret = func.decompose_compatibility (این, u, decomposed, user_data.decompose_compatibility);
 #endif
-    if (ret == 1 && u == decomposed[0]) {
+    اگر (ret == 1 && u == decomposed[0]) {
       decomposed[0] = 0;
-      return 0;
+      بازگشت 0;
     }
     decomposed[ret] = 0;
-    return ret;
+    بازگشت ret;
   }
 
-  unsigned int
+  unsigned صحیح
   modified_combining_class (hb_codepoint_t u)
   {
     /* Reorder SAKOT to ensure it comes after any tone marks. */
-    if (unlikely (u == 0x1A60u)) return 254;
+    اگر (unlikely (u == 0x1A60u)) بازگشت 254;
     /* Reorder PADMA to ensure it comes after any vowel marks. */
-    if (unlikely (u == 0x0FC6u)) return 254;
+    اگر (unlikely (u == 0x0FC6u)) بازگشت 254;
     /* Reorder TSA -PHRU to reorder before U+0F74 */
-    if (unlikely (u == 0x0F39u)) return 127;
+    اگر (unlikely (u == 0x0F39u)) بازگشت 127;
 
-    return _hb_modified_combining_class[combining_class (u)];
+    بازگشت _hb_modified_combining_class[combining_class (u)];
   }
 
-  static hb_bool_t
+  ایستا hb_bool_t
   is_variation_selector (hb_codepoint_t unicode)
   {
     /* U+180B..180D, U+180F MONGOLIAN FREE VARIATION SELECTORs are handled in the
      * Arabic shaper.  No need to match them here. */
-    return unlikely (hb_in_ranges<hb_codepoint_t> (unicode,
+    بازگشت unlikely (hb_in_ranges<hb_codepoint_t> (unicode,
 						   0xFE00u, 0xFE0Fu, /* VARIATION SELECTOR-1..16 */
 						   0xE0100u, 0xE01EFu));  /* VARIATION SELECTOR-17..256 */
   }
@@ -163,35 +163,35 @@ HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS_SIMPLE
    * E0100..E01EF  # Mn [240] VARIATION SELECTOR-17..VARIATION SELECTOR-256
    * E01F0..E0FFF  # Cn [3600] <reserved-E01F0>..<reserved-E0FFF>
    */
-  static hb_bool_t
+  ایستا hb_bool_t
   is_default_ignorable (hb_codepoint_t ch)
   {
     hb_codepoint_t plane = ch >> 16;
-    if (likely (plane == 0))
+    اگر (likely (plane == 0))
     {
       /* BMP */
       hb_codepoint_t page = ch >> 8;
-      switch (page) {
-	case 0x00: return unlikely (ch == 0x00ADu);
-	case 0x03: return unlikely (ch == 0x034Fu);
-	case 0x06: return unlikely (ch == 0x061Cu);
-	case 0x17: return hb_in_range<hb_codepoint_t> (ch, 0x17B4u, 0x17B5u);
-	case 0x18: return hb_in_range<hb_codepoint_t> (ch, 0x180Bu, 0x180Fu);
-	case 0x20: return hb_in_ranges<hb_codepoint_t> (ch, 0x200Bu, 0x200Fu,
+      انتخاب (page) {
+	حالت 0x00: بازگشت unlikely (ch == 0x00ADu);
+	حالت 0x03: بازگشت unlikely (ch == 0x034Fu);
+	حالت 0x06: بازگشت unlikely (ch == 0x061Cu);
+	حالت 0x17: بازگشت hb_in_range<hb_codepoint_t> (ch, 0x17B4u, 0x17B5u);
+	حالت 0x18: بازگشت hb_in_range<hb_codepoint_t> (ch, 0x180Bu, 0x180Fu);
+	حالت 0x20: بازگشت hb_in_ranges<hb_codepoint_t> (ch, 0x200Bu, 0x200Fu,
 					    0x202Au, 0x202Eu,
 					    0x2060u, 0x206Fu);
-	case 0xFE: return hb_in_range<hb_codepoint_t> (ch, 0xFE00u, 0xFE0Fu) || ch == 0xFEFFu;
-	case 0xFF: return hb_in_range<hb_codepoint_t> (ch, 0xFFF0u, 0xFFF8u);
-	default: return false;
+	حالت 0xFE: بازگشت hb_in_range<hb_codepoint_t> (ch, 0xFE00u, 0xFE0Fu) || ch == 0xFEFFu;
+	حالت 0xFF: بازگشت hb_in_range<hb_codepoint_t> (ch, 0xFFF0u, 0xFFF8u);
+	پیشفرض: بازگشت نادرست;
       }
     }
-    else
+    وگرنه
     {
       /* Other planes */
-      switch (plane) {
-	case 0x01: return hb_in_range<hb_codepoint_t> (ch, 0x1D173u, 0x1D17Au);
-	case 0x0E: return hb_in_range<hb_codepoint_t> (ch, 0xE0000u, 0xE0FFFu);
-	default: return false;
+      انتخاب (plane) {
+	حالت 0x01: بازگشت hb_in_range<hb_codepoint_t> (ch, 0x1D173u, 0x1D17Au);
+	حالت 0x0E: بازگشت hb_in_range<hb_codepoint_t> (ch, 0xE0000u, 0xE0FFFu);
+	پیشفرض: بازگشت نادرست;
       }
     }
   }
@@ -200,7 +200,7 @@ HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS_SIMPLE
    * https://unicode.org/charts/PDF/U2000.pdf
    * https://docs.microsoft.com/en-us/typography/develop/character-design-standards/whitespace
    */
-  enum space_t {
+  شمارش space_t {
     NOT_SPACE = 0,
     SPACE_EM   = 1,
     SPACE_EM_2 = 2,
@@ -215,96 +215,96 @@ HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS_SIMPLE
     SPACE_PUNCTUATION,
     SPACE_NARROW,
   };
-  static space_t
+  ایستا space_t
   space_fallback_type (hb_codepoint_t u)
   {
-    switch (u)
+    انتخاب (u)
     {
       /* All GC=Zs chars that can use a fallback. */
-      default:	    return NOT_SPACE;	/* U+1680 OGHAM SPACE MARK */
-      case 0x0020u: return SPACE;	/* U+0020 SPACE */
-      case 0x00A0u: return SPACE;	/* U+00A0 NO-BREAK SPACE */
-      case 0x2000u: return SPACE_EM_2;	/* U+2000 EN QUAD */
-      case 0x2001u: return SPACE_EM;	/* U+2001 EM QUAD */
-      case 0x2002u: return SPACE_EM_2;	/* U+2002 EN SPACE */
-      case 0x2003u: return SPACE_EM;	/* U+2003 EM SPACE */
-      case 0x2004u: return SPACE_EM_3;	/* U+2004 THREE-PER-EM SPACE */
-      case 0x2005u: return SPACE_EM_4;	/* U+2005 FOUR-PER-EM SPACE */
-      case 0x2006u: return SPACE_EM_6;	/* U+2006 SIX-PER-EM SPACE */
-      case 0x2007u: return SPACE_FIGURE;	/* U+2007 FIGURE SPACE */
-      case 0x2008u: return SPACE_PUNCTUATION;	/* U+2008 PUNCTUATION SPACE */
-      case 0x2009u: return SPACE_EM_5;		/* U+2009 THIN SPACE */
-      case 0x200Au: return SPACE_EM_16;		/* U+200A HAIR SPACE */
-      case 0x202Fu: return SPACE_NARROW;	/* U+202F NARROW NO-BREAK SPACE */
-      case 0x205Fu: return SPACE_4_EM_18;	/* U+205F MEDIUM MATHEMATICAL SPACE */
-      case 0x3000u: return SPACE_EM;		/* U+3000 IDEOGRAPHIC SPACE */
+      پیشفرض:	    بازگشت NOT_SPACE;	/* U+1680 OGHAM SPACE MARK */
+      حالت 0x0020u: بازگشت SPACE;	/* U+0020 SPACE */
+      حالت 0x00A0u: بازگشت SPACE;	/* U+00A0 NO-BREAK SPACE */
+      حالت 0x2000u: بازگشت SPACE_EM_2;	/* U+2000 EN QUAD */
+      حالت 0x2001u: بازگشت SPACE_EM;	/* U+2001 EM QUAD */
+      حالت 0x2002u: بازگشت SPACE_EM_2;	/* U+2002 EN SPACE */
+      حالت 0x2003u: بازگشت SPACE_EM;	/* U+2003 EM SPACE */
+      حالت 0x2004u: بازگشت SPACE_EM_3;	/* U+2004 THREE-PER-EM SPACE */
+      حالت 0x2005u: بازگشت SPACE_EM_4;	/* U+2005 FOUR-PER-EM SPACE */
+      حالت 0x2006u: بازگشت SPACE_EM_6;	/* U+2006 SIX-PER-EM SPACE */
+      حالت 0x2007u: بازگشت SPACE_FIGURE;	/* U+2007 FIGURE SPACE */
+      حالت 0x2008u: بازگشت SPACE_PUNCTUATION;	/* U+2008 PUNCTUATION SPACE */
+      حالت 0x2009u: بازگشت SPACE_EM_5;		/* U+2009 THIN SPACE */
+      حالت 0x200Au: بازگشت SPACE_EM_16;		/* U+200A HAIR SPACE */
+      حالت 0x202Fu: بازگشت SPACE_NARROW;	/* U+202F NARROW NO-BREAK SPACE */
+      حالت 0x205Fu: بازگشت SPACE_4_EM_18;	/* U+205F MEDIUM MATHEMATICAL SPACE */
+      حالت 0x3000u: بازگشت SPACE_EM;		/* U+3000 IDEOGRAPHIC SPACE */
     }
   }
 
-  static hb_codepoint_t
+  ایستا hb_codepoint_t
   vertical_char_for (hb_codepoint_t u)
   {
-    switch (u >> 8)
+    انتخاب (u >> 8)
     {
-      case 0x20: switch (u) {
-	case 0x2013u: return 0xfe32u; // EN DASH
-	case 0x2014u: return 0xfe31u; // EM DASH
-	case 0x2025u: return 0xfe30u; // TWO DOT LEADER
-	case 0x2026u: return 0xfe19u; // HORIZONTAL ELLIPSIS
-      } break;
-      case 0x30: switch (u) {
-	case 0x3001u: return 0xfe11u; // IDEOGRAPHIC COMMA
-	case 0x3002u: return 0xfe12u; // IDEOGRAPHIC FULL STOP
-	case 0x3008u: return 0xfe3fu; // LEFT ANGLE BRACKET
-	case 0x3009u: return 0xfe40u; // RIGHT ANGLE BRACKET
-	case 0x300au: return 0xfe3du; // LEFT DOUBLE ANGLE BRACKET
-	case 0x300bu: return 0xfe3eu; // RIGHT DOUBLE ANGLE BRACKET
-	case 0x300cu: return 0xfe41u; // LEFT CORNER BRACKET
-	case 0x300du: return 0xfe42u; // RIGHT CORNER BRACKET
-	case 0x300eu: return 0xfe43u; // LEFT WHITE CORNER BRACKET
-	case 0x300fu: return 0xfe44u; // RIGHT WHITE CORNER BRACKET
-	case 0x3010u: return 0xfe3bu; // LEFT BLACK LENTICULAR BRACKET
-	case 0x3011u: return 0xfe3cu; // RIGHT BLACK LENTICULAR BRACKET
-	case 0x3014u: return 0xfe39u; // LEFT TORTOISE SHELL BRACKET
-	case 0x3015u: return 0xfe3au; // RIGHT TORTOISE SHELL BRACKET
-	case 0x3016u: return 0xfe17u; // LEFT WHITE LENTICULAR BRACKET
-	case 0x3017u: return 0xfe18u; // RIGHT WHITE LENTICULAR BRACKET
-      } break;
-      case 0xfe: switch (u) {
-	case 0xfe4fu: return 0xfe34u; // WAVY LOW LINE
-      } break;
-      case 0xff: switch (u) {
-	case 0xff01u: return 0xfe15u; // FULLWIDTH EXCLAMATION MARK
-	case 0xff08u: return 0xfe35u; // FULLWIDTH LEFT PARENTHESIS
-	case 0xff09u: return 0xfe36u; // FULLWIDTH RIGHT PARENTHESIS
-	case 0xff0cu: return 0xfe10u; // FULLWIDTH COMMA
-	case 0xff1au: return 0xfe13u; // FULLWIDTH COLON
-	case 0xff1bu: return 0xfe14u; // FULLWIDTH SEMICOLON
-	case 0xff1fu: return 0xfe16u; // FULLWIDTH QUESTION MARK
-	case 0xff3bu: return 0xfe47u; // FULLWIDTH LEFT SQUARE BRACKET
-	case 0xff3du: return 0xfe48u; // FULLWIDTH RIGHT SQUARE BRACKET
-	case 0xff3fu: return 0xfe33u; // FULLWIDTH LOW LINE
-	case 0xff5bu: return 0xfe37u; // FULLWIDTH LEFT CURLY BRACKET
-	case 0xff5du: return 0xfe38u; // FULLWIDTH RIGHT CURLY BRACKET
-      } break;
+      حالت 0x20: انتخاب (u) {
+	حالت 0x2013u: بازگشت 0xfe32u; // EN DASH
+	حالت 0x2014u: بازگشت 0xfe31u; // EM DASH
+	حالت 0x2025u: بازگشت 0xfe30u; // TWO DOT LEADER
+	حالت 0x2026u: بازگشت 0xfe19u; // HORIZONTAL ELLIPSIS
+      } بشکن;
+      حالت 0x30: انتخاب (u) {
+	حالت 0x3001u: بازگشت 0xfe11u; // IDEOGRAPHIC COMMA
+	حالت 0x3002u: بازگشت 0xfe12u; // IDEOGRAPHIC FULL STOP
+	حالت 0x3008u: بازگشت 0xfe3fu; // LEFT ANGLE BRACKET
+	حالت 0x3009u: بازگشت 0xfe40u; // RIGHT ANGLE BRACKET
+	حالت 0x300au: بازگشت 0xfe3du; // LEFT DOUBLE ANGLE BRACKET
+	حالت 0x300bu: بازگشت 0xfe3eu; // RIGHT DOUBLE ANGLE BRACKET
+	حالت 0x300cu: بازگشت 0xfe41u; // LEFT CORNER BRACKET
+	حالت 0x300du: بازگشت 0xfe42u; // RIGHT CORNER BRACKET
+	حالت 0x300eu: بازگشت 0xfe43u; // LEFT WHITE CORNER BRACKET
+	حالت 0x300fu: بازگشت 0xfe44u; // RIGHT WHITE CORNER BRACKET
+	حالت 0x3010u: بازگشت 0xfe3bu; // LEFT BLACK LENTICULAR BRACKET
+	حالت 0x3011u: بازگشت 0xfe3cu; // RIGHT BLACK LENTICULAR BRACKET
+	حالت 0x3014u: بازگشت 0xfe39u; // LEFT TORTOISE SHELL BRACKET
+	حالت 0x3015u: بازگشت 0xfe3au; // RIGHT TORTOISE SHELL BRACKET
+	حالت 0x3016u: بازگشت 0xfe17u; // LEFT WHITE LENTICULAR BRACKET
+	حالت 0x3017u: بازگشت 0xfe18u; // RIGHT WHITE LENTICULAR BRACKET
+      } بشکن;
+      حالت 0xfe: انتخاب (u) {
+	حالت 0xfe4fu: بازگشت 0xfe34u; // WAVY LOW LINE
+      } بشکن;
+      حالت 0xff: انتخاب (u) {
+	حالت 0xff01u: بازگشت 0xfe15u; // FULLWIDTH EXCLAMATION MARK
+	حالت 0xff08u: بازگشت 0xfe35u; // FULLWIDTH LEFT PARENTHESIS
+	حالت 0xff09u: بازگشت 0xfe36u; // FULLWIDTH RIGHT PARENTHESIS
+	حالت 0xff0cu: بازگشت 0xfe10u; // FULLWIDTH COMMA
+	حالت 0xff1au: بازگشت 0xfe13u; // FULLWIDTH COLON
+	حالت 0xff1bu: بازگشت 0xfe14u; // FULLWIDTH SEMICOLON
+	حالت 0xff1fu: بازگشت 0xfe16u; // FULLWIDTH QUESTION MARK
+	حالت 0xff3bu: بازگشت 0xfe47u; // FULLWIDTH LEFT SQUARE BRACKET
+	حالت 0xff3du: بازگشت 0xfe48u; // FULLWIDTH RIGHT SQUARE BRACKET
+	حالت 0xff3fu: بازگشت 0xfe33u; // FULLWIDTH LOW LINE
+	حالت 0xff5bu: بازگشت 0xfe37u; // FULLWIDTH LEFT CURLY BRACKET
+	حالت 0xff5du: بازگشت 0xfe38u; // FULLWIDTH RIGHT CURLY BRACKET
+      } بشکن;
     }
 
-    return u;
+    بازگشت u;
   }
 
-  struct {
+  ساختار {
 #define HB_UNICODE_FUNC_IMPLEMENT(name) hb_unicode_##name##_func_t name;
     HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_UNICODE_FUNC_IMPLEMENT
   } func;
 
-  struct {
-#define HB_UNICODE_FUNC_IMPLEMENT(name) void *name;
+  ساختار {
+#define HB_UNICODE_FUNC_IMPLEMENT(name) تهی *name;
     HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_UNICODE_FUNC_IMPLEMENT
   } user_data;
 
-  struct {
+  ساختار {
 #define HB_UNICODE_FUNC_IMPLEMENT(name) hb_destroy_func_t name;
     HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_UNICODE_FUNC_IMPLEMENT
@@ -420,20 +420,20 @@ DECLARE_NULL_INSTANCE (hb_unicode_funcs_t);
  * Ranges, used for bsearch tables.
  */
 
-struct hb_unicode_range_t
+ساختار hb_unicode_range_t
 {
-  static int
-  cmp (const void *_key, const void *_item)
+  ایستا صحیح
+  cmp (ثابت تهی *کلید_3, ثابت تهی *_item)
   {
-    hb_codepoint_t cp = *((hb_codepoint_t *) _key);
-    const hb_unicode_range_t *range = (hb_unicode_range_t *) _item;
+    hb_codepoint_t cp = *((hb_codepoint_t *) کلید_3);
+    ثابت hb_unicode_range_t *range = (hb_unicode_range_t *) _item;
 
-    if (cp < range->start)
-      return -1;
-    else if (cp <= range->end)
-      return 0;
-    else
-      return +1;
+    اگر (cp < range->start)
+      بازگشت -1;
+    وگرنه اگر (cp <= range->end)
+      بازگشت 0;
+    وگرنه
+      بازگشت +1;
   }
 
   hb_codepoint_t start;
@@ -444,11 +444,11 @@ struct hb_unicode_range_t
  * Emoji.
  */
 
-HB_INTERNAL bool
+HB_INTERNAL منطقی
 _hb_unicode_is_emoji_Extended_Pictographic (hb_codepoint_t cp);
 
 
-extern "C" HB_INTERNAL hb_unicode_funcs_t *hb_ucd_get_unicode_funcs ();
+بیرونی "C" HB_INTERNAL hb_unicode_funcs_t *hb_ucd_get_unicode_funcs ();
 
 
 #endif /* HB_UNICODE_HH */

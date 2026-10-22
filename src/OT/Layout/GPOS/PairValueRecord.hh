@@ -1,93 +1,93 @@
 #ifndef OT_LAYOUT_GPOS_PAIRVALUERECORD_HH
 #define OT_LAYOUT_GPOS_PAIRVALUERECORD_HH
 
-#include "ValueFormat.hh"
+#شامل "ValueFormat.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+فضاینام OT {
+فضاینام Layout {
+فضاینام GPOS_impl {
 
 
-struct pair_value_record_context_t
+ساختار pair_مقدار_record_context_t
 {
-  const ValueBase     *base;
-  const ValueFormat   *valueFormats;
-  const ValueFormat   *newFormats;
+  ثابت مقدار_Base     *base;
+  ثابت مقدار_Format   *مقدار_Formats;
+  ثابت مقدار_Format   *newFormats;
   unsigned            len1; /* valueFormats[0].get_len() */
-  const hb_map_t      *glyph_map;
-  const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map;
+  ثابت hb_map_t      *glyph_map;
+  ثابت hb_hashmap_t<unsigned, hb_pair_t<unsigned, صحیح>> *layout_variation_idx_delta_map;
 
-  void copy_values (hb_serialize_context_t *s, const Value *values) const
+  تهی copy_مقادیر (hb_serialize_context_t *s, ثابت مقدار *values) ثابت
   {
-    valueFormats[0].copy_values (s, newFormats[0], base, values,
+    مقدار_Formats[0].copy_مقادیر (s, newFormats[0], base, values,
                                 layout_variation_idx_delta_map);
-    valueFormats[1].copy_values (s, newFormats[1], base, values + len1,
+    مقدار_Formats[1].copy_مقادیر (s, newFormats[1], base, values + len1,
                                 layout_variation_idx_delta_map);
   }
 };
 
 template <typename Types>
-struct PairValueRecord
+ساختار Pair_مقدار_Record
 {
   template <typename Types2>
-  friend struct PairSet;
+  friend ساختار PairSet;
 
-  protected:
+  محافظتشده:
   typename Types::HBGlyphID
 	        secondGlyph;            /* GlyphID of second glyph in the
                                          * pair--first glyph is listed in the
                                          * Coverage table */
-  ValueRecord   values;                 /* Positioning data for the first glyph
+  مقدار_Record   values;                 /* Positioning data for the first glyph
                                          * followed by for second glyph */
-  public:
+  عمومی:
   DEFINE_SIZE_ARRAY (Types::HBGlyphID::static_size, values);
 
-  int cmp (hb_codepoint_t k) const
-  { return secondGlyph.cmp (k); }
+  صحیح cmp (hb_codepoint_t k) ثابت
+  { بازگشت secondGlyph.cmp (k); }
 
-  bool subset (hb_subset_context_t *c,
-               pair_value_record_context_t *closure) const
+  منطقی subset (hb_subset_context_t *c,
+               pair_مقدار_record_context_t *closure) ثابت
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (این);
     auto *s = c->serializer;
-    auto *out = s->start_embed (*this);
-    if (unlikely (!s->extend_min (out))) return_trace (false);
+    auto *out = s->start_embed (*این);
+    اگر (unlikely (!s->extend_min (out))) return_trace (نادرست);
 
     out->secondGlyph = (*closure->glyph_map)[secondGlyph];
 
-    closure->copy_values (s, values);
+    closure->copy_مقادیر (s, values);
 
-    return_trace (true);
+    return_trace (درست);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const ValueFormat *valueFormats,
-                                  const ValueBase *base) const
+  تهی collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  ثابت مقدار_Format *مقدار_Formats,
+                                  ثابت مقدار_Base *base) ثابت
   {
-    unsigned record1_len = valueFormats[0].get_len ();
-    unsigned record2_len = valueFormats[1].get_len ();
-    const hb_array_t<const Value> values_array = values.as_array (record1_len + record2_len);
+    unsigned record1_len = مقدار_Formats[0].get_len ();
+    unsigned record2_len = مقدار_Formats[1].get_len ();
+    ثابت hb_array_t<ثابت مقدار> مقادیر_array = values.as_array (record1_len + record2_len);
 
-    if (valueFormats[0].has_device ())
-      valueFormats[0].collect_variation_indices (c, base, values_array.sub_array (0, record1_len));
+    اگر (مقدار_Formats[0].has_device ())
+      مقدار_Formats[0].collect_variation_indices (c, base, مقادیر_array.sub_array (0, record1_len));
 
-    if (valueFormats[1].has_device ())
-      valueFormats[1].collect_variation_indices (c, base, values_array.sub_array (record1_len, record2_len));
+    اگر (مقدار_Formats[1].has_device ())
+      مقدار_Formats[1].collect_variation_indices (c, base, مقادیر_array.sub_array (record1_len, record2_len));
   }
 
-  bool intersects (const hb_set_t& glyphset) const
+  منطقی intersects (ثابت hb_set_t& glyphset) ثابت
   {
-    return glyphset.has(secondGlyph);
+    بازگشت glyphset.has(secondGlyph);
   }
 
-  const Value* get_values_1 () const
+  ثابت مقدار* get_مقادیر_1 () ثابت
   {
-    return &values[0];
+    بازگشت &values[0];
   }
 
-  const Value* get_values_2 (ValueFormat format1) const
+  ثابت مقدار* get_مقادیر_2 (مقدار_Format format1) ثابت
   {
-    return &values[format1.get_len ()];
+    بازگشت &values[format1.get_len ()];
   }
 };
 

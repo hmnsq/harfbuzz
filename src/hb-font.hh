@@ -29,14 +29,14 @@
 #ifndef HB_FONT_HH
 #define HB_FONT_HH
 
-#include "hb.hh"
+#شامل "hb.hh"
 
-#include "hb-face.hh"
-#include "hb-atomic.hh"
-#include "hb-draw.hh"
-#include "hb-paint-extents.hh"
-#include "hb-shaper.hh"
-#include "hb-outline.hh"
+#شامل "hb-face.hh"
+#شامل "hb-atomic.hh"
+#شامل "hb-draw.hh"
+#شامل "hb-paint-extents.hh"
+#شامل "hb-shaper.hh"
+#شامل "hb-outline.hh"
 
 
 /*
@@ -67,30 +67,30 @@
   HB_FONT_FUNC_IMPLEMENT (,paint_glyph_or_fail) \
   /* ^--- Add new callbacks here */
 
-struct hb_font_funcs_t
+ساختار hb_font_funcs_t
 {
   hb_object_header_t header;
 
-  struct {
-#define HB_FONT_FUNC_IMPLEMENT(get_,name) void *name;
+  ساختار {
+#define HB_FONT_FUNC_IMPLEMENT(get_,name) تهی *name;
     HB_FONT_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_FONT_FUNC_IMPLEMENT
   } *user_data;
 
-  struct {
+  ساختار {
 #define HB_FONT_FUNC_IMPLEMENT(get_,name) hb_destroy_func_t name;
     HB_FONT_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_FONT_FUNC_IMPLEMENT
   } *destroy;
 
   /* Don't access these directly.  Call font->get_*() instead. */
-  union get_t {
-    struct get_funcs_t {
+  اجتماع get_t {
+    ساختار get_funcs_t {
 #define HB_FONT_FUNC_IMPLEMENT(get_,name) hb_font_##get_##name##_func_t name;
       HB_FONT_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_FONT_FUNC_IMPLEMENT
     } f;
-    void (*array[0
+    تهی (*array[0
 #define HB_FONT_FUNC_IMPLEMENT(get_,name) +1
       HB_FONT_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_FONT_FUNC_IMPLEMENT
@@ -105,10 +105,10 @@ DECLARE_NULL_INSTANCE (hb_font_funcs_t);
  */
 
 #define HB_SHAPER_IMPLEMENT(shaper) HB_SHAPER_DATA_INSTANTIATE_SHAPERS(shaper, font);
-#include "hb-shaper-list.hh"
+#شامل "hb-shaper-list.hh"
 #undef HB_SHAPER_IMPLEMENT
 
-struct hb_font_t
+ساختار hb_font_t
 {
   hb_object_header_t header;
   hb_atomic_t<unsigned> serial;
@@ -120,36 +120,36 @@ struct hb_font_t
   int32_t x_scale;
   int32_t y_scale;
 
-  bool is_synthetic;
+  منطقی is_synthetic;
 
-  float x_embolden;
-  float y_embolden;
-  bool embolden_in_place;
+  اعشاری x_embolden;
+  اعشاری y_embolden;
+  منطقی embolden_in_place;
   int32_t x_strength; /* x_embolden, in scaled units. */
   int32_t y_strength; /* y_embolden, in scaled units. */
 
-  float slant;
-  float slant_xy;
+  اعشاری slant;
+  اعشاری slant_xy;
 
-  float x_multf;
-  float y_multf;
+  اعشاری x_multf;
+  اعشاری y_multf;
   int64_t x_mult;
   int64_t y_mult;
 
-  unsigned int x_ppem;
-  unsigned int y_ppem;
+  unsigned صحیح x_ppem;
+  unsigned صحیح y_ppem;
 
-  float ptem;
+  اعشاری ptem;
 
   /* Font variation coordinates. */
-  unsigned int instance_index;
-  bool has_nonzero_coords;
-  unsigned int num_coords;
-  int *coords;
-  float *design_coords;
+  unsigned صحیح instance_index;
+  منطقی has_nonzero_coords;
+  unsigned صحیح رقم_coords;
+  صحیح *coords;
+  اعشاری *design_coords;
 
   hb_font_funcs_t   *klass;
-  void              *user_data;
+  تهی              *user_data;
   hb_destroy_func_t  destroy;
 
   hb_shaper_object_dataset_t<hb_font_t> data; /* Various shaper data. */
@@ -157,53 +157,53 @@ struct hb_font_t
 
   /* Convert from font-space to user-space */
   int64_t dir_mult (hb_direction_t direction)
-  { return HB_DIRECTION_IS_VERTICAL(direction) ? y_mult : x_mult; }
-  hb_position_t em_scale_x (int32_t v) { return em_mult (v, x_mult); }
-  hb_position_t em_scale_y (int32_t v) { return em_mult (v, y_mult); }
-  hb_position_t em_scalef_x (float v) { return em_multf (v, x_multf); }
-  hb_position_t em_scalef_y (float v) { return em_multf (v, y_multf); }
-  float em_fscale_x (int32_t v) { return em_fmult (v, x_multf); }
-  float em_fscale_y (int32_t v) { return em_fmult (v, y_multf); }
-  float em_fscalef_x (float v) { return em_fmultf (v, x_multf); }
-  float em_fscalef_y (float v) { return em_fmultf (v, y_multf); }
+  { بازگشت HB_DIRECTION_IS_VERTICAL(direction) ? y_mult : x_mult; }
+  hb_position_t em_scale_x (int32_t v) { بازگشت em_mult (v, x_mult); }
+  hb_position_t em_scale_y (int32_t v) { بازگشت em_mult (v, y_mult); }
+  hb_position_t em_scalef_x (اعشاری v) { بازگشت em_multf (v, x_multf); }
+  hb_position_t em_scalef_y (اعشاری v) { بازگشت em_multf (v, y_multf); }
+  اعشاری em_fscale_x (int32_t v) { بازگشت em_fmult (v, x_multf); }
+  اعشاری em_fscale_y (int32_t v) { بازگشت em_fmult (v, y_multf); }
+  اعشاری em_fscalef_x (اعشاری v) { بازگشت em_fmultf (v, x_multf); }
+  اعشاری em_fscalef_y (اعشاری v) { بازگشت em_fmultf (v, y_multf); }
   hb_position_t em_scale_dir (int16_t v, hb_direction_t direction)
-  { return em_mult (v, dir_mult (direction)); }
+  { بازگشت em_mult (v, dir_mult (direction)); }
 
   /* Convert from parent-font user-space to our user-space */
   hb_position_t parent_scale_x_distance (hb_position_t v)
   {
-    if (unlikely (parent && parent->x_scale && parent->x_scale != x_scale))
-      return (hb_position_t) (v * (int64_t) this->x_scale / this->parent->x_scale);
-    return v;
+    اگر (unlikely (parent && parent->x_scale && parent->x_scale != x_scale))
+      بازگشت (hb_position_t) (v * (int64_t) این->x_scale / این->parent->x_scale);
+    بازگشت v;
   }
   hb_position_t parent_scale_y_distance (hb_position_t v)
   {
-    if (unlikely (parent && parent->y_scale && parent->y_scale != y_scale))
-      return (hb_position_t) (v * (int64_t) this->y_scale / this->parent->y_scale);
-    return v;
+    اگر (unlikely (parent && parent->y_scale && parent->y_scale != y_scale))
+      بازگشت (hb_position_t) (v * (int64_t) این->y_scale / این->parent->y_scale);
+    بازگشت v;
   }
   hb_position_t parent_scale_x_position (hb_position_t v)
-  { return parent_scale_x_distance (v); }
+  { بازگشت parent_scale_x_distance (v); }
   hb_position_t parent_scale_y_position (hb_position_t v)
-  { return parent_scale_y_distance (v); }
+  { بازگشت parent_scale_y_distance (v); }
 
-  void parent_scale_distance (hb_position_t *x, hb_position_t *y)
+  تهی parent_scale_distance (hb_position_t *x, hb_position_t *y)
   {
     *x = parent_scale_x_distance (*x);
     *y = parent_scale_y_distance (*y);
   }
-  void parent_scale_position (hb_position_t *x, hb_position_t *y)
+  تهی parent_scale_position (hb_position_t *x, hb_position_t *y)
   {
     *x = parent_scale_x_position (*x);
     *y = parent_scale_y_position (*y);
   }
 
-  void scale_glyph_extents (hb_glyph_extents_t *extents)
+  تهی scale_glyph_extents (hb_glyph_extents_t *extents)
   {
-    float x1 = em_fscale_x (extents->x_bearing);
-    float y1 = em_fscale_y (extents->y_bearing);
-    float x2 = x1 + em_fscale_x (extents->width);
-    float y2 = y1 + em_fscale_y (extents->height);
+    اعشاری x1 = em_fscale_x (extents->x_bearing);
+    اعشاری y1 = em_fscale_y (extents->y_bearing);
+    اعشاری x2 = x1 + em_fscale_x (extents->width);
+    اعشاری y2 = y1 + em_fscale_y (extents->height);
 
     extents->x_bearing = floorf (x1);
     extents->y_bearing = floorf (y1);
@@ -211,10 +211,10 @@ struct hb_font_t
     extents->height = ceilf (y2) - extents->y_bearing;
   }
 
-  void synthetic_glyph_extents (hb_glyph_extents_t *extents)
+  تهی synthetic_glyph_extents (hb_glyph_extents_t *extents)
   {
     /* Slant. */
-    if (slant_xy)
+    اگر (slant_xy)
     {
       /* x_bearing/width and y_bearing/height are each clamped to the full
        * hb_position_t range independently by the extent producers, so their
@@ -230,18 +230,18 @@ struct hb_font_t
     }
 
     /* Embolden. */
-    if (x_strength || y_strength)
+    اگر (x_strength || y_strength)
     {
       /* Y */
-      int y_shift = y_strength;
-      if (y_scale < 0) y_shift = -y_shift;
+      صحیح y_shift = y_strength;
+      اگر (y_scale < 0) y_shift = -y_shift;
       extents->y_bearing = hb_clamp_to<hb_position_t> ((int64_t) extents->y_bearing + y_shift);
       extents->height = hb_clamp_to<hb_position_t> ((int64_t) extents->height - y_shift);
 
       /* X */
-      int x_shift = x_strength;
-      if (x_scale < 0) x_shift = -x_shift;
-      if (embolden_in_place)
+      صحیح x_shift = x_strength;
+      اگر (x_scale < 0) x_shift = -x_shift;
+      اگر (embolden_in_place)
 	extents->x_bearing = hb_clamp_to<hb_position_t> ((int64_t) extents->x_bearing - x_shift / 2);
       extents->width = hb_clamp_to<hb_position_t> ((int64_t) extents->width + x_shift);
     }
@@ -250,73 +250,73 @@ struct hb_font_t
 
   /* Public getters */
 
-  HB_INTERNAL bool has_func (unsigned int i);
-  HB_INTERNAL bool has_func_set (unsigned int i);
+  HB_INTERNAL منطقی has_func (unsigned صحیح i);
+  HB_INTERNAL منطقی has_func_set (unsigned صحیح i);
 
   /* has_* ... */
 #define HB_FONT_FUNC_IMPLEMENT(get_,name) \
-  bool \
+  منطقی \
   has_##name##_func () \
   { \
-    hb_font_funcs_t *funcs = this->klass; \
-    unsigned int i = offsetof (hb_font_funcs_t::get_t::get_funcs_t, name) / sizeof (funcs->get.array[0]); \
-    return has_func (i); \
+    hb_font_funcs_t *funcs = این->klass; \
+    unsigned صحیح i = offsetof (hb_font_funcs_t::get_t::get_funcs_t, name) / اندازه (funcs->get.array[0]); \
+    بازگشت has_func (i); \
   } \
-  bool \
+  منطقی \
   has_##name##_func_set () \
   { \
-    hb_font_funcs_t *funcs = this->klass; \
-    unsigned int i = offsetof (hb_font_funcs_t::get_t::get_funcs_t, name) / sizeof (funcs->get.array[0]); \
-    return has_func_set (i); \
+    hb_font_funcs_t *funcs = این->klass; \
+    unsigned صحیح i = offsetof (hb_font_funcs_t::get_t::get_funcs_t, name) / اندازه (funcs->get.array[0]); \
+    بازگشت has_func_set (i); \
   }
   HB_FONT_FUNCS_IMPLEMENT_CALLBACKS
 #undef HB_FONT_FUNC_IMPLEMENT
 
   hb_bool_t get_font_h_extents (hb_font_extents_t *extents,
-				bool synthetic = true)
+				منطقی synthetic = درست)
   {
-    hb_memset (extents, 0, sizeof (*extents));
-    bool ret = klass->get.f.font_h_extents (this, user_data,
+    hb_memset (extents, 0, اندازه (*extents));
+    منطقی ret = klass->get.f.font_h_extents (این, user_data,
 					    extents,
 					    !klass->user_data ? nullptr : klass->user_data->font_h_extents);
 
-    if (synthetic && ret)
+    اگر (synthetic && ret)
     {
       /* Embolden */
-      int y_shift = y_scale < 0 ? -y_strength : y_strength;
+      صحیح y_shift = y_scale < 0 ? -y_strength : y_strength;
       extents->ascender += y_shift;
     }
 
-    return ret;
+    بازگشت ret;
   }
   hb_bool_t get_font_v_extents (hb_font_extents_t *extents,
-				bool synthetic = true)
+				منطقی synthetic = درست)
   {
-    hb_memset (extents, 0, sizeof (*extents));
-    bool ret = klass->get.f.font_v_extents (this, user_data,
+    hb_memset (extents, 0, اندازه (*extents));
+    منطقی ret = klass->get.f.font_v_extents (این, user_data,
 					    extents,
 					    !klass->user_data ? nullptr : klass->user_data->font_v_extents);
 
-    if (synthetic && ret)
+    اگر (synthetic && ret)
     {
       /* Embolden */
-      int x_shift = x_scale < 0 ? -x_strength : x_strength;
-      if (embolden_in_place)
+      صحیح x_shift = x_scale < 0 ? -x_strength : x_strength;
+      اگر (embolden_in_place)
       {
 	extents->ascender += x_shift / 2;
 	extents->descender -= x_shift - x_shift / 2;
       }
-      else
+      وگرنه
 	extents->ascender += x_shift;
     }
 
-    return ret;
+    بازگشت ret;
   }
 
-  bool has_glyph (hb_codepoint_t unicode)
+  منطقی has_glyph (hb_codepoint_t unicode)
   {
     hb_codepoint_t glyph;
-    return get_nominal_glyph (unicode, &glyph);
+    بازگشت get_nominal_glyph (unicode, &glyph);
   }
 
   hb_bool_t get_nominal_glyph (hb_codepoint_t unicode,
@@ -324,18 +324,18 @@ struct hb_font_t
 			       hb_codepoint_t not_found = 0)
   {
     *glyph = not_found;
-    return klass->get.f.nominal_glyph (this, user_data,
+    بازگشت klass->get.f.nominal_glyph (این, user_data,
 				       unicode, glyph,
 				       !klass->user_data ? nullptr : klass->user_data->nominal_glyph);
   }
-  unsigned int get_nominal_glyphs (unsigned int count,
-				   const hb_codepoint_t *first_unicode,
-				   unsigned int unicode_stride,
+  unsigned صحیح get_nominal_glyphs (unsigned صحیح شمار,
+				   ثابت hb_codepoint_t *first_unicode,
+				   unsigned صحیح unicode_stride,
 				   hb_codepoint_t *first_glyph,
-				   unsigned int glyph_stride)
+				   unsigned صحیح glyph_stride)
   {
-    return klass->get.f.nominal_glyphs (this, user_data,
-					count,
+    بازگشت klass->get.f.nominal_glyphs (این, user_data,
+					شمار,
 					first_unicode, unicode_stride,
 					first_glyph, glyph_stride,
 					!klass->user_data ? nullptr : klass->user_data->nominal_glyphs);
@@ -346,63 +346,63 @@ struct hb_font_t
 				 hb_codepoint_t not_found = 0)
   {
     *glyph = not_found;
-    return klass->get.f.variation_glyph (this, user_data,
+    بازگشت klass->get.f.variation_glyph (این, user_data,
 					 unicode, variation_selector, glyph,
 					 !klass->user_data ? nullptr : klass->user_data->variation_glyph);
   }
 
   hb_position_t get_glyph_h_advance (hb_codepoint_t glyph,
-				     bool synthetic = true)
+				     منطقی synthetic = درست)
   {
-    hb_position_t advance = klass->get.f.glyph_h_advance (this, user_data,
+    hb_position_t advance = klass->get.f.glyph_h_advance (این, user_data,
 							  glyph,
 							  !klass->user_data ? nullptr : klass->user_data->glyph_h_advance);
 
-    if (synthetic && x_strength && !embolden_in_place)
+    اگر (synthetic && x_strength && !embolden_in_place)
     {
       /* Embolden */
       hb_position_t strength = x_scale >= 0 ? x_strength : -x_strength;
       advance += advance ? strength : 0;
     }
 
-    return advance;
+    بازگشت advance;
   }
 
   hb_position_t get_glyph_v_advance (hb_codepoint_t glyph,
-				     bool synthetic = true)
+				     منطقی synthetic = درست)
   {
-    hb_position_t advance = klass->get.f.glyph_v_advance (this, user_data,
+    hb_position_t advance = klass->get.f.glyph_v_advance (این, user_data,
 							  glyph,
 							  !klass->user_data ? nullptr : klass->user_data->glyph_v_advance);
 
-    if (synthetic && y_strength && !embolden_in_place)
+    اگر (synthetic && y_strength && !embolden_in_place)
     {
       /* Embolden */
       hb_position_t strength = y_scale >= 0 ? y_strength : -y_strength;
       advance += advance ? strength : 0;
     }
 
-    return advance;
+    بازگشت advance;
   }
 
-  void get_glyph_h_advances (unsigned int count,
-			     const hb_codepoint_t *first_glyph,
-			     unsigned int glyph_stride,
+  تهی get_glyph_h_advances (unsigned صحیح شمار,
+			     ثابت hb_codepoint_t *first_glyph,
+			     unsigned صحیح glyph_stride,
 			     hb_position_t *first_advance,
-			     unsigned int advance_stride,
-			     bool synthetic = true)
+			     unsigned صحیح advance_stride,
+			     منطقی synthetic = درست)
   {
-    klass->get.f.glyph_h_advances (this, user_data,
-				   count,
+    klass->get.f.glyph_h_advances (این, user_data,
+				   شمار,
 				   first_glyph, glyph_stride,
 				   first_advance, advance_stride,
 				   !klass->user_data ? nullptr : klass->user_data->glyph_h_advances);
 
-    if (synthetic && x_strength && !embolden_in_place)
+    اگر (synthetic && x_strength && !embolden_in_place)
     {
       /* Embolden */
       hb_position_t strength = x_scale >= 0 ? x_strength : -x_strength;
-      for (unsigned int i = 0; i < count; i++)
+      برای (unsigned صحیح i = 0; i < شمار; i++)
       {
 	*first_advance += *first_advance ? strength : 0;
 	first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
@@ -410,24 +410,24 @@ struct hb_font_t
     }
   }
 
-  void get_glyph_v_advances (unsigned int count,
-			     const hb_codepoint_t *first_glyph,
-			     unsigned int glyph_stride,
+  تهی get_glyph_v_advances (unsigned صحیح شمار,
+			     ثابت hb_codepoint_t *first_glyph,
+			     unsigned صحیح glyph_stride,
 			     hb_position_t *first_advance,
-			     unsigned int advance_stride,
-			     bool synthetic = true)
+			     unsigned صحیح advance_stride,
+			     منطقی synthetic = درست)
   {
-    klass->get.f.glyph_v_advances (this, user_data,
-				   count,
+    klass->get.f.glyph_v_advances (این, user_data,
+				   شمار,
 				   first_glyph, glyph_stride,
 				   first_advance, advance_stride,
 				   !klass->user_data ? nullptr : klass->user_data->glyph_v_advances);
 
-    if (synthetic && y_strength && !embolden_in_place)
+    اگر (synthetic && y_strength && !embolden_in_place)
     {
       /* Embolden */
       hb_position_t strength = y_scale >= 0 ? y_strength : -y_strength;
-      for (unsigned int i = 0; i < count; i++)
+      برای (unsigned صحیح i = 0; i < شمار; i++)
       {
 	*first_advance += *first_advance ? strength : 0;
 	first_advance = &StructAtOffsetUnaligned<hb_position_t> (first_advance, advance_stride);
@@ -437,78 +437,78 @@ struct hb_font_t
 
   hb_bool_t get_glyph_h_origin (hb_codepoint_t glyph,
 				hb_position_t *x, hb_position_t *y,
-				bool synthetic = true)
+				منطقی synthetic = درست)
   {
     *x = *y = 0;
-    bool ret = klass->get.f.glyph_h_origin (this, user_data,
+    منطقی ret = klass->get.f.glyph_h_origin (این, user_data,
 					    glyph, x, y,
 					    !klass->user_data ? nullptr : klass->user_data->glyph_h_origin);
 
-    if (synthetic && ret)
+    اگر (synthetic && ret)
     {
       /* Slant is ignored as it does not affect glyph origin */
 
       /* Embolden */
-      if (!embolden_in_place)
+      اگر (!embolden_in_place)
       {
         *x += x_scale < 0 ? -x_strength : x_strength;
 	*y += y_scale < 0 ? -y_strength : y_strength;
       }
     }
 
-    return ret;
+    بازگشت ret;
   }
 
   hb_bool_t get_glyph_v_origin (hb_codepoint_t glyph,
 				hb_position_t *x, hb_position_t *y,
-				bool synthetic = true)
+				منطقی synthetic = درست)
   {
     *x = *y = 0;
-    bool ret = klass->get.f.glyph_v_origin (this, user_data,
+    منطقی ret = klass->get.f.glyph_v_origin (این, user_data,
 					    glyph, x, y,
 					    !klass->user_data ? nullptr : klass->user_data->glyph_v_origin);
 
-    if (synthetic && ret)
+    اگر (synthetic && ret)
     {
       /* Slant is ignored as it does not affect glyph origin */
 
       /* Embolden */
-      if (!embolden_in_place)
+      اگر (!embolden_in_place)
       {
         *x += x_scale < 0 ? -x_strength : x_strength;
 	*y += y_scale < 0 ? -y_strength : y_strength;
       }
     }
 
-    return ret;
+    بازگشت ret;
   }
 
-  hb_bool_t get_glyph_h_origins (unsigned int count,
-				 const hb_codepoint_t *first_glyph,
-				 unsigned int glyph_stride,
+  hb_bool_t get_glyph_h_origins (unsigned صحیح شمار,
+				 ثابت hb_codepoint_t *first_glyph,
+				 unsigned صحیح glyph_stride,
 				 hb_position_t *first_x,
-				 unsigned int x_stride,
+				 unsigned صحیح x_stride,
 				 hb_position_t *first_y,
-				 unsigned int y_stride,
-				 bool synthetic = true)
+				 unsigned صحیح y_stride,
+				 منطقی synthetic = درست)
 
   {
-    bool ret = klass->get.f.glyph_h_origins (this, user_data,
-					     count,
+    منطقی ret = klass->get.f.glyph_h_origins (این, user_data,
+					     شمار,
 					     first_glyph, glyph_stride,
 					     first_x, x_stride, first_y, y_stride,
 					     !klass->user_data ? nullptr : klass->user_data->glyph_h_origins);
 
-    if (synthetic && ret)
+    اگر (synthetic && ret)
     {
       hb_position_t x_shift = x_scale < 0 ? -x_strength : x_strength;
       hb_position_t y_shift = y_scale < 0 ? -y_strength : y_strength;
-      for (unsigned i = 0; i < count; i++)
+      برای (unsigned i = 0; i < شمار; i++)
       {
 	/* Slant is ignored as it does not affect glyph origin */
 
 	/* Embolden */
-	if (!embolden_in_place)
+	اگر (!embolden_in_place)
 	{
 	  *first_x += x_shift;
 	  *first_y += y_shift;
@@ -518,35 +518,35 @@ struct hb_font_t
       }
     }
 
-    return ret;
+    بازگشت ret;
   }
 
-  hb_bool_t get_glyph_v_origins (unsigned int count,
-				 const hb_codepoint_t *first_glyph,
-				 unsigned int glyph_stride,
+  hb_bool_t get_glyph_v_origins (unsigned صحیح شمار,
+				 ثابت hb_codepoint_t *first_glyph,
+				 unsigned صحیح glyph_stride,
 				 hb_position_t *first_x,
-				 unsigned int x_stride,
+				 unsigned صحیح x_stride,
 				 hb_position_t *first_y,
-				 unsigned int y_stride,
-				 bool synthetic = true)
+				 unsigned صحیح y_stride,
+				 منطقی synthetic = درست)
 
   {
-    bool ret = klass->get.f.glyph_v_origins (this, user_data,
-					     count,
+    منطقی ret = klass->get.f.glyph_v_origins (این, user_data,
+					     شمار,
 					     first_glyph, glyph_stride,
 					     first_x, x_stride, first_y, y_stride,
 					     !klass->user_data ? nullptr : klass->user_data->glyph_v_origins);
 
-    if (synthetic && is_synthetic && ret)
+    اگر (synthetic && is_synthetic && ret)
     {
       hb_position_t x_shift = x_scale < 0 ? -x_strength : x_strength;
       hb_position_t y_shift = y_scale < 0 ? -y_strength : y_strength;
-      for (unsigned i = 0; i < count; i++)
+      برای (unsigned i = 0; i < شمار; i++)
       {
 	/* Slant is ignored as it does not affect glyph origin */
 
 	/* Embolden */
-	if (!embolden_in_place)
+	اگر (!embolden_in_place)
 	{
 	  *first_x += x_shift;
 	  *first_y += y_shift;
@@ -556,153 +556,153 @@ struct hb_font_t
       }
     }
 
-    return ret;
+    بازگشت ret;
   }
 
-  hb_position_t get_glyph_h_kerning (hb_codepoint_t left_glyph,
-				     hb_codepoint_t right_glyph)
+  hb_position_t get_glyph_h_kerning (hb_codepoint_t چپ_glyph,
+				     hb_codepoint_t راست_glyph)
   {
 #ifdef HB_DISABLE_DEPRECATED
-    return 0;
-#else
-    return klass->get.f.glyph_h_kerning (this, user_data,
-					 left_glyph, right_glyph,
+    بازگشت 0;
+#وگرنه
+    بازگشت klass->get.f.glyph_h_kerning (این, user_data,
+					 چپ_glyph, راست_glyph,
 					 !klass->user_data ? nullptr : klass->user_data->glyph_h_kerning);
 #endif
   }
 
-  hb_position_t get_glyph_v_kerning (hb_codepoint_t top_glyph,
+  hb_position_t get_glyph_v_kerning (hb_codepoint_t بالاترین_glyph,
 				     hb_codepoint_t bottom_glyph)
   {
 #ifdef HB_DISABLE_DEPRECATED
-    return 0;
-#else
-    return klass->get.f.glyph_v_kerning (this, user_data,
-					 top_glyph, bottom_glyph,
+    بازگشت 0;
+#وگرنه
+    بازگشت klass->get.f.glyph_v_kerning (این, user_data,
+					 بالاترین_glyph, bottom_glyph,
 					 !klass->user_data ? nullptr : klass->user_data->glyph_v_kerning);
 #endif
   }
 
   hb_bool_t get_glyph_extents (hb_codepoint_t glyph,
 			       hb_glyph_extents_t *extents,
-			       bool synthetic = true)
+			       منطقی synthetic = درست)
   {
-    hb_memset (extents, 0, sizeof (*extents));
+    hb_memset (extents, 0, اندازه (*extents));
 
     /* This is rather messy, but necessary. */
 
-    if (!synthetic)
+    اگر (!synthetic)
     {
-      return klass->get.f.glyph_extents (this, user_data,
+      بازگشت klass->get.f.glyph_extents (این, user_data,
 					 glyph,
 					 extents,
 					 !klass->user_data ? nullptr : klass->user_data->glyph_extents);
     }
-    if (!is_synthetic &&
-	klass->get.f.glyph_extents (this, user_data,
+    اگر (!is_synthetic &&
+	klass->get.f.glyph_extents (این, user_data,
 				    glyph,
 				    extents,
 				    !klass->user_data ? nullptr : klass->user_data->glyph_extents))
-      return true;
+      بازگشت درست;
 
     /* Try getting extents from paint(), then draw(), *then* get_extents()
      * and apply synthetic settings in the last case. */
 
 #ifndef HB_NO_PAINT
     hb_paint_extents_context_t paint_extents;
-    if (paint_glyph_or_fail (glyph,
+    اگر (paint_glyph_or_fail (glyph,
 			     hb_paint_extents_get_funcs (), &paint_extents,
 			     0, 0))
     {
       *extents = paint_extents.get_extents ().to_glyph_extents ();
-      return true;
+      بازگشت درست;
     }
 #endif
 
 #ifndef HB_NO_DRAW
     hb_extents_t<> draw_extents;
-    if (draw_glyph_or_fail (glyph,
+    اگر (draw_glyph_or_fail (glyph,
 			    hb_draw_extents_get_funcs (), &draw_extents))
     {
       *extents = draw_extents.to_glyph_extents ();
-      return true;
+      بازگشت درست;
     }
 #endif
 
-    bool ret = klass->get.f.glyph_extents (this, user_data,
+    منطقی ret = klass->get.f.glyph_extents (این, user_data,
 					   glyph,
 					   extents,
 					   !klass->user_data ? nullptr : klass->user_data->glyph_extents);
-    if (ret)
+    اگر (ret)
       synthetic_glyph_extents (extents);
 
-    return ret;
+    بازگشت ret;
   }
 
-  hb_bool_t get_glyph_contour_point (hb_codepoint_t glyph, unsigned int point_index,
+  hb_bool_t get_glyph_contour_point (hb_codepoint_t glyph, unsigned صحیح point_index,
 				     hb_position_t *x, hb_position_t *y,
-				     bool synthetic = true)
+				     منطقی synthetic = درست)
   {
     *x = *y = 0;
-    bool ret = klass->get.f.glyph_contour_point (this, user_data,
+    منطقی ret = klass->get.f.glyph_contour_point (این, user_data,
 						 glyph, point_index,
 						 x, y,
 						 !klass->user_data ? nullptr : klass->user_data->glyph_contour_point);
 
-    if (synthetic && ret)
+    اگر (synthetic && ret)
     {
       /* Slant */
-      if (slant_xy)
+      اگر (slant_xy)
         *x += roundf (*y * slant_xy);
 
       /* Embolden */
-      if (!embolden_in_place)
+      اگر (!embolden_in_place)
       {
-	int x_shift = x_scale < 0 ? -x_strength : x_strength;
+	صحیح x_shift = x_scale < 0 ? -x_strength : x_strength;
 	*x += x_shift;
       }
     }
 
-    return ret;
+    بازگشت ret;
   }
 
   hb_bool_t get_glyph_name (hb_codepoint_t glyph,
-			    char *name, unsigned int size)
+			    نویسه *name, unsigned صحیح size)
   {
-    if (size) *name = '\0';
-    return klass->get.f.glyph_name (this, user_data,
+    اگر (size) *name = '\0';
+    بازگشت klass->get.f.glyph_name (این, user_data,
 				    glyph,
 				    name, size,
 				    !klass->user_data ? nullptr : klass->user_data->glyph_name);
   }
 
-  hb_bool_t get_glyph_from_name (const char *name, int len, /* -1 means nul-terminated */
+  hb_bool_t get_glyph_from_name (ثابت نویسه *name, صحیح len, /* -1 means nul-terminated */
 				 hb_codepoint_t *glyph)
   {
     *glyph = 0;
-    if (len == -1) len = strlen (name);
-    return klass->get.f.glyph_from_name (this, user_data,
+    اگر (len == -1) len = strlen (name);
+    بازگشت klass->get.f.glyph_from_name (این, user_data,
 					 name, len,
 					 glyph,
 					 !klass->user_data ? nullptr : klass->user_data->glyph_from_name);
   }
 
-  bool draw_glyph_or_fail (hb_codepoint_t glyph,
-			   hb_draw_funcs_t *draw_funcs, void *draw_data,
-			   bool synthetic = true)
+  منطقی draw_glyph_or_fail (hb_codepoint_t glyph,
+			   hb_draw_funcs_t *draw_funcs, تهی *draw_data,
+			   منطقی synthetic = درست)
   {
 #ifndef HB_NO_DRAW
 #ifndef HB_NO_OUTLINE
-    bool embolden = x_strength || y_strength;
-    bool slanted = slant_xy;
+    منطقی embolden = x_strength || y_strength;
+    منطقی slanted = slant_xy;
     synthetic = synthetic && (embolden || slanted);
-#else
-    synthetic = false;
+#وگرنه
+    synthetic = نادرست;
 #endif
 
-    if (!synthetic)
+    اگر (!synthetic)
     {
-      return klass->get.f.draw_glyph_or_fail (this, user_data,
+      بازگشت klass->get.f.draw_glyph_or_fail (این, user_data,
 					      glyph,
 					      draw_funcs, draw_data,
 					      !klass->user_data ? nullptr : klass->user_data->draw_glyph_or_fail);
@@ -712,150 +712,150 @@ struct hb_font_t
 
     hb_outline_t outline;
     outline.budget_remaining = draw_funcs->get_budget_remaining_ptr (draw_data);
-    if (!klass->get.f.draw_glyph_or_fail (this, user_data,
+    اگر (!klass->get.f.draw_glyph_or_fail (این, user_data,
 					  glyph,
 					  hb_outline_recording_pen_get_funcs (), &outline,
 					  !klass->user_data ? nullptr : klass->user_data->draw_glyph_or_fail))
-      return false;
+      بازگشت نادرست;
 
     // Slant before embolden; produces nicer results.
 
-    if (slanted)
+    اگر (slanted)
     {
       hb_position_t xo = 0, yo = 0;
-      get_glyph_h_origin (glyph, &xo, &yo, false);
+      get_glyph_h_origin (glyph, &xo, &yo, نادرست);
       outline.translate (-xo, -yo);
       outline.slant (slant_xy);
       outline.translate (xo, yo);
     }
 
-    if (embolden)
+    اگر (embolden)
     {
-      float x_shift = embolden_in_place ? 0 : (float) x_strength / 2;
-      float y_shift = (float) y_strength / 2;
-      if (x_scale < 0) x_shift = -x_shift;
-      if (y_scale < 0) y_shift = -y_shift;
+      اعشاری x_shift = embolden_in_place ? 0 : (اعشاری) x_strength / 2;
+      اعشاری y_shift = (اعشاری) y_strength / 2;
+      اگر (x_scale < 0) x_shift = -x_shift;
+      اگر (y_scale < 0) y_shift = -y_shift;
       outline.embolden (x_strength, y_strength, x_shift, y_shift);
     }
 
     outline.replay (draw_funcs, draw_data);
 
-    return true;
+    بازگشت درست;
 #endif
 #endif
-    return false;
+    بازگشت نادرست;
   }
 
-  bool paint_glyph_or_fail (hb_codepoint_t glyph,
-			    hb_paint_funcs_t *paint_funcs, void *paint_data,
-			    unsigned int palette,
+  منطقی paint_glyph_or_fail (hb_codepoint_t glyph,
+			    hb_paint_funcs_t *paint_funcs, تهی *paint_data,
+			    unsigned صحیح palette,
 			    hb_color_t foreground,
-			    bool synthetic = true)
+			    منطقی synthetic = درست)
   {
 #ifndef HB_NO_PAINT
     /* Slant */
-    if (synthetic && slant_xy)
-      hb_paint_push_transform (paint_funcs, paint_data,
+    اگر (synthetic && slant_xy)
+      hb_paint_افزودن_transform (paint_funcs, paint_data,
 			       1.f, 0.f,
 			       slant_xy, 1.f,
 			       0.f, 0.f);
 
-    bool ret = klass->get.f.paint_glyph_or_fail (this, user_data,
+    منطقی ret = klass->get.f.paint_glyph_or_fail (این, user_data,
 						 glyph,
 						 paint_funcs, paint_data,
 						 palette, foreground,
 						 !klass->user_data ? nullptr : klass->user_data->paint_glyph_or_fail);
 
-    if (synthetic && slant_xy)
-      hb_paint_pop_transform (paint_funcs, paint_data);
+    اگر (synthetic && slant_xy)
+      hb_paint_برداشت_transform (paint_funcs, paint_data);
 
-    return ret;
+    بازگشت ret;
 #endif
-    return false;
+    بازگشت نادرست;
   }
 
   /* A bit higher-level, and with fallback */
 
   HB_INTERNAL
-  void paint_glyph (hb_codepoint_t glyph,
-		    hb_paint_funcs_t *paint_funcs, void *paint_data,
-		    unsigned int palette,
+  تهی paint_glyph (hb_codepoint_t glyph,
+		    hb_paint_funcs_t *paint_funcs, تهی *paint_data,
+		    unsigned صحیح palette,
 		    hb_color_t foreground);
 
-  void get_h_extents_with_fallback (hb_font_extents_t *extents)
+  تهی get_h_extents_with_fallback (hb_font_extents_t *extents)
   {
-    if (!get_font_h_extents (extents))
+    اگر (!get_font_h_extents (extents))
     {
       extents->ascender = y_scale * .8;
       extents->descender = extents->ascender - y_scale;
-      extents->line_gap = 0;
+      extents->سطر_gap = 0;
     }
   }
-  void get_v_extents_with_fallback (hb_font_extents_t *extents)
+  تهی get_v_extents_with_fallback (hb_font_extents_t *extents)
   {
-    if (!get_font_v_extents (extents))
+    اگر (!get_font_v_extents (extents))
     {
       extents->ascender = x_scale / 2;
       extents->descender = extents->ascender - x_scale;
-      extents->line_gap = 0;
+      extents->سطر_gap = 0;
     }
   }
 
-  void get_extents_for_direction (hb_direction_t direction,
+  تهی get_extents_for_direction (hb_direction_t direction,
 				  hb_font_extents_t *extents)
   {
-    if (likely (HB_DIRECTION_IS_HORIZONTAL (direction)))
+    اگر (likely (HB_DIRECTION_IS_HORIZONTAL (direction)))
       get_h_extents_with_fallback (extents);
-    else
+    وگرنه
       get_v_extents_with_fallback (extents);
   }
 
-  void get_glyph_advance_for_direction (hb_codepoint_t glyph,
+  تهی get_glyph_advance_for_direction (hb_codepoint_t glyph,
 					hb_direction_t direction,
 					hb_position_t *x, hb_position_t *y)
   {
     *x = *y = 0;
-    if (likely (HB_DIRECTION_IS_HORIZONTAL (direction)))
+    اگر (likely (HB_DIRECTION_IS_HORIZONTAL (direction)))
       *x = get_glyph_h_advance (glyph);
-    else
+    وگرنه
       *y = get_glyph_v_advance (glyph);
   }
-  void get_glyph_advances_for_direction (hb_direction_t direction,
-					 unsigned int count,
-					 const hb_codepoint_t *first_glyph,
+  تهی get_glyph_advances_for_direction (hb_direction_t direction,
+					 unsigned صحیح شمار,
+					 ثابت hb_codepoint_t *first_glyph,
 					 unsigned glyph_stride,
 					 hb_position_t *first_advance,
 					 unsigned advance_stride)
   {
-    if (likely (HB_DIRECTION_IS_HORIZONTAL (direction)))
-      get_glyph_h_advances (count, first_glyph, glyph_stride, first_advance, advance_stride);
-    else
-      get_glyph_v_advances (count, first_glyph, glyph_stride, first_advance, advance_stride);
+    اگر (likely (HB_DIRECTION_IS_HORIZONTAL (direction)))
+      get_glyph_h_advances (شمار, first_glyph, glyph_stride, first_advance, advance_stride);
+    وگرنه
+      get_glyph_v_advances (شمار, first_glyph, glyph_stride, first_advance, advance_stride);
   }
 
-  void apply_offset (hb_position_t *x, hb_position_t *y,
+  تهی apply_offset (hb_position_t *x, hb_position_t *y,
 		     hb_position_t dx, hb_position_t dy,
 		     signed mult)
   {
-    assert (mult == -1 || mult == +1);
+    أكد (mult == -1 || mult == +1);
 
     *x += dx * mult;
     *y += dy * mult;
   }
-  void add_offset (hb_position_t *x, hb_position_t *y,
+  تهی add_offset (hb_position_t *x, hb_position_t *y,
 		   hb_position_t dx, hb_position_t dy)
   {
     *x += dx;
     *y += dy;
   }
-  void subtract_offset (hb_position_t *x, hb_position_t *y,
+  تهی subtract_offset (hb_position_t *x, hb_position_t *y,
 			hb_position_t dx, hb_position_t dy)
   {
     *x -= dx;
     *y -= dy;
   }
 
-  void guess_v_origin_minus_h_origin (hb_codepoint_t glyph,
+  تهی guess_v_origin_minus_h_origin (hb_codepoint_t glyph,
 				      hb_position_t *x, hb_position_t *y)
   {
     *x = get_glyph_h_advance (glyph) / 2;
@@ -865,60 +865,60 @@ struct hb_font_t
     *y = extents.ascender;
   }
 
-  void apply_glyph_h_origins_with_fallback (hb_buffer_t *buf, int mult)
+  تهی apply_glyph_h_origins_with_fallback (hb_buffer_t *buf, صحیح mult)
   {
-    bool has_ascender = false;
+    منطقی has_ascender = نادرست;
     hb_position_t ascender = 0;
 
-    struct { hb_position_t x, y; } origins[32];
+    ساختار { hb_position_t x, y; } origins[32];
 
-    unsigned int offset = 0;
-    unsigned int count = buf->len;
-    while (offset < count)
+    unsigned صحیح offset = 0;
+    unsigned صحیح شمار = buf->len;
+    وقتی (offset < شمار)
     {
-      unsigned n = hb_min (count - offset, ARRAY_LENGTH (origins));
-      if (!get_glyph_h_origins (n,
-				&buf->info[offset].codepoint, sizeof (hb_glyph_info_t),
-				&origins[0].x, sizeof (origins[0]),
-				&origins[0].y, sizeof (origins[0])))
+      unsigned n = hb_min (شمار - offset, ARRAY_LENGTH (origins));
+      اگر (!get_glyph_h_origins (n,
+				&buf->info[offset].codepoint, اندازه (hb_glyph_info_t),
+				&origins[0].x, اندازه (origins[0]),
+				&origins[0].y, اندازه (origins[0])))
       {
-        if (get_glyph_v_origins (n,
-				  &buf->info[offset].codepoint, sizeof (hb_glyph_info_t),
-				  &origins[0].x, sizeof (origins[0]),
-				  &origins[0].y, sizeof (origins[0])))
+        اگر (get_glyph_v_origins (n,
+				  &buf->info[offset].codepoint, اندازه (hb_glyph_info_t),
+				  &origins[0].x, اندازه (origins[0]),
+				  &origins[0].y, اندازه (origins[0])))
 	{
-	  if (!has_ascender)
+	  اگر (!has_ascender)
 	  {
 	    hb_font_extents_t extents;
 	    get_h_extents_with_fallback (&extents);
 	    ascender = extents.ascender;
-	    has_ascender = true;
+	    has_ascender = درست;
 	  }
 
 	  /* We got the v_origins, adjust them to h_origins. */
-	  for (unsigned j = 0; j < n; j++)
+	  برای (unsigned j = 0; j < n; j++)
 	  {
 	    hb_codepoint_t glyph = buf->info[offset + j].codepoint;
 	    origins[j].x -= get_glyph_h_advance (glyph) / 2;
 	    origins[j].y -= ascender;
 	  }
 	}
-	else
+	وگرنه
 	{
 	  mult = 0; /* Indicates all origins[].x and origins[].y values are 0, therefore we can skip adjusting offsets below */
 	}
       }
 
-      assert (mult == -1 || mult == +1 || mult == 0);
-      if (mult == +1)
-        for (unsigned j = 0; j < n; j++)
+      أكد (mult == -1 || mult == +1 || mult == 0);
+      اگر (mult == +1)
+        برای (unsigned j = 0; j < n; j++)
 	{
 	  hb_glyph_position_t *pos = &buf->pos[offset + j];
 	  add_offset (&pos->x_offset, &pos->y_offset,
 		      origins[j].x, origins[j].y);
 	}
-      else if (mult == -1)
-	for (unsigned j = 0; j < n; j++)
+      وگرنه اگر (mult == -1)
+	برای (unsigned j = 0; j < n; j++)
 	{
 	  hb_glyph_position_t *pos = &buf->pos[offset + j];
 	  subtract_offset (&pos->x_offset, &pos->y_offset,
@@ -929,60 +929,60 @@ struct hb_font_t
       offset += n;
     }
   }
-  void apply_glyph_v_origins_with_fallback (hb_buffer_t *buf, int mult)
+  تهی apply_glyph_v_origins_with_fallback (hb_buffer_t *buf, صحیح mult)
   {
-    bool has_ascender = false;
+    منطقی has_ascender = نادرست;
     hb_position_t ascender = 0;
 
-    struct { hb_position_t x, y; } origins[32];
+    ساختار { hb_position_t x, y; } origins[32];
 
-    unsigned int offset = 0;
-    unsigned int count = buf->len;
-    while (offset < count)
+    unsigned صحیح offset = 0;
+    unsigned صحیح شمار = buf->len;
+    وقتی (offset < شمار)
     {
-      unsigned n = hb_min (count - offset, ARRAY_LENGTH (origins));
-      if (!get_glyph_v_origins (n,
-				&buf->info[offset].codepoint, sizeof (hb_glyph_info_t),
-				&origins[0].x, sizeof (origins[0]),
-				&origins[0].y, sizeof (origins[0])))
+      unsigned n = hb_min (شمار - offset, ARRAY_LENGTH (origins));
+      اگر (!get_glyph_v_origins (n,
+				&buf->info[offset].codepoint, اندازه (hb_glyph_info_t),
+				&origins[0].x, اندازه (origins[0]),
+				&origins[0].y, اندازه (origins[0])))
       {
-	if (get_glyph_h_origins (n,
-				 &buf->info[offset].codepoint, sizeof (hb_glyph_info_t),
-				 &origins[0].x, sizeof (origins[0]),
-				 &origins[0].y, sizeof (origins[0])))
+	اگر (get_glyph_h_origins (n,
+				 &buf->info[offset].codepoint, اندازه (hb_glyph_info_t),
+				 &origins[0].x, اندازه (origins[0]),
+				 &origins[0].y, اندازه (origins[0])))
 	{
-	  if (!has_ascender)
+	  اگر (!has_ascender)
 	  {
 	    hb_font_extents_t extents;
 	    get_h_extents_with_fallback (&extents);
 	    ascender = extents.ascender;
-	    has_ascender = true;
+	    has_ascender = درست;
 	  }
 
 	  /* We got the h_origins, adjust them to v_origins. */
-	  for (unsigned j = 0; j < n; j++)
+	  برای (unsigned j = 0; j < n; j++)
 	  {
 	    hb_codepoint_t glyph = buf->info[offset + j].codepoint;
 	    origins[j].x += get_glyph_h_advance (glyph) / 2;
 	    origins[j].y += ascender;
 	  }
 	}
-	else
+	وگرنه
 	{
 	  mult = 0; /* Indicates all origins[].x and origins[].y values are 0, therefore we can skip adjusting offsets below */
 	}
       }
 
-      assert (mult == -1 || mult == +1 || mult == 0);
-      if (mult == +1)
-        for (unsigned j = 0; j < n; j++)
+      أكد (mult == -1 || mult == +1 || mult == 0);
+      اگر (mult == +1)
+        برای (unsigned j = 0; j < n; j++)
 	{
 	  hb_glyph_position_t *pos = &buf->pos[offset + j];
 	  add_offset (&pos->x_offset, &pos->y_offset,
 		      origins[j].x, origins[j].y);
 	}
-      else if (mult == -1)
-	for (unsigned j = 0; j < n; j++)
+      وگرنه اگر (mult == -1)
+	برای (unsigned j = 0; j < n; j++)
 	{
 	  hb_glyph_position_t *pos = &buf->pos[offset + j];
 	  subtract_offset (&pos->x_offset, &pos->y_offset,
@@ -994,10 +994,10 @@ struct hb_font_t
     }
   }
 
-  void get_glyph_h_origin_with_fallback (hb_codepoint_t glyph,
+  تهی get_glyph_h_origin_with_fallback (hb_codepoint_t glyph,
 					 hb_position_t *x, hb_position_t *y)
   {
-    if (!get_glyph_h_origin (glyph, x, y) &&
+    اگر (!get_glyph_h_origin (glyph, x, y) &&
 	 get_glyph_v_origin (glyph, x, y))
     {
       hb_position_t dx, dy;
@@ -1005,10 +1005,10 @@ struct hb_font_t
       subtract_offset (x, y, dx, dy);
     }
   }
-  void get_glyph_v_origin_with_fallback (hb_codepoint_t glyph,
+  تهی get_glyph_v_origin_with_fallback (hb_codepoint_t glyph,
 					 hb_position_t *x, hb_position_t *y)
   {
-    if (!get_glyph_v_origin (glyph, x, y) &&
+    اگر (!get_glyph_v_origin (glyph, x, y) &&
 	 get_glyph_h_origin (glyph, x, y))
     {
       hb_position_t dx, dy;
@@ -1017,25 +1017,25 @@ struct hb_font_t
     }
   }
 
-  void get_glyph_origin_for_direction (hb_codepoint_t glyph,
+  تهی get_glyph_origin_for_direction (hb_codepoint_t glyph,
 				       hb_direction_t direction,
 				       hb_position_t *x, hb_position_t *y)
   {
-    if (likely (HB_DIRECTION_IS_HORIZONTAL (direction)))
+    اگر (likely (HB_DIRECTION_IS_HORIZONTAL (direction)))
       get_glyph_h_origin_with_fallback (glyph, x, y);
-    else
+    وگرنه
       get_glyph_v_origin_with_fallback (glyph, x, y);
   }
 
-  void add_glyph_h_origins (hb_buffer_t *buf)
+  تهی add_glyph_h_origins (hb_buffer_t *buf)
   {
     apply_glyph_h_origins_with_fallback (buf, +1);
   }
-  void add_glyph_v_origins (hb_buffer_t *buf)
+  تهی add_glyph_v_origins (hb_buffer_t *buf)
   {
     apply_glyph_v_origins_with_fallback (buf, +1);
   }
-  void add_glyph_origin_for_direction (hb_codepoint_t glyph,
+  تهی add_glyph_origin_for_direction (hb_codepoint_t glyph,
 				       hb_direction_t direction,
 				       hb_position_t *x, hb_position_t *y)
   {
@@ -1044,15 +1044,15 @@ struct hb_font_t
     add_offset (x, y, origin_x, origin_y);
   }
 
-  void subtract_glyph_h_origins (hb_buffer_t *buf)
+  تهی subtract_glyph_h_origins (hb_buffer_t *buf)
   {
     apply_glyph_h_origins_with_fallback (buf, -1);
   }
-  void subtract_glyph_v_origins (hb_buffer_t *buf)
+  تهی subtract_glyph_v_origins (hb_buffer_t *buf)
   {
     apply_glyph_v_origins_with_fallback (buf, -1);
   }
-  void subtract_glyph_origin_for_direction (hb_codepoint_t glyph,
+  تهی subtract_glyph_origin_for_direction (hb_codepoint_t glyph,
 					    hb_direction_t direction,
 					    hb_position_t *x, hb_position_t *y)
   {
@@ -1061,14 +1061,14 @@ struct hb_font_t
     subtract_offset (x, y, origin_x, origin_y);
   }
 
-  void get_glyph_kerning_for_direction (hb_codepoint_t first_glyph, hb_codepoint_t second_glyph,
+  تهی get_glyph_kerning_for_direction (hb_codepoint_t first_glyph, hb_codepoint_t second_glyph,
 					hb_direction_t direction,
 					hb_position_t *x, hb_position_t *y)
   {
-    if (likely (HB_DIRECTION_IS_HORIZONTAL (direction))) {
+    اگر (likely (HB_DIRECTION_IS_HORIZONTAL (direction))) {
       *y = 0;
       *x = get_glyph_h_kerning (first_glyph, second_glyph);
-    } else {
+    } وگرنه {
       *x = 0;
       *y = get_glyph_v_kerning (first_glyph, second_glyph);
     }
@@ -1080,69 +1080,69 @@ struct hb_font_t
   {
     hb_bool_t ret = get_glyph_extents (glyph, extents);
 
-    if (ret)
+    اگر (ret)
       subtract_glyph_origin_for_direction (glyph, direction, &extents->x_bearing, &extents->y_bearing);
 
-    return ret;
+    بازگشت ret;
   }
 
-  hb_bool_t get_glyph_contour_point_for_origin (hb_codepoint_t glyph, unsigned int point_index,
+  hb_bool_t get_glyph_contour_point_for_origin (hb_codepoint_t glyph, unsigned صحیح point_index,
 						hb_direction_t direction,
 						hb_position_t *x, hb_position_t *y)
   {
     hb_bool_t ret = get_glyph_contour_point (glyph, point_index, x, y);
 
-    if (ret)
+    اگر (ret)
       subtract_glyph_origin_for_direction (glyph, direction, x, y);
 
-    return ret;
+    بازگشت ret;
   }
 
   /* Generates gidDDD if glyph has no name. */
-  void
+  تهی
   glyph_to_string (hb_codepoint_t glyph,
-		   char *s, unsigned int size)
+		   نویسه *s, unsigned صحیح size)
   {
-    if (get_glyph_name (glyph, s, size)) return;
+    اگر (get_glyph_name (glyph, s, size)) بازگشت;
 
-    if (size && snprintf (s, size, "gid%" PRIu32, glyph) < 0)
+    اگر (size && snprintf (s, size, "gid%" PRIu32, glyph) < 0)
       *s = '\0';
   }
 
   /* Parses gidDDD and uniUUUU strings automatically. */
   hb_bool_t
-  glyph_from_string (const char *s, int len, /* -1 means nul-terminated */
+  glyph_from_string (ثابت نویسه *s, صحیح len, /* -1 means nul-terminated */
 		     hb_codepoint_t *glyph)
   {
-    if (get_glyph_from_name (s, len, glyph)) return true;
+    اگر (get_glyph_from_name (s, len, glyph)) بازگشت درست;
 
-    if (len == -1) len = strlen (s);
+    اگر (len == -1) len = strlen (s);
 
     /* Straight glyph index. */
-    if (hb_codepoint_parse (s, len, 10, glyph))
-      return true;
+    اگر (hb_codepoint_parse (s, len, 10, glyph))
+      بازگشت درست;
 
-    if (len > 3)
+    اگر (len > 3)
     {
       /* gidDDD syntax for glyph indices. */
-      if (0 == strncmp (s, "gid", 3) &&
+      اگر (0 == strncmp (s, "gid", 3) &&
 	  hb_codepoint_parse (s + 3, len - 3, 10, glyph))
-	return true;
+	بازگشت درست;
 
       /* uniUUUU and other Unicode character indices. */
       hb_codepoint_t unichar;
-      if (0 == strncmp (s, "uni", 3) &&
+      اگر (0 == strncmp (s, "uni", 3) &&
 	  hb_codepoint_parse (s + 3, len - 3, 16, &unichar) &&
 	  get_nominal_glyph (unichar, glyph))
-	return true;
+	بازگشت درست;
     }
 
-    return false;
+    بازگشت نادرست;
   }
 
-  void changed ()
+  تهی changed ()
   {
-    float upem = face->get_upem ();
+    اعشاری upem = face->get_upem ();
 
     x_multf = x_scale / upem;
     y_multf = y_scale / upem;
@@ -1162,13 +1162,13 @@ struct hb_font_t
   }
 
   hb_position_t em_mult (int32_t v, int64_t mult)
-  { return (hb_position_t) ((v * mult + 32768) >> 16); }
-  hb_position_t em_multf (float v, float mult)
-  { return (hb_position_t) roundf (em_fmultf (v, mult)); }
-  float em_fmultf (float v, float mult)
-  { return v * mult; }
-  float em_fmult (int32_t v, float mult)
-  { return (float) v * mult; }
+  { بازگشت (hb_position_t) ((v * mult + 32768) >> 16); }
+  hb_position_t em_multf (اعشاری v, اعشاری mult)
+  { بازگشت (hb_position_t) roundf (em_fmultf (v, mult)); }
+  اعشاری em_fmultf (اعشاری v, اعشاری mult)
+  { بازگشت v * mult; }
+  اعشاری em_fmult (int32_t v, اعشاری mult)
+  { بازگشت (اعشاری) v * mult; }
 };
 DECLARE_NULL_INSTANCE (hb_font_t);
 

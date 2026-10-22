@@ -1,18 +1,18 @@
 #define HB_WASM_INTERFACE(ret_t, name) __attribute__((export_name(#name))) ret_t name
 
-#include <hb-wasm-api.h>
+#شامل <hb-wasm-api.h>
 
-extern "C" {
-void debugprint1 (const char *s, int32_t);
-void debugprint2 (const char *s, int32_t, int32_t);
+بیرونی "C" {
+تهی debugprint1 (ثابت نویسه *s, int32_t);
+تهی debugprint2 (ثابت نویسه *s, int32_t, int32_t);
 }
 
 bool_t
-shape (void *shape_plan,
+shape (تهی *shape_plan,
        font_t *font,
        buffer_t *buffer,
-       const feature_t *features,
-       uint32_t num_features)
+       ثابت feature_t *features,
+       uint32_t رقم_features)
 {
-  return shape_with (font, buffer, features, num_features, "ot");
+  بازگشت shape_with (font, buffer, features, رقم_features, "ot");
 }

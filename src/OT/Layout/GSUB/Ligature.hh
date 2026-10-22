@@ -1,120 +1,120 @@
 #ifndef OT_LAYOUT_GSUB_LIGATURE_HH
 #define OT_LAYOUT_GSUB_LIGATURE_HH
 
-#include "Common.hh"
+#شامل "Common.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+فضاینام OT {
+فضاینام Layout {
+فضاینام GSUB_impl {
 
 template <typename Types>
-struct Ligature
+ساختار Ligature
 {
-  public:
+  عمومی:
   typename Types::HBGlyphID
 		ligGlyph;               /* GlyphID of ligature to substitute */
   HeadlessArray16Of<typename Types::HBGlyphID>
 		component;              /* Array of component GlyphIDs--start
                                          * with the second  component--ordered
                                          * in writing direction */
-  public:
+  عمومی:
   DEFINE_SIZE_ARRAY (Types::size + 2, component);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (این);
     return_trace (ligGlyph.sanitize (c) && component.sanitize (c));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
-  { return hb_all (component, glyphs); }
+  منطقی intersects (ثابت hb_set_t *glyphs) ثابت
+  { بازگشت hb_all (component, glyphs); }
 
-  bool intersects_lig_glyph (const hb_set_t *glyphs) const
-  { return glyphs->has(ligGlyph); }
+  منطقی intersects_lig_glyph (ثابت hb_set_t *glyphs) ثابت
+  { بازگشت glyphs->has(ligGlyph); }
 
-  void closure (hb_closure_context_t *c) const
+  تهی closure (hb_closure_context_t *c) ثابت
   {
-    if (!intersects (c->glyphs)) return;
+    اگر (!intersects (c->glyphs)) بازگشت;
     c->output->add (ligGlyph);
   }
 
-  void depend (hb_depend_context_t *c, hb_codepoint_t first) const
+  تهی depend (hb_depend_context_t *c, hb_codepoint_t first) ثابت
   {
     // Build the complete ligature set upfront before adding any edges
     hb_set_t complete_ligset;
     complete_ligset.add (first);
     + hb_iter (component) | hb_sink (complete_ligset);
-    if (unlikely (complete_ligset.in_error ()))
+    اگر (unlikely (complete_ligset.in_error ()))
     {
       c->depend_data->fail ();
-      return;
+      بازگشت;
     }
 
-    bool ligset_created;
+    منطقی ligset_created;
     hb_codepoint_t ligset_idx = c->depend_data->find_or_create_set (complete_ligset,
                                                                     &ligset_created);
-    if (unlikely (ligset_idx == HB_CODEPOINT_INVALID))
-      return;
+    اگر (unlikely (ligset_idx == HB_CODEPOINT_INVALID))
+      بازگشت;
 
     // Track whether any edge using this ligset_idx was actually added
-    bool any_added = false;
+    منطقی any_added = نادرست;
 
     // Now add one edge for each glyph in the complete, immutable set
     + hb_iter (complete_ligset)
     | hb_apply ([&] (hb_codepoint_t gid) {
-        if (c->depend_data->add_gsub_lookup (gid, c->lookup_index, ligGlyph, ligset_idx))
-          any_added = true;
+        اگر (c->depend_data->add_gsub_lookup (gid, c->lookup_index, ligGlyph, ligset_idx))
+          any_added = درست;
       })
     ;
 
     // If no edges were added, a newly allocated set is unused - free it for reuse
-    if (!any_added && ligset_created)
+    اگر (!any_added && ligset_created)
       c->depend_data->discard_set (ligset_idx);
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  تهی collect_glyphs (hb_collect_glyphs_context_t *c) ثابت
   {
-    c->input->add_array (component.arrayZ, component.get_length ());
+    c->درون_داد->add_array (component.arrayZ, component.get_length ());
     c->output->add (ligGlyph);
   }
 
   template <typename set_t>
-  void collect_second (set_t &s) const
+  تهی collect_second (set_t &s) ثابت
   {
-    if (unlikely (!component.get_length ()))
+    اگر (unlikely (!component.get_length ()))
     {
       // A ligature without any components. Anything matches.
       s = set_t::full ();
-      return;
+      بازگشت;
     }
     s.add (component.arrayZ[0]);
   }
 
-  bool would_apply (hb_would_apply_context_t *c) const
+  منطقی would_apply (hb_would_apply_context_t *c) ثابت
   {
-    if (c->len != component.lenP1)
-      return false;
+    اگر (c->len != component.lenP1)
+      بازگشت نادرست;
 
-    for (unsigned int i = 1; i < c->len; i++)
-      if (likely (c->glyphs[i] != component[i]))
-        return false;
+    برای (unsigned صحیح i = 1; i < c->len; i++)
+      اگر (likely (c->glyphs[i] != component[i]))
+        بازگشت نادرست;
 
-    return true;
+    بازگشت درست;
   }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  منطقی apply (hb_ot_apply_context_t *c) ثابت
   {
-    TRACE_APPLY (this);
-    unsigned int count = component.lenP1;
+    TRACE_APPLY (این);
+    unsigned صحیح شمار = component.lenP1;
 
-    if (unlikely (!count)) return_trace (false);
+    اگر (unlikely (!شمار)) return_trace (نادرست);
 
     /* Special-case to make it in-place and not consider this
      * as a "ligated" substitution. */
-    if (unlikely (count == 1))
+    اگر (unlikely (شمار == 1))
     {
 
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      اگر (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
       {
 	c->buffer->sync_so_far ();
 	c->buffer->message (c->font,
@@ -124,49 +124,49 @@ struct Ligature
 
       c->replace_glyph (ligGlyph);
 
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      اگر (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
       {
 	c->buffer->message (c->font,
 			    "replaced glyph at %u (ligature substitution)",
 			    c->buffer->idx - 1u);
       }
 
-      return_trace (true);
+      return_trace (درست);
     }
 
-    unsigned int total_component_count = 0;
+    unsigned صحیح total_component_شمار = 0;
 
-    if (unlikely (count > HB_MAX_CONTEXT_LENGTH)) return false;
-    unsigned int match_end = 0;
+    اگر (unlikely (شمار > HB_MAX_CONTEXT_LENGTH)) بازگشت نادرست;
+    unsigned صحیح match_end = 0;
 
-    if (likely (!match_input (c, count,
+    اگر (likely (!match_درون_داد (c, شمار,
                               &component[1],
                               match_glyph,
                               nullptr,
                               &match_end,
-                              &total_component_count)))
+                              &total_component_شمار)))
     {
       c->buffer->unsafe_to_concat (c->buffer->idx, match_end);
-      return_trace (false);
+      return_trace (نادرست);
     }
 
     unsigned pos = 0;
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    اگر (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
       unsigned delta = c->buffer->sync_so_far ();
 
       pos = c->buffer->idx;
 
-      char buf[HB_MAX_CONTEXT_LENGTH * 16] = {0};
-      char *p = buf;
+      نویسه buf[HB_MAX_CONTEXT_LENGTH * 16] = {0};
+      نویسه *p = buf;
 
       match_end += delta;
-      for (unsigned i = 0; i < count; i++)
+      برای (unsigned i = 0; i < شمار; i++)
       {
 	c->match_positions[i] += delta;
-	if (i)
+	اگر (i)
 	  *p++ = ',';
-	snprintf (p, sizeof(buf) - (p - buf), "%u", c->match_positions[i]);
+	snprintf (p, اندازه(buf) - (p - buf), "%u", c->match_positions[i]);
 	p += strlen(p);
       }
 
@@ -175,13 +175,13 @@ struct Ligature
 			  buf);
     }
 
-    ligate_input (c,
-                  count,
+    ligate_درون_داد (c,
+                  شمار,
                   match_end,
                   ligGlyph,
-                  total_component_count);
+                  total_component_شمار);
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    اگر (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
     {
       c->buffer->sync_so_far ();
       c->buffer->message (c->font,
@@ -189,29 +189,29 @@ struct Ligature
 			  pos);
     }
 
-    return_trace (true);
+    return_trace (درست);
   }
 
   template <typename Iterator,
             hb_requires (hb_is_source_of (Iterator, hb_codepoint_t))>
-  bool serialize (hb_serialize_context_t *c,
+  منطقی serialize (hb_serialize_context_t *c,
                   hb_codepoint_t ligature,
                   Iterator components /* Starting from second */)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (این);
+    اگر (unlikely (!c->extend_min (این))) return_trace (نادرست);
     ligGlyph = ligature;
-    if (unlikely (!component.serialize (c, components))) return_trace (false);
-    return_trace (true);
+    اگر (unlikely (!component.serialize (c, components))) return_trace (نادرست);
+    return_trace (درست);
   }
 
-  bool subset (hb_subset_context_t *c, unsigned coverage_idx) const
+  منطقی subset (hb_subset_context_t *c, unsigned coverage_idx) ثابت
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (این);
+    ثابت hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+    ثابت hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    if (!intersects (&glyphset) || !glyphset.has (ligGlyph)) return_trace (false);
+    اگر (!intersects (&glyphset) || !glyphset.has (ligGlyph)) return_trace (نادرست);
     // Ensure Coverage table is always packed after this.
     c->serializer->add_virtual_link (coverage_idx);
 
@@ -220,7 +220,7 @@ struct Ligature
       | hb_map (glyph_map)
       ;
 
-    auto *out = c->serializer->start_embed (*this);
+    auto *out = c->serializer->start_embed (*این);
     return_trace (out->serialize (c->serializer,
                                   glyph_map[ligGlyph],
                                   it));  }

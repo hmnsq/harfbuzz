@@ -27,39 +27,39 @@
 #ifndef HB_OT_MATH_TABLE_HH
 #define HB_OT_MATH_TABLE_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-layout-common.hh"
-#include "hb-ot-layout-gdef-table.hh"
-#include "hb-ot-math.h"
-#include "hb-depend-data.hh"
+#شامل "hb-open-type.hh"
+#شامل "hb-ot-layout-common.hh"
+#شامل "hb-ot-layout-gdef-table.hh"
+#شامل "hb-ot-math.h"
+#شامل "hb-depend-data.hh"
 
-namespace OT {
+فضاینام OT {
 
 
-struct MathValueRecord
+ساختار Math_مقدار_Record
 {
-  hb_position_t get_x_value (hb_font_t *font, const void *base) const
-  { return hb_saturate_add (font->em_scale_x (value), (base+deviceTable).get_x_delta (font, get_var_store (font, base))); }
-  hb_position_t get_y_value (hb_font_t *font, const void *base) const
-  { return hb_saturate_add (font->em_scale_y (value), (base+deviceTable).get_y_delta (font, get_var_store (font, base))); }
+  hb_position_t get_x_مقدار (hb_font_t *font, ثابت تهی *base) ثابت
+  { بازگشت hb_saturate_add (font->em_scale_x (value), (base+deviceTable).get_x_delta (font, get_var_store (font, base))); }
+  hb_position_t get_y_مقدار (hb_font_t *font, ثابت تهی *base) ثابت
+  { بازگشت hb_saturate_add (font->em_scale_y (value), (base+deviceTable).get_y_delta (font, get_var_store (font, base))); }
 
-  const ItemVariationStore &get_var_store (hb_font_t *font, const void *base) const
+  ثابت ItemVariationStore &get_var_store (hb_font_t *font, ثابت تهی *base) ثابت
   {
-#if !defined(HB_NO_VAR) && !defined(HB_NO_OT_LAYOUT)
-    if ((base+deviceTable).is_variation_device ())
-      return font->face->table.GDEF->table->get_var_store ();
+#اگر !defined(HB_NO_VAR) && !defined(HB_NO_OT_LAYOUT)
+    اگر ((base+deviceTable).is_variation_device ())
+      بازگشت font->face->table.GDEF->table->get_var_store ();
 #endif
-    return Null (ItemVariationStore);
+    بازگشت Null (ItemVariationStore);
   }
 
-  MathValueRecord* copy (hb_serialize_context_t *c, const void *base,
-                         const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *variation_map) const
+  Math_مقدار_Record* copy (hb_serialize_context_t *c, ثابت تهی *base,
+                         ثابت hb_hashmap_t<unsigned, hb_pair_t<unsigned, صحیح>> *variation_map) ثابت
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->embed (this);
-    if (unlikely (!out)) return_trace (nullptr);
-    hb_pair_t<unsigned, int> *varidx_delta;
-    if (variation_map->has ((base+deviceTable).get_variation_index (), &varidx_delta) &&
+    TRACE_SERIALIZE (این);
+    auto *out = c->embed (این);
+    اگر (unlikely (!out)) return_trace (nullptr);
+    hb_pair_t<unsigned, صحیح> *varidx_delta;
+    اگر (variation_map->has ((base+deviceTable).get_variation_index (), &varidx_delta) &&
         !c->check_assign (out->value, (int64_t) value + hb_second (*varidx_delta),
                           HB_SERIALIZE_ERROR_INT_OVERFLOW))
       return_trace (nullptr);
@@ -68,331 +68,331 @@ struct MathValueRecord
     return_trace (out);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c, const void *base) const
+  تهی collect_variation_indices (hb_collect_variation_indices_context_t *c, ثابت تهی *base) ثابت
   { (base+deviceTable).collect_variation_indices (c); }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  منطقی sanitize (hb_sanitize_context_t *c, ثابت تهی *base) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && deviceTable.sanitize (c, base));
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این) && deviceTable.sanitize (c, base));
   }
 
-  protected:
+  محافظتشده:
   HBINT16		value;		/* The X or Y value in design units */
   Offset16To<Device>	deviceTable;	/* Offset to the device table - from the
 					 * beginning of parent table.  May be NULL.
 					 * Suggested format for device table is 1. */
 
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (4);
 };
 
-struct MathConstants
+ساختار MathConstants
 {
-  friend struct MATH;
+  friend ساختار MATH;
 
   MathConstants* copy (hb_serialize_context_t *c,
-                      const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *variation_map) const
+                      ثابت hb_hashmap_t<unsigned, hb_pair_t<unsigned, صحیح>> *variation_map) ثابت
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->start_embed (this);
+    TRACE_SERIALIZE (این);
+    auto *out = c->start_embed (این);
 
     HBINT16 *p = c->allocate_size<HBINT16> (HBINT16::static_size * 2);
-    if (unlikely (!p)) return_trace (nullptr);
+    اگر (unlikely (!p)) return_trace (nullptr);
     hb_memcpy (p, percentScaleDown, HBINT16::static_size * 2);
 
     HBUINT16 *m = c->allocate_size<HBUINT16> (HBUINT16::static_size * 2);
-    if (unlikely (!m)) return_trace (nullptr);
+    اگر (unlikely (!m)) return_trace (nullptr);
     hb_memcpy (m, minHeight, HBUINT16::static_size * 2);
 
-    unsigned count = ARRAY_LENGTH (mathValueRecords);
-    for (unsigned i = 0; i < count; i++)
-      if (!c->copy (mathValueRecords[i], this, variation_map))
+    unsigned شمار = ARRAY_LENGTH (math_مقدار_Records);
+    برای (unsigned i = 0; i < شمار; i++)
+      اگر (!c->copy (math_مقدار_Records[i], این, variation_map))
         return_trace (nullptr);
 
-    if (!c->embed (radicalDegreeBottomRaisePercent)) return_trace (nullptr);
+    اگر (!c->embed (radicalDegreeBottomRaisePercent)) return_trace (nullptr);
     return_trace (out);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  تهی collect_variation_indices (hb_collect_variation_indices_context_t *c) ثابت
   {
-    for (const auto &record : mathValueRecords)
-      record.collect_variation_indices (c, this);
+    برای (ثابت auto &record : math_مقدار_Records)
+      record.collect_variation_indices (c, این);
   }
 
-  bool sanitize_math_value_records (hb_sanitize_context_t *c) const
+  منطقی sanitize_math_مقدار_records (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (این);
 
-    unsigned int count = ARRAY_LENGTH (mathValueRecords);
-    for (unsigned int i = 0; i < count; i++)
-      if (!mathValueRecords[i].sanitize (c, this))
-	return_trace (false);
+    unsigned صحیح شمار = ARRAY_LENGTH (math_مقدار_Records);
+    برای (unsigned صحیح i = 0; i < شمار; i++)
+      اگر (!math_مقدار_Records[i].sanitize (c, این))
+	return_trace (نادرست);
 
-    return_trace (true);
+    return_trace (درست);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && sanitize_math_value_records (c));
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این) && sanitize_math_مقدار_records (c));
   }
 
-  hb_position_t get_value (hb_ot_math_constant_t constant,
-			   hb_font_t *font) const
+  hb_position_t get_مقدار (hb_ot_math_constant_t constant,
+			   hb_font_t *font) ثابت
   {
-    switch (constant) {
+    انتخاب (constant) {
 
-    case HB_OT_MATH_CONSTANT_SCRIPT_PERCENT_SCALE_DOWN:
-    case HB_OT_MATH_CONSTANT_SCRIPT_SCRIPT_PERCENT_SCALE_DOWN:
-      return percentScaleDown[constant - HB_OT_MATH_CONSTANT_SCRIPT_PERCENT_SCALE_DOWN];
+    حالت HB_OT_MATH_CONSTANT_SCRIPT_PERCENT_SCALE_DOWN:
+    حالت HB_OT_MATH_CONSTANT_SCRIPT_SCRIPT_PERCENT_SCALE_DOWN:
+      بازگشت percentScaleDown[constant - HB_OT_MATH_CONSTANT_SCRIPT_PERCENT_SCALE_DOWN];
 
-    case HB_OT_MATH_CONSTANT_DELIMITED_SUB_FORMULA_MIN_HEIGHT:
-    case HB_OT_MATH_CONSTANT_DISPLAY_OPERATOR_MIN_HEIGHT:
-      return font->em_scale_y (minHeight[constant - HB_OT_MATH_CONSTANT_DELIMITED_SUB_FORMULA_MIN_HEIGHT]);
+    حالت HB_OT_MATH_CONSTANT_DELIMITED_SUB_FORMULA_MIN_HEIGHT:
+    حالت HB_OT_MATH_CONSTANT_DISPLAY_OPERATOR_MIN_HEIGHT:
+      بازگشت font->em_scale_y (minHeight[constant - HB_OT_MATH_CONSTANT_DELIMITED_SUB_FORMULA_MIN_HEIGHT]);
 
-    case HB_OT_MATH_CONSTANT_RADICAL_KERN_AFTER_DEGREE:
-    case HB_OT_MATH_CONSTANT_RADICAL_KERN_BEFORE_DEGREE:
-    case HB_OT_MATH_CONSTANT_SKEWED_FRACTION_HORIZONTAL_GAP:
-    case HB_OT_MATH_CONSTANT_SPACE_AFTER_SCRIPT:
-      return mathValueRecords[constant - HB_OT_MATH_CONSTANT_MATH_LEADING].get_x_value (font, this);
+    حالت HB_OT_MATH_CONSTANT_RADICAL_KERN_AFTER_DEGREE:
+    حالت HB_OT_MATH_CONSTANT_RADICAL_KERN_BEFORE_DEGREE:
+    حالت HB_OT_MATH_CONSTANT_SKEWED_FRACTION_HORIZONTAL_GAP:
+    حالت HB_OT_MATH_CONSTANT_SPACE_AFTER_SCRIPT:
+      بازگشت math_مقدار_Records[constant - HB_OT_MATH_CONSTANT_MATH_LEADING].get_x_مقدار (font, این);
 
-    case HB_OT_MATH_CONSTANT_ACCENT_BASE_HEIGHT:
-    case HB_OT_MATH_CONSTANT_AXIS_HEIGHT:
-    case HB_OT_MATH_CONSTANT_FLATTENED_ACCENT_BASE_HEIGHT:
-    case HB_OT_MATH_CONSTANT_FRACTION_DENOMINATOR_DISPLAY_STYLE_SHIFT_DOWN:
-    case HB_OT_MATH_CONSTANT_FRACTION_DENOMINATOR_GAP_MIN:
-    case HB_OT_MATH_CONSTANT_FRACTION_DENOMINATOR_SHIFT_DOWN:
-    case HB_OT_MATH_CONSTANT_FRACTION_DENOM_DISPLAY_STYLE_GAP_MIN:
-    case HB_OT_MATH_CONSTANT_FRACTION_NUMERATOR_DISPLAY_STYLE_SHIFT_UP:
-    case HB_OT_MATH_CONSTANT_FRACTION_NUMERATOR_GAP_MIN:
-    case HB_OT_MATH_CONSTANT_FRACTION_NUMERATOR_SHIFT_UP:
-    case HB_OT_MATH_CONSTANT_FRACTION_NUM_DISPLAY_STYLE_GAP_MIN:
-    case HB_OT_MATH_CONSTANT_FRACTION_RULE_THICKNESS:
-    case HB_OT_MATH_CONSTANT_LOWER_LIMIT_BASELINE_DROP_MIN:
-    case HB_OT_MATH_CONSTANT_LOWER_LIMIT_GAP_MIN:
-    case HB_OT_MATH_CONSTANT_MATH_LEADING:
-    case HB_OT_MATH_CONSTANT_OVERBAR_EXTRA_ASCENDER:
-    case HB_OT_MATH_CONSTANT_OVERBAR_RULE_THICKNESS:
-    case HB_OT_MATH_CONSTANT_OVERBAR_VERTICAL_GAP:
-    case HB_OT_MATH_CONSTANT_RADICAL_DISPLAY_STYLE_VERTICAL_GAP:
-    case HB_OT_MATH_CONSTANT_RADICAL_EXTRA_ASCENDER:
-    case HB_OT_MATH_CONSTANT_RADICAL_RULE_THICKNESS:
-    case HB_OT_MATH_CONSTANT_RADICAL_VERTICAL_GAP:
-    case HB_OT_MATH_CONSTANT_SKEWED_FRACTION_VERTICAL_GAP:
-    case HB_OT_MATH_CONSTANT_STACK_BOTTOM_DISPLAY_STYLE_SHIFT_DOWN:
-    case HB_OT_MATH_CONSTANT_STACK_BOTTOM_SHIFT_DOWN:
-    case HB_OT_MATH_CONSTANT_STACK_DISPLAY_STYLE_GAP_MIN:
-    case HB_OT_MATH_CONSTANT_STACK_GAP_MIN:
-    case HB_OT_MATH_CONSTANT_STACK_TOP_DISPLAY_STYLE_SHIFT_UP:
-    case HB_OT_MATH_CONSTANT_STACK_TOP_SHIFT_UP:
-    case HB_OT_MATH_CONSTANT_STRETCH_STACK_BOTTOM_SHIFT_DOWN:
-    case HB_OT_MATH_CONSTANT_STRETCH_STACK_GAP_ABOVE_MIN:
-    case HB_OT_MATH_CONSTANT_STRETCH_STACK_GAP_BELOW_MIN:
-    case HB_OT_MATH_CONSTANT_STRETCH_STACK_TOP_SHIFT_UP:
-    case HB_OT_MATH_CONSTANT_SUBSCRIPT_BASELINE_DROP_MIN:
-    case HB_OT_MATH_CONSTANT_SUBSCRIPT_SHIFT_DOWN:
-    case HB_OT_MATH_CONSTANT_SUBSCRIPT_TOP_MAX:
-    case HB_OT_MATH_CONSTANT_SUB_SUPERSCRIPT_GAP_MIN:
-    case HB_OT_MATH_CONSTANT_SUPERSCRIPT_BASELINE_DROP_MAX:
-    case HB_OT_MATH_CONSTANT_SUPERSCRIPT_BOTTOM_MAX_WITH_SUBSCRIPT:
-    case HB_OT_MATH_CONSTANT_SUPERSCRIPT_BOTTOM_MIN:
-    case HB_OT_MATH_CONSTANT_SUPERSCRIPT_SHIFT_UP:
-    case HB_OT_MATH_CONSTANT_SUPERSCRIPT_SHIFT_UP_CRAMPED:
-    case HB_OT_MATH_CONSTANT_UNDERBAR_EXTRA_DESCENDER:
-    case HB_OT_MATH_CONSTANT_UNDERBAR_RULE_THICKNESS:
-    case HB_OT_MATH_CONSTANT_UNDERBAR_VERTICAL_GAP:
-    case HB_OT_MATH_CONSTANT_UPPER_LIMIT_BASELINE_RISE_MIN:
-    case HB_OT_MATH_CONSTANT_UPPER_LIMIT_GAP_MIN:
-      return mathValueRecords[constant - HB_OT_MATH_CONSTANT_MATH_LEADING].get_y_value (font, this);
+    حالت HB_OT_MATH_CONSTANT_ACCENT_BASE_HEIGHT:
+    حالت HB_OT_MATH_CONSTANT_AXIS_HEIGHT:
+    حالت HB_OT_MATH_CONSTANT_FLATTENED_ACCENT_BASE_HEIGHT:
+    حالت HB_OT_MATH_CONSTANT_FRACTION_DENOMINATOR_DISPLAY_STYLE_SHIFT_DOWN:
+    حالت HB_OT_MATH_CONSTANT_FRACTION_DENOMINATOR_GAP_MIN:
+    حالت HB_OT_MATH_CONSTANT_FRACTION_DENOMINATOR_SHIFT_DOWN:
+    حالت HB_OT_MATH_CONSTANT_FRACTION_DENOM_DISPLAY_STYLE_GAP_MIN:
+    حالت HB_OT_MATH_CONSTANT_FRACTION_NUMERATOR_DISPLAY_STYLE_SHIFT_UP:
+    حالت HB_OT_MATH_CONSTANT_FRACTION_NUMERATOR_GAP_MIN:
+    حالت HB_OT_MATH_CONSTANT_FRACTION_NUMERATOR_SHIFT_UP:
+    حالت HB_OT_MATH_CONSTANT_FRACTION_رقم_DISPLAY_STYLE_GAP_MIN:
+    حالت HB_OT_MATH_CONSTANT_FRACTION_RULE_THICKNESS:
+    حالت HB_OT_MATH_CONSTANT_LOWER_LIMIT_BASELINE_DROP_MIN:
+    حالت HB_OT_MATH_CONSTANT_LOWER_LIMIT_GAP_MIN:
+    حالت HB_OT_MATH_CONSTANT_MATH_LEADING:
+    حالت HB_OT_MATH_CONSTANT_OVERBAR_EXTRA_ASCENDER:
+    حالت HB_OT_MATH_CONSTANT_OVERBAR_RULE_THICKNESS:
+    حالت HB_OT_MATH_CONSTANT_OVERBAR_VERTICAL_GAP:
+    حالت HB_OT_MATH_CONSTANT_RADICAL_DISPLAY_STYLE_VERTICAL_GAP:
+    حالت HB_OT_MATH_CONSTANT_RADICAL_EXTRA_ASCENDER:
+    حالت HB_OT_MATH_CONSTANT_RADICAL_RULE_THICKNESS:
+    حالت HB_OT_MATH_CONSTANT_RADICAL_VERTICAL_GAP:
+    حالت HB_OT_MATH_CONSTANT_SKEWED_FRACTION_VERTICAL_GAP:
+    حالت HB_OT_MATH_CONSTANT_پشته_BOTTOM_DISPLAY_STYLE_SHIFT_DOWN:
+    حالت HB_OT_MATH_CONSTANT_پشته_BOTTOM_SHIFT_DOWN:
+    حالت HB_OT_MATH_CONSTANT_پشته_DISPLAY_STYLE_GAP_MIN:
+    حالت HB_OT_MATH_CONSTANT_پشته_GAP_MIN:
+    حالت HB_OT_MATH_CONSTANT_پشته_بالاترین_DISPLAY_STYLE_SHIFT_UP:
+    حالت HB_OT_MATH_CONSTANT_پشته_بالاترین_SHIFT_UP:
+    حالت HB_OT_MATH_CONSTANT_STRETCH_پشته_BOTTOM_SHIFT_DOWN:
+    حالت HB_OT_MATH_CONSTANT_STRETCH_پشته_GAP_ABOVE_MIN:
+    حالت HB_OT_MATH_CONSTANT_STRETCH_پشته_GAP_BELOW_MIN:
+    حالت HB_OT_MATH_CONSTANT_STRETCH_پشته_بالاترین_SHIFT_UP:
+    حالت HB_OT_MATH_CONSTANT_SUBSCRIPT_BASELINE_DROP_MIN:
+    حالت HB_OT_MATH_CONSTANT_SUBSCRIPT_SHIFT_DOWN:
+    حالت HB_OT_MATH_CONSTANT_SUBSCRIPT_بالاترین_MAX:
+    حالت HB_OT_MATH_CONSTANT_SUB_SUPERSCRIPT_GAP_MIN:
+    حالت HB_OT_MATH_CONSTANT_SUPERSCRIPT_BASELINE_DROP_MAX:
+    حالت HB_OT_MATH_CONSTANT_SUPERSCRIPT_BOTTOM_MAX_WITH_SUBSCRIPT:
+    حالت HB_OT_MATH_CONSTANT_SUPERSCRIPT_BOTTOM_MIN:
+    حالت HB_OT_MATH_CONSTANT_SUPERSCRIPT_SHIFT_UP:
+    حالت HB_OT_MATH_CONSTANT_SUPERSCRIPT_SHIFT_UP_CRAMPED:
+    حالت HB_OT_MATH_CONSTANT_UNDERBAR_EXTRA_DESCENDER:
+    حالت HB_OT_MATH_CONSTANT_UNDERBAR_RULE_THICKNESS:
+    حالت HB_OT_MATH_CONSTANT_UNDERBAR_VERTICAL_GAP:
+    حالت HB_OT_MATH_CONSTANT_UPPER_LIMIT_BASELINE_RISE_MIN:
+    حالت HB_OT_MATH_CONSTANT_UPPER_LIMIT_GAP_MIN:
+      بازگشت math_مقدار_Records[constant - HB_OT_MATH_CONSTANT_MATH_LEADING].get_y_مقدار (font, این);
 
-    case HB_OT_MATH_CONSTANT_RADICAL_DEGREE_BOTTOM_RAISE_PERCENT:
-      return radicalDegreeBottomRaisePercent;
+    حالت HB_OT_MATH_CONSTANT_RADICAL_DEGREE_BOTTOM_RAISE_PERCENT:
+      بازگشت radicalDegreeBottomRaisePercent;
 
-    default:
-      return 0;
+    پیشفرض:
+      بازگشت 0;
     }
   }
 
-  protected:
+  محافظتشده:
   HBINT16 percentScaleDown[2];
   HBUINT16 minHeight[2];
-  MathValueRecord mathValueRecords[51];
+  Math_مقدار_Record math_مقدار_Records[51];
   HBINT16 radicalDegreeBottomRaisePercent;
 
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (214);
 };
 
-struct MathItalicsCorrectionInfo
+ساختار MathItalicsCorrectionInfo
 {
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = c->plan->_glyphset_mathed;
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (این);
+    ثابت hb_set_t &glyphset = c->plan->_glyphset_mathed;
+    ثابت hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (*این);
+    اگر (unlikely (!c->serializer->extend_min (out))) return_trace (نادرست);
 
     hb_sorted_vector_t<hb_codepoint_t> new_coverage;
-    + hb_zip (this+coverage, italicsCorrection)
+    + hb_zip (این+coverage, italicsCorrection)
     | hb_filter (glyphset, hb_first)
-    | hb_filter (serialize_math_record_array (c->serializer, out->italicsCorrection, this, &c->plan->layout_variation_idx_delta_map), hb_second)
+    | hb_filter (serialize_math_record_array (c->serializer, out->italicsCorrection, این, &c->plan->layout_variation_idx_delta_map), hb_second)
     | hb_map (hb_first)
     | hb_map (glyph_map)
     | hb_sink (new_coverage)
     ;
 
     out->coverage.serialize_serialize (c->serializer, new_coverage.iter ());
-    return_trace (true);
+    return_trace (درست);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  تهی collect_variation_indices (hb_collect_variation_indices_context_t *c) ثابت
   {
-    for (const auto &entry : hb_zip (this+coverage, italicsCorrection))
-      if (c->glyph_set->has (hb_first (entry)))
-        hb_second (entry).collect_variation_indices (c, this);
+    برای (ثابت auto &entry : hb_zip (این+coverage, italicsCorrection))
+      اگر (c->glyph_set->has (hb_first (entry)))
+        hb_second (entry).collect_variation_indices (c, این);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  coverage.sanitize (c, this) &&
-		  italicsCorrection.sanitize (c, this));
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این) &&
+		  coverage.sanitize (c, این) &&
+		  italicsCorrection.sanitize (c, این));
   }
 
-  hb_position_t get_value (hb_codepoint_t glyph,
-			   hb_font_t *font) const
+  hb_position_t get_مقدار (hb_codepoint_t glyph,
+			   hb_font_t *font) ثابت
   {
-    unsigned int index = (this+coverage).get_coverage (glyph);
-    return italicsCorrection[index].get_x_value (font, this);
+    unsigned صحیح index = (این+coverage).get_coverage (glyph);
+    بازگشت italicsCorrection[index].get_x_مقدار (font, این);
   }
 
-  protected:
+  محافظتشده:
   Offset16To<Coverage>       coverage;		/* Offset to Coverage table -
 						 * from the beginning of
 						 * MathItalicsCorrectionInfo
 						 * table. */
-  Array16Of<MathValueRecord> italicsCorrection;	/* Array of MathValueRecords
+  Array16Of<Math_مقدار_Record> italicsCorrection;	/* Array of MathValueRecords
 						 * defining italics correction
 						 * values for each
 						 * covered glyph. */
 
-  public:
+  عمومی:
   DEFINE_SIZE_ARRAY (4, italicsCorrection);
 };
 
-struct MathTopAccentAttachment
+ساختار Math_بالاترین_Accent_Attachment
 {
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = c->plan->_glyphset_mathed;
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (این);
+    ثابت hb_set_t &glyphset = c->plan->_glyphset_mathed;
+    ثابت hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (*این);
+    اگر (unlikely (!c->serializer->extend_min (out))) return_trace (نادرست);
 
     hb_sorted_vector_t<hb_codepoint_t> new_coverage;
-    + hb_zip (this+topAccentCoverage, topAccentAttachment)
+    + hb_zip (این+بالاترین_Accent_Coverage, بالاترین_Accent_Attachment)
     | hb_filter (glyphset, hb_first)
-    | hb_filter (serialize_math_record_array (c->serializer, out->topAccentAttachment, this, &c->plan->layout_variation_idx_delta_map), hb_second)
+    | hb_filter (serialize_math_record_array (c->serializer, out->بالاترین_Accent_Attachment, این, &c->plan->layout_variation_idx_delta_map), hb_second)
     | hb_map (hb_first)
     | hb_map (glyph_map)
     | hb_sink (new_coverage)
     ;
 
-    out->topAccentCoverage.serialize_serialize (c->serializer, new_coverage.iter ());
-    return_trace (true);
+    out->بالاترین_Accent_Coverage.serialize_serialize (c->serializer, new_coverage.iter ());
+    return_trace (درست);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  تهی collect_variation_indices (hb_collect_variation_indices_context_t *c) ثابت
   {
-    for (const auto &entry : hb_zip (this+topAccentCoverage, topAccentAttachment))
-      if (c->glyph_set->has (hb_first (entry)))
-        hb_second (entry).collect_variation_indices (c, this);
+    برای (ثابت auto &entry : hb_zip (این+بالاترین_Accent_Coverage, بالاترین_Accent_Attachment))
+      اگر (c->glyph_set->has (hb_first (entry)))
+        hb_second (entry).collect_variation_indices (c, این);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  topAccentCoverage.sanitize (c, this) &&
-		  topAccentAttachment.sanitize (c, this));
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این) &&
+		  بالاترین_Accent_Coverage.sanitize (c, این) &&
+		  بالاترین_Accent_Attachment.sanitize (c, این));
   }
 
-  hb_position_t get_value (hb_codepoint_t glyph,
-			   hb_font_t *font) const
+  hb_position_t get_مقدار (hb_codepoint_t glyph,
+			   hb_font_t *font) ثابت
   {
-    unsigned int index = (this+topAccentCoverage).get_coverage (glyph);
-    if (index == NOT_COVERED)
-      return font->get_glyph_h_advance (glyph) / 2;
-    return topAccentAttachment[index].get_x_value (font, this);
+    unsigned صحیح index = (این+بالاترین_Accent_Coverage).get_coverage (glyph);
+    اگر (index == NOT_COVERED)
+      بازگشت font->get_glyph_h_advance (glyph) / 2;
+    بازگشت بالاترین_Accent_Attachment[index].get_x_مقدار (font, این);
   }
 
-  protected:
-  Offset16To<Coverage>       topAccentCoverage;   /* Offset to Coverage table -
+  محافظتشده:
+  Offset16To<Coverage>       بالاترین_Accent_Coverage;   /* Offset to Coverage table -
 						 * from the beginning of
 						 * MathTopAccentAttachment
 						 * table. */
-  Array16Of<MathValueRecord> topAccentAttachment; /* Array of MathValueRecords
+  Array16Of<Math_مقدار_Record> بالاترین_Accent_Attachment; /* Array of MathValueRecords
 						 * defining top accent
 						 * attachment points for each
 						 * covered glyph. */
 
-  public:
-  DEFINE_SIZE_ARRAY (2 + 2, topAccentAttachment);
+  عمومی:
+  DEFINE_SIZE_ARRAY (2 + 2, بالاترین_Accent_Attachment);
 };
 
-struct MathKern
+ساختار MathKern
 {
   MathKern* copy (hb_serialize_context_t *c,
-                      const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *variation_map) const
+                      ثابت hb_hashmap_t<unsigned, hb_pair_t<unsigned, صحیح>> *variation_map) ثابت
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->start_embed (this);
+    TRACE_SERIALIZE (این);
+    auto *out = c->start_embed (این);
 
-    if (unlikely (!c->embed (heightCount))) return_trace (nullptr);
+    اگر (unlikely (!c->embed (height_شمار))) return_trace (nullptr);
 
-    unsigned count = 2 * heightCount + 1;
-    for (unsigned i = 0; i < count; i++)
-      if (!c->copy (mathValueRecordsZ.arrayZ[i], this, variation_map))
+    unsigned شمار = 2 * height_شمار + 1;
+    برای (unsigned i = 0; i < شمار; i++)
+      اگر (!c->copy (math_مقدار_Records_Z.arrayZ[i], این, variation_map))
         return_trace (nullptr);
 
     return_trace (out);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  تهی collect_variation_indices (hb_collect_variation_indices_context_t *c) ثابت
   {
-    for (const auto &record : mathValueRecordsZ.as_array (2 * heightCount + 1))
-      record.collect_variation_indices (c, this);
+    برای (ثابت auto &record : math_مقدار_Records_Z.as_array (2 * height_شمار + 1))
+      record.collect_variation_indices (c, این);
   }
 
-  bool sanitize_math_value_records (hb_sanitize_context_t *c) const
+  منطقی sanitize_math_مقدار_records (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    unsigned int count = 2 * heightCount + 1;
-    for (unsigned int i = 0; i < count; i++)
-      if (!mathValueRecordsZ.arrayZ[i].sanitize (c, this)) return_trace (false);
-    return_trace (true);
+    TRACE_SANITIZE (این);
+    unsigned صحیح شمار = 2 * height_شمار + 1;
+    برای (unsigned صحیح i = 0; i < شمار; i++)
+      اگر (!math_مقدار_Records_Z.arrayZ[i].sanitize (c, این)) return_trace (نادرست);
+    return_trace (درست);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این) &&
 		  hb_barrier () &&
-		  c->check_array (mathValueRecordsZ.arrayZ, 2 * heightCount + 1) &&
-		  sanitize_math_value_records (c));
+		  c->check_array (math_مقدار_Records_Z.arrayZ, 2 * height_شمار + 1) &&
+		  sanitize_math_مقدار_records (c));
   }
 
-  hb_position_t get_value (hb_position_t correction_height, hb_font_t *font) const
+  hb_position_t get_مقدار (hb_position_t correction_height, hb_font_t *font) ثابت
   {
-    const MathValueRecord* correctionHeight = mathValueRecordsZ.arrayZ;
-    const MathValueRecord* kernValue = mathValueRecordsZ.arrayZ + heightCount;
-    int sign = font->y_scale < 0 ? -1 : +1;
+    ثابت Math_مقدار_Record* correctionHeight = math_مقدار_Records_Z.arrayZ;
+    ثابت Math_مقدار_Record* kern_مقدار = math_مقدار_Records_Z.arrayZ + height_شمار;
+    صحیح sign = font->y_scale < 0 ? -1 : +1;
 
     /* According to OpenType spec (v1.9), except for the boundary cases, the index
      * chosen for kern value should be i such that
@@ -400,55 +400,55 @@ struct MathKern
      * We can use the binary search algorithm of std::upper_bound(). Or, we can
      * use the internal hb_bsearch_impl.
      */
-    unsigned int pos;
-    auto cmp = +[](const void* key, const void* p,
-                   int sign, hb_font_t* font, const MathKern* mathKern) -> int {
+    unsigned صحیح pos;
+    auto cmp = +[](ثابت تهی* key, ثابت تهی* p,
+                   صحیح sign, hb_font_t* font, ثابت MathKern* mathKern) -> صحیح {
       hb_position_t a = *(hb_position_t *) key;
-      hb_position_t b = ((MathValueRecord *) p)->get_y_value (font, mathKern);
-      if (a == b) return 0;
-      return sign > 0 ? (a < b ? -1 : +1) : (b < a ? -1 : +1);
+      hb_position_t b = ((Math_مقدار_Record *) p)->get_y_مقدار (font, mathKern);
+      اگر (a == b) بازگشت 0;
+      بازگشت sign > 0 ? (a < b ? -1 : +1) : (b < a ? -1 : +1);
     };
-    unsigned int i = hb_bsearch_impl(&pos, correction_height, correctionHeight,
-                                     heightCount, MathValueRecord::static_size,
-                                     cmp, sign, font, this) ? pos + 1 : pos;
-    return kernValue[i].get_x_value (font, this);
+    unsigned صحیح i = hb_bsearch_impl(&pos, correction_height, correctionHeight,
+                                     height_شمار, Math_مقدار_Record::static_size,
+                                     cmp, sign, font, این) ? pos + 1 : pos;
+    بازگشت kern_مقدار[i].get_x_مقدار (font, این);
   }
 
-  unsigned int get_entries (unsigned int start_offset,
-			    unsigned int *entries_count, /* IN/OUT */
+  unsigned صحیح get_entries (unsigned صحیح start_offset,
+			    unsigned صحیح *entries_شمار, /* IN/OUT */
 			    hb_ot_math_kern_entry_t *kern_entries, /* OUT */
-			    hb_font_t *font) const
+			    hb_font_t *font) ثابت
   {
-    const MathValueRecord* correctionHeight = mathValueRecordsZ.arrayZ;
-    const MathValueRecord* kernValue = mathValueRecordsZ.arrayZ + heightCount;
-    const unsigned int entriesCount = heightCount + 1;
+    ثابت Math_مقدار_Record* correctionHeight = math_مقدار_Records_Z.arrayZ;
+    ثابت Math_مقدار_Record* kern_مقدار = math_مقدار_Records_Z.arrayZ + height_شمار;
+    ثابت unsigned صحیح entries_شمار_2 = height_شمار + 1;
 
-    if (entries_count && kern_entries)
+    اگر (entries_شمار && kern_entries)
     {
-      unsigned int start = hb_min (start_offset, entriesCount);
-      unsigned int end = hb_min (start + *entries_count, entriesCount);
-      *entries_count = end - start;
+      unsigned صحیح start = hb_min (start_offset, entries_شمار_2);
+      unsigned صحیح end = hb_min (start + *entries_شمار, entries_شمار_2);
+      *entries_شمار = end - start;
 
-      for (unsigned int i = 0; i < *entries_count; i++) {
-	unsigned int j = start + i;
+      برای (unsigned صحیح i = 0; i < *entries_شمار; i++) {
+	unsigned صحیح j = start + i;
 
 	hb_position_t max_height;
-	if (j == heightCount) {
+	اگر (j == height_شمار) {
 	  max_height = INT32_MAX;
-	} else {
-	  max_height = correctionHeight[j].get_y_value (font, this);
+	} وگرنه {
+	  max_height = correctionHeight[j].get_y_مقدار (font, این);
 	}
 
-	kern_entries[i] = {max_height, kernValue[j].get_x_value (font, this)};
+	kern_entries[i] = {max_height, kern_مقدار[j].get_x_مقدار (font, این)};
       }
     }
-    return entriesCount;
+    بازگشت entries_شمار_2;
   }
 
-  protected:
-  HBUINT16	heightCount;
-  UnsizedArrayOf<MathValueRecord>
-		mathValueRecordsZ;
+  محافظتشده:
+  HBUINT16	height_شمار;
+  UnsizedArrayOf<Math_مقدار_Record>
+		math_مقدار_Records_Z;
 				/* Array of correction heights at
 				 * which the kern value changes.
 				 * Sorted by the height value in
@@ -458,146 +458,146 @@ struct MathKern
 				 * to heights. (heightCount+1 entries).
 				 */
 
-  public:
-  DEFINE_SIZE_ARRAY (2, mathValueRecordsZ);
+  عمومی:
+  DEFINE_SIZE_ARRAY (2, math_مقدار_Records_Z);
 };
 
-struct MathKernInfoRecord
+ساختار MathKernInfoRecord
 {
-  MathKernInfoRecord* copy (hb_serialize_context_t *c, const void *base,
-                            const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *variation_map) const
+  MathKernInfoRecord* copy (hb_serialize_context_t *c, ثابت تهی *base,
+                            ثابت hb_hashmap_t<unsigned, hb_pair_t<unsigned, صحیح>> *variation_map) ثابت
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->embed (this);
-    if (unlikely (!out)) return_trace (nullptr);
+    TRACE_SERIALIZE (این);
+    auto *out = c->embed (این);
+    اگر (unlikely (!out)) return_trace (nullptr);
 
-    unsigned count = ARRAY_LENGTH (mathKern);
-    for (unsigned i = 0; i < count; i++)
+    unsigned شمار = ARRAY_LENGTH (mathKern);
+    برای (unsigned i = 0; i < شمار; i++)
       out->mathKern[i].serialize_copy (c, mathKern[i], base, 0, hb_serialize_context_t::Head, variation_map);
 
     return_trace (out);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c, const void *base) const
+  تهی collect_variation_indices (hb_collect_variation_indices_context_t *c, ثابت تهی *base) ثابت
   {
-    for (const auto &offset : mathKern)
+    برای (ثابت auto &offset : mathKern)
       (base+offset).collect_variation_indices (c);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  منطقی sanitize (hb_sanitize_context_t *c, ثابت تهی *base) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (این);
 
-    unsigned int count = ARRAY_LENGTH (mathKern);
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!mathKern[i].sanitize (c, base)))
-	return_trace (false);
+    unsigned صحیح شمار = ARRAY_LENGTH (mathKern);
+    برای (unsigned صحیح i = 0; i < شمار; i++)
+      اگر (unlikely (!mathKern[i].sanitize (c, base)))
+	return_trace (نادرست);
 
-    return_trace (true);
+    return_trace (درست);
   }
 
   hb_position_t get_kerning (hb_ot_math_kern_t kern,
 			     hb_position_t correction_height,
 			     hb_font_t *font,
-			     const void *base) const
+			     ثابت تهی *base) ثابت
   {
-    unsigned int idx = kern;
-    if (unlikely (idx >= ARRAY_LENGTH (mathKern))) return 0;
-    return (base+mathKern[idx]).get_value (correction_height, font);
+    unsigned صحیح idx = kern;
+    اگر (unlikely (idx >= ARRAY_LENGTH (mathKern))) بازگشت 0;
+    بازگشت (base+mathKern[idx]).get_مقدار (correction_height, font);
   }
 
-  unsigned int get_kernings (hb_ot_math_kern_t kern,
-			     unsigned int start_offset,
-			     unsigned int *entries_count, /* IN/OUT */
+  unsigned صحیح get_kernings (hb_ot_math_kern_t kern,
+			     unsigned صحیح start_offset,
+			     unsigned صحیح *entries_شمار, /* IN/OUT */
 			     hb_ot_math_kern_entry_t *kern_entries, /* OUT */
 			     hb_font_t *font,
-			     const void *base) const
+			     ثابت تهی *base) ثابت
   {
-    unsigned int idx = kern;
-    if (unlikely (idx >= ARRAY_LENGTH (mathKern)) || !mathKern[idx]) {
-      if (entries_count) *entries_count = 0;
-      return 0;
+    unsigned صحیح idx = kern;
+    اگر (unlikely (idx >= ARRAY_LENGTH (mathKern)) || !mathKern[idx]) {
+      اگر (entries_شمار) *entries_شمار = 0;
+      بازگشت 0;
     }
-    return (base+mathKern[idx]).get_entries (start_offset,
-					     entries_count,
+    بازگشت (base+mathKern[idx]).get_entries (start_offset,
+					     entries_شمار,
 					     kern_entries,
 					     font);
   }
 
-  protected:
+  محافظتشده:
   /* Offset to MathKern table for each corner -
    * from the beginning of MathKernInfo table.  May be NULL. */
   Offset16To<MathKern> mathKern[4];
 
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (8);
 };
 
-struct MathKernInfo
+ساختار MathKernInfo
 {
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = c->plan->_glyphset_mathed;
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (این);
+    ثابت hb_set_t &glyphset = c->plan->_glyphset_mathed;
+    ثابت hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (*این);
+    اگر (unlikely (!c->serializer->extend_min (out))) return_trace (نادرست);
 
     hb_sorted_vector_t<hb_codepoint_t> new_coverage;
-    + hb_zip (this+mathKernCoverage, mathKernInfoRecords)
+    + hb_zip (این+mathKernCoverage, mathKernInfoRecords)
     | hb_filter (glyphset, hb_first)
-    | hb_filter (serialize_math_record_array (c->serializer, out->mathKernInfoRecords, this, &c->plan->layout_variation_idx_delta_map), hb_second)
+    | hb_filter (serialize_math_record_array (c->serializer, out->mathKernInfoRecords, این, &c->plan->layout_variation_idx_delta_map), hb_second)
     | hb_map (hb_first)
     | hb_map (glyph_map)
     | hb_sink (new_coverage)
     ;
 
     out->mathKernCoverage.serialize_serialize (c->serializer, new_coverage.iter ());
-    return_trace (true);
+    return_trace (درست);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  تهی collect_variation_indices (hb_collect_variation_indices_context_t *c) ثابت
   {
-    for (const auto &entry : hb_zip (this+mathKernCoverage, mathKernInfoRecords))
-      if (c->glyph_set->has (hb_first (entry)))
-        hb_second (entry).collect_variation_indices (c, this);
+    برای (ثابت auto &entry : hb_zip (این+mathKernCoverage, mathKernInfoRecords))
+      اگر (c->glyph_set->has (hb_first (entry)))
+        hb_second (entry).collect_variation_indices (c, این);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  mathKernCoverage.sanitize (c, this) &&
-		  mathKernInfoRecords.sanitize (c, this));
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این) &&
+		  mathKernCoverage.sanitize (c, این) &&
+		  mathKernInfoRecords.sanitize (c, این));
   }
 
   hb_position_t get_kerning (hb_codepoint_t glyph,
 			     hb_ot_math_kern_t kern,
 			     hb_position_t correction_height,
-			     hb_font_t *font) const
+			     hb_font_t *font) ثابت
   {
-    unsigned int index = (this+mathKernCoverage).get_coverage (glyph);
-    return mathKernInfoRecords[index].get_kerning (kern, correction_height, font, this);
+    unsigned صحیح index = (این+mathKernCoverage).get_coverage (glyph);
+    بازگشت mathKernInfoRecords[index].get_kerning (kern, correction_height, font, این);
   }
 
-  unsigned int get_kernings (hb_codepoint_t glyph,
+  unsigned صحیح get_kernings (hb_codepoint_t glyph,
 			     hb_ot_math_kern_t kern,
-			     unsigned int start_offset,
-			     unsigned int *entries_count, /* IN/OUT */
+			     unsigned صحیح start_offset,
+			     unsigned صحیح *entries_شمار, /* IN/OUT */
 			     hb_ot_math_kern_entry_t *kern_entries, /* OUT */
-			     hb_font_t *font) const
+			     hb_font_t *font) ثابت
   {
-    unsigned int index = (this+mathKernCoverage).get_coverage (glyph);
-    return mathKernInfoRecords[index].get_kernings (kern,
+    unsigned صحیح index = (این+mathKernCoverage).get_coverage (glyph);
+    بازگشت mathKernInfoRecords[index].get_kernings (kern,
 						    start_offset,
-						    entries_count,
+						    entries_شمار,
 						    kern_entries,
 						    font,
-						    this);
+						    این);
   }
 
-  protected:
+  محافظتشده:
   Offset16To<Coverage>
 		mathKernCoverage;
 				/* Offset to Coverage table -
@@ -611,93 +611,93 @@ struct MathKernInfo
 				 * of subscripts and
 				 * superscripts. */
 
-  public:
+  عمومی:
   DEFINE_SIZE_ARRAY (4, mathKernInfoRecords);
 };
 
-struct MathGlyphInfo
+ساختار MathGlyphInfo
 {
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (این);
+    auto *out = c->serializer->embed (*این);
+    اگر (unlikely (!out)) return_trace (نادرست);
 
-    out->mathItalicsCorrectionInfo.serialize_subset (c, mathItalicsCorrectionInfo, this);
-    out->mathTopAccentAttachment.serialize_subset (c, mathTopAccentAttachment, this);
+    out->mathItalicsCorrectionInfo.serialize_subset (c, mathItalicsCorrectionInfo, این);
+    out->math_بالاترین_Accent_Attachment.serialize_subset (c, math_بالاترین_Accent_Attachment, این);
 
-    const hb_set_t &glyphset = c->plan->_glyphset_mathed;
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    ثابت hb_set_t &glyphset = c->plan->_glyphset_mathed;
+    ثابت hb_map_t &glyph_map = *c->plan->glyph_map;
 
     auto it =
-    + hb_iter (this+extendedShapeCoverage)
-    | hb_take (c->plan->source->get_num_glyphs ())
+    + hb_iter (این+extendedShapeCoverage)
+    | hb_take (c->plan->source->get_رقم_glyphs ())
     | hb_filter (glyphset)
     | hb_map_retains_sorting (glyph_map)
     ;
 
-    if (it) out->extendedShapeCoverage.serialize_serialize (c->serializer, it);
-    else out->extendedShapeCoverage = 0;
+    اگر (it) out->extendedShapeCoverage.serialize_serialize (c->serializer, it);
+    وگرنه out->extendedShapeCoverage = 0;
 
-    out->mathKernInfo.serialize_subset (c, mathKernInfo, this);
-    return_trace (true);
+    out->mathKernInfo.serialize_subset (c, mathKernInfo, این);
+    return_trace (درست);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  تهی collect_variation_indices (hb_collect_variation_indices_context_t *c) ثابت
   {
-    (this+mathItalicsCorrectionInfo).collect_variation_indices (c);
-    (this+mathTopAccentAttachment).collect_variation_indices (c);
-    (this+mathKernInfo).collect_variation_indices (c);
+    (این+mathItalicsCorrectionInfo).collect_variation_indices (c);
+    (این+math_بالاترین_Accent_Attachment).collect_variation_indices (c);
+    (این+mathKernInfo).collect_variation_indices (c);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  mathItalicsCorrectionInfo.sanitize (c, this) &&
-		  mathTopAccentAttachment.sanitize (c, this) &&
-		  extendedShapeCoverage.sanitize (c, this) &&
-		  mathKernInfo.sanitize (c, this));
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این) &&
+		  mathItalicsCorrectionInfo.sanitize (c, این) &&
+		  math_بالاترین_Accent_Attachment.sanitize (c, این) &&
+		  extendedShapeCoverage.sanitize (c, این) &&
+		  mathKernInfo.sanitize (c, این));
   }
 
   hb_position_t
-  get_italics_correction (hb_codepoint_t  glyph, hb_font_t *font) const
-  { return (this+mathItalicsCorrectionInfo).get_value (glyph, font); }
+  get_italics_correction (hb_codepoint_t  glyph, hb_font_t *font) ثابت
+  { بازگشت (این+mathItalicsCorrectionInfo).get_مقدار (glyph, font); }
 
   hb_position_t
-  get_top_accent_attachment (hb_codepoint_t  glyph, hb_font_t *font) const
-  { return (this+mathTopAccentAttachment).get_value (glyph, font); }
+  get_بالاترین_accent_attachment (hb_codepoint_t  glyph, hb_font_t *font) ثابت
+  { بازگشت (این+math_بالاترین_Accent_Attachment).get_مقدار (glyph, font); }
 
-  bool is_extended_shape (hb_codepoint_t glyph) const
-  { return (this+extendedShapeCoverage).get_coverage (glyph) != NOT_COVERED; }
+  منطقی is_extended_shape (hb_codepoint_t glyph) ثابت
+  { بازگشت (این+extendedShapeCoverage).get_coverage (glyph) != NOT_COVERED; }
 
   hb_position_t get_kerning (hb_codepoint_t glyph,
 			     hb_ot_math_kern_t kern,
 			     hb_position_t correction_height,
-			     hb_font_t *font) const
-  { return (this+mathKernInfo).get_kerning (glyph, kern, correction_height, font); }
+			     hb_font_t *font) ثابت
+  { بازگشت (این+mathKernInfo).get_kerning (glyph, kern, correction_height, font); }
 
   hb_position_t get_kernings (hb_codepoint_t glyph,
 			      hb_ot_math_kern_t kern,
-			      unsigned int start_offset,
-			      unsigned int *entries_count, /* IN/OUT */
+			      unsigned صحیح start_offset,
+			      unsigned صحیح *entries_شمار, /* IN/OUT */
 			      hb_ot_math_kern_entry_t *kern_entries, /* OUT */
-			      hb_font_t *font) const
-  { return (this+mathKernInfo).get_kernings (glyph,
+			      hb_font_t *font) ثابت
+  { بازگشت (این+mathKernInfo).get_kernings (glyph,
 					     kern,
 					     start_offset,
-					     entries_count,
+					     entries_شمار,
 					     kern_entries,
 					     font); }
 
-  protected:
+  محافظتشده:
   /* Offset to MathItalicsCorrectionInfo table -
    * from the beginning of MathGlyphInfo table. */
   Offset16To<MathItalicsCorrectionInfo> mathItalicsCorrectionInfo;
 
   /* Offset to MathTopAccentAttachment table -
    * from the beginning of MathGlyphInfo table. */
-  Offset16To<MathTopAccentAttachment> mathTopAccentAttachment;
+  Offset16To<Math_بالاترین_Accent_Attachment> math_بالاترین_Accent_Attachment;
 
   /* Offset to coverage table for Extended Shape glyphs -
    * from the beginning of MathGlyphInfo table. When the left or right glyph of
@@ -710,79 +710,79 @@ struct MathGlyphInfo
     * from the beginning of MathGlyphInfo table. */
   Offset16To<MathKernInfo> mathKernInfo;
 
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (8);
 };
 
-struct MathGlyphVariantRecord
+ساختار MathGlyphVariantRecord
 {
-  friend struct MathGlyphConstruction;
+  friend ساختار MathGlyphConstruction;
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (این);
+    auto *out = c->serializer->embed (این);
+    اگر (unlikely (!out)) return_trace (نادرست);
 
-    const hb_map_t& glyph_map = *c->plan->glyph_map;
+    ثابت hb_map_t& glyph_map = *c->plan->glyph_map;
     return_trace (c->serializer->check_assign (out->variantGlyph, glyph_map.get (variantGlyph), HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این));
   }
 
-  void depend (hb_depend_data_builder_t *depend_data, unsigned source) const
+  تهی depend (hb_depend_data_builder_t *depend_data, unsigned source) ثابت
   { depend_data->add_depend(source, HB_OT_TAG_MATH, variantGlyph); }
 
-  void closure_glyphs (hb_set_t *variant_glyphs) const
+  تهی closure_glyphs (hb_set_t *variant_glyphs) ثابت
   { variant_glyphs->add (variantGlyph); }
 
-  protected:
+  محافظتشده:
   HBGlyphID16 variantGlyph;       /* Glyph ID for the variant. */
   HBUINT16  advanceMeasurement; /* Advance width/height, in design units, of the
 				 * variant, in the direction of requested
 				 * glyph extension. */
 
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (4);
 };
 
-struct PartFlags : HBUINT16
+ساختار PartFlags : HBUINT16
 {
-  enum Flags {
+  شمارش Flags {
     Extender	= 0x0001u, /* If set, the part can be skipped or repeated. */
 
     Defined	= 0x0001u, /* All defined flags. */
   };
 
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (2);
 };
 
-struct MathGlyphPartRecord
+ساختار MathGlyphPartRecord
 {
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (این);
+    auto *out = c->serializer->embed (این);
+    اگر (unlikely (!out)) return_trace (نادرست);
 
-    const hb_map_t& glyph_map = *c->plan->glyph_map;
+    ثابت hb_map_t& glyph_map = *c->plan->glyph_map;
     return_trace (c->serializer->check_assign (out->glyph, glyph_map.get (glyph), HB_SERIALIZE_ERROR_INT_OVERFLOW));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این));
   }
 
-  void extract (hb_ot_math_glyph_part_t &out,
+  تهی extract (hb_ot_math_glyph_part_t &out,
 		int64_t mult,
-		hb_font_t *font) const
+		hb_font_t *font) ثابت
   {
     out.glyph			= glyph;
 
@@ -790,21 +790,21 @@ struct MathGlyphPartRecord
     out.end_connector_length	= font->em_mult (endConnectorLength, mult);
     out.full_advance		= font->em_mult (fullAdvance, mult);
 
-    static_assert ((unsigned int) HB_OT_MATH_GLYPH_PART_FLAG_EXTENDER ==
-		   (unsigned int) PartFlags::Extender, "");
+    static_assert ((unsigned صحیح) HB_OT_MATH_GLYPH_PART_FLAG_EXTENDER ==
+		   (unsigned صحیح) PartFlags::Extender, "");
 
     out.flags = (hb_ot_math_glyph_part_flags_t)
-		(unsigned int)
+		(unsigned صحیح)
 		(partFlags & PartFlags::Defined);
   }
 
-  void depend (hb_depend_data_builder_t *depend_data, unsigned source) const
+  تهی depend (hb_depend_data_builder_t *depend_data, unsigned source) ثابت
   { depend_data->add_depend(source, HB_OT_TAG_MATH, glyph); }
 
-  void closure_glyphs (hb_set_t *variant_glyphs) const
+  تهی closure_glyphs (hb_set_t *variant_glyphs) ثابت
   { variant_glyphs->add (glyph); }
 
-  protected:
+  محافظتشده:
   HBGlyphID16	glyph;		/* Glyph ID for the part. */
   HBUINT16	startConnectorLength;
 				/* Advance width/ height of the straight bar
@@ -821,72 +821,72 @@ struct MathGlyphPartRecord
 				 * In design units. */
   PartFlags	partFlags;	/* Part qualifiers. */
 
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (10);
 };
 
-struct MathGlyphAssembly
+ساختار MathGlyphAssembly
 {
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (این);
 
-    if (!c->serializer->copy (italicsCorrection, this, &c->plan->layout_variation_idx_delta_map)) return_trace (false);
-    if (!c->serializer->copy<HBUINT16> (partRecords.len)) return_trace (false);
+    اگر (!c->serializer->copy (italicsCorrection, این, &c->plan->layout_variation_idx_delta_map)) return_trace (نادرست);
+    اگر (!c->serializer->copy<HBUINT16> (partRecords.len)) return_trace (نادرست);
 
-    for (const auto& record : partRecords.iter ())
-      if (!record.subset (c)) return_trace (false);
-    return_trace (true);
+    برای (ثابت auto& record : partRecords.iter ())
+      اگر (!record.subset (c)) return_trace (نادرست);
+    return_trace (درست);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  تهی collect_variation_indices (hb_collect_variation_indices_context_t *c) ثابت
   {
-    italicsCorrection.collect_variation_indices (c, this);
+    italicsCorrection.collect_variation_indices (c, این);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  italicsCorrection.sanitize (c, this) &&
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این) &&
+		  italicsCorrection.sanitize (c, این) &&
 		  partRecords.sanitize (c));
   }
 
-  unsigned int get_parts (hb_direction_t direction,
+  unsigned صحیح get_parts (hb_direction_t direction,
 			  hb_font_t *font,
-			  unsigned int start_offset,
-			  unsigned int *parts_count, /* IN/OUT */
+			  unsigned صحیح start_offset,
+			  unsigned صحیح *parts_شمار, /* IN/OUT */
 			  hb_ot_math_glyph_part_t *parts /* OUT */,
-			  hb_position_t *italics_correction /* OUT */) const
+			  hb_position_t *italics_correction /* OUT */) ثابت
   {
-    if (parts_count && parts)
+    اگر (parts_شمار && parts)
     {
       int64_t mult = font->dir_mult (direction);
-      for (auto _ : hb_zip (partRecords.as_array ().sub_array (start_offset, parts_count),
-			    hb_array (parts, *parts_count)))
+      برای (auto _ : hb_zip (partRecords.as_array ().sub_array (start_offset, parts_شمار),
+			    hb_array (parts, *parts_شمار)))
 	_.first.extract (_.second, mult, font);
     }
 
-    if (italics_correction)
-      *italics_correction = italicsCorrection.get_x_value (font, this);
+    اگر (italics_correction)
+      *italics_correction = italicsCorrection.get_x_مقدار (font, این);
 
-    return partRecords.len;
+    بازگشت partRecords.len;
   }
 
-  void depend (hb_depend_data_builder_t *depend_data, unsigned source) const
+  تهی depend (hb_depend_data_builder_t *depend_data, unsigned source) ثابت
   {
-    for (const auto& _ : partRecords.iter ())
+    برای (ثابت auto& _ : partRecords.iter ())
       _.depend (depend_data, source);
   }
 
-  void closure_glyphs (hb_set_t *variant_glyphs) const
+  تهی closure_glyphs (hb_set_t *variant_glyphs) ثابت
   {
-    for (const auto& _ : partRecords.iter ())
+    برای (ثابت auto& _ : partRecords.iter ())
       _.closure_glyphs (variant_glyphs);
   }
 
-  protected:
-  MathValueRecord
+  محافظتشده:
+  Math_مقدار_Record
 		italicsCorrection;
 				/* Italics correction of this
 				 * MathGlyphAssembly. Should not
@@ -896,76 +896,76 @@ struct MathGlyphAssembly
 				 * left to right and bottom to
 				 * top. */
 
-  public:
+  عمومی:
   DEFINE_SIZE_ARRAY (6, partRecords);
 };
 
-struct MathGlyphConstruction
+ساختار MathGlyphConstruction
 {
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (این);
+    auto *out = c->serializer->start_embed (*این);
+    اگر (unlikely (!c->serializer->extend_min (out))) return_trace (نادرست);
 
-    out->glyphAssembly.serialize_subset (c, glyphAssembly, this);
+    out->glyphAssembly.serialize_subset (c, glyphAssembly, این);
 
-    if (!c->serializer->check_assign (out->mathGlyphVariantRecord.len, mathGlyphVariantRecord.len, HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
-    for (const auto& record : mathGlyphVariantRecord.iter ())
-      if (!record.subset (c)) return_trace (false);
+    اگر (!c->serializer->check_assign (out->mathGlyphVariantRecord.len, mathGlyphVariantRecord.len, HB_SERIALIZE_ERROR_INT_OVERFLOW))
+      return_trace (نادرست);
+    برای (ثابت auto& record : mathGlyphVariantRecord.iter ())
+      اگر (!record.subset (c)) return_trace (نادرست);
 
-    return_trace (true);
+    return_trace (درست);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  تهی collect_variation_indices (hb_collect_variation_indices_context_t *c) ثابت
   {
-    (this+glyphAssembly).collect_variation_indices (c);
+    (این+glyphAssembly).collect_variation_indices (c);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  glyphAssembly.sanitize (c, this) &&
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این) &&
+		  glyphAssembly.sanitize (c, این) &&
 		  mathGlyphVariantRecord.sanitize (c));
   }
 
-  const MathGlyphAssembly &get_assembly () const { return this+glyphAssembly; }
+  ثابت MathGlyphAssembly &get_assembly () ثابت { بازگشت این+glyphAssembly; }
 
-  unsigned int get_variants (hb_direction_t direction,
+  unsigned صحیح get_variants (hb_direction_t direction,
 			     hb_font_t *font,
-			     unsigned int start_offset,
-			     unsigned int *variants_count, /* IN/OUT */
-			     hb_ot_math_glyph_variant_t *variants /* OUT */) const
+			     unsigned صحیح start_offset,
+			     unsigned صحیح *variants_شمار, /* IN/OUT */
+			     hb_ot_math_glyph_variant_t *variants /* OUT */) ثابت
   {
-    if (variants_count && variants)
+    اگر (variants_شمار && variants)
     {
       int64_t mult = font->dir_mult (direction);
-      for (auto _ : hb_zip (mathGlyphVariantRecord.as_array ().sub_array (start_offset, variants_count),
-			    hb_array (variants, *variants_count)))
+      برای (auto _ : hb_zip (mathGlyphVariantRecord.as_array ().sub_array (start_offset, variants_شمار),
+			    hb_array (variants, *variants_شمار)))
 	_.second = {_.first.variantGlyph, font->em_mult (_.first.advanceMeasurement, mult)};
     }
-    return mathGlyphVariantRecord.len;
+    بازگشت mathGlyphVariantRecord.len;
   }
 
-  void depend (hb_depend_data_builder_t *depend_data, unsigned source) const
+  تهی depend (hb_depend_data_builder_t *depend_data, unsigned source) ثابت
   {
-    (this+glyphAssembly).depend (depend_data, source);
+    (این+glyphAssembly).depend (depend_data, source);
 
-    for (const auto& _ : mathGlyphVariantRecord.iter ())
+    برای (ثابت auto& _ : mathGlyphVariantRecord.iter ())
       _.depend (depend_data, source);
   }
 
-  void closure_glyphs (hb_set_t *variant_glyphs) const
+  تهی closure_glyphs (hb_set_t *variant_glyphs) ثابت
   {
-    (this+glyphAssembly).closure_glyphs (variant_glyphs);
+    (این+glyphAssembly).closure_glyphs (variant_glyphs);
 
-    for (const auto& _ : mathGlyphVariantRecord.iter ())
+    برای (ثابت auto& _ : mathGlyphVariantRecord.iter ())
       _.closure_glyphs (variant_glyphs);
   }
 
-  protected:
+  محافظتشده:
   /* Offset to MathGlyphAssembly table for this shape - from the beginning of
      MathGlyphConstruction table.  May be NULL. */
   Offset16To<MathGlyphAssembly>	  glyphAssembly;
@@ -973,82 +973,82 @@ struct MathGlyphConstruction
   /* MathGlyphVariantRecords for alternative variants of the glyphs. */
   Array16Of<MathGlyphVariantRecord> mathGlyphVariantRecord;
 
-  public:
+  عمومی:
   DEFINE_SIZE_ARRAY (4, mathGlyphVariantRecord);
 };
 
-struct MathVariants
+ساختار MathVariants
 {
-  void depend (hb_depend_data_builder_t *depend_data) const
+  تهی depend (hb_depend_data_builder_t *depend_data) ثابت
   {
-    const hb_array_t<const Offset16To<MathGlyphConstruction>> glyph_construction_offsets = glyphConstruction.as_array (vertGlyphCount + horizGlyphCount);
+    ثابت hb_array_t<ثابت Offset16To<MathGlyphConstruction>> glyph_construction_offsets = glyphConstruction.as_array (vert_Glyph_شمار + horiz_Glyph_شمار);
 
-    if (vertGlyphCoverage)
+    اگر (vertGlyphCoverage)
     {
-      const auto vert_offsets = glyph_construction_offsets.sub_array (0, vertGlyphCount);
-      + hb_zip (this+vertGlyphCoverage, vert_offsets)
-      | hb_apply ([&] (const hb_pair_t<hb_codepoint_t, const Offset16To<MathGlyphConstruction>&> &_)
+      ثابت auto vert_offsets = glyph_construction_offsets.sub_array (0, vert_Glyph_شمار);
+      + hb_zip (این+vertGlyphCoverage, vert_offsets)
+      | hb_apply ([&] (ثابت hb_pair_t<hb_codepoint_t, ثابت Offset16To<MathGlyphConstruction>&> &_)
                   {
-                    const MathGlyphConstruction &mgc = this+_.second;
+                    ثابت MathGlyphConstruction &mgc = این+_.second;
                     mgc.depend (depend_data, _.first);
                   })
       ;
     }
-    if (horizGlyphCoverage)
+    اگر (horizGlyphCoverage)
     {
-      const auto hori_offsets = glyph_construction_offsets.sub_array (vertGlyphCount, horizGlyphCount);
-      + hb_zip (this+horizGlyphCoverage, hori_offsets)
-      | hb_apply ([&] (const hb_pair_t<hb_codepoint_t, const Offset16To<MathGlyphConstruction>&> &_)
+      ثابت auto hori_offsets = glyph_construction_offsets.sub_array (vert_Glyph_شمار, horiz_Glyph_شمار);
+      + hb_zip (این+horizGlyphCoverage, hori_offsets)
+      | hb_apply ([&] (ثابت hb_pair_t<hb_codepoint_t, ثابت Offset16To<MathGlyphConstruction>&> &_)
                   {
-                    const MathGlyphConstruction &mgc = this+_.second;
+                    ثابت MathGlyphConstruction &mgc = این+_.second;
                     mgc.depend (depend_data, _.first);
                   })
       ;
     }
   }
 
-  void closure_glyphs (const hb_set_t *glyph_set,
-                       hb_set_t *variant_glyphs) const
+  تهی closure_glyphs (ثابت hb_set_t *glyph_set,
+                       hb_set_t *variant_glyphs) ثابت
   {
-    const hb_array_t<const Offset16To<MathGlyphConstruction>> glyph_construction_offsets = glyphConstruction.as_array (vertGlyphCount + horizGlyphCount);
+    ثابت hb_array_t<ثابت Offset16To<MathGlyphConstruction>> glyph_construction_offsets = glyphConstruction.as_array (vert_Glyph_شمار + horiz_Glyph_شمار);
 
-    if (vertGlyphCoverage)
+    اگر (vertGlyphCoverage)
     {
-      const auto vert_offsets = glyph_construction_offsets.sub_array (0, vertGlyphCount);
-      + hb_zip (this+vertGlyphCoverage, vert_offsets)
+      ثابت auto vert_offsets = glyph_construction_offsets.sub_array (0, vert_Glyph_شمار);
+      + hb_zip (این+vertGlyphCoverage, vert_offsets)
       | hb_filter (glyph_set, hb_first)
       | hb_map (hb_second)
-      | hb_map (hb_add (this))
-      | hb_apply ([=] (const MathGlyphConstruction &_) { _.closure_glyphs (variant_glyphs); })
+      | hb_map (hb_add (این))
+      | hb_apply ([=] (ثابت MathGlyphConstruction &_) { _.closure_glyphs (variant_glyphs); })
       ;
     }
 
-    if (horizGlyphCoverage)
+    اگر (horizGlyphCoverage)
     {
-      const auto hori_offsets = glyph_construction_offsets.sub_array (vertGlyphCount, horizGlyphCount);
-      + hb_zip (this+horizGlyphCoverage, hori_offsets)
+      ثابت auto hori_offsets = glyph_construction_offsets.sub_array (vert_Glyph_شمار, horiz_Glyph_شمار);
+      + hb_zip (این+horizGlyphCoverage, hori_offsets)
       | hb_filter (glyph_set, hb_first)
       | hb_map (hb_second)
-      | hb_map (hb_add (this))
-      | hb_apply ([=] (const MathGlyphConstruction &_) { _.closure_glyphs (variant_glyphs); })
+      | hb_map (hb_add (این))
+      | hb_apply ([=] (ثابت MathGlyphConstruction &_) { _.closure_glyphs (variant_glyphs); })
       ;
     }
   }
 
-  void collect_coverage_and_indices (hb_sorted_vector_t<hb_codepoint_t>& new_coverage,
-                                     const Offset16To<Coverage>& coverage,
+  تهی collect_coverage_and_indices (hb_sorted_vector_t<hb_codepoint_t>& new_coverage,
+                                     ثابت Offset16To<Coverage>& coverage,
                                      unsigned i,
                                      unsigned end_index,
                                      hb_set_t& indices,
-                                     const hb_set_t& glyphset,
-                                     const hb_map_t& glyph_map) const
+                                     ثابت hb_set_t& glyphset,
+                                     ثابت hb_map_t& glyph_map) ثابت
   {
-    if (!coverage) return;
+    اگر (!coverage) بازگشت;
 
-    for (const auto _ : (this+coverage).iter ())
+    برای (ثابت auto _ : (این+coverage).iter ())
     {
-      if (i >= end_index) return;
-      if (glyphset.has (_))
+      اگر (i >= end_index) بازگشت;
+      اگر (glyphset.has (_))
       {
         unsigned new_gid = glyph_map.get (_);
         new_coverage.push (new_gid);
@@ -1058,120 +1058,120 @@ struct MathVariants
     }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = c->plan->_glyphset_cmaped;
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (این);
+    ثابت hb_set_t &glyphset = c->plan->_glyphset_cmaped;
+    ثابت hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
-    if (!c->serializer->check_assign (out->minConnectorOverlap, minConnectorOverlap, HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
+    auto *out = c->serializer->start_embed (*این);
+    اگر (unlikely (!c->serializer->extend_min (out))) return_trace (نادرست);
+    اگر (!c->serializer->check_assign (out->minConnectorOverlap, minConnectorOverlap, HB_SERIALIZE_ERROR_INT_OVERFLOW))
+      return_trace (نادرست);
 
     hb_sorted_vector_t<hb_codepoint_t> new_vert_coverage;
     hb_sorted_vector_t<hb_codepoint_t> new_hori_coverage;
     hb_set_t indices;
-    collect_coverage_and_indices (new_vert_coverage, vertGlyphCoverage, 0, vertGlyphCount, indices, glyphset, glyph_map);
-    collect_coverage_and_indices (new_hori_coverage, horizGlyphCoverage, vertGlyphCount, vertGlyphCount + horizGlyphCount, indices, glyphset, glyph_map);
+    collect_coverage_and_indices (new_vert_coverage, vertGlyphCoverage, 0, vert_Glyph_شمار, indices, glyphset, glyph_map);
+    collect_coverage_and_indices (new_hori_coverage, horizGlyphCoverage, vert_Glyph_شمار, vert_Glyph_شمار + horiz_Glyph_شمار, indices, glyphset, glyph_map);
 
-    if (!c->serializer->check_assign (out->vertGlyphCount, new_vert_coverage.length, HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
-    if (!c->serializer->check_assign (out->horizGlyphCount, new_hori_coverage.length, HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
+    اگر (!c->serializer->check_assign (out->vert_Glyph_شمار, new_vert_coverage.length, HB_SERIALIZE_ERROR_INT_OVERFLOW))
+      return_trace (نادرست);
+    اگر (!c->serializer->check_assign (out->horiz_Glyph_شمار, new_hori_coverage.length, HB_SERIALIZE_ERROR_INT_OVERFLOW))
+      return_trace (نادرست);
 
-    for (unsigned i : indices.iter ())
+    برای (unsigned i : indices.iter ())
     {
       auto *o = c->serializer->embed (glyphConstruction[i]);
-      if (!o) return_trace (false);
-      o->serialize_subset (c, glyphConstruction[i], this);
+      اگر (!o) return_trace (نادرست);
+      o->serialize_subset (c, glyphConstruction[i], این);
     }
 
-    if (new_vert_coverage)
+    اگر (new_vert_coverage)
       out->vertGlyphCoverage.serialize_serialize (c->serializer, new_vert_coverage.iter ());
 
-    if (new_hori_coverage)
+    اگر (new_hori_coverage)
     out->horizGlyphCoverage.serialize_serialize (c->serializer, new_hori_coverage.iter ());
-    return_trace (true);
+    return_trace (درست);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  تهی collect_variation_indices (hb_collect_variation_indices_context_t *c) ثابت
   {
-    for (const auto &entry : hb_zip (this+vertGlyphCoverage, glyphConstruction.as_array (vertGlyphCount)))
-      if (c->glyph_set->has (hb_first (entry)))
-        (this+hb_second (entry)).collect_variation_indices (c);
-    for (const auto &entry : hb_zip (this+horizGlyphCoverage, glyphConstruction.as_array (vertGlyphCount + horizGlyphCount).sub_array (vertGlyphCount)))
-      if (c->glyph_set->has (hb_first (entry)))
-        (this+hb_second (entry)).collect_variation_indices (c);
+    برای (ثابت auto &entry : hb_zip (این+vertGlyphCoverage, glyphConstruction.as_array (vert_Glyph_شمار)))
+      اگر (c->glyph_set->has (hb_first (entry)))
+        (این+hb_second (entry)).collect_variation_indices (c);
+    برای (ثابت auto &entry : hb_zip (این+horizGlyphCoverage, glyphConstruction.as_array (vert_Glyph_شمار + horiz_Glyph_شمار).sub_array (vert_Glyph_شمار)))
+      اگر (c->glyph_set->has (hb_first (entry)))
+        (این+hb_second (entry)).collect_variation_indices (c);
   }
 
-  bool sanitize_offsets (hb_sanitize_context_t *c) const
+  منطقی sanitize_offsets (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    unsigned int count = vertGlyphCount + horizGlyphCount;
-    for (unsigned int i = 0; i < count; i++)
-      if (!glyphConstruction.arrayZ[i].sanitize (c, this)) return_trace (false);
-    return_trace (true);
+    TRACE_SANITIZE (این);
+    unsigned صحیح شمار = vert_Glyph_شمار + horiz_Glyph_شمار;
+    برای (unsigned صحیح i = 0; i < شمار; i++)
+      اگر (!glyphConstruction.arrayZ[i].sanitize (c, این)) return_trace (نادرست);
+    return_trace (درست);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  vertGlyphCoverage.sanitize (c, this) &&
-		  horizGlyphCoverage.sanitize (c, this) &&
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این) &&
+		  vertGlyphCoverage.sanitize (c, این) &&
+		  horizGlyphCoverage.sanitize (c, این) &&
 		  hb_barrier () &&
-		  c->check_array (glyphConstruction.arrayZ, vertGlyphCount + horizGlyphCount) &&
+		  c->check_array (glyphConstruction.arrayZ, vert_Glyph_شمار + horiz_Glyph_شمار) &&
 		  sanitize_offsets (c));
   }
 
   hb_position_t get_min_connector_overlap (hb_direction_t direction,
-						  hb_font_t *font) const
-  { return font->em_scale_dir (minConnectorOverlap, direction); }
+						  hb_font_t *font) ثابت
+  { بازگشت font->em_scale_dir (minConnectorOverlap, direction); }
 
-  unsigned int get_glyph_variants (hb_codepoint_t glyph,
+  unsigned صحیح get_glyph_variants (hb_codepoint_t glyph,
 				   hb_direction_t direction,
 				   hb_font_t *font,
-				   unsigned int start_offset,
-				   unsigned int *variants_count, /* IN/OUT */
-				   hb_ot_math_glyph_variant_t *variants /* OUT */) const
-  { return get_glyph_construction (glyph, direction, font)
-	   .get_variants (direction, font, start_offset, variants_count, variants); }
+				   unsigned صحیح start_offset,
+				   unsigned صحیح *variants_شمار, /* IN/OUT */
+				   hb_ot_math_glyph_variant_t *variants /* OUT */) ثابت
+  { بازگشت get_glyph_construction (glyph, direction, font)
+	   .get_variants (direction, font, start_offset, variants_شمار, variants); }
 
-  unsigned int get_glyph_parts (hb_codepoint_t glyph,
+  unsigned صحیح get_glyph_parts (hb_codepoint_t glyph,
 				hb_direction_t direction,
 				hb_font_t *font,
-				unsigned int start_offset,
-				unsigned int *parts_count, /* IN/OUT */
+				unsigned صحیح start_offset,
+				unsigned صحیح *parts_شمار, /* IN/OUT */
 				hb_ot_math_glyph_part_t *parts /* OUT */,
-				hb_position_t *italics_correction /* OUT */) const
-  { return get_glyph_construction (glyph, direction, font)
+				hb_position_t *italics_correction /* OUT */) ثابت
+  { بازگشت get_glyph_construction (glyph, direction, font)
 	   .get_assembly ()
 	   .get_parts (direction, font,
-		       start_offset, parts_count, parts,
+		       start_offset, parts_شمار, parts,
 		       italics_correction); }
 
-  private:
-  const MathGlyphConstruction &
+  خصوصی:
+  ثابت MathGlyphConstruction &
   get_glyph_construction (hb_codepoint_t glyph,
 			  hb_direction_t direction,
-			  hb_font_t *font HB_UNUSED) const
+			  hb_font_t *font HB_UNUSED) ثابت
   {
-    bool vertical = HB_DIRECTION_IS_VERTICAL (direction);
-    unsigned int count = vertical ? vertGlyphCount : horizGlyphCount;
-    const Offset16To<Coverage> &coverage = vertical ? vertGlyphCoverage
+    منطقی vertical = HB_DIRECTION_IS_VERTICAL (direction);
+    unsigned صحیح شمار = vertical ? vert_Glyph_شمار : horiz_Glyph_شمار;
+    ثابت Offset16To<Coverage> &coverage = vertical ? vertGlyphCoverage
 						  : horizGlyphCoverage;
 
-    unsigned int index = (this+coverage).get_coverage (glyph);
-    if (unlikely (index >= count)) return Null (MathGlyphConstruction);
+    unsigned صحیح index = (این+coverage).get_coverage (glyph);
+    اگر (unlikely (index >= شمار)) بازگشت Null (MathGlyphConstruction);
 
-    if (!vertical)
-      index += vertGlyphCount;
+    اگر (!vertical)
+      index += vert_Glyph_شمار;
 
-    return this+glyphConstruction[index];
+    بازگشت این+glyphConstruction[index];
   }
 
-  protected:
+  محافظتشده:
   HBUINT16	minConnectorOverlap;
 				/* Minimum overlap of connecting
 				 * glyphs during glyph construction,
@@ -1184,10 +1184,10 @@ struct MathVariants
 				/* Offset to Coverage table -
 				 * from the beginning of MathVariants
 				 * table. */
-  HBUINT16	vertGlyphCount;	/* Number of glyphs for which
+  HBUINT16	vert_Glyph_شمار;	/* Number of glyphs for which
 				 * information is provided for
 				 * vertically growing variants. */
-  HBUINT16	horizGlyphCount;/* Number of glyphs for which
+  HBUINT16	horiz_Glyph_شمار;/* Number of glyphs for which
 				 * information is provided for
 				 * horizontally growing variants. */
 
@@ -1197,7 +1197,7 @@ struct MathVariants
   UnsizedArrayOf<Offset16To<MathGlyphConstruction>>
 			glyphConstruction;
 
-  public:
+  عمومی:
   DEFINE_SIZE_ARRAY (10, glyphConstruction);
 };
 
@@ -1207,88 +1207,88 @@ struct MathVariants
  * https://docs.microsoft.com/en-us/typography/opentype/spec/math
  */
 
-struct MATH
+ساختار MATH
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_MATH;
+  ایستا constexpr hb_tag_t tableTag = HB_OT_TAG_MATH;
 
-  bool has_data () const { return version.to_int (); }
+  منطقی has_data () ثابت { بازگشت version.to_int (); }
 
-  void depend (hb_depend_data_builder_t *depend_data) const
+  تهی depend (hb_depend_data_builder_t *depend_data) ثابت
   {
-    if (mathVariants)
-      (this+mathVariants).depend (depend_data);
+    اگر (mathVariants)
+      (این+mathVariants).depend (depend_data);
   }
 
-  void closure_glyphs (hb_set_t *glyph_set) const
+  تهی closure_glyphs (hb_set_t *glyph_set) ثابت
   {
-    if (mathVariants)
+    اگر (mathVariants)
     {
       hb_set_t variant_glyphs;
-      (this+mathVariants).closure_glyphs (glyph_set, &variant_glyphs);
+      (این+mathVariants).closure_glyphs (glyph_set, &variant_glyphs);
       hb_set_union (glyph_set, &variant_glyphs);
     }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (این);
+    auto *out = c->serializer->embed (*این);
+    اگر (unlikely (!out)) return_trace (نادرست);
 
-    out->mathConstants.serialize_copy (c->serializer, mathConstants, this, 0, hb_serialize_context_t::Head, &c->plan->layout_variation_idx_delta_map);
-    out->mathGlyphInfo.serialize_subset (c, mathGlyphInfo, this);
-    out->mathVariants.serialize_subset (c, mathVariants, this);
-    return_trace (true);
+    out->mathConstants.serialize_copy (c->serializer, mathConstants, این, 0, hb_serialize_context_t::Head, &c->plan->layout_variation_idx_delta_map);
+    out->mathGlyphInfo.serialize_subset (c, mathGlyphInfo, این);
+    out->mathVariants.serialize_subset (c, mathVariants, این);
+    return_trace (درست);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c, const hb_set_t *variant_glyph_set) const
+  تهی collect_variation_indices (hb_collect_variation_indices_context_t *c, ثابت hb_set_t *variant_glyph_set) ثابت
   {
-    (this+mathConstants).collect_variation_indices (c);
-    (this+mathGlyphInfo).collect_variation_indices (c);
+    (این+mathConstants).collect_variation_indices (c);
+    (این+mathGlyphInfo).collect_variation_indices (c);
     auto *glyph_set = c->glyph_set;
     c->glyph_set = variant_glyph_set;
-    (this+mathVariants).collect_variation_indices (c);
+    (این+mathVariants).collect_variation_indices (c);
     c->glyph_set = glyph_set;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (این);
     return_trace (version.sanitize (c) &&
 		  likely (version.major == 1) &&
 		  hb_barrier () &&
-		  mathConstants.sanitize (c, this) &&
-		  mathGlyphInfo.sanitize (c, this) &&
-		  mathVariants.sanitize (c, this));
+		  mathConstants.sanitize (c, این) &&
+		  mathGlyphInfo.sanitize (c, این) &&
+		  mathVariants.sanitize (c, این));
   }
 
   // https://github.com/harfbuzz/harfbuzz/issues/4653
-  HB_INTERNAL bool is_bad_cambria (hb_font_t *font) const
+  HB_INTERNAL منطقی is_bad_cambria (hb_font_t *font) ثابت
   {
 #ifndef HB_NO_MATH
-    switch HB_CODEPOINT_ENCODE3 (font->face->table.MATH.get_blob ()->length,
-                                 (this+mathConstants).minHeight[1], // displayOperatorMinHeight
-                                 (this+mathConstants).minHeight[0]) // delimitedSubFormulaMinHeight
+    انتخاب HB_CODEPOINT_ENCODE3 (font->face->table.MATH.get_blob ()->length,
+                                 (این+mathConstants).minHeight[1], // displayOperatorMinHeight
+                                 (این+mathConstants).minHeight[0]) // delimitedSubFormulaMinHeight
     {
       /* sha1sum:ab4a4fe054d23061f3c039493d6f665cfda2ecf5  cambria.ttc
        * sha1sum:086855301bff644f9d8827b88491fcf73a6d4cb9  cambria.ttc
        * sha1sum:b1e5a3feaca2ea3dfcf79ccb377de749ecf60343  cambria.ttc */
-      case HB_CODEPOINT_ENCODE3 (25722, 2500, 3000):
-        return true;
+      حالت HB_CODEPOINT_ENCODE3 (25722, 2500, 3000):
+        بازگشت درست;
     }
 #endif
-    return false;
+    بازگشت نادرست;
   }
 
   hb_position_t get_constant (hb_ot_math_constant_t  constant,
-			      hb_font_t		   *font) const
-  { return (this+mathConstants).get_value (constant, font); }
+			      hb_font_t		   *font) ثابت
+  { بازگشت (این+mathConstants).get_مقدار (constant, font); }
 
-  const MathGlyphInfo &get_glyph_info () const { return this+mathGlyphInfo; }
+  ثابت MathGlyphInfo &get_glyph_info () ثابت { بازگشت این+mathGlyphInfo; }
 
-  const MathVariants &get_variants () const    { return this+mathVariants; }
+  ثابت MathVariants &get_variants () ثابت    { بازگشت این+mathVariants; }
 
-  protected:
+  محافظتشده:
   FixedVersion<>version;	/* Version of the MATH table
 				 * initially set to 0x00010000u */
   Offset16To<MathConstants>
@@ -1298,7 +1298,7 @@ struct MATH
   Offset16To<MathVariants>
 		mathVariants;	/* MathVariants table */
 
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (10);
 };
 

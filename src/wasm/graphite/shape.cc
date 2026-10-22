@@ -1,70 +1,70 @@
 #define HB_WASM_INTERFACE(ret_t, name) __attribute__((export_name(#name))) ret_t name
 
-#include <hb-wasm-api.h>
+#شامل <hb-wasm-api.h>
 
-#include <graphite2/Segment.h>
+#شامل <graphite2/Segment.h>
 
-#include <stdlib.h>
-#include <string.h>
+#شامل <stdlib.h>
+#شامل <string.h>
 
-static int32_t
-clamp_position (double value)
+ایستا int32_t
+clamp_position (دوگانه value)
 {
-  if (value <= INT32_MIN) return INT32_MIN;
-  if (value >= INT32_MAX) return INT32_MAX;
-  return (int32_t) value;
+  اگر (value <= INT32_MIN) بازگشت INT32_MIN;
+  اگر (value >= INT32_MAX) بازگشت INT32_MAX;
+  بازگشت (int32_t) value;
 }
 
-static int32_t
+ایستا int32_t
 saturate_add (int32_t a, int32_t b)
-{ return clamp_position ((int64_t) a + b); }
+{ بازگشت clamp_position ((int64_t) a + b); }
 
-static int32_t
+ایستا int32_t
 saturate_sub (int32_t a, int32_t b)
-{ return clamp_position ((int64_t) a - b); }
+{ بازگشت clamp_position ((int64_t) a - b); }
 
-void debugprint1 (char *s, int32_t);
-void debugprint2 (char *s, int32_t, int32_t);
+تهی debugprint1 (نویسه *s, int32_t);
+تهی debugprint2 (نویسه *s, int32_t, int32_t);
 
-static const void *copy_table (const void *data, unsigned int tag, size_t *len)
+ایستا ثابت تهی *copy_table (ثابت تهی *data, unsigned صحیح tag, size_t *len)
 {
   face_t *face = (face_t *) data;
   blob_t blob = BLOB_INIT;
-  if (!face_copy_table (face, tag, &blob))
+  اگر (!face_copy_table (face, tag, &blob))
     abort ();
 
   *len = blob.length;
-  return blob.data;
+  بازگشت blob.data;
 }
 
-static void free_table (const void *data, const void *table_data)
+ایستا تهی free_table (ثابت تهی *data, ثابت تهی *table_data)
 {
   blob_t blob;
   blob.length = 0; // Doesn't matter
-  blob.data = (char *) table_data;
+  blob.data = (نویسه *) table_data;
   blob_free (&blob);
 }
 
-void *
+تهی *
 shape_plan_create (face_t *face)
 {
-  const gr_face_ops ops = {sizeof (gr_face_ops), &copy_table, &free_table};
+  ثابت gr_face_ops ops = {اندازه (gr_face_ops), &copy_table, &free_table};
   gr_face *grface = gr_make_face_with_ops (face, &ops, gr_face_preloadAll);
-  return grface;
+  بازگشت grface;
 }
 
-void
-shape_plan_destroy (void *data)
+تهی
+shape_plan_destroy (تهی *data)
 {
   gr_face_destroy ((gr_face *) data);
 }
 
 bool_t
-shape (void *shape_plan,
+shape (تهی *shape_plan,
        font_t *font,
        buffer_t *buffer,
-       const feature_t *features,
-       uint32_t num_features)
+       ثابت feature_t *features,
+       uint32_t رقم_features)
 {
   face_t *face = font_get_face (font);
   gr_face *grface = (gr_face *) shape_plan;
@@ -75,7 +75,7 @@ shape (void *shape_plan,
    * The only BTT vertical script is Ogham, but it's not clear to me whether OpenType
    * Ogham fonts are supposed to be implemented BTT or not.  Need to research that
    * first. */
-  if ((DIRECTION_IS_HORIZONTAL (direction) &&
+  اگر ((DIRECTION_IS_HORIZONTAL (direction) &&
        direction != horiz_dir && horiz_dir != DIRECTION_INVALID) ||
       (DIRECTION_IS_VERTICAL   (direction) &&
        direction != DIRECTION_TTB))
@@ -85,19 +85,19 @@ shape (void *shape_plan,
   }
 
   buffer_contents_t contents = BUFFER_CONTENTS_INIT;
-  if (!buffer_copy_contents (buffer, &contents))
-    return false;
+  اگر (!buffer_copy_contents (buffer, &contents))
+    بازگشت نادرست;
 
   gr_segment *seg = nullptr;
-  const gr_slot *is;
-  unsigned int ci = 0, ic = 0;
+  ثابت gr_slot *is;
+  unsigned صحیح ci = 0, ic = 0;
   int32_t curradvx = 0, curradvy = 0;
   unsigned length = contents.length;
 
-  uint32_t *chars = (uint32_t *) malloc (length * sizeof (uint32_t));
-  if (!chars)
-    return false;
-  for (unsigned int i = 0; i < contents.length; ++i)
+  uint32_t *chars = (uint32_t *) malloc (length * اندازه (uint32_t));
+  اگر (!chars)
+    بازگشت نادرست;
+  برای (unsigned صحیح i = 0; i < contents.length; ++i)
     chars[i] = contents.info[i].codepoint;
 
   seg = gr_make_seg (nullptr, grface,
@@ -106,79 +106,79 @@ shape (void *shape_plan,
 		     gr_utf32, chars, contents.length,
 		     2 | (direction == DIRECTION_RTL ? 1 : 0));
 
-  free (chars);
+  آزاد (chars);
 
-  if (!seg)
-    return false;
+  اگر (!seg)
+    بازگشت نادرست;
 
-  unsigned int glyph_count = gr_seg_n_slots (seg);
+  unsigned صحیح glyph_شمار = gr_seg_n_slots (seg);
 
-  struct cluster_t {
-    unsigned int base_char;
-    unsigned int num_chars;
-    unsigned int base_glyph;
-    unsigned int num_glyphs;
-    unsigned int cluster;
+  ساختار cluster_t {
+    unsigned صحیح base_char;
+    unsigned صحیح رقم_chars;
+    unsigned صحیح base_glyph;
+    unsigned صحیح رقم_glyphs;
+    unsigned صحیح cluster;
     int32_t advance;
   };
 
-  length = glyph_count;
-  if (!buffer_contents_realloc (&contents, length))
-    return false;
-  cluster_t *clusters = (cluster_t *) malloc (length * sizeof (cluster_t));
-  uint32_t *gids = (uint32_t *) malloc (length * sizeof (uint32_t));
-  if (!clusters || !gids)
+  length = glyph_شمار;
+  اگر (!buffer_contents_realloc (&contents, length))
+    بازگشت نادرست;
+  cluster_t *clusters = (cluster_t *) malloc (length * اندازه (cluster_t));
+  uint32_t *gids = (uint32_t *) malloc (length * اندازه (uint32_t));
+  اگر (!clusters || !gids)
   {
-    free (clusters);
-    free (gids);
-    return false;
+    آزاد (clusters);
+    آزاد (gids);
+    بازگشت نادرست;
   }
 
-  memset (clusters, 0, sizeof (clusters[0]) * length);
+  memset (clusters, 0, اندازه (clusters[0]) * length);
   codepoint_t *pg = gids;
   clusters[0].cluster = contents.info[0].cluster;
-  unsigned int upem = face_get_upem (face);
+  unsigned صحیح upem = face_get_upem (face);
   int32_t font_x_scale, font_y_scale;
   font_get_scale (font, &font_x_scale, &font_y_scale);
-  float xscale = (float) font_x_scale / upem;
-  float yscale = (float) font_y_scale / upem;
+  اعشاری xscale = (اعشاری) font_x_scale / upem;
+  اعشاری yscale = (اعشاری) font_y_scale / upem;
   yscale *= yscale / xscale;
   int32_t curradv = 0;
-  if (DIRECTION_IS_BACKWARD (direction))
+  اگر (DIRECTION_IS_BACKWARD (direction))
   {
     curradv = clamp_position (gr_slot_origin_X(gr_seg_first_slot(seg)) * xscale);
-    clusters[0].advance = clamp_position ((double) (gr_seg_advance_X(seg) * xscale) - curradv);
+    clusters[0].advance = clamp_position ((دوگانه) (gr_seg_advance_X(seg) * xscale) - curradv);
   }
-  else
+  وگرنه
     clusters[0].advance = 0;
-  for (is = gr_seg_first_slot (seg), ic = 0; is; is = gr_slot_next_in_segment (is), ic++)
+  برای (is = gr_seg_first_slot (seg), ic = 0; is; is = gr_slot_next_in_segment (is), ic++)
   {
-    unsigned int before = gr_slot_before (is);
-    unsigned int after = gr_slot_after (is);
+    unsigned صحیح before = gr_slot_before (is);
+    unsigned صحیح after = gr_slot_after (is);
     *pg = gr_slot_gid (is);
     pg++;
-    while (clusters[ci].base_char > before && ci)
+    وقتی (clusters[ci].base_char > before && ci)
     {
-      clusters[ci-1].num_chars += clusters[ci].num_chars;
-      clusters[ci-1].num_glyphs += clusters[ci].num_glyphs;
+      clusters[ci-1].رقم_chars += clusters[ci].رقم_chars;
+      clusters[ci-1].رقم_glyphs += clusters[ci].رقم_glyphs;
       clusters[ci-1].advance = saturate_add (clusters[ci-1].advance, clusters[ci].advance);
       ci--;
     }
 
-    if (gr_slot_can_insert_before (is) && clusters[ci].num_chars && before >= clusters[ci].base_char + clusters[ci].num_chars)
+    اگر (gr_slot_can_درج_before (is) && clusters[ci].رقم_chars && before >= clusters[ci].base_char + clusters[ci].رقم_chars)
     {
       cluster_t *c = clusters + ci + 1;
-      c->base_char = clusters[ci].base_char + clusters[ci].num_chars;
+      c->base_char = clusters[ci].base_char + clusters[ci].رقم_chars;
       c->cluster = contents.info[c->base_char].cluster;
-      c->num_chars = before - c->base_char;
+      c->رقم_chars = before - c->base_char;
       c->base_glyph = ic;
-      c->num_glyphs = 0;
-      if (DIRECTION_IS_BACKWARD (direction))
+      c->رقم_glyphs = 0;
+      اگر (DIRECTION_IS_BACKWARD (direction))
       {
-	c->advance = clamp_position ((double) curradv - (double) (gr_slot_origin_X(is) * xscale));
+	c->advance = clamp_position ((دوگانه) curradv - (دوگانه) (gr_slot_origin_X(is) * xscale));
 	curradv = saturate_sub (curradv, c->advance);
       }
-      else
+      وگرنه
       {
 	int32_t origin_X = clamp_position (gr_slot_origin_X (is) * xscale);
 	c->advance = 0;
@@ -188,22 +188,22 @@ shape (void *shape_plan,
       }
       ci++;
     }
-    clusters[ci].num_glyphs++;
+    clusters[ci].رقم_glyphs++;
 
-    if (clusters[ci].base_char + clusters[ci].num_chars < after + 1)
-	clusters[ci].num_chars = after + 1 - clusters[ci].base_char;
+    اگر (clusters[ci].base_char + clusters[ci].رقم_chars < after + 1)
+	clusters[ci].رقم_chars = after + 1 - clusters[ci].base_char;
   }
 
-  if (DIRECTION_IS_BACKWARD (direction))
+  اگر (DIRECTION_IS_BACKWARD (direction))
     clusters[ci].advance = saturate_add (clusters[ci].advance, curradv);
-  else
-    clusters[ci].advance = clamp_position ((double) clusters[ci].advance +
-					   (double) (gr_seg_advance_X(seg) * xscale) - curradv);
+  وگرنه
+    clusters[ci].advance = clamp_position ((دوگانه) clusters[ci].advance +
+					   (دوگانه) (gr_seg_advance_X(seg) * xscale) - curradv);
   ci++;
 
-  for (unsigned int i = 0; i < ci; ++i)
+  برای (unsigned صحیح i = 0; i < ci; ++i)
   {
-    for (unsigned int j = 0; j < clusters[i].num_glyphs; ++j)
+    برای (unsigned صحیح j = 0; j < clusters[i].رقم_glyphs; ++j)
     {
       glyph_info_t *info = &contents.info[clusters[i].base_glyph + j];
       info->codepoint = gids[clusters[i].base_glyph + j];
@@ -211,24 +211,24 @@ shape (void *shape_plan,
       info->var1 = (unsigned) clusters[i].advance;     // all glyphs in the cluster get the same advance
     }
   }
-  contents.length = glyph_count;
+  contents.length = glyph_شمار;
 
   /* Positioning. */
-  unsigned int currclus = 0xFFFFFFFF;
-  const glyph_info_t *info = contents.info;
+  unsigned صحیح currclus = 0xFFFFFFFF;
+  ثابت glyph_info_t *info = contents.info;
   glyph_position_t *pPos = contents.pos;
-  if (!DIRECTION_IS_BACKWARD (direction))
+  اگر (!DIRECTION_IS_BACKWARD (direction))
   {
     curradvx = 0;
-    for (is = gr_seg_first_slot (seg); is; pPos++, ++info, is = gr_slot_next_in_segment (is))
+    برای (is = gr_seg_first_slot (seg); is; pPos++, ++info, is = gr_slot_next_in_segment (is))
     {
-      pPos->x_offset = clamp_position ((double) (gr_slot_origin_X (is) * xscale) - curradvx);
-      pPos->y_offset = clamp_position ((double) (gr_slot_origin_Y (is) * yscale) - curradvy);
-      if (info->cluster != currclus) {
-	pPos->x_advance = (int) info->var1;
+      pPos->x_offset = clamp_position ((دوگانه) (gr_slot_origin_X (is) * xscale) - curradvx);
+      pPos->y_offset = clamp_position ((دوگانه) (gr_slot_origin_Y (is) * yscale) - curradvy);
+      اگر (info->cluster != currclus) {
+	pPos->x_advance = (صحیح) info->var1;
 	curradvx = saturate_add (curradvx, pPos->x_advance);
 	currclus = info->cluster;
-      } else
+      } وگرنه
 	pPos->x_advance = 0.;
 
       pPos->y_advance = clamp_position (gr_slot_advance_Y (is, grface, nullptr) * yscale);
@@ -236,34 +236,34 @@ shape (void *shape_plan,
     }
     buffer_set_contents (buffer, &contents);
   }
-  else
+  وگرنه
   {
     curradvx = clamp_position (gr_seg_advance_X(seg) * xscale);
-    for (is = gr_seg_first_slot (seg); is; pPos++, info++, is = gr_slot_next_in_segment (is))
+    برای (is = gr_seg_first_slot (seg); is; pPos++, info++, is = gr_slot_next_in_segment (is))
     {
-      if (info->cluster != currclus)
+      اگر (info->cluster != currclus)
       {
-	pPos->x_advance = (int) info->var1;
+	pPos->x_advance = (صحیح) info->var1;
 	curradvx = saturate_sub (curradvx, pPos->x_advance);
 	currclus = info->cluster;
-      } else
+      } وگرنه
 	pPos->x_advance = 0.;
 
       pPos->y_advance = clamp_position (gr_slot_advance_Y (is, grface, nullptr) * yscale);
       curradvy = saturate_sub (curradvy, pPos->y_advance);
-      pPos->x_offset = clamp_position ((double) (gr_slot_origin_X (is) * xscale) -
-					      (int) info->var1 - curradvx + pPos->x_advance);
-      pPos->y_offset = clamp_position ((double) (gr_slot_origin_Y (is) * yscale) - curradvy);
+      pPos->x_offset = clamp_position ((دوگانه) (gr_slot_origin_X (is) * xscale) -
+					      (صحیح) info->var1 - curradvx + pPos->x_advance);
+      pPos->y_offset = clamp_position ((دوگانه) (gr_slot_origin_Y (is) * yscale) - curradvy);
     }
     buffer_set_contents (buffer, &contents);
     buffer_reverse_clusters (buffer);
   }
 
   gr_seg_destroy (seg);
-  free (clusters);
-  free (gids);
+  آزاد (clusters);
+  آزاد (gids);
 
-  bool ret = glyph_count;
+  منطقی ret = glyph_شمار;
 
-  return ret;
+  بازگشت ret;
 }

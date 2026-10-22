@@ -24,19 +24,19 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "graph.hh"
-#include "../hb-ot-layout-gsubgpos.hh"
+#شامل "graph.hh"
+#شامل "../hb-ot-layout-gsubgpos.hh"
 
 #ifndef GRAPH_GSUBGPOS_CONTEXT_HH
 #define GRAPH_GSUBGPOS_CONTEXT_HH
 
-namespace graph {
+فضاینام graph {
 
-struct Lookup;
+ساختار Lookup;
 
-struct gsubgpos_graph_context_t
+ساختار gsubgpos_graph_context_t
 {
-  HB_INTERNAL static graph_result_t<gsubgpos_graph_context_t> create (hb_tag_t table_tag_,
+  HB_INTERNAL ایستا graph_result_t<gsubgpos_graph_context_t> create (hb_tag_t table_tag_,
                                                                       graph_t& graph_);
 
   hb_tag_t table_tag;
@@ -47,18 +47,18 @@ struct gsubgpos_graph_context_t
   hb_hashmap_t<unsigned, hb_vector_t<unsigned>> split_subtables;
 
 
-  HB_INTERNAL graph_result_t<unsigned> create_node (unsigned size);
+  HB_INTERNAL graph_result_t<unsigned> create_گره (unsigned size);
 
-  graph_result_t<void> add_buffer (char* buffer)
+  graph_result_t<تهی> add_buffer (نویسه* buffer)
   {
-    return graph.add_buffer (buffer);
+    بازگشت graph.add_buffer (buffer);
   }
 
- private:
+ خصوصی:
   HB_INTERNAL gsubgpos_graph_context_t (hb_tag_t table_tag_,
                                         graph_t& graph_);
 
-  HB_INTERNAL unsigned num_non_ext_subtables ();
+  HB_INTERNAL unsigned رقم_non_ext_subtables ();
 };
 
 }

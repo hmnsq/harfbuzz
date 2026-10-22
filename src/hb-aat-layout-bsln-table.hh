@@ -25,7 +25,7 @@
 #ifndef HB_AAT_LAYOUT_BSLN_TABLE_HH
 #define HB_AAT_LAYOUT_BSLN_TABLE_HH
 
-#include "hb-aat-layout-common.hh"
+#شامل "hb-aat-layout-common.hh"
 
 /*
  * bsln -- Baseline
@@ -34,54 +34,54 @@
 #define HB_AAT_TAG_bsln HB_TAG('b','s','l','n')
 
 
-namespace AAT {
+فضاینام AAT {
 
 
-struct BaselineTableFormat0Part
+ساختار BaselineTableFormat0Part
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این));
   }
 
-  protected:
+  محافظتشده:
   // Roman, Ideographic centered, Ideographic low, Hanging and Math
   // are the default defined ones, but any other maybe accessed also.
   HBINT16	deltas[32];	/* These are the FUnit distance deltas from
 				 * the font's natural baseline to the other
 				 * baselines used in the font. */
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (64);
 };
 
-struct BaselineTableFormat1Part
+ساختار BaselineTableFormat1Part
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (این);
+    return_trace (likely (c->check_struct (این) &&
 			  lookupTable.sanitize (c)));
   }
 
-  protected:
+  محافظتشده:
   HBINT16	deltas[32];	/* ditto */
   Lookup<HBUINT16>
 		lookupTable;	/* Lookup table that maps glyphs to their
 				 * baseline values. */
-  public:
+  عمومی:
   DEFINE_SIZE_MIN (66);
 };
 
-struct BaselineTableFormat2Part
+ساختار BaselineTableFormat2Part
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (این);
+    return_trace (c->check_struct (این));
   }
 
-  protected:
+  محافظتشده:
   HBGlyphID16	stdGlyph;	/* The specific glyph index number in this
 				 * font that is used to set the baseline values.
 				 * This is the standard glyph.
@@ -92,56 +92,56 @@ struct BaselineTableFormat2Part
 				 * associated with the standard glyph.
 				 * A value of 0xFFFF means there is no corresponding
 				 * control point in the standard glyph. */
-  public:
+  عمومی:
   DEFINE_SIZE_STATIC (66);
 };
 
-struct BaselineTableFormat3Part
+ساختار BaselineTableFormat3Part
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) && lookupTable.sanitize (c)));
+    TRACE_SANITIZE (این);
+    return_trace (likely (c->check_struct (این) && lookupTable.sanitize (c)));
   }
 
-  protected:
+  محافظتشده:
   HBGlyphID16	stdGlyph;	/* ditto */
   HBUINT16	ctlPoints[32];	/* ditto */
   Lookup<HBUINT16>
 		lookupTable;	/* Lookup table that maps glyphs to their
 				 * baseline values. */
-  public:
+  عمومی:
   DEFINE_SIZE_MIN (68);
 };
 
-struct bsln
+ساختار bsln
 {
-  static constexpr hb_tag_t tableTag = HB_AAT_TAG_bsln;
+  ایستا constexpr hb_tag_t tableTag = HB_AAT_TAG_bsln;
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!(c->check_struct (this) && defaultBaseline < 32)))
-      return_trace (false);
+    TRACE_SANITIZE (این);
+    اگر (unlikely (!(c->check_struct (این) && defaultBaseline < 32)))
+      return_trace (نادرست);
     hb_barrier ();
 
-    switch (format)
+    انتخاب (format)
     {
-    case 0: hb_barrier (); return_trace (parts.format0.sanitize (c));
-    case 1: hb_barrier (); return_trace (parts.format1.sanitize (c));
-    case 2: hb_barrier (); return_trace (parts.format2.sanitize (c));
-    case 3: hb_barrier (); return_trace (parts.format3.sanitize (c));
-    default:return_trace (true);
+    حالت 0: hb_barrier (); return_trace (parts.format0.sanitize (c));
+    حالت 1: hb_barrier (); return_trace (parts.format1.sanitize (c));
+    حالت 2: hb_barrier (); return_trace (parts.format2.sanitize (c));
+    حالت 3: hb_barrier (); return_trace (parts.format3.sanitize (c));
+    پیشفرض:return_trace (درست);
     }
   }
 
-  protected:
+  محافظتشده:
   FixedVersion<>version;	/* Version number of the Baseline table. */
   HBUINT16	format;		/* Format of the baseline table. Only one baseline
 				 * format may be selected for the font. */
   HBUINT16	defaultBaseline;/* Default baseline value for all glyphs.
 				 * This value can be from 0 through 31. */
-  union {
+  اجتماع {
   // Distance-Based Formats
   BaselineTableFormat0Part	format0;
   BaselineTableFormat1Part	format1;
@@ -149,7 +149,7 @@ struct bsln
   BaselineTableFormat2Part	format2;
   BaselineTableFormat3Part	format3;
   } parts;
-  public:
+  عمومی:
   DEFINE_SIZE_MIN (8);
 };
 

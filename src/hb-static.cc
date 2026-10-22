@@ -28,28 +28,28 @@
 #define HB_STATIC_CC
 #ifdef HB_STATIC_CC /* Pacify -Wunused-macros. */
 
-#include "hb.hh"
+#شامل "hb.hh"
 
-#include "hb-open-type.hh"
-#include "hb-face.hh"
+#شامل "hb-open-type.hh"
+#شامل "hb-face.hh"
 
-#include "hb-aat-layout-common.hh"
-#include "hb-aat-layout-feat-table.hh"
-#include "hb-cff-interp-common.hh"
-#include "hb-ot-layout-common.hh"
-#include "hb-ot-cmap-table.hh"
-#include "OT/Color/COLR/COLR.hh"
-#include "hb-ot-glyf-table.hh"
-#include "hb-ot-head-table.hh"
-#include "hb-ot-hmtx-table.hh"
-#include "hb-ot-maxp-table.hh"
+#شامل "hb-aat-layout-common.hh"
+#شامل "hb-aat-layout-feat-table.hh"
+#شامل "hb-cff-interp-common.hh"
+#شامل "hb-ot-layout-common.hh"
+#شامل "hb-ot-cmap-table.hh"
+#شامل "OT/Color/COLR/COLR.hh"
+#شامل "hb-ot-glyf-table.hh"
+#شامل "hb-ot-head-table.hh"
+#شامل "hb-ot-hmtx-table.hh"
+#شامل "hb-ot-maxp-table.hh"
 
 #ifndef HB_NO_VISIBILITY
 
-#include "hb-ot-name-language-static.hh"
+#شامل "hb-ot-name-language-static.hh"
 
-uint64_t const _hb_NullPool[(HB_NULL_POOL_SIZE + sizeof (uint64_t) - 1) / sizeof (uint64_t)] = {};
-/*thread_local*/ uint64_t _hb_CrapPool[(HB_NULL_POOL_SIZE + sizeof (uint64_t) - 1) / sizeof (uint64_t)] = {};
+uint64_t ثابت _hb_NullPool[(HB_NULL_POOL_SIZE + اندازه (uint64_t) - 1) / اندازه (uint64_t)] = {};
+/*thread_local*/ uint64_t _hb_CrapPool[(HB_NULL_POOL_SIZE + اندازه (uint64_t) - 1) / اندازه (uint64_t)] = {};
 
 DEFINE_NULL_NAMESPACE_BYTES (OT, Index) =  {0xFF,0xFF};
 DEFINE_NULL_NAMESPACE_BYTES (OT, VarIdx) =  {0xFF,0xFF,0xFF,0xFF};
@@ -63,31 +63,31 @@ DEFINE_NULL_NAMESPACE_BYTES (AAT, Lookup) = {0xFF,0xFF};
 
 /* hb_map_t */
 
-const hb_codepoint_t minus_1 = -1;
-static const unsigned char static_endchar_str[] = {OpCode_endchar};
-const unsigned char *endchar_str = static_endchar_str;
+ثابت hb_codepoint_t minus_1 = -1;
+ایستا ثابت unsigned نویسه static_endchar_str[] = {OpCode_endchar};
+ثابت unsigned نویسه *endchar_str = static_endchar_str;
 
 /* hb_face_t */
 
-static inline unsigned
-load_num_glyphs_from_maxp (const hb_face_t *face)
+ایستا درونخطی unsigned
+load_رقم_glyphs_from_maxp (ثابت hb_face_t *face)
 {
-  return face->table.maxp->get_num_glyphs ();
+  بازگشت face->table.maxp->get_رقم_glyphs ();
 }
 
-unsigned int
-hb_face_t::load_num_glyphs () const
+unsigned صحیح
+hb_face_t::load_رقم_glyphs () ثابت
 {
-  num_glyphs = load_num_glyphs_from_maxp (this);
-  return num_glyphs;
+  رقم_glyphs = load_رقم_glyphs_from_maxp (این);
+  بازگشت رقم_glyphs;
 }
 
-unsigned int
-hb_face_t::load_upem () const
+unsigned صحیح
+hb_face_t::load_upem () ثابت
 {
-  unsigned int ret = table.head->get_upem ();
+  unsigned صحیح ret = table.head->get_upem ();
   upem = ret;
-  return ret;
+  بازگشت ret;
 }
 
 #endif

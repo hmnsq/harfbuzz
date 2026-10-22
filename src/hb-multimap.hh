@@ -25,68 +25,68 @@
 #ifndef HB_MULTIMAP_HH
 #define HB_MULTIMAP_HH
 
-#include "hb.hh"
-#include "hb-map.hh"
-#include "hb-vector.hh"
+#شامل "hb.hh"
+#شامل "hb-map.hh"
+#شامل "hb-vector.hh"
 
 
 /*
  * hb_multimap_t
  */
 
-struct hb_multimap_t
+ساختار hb_multimap_t
 {
-  void add (hb_codepoint_t k, hb_codepoint_t v)
+  تهی add (hb_codepoint_t k, hb_codepoint_t v)
   {
     hb_vector_t<hb_codepoint_t> *m;
-    if (multiples.has (k, &m))
+    اگر (multiples.has (k, &m))
     {
       m->push (v);
-      return;
+      بازگشت;
     }
 
     hb_codepoint_t *old_v;
-    if (singulars.has (k, &old_v))
+    اگر (singulars.has (k, &old_v))
     {
       hb_codepoint_t old = *old_v;
       singulars.del (k);
 
       multiples.set (k, hb_vector_t<hb_codepoint_t> {old, v});
-      return;
+      بازگشت;
     }
 
     singulars.set (k, v);
   }
 
-  hb_array_t<const hb_codepoint_t> get (hb_codepoint_t k) const
+  hb_array_t<ثابت hb_codepoint_t> get (hb_codepoint_t k) ثابت
   {
-    const hb_codepoint_t *v;
-    if (singulars.has (k, &v))
-      return hb_array (v, 1);
+    ثابت hb_codepoint_t *v;
+    اگر (singulars.has (k, &v))
+      بازگشت hb_array (v, 1);
 
     hb_vector_t<hb_codepoint_t> *m;
-    if (multiples.has (k, &m))
-      return m->as_array ();
+    اگر (multiples.has (k, &m))
+      بازگشت m->as_array ();
 
-    return hb_array_t<const hb_codepoint_t> ();
+    بازگشت hb_array_t<ثابت hb_codepoint_t> ();
   }
 
-  bool in_error () const
+  منطقی in_error () ثابت
   {
-    if (singulars.in_error () || multiples.in_error ())
-      return true;
-    for (const auto &m : multiples.values_ref ())
-      if (m.in_error ())
-        return true;
-    return false;
+    اگر (singulars.in_error () || multiples.in_error ())
+      بازگشت درست;
+    برای (ثابت auto &m : multiples.مقادیر_ref ())
+      اگر (m.in_error ())
+        بازگشت درست;
+    بازگشت نادرست;
   }
 
-  void alloc (unsigned size)
+  تهی alloc (unsigned size)
   {
     singulars.alloc (size);
   }
 
-  protected:
+  محافظتشده:
   hb_map_t singulars;
   hb_hashmap_t<hb_codepoint_t, hb_vector_t<hb_codepoint_t>> multiples;
 };

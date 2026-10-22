@@ -2,12 +2,12 @@
 #define HB_ZLIB_CC
 #ifdef HB_ZLIB_CC /* Pacify -Wunused-macros. */
 
-#include "hb.hh"
+#شامل "hb.hh"
 
-#include "hb-zlib.hh"
+#شامل "hb-zlib.hh"
 
 #ifdef HAVE_ZLIB
-#include <zlib.h>
+#شامل <zlib.h>
 #endif
 
 hb_blob_t *
@@ -15,49 +15,49 @@ hb_blob_decompress_gzip (hb_blob_t *blob,
                          unsigned   max_output_len)
 {
 #ifndef HAVE_ZLIB
-  return nullptr;
-#else
+  بازگشت nullptr;
+#وگرنه
   unsigned compressed_len = 0;
-  const uint8_t *compressed = (const uint8_t *) hb_blob_get_data (blob, &compressed_len);
-  if (!compressed || !compressed_len)
-    return nullptr;
+  ثابت uint8_t *compressed = (ثابت uint8_t *) hb_blob_get_data (blob, &compressed_len);
+  اگر (!compressed || !compressed_len)
+    بازگشت nullptr;
 
   z_stream stream = {};
   stream.next_in = (Bytef *) compressed;
   stream.avail_in = compressed_len;
 
-  if (inflateInit2 (&stream, 16 + MAX_WBITS) != Z_OK)
-    return nullptr;
+  اگر (inflateInit2 (&stream, 16 + MAX_WBITS) != Z_OK)
+    بازگشت nullptr;
   HB_SCOPE_GUARD (inflateEnd (&stream));
 
   uint32_t expected_size = 0;
-  hb_gzip_get_uncompressed_size ((const char *) compressed,
+  hb_gzip_get_uncompressed_size ((ثابت نویسه *) compressed,
                                  compressed_len,
                                  &expected_size);
 
   size_t allocated = hb_min ((size_t) hb_max (expected_size, 4096u),
                              (size_t) max_output_len);
-  char *output = (char *) hb_malloc (allocated);
-  if (!output)
-    return nullptr;
+  نویسه *output = (نویسه *) hb_malloc (allocated);
+  اگر (!output)
+    بازگشت nullptr;
   auto output_guard = hb_make_scope_guard ([&]() { hb_free (output); });
 
-  int status = Z_OK;
-  while (true)
+  صحیح status = Z_OK;
+  وقتی (درست)
   {
     size_t produced = (size_t) stream.total_out;
-    if (unlikely (produced >= (size_t) max_output_len))
-      return nullptr;
+    اگر (unlikely (produced >= (size_t) max_output_len))
+      بازگشت nullptr;
 
-    if (produced == allocated)
+    اگر (produced == allocated)
     {
       size_t new_allocated = hb_min (allocated * 2, (size_t) max_output_len);
-      if (unlikely (new_allocated <= allocated))
-        return nullptr;
+      اگر (unlikely (new_allocated <= allocated))
+        بازگشت nullptr;
 
-      char *new_output = (char *) hb_realloc (output, new_allocated);
-      if (unlikely (!new_output))
-        return nullptr;
+      نویسه *new_output = (نویسه *) hb_realloc (output, new_allocated);
+      اگر (unlikely (!new_output))
+        بازگشت nullptr;
 
       output = new_output;
       allocated = new_allocated;
@@ -67,20 +67,20 @@ hb_blob_decompress_gzip (hb_blob_t *blob,
     stream.avail_out = (uInt) (allocated - (size_t) stream.total_out);
 
     status = inflate (&stream, Z_FINISH);
-    if (status == Z_STREAM_END)
-      break;
+    اگر (status == Z_STREAM_END)
+      بشکن;
 
-    if ((status == Z_OK || status == Z_BUF_ERROR) && stream.avail_out == 0)
-      continue;
+    اگر ((status == Z_OK || status == Z_BUF_ERROR) && stream.avail_out == 0)
+      ادامه;
 
-    return nullptr;
+    بازگشت nullptr;
   }
 
-  if (unlikely ((size_t) stream.total_out > (size_t) max_output_len))
-    return nullptr;
+  اگر (unlikely ((size_t) stream.total_out > (size_t) max_output_len))
+    بازگشت nullptr;
 
   output_guard.release ();
-  return hb_blob_create_or_fail (output,
+  بازگشت hb_blob_create_or_fail (output,
                                  (unsigned) stream.total_out,
                                  HB_MEMORY_MODE_WRITABLE,
                                  output,

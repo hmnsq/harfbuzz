@@ -24,22 +24,22 @@
  * Google Author(s): Garret Rieger, Roderick Sheeter
  */
 
-#ifndef HB_SUBSET_INPUT_HH
-#define HB_SUBSET_INPUT_HH
+#ifndef HB_SUBSET_درون_داد_HH
+#define HB_SUBSET_درون_داد_HH
 
 
-#include "hb.hh"
+#شامل "hb.hh"
 
-#include "hb-subset.h"
-#include "hb-map.hh"
-#include "hb-set.hh"
-#include "hb-cplusplus.hh"
-#include "hb-font.hh"
-#include "hb-subset-instancer-solver.hh"
+#شامل "hb-subset.h"
+#شامل "hb-map.hh"
+#شامل "hb-set.hh"
+#شامل "hb-cplusplus.hh"
+#شامل "hb-font.hh"
+#شامل "hb-subset-instancer-solver.hh"
 
-struct hb_ot_name_record_ids_t
+ساختار hb_ot_name_record_ids_t
 {
-  hb_ot_name_record_ids_t () = default;
+  hb_ot_name_record_ids_t () = پیشفرض;
   hb_ot_name_record_ids_t (unsigned platform_id_,
                            unsigned encoding_id_,
                            unsigned language_id_,
@@ -49,25 +49,25 @@ struct hb_ot_name_record_ids_t
       language_id (language_id_),
       name_id (name_id_) {}
 
-  bool operator != (const hb_ot_name_record_ids_t o) const
-  { return !(*this == o); }
+  منطقی operator != (ثابت hb_ot_name_record_ids_t o) ثابت
+  { بازگشت !(*این == o); }
 
-  inline bool operator == (const hb_ot_name_record_ids_t& o) const
+  درونخطی منطقی operator == (ثابت hb_ot_name_record_ids_t& o) ثابت
   {
-    return platform_id == o.platform_id &&
+    بازگشت platform_id == o.platform_id &&
            encoding_id == o.encoding_id &&
            language_id == o.language_id &&
            name_id == o.name_id;
   }
 
-  inline uint32_t hash () const
+  درونخطی uint32_t hash () ثابت
   {
     uint32_t current = 0;
     current = current * 31 + hb_hash (platform_id);
     current = current * 31 + hb_hash (encoding_id);
     current = current * 31 + hb_hash (language_id);
     current = current * 31 + hb_hash (name_id);
-    return current;
+    بازگشت current;
   }
 
   unsigned platform_id;
@@ -76,28 +76,28 @@ struct hb_ot_name_record_ids_t
   unsigned name_id;
 };
 
-typedef struct hb_ot_name_record_ids_t hb_ot_name_record_ids_t;
+تعریفنوع ساختار hb_ot_name_record_ids_t hb_ot_name_record_ids_t;
 
 
 HB_MARK_AS_FLAG_T (hb_subset_flags_t);
 
-struct hb_subset_input_t
+ساختار hb_subset_درون_داد_t
 {
-  HB_INTERNAL hb_subset_input_t ();
+  HB_INTERNAL hb_subset_درون_داد_t ();
 
-  ~hb_subset_input_t ()
+  ~hb_subset_درون_داد_t ()
   {
     sets.~sets_t ();
 
 #ifdef HB_EXPERIMENTAL_API
-    for (auto _ : name_table_overrides.values ())
+    برای (auto _ : name_table_overrides.values ())
       _.fini ();
 #endif
   }
 
   hb_object_header_t header;
 
-  struct sets_t {
+  ساختار sets_t {
     hb::shared_ptr<hb_set_t> glyphs;
     hb::shared_ptr<hb_set_t> unicodes;
     hb::shared_ptr<hb_set_t> no_subset_tables;
@@ -108,16 +108,16 @@ struct hb_subset_input_t
     hb::shared_ptr<hb_set_t> layout_scripts;
   };
 
-  union {
+  اجتماع {
     sets_t sets;
-    hb::shared_ptr<hb_set_t> set_ptrs[sizeof (sets_t) / sizeof (hb_set_t*)];
+    hb::shared_ptr<hb_set_t> set_ptrs[اندازه (sets_t) / اندازه (hb_set_t*)];
   };
 
   unsigned flags;
-  bool attach_accelerator_data = false;
+  منطقی attach_accelerator_data = نادرست;
 
   // If set loca format will always be the long version.
-  bool force_long_loca = false;
+  منطقی force_long_loca = نادرست;
 
   hb_hashmap_t<hb_tag_t, Triple> axes_location;
   hb_map_t glyph_map;
@@ -125,25 +125,25 @@ struct hb_subset_input_t
   hb_hashmap_t<hb_ot_name_record_ids_t, hb_bytes_t> name_table_overrides;
 #endif
 
-  inline unsigned num_sets () const
+  درونخطی unsigned رقم_sets () ثابت
   {
-    return sizeof (set_ptrs) / sizeof (hb_set_t*);
+    بازگشت اندازه (set_ptrs) / اندازه (hb_set_t*);
   }
 
-  inline hb_array_t<hb::shared_ptr<hb_set_t>> sets_iter ()
+  درونخطی hb_array_t<hb::shared_ptr<hb_set_t>> sets_iter ()
   {
-    return hb_array (set_ptrs);
+    بازگشت hb_array (set_ptrs);
   }
 
-  bool in_error () const
+  منطقی in_error () ثابت
   {
-    for (unsigned i = 0; i < num_sets (); i++)
+    برای (unsigned i = 0; i < رقم_sets (); i++)
     {
-      if (unlikely (set_ptrs[i]->in_error ()))
-        return true;
+      اگر (unlikely (set_ptrs[i]->in_error ()))
+        بازگشت درست;
     }
 
-    return axes_location.in_error ()
+    بازگشت axes_location.in_error ()
 #ifdef HB_EXPERIMENTAL_API
 	|| name_table_overrides.in_error ()
 #endif

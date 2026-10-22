@@ -24,10 +24,10 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#شامل "hb.hh"
 
-#include "hb-machinery.hh"
-#include "hb-vector-buf.hh"
+#شامل "hb-machinery.hh"
+#شامل "hb-vector-buf.hh"
 
 /**
  * SECTION:hb-vector
@@ -74,23 +74,23 @@
  * painted as a single uniform layer.
  **/
 
-struct hb_vector_decimal_point_t
+ساختار hb_vector_decimal_point_t
 {
-  char value[8];
+  نویسه value[8];
 };
 
-static hb_vector_decimal_point_t hb_vector_decimal_point_default = {{'.', '\0'}};
+ایستا hb_vector_decimal_point_t hb_vector_decimal_point_default = {{'.', '\0'}};
 
-static inline void free_static_svg_decimal_point ();
+ایستا درونخطی تهی free_static_svg_decimal_point ();
 
-static struct hb_vector_decimal_point_lazy_loader_t
+ایستا ساختار hb_vector_decimal_point_lazy_loader_t
   : hb_lazy_loader_t<hb_vector_decimal_point_t, hb_vector_decimal_point_lazy_loader_t>
 {
-  static hb_vector_decimal_point_t *create ()
+  ایستا hb_vector_decimal_point_t *create ()
   {
-    auto *p = (hb_vector_decimal_point_t *) hb_calloc (1, sizeof (hb_vector_decimal_point_t));
-    if (!p)
-      return nullptr;
+    auto *p = (hb_vector_decimal_point_t *) hb_calloc (1, اندازه (hb_vector_decimal_point_t));
+    اگر (!p)
+      بازگشت nullptr;
 
     p->value[0] = '.';
     p->value[1] = '\0';
@@ -99,37 +99,37 @@ static struct hb_vector_decimal_point_lazy_loader_t
     lconv *lc = nullptr;
 #ifdef HAVE_LOCALECONV_L
     hb_locale_t current_locale = hb_uselocale ((hb_locale_t) 0);
-    if (current_locale)
+    اگر (current_locale)
       lc = localeconv_l (current_locale);
 #endif
-    if (!lc)
+    اگر (!lc)
       lc = localeconv ();
-    if (lc && lc->decimal_point && lc->decimal_point[0])
+    اگر (lc && lc->decimal_point && lc->decimal_point[0])
     {
-      strncpy (p->value, lc->decimal_point, sizeof (p->value) - 1);
-      p->value[sizeof (p->value) - 1] = '\0';
+      strncpy (p->value, lc->decimal_point, اندازه (p->value) - 1);
+      p->value[اندازه (p->value) - 1] = '\0';
     }
 #endif
 
     hb_atexit (free_static_svg_decimal_point);
-    return p;
+    بازگشت p;
   }
 
-  static void destroy (hb_vector_decimal_point_t *p)
+  ایستا تهی destroy (hb_vector_decimal_point_t *p)
   { hb_free (p); }
 
-  static const hb_vector_decimal_point_t *get_null ()
-  { return &hb_vector_decimal_point_default; }
+  ایستا ثابت hb_vector_decimal_point_t *get_null ()
+  { بازگشت &hb_vector_decimal_point_default; }
 } static_svg_decimal_point;
 
-static inline void
+ایستا درونخطی تهی
 free_static_svg_decimal_point ()
 {
   static_svg_decimal_point.free_instance ();
 }
 
-const char *
-hb_vector_decimal_point_get (void)
+ثابت نویسه *
+hb_vector_decimal_point_get (تهی)
 {
-  return static_svg_decimal_point.get_unconst ()->value;
+  بازگشت static_svg_decimal_point.get_unconst ()->value;
 }

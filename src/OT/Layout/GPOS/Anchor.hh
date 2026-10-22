@@ -1,80 +1,80 @@
 #ifndef OT_LAYOUT_GPOS_ANCHOR_HH
 #define OT_LAYOUT_GPOS_ANCHOR_HH
 
-#include "AnchorFormat1.hh"
-#include "AnchorFormat2.hh"
-#include "AnchorFormat3.hh"
+#شامل "AnchorFormat1.hh"
+#شامل "AnchorFormat2.hh"
+#شامل "AnchorFormat3.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+فضاینام OT {
+فضاینام Layout {
+فضاینام GPOS_impl {
 
-struct Anchor
+ساختار Anchor
 {
-  protected:
-  union {
-  struct { HBUINT16 v; } format;        /* Format identifier */
+  محافظتشده:
+  اجتماع {
+  ساختار { HBUINT16 v; } format;        /* Format identifier */
   AnchorFormat1         format1;
   AnchorFormat2         format2;
   AnchorFormat3         format3;
   } u;
-  public:
+  عمومی:
   DEFINE_SIZE_UNION (2, format.v);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (این);
+    اگر (!u.format.v.sanitize (c)) return_trace (نادرست);
     hb_barrier ();
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c));
-    case 2: hb_barrier (); return_trace (u.format2.sanitize (c));
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c));
-    default:return_trace (true);
+    انتخاب (u.format.v) {
+    حالت 1: hb_barrier (); return_trace (u.format1.sanitize (c));
+    حالت 2: hb_barrier (); return_trace (u.format2.sanitize (c));
+    حالت 3: hb_barrier (); return_trace (u.format3.sanitize (c));
+    پیشفرض:return_trace (درست);
     }
   }
 
-  void get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id,
-                   float *x, float *y) const
+  تهی get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id,
+                   اعشاری *x, اعشاری *y) ثابت
   {
     *x = *y = 0;
-    switch (u.format.v) {
-    case 1: hb_barrier (); u.format1.get_anchor (c, glyph_id, x, y); return;
-    case 2: hb_barrier (); u.format2.get_anchor (c, glyph_id, x, y); return;
-    case 3: hb_barrier (); u.format3.get_anchor (c, glyph_id, x, y); return;
-    default:                                          return;
+    انتخاب (u.format.v) {
+    حالت 1: hb_barrier (); u.format1.get_anchor (c, glyph_id, x, y); بازگشت;
+    حالت 2: hb_barrier (); u.format2.get_anchor (c, glyph_id, x, y); بازگشت;
+    حالت 3: hb_barrier (); u.format3.get_anchor (c, glyph_id, x, y); بازگشت;
+    پیشفرض:                                          بازگشت;
     }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (bool (reinterpret_cast<Anchor *> (u.format1.copy (c->serializer))));
-    case 2:
+    TRACE_SUBSET (این);
+    انتخاب (u.format.v) {
+    حالت 1: hb_barrier (); return_trace (منطقی (reinterpret_cast<Anchor *> (u.format1.copy (c->serializer))));
+    حالت 2:
       hb_barrier ();
-      if (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
+      اگر (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
       {
         // AnchorFormat 2 just containins extra hinting information, so
         // if hints are being dropped convert to format 1.
-        return_trace (bool (reinterpret_cast<Anchor *> (u.format1.copy (c->serializer))));
+        return_trace (منطقی (reinterpret_cast<Anchor *> (u.format1.copy (c->serializer))));
       }
-      return_trace (bool (reinterpret_cast<Anchor *> (u.format2.copy (c->serializer))));
-    case 3: hb_barrier (); return_trace (u.format3.subset (c));
-    default:return_trace (false);
+      return_trace (منطقی (reinterpret_cast<Anchor *> (u.format2.copy (c->serializer))));
+    حالت 3: hb_barrier (); return_trace (u.format3.subset (c));
+    پیشفرض:return_trace (نادرست);
     }
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  تهی collect_variation_indices (hb_collect_variation_indices_context_t *c) ثابت
   {
-    switch (u.format.v) {
-    case 1: case 2:
-      return;
-    case 3:
+    انتخاب (u.format.v) {
+    حالت 1: حالت 2:
+      بازگشت;
+    حالت 3:
       hb_barrier ();
       u.format3.collect_variation_indices (c);
-      return;
-    default: return;
+      بازگشت;
+    پیشفرض: بازگشت;
     }
   }
 };

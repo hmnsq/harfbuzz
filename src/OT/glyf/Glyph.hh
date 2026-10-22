@@ -2,200 +2,200 @@
 #define OT_GLYF_GLYPH_HH
 
 
-#include "../../hb-open-type.hh"
+#شامل "../../hb-open-type.hh"
 
-#include "GlyphHeader.hh"
-#include "SimpleGlyph.hh"
-#include "CompositeGlyph.hh"
-
-
-namespace OT {
-
-struct glyf_accelerator_t;
-
-namespace glyf_impl {
+#شامل "GlyphHeader.hh"
+#شامل "SimpleGlyph.hh"
+#شامل "CompositeGlyph.hh"
 
 
-enum phantom_point_index_t
+فضاینام OT {
+
+ساختار glyf_accelerator_t;
+
+فضاینام glyf_impl {
+
+
+شمارش phantom_point_index_t
 {
-  PHANTOM_LEFT   = 0,
-  PHANTOM_RIGHT  = 1,
-  PHANTOM_TOP    = 2,
+  PHANTOM_چپ   = 0,
+  PHANTOM_راست  = 1,
+  PHANTOM_بالاترین    = 2,
   PHANTOM_BOTTOM = 3,
-  PHANTOM_COUNT  = 4
+  PHANTOM_شمار  = 4
 };
 
-struct Glyph
+ساختار Glyph
 {
-  enum glyph_type_t {
+  شمارش glyph_type_t {
     EMPTY,
     SIMPLE,
     COMPOSITE,
   };
 
-  public:
-  composite_iter_t get_composite_iterator () const
+  عمومی:
+  composite_iter_t get_composite_iterator () ثابت
   {
-    if (type != COMPOSITE) return composite_iter_t ();
-    return CompositeGlyph (*header, bytes, extended).iter ();
+    اگر (type != COMPOSITE) بازگشت composite_iter_t ();
+    بازگشت CompositeGlyph (*header, bytes, extended).iter ();
   }
 
-  const hb_bytes_t trim_padding () const
+  ثابت hb_bytes_t trim_padding () ثابت
   {
-    switch (type) {
-    case COMPOSITE: return CompositeGlyph (*header, bytes, extended).trim_padding ();
-    case SIMPLE:    return SimpleGlyph (*header, bytes).trim_padding ();
-    case EMPTY:     return bytes;
-    default:        return bytes;
+    انتخاب (type) {
+    حالت COMPOSITE: بازگشت CompositeGlyph (*header, bytes, extended).trim_padding ();
+    حالت SIMPLE:    بازگشت SimpleGlyph (*header, bytes).trim_padding ();
+    حالت EMPTY:     بازگشت bytes;
+    پیشفرض:        بازگشت bytes;
     }
   }
 
-  void drop_hints ()
+  تهی drop_hints ()
   {
-    switch (type) {
-    case COMPOSITE: CompositeGlyph (*header, bytes, extended).drop_hints (); return;
-    case SIMPLE:    SimpleGlyph (*header, bytes).drop_hints (); return;
-    case EMPTY:
-      if (bytes.length >= GlyphHeader::static_size)
+    انتخاب (type) {
+    حالت COMPOSITE: CompositeGlyph (*header, bytes, extended).drop_hints (); بازگشت;
+    حالت SIMPLE:    SimpleGlyph (*header, bytes).drop_hints (); بازگشت;
+    حالت EMPTY:
+      اگر (bytes.length >= GlyphHeader::static_size)
         SimpleGlyph (*header, bytes).drop_hints ();
-      return;
+      بازگشت;
     }
   }
 
-  void set_overlaps_flag ()
+  تهی set_overlaps_flag ()
   {
-    switch (type) {
-    case COMPOSITE: CompositeGlyph (*header, bytes, extended).set_overlaps_flag (); return;
-    case SIMPLE:    SimpleGlyph (*header, bytes).set_overlaps_flag (); return;
-    case EMPTY:     return;
+    انتخاب (type) {
+    حالت COMPOSITE: CompositeGlyph (*header, bytes, extended).set_overlaps_flag (); بازگشت;
+    حالت SIMPLE:    SimpleGlyph (*header, bytes).set_overlaps_flag (); بازگشت;
+    حالت EMPTY:     بازگشت;
     }
   }
 
-  void drop_hints_bytes (hb_bytes_t &dest_start, hb_bytes_t &dest_end) const
+  تهی drop_hints_bytes (hb_bytes_t &dest_start, hb_bytes_t &dest_end) ثابت
   {
-    switch (type) {
-    case COMPOSITE: CompositeGlyph (*header, bytes, extended).drop_hints_bytes (dest_start); return;
-    case SIMPLE:    SimpleGlyph (*header, bytes).drop_hints_bytes (dest_start, dest_end); return;
-    case EMPTY:
+    انتخاب (type) {
+    حالت COMPOSITE: CompositeGlyph (*header, bytes, extended).drop_hints_bytes (dest_start); بازگشت;
+    حالت SIMPLE:    SimpleGlyph (*header, bytes).drop_hints_bytes (dest_start, dest_end); بازگشت;
+    حالت EMPTY:
       dest_start = bytes;
       dest_end = hb_bytes_t ();
-      if (bytes.length >= GlyphHeader::static_size &&
+      اگر (bytes.length >= GlyphHeader::static_size &&
           SimpleGlyph (*header, bytes).has_instructions_length ())
         SimpleGlyph (*header, bytes).drop_hints_bytes (dest_start, dest_end);
-      return;
+      بازگشت;
     }
   }
 
-  bool is_composite () const
-  { return type == COMPOSITE; }
+  منطقی is_composite () ثابت
+  { بازگشت type == COMPOSITE; }
 
-  bool get_all_points_without_var (const hb_face_t *face,
-                                   contour_point_vector_t &points /* OUT */) const
+  منطقی get_all_points_without_var (ثابت hb_face_t *face,
+                                   contour_point_vector_t &points /* OUT */) ثابت
   {
-    switch (type) {
-    case SIMPLE:
-      if (unlikely (!SimpleGlyph (*header, bytes).get_contour_points (points, extended)))
-        return false;
-      break;
-    case COMPOSITE:
+    انتخاب (type) {
+    حالت SIMPLE:
+      اگر (unlikely (!SimpleGlyph (*header, bytes).get_contour_points (points, extended)))
+        بازگشت نادرست;
+      بشکن;
+    حالت COMPOSITE:
     {
-      for (auto &item : get_composite_iterator ())
-        if (unlikely (!item.get_points (points, extended))) return false;
-      break;
+      برای (auto &item : get_composite_iterator ())
+        اگر (unlikely (!item.get_points (points, extended))) بازگشت نادرست;
+      بشکن;
     }
-    case EMPTY:
-      break;
+    حالت EMPTY:
+      بشکن;
     }
 
     /* Init phantom points */
-    if (unlikely (!points.resize (points.length + PHANTOM_COUNT))) return false;
-    hb_array_t<contour_point_t> phantoms = points.as_array ().sub_array (points.length - PHANTOM_COUNT, PHANTOM_COUNT);
+    اگر (unlikely (!points.resize (points.length + PHANTOM_شمار))) بازگشت نادرست;
+    hb_array_t<contour_point_t> phantoms = points.as_array ().sub_array (points.length - PHANTOM_شمار, PHANTOM_شمار);
     {
       // Duplicated code.
-      int lsb = 0;
+      صحیح lsb = 0;
       face->table.hmtx->get_leading_bearing_without_var_unscaled (gid, &lsb);
-      int h_delta = (int) header->xMin - lsb;
-      HB_UNUSED int tsb = 0;
+      صحیح h_delta = (صحیح) header->xMin - lsb;
+      HB_UNUSED صحیح tsb = 0;
 #ifndef HB_NO_VERTICAL
       face->table.vmtx->get_leading_bearing_without_var_unscaled (gid, &tsb);
 #endif
-      int v_orig  = (int) header->yMax + tsb;
+      صحیح v_orig  = (صحیح) header->yMax + tsb;
       unsigned h_adv = face->table.hmtx->get_advance_without_var_unscaled (gid);
       unsigned v_adv =
 #ifndef HB_NO_VERTICAL
                        face->table.vmtx->get_advance_without_var_unscaled (gid)
-#else
+#وگرنه
                        - face->get_upem ()
 #endif
                        ;
-      phantoms[PHANTOM_LEFT].x = h_delta;
-      phantoms[PHANTOM_RIGHT].x = (int) h_adv + h_delta;
-      phantoms[PHANTOM_TOP].y = v_orig;
-      phantoms[PHANTOM_BOTTOM].y = v_orig - (int) v_adv;
+      phantoms[PHANTOM_چپ].x = h_delta;
+      phantoms[PHANTOM_راست].x = (صحیح) h_adv + h_delta;
+      phantoms[PHANTOM_بالاترین].y = v_orig;
+      phantoms[PHANTOM_BOTTOM].y = v_orig - (صحیح) v_adv;
     }
-    return true;
+    بازگشت درست;
   }
 
-  void update_mtx (const hb_subset_plan_t *plan,
-                   int xMin, int xMax,
-                   int yMin, int yMax,
-                   const contour_point_vector_t &all_points) const
+  تهی update_mtx (ثابت hb_subset_plan_t *plan,
+                   صحیح xMin, صحیح xMax,
+                   صحیح yMin, صحیح yMax,
+                   ثابت contour_point_vector_t &all_points) ثابت
   {
     hb_codepoint_t new_gid = 0;
-    if (!plan->new_gid_for_old_gid (gid, &new_gid))
-      return;
+    اگر (!plan->new_gid_for_old_gid (gid, &new_gid))
+      بازگشت;
 
-    if (type != EMPTY)
+    اگر (type != EMPTY)
     {
       plan->bounds_width_vec[new_gid] = xMax - xMin;
       plan->bounds_height_vec[new_gid] = yMax - yMin;
     }
 
     unsigned len = all_points.length;
-    float leftSideX = all_points[len - 4].x;
-    float rightSideX = all_points[len - 3].x;
-    float topSideY = all_points[len - 2].y;
-    float bottomSideY = all_points[len - 1].y;
+    اعشاری چپ_Side_X = all_points[len - 4].x;
+    اعشاری راست_Side_X = all_points[len - 3].x;
+    اعشاری بالاترین_Side_Y = all_points[len - 2].y;
+    اعشاری bottomSideY = all_points[len - 1].y;
 
     uint32_t hash = hb_hash (new_gid);
 
-    signed hori_aw = roundf (rightSideX - leftSideX);
-    if (hori_aw < 0) hori_aw = 0;
-    int lsb = roundf (xMin - leftSideX);
+    signed hori_aw = roundf (راست_Side_X - چپ_Side_X);
+    اگر (hori_aw < 0) hori_aw = 0;
+    صحیح lsb = roundf (xMin - چپ_Side_X);
     plan->hmtx_map.set_with_hash (new_gid, hash, hb_pair ((unsigned) hori_aw, lsb));
     //flag value should be computed using non-empty glyphs
-    if (type != EMPTY && lsb != xMin)
-      plan->head_maxp_info.allXMinIsLsb = false;
+    اگر (type != EMPTY && lsb != xMin)
+      plan->head_maxp_info.allXMinIsLsb = نادرست;
 
-    signed vert_aw = roundf (topSideY - bottomSideY);
-    if (vert_aw < 0) vert_aw = 0;
-    int tsb = roundf (topSideY - yMax);
+    signed vert_aw = roundf (بالاترین_Side_Y - bottomSideY);
+    اگر (vert_aw < 0) vert_aw = 0;
+    صحیح tsb = roundf (بالاترین_Side_Y - yMax);
     plan->vmtx_map.set_with_hash (new_gid, hash, hb_pair ((unsigned) vert_aw, tsb));
   }
 
-  bool compile_header_bytes (const hb_subset_plan_t *plan,
-                             const contour_point_vector_t &all_points,
-                             hb_bytes_t &dest_bytes /* OUT */) const
+  منطقی compile_header_bytes (ثابت hb_subset_plan_t *plan,
+                             ثابت contour_point_vector_t &all_points,
+                             hb_bytes_t &dest_bytes /* OUT */) ثابت
   {
     GlyphHeader *glyph_header = nullptr;
-    if (!plan->pinned_at_default && type != EMPTY && all_points.length >= 4)
+    اگر (!plan->pinned_at_default && type != EMPTY && all_points.length >= 4)
     {
       glyph_header = (GlyphHeader *) hb_calloc (1, GlyphHeader::static_size);
-      if (unlikely (!glyph_header)) return false;
+      اگر (unlikely (!glyph_header)) بازگشت نادرست;
     }
 
-    float xMin = 0, xMax = 0;
-    float yMin = 0, yMax = 0;
-    if (all_points.length > 4)
+    اعشاری xMin = 0, xMax = 0;
+    اعشاری yMin = 0, yMax = 0;
+    اگر (all_points.length > 4)
     {
       xMin = xMax = all_points[0].x;
       yMin = yMax = all_points[0].y;
 
-      unsigned count = all_points.length - 4;
-      for (unsigned i = 1; i < count; i++)
+      unsigned شمار = all_points.length - 4;
+      برای (unsigned i = 1; i < شمار; i++)
       {
-	float x = all_points[i].x;
-	float y = all_points[i].y;
+	اعشاری x = all_points[i].x;
+	اعشاری y = all_points[i].y;
 	xMin = hb_min (xMin, x);
 	xMax = hb_max (xMax, x);
 	yMin = hb_min (yMin, y);
@@ -206,14 +206,14 @@ struct Glyph
 
     // These are destined for storage in a 16 bit field to clamp the values to
     // fit into a 16 bit signed integer.
-    int rounded_xMin = hb_clamp (roundf (xMin), -32768.0f, 32767.0f);
-    int rounded_xMax = hb_clamp (roundf (xMax), -32768.0f, 32767.0f);
-    int rounded_yMin = hb_clamp (roundf (yMin), -32768.0f, 32767.0f);
-    int rounded_yMax = hb_clamp (roundf (yMax), -32768.0f, 32767.0f);
+    صحیح rounded_xMin = hb_clamp (roundf (xMin), -32768.0f, 32767.0f);
+    صحیح rounded_xMax = hb_clamp (roundf (xMax), -32768.0f, 32767.0f);
+    صحیح rounded_yMin = hb_clamp (roundf (yMin), -32768.0f, 32767.0f);
+    صحیح rounded_yMax = hb_clamp (roundf (yMax), -32768.0f, 32767.0f);
 
     update_mtx (plan, rounded_xMin, rounded_xMax, rounded_yMin, rounded_yMax, all_points);
 
-    if (type != EMPTY)
+    اگر (type != EMPTY)
     {
       plan->head_maxp_info.xMin = hb_min (plan->head_maxp_info.xMin, rounded_xMin);
       plan->head_maxp_info.yMin = hb_min (plan->head_maxp_info.yMin, rounded_yMin);
@@ -224,23 +224,23 @@ struct Glyph
     /* when pinned at default, no need to compile glyph header
      * and for empty glyphs: all_points only include phantom points.
      * just update metrics and then return */
-    if (!glyph_header)
-      return true;
+    اگر (!glyph_header)
+      بازگشت درست;
 
-    glyph_header->numberOfContours = header->numberOfContours;
+    glyph_header->عدد_Of_Contours = header->عدد_Of_Contours;
 
     glyph_header->xMin = rounded_xMin;
     glyph_header->yMin = rounded_yMin;
     glyph_header->xMax = rounded_xMax;
     glyph_header->yMax = rounded_yMax;
 
-    dest_bytes = hb_bytes_t ((const char *)glyph_header, GlyphHeader::static_size);
-    return true;
+    dest_bytes = hb_bytes_t ((ثابت نویسه *)glyph_header, GlyphHeader::static_size);
+    بازگشت درست;
   }
 
-  bool compile_bytes_with_deltas (const hb_subset_plan_t *plan,
+  منطقی compile_bytes_with_deltas (ثابت hb_subset_plan_t *plan,
                                   hb_font_t *font,
-                                  const glyf_accelerator_t &glyf,
+                                  ثابت glyf_accelerator_t &glyf,
                                   hb_bytes_t &dest_start,  /* IN/OUT */
                                   hb_bytes_t &dest_end /* OUT */)
   {
@@ -251,7 +251,7 @@ struct Glyph
 
     // don't compute head/maxp values when glyph has no contours(type is EMPTY)
     // also ignore .notdef glyph when --notdef-outline is not enabled
-    if (type == EMPTY ||
+    اگر (type == EMPTY ||
         (gid == 0 && !(plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE)))
     {
       head_maxp_info_p = nullptr;
@@ -259,12 +259,12 @@ struct Glyph
     }
 
     hb_glyf_scratch_t scratch;
-    if (!get_points (font, glyf, all_points, scratch, &points_with_deltas, head_maxp_info_p, composite_contours_p, false, false))
-      return false;
+    اگر (!get_points (font, glyf, all_points, scratch, &points_with_deltas, head_maxp_info_p, composite_contours_p, نادرست, نادرست))
+      بازگشت نادرست;
 
     // .notdef, set type to empty so we only update metrics and don't compile bytes for
     // it
-    if (gid == 0 &&
+    اگر (gid == 0 &&
         !(plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
     {
       type = EMPTY;
@@ -273,52 +273,52 @@ struct Glyph
     }
 
     //dont compile bytes when pinned at default, just recalculate bounds
-    if (!plan->pinned_at_default)
+    اگر (!plan->pinned_at_default)
     {
-      switch (type)
+      انتخاب (type)
       {
-      case COMPOSITE:
-        if (!CompositeGlyph (*header, bytes, extended).compile_bytes_with_deltas (dest_start,
+      حالت COMPOSITE:
+        اگر (!CompositeGlyph (*header, bytes, extended).compile_bytes_with_deltas (dest_start,
 										  points_with_deltas,
 										  dest_end))
-          return false;
-        break;
-      case SIMPLE:
-        if (!SimpleGlyph (*header, bytes).compile_bytes_with_deltas (all_points,
+          بازگشت نادرست;
+        بشکن;
+      حالت SIMPLE:
+        اگر (!SimpleGlyph (*header, bytes).compile_bytes_with_deltas (all_points,
 								     plan->flags & HB_SUBSET_FLAGS_NO_HINTING,
 								     dest_end))
-          return false;
-        break;
-      case EMPTY:
+          بازگشت نادرست;
+        بشکن;
+      حالت EMPTY:
         dest_start = hb_bytes_t ();
         dest_end = hb_bytes_t ();
         /* Zero-contour glyphs may carry instructions for phantom points.
          * Copy them into owned memory like the other compiled glyphs. */
-        if (!(plan->flags & HB_SUBSET_FLAGS_NO_HINTING) &&
+        اگر (!(plan->flags & HB_SUBSET_FLAGS_NO_HINTING) &&
             bytes.length >= GlyphHeader::static_size &&
-            header->numberOfContours == 0)
+            header->عدد_Of_Contours == 0)
         {
           SimpleGlyph simple (*header, bytes);
           unsigned length = simple.instructions_length ();
-          if (length)
+          اگر (length)
           {
             length = simple.length (length);
-            char *p = (char *) hb_malloc (length);
-            if (unlikely (!p)) return false;
+            نویسه *p = (نویسه *) hb_malloc (length);
+            اگر (unlikely (!p)) بازگشت نادرست;
             hb_memcpy (p, bytes.arrayZ, length);
             dest_start = hb_bytes_t (p, length);
           }
         }
-        break;
+        بشکن;
       }
     }
 
-    if (!compile_header_bytes (plan, all_points, dest_start))
+    اگر (!compile_header_bytes (plan, all_points, dest_start))
     {
       dest_end.fini ();
-      return false;
+      بازگشت نادرست;
     }
-    return true;
+    بازگشت درست;
   }
 
 
@@ -326,144 +326,144 @@ struct Glyph
    * all_points includes phantom points
    */
   template <typename accelerator_t>
-  bool get_points (hb_font_t *font, const accelerator_t &glyf_accelerator,
+  منطقی get_points (hb_font_t *font, ثابت accelerator_t &glyf_accelerator,
 		   contour_point_vector_t &all_points /* OUT */,
 		   hb_glyf_scratch_t &scratch,
 		   contour_point_vector_t *points_with_deltas = nullptr, /* OUT */
 		   head_maxp_info_t * head_maxp_info = nullptr, /* OUT */
 		   unsigned *composite_contours = nullptr, /* OUT */
-		   bool shift_points_hori = true,
-		   bool use_my_metrics = true,
-		   bool phantom_only = false,
-		   hb_array_t<const int> coords = hb_array_t<const int> (),
+		   منطقی shift_points_hori = درست,
+		   منطقی use_my_metrics = درست,
+		   منطقی phantom_only = نادرست,
+		   hb_array_t<ثابت صحیح> coords = hb_array_t<ثابت صحیح> (),
 		   hb_scalar_cache_t *gvar_cache = nullptr,
-		   unsigned int depth = 0,
-		   unsigned *edge_count = nullptr,
-		   int64_t *budget = nullptr) const
+		   unsigned صحیح depth = 0,
+		   unsigned *edge_شمار = nullptr,
+		   int64_t *budget = nullptr) ثابت
   {
-    if (unlikely (depth > HB_MAX_NESTING_LEVEL)) return false;
-    unsigned stack_edge_count = 0;
-    if (!edge_count) edge_count = &stack_edge_count;
-    if (unlikely (*edge_count > HB_MAX_GRAPH_EDGE_COUNT)) return false;
-    (*edge_count)++;
+    اگر (unlikely (depth > HB_MAX_NESTING_LEVEL)) بازگشت نادرست;
+    unsigned پشته_edge_شمار = 0;
+    اگر (!edge_شمار) edge_شمار = &پشته_edge_شمار;
+    اگر (unlikely (*edge_شمار > HB_MAX_GRAPH_EDGE_شمار)) بازگشت نادرست;
+    (*edge_شمار)++;
 
-    int64_t stack_budget = HB_BUDGET_GLYPH;
-    if (!budget) budget = &stack_budget;
-    if (unlikely (!hb_budget_spend (*budget, HB_BUDGET_16))) return false;
+    int64_t پشته_budget = HB_BUDGET_GLYPH;
+    اگر (!budget) budget = &پشته_budget;
+    اگر (unlikely (!hb_budget_spend (*budget, HB_BUDGET_16))) بازگشت نادرست;
 
-    if (head_maxp_info)
+    اگر (head_maxp_info)
     {
       head_maxp_info->maxComponentDepth = hb_max (head_maxp_info->maxComponentDepth, depth);
     }
 
-    if (!coords && font->has_nonzero_coords)
-      coords = hb_array (font->coords, font->num_coords);
+    اگر (!coords && font->has_nonzero_coords)
+      coords = hb_array (font->coords, font->رقم_coords);
 
     contour_point_vector_t &points = type == SIMPLE ? all_points : scratch.comp_points;
     unsigned old_length = points.length;
 
-    switch (type) {
-    case SIMPLE:
-      if (depth == 0 && head_maxp_info)
-        head_maxp_info->maxContours = hb_max (head_maxp_info->maxContours, (unsigned) header->numberOfContours);
-      if (depth > 0 && composite_contours)
-        *composite_contours += (unsigned) header->numberOfContours;
-      if (unlikely (!SimpleGlyph (*header, bytes).get_contour_points (all_points, extended, phantom_only, budget)))
-	return false;
-      break;
-    case COMPOSITE:
+    انتخاب (type) {
+    حالت SIMPLE:
+      اگر (depth == 0 && head_maxp_info)
+        head_maxp_info->maxContours = hb_max (head_maxp_info->maxContours, (unsigned) header->عدد_Of_Contours);
+      اگر (depth > 0 && composite_contours)
+        *composite_contours += (unsigned) header->عدد_Of_Contours;
+      اگر (unlikely (!SimpleGlyph (*header, bytes).get_contour_points (all_points, extended, phantom_only, budget)))
+	بازگشت نادرست;
+      بشکن;
+    حالت COMPOSITE:
     {
-      for (auto &item : get_composite_iterator ())
+      برای (auto &item : get_composite_iterator ())
       {
         /* Preparing a component is a traversal step, even if cycle
          * detection later skips its child glyph. */
-        if (unlikely (!hb_budget_spend (*budget, HB_BUDGET_16) ||
+        اگر (unlikely (!hb_budget_spend (*budget, HB_BUDGET_16) ||
                       !item.get_points (points, extended)))
         {
           points.resize (old_length);
-          return false;
+          بازگشت نادرست;
         }
       }
-      break;
+      بشکن;
     }
-    case EMPTY:
-      break;
+    حالت EMPTY:
+      بشکن;
     }
 
     /* Init phantom points */
-    if (unlikely (!points.resize (points.length + PHANTOM_COUNT))) return false;
-    hb_array_t<contour_point_t> phantoms = points.as_array ().sub_array (points.length - PHANTOM_COUNT, PHANTOM_COUNT);
+    اگر (unlikely (!points.resize (points.length + PHANTOM_شمار))) بازگشت نادرست;
+    hb_array_t<contour_point_t> phantoms = points.as_array ().sub_array (points.length - PHANTOM_شمار, PHANTOM_شمار);
     {
       // Duplicated code.
-      int lsb = 0;
+      صحیح lsb = 0;
       glyf_accelerator.hmtx->get_leading_bearing_without_var_unscaled (gid, &lsb);
-      int h_delta = (int) header->xMin - lsb;
-      HB_UNUSED int tsb = 0;
+      صحیح h_delta = (صحیح) header->xMin - lsb;
+      HB_UNUSED صحیح tsb = 0;
 #ifndef HB_NO_VERTICAL
       glyf_accelerator.vmtx->get_leading_bearing_without_var_unscaled (gid, &tsb);
 #endif
-      int v_orig  = (int) header->yMax + tsb;
+      صحیح v_orig  = (صحیح) header->yMax + tsb;
       unsigned h_adv = glyf_accelerator.hmtx->get_advance_without_var_unscaled (gid);
       unsigned v_adv =
 #ifndef HB_NO_VERTICAL
                        glyf_accelerator.vmtx->get_advance_without_var_unscaled (gid)
-#else
+#وگرنه
                        - font->face->get_upem ()
 #endif
                        ;
-      phantoms[PHANTOM_LEFT].x = h_delta;
-      phantoms[PHANTOM_RIGHT].x = (int) h_adv + h_delta;
-      phantoms[PHANTOM_TOP].y = v_orig;
-      phantoms[PHANTOM_BOTTOM].y = v_orig - (int) v_adv;
+      phantoms[PHANTOM_چپ].x = h_delta;
+      phantoms[PHANTOM_راست].x = (صحیح) h_adv + h_delta;
+      phantoms[PHANTOM_بالاترین].y = v_orig;
+      phantoms[PHANTOM_BOTTOM].y = v_orig - (صحیح) v_adv;
     }
 
 #ifndef HB_NO_VAR
-    if (hb_any (coords))
+    اگر (hb_any (coords))
     {
-      if (!glyf_accelerator.gvar->apply_deltas_to_points (gid,
+      اگر (!glyf_accelerator.gvar->apply_deltas_to_points (gid,
 							  coords,
 							  points.as_array ().sub_array (old_length),
 							  scratch,
 							  gvar_cache,
 							  phantom_only && type == SIMPLE,
 							  budget))
-        return false;
+        بازگشت نادرست;
     }
 #endif
 
     // mainly used by CompositeGlyph calculating new X/Y offset value so no need to extend it
     // with child glyphs' points
-    if (points_with_deltas != nullptr && depth == 0 && type == COMPOSITE)
+    اگر (points_with_deltas != nullptr && depth == 0 && type == COMPOSITE)
     {
-      assert (old_length == 0);
+      أكد (old_length == 0);
       *points_with_deltas = points;
     }
 
-    float shift = 0;
-    switch (type) {
-    case SIMPLE:
-      if (depth == 0 && head_maxp_info)
+    اعشاری shift = 0;
+    انتخاب (type) {
+    حالت SIMPLE:
+      اگر (depth == 0 && head_maxp_info)
         head_maxp_info->maxPoints = hb_max (head_maxp_info->maxPoints, all_points.length - old_length - 4);
-      shift = phantoms[PHANTOM_LEFT].x;
-      break;
-    case COMPOSITE:
+      shift = phantoms[PHANTOM_چپ].x;
+      بشکن;
+    حالت COMPOSITE:
     {
-      hb_decycler_node_t decycler_node (scratch.decycler);
+      hb_decycler_گره_t decycler_گره (scratch.decycler);
 
-      unsigned int comp_index = 0;
-      for (auto &item : get_composite_iterator ())
+      unsigned صحیح comp_index = 0;
+      برای (auto &item : get_composite_iterator ())
       {
 	hb_codepoint_t item_gid = item.get_gid (extended);
 
-        if (unlikely (!decycler_node.visit (item_gid)))
+        اگر (unlikely (!decycler_گره.visit (item_gid)))
 	{
 	  comp_index++;
-	  continue;
+	  ادامه;
 	}
 
-	unsigned old_count = all_points.length;
+	unsigned old_شمار = all_points.length;
 
-	if (unlikely ((!phantom_only || (use_my_metrics && item.is_use_my_metrics ())) &&
+	اگر (unlikely ((!phantom_only || (use_my_metrics && item.is_use_my_metrics ())) &&
 		      !glyf_accelerator.glyph_for_gid (item_gid)
 				       .get_points (font,
 						    glyf_accelerator,
@@ -478,35 +478,35 @@ struct Glyph
 						    coords,
 						    gvar_cache,
 						    depth + 1,
-						    edge_count,
+						    edge_شمار,
 						    budget)))
 	{
 	  points.resize (old_length);
-	  return false;
+	  بازگشت نادرست;
 	}
 
 	// points might have been reallocated. Relocate phantoms.
-	phantoms = points.as_array ().sub_array (points.length - PHANTOM_COUNT, PHANTOM_COUNT);
+	phantoms = points.as_array ().sub_array (points.length - PHANTOM_شمار, PHANTOM_شمار);
 
-	auto comp_points = all_points.as_array ().sub_array (old_count);
+	auto comp_points = all_points.as_array ().sub_array (old_شمار);
 
 	/* Copy phantom points from component if USE_MY_METRICS flag set */
-	if (use_my_metrics && item.is_use_my_metrics ())
-	  for (unsigned int i = 0; i < PHANTOM_COUNT; i++)
-	    phantoms[i] = comp_points[comp_points.length - PHANTOM_COUNT + i];
+	اگر (use_my_metrics && item.is_use_my_metrics ())
+	  برای (unsigned صحیح i = 0; i < PHANTOM_شمار; i++)
+	    phantoms[i] = comp_points[comp_points.length - PHANTOM_شمار + i];
 
 	/* Each composite level transforms the whole subtree below it;
 	 * charge that work here so deep nesting is bounded by the budget
 	 * rather than by the per-draw point cap alone. */
-	if (unlikely (!hb_budget_spend (*budget, HB_BUDGET_1, comp_points.length)))
+	اگر (unlikely (!hb_budget_spend (*budget, HB_BUDGET_1, comp_points.length)))
 	{
 	  points.resize (old_length);
-	  return false;
+	  بازگشت نادرست;
 	}
 
-	if (comp_points) // Empty in case of phantom_only
+	اگر (comp_points) // Empty in case of phantom_only
 	{
-	  float matrix[4];
+	  اعشاری matrix[4];
 	  contour_point_t default_trans;
 	  item.get_transformation (matrix, default_trans, extended);
 
@@ -514,11 +514,11 @@ struct Glyph
 	  item.transform_points (comp_points, matrix, points[old_length + comp_index]);
 	}
 
-	if (item.is_anchored () && !phantom_only)
+	اگر (item.is_anchored () && !phantom_only)
 	{
-	  unsigned int p1, p2;
+	  unsigned صحیح p1, p2;
 	  item.get_anchor_points (p1, p2, extended);
-	  if (likely (p1 < all_points.length && p2 < comp_points.length))
+	  اگر (likely (p1 < all_points.length && p2 < comp_points.length))
 	  {
 	    contour_point_t delta;
 	    delta.init (all_points[p1].x - comp_points[p2].x,
@@ -528,91 +528,91 @@ struct Glyph
 	  }
 	}
 
-	all_points.resize (all_points.length - PHANTOM_COUNT);
+	all_points.resize (all_points.length - PHANTOM_شمار);
 
-	if (all_points.length > HB_GLYF_MAX_POINTS)
+	اگر (all_points.length > HB_GLYF_MAX_POINTS)
 	{
 	  points.resize (old_length);
-	  return false;
+	  بازگشت نادرست;
 	}
 
 	comp_index++;
       }
 
-      if (head_maxp_info && depth == 0)
+      اگر (head_maxp_info && depth == 0)
       {
-        if (composite_contours)
+        اگر (composite_contours)
           head_maxp_info->maxCompositeContours = hb_max (head_maxp_info->maxCompositeContours, *composite_contours);
         head_maxp_info->maxCompositePoints = hb_max (head_maxp_info->maxCompositePoints, all_points.length);
         head_maxp_info->maxComponentElements = hb_max (head_maxp_info->maxComponentElements, comp_index);
       }
       all_points.extend (phantoms);
-      shift = phantoms[PHANTOM_LEFT].x;
+      shift = phantoms[PHANTOM_چپ].x;
       points.resize (old_length);
-    } break;
-    case EMPTY:
+    } بشکن;
+    حالت EMPTY:
       all_points.extend (phantoms);
-      shift = phantoms[PHANTOM_LEFT].x;
+      shift = phantoms[PHANTOM_چپ].x;
       points.resize (old_length);
-      break;
+      بشکن;
     }
 
-    if (depth == 0 && shift_points_hori) /* Apply at top level */
+    اگر (depth == 0 && shift_points_hori) /* Apply at top level */
     {
       /* Undocumented rasterizer behavior:
        * Shift points horizontally by the updated left side bearing
        */
-      if (shift)
-        for (auto &point : all_points)
+      اگر (shift)
+        برای (auto &point : all_points)
 	  point.x -= shift;
     }
 
-    return !all_points.in_error ();
+    بازگشت !all_points.in_error ();
   }
 
-  bool get_extents_without_var_scaled (hb_font_t *font, const glyf_accelerator_t &glyf_accelerator,
-				       hb_glyph_extents_t *extents) const
+  منطقی get_extents_without_var_scaled (hb_font_t *font, ثابت glyf_accelerator_t &glyf_accelerator,
+				       hb_glyph_extents_t *extents) ثابت
   {
-    if (type == EMPTY)
+    اگر (type == EMPTY)
     {
       *extents = {0, 0, 0, 0};
-      return true; /* Empty glyph; zero extents. */
+      بازگشت درست; /* Empty glyph; zero extents. */
     }
-    return header->get_extents_without_var_scaled (font, glyf_accelerator, gid, extents);
+    بازگشت header->get_extents_without_var_scaled (font, glyf_accelerator, gid, extents);
   }
 
-  hb_bytes_t get_bytes () const { return bytes; }
-  glyph_type_t get_type () const { return type; }
-  const GlyphHeader *get_header () const { return header; }
-  bool is_extended () const { return extended; }
+  hb_bytes_t get_bytes () ثابت { بازگشت bytes; }
+  glyph_type_t get_type () ثابت { بازگشت type; }
+  ثابت GlyphHeader *get_header () ثابت { بازگشت header; }
+  منطقی is_extended () ثابت { بازگشت extended; }
 
   Glyph () : bytes (),
              header (bytes.as<GlyphHeader> ()),
              gid (-1),
              type(EMPTY),
-	     extended (false)
+	     extended (نادرست)
   {}
 
   Glyph (hb_bytes_t bytes_,
 	 hb_codepoint_t gid_,
-	 bool extended_) : bytes (bytes_),
+	 منطقی extended_) : bytes (bytes_),
 			   header (bytes.as<GlyphHeader> ()),
 			   gid (gid_),
 			   extended (extended_)
   {
-    int num_contours = header->numberOfContours;
-    if (unlikely (num_contours == 0)) type = EMPTY;
-    else if (num_contours > 0) type = SIMPLE;
-    else if (num_contours <= -1) type = COMPOSITE;
-    else type = EMPTY; // Spec deviation; Spec says COMPOSITE, but not seen in the wild.
+    صحیح رقم_contours = header->عدد_Of_Contours;
+    اگر (unlikely (رقم_contours == 0)) type = EMPTY;
+    وگرنه اگر (رقم_contours > 0) type = SIMPLE;
+    وگرنه اگر (رقم_contours <= -1) type = COMPOSITE;
+    وگرنه type = EMPTY; // Spec deviation; Spec says COMPOSITE, but not seen in the wild.
   }
 
-  protected:
+  محافظتشده:
   hb_bytes_t bytes;
-  const GlyphHeader *header;
+  ثابت GlyphHeader *header;
   hb_codepoint_t gid;
   glyph_type_t type;
-  bool extended;
+  منطقی extended;
 };
 
 
