@@ -26,17 +26,17 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
 #ifdef HAVE_GRAPHITE2
 
-#include "hb-shaper-impl.hh"
+#ضمن "hb-shaper-impl.hh"
 
-#include "hb-graphite2.h"
+#ضمن "hb-graphite2.h"
 
-#include <graphite2/Segment.h>
+#ضمن <graphite2/Segment.h>
 
-#include "hb-ot-layout.h"
+#ضمن "hb-ot-layout.h"
 
 
 /**
@@ -57,41 +57,41 @@
  * shaper face data
  */
 
-typedef struct hb_graphite2_tablelist_t
+تعريفنوع بنية hb_graphite2_tablelist_t
 {
-  struct hb_graphite2_tablelist_t *next;
+  بنية hb_graphite2_tablelist_t *next;
   hb_blob_t *blob;
-  unsigned int tag;
+  unsigned صحيح tag;
 } hb_graphite2_tablelist_t;
 
-struct hb_graphite2_face_data_t
+بنية hb_graphite2_face_data_t
 {
   hb_face_t *face;
   gr_face   *grface;
   hb_atomic_t<hb_graphite2_tablelist_t *> tlist;
 };
 
-static const void *hb_graphite2_get_table (const void *data, unsigned int tag, size_t *len)
+ساكن ثابت فراغ *hb_graphite2_get_table (ثابت فراغ *data, unsigned صحيح tag, size_t *len)
 {
   hb_graphite2_face_data_t *face_data = (hb_graphite2_face_data_t *) data;
   hb_graphite2_tablelist_t *tlist = face_data->tlist;
 
   hb_blob_t *blob = nullptr;
 
-  for (hb_graphite2_tablelist_t *p = tlist; p; p = p->next)
-    if (p->tag == tag) {
+  لكل (hb_graphite2_tablelist_t *p = tlist; p; p = p->next)
+    إذا (p->tag == tag) {
       blob = p->blob;
-      break;
+      اكسر;
     }
 
-  if (unlikely (!blob))
+  إذا (unlikely (!blob))
   {
     blob = face_data->face->reference_table (tag);
 
-    hb_graphite2_tablelist_t *p = (hb_graphite2_tablelist_t *) hb_calloc (1, sizeof (hb_graphite2_tablelist_t));
-    if (unlikely (!p)) {
+    hb_graphite2_tablelist_t *p = (hb_graphite2_tablelist_t *) hb_calloc (1, حجم (hb_graphite2_tablelist_t));
+    إذا (unlikely (!p)) {
       hb_blob_destroy (blob);
-      return nullptr;
+      أرجع nullptr;
     }
     p->blob = blob;
     p->tag = tag;
@@ -100,14 +100,14 @@ retry:
     hb_graphite2_tablelist_t *tlist = face_data->tlist;
     p->next = tlist;
 
-    if (unlikely (!face_data->tlist.cmpexch (tlist, p)))
-      goto retry;
+    إذا (unlikely (!face_data->tlist.cmpexch (tlist, p)))
+      اذهب retry;
   }
 
-  unsigned int tlen;
-  const char *d = hb_blob_get_data (blob, &tlen);
+  unsigned صحيح tlen;
+  ثابت حرف *d = hb_blob_get_data (blob, &tlen);
   *len = tlen;
-  return d;
+  أرجع d;
 }
 
 hb_graphite2_face_data_t *
@@ -116,33 +116,33 @@ _hb_graphite2_shaper_face_data_create (hb_face_t *face)
   hb_unique_ptr_t<hb_blob_t> silf_blob (face->reference_table (HB_GRAPHITE2_TAG_SILF));
   /* Umm, we just reference the table to check whether it exists.
    * Maybe add better API for this? */
-  if (!hb_blob_get_length (silf_blob))
-    return nullptr;
+  إذا (!hb_blob_get_length (silf_blob))
+    أرجع nullptr;
 
-  hb_graphite2_face_data_t *data = (hb_graphite2_face_data_t *) hb_calloc (1, sizeof (hb_graphite2_face_data_t));
-  if (unlikely (!data))
-    return nullptr;
+  hb_graphite2_face_data_t *data = (hb_graphite2_face_data_t *) hb_calloc (1, حجم (hb_graphite2_face_data_t));
+  إذا (unlikely (!data))
+    أرجع nullptr;
 
   data->face = face;
-  const gr_face_ops ops = {sizeof(gr_face_ops), &hb_graphite2_get_table, NULL};
+  ثابت gr_face_ops ops = {حجم(gr_face_ops), &hb_graphite2_get_table, عدم};
   data->grface = gr_make_face_with_ops (data, &ops, gr_face_preloadAll);
 
-  if (unlikely (!data->grface)) {
+  إذا (unlikely (!data->grface)) {
     /* data->tlist has already been populated by the callback,
      * so everything needs to be destroyed */
     _hb_graphite2_shaper_face_data_destroy (data);
-    return nullptr;
+    أرجع nullptr;
   }
 
-  return data;
+  أرجع data;
 }
 
-void
+فراغ
 _hb_graphite2_shaper_face_data_destroy (hb_graphite2_face_data_t *data)
 {
   hb_graphite2_tablelist_t *tlist = data->tlist;
 
-  while (tlist)
+  طالما (tlist)
   {
     hb_graphite2_tablelist_t *old = tlist;
     hb_blob_destroy (tlist->blob);
@@ -169,8 +169,8 @@ _hb_graphite2_shaper_face_data_destroy (hb_graphite2_face_data_t *data)
 gr_face *
 hb_graphite2_face_get_gr_face (hb_face_t *face)
 {
-  const hb_graphite2_face_data_t *data = face->data.graphite2;
-  return data ? data->grface : nullptr;
+  ثابت hb_graphite2_face_data_t *data = face->data.graphite2;
+  أرجع data ? data->grface : nullptr;
 }
 
 
@@ -178,15 +178,15 @@ hb_graphite2_face_get_gr_face (hb_face_t *face)
  * shaper font data
  */
 
-struct hb_graphite2_font_data_t {};
+بنية hb_graphite2_font_data_t {};
 
 hb_graphite2_font_data_t *
 _hb_graphite2_shaper_font_data_create (hb_font_t *font HB_UNUSED)
 {
-  return (hb_graphite2_font_data_t *) HB_SHAPER_DATA_SUCCEEDED;
+  أرجع (hb_graphite2_font_data_t *) HB_SHAPER_DATA_SUCCEEDED;
 }
 
-void
+فراغ
 _hb_graphite2_shaper_font_data_destroy (hb_graphite2_font_data_t *data HB_UNUSED)
 {
 }
@@ -206,7 +206,7 @@ _hb_graphite2_shaper_font_data_destroy (hb_graphite2_font_data_t *data HB_UNUSED
 gr_font *
 hb_graphite2_font_get_gr_font (hb_font_t *font HB_UNUSED)
 {
-  return nullptr;
+  أرجع nullptr;
 }
 #endif
 
@@ -215,40 +215,40 @@ hb_graphite2_font_get_gr_font (hb_font_t *font HB_UNUSED)
  * shaper
  */
 
-struct hb_graphite2_cluster_t {
-  unsigned int base_char;
-  unsigned int num_chars;
-  unsigned int base_glyph;
-  unsigned int num_glyphs;
-  unsigned int cluster;
+بنية hb_graphite2_cluster_t {
+  unsigned صحيح base_char;
+  unsigned صحيح عدد_chars;
+  unsigned صحيح base_glyph;
+  unsigned صحيح عدد_glyphs;
+  unsigned صحيح cluster;
   hb_position_t advance;
 };
 
-struct hb_graphite2_glyph_t {
+بنية hb_graphite2_glyph_t {
   hb_codepoint_t codepoint;
-  unsigned int cluster;
+  unsigned صحيح cluster;
 };
 
 hb_bool_t
 _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
 		     hb_font_t          *font,
 		     hb_buffer_t        *buffer,
-		     const hb_feature_t *features,
-		     unsigned int        num_features)
+		     ثابت hb_feature_t *features,
+		     unsigned صحيح        عدد_features)
 {
   hb_face_t *face = font->face;
   gr_face *grface = face->data.graphite2->grface;
 
-  const char *lang = hb_language_to_string (hb_buffer_get_language (buffer));
-  const char *lang_end = lang ? strchr (lang, '-') : nullptr;
-  int lang_len = lang_end ? lang_end - lang : -1;
+  ثابت حرف *lang = hb_language_to_string (hb_buffer_get_language (buffer));
+  ثابت حرف *lang_end = lang ? strchr (lang, '-') : nullptr;
+  صحيح lang_len = lang_end ? lang_end - lang : -1;
   gr_feature_val *feats = gr_face_featureval_for_lang (grface, lang ? hb_tag_from_string (lang, lang_len) : 0);
 
-  for (unsigned int i = 0; i < num_features; i++)
+  لكل (unsigned صحيح i = 0; i < عدد_features; i++)
   {
-    const gr_feature_ref *fref = gr_face_find_fref (grface, features[i].tag);
-    if (fref)
-      gr_fref_set_feature_value (fref, features[i].value, feats);
+    ثابت gr_feature_ref *fref = gr_face_find_fref (grface, features[i].tag);
+    إذا (fref)
+      gr_fref_set_feature_قدر (fref, features[i].value, feats);
   }
 
   hb_direction_t direction = buffer->props.direction;
@@ -257,7 +257,7 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
    * The only BTT vertical script is Ogham, but it's not clear to me whether OpenType
    * Ogham fonts are supposed to be implemented BTT or not.  Need to research that
    * first. */
-  if ((HB_DIRECTION_IS_HORIZONTAL (direction) &&
+  إذا ((HB_DIRECTION_IS_HORIZONTAL (direction) &&
        direction != horiz_dir && horiz_dir != HB_DIRECTION_INVALID) ||
       (HB_DIRECTION_IS_VERTICAL   (direction) &&
        direction != HB_DIRECTION_TTB))
@@ -267,16 +267,16 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
   }
 
   gr_segment *seg = nullptr;
-  const gr_slot *is;
-  unsigned int ci = 0, ic = 0;
+  ثابت gr_slot *is;
+  unsigned صحيح ci = 0, ic = 0;
   hb_position_t curradvx = 0, curradvy = 0;
 
-  unsigned int scratch_size;
+  unsigned صحيح scratch_size;
   hb_buffer_t::scratch_buffer_t *scratch = buffer->get_scratch_buffer (&scratch_size);
 
   uint32_t *chars = (uint32_t *) scratch;
 
-  for (unsigned int i = 0; i < buffer->len; ++i)
+  لكل (unsigned صحيح i = 0; i < buffer->len; ++i)
     chars[i] = buffer->info[i].codepoint;
 
   seg = gr_make_seg (nullptr, grface,
@@ -285,104 +285,104 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
 		     gr_utf32, chars, buffer->len,
 		     2 | (direction == HB_DIRECTION_RTL ? 1 : 0));
 
-  if (unlikely (!seg)) {
-    if (feats) gr_featureval_destroy (feats);
-    return false;
+  إذا (unlikely (!seg)) {
+    إذا (feats) gr_featureval_destroy (feats);
+    أرجع خطأ;
   }
 
-  unsigned int glyph_count = gr_seg_n_slots (seg);
-  if (unlikely (!glyph_count)) {
-    if (feats) gr_featureval_destroy (feats);
+  unsigned صحيح glyph_گنتی = gr_seg_n_slots (seg);
+  إذا (unlikely (!glyph_گنتی)) {
+    إذا (feats) gr_featureval_destroy (feats);
     gr_seg_destroy (seg);
     buffer->len = 0;
-    return true;
+    أرجع true;
   }
 
-  (void) buffer->ensure (glyph_count);
+  (فراغ) buffer->ensure (glyph_گنتی);
   scratch = buffer->get_scratch_buffer (&scratch_size);
-  while ((DIV_CEIL (sizeof (hb_graphite2_cluster_t) * buffer->len, sizeof (*scratch)) +
-	  DIV_CEIL (sizeof (hb_graphite2_glyph_t) * glyph_count, sizeof (*scratch))) > scratch_size)
+  طالما ((DIV_CEIL (حجم (hb_graphite2_cluster_t) * buffer->len, حجم (*scratch)) +
+	  DIV_CEIL (حجم (hb_graphite2_glyph_t) * glyph_گنتی, حجم (*scratch))) > scratch_size)
   {
-    if (unlikely (!buffer->ensure (buffer->allocated * 2)))
+    إذا (unlikely (!buffer->ensure (buffer->allocated * 2)))
     {
-      if (feats) gr_featureval_destroy (feats);
+      إذا (feats) gr_featureval_destroy (feats);
       gr_seg_destroy (seg);
-      return false;
+      أرجع خطأ;
     }
     scratch = buffer->get_scratch_buffer (&scratch_size);
   }
 
 #define ALLOCATE_ARRAY(Type, name, len) \
   Type *name = (Type *) scratch; \
-  do { \
-    unsigned int _consumed = DIV_CEIL ((len) * sizeof (Type), sizeof (*scratch)); \
-    assert (_consumed <= scratch_size); \
+  افعل { \
+    unsigned صحيح _consumed = DIV_CEIL ((len) * حجم (Type), حجم (*scratch)); \
+    أكد (_consumed <= scratch_size); \
     scratch += _consumed; \
     scratch_size -= _consumed; \
-  } while (0)
+  } طالما (0)
 
   ALLOCATE_ARRAY (hb_graphite2_cluster_t, clusters, buffer->len);
-  ALLOCATE_ARRAY (hb_graphite2_glyph_t, glyphs, glyph_count);
+  ALLOCATE_ARRAY (hb_graphite2_glyph_t, glyphs, glyph_گنتی);
 
 #undef ALLOCATE_ARRAY
 
-  hb_memset (clusters, 0, sizeof (clusters[0]) * buffer->len);
+  hb_memset (clusters, 0, حجم (clusters[0]) * buffer->len);
 
   hb_graphite2_glyph_t *pg = glyphs;
   clusters[0].cluster = buffer->info[0].cluster;
-  unsigned int upem = hb_face_get_upem (face);
-  float xscale = (float) font->x_scale / upem;
-  float yscale = (float) font->y_scale / upem;
+  unsigned صحيح upem = hb_face_get_upem (face);
+  عائم xscale = (عائم) font->x_scale / upem;
+  عائم yscale = (عائم) font->y_scale / upem;
   yscale *= yscale / xscale;
   hb_position_t curradv = 0;
-  if (HB_DIRECTION_IS_BACKWARD (direction))
+  إذا (HB_DIRECTION_IS_BACKWARD (direction))
   {
     curradv = hb_clamp_to<hb_position_t> (gr_slot_origin_X(gr_seg_first_slot(seg)) * xscale);
-    clusters[0].advance = hb_clamp_to<hb_position_t> ((double) (gr_seg_advance_X(seg) * xscale) - curradv);
+    clusters[0].advance = hb_clamp_to<hb_position_t> ((مزدوج) (gr_seg_advance_X(seg) * xscale) - curradv);
   }
-  else
+  وإلا
     clusters[0].advance = 0;
-  for (is = gr_seg_first_slot (seg), ic = 0; is; is = gr_slot_next_in_segment (is), ic++)
+  لكل (is = gr_seg_first_slot (seg), ic = 0; is; is = gr_slot_next_in_segment (is), ic++)
   {
-    int slot_before = gr_slot_before (is);
-    int slot_after = gr_slot_after (is);
-    if (unlikely (slot_before < 0 ||
+    صحيح slot_before = gr_slot_before (is);
+    صحيح slot_after = gr_slot_after (is);
+    إذا (unlikely (slot_before < 0 ||
 		  slot_after < slot_before ||
-		  (unsigned int) slot_after >= buffer->len))
+		  (unsigned صحيح) slot_after >= buffer->len))
     {
-      if (feats) gr_featureval_destroy (feats);
+      إذا (feats) gr_featureval_destroy (feats);
       gr_seg_destroy (seg);
-      return false;
+      أرجع خطأ;
     }
-    unsigned int before = (unsigned int) slot_before;
-    unsigned int after = (unsigned int) slot_after;
+    unsigned صحيح before = (unsigned صحيح) slot_before;
+    unsigned صحيح after = (unsigned صحيح) slot_after;
     pg->codepoint = gr_slot_gid (is);
     pg->cluster = hb_min (buffer->info[before].cluster,
 			  buffer->info[after].cluster);
     pg++;
-    while (clusters[ci].base_char > before && ci)
+    طالما (clusters[ci].base_char > before && ci)
     {
-      clusters[ci-1].num_chars += clusters[ci].num_chars;
-      clusters[ci-1].num_glyphs += clusters[ci].num_glyphs;
+      clusters[ci-1].عدد_chars += clusters[ci].عدد_chars;
+      clusters[ci-1].عدد_glyphs += clusters[ci].عدد_glyphs;
       clusters[ci-1].advance = hb_saturate_add (clusters[ci-1].advance, clusters[ci].advance);
       ci--;
     }
 
-    if (gr_slot_can_insert_before (is) && clusters[ci].num_chars && before >= clusters[ci].base_char + clusters[ci].num_chars)
+    إذا (gr_slot_can_داخل_کرو_before (is) && clusters[ci].عدد_chars && before >= clusters[ci].base_char + clusters[ci].عدد_chars)
     {
       hb_graphite2_cluster_t *c = clusters + ci + 1;
-      c->base_char = clusters[ci].base_char + clusters[ci].num_chars;
+      c->base_char = clusters[ci].base_char + clusters[ci].عدد_chars;
       c->cluster = buffer->info[c->base_char].cluster;
-      c->num_chars = before - c->base_char;
+      c->عدد_chars = before - c->base_char;
       c->base_glyph = ic;
-      c->num_glyphs = 0;
-      if (HB_DIRECTION_IS_BACKWARD (direction))
+      c->عدد_glyphs = 0;
+      إذا (HB_DIRECTION_IS_BACKWARD (direction))
       {
-	c->advance = hb_clamp_to<hb_position_t> ((double) curradv -
-						   (double) (gr_slot_origin_X(is) * xscale));
+	c->advance = hb_clamp_to<hb_position_t> ((مزدوج) curradv -
+						   (مزدوج) (gr_slot_origin_X(is) * xscale));
 	curradv = hb_saturate_sub (curradv, c->advance);
       }
-      else
+      وإلا
       {
 	hb_position_t origin_X = hb_clamp_to<hb_position_t> (gr_slot_origin_X (is) * xscale);
 	c->advance = 0;
@@ -392,22 +392,22 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
       }
       ci++;
     }
-    clusters[ci].num_glyphs++;
+    clusters[ci].عدد_glyphs++;
 
-    if (clusters[ci].base_char + clusters[ci].num_chars < after + 1)
-	clusters[ci].num_chars = after + 1 - clusters[ci].base_char;
+    إذا (clusters[ci].base_char + clusters[ci].عدد_chars < after + 1)
+	clusters[ci].عدد_chars = after + 1 - clusters[ci].base_char;
   }
 
-  if (HB_DIRECTION_IS_BACKWARD (direction))
+  إذا (HB_DIRECTION_IS_BACKWARD (direction))
     clusters[ci].advance = hb_saturate_add (clusters[ci].advance, curradv);
-  else
-    clusters[ci].advance = hb_clamp_to<hb_position_t> ((double) clusters[ci].advance +
-							       (double) (gr_seg_advance_X(seg) * xscale) - curradv);
+  وإلا
+    clusters[ci].advance = hb_clamp_to<hb_position_t> ((مزدوج) clusters[ci].advance +
+							       (مزدوج) (gr_seg_advance_X(seg) * xscale) - curradv);
   ci++;
 
-  for (unsigned int i = 0; i < ci; ++i)
+  لكل (unsigned صحيح i = 0; i < ci; ++i)
   {
-    for (unsigned int j = 0; j < clusters[i].num_glyphs; ++j)
+    لكل (unsigned صحيح j = 0; j < clusters[i].عدد_glyphs; ++j)
     {
       hb_glyph_info_t *info = &buffer->info[clusters[i].base_glyph + j];
       info->codepoint = glyphs[clusters[i].base_glyph + j].codepoint;
@@ -418,63 +418,63 @@ _hb_graphite2_shape (hb_shape_plan_t    *shape_plan HB_UNUSED,
       info->var2.u32 = i;                       // Graphite cluster index
     }
   }
-  buffer->len = glyph_count;
+  buffer->len = glyph_گنتی;
 
-  for (unsigned int i = 0; i < ci; ++i)
+  لكل (unsigned صحيح i = 0; i < ci; ++i)
     buffer->merge_clusters (clusters[i].base_glyph,
-			    clusters[i].base_glyph + clusters[i].num_glyphs);
+			    clusters[i].base_glyph + clusters[i].عدد_glyphs);
 
   /* Positioning. */
-  unsigned int curr_gr_cluster = UINT_MAX;
-  const hb_glyph_info_t *info = buffer->info;
+  unsigned صحيح curr_gr_cluster = UINT_MAX;
+  ثابت hb_glyph_info_t *info = buffer->info;
   hb_glyph_position_t *pPos = hb_buffer_get_glyph_positions (buffer, nullptr);
-  if (!HB_DIRECTION_IS_BACKWARD (direction))
+  إذا (!HB_DIRECTION_IS_BACKWARD (direction))
   {
     curradvx = 0;
-    for (is = gr_seg_first_slot (seg); is; pPos++, ++info, is = gr_slot_next_in_segment (is))
+    لكل (is = gr_seg_first_slot (seg); is; pPos++, ++info, is = gr_slot_next_in_segment (is))
     {
-      pPos->x_offset = hb_clamp_to<hb_position_t> ((double) (gr_slot_origin_X (is) * xscale) - curradvx);
-      pPos->y_offset = hb_clamp_to<hb_position_t> ((double) (gr_slot_origin_Y (is) * yscale) - curradvy);
-      if (info->var2.u32 != curr_gr_cluster) {
+      pPos->x_offset = hb_clamp_to<hb_position_t> ((مزدوج) (gr_slot_origin_X (is) * xscale) - curradvx);
+      pPos->y_offset = hb_clamp_to<hb_position_t> ((مزدوج) (gr_slot_origin_Y (is) * yscale) - curradvy);
+      إذا (info->var2.u32 != curr_gr_cluster) {
 	pPos->x_advance = info->var1.i32;
 	curradvx = hb_saturate_add (curradvx, pPos->x_advance);
 	curr_gr_cluster = info->var2.u32;
-      } else
+      } وإلا
 	pPos->x_advance = 0.;
 
       pPos->y_advance = hb_clamp_to<hb_position_t> (gr_slot_advance_Y (is, grface, nullptr) * yscale);
       curradvy = hb_saturate_add (curradvy, pPos->y_advance);
     }
   }
-  else
+  وإلا
   {
     curradvx = hb_clamp_to<hb_position_t> (gr_seg_advance_X(seg) * xscale);
-    for (is = gr_seg_first_slot (seg); is; pPos++, info++, is = gr_slot_next_in_segment (is))
+    لكل (is = gr_seg_first_slot (seg); is; pPos++, info++, is = gr_slot_next_in_segment (is))
     {
-      if (info->var2.u32 != curr_gr_cluster)
+      إذا (info->var2.u32 != curr_gr_cluster)
       {
 	pPos->x_advance = info->var1.i32;
 	curradvx = hb_saturate_sub (curradvx, pPos->x_advance);
 	curr_gr_cluster = info->var2.u32;
-      } else
+      } وإلا
 	pPos->x_advance = 0.;
 
       pPos->y_advance = hb_clamp_to<hb_position_t> (gr_slot_advance_Y (is, grface, nullptr) * yscale);
       curradvy = hb_saturate_sub (curradvy, pPos->y_advance);
-      pPos->x_offset = hb_clamp_to<hb_position_t> ((double) (gr_slot_origin_X (is) * xscale) -
+      pPos->x_offset = hb_clamp_to<hb_position_t> ((مزدوج) (gr_slot_origin_X (is) * xscale) -
 							  info->var1.i32 - curradvx + pPos->x_advance);
-      pPos->y_offset = hb_clamp_to<hb_position_t> ((double) (gr_slot_origin_Y (is) * yscale) - curradvy);
+      pPos->y_offset = hb_clamp_to<hb_position_t> ((مزدوج) (gr_slot_origin_Y (is) * yscale) - curradvy);
     }
     hb_buffer_reverse_clusters (buffer);
   }
 
-  if (feats) gr_featureval_destroy (feats);
+  إذا (feats) gr_featureval_destroy (feats);
   gr_seg_destroy (seg);
 
   buffer->clear_glyph_flags ();
   buffer->unsafe_to_break ();
 
-  return true;
+  أرجع true;
 }
 
 

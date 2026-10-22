@@ -22,11 +22,11 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
-#include "hb-set.hh"
+#ضمن "hb.hh"
+#ضمن "hb-set.hh"
 
-int
-main (int argc, char **argv)
+صحيح
+main (صحيح argc, حرف **argv)
 {
 
   /* Test copy constructor. */
@@ -113,20 +113,20 @@ main (int argc, char **argv)
     s.invert();
     s.del (5);
 
-    hb_codepoint_t start = HB_SET_VALUE_INVALID, last = HB_SET_VALUE_INVALID;
+    hb_codepoint_t start = HB_SET_قدر_INVALID, last = HB_SET_قدر_INVALID;
     hb_always_assert (s.next_range (&start, &last));
     hb_always_assert (start == 0);
     hb_always_assert (last == 4);
     hb_always_assert (s.next_range (&start, &last));
     hb_always_assert (start == 6);
-    hb_always_assert (last == HB_SET_VALUE_INVALID - 1);
+    hb_always_assert (last == HB_SET_قدر_INVALID - 1);
     hb_always_assert (!s.next_range (&start, &last));
 
-    start = HB_SET_VALUE_INVALID;
-    last = HB_SET_VALUE_INVALID;
+    start = HB_SET_قدر_INVALID;
+    last = HB_SET_قدر_INVALID;
     hb_always_assert (s.previous_range (&start, &last));
     hb_always_assert (start == 6);
-    hb_always_assert (last == HB_SET_VALUE_INVALID - 1);
+    hb_always_assert (last == HB_SET_قدر_INVALID - 1);
     hb_always_assert (s.previous_range (&start, &last));
     hb_always_assert (start == 0);
     hb_always_assert (last == 4);
@@ -134,7 +134,7 @@ main (int argc, char **argv)
 
     hb_always_assert (s.is_inverted ());
     /* Inverted set returns true for invalid value; oh well. */
-    hb_always_assert (s.has (HB_SET_VALUE_INVALID));
+    hb_always_assert (s.has (HB_SET_قدر_INVALID));
   }
 
   /* Test set intersection. */
@@ -196,34 +196,34 @@ main (int argc, char **argv)
   {
     hb_set_t s;
 
-    s.add(HB_SET_VALUE_INVALID);
-    hb_always_assert(!s.has(HB_SET_VALUE_INVALID));
+    s.add(HB_SET_قدر_INVALID);
+    hb_always_assert(!s.has(HB_SET_قدر_INVALID));
 
     s.clear();
-    hb_always_assert(!s.add_range(HB_SET_VALUE_INVALID - 2, HB_SET_VALUE_INVALID));
-    hb_always_assert(!s.has(HB_SET_VALUE_INVALID));
+    hb_always_assert(!s.add_range(HB_SET_قدر_INVALID - 2, HB_SET_قدر_INVALID));
+    hb_always_assert(!s.has(HB_SET_قدر_INVALID));
 
-    hb_codepoint_t array[] = {(unsigned) HB_SET_VALUE_INVALID, 0, 2};
+    hb_codepoint_t array[] = {(unsigned) HB_SET_قدر_INVALID, 0, 2};
     s.clear();
     s.add_array(array, 3);
-    hb_always_assert(!s.has(HB_SET_VALUE_INVALID));
+    hb_always_assert(!s.has(HB_SET_قدر_INVALID));
     hb_always_assert(s.has(2));
 
-    hb_codepoint_t sorted_array[] = {0, 2, (unsigned) HB_SET_VALUE_INVALID};
+    hb_codepoint_t sorted_array[] = {0, 2, (unsigned) HB_SET_قدر_INVALID};
     s.clear();
     s.add_sorted_array(sorted_array, 3);
-    hb_always_assert(!s.has(HB_SET_VALUE_INVALID));
+    hb_always_assert(!s.has(HB_SET_قدر_INVALID));
     hb_always_assert(s.has(2));
   }
 
   /* Test iteration across words and pages. */
   {
     hb_set_t s {0, 1, 63, 64, 65, 127, 511, 512, 513, 1024,
-		HB_SET_VALUE_INVALID - 1};
+		HB_SET_قدر_INVALID - 1};
     hb_codepoint_t expected[] = {0, 1, 63, 64, 65, 127, 511, 512, 513,
-				 1024, HB_SET_VALUE_INVALID - 1};
-    unsigned int i = 0;
-    for (hb_codepoint_t v : s)
+				 1024, HB_SET_قدر_INVALID - 1};
+    unsigned صحيح i = 0;
+    لكل (hb_codepoint_t v : s)
     {
       hb_always_assert (i < ARRAY_LENGTH (expected));
       hb_always_assert (v == expected[i++]);
@@ -251,11 +251,11 @@ main (int argc, char **argv)
 
     it = it.end ();
     --it;
-    hb_always_assert (*it == HB_SET_VALUE_INVALID - 1);
+    hb_always_assert (*it == HB_SET_قدر_INVALID - 1);
     --it;
     hb_always_assert (*it == 1024);
     ++it;
-    hb_always_assert (*it == HB_SET_VALUE_INVALID - 1);
+    hb_always_assert (*it == HB_SET_قدر_INVALID - 1);
 
     it = s.iter ();
     it += 2;
@@ -268,7 +268,7 @@ main (int argc, char **argv)
     s.invert ();
     auto it = s.iter ();
     hb_always_assert (*it == 2);
-    hb_always_assert (it.len () == HB_SET_VALUE_INVALID - 4);
+    hb_always_assert (it.len () == HB_SET_قدر_INVALID - 4);
     ++it;
     hb_always_assert (*it == 3);
     --it;
@@ -276,10 +276,10 @@ main (int argc, char **argv)
 
     it = it.end ();
     --it;
-    hb_always_assert (*it == HB_SET_VALUE_INVALID - 1);
+    hb_always_assert (*it == HB_SET_قدر_INVALID - 1);
     --it;
-    hb_always_assert (*it == HB_SET_VALUE_INVALID - 2);
+    hb_always_assert (*it == HB_SET_قدر_INVALID - 2);
   }
 
-  return 0;
+  أرجع 0;
 }
