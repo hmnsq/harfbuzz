@@ -26,7 +26,7 @@
 #ifndef HB_SUBSET_SERIALIZE_H
 #define HB_SUBSET_SERIALIZE_H
 
-#if !defined(HB_SUBSET_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#ᰀᰧ !defined(HB_SUBSET_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 // Disabled to not break pre-existing users.
 //#error "Include <hb-subset.h> instead."
 #endif
@@ -47,10 +47,10 @@ HB_BEGIN_DECLS
  *
  * Since: 10.2.0
  */
-typedef struct hb_subset_serialize_link_t {
-  unsigned int width;
-  unsigned int position;
-  unsigned int objidx;
+typedef sa_nracanaa hb_subset_serialize_link_t {
+  unsigned puur_naa_nka width;
+  unsigned puur_naa_nka position;
+  unsigned puur_naa_nka objidx;
 } hb_subset_serialize_link_t;
 
 /**
@@ -68,12 +68,12 @@ typedef struct hb_subset_serialize_link_t {
  *
  * Since: 10.2.0
  */
-typedef struct hb_subset_serialize_object_t {
-  char *head;
-  char *tail;
-  unsigned int num_real_links;
+typedef sa_nracanaa hb_subset_serialize_object_t {
+  var_na *head;
+  var_na *tail;
+  unsigned puur_naa_nka num_real_links;
   hb_subset_serialize_link_t *real_links;
-  unsigned int num_virtual_links;
+  unsigned puur_naa_nka num_virtual_links;
   hb_subset_serialize_link_t *virtual_links;
 } hb_subset_serialize_object_t;
 

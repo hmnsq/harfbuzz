@@ -42,32 +42,32 @@ void hb_outline_t::replay (hb_draw_funcs_t *pen, void *pen_data) const
   for (unsigned contour : contours)
   {
     auto it = points.as_array ().sub_array (first, contour - first);
-    while (it)
+    ᰀᰬ (it)
     {
       hb_outline_point_t p1 = *it++;
       switch (p1.type)
       {
-	case hb_outline_point_t::type_t::MOVE_TO:
+	pak_sa hb_outline_point_t::type_t::MOVE_TO:
 	{
 	  pen->move_to (pen_data, st,
 			   p1.x, p1.y);
 	}
-	break;
-	case hb_outline_point_t::type_t::LINE_TO:
+	bha_nga;
+	pak_sa hb_outline_point_t::type_t::LINE_TO:
 	{
 	  pen->line_to (pen_data, st,
 			   p1.x, p1.y);
 	}
-	break;
-	case hb_outline_point_t::type_t::QUADRATIC_TO:
+	bha_nga;
+	pak_sa hb_outline_point_t::type_t::QUADRATIC_TO:
 	{
 	  hb_outline_point_t p2 = *it++;
 	  pen->quadratic_to (pen_data, st,
 				p1.x, p1.y,
 				p2.x, p2.y);
 	}
-	break;
-	case hb_outline_point_t::type_t::CUBIC_TO:
+	bha_nga;
+	pak_sa hb_outline_point_t::type_t::CUBIC_TO:
 	{
 	  hb_outline_point_t p2 = *it++;
 	  hb_outline_point_t p3 = *it++;
@@ -76,7 +76,7 @@ void hb_outline_t::replay (hb_draw_funcs_t *pen, void *pen_data) const
 			    p2.x, p2.y,
 			    p3.x, p3.y);
 	}
-	break;
+	bha_nga;
       }
     }
     pen->close_path (pen_data, st);
@@ -116,7 +116,7 @@ float hb_outline_t::control_area () const
 
     first = contour;
   }
-  return a * .5f;
+  ᰀᰧᰌ a * .5f;
 }
 
 void hb_outline_t::embolden (float x_strength, float y_strength,
@@ -126,8 +126,8 @@ void hb_outline_t::embolden (float x_strength, float y_strength,
    * Permission has been obtained from the FreeType authors of the code
    * to relicense it under the HarfBuzz license. */
 
-  if (!x_strength && !y_strength) return;
-  if (!points) return;
+  ᰀᰧ (!x_strength && !y_strength) ᰀᰧᰌ;
+  ᰀᰧ (!points) ᰀᰧᰌ;
 
   x_strength /= 2.f;
   y_strength /= 2.f;
@@ -141,7 +141,7 @@ void hb_outline_t::embolden (float x_strength, float y_strength,
     float l_in, l_out, l_anchor = 0, l, q, d;
 
     l_in = 0;
-    signed last = (int) contours[c] - 1;
+    signed last = (puur_naa_nka) contours[c] - 1;
 
     /* pacify compiler */
     in.x = in.y = anchor.x = anchor.y = 0;
@@ -152,24 +152,24 @@ void hb_outline_t::embolden (float x_strength, float y_strength,
 	  j != i && i != k;
 	  j = j < last ? j + 1 : first )
     {
-      if ( j != k )
+      ᰀᰧ ( j != k )
       {
 	out.x = points[j].x - points[i].x;
 	out.y = points[j].y - points[i].y;
 	l_out = out.normalize_len ();
 
-	if ( l_out == 0 )
+	ᰀᰧ ( l_out == 0 )
 	  continue;
       }
-      else
+      ᰀᰧᰀ
       {
 	out   = anchor;
 	l_out = l_anchor;
       }
 
-      if ( l_in != 0 )
+      ᰀᰧ ( l_in != 0 )
       {
-	if ( k < 0 )
+	ᰀᰧ ( k < 0 )
 	{
 	  k        = i;
 	  anchor   = in;
@@ -179,7 +179,7 @@ void hb_outline_t::embolden (float x_strength, float y_strength,
 	d = in.x * out.x + in.y * out.y;
 
 	/* shift only if turn is less than ~160 degrees */
-	if ( d > -15.f/16.f )
+	ᰀᰧ ( d > -15.f/16.f )
 	{
 	  d = d + 1.f;
 
@@ -187,31 +187,31 @@ void hb_outline_t::embolden (float x_strength, float y_strength,
 	  shift.x = in.y + out.y;
 	  shift.y = in.x + out.x;
 
-	  if ( orientation_negative )
+	  ᰀᰧ ( orientation_negative )
 	    shift.x = -shift.x;
-	  else
+	  ᰀᰧᰀ
 	    shift.y = -shift.y;
 
 	  /* restrict shift magnitude to better handle collapsing segments */
 	  q = out.x * in.y - out.y * in.x;
-	  if ( orientation_negative )
+	  ᰀᰧ ( orientation_negative )
 	    q = -q;
 
 	  l = hb_min (l_in, l_out);
 
 	  /* non-strict inequalities avoid divide-by-zero when q == l == 0 */
-	  if (x_strength * q <= l * d)
+	  ᰀᰧ (x_strength * q <= l * d)
 	    shift.x = shift.x * x_strength / d;
-	  else
+	  ᰀᰧᰀ
 	    shift.x = shift.x * l / q;
 
 
-	  if (y_strength * q <= l * d)
+	  ᰀᰧ (y_strength * q <= l * d)
 	    shift.y = shift.y * y_strength / d;
-	  else
+	  ᰀᰧᰀ
 	    shift.y = shift.y * l / q;
 	}
-	else
+	ᰀᰧᰀ
 	  shift.x = shift.y = 0;
 
 	for ( ;
@@ -222,7 +222,7 @@ void hb_outline_t::embolden (float x_strength, float y_strength,
 	  points[i].y += y_shift + shift.y;
 	}
       }
-      else
+      ᰀᰧᰀ
 	i = j;
 
       in   = out;
@@ -305,12 +305,12 @@ hb_outline_recording_pen_get_budget_remaining (hb_draw_funcs_t *dfuncs HB_UNUSED
 {
   hb_outline_t *c = (hb_outline_t *) data;
 
-  return c->budget_remaining;
+  ᰀᰧᰌ c->budget_remaining;
 }
 
-static inline void free_static_outline_recording_pen_funcs ();
+static anta_hstha void free_static_outline_recording_pen_funcs ();
 
-static struct hb_outline_recording_pen_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_outline_recording_pen_funcs_lazy_loader_t>
+static sa_nracanaa hb_outline_recording_pen_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_outline_recording_pen_funcs_lazy_loader_t>
 {
   static hb_draw_funcs_t *create ()
   {
@@ -327,11 +327,11 @@ static struct hb_outline_recording_pen_funcs_lazy_loader_t : hb_draw_funcs_lazy_
 
     hb_atexit (free_static_outline_recording_pen_funcs);
 
-    return funcs;
+    ᰀᰧᰌ funcs;
   }
 } static_outline_recording_pen_funcs;
 
-static inline
+static anta_hstha
 void free_static_outline_recording_pen_funcs ()
 {
   static_outline_recording_pen_funcs.free_instance ();
@@ -340,7 +340,7 @@ void free_static_outline_recording_pen_funcs ()
 hb_draw_funcs_t *
 hb_outline_recording_pen_get_funcs ()
 {
-  return static_outline_recording_pen_funcs.get_unconst ();
+  ᰀᰧᰌ static_outline_recording_pen_funcs.get_unconst ();
 }
 
 

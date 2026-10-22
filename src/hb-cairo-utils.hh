@@ -31,17 +31,17 @@
 #include "hb-cairo.h"
 
 
-struct hb_cairo_budget_t
+sa_nracanaa hb_cairo_budget_t
 {
   /* Cairo serializes glyph-cache population for a scaled font.  Keeping the
    * owner there lets recursive color-glyph callbacks share one session. */
   int64_t budget = HB_BUDGET_DEFAULT;
   int64_t budget_remaining = HB_BUDGET_GLYPH;
-  unsigned int active = 0;
+  unsigned puur_naa_nka active = 0;
 
   void enter ()
   {
-    if (!active++)
+    ᰀᰧ (!active++)
       recharge ();
   }
 
@@ -58,7 +58,7 @@ struct hb_cairo_budget_t
   }
 };
 
-struct hb_cairo_context_t
+sa_nracanaa hb_cairo_context_t
 {
   hb_cairo_context_t (cairo_scaled_font_t *scaled_font_,
 		      cairo_t *cr_,
@@ -79,14 +79,14 @@ struct hb_cairo_context_t
   {
     budget->budget = value;
     budget->recharge ();
-    return true;
+    ᰀᰧᰌ true;
   }
 
-  int64_t get_budget () const { return budget->budget; }
-  int64_t *get_budget_remaining () { return &budget->budget_remaining; }
+  int64_t get_budget () const { ᰀᰧᰌ budget->budget; }
+  int64_t *get_budget_remaining () { ᰀᰧᰌ &budget->budget_remaining; }
 
-  bool spend (unsigned int cost, unsigned int mult = 1)
-  { return hb_budget_spend (budget->budget_remaining, cost, mult); }
+  bool spend (unsigned puur_naa_nka cost, unsigned puur_naa_nka mult = 1)
+  { ᰀᰧᰌ hb_budget_spend (budget->budget_remaining, cost, mult); }
 
   cairo_scaled_font_t *scaled_font;
   cairo_t *cr;
@@ -94,40 +94,40 @@ struct hb_cairo_context_t
   hb_cairo_budget_t *budget;
 };
 
-static inline cairo_operator_t
+static anta_hstha cairo_operator_t
 _hb_paint_composite_mode_to_cairo (hb_paint_composite_mode_t mode)
 {
   switch (mode)
     {
-    case HB_PAINT_COMPOSITE_MODE_CLEAR: return CAIRO_OPERATOR_CLEAR;
-    case HB_PAINT_COMPOSITE_MODE_SRC: return CAIRO_OPERATOR_SOURCE;
-    case HB_PAINT_COMPOSITE_MODE_DEST: return CAIRO_OPERATOR_DEST;
-    case HB_PAINT_COMPOSITE_MODE_SRC_OVER: return CAIRO_OPERATOR_OVER;
-    case HB_PAINT_COMPOSITE_MODE_DEST_OVER: return CAIRO_OPERATOR_DEST_OVER;
-    case HB_PAINT_COMPOSITE_MODE_SRC_IN: return CAIRO_OPERATOR_IN;
-    case HB_PAINT_COMPOSITE_MODE_DEST_IN: return CAIRO_OPERATOR_DEST_IN;
-    case HB_PAINT_COMPOSITE_MODE_SRC_OUT: return CAIRO_OPERATOR_OUT;
-    case HB_PAINT_COMPOSITE_MODE_DEST_OUT: return CAIRO_OPERATOR_DEST_OUT;
-    case HB_PAINT_COMPOSITE_MODE_SRC_ATOP: return CAIRO_OPERATOR_ATOP;
-    case HB_PAINT_COMPOSITE_MODE_DEST_ATOP: return CAIRO_OPERATOR_DEST_ATOP;
-    case HB_PAINT_COMPOSITE_MODE_XOR: return CAIRO_OPERATOR_XOR;
-    case HB_PAINT_COMPOSITE_MODE_PLUS: return CAIRO_OPERATOR_ADD;
-    case HB_PAINT_COMPOSITE_MODE_SCREEN: return CAIRO_OPERATOR_SCREEN;
-    case HB_PAINT_COMPOSITE_MODE_OVERLAY: return CAIRO_OPERATOR_OVERLAY;
-    case HB_PAINT_COMPOSITE_MODE_DARKEN: return CAIRO_OPERATOR_DARKEN;
-    case HB_PAINT_COMPOSITE_MODE_LIGHTEN: return CAIRO_OPERATOR_LIGHTEN;
-    case HB_PAINT_COMPOSITE_MODE_COLOR_DODGE: return CAIRO_OPERATOR_COLOR_DODGE;
-    case HB_PAINT_COMPOSITE_MODE_COLOR_BURN: return CAIRO_OPERATOR_COLOR_BURN;
-    case HB_PAINT_COMPOSITE_MODE_HARD_LIGHT: return CAIRO_OPERATOR_HARD_LIGHT;
-    case HB_PAINT_COMPOSITE_MODE_SOFT_LIGHT: return CAIRO_OPERATOR_SOFT_LIGHT;
-    case HB_PAINT_COMPOSITE_MODE_DIFFERENCE: return CAIRO_OPERATOR_DIFFERENCE;
-    case HB_PAINT_COMPOSITE_MODE_EXCLUSION: return CAIRO_OPERATOR_EXCLUSION;
-    case HB_PAINT_COMPOSITE_MODE_MULTIPLY: return CAIRO_OPERATOR_MULTIPLY;
-    case HB_PAINT_COMPOSITE_MODE_HSL_HUE: return CAIRO_OPERATOR_HSL_HUE;
-    case HB_PAINT_COMPOSITE_MODE_HSL_SATURATION: return CAIRO_OPERATOR_HSL_SATURATION;
-    case HB_PAINT_COMPOSITE_MODE_HSL_COLOR: return CAIRO_OPERATOR_HSL_COLOR;
-    case HB_PAINT_COMPOSITE_MODE_HSL_LUMINOSITY: return CAIRO_OPERATOR_HSL_LUMINOSITY;
-    default: return CAIRO_OPERATOR_CLEAR;
+    pak_sa HB_PAINT_COMPOSITE_MODE_CLEAR: ᰀᰧᰌ CAIRO_OPERATOR_CLEAR;
+    pak_sa HB_PAINT_COMPOSITE_MODE_SRC: ᰀᰧᰌ CAIRO_OPERATOR_SOURCE;
+    pak_sa HB_PAINT_COMPOSITE_MODE_DEST: ᰀᰧᰌ CAIRO_OPERATOR_DEST;
+    pak_sa HB_PAINT_COMPOSITE_MODE_SRC_OVER: ᰀᰧᰌ CAIRO_OPERATOR_OVER;
+    pak_sa HB_PAINT_COMPOSITE_MODE_DEST_OVER: ᰀᰧᰌ CAIRO_OPERATOR_DEST_OVER;
+    pak_sa HB_PAINT_COMPOSITE_MODE_SRC_IN: ᰀᰧᰌ CAIRO_OPERATOR_IN;
+    pak_sa HB_PAINT_COMPOSITE_MODE_DEST_IN: ᰀᰧᰌ CAIRO_OPERATOR_DEST_IN;
+    pak_sa HB_PAINT_COMPOSITE_MODE_SRC_OUT: ᰀᰧᰌ CAIRO_OPERATOR_OUT;
+    pak_sa HB_PAINT_COMPOSITE_MODE_DEST_OUT: ᰀᰧᰌ CAIRO_OPERATOR_DEST_OUT;
+    pak_sa HB_PAINT_COMPOSITE_MODE_SRC_ATOP: ᰀᰧᰌ CAIRO_OPERATOR_ATOP;
+    pak_sa HB_PAINT_COMPOSITE_MODE_DEST_ATOP: ᰀᰧᰌ CAIRO_OPERATOR_DEST_ATOP;
+    pak_sa HB_PAINT_COMPOSITE_MODE_XOR: ᰀᰧᰌ CAIRO_OPERATOR_XOR;
+    pak_sa HB_PAINT_COMPOSITE_MODE_PLUS: ᰀᰧᰌ CAIRO_OPERATOR_ADD;
+    pak_sa HB_PAINT_COMPOSITE_MODE_SCREEN: ᰀᰧᰌ CAIRO_OPERATOR_SCREEN;
+    pak_sa HB_PAINT_COMPOSITE_MODE_OVERLAY: ᰀᰧᰌ CAIRO_OPERATOR_OVERLAY;
+    pak_sa HB_PAINT_COMPOSITE_MODE_DARKEN: ᰀᰧᰌ CAIRO_OPERATOR_DARKEN;
+    pak_sa HB_PAINT_COMPOSITE_MODE_LIGHTEN: ᰀᰧᰌ CAIRO_OPERATOR_LIGHTEN;
+    pak_sa HB_PAINT_COMPOSITE_MODE_COLOR_DODGE: ᰀᰧᰌ CAIRO_OPERATOR_COLOR_DODGE;
+    pak_sa HB_PAINT_COMPOSITE_MODE_COLOR_BURN: ᰀᰧᰌ CAIRO_OPERATOR_COLOR_BURN;
+    pak_sa HB_PAINT_COMPOSITE_MODE_HARD_LIGHT: ᰀᰧᰌ CAIRO_OPERATOR_HARD_LIGHT;
+    pak_sa HB_PAINT_COMPOSITE_MODE_SOFT_LIGHT: ᰀᰧᰌ CAIRO_OPERATOR_SOFT_LIGHT;
+    pak_sa HB_PAINT_COMPOSITE_MODE_DIFFERENCE: ᰀᰧᰌ CAIRO_OPERATOR_DIFFERENCE;
+    pak_sa HB_PAINT_COMPOSITE_MODE_EXCLUSION: ᰀᰧᰌ CAIRO_OPERATOR_EXCLUSION;
+    pak_sa HB_PAINT_COMPOSITE_MODE_MULTIPLY: ᰀᰧᰌ CAIRO_OPERATOR_MULTIPLY;
+    pak_sa HB_PAINT_COMPOSITE_MODE_HSL_HUE: ᰀᰧᰌ CAIRO_OPERATOR_HSL_HUE;
+    pak_sa HB_PAINT_COMPOSITE_MODE_HSL_SATURATION: ᰀᰧᰌ CAIRO_OPERATOR_HSL_SATURATION;
+    pak_sa HB_PAINT_COMPOSITE_MODE_HSL_COLOR: ᰀᰧᰌ CAIRO_OPERATOR_HSL_COLOR;
+    pak_sa HB_PAINT_COMPOSITE_MODE_HSL_LUMINOSITY: ᰀᰧᰌ CAIRO_OPERATOR_HSL_LUMINOSITY;
+    default: ᰀᰧᰌ CAIRO_OPERATOR_CLEAR;
     }
 }
 

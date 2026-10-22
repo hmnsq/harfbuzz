@@ -22,7 +22,7 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#ᰀᰧ !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
@@ -59,7 +59,7 @@ HB_BEGIN_DECLS
  *
  * Since: 3.0.0
  **/
-typedef enum
+typedef ga_nanaa
 {
   HB_STYLE_TAG_ITALIC		= HB_TAG ('i','t','a','l'),
   HB_STYLE_TAG_OPTICAL_SIZE	= HB_TAG ('o','p','s','z'),

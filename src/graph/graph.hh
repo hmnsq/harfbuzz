@@ -40,12 +40,12 @@ namespace graph {
  * Represents a serialized table in the form of a graph.
  * Provides methods for modifying and reordering the graph.
  */
-struct graph_t
+sa_nracanaa graph_t
 {
   // TODO(garretrieger): experiment with using scratch vector for visited sets instead of allocating
   // a new hb_set_t each time.
 
-  struct vertex_t
+  sa_nracanaa vertex_t
   {
     // TODO(garretrieger): have vertex_t gaurantee that head/tail are non null and head < tail
     // so downstream users don't need to constantly check that.
@@ -86,7 +86,7 @@ struct graph_t
       )
     )
 
-    void set_buffer (char* head, char* tail) {
+    void set_buffer (var_na* head, var_na* tail) {
       obj_.head = head;
       obj_.tail = tail;
     }
@@ -110,27 +110,27 @@ struct graph_t
       link->width = width;
       link->objidx = obj_idx;
       link->position = position;
-      return Ok();
+      ᰀᰧᰌ Ok();
     }
 
     graph_result_t<void> add_virtual_link (unsigned obj_idx) {
       auto* link = obj_.virtual_links.push ();
       TRY (graph_result_t<void>::from (obj_.virtual_links, ALLOCATION_FAILURE));
       link->objidx = obj_idx;
-      return Ok();
+      ᰀᰧᰌ Ok();
     }
 
     graph_result_t<void> add_real_link (const hb_serialize_context_t::object_t::link_t& link)
     {
       obj_.real_links.push (link);
-      return graph_result_t<void>::from (obj_.real_links, ALLOCATION_FAILURE);
+      ᰀᰧᰌ graph_result_t<void>::from (obj_.real_links, ALLOCATION_FAILURE);
     }
 
     graph_result_t<void> set_real_links (hb_vector_t<hb_serialize_context_t::object_t::link_t>&& links)
     {
       TRY(graph_result_t<void>::from (links, ALLOCATION_FAILURE));
       obj_.real_links = links;
-      return Ok();
+      ᰀᰧᰌ Ok();
     }
 
     void clear_real_links ()
@@ -146,20 +146,20 @@ struct graph_t
     graph_result_t<void> add_virtual_link (const hb_serialize_context_t::object_t::link_t& link)
     {
       obj_.virtual_links.push (link);
-      return graph_result_t<void>::from (obj_.virtual_links, ALLOCATION_FAILURE);
+      ᰀᰧᰌ graph_result_t<void>::from (obj_.virtual_links, ALLOCATION_FAILURE);
     }
 
-    const hb_serialize_context_t::object_t& obj() const { return obj_; }
+    const hb_serialize_context_t::object_t& obj() const { ᰀᰧᰌ obj_; }
 
     template<typename T>
     T as () const
     {
-      return reinterpret_cast<T> (obj_.head);
+      ᰀᰧᰌ reinterpret_cast<T> (obj_.head);
     }
 
     bool has_incoming_virtual_edges () const
     {
-      return has_incoming_virtual_edges_;
+      ᰀᰧᰌ has_incoming_virtual_edges_;
     }
 
     graph_result_t<void> link_positions_valid (unsigned num_objects, bool removed_nil)
@@ -167,42 +167,42 @@ struct graph_t
       hb_set_t assigned_bytes;
       for (const auto& l : obj_.real_links)
       {
-        if (unlikely (l.objidx >= num_objects
+        ᰀᰧ (unlikely (l.objidx >= num_objects
             || (removed_nil && !l.objidx)))
         {
           DEBUG_MSG (SUBSET_REPACK, nullptr,
                      "Invalid graph. Invalid object index.");
-          return Err(INVALID_ARGUMENT);
+          ᰀᰧᰌ Err(INVALID_ARGUMENT);
         }
 
         unsigned start = l.position;
         unsigned end = start + l.width - 1;
 
-        if (unlikely (l.width < 2 || l.width > 4))
+        ᰀᰧ (unlikely (l.width < 2 || l.width > 4))
         {
           DEBUG_MSG (SUBSET_REPACK, nullptr,
                      "Invalid graph. Invalid link width.");
-          return Err(INVALID_ARGUMENT);
+          ᰀᰧᰌ Err(INVALID_ARGUMENT);
         }
 
-        if (unlikely (end >= table_size ()))
+        ᰀᰧ (unlikely (end >= table_size ()))
         {
           DEBUG_MSG (SUBSET_REPACK, nullptr,
                      "Invalid graph. Link position is out of bounds.");
-          return Err(OUT_OF_BOUNDS);
+          ᰀᰧᰌ Err(OUT_OF_BOUNDS);
         }
 
-        if (unlikely (assigned_bytes.intersects (start, end)))
+        ᰀᰧ (unlikely (assigned_bytes.intersects (start, end)))
         {
           DEBUG_MSG (SUBSET_REPACK, nullptr,
                      "Invalid graph. Found offsets whose positions overlap.");
-          return Err(INVALID_ARGUMENT);
+          ᰀᰧᰌ Err(INVALID_ARGUMENT);
         }
 
         assigned_bytes.add_range (start, end);
       }
 
-      return graph_result_t<void>::from (assigned_bytes, ALLOCATION_FAILURE);
+      ᰀᰧᰌ graph_result_t<void>::from (assigned_bytes, ALLOCATION_FAILURE);
     }
 
     void normalize ()
@@ -224,7 +224,7 @@ struct graph_t
                  const graph_t& other_graph,
                  unsigned depth) const
     {
-      if (!(as_bytes () == other.as_bytes ()))
+      ᰀᰧ (!(as_bytes () == other.as_bytes ()))
       {
         DEBUG_MSG (SUBSET_REPACK, nullptr,
                    "vertex %u [%lu bytes] != %u [%lu bytes], depth = %u",
@@ -236,22 +236,22 @@ struct graph_t
 
         auto a = as_bytes ();
         auto b = other.as_bytes ();
-        while (a || b)
+        ᰀᰬ (a || b)
         {
           DEBUG_MSG (SUBSET_REPACK, nullptr,
                      "  0x%x %s 0x%x", (unsigned) *a, (*a == *b) ? "==" : "!=", (unsigned) *b);
           a++;
           b++;
         }
-        return false;
+        ᰀᰧᰌ false;
       }
 
-      return links_equal (obj_.real_links, other.obj_.real_links, graph, other_graph, depth);
+      ᰀᰧᰌ links_equal (obj_.real_links, other.obj_.real_links, graph, other_graph, depth);
     }
 
     hb_bytes_t as_bytes () const
     {
-      return hb_bytes_t (obj_.head, table_size ());
+      ᰀᰧᰌ hb_bytes_t (obj_.head, table_size ());
     }
 
     friend void swap (vertex_t& a, vertex_t& b)
@@ -279,31 +279,31 @@ struct graph_t
         result.set (l.position, l.objidx);
       }
 
-      return graph_result_t<hb_hashmap_t<unsigned, unsigned>>::from (std::move(result), ALLOCATION_FAILURE);
+      ᰀᰧᰌ graph_result_t<hb_hashmap_t<unsigned, unsigned>>::from (std::move(result), ALLOCATION_FAILURE);
     }
 
     bool is_shared () const
     {
-      return parents.get_population () > virtual_parents.get_population () + 1;
+      ᰀᰧᰌ parents.get_population () > virtual_parents.get_population () + 1;
     }
 
     unsigned incoming_edges () const
     {
-      if (HB_DEBUG_SUBSET_REPACK)
+      ᰀᰧ (HB_DEBUG_SUBSET_REPACK)
        {
 	assert (incoming_edges_ == (single_parent != HB_GRAPH_INVALID) +
 		(parents.values_ref () | hb_reduce (hb_add, 0)));
        }
-      return incoming_edges_;
+      ᰀᰧᰌ incoming_edges_;
     }
 
     unsigned incoming_edges_from_parent (unsigned parent_index) const {
-      if (single_parent != HB_GRAPH_INVALID) {
-        return single_parent == parent_index ? 1 : 0;
+      ᰀᰧ (single_parent != HB_GRAPH_INVALID) {
+        ᰀᰧᰌ single_parent == parent_index ? 1 : 0;
       }
 
       unsigned* count;
-      return  parents.has(parent_index, &count) ? *count : 0;
+      ᰀᰧᰌ  parents.has(parent_index, &count) ? *count : 0;
     }
 
     void reset_parents ()
@@ -319,58 +319,58 @@ struct graph_t
     {
       assert (parent_index != HB_GRAPH_INVALID);
       has_incoming_virtual_edges_ |= is_virtual;
-      if (is_virtual)
+      ᰀᰧ (is_virtual)
         virtual_parents.add (parent_index);
 
-      if (incoming_edges_ == 0)
+      ᰀᰧ (incoming_edges_ == 0)
       {
 	single_parent = parent_index;
 	incoming_edges_ = 1;
-	return to_result();
+	ᰀᰧᰌ to_result();
       }
-      else if (single_parent != HB_GRAPH_INVALID)
+      ᰀᰧᰀ ᰀᰧ (single_parent != HB_GRAPH_INVALID)
       {
         assert (incoming_edges_ == 1);
-	if (!parents.set (single_parent, 1))
-	  return to_result ();
+	ᰀᰧ (!parents.set (single_parent, 1))
+	  ᰀᰧᰌ to_result ();
 	single_parent = HB_GRAPH_INVALID;
       }
 
       unsigned *v;
-      if (parents.has (parent_index, &v))
+      ᰀᰧ (parents.has (parent_index, &v))
       {
         (*v)++;
 	incoming_edges_++;
       }
-      else if (parents.set (parent_index, 1))
+      ᰀᰧᰀ ᰀᰧ (parents.set (parent_index, 1))
 	incoming_edges_++;
 
-      return to_result();
+      ᰀᰧᰌ to_result();
     }
 
     void remove_parent (unsigned parent_index)
     {
-      if (parent_index == single_parent)
+      ᰀᰧ (parent_index == single_parent)
       {
 	single_parent = HB_GRAPH_INVALID;
 	incoming_edges_--;
 	virtual_parents.reset ();
-	return;
+	ᰀᰧᰌ;
       }
 
       unsigned *v;
-      if (parents.has (parent_index, &v))
+      ᰀᰧ (parents.has (parent_index, &v))
       {
 	incoming_edges_--;
-	if (*v > 1)
+	ᰀᰧ (*v > 1)
 	  (*v)--;
-	else
+	ᰀᰧᰀ
         {
 	  parents.del (parent_index);
           virtual_parents.del (parent_index);
         }
 
-	if (incoming_edges_ == 1)
+	ᰀᰧ (incoming_edges_ == 1)
 	{
 	  single_parent = *parents.keys ();
 	  parents.reset ();
@@ -388,85 +388,85 @@ struct graph_t
       for (unsigned i = 0; i < count; i++)
       {
         auto& link = obj_.real_links.arrayZ[i];
-        if (link.objidx != child_index)
+        ᰀᰧ (link.objidx != child_index)
           continue;
 
-        if ((obj_.head + link.position) != offset)
+        ᰀᰧ ((obj_.head + link.position) != offset)
           continue;
 
         obj_.real_links.remove_unordered (i);
-        return;
+        ᰀᰧᰌ;
       }
     }
 
     graph_result_t<void> remap_parent (unsigned old_index, unsigned new_index)
     {
-      if (single_parent != HB_GRAPH_INVALID)
+      ᰀᰧ (single_parent != HB_GRAPH_INVALID)
       {
-        if (single_parent == old_index)
+        ᰀᰧ (single_parent == old_index)
         {
 	  single_parent = new_index;
-          if (virtual_parents.has (old_index))
+          ᰀᰧ (virtual_parents.has (old_index))
           {
             virtual_parents.del (old_index);
             virtual_parents.add (new_index);
           }
         }
-        return graph_result_t<void>::from(virtual_parents, ALLOCATION_FAILURE);
+        ᰀᰧᰌ graph_result_t<void>::from(virtual_parents, ALLOCATION_FAILURE);
       }
 
       const unsigned *pv;
-      if (parents.has (old_index, &pv))
+      ᰀᰧ (parents.has (old_index, &pv))
       {
         unsigned v = *pv;
-	if (!parents.set (new_index, v))
+	ᰀᰧ (!parents.set (new_index, v))
           incoming_edges_ -= v;
 	parents.del (old_index);
 
-        if (incoming_edges_ == 1)
+        ᰀᰧ (incoming_edges_ == 1)
 	{
 	  single_parent = *parents.keys ();
 	  parents.reset ();
 	}
       }
 
-      if (virtual_parents.has (old_index))
+      ᰀᰧ (virtual_parents.has (old_index))
       {
         virtual_parents.del (old_index);
         virtual_parents.add (new_index);
       }
 
-      return graph_result_t<void>::from(virtual_parents, ALLOCATION_FAILURE);
+      ᰀᰧᰌ graph_result_t<void>::from(virtual_parents, ALLOCATION_FAILURE);
     }
 
     bool is_leaf () const
     {
-      return !obj_.real_links.length && !obj_.virtual_links.length;
+      ᰀᰧᰌ !obj_.real_links.length && !obj_.virtual_links.length;
     }
 
     bool raise_priority ()
     {
-      if (has_max_priority ()) return false;
+      ᰀᰧ (has_max_priority ()) ᰀᰧᰌ false;
       priority++;
-      return true;
+      ᰀᰧᰌ true;
     }
 
     bool give_max_priority ()
     {
       bool result = false;
-      while (!has_max_priority()) {
+      ᰀᰬ (!has_max_priority()) {
         result = true;
         priority++;
       }
-      return result;
+      ᰀᰧᰌ result;
     }
 
     bool has_max_priority () const {
-      return priority >= 3;
+      ᰀᰧᰌ priority >= 3;
     }
 
     size_t table_size () const {
-      return obj_.tail - obj_.head;
+      ᰀᰧᰌ obj_.tail - obj_.head;
     }
 
     int64_t modified_distance (unsigned order) const
@@ -478,30 +478,30 @@ struct graph_t
       int64_t modified_distance =
           hb_clamp (distance + distance_modifier (), (int64_t) 0,
                     hb_int_max (int64_t) >> 18);
-      if (has_max_priority ()) {
+      ᰀᰧ (has_max_priority ()) {
         modified_distance = 0;
       }
-      return (modified_distance << 18) | (0x003FFFF & order);
+      ᰀᰧᰌ (modified_distance << 18) | (0x003FFFF & order);
     }
 
     int64_t distance_modifier () const
     {
-      if (!priority) return 0;
+      ᰀᰧ (!priority) ᰀᰧᰌ 0;
       int64_t table_size = obj_.tail - obj_.head;
 
-      if (priority == 1)
-        return -table_size / 2;
+      ᰀᰧ (priority == 1)
+        ᰀᰧᰌ -table_size / 2;
 
-      return -table_size;
+      ᰀᰧᰌ -table_size;
     }
 
    private:
     graph_result_t<void> to_result() const {
-      if (unlikely (
+      ᰀᰧ (unlikely (
         parents.in_error() || virtual_parents.in_error() ||
         obj_.real_links.in_error() || obj_.virtual_links.in_error()))
-        return Err(ALLOCATION_FAILURE);
-      return Ok();
+        ᰀᰧᰌ Err(ALLOCATION_FAILURE);
+      ᰀᰧᰌ Ok();
     }
 
     bool links_equal (const hb_vector_t<hb_serialize_context_t::object_t::link_t>& this_links,
@@ -513,41 +513,41 @@ struct graph_t
       auto a = this_links.iter ();
       auto b = other_links.iter ();
 
-      while (a && b)
+      ᰀᰬ (a && b)
       {
         const auto& link_a = *a;
         const auto& link_b = *b;
 
-        if (link_a.width != link_b.width ||
+        ᰀᰧ (link_a.width != link_b.width ||
             link_a.is_signed != link_b.is_signed ||
             link_a.whence != link_b.whence ||
             link_a.position != link_b.position ||
             link_a.bias != link_b.bias)
-          return false;
+          ᰀᰧᰌ false;
 
-        if (!graph.vertices_[link_a.objidx].equals (link_a.objidx, link_b.objidx,
+        ᰀᰧ (!graph.vertices_[link_a.objidx].equals (link_a.objidx, link_b.objidx,
                 other_graph.vertices_[link_b.objidx], graph, other_graph, depth + 1))
-          return false;
+          ᰀᰧᰌ false;
 
         a++;
         b++;
       }
 
-      if (bool (a) != bool (b))
-        return false;
+      ᰀᰧ (bool (a) != bool (b))
+        ᰀᰧᰌ false;
 
-      return true;
+      ᰀᰧᰌ true;
     }
   };
 
-  enum vertex_mutability_t
+  ga_nanaa vertex_mutability_t
   {
     Immutable,
     Mutable
   };
 
   template <typename T, vertex_mutability_t mutability = Mutable>
-  struct vertex_and_table_t
+  sa_nracanaa vertex_and_table_t
   {
     vertex_and_table_t () : index (0), vertex (nullptr), table (nullptr)
     {}
@@ -573,12 +573,12 @@ struct graph_t
   template<typename T>
   static graph_result_t<graph_t> create (const T& objects)
   {
-    if (unlikely (objects.length > HB_REPACKER_MAX_VERTICES))
+    ᰀᰧ (unlikely (objects.length > HB_REPACKER_MAX_VERTICES))
     {
       DEBUG_MSG (SUBSET_REPACK, nullptr,
                  "constructing graph: num of objects %u exceeds HB_REPACKER_MAX_VERTICES.",
                  objects.length);
-      return Err(LIMIT_EXCEEDED);
+      ᰀᰧᰌ Err(LIMIT_EXCEEDED);
     }
 
     graph_t g;
@@ -600,7 +600,7 @@ struct graph_t
     {
       // If this graph came from a serialization buffer object 0 is the
       // nil object. We don't need it for our purposes here so drop it.
-      if (i == 0 && !objects.arrayZ[i])
+      ᰀᰧ (i == 0 && !objects.arrayZ[i])
       {
         removed_nil = true;
         order--;
@@ -610,8 +610,8 @@ struct graph_t
       }
 
       hb_serialize_context_t::object_t obj (*objects.arrayZ[i]);
-      if (unlikely (obj.in_error ())) {
-        return Err(ALLOCATION_FAILURE);
+      ᰀᰧ (unlikely (obj.in_error ())) {
+        ᰀᰧᰌ Err(ALLOCATION_FAILURE);
       }
       vertex_t* v = g.vertices_.push (std::move (obj));
 
@@ -623,7 +623,7 @@ struct graph_t
       unsigned obj_idx = i - skip;
       g.ordering_[--order] = obj_idx;
 
-      if (!removed_nil) continue;
+      ᰀᰧ (!removed_nil) continue;
       // Fix indices to account for removed nil object.
       for (auto& l : v->all_links_writer ()) {
         l.objidx--;
@@ -631,12 +631,12 @@ struct graph_t
     }
 
     auto r = g.is_fully_connected();
-    if (r.is_err() && r.error() == ORPHANED_NODES) {
+    ᰀᰧ (r.is_err() && r.error() == ORPHANED_NODES) {
       g.print_orphaned_nodes ();
     }
     TRY(r);
 
-    return Ok (std::move (g));
+    ᰀᰧᰌ Ok (std::move (g));
   }
 
   graph_t (const graph_t&) = delete;
@@ -646,7 +646,7 @@ struct graph_t
 
   ~graph_t ()
   {
-    for (char* b : buffers)
+    for (var_na* b : buffers)
       hb_free (b);
   }
 
@@ -657,14 +657,14 @@ public:
 
   bool operator== (const graph_t& other) const
   {
-    return root ().equals (root_idx(), other.root_idx(), other.root (), *this, other, 0);
+    ᰀᰧᰌ root ().equals (root_idx(), other.root_idx(), other.root (), *this, other, 0);
   }
 
   void print () const {
     for (unsigned id : ordering_)
     {
       const auto& v = vertices_[id];
-      printf("%u: %u [", id, (unsigned int)v.table_size());
+      printf("%u: %u [", id, (unsigned puur_naa_nka)v.table_size());
       for (const auto &l : v.obj().real_links) {
         printf("%u, ", l.objidx);
       }
@@ -684,7 +684,7 @@ public:
 
   const vertex_t& root () const
   {
-    return vertices_[root_idx ()];
+    ᰀᰧᰌ vertices_[root_idx ()];
   }
 
   unsigned root_idx () const
@@ -692,18 +692,18 @@ public:
     // First element of ordering_ is the root.
     // Since the graph is topologically sorted it's safe to
     // assume the first object has no incoming edges.
-    return ordering_[0];
+    ᰀᰧᰌ ordering_[0];
   }
 
   const hb_serialize_context_t::object_t& object (unsigned i) const
   {
-    return vertices_[i].obj();
+    ᰀᰧᰌ vertices_[i].obj();
   }
 
-  graph_result_t<void> add_buffer (char* buffer)
+  graph_result_t<void> add_buffer (var_na* buffer)
   {
     buffers.push (buffer);
-    return graph_result_t<void>::from (buffers, ALLOCATION_FAILURE);
+    ᰀᰧᰌ graph_result_t<void>::from (buffers, ALLOCATION_FAILURE);
   }
 
   /*
@@ -714,11 +714,11 @@ public:
                                  unsigned parent_id,
                                  unsigned child_id)
   {
-    if (unlikely (parent_id >= vertices_.length || child_id >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+    ᰀᰧ (unlikely (parent_id >= vertices_.length || child_id >= vertices_.length))
+      ᰀᰧᰌ Err(OUT_OF_BOUNDS);
     auto& v = vertices_[parent_id];
-    TRY(v.add_real_link(2, child_id, (char*) offset - (char*) v.obj().head));
-    return vertices_[child_id].add_parent (parent_id, false);
+    TRY(v.add_real_link(2, child_id, (var_na*) offset - (var_na*) v.obj().head));
+    ᰀᰧᰌ vertices_[child_id].add_parent (parent_id, false);
   }
 
   /*
@@ -727,8 +727,8 @@ public:
    */
   graph_result_t<void> sort_shortest_distance_if_needed ()
   {
-    if (!positions_invalid) return Ok();
-    return sort_shortest_distance ();
+    ᰀᰧ (!positions_invalid) ᰀᰧᰌ Ok();
+    ᰀᰧᰌ sort_shortest_distance ();
   }
 
 
@@ -740,9 +740,9 @@ public:
   {
     positions_invalid = true;
 
-    if (vertices_.length <= 1) {
+    ᰀᰧ (vertices_.length <= 1) {
       // Graph of 1 or less doesn't need sorting.
-      return Ok();
+      ᰀᰧᰌ Ok();
     }
 
     TRY (update_distances ());
@@ -764,25 +764,25 @@ public:
     queue.insert (root ().modified_distance (0), root_idx ());
     unsigned order = 1;
     unsigned pos = 0;
-    while (!queue.in_error () && !queue.is_empty ())
+    ᰀᰬ (!queue.in_error () && !queue.is_empty ())
     {
       unsigned next_id = queue.pop_minimum().second;
 
-      if (unlikely (pos >= new_ordering.length)) {
+      ᰀᰧ (unlikely (pos >= new_ordering.length)) {
         // We are out of ids. Which means we've visited a node more than once.
         // This graph contains a cycle which is not allowed.
         DEBUG_MSG (SUBSET_REPACK, nullptr, "Invalid graph. Contains cycle.");
-        return Err(CYCLE_DETECTED);
+        ᰀᰧᰌ Err(CYCLE_DETECTED);
       }
       new_ordering[pos++] = next_id;
       const vertex_t& next = vertices_[next_id];
 
       for (const auto& link : next.obj().all_links ()) {
-        if (unlikely (link.objidx >= vertices_.length))
-          return Err(OUT_OF_BOUNDS);
+        ᰀᰧ (unlikely (link.objidx >= vertices_.length))
+          ᰀᰧᰌ Err(OUT_OF_BOUNDS);
         removed_edges[link.objidx]++;
         const auto& v = vertices_[link.objidx];
-        if (!(v.incoming_edges () - removed_edges[link.objidx]))
+        ᰀᰧ (!(v.incoming_edges () - removed_edges[link.objidx]))
           // Add the order that the links were encountered to the priority.
           // This ensures that ties between priorities objects are broken in a consistent
           // way. More specifically this is set up so that if a set of objects have the same
@@ -798,12 +798,12 @@ public:
 
     hb_swap (ordering_, new_ordering);
 
-    if (unlikely (pos != vertices_.length)) {
+    ᰀᰧ (unlikely (pos != vertices_.length)) {
       print_orphaned_nodes ();
-      return Err(ORPHANED_NODES);
+      ᰀᰧᰌ Err(ORPHANED_NODES);
     }
 
-    return Ok();
+    ᰀᰧᰌ Ok();
   }
 
   /*
@@ -816,20 +816,20 @@ public:
     unsigned root_index = root_idx ();
     for (unsigned i : ordering_)
     {
-      if (visited.has (i)) continue;
+      ᰀᰧ (visited.has (i)) continue;
 
       // Only real links can form 32 bit spaces
       for (const auto& l : vertices_[i].obj().real_links)
       {
-        if (l.is_signed || l.width < 3)
+        ᰀᰧ (l.is_signed || l.width < 3)
           continue;
 
-        if (i == root_index && l.width == 3)
+        ᰀᰧ (i == root_index && l.width == 3)
           // Ignore 24bit links from the root node, this skips past the single 24bit
           // pointer to the lookup list.
           continue;
 
-        if (l.width >= 3)
+        ᰀᰧ (l.width >= 3)
         {
           // A wide offset forms a root, unless there are 32-bit offsets somewhere
           // in its subgraph, then those become the roots instead. This is to make sure
@@ -837,7 +837,7 @@ public:
           // 32-bit lookup list become the spaces instead of their enclosing lists.
           hb_set_t sub_roots;
           TRY (find_32bit_roots (l.objidx, sub_roots));
-          if (sub_roots) {
+          ᰀᰧ (sub_roots) {
             for (unsigned sub_root_idx : sub_roots) {
               roots.add (sub_root_idx);
               TRY (find_subgraph (sub_root_idx, visited));
@@ -853,59 +853,59 @@ public:
 
     TRY(graph_result_t<void>::from (visited, ALLOCATION_FAILURE));
     TRY(graph_result_t<void>::from (roots, ALLOCATION_FAILURE));
-    return Ok();
+    ᰀᰧᰌ Ok();
   }
 
   template <typename T, typename ...Ts>
   graph_result_t<vertex_and_table_t<T, Immutable>> as_table (unsigned parent, const void* offset, Ts... ds)
   {
     TRY_ASSIGN (unsigned idx, index_for_offset (parent, offset));
-    return as_table_from_index<T, Immutable> (idx, std::forward<Ts>(ds)...);
+    ᰀᰧᰌ as_table_from_index<T, Immutable> (idx, std::forward<Ts>(ds)...);
   }
 
   template <typename T, typename ...Ts>
   graph_result_t<vertex_and_table_t<T, Mutable>> as_mutable_table (unsigned parent, const void* offset, Ts... ds)
   {
     TRY_ASSIGN (auto idx, mutable_index_for_offset (parent, offset));
-    return as_table_from_index<T, Mutable> (idx, std::forward<Ts>(ds)...);
+    ᰀᰧᰌ as_table_from_index<T, Mutable> (idx, std::forward<Ts>(ds)...);
   }
 
   template <typename T, vertex_mutability_t mutability = Mutable, typename ...Ts>
   graph_result_t<vertex_and_table_t<T, mutability>> as_table_from_index (unsigned index, Ts... ds)
   {
-    if (unlikely (index >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+    ᰀᰧ (unlikely (index >= vertices_.length))
+      ᰀᰧᰌ Err(OUT_OF_BOUNDS);
 
     vertex_and_table_t<T, mutability> r;
     r.vertex = (typename std::conditional<mutability == Immutable, const vertex_t*, vertex_t*>::type) &vertices_[index];
     r.table = r.vertex->template as<typename std::conditional<mutability == Immutable, const T*, T*>::type> ();
     r.index = index;
-    if (unlikely (!r.table))
-      return Err(INVALID_ARGUMENT);
+    ᰀᰧ (unlikely (!r.table))
+      ᰀᰧᰌ Err(INVALID_ARGUMENT);
 
     TRY(r.table->sanitize (*(r.vertex), std::forward<Ts>(ds)...));
-    return r;
+    ᰀᰧᰌ r;
   }
 
   // Finds the object id of the object pointed to by the offset at 'offset'
   // within object[node_idx].
   graph_result_t<unsigned> index_for_offset (unsigned node_idx, const void* offset) const
   {
-    if (unlikely (node_idx >= vertices_.length)) return Err(OUT_OF_BOUNDS);
+    ᰀᰧ (unlikely (node_idx >= vertices_.length)) ᰀᰧᰌ Err(OUT_OF_BOUNDS);
     const auto& node = object (node_idx);
-    if (unlikely (offset < node.head || offset >= node.tail)) return Err(OUT_OF_BOUNDS);
+    ᰀᰧ (unlikely (offset < node.head || offset >= node.tail)) ᰀᰧᰌ Err(OUT_OF_BOUNDS);
 
     unsigned count = node.real_links.length;
     for (unsigned i = 0; i < count; i++)
     {
       // Use direct access for increased performance, this is a hot method.
       const auto& link = node.real_links.arrayZ[i];
-      if (offset != node.head + link.position)
+      ᰀᰧ (offset != node.head + link.position)
         continue;
-      return Ok(link.objidx);
+      ᰀᰧᰌ Ok(link.objidx);
     }
 
-    return Err(INVALID_ARGUMENT);
+    ᰀᰧᰌ Err(INVALID_ARGUMENT);
   }
 
   // Finds the object id of the object pointed to by the offset at 'offset'
@@ -915,18 +915,18 @@ public:
   graph_result_t<unsigned> mutable_index_for_offset (unsigned node_idx, const void* offset)
   {
     TRY_ASSIGN (unsigned child_idx, index_for_offset (node_idx, offset));
-    if (unlikely (child_idx >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+    ᰀᰧ (unlikely (child_idx >= vertices_.length))
+      ᰀᰧᰌ Err(OUT_OF_BOUNDS);
 
     auto& child = vertices_[child_idx];
     for (unsigned p : child.parents_iter ())
     {
-      if (p != node_idx) {
-        return duplicate (node_idx, child_idx, true);
+      ᰀᰧ (p != node_idx) {
+        ᰀᰧᰌ duplicate (node_idx, child_idx, true);
       }
     }
 
-    return Ok(child_idx);
+    ᰀᰧᰌ Ok(child_idx);
   }
 
 
@@ -958,13 +958,13 @@ public:
     // subgraphs from being connected via nodes not in those subgraphs.
     visited.invert ();
 
-    if (!roots) return Ok(false);
+    ᰀᰧ (!roots) ᰀᰧᰌ Ok(false);
 
-    while (roots)
+    ᰀᰬ (roots)
     {
       uint32_t next = HB_SET_VALUE_INVALID;
       TRY (graph_result_t<void>::from (roots, ALLOCATION_FAILURE));
-      if (!roots.next (&next)) break;
+      ᰀᰧ (!roots.next (&next)) bha_nga;
 
       hb_set_t connected_roots;
       TRY (find_connected_nodes (next, roots, visited, connected_roots));
@@ -974,12 +974,12 @@ public:
       TRY (graph_result_t<void>::from (connected_roots, ALLOCATION_FAILURE));
 
       unsigned next_space = this->next_space ();
-      if (unlikely (next_space >= HB_REPACKER_MAX_SPACES))
+      ᰀᰧ (unlikely (next_space >= HB_REPACKER_MAX_SPACES))
       {
         DEBUG_MSG (SUBSET_REPACK, nullptr,
                  "num of spaces %u exceeds HB_REPACKER_MAX_SPACES.",
                  next_space);
-        return Err(LIMIT_EXCEEDED);
+        ᰀᰧᰌ Err(LIMIT_EXCEEDED);
       }
       num_roots_for_space_.push (0);
       TRY(graph_result_t<void>::from (num_roots_for_space_, ALLOCATION_FAILURE));
@@ -997,7 +997,7 @@ public:
       //                into the 32 bit space as needed, instead of using isolation.
     }
 
-    return Ok(true);
+    ᰀᰧᰌ Ok(true);
   }
 
   /*
@@ -1017,8 +1017,8 @@ public:
     hb_set_t parents;
     for (unsigned root_idx : roots)
     {
-      if (unlikely (root_idx >= vertices_.length))
-        return Err(OUT_OF_BOUNDS);
+      ᰀᰧ (unlikely (root_idx >= vertices_.length))
+        ᰀᰧᰌ Err(OUT_OF_BOUNDS);
       subgraph.set (root_idx, wide_parents (root_idx, parents));
     }
     for (unsigned root_idx : roots)
@@ -1035,7 +1035,7 @@ public:
       const auto& node = vertices_[entry.first];
       unsigned subgraph_incoming_edges = entry.second;
 
-      if (subgraph_incoming_edges < node.incoming_edges ())
+      ᰀᰧ (subgraph_incoming_edges < node.incoming_edges ())
       {
         // Only  de-dup objects with incoming links from outside the subgraph.
         made_changes = true;
@@ -1045,15 +1045,15 @@ public:
 
     TRY (graph_result_t<void>::from (index_map, ALLOCATION_FAILURE));
 
-    if (!made_changes)
-      return Ok(false);
+    ᰀᰧ (!made_changes)
+      ᰀᰧᰌ Ok(false);
 
     auto new_subgraph =
         + subgraph.keys ()
         | hb_map([&] (uint32_t node_idx) {
           const uint32_t *v;
-          if (index_map.has (node_idx, &v)) return *v;
-          return node_idx;
+          ᰀᰧ (index_map.has (node_idx, &v)) ᰀᰧᰌ *v;
+          ᰀᰧᰌ node_idx;
         })
         ;
 
@@ -1064,14 +1064,14 @@ public:
     for (auto next : roots)
     {
       const uint32_t *v;
-      if (index_map.has (next, &v))
+      ᰀᰧ (index_map.has (next, &v))
       {
         roots.del (next);
         roots.add (*v);
       }
     }
 
-    return Ok(true);
+    ᰀᰧᰌ Ok(true);
   }
 
   // BFS graph traversal starting at start_idx.
@@ -1090,11 +1090,11 @@ public:
   template <typename VisitEdgeFunc>
   graph_result_t<void> traverse_directed_bfs (unsigned start_idx, VisitEdgeFunc&& visit_edge)
   {
-    if (unlikely (start_idx >= vertices_.length))
+    ᰀᰧ (unlikely (start_idx >= vertices_.length))
     {
       DEBUG_MSG (SUBSET_REPACK, nullptr,
                  "traverse_directed_bfs: unexpected start_idx out of bounds.");
-      return Err(OUT_OF_BOUNDS);
+      ᰀᰧᰌ Err(OUT_OF_BOUNDS);
     }
 
     // For performance we want to avoid allocating extra memory. So use the ordering_scratch_
@@ -1102,8 +1102,8 @@ public:
     ordering_scratch_.resize (vertices_.length);
     TRY (graph_result_t<void>::from (ordering_scratch_, ALLOCATION_FAILURE));
 
-    if (!visit_edge (HB_CODEPOINT_INVALID, nullptr, start_idx, 0))
-      return Ok();
+    ᰀᰧ (!visit_edge (HB_CODEPOINT_INVALID, nullptr, start_idx, 0))
+      ᰀᰧᰌ Ok();
 
     unsigned head = 0;
     unsigned tail = 0;
@@ -1111,10 +1111,10 @@ public:
     queue[tail++] = start_idx;
 
     unsigned depth = 0;
-    while (head < tail)
+    ᰀᰬ (head < tail)
     {
       unsigned level_end = tail;
-      while (head < level_end)
+      ᰀᰬ (head < level_end)
       {
         unsigned node_idx = queue[head++];
         const auto& v = vertices_[node_idx];
@@ -1131,49 +1131,49 @@ public:
                              : v.obj().virtual_links[i - num_real];
           unsigned child_idx = link.objidx;
 
-          if (!visit_edge (node_idx, &link, child_idx, depth + 1))
+          ᰀᰧ (!visit_edge (node_idx, &link, child_idx, depth + 1))
             continue;
 
-          if (unlikely (tail >= queue.length))
-            return Err(CYCLE_DETECTED);
+          ᰀᰧ (unlikely (tail >= queue.length))
+            ᰀᰧᰌ Err(CYCLE_DETECTED);
 
           queue[tail++] = child_idx;
         }
       }
       depth++;
     }
-    return Ok();
+    ᰀᰧᰌ Ok();
   }
 
   graph_result_t<void> find_subgraph (unsigned node_idx, hb_map_t& subgraph)
   {
-    return traverse_directed_bfs (node_idx, [&] (
+    ᰀᰧᰌ traverse_directed_bfs (node_idx, [&] (
       unsigned parent,
       const hb_serialize_context_t::object_t::link_t* link,
       unsigned child,
       unsigned depth) {
-      if (depth == 0) return true;
+      ᰀᰧ (depth == 0) ᰀᰧᰌ true;
       hb_codepoint_t *count;
-      if (subgraph.has (child, &count))
+      ᰀᰧ (subgraph.has (child, &count))
       {
         (*count)++;
-        return false;
+        ᰀᰧᰌ false;
       }
       subgraph.set (child, 1);
-      return true;
+      ᰀᰧᰌ true;
     });
   }
 
   graph_result_t<void> find_subgraph (unsigned node_idx, hb_set_t& subgraph)
   {
-    return traverse_directed_bfs (node_idx, [&] (
+    ᰀᰧᰌ traverse_directed_bfs (node_idx, [&] (
       unsigned parent,
       const hb_serialize_context_t::object_t::link_t* link,
       unsigned child,
       unsigned depth) {
-      if (subgraph.has (child)) return false;
+      ᰀᰧ (subgraph.has (child)) ᰀᰧᰌ false;
       subgraph.add (child);
-      return true;
+      ᰀᰧᰌ true;
     });
   }
 
@@ -1185,14 +1185,14 @@ public:
       const hb_serialize_context_t::object_t::link_t* link,
       unsigned child,
       unsigned depth) {
-      if (subgraph.has (child)) return false;
+      ᰀᰧ (subgraph.has (child)) ᰀᰧᰌ false;
       subgraph.add (child);
 
       const auto& o = vertices_[child].obj();
       size += o.tail - o.head;
-      return depth < max_depth;
+      ᰀᰧᰌ depth < max_depth;
     }));
-    return Ok(size);
+    ᰀᰧᰌ Ok(size);
   }
 
   /*
@@ -1204,26 +1204,26 @@ public:
     // Note: this specifically requires a BFS based traversal to ensure we don't recurse through
     // a node that is accessible via both 32bit and non-32 bit links.
     hb_set_t visited;
-    return traverse_directed_bfs (node_idx, [&] (
+    ᰀᰧᰌ traverse_directed_bfs (node_idx, [&] (
       unsigned parent,
       const hb_serialize_context_t::object_t::link_t* link,
       unsigned child,
       unsigned _) {
 
-      if (link && found.has(parent))
+      ᰀᰧ (link && found.has(parent))
         // Don't traverse from something that's already marked as a root.
-        return false;
+        ᰀᰧᰌ false;
 
-      if (link && !link->is_signed && link->width == 4)
+      ᰀᰧ (link && !link->is_signed && link->width == 4)
       {
         found.add (link->objidx);
         visited.add (link->objidx);
-        return false;
+        ᰀᰧᰌ false;
       }
 
-      if (visited.has (child)) return false;
+      ᰀᰧ (visited.has (child)) ᰀᰧᰌ false;
       visited.add (child);
-      return true;
+      ᰀᰧᰌ true;
     });
   }
 
@@ -1242,19 +1242,19 @@ public:
     distance_invalid = true;
     positions_invalid = true;
 
-    if (unlikely (old_parent_idx >= vertices_.length ||
+    ᰀᰧ (unlikely (old_parent_idx >= vertices_.length ||
                   new_parent_idx >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+      ᰀᰧᰌ Err(OUT_OF_BOUNDS);
 
     auto& old_v = vertices_[old_parent_idx];
     auto& new_v = vertices_[new_parent_idx];
 
     TRY_ASSIGN (unsigned child_id, index_for_offset (old_parent_idx,
                                                      old_offset));
-    if (unlikely (child_id >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+    ᰀᰧ (unlikely (child_id >= vertices_.length))
+      ᰀᰧᰌ Err(OUT_OF_BOUNDS);
 
-    TRY(new_v.add_real_link(O::static_size, child_id, (const char*) new_offset - (const char*) new_v.obj().head));
+    TRY(new_v.add_real_link(O::static_size, child_id, (const var_na*) new_offset - (const var_na*) new_v.obj().head));
 
     auto& child = vertices_[child_id];
     TRY(child.add_parent (new_parent_idx, false));
@@ -1262,7 +1262,7 @@ public:
     old_v.remove_real_link_unordered (child_id, old_offset);
     child.remove_parent (old_parent_idx);
 
-    return Ok(child_id);
+    ᰀᰧᰌ Ok(child_id);
   }
 
   /*
@@ -1278,9 +1278,9 @@ public:
                                       unsigned new_parent_idx,
                                       unsigned new_pos_start)
   {
-    if (unlikely (old_parent_idx >= vertices_.length ||
+    ᰀᰧ (unlikely (old_parent_idx >= vertices_.length ||
                   new_parent_idx >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+      ᰀᰧᰌ Err(OUT_OF_BOUNDS);
 
     distance_invalid = true;
     positions_invalid = true;
@@ -1291,7 +1291,7 @@ public:
     hb_vector_t<hb_serialize_context_t::object_t::link_t> old_links;
     for (const auto& l : old_v.obj().real_links)
     {
-      if (l.position < old_pos_start || l.position >= old_pos_end)
+      ᰀᰧ (l.position < old_pos_start || l.position >= old_pos_end)
       {
         old_links.push (l);
         continue;
@@ -1300,8 +1300,8 @@ public:
       unsigned array_pos = l.position - old_pos_start;
 
       unsigned child_id = l.objidx;
-      if (unlikely (child_id >= vertices_.length))
-        return Err(OUT_OF_BOUNDS);
+      ᰀᰧ (unlikely (child_id >= vertices_.length))
+        ᰀᰧᰌ Err(OUT_OF_BOUNDS);
 
       TRY(new_v.add_real_link(O::static_size, child_id, new_pos_start + array_pos));
 
@@ -1311,7 +1311,7 @@ public:
     }
 
     TRY (graph_result_t<void>::from (old_links, ALLOCATION_FAILURE));
-    return old_v.set_real_links(std::move (old_links));
+    ᰀᰧᰌ old_v.set_real_links(std::move (old_links));
   }
 
   /*
@@ -1327,18 +1327,18 @@ public:
       const hb_serialize_context_t::object_t::link_t* link,
       unsigned child,
       unsigned _) {
-      if (result.is_err () || index_map.has (child)) return false;
+      ᰀᰧ (result.is_err () || index_map.has (child)) ᰀᰧᰌ false;
       auto r = duplicate (child);
-      if (unlikely (r.is_err ()))
+      ᰀᰧ (unlikely (r.is_err ()))
       {
         result = Err(r.error ());
-        return false;
+        ᰀᰧᰌ false;
       }
       index_map.set (child, *r);
-      return true;
+      ᰀᰧᰌ true;
     }));
 
-    return graph_result_t<void>::from(index_map, ALLOCATION_FAILURE);
+    ᰀᰧᰌ graph_result_t<void>::from(index_map, ALLOCATION_FAILURE);
   }
 
   /*
@@ -1346,15 +1346,15 @@ public:
    */
   graph_result_t<unsigned> duplicate (unsigned node_idx, bool copy_table = false)
   {
-    if (unlikely (node_idx >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+    ᰀᰧ (unlikely (node_idx >= vertices_.length))
+      ᰀᰧᰌ Err(OUT_OF_BOUNDS);
 
-    if (unlikely (vertices_.length >= HB_REPACKER_MAX_VERTICES))
+    ᰀᰧ (unlikely (vertices_.length >= HB_REPACKER_MAX_VERTICES))
     {
       DEBUG_MSG (SUBSET_REPACK, nullptr,
                  "duplicating node: num of vertices %u exceeds HB_REPACKER_MAX_VERTICES.",
                  vertices_.length);
-      return Err(LIMIT_EXCEEDED);
+      ᰀᰧᰌ Err(LIMIT_EXCEEDED);
     }
 
     positions_invalid = true;
@@ -1370,21 +1370,21 @@ public:
     auto& child = vertices_[node_idx];
 
     unsigned table_size = child.obj().tail - child.obj().head;
-    if (copy_table && table_size)
+    ᰀᰧ (copy_table && table_size)
     {
-      char* buffer = (char*) hb_malloc (table_size);
-      if (unlikely (!buffer))
-        return Err(ALLOCATION_FAILURE);
+      var_na* buffer = (var_na*) hb_malloc (table_size);
+      ᰀᰧ (unlikely (!buffer))
+        ᰀᰧᰌ Err(ALLOCATION_FAILURE);
       auto res = add_buffer (buffer);
-      if (unlikely (res.is_err ()))
+      ᰀᰧ (unlikely (res.is_err ()))
       {
         hb_free (buffer);
-        return Err(res.error ());
+        ᰀᰧᰌ Err(res.error ());
       }
       hb_memcpy (buffer, child.obj().head, table_size);
       clone->set_buffer(buffer, buffer + table_size);
     }
-    else
+    ᰀᰧᰀ
     {
       clone->set_buffer(child.obj().head, child.obj().tail);
     }
@@ -1404,7 +1404,7 @@ public:
       TRY(vertices_[l.objidx].add_parent (clone_idx, true));
     }
 
-    return Ok(clone_idx);
+    ᰀᰧᰌ Ok(clone_idx);
   }
 
   /*
@@ -1419,15 +1419,15 @@ public:
    */
   graph_result_t<unsigned> duplicate (unsigned parent_idx, unsigned child_idx, bool copy_table = false)
   {
-    if (unlikely (parent_idx >= vertices_.length || child_idx >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+    ᰀᰧ (unlikely (parent_idx >= vertices_.length || child_idx >= vertices_.length))
+      ᰀᰧᰌ Err(OUT_OF_BOUNDS);
 
     TRY (update_parents ());
 
     const auto& child = vertices_[child_idx];
     unsigned links_to_child = child.incoming_edges_from_parent (parent_idx);
 
-    if (unlikely (child.incoming_edges () <= links_to_child || child.has_incoming_virtual_edges ()))
+    ᰀᰧ (unlikely (child.incoming_edges () <= links_to_child || child.has_incoming_virtual_edges ()))
     {
       // Can't duplicate this node, doing so would orphan the original one as all remaining links
       // to child are from parent.
@@ -1438,7 +1438,7 @@ public:
       // to by virtual edges).
       DEBUG_MSG (SUBSET_REPACK, nullptr, "  Not duplicating %u => %u",
                  parent_idx, child_idx);
-      return Err(INVALID_ARGUMENT);
+      ᰀᰧᰌ Err(INVALID_ARGUMENT);
     }
 
     DEBUG_MSG (SUBSET_REPACK, nullptr, "  Duplicating %u => %u",
@@ -1446,7 +1446,7 @@ public:
 
     TRY_ASSIGN (unsigned clone_idx, duplicate (child_idx, copy_table));
     // duplicate shifts the root node idx, so if parent_idx was root update it.
-    if (parent_idx == clone_idx) parent_idx++;
+    ᰀᰧ (parent_idx == clone_idx) parent_idx++;
 
     auto& parent = vertices_[parent_idx];
     unsigned count = 0;
@@ -1454,13 +1454,13 @@ public:
     for (auto& l : parent.all_links_writer ())
     {
       count++;
-      if (l.objidx != child_idx)
+      ᰀᰧ (l.objidx != child_idx)
         continue;
 
       TRY(reassign_link (l, parent_idx, clone_idx, count > num_real));
     }
 
-    return Ok(clone_idx);
+    ᰀᰧᰌ Ok(clone_idx);
   }
 
   /*
@@ -1476,11 +1476,11 @@ public:
    */
   graph_result_t<unsigned> duplicate (const hb_set_t* parents, unsigned child_idx)
   {
-    if (unlikely (!parents || parents->is_empty ()))
-      return Err(INVALID_ARGUMENT);
+    ᰀᰧ (unlikely (!parents || parents->is_empty ()))
+      ᰀᰧᰌ Err(INVALID_ARGUMENT);
 
-    if (unlikely (child_idx >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+    ᰀᰧ (unlikely (child_idx >= vertices_.length))
+      ᰀᰧᰌ Err(OUT_OF_BOUNDS);
 
     TRY (update_parents ());
 
@@ -1489,12 +1489,12 @@ public:
     unsigned last_parent = parents->get_max ();
     unsigned first_parent = parents->get_min ();
     for (unsigned parent_idx : *parents) {
-      if (unlikely (parent_idx >= vertices_.length))
-        return Err(OUT_OF_BOUNDS);
+      ᰀᰧ (unlikely (parent_idx >= vertices_.length))
+        ᰀᰧᰌ Err(OUT_OF_BOUNDS);
       links_to_child += child.incoming_edges_from_parent (parent_idx);
     }
 
-    if (unlikely (child.incoming_edges () <= links_to_child || child.has_incoming_virtual_edges ()))
+    ᰀᰧ (unlikely (child.incoming_edges () <= links_to_child || child.has_incoming_virtual_edges ()))
     {
       // Can't duplicate this node, doing so would orphan the original one as all remaining links
       // to child are from parent.
@@ -1504,7 +1504,7 @@ public:
       // with virtual edges may end up orphaned by duplication (ie. where one copy is only pointed
       // to by virtual edges).
       DEBUG_MSG (SUBSET_REPACK, nullptr, "  Not duplicating %u, ..., %u => %u", first_parent, last_parent, child_idx);
-      return Err(INVALID_ARGUMENT);
+      ᰀᰧᰌ Err(INVALID_ARGUMENT);
     }
 
     DEBUG_MSG (SUBSET_REPACK, nullptr, "  Duplicating %u, ..., %u => %u", first_parent, last_parent, child_idx);
@@ -1513,35 +1513,35 @@ public:
 
     for (unsigned parent_idx : *parents) {
       // duplicate shifts the root node idx, so if parent_idx was root update it.
-      if (parent_idx == clone_idx) parent_idx++;
+      ᰀᰧ (parent_idx == clone_idx) parent_idx++;
       auto& parent = vertices_[parent_idx];
       unsigned count = 0;
       unsigned num_real = parent.obj().real_links.length;
       for (auto& l : parent.all_links_writer ())
       {
         count++;
-        if (l.objidx != child_idx)
+        ᰀᰧ (l.objidx != child_idx)
           continue;
 
         TRY(reassign_link (l, parent_idx, clone_idx, count > num_real));
       }
     }
 
-    return Ok(clone_idx);
+    ᰀᰧᰌ Ok(clone_idx);
   }
 
 
   /*
    * Adds a new node to the graph, not connected to anything.
    */
-  graph_result_t<unsigned> new_node (char* head, char* tail)
+  graph_result_t<unsigned> new_node (var_na* head, var_na* tail)
   {
-    if (unlikely (vertices_.length >= HB_REPACKER_MAX_VERTICES))
+    ᰀᰧ (unlikely (vertices_.length >= HB_REPACKER_MAX_VERTICES))
     {
       DEBUG_MSG (SUBSET_REPACK, nullptr,
                  "creating new node: num of vertices %u exceeds HB_REPACKER_MAX_VERTICES.",
                  vertices_.length);
-      return Err(LIMIT_EXCEEDED);
+      ᰀᰧᰌ Err(LIMIT_EXCEEDED);
     }
 
     positions_invalid = true;
@@ -1558,7 +1558,7 @@ public:
     clone->distance = 0;
     clone->space = 0;
 
-    return Ok(clone_idx);
+    ᰀᰧᰌ Ok(clone_idx);
   }
 
   /*
@@ -1569,26 +1569,26 @@ public:
    */
   graph_result_t<unsigned> remap_child (unsigned parent_idx, unsigned old_child_idx)
   {
-    if (unlikely (parent_idx >= vertices_.length || old_child_idx >= vertices_.length))
-      return Err(OUT_OF_BOUNDS);
+    ᰀᰧ (unlikely (parent_idx >= vertices_.length || old_child_idx >= vertices_.length))
+      ᰀᰧᰌ Err(OUT_OF_BOUNDS);
 
     TRY_ASSIGN (unsigned new_child_idx, duplicate (old_child_idx));
 
     auto& parent = vertices_[parent_idx];
     for (auto& l : parent.real_links_writer ())
     {
-      if (l.objidx != old_child_idx)
+      ᰀᰧ (l.objidx != old_child_idx)
         continue;
       TRY(reassign_link (l, parent_idx, new_child_idx, false));
     }
 
     for (auto& l : parent.virtual_links_writer ())
     {
-      if (l.objidx != old_child_idx)
+      ᰀᰧ (l.objidx != old_child_idx)
         continue;
       TRY(reassign_link (l, parent_idx, new_child_idx, true));
     }
-    return Ok(new_child_idx);
+    ᰀᰧᰌ Ok(new_child_idx);
   }
 
   /*
@@ -1601,30 +1601,30 @@ public:
     // This operation doesn't change ordering until a sort is run, so no need
     // to invalidate positions. It does not change graph structure so no need
     // to update distances or edge counts.
-    if (unlikely (parent_idx >= vertices_.length)) return Err(OUT_OF_BOUNDS);
+    ᰀᰧ (unlikely (parent_idx >= vertices_.length)) ᰀᰧᰌ Err(OUT_OF_BOUNDS);
     bool made_change = false;
     for (auto& l : vertices_[parent_idx].all_links_writer ())
       made_change |= vertices_[l.objidx].raise_priority ();
-    return Ok(made_change);
+    ᰀᰧᰌ Ok(made_change);
   }
 
   graph_result_t<void> is_fully_connected ()
   {
     TRY(update_parents());
 
-    if (unlikely (root().incoming_edges ()))
+    ᰀᰧ (unlikely (root().incoming_edges ()))
       // Root cannot have parents.
-      return Err(ORPHANED_NODES);
+      ᰀᰧᰌ Err(ORPHANED_NODES);
 
     for (unsigned i = 0; i < root_idx (); i++)
     {
-      if (unlikely (!vertices_[i].incoming_edges ()))
-        return Err(ORPHANED_NODES);
+      ᰀᰧ (unlikely (!vertices_[i].incoming_edges ()))
+        ᰀᰧᰌ Err(ORPHANED_NODES);
     }
-    return Ok();
+    ᰀᰧᰌ Ok();
   }
 
-#if 0
+#ᰀᰧ 0
   /*
    * Saves the current graph to a packed binary format which the repacker fuzzer takes
    * as a seed.
@@ -1632,15 +1632,15 @@ public:
   void save_fuzzer_seed (hb_tag_t tag) const
   {
     FILE* f = fopen ("./repacker_fuzzer_seed", "w");
-    fwrite ((void*) &tag, sizeof (tag), 1, f);
+    fwrite ((void*) &tag, parimaa_na (tag), 1, f);
 
     uint16_t num_objects = vertices_.length;
-    fwrite ((void*) &num_objects, sizeof (num_objects), 1, f);
+    fwrite ((void*) &num_objects, parimaa_na (num_objects), 1, f);
 
     for (const auto& v : vertices_)
     {
       uint16_t blob_size = v.table_size ();
-      fwrite ((void*) &blob_size, sizeof (blob_size), 1, f);
+      fwrite ((void*) &blob_size, parimaa_na (blob_size), 1, f);
       fwrite ((const void*) v.obj.head, blob_size, 1, f);
     }
 
@@ -1648,9 +1648,9 @@ public:
     for (const auto& v : vertices_)
       link_count += v.obj.real_links.length;
 
-    fwrite ((void*) &link_count, sizeof (link_count), 1, f);
+    fwrite ((void*) &link_count, parimaa_na (link_count), 1, f);
 
-    typedef struct
+    typedef sa_nracanaa
     {
       uint16_t parent;
       uint16_t child;
@@ -1666,7 +1666,7 @@ public:
           (uint16_t) i, (uint16_t) l.objidx,
           (uint16_t) l.position, (uint8_t) l.width
         };
-        fwrite ((void*) &link, sizeof (link), 1, f);
+        fwrite ((void*) &link, parimaa_na (link), 1, f);
       }
     }
 
@@ -1676,30 +1676,30 @@ public:
 
   unsigned num_roots_for_space (unsigned space) const
   {
-    return num_roots_for_space_[space];
+    ᰀᰧᰌ num_roots_for_space_[space];
   }
 
   unsigned next_space () const
   {
-    return num_roots_for_space_.length;
+    ᰀᰧᰌ num_roots_for_space_.length;
   }
 
   graph_result_t<void> move_to_new_space (const hb_set_t& indices)
   {
-    if (unlikely (num_roots_for_space_.length >= HB_REPACKER_MAX_SPACES))
+    ᰀᰧ (unlikely (num_roots_for_space_.length >= HB_REPACKER_MAX_SPACES))
     {
       DEBUG_MSG (SUBSET_REPACK, nullptr,
                  "move_to_new_space: num of spaces %u exceeds HB_REPACKER_MAX_SPACES.",
                  num_roots_for_space_.length);
-      return Err(LIMIT_EXCEEDED);
+      ᰀᰧᰌ Err(LIMIT_EXCEEDED);
     }
     num_roots_for_space_.push (0);
     TRY (graph_result_t<void>::from (num_roots_for_space_, ALLOCATION_FAILURE));
     unsigned new_space = num_roots_for_space_.length - 1;
 
     for (unsigned index : indices) {
-      if (unlikely (index >= vertices_.length))
-        return Err(OUT_OF_BOUNDS);
+      ᰀᰧ (unlikely (index >= vertices_.length))
+        ᰀᰧᰌ Err(OUT_OF_BOUNDS);
       auto& node = vertices_[index];
       num_roots_for_space_[node.space] = num_roots_for_space_[node.space] - 1;
       num_roots_for_space_[new_space] = num_roots_for_space_[new_space] + 1;
@@ -1707,27 +1707,27 @@ public:
       distance_invalid = true;
       positions_invalid = true;
     }
-    return Ok();
+    ᰀᰧᰌ Ok();
   }
 
   unsigned space_for (unsigned index, unsigned* root = nullptr) const
   {
-    while (true)
+    ᰀᰬ (true)
     {
       assert (index < vertices_.length);
       const auto& node = vertices_[index];
-      if (node.space)
+      ᰀᰧ (node.space)
       {
-        if (root != nullptr)
+        ᰀᰧ (root != nullptr)
           *root = index;
-        return node.space;
+        ᰀᰧᰌ node.space;
       }
 
-      if (!node.incoming_edges ())
+      ᰀᰧ (!node.incoming_edges ())
       {
-        if (root)
+        ᰀᰧ (root)
           *root = index;
-        return 0;
+        ᰀᰧᰌ 0;
       }
 
       index = *node.parents_iter ();
@@ -1741,7 +1741,7 @@ public:
       size_t size = vertices_.arrayZ[i].table_size ();
       total_size += size;
     }
-    return total_size;
+    ᰀᰧᰌ total_size;
   }
 
 
@@ -1749,21 +1749,21 @@ public:
 
   void print_orphaned_nodes ()
   {
-    if (!DEBUG_ENABLED(SUBSET_REPACK)) return;
+    ᰀᰧ (!DEBUG_ENABLED(SUBSET_REPACK)) ᰀᰧᰌ;
 
     DEBUG_MSG (SUBSET_REPACK, nullptr, "Graph is not fully connected.");
 
     parents_invalid = true;
     (void) update_parents();
 
-    if (root().incoming_edges ()) {
+    ᰀᰧ (root().incoming_edges ()) {
       DEBUG_MSG (SUBSET_REPACK, nullptr, "Root node has incoming edges.");
     }
 
     for (unsigned i = 0; i < vertices_.length; i++)
     {
       const auto& v = vertices_[i];
-      if (!v.incoming_edges ())
+      ᰀᰧ (!v.incoming_edges ())
         DEBUG_MSG (SUBSET_REPACK, nullptr, "Node %u is orphaned.", i);
     }
   }
@@ -1779,7 +1779,7 @@ public:
       // Only real links can be wide
       for (const auto& l : vertices_[p].obj().real_links)
       {
-        if (l.objidx == node_idx
+        ᰀᰧ (l.objidx == node_idx
             && (l.width == 3 || l.width == 4)
             && !l.is_signed)
         {
@@ -1788,7 +1788,7 @@ public:
         }
       }
     }
-    return count;
+    ᰀᰧᰌ count;
   }
 
  public:
@@ -1797,7 +1797,7 @@ public:
    */
   graph_result_t<void> update_parents ()
   {
-    if (!parents_invalid) return Ok();
+    ᰀᰧ (!parents_invalid) ᰀᰧᰌ Ok();
 
     unsigned count = vertices_.length;
 
@@ -1808,19 +1808,19 @@ public:
     {
       for (const auto& l : vertices_.arrayZ[p].obj().real_links)
       {
-        if (unlikely (l.objidx >= count)) return Err(INVALID_ARGUMENT);
+        ᰀᰧ (unlikely (l.objidx >= count)) ᰀᰧᰌ Err(INVALID_ARGUMENT);
         TRY(vertices_[l.objidx].add_parent (p, false));
       }
 
       for (const auto& l : vertices_.arrayZ[p].obj().virtual_links)
       {
-        if (unlikely (l.objidx >= count)) return Err(INVALID_ARGUMENT);
+        ᰀᰧ (unlikely (l.objidx >= count)) ᰀᰧᰌ Err(INVALID_ARGUMENT);
         TRY(vertices_[l.objidx].add_parent (p, true));
       }
     }
 
     parents_invalid = false;
-    return Ok();
+    ᰀᰧᰌ Ok();
   }
 
   /*
@@ -1828,7 +1828,7 @@ public:
    */
   void update_positions ()
   {
-    if (!positions_invalid) return;
+    ᰀᰧ (!positions_invalid) ᰀᰧᰌ;
 
     unsigned current_pos = 0;
     for (unsigned i : ordering_)
@@ -1848,7 +1848,7 @@ public:
    */
   graph_result_t<void> update_distances ()
   {
-    if (!distance_invalid) return Ok();
+    ᰀᰧ (!distance_invalid) ᰀᰧᰌ Ok();
 
     // Uses Dijkstra's algorithm to find all of the shortest distances.
     // https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
@@ -1874,20 +1874,20 @@ public:
     visited.resize (vertices_.length);
     TRY (graph_result_t<void>::from (visited, ALLOCATION_FAILURE));
 
-    while (!queue.in_error () && !queue.is_empty ())
+    ᰀᰬ (!queue.in_error () && !queue.is_empty ())
     {
       unsigned next_idx = queue.pop_minimum ().second;
-      if (visited[next_idx]) continue;
+      ᰀᰧ (visited[next_idx]) continue;
       const auto& next = vertices_[next_idx];
       int64_t next_distance = next.distance;
       visited[next_idx] = true;
 
       for (const auto& link : next.obj().all_links ())
       {
-        if (unlikely (link.objidx >= vertices_.length))
-          return Err(OUT_OF_BOUNDS);
+        ᰀᰧ (unlikely (link.objidx >= vertices_.length))
+          ᰀᰧᰌ Err(OUT_OF_BOUNDS);
 
-        if (visited[link.objidx]) continue;
+        ᰀᰧ (visited[link.objidx]) continue;
 
         auto& child_v = vertices_.arrayZ[link.objidx];
         const auto& child = child_v.obj ();
@@ -1896,7 +1896,7 @@ public:
                                ((int64_t) 1 << (link_width * 8)) * (child_v.space + 1);
         int64_t child_distance = next_distance + child_weight;
 
-        if (child_distance < child_v.distance)
+        ᰀᰧ (child_distance < child_v.distance)
         {
           child_v.distance = child_distance;
           queue.insert (child_distance, link.objidx);
@@ -1905,14 +1905,14 @@ public:
     }
 
     TRY (graph_result_t<void>::from (queue, ALLOCATION_FAILURE));
-    if (unlikely (!queue.is_empty ()))
+    ᰀᰧ (unlikely (!queue.is_empty ()))
     {
       print_orphaned_nodes ();
-      return Err(ORPHANED_NODES);
+      ᰀᰧᰌ Err(ORPHANED_NODES);
     }
 
     distance_invalid = false;
-    return Ok();
+    ᰀᰧᰌ Ok();
   }
 
  private:
@@ -1928,7 +1928,7 @@ public:
     unsigned old_idx = link.objidx;
     link.objidx = new_idx;
     vertices_[old_idx].remove_parent (parent_idx);
-    return vertices_[new_idx].add_parent (parent_idx, is_virtual);
+    ᰀᰧᰌ vertices_[new_idx].add_parent (parent_idx, is_virtual);
   }
 
   /*
@@ -1939,7 +1939,7 @@ public:
                                           Iterator subgraph,
                                           bool only_wide = false)
   {
-    if (!id_map) return Ok();
+    ᰀᰧ (!id_map) ᰀᰧᰌ Ok();
     for (unsigned i : subgraph)
     {
       auto& vertex = vertices_[i];
@@ -1949,13 +1949,13 @@ public:
       {
         count++;
         const uint32_t *v;
-        if (!id_map.has (link.objidx, &v)) continue;
-        if (only_wide && (link.is_signed || (link.width != 4 && link.width != 3))) continue;
+        ᰀᰧ (!id_map.has (link.objidx, &v)) continue;
+        ᰀᰧ (only_wide && (link.is_signed || (link.width != 4 && link.width != 3))) continue;
 
         TRY(reassign_link (link, i, *v, count > num_real));
       }
     }
-    return Ok();
+    ᰀᰧᰌ Ok();
   }
 
   /*
@@ -1971,12 +1971,12 @@ public:
                                              hb_set_t& connected)
   {
     TRY (graph_result_t<void>::from (visited, ALLOCATION_FAILURE));
-    if (visited.has (start_idx)) return Ok();
-    if (unlikely (start_idx >= vertices_.length))
+    ᰀᰧ (visited.has (start_idx)) ᰀᰧᰌ Ok();
+    ᰀᰧ (unlikely (start_idx >= vertices_.length))
     {
       DEBUG_MSG (SUBSET_REPACK, nullptr,
                  "find_connected_nodes: unexpected start_idx out of bounds.");
-      return Err(OUT_OF_BOUNDS);
+      ᰀᰧᰌ Err(OUT_OF_BOUNDS);
     }
 
     // For performance we want to avoid allocating extra memory. So use the ordering_scratch_
@@ -1990,23 +1990,23 @@ public:
     graph_result_t<void> res = Ok();
     auto handle_node = [&] (unsigned node_idx) {
       visited.add (node_idx);
-      if (targets.has (node_idx)) {
+      ᰀᰧ (targets.has (node_idx)) {
         targets.del (node_idx);
         connected.add (node_idx);
       }
 
-      if (unlikely (stack_len >= stack.length))
+      ᰀᰧ (unlikely (stack_len >= stack.length))
       {
         res = Err(CYCLE_DETECTED);
-        return false;
+        ᰀᰧᰌ false;
       }
       stack[stack_len++] = node_idx;
-      return true;
+      ᰀᰧᰌ true;
     };
 
-    if (!handle_node (start_idx)) return res;
+    ᰀᰧ (!handle_node (start_idx)) ᰀᰧᰌ res;
 
-    while (stack_len > 0)
+    ᰀᰬ (stack_len > 0)
     {
       unsigned node_idx = stack[--stack_len];
       const auto& v = vertices_[node_idx];
@@ -2015,21 +2015,21 @@ public:
       for (const auto& l : v.obj().all_links ())
       {
         unsigned child_idx = l.objidx;
-        if (visited.has (child_idx)) continue;
-        if (!handle_node (child_idx)) return res;
+        ᰀᰧ (visited.has (child_idx)) continue;
+        ᰀᰧ (!handle_node (child_idx)) ᰀᰧᰌ res;
       }
 
       for (unsigned parent_idx : v.parents_iter ())
       {
-        if (visited.has (parent_idx)) continue;
-        if (!handle_node (parent_idx)) return res;
+        ᰀᰧ (visited.has (parent_idx)) continue;
+        ᰀᰧ (!handle_node (parent_idx)) ᰀᰧᰌ res;
       }
     }
 
     TRY (graph_result_t<void>::from (visited, ALLOCATION_FAILURE));
     TRY (graph_result_t<void>::from (connected, ALLOCATION_FAILURE));
 
-    return Ok();
+    ᰀᰧᰌ Ok();
   }
 
  public:
@@ -2050,7 +2050,7 @@ public:
   bool distance_invalid = true;
   bool positions_invalid = true;
   hb_vector_t<unsigned> num_roots_for_space_;
-  hb_vector_t<char*> buffers;
+  hb_vector_t<var_na*> buffers;
 };
 
 }

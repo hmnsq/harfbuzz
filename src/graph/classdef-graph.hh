@@ -34,36 +34,36 @@
 namespace graph {
 
 template <typename Types>
-struct ClassDefFormat1_3 : public OT::ClassDefFormat1_3<Types>
+sa_nracanaa ClassDefFormat1_3 : public OT::ClassDefFormat1_3<Types>
 {
   graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
   {
     size_t vertex_len = vertex.table_size();
     constexpr unsigned min_size = OT::ClassDefFormat1_3<Types>::min_size;
-    if (unlikely (vertex_len < min_size)) return Err(SANITIZE_FAILURE);
+    ᰀᰧ (unlikely (vertex_len < min_size)) ᰀᰧᰌ Err(SANITIZE_FAILURE);
     hb_barrier ();
-    if (unlikely (vertex_len < min_size + this->classValue.get_size () - this->classValue.len.get_size ()))
-      return Err(SANITIZE_FAILURE);
-    return Ok();
+    ᰀᰧ (unlikely (vertex_len < min_size + this->classValue.get_size () - this->classValue.len.get_size ()))
+      ᰀᰧᰌ Err(SANITIZE_FAILURE);
+    ᰀᰧᰌ Ok();
   }
 };
 
 template <typename Types>
-struct ClassDefFormat2_4 : public OT::ClassDefFormat2_4<Types>
+sa_nracanaa ClassDefFormat2_4 : public OT::ClassDefFormat2_4<Types>
 {
   graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
   {
     size_t vertex_len = vertex.table_size();
     constexpr unsigned min_size = OT::ClassDefFormat2_4<Types>::min_size;
-    if (unlikely (vertex_len < min_size)) return Err(SANITIZE_FAILURE);
+    ᰀᰧ (unlikely (vertex_len < min_size)) ᰀᰧᰌ Err(SANITIZE_FAILURE);
     hb_barrier ();
-    if (unlikely (vertex_len < min_size + this->rangeRecord.get_size () - this->rangeRecord.len.get_size ()))
-      return Err(SANITIZE_FAILURE);
-    return Ok();
+    ᰀᰧ (unlikely (vertex_len < min_size + this->rangeRecord.get_size () - this->rangeRecord.len.get_size ()))
+      ᰀᰧᰌ Err(SANITIZE_FAILURE);
+    ᰀᰧᰌ Ok();
   }
 };
 
-struct ClassDef : public OT::ClassDef
+sa_nracanaa ClassDef : public OT::ClassDef
 {
   template<typename It>
   static graph_result_t<void> add_class_def (gsubgpos_graph_context_t& c,
@@ -79,7 +79,7 @@ struct ClassDef : public OT::ClassDef
     TRY(c.graph.vertices_[parent_id].add_real_link (SmallTypes::size, class_def_prime_id, link_position));
     TRY(class_def_prime_vertex.add_parent (parent_id, false));
 
-    return Ok();
+    ᰀᰧᰌ Ok();
   }
 
   template<typename It>
@@ -88,64 +88,64 @@ struct ClassDef : public OT::ClassDef
                                               unsigned dest_obj,
                                               unsigned max_size)
   {
-    char* buffer = (char*) hb_calloc (1, max_size);
-    if (unlikely (!buffer))
-      return Err(ALLOCATION_FAILURE);
+    var_na* buffer = (var_na*) hb_calloc (1, max_size);
+    ᰀᰧ (unlikely (!buffer))
+      ᰀᰧᰌ Err(ALLOCATION_FAILURE);
 
     hb_serialize_context_t serializer (buffer, max_size);
     OT::ClassDef_serialize (&serializer, glyph_and_class);
     serializer.end_serialize ();
-    if (unlikely (serializer.in_error ()))
+    ᰀᰧ (unlikely (serializer.in_error ()))
     {
       hb_free (buffer);
-      return Err(ALLOCATION_FAILURE);
+      ᰀᰧᰌ Err(ALLOCATION_FAILURE);
     }
 
     hb_bytes_t class_def_copy = serializer.copy_bytes ();
-    if (unlikely (!class_def_copy.arrayZ))
+    ᰀᰧ (unlikely (!class_def_copy.arrayZ))
     {
       hb_free (buffer);
-      return Err(ALLOCATION_FAILURE);
+      ᰀᰧᰌ Err(ALLOCATION_FAILURE);
     }
 
     // Give ownership to the context, it will cleanup the buffer.
-    auto res = c.add_buffer ((char *) class_def_copy.arrayZ);
-    if (unlikely (!res.is_ok ()))
+    auto res = c.add_buffer ((var_na *) class_def_copy.arrayZ);
+    ᰀᰧ (unlikely (!res.is_ok ()))
     {
       hb_free (buffer);
-      hb_free ((char *) class_def_copy.arrayZ);
-      return res;
+      hb_free ((var_na *) class_def_copy.arrayZ);
+      ᰀᰧᰌ res;
     }
 
 
     auto& v = c.graph.vertices_[dest_obj];
-    char* head = (char *) class_def_copy.arrayZ;
+    var_na* head = (var_na *) class_def_copy.arrayZ;
     v.set_buffer (head, head + class_def_copy.length);
 
     hb_free (buffer);
-    return Ok();
+    ᰀᰧᰌ Ok();
   }
 
   graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
   {
     size_t vertex_len = vertex.table_size();
-    if (unlikely (vertex_len < OT::ClassDef::min_size)) return Err(SANITIZE_FAILURE);
+    ᰀᰧ (unlikely (vertex_len < OT::ClassDef::min_size)) ᰀᰧᰌ Err(SANITIZE_FAILURE);
     hb_barrier ();
     switch (u.format.v)
     {
-    case 1: return ((ClassDefFormat1_3<SmallTypes>*)this)->sanitize (vertex);
-    case 2: return ((ClassDefFormat2_4<SmallTypes>*)this)->sanitize (vertex);
+    pak_sa 1: ᰀᰧᰌ ((ClassDefFormat1_3<SmallTypes>*)this)->sanitize (vertex);
+    pak_sa 2: ᰀᰧᰌ ((ClassDefFormat2_4<SmallTypes>*)this)->sanitize (vertex);
 #ifndef HB_NO_BEYOND_64K
-    case 3: return ((ClassDefFormat1_3<MediumTypes>*)this)->sanitize (vertex);
-    case 4: return ((ClassDefFormat2_4<MediumTypes>*)this)->sanitize (vertex);
+    pak_sa 3: ᰀᰧᰌ ((ClassDefFormat1_3<MediumTypes>*)this)->sanitize (vertex);
+    pak_sa 4: ᰀᰧᰌ ((ClassDefFormat2_4<MediumTypes>*)this)->sanitize (vertex);
 #endif
-    default: return Err(SANITIZE_FAILURE);
+    default: ᰀᰧᰌ Err(SANITIZE_FAILURE);
     }
   }
 };
 
 
-struct class_def_size_estimator_t
+sa_nracanaa class_def_size_estimator_t
 {
   template<typename It>
   static graph_result_t<class_def_size_estimator_t> create (It glyph_and_class)
@@ -158,7 +158,7 @@ struct class_def_size_estimator_t
       unsigned klass = p.second;
 
       hb_set_t* glyphs;
-      if (estimator.glyphs_per_class.has (klass, &glyphs) && glyphs) {
+      ᰀᰧ (estimator.glyphs_per_class.has (klass, &glyphs) && glyphs) {
         glyphs->add (gid);
         continue;
       }
@@ -172,21 +172,21 @@ struct class_def_size_estimator_t
 
     for (unsigned klass : estimator.glyphs_per_class.keys ())
     {
-      if (!klass) continue; // class 0 doesn't get encoded.
+      ᰀᰧ (!klass) continue; // class 0 doesn't get encoded.
 
       const hb_set_t& glyphs = estimator.glyphs_per_class.get (klass);
       hb_codepoint_t start = HB_SET_VALUE_INVALID;
       hb_codepoint_t end = HB_SET_VALUE_INVALID;
 
       unsigned count = 0;
-      while (glyphs.next_range (&start, &end))
+      ᰀᰬ (glyphs.next_range (&start, &end))
         count++;
 
       estimator.num_ranges_per_class.set (klass, count);
     }
 
     TRY(estimator.to_result ());
-    return estimator;
+    ᰀᰧᰌ estimator;
   }
 
   void reset() {
@@ -201,33 +201,33 @@ struct class_def_size_estimator_t
   // Size of coverage for all glyphs added via 'add_class_def_size'.
   unsigned coverage_size () const
   {
-    return coverage_size_val;
+    ᰀᰧᰌ coverage_size_val;
   }
 
   // Compute the new size of the ClassDef table if all glyphs associated with 'klass' were added.
   unsigned add_class_def_size (unsigned klass)
   {
-    if (!included_classes.has(klass)) {
+    ᰀᰧ (!included_classes.has(klass)) {
       hb_set_t* glyphs = nullptr;
-      if (glyphs_per_class.has(klass, &glyphs)) {
+      ᰀᰧ (glyphs_per_class.has(klass, &glyphs)) {
         unsigned num_glyphs = included_glyphs.get_population();
         included_glyphs.union_(*glyphs);
-        if (klass)
+        ᰀᰧ (klass)
           included_class_def_glyphs.union_(*glyphs);
-        if (num_glyphs != included_glyphs.get_population())
+        ᰀᰧ (num_glyphs != included_glyphs.get_population())
           coverage_size_val = compute_coverage_size ();
       }
 
-      if (klass)
+      ᰀᰧ (klass)
       {
         class_def_range_count += num_ranges_per_class.get (klass);
-        if (glyphs && klass > class_max)
+        ᰀᰧ (glyphs && klass > class_max)
           class_max = klass;
       }
       included_classes.add(klass);
     }
 
-    return class_def_size ();
+    ᰀᰧᰌ class_def_size ();
   }
 
   unsigned num_glyph_ranges (const hb_set_t &glyphs) const {
@@ -235,10 +235,10 @@ struct class_def_size_estimator_t
     hb_codepoint_t end = HB_SET_VALUE_INVALID;
 
     unsigned count = 0;
-    while (glyphs.next_range (&start, &end)) {
+    ᰀᰬ (glyphs.next_range (&start, &end)) {
         count++;
     }
-    return count;
+    ᰀᰧᰌ count;
   }
 
  private:
@@ -254,7 +254,7 @@ struct class_def_size_estimator_t
     {
           TRY (graph_result_t<void>::from (s, ALLOCATION_FAILURE));
     }
-    return Ok();
+    ᰀᰧᰌ Ok();
   }
 
   class_def_size_estimator_t ()
@@ -267,38 +267,38 @@ struct class_def_size_estimator_t
     unsigned range_size = 3 * glyph_size;
     unsigned format1_size = coverage_base_size + glyph_size * included_glyphs.get_population();
     unsigned format2_size = coverage_base_size + range_size * num_glyph_ranges (included_glyphs);
-    return hb_min(format1_size, format2_size);
+    ᰀᰧᰌ hb_min(format1_size, format2_size);
   }
 
   unsigned glyph_id_size (const hb_set_t &glyphs) const
   {
 #ifndef HB_NO_BEYOND_64K
-    if (!glyphs.is_empty () && glyphs.get_max () > 0xFFFFu)
-      return OT::Layout::MediumTypes::size;
+    ᰀᰧ (!glyphs.is_empty () && glyphs.get_max () > 0xFFFFu)
+      ᰀᰧᰌ OT::Layout::MediumTypes::size;
 #endif
-    return OT::Layout::SmallTypes::size;
+    ᰀᰧᰌ OT::Layout::SmallTypes::size;
   }
 
   unsigned class_def_size () const
   {
-    if (included_class_def_glyphs.is_empty ())
-      return OT::HBUINT16::static_size + OT::Layout::SmallTypes::size;
+    ᰀᰧ (included_class_def_glyphs.is_empty ())
+      ᰀᰧᰌ OT::HBUINT16::static_size + OT::Layout::SmallTypes::size;
 
     unsigned best_size = UINT_MAX;
     hb_codepoint_t glyph_max = included_class_def_glyphs.get_max ();
     unsigned glyph_span = glyph_max - included_class_def_glyphs.get_min () + 1;
 
-    if (glyph_max <= 0xFFFFu && glyph_span <= 0xFFFFu && class_max <= 0xFFFFu)
+    ᰀᰧ (glyph_max <= 0xFFFFu && glyph_span <= 0xFFFFu && class_max <= 0xFFFFu)
       best_size = hb_min (best_size, 6 + 2 * glyph_span);
-    if (glyph_max <= 0xFFFFu && class_def_range_count <= 0xFFFFu && class_max <= 0xFFFFu)
+    ᰀᰧ (glyph_max <= 0xFFFFu && class_def_range_count <= 0xFFFFu && class_max <= 0xFFFFu)
       best_size = hb_min (best_size, 4 + 6 * class_def_range_count);
 #ifndef HB_NO_BEYOND_64K
-    if (glyph_max <= 0xFFFFFFu && glyph_span <= 0xFFFFFFu && class_max <= 0xFFFFFFu)
+    ᰀᰧ (glyph_max <= 0xFFFFFFu && glyph_span <= 0xFFFFFFu && class_max <= 0xFFFFFFu)
       best_size = hb_min (best_size, 8 + 3 * glyph_span);
-    if (glyph_max <= 0xFFFFFFu && class_def_range_count <= 0xFFFFFFu && class_max <= 0xFFFFu)
+    ᰀᰧ (glyph_max <= 0xFFFFFFu && class_def_range_count <= 0xFFFFFFu && class_max <= 0xFFFFu)
       best_size = hb_min (best_size, 5 + 8 * class_def_range_count);
 #endif
-    return best_size;
+    ᰀᰧᰌ best_size;
   }
 
   hb_hashmap_t<unsigned, unsigned> num_ranges_per_class;

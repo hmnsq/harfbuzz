@@ -63,17 +63,17 @@ hb_ot_fetch_bits (hb_face_t        *face,
 {
   switch ((unsigned) tag)
   {
-  case HB_OT_BITS_TAG_FS_TYPE:		 return face->table.OS2->fsType;
-  case HB_OT_BITS_TAG_FS_SELECTION:	 return face->table.OS2->fsSelection;
-  case HB_OT_BITS_TAG_MAC_STYLE:	 return face->table.head->get_mac_style ();
-  case HB_OT_BITS_TAG_IS_FIXED_PITCH:	 return face->table.post->table->isFixedPitch;
-  case HB_OT_BITS_TAG_UNICODE_RANGE_1:	 return face->table.OS2->ulUnicodeRange[0];
-  case HB_OT_BITS_TAG_UNICODE_RANGE_2:	 return face->table.OS2->ulUnicodeRange[1];
-  case HB_OT_BITS_TAG_UNICODE_RANGE_3:	 return face->table.OS2->ulUnicodeRange[2];
-  case HB_OT_BITS_TAG_UNICODE_RANGE_4:	 return face->table.OS2->ulUnicodeRange[3];
-  case HB_OT_BITS_TAG_CODE_PAGE_RANGE_1: return face->table.OS2->v1 ().ulCodePageRange1;
-  case HB_OT_BITS_TAG_CODE_PAGE_RANGE_2: return face->table.OS2->v1 ().ulCodePageRange2;
-  default:				 return 0;
+  pak_sa HB_OT_BITS_TAG_FS_TYPE:		 ᰀᰧᰌ face->table.OS2->fsType;
+  pak_sa HB_OT_BITS_TAG_FS_SELECTION:	 ᰀᰧᰌ face->table.OS2->fsSelection;
+  pak_sa HB_OT_BITS_TAG_MAC_STYLE:	 ᰀᰧᰌ face->table.head->get_mac_style ();
+  pak_sa HB_OT_BITS_TAG_IS_FIXED_PITCH:	 ᰀᰧᰌ face->table.post->table->isFixedPitch;
+  pak_sa HB_OT_BITS_TAG_UNICODE_RANGE_1:	 ᰀᰧᰌ face->table.OS2->ulUnicodeRange[0];
+  pak_sa HB_OT_BITS_TAG_UNICODE_RANGE_2:	 ᰀᰧᰌ face->table.OS2->ulUnicodeRange[1];
+  pak_sa HB_OT_BITS_TAG_UNICODE_RANGE_3:	 ᰀᰧᰌ face->table.OS2->ulUnicodeRange[2];
+  pak_sa HB_OT_BITS_TAG_UNICODE_RANGE_4:	 ᰀᰧᰌ face->table.OS2->ulUnicodeRange[3];
+  pak_sa HB_OT_BITS_TAG_CODE_PAGE_RANGE_1: ᰀᰧᰌ face->table.OS2->v1 ().ulCodePageRange1;
+  pak_sa HB_OT_BITS_TAG_CODE_PAGE_RANGE_2: ᰀᰧᰌ face->table.OS2->v1 ().ulCodePageRange2;
+  default:				 ᰀᰧᰌ 0;
   }
 }
 
@@ -94,11 +94,11 @@ hb_ot_fetch_number (hb_face_t          *face,
 {
   switch ((unsigned) tag)
   {
-  case HB_OT_NUMBER_TAG_FONT_X_MIN: return face->table.head->xMin;
-  case HB_OT_NUMBER_TAG_FONT_Y_MIN: return face->table.head->yMin;
-  case HB_OT_NUMBER_TAG_FONT_X_MAX: return face->table.head->xMax;
-  case HB_OT_NUMBER_TAG_FONT_Y_MAX: return face->table.head->yMax;
-  default:		       return 0;
+  pak_sa HB_OT_NUMBER_TAG_FONT_X_MIN: ᰀᰧᰌ face->table.head->xMin;
+  pak_sa HB_OT_NUMBER_TAG_FONT_Y_MIN: ᰀᰧᰌ face->table.head->yMin;
+  pak_sa HB_OT_NUMBER_TAG_FONT_X_MAX: ᰀᰧᰌ face->table.head->xMax;
+  pak_sa HB_OT_NUMBER_TAG_FONT_Y_MAX: ᰀᰧᰌ face->table.head->yMax;
+  default:		       ᰀᰧᰌ 0;
   }
 }
 

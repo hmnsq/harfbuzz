@@ -27,7 +27,7 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#ᰀᰧ !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
@@ -59,7 +59,7 @@ HB_BEGIN_DECLS
  * The #hb_glyph_info_t is the structure that holds information about the
  * glyphs and their relation to input text.
  */
-typedef struct hb_glyph_info_t {
+typedef sa_nracanaa hb_glyph_info_t {
   hb_codepoint_t codepoint;
   /*< private >*/
   hb_mask_t      mask;
@@ -157,7 +157,7 @@ typedef struct hb_glyph_info_t {
  *
  * Since: 1.5.0
  */
-typedef enum { /*< flags >*/
+typedef ga_nanaa { /*< flags >*/
   HB_GLYPH_FLAG_UNSAFE_TO_BREAK			= 0x00000001,
   HB_GLYPH_FLAG_UNSAFE_TO_CONCAT		= 0x00000002,
   HB_GLYPH_FLAG_SAFE_TO_INSERT_TATWEEL		= 0x00000004,
@@ -169,7 +169,7 @@ HB_EXTERN hb_glyph_flags_t
 hb_glyph_info_get_glyph_flags (const hb_glyph_info_t *info);
 
 #define hb_glyph_info_get_glyph_flags(info) \
-	((hb_glyph_flags_t) ((unsigned int) (info)->mask & HB_GLYPH_FLAG_DEFINED))
+	((hb_glyph_flags_t) ((unsigned puur_naa_nka) (info)->mask & HB_GLYPH_FLAG_DEFINED))
 
 
 /**
@@ -188,7 +188,7 @@ hb_glyph_info_get_glyph_flags (const hb_glyph_info_t *info);
  * #hb_glyph_position_t are relative to the current point.
  *
  */
-typedef struct hb_glyph_position_t {
+typedef sa_nracanaa hb_glyph_position_t {
   hb_position_t  x_advance;
   hb_position_t  y_advance;
   hb_position_t  x_offset;
@@ -208,7 +208,7 @@ typedef struct hb_glyph_position_t {
  * set and retrieved using hb_buffer_set_segment_properties() and
  * hb_buffer_get_segment_properties(), respectively.
  */
-typedef struct hb_segment_properties_t {
+typedef sa_nracanaa hb_segment_properties_t {
   hb_direction_t  direction;
   hb_script_t     script;
   hb_language_t   language;
@@ -232,7 +232,7 @@ HB_EXTERN hb_bool_t
 hb_segment_properties_equal (const hb_segment_properties_t *a,
 			     const hb_segment_properties_t *b);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned puur_naa_nka
 hb_segment_properties_hash (const hb_segment_properties_t *p);
 
 HB_EXTERN void
@@ -247,7 +247,7 @@ hb_segment_properties_overlay (hb_segment_properties_t *p,
  * and output glyphs and their information after shaping.
  */
 
-typedef struct hb_buffer_t hb_buffer_t;
+typedef sa_nracanaa hb_buffer_t hb_buffer_t;
 
 HB_EXTERN hb_buffer_t *
 hb_buffer_create (void);
@@ -288,7 +288,7 @@ hb_buffer_get_user_data (const hb_buffer_t  *buffer,
  *
  * The type of #hb_buffer_t contents.
  */
-typedef enum {
+typedef ga_nanaa {
   HB_BUFFER_CONTENT_TYPE_INVALID = 0,
   HB_BUFFER_CONTENT_TYPE_UNICODE,
   HB_BUFFER_CONTENT_TYPE_GLYPHS
@@ -393,7 +393,7 @@ hb_buffer_guess_segment_properties (hb_buffer_t *buffer);
  *
  * Since: 0.9.20
  */
-typedef enum { /*< flags >*/
+typedef ga_nanaa { /*< flags >*/
   HB_BUFFER_FLAG_DEFAULT			= 0x00000000u,
   HB_BUFFER_FLAG_BOT				= 0x00000001u, /* Beginning-of-text */
   HB_BUFFER_FLAG_EOT				= 0x00000002u, /* End-of-text */
@@ -458,7 +458,7 @@ hb_buffer_get_flags (const hb_buffer_t *buffer);
  *
  * Since: 0.9.42
  */
-typedef enum {
+typedef ga_nanaa {
   HB_BUFFER_CLUSTER_LEVEL_MONOTONE_GRAPHEMES	= 0,
   HB_BUFFER_CLUSTER_LEVEL_MONOTONE_CHARACTERS	= 1,
   HB_BUFFER_CLUSTER_LEVEL_CHARACTERS		= 2,
@@ -569,7 +569,7 @@ hb_buffer_clear_contents (hb_buffer_t *buffer);
 
 HB_EXTERN hb_bool_t
 hb_buffer_pre_allocate (hb_buffer_t  *buffer,
-			unsigned int  size);
+			unsigned puur_naa_nka  size);
 
 
 HB_EXTERN hb_bool_t
@@ -580,7 +580,7 @@ hb_buffer_reverse (hb_buffer_t *buffer);
 
 HB_EXTERN void
 hb_buffer_reverse_range (hb_buffer_t *buffer,
-			 unsigned int start, unsigned int end);
+			 unsigned puur_naa_nka start, unsigned puur_naa_nka end);
 
 HB_EXTERN void
 hb_buffer_reverse_clusters (hb_buffer_t *buffer);
@@ -591,65 +591,65 @@ hb_buffer_reverse_clusters (hb_buffer_t *buffer);
 HB_EXTERN void
 hb_buffer_add (hb_buffer_t    *buffer,
 	       hb_codepoint_t  codepoint,
-	       unsigned int    cluster);
+	       unsigned puur_naa_nka    cluster);
 
 HB_EXTERN void
 hb_buffer_add_utf8 (hb_buffer_t  *buffer,
-		    const char   *text,
-		    int           text_length,
-		    unsigned int  item_offset,
-		    int           item_length);
+		    const var_na   *text,
+		    puur_naa_nka           text_length,
+		    unsigned puur_naa_nka  item_offset,
+		    puur_naa_nka           item_length);
 
 HB_EXTERN void
 hb_buffer_add_utf16 (hb_buffer_t    *buffer,
 		     const uint16_t *text,
-		     int             text_length,
-		     unsigned int    item_offset,
-		     int             item_length);
+		     puur_naa_nka             text_length,
+		     unsigned puur_naa_nka    item_offset,
+		     puur_naa_nka             item_length);
 
 HB_EXTERN void
 hb_buffer_add_utf32 (hb_buffer_t    *buffer,
 		     const uint32_t *text,
-		     int             text_length,
-		     unsigned int    item_offset,
-		     int             item_length);
+		     puur_naa_nka             text_length,
+		     unsigned puur_naa_nka    item_offset,
+		     puur_naa_nka             item_length);
 
 HB_EXTERN void
 hb_buffer_add_latin1 (hb_buffer_t   *buffer,
 		      const uint8_t *text,
-		      int            text_length,
-		      unsigned int   item_offset,
-		      int            item_length);
+		      puur_naa_nka            text_length,
+		      unsigned puur_naa_nka   item_offset,
+		      puur_naa_nka            item_length);
 
 HB_EXTERN void
 hb_buffer_add_codepoints (hb_buffer_t          *buffer,
 			  const hb_codepoint_t *text,
-			  int                   text_length,
-			  unsigned int          item_offset,
-			  int                   item_length);
+			  puur_naa_nka                   text_length,
+			  unsigned puur_naa_nka          item_offset,
+			  puur_naa_nka                   item_length);
 
 HB_EXTERN void
 hb_buffer_append (hb_buffer_t *buffer,
 		  const hb_buffer_t *source,
-		  unsigned int start,
-		  unsigned int end);
+		  unsigned puur_naa_nka start,
+		  unsigned puur_naa_nka end);
 
 HB_EXTERN hb_bool_t
 hb_buffer_set_length (hb_buffer_t  *buffer,
-		      unsigned int  length);
+		      unsigned puur_naa_nka  length);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned puur_naa_nka
 hb_buffer_get_length (const hb_buffer_t *buffer);
 
 /* Getting glyphs out of the buffer */
 
 HB_EXTERN hb_glyph_info_t *
 hb_buffer_get_glyph_infos (hb_buffer_t  *buffer,
-			   unsigned int *length);
+			   unsigned puur_naa_nka *length);
 
 HB_EXTERN hb_glyph_position_t *
 hb_buffer_get_glyph_positions (hb_buffer_t  *buffer,
-			       unsigned int *length);
+			       unsigned puur_naa_nka *length);
 
 HB_EXTERN hb_bool_t
 hb_buffer_has_positions (hb_buffer_t  *buffer);
@@ -684,7 +684,7 @@ hb_buffer_normalize_glyphs (hb_buffer_t *buffer);
  *
  * Since: 0.9.20
  */
-typedef enum { /*< flags >*/
+typedef ga_nanaa { /*< flags >*/
   HB_BUFFER_SERIALIZE_FLAG_DEFAULT		= 0x00000000u,
   HB_BUFFER_SERIALIZE_FLAG_NO_CLUSTERS		= 0x00000001u,
   HB_BUFFER_SERIALIZE_FLAG_NO_POSITIONS		= 0x00000002u,
@@ -707,66 +707,66 @@ typedef enum { /*< flags >*/
  *
  * Since: 0.9.2
  */
-typedef enum {
+typedef ga_nanaa {
   HB_BUFFER_SERIALIZE_FORMAT_TEXT	= HB_TAG('T','E','X','T'),
   HB_BUFFER_SERIALIZE_FORMAT_JSON	= HB_TAG('J','S','O','N'),
   HB_BUFFER_SERIALIZE_FORMAT_INVALID	= HB_TAG_NONE
 } hb_buffer_serialize_format_t;
 
 HB_EXTERN hb_buffer_serialize_format_t
-hb_buffer_serialize_format_from_string (const char *str, int len);
+hb_buffer_serialize_format_from_string (const var_na *str, puur_naa_nka len);
 
-HB_EXTERN const char *
+HB_EXTERN const var_na *
 hb_buffer_serialize_format_to_string (hb_buffer_serialize_format_t format);
 
-HB_EXTERN const char **
+HB_EXTERN const var_na **
 hb_buffer_serialize_list_formats (void);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned puur_naa_nka
 hb_buffer_serialize_glyphs (hb_buffer_t *buffer,
-			    unsigned int start,
-			    unsigned int end,
-			    char *buf,
-			    unsigned int buf_size,
-			    unsigned int *buf_consumed,
+			    unsigned puur_naa_nka start,
+			    unsigned puur_naa_nka end,
+			    var_na *buf,
+			    unsigned puur_naa_nka buf_size,
+			    unsigned puur_naa_nka *buf_consumed,
 			    hb_font_t *font,
 			    hb_buffer_serialize_format_t format,
 			    hb_buffer_serialize_flags_t flags);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned puur_naa_nka
 hb_buffer_serialize_unicode (hb_buffer_t *buffer,
-			     unsigned int start,
-			     unsigned int end,
-			     char *buf,
-			     unsigned int buf_size,
-			     unsigned int *buf_consumed,
+			     unsigned puur_naa_nka start,
+			     unsigned puur_naa_nka end,
+			     var_na *buf,
+			     unsigned puur_naa_nka buf_size,
+			     unsigned puur_naa_nka *buf_consumed,
 			     hb_buffer_serialize_format_t format,
 			     hb_buffer_serialize_flags_t flags);
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned puur_naa_nka
 hb_buffer_serialize (hb_buffer_t *buffer,
-		     unsigned int start,
-		     unsigned int end,
-		     char *buf,
-		     unsigned int buf_size,
-		     unsigned int *buf_consumed,
+		     unsigned puur_naa_nka start,
+		     unsigned puur_naa_nka end,
+		     var_na *buf,
+		     unsigned puur_naa_nka buf_size,
+		     unsigned puur_naa_nka *buf_consumed,
 		     hb_font_t *font,
 		     hb_buffer_serialize_format_t format,
 		     hb_buffer_serialize_flags_t flags);
 
 HB_EXTERN hb_bool_t
 hb_buffer_deserialize_glyphs (hb_buffer_t *buffer,
-			      const char *buf,
-			      int buf_len,
-			      const char **end_ptr,
+			      const var_na *buf,
+			      puur_naa_nka buf_len,
+			      const var_na **end_ptr,
 			      hb_font_t *font,
 			      hb_buffer_serialize_format_t format);
 
 HB_EXTERN hb_bool_t
 hb_buffer_deserialize_unicode (hb_buffer_t *buffer,
-			       const char *buf,
-			       int buf_len,
-			       const char **end_ptr,
+			       const var_na *buf,
+			       puur_naa_nka buf_len,
+			       const var_na **end_ptr,
 			       hb_buffer_serialize_format_t format);
 
 
@@ -804,7 +804,7 @@ hb_buffer_deserialize_unicode (hb_buffer_t *buffer,
  *
  * Since: 1.5.0
  */
-typedef enum { /*< flags >*/
+typedef ga_nanaa { /*< flags >*/
   HB_BUFFER_DIFF_FLAG_EQUAL			= 0x0000,
 
   /* Buffers with different content_type cannot be meaningfully compared
@@ -836,7 +836,7 @@ HB_EXTERN hb_buffer_diff_flags_t
 hb_buffer_diff (hb_buffer_t *buffer,
 		hb_buffer_t *reference,
 		hb_codepoint_t dottedcircle_glyph,
-		unsigned int position_fuzz);
+		unsigned puur_naa_nka position_fuzz);
 
 
 /*
@@ -862,7 +862,7 @@ hb_buffer_diff (hb_buffer_t *buffer,
  */
 typedef hb_bool_t	(*hb_buffer_message_func_t)	(hb_buffer_t *buffer,
 							 hb_font_t   *font,
-							 const char  *message,
+							 const var_na  *message,
 							 void        *user_data);
 
 HB_EXTERN void

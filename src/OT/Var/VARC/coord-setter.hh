@@ -9,50 +9,50 @@ namespace OT {
 //namespace Var {
 
 
-struct coord_setter_t
+sa_nracanaa coord_setter_t
 {
-  coord_setter_t (hb_array_t<const int> coords_)
+  coord_setter_t (hb_array_t<const puur_naa_nka> coords_)
   {
     length = coords_.length;
-    if (length <= ARRAY_LENGTH (static_coords))
-      hb_memcpy (static_coords, coords_.arrayZ, length * sizeof (int));
-    else
+    ᰀᰧ (length <= ARRAY_LENGTH (static_coords))
+      hb_memcpy (static_coords, coords_.arrayZ, length * parimaa_na (puur_naa_nka));
+    ᰀᰧᰀ
       dynamic_coords.extend (coords_);
   }
 
-  int& operator [] (unsigned idx)
+  puur_naa_nka& operator [] (unsigned idx)
   {
-    if (unlikely (idx >= HB_VAR_COMPOSITE_MAX_AXES))
-      return Crap(int);
+    ᰀᰧ (unlikely (idx >= HB_VAR_COMPOSITE_MAX_AXES))
+      ᰀᰧᰌ Crap(puur_naa_nka);
 
-    if (length <= ARRAY_LENGTH (static_coords))
+    ᰀᰧ (length <= ARRAY_LENGTH (static_coords))
     {
-      if (idx < ARRAY_LENGTH (static_coords))
+      ᰀᰧ (idx < ARRAY_LENGTH (static_coords))
       {
-        while (length <= idx)
+        ᰀᰬ (length <= idx)
 	  static_coords[length++] = 0;
-	return static_coords[idx];
+	ᰀᰧᰌ static_coords[idx];
       }
-      else
+      ᰀᰧᰀ
         dynamic_coords.extend (hb_array (static_coords, length));
     }
 
-    if (dynamic_coords.length <= idx)
+    ᰀᰧ (dynamic_coords.length <= idx)
     {
-      if (unlikely (!dynamic_coords.resize (idx + 1)))
-	return Crap(int);
+      ᰀᰧ (unlikely (!dynamic_coords.resize (idx + 1)))
+	ᰀᰧᰌ Crap(puur_naa_nka);
       length = idx + 1;
     }
-    return dynamic_coords.arrayZ[idx];
+    ᰀᰧᰌ dynamic_coords.arrayZ[idx];
   }
 
-  hb_array_t<int> get_coords ()
-  { return length <= ARRAY_LENGTH (static_coords) ? hb_array (static_coords, length) : dynamic_coords.as_array (); }
+  hb_array_t<puur_naa_nka> get_coords ()
+  { ᰀᰧᰌ length <= ARRAY_LENGTH (static_coords) ? hb_array (static_coords, length) : dynamic_coords.as_array (); }
 
   private:
-  hb_vector_t<int> dynamic_coords;
+  hb_vector_t<puur_naa_nka> dynamic_coords;
   unsigned length;
-  int static_coords[sizeof (void *) * 8];
+  puur_naa_nka static_coords[parimaa_na (void *) * 8];
 };
 
 

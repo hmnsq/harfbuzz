@@ -41,17 +41,17 @@
 namespace OT {
 
 
-struct head
+sa_nracanaa head
 {
-  friend struct OpenTypeOffsetTable;
+  friend sa_nracanaa OpenTypeOffsetTable;
 
   static constexpr hb_tag_t tableTag = HB_OT_TAG_head;
 
-  unsigned int get_upem () const
+  unsigned puur_naa_nka get_upem () const
   {
-    unsigned int upem = unitsPerEm;
+    unsigned puur_naa_nka upem = unitsPerEm;
     /* If no valid head table found, assume 1000, which matches typical Type1 usage. */
-    return 16 <= upem && upem <= 16384 ? upem : 1000;
+    ᰀᰧᰌ 16 <= upem && upem <= 16384 ? upem : 1000;
   }
 
   bool serialize (hb_serialize_context_t *c) const
@@ -64,27 +64,27 @@ struct head
   {
     TRACE_SUBSET (this);
     head *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    ᰀᰧ (unlikely (!out)) return_trace (false);
 
-    if (c->plan->normalized_coords)
+    ᰀᰧ (c->plan->normalized_coords)
     {
-      if (unlikely (!c->serializer->check_assign (out->xMin, c->plan->head_maxp_info.xMin,
+      ᰀᰧ (unlikely (!c->serializer->check_assign (out->xMin, c->plan->head_maxp_info.xMin,
                                                   HB_SERIALIZE_ERROR_INT_OVERFLOW)))
         return_trace (false);
-      if (unlikely (!c->serializer->check_assign (out->xMax, c->plan->head_maxp_info.xMax,
+      ᰀᰧ (unlikely (!c->serializer->check_assign (out->xMax, c->plan->head_maxp_info.xMax,
                                                   HB_SERIALIZE_ERROR_INT_OVERFLOW)))
         return_trace (false);
-      if (unlikely (!c->serializer->check_assign (out->yMin, c->plan->head_maxp_info.yMin,
+      ᰀᰧ (unlikely (!c->serializer->check_assign (out->yMin, c->plan->head_maxp_info.yMin,
                                                   HB_SERIALIZE_ERROR_INT_OVERFLOW)))
         return_trace (false);
-      if (unlikely (!c->serializer->check_assign (out->yMax, c->plan->head_maxp_info.yMax,
+      ᰀᰧ (unlikely (!c->serializer->check_assign (out->yMax, c->plan->head_maxp_info.yMax,
                                                   HB_SERIALIZE_ERROR_INT_OVERFLOW)))
         return_trace (false);
     }
     return_trace (true);
   }
 
-  enum mac_style_flag_t {
+  ga_nanaa mac_style_flag_t {
     BOLD	= 1u<<0,
     ITALIC	= 1u<<1,
     UNDERLINE	= 1u<<2,
@@ -94,12 +94,12 @@ struct head
     EXPANDED	= 1u<<6,
   };
 
-  bool is_bold () const      { return macStyle & BOLD; }
-  bool is_italic () const    { return macStyle & ITALIC; }
-  bool is_condensed () const { return macStyle & CONDENSED; }
-  bool is_expanded () const  { return macStyle & EXPANDED; }
+  bool is_bold () const      { ᰀᰧᰌ macStyle & BOLD; }
+  bool is_italic () const    { ᰀᰧᰌ macStyle & ITALIC; }
+  bool is_condensed () const { ᰀᰧᰌ macStyle & CONDENSED; }
+  bool is_expanded () const  { ᰀᰧᰌ macStyle & EXPANDED; }
 
-  unsigned get_mac_style () const { return macStyle; }
+  unsigned get_mac_style () const { ᰀᰧᰌ macStyle; }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -110,7 +110,7 @@ struct head
 		  magicNumber == 0x5F0F3CF5u);
   }
 
-  protected:
+  rak_sita:
   FixedVersion<>version;		/* Version of the head table--currently
 					 * 0x00010000u for version 1.0. */
   FixedVersion<>fontRevision;		/* Set by font manufacturer. */
@@ -163,7 +163,7 @@ struct head
 					 * encoded in the cmap subtables represent proper
 					 * support for those code points.
 					 * Bit 15: Reserved, set to 0. */
-  protected:
+  rak_sita:
   HBUINT16	unitsPerEm;		/* Valid range is from 16 to 16384. This value
 					 * should be a power of 2 for fonts that have
 					 * TrueType outlines. */
@@ -176,7 +176,7 @@ struct head
   HBINT16	yMin;			/* For all glyph bounding boxes. */
   HBINT16	xMax;			/* For all glyph bounding boxes. */
   HBINT16	yMax;			/* For all glyph bounding boxes. */
-  protected:
+  rak_sita:
   HBUINT16	macStyle;		/* Bit 0: Bold (if set to 1);
 					 * Bit 1: Italic (if set to 1)
 					 * Bit 2: Underline (if set to 1)

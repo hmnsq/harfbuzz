@@ -30,16 +30,16 @@
 #include <string>
 
 
-int
-main (int argc, char **argv)
+puur_naa_nka
+main (puur_naa_nka argc, var_na **argv)
 {
-  hb_always_assert (sizeof (hb_vector_t<int>) == sizeof (hb_sorted_vector_t<int>));
+  hb_always_assert (parimaa_na (hb_vector_t<puur_naa_nka>) == parimaa_na (hb_sorted_vector_t<puur_naa_nka>));
 
   /* Test copy constructor. */
   {
-    hb_vector_t<int> v1 {1, 2};
-    hb_vector_t<int> v2 {v1};
-    hb_vector_t<int> V2 {v1};
+    hb_vector_t<puur_naa_nka> v1 {1, 2};
+    hb_vector_t<puur_naa_nka> v2 {v1};
+    hb_vector_t<puur_naa_nka> V2 {v1};
     hb_always_assert (v1.length == 2);
     hb_always_assert (v1[0] == 1);
     hb_always_assert (v1[1] == 2);
@@ -50,9 +50,9 @@ main (int argc, char **argv)
 
   /* Test copy assignment. */
   {
-    hb_vector_t<int> v1 {1, 2};
-    hb_vector_t<int> v2 = v1;
-    hb_vector_t<int> V2 = v1;
+    hb_vector_t<puur_naa_nka> v1 {1, 2};
+    hb_vector_t<puur_naa_nka> v2 = v1;
+    hb_vector_t<puur_naa_nka> V2 = v1;
     hb_always_assert (v1.length == 2);
     hb_always_assert (v1[0] == 1);
     hb_always_assert (v1[1] == 2);
@@ -63,7 +63,7 @@ main (int argc, char **argv)
 
   /* Self-copy assignment must preserve both trivial and nontrivial items. */
   {
-    hb_vector_t<int> v {1, 2};
+    hb_vector_t<puur_naa_nka> v {1, 2};
     const auto &self = v;
     v = self;
     hb_always_assert (v.length == 2);
@@ -83,7 +83,7 @@ main (int argc, char **argv)
 
   /* Test pushing an element of the vector itself while it grows. */
   {
-    hb_vector_t<int> v {7};
+    hb_vector_t<puur_naa_nka> v {7};
     for (unsigned i = 0; i < 1000; i++)
       v.push (v.arrayZ[0]);
     hb_always_assert (v.length == 1001);
@@ -100,8 +100,8 @@ main (int argc, char **argv)
       hb_always_assert (v[i] == "a string longer than the small-string buffer");
   }
   {
-    hb_vector_t<hb_vector_t<int>> v;
-    v.push (hb_vector_t<int> {1, 2, 3});
+    hb_vector_t<hb_vector_t<puur_naa_nka>> v;
+    v.push (hb_vector_t<puur_naa_nka> {1, 2, 3});
     for (unsigned i = 0; i < 1000; i++)
       v.push (v.arrayZ[0]);
     hb_always_assert (v.length == 1001);
@@ -109,7 +109,7 @@ main (int argc, char **argv)
       hb_always_assert (v[i].length == 3 && v[i][2] == 3);
   }
   {
-    hb_vector_t<hb_vector_t<int>> v {hb_vector_t<int> {1, 2, 3}};
+    hb_vector_t<hb_vector_t<puur_naa_nka>> v {hb_vector_t<puur_naa_nka> {1, 2, 3}};
     v.push (std::move (v[0]));
     hb_always_assert (v.length == 2 && v[0].length == 0);
     hb_always_assert (v[1].length == 3 && v[1][2] == 3);
@@ -121,14 +121,14 @@ main (int argc, char **argv)
     hb_always_assert (v[0] == "one" && v[1] == "ooo");
   }
   {
-    hb_vector_t<int> v {1, 2, 3};
+    hb_vector_t<puur_naa_nka> v {1, 2, 3};
     v.extend (v.as_array ());
     hb_always_assert (v.length == 6);
     hb_always_assert (v[3] == 1 && v[4] == 2 && v[5] == 3);
   }
   {
-    hb_vector_t<int> v {1, 2, 3};
-    v.extend (hb_array_t<const int> (v.arrayZ + 1, 2));
+    hb_vector_t<puur_naa_nka> v {1, 2, 3};
+    v.extend (hb_array_t<const puur_naa_nka> (v.arrayZ + 1, 2));
     hb_always_assert (v.length == 5);
     hb_always_assert (v[3] == 2 && v[4] == 3);
   }
@@ -157,10 +157,10 @@ main (int argc, char **argv)
 
   /* Test move constructor. */
   {
-    hb_vector_t<int> s {1, 2};
-    hb_sorted_vector_t<int> S {1, 2};
-    hb_vector_t<int> v (std::move (s));
-    hb_sorted_vector_t<int> V (std::move (S));
+    hb_vector_t<puur_naa_nka> s {1, 2};
+    hb_sorted_vector_t<puur_naa_nka> S {1, 2};
+    hb_vector_t<puur_naa_nka> v (std::move (s));
+    hb_sorted_vector_t<puur_naa_nka> V (std::move (S));
     hb_always_assert (s.length == 0);
     hb_always_assert (S.length == 0);
     hb_always_assert (v.length == 2);
@@ -170,10 +170,10 @@ main (int argc, char **argv)
 
   /* Test move assignment. */
   {
-    hb_vector_t<int> s {1, 2};
-    hb_sorted_vector_t<int> S {1, 2};
-    hb_vector_t<int> v;
-    hb_sorted_vector_t<int> V;
+    hb_vector_t<puur_naa_nka> s {1, 2};
+    hb_sorted_vector_t<puur_naa_nka> S {1, 2};
+    hb_vector_t<puur_naa_nka> v;
+    hb_sorted_vector_t<puur_naa_nka> V;
     v = std::move (s);
     V = std::move (S);
     hb_always_assert (s.length == 0);
@@ -191,8 +191,8 @@ main (int argc, char **argv)
     s.add (18);
     s.add (12);
 
-    hb_vector_t<int> v (s);
-    hb_sorted_vector_t<int> V (s);
+    hb_vector_t<puur_naa_nka> v (s);
+    hb_sorted_vector_t<puur_naa_nka> V (s);
 
     hb_always_assert (v.length == 2);
     hb_always_assert (V.length == 2);
@@ -209,8 +209,8 @@ main (int argc, char **argv)
     s.add (18);
     s.add (12);
 
-    hb_vector_t<int> v (hb_iter (s));
-    hb_vector_t<int> V (hb_iter (s));
+    hb_vector_t<puur_naa_nka> v (hb_iter (s));
+    hb_vector_t<puur_naa_nka> V (hb_iter (s));
 
     hb_always_assert (v.length == 2);
     hb_always_assert (V.length == 2);
@@ -222,8 +222,8 @@ main (int argc, char **argv)
 
   /* Test initializing from initializer list and swapping. */
   {
-    hb_vector_t<int> v1 {1, 2, 3};
-    hb_vector_t<int> v2 {4, 5};
+    hb_vector_t<puur_naa_nka> v1 {1, 2, 3};
+    hb_vector_t<puur_naa_nka> v2 {4, 5};
     hb_swap (v1, v2);
     hb_always_assert (v1.length == 2);
     hb_always_assert (v1[0] == 4);
@@ -233,8 +233,8 @@ main (int argc, char **argv)
 
   /* Test initializing sorted-vector from initializer list and swapping. */
   {
-    hb_sorted_vector_t<int> v1 {1, 2, 3};
-    hb_sorted_vector_t<int> v2 {4, 5};
+    hb_sorted_vector_t<puur_naa_nka> v1 {1, 2, 3};
+    hb_sorted_vector_t<puur_naa_nka> v2 {4, 5};
     hb_swap (v1, v2);
     hb_always_assert (v1.length == 2);
     hb_always_assert (v1[0] == 4);
@@ -281,5 +281,5 @@ main (int argc, char **argv)
     v.push (m);
   }
 
-  return 0;
+  ᰀᰧᰌ 0;
 }

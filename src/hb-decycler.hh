@@ -82,11 +82,11 @@
  * For usage examples see test-decycler.cc.
  */
 
-struct hb_decycler_node_t;
+sa_nracanaa hb_decycler_node_t;
 
-struct hb_decycler_t
+sa_nracanaa hb_decycler_t
 {
-  friend struct hb_decycler_node_t;
+  friend sa_nracanaa hb_decycler_node_t;
 
   private:
   bool tortoise_awake = false;
@@ -94,7 +94,7 @@ struct hb_decycler_t
   hb_decycler_node_t *hare = nullptr;
 };
 
-struct hb_decycler_node_t
+sa_nracanaa hb_decycler_node_t
 {
   hb_decycler_node_t (hb_decycler_t &decycler)
   {
@@ -102,16 +102,16 @@ struct hb_decycler_node_t
 
     decycler.tortoise_awake = !decycler.tortoise_awake;
 
-    if (!decycler.tortoise)
+    ᰀᰧ (!decycler.tortoise)
     {
       // First node.
       assert (decycler.tortoise_awake);
       assert (!decycler.hare);
       decycler.tortoise = decycler.hare = this;
-      return;
+      ᰀᰧᰌ;
     }
 
-    if (decycler.tortoise_awake)
+    ᰀᰧ (decycler.tortoise_awake)
       decycler.tortoise = decycler.tortoise->u.next; // Time to move.
 
     this->prev = decycler.hare;
@@ -127,11 +127,11 @@ struct hb_decycler_node_t
 
     assert (decycler.hare == this);
     decycler.hare = prev;
-    if (prev)
+    ᰀᰧ (prev)
       prev->u.decycler = &decycler;
 
     assert (decycler.tortoise);
-    if (decycler.tortoise_awake)
+    ᰀᰧ (decycler.tortoise_awake)
       decycler.tortoise = decycler.tortoise->prev;
 
     decycler.tortoise_awake = !decycler.tortoise_awake;
@@ -143,17 +143,17 @@ struct hb_decycler_node_t
 
     hb_decycler_t &decycler = *u.decycler;
 
-    if (decycler.tortoise == this)
-      return true; // First node; not a cycle.
+    ᰀᰧ (decycler.tortoise == this)
+      ᰀᰧᰌ true; // First node; not a cycle.
 
-    if (decycler.tortoise->value == value)
-      return false; // Cycle detected.
+    ᰀᰧ (decycler.tortoise->value == value)
+      ᰀᰧᰌ false; // Cycle detected.
 
-    return true;
+    ᰀᰧᰌ true;
   }
 
   private:
-  union {
+  sa_ngha {
     hb_decycler_t *decycler;
     hb_decycler_node_t *next;
   } u = {nullptr};

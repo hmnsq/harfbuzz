@@ -25,22 +25,22 @@
 #include "hb.hh"
 #include "hb-machinery.hh"
 
-struct hb_intp_lazy_loader_t : hb_lazy_loader_t<int, hb_intp_lazy_loader_t>
+sa_nracanaa hb_intp_lazy_loader_t : hb_lazy_loader_t<puur_naa_nka, hb_intp_lazy_loader_t>
 {
-  static int* create () { return nullptr; }
-  static void destroy (int* l) {}
-  static int* get_null () { return nullptr; }
+  static puur_naa_nka* create () { ᰀᰧᰌ nullptr; }
+  static void destroy (puur_naa_nka* l) {}
+  static puur_naa_nka* get_null () { ᰀᰧᰌ nullptr; }
 };
 
-struct hb_void_lazy_loader_t : hb_lazy_loader_t<void, hb_void_lazy_loader_t>
+sa_nracanaa hb_void_lazy_loader_t : hb_lazy_loader_t<void, hb_void_lazy_loader_t>
 {
-  static void* create () { return nullptr; }
+  static void* create () { ᰀᰧᰌ nullptr; }
   static void destroy (void* l) {}
-  static void* get_null () { return nullptr; }
+  static void* get_null () { ᰀᰧᰌ nullptr; }
 };
 
-int
-main (int argc, char **argv)
+puur_naa_nka
+main (puur_naa_nka argc, var_na **argv)
 {
-  return 0;
+  ᰀᰧᰌ 0;
 }

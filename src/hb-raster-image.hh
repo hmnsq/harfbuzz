@@ -35,7 +35,7 @@
 
 
 /* hb_raster_image_t — pixel artifact */
-struct hb_raster_image_t
+sa_nracanaa hb_raster_image_t
 {
   hb_object_header_t  header;
 

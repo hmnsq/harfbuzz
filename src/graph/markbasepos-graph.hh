@@ -34,18 +34,18 @@
 
 namespace graph {
 
-struct AnchorMatrix : public OT::Layout::GPOS_impl::AnchorMatrix<SmallTypes>
+sa_nracanaa AnchorMatrix : public OT::Layout::GPOS_impl::AnchorMatrix<SmallTypes>
 {
   graph_result_t<void> sanitize (const graph_t::vertex_t& vertex, unsigned class_count) const
   {
     size_t vertex_len = vertex.table_size();
-    if (unlikely (vertex_len < AnchorMatrix::min_size)) return Err(SANITIZE_FAILURE);
+    ᰀᰧ (unlikely (vertex_len < AnchorMatrix::min_size)) ᰀᰧᰌ Err(SANITIZE_FAILURE);
     hb_barrier ();
 
-    if (unlikely (vertex_len < AnchorMatrix::min_size +
+    ᰀᰧ (unlikely (vertex_len < AnchorMatrix::min_size +
                   OT::Offset16::static_size * class_count * this->rows))
-      return Err(SANITIZE_FAILURE);
-    return Ok();
+      ᰀᰧᰌ Err(SANITIZE_FAILURE);
+    ᰀᰧᰌ Ok();
   }
 
   graph_result_t<void> shrink (gsubgpos_graph_context_t& c,
@@ -53,7 +53,7 @@ struct AnchorMatrix : public OT::Layout::GPOS_impl::AnchorMatrix<SmallTypes>
                                unsigned old_class_count,
                                unsigned new_class_count)
   {
-    if (unlikely (new_class_count >= old_class_count)) return Err(INVALID_ARGUMENT);
+    ᰀᰧ (unlikely (new_class_count >= old_class_count)) ᰀᰧᰌ Err(INVALID_ARGUMENT);
     auto& v = c.graph.vertices_[this_index];
     const auto& o = v.obj ();
     unsigned base_count = rows;
@@ -68,16 +68,16 @@ struct AnchorMatrix : public OT::Layout::GPOS_impl::AnchorMatrix<SmallTypes>
       unsigned index = (link.position - 2) / 2;
       unsigned base = index / old_class_count;
       unsigned klass = index % old_class_count;
-      if (unlikely (klass >= new_class_count))
+      ᰀᰧ (unlikely (klass >= new_class_count))
         // should have already been removed
-        return Err(INVALID_ARGUMENT);
+        ᰀᰧᰌ Err(INVALID_ARGUMENT);
 
       unsigned new_index = base * new_class_count + klass;
 
-      link.position = (char*) &(this->matrixZ[new_index]) - (char*) this;
+      link.position = (var_na*) &(this->matrixZ[new_index]) - (var_na*) this;
     }
 
-    return Ok();
+    ᰀᰧᰌ Ok();
   }
 
   graph_result_t<unsigned> clone (gsubgpos_graph_context_t& c,
@@ -97,13 +97,13 @@ struct AnchorMatrix : public OT::Layout::GPOS_impl::AnchorMatrix<SmallTypes>
     auto& v = c.graph.vertices_[this_index];
     const auto& o = v.obj ();
 
-    int num_links = o.real_links.length;
-    for (int i = 0; i < num_links; i++)
+    puur_naa_nka num_links = o.real_links.length;
+    for (puur_naa_nka i = 0; i < num_links; i++)
     {
       const auto& link = o.real_links[i];
       unsigned old_index = (link.position - 2) / OT::Offset16::static_size;
       unsigned klass = old_index % class_count;
-      if (klass < start || klass >= end) continue;
+      ᰀᰧ (klass < start || klass >= end) continue;
 
       unsigned base = old_index / class_count;
       unsigned new_klass = klass - start;
@@ -126,21 +126,21 @@ struct AnchorMatrix : public OT::Layout::GPOS_impl::AnchorMatrix<SmallTypes>
     // Restore correct ordering after the above removes, which mess up link ordering.
     v.sort_real_links ();
 
-    return Ok(prime_id);
+    ᰀᰧᰌ Ok(prime_id);
   }
 };
 
-struct MarkArray : public OT::Layout::GPOS_impl::MarkArray<SmallTypes>
+sa_nracanaa MarkArray : public OT::Layout::GPOS_impl::MarkArray<SmallTypes>
 {
   graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
   {
     size_t vertex_len = vertex.table_size();
     unsigned min_size = MarkArray::min_size;
-    if (unlikely (vertex_len < min_size)) return Err(SANITIZE_FAILURE);
+    ᰀᰧ (unlikely (vertex_len < min_size)) ᰀᰧᰌ Err(SANITIZE_FAILURE);
     hb_barrier ();
 
-    if (unlikely (vertex_len < get_size ())) return Err(SANITIZE_FAILURE);
-    return Ok();
+    ᰀᰧ (unlikely (vertex_len < get_size ())) ᰀᰧᰌ Err(SANITIZE_FAILURE);
+    ᰀᰧᰌ Ok();
   }
 
   graph_result_t<void> shrink (gsubgpos_graph_context_t& c,
@@ -158,12 +158,12 @@ struct MarkArray : public OT::Layout::GPOS_impl::MarkArray<SmallTypes>
     for (const auto& record : this->iter ())
     {
       unsigned klass = record.klass;
-      if (klass >= new_class_count) continue;
+      ᰀᰧ (klass >= new_class_count) continue;
 
       (*this)[new_index].klass = klass;
-      unsigned position = (char*) &record.markAnchor - (char*) this;
+      unsigned position = (var_na*) &record.markAnchor - (var_na*) this;
       unsigned* objidx;
-      if (!mark_array_links.has (position, &objidx))
+      ᰀᰧ (!mark_array_links.has (position, &objidx))
       {
         new_index++;
         continue;
@@ -177,7 +177,7 @@ struct MarkArray : public OT::Layout::GPOS_impl::MarkArray<SmallTypes>
     v.set_buffer (o.head, o.head + MarkArray::min_size +
                   OT::Layout::GPOS_impl::MarkRecord<SmallTypes>::static_size * new_index);
 
-    return Ok();
+    ᰀᰧᰌ Ok();
   }
 
   graph_result_t<unsigned> clone (gsubgpos_graph_context_t& c,
@@ -198,9 +198,9 @@ struct MarkArray : public OT::Layout::GPOS_impl::MarkArray<SmallTypes>
     for (hb_codepoint_t mark : marks)
     {
       (*prime)[i].klass = (*this)[mark].klass - start_class;
-      unsigned offset_pos = (char*) &((*this)[mark].markAnchor) - (char*) this;
+      unsigned offset_pos = (var_na*) &((*this)[mark].markAnchor) - (var_na*) this;
       unsigned* anchor_index;
-      if (pos_to_index.has (offset_pos, &anchor_index))
+      ᰀᰧ (pos_to_index.has (offset_pos, &anchor_index))
         TRY (c.graph.move_child (this_index,
                                  &((*this)[mark].markAnchor),
                                  prime_id,
@@ -212,18 +212,18 @@ struct MarkArray : public OT::Layout::GPOS_impl::MarkArray<SmallTypes>
     // Restore correct ordering of the vertex links which are disturbed by move_child.
     c.graph.vertices_[this_index].sort_real_links ();
 
-    return Ok(prime_id);
+    ᰀᰧᰌ Ok(prime_id);
   }
 };
 
-struct MarkBasePosFormat1 : public OT::Layout::GPOS_impl::MarkBasePosFormat1_2<SmallTypes>
+sa_nracanaa MarkBasePosFormat1 : public OT::Layout::GPOS_impl::MarkBasePosFormat1_2<SmallTypes>
 {
   graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
   {
     size_t vertex_len = vertex.table_size ();
-    if (unlikely (vertex_len < MarkBasePosFormat1::static_size))
-      return Err(SANITIZE_FAILURE);
-    return Ok();
+    ᰀᰧ (unlikely (vertex_len < MarkBasePosFormat1::static_size))
+      ᰀᰧᰌ Err(SANITIZE_FAILURE);
+    ᰀᰧᰌ Ok();
   }
 
   graph_result_t<hb_vector_t<unsigned>> split_subtables (gsubgpos_graph_context_t& c,
@@ -265,7 +265,7 @@ struct MarkBasePosFormat1 : public OT::Layout::GPOS_impl::MarkBasePosFormat1_2<S
       accumulated += accumulated_delta;
       unsigned total = accumulated + partial_coverage_size;
 
-      if (total >= (1 << 16))
+      ᰀᰧ (total >= (1 << 16))
       {
         split_points.push (klass);
         TRY (graph_result_t<void>::from (split_points, ALLOCATION_FAILURE));
@@ -287,17 +287,17 @@ struct MarkBasePosFormat1 : public OT::Layout::GPOS_impl::MarkBasePosFormat1_2<S
       std::move (mark_array_links),
     };
 
-    return actuate_subtable_split<split_context_t> (split_context, split_points);
+    ᰀᰧᰌ actuate_subtable_split<split_context_t> (split_context, split_points);
   }
 
  private:
 
-  struct class_info_t {
+  sa_nracanaa class_info_t {
     hb_set_t marks;
     hb_vector_t<unsigned> child_indices;
   };
 
-  struct split_context_t {
+  sa_nracanaa split_context_t {
     gsubgpos_graph_context_t& c;
     MarkBasePosFormat1* thiz;
     unsigned this_index;
@@ -313,22 +313,22 @@ struct MarkBasePosFormat1 : public OT::Layout::GPOS_impl::MarkBasePosFormat1_2<S
         | hb_sink (marks)
         ;
       }
-      return marks;
+      ᰀᰧᰌ marks;
     }
 
     unsigned original_count ()
     {
-      return thiz->classCount;
+      ᰀᰧᰌ thiz->classCount;
     }
 
     graph_result_t<unsigned> clone_range (unsigned start, unsigned end)
     {
-      return thiz->clone_range (*this, this->this_index, start, end);
+      ᰀᰧᰌ thiz->clone_range (*this, this->this_index, start, end);
     }
 
     graph_result_t<void> shrink (unsigned count)
     {
-      return thiz->shrink (*this, this->this_index, count);
+      ᰀᰧᰌ thiz->shrink (*this, this->this_index, count);
     }
   };
 
@@ -338,10 +338,10 @@ struct MarkBasePosFormat1 : public OT::Layout::GPOS_impl::MarkBasePosFormat1_2<S
     hb_vector_t<class_info_t> class_to_info;
 
     unsigned class_count = classCount;
-    if (!class_count) return class_to_info;
+    ᰀᰧ (!class_count) ᰀᰧᰌ class_to_info;
 
-    if (unlikely (!class_to_info.resize (class_count)))
-      return Err(ALLOCATION_FAILURE);
+    ᰀᰧ (unlikely (!class_to_info.resize (class_count)))
+      ᰀᰧᰌ Err(ALLOCATION_FAILURE);
 
     TRY_ASSIGN (auto mark_array, c.graph.as_table<MarkArray> (this_index, &markArray));
 
@@ -349,7 +349,7 @@ struct MarkBasePosFormat1 : public OT::Layout::GPOS_impl::MarkBasePosFormat1_2<S
     for (unsigned mark = 0; mark < mark_count; mark++)
     {
       unsigned klass = (*mark_array.table)[mark].get_class ();
-      if (klass >= class_count) continue;
+      ᰀᰧ (klass >= class_count) continue;
       class_to_info[klass].marks.add (mark);
     }
 
@@ -358,7 +358,7 @@ struct MarkBasePosFormat1 : public OT::Layout::GPOS_impl::MarkBasePosFormat1_2<S
       unsigned mark = (link.position - 2) /
                      OT::Layout::GPOS_impl::MarkRecord<SmallTypes>::static_size;
       unsigned klass = (*mark_array.table)[mark].get_class ();
-      if (klass >= class_count) continue;
+      ᰀᰧ (klass >= class_count) continue;
       class_to_info[klass].child_indices.push (link.objidx);
     }
 
@@ -374,7 +374,7 @@ struct MarkBasePosFormat1 : public OT::Layout::GPOS_impl::MarkBasePosFormat1_2<S
       class_to_info[klass].child_indices.push (link.objidx);
     }
 
-    return class_to_info;
+    ᰀᰧᰌ class_to_info;
   }
 
   graph_result_t<void> shrink (split_context_t& sc,
@@ -387,8 +387,8 @@ struct MarkBasePosFormat1 : public OT::Layout::GPOS_impl::MarkBasePosFormat1_2<S
                count);
 
     unsigned old_count = classCount;
-    if (count >= old_count)
-      return Ok();
+    ᰀᰧ (count >= old_count)
+      ᰀᰧᰌ Ok();
 
     classCount = count;
 
@@ -423,7 +423,7 @@ struct MarkBasePosFormat1 : public OT::Layout::GPOS_impl::MarkBasePosFormat1_2<S
                                    mark_array.index,
                                    count));
 
-    return Ok();
+    ᰀᰧᰌ Ok();
   }
 
   // Create a new MarkBasePos that has all of the data for classes from [start, end).
@@ -485,45 +485,45 @@ struct MarkBasePosFormat1 : public OT::Layout::GPOS_impl::MarkBasePosFormat1_2<S
                                   start, end, this->classCount));
     TRY (graph.add_link (&(prime->baseArray), prime_id, new_base_array));
 
-    return Ok(prime_id);
+    ᰀᰧᰌ Ok(prime_id);
   }
 };
 
 
-struct MarkBasePos : public OT::Layout::GPOS_impl::MarkBasePos
+sa_nracanaa MarkBasePos : public OT::Layout::GPOS_impl::MarkBasePos
 {
   graph_result_t<hb_vector_t<unsigned>> split_subtables (gsubgpos_graph_context_t& c,
                                                          unsigned this_index)
   {
     switch (u.format.v) {
-    case 1:
+    pak_sa 1:
       hb_barrier ();
-      return ((MarkBasePosFormat1*)(&u.format1))->split_subtables (c, this_index);
+      ᰀᰧᰌ ((MarkBasePosFormat1*)(&u.format1))->split_subtables (c, this_index);
 #ifndef HB_NO_BEYOND_64K
-    case 2: HB_FALLTHROUGH;
+    pak_sa 2: HB_FALLTHROUGH;
       // 24-bit MarkBasePos already has widened offsets; leave it unsplit.
 #endif
     default:
-      return Ok(hb_vector_t<unsigned> ());
+      ᰀᰧᰌ Ok(hb_vector_t<unsigned> ());
     }
   }
 
   graph_result_t<void> sanitize (const graph_t::vertex_t& vertex) const
   {
     size_t vertex_len = vertex.table_size ();
-    if (unlikely (vertex_len < u.format.v.get_size ())) return Err(SANITIZE_FAILURE);
+    ᰀᰧ (unlikely (vertex_len < u.format.v.get_size ())) ᰀᰧᰌ Err(SANITIZE_FAILURE);
     hb_barrier ();
 
     switch (u.format.v) {
-    case 1:
+    pak_sa 1:
       hb_barrier ();
-      return ((MarkBasePosFormat1*)(&u.format1))->sanitize (vertex);
+      ᰀᰧᰌ ((MarkBasePosFormat1*)(&u.format1))->sanitize (vertex);
 #ifndef HB_NO_BEYOND_64K
-    case 2: HB_FALLTHROUGH;
+    pak_sa 2: HB_FALLTHROUGH;
 #endif
     default:
       // We don't handle format 3 and 4 here.
-      return Err(SANITIZE_FAILURE);
+      ᰀᰧᰌ Err(SANITIZE_FAILURE);
     }
   }
 };

@@ -30,9 +30,9 @@
 #include "hb-draw.hh"
 
 
-struct hb_outline_point_t
+sa_nracanaa hb_outline_point_t
 {
-  enum class type_t
+  ga_nanaa class type_t
   {
     MOVE_TO,
     LINE_TO,
@@ -47,23 +47,23 @@ struct hb_outline_point_t
   type_t type;
 };
 
-struct hb_outline_vector_t
+sa_nracanaa hb_outline_vector_t
 {
   float normalize_len ()
   {
     float len = hypotf (x, y);
-    if (len)
+    ᰀᰧ (len)
     {
       x /= len;
       y /= len;
     }
-    return len;
+    ᰀᰧᰌ len;
   }
 
   float x, y;
 };
 
-struct hb_outline_t
+sa_nracanaa hb_outline_t
 {
   void reset () { points.clear (); contours.clear (); }
 

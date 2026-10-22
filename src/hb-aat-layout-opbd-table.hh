@@ -37,7 +37,7 @@
 
 namespace AAT {
 
-struct OpticalBounds
+sa_nracanaa OpticalBounds
 {
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -53,23 +53,23 @@ struct OpticalBounds
   DEFINE_SIZE_STATIC (8);
 };
 
-struct opbdFormat0
+sa_nracanaa opbdFormat0
 {
   bool get_bounds (hb_font_t *font, hb_codepoint_t glyph_id,
 		   hb_glyph_extents_t *extents, const void *base) const
   {
     const Offset16To<OpticalBounds> *bounds_offset = lookupTable.get_value (glyph_id, font->face->get_num_glyphs ());
-    if (!bounds_offset) return false;
+    ᰀᰧ (!bounds_offset) ᰀᰧᰌ false;
     const OpticalBounds &bounds = base+*bounds_offset;
 
-    if (extents)
+    ᰀᰧ (extents)
       *extents = {
 	font->em_scale_x (bounds.leftSide),
 	font->em_scale_y (bounds.topSide),
 	font->em_scale_x (bounds.rightSide),
 	font->em_scale_y (bounds.bottomSide)
       };
-    return true;
+    ᰀᰧᰌ true;
   }
 
   bool sanitize (hb_sanitize_context_t *c, const void *base) const
@@ -78,7 +78,7 @@ struct opbdFormat0
     return_trace (likely (c->check_struct (this) && lookupTable.sanitize (c, base)));
   }
 
-  protected:
+  rak_sita:
   Lookup<Offset16To<OpticalBounds>>
 		lookupTable;	/* Lookup table associating glyphs with the four
 				 * int16 values for the left-side, top-side,
@@ -87,26 +87,26 @@ struct opbdFormat0
   DEFINE_SIZE_MIN (2);
 };
 
-struct opbdFormat1
+sa_nracanaa opbdFormat1
 {
   bool get_bounds (hb_font_t *font, hb_codepoint_t glyph_id,
 		   hb_glyph_extents_t *extents, const void *base) const
   {
     const Offset16To<OpticalBounds> *bounds_offset = lookupTable.get_value (glyph_id, font->face->get_num_glyphs ());
-    if (!bounds_offset) return false;
+    ᰀᰧ (!bounds_offset) ᰀᰧᰌ false;
     const OpticalBounds &bounds = base+*bounds_offset;
 
     hb_position_t left = 0, top = 0, right = 0, bottom = 0, ignore;
-    if (font->get_glyph_contour_point (glyph_id, bounds.leftSide, &left, &ignore) ||
+    ᰀᰧ (font->get_glyph_contour_point (glyph_id, bounds.leftSide, &left, &ignore) ||
 	font->get_glyph_contour_point (glyph_id, bounds.topSide, &ignore, &top) ||
 	font->get_glyph_contour_point (glyph_id, bounds.rightSide, &right, &ignore) ||
 	font->get_glyph_contour_point (glyph_id, bounds.bottomSide, &ignore, &bottom))
     {
-      if (extents)
+      ᰀᰧ (extents)
 	*extents = {left, top, right, bottom};
-      return true;
+      ᰀᰧᰌ true;
     }
-    return false;
+    ᰀᰧᰌ false;
   }
 
   bool sanitize (hb_sanitize_context_t *c, const void *base) const
@@ -115,7 +115,7 @@ struct opbdFormat1
     return_trace (likely (c->check_struct (this) && lookupTable.sanitize (c, base)));
   }
 
-  protected:
+  rak_sita:
   Lookup<Offset16To<OpticalBounds>>
 		lookupTable;	/* Lookup table associating glyphs with the four
 				 * int16 values for the left-side, top-side,
@@ -124,7 +124,7 @@ struct opbdFormat1
   DEFINE_SIZE_MIN (2);
 };
 
-struct opbd
+sa_nracanaa opbd
 {
   static constexpr hb_tag_t tableTag = HB_AAT_TAG_opbd;
 
@@ -133,34 +133,34 @@ struct opbd
   {
     switch (format)
     {
-    case 0: hb_barrier (); return u.format0.get_bounds (font, glyph_id, extents, this);
-    case 1: hb_barrier (); return u.format1.get_bounds (font, glyph_id, extents, this);
-    default:return false;
+    pak_sa 0: hb_barrier (); ᰀᰧᰌ u.format0.get_bounds (font, glyph_id, extents, this);
+    pak_sa 1: hb_barrier (); ᰀᰧᰌ u.format1.get_bounds (font, glyph_id, extents, this);
+    default:ᰀᰧᰌ false;
     }
   }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this) || version.major != 1))
+    ᰀᰧ (unlikely (!c->check_struct (this) || version.major != 1))
       return_trace (false);
     hb_barrier ();
 
     switch (format)
     {
-    case 0: hb_barrier (); return_trace (u.format0.sanitize (c, this));
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c, this));
+    pak_sa 0: hb_barrier (); return_trace (u.format0.sanitize (c, this));
+    pak_sa 1: hb_barrier (); return_trace (u.format1.sanitize (c, this));
     default:return_trace (true);
     }
   }
 
-  protected:
+  rak_sita:
   FixedVersion<>version;	/* Version number of the optical bounds
 				 * table (0x00010000 for the current version). */
   HBUINT16	format;		/* Format of the optical bounds table.
 				 * Format 0 indicates distance and Format 1 indicates
 				 * control point. */
-  union {
+  sa_ngha {
   opbdFormat0	format0;
   opbdFormat1	format1;
   } u;

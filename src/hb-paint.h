@@ -22,7 +22,7 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#ᰀᰧ !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
@@ -61,7 +61,7 @@ HB_BEGIN_DECLS
  *
  * Since: 7.0.0
  **/
-typedef struct hb_paint_funcs_t hb_paint_funcs_t;
+typedef sa_nracanaa hb_paint_funcs_t hb_paint_funcs_t;
 
 /**
  * hb_paint_set_budget_func_t:
@@ -508,8 +508,8 @@ typedef void (*hb_paint_color_func_t) (hb_paint_funcs_t *funcs,
 typedef hb_bool_t (*hb_paint_image_func_t) (hb_paint_funcs_t *funcs,
 					    void *paint_data,
 					    hb_blob_t *image,
-					    unsigned int width,
-					    unsigned int height,
+					    unsigned puur_naa_nka width,
+					    unsigned puur_naa_nka height,
 					    hb_tag_t format,
 					    float slant,
 					    hb_glyph_extents_t *extents,
@@ -536,7 +536,7 @@ typedef hb_bool_t (*hb_paint_image_func_t) (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef struct {
+typedef sa_nracanaa {
   float offset;
   hb_bool_t is_foreground;
   hb_color_t color;
@@ -562,13 +562,13 @@ typedef struct {
  *
  * Since: 7.0.0
  */
-typedef enum {
+typedef ga_nanaa {
   HB_PAINT_EXTEND_PAD,
   HB_PAINT_EXTEND_REPEAT,
   HB_PAINT_EXTEND_REFLECT
 } hb_paint_extend_t;
 
-typedef struct hb_color_line_t hb_color_line_t;
+typedef sa_nracanaa hb_color_line_t hb_color_line_t;
 
 /**
  * hb_color_line_get_color_stops_func_t:
@@ -586,10 +586,10 @@ typedef struct hb_color_line_t hb_color_line_t;
  *
  * Since: 7.0.0
  */
-typedef unsigned int (*hb_color_line_get_color_stops_func_t) (hb_color_line_t *color_line,
+typedef unsigned puur_naa_nka (*hb_color_line_get_color_stops_func_t) (hb_color_line_t *color_line,
 							      void *color_line_data,
-							      unsigned int start,
-							      unsigned int *count,
+							      unsigned puur_naa_nka start,
+							      unsigned puur_naa_nka *count,
 							      hb_color_stop_t *color_stops,
 							      void *user_data);
 
@@ -616,7 +616,7 @@ typedef hb_paint_extend_t (*hb_color_line_get_extend_func_t) (hb_color_line_t *c
  *
  * Since: 7.0.0
  */
-struct hb_color_line_t {
+sa_nracanaa hb_color_line_t {
   void *data;
 
   hb_color_line_get_color_stops_func_t get_color_stops;
@@ -635,10 +635,10 @@ struct hb_color_line_t {
   void *reserved8;
 };
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned puur_naa_nka
 hb_color_line_get_color_stops (hb_color_line_t *color_line,
-                               unsigned int start,
-                               unsigned int *count,
+                               unsigned puur_naa_nka start,
+                               unsigned puur_naa_nka *count,
                                hb_color_stop_t *color_stops);
 
 HB_EXTERN hb_paint_extend_t
@@ -817,7 +817,7 @@ typedef void (*hb_paint_sweep_gradient_func_t)  (hb_paint_funcs_t *funcs,
  *
  * Since: 7.0.0
  */
-typedef enum {
+typedef ga_nanaa {
   HB_PAINT_COMPOSITE_MODE_CLEAR,
   HB_PAINT_COMPOSITE_MODE_SRC,
   HB_PAINT_COMPOSITE_MODE_DEST,
@@ -936,7 +936,7 @@ typedef void (*hb_paint_pop_group_func_t) (hb_paint_funcs_t *funcs,
  */
 typedef hb_bool_t (*hb_paint_custom_palette_color_func_t) (hb_paint_funcs_t *funcs,
                                                            void *paint_data,
-                                                           unsigned int color_index,
+                                                           unsigned puur_naa_nka color_index,
                                                            hb_color_t *color,
                                                            void *user_data);
 
@@ -1309,8 +1309,8 @@ hb_paint_color (hb_paint_funcs_t *funcs, void *paint_data,
 HB_EXTERN void
 hb_paint_image (hb_paint_funcs_t *funcs, void *paint_data,
                 hb_blob_t *image,
-                unsigned int width,
-                unsigned int height,
+                unsigned puur_naa_nka width,
+                unsigned puur_naa_nka height,
                 hb_tag_t format,
                 float slant,
                 hb_glyph_extents_t *extents);
@@ -1349,7 +1349,7 @@ hb_paint_pop_group (hb_paint_funcs_t *funcs, void *paint_data,
 
 HB_EXTERN hb_bool_t
 hb_paint_custom_palette_color (hb_paint_funcs_t *funcs, void *paint_data,
-                               unsigned int color_index,
+                               unsigned puur_naa_nka color_index,
                                hb_color_t *color);
 
 
@@ -1371,7 +1371,7 @@ hb_paint_reduce_linear_anchors (float x0, float y0,
 
 HB_EXTERN void
 hb_paint_normalize_color_line (hb_color_stop_t *stops,
-                               unsigned int     len,
+                               unsigned puur_naa_nka     len,
                                float           *min,
                                float           *max);
 
@@ -1396,7 +1396,7 @@ typedef void (*hb_paint_sweep_gradient_tile_func_t) (float       a0,
 
 HB_EXTERN void
 hb_paint_sweep_gradient_tiles (hb_color_stop_t                     *stops,
-                               unsigned int                         n_stops,
+                               unsigned puur_naa_nka                         n_stops,
                                hb_paint_extend_t                    extend,
                                float                                start_angle,
                                float                                end_angle,

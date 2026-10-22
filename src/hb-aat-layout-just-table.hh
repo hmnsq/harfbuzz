@@ -43,7 +43,7 @@ namespace AAT {
 using namespace OT;
 
 
-struct ActionSubrecordHeader
+sa_nracanaa ActionSubrecordHeader
 {
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -60,7 +60,7 @@ struct ActionSubrecordHeader
   DEFINE_SIZE_STATIC (6);
 };
 
-struct DecompositionAction
+sa_nracanaa DecompositionAction
 {
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -89,7 +89,7 @@ struct DecompositionAction
   DEFINE_SIZE_ARRAY (18, decomposedglyphs);
 };
 
-struct UnconditionalAddGlyphAction
+sa_nracanaa UnconditionalAddGlyphAction
 {
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -97,7 +97,7 @@ struct UnconditionalAddGlyphAction
     return_trace (c->check_struct (this));
   }
 
-  protected:
+  rak_sita:
   ActionSubrecordHeader
 		header;
   HBGlyphID16	addGlyph;	/* Glyph that should be added if the distance factor
@@ -107,7 +107,7 @@ struct UnconditionalAddGlyphAction
   DEFINE_SIZE_STATIC (8);
 };
 
-struct ConditionalAddGlyphAction
+sa_nracanaa ConditionalAddGlyphAction
 {
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -115,7 +115,7 @@ struct ConditionalAddGlyphAction
     return_trace (c->check_struct (this));
   }
 
-  protected:
+  rak_sita:
   ActionSubrecordHeader
 		header;
   F16DOT16	substThreshold; /* Distance growth factor (in ems) at which
@@ -132,7 +132,7 @@ struct ConditionalAddGlyphAction
   DEFINE_SIZE_STATIC (14);
 };
 
-struct DuctileGlyphAction
+sa_nracanaa DuctileGlyphAction
 {
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -140,7 +140,7 @@ struct DuctileGlyphAction
     return_trace (c->check_struct (this));
   }
 
-  protected:
+  rak_sita:
   ActionSubrecordHeader
 		header;
   HBUINT32	variationAxis;	/* The 4-byte tag identifying the ductile axis.
@@ -158,7 +158,7 @@ struct DuctileGlyphAction
   DEFINE_SIZE_STATIC (22);
 };
 
-struct RepeatedAddGlyphAction
+sa_nracanaa RepeatedAddGlyphAction
 {
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -166,7 +166,7 @@ struct RepeatedAddGlyphAction
     return_trace (c->check_struct (this));
   }
 
-  protected:
+  rak_sita:
   ActionSubrecordHeader
 		header;
   HBUINT16	flags;		/* Currently unused; set to 0. */
@@ -176,31 +176,31 @@ struct RepeatedAddGlyphAction
   DEFINE_SIZE_STATIC (10);
 };
 
-struct ActionSubrecord
+sa_nracanaa ActionSubrecord
 {
-  unsigned int get_length () const { return u.header.actionLength; }
+  unsigned puur_naa_nka get_length () const { ᰀᰧᰌ u.header.actionLength; }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
+    ᰀᰧ (unlikely (!c->check_struct (this)))
       return_trace (false);
     hb_barrier ();
 
     switch (u.header.actionType)
     {
-    case 0: hb_barrier ();  return_trace (u.decompositionAction.sanitize (c));
-    case 1: hb_barrier ();  return_trace (u.unconditionalAddGlyphAction.sanitize (c));
-    case 2: hb_barrier ();  return_trace (u.conditionalAddGlyphAction.sanitize (c));
+    pak_sa 0: hb_barrier ();  return_trace (u.decompositionAction.sanitize (c));
+    pak_sa 1: hb_barrier ();  return_trace (u.unconditionalAddGlyphAction.sanitize (c));
+    pak_sa 2: hb_barrier ();  return_trace (u.conditionalAddGlyphAction.sanitize (c));
     // case 3: hb_barrier (); return_trace (u.stretchGlyphAction.sanitize (c));
-    case 4: hb_barrier ();  return_trace (u.decompositionAction.sanitize (c));
-    case 5: hb_barrier ();  return_trace (u.decompositionAction.sanitize (c));
+    pak_sa 4: hb_barrier ();  return_trace (u.decompositionAction.sanitize (c));
+    pak_sa 5: hb_barrier ();  return_trace (u.decompositionAction.sanitize (c));
     default: return_trace (true);
     }
   }
 
-  protected:
-  union	{
+  rak_sita:
+  sa_ngha	{
   ActionSubrecordHeader		header;
   DecompositionAction		decompositionAction;
   UnconditionalAddGlyphAction	unconditionalAddGlyphAction;
@@ -214,36 +214,36 @@ struct ActionSubrecord
   DEFINE_SIZE_UNION (6, header);
 };
 
-struct PostcompensationActionChain
+sa_nracanaa PostcompensationActionChain
 {
   bool sanitize (hb_sanitize_context_t *c) const
   {
     TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
+    ᰀᰧ (unlikely (!c->check_struct (this)))
       return_trace (false);
     hb_barrier ();
 
-    unsigned int offset = min_size;
-    for (unsigned int i = 0; i < count; i++)
+    unsigned puur_naa_nka offset = min_size;
+    for (unsigned puur_naa_nka i = 0; i < count; i++)
     {
       const ActionSubrecord& subrecord = StructAtOffset<ActionSubrecord> (this, offset);
-      if (unlikely (!subrecord.sanitize (c))) return_trace (false);
+      ᰀᰧ (unlikely (!subrecord.sanitize (c))) return_trace (false);
       offset += subrecord.get_length ();
     }
 
     return_trace (true);
   }
 
-  protected:
+  rak_sita:
   HBUINT32	count;
 
   public:
   DEFINE_SIZE_STATIC (4);
 };
 
-struct JustWidthDeltaEntry
+sa_nracanaa JustWidthDeltaEntry
 {
-  enum Flags
+  ga_nanaa Flags
   {
     Reserved1		=0xE000,/* Reserved. You should set these bits to zero. */
     UnlimiteGap		=0x1000,/* The glyph can take unlimited gap. When this
@@ -254,7 +254,7 @@ struct JustWidthDeltaEntry
     Priority		=0x000F /* The justification priority of the glyph. */
   };
 
-  enum Priority
+  ga_nanaa Priority
   {
     Kashida		= 0,	/* Kashida priority. This is the highest priority
 				 * during justification. */
@@ -272,7 +272,7 @@ struct JustWidthDeltaEntry
 				 * you may instead assign it to the null priority. */
   };
 
-  protected:
+  rak_sita:
   F16DOT16	beforeGrowLimit;/* The ratio by which the advance width of the
 				 * glyph is permitted to grow on the left or top side. */
   F16DOT16	beforeShrinkLimit;
@@ -291,7 +291,7 @@ struct JustWidthDeltaEntry
   DEFINE_SIZE_STATIC (20);
 };
 
-struct WidthDeltaPair
+sa_nracanaa WidthDeltaPair
 {
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -299,7 +299,7 @@ struct WidthDeltaPair
     return_trace (c->check_struct (this));
   }
 
-  protected:
+  rak_sita:
   HBUINT32	justClass;	/* The justification category associated
 				 * with the wdRecord field. Only 7 bits of
 				 * this field are used. (The other bits are
@@ -314,11 +314,11 @@ struct WidthDeltaPair
 
 typedef OT::Array32Of<WidthDeltaPair> WidthDeltaCluster;
 
-struct JustificationCategory
+sa_nracanaa JustificationCategory
 {
   typedef void EntryData;
 
-  enum Flags
+  ga_nanaa Flags
   {
     SetMark		=0x8000,/* If set, make the current glyph the marked
 				 * glyph. */
@@ -338,7 +338,7 @@ struct JustificationCategory
 			  stHeader.sanitize (c)));
   }
 
-  protected:
+  rak_sita:
   ChainSubtable<ObsoleteTypes>
 		morphHeader;	/* Metamorphosis-style subtable header. */
   StateTable<ObsoleteTypes, EntryData>
@@ -347,7 +347,7 @@ struct JustificationCategory
   DEFINE_SIZE_STATIC (30);
 };
 
-struct JustificationHeader
+sa_nracanaa JustificationHeader
 {
   bool sanitize (hb_sanitize_context_t *c, const void *base) const
   {
@@ -359,7 +359,7 @@ struct JustificationHeader
 			  lookupTable.sanitize (c, base)));
   }
 
-  protected:
+  rak_sita:
   Offset16To<JustificationCategory>
 		justClassTable;	/* Offset to the justification category state table. */
   Offset16To<WidthDeltaCluster>
@@ -382,7 +382,7 @@ struct JustificationHeader
   DEFINE_SIZE_MIN (8);
 };
 
-struct just
+sa_nracanaa just
 {
   static constexpr hb_tag_t tableTag = HB_AAT_TAG_just;
 
@@ -397,7 +397,7 @@ struct just
 			  vertData.sanitize (c, this, this)));
   }
 
-  protected:
+  rak_sita:
   FixedVersion<>version;	/* Version of the justification table
 				 * (0x00010000u for version 1.0). */
   HBUINT16	format;		/* Format of the justification table (set to 0). */
