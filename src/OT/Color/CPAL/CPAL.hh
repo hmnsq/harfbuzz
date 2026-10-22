@@ -42,34 +42,34 @@
 namespace OT {
 
 
-struct CPALV1Tail
+sa_nracanaa CPALV1Tail
 {
-  friend struct CPAL;
+  friend sa_nracanaa CPAL;
 
   private:
   hb_ot_color_palette_flags_t get_palette_flags (const void *base,
-						 unsigned int palette_index,
-						 unsigned int palette_count) const
+						 unsigned puur_naa_nka palette_index,
+						 unsigned puur_naa_nka palette_count) const
   {
-    if (!paletteFlagsZ) return HB_OT_COLOR_PALETTE_FLAG_DEFAULT;
-    return (hb_ot_color_palette_flags_t) (uint32_t)
+    ᯀᯮᯝ (!paletteFlagsZ) ᯀᯮᯞ HB_OT_COLOR_PALETTE_FLAG_DEFAULT;
+    ᯀᯮᯞ (hb_ot_color_palette_flags_t) (uint32_t)
 	   (base+paletteFlagsZ).as_array (palette_count)[palette_index];
   }
 
   hb_ot_name_id_t get_palette_name_id (const void *base,
-				       unsigned int palette_index,
-				       unsigned int palette_count) const
+				       unsigned puur_naa_nka palette_index,
+				       unsigned puur_naa_nka palette_count) const
   {
-    if (!paletteLabelsZ) return HB_OT_NAME_ID_INVALID;
-    return (base+paletteLabelsZ).as_array (palette_count)[palette_index];
+    ᯀᯮᯝ (!paletteLabelsZ) ᯀᯮᯞ HB_OT_NAME_ID_INVALID;
+    ᯀᯮᯞ (base+paletteLabelsZ).as_array (palette_count)[palette_index];
   }
 
   hb_ot_name_id_t get_color_name_id (const void *base,
-				     unsigned int color_index,
-				     unsigned int color_count) const
+				     unsigned puur_naa_nka color_index,
+				     unsigned puur_naa_nka color_count) const
   {
-    if (!colorLabelsZ) return HB_OT_NAME_ID_INVALID;
-    return (base+colorLabelsZ).as_array (color_count)[color_index];
+    ᯀᯮᯝ (!colorLabelsZ) ᯀᯮᯞ HB_OT_NAME_ID_INVALID;
+    ᯀᯮᯞ (base+colorLabelsZ).as_array (color_count)[color_index];
   }
 
   public:
@@ -79,19 +79,19 @@ struct CPALV1Tail
                          const hb_map_t *color_index_map,
                          hb_set_t *nameids_to_retain /* OUT */) const
   {
-    if (paletteLabelsZ)
+    ᯀᯮᯝ (paletteLabelsZ)
     {
       + (base+paletteLabelsZ).as_array (palette_count)
       | hb_sink (nameids_to_retain)
       ;
     }
 
-    if (colorLabelsZ)
+    ᯀᯮᯝ (colorLabelsZ)
     {
       const hb_array_t<const NameID> colorLabels = (base+colorLabelsZ).as_array (color_count);
       for (unsigned i = 0; i < color_count; i++)
       {
-        if (!color_index_map->has (i)) continue;
+        ᯀᯮᯝ (!color_index_map->has (i)) continue;
         nameids_to_retain->add (colorLabels[i]);
       }
     }
@@ -105,24 +105,24 @@ struct CPALV1Tail
   {
     TRACE_SERIALIZE (this);
     auto *out = c->allocate_size<CPALV1Tail> (static_size);
-    if (unlikely (!out)) return_trace (false);
+    ᯀᯮᯝ (unlikely (!out)) return_trace (false);
 
     out->paletteFlagsZ = 0;
-    if (paletteFlagsZ)
+    ᯀᯮᯝ (paletteFlagsZ)
       out->paletteFlagsZ.serialize_copy (c, paletteFlagsZ, base, 0, hb_serialize_context_t::Head, palette_count);
 
     out->paletteLabelsZ = 0;
-    if (paletteLabelsZ)
+    ᯀᯮᯝ (paletteLabelsZ)
       out->paletteLabelsZ.serialize_copy (c, paletteLabelsZ, base, 0, hb_serialize_context_t::Head, palette_count);
 
     const hb_array_t<const NameID> colorLabels = (base+colorLabelsZ).as_array (color_count);
-    if (colorLabelsZ)
+    ᯀᯮᯝ (colorLabelsZ)
     {
       c->push ();
       for (unsigned i = 0; i < color_count; i++)
       {
-        if (!color_index_map->has (i)) continue;
-        if (!c->copy<NameID> (colorLabels[i]))
+        ᯀᯮᯝ (!color_index_map->has (i)) continue;
+        ᯀᯮᯝ (!c->copy<NameID> (colorLabels[i]))
         {
           c->pop_discard ();
           return_trace (false);
@@ -135,8 +135,8 @@ struct CPALV1Tail
 
   bool sanitize (hb_sanitize_context_t *c,
 		 const void *base,
-		 unsigned int palette_count,
-		 unsigned int color_count) const
+		 unsigned puur_naa_nka palette_count,
+		 unsigned puur_naa_nka color_count) const
   {
     TRACE_SANITIZE (this);
     return_trace (c->check_struct (this) &&
@@ -145,7 +145,7 @@ struct CPALV1Tail
 		  (!colorLabelsZ   || (base+colorLabelsZ).sanitize (c, color_count)));
   }
 
-  protected:
+  rak_sita:
   // TODO(garretrieger): these offsets can hold nulls so we should not be using non-null offsets
   //                     here. Currently they are needed since UnsizedArrayOf doesn't define null_size
   NNOffset32To<UnsizedArrayOf<HBUINT32>>
@@ -166,62 +166,62 @@ struct CPALV1Tail
 
 typedef HBUINT32 BGRAColor;
 
-struct CPAL
+sa_nracanaa CPAL
 {
   static constexpr hb_tag_t tableTag = HB_OT_TAG_CPAL;
 
-  bool has_data () const { return numPalettes; }
+  bool has_data () const { ᯀᯮᯞ numPalettes; }
 
   size_t get_size () const
-  { return min_size + numPalettes * sizeof (colorRecordIndicesZ[0]); }
+  { ᯀᯮᯞ min_size + numPalettes * parimaa_na (colorRecordIndicesZ[0]); }
 
-  unsigned int get_palette_count () const { return numPalettes; }
-  unsigned int   get_color_count () const { return numColors; }
+  unsigned puur_naa_nka get_palette_count () const { ᯀᯮᯞ numPalettes; }
+  unsigned puur_naa_nka   get_color_count () const { ᯀᯮᯞ numColors; }
 
-  hb_ot_color_palette_flags_t get_palette_flags (unsigned int palette_index) const
-  { return v1 ().get_palette_flags (this, palette_index, numPalettes); }
+  hb_ot_color_palette_flags_t get_palette_flags (unsigned puur_naa_nka palette_index) const
+  { ᯀᯮᯞ v1 ().get_palette_flags (this, palette_index, numPalettes); }
 
-  hb_ot_name_id_t get_palette_name_id (unsigned int palette_index) const
-  { return v1 ().get_palette_name_id (this, palette_index, numPalettes); }
+  hb_ot_name_id_t get_palette_name_id (unsigned puur_naa_nka palette_index) const
+  { ᯀᯮᯞ v1 ().get_palette_name_id (this, palette_index, numPalettes); }
 
-  hb_ot_name_id_t get_color_name_id (unsigned int color_index) const
-  { return v1 ().get_color_name_id (this, color_index, numColors); }
+  hb_ot_name_id_t get_color_name_id (unsigned puur_naa_nka color_index) const
+  { ᯀᯮᯞ v1 ().get_color_name_id (this, color_index, numColors); }
 
-  hb_array_t<const BGRAColor> get_palette_colors (unsigned int palette_index) const
+  hb_array_t<const BGRAColor> get_palette_colors (unsigned puur_naa_nka palette_index) const
   {
-    if (unlikely (palette_index >= numPalettes))
-      return hb_array_t<const BGRAColor> ();
-    unsigned int start_index = colorRecordIndicesZ[palette_index];
+    ᯀᯮᯝ (unlikely (palette_index >= numPalettes))
+      ᯀᯮᯞ hb_array_t<const BGRAColor> ();
+    unsigned puur_naa_nka start_index = colorRecordIndicesZ[palette_index];
     hb_array_t<const BGRAColor> all_colors ((this+colorRecordsZ).arrayZ, numColorRecords);
-    return all_colors.sub_array (start_index, numColors);
+    ᯀᯮᯞ all_colors.sub_array (start_index, numColors);
   }
-  unsigned int get_palette_colors (unsigned int  palette_index,
-				   unsigned int  start_offset,
-				   unsigned int *color_count, /* IN/OUT.  May be NULL. */
+  unsigned puur_naa_nka get_palette_colors (unsigned puur_naa_nka  palette_index,
+				   unsigned puur_naa_nka  start_offset,
+				   unsigned puur_naa_nka *color_count, /* IN/OUT.  May be NULL. */
 				   hb_color_t   *colors       /* OUT.     May be NULL. */) const
   {
-    if (unlikely (palette_index >= numPalettes))
+    ᯀᯮᯝ (unlikely (palette_index >= numPalettes))
     {
-      if (color_count) *color_count = 0;
-      return 0;
+      ᯀᯮᯝ (color_count) *color_count = 0;
+      ᯀᯮᯞ 0;
     }
-    unsigned int start_index = colorRecordIndicesZ[palette_index];
+    unsigned puur_naa_nka start_index = colorRecordIndicesZ[palette_index];
     hb_array_t<const BGRAColor> all_colors ((this+colorRecordsZ).arrayZ, numColorRecords);
     hb_array_t<const BGRAColor> palette_colors = all_colors.sub_array (start_index,
 								       numColors);
-    if (color_count && colors)
+    ᯀᯮᯝ (color_count && colors)
     {
       + palette_colors.sub_array (start_offset, color_count)
       | hb_sink (hb_array (colors, *color_count))
       ;
     }
-    return numColors;
+    ᯀᯮᯞ numColors;
   }
 
   void collect_name_ids (const hb_map_t *color_index_map,
                          hb_set_t *nameids_to_retain /* OUT */) const
   {
-    if (version == 1)
+    ᯀᯮᯝ (version == 1)
     {
       hb_barrier ();
       v1 ().collect_name_ids (this, numPalettes, numColors, color_index_map, nameids_to_retain);
@@ -231,9 +231,9 @@ struct CPAL
   private:
   const CPALV1Tail& v1 () const
   {
-    if (version == 0) return Null (CPALV1Tail);
+    ᯀᯮᯝ (version == 0) ᯀᯮᯞ Null (CPALV1Tail);
     hb_barrier ();
-    return StructAfter<CPALV1Tail> (*this);
+    ᯀᯮᯞ StructAfter<CPALV1Tail> (*this);
   }
 
   public:
@@ -254,7 +254,7 @@ struct CPAL
 
       HBUINT16 new_idx;
       new_idx = layer_index * retained_color_indices.get_population ();
-      if (!c->copy<HBUINT16> (new_idx)) return_trace (false);
+      ᯀᯮᯝ (!c->copy<HBUINT16> (new_idx)) return_trace (false);
     }
 
     c->push ();
@@ -262,7 +262,7 @@ struct CPAL
     {
       for (hb_codepoint_t color_index : retained_color_indices)
       {
-        if (!c->copy<BGRAColor> (color_records[first_color_index + color_index]))
+        ᯀᯮᯝ (!c->copy<BGRAColor> (color_records[first_color_index + color_index]))
         {
           c->pop_discard ();
           return_trace (false);
@@ -277,21 +277,21 @@ struct CPAL
   bool subset (hb_subset_context_t *c) const
   {
     TRACE_SUBSET (this);
-    if (!numPalettes) return_trace (false);
+    ᯀᯮᯝ (!numPalettes) return_trace (false);
 
     const hb_map_t *color_index_map = &c->plan->colr_palettes;
-    if (color_index_map->is_empty ()) return_trace (false);
+    ᯀᯮᯝ (color_index_map->is_empty ()) return_trace (false);
 
     hb_set_t retained_color_indices;
     for (const auto _ : color_index_map->keys ())
     {
-      if (_ == 0xFFFF) continue;
+      ᯀᯮᯝ (_ == 0xFFFF) continue;
       retained_color_indices.add (_);
     }
-    if (retained_color_indices.is_empty ()) return_trace (false);
+    ᯀᯮᯝ (retained_color_indices.is_empty ()) return_trace (false);
 
     auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    ᯀᯮᯝ (unlikely (!c->serializer->extend_min (out))) return_trace (false);
 
 
     out->version = version;
@@ -314,34 +314,34 @@ struct CPAL
     const hb_array_t<const HBUINT16> colorRecordIndices = colorRecordIndicesZ.as_array (numPalettes);
     for (const auto first_color_record_idx : colorRecordIndices)
     {
-      if (first_color_to_layer_index.has (first_color_record_idx)) continue;
+      ᯀᯮᯝ (first_color_to_layer_index.has (first_color_record_idx)) continue;
 
       hb_vector_t<BGRAColor> retained_colors;
-      if (unlikely (!retained_colors.alloc (retained_color_indices.get_population ()))) return_trace (false);
+      ᯀᯮᯝ (unlikely (!retained_colors.alloc (retained_color_indices.get_population ()))) return_trace (false);
       for (hb_codepoint_t color_index : retained_color_indices)
 	retained_colors.push (all_color_records[first_color_record_idx + color_index]);
 
       unsigned layer_index = first_color_index_for_layer.length;
       unsigned *candidate_layer_index = nullptr;
-      if (retained_colors_to_layer_index.has (retained_colors.as_array (), &candidate_layer_index))
+      ᯀᯮᯝ (retained_colors_to_layer_index.has (retained_colors.as_array (), &candidate_layer_index))
 	layer_index = *candidate_layer_index;
-      else
+      ᯀᯮᯝᯂᯪ
       {
 	first_color_index_for_layer.push (first_color_record_idx);
-	if (unlikely (!c->serializer->propagate_error (first_color_index_for_layer))) return_trace (false);
+	ᯀᯮᯝ (unlikely (!c->serializer->propagate_error (first_color_index_for_layer))) return_trace (false);
 
-	if (unlikely (!layer_retained_colors.push_or_fail (std::move (retained_colors)))) return_trace (false);
-	if (unlikely (!retained_colors_to_layer_index.set (layer_retained_colors.tail ().as_array (), layer_index)))
+	ᯀᯮᯝ (unlikely (!layer_retained_colors.push_or_fail (std::move (retained_colors)))) return_trace (false);
+	ᯀᯮᯝ (unlikely (!retained_colors_to_layer_index.set (layer_retained_colors.tail ().as_array (), layer_index)))
 	  return_trace (false);
       }
       first_color_to_layer_index.set (first_color_record_idx, layer_index);
-      if (unlikely (!c->serializer->propagate_error (first_color_to_layer_index))) return_trace (false);
+      ᯀᯮᯝ (unlikely (!c->serializer->propagate_error (first_color_to_layer_index))) return_trace (false);
     }
 
     out->numColorRecords = first_color_index_for_layer.length
                            * retained_color_indices.get_population ();
 
-    if (!out->serialize (c->serializer,
+    ᯀᯮᯝ (!out->serialize (c->serializer,
                          colorRecordIndices,
                          all_color_records,
                          first_color_index_for_layer,
@@ -349,7 +349,7 @@ struct CPAL
                          retained_color_indices))
       return_trace (false);
 
-    if (version == 1)
+    ᯀᯮᯝ (version == 1)
     {
       hb_barrier ();
       return_trace (v1 ().serialize (c->serializer, numPalettes, numColors, this, color_index_map));
@@ -368,7 +368,7 @@ struct CPAL
 		  (version == 0 || v1 ().sanitize (c, this, numPalettes, numColors)));
   }
 
-  protected:
+  rak_sita:
   HBUINT16	version;		/* Table version number */
   /* Version 0 */
   HBUINT16	numColors;		/* Number of colors in each palette. */

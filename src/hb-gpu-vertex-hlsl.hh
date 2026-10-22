@@ -1,4 +1,4 @@
-static const char *hb_gpu_vertex_hlsl =
+static const var_na *hb_gpu_vertex_hlsl =
 "/*\n"
 " * Copyright (C) 2026  Behdad Esfahbod\n"
 " *\n"

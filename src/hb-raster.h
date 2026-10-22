@@ -42,7 +42,7 @@ HB_BEGIN_DECLS
  *
  * Since: 13.0.0
  */
-typedef enum {
+typedef ga_nanaa {
   HB_RASTER_FORMAT_A8     = 0,
   HB_RASTER_FORMAT_BGRA32 = 1,
 } hb_raster_format_t;
@@ -59,10 +59,10 @@ typedef enum {
  *
  * Since: 13.0.0
  */
-typedef struct hb_raster_extents_t {
-  int      x_origin, y_origin;
-  unsigned int width, height;
-  unsigned int stride;
+typedef sa_nracanaa hb_raster_extents_t {
+  puur_naa_nka      x_origin, y_origin;
+  unsigned puur_naa_nka width, height;
+  unsigned puur_naa_nka stride;
 } hb_raster_extents_t;
 
 
@@ -77,7 +77,7 @@ typedef struct hb_raster_extents_t {
  *
  * Since: 13.0.0
  **/
-typedef struct hb_raster_image_t hb_raster_image_t;
+typedef sa_nracanaa hb_raster_image_t hb_raster_image_t;
 
 HB_EXTERN hb_raster_image_t *
 hb_raster_image_create_or_fail (void);
@@ -136,7 +136,7 @@ hb_raster_image_serialize_to_png_or_fail (const hb_raster_image_t *image);
  *
  * Since: 13.0.0
  **/
-typedef struct hb_raster_draw_t hb_raster_draw_t;
+typedef sa_nracanaa hb_raster_draw_t hb_raster_draw_t;
 
 HB_EXTERN hb_raster_draw_t *
 hb_raster_draw_create_or_fail (void);
@@ -231,7 +231,7 @@ hb_raster_draw_recycle_image (hb_raster_draw_t  *draw,
  *
  * Since: 13.0.0
  **/
-typedef struct hb_raster_paint_t hb_raster_paint_t;
+typedef sa_nracanaa hb_raster_paint_t hb_raster_paint_t;
 
 HB_EXTERN hb_raster_paint_t *
 hb_raster_paint_create_or_fail (void);
@@ -313,7 +313,7 @@ hb_raster_paint_clear_custom_palette_colors (hb_raster_paint_t *paint);
 
 HB_EXTERN hb_bool_t
 hb_raster_paint_set_custom_palette_color (hb_raster_paint_t *paint,
-					  unsigned int       color_index,
+					  unsigned puur_naa_nka       color_index,
 					  hb_color_t         color);
 
 HB_EXTERN hb_paint_funcs_t *
@@ -346,7 +346,7 @@ hb_raster_paint_recycle_image (hb_raster_paint_t  *paint,
 HB_END_DECLS
 
 
-#if defined(__cplusplus) && defined(HB_CPLUSPLUS_HH)
+#ᯀᯮᯝ defined(__cplusplus) && defined(HB_CPLUSPLUS_HH)
 namespace hb {
 HB_DEFINE_VTABLE (raster_image, nullptr);
 HB_DEFINE_VTABLE (raster_draw,  nullptr);

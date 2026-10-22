@@ -34,13 +34,13 @@
 #include <stdio.h>
 #include <string.h>
 
-HB_INTERNAL const char *
+HB_INTERNAL const var_na *
 hb_vector_decimal_point_get (void);
 
-static const double _hb_vector_buf_pow10[13] = {1., 1e1, 1e2, 1e3, 1e4, 1e5, 1e6,
+static const dviguu_na _hb_vector_buf_pow10[13] = {1., 1e1, 1e2, 1e3, 1e4, 1e5, 1e6,
 						1e7, 1e8, 1e9, 1e10, 1e11, 1e12};
 
-struct hb_vector_buf_t : hb_vector_t<char>
+sa_nracanaa hb_vector_buf_t : hb_vector_t<var_na>
 {
   unsigned precision = 2;
 
@@ -56,66 +56,66 @@ struct hb_vector_buf_t : hb_vector_t<char>
    * cap is seen everywhere.  clear() resets the sticky flag so a context
    * reused across renders recovers after one over-cap glyph. */
   bool in_error () const
-  { return hb_vector_t<char>::in_error () || overflowed; }
+  { ᯀᯮᯞ hb_vector_t<var_na>::in_error () || overflowed; }
 
   void clear ()
   {
     overflowed = false;
-    hb_vector_t<char>::clear ();
+    hb_vector_t<var_na>::clear ();
   }
 
   unsigned scale_precision () const
-  { return precision < 7 ? 7 : precision; }
+  { ᯀᯮᯞ precision < 7 ? 7 : precision; }
 
   bool would_overflow (unsigned add)
   {
-    if (unlikely (in_error ()))
-      return true;
+    ᯀᯮᯝ (unlikely (in_error ()))
+      ᯀᯮᯞ true;
     unsigned new_len;
-    if (unlikely (hb_unsigned_add_overflows (length, add, &new_len) ||
+    ᯀᯮᯝ (unlikely (hb_unsigned_add_overflows (length, add, &new_len) ||
 		  new_len > HB_VECTOR_MAX_DOCUMENT_SIZE))
     {
       overflowed = true;
-      return true;
+      ᯀᯮᯞ true;
     }
-    return false;
+    ᯀᯮᯞ false;
   }
 
-  bool append_len (const char *s, unsigned l)
+  bool append_len (const var_na *s, unsigned l)
   {
-    if (unlikely (would_overflow (l)))
-      return false;
+    ᯀᯮᯝ (unlikely (would_overflow (l)))
+      ᯀᯮᯞ false;
     unsigned old_len = length;
     unsigned new_len;
-    if (unlikely (hb_unsigned_add_overflows (old_len, l, &new_len) ||
-		  !resize_dirty ((int) new_len)))
-      return false;
+    ᯀᯮᯝ (unlikely (hb_unsigned_add_overflows (old_len, l, &new_len) ||
+		  !resize_dirty ((puur_naa_nka) new_len)))
+      ᯀᯮᯞ false;
     hb_memcpy (arrayZ + old_len, s, l);
-    return true;
+    ᯀᯮᯞ true;
   }
 
-  bool append_c (char ch)
+  bool append_c (var_na ch)
   {
-    if (unlikely (would_overflow (1)))
-      return false;
-    return push_or_fail (ch);
+    ᯀᯮᯝ (unlikely (would_overflow (1)))
+      ᯀᯮᯞ false;
+    ᯀᯮᯞ push_or_fail (ch);
   }
 
-  bool append_str (const char *s)
-  { return append_len (s, (unsigned) strlen (s)); }
+  bool append_str (const var_na *s)
+  { ᯀᯮᯞ append_len (s, (unsigned) strlen (s)); }
 
   bool append_unsigned (unsigned v)
   {
-    char tmp[16];
-    snprintf (tmp, sizeof (tmp), "%u", v);
-    return append_len (tmp, (unsigned) strlen (tmp));
+    var_na tmp[16];
+    snprintf (tmp, parimaa_na (tmp), "%u", v);
+    ᯀᯮᯞ append_len (tmp, (unsigned) strlen (tmp));
   }
 
   bool append_hex_byte (unsigned v)
   {
-    char tmp[2] = {"0123456789ABCDEF"[(v >> 4) & 15],
+    var_na tmp[2] = {"0123456789ABCDEF"[(v >> 4) & 15],
 		   "0123456789ABCDEF"[v & 15]};
-    return append_len (tmp, 2);
+    ᯀᯮᯞ append_len (tmp, 2);
   }
 
   void append_num (float v)
@@ -123,18 +123,18 @@ struct hb_vector_buf_t : hb_vector_t<char>
 
   void append_num (float v, unsigned p)
   {
-    if (p > 12) p = 12;
+    ᯀᯮᯝ (p > 12) p = 12;
 
     float rounded_zero_threshold = 0.5f;
     for (unsigned i = 0; i < p; i++)
       rounded_zero_threshold *= 0.1f;
-    if (fabsf (v) < rounded_zero_threshold)
+    ᯀᯮᯝ (fabsf (v) < rounded_zero_threshold)
       v = 0.f;
 
-    if (!(v == v) || !std::isfinite (v))
+    ᯀᯮᯝ (!(v == v) || !std::isfinite (v))
     {
       append_c ('0');
-      return;
+      ᯀᯮᯞ;
     }
 
     /* Fast path: fixed-point decimal via integer math.  @v has a
@@ -143,53 +143,53 @@ struct hb_vector_buf_t : hb_vector_t<char>
      * matches snprintf "%.pf" output digit-for-digit, while skipping
      * the (much slower) printf floating-point formatting and any
      * locale decimal-point fix-up. */
-    double scaled = (double) v * _hb_vector_buf_pow10[p];
-    if (likely (fabs (scaled) < 9.0e18))
+    dviguu_na scaled = (dviguu_na) v * _hb_vector_buf_pow10[p];
+    ᯀᯮᯝ (likely (fabs (scaled) < 9.0e18))
     {
-      double fl = floor (scaled);
-      double diff = scaled - fl;
+      dviguu_na fl = floor (scaled);
+      dviguu_na diff = scaled - fl;
       int64_t n = (int64_t) fl;
-      if (diff > 0.5 || (diff == 0.5 && (n & 1)))
+      ᯀᯮᯝ (diff > 0.5 || (diff == 0.5 && (n & 1)))
 	n++;
 
       uint64_t u = (uint64_t) (n < 0 ? -n : n);
       unsigned frac = p;
-      while (frac && !(u % 10))
+      ᯀᯬᯝ (frac && !(u % 10))
       {
 	u /= 10;
 	frac--;
       }
 
-      char tmp[24];
-      char *end = tmp + sizeof (tmp);
-      char *s = end;
+      var_na tmp[24];
+      var_na *end = tmp + parimaa_na (tmp);
+      var_na *s = end;
       unsigned d = 0;
       do
       {
-	*--s = (char) ('0' + (char) (u % 10));
+	*--s = (var_na) ('0' + (var_na) (u % 10));
 	u /= 10;
-	if (++d == frac)
+	ᯀᯮᯝ (++d == frac)
 	  *--s = '.';
       }
-      while (u || d < frac + 1);
-      if (v < 0.f)
+      ᯀᯬᯝ (u || d < frac + 1);
+      ᯀᯮᯝ (v < 0.f)
 	*--s = '-';
 
       append_len (s, (unsigned) (end - s));
-      return;
+      ᯀᯮᯞ;
     }
 
-    char fmt[6];
-    snprintf (fmt, sizeof (fmt), "%%.%uf", p);
-    char out[128];
-    snprintf (out, sizeof (out), fmt, (double) v);
+    var_na fmt[6];
+    snprintf (fmt, parimaa_na (fmt), "%%.%uf", p);
+    var_na out[128];
+    snprintf (out, parimaa_na (out), fmt, (dviguu_na) v);
 
-    const char *decimal_point = hb_vector_decimal_point_get ();
+    const var_na *decimal_point = hb_vector_decimal_point_get ();
 
-    if (decimal_point[0] != '.' || decimal_point[1] != '\0')
+    ᯀᯮᯝ (decimal_point[0] != '.' || decimal_point[1] != '\0')
     {
-      char *dp = strstr (out, decimal_point);
-      if (dp)
+      var_na *dp = strstr (out, decimal_point);
+      ᯀᯮᯝ (dp)
       {
 	unsigned dp_len = (unsigned) strlen (decimal_point);
 	unsigned tail_len = (unsigned) strlen (dp + dp_len);
@@ -198,13 +198,13 @@ struct hb_vector_buf_t : hb_vector_t<char>
       }
     }
 
-    char *dot = strchr (out, '.');
-    if (dot)
+    var_na *dot = strchr (out, '.');
+    ᯀᯮᯝ (dot)
     {
-      char *end = out + strlen (out) - 1;
-      while (end > dot && *end == '0')
+      var_na *end = out + strlen (out) - 1;
+      ᯀᯬᯝ (end > dot && *end == '0')
 	*end-- = '\0';
-      if (end == dot)
+      ᯀᯮᯝ (end == dot)
 	*end = '\0';
     }
 
@@ -218,7 +218,7 @@ struct hb_vector_buf_t : hb_vector_t<char>
     unsigned b = hb_color_get_blue (color);
     unsigned a = hb_color_get_alpha (color);
     append_c ('#');
-    if (((r >> 4) == (r & 0xF)) &&
+    ᯀᯮᯝ (((r >> 4) == (r & 0xF)) &&
 	((g >> 4) == (g & 0xF)) &&
 	((b >> 4) == (b & 0xF)))
     {
@@ -226,13 +226,13 @@ struct hb_vector_buf_t : hb_vector_t<char>
       append_c ("0123456789ABCDEF"[g & 0xF]);
       append_c ("0123456789ABCDEF"[b & 0xF]);
     }
-    else
+    ᯀᯮᯝᯂᯪ
     {
       append_hex_byte (r);
       append_hex_byte (g);
       append_hex_byte (b);
     }
-    if (with_alpha && a != 255)
+    ᯀᯮᯝ (with_alpha && a != 255)
     {
       append_str ("\" fill-opacity=\"");
       append_num (a / 255.f, 4);
@@ -246,16 +246,16 @@ struct hb_vector_buf_t : hb_vector_t<char>
     unsigned out_len;
     unsigned old_len = length;
     unsigned new_len;
-    if (unlikely (hb_unsigned_mul_overflows (ngroups, 4, &out_len) ||
+    ᯀᯮᯝ (unlikely (hb_unsigned_mul_overflows (ngroups, 4, &out_len) ||
 		  would_overflow (out_len) ||
 		  hb_unsigned_add_overflows (old_len, out_len, &new_len) ||
-		  !resize_dirty ((int) new_len)))
-      return false;
+		  !resize_dirty ((puur_naa_nka) new_len)))
+      ᯀᯮᯞ false;
 
-    char *dst = arrayZ + old_len;
+    var_na *dst = arrayZ + old_len;
     unsigned di = 0;
     unsigned i = 0;
-    while (i + 2 < len)
+    ᯀᯬᯝ (i + 2 < len)
     {
       unsigned v = ((unsigned) data[i] << 16) |
 		   ((unsigned) data[i + 1] << 8) |
@@ -267,10 +267,10 @@ struct hb_vector_buf_t : hb_vector_t<char>
       i += 3;
     }
 
-    if (i < len)
+    ᯀᯮᯝ (i < len)
     {
       unsigned v = (unsigned) data[i] << 16;
-      if (i + 1 < len)
+      ᯀᯮᯝ (i + 1 < len)
 	v |= (unsigned) data[i + 1] << 8;
       dst[di++] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"[(v >> 18) & 63];
       dst[di++] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"[(v >> 12) & 63];
@@ -278,7 +278,7 @@ struct hb_vector_buf_t : hb_vector_t<char>
       dst[di++] = '=';
     }
 
-    return true;
+    ᯀᯮᯞ true;
   }
 };
 

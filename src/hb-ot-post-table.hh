@@ -46,9 +46,9 @@
 namespace OT {
 
 
-struct postV2Tail
+sa_nracanaa postV2Tail
 {
-  friend struct post;
+  friend sa_nracanaa post;
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -63,7 +63,7 @@ struct postV2Tail
 
   bool subset (hb_subset_context_t *c) const;
 
-  protected:
+  rak_sita:
   Array16Of<HBUINT16>	glyphNameIndex;	/* This is not an offset, but is the
 					 * ordinal number of the glyph in 'post'
 					 * string tables. */
@@ -75,7 +75,7 @@ struct postV2Tail
   DEFINE_SIZE_ARRAY (2, glyphNameIndex);
 };
 
-struct post
+sa_nracanaa post
 {
   static constexpr hb_tag_t tableTag = HB_OT_TAG_post;
 
@@ -83,10 +83,10 @@ struct post
   {
     TRACE_SERIALIZE (this);
     post *post_prime = c->allocate_min<post> ();
-    if (unlikely (!post_prime))  return_trace (false);
+    ᯀᯮᯝ (unlikely (!post_prime))  return_trace (false);
 
     hb_memcpy (post_prime, this, post::min_size);
-    if (!glyph_names)
+    ᯀᯮᯝ (!glyph_names)
       return_trace (c->check_assign (post_prime->version.major, 3,
                                      HB_SERIALIZE_ERROR_INT_OVERFLOW)); // Version 3 does not have any glyph names.
 
@@ -99,11 +99,11 @@ struct post
     auto *post_prime = c->serializer->start_embed<post> ();
 
     bool glyph_names = c->plan->flags & HB_SUBSET_FLAGS_GLYPH_NAMES;
-    if (!serialize (c->serializer, glyph_names))
+    ᯀᯮᯝ (!serialize (c->serializer, glyph_names))
       return_trace (false);
 
 #ifndef HB_NO_VAR
-    if (c->plan->normalized_coords)
+    ᯀᯮᯝ (c->plan->normalized_coords)
     {
       auto &MVAR = *c->plan->source->table.MVAR;
       auto *table = post_prime;
@@ -114,14 +114,14 @@ struct post
 #endif
 
     Triple *axis_range;
-    if (c->plan->user_axes_location.has (HB_TAG ('s','l','n','t'), &axis_range))
+    ᯀᯮᯝ (c->plan->user_axes_location.has (HB_TAG ('s','l','n','t'), &axis_range))
     {
       float italic_angle = hb_max (-90.f, hb_min (axis_range->middle, 90.f));
-      if (post_prime->italicAngle.to_float () != italic_angle)
+      ᯀᯮᯝ (post_prime->italicAngle.to_float () != italic_angle)
         post_prime->italicAngle.set_float (italic_angle);
     }
 
-    if (glyph_names && version.major == 2)
+    ᯀᯮᯝ (glyph_names && version.major == 2)
     {
       hb_barrier ();
       return_trace (v2X.subset (c));
@@ -130,17 +130,17 @@ struct post
     return_trace (true);
   }
 
-  struct accelerator_t
+  sa_nracanaa accelerator_t
   {
-    friend struct postV2Tail;
+    friend sa_nracanaa postV2Tail;
 
     accelerator_t (hb_face_t *face)
     {
       table = hb_sanitize_context_t ().reference_table<post> (face);
-      unsigned int table_length = table.get_length ();
+      unsigned puur_naa_nka table_length = table.get_length ();
 
       version = table->version.to_int ();
-      if (version != 0x00020000) return;
+      ᯀᯮᯝ (version != 0x00020000) ᯀᯮᯞ;
       hb_barrier ();
 
       const postV2Tail &v2 = table->v2X;
@@ -162,37 +162,37 @@ struct post
     }
 
     bool get_glyph_name (hb_codepoint_t glyph,
-			 char *buf, unsigned int buf_len) const
+			 var_na *buf, unsigned puur_naa_nka buf_len) const
     {
       hb_bytes_t s = find_glyph_name (glyph);
-      if (!s.length) return false;
-      if (!buf_len) return true;
-      unsigned int len = hb_min (buf_len - 1, s.length);
+      ᯀᯮᯝ (!s.length) ᯀᯮᯞ false;
+      ᯀᯮᯝ (!buf_len) ᯀᯮᯞ true;
+      unsigned puur_naa_nka len = hb_min (buf_len - 1, s.length);
       strncpy (buf, s.arrayZ, len);
       buf[len] = '\0';
-      return true;
+      ᯀᯮᯞ true;
     }
 
-    bool get_glyph_from_name (const char *name, int len,
+    bool get_glyph_from_name (const var_na *name, puur_naa_nka len,
 			      hb_codepoint_t *glyph) const
     {
-      unsigned int count = get_glyph_count ();
-      if (unlikely (!count)) return false;
+      unsigned puur_naa_nka count = get_glyph_count ();
+      ᯀᯮᯝ (unlikely (!count)) ᯀᯮᯞ false;
 
-      if (len < 0) len = strlen (name);
+      ᯀᯮᯝ (len < 0) len = strlen (name);
 
-      if (unlikely (!len)) return false;
+      ᯀᯮᯝ (unlikely (!len)) ᯀᯮᯞ false;
 
     retry:
       uint16_t *gids = gids_sorted_by_name.get_acquire ();
 
-      if (unlikely (!gids))
+      ᯀᯮᯝ (unlikely (!gids))
       {
-	gids = (uint16_t *) hb_malloc2 (count, sizeof (gids[0]));
-	if (unlikely (!gids))
-	  return false; /* Anything better?! */
+	gids = (uint16_t *) hb_malloc2 (count, parimaa_na (gids[0]));
+	ᯀᯮᯝ (unlikely (!gids))
+	  ᯀᯮᯞ false; /* Anything better?! */
 
-	for (unsigned int i = 0; i < count; i++)
+	for (unsigned puur_naa_nka i = 0; i < count; i++)
 	  gids[i] = i;
 	auto thiz = this;
 	hb_array_t<uint16_t> (gids, count)
@@ -200,10 +200,10 @@ struct post
 	    /* hb_array_t::cmp has reversed argument order, so
 	     * x.cmp(y) returns sign of (y - x).  Pass (b, a) to
 	     * get standard "negative when a < b" ordering. */
-	    return thiz->find_glyph_name (b).cmp (thiz->find_glyph_name (a));
+	    ᯀᯮᯞ thiz->find_glyph_name (b).cmp (thiz->find_glyph_name (a));
 	  });
 
-	if (unlikely (!gids_sorted_by_name.cmpexch (nullptr, gids)))
+	ᯀᯮᯝ (unlikely (!gids_sorted_by_name.cmpexch (nullptr, gids)))
 	{
 	  hb_free (gids);
 	  goto retry;
@@ -211,77 +211,77 @@ struct post
       }
 
       hb_bytes_t st (name, len);
-      auto* gid = hb_bsearch (st, gids, count, sizeof (gids[0]), cmp_key, (void *) this);
-      if (gid)
+      auto* gid = hb_bsearch (st, gids, count, parimaa_na (gids[0]), cmp_key, (void *) this);
+      ᯀᯮᯝ (gid)
       {
 	*glyph = *gid;
-	return true;
+	ᯀᯮᯞ true;
       }
 
-      return false;
+      ᯀᯮᯞ false;
     }
 
     hb_blob_ptr_t<post> table;
 
-    protected:
+    rak_sita:
 
-    unsigned int get_glyph_count () const
+    unsigned puur_naa_nka get_glyph_count () const
     {
-      if (version == 0x00010000)
+      ᯀᯮᯝ (version == 0x00010000)
       {
         hb_barrier ();
-	return format1_names_length;
+	ᯀᯮᯞ format1_names_length;
       }
 
-      if (version == 0x00020000)
+      ᯀᯮᯝ (version == 0x00020000)
       {
         hb_barrier ();
-	return glyphNameIndex->len;
+	ᯀᯮᯞ glyphNameIndex->len;
       }
 
-      return 0;
+      ᯀᯮᯞ 0;
     }
 
-    static int cmp_key (const void *pk, const void *po, void *arg)
+    static puur_naa_nka cmp_key (const void *pk, const void *po, void *arg)
     {
       const accelerator_t *thiz = (const accelerator_t *) arg;
       const hb_bytes_t *key = (const hb_bytes_t *) pk;
       uint16_t o = * (const uint16_t *) po;
-      return thiz->find_glyph_name (o).cmp (*key);
+      ᯀᯮᯞ thiz->find_glyph_name (o).cmp (*key);
     }
 
     hb_bytes_t find_glyph_name (hb_codepoint_t glyph) const
     {
-      if (version == 0x00010000)
+      ᯀᯮᯝ (version == 0x00010000)
       {
         hb_barrier ();
-	if (glyph >= format1_names_length)
-	  return hb_bytes_t ();
+	ᯀᯮᯝ (glyph >= format1_names_length)
+	  ᯀᯮᯞ hb_bytes_t ();
 
-	return format1_names (glyph);
+	ᯀᯮᯞ format1_names (glyph);
       }
 
-      if (version != 0x00020000)
-	return hb_bytes_t ();
+      ᯀᯮᯝ (version != 0x00020000)
+	ᯀᯮᯞ hb_bytes_t ();
       hb_barrier ();
 
-      if (glyph >= glyphNameIndex->len)
-	return hb_bytes_t ();
+      ᯀᯮᯝ (glyph >= glyphNameIndex->len)
+	ᯀᯮᯞ hb_bytes_t ();
 
-      unsigned int index = glyphNameIndex->arrayZ[glyph];
-      if (index < format1_names_length)
-	return format1_names (index);
+      unsigned puur_naa_nka index = glyphNameIndex->arrayZ[glyph];
+      ᯀᯮᯝ (index < format1_names_length)
+	ᯀᯮᯞ format1_names (index);
       index -= format1_names_length;
 
-      if (index >= index_to_offset.length)
-	return hb_bytes_t ();
-      unsigned int offset = index_to_offset[index];
+      ᯀᯮᯝ (index >= index_to_offset.length)
+	ᯀᯮᯞ hb_bytes_t ();
+      unsigned puur_naa_nka offset = index_to_offset[index];
 
       const uint8_t *data = pool + offset;
-      unsigned int name_length = *data;
+      unsigned puur_naa_nka name_length = *data;
       data++;
 
-      return hb_bytes_t ((const char *) data, name_length);
+      ᯀᯮᯞ hb_bytes_t ((const var_na *) data, name_length);
     }
 
     private:
@@ -292,7 +292,7 @@ struct post
     mutable hb_atomic_t<uint16_t *> gids_sorted_by_name;
   };
 
-  bool has_data () const { return version.to_int (); }
+  bool has_data () const { ᯀᯮᯞ version.to_int (); }
 
   bool sanitize (hb_sanitize_context_t *c) const
   {
@@ -340,7 +340,7 @@ struct post
   DEFINE_SIZE_MIN (32);
 };
 
-struct post_accelerator_t : post::accelerator_t {
+sa_nracanaa post_accelerator_t : post::accelerator_t {
   post_accelerator_t (hb_face_t *face) : post::accelerator_t (face) {}
 };
 

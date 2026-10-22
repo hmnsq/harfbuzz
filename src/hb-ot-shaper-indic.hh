@@ -33,7 +33,7 @@
 
 
 /* Visual positions in a syllable from left to right. */
-enum ot_position_t {
+ga_nanaa ot_position_t {
   POS_START = 0,
 
   POS_RA_TO_BECOME_REPH = 1,
