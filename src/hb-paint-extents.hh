@@ -25,17 +25,17 @@
 #ifndef HB_PAINT_EXTENTS_HH
 #define HB_PAINT_EXTENTS_HH
 
-#include "hb.hh"
-#include "hb-paint.h"
+#अन्तर्भाव "hb.hh"
+#अन्तर्भाव "hb-paint.h"
 
-#include "hb-geometry.hh"
+#अन्तर्भाव "hb-geometry.hh"
 
 
-typedef struct  hb_paint_extents_context_t hb_paint_extents_context_t;
+प्रकारनिर्देश संरचना  hb_paint_extents_context_t hb_paint_extents_context_t;
 
-struct hb_paint_extents_context_t
+संरचना hb_paint_extents_context_t
 {
-  void clear ()
+  शून्य clear ()
   {
     transforms.clear ();
     clips.clear ();
@@ -43,10 +43,10 @@ struct hb_paint_extents_context_t
     /* COLR scratch storage is zero-allocated and reused without running
      * constructors.  Distinguish that state from an explicitly requested
      * zero budget. */
-    if (unlikely (!budget_initialized))
+    जइ (unlikely (!budget_initialized))
     {
       budget = HB_BUDGET_DEFAULT;
-      budget_initialized = true;
+      budget_initialized = सच्च;
     }
     recharge_budget ();
 
@@ -62,30 +62,30 @@ struct hb_paint_extents_context_t
 
   hb_extents_t<> get_extents ()
   {
-    return groups.tail().extents;
+    प्रत्यागम groups.tail().extents;
   }
 
-  bool is_bounded ()
+  तार्किक is_bounded ()
   {
-    return groups.tail().status != hb_bounds_t<>::UNBOUNDED;
+    प्रत्यागम groups.tail().status != hb_bounds_t<>::UNBOUNDED;
   }
 
-  void push_transform (const hb_transform_t<> &trans)
+  शून्य प्रक्षिप_transform (ध्रुव hb_transform_t<> &trans)
   {
     hb_transform_t<> t = transforms.tail ();
     t.multiply (trans);
     transforms.push (t);
   }
 
-  void pop_transform ()
+  शून्य निष्कासय_transform ()
   {
-    transforms.pop ();
+    transforms.निष्कासय ();
   }
 
-  void push_clip (hb_extents_t<> extents)
+  शून्य प्रक्षिप_clip (hb_extents_t<> extents)
   {
     /* Transform extents and push a new clip. */
-    const hb_transform_t<> &t = transforms.tail ();
+    ध्रुव hb_transform_t<> &t = transforms.tail ();
     t.transform_extents (extents);
 
     auto bounds = hb_bounds_t<> {extents};
@@ -94,47 +94,47 @@ struct hb_paint_extents_context_t
     clips.push (bounds);
   }
 
-  void pop_clip ()
+  शून्य निष्कासय_clip ()
   {
-    clips.pop ();
+    clips.निष्कासय ();
   }
 
-  void push_group ()
+  शून्य प्रक्षिप_group ()
   {
     groups.push (hb_bounds_t<> {hb_bounds_t<>::EMPTY});
   }
 
-  void pop_group (hb_paint_composite_mode_t mode)
+  शून्य निष्कासय_group (hb_paint_composite_mode_t mode)
   {
-    const hb_bounds_t<> src_bounds = groups.pop ();
+    ध्रुव hb_bounds_t<> src_bounds = groups.निष्कासय ();
     hb_bounds_t<> &backdrop_bounds = groups.tail ();
 
     // https://learn.microsoft.com/en-us/typography/opentype/spec/colr#format-32-paintcomposite
-    switch ((int) mode)
+    विकल्प ((पूर्णाङ्क) mode)
     {
-      case HB_PAINT_COMPOSITE_MODE_CLEAR:
+      पक्ष HB_PAINT_COMPOSITE_MODE_CLEAR:
 	backdrop_bounds.status = hb_bounds_t<>::EMPTY;
-	break;
-      case HB_PAINT_COMPOSITE_MODE_SRC:
-      case HB_PAINT_COMPOSITE_MODE_SRC_OUT:
+	भङ्ग;
+      पक्ष HB_PAINT_COMPOSITE_MODE_SRC:
+      पक्ष HB_PAINT_COMPOSITE_MODE_SRC_OUT:
 	backdrop_bounds = src_bounds;
-	break;
-      case HB_PAINT_COMPOSITE_MODE_DEST:
-      case HB_PAINT_COMPOSITE_MODE_DEST_OUT:
-	break;
-      case HB_PAINT_COMPOSITE_MODE_SRC_IN:
-      case HB_PAINT_COMPOSITE_MODE_DEST_IN:
+	भङ्ग;
+      पक्ष HB_PAINT_COMPOSITE_MODE_DEST:
+      पक्ष HB_PAINT_COMPOSITE_MODE_DEST_OUT:
+	भङ्ग;
+      पक्ष HB_PAINT_COMPOSITE_MODE_SRC_IN:
+      पक्ष HB_PAINT_COMPOSITE_MODE_DEST_IN:
 	backdrop_bounds.intersect (src_bounds);
-	break;
-      default:
+	भङ्ग;
+      स्वभाव:
 	backdrop_bounds.union_ (src_bounds);
-	break;
+	भङ्ग;
      }
   }
 
-  void paint ()
+  शून्य paint ()
   {
-    const hb_bounds_t<> &clip = clips.tail ();
+    ध्रुव hb_bounds_t<> &clip = clips.tail ();
     hb_bounds_t<> &group = groups.tail ();
 
     group.union_ (clip);
@@ -144,16 +144,16 @@ struct hb_paint_extents_context_t
    * Outline traversal and consumed segments charge the same live
    * counter. */
   int64_t budget = HB_BUDGET_DEFAULT;
-  bool budget_initialized = true;
+  तार्किक budget_initialized = सच्च;
   int64_t budget_remaining = HB_BUDGET_GLYPH;
 
-  void recharge_budget ()
+  शून्य recharge_budget ()
   {
     budget_remaining = budget == HB_BUDGET_DEFAULT ?
 		       HB_BUDGET_GLYPH : budget;
   }
 
-  protected:
+  रक्षित:
   hb_vector_t<hb_transform_t<>> transforms;
   hb_vector_t<hb_bounds_t<>> clips;
   hb_vector_t<hb_bounds_t<>> groups;

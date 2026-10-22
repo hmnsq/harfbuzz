@@ -27,14 +27,14 @@
 #ifndef HB_OT_HMTX_TABLE_HH
 #define HB_OT_HMTX_TABLE_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-dual.hh"
-#include "hb-ot-maxp-table.hh"
-#include "hb-ot-hhea-table.hh"
-#include "hb-ot-os2-table.hh"
-#include "hb-ot-var-hvar-table.hh"
-#include "hb-ot-var-mvar-table.hh"
-#include "hb-ot-metrics.hh"
+#अन्तर्भाव "hb-open-type.hh"
+#अन्तर्भाव "hb-ot-dual.hh"
+#अन्तर्भाव "hb-ot-maxp-table.hh"
+#अन्तर्भाव "hb-ot-hhea-table.hh"
+#अन्तर्भाव "hb-ot-os2-table.hh"
+#अन्तर्भाव "hb-ot-var-hvar-table.hh"
+#अन्तर्भाव "hb-ot-var-mvar-table.hh"
+#अन्तर्भाव "hb-ot-metrics.hh"
 
 /*
  * hmtx -- Horizontal Metrics
@@ -48,84 +48,84 @@
 #define HB_OT_TAG_VMTX HB_TAG('V','M','T','X')
 
 
-namespace OT {
+नामाकाश OT {
 
 
-struct LongMetric
+संरचना LongMetric
 {
   UFWORD	advance; /* Advance width/height. */
   FWORD		sb; /* Leading (left/top) side bearing. */
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_STATIC (4);
 };
 
 
 template <typename T/*Data table type*/, typename H/*Header table type*/, typename V/*Var table type*/>
-struct hmtxvmtx
+संरचना hmtxvmtx
 {
-  bool sanitize (hb_sanitize_context_t *c HB_UNUSED) const
+  तार्किक sanitize (hb_sanitize_context_t *c HB_UNUSED) ध्रुव
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (एतत्);
     /* We don't check for anything specific here.  The users of the
      * struct do all the hard work... */
-    return_trace (true);
+    return_trace (सच्च);
   }
 
-  const hb_hashmap_t<hb_codepoint_t, hb_pair_t<unsigned, int>>* get_mtx_map (const hb_subset_plan_t *plan) const
-  { return T::is_horizontal ? &plan->hmtx_map : &plan->vmtx_map; }
+  ध्रुव hb_hashmap_t<hb_codepoint_t, hb_pair_t<unsigned, पूर्णाङ्क>>* get_mtx_map (ध्रुव hb_subset_plan_t *plan) ध्रुव
+  { प्रत्यागम T::is_horizontal ? &plan->hmtx_map : &plan->vmtx_map; }
 
-  bool subset_update_header (hb_subset_context_t *c,
-			     unsigned int num_hmetrics,
-			     const hb_hashmap_t<hb_codepoint_t, hb_pair_t<unsigned, int>> *mtx_map,
-			     const hb_vector_t<unsigned> &bounds_vec) const
+  तार्किक subset_update_header (hb_subset_context_t *c,
+			     unsigned पूर्णाङ्क अङ्कः_hmetrics,
+			     ध्रुव hb_hashmap_t<hb_codepoint_t, hb_pair_t<unsigned, पूर्णाङ्क>> *mtx_map,
+			     ध्रुव hb_vector_t<unsigned> &bounds_vec) ध्रुव
   {
     hb_blob_t *src_blob = hb_sanitize_context_t ().reference_table<H> (c->plan->source, H::tableTag);
     hb_blob_t *dest_blob = hb_blob_copy_writable_or_fail (src_blob);
     hb_blob_destroy (src_blob);
 
-    if (unlikely (!dest_blob)) {
-      return false;
+    जइ (unlikely (!dest_blob)) {
+      प्रत्यागम मिच्छ;
     }
 
-    unsigned int length;
+    unsigned पूर्णाङ्क length;
     H *table = (H *) hb_blob_get_data (dest_blob, &length);
-    c->serializer->check_assign (table->numberOfLongMetrics, num_hmetrics, HB_SERIALIZE_ERROR_INT_OVERFLOW);
+    c->serializer->check_assign (table->सङ्ख्या_Of_Long_Metrics, अङ्कः_hmetrics, HB_SERIALIZE_ERROR_INT_OVERFLOW);
 
 #ifndef HB_NO_VAR
-    if (c->plan->normalized_coords)
+    जइ (c->plan->normalized_coords)
     {
       auto &MVAR = *c->plan->source->table.MVAR;
-      if (T::is_horizontal)
+      जइ (T::is_horizontal)
       {
 	HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_HORIZONTAL_CARET_RISE,   caretSlopeRise);
 	HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_HORIZONTAL_CARET_RUN,    caretSlopeRun);
 	HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_HORIZONTAL_CARET_OFFSET, caretOffset);
       }
-      else
+      अण्णहा
       {
 	HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_VERTICAL_CARET_RISE,     caretSlopeRise);
 	HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_VERTICAL_CARET_RUN,      caretSlopeRun);
 	HB_ADD_MVAR_VAR (HB_OT_METRICS_TAG_VERTICAL_CARET_OFFSET,   caretOffset);
       }
 
-      bool empty = true;
-      int min_lsb = 0x7FFF;
-      int min_rsb = 0x7FFF;
-      int max_extent = -0x7FFF;
+      तार्किक empty = सच्च;
+      पूर्णाङ्क min_lsb = 0x7FFF;
+      पूर्णाङ्क min_rsb = 0x7FFF;
+      पूर्णाङ्क max_extent = -0x7FFF;
       unsigned max_adv = 0;
-      for (const auto _ : *mtx_map)
+      प्रति (ध्रुव auto _ : *mtx_map)
       {
         hb_codepoint_t gid = _.first;
         unsigned adv = _.second.first;
-        int lsb = _.second.second;
+        पूर्णाङ्क lsb = _.second.second;
         max_adv = hb_max (max_adv, adv);
 
-        if (bounds_vec[gid] != 0xFFFFFFFF)
+        जइ (bounds_vec[gid] != 0xFFFFFFFF)
         {
-	  empty = false;
+	  empty = मिच्छ;
           unsigned bound_width = bounds_vec[gid];
-          int rsb = adv - lsb - bound_width;
-          int extent = lsb + bound_width;
+          पूर्णाङ्क rsb = adv - lsb - bound_width;
+          पूर्णाङ्क extent = lsb + bound_width;
           min_lsb = hb_min (min_lsb, lsb);
           min_rsb = hb_min (min_rsb, rsb);
           max_extent = hb_max (max_extent, extent);
@@ -133,31 +133,31 @@ struct hmtxvmtx
       }
 
       table->advanceMax = max_adv;
-      if (!empty)
+      जइ (!empty)
       {
         table->minLeadingBearing = min_lsb;
         table->minTrailingBearing = min_rsb;
         table->maxExtent = max_extent;
       }
 
-      if (T::is_horizontal)
+      जइ (T::is_horizontal)
       {
-        const auto &OS2 = *c->plan->source->table.OS2;
-        if (OS2.has_data () &&
+        ध्रुव auto &OS2 = *c->plan->source->table.OS2;
+        जइ (OS2.has_data () &&
             table->ascender == OS2.sTypoAscender &&
             table->descender == OS2.sTypoDescender &&
-            table->lineGap == OS2.sTypoLineGap)
+            table->पङ्क्तिः_Gap == OS2.s_Typo_पङ्क्तिः_Gap)
         {
-          table->ascender = static_cast<int> (roundf (OS2.sTypoAscender +
+          table->ascender = static_cast<पूर्णाङ्क> (roundf (OS2.sTypoAscender +
                                                       MVAR.get_var (HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER,
                                                                     c->plan->normalized_coords.arrayZ,
                                                                     c->plan->normalized_coords.length)));
-          table->descender = static_cast<int> (roundf (OS2.sTypoDescender +
+          table->descender = static_cast<पूर्णाङ्क> (roundf (OS2.sTypoDescender +
                                                        MVAR.get_var (HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER,
                                                                      c->plan->normalized_coords.arrayZ,
                                                                      c->plan->normalized_coords.length)));
-          table->lineGap = static_cast<int> (roundf (OS2.sTypoLineGap +
-                                                     MVAR.get_var (HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP,
+          table->पङ्क्तिः_Gap = static_cast<पूर्णाङ्क> (roundf (OS2.s_Typo_पङ्क्तिः_Gap +
+                                                     MVAR.get_var (HB_OT_METRICS_TAG_HORIZONTAL_पङ्क्तिः_GAP,
                                                                    c->plan->normalized_coords.arrayZ,
                                                                    c->plan->normalized_coords.length)));
         }
@@ -165,63 +165,63 @@ struct hmtxvmtx
     }
 #endif
 
-    bool result = c->plan->add_table (H::tableTag, dest_blob);
+    तार्किक result = c->plan->add_table (H::tableTag, dest_blob);
     hb_blob_destroy (dest_blob);
 
-    return result;
+    प्रत्यागम result;
   }
 
   template<typename Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  void serialize (hb_serialize_context_t *c,
+  शून्य serialize (hb_serialize_context_t *c,
 		  Iterator it,
-		  hb_array_t<const hb_codepoint_pair_t> new_to_old_gid_list,
-		  unsigned num_long_metrics,
-                  unsigned total_num_metrics)
+		  hb_array_t<ध्रुव hb_codepoint_pair_t> new_to_old_gid_list,
+		  unsigned अङ्कः_long_metrics,
+                  unsigned total_अङ्कः_metrics)
   {
-    LongMetric* long_metrics = c->allocate_size<LongMetric> (num_long_metrics * LongMetric::static_size);
-    FWORD* short_metrics = c->allocate_size<FWORD> ((total_num_metrics - num_long_metrics) * FWORD::static_size);
-    if (!long_metrics || !short_metrics) return;
+    LongMetric* long_metrics = c->allocate_size<LongMetric> (अङ्कः_long_metrics * LongMetric::static_size);
+    FWORD* short_metrics = c->allocate_size<FWORD> ((total_अङ्कः_metrics - अङ्कः_long_metrics) * FWORD::static_size);
+    जइ (!long_metrics || !short_metrics) प्रत्यागम;
 
-    short_metrics -= num_long_metrics;
+    short_metrics -= अङ्कः_long_metrics;
 
-    for (auto _ : new_to_old_gid_list)
+    प्रति (auto _ : new_to_old_gid_list)
     {
       hb_codepoint_t gid = _.first;
       auto mtx = *it++;
 
-      if (gid < num_long_metrics)
+      जइ (gid < अङ्कः_long_metrics)
       {
 	LongMetric& lm = long_metrics[gid];
 	lm.advance = mtx.first;
 	lm.sb = mtx.second;
       }
-      else
+      अण्णहा
         short_metrics[gid] = mtx.second;
     }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  तार्किक subset (hb_subset_context_t *c) ध्रुव
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (एतत्);
 
-    auto *table_prime = c->serializer->start_embed <T> ();
+    auto *table_अविभाज्यः = c->serializer->start_embed <T> ();
 
     accelerator_t _mtx (c->plan->source);
-    unsigned num_long_metrics;
-    const hb_hashmap_t<hb_codepoint_t, hb_pair_t<unsigned, int>> *mtx_map = get_mtx_map (c->plan);
+    unsigned अङ्कः_long_metrics;
+    ध्रुव hb_hashmap_t<hb_codepoint_t, hb_pair_t<unsigned, पूर्णाङ्क>> *mtx_map = get_mtx_map (c->plan);
     {
       /* Determine num_long_metrics to encode. */
       auto& plan = c->plan;
 
       // TODO Don't consider retaingid holes here.
 
-      num_long_metrics = hb_min (plan->num_output_glyphs (), H::long_metric_count_max ());
-      unsigned int last_advance = get_new_gid_advance_unscaled (plan, mtx_map, num_long_metrics - 1, _mtx);
-      while (num_long_metrics > 1 &&
-	     last_advance == get_new_gid_advance_unscaled (plan, mtx_map, num_long_metrics - 2, _mtx))
+      अङ्कः_long_metrics = hb_min (plan->अङ्कः_output_glyphs (), H::long_metric_गणनम्_max ());
+      unsigned पूर्णाङ्क last_advance = get_new_gid_advance_unscaled (plan, mtx_map, अङ्कः_long_metrics - 1, _mtx);
+      जाव (अङ्कः_long_metrics > 1 &&
+	     last_advance == get_new_gid_advance_unscaled (plan, mtx_map, अङ्कः_long_metrics - 2, _mtx))
       {
-	num_long_metrics--;
+	अङ्कः_long_metrics--;
       }
     }
 
@@ -232,43 +232,43 @@ struct hmtxvmtx
 		hb_codepoint_t new_gid = _.first;
 		hb_codepoint_t old_gid = _.second;
 
-		hb_pair_t<unsigned, int> *v = nullptr;
-		if (!mtx_map->has (new_gid, &v))
+		hb_pair_t<unsigned, पूर्णाङ्क> *v = nullptr;
+		जइ (!mtx_map->has (new_gid, &v))
 		{
-		  int lsb = 0;
+		  पूर्णाङ्क lsb = 0;
 		  _mtx.get_leading_bearing_without_var_unscaled (old_gid, &lsb);
-		  return hb_pair (_mtx.get_advance_without_var_unscaled (old_gid), +lsb);
+		  प्रत्यागम hb_pair (_mtx.get_advance_without_var_unscaled (old_gid), +lsb);
 		}
-		return *v;
+		प्रत्यागम *v;
 	      })
     ;
 
-    table_prime->serialize (c->serializer,
+    table_अविभाज्यः->serialize (c->serializer,
 			    it,
 			    c->plan->new_to_old_gid_list,
-			    num_long_metrics,
-			    c->plan->num_output_glyphs ());
+			    अङ्कः_long_metrics,
+			    c->plan->अङ्कः_output_glyphs ());
 
-    if (unlikely (c->serializer->in_error ()))
-      return_trace (false);
+    जइ (unlikely (c->serializer->in_error ()))
+      return_trace (मिच्छ);
 
     // Amend header num hmetrics
-    if (unlikely (!subset_update_header (c, num_long_metrics, mtx_map,
+    जइ (unlikely (!subset_update_header (c, अङ्कः_long_metrics, mtx_map,
                                          T::is_horizontal ? c->plan->bounds_width_vec : c->plan->bounds_height_vec)))
-      return_trace (false);
+      return_trace (मिच्छ);
 
-    return_trace (true);
+    return_trace (सच्च);
   }
 
-  struct accelerator_t
+  संरचना accelerator_t
   {
-    friend struct hmtxvmtx;
+    friend संरचना hmtxvmtx;
 
     accelerator_t (hb_face_t *face) :
-      accelerator_t (face, T::tableTag, get_num_long_metrics (face))
+      accelerator_t (face, T::tableTag, get_अङ्कः_long_metrics (face))
     {}
 
-    accelerator_t (hb_face_t *face, hb_tag_t tableTag, unsigned num_long_metrics_)
+    accelerator_t (hb_face_t *face, hb_tag_t tableTag, unsigned अङ्कः_long_metrics_2)
     {
       table = hb_sanitize_context_t ().reference_table<hmtxvmtx> (face, tableTag);
       var_table = hb_sanitize_context_t ().reference_table<V> (face, T::variationsTag);
@@ -277,32 +277,32 @@ struct hmtxvmtx
 
       /* Populate count variables and sort them out as we go */
 
-      unsigned int len = table.get_length ();
-      if (len & 1)
+      unsigned पूर्णाङ्क len = table.get_length ();
+      जइ (len & 1)
         len--;
 
-      num_long_metrics = num_long_metrics_;
-      if (unlikely (num_long_metrics > len / 4))
-	num_long_metrics = len / 4;
-      len -= num_long_metrics * 4;
+      अङ्कः_long_metrics = अङ्कः_long_metrics_2;
+      जइ (unlikely (अङ्कः_long_metrics > len / 4))
+	अङ्कः_long_metrics = len / 4;
+      len -= अङ्कः_long_metrics * 4;
 
-      num_bearings = face->table.maxp->get_num_glyphs ();
+      अङ्कः_bearings = face->table.maxp->get_अङ्कः_glyphs ();
 
-      if (unlikely (num_bearings < num_long_metrics))
-        num_bearings = num_long_metrics;
-      if (unlikely ((num_bearings - num_long_metrics) * 2 > len))
-        num_bearings = num_long_metrics + len / 2;
-      len -= (num_bearings - num_long_metrics) * 2;
+      जइ (unlikely (अङ्कः_bearings < अङ्कः_long_metrics))
+        अङ्कः_bearings = अङ्कः_long_metrics;
+      जइ (unlikely ((अङ्कः_bearings - अङ्कः_long_metrics) * 2 > len))
+        अङ्कः_bearings = अङ्कः_long_metrics + len / 2;
+      len -= (अङ्कः_bearings - अङ्कः_long_metrics) * 2;
 
       /* We MUST set num_bearings to zero if num_long_metrics is zero.
        * Our get_advance() depends on that. */
-      if (unlikely (!num_long_metrics))
-	num_bearings = num_long_metrics = 0;
+      जइ (unlikely (!अङ्कः_long_metrics))
+	अङ्कः_bearings = अङ्कः_long_metrics = 0;
 
-      num_advances = num_bearings + len / 2;
-      num_glyphs = face->get_num_glyphs ();
-      if (num_glyphs < num_advances)
-        num_glyphs = num_advances;
+      अङ्कः_advances = अङ्कः_bearings + len / 2;
+      अङ्कः_glyphs = face->get_अङ्कः_glyphs ();
+      जइ (अङ्कः_glyphs < अङ्कः_advances)
+        अङ्कः_glyphs = अङ्कः_advances;
     }
     ~accelerator_t ()
     {
@@ -310,92 +310,92 @@ struct hmtxvmtx
       var_table.destroy ();
     }
 
-    bool has_data () const { return (bool) num_bearings; }
+    तार्किक has_data () ध्रुव { प्रत्यागम (तार्किक) अङ्कः_bearings; }
 
-    void get_leading_bearing_without_var_unscaled (hb_codepoint_t glyph,
-						   int *lsb) const
+    शून्य get_leading_bearing_without_var_unscaled (hb_codepoint_t glyph,
+						   पूर्णाङ्क *lsb) ध्रुव
     {
-      if (glyph < num_long_metrics)
+      जइ (glyph < अङ्कः_long_metrics)
       {
 	*lsb = table->longMetricZ[glyph].sb;
-	return;
+	प्रत्यागम;
       }
 
-      if (unlikely (glyph >= num_bearings))
+      जइ (unlikely (glyph >= अङ्कः_bearings))
       {
         *lsb = 0;
-	return;
+	प्रत्यागम;
       }
 
-      const FWORD *bearings = (const FWORD *) &table->longMetricZ[num_long_metrics];
-      *lsb = bearings[glyph - num_long_metrics];
+      ध्रुव FWORD *bearings = (ध्रुव FWORD *) &table->longMetricZ[अङ्कः_long_metrics];
+      *lsb = bearings[glyph - अङ्कः_long_metrics];
     }
 
-    unsigned int get_advance_without_var_unscaled (hb_codepoint_t glyph) const
+    unsigned पूर्णाङ्क get_advance_without_var_unscaled (hb_codepoint_t glyph) ध्रुव
     {
-      if (glyph < num_bearings)
-	return table->longMetricZ[hb_min (glyph, (uint32_t) num_long_metrics - 1)].advance;
+      जइ (glyph < अङ्कः_bearings)
+	प्रत्यागम table->longMetricZ[hb_min (glyph, (uint32_t) अङ्कः_long_metrics - 1)].advance;
 
       /* If num_advances is zero, it means we don't have the metrics table
        * for this direction: return default advance. */
-      if (unlikely (!num_advances))
-	return default_advance;
+      जइ (unlikely (!अङ्कः_advances))
+	प्रत्यागम default_advance;
 
-      return 0;
+      प्रत्यागम 0;
     }
 
 #ifndef HB_NO_VAR
     unsigned get_advance_with_var_unscaled (hb_codepoint_t     glyph,
 					    hb_font_t         *font,
-					    hb_scalar_cache_t *store_cache = nullptr) const
+					    hb_scalar_cache_t *store_cache = nullptr) ध्रुव
     {
-      unsigned int advance = get_advance_without_var_unscaled (glyph);
-      return hb_clamp_to<unsigned> (advance + roundf (var_table->get_advance_delta_unscaled (glyph,
-								      font->coords, font->num_coords,
+      unsigned पूर्णाङ्क advance = get_advance_without_var_unscaled (glyph);
+      प्रत्यागम hb_clamp_to<unsigned> (advance + roundf (var_table->get_advance_delta_unscaled (glyph,
+								      font->coords, font->अङ्कः_coords,
 								      store_cache)));
     }
 #endif
 
-    protected:
+    रक्षित:
     // 0 <= num_long_metrics <= num_bearings <= num_advances <= num_glyphs
-    unsigned num_long_metrics;
-    unsigned num_bearings;
-    unsigned num_advances;
-    unsigned num_glyphs;
+    unsigned अङ्कः_long_metrics;
+    unsigned अङ्कः_bearings;
+    unsigned अङ्कः_advances;
+    unsigned अङ्कः_glyphs;
 
-    unsigned int default_advance;
+    unsigned पूर्णाङ्क default_advance;
 
-    public:
+    सार्वजनिक:
     hb_blob_ptr_t<hmtxvmtx> table;
     hb_blob_ptr_t<V> var_table;
 
-    private:
-    static unsigned get_num_long_metrics (hb_face_t *face)
+    गुप्त:
+    स्थिर unsigned get_अङ्कः_long_metrics (hb_face_t *face)
     {
       hb_blob_ptr_t<H> hea = hb_sanitize_context_t ().reference_table<H> (face);
-      unsigned ret = hea->numberOfLongMetrics;
+      unsigned ret = hea->सङ्ख्या_Of_Long_Metrics;
       hea.destroy ();
-      return ret;
+      प्रत्यागम ret;
     }
   };
 
   /* get advance: when no variations, call get_advance_without_var_unscaled.
    * when there're variations, get advance value from mtx_map in subset_plan*/
-  unsigned get_new_gid_advance_unscaled (const hb_subset_plan_t *plan,
-                                         const hb_hashmap_t<hb_codepoint_t, hb_pair_t<unsigned, int>> *mtx_map,
+  unsigned get_new_gid_advance_unscaled (ध्रुव hb_subset_plan_t *plan,
+                                         ध्रुव hb_hashmap_t<hb_codepoint_t, hb_pair_t<unsigned, पूर्णाङ्क>> *mtx_map,
                                          unsigned new_gid,
-                                         const accelerator_t &_mtx) const
+                                         ध्रुव accelerator_t &_mtx) ध्रुव
   {
-    if (mtx_map->is_empty ())
+    जइ (mtx_map->is_empty ())
     {
       hb_codepoint_t old_gid = 0;
-      return plan->old_gid_for_new_gid (new_gid, &old_gid) ?
+      प्रत्यागम plan->old_gid_for_new_gid (new_gid, &old_gid) ?
              _mtx.get_advance_without_var_unscaled (old_gid) : 0;
     }
-    return mtx_map->get (new_gid).first;
+    प्रत्यागम mtx_map->get (new_gid).first;
   }
 
-  protected:
+  रक्षित:
   UnsizedArrayOf<LongMetric>
 		longMetricZ;	/* Paired advance width and leading
 				 * bearing values for each glyph. The
@@ -421,32 +421,32 @@ struct hmtxvmtx
 				 * values for each glyph. */
 /*UnsizedArrayOf<UFWORD>advancesX;*/
 				/* TODO Document. */
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_ARRAY (0, longMetricZ);
 };
 
-struct hmtx : hmtxvmtx<hmtx, hhea, HVAR> {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_hmtx;
-  static constexpr hb_tag_t variationsTag = HB_OT_TAG_HVAR;
-  static constexpr bool is_horizontal = true;
+संरचना hmtx : hmtxvmtx<hmtx, hhea, HVAR> {
+  स्थिर constexpr hb_tag_t tableTag = HB_OT_TAG_hmtx;
+  स्थिर constexpr hb_tag_t variationsTag = HB_OT_TAG_HVAR;
+  स्थिर constexpr तार्किक is_horizontal = सच्च;
 };
-struct HMTX : hmtxvmtx<HMTX, HHEA, HVAR> {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_HMTX;
-  static constexpr hb_tag_t variationsTag = HB_OT_TAG_HVAR;
-  static constexpr bool is_horizontal = true;
+संरचना HMTX : hmtxvmtx<HMTX, HHEA, HVAR> {
+  स्थिर constexpr hb_tag_t tableTag = HB_OT_TAG_HMTX;
+  स्थिर constexpr hb_tag_t variationsTag = HB_OT_TAG_HVAR;
+  स्थिर constexpr तार्किक is_horizontal = सच्च;
 };
-struct vmtx : hmtxvmtx<vmtx, vhea, VVAR> {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_vmtx;
-  static constexpr hb_tag_t variationsTag = HB_OT_TAG_VVAR;
-  static constexpr bool is_horizontal = false;
+संरचना vmtx : hmtxvmtx<vmtx, vhea, VVAR> {
+  स्थिर constexpr hb_tag_t tableTag = HB_OT_TAG_vmtx;
+  स्थिर constexpr hb_tag_t variationsTag = HB_OT_TAG_VVAR;
+  स्थिर constexpr तार्किक is_horizontal = मिच्छ;
 };
-struct VMTX : hmtxvmtx<VMTX, VHEA, VVAR> {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_VMTX;
-  static constexpr hb_tag_t variationsTag = HB_OT_TAG_VVAR;
-  static constexpr bool is_horizontal = false;
+संरचना VMTX : hmtxvmtx<VMTX, VHEA, VVAR> {
+  स्थिर constexpr hb_tag_t tableTag = HB_OT_TAG_VMTX;
+  स्थिर constexpr hb_tag_t variationsTag = HB_OT_TAG_VVAR;
+  स्थिर constexpr तार्किक is_horizontal = मिच्छ;
 };
 
-struct hmtx_accelerator_t : hb_dual_accelerator_t<hmtx::accelerator_t,
+संरचना hmtx_accelerator_t : hb_dual_accelerator_t<hmtx::accelerator_t,
 						  HMTX::accelerator_t>
 {
   hmtx_accelerator_t (hb_face_t *face) :
@@ -460,25 +460,25 @@ struct hmtx_accelerator_t : hb_dual_accelerator_t<hmtx::accelerator_t,
     var_table.destroy ();
   }
 
-  void get_leading_bearing_without_var_unscaled (hb_codepoint_t glyph,
-						 int *lsb) const
+  शून्य get_leading_bearing_without_var_unscaled (hb_codepoint_t glyph,
+						 पूर्णाङ्क *lsb) ध्रुव
   {
-    HB_DUAL_GET (*this, get_leading_bearing_without_var_unscaled (glyph, lsb));
+    HB_DUAL_GET (*एतत्, get_leading_bearing_without_var_unscaled (glyph, lsb));
   }
 
-  unsigned int get_advance_without_var_unscaled (hb_codepoint_t glyph) const
+  unsigned पूर्णाङ्क get_advance_without_var_unscaled (hb_codepoint_t glyph) ध्रुव
   {
-    return HB_DUAL_GET (*this, get_advance_without_var_unscaled (glyph));
+    प्रत्यागम HB_DUAL_GET (*एतत्, get_advance_without_var_unscaled (glyph));
   }
 
 #ifndef HB_NO_VAR
   unsigned get_advance_with_var_unscaled (hb_codepoint_t     glyph,
 					  hb_font_t         *font,
-					  hb_scalar_cache_t *store_cache = nullptr) const
+					  hb_scalar_cache_t *store_cache = nullptr) ध्रुव
   {
-    unsigned int advance = get_advance_without_var_unscaled (glyph);
-    return hb_clamp_to<unsigned> (advance + roundf (var_table->get_advance_delta_unscaled (glyph,
-								    font->coords, font->num_coords,
+    unsigned पूर्णाङ्क advance = get_advance_without_var_unscaled (glyph);
+    प्रत्यागम hb_clamp_to<unsigned> (advance + roundf (var_table->get_advance_delta_unscaled (glyph,
+								    font->coords, font->अङ्कः_coords,
 								    store_cache)));
   }
 #endif
@@ -487,7 +487,7 @@ struct hmtx_accelerator_t : hb_dual_accelerator_t<hmtx::accelerator_t,
 };
 
 #ifndef HB_NO_VERTICAL
-struct vmtx_accelerator_t : hb_dual_accelerator_t<vmtx::accelerator_t,
+संरचना vmtx_accelerator_t : hb_dual_accelerator_t<vmtx::accelerator_t,
 						  VMTX::accelerator_t>
 {
   vmtx_accelerator_t (hb_face_t *face) :
@@ -501,33 +501,33 @@ struct vmtx_accelerator_t : hb_dual_accelerator_t<vmtx::accelerator_t,
     var_table.destroy ();
   }
 
-  void get_leading_bearing_without_var_unscaled (hb_codepoint_t glyph,
-						 int *lsb) const
+  शून्य get_leading_bearing_without_var_unscaled (hb_codepoint_t glyph,
+						 पूर्णाङ्क *lsb) ध्रुव
   {
-    HB_DUAL_GET (*this, get_leading_bearing_without_var_unscaled (glyph, lsb));
+    HB_DUAL_GET (*एतत्, get_leading_bearing_without_var_unscaled (glyph, lsb));
   }
 
-  unsigned int get_advance_without_var_unscaled (hb_codepoint_t glyph) const
+  unsigned पूर्णाङ्क get_advance_without_var_unscaled (hb_codepoint_t glyph) ध्रुव
   {
-    return HB_DUAL_GET (*this, get_advance_without_var_unscaled (glyph));
+    प्रत्यागम HB_DUAL_GET (*एतत्, get_advance_without_var_unscaled (glyph));
   }
 
 #ifndef HB_NO_VAR
   unsigned get_advance_with_var_unscaled (hb_codepoint_t     glyph,
 					  hb_font_t         *font,
-					  hb_scalar_cache_t *store_cache = nullptr) const
+					  hb_scalar_cache_t *store_cache = nullptr) ध्रुव
   {
-    unsigned int advance = get_advance_without_var_unscaled (glyph);
-    return hb_clamp_to<unsigned> (advance + roundf (var_table->get_advance_delta_unscaled (glyph,
-								    font->coords, font->num_coords,
+    unsigned पूर्णाङ्क advance = get_advance_without_var_unscaled (glyph);
+    प्रत्यागम hb_clamp_to<unsigned> (advance + roundf (var_table->get_advance_delta_unscaled (glyph,
+								    font->coords, font->अङ्कः_coords,
 								    store_cache)));
   }
 #endif
 
   hb_blob_ptr_t<VVAR> var_table;
 };
-#else
-struct vmtx_accelerator_t : vmtx::accelerator_t {
+#अण्णहा
+संरचना vmtx_accelerator_t : vmtx::accelerator_t {
   vmtx_accelerator_t (hb_face_t *face) : vmtx::accelerator_t (face) {}
 };
 #endif

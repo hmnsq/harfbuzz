@@ -1,52 +1,52 @@
 #ifndef OT_LAYOUT_GSUB_MULTIPLESUBST_HH
 #define OT_LAYOUT_GSUB_MULTIPLESUBST_HH
 
-#include "Common.hh"
-#include "MultipleSubstFormat1.hh"
+#अन्तर्भाव "Common.hh"
+#अन्तर्भाव "MultipleSubstFormat1.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+नामाकाश OT {
+नामाकाश Layout {
+नामाकाश GSUB_impl {
 
-struct MultipleSubst
+संरचना MultipleSubst
 {
-  protected:
-  union {
-  struct { HBUINT16 v; }		format;         /* Format identifier */
+  रक्षित:
+  सङ्घ {
+  संरचना { HBUINT16 v; }		format;         /* Format identifier */
   MultipleSubstFormat1_2<SmallTypes>	format1;
 #ifndef HB_NO_BEYOND_64K
   MultipleSubstFormat1_2<MediumTypes>	format2;
 #endif
   } u;
 
-  public:
+  सार्वजनिक:
 
   template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) ध्रुव
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    जइ (unlikely (!c->may_dispatch (एतत्, &u.format.v))) प्रत्यागम c->no_dispatch_return_मानम् ();
+    TRACE_DISPATCH (एतत्, u.format.v);
+    विकल्प (u.format.v) {
+    पक्ष 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
 #ifndef HB_NO_BEYOND_64K
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    पक्ष 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
 #endif
-    default:return_trace (c->default_return_value ());
+    स्वभाव:return_trace (c->default_return_मानम् ());
     }
   }
 
   template<typename Iterator,
            hb_requires (hb_is_sorted_iterator (Iterator))>
-  bool serialize (hb_serialize_context_t *c,
+  तार्किक serialize (hb_serialize_context_t *c,
 		  Iterator it)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (u.format.v))) return_trace (false);
-    unsigned int format = 1;
+    TRACE_SERIALIZE (एतत्);
+    जइ (unlikely (!c->extend_min (u.format.v))) return_trace (मिच्छ);
+    unsigned पूर्णाङ्क format = 1;
     u.format.v = format;
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.serialize (c, it));
-    default:return_trace (false);
+    विकल्प (u.format.v) {
+    पक्ष 1: hb_barrier (); return_trace (u.format1.serialize (c, it));
+    स्वभाव:return_trace (मिच्छ);
     }
   }
 

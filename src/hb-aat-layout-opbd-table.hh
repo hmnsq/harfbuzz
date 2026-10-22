@@ -25,8 +25,8 @@
 #ifndef HB_AAT_LAYOUT_OPBD_TABLE_HH
 #define HB_AAT_LAYOUT_OPBD_TABLE_HH
 
-#include "hb-aat-layout-common.hh"
-#include "hb-open-type.hh"
+#अन्तर्भाव "hb-aat-layout-common.hh"
+#अन्तर्भाव "hb-open-type.hh"
 
 /*
  * opbd -- Optical Bounds
@@ -35,136 +35,136 @@
 #define HB_AAT_TAG_opbd HB_TAG('o','p','b','d')
 
 
-namespace AAT {
+नामाकाश AAT {
 
-struct OpticalBounds
+संरचना OpticalBounds
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) ध्रुव
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (एतत्);
+    return_trace (c->check_struct (एतत्));
   }
 
-  FWORD		leftSide;
-  FWORD		topSide;
-  FWORD		rightSide;
+  FWORD		वामः_Side;
+  FWORD		शिखरम्_Side;
+  FWORD		दक्षिणः_Side;
   FWORD		bottomSide;
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_STATIC (8);
 };
 
-struct opbdFormat0
+संरचना opbdFormat0
 {
-  bool get_bounds (hb_font_t *font, hb_codepoint_t glyph_id,
-		   hb_glyph_extents_t *extents, const void *base) const
+  तार्किक get_bounds (hb_font_t *font, hb_codepoint_t glyph_id,
+		   hb_glyph_extents_t *extents, ध्रुव शून्य *base) ध्रुव
   {
-    const Offset16To<OpticalBounds> *bounds_offset = lookupTable.get_value (glyph_id, font->face->get_num_glyphs ());
-    if (!bounds_offset) return false;
-    const OpticalBounds &bounds = base+*bounds_offset;
+    ध्रुव Offset16To<OpticalBounds> *bounds_offset = lookupTable.get_मानम् (glyph_id, font->face->get_अङ्कः_glyphs ());
+    जइ (!bounds_offset) प्रत्यागम मिच्छ;
+    ध्रुव OpticalBounds &bounds = base+*bounds_offset;
 
-    if (extents)
+    जइ (extents)
       *extents = {
-	font->em_scale_x (bounds.leftSide),
-	font->em_scale_y (bounds.topSide),
-	font->em_scale_x (bounds.rightSide),
+	font->em_scale_x (bounds.वामः_Side),
+	font->em_scale_y (bounds.शिखरम्_Side),
+	font->em_scale_x (bounds.दक्षिणः_Side),
 	font->em_scale_y (bounds.bottomSide)
       };
-    return true;
+    प्रत्यागम सच्च;
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  तार्किक sanitize (hb_sanitize_context_t *c, ध्रुव शून्य *base) ध्रुव
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) && lookupTable.sanitize (c, base)));
+    TRACE_SANITIZE (एतत्);
+    return_trace (likely (c->check_struct (एतत्) && lookupTable.sanitize (c, base)));
   }
 
-  protected:
+  रक्षित:
   Lookup<Offset16To<OpticalBounds>>
 		lookupTable;	/* Lookup table associating glyphs with the four
 				 * int16 values for the left-side, top-side,
 				 * right-side, and bottom-side optical bounds. */
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_MIN (2);
 };
 
-struct opbdFormat1
+संरचना opbdFormat1
 {
-  bool get_bounds (hb_font_t *font, hb_codepoint_t glyph_id,
-		   hb_glyph_extents_t *extents, const void *base) const
+  तार्किक get_bounds (hb_font_t *font, hb_codepoint_t glyph_id,
+		   hb_glyph_extents_t *extents, ध्रुव शून्य *base) ध्रुव
   {
-    const Offset16To<OpticalBounds> *bounds_offset = lookupTable.get_value (glyph_id, font->face->get_num_glyphs ());
-    if (!bounds_offset) return false;
-    const OpticalBounds &bounds = base+*bounds_offset;
+    ध्रुव Offset16To<OpticalBounds> *bounds_offset = lookupTable.get_मानम् (glyph_id, font->face->get_अङ्कः_glyphs ());
+    जइ (!bounds_offset) प्रत्यागम मिच्छ;
+    ध्रुव OpticalBounds &bounds = base+*bounds_offset;
 
-    hb_position_t left = 0, top = 0, right = 0, bottom = 0, ignore;
-    if (font->get_glyph_contour_point (glyph_id, bounds.leftSide, &left, &ignore) ||
-	font->get_glyph_contour_point (glyph_id, bounds.topSide, &ignore, &top) ||
-	font->get_glyph_contour_point (glyph_id, bounds.rightSide, &right, &ignore) ||
+    hb_position_t left = 0, शिखरम्_2 = 0, दक्षिणः = 0, bottom = 0, ignore;
+    जइ (font->get_glyph_contour_point (glyph_id, bounds.वामः_Side, &left, &ignore) ||
+	font->get_glyph_contour_point (glyph_id, bounds.शिखरम्_Side, &ignore, &शिखरम्_2) ||
+	font->get_glyph_contour_point (glyph_id, bounds.दक्षिणः_Side, &दक्षिणः, &ignore) ||
 	font->get_glyph_contour_point (glyph_id, bounds.bottomSide, &ignore, &bottom))
     {
-      if (extents)
-	*extents = {left, top, right, bottom};
-      return true;
+      जइ (extents)
+	*extents = {left, शिखरम्_2, दक्षिणः, bottom};
+      प्रत्यागम सच्च;
     }
-    return false;
+    प्रत्यागम मिच्छ;
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  तार्किक sanitize (hb_sanitize_context_t *c, ध्रुव शून्य *base) ध्रुव
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) && lookupTable.sanitize (c, base)));
+    TRACE_SANITIZE (एतत्);
+    return_trace (likely (c->check_struct (एतत्) && lookupTable.sanitize (c, base)));
   }
 
-  protected:
+  रक्षित:
   Lookup<Offset16To<OpticalBounds>>
 		lookupTable;	/* Lookup table associating glyphs with the four
 				 * int16 values for the left-side, top-side,
 				 * right-side, and bottom-side optical bounds. */
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_MIN (2);
 };
 
-struct opbd
+संरचना opbd
 {
-  static constexpr hb_tag_t tableTag = HB_AAT_TAG_opbd;
+  स्थिर constexpr hb_tag_t tableTag = HB_AAT_TAG_opbd;
 
-  bool get_bounds (hb_font_t *font, hb_codepoint_t glyph_id,
-		   hb_glyph_extents_t *extents) const
+  तार्किक get_bounds (hb_font_t *font, hb_codepoint_t glyph_id,
+		   hb_glyph_extents_t *extents) ध्रुव
   {
-    switch (format)
+    विकल्प (format)
     {
-    case 0: hb_barrier (); return u.format0.get_bounds (font, glyph_id, extents, this);
-    case 1: hb_barrier (); return u.format1.get_bounds (font, glyph_id, extents, this);
-    default:return false;
+    पक्ष 0: hb_barrier (); प्रत्यागम u.format0.get_bounds (font, glyph_id, extents, एतत्);
+    पक्ष 1: hb_barrier (); प्रत्यागम u.format1.get_bounds (font, glyph_id, extents, एतत्);
+    स्वभाव:प्रत्यागम मिच्छ;
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) ध्रुव
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this) || version.major != 1))
-      return_trace (false);
+    TRACE_SANITIZE (एतत्);
+    जइ (unlikely (!c->check_struct (एतत्) || version.major != 1))
+      return_trace (मिच्छ);
     hb_barrier ();
 
-    switch (format)
+    विकल्प (format)
     {
-    case 0: hb_barrier (); return_trace (u.format0.sanitize (c, this));
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c, this));
-    default:return_trace (true);
+    पक्ष 0: hb_barrier (); return_trace (u.format0.sanitize (c, एतत्));
+    पक्ष 1: hb_barrier (); return_trace (u.format1.sanitize (c, एतत्));
+    स्वभाव:return_trace (सच्च);
     }
   }
 
-  protected:
+  रक्षित:
   FixedVersion<>version;	/* Version number of the optical bounds
 				 * table (0x00010000 for the current version). */
   HBUINT16	format;		/* Format of the optical bounds table.
 				 * Format 0 indicates distance and Format 1 indicates
 				 * control point. */
-  union {
+  सङ्घ {
   opbdFormat0	format0;
   opbdFormat1	format1;
   } u;
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_MIN (8);
 };
 

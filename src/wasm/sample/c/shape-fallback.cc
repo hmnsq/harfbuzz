@@ -1,19 +1,19 @@
 #define HB_WASM_INTERFACE(ret_t, name) __attribute__((export_name(#name))) ret_t name
 
-#include <hb-wasm-api.h>
+#अन्तर्भाव <hb-wasm-api.h>
 
-extern "C" {
-void debugprint (const char *s);
-void debugprint1 (const char *s, int32_t);
-void debugprint2 (const char *s, int32_t, int32_t);
+बाह्य "C" {
+शून्य debugprint (ध्रुव वर्ण *s);
+शून्य debugprint1 (ध्रुव वर्ण *s, int32_t);
+शून्य debugprint2 (ध्रुव वर्ण *s, int32_t, int32_t);
 }
 
 bool_t
-shape (void *shape_plan,
+shape (शून्य *shape_plan,
        font_t *font,
        buffer_t *buffer,
-       const feature_t *features,
-       uint32_t num_features)
+       ध्रुव feature_t *features,
+       uint32_t अङ्कः_features)
 {
   face_t *face = font_get_face (font);
 
@@ -25,20 +25,20 @@ shape (void *shape_plan,
   blob_free (&blob);
 
   buffer_contents_t contents = BUFFER_CONTENTS_INIT;
-  if (!buffer_copy_contents (buffer, &contents))
-    return false;
+  जइ (!buffer_copy_contents (buffer, &contents))
+    प्रत्यागम मिच्छ;
 
   debugprint1 ("buffer length", contents.length);
 
   glyph_outline_t outline = GLYPH_OUTLINE_INIT;
 
-  for (unsigned i = 0; i < contents.length; i++)
+  प्रति (unsigned i = 0; i < contents.length; i++)
   {
-    char name[64];
+    वर्ण name[64];
 
     debugprint1 ("glyph at", i);
 
-    font_glyph_to_string (font, contents.info[i].codepoint, name, sizeof (name));
+    font_glyph_to_string (font, contents.info[i].codepoint, name, परिमाण (name));
 
     debugprint (name);
 
@@ -56,5 +56,5 @@ shape (void *shape_plan,
 
   buffer_contents_free (&contents);
 
-  return ret;
+  प्रत्यागम ret;
 }
