@@ -31,9 +31,9 @@
  * hb_depend_data_builder_t for hb_depend_context_t, but hb-depend.hh pulls
  * in table headers that include hb-ot-layout-gsubgpos.hh. */
 
-#include "hb.hh"
+#अन्तर्भाव "hb.hh"
 
-#include "hb-multimap.hh"
+#अन्तर्भाव "hb-multimap.hh"
 
 /* hb_subset_depend_edge_flags_t is defined in hb-depend.h (public header).
  * We redeclare it here under the same include-guard so internal code that
@@ -41,7 +41,7 @@
  * the type. The definitions must stay in sync. */
 #ifndef HB_SUBSET_DEPEND_EDGE_FLAGS_T_DEFINED
 #define HB_SUBSET_DEPEND_EDGE_FLAGS_T_DEFINED
-typedef enum {
+प्रकारनिर्देश गणना {
   HB_SUBSET_DEPEND_EDGE_FLAG_NONE                   = 0x00u,
   HB_SUBSET_DEPEND_EDGE_FLAG_FROM_CONTEXT_POSITION  = 0x01u,
   HB_SUBSET_DEPEND_EDGE_FLAG_FROM_NESTED_CONTEXT    = 0x02u,
@@ -68,7 +68,7 @@ HB_MARK_AS_FLAG_T (hb_subset_depend_edge_flags_t);
  * - context_set: Index into sets array for context requirements, else INVALID
  * - flags: Edge flags (FROM_CONTEXT_POSITION, FROM_NESTED_CONTEXT)
  */
-struct hb_depend_edge_t {
+संरचना hb_depend_edge_t {
   hb_depend_edge_t() = delete;
   hb_depend_edge_t(hb_tag_t table_tag,
                    hb_codepoint_t dependent,
@@ -81,21 +81,21 @@ struct hb_depend_edge_t {
      flags(flags)
      {}
 
-  bool operator == (const hb_depend_edge_t &o) const
+  तार्किक operator == (ध्रुव hb_depend_edge_t &o) ध्रुव
   {
     /* NOTE: flags intentionally excluded from equality comparison.
      * Flags are metadata about how an edge was discovered (e.g.,
      * FROM_CONTEXT_POSITION, FROM_NESTED_CONTEXT), not part of the
      * edge's identity. Multiple discoveries of the same edge via
      * different paths should be treated as duplicates. */
-    return table_tag == o.table_tag &&
+    प्रत्यागम table_tag == o.table_tag &&
            dependent == o.dependent &&
            layout_tag == o.layout_tag &&
            ligature_set == o.ligature_set &&
            context_set == o.context_set;
   }
 
-  uint32_t hash () const
+  uint32_t hash () ध्रुव
   {
     /* FNV-1a hash of all identity fields (excludes flags) */
     uint32_t current = 0x84222325;  /* FNV-1a offset basis */
@@ -109,7 +109,7 @@ struct hb_depend_edge_t {
     current = current * 16777619;
     current = current ^ hb_hash (context_set);
     current = current * 16777619;
-    return current;
+    प्रत्यागम current;
   }
 
   hb_tag_t table_tag;
@@ -126,13 +126,13 @@ struct hb_depend_edge_t {
  * Key structure for edge deduplication. Combines source glyph with edge record.
  * Uses the record's equality and hash operators for comparison.
  */
-struct hb_depend_edge_key_t {
+संरचना hb_depend_edge_किल्ली_t {
   hb_codepoint_t source;
   hb_depend_edge_t record;
 
-  hb_depend_edge_key_t () : source (0), record (0, 0, 0, HB_CODEPOINT_INVALID, HB_CODEPOINT_INVALID, HB_SUBSET_DEPEND_EDGE_FLAG_NONE) {}
+  hb_depend_edge_किल्ली_t () : source (0), record (0, 0, 0, HB_CODEPOINT_INVALID, HB_CODEPOINT_INVALID, HB_SUBSET_DEPEND_EDGE_FLAG_NONE) {}
 
-  hb_depend_edge_key_t (hb_codepoint_t source,
+  hb_depend_edge_किल्ली_t (hb_codepoint_t source,
               hb_tag_t table_tag,
               hb_tag_t layout_tag,
               hb_codepoint_t dependent,
@@ -141,12 +141,12 @@ struct hb_depend_edge_key_t {
     : source (source),
       record (table_tag, dependent, layout_tag, ligature_set, context_set, HB_SUBSET_DEPEND_EDGE_FLAG_NONE) {}
 
-  bool operator == (const hb_depend_edge_key_t &o) const
+  तार्किक operator == (ध्रुव hb_depend_edge_किल्ली_t &o) ध्रुव
   {
-    return source == o.source && record == o.record;
+    प्रत्यागम source == o.source && record == o.record;
   }
 
-  uint32_t hash () const
+  uint32_t hash () ध्रुव
   {
     /* Combine source hash with record hash */
     uint32_t current = 0x84222325;  /* FNV-1a offset basis */
@@ -154,7 +154,7 @@ struct hb_depend_edge_key_t {
     current = current * 16777619;   /* FNV-1a prime */
     current = current ^ record.hash ();
     current = current * 16777619;
-    return current;
+    प्रत्यागम current;
   }
 };
 
@@ -163,7 +163,7 @@ struct hb_depend_edge_key_t {
  *
  * Internal structure holding all dependency edges for a single glyph.
  */
-struct hb_depend_glyph_record_t {
+संरचना hb_depend_glyph_record_t {
   hb_vector_t<hb_depend_edge_t> dependencies;
 };
 
@@ -174,22 +174,22 @@ struct hb_depend_glyph_record_t {
  * Used during GSUB dependency analysis to record the feature tags that
  * activate each lookup.
  */
-struct hb_depend_lookup_revmap_t
+संरचना hb_depend_lookup_revmap_t
 {
-  hb_depend_lookup_revmap_t () = default;
-  explicit hb_depend_lookup_revmap_t (bool full) : full (full) {}
-  hb_depend_lookup_revmap_t (const hb_depend_lookup_revmap_t &o) : full(o.full),
+  hb_depend_lookup_revmap_t () = स्वभाव;
+  explicit hb_depend_lookup_revmap_t (तार्किक full) : full (full) {}
+  hb_depend_lookup_revmap_t (ध्रुव hb_depend_lookup_revmap_t &o) : full(o.full),
                                                                      fv_indexes(o.fv_indexes) {}
   hb_depend_lookup_revmap_t (hb_depend_lookup_revmap_t &&o) : full(o.full),
                                                                 fv_indexes(std::move(o.fv_indexes)) {}
-  hb_depend_lookup_revmap_t& operator = (const hb_depend_lookup_revmap_t &o)
+  hb_depend_lookup_revmap_t& operator = (ध्रुव hb_depend_lookup_revmap_t &o)
   {
     full = o.full;
     fv_indexes = o.fv_indexes;
-    return *this;
+    प्रत्यागम *एतत्;
   }
 
-  bool full = true;
+  तार्किक full = सत्य;
   hb_set_t fv_indexes;
 };
 
@@ -203,7 +203,7 @@ struct hb_depend_lookup_revmap_t
  *
  * Constructed via hb_depend_data_builder_t; immutable thereafter.
  */
-struct hb_depend_data_t
+संरचना hb_depend_data_t
 {
   /* Set storage: vector of heap-allocated sets (both ligature and context sets).
    * Using unique_ptr follows HarfBuzz pattern and provides stable pointers. */
@@ -211,26 +211,26 @@ struct hb_depend_data_t
 
   hb_vector_t<hb_depend_glyph_record_t> glyph_dependencies;
 
-  const hb_set_t *get_set_from_index (hb_codepoint_t index)
+  ध्रुव hb_set_t *get_set_from_index (hb_codepoint_t index)
   {
-    if (index < sets.length)
-      return sets[index].get ();
-    return nullptr;
+    यदि (index < sets.length)
+      प्रत्यागम sets[index].get ();
+    प्रत्यागम nullptr;
   }
 
-  unsigned int get_glyph_entry_count (hb_codepoint_t gid) const
+  unsigned पूर्णाङ्क get_glyph_entry_मोजणी (hb_codepoint_t gid) ध्रुव
   {
-    if (gid < glyph_dependencies.length)
-      return glyph_dependencies[gid].dependencies.length;
-    return 0;
+    यदि (gid < glyph_dependencies.length)
+      प्रत्यागम glyph_dependencies[gid].dependencies.length;
+    प्रत्यागम 0;
   }
 
-  bool get_glyph_entry (hb_codepoint_t gid, unsigned int index,
+  तार्किक get_glyph_entry (hb_codepoint_t gid, unsigned पूर्णाङ्क index,
                         hb_tag_t *table_tag, hb_codepoint_t *dependent,
                         hb_tag_t *layout_tag, hb_codepoint_t *ligature_set,
                         hb_codepoint_t *context_set, uint8_t *flags)
   {
-    if (gid < glyph_dependencies.length &&
+    यदि (gid < glyph_dependencies.length &&
         index < glyph_dependencies[gid].dependencies.length) {
       auto &d = glyph_dependencies[gid].dependencies[index];
       *table_tag = d.table_tag;
@@ -238,25 +238,25 @@ struct hb_depend_data_t
       *layout_tag = d.layout_tag;
       *ligature_set = d.ligature_set;
       *context_set = d.context_set;
-      if (flags) *flags = d.flags;
-      return true;
+      यदि (flags) *flags = d.flags;
+      प्रत्यागम सत्य;
     }
-    return false;
+    प्रत्यागम असत्य;
   }
 
-  void print ()
+  शून्य print ()
   {
-    for (unsigned i = 0; i < glyph_dependencies.length; i++) {
+    प्रति (unsigned i = 0; i < glyph_dependencies.length; i++) {
       auto &gd = glyph_dependencies[i];
-      if (!gd.dependencies.length)
-        continue;
+      यदि (!gd.dependencies.length)
+        अनुवर्त;
       printf ("GID %u:\n", i);
-      for (auto &d : gd.dependencies) {
-        if (d.table_tag == HB_OT_TAG_GSUB) {
+      प्रति (auto &d : gd.dependencies) {
+        यदि (d.table_tag == HB_OT_TAG_GSUB) {
           printf ("  layout %c%c%c%c -> %u", HB_UNTAG(d.layout_tag), d.dependent);
-          if (d.ligature_set != HB_CODEPOINT_INVALID)
+          यदि (d.ligature_set != HB_CODEPOINT_INVALID)
             printf ("  (ligature)");
-        } else {
+        } अन्यथा {
           printf ("  %c%c%c%c -> %u", HB_UNTAG(d.table_tag), d.dependent);
         }
         printf ("\n");
@@ -281,7 +281,7 @@ struct hb_depend_data_t
  * - current_context_set_index: Context requirements for current rule
  * - current_edge_flags: Flags to apply to edges being recorded
  */
-struct hb_depend_data_builder_t
+संरचना hb_depend_data_builder_t
 {
   hb_depend_data_builder_t (hb_depend_data_t &data_)
     : current_context_set_index (HB_CODEPOINT_INVALID),
@@ -289,75 +289,75 @@ struct hb_depend_data_builder_t
       data (data_) {}
 
   /* Forward to data for use during construction (e.g. from hb_depend_context_t) */
-  const hb_set_t *get_set_from_index (hb_codepoint_t index)
-  { return data.get_set_from_index (index); }
+  ध्रुव hb_set_t *get_set_from_index (hb_codepoint_t index)
+  { प्रत्यागम data.get_set_from_index (index); }
 
   /* Discard an unused set that was allocated but had no edges added. */
-  void discard_set (hb_codepoint_t set_index)
+  शून्य discard_set (hb_codepoint_t set_index)
   {
-    if (set_index >= data.sets.length)
+    यदि (set_index >= data.sets.length)
     {
-      DEBUG_MSG (SUBSET, nullptr, "Attempting to discard invalid set %u (max is %u)",
+      DEBUG_संदेश (SUBSET, nullptr, "Attempting to discard invalid set %u (max is %u)",
                  set_index, data.sets.length - 1);
-      return;
+      प्रत्यागम;
     }
     set_to_index.del (data.sets[set_index].get ());
     data.sets[set_index]->clear ();
-    check_success (free_set_list.push_or_fail (set_index));
+    check_success (free_set_list.ढकला_or_fail (set_index));
   }
 
-  hb_codepoint_t new_set (const hb_set_t &set)
+  hb_codepoint_t new_set (ध्रुव hb_set_t &set)
   {
     hb_codepoint_t set_index;
 
-    if (free_set_list.length > 0)
+    यदि (free_set_list.length > 0)
     {
-      set_index = free_set_list.pop ();
+      set_index = free_set_list.काढा ();
       data.sets[set_index]->set (set);
-      if (unlikely (data.sets[set_index]->in_error ()))
-	return fail_invalid ();
+      यदि (unlikely (data.sets[set_index]->in_error ()))
+	प्रत्यागम fail_invalid ();
     }
-    else
+    अन्यथा
     {
       set_index = data.sets.length;
       hb_set_t *new_set = hb_set_create ();
-      if (unlikely (!new_set))
-	return fail_invalid ();
+      यदि (unlikely (!new_set))
+	प्रत्यागम fail_invalid ();
       new_set->set (set);
-      if (unlikely (new_set->in_error ()))
+      यदि (unlikely (new_set->in_error ()))
       {
 	hb_set_destroy (new_set);
-	return fail_invalid ();
+	प्रत्यागम fail_invalid ();
       }
-      if (unlikely (!data.sets.push_or_fail (hb::unique_ptr<hb_set_t> {new_set})))
-	return fail_invalid ();
+      यदि (unlikely (!data.sets.ढकला_or_fail (hb::unique_ptr<hb_set_t> {new_set})))
+	प्रत्यागम fail_invalid ();
     }
 
-    return set_index;
+    प्रत्यागम set_index;
   }
 
   /* Find an existing dependency set with the same contents, or create one. */
-  hb_codepoint_t find_or_create_set (const hb_set_t &set, bool *created = nullptr)
+  hb_codepoint_t find_or_create_set (ध्रुव hb_set_t &set, तार्किक *created = nullptr)
   {
     hb_codepoint_t *existing_idx = nullptr;
-    if (set_to_index.has (&set, &existing_idx))
+    यदि (set_to_index.has (&set, &existing_idx))
     {
-      if (created) *created = false;
-      return *existing_idx;
+      यदि (created) *created = असत्य;
+      प्रत्यागम *existing_idx;
     }
 
     hb_codepoint_t new_idx = new_set (set);
-    if (unlikely (new_idx == HB_CODEPOINT_INVALID))
-      return HB_CODEPOINT_INVALID;
+    यदि (unlikely (new_idx == HB_CODEPOINT_INVALID))
+      प्रत्यागम HB_CODEPOINT_INVALID;
 
-    if (unlikely (!set_to_index.set (data.sets[new_idx].get (), new_idx)))
-      return fail_invalid ();
-    if (created) *created = true;
-    return new_idx;
+    यदि (unlikely (!set_to_index.set (data.sets[new_idx].get (), new_idx)))
+      प्रत्यागम fail_invalid ();
+    यदि (created) *created = सत्य;
+    प्रत्यागम new_idx;
   }
 
-  hb_codepoint_t find_or_create_context_set (const hb_set_t &set)
-  { return find_or_create_set (set); }
+  hb_codepoint_t find_or_create_context_set (ध्रुव hb_set_t &set)
+  { प्रत्यागम find_or_create_set (set); }
 
   /* Build a context set from context information.
    * Encodes backtrack and lookahead requirements as a flattened set.
@@ -368,30 +368,30 @@ struct hb_depend_data_builder_t
    * 2. Second pass: create disjunction sets, subtracting direct requirements
    * 3. Combine: add direct requirements and filtered disjunction references
    */
-  hb_codepoint_t build_context_set (const hb_vector_t<hb_set_t> *backtrack_sets,
-                                     const hb_vector_t<hb_set_t> *lookahead_sets)
+  hb_codepoint_t build_context_set (ध्रुव hb_vector_t<hb_set_t> *backtrack_sets,
+                                     ध्रुव hb_vector_t<hb_set_t> *lookahead_sets)
   {
-    if ((!backtrack_sets || backtrack_sets->length == 0) &&
+    यदि ((!backtrack_sets || backtrack_sets->length == 0) &&
         (!lookahead_sets || lookahead_sets->length == 0))
-      return HB_CODEPOINT_INVALID;
+      प्रत्यागम HB_CODEPOINT_INVALID;
 
     /* First pass: collect all direct (single-glyph) requirements */
     hb_set_t direct_requirements;
 
-    if (backtrack_sets)
+    यदि (backtrack_sets)
     {
-      for (const auto &back_set : *backtrack_sets)
+      प्रति (ध्रुव auto &back_set : *backtrack_sets)
       {
-        if (back_set.get_population () == 1)
+        यदि (back_set.get_population () == 1)
           direct_requirements.add (back_set.get_min ());
       }
     }
 
-    if (lookahead_sets)
+    यदि (lookahead_sets)
     {
-      for (const auto &look_set : *lookahead_sets)
+      प्रति (ध्रुव auto &look_set : *lookahead_sets)
       {
-        if (look_set.get_population () == 1)
+        यदि (look_set.get_population () == 1)
           direct_requirements.add (look_set.get_min ());
       }
     }
@@ -399,46 +399,46 @@ struct hb_depend_data_builder_t
     /* Second pass: create disjunction sets, filtering out direct requirements */
     hb_set_t context_elements;
 
-    if (backtrack_sets)
+    यदि (backtrack_sets)
     {
-      for (const auto &back_set : *backtrack_sets)
+      प्रति (ध्रुव auto &back_set : *backtrack_sets)
       {
-        if (back_set.get_population () > 1)
+        यदि (back_set.get_population () > 1)
         {
           hb_set_t filtered_set;
           filtered_set.set (back_set);
           filtered_set.subtract (direct_requirements);
-          if (unlikely (filtered_set.in_error ()))
-            return fail_invalid ();
+          यदि (unlikely (filtered_set.in_error ()))
+            प्रत्यागम fail_invalid ();
 
-          if (!filtered_set.is_empty ())
+          यदि (!filtered_set.is_empty ())
           {
             hb_codepoint_t set_idx = find_or_create_context_set (filtered_set);
-            if (unlikely (set_idx == HB_CODEPOINT_INVALID))
-              return HB_CODEPOINT_INVALID;
+            यदि (unlikely (set_idx == HB_CODEPOINT_INVALID))
+              प्रत्यागम HB_CODEPOINT_INVALID;
             context_elements.add (HB_DEPEND_CONTEXT_SET_FLAG | set_idx);
           }
         }
       }
     }
 
-    if (lookahead_sets)
+    यदि (lookahead_sets)
     {
-      for (const auto &look_set : *lookahead_sets)
+      प्रति (ध्रुव auto &look_set : *lookahead_sets)
       {
-        if (look_set.get_population () > 1)
+        यदि (look_set.get_population () > 1)
         {
           hb_set_t filtered_set;
           filtered_set.set (look_set);
           filtered_set.subtract (direct_requirements);
-          if (unlikely (filtered_set.in_error ()))
-            return fail_invalid ();
+          यदि (unlikely (filtered_set.in_error ()))
+            प्रत्यागम fail_invalid ();
 
-          if (!filtered_set.is_empty ())
+          यदि (!filtered_set.is_empty ())
           {
             hb_codepoint_t set_idx = find_or_create_context_set (filtered_set);
-            if (unlikely (set_idx == HB_CODEPOINT_INVALID))
-              return HB_CODEPOINT_INVALID;
+            यदि (unlikely (set_idx == HB_CODEPOINT_INVALID))
+              प्रत्यागम HB_CODEPOINT_INVALID;
             context_elements.add (HB_DEPEND_CONTEXT_SET_FLAG | set_idx);
           }
         }
@@ -446,189 +446,189 @@ struct hb_depend_data_builder_t
     }
 
     context_elements.union_ (direct_requirements);
-    if (unlikely (direct_requirements.in_error () ||
+    यदि (unlikely (direct_requirements.in_error () ||
                   context_elements.in_error ()))
-      return fail_invalid ();
+      प्रत्यागम fail_invalid ();
 
-    if (context_elements.is_empty ())
-      return HB_CODEPOINT_INVALID;
+    यदि (context_elements.is_empty ())
+      प्रत्यागम HB_CODEPOINT_INVALID;
 
-    return find_or_create_context_set (context_elements);
+    प्रत्यागम find_or_create_context_set (context_elements);
   }
 
-  static uint64_t encode_edge_ref (hb_codepoint_t source, unsigned int index)
-  { return (uint64_t (source) + 1) << 32 | index; }
+  स्थिर uint64_t encode_edge_ref (hb_codepoint_t source, unsigned पूर्णाङ्क index)
+  { प्रत्यागम (uint64_t (source) + 1) << 32 | index; }
 
-  static void decode_edge_ref (uint64_t ref,
+  स्थिर शून्य decode_edge_ref (uint64_t ref,
 			       hb_codepoint_t *source,
-			       unsigned int *index)
+			       unsigned पूर्णाङ्क *index)
   {
     *source = (ref >> 32) - 1;
     *index = ref;
   }
 
-  uint32_t edge_hash (hb_codepoint_t source, const hb_depend_edge_t &record) const
+  uint32_t edge_hash (hb_codepoint_t source, ध्रुव hb_depend_edge_t &record) ध्रुव
   {
-    hb_depend_edge_key_t key (source, record.table_tag, record.layout_tag,
+    hb_depend_edge_किल्ली_t key (source, record.table_tag, record.layout_tag,
 			      record.dependent, record.ligature_set,
 			      record.context_set);
-    return key.hash ();
+    प्रत्यागम key.hash ();
   }
 
-  bool resize_edge_slots ()
+  तार्किक resize_edge_slots ()
   {
-    unsigned int new_size = edge_slots.length ? edge_slots.length * 2 : 8;
-    if (unlikely (new_size < edge_slots.length))
-      return fail ();
+    unsigned पूर्णाङ्क new_size = edge_slots.length ? edge_slots.length * 2 : 8;
+    यदि (unlikely (new_size < edge_slots.length))
+      प्रत्यागम fail ();
 
     hb_vector_t<uint64_t> new_slots;
-    if (unlikely (!new_slots.resize_exact (new_size)))
-      return fail ();
+    यदि (unlikely (!new_slots.resize_exact (new_size)))
+      प्रत्यागम fail ();
 
-    for (uint64_t ref : edge_slots)
+    प्रति (uint64_t ref : edge_slots)
     {
-      if (!ref)
-	continue;
+      यदि (!ref)
+	अनुवर्त;
 
       hb_codepoint_t source;
-      unsigned int index;
+      unsigned पूर्णाङ्क index;
       decode_edge_ref (ref, &source, &index);
-      const hb_depend_edge_t &record = data.glyph_dependencies[source].dependencies[index];
-      unsigned int slot = edge_hash (source, record) & (new_size - 1);
-      unsigned int step = 0;
-      while (new_slots[slot])
+      ध्रुव hb_depend_edge_t &record = data.glyph_dependencies[source].dependencies[index];
+      unsigned पूर्णाङ्क slot = edge_hash (source, record) & (new_size - 1);
+      unsigned पूर्णाङ्क step = 0;
+      यावत् (new_slots[slot])
 	slot = (slot + ++step) & (new_size - 1);
       new_slots[slot] = ref;
     }
 
     edge_slots = std::move (new_slots);
-    return true;
+    प्रत्यागम सत्य;
   }
 
-  bool add_edge (hb_codepoint_t source, const hb_depend_edge_t &record)
+  तार्किक add_edge (hb_codepoint_t source, ध्रुव hb_depend_edge_t &record)
   {
     /* Store only a source and per-glyph edge index in each bucket.  The edge
      * itself already lives in the output vector, where it can be compared to
      * resolve hash collisions exactly.  Adding one to the encoded source
      * reserves zero as the empty-bucket value. */
-    if (unlikely (!edge_slots.length ||
+    यदि (unlikely (!edge_slots.length ||
 		  uint64_t (edge_population) * 3 / 2 >= edge_slots.length - 1))
-      if (unlikely (!resize_edge_slots ()))
-	return false;
+      यदि (unlikely (!resize_edge_slots ()))
+	प्रत्यागम असत्य;
 
-    unsigned int slot = edge_hash (source, record) & (edge_slots.length - 1);
-    unsigned int step = 0;
-    while (uint64_t ref = edge_slots[slot])
+    unsigned पूर्णाङ्क slot = edge_hash (source, record) & (edge_slots.length - 1);
+    unsigned पूर्णाङ्क step = 0;
+    यावत् (uint64_t ref = edge_slots[slot])
     {
       hb_codepoint_t existing_source;
-      unsigned int existing_index;
+      unsigned पूर्णाङ्क existing_index;
       decode_edge_ref (ref, &existing_source, &existing_index);
-      if (existing_source == source &&
+      यदि (existing_source == source &&
 	  data.glyph_dependencies[source].dependencies[existing_index] == record)
-	return false;
+	प्रत्यागम असत्य;
       slot = (slot + ++step) & (edge_slots.length - 1);
     }
 
     auto &dependencies = data.glyph_dependencies[source].dependencies;
-    unsigned int index = dependencies.length;
-    if (unlikely (!dependencies.push_or_fail (record)))
-      return fail ();
+    unsigned पूर्णाङ्क index = dependencies.length;
+    यदि (unlikely (!dependencies.ढकला_or_fail (record)))
+      प्रत्यागम fail ();
 
     edge_slots[slot] = encode_edge_ref (source, index);
     edge_population++;
-    return true;
+    प्रत्यागम सत्य;
   }
 
-  bool add_depend_layout (hb_codepoint_t target, hb_tag_t table_tag,
+  तार्किक add_depend_layout (hb_codepoint_t target, hb_tag_t table_tag,
                           hb_tag_t layout_tag,
                           hb_codepoint_t dependent,
                           hb_codepoint_t lig_set = HB_CODEPOINT_INVALID,
                           hb_codepoint_t context_set = HB_CODEPOINT_INVALID,
                           hb_subset_depend_edge_flags_t flags = HB_SUBSET_DEPEND_EDGE_FLAG_NONE)
   {
-    if (target >= data.glyph_dependencies.length) {
-      DEBUG_MSG (SUBSET, nullptr, "Dependency glyph %u for %c%c%c%c too large",
+    यदि (target >= data.glyph_dependencies.length) {
+      DEBUG_संदेश (SUBSET, nullptr, "Dependency glyph %u for %c%c%c%c too large",
                  target, HB_UNTAG(table_tag));
-      return false;
+      प्रत्यागम असत्य;
     }
 
-    return add_edge (target, hb_depend_edge_t (table_tag, dependent, layout_tag,
+    प्रत्यागम add_edge (target, hb_depend_edge_t (table_tag, dependent, layout_tag,
 					      lig_set, context_set, flags));
   }
 
-  bool add_gsub_lookup (hb_codepoint_t target, hb_codepoint_t lookup_index,
+  तार्किक add_gsub_lookup (hb_codepoint_t target, hb_codepoint_t lookup_index,
                         hb_codepoint_t dependent,
                         hb_codepoint_t lig_set = HB_CODEPOINT_INVALID,
                         hb_codepoint_t context_set = HB_CODEPOINT_INVALID)
   {
-    if (context_set == HB_CODEPOINT_INVALID)
+    यदि (context_set == HB_CODEPOINT_INVALID)
       context_set = current_context_set_index;
     hb_subset_depend_edge_flags_t flags = current_edge_flags;
 
-    bool any_added = false;
-    for (uint64_t entry : get_lookup_features (lookup_index)) {
+    तार्किक any_added = असत्य;
+    प्रति (uint64_t entry : get_lookup_features (lookup_index)) {
       hb_tag_t t = (hb_tag_t) entry;
-      if (add_depend_layout (target, HB_OT_TAG_GSUB, t, dependent, lig_set, context_set, flags))
-        any_added = true;
+      यदि (add_depend_layout (target, HB_OT_TAG_GSUB, t, dependent, lig_set, context_set, flags))
+        any_added = सत्य;
     }
-    return any_added;
+    प्रत्यागम any_added;
   }
 
-  bool init_lookup_features (unsigned lookup_count)
+  तार्किक init_lookup_features (unsigned lookup_मोजणी)
   {
-    return check_success (lookup_feature_offsets.resize (lookup_count + 1));
+    प्रत्यागम check_success (lookup_feature_offsets.resize (lookup_मोजणी + 1));
   }
 
-  bool add_lookup_feature (hb_codepoint_t lookup_index, hb_tag_t feature_tag)
+  तार्किक add_lookup_feature (hb_codepoint_t lookup_index, hb_tag_t feature_tag)
   {
-    if (feature_tag == HB_SET_VALUE_INVALID)
-      return true;
+    यदि (feature_tag == HB_SET_मूल्य_INVALID)
+      प्रत्यागम सत्य;
 
-    if (unlikely (!lookup_feature_offsets.length ||
+    यदि (unlikely (!lookup_feature_offsets.length ||
 		  lookup_index >= lookup_feature_offsets.length - 1))
-      return fail ();
+      प्रत्यागम fail ();
 
     uint64_t entry = ((uint64_t) lookup_index << 32) | feature_tag;
-    return check_success (lookup_features.push_or_fail (entry));
+    प्रत्यागम check_success (lookup_features.ढकला_or_fail (entry));
   }
 
-  bool finish_lookup_features ()
+  तार्किक finish_lookup_features ()
   {
     lookup_features.qsort ([] (uint64_t a, uint64_t b) {
-      return a < b ? -1 : a > b ? 1 : 0;
+      प्रत्यागम a < b ? -1 : a > b ? 1 : 0;
     });
 
-    unsigned write = 0;
-    for (uint64_t entry : lookup_features)
-      if (!write || entry != lookup_features[write - 1])
-	lookup_features[write++] = entry;
-    lookup_features.shrink (write, false);
+    unsigned लिख = 0;
+    प्रति (uint64_t entry : lookup_features)
+      यदि (!लिख || entry != lookup_features[लिख - 1])
+	lookup_features[लिख++] = entry;
+    lookup_features.shrink (लिख, असत्य);
 
     unsigned feature_index = 0;
-    unsigned lookup_count = lookup_feature_offsets.length - 1;
-    for (unsigned lookup_index = 0; lookup_index < lookup_count; lookup_index++)
+    unsigned lookup_मोजणी = lookup_feature_offsets.length - 1;
+    प्रति (unsigned lookup_index = 0; lookup_index < lookup_मोजणी; lookup_index++)
     {
       lookup_feature_offsets[lookup_index] = feature_index;
-      while (feature_index < lookup_features.length &&
+      यावत् (feature_index < lookup_features.length &&
 	     lookup_features[feature_index] >> 32 == lookup_index)
 	feature_index++;
     }
-    lookup_feature_offsets[lookup_count] = feature_index;
-    return true;
+    lookup_feature_offsets[lookup_मोजणी] = feature_index;
+    प्रत्यागम सत्य;
   }
 
-  hb_array_t<const uint64_t> get_lookup_features (hb_codepoint_t lookup_index) const
+  hb_array_t<ध्रुव uint64_t> get_lookup_features (hb_codepoint_t lookup_index) ध्रुव
   {
-    if (unlikely (!lookup_feature_offsets.length ||
+    यदि (unlikely (!lookup_feature_offsets.length ||
 		  lookup_index >= lookup_feature_offsets.length - 1))
-      return {};
+      प्रत्यागम {};
 
     unsigned start = lookup_feature_offsets[lookup_index];
     unsigned end = lookup_feature_offsets[lookup_index + 1];
-    return lookup_features.as_array ().sub_array (start, end - start);
+    प्रत्यागम lookup_features.as_array ().sub_array (start, end - start);
   }
 
-  void add_depend (hb_codepoint_t target, hb_tag_t table_tag,
+  शून्य add_depend (hb_codepoint_t target, hb_tag_t table_tag,
                    hb_codepoint_t dependent,
                    hb_codepoint_t lig_set = HB_CODEPOINT_INVALID,
                    hb_codepoint_t context_set = HB_CODEPOINT_INVALID,
@@ -639,24 +639,24 @@ struct hb_depend_data_builder_t
   }
 
   hb_codepoint_t get_nominal_glyph (hb_codepoint_t cp)
-  { return hb_map_get (&nominal_glyphs, cp); }
+  { प्रत्यागम hb_map_get (&nominal_glyphs, cp); }
 
-  HB_INTERNAL bool compile (hb_face_t *face);
+  HB_INTERNAL तार्किक compile (hb_face_t *face);
 
-  bool fail () { successful = false; return false; }
-  hb_codepoint_t fail_invalid () { fail (); return HB_CODEPOINT_INVALID; }
-  bool check_success (bool s) { successful = (successful && s); return successful; }
+  तार्किक fail () { successful = असत्य; प्रत्यागम असत्य; }
+  hb_codepoint_t fail_invalid () { fail (); प्रत्यागम HB_CODEPOINT_INVALID; }
+  तार्किक check_success (तार्किक s) { successful = (successful && s); प्रत्यागम successful; }
 
-  HB_INTERNAL void get_gsub_dependencies (hb_face_t *face);
+  HB_INTERNAL शून्य get_gsub_dependencies (hb_face_t *face);
 
-  bool successful = true;
+  तार्किक successful = सत्य;
   hb_set_t unicodes;
   hb_map_t nominal_glyphs;
   hb_vector_t<uint64_t> lookup_features;
   hb_vector_t<unsigned> lookup_feature_offsets;
   hb_vector_t<uint64_t> edge_slots;
-  unsigned int edge_population = 0;
-  hb_hashmap_t<const hb_set_t*, hb_codepoint_t> set_to_index;
+  unsigned पूर्णाङ्क edge_population = 0;
+  hb_hashmap_t<ध्रुव hb_set_t*, hb_codepoint_t> set_to_index;
   hb_vector_t<hb_codepoint_t> free_set_list;
   hb_codepoint_t current_context_set_index;
   hb_subset_depend_edge_flags_t current_edge_flags;

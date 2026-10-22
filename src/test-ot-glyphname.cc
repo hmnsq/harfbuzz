@@ -24,17 +24,17 @@
  * Adobe Author(s): Michiharu Ariza
  */
 
-#include "hb.hh"
-#include "hb-ot.h"
+#अन्तर्भाव "hb.hh"
+#अन्तर्भाव "hb-ot.h"
 
 #ifdef HB_NO_OPEN
 #define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
 #endif
 
-int
-main (int argc, char **argv)
+पूर्णाङ्क
+main (पूर्णाङ्क argc, वर्ण **argv)
 {
-  if (argc != 2) {
+  यदि (argc != 2) {
     fprintf (stderr, "usage: %s font-file\n", argv[0]);
     exit (1);
   }
@@ -47,35 +47,35 @@ main (int argc, char **argv)
   blob = nullptr;
   
 
-  const unsigned int num_glyphs = hb_face_get_glyph_count (face);
-  int	result = 1;
+  ध्रुव unsigned पूर्णाङ्क अंक_glyphs = hb_face_get_glyph_मोजणी (face);
+  पूर्णाङ्क	result = 1;
 
-  for (hb_codepoint_t gid = 0; gid < num_glyphs; gid++)
+  प्रति (hb_codepoint_t gid = 0; gid < अंक_glyphs; gid++)
   {
-    char buf[64];
-    unsigned int buf_size = sizeof (buf);
-    if (hb_font_get_glyph_name (font, gid, buf, buf_size))
+    वर्ण buf[64];
+    unsigned पूर्णाङ्क buf_size = परिमाण (buf);
+    यदि (hb_font_get_glyph_name (font, gid, buf, buf_size))
     {
       hb_codepoint_t	gid_inv;
-      if (hb_font_get_glyph_from_name(font, buf, strlen (buf), &gid_inv))
+      यदि (hb_font_get_glyph_from_name(font, buf, strlen (buf), &gid_inv))
       {
-	if (gid == gid_inv)
+	यदि (gid == gid_inv)
 	{
 	  printf ("%u <-> %s\n", gid, buf);
 	}
-	else
+	अन्यथा
 	{
 	  printf ("%u -> %s -> %u\n", gid, buf, gid_inv);
 	  result = 0;
 	}
       }
-      else
+      अन्यथा
       {
 	printf ("%u -> %s -> ?\n", gid, buf);
 	result = 0;
       }
     }
-    else
+    अन्यथा
     {
       printf ("%u -> ?\n", gid);
       result = 0;
@@ -85,5 +85,5 @@ main (int argc, char **argv)
   hb_font_destroy (font);
   hb_face_destroy (face);
 
-  return !result;
+  प्रत्यागम !result;
 }

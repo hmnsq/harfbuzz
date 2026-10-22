@@ -25,68 +25,68 @@
 #ifndef HB_MULTIMAP_HH
 #define HB_MULTIMAP_HH
 
-#include "hb.hh"
-#include "hb-map.hh"
-#include "hb-vector.hh"
+#अन्तर्भाव "hb.hh"
+#अन्तर्भाव "hb-map.hh"
+#अन्तर्भाव "hb-vector.hh"
 
 
 /*
  * hb_multimap_t
  */
 
-struct hb_multimap_t
+संरचना hb_multimap_t
 {
-  void add (hb_codepoint_t k, hb_codepoint_t v)
+  शून्य add (hb_codepoint_t k, hb_codepoint_t v)
   {
     hb_vector_t<hb_codepoint_t> *m;
-    if (multiples.has (k, &m))
+    यदि (multiples.has (k, &m))
     {
       m->push (v);
-      return;
+      प्रत्यागम;
     }
 
     hb_codepoint_t *old_v;
-    if (singulars.has (k, &old_v))
+    यदि (singulars.has (k, &old_v))
     {
       hb_codepoint_t old = *old_v;
       singulars.del (k);
 
       multiples.set (k, hb_vector_t<hb_codepoint_t> {old, v});
-      return;
+      प्रत्यागम;
     }
 
     singulars.set (k, v);
   }
 
-  hb_array_t<const hb_codepoint_t> get (hb_codepoint_t k) const
+  hb_array_t<ध्रुव hb_codepoint_t> get (hb_codepoint_t k) ध्रुव
   {
-    const hb_codepoint_t *v;
-    if (singulars.has (k, &v))
-      return hb_array (v, 1);
+    ध्रुव hb_codepoint_t *v;
+    यदि (singulars.has (k, &v))
+      प्रत्यागम hb_array (v, 1);
 
     hb_vector_t<hb_codepoint_t> *m;
-    if (multiples.has (k, &m))
-      return m->as_array ();
+    यदि (multiples.has (k, &m))
+      प्रत्यागम m->as_array ();
 
-    return hb_array_t<const hb_codepoint_t> ();
+    प्रत्यागम hb_array_t<ध्रुव hb_codepoint_t> ();
   }
 
-  bool in_error () const
+  तार्किक in_error () ध्रुव
   {
-    if (singulars.in_error () || multiples.in_error ())
-      return true;
-    for (const auto &m : multiples.values_ref ())
-      if (m.in_error ())
-        return true;
-    return false;
+    यदि (singulars.in_error () || multiples.in_error ())
+      प्रत्यागम सत्य;
+    प्रति (ध्रुव auto &m : multiples.मूल्ये_ref ())
+      यदि (m.in_error ())
+        प्रत्यागम सत्य;
+    प्रत्यागम असत्य;
   }
 
-  void alloc (unsigned size)
+  शून्य alloc (unsigned size)
   {
     singulars.alloc (size);
   }
 
-  protected:
+  रक्षित:
   hb_map_t singulars;
   hb_hashmap_t<hb_codepoint_t, hb_vector_t<hb_codepoint_t>> multiples;
 };

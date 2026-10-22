@@ -1,17 +1,17 @@
 #ifndef OT_LAYOUT_GSUB_LIGATURESUBSTFORMAT1_HH
 #define OT_LAYOUT_GSUB_LIGATURESUBSTFORMAT1_HH
 
-#include "Common.hh"
-#include "LigatureSet.hh"
+#अन्तर्भाव "Common.hh"
+#अन्तर्भाव "LigatureSet.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+नामाकाश OT {
+नामाकाश Layout {
+नामाकाश GSUB_impl {
 
 template <typename Types>
-struct LigatureSubstFormat1_2
+संरचना LigatureSubstFormat1_2
 {
-  protected:
+  रक्षित:
   HBUINT16      format;                 /* Format identifier--format = 1 */
   typename Types::template LOffsetTo<Coverage>
                 coverage;               /* Offset to Coverage table--from
@@ -19,193 +19,193 @@ struct LigatureSubstFormat1_2
   typename Types::template ArrayOf<typename Types::template OffsetTo<LigatureSet<Types>>>
                 ligatureSet;            /* Array LigatureSet tables
                                          * ordered by Coverage Index */
-  public:
+  सार्वजनिक:
   DEFINE_SIZE_ARRAY (2 + Types::LOffset::static_size + Types::HBUINT::static_size, ligatureSet);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  तार्किक sanitize (hb_sanitize_context_t *c) ध्रुव
   {
-    TRACE_SANITIZE (this);
-    return_trace (coverage.sanitize (c, this) && ligatureSet.sanitize (c, this));
+    TRACE_SANITIZE (एतत्);
+    return_trace (coverage.sanitize (c, एतत्) && ligatureSet.sanitize (c, एतत्));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  तार्किक intersects (ध्रुव hb_set_t *glyphs) ध्रुव
   {
-    return
-    + hb_zip (this+coverage, ligatureSet)
+    प्रत्यागम
+    + hb_zip (एतत्+coverage, ligatureSet)
     | hb_filter (*glyphs, hb_first)
     | hb_map (hb_second)
-    | hb_map ([this, glyphs] (const typename Types::template OffsetTo<LigatureSet<Types>> &_)
-              { return (this+_).intersects (glyphs); })
+    | hb_map ([एतत्, glyphs] (ध्रुव typename Types::template OffsetTo<LigatureSet<Types>> &_)
+              { प्रत्यागम (एतत्+_).intersects (glyphs); })
     | hb_any
     ;
   }
 
-  bool may_have_non_1to1 () const
-  { return true; }
+  तार्किक may_have_non_1to1 () ध्रुव
+  { प्रत्यागम सत्य; }
 
-  void depend (hb_depend_context_t *c) const
+  शून्य depend (hb_depend_context_t *c) ध्रुव
   {
-    + hb_zip (this+coverage, ligatureSet)
+    + hb_zip (एतत्+coverage, ligatureSet)
     | hb_filter (c->parent_active_glyphs (), hb_first)
-    | hb_apply ([&] (const hb_pair_t<hb_codepoint_t, const typename Types::template OffsetTo<LigatureSet<Types>>&> &_)
+    | hb_apply ([&] (ध्रुव hb_pair_t<hb_codepoint_t, ध्रुव typename Types::template OffsetTo<LigatureSet<Types>>&> &_)
                 {
-                  const LigatureSet<Types>& ls = this+_.second;
+                  ध्रुव LigatureSet<Types>& ls = एतत्+_.second;
                   ls.depend (c, _.first);
                 })
     ;
   }
 
-  void closure (hb_closure_context_t *c) const
+  शून्य closure (hb_closure_context_t *c) ध्रुव
   {
-    + hb_zip (this+coverage, ligatureSet)
+    + hb_zip (एतत्+coverage, ligatureSet)
     | hb_filter (c->parent_active_glyphs (), hb_first)
     | hb_map (hb_second)
-    | hb_map (hb_add (this))
-    | hb_apply ([c] (const LigatureSet<Types> &_) { _.closure (c); })
+    | hb_map (hb_add (एतत्))
+    | hb_apply ([c] (ध्रुव LigatureSet<Types> &_) { _.closure (c); })
     ;
 
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const {}
+  शून्य closure_lookups (hb_closure_lookups_context_t *c) ध्रुव {}
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  शून्य collect_glyphs (hb_collect_glyphs_context_t *c) ध्रुव
   {
-    if (unlikely (!(this+coverage).collect_coverage (c->input))) return;
+    यदि (unlikely (!(एतत्+coverage).collect_coverage (c->आदान))) प्रत्यागम;
 
-    + hb_zip (this+coverage, ligatureSet)
+    + hb_zip (एतत्+coverage, ligatureSet)
     | hb_map (hb_second)
-    | hb_map (hb_add (this))
-    | hb_apply ([c] (const LigatureSet<Types> &_) { _.collect_glyphs (c); })
+    | hb_map (hb_add (एतत्))
+    | hb_apply ([c] (ध्रुव LigatureSet<Types> &_) { _.collect_glyphs (c); })
     ;
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest) const
+  शून्य collect_second_glyphs (hb_set_digest_t *digest) ध्रुव
   {
     + hb_iter (ligatureSet)
-    | hb_map (hb_add (this))
-    | hb_apply ([digest] (const LigatureSet<Types> &_) { _.collect_seconds (*digest); })
+    | hb_map (hb_add (एतत्))
+    | hb_apply ([digest] (ध्रुव LigatureSet<Types> &_) { _.collect_seconds (*digest); })
     ;
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  ध्रुव Coverage &get_coverage () ध्रुव { प्रत्यागम एतत्+coverage; }
 
-  bool would_apply (hb_would_apply_context_t *c) const
+  तार्किक would_apply (hb_would_apply_context_t *c) ध्रुव
   {
-    unsigned int index = (this+coverage).get_coverage (c->glyphs[0]);
-    if (likely (index == NOT_COVERED)) return false;
+    unsigned पूर्णाङ्क index = (एतत्+coverage).get_coverage (c->glyphs[0]);
+    यदि (likely (index == NOT_COVERED)) प्रत्यागम असत्य;
 
-    const auto &lig_set = this+ligatureSet[index];
-    return lig_set.would_apply (c);
+    ध्रुव auto &lig_set = एतत्+ligatureSet[index];
+    प्रत्यागम lig_set.would_apply (c);
   }
 
-  struct external_cache_t
+  संरचना external_cache_t
   {
     hb_ot_layout_mapping_cache_t coverage;
     hb_set_digest_t seconds;
   };
-  void *external_cache_create () const
+  शून्य *external_cache_create () ध्रुव
   {
-    external_cache_t *cache = (external_cache_t *) hb_malloc (sizeof (external_cache_t));
-    if (likely (cache))
+    external_cache_t *cache = (external_cache_t *) hb_malloc (परिमाण (external_cache_t));
+    यदि (likely (cache))
     {
       cache->coverage.clear ();
 
       cache->seconds.init ();
       + hb_iter (ligatureSet)
-      | hb_map (hb_add (this))
-      | hb_apply ([cache] (const LigatureSet<Types> &_) { _.collect_seconds (cache->seconds); })
+      | hb_map (hb_add (एतत्))
+      | hb_apply ([cache] (ध्रुव LigatureSet<Types> &_) { _.collect_seconds (cache->seconds); })
       ;
     }
-    return cache;
+    प्रत्यागम cache;
   }
 
-  bool apply (hb_ot_apply_context_t *c, void *external_cache) const
+  तार्किक apply (hb_ot_apply_context_t *c, शून्य *external_cache) ध्रुव
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (एतत्);
     hb_buffer_t *buffer = c->buffer;
 
 #ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
     external_cache_t *cache = (external_cache_t *) external_cache;
-    const hb_set_digest_t *seconds = cache ? &cache->seconds : nullptr;
-    unsigned int index = (this+coverage).get_coverage (buffer->cur().codepoint, cache ? &cache->coverage : nullptr);
-#else
-    const hb_set_digest_t *seconds = nullptr;
-    unsigned int index = (this+coverage).get_coverage (buffer->cur().codepoint);
+    ध्रुव hb_set_digest_t *seconds = cache ? &cache->seconds : nullptr;
+    unsigned पूर्णाङ्क index = (एतत्+coverage).get_coverage (buffer->cur().codepoint, cache ? &cache->coverage : nullptr);
+#अन्यथा
+    ध्रुव hb_set_digest_t *seconds = nullptr;
+    unsigned पूर्णाङ्क index = (एतत्+coverage).get_coverage (buffer->cur().codepoint);
 #endif
-    if (index == NOT_COVERED) return_trace (false);
+    यदि (index == NOT_COVERED) return_trace (असत्य);
 
-    const auto &lig_set = this+ligatureSet[index];
+    ध्रुव auto &lig_set = एतत्+ligatureSet[index];
     return_trace (lig_set.apply (c, seconds));
   }
 
   template <typename GlyphID>
-  bool serialize (hb_serialize_context_t *c,
+  तार्किक serialize (hb_serialize_context_t *c,
                   hb_sorted_array_t<GlyphID> first_glyphs,
-                  hb_array_t<const unsigned int> ligature_per_first_glyph_count_list,
+                  hb_array_t<ध्रुव unsigned पूर्णाङ्क> ligature_per_first_glyph_मोजणी_list,
                   hb_array_t<GlyphID> ligatures_list,
-                  hb_array_t<const unsigned int> component_count_list,
+                  hb_array_t<ध्रुव unsigned पूर्णाङ्क> component_मोजणी_list,
                   hb_array_t<GlyphID> component_list /* Starting from second for each ligature */)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    if (unlikely (!ligatureSet.serialize (c, first_glyphs.length))) return_trace (false);
-    for (unsigned int i = 0; i < first_glyphs.length; i++)
+    TRACE_SERIALIZE (एतत्);
+    यदि (unlikely (!c->extend_min (एतत्))) return_trace (असत्य);
+    यदि (unlikely (!ligatureSet.serialize (c, first_glyphs.length))) return_trace (असत्य);
+    प्रति (unsigned पूर्णाङ्क i = 0; i < first_glyphs.length; i++)
     {
-      unsigned int ligature_count = ligature_per_first_glyph_count_list[i];
-      if (unlikely (!ligatureSet[i]
+      unsigned पूर्णाङ्क ligature_मोजणी = ligature_per_first_glyph_मोजणी_list[i];
+      यदि (unlikely (!ligatureSet[i]
                         .serialize_serialize (c,
-                                              ligatures_list.sub_array (0, ligature_count),
-                                              component_count_list.sub_array (0, ligature_count),
-                                              component_list))) return_trace (false);
-      ligatures_list += ligature_count;
-      component_count_list += ligature_count;
+                                              ligatures_list.sub_array (0, ligature_मोजणी),
+                                              component_मोजणी_list.sub_array (0, ligature_मोजणी),
+                                              component_list))) return_trace (असत्य);
+      ligatures_list += ligature_मोजणी;
+      component_मोजणी_list += ligature_मोजणी;
     }
     return_trace (coverage.serialize_serialize (c, first_glyphs));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  तार्किक subset (hb_subset_context_t *c) ध्रुव
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (एतत्);
+    ध्रुव hb_set_t &glyphset = *c->plan->glyphset_gsub ();
+    ध्रुव hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    auto *out = c->serializer->start_embed (*एतत्);
+    यदि (unlikely (!c->serializer->extend_min (out))) return_trace (असत्य);
     out->format = format;
 
     // Due to a bug in some older versions of windows 7 the Coverage table must be
     // packed after the LigatureSet and Ligature tables, so serialize Coverage first
     // which places it last in the packed order.
     hb_set_t new_coverage;
-    + hb_zip (this+coverage, hb_iter (ligatureSet) | hb_map (hb_add (this)))
+    + hb_zip (एतत्+coverage, hb_iter (ligatureSet) | hb_map (hb_add (एतत्)))
     | hb_filter (glyphset, hb_first)
-    | hb_filter ([&] (const LigatureSet<Types>& _) {
-      return _.intersects_lig_glyph (&glyphset);
+    | hb_filter ([&] (ध्रुव LigatureSet<Types>& _) {
+      प्रत्यागम _.intersects_lig_glyph (&glyphset);
     }, hb_second)
     | hb_map (hb_first)
     | hb_sink (new_coverage);
 
-    if (!c->serializer->push<Coverage> ()
+    यदि (!c->serializer->push<Coverage> ()
         ->serialize (c->serializer,
                      + new_coverage.iter () | hb_map_retains_sorting (glyph_map)))
     {
-      c->serializer->pop_discard ();
-      return_trace (false);
+      c->serializer->काढा_discard ();
+      return_trace (असत्य);
     }
 
-    unsigned coverage_idx = c->serializer->pop_pack ();
+    unsigned coverage_idx = c->serializer->काढा_pack ();
      c->serializer->add_link (out->coverage, coverage_idx);
 
-    + hb_zip (this+coverage, ligatureSet)
+    + hb_zip (एतत्+coverage, ligatureSet)
     | hb_filter (new_coverage, hb_first)
     | hb_map (hb_second)
     // to ensure that the repacker always orders the coverage table after the LigatureSet
     // and LigatureSubtable's they will be linked to the Coverage table via a virtual link
     // the coverage table object idx is passed down to facilitate this.
-    | hb_apply (subset_offset_array (c, out->ligatureSet, this, coverage_idx))
+    | hb_apply (subset_offset_array (c, out->ligatureSet, एतत्, coverage_idx))
     ;
 
-    return_trace (bool (new_coverage));
+    return_trace (तार्किक (new_coverage));
   }
 };
 

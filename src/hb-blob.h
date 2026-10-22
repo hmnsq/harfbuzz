@@ -24,14 +24,14 @@
  * Red Hat Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
+#यदि !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
 #error "Include <hb.h> instead."
 #endif
 
 #ifndef HB_BLOB_H
 #define HB_BLOB_H
 
-#include "hb-common.h"
+#अन्तर्भाव "hb-common.h"
 
 HB_BEGIN_DECLS
 
@@ -66,7 +66,7 @@ HB_BEGIN_DECLS
  *   @HB_MEMORY_MODE_READONLY_MAY_MAKE_WRITABLE, however, using that mode
  *   correctly is very tricky.  Use @HB_MEMORY_MODE_READONLY instead.
  **/
-typedef enum {
+प्रकारनिर्देश गणना {
   HB_MEMORY_MODE_DUPLICATE,
   HB_MEMORY_MODE_READONLY,
   HB_MEMORY_MODE_WRITABLE,
@@ -81,27 +81,27 @@ typedef enum {
  * a client program and HarfBuzz.
  *
  **/
-typedef struct hb_blob_t hb_blob_t;
+प्रकारनिर्देश संरचना hb_blob_t hb_blob_t;
 
 HB_EXTERN hb_blob_t *
-hb_blob_create (const char        *data,
-		unsigned int       length,
+hb_blob_create (ध्रुव वर्ण        *data,
+		unsigned पूर्णाङ्क       length,
 		hb_memory_mode_t   mode,
-		void              *user_data,
+		शून्य              *user_data,
 		hb_destroy_func_t  destroy);
 
 HB_EXTERN hb_blob_t *
-hb_blob_create_or_fail (const char        *data,
-			unsigned int       length,
+hb_blob_create_or_fail (ध्रुव वर्ण        *data,
+			unsigned पूर्णाङ्क       length,
 			hb_memory_mode_t   mode,
-			void              *user_data,
+			शून्य              *user_data,
 			hb_destroy_func_t  destroy);
 
 HB_EXTERN hb_blob_t *
-hb_blob_create_from_file (const char *file_name);
+hb_blob_create_from_file (ध्रुव वर्ण *file_name);
 
 HB_EXTERN hb_blob_t *
-hb_blob_create_from_file_or_fail (const char *file_name);
+hb_blob_create_from_file_or_fail (ध्रुव वर्ण *file_name);
 
 /* Always creates with MEMORY_MODE_READONLY.
  * Even if the parent blob is writable, we don't
@@ -111,49 +111,49 @@ hb_blob_create_from_file_or_fail (const char *file_name);
  */
 HB_EXTERN hb_blob_t *
 hb_blob_create_sub_blob (hb_blob_t    *parent,
-			 unsigned int  offset,
-			 unsigned int  length);
+			 unsigned पूर्णाङ्क  offset,
+			 unsigned पूर्णाङ्क  length);
 
 HB_EXTERN hb_blob_t *
 hb_blob_copy_writable_or_fail (hb_blob_t *blob);
 
 HB_EXTERN hb_blob_t *
-hb_blob_get_empty (void);
+hb_blob_get_empty (शून्य);
 
 HB_EXTERN hb_blob_t *
 hb_blob_reference (hb_blob_t *blob);
 
-HB_EXTERN void
+HB_EXTERN शून्य
 hb_blob_destroy (hb_blob_t *blob);
 
 HB_EXTERN hb_bool_t
 hb_blob_set_user_data (hb_blob_t          *blob,
-		       hb_user_data_key_t *key,
-		       void *              data,
+		       hb_user_data_किल्ली_t *किल्ली_2,
+		       शून्य *              data,
 		       hb_destroy_func_t   destroy,
 		       hb_bool_t           replace);
 
 
-HB_EXTERN void *
-hb_blob_get_user_data (const hb_blob_t    *blob,
-		       hb_user_data_key_t *key);
+HB_EXTERN शून्य *
+hb_blob_get_user_data (ध्रुव hb_blob_t    *blob,
+		       hb_user_data_किल्ली_t *किल्ली_2);
 
 
-HB_EXTERN void
+HB_EXTERN शून्य
 hb_blob_make_immutable (hb_blob_t *blob);
 
 HB_EXTERN hb_bool_t
 hb_blob_is_immutable (hb_blob_t *blob);
 
 
-HB_EXTERN unsigned int
+HB_EXTERN unsigned पूर्णाङ्क
 hb_blob_get_length (hb_blob_t *blob);
 
-HB_EXTERN const char *
-hb_blob_get_data (hb_blob_t *blob, unsigned int *length);
+HB_EXTERN ध्रुव वर्ण *
+hb_blob_get_data (hb_blob_t *blob, unsigned पूर्णाङ्क *length);
 
-HB_EXTERN char *
-hb_blob_get_data_writable (hb_blob_t *blob, unsigned int *length);
+HB_EXTERN वर्ण *
+hb_blob_get_data_writable (hb_blob_t *blob, unsigned पूर्णाङ्क *length);
 
 HB_END_DECLS
 
