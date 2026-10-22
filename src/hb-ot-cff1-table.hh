@@ -24,1531 +24,1531 @@
  * Adobe Author(s): Michiharu Ariza
  */
 
-#ifndef HB_OT_CFF1_TABLE_HH
-#define HB_OT_CFF1_TABLE_HH
+#اگر_غیر_تعریف_شدہ HB_OT_CFF1_جدول_HH
+#تعریف_کرو HB_OT_CFF1_جدول_HH
 
-#include "hb-ot-cff-common.hh"
-#include "hb-depend-data.hh"
-#include "hb-subset-cff-common.hh"
-#include "hb-draw.hh"
-#include "hb-paint.hh"
+#شامل "hb-ot-cff-common.hh"
+#شامل "hb-depend-data.hh"
+#شامل "hb-subset-cff-common.hh"
+#شامل "hb-draw.hh"
+#شامل "hb-paint.hh"
 
-#define HB_STRING_ARRAY_NAME cff1_std_strings
-#define HB_STRING_ARRAY_LIST "hb-ot-cff1-std-str.hh"
-#include "hb-string-array.hh"
-#undef HB_STRING_ARRAY_LIST
-#undef HB_STRING_ARRAY_NAME
+#تعریف_کرو HB_STRING_ARRAY_NAME cff1_std_لڑیاں
+#تعریف_کرو HB_STRING_ARRAY_LIST "hb-ot-cff1-std-str.hh"
+#شامل "hb-string-array.hh"
+#تعریف_منسوخ HB_STRING_ARRAY_LIST
+#تعریف_منسوخ HB_STRING_ARRAY_NAME
 
-namespace CFF {
+نامخلا CFF {
 
 /*
  * CFF -- Compact Font Format (CFF)
  * https://www.adobe.com/content/dam/acom/en/devnet/font/pdfs/5176.CFF.pdf
  */
-#define HB_OT_TAG_CFF1 HB_TAG('C','F','F',' ')
+#تعریف_کرو HB_OT_لیبل_CFF1 HB_لیبل('C','F','F',' ')
 
-#define CFF_UNDEF_SID   CFF_UNDEF_CODE
+#تعریف_کرو CFF_UNDEF_SID   CFF_UNDEF_رمز
 
-enum EncodingID { StandardEncoding = 0, ExpertEncoding = 1 };
-enum CharsetID { ISOAdobeCharset = 0, ExpertCharset = 1, ExpertSubsetCharset = 2 };
+شمار EncodingID { StandardEncoding = 0, ExpertEncoding = 1 };
+شمار CharsetID { ISOAdobeCharset = 0, ExpertCharset = 1, ExpertSubsetCharset = 2 };
 
-typedef CFF1Index          CFF1CharStrings;
-typedef Subrs<HBUINT16>    CFF1Subrs;
+قسمتعریف CFF1_اشاریہ          CFF1_Char_لڑیاں;
+قسمتعریف Subrs<HBUINT16>    CFF1Subrs;
 
-struct CFF1FDSelect : FDSelect {};
+ساخت CFF1FDSelect : FDSelect {};
 
 /* Encoding */
-struct Encoding0 {
-  bool sanitize (hb_sanitize_context_t *c) const
+ساخت Encoding0 {
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (یہ);
     return_trace (codes.sanitize (c));
   }
 
-  hb_codepoint_t get_code (hb_codepoint_t glyph) const
+  hb_codepoint_t get_رمز (hb_codepoint_t glyph) ثابت
   {
-    assert (glyph > 0);
+    أكد (glyph > 0);
     glyph--;
-    if (glyph < nCodes ())
+    اگر (glyph < nCodes ())
     {
-      return (hb_codepoint_t)codes[glyph];
+      واپس (hb_codepoint_t)codes[glyph];
     }
-    else
-      return CFF_UNDEF_CODE;
+    ورنہ
+      واپس CFF_UNDEF_رمز;
   }
 
-  HBUINT8 &nCodes () { return codes.len; }
-  HBUINT8 nCodes () const { return codes.len; }
+  HBUINT8 &nCodes () { واپس codes.len; }
+  HBUINT8 nCodes () ثابت { واپس codes.len; }
 
-  ArrayOf<HBUINT8, HBUINT8> codes;
+  Array_کا<HBUINT8, HBUINT8> codes;
 
-  DEFINE_SIZE_ARRAY_SIZED (1, codes);
+  DEFINE_سائز_ARRAY_SIZED (1, codes);
 };
 
-struct Encoding1_Range {
-  bool sanitize (hb_sanitize_context_t *c) const
+ساخت Encoding1_Range {
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ));
   }
 
-  HBUINT8   first;
-  HBUINT8   nLeft;
+  HBUINT8   پہلا;
+  HBUINT8   n_بایاں;
 
-  DEFINE_SIZE_STATIC (2);
+  DEFINE_سائز_STATIC (2);
 };
 
-struct Encoding1 {
-  bool sanitize (hb_sanitize_context_t *c) const
+ساخت Encoding1 {
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (یہ);
     return_trace (ranges.sanitize (c));
   }
 
-  hb_codepoint_t get_code (hb_codepoint_t glyph) const
+  hb_codepoint_t get_رمز (hb_codepoint_t glyph) ثابت
   {
     /* TODO: Add cache like get_sid. */
-    assert (glyph > 0);
+    أكد (glyph > 0);
     glyph--;
-    for (unsigned int i = 0; i < nRanges (); i++)
+    برائے (غیرعلامتی صحیح i = 0; i < nRanges (); i++)
     {
-      if (glyph <= ranges[i].nLeft)
+      اگر (glyph <= ranges[i].n_بایاں)
       {
-	hb_codepoint_t code = (hb_codepoint_t) ranges[i].first + glyph;
-	return (likely (code < 0x100) ? code: CFF_UNDEF_CODE);
+	hb_codepoint_t رمز = (hb_codepoint_t) ranges[i].پہلا + glyph;
+	واپس (likely (رمز < 0x100) ? رمز: CFF_UNDEF_رمز);
       }
-      glyph -= (ranges[i].nLeft + 1);
+      glyph -= (ranges[i].n_بایاں + 1);
     }
-    return CFF_UNDEF_CODE;
+    واپس CFF_UNDEF_رمز;
   }
 
-  HBUINT8 &nRanges () { return ranges.len; }
-  HBUINT8 nRanges () const { return ranges.len; }
+  HBUINT8 &nRanges () { واپس ranges.len; }
+  HBUINT8 nRanges () ثابت { واپس ranges.len; }
 
-  ArrayOf<Encoding1_Range, HBUINT8> ranges;
+  Array_کا<Encoding1_Range, HBUINT8> ranges;
 
-  DEFINE_SIZE_ARRAY_SIZED (1, ranges);
+  DEFINE_سائز_ARRAY_SIZED (1, ranges);
 };
 
-struct SuppEncoding {
-  bool sanitize (hb_sanitize_context_t *c) const
+ساخت SuppEncoding {
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ));
   }
 
-  HBUINT8   code;
+  HBUINT8   رمز;
   HBUINT16  glyph;
 
-  DEFINE_SIZE_STATIC (3);
+  DEFINE_سائز_STATIC (3);
 };
 
-struct CFF1SuppEncData {
-  bool sanitize (hb_sanitize_context_t *c) const
+ساخت CFF1_Supp_Enc_ڈیٹا {
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (یہ);
     return_trace (supps.sanitize (c));
   }
 
-  void get_codes (hb_codepoint_t sid, hb_vector_t<hb_codepoint_t> &codes) const
+  خالی get_codes (hb_codepoint_t sid, hb_سمتیہ_t<hb_codepoint_t> &codes) ثابت
   {
-    for (unsigned int i = 0; i < nSups (); i++)
-      if (sid == supps[i].glyph)
-	codes.push (supps[i].code);
+    برائے (غیرعلامتی صحیح i = 0; i < nSups (); i++)
+      اگر (sid == supps[i].glyph)
+	codes.push (supps[i].رمز);
   }
 
-  HBUINT8 &nSups () { return supps.len; }
-  HBUINT8 nSups () const { return supps.len; }
+  HBUINT8 &nSups () { واپس supps.len; }
+  HBUINT8 nSups () ثابت { واپس supps.len; }
 
-  ArrayOf<SuppEncoding, HBUINT8> supps;
+  Array_کا<SuppEncoding, HBUINT8> supps;
 
-  DEFINE_SIZE_ARRAY_SIZED (1, supps);
+  DEFINE_سائز_ARRAY_SIZED (1, supps);
 };
 
-struct Encoding
+ساخت Encoding
 {
   /* serialize a fullset Encoding */
-  bool serialize (hb_serialize_context_t *c, const Encoding &src)
+  منطقی serialize (hb_serialize_context_t *c, ثابت Encoding &src)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (یہ);
     return_trace (c->embed (src));
   }
 
   /* serialize a subset Encoding */
-  bool serialize (hb_serialize_context_t *c,
+  منطقی serialize (hb_serialize_context_t *c,
 		  uint8_t format,
-		  unsigned int enc_count,
-		  const hb_vector_t<code_pair_t>& code_ranges,
-		  const hb_vector_t<code_pair_t>& supp_codes)
+		  غیرعلامتی صحیح enc_گنتی,
+		  ثابت hb_سمتیہ_t<رمز_pair_t>& رمز_ranges,
+		  ثابت hb_سمتیہ_t<رمز_pair_t>& supp_codes)
   {
-    TRACE_SERIALIZE (this);
-    Encoding *dest = c->extend_min (this);
-    if (unlikely (!dest)) return_trace (false);
-    dest->format = format | ((supp_codes.length > 0) ? 0x80 : 0);
-    switch (format) {
-    case 0:
+    TRACE_SERIALIZE (یہ);
+    Encoding *dest = c->extend_min (یہ);
+    اگر (unlikely (!dest)) return_trace (جھوٹ);
+    dest->format = format | ((supp_codes.لمبائی > 0) ? 0x80 : 0);
+    انتخاب (format) {
+    حالت 0:
     {
-      Encoding0 *fmt0 = c->allocate_size<Encoding0> (Encoding0::min_size + HBUINT8::static_size * enc_count);
-      if (unlikely (!fmt0)) return_trace (false);
-      fmt0->nCodes () = enc_count;
-      unsigned int glyph = 0;
-      for (unsigned int i = 0; i < code_ranges.length; i++)
+      Encoding0 *fmt0 = c->allocate_سائز<Encoding0> (Encoding0::min_سائز + HBUINT8::static_سائز * enc_گنتی);
+      اگر (unlikely (!fmt0)) return_trace (جھوٹ);
+      fmt0->nCodes () = enc_گنتی;
+      غیرعلامتی صحیح glyph = 0;
+      برائے (غیرعلامتی صحیح i = 0; i < رمز_ranges.لمبائی; i++)
       {
-	hb_codepoint_t code = code_ranges[i].code;
-	for (int left = (int)code_ranges[i].glyph; left >= 0; left--)
-	  fmt0->codes[glyph++] = code++;
-	if (unlikely (!((glyph <= 0x100) && (code <= 0x100))))
-	  return_trace (false);
+	hb_codepoint_t رمز = رمز_ranges[i].رمز;
+	برائے (صحیح بائیں = (صحیح)رمز_ranges[i].glyph; بائیں >= 0; بائیں--)
+	  fmt0->codes[glyph++] = رمز++;
+	اگر (unlikely (!((glyph <= 0x100) && (رمز <= 0x100))))
+	  return_trace (جھوٹ);
       }
     }
-    break;
+    توڑو;
 
-    case 1:
+    حالت 1:
     {
-      Encoding1 *fmt1 = c->allocate_size<Encoding1> (Encoding1::min_size + Encoding1_Range::static_size * code_ranges.length);
-      if (unlikely (!fmt1)) return_trace (false);
-      fmt1->nRanges () = code_ranges.length;
-      for (unsigned int i = 0; i < code_ranges.length; i++)
+      Encoding1 *fmt1 = c->allocate_سائز<Encoding1> (Encoding1::min_سائز + Encoding1_Range::static_سائز * رمز_ranges.لمبائی);
+      اگر (unlikely (!fmt1)) return_trace (جھوٹ);
+      fmt1->nRanges () = رمز_ranges.لمبائی;
+      برائے (غیرعلامتی صحیح i = 0; i < رمز_ranges.لمبائی; i++)
       {
-	if (unlikely (!((code_ranges[i].code <= 0xFF) && (code_ranges[i].glyph <= 0xFF))))
-	  return_trace (false);
-	fmt1->ranges[i].first = code_ranges[i].code;
-	fmt1->ranges[i].nLeft = code_ranges[i].glyph;
+	اگر (unlikely (!((رمز_ranges[i].رمز <= 0xFF) && (رمز_ranges[i].glyph <= 0xFF))))
+	  return_trace (جھوٹ);
+	fmt1->ranges[i].پہلا = رمز_ranges[i].رمز;
+	fmt1->ranges[i].n_بایاں = رمز_ranges[i].glyph;
       }
     }
-    break;
+    توڑو;
 
     }
 
-    if (supp_codes.length)
+    اگر (supp_codes.لمبائی)
     {
-      CFF1SuppEncData *suppData = c->allocate_size<CFF1SuppEncData> (CFF1SuppEncData::min_size + SuppEncoding::static_size * supp_codes.length);
-      if (unlikely (!suppData)) return_trace (false);
-      suppData->nSups () = supp_codes.length;
-      for (unsigned int i = 0; i < supp_codes.length; i++)
+      CFF1_Supp_Enc_ڈیٹا *supp_ڈیٹا = c->allocate_سائز<CFF1_Supp_Enc_ڈیٹا> (CFF1_Supp_Enc_ڈیٹا::min_سائز + SuppEncoding::static_سائز * supp_codes.لمبائی);
+      اگر (unlikely (!supp_ڈیٹا)) return_trace (جھوٹ);
+      supp_ڈیٹا->nSups () = supp_codes.لمبائی;
+      برائے (غیرعلامتی صحیح i = 0; i < supp_codes.لمبائی; i++)
       {
-	suppData->supps[i].code = supp_codes[i].code;
-	suppData->supps[i].glyph = supp_codes[i].glyph; /* actually SID */
+	supp_ڈیٹا->supps[i].رمز = supp_codes[i].رمز;
+	supp_ڈیٹا->supps[i].glyph = supp_codes[i].glyph; /* actually SID */
       }
     }
 
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  size_t get_size () const
+  size_t get_سائز () ثابت
   {
-    size_t size = min_size;
-    switch (table_format ())
+    size_t سائز = min_سائز;
+    انتخاب (جدول_format ())
     {
-    case 0: hb_barrier (); size = hb_unsigned_add_saturate (size, u.format0.get_size ()); break;
-    case 1: hb_barrier (); size = hb_unsigned_add_saturate (size, u.format1.get_size ()); break;
+    حالت 0: hb_barrier (); سائز = hb_unsigned_جوڑو_saturate (سائز, u.format0.get_سائز ()); توڑو;
+    حالت 1: hb_barrier (); سائز = hb_unsigned_جوڑو_saturate (سائز, u.format1.get_سائز ()); توڑو;
     }
-    if (has_supplement ())
-      size = hb_unsigned_add_saturate (size, suppEncData ().get_size ());
-    return size;
+    اگر (has_supplement ())
+      سائز = hb_unsigned_جوڑو_saturate (سائز, supp_Enc_ڈیٹا ().get_سائز ());
+    واپس سائز;
   }
 
-  hb_codepoint_t get_code (hb_codepoint_t glyph) const
+  hb_codepoint_t get_رمز (hb_codepoint_t glyph) ثابت
   {
-    switch (table_format ())
+    انتخاب (جدول_format ())
     {
-    case 0: hb_barrier (); return u.format0.get_code (glyph);
-    case 1: hb_barrier (); return u.format1.get_code (glyph);
-    default:return 0;
+    حالت 0: hb_barrier (); واپس u.format0.get_رمز (glyph);
+    حالت 1: hb_barrier (); واپس u.format1.get_رمز (glyph);
+    طےشدہ:واپس 0;
     }
   }
 
-  uint8_t table_format () const { return format & 0x7F; }
-  bool  has_supplement () const { return format & 0x80; }
+  uint8_t جدول_format () ثابت { واپس format & 0x7F; }
+  منطقی  has_supplement () ثابت { واپس format & 0x80; }
 
-  void get_supplement_codes (hb_codepoint_t sid, hb_vector_t<hb_codepoint_t> &codes) const
+  خالی get_supplement_codes (hb_codepoint_t sid, hb_سمتیہ_t<hb_codepoint_t> &codes) ثابت
   {
     codes.clear ();
-    if (has_supplement ())
-      suppEncData().get_codes (sid, codes);
+    اگر (has_supplement ())
+      supp_Enc_ڈیٹا().get_codes (sid, codes);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
-      return_trace (false);
+    TRACE_SANITIZE (یہ);
+    اگر (unlikely (!c->check_struct (یہ)))
+      return_trace (جھوٹ);
     hb_barrier ();
 
-    switch (table_format ())
+    انتخاب (جدول_format ())
     {
-    case 0: hb_barrier (); if (unlikely (!u.format0.sanitize (c))) { return_trace (false); } break;
-    case 1: hb_barrier (); if (unlikely (!u.format1.sanitize (c))) { return_trace (false); } break;
-    default:return_trace (false);
+    حالت 0: hb_barrier (); اگر (unlikely (!u.format0.sanitize (c))) { return_trace (جھوٹ); } توڑو;
+    حالت 1: hb_barrier (); اگر (unlikely (!u.format1.sanitize (c))) { return_trace (جھوٹ); } توڑو;
+    طےشدہ:return_trace (جھوٹ);
     }
-    return_trace (likely (!has_supplement () || suppEncData ().sanitize (c)));
+    return_trace (likely (!has_supplement () || supp_Enc_ڈیٹا ().sanitize (c)));
   }
 
-  protected:
-  const CFF1SuppEncData &suppEncData () const
+  محفوظ:
+  ثابت CFF1_Supp_Enc_ڈیٹا &supp_Enc_ڈیٹا () ثابت
   {
-    switch (table_format ())
+    انتخاب (جدول_format ())
     {
-    case 0: hb_barrier (); return StructAfter<CFF1SuppEncData> (u.format0.codes[u.format0.nCodes ()-1]);
-    case 1: hb_barrier (); return StructAfter<CFF1SuppEncData> (u.format1.ranges[u.format1.nRanges ()-1]);
-    default:return Null (CFF1SuppEncData);
+    حالت 0: hb_barrier (); واپس StructAfter<CFF1_Supp_Enc_ڈیٹا> (u.format0.codes[u.format0.nCodes ()-1]);
+    حالت 1: hb_barrier (); واپس StructAfter<CFF1_Supp_Enc_ڈیٹا> (u.format1.ranges[u.format1.nRanges ()-1]);
+    طےشدہ:واپس Null (CFF1_Supp_Enc_ڈیٹا);
     }
   }
 
-  public:
+  عوامی:
   HBUINT8	format;
-  union {
+  اتحاد {
   Encoding0	format0;
   Encoding1	format1;
   } u;
   /* CFF1SuppEncData  suppEncData; */
 
-  DEFINE_SIZE_MIN (1);
+  DEFINE_سائز_MIN (1);
 };
 
 /* Charset */
-struct Charset0
+ساخت Charset0
 {
-  bool sanitize (hb_sanitize_context_t *c, unsigned int num_glyphs, unsigned *num_charset_entries) const
+  منطقی sanitize (hb_sanitize_context_t *c, غیرعلامتی صحیح عدد_glyphs, غیرعلامتی *عدد_charset_entries) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (num_charset_entries) *num_charset_entries = num_glyphs;
-    return_trace (sids.sanitize (c, num_glyphs - 1));
+    TRACE_SANITIZE (یہ);
+    اگر (عدد_charset_entries) *عدد_charset_entries = عدد_glyphs;
+    return_trace (sids.sanitize (c, عدد_glyphs - 1));
   }
 
-  hb_codepoint_t get_sid (hb_codepoint_t glyph, unsigned num_glyphs) const
+  hb_codepoint_t get_sid (hb_codepoint_t glyph, غیرعلامتی عدد_glyphs) ثابت
   {
-    if (unlikely (glyph >= num_glyphs)) return 0;
-    if (unlikely (glyph == 0))
-      return 0;
-    else
-      return sids[glyph - 1];
+    اگر (unlikely (glyph >= عدد_glyphs)) واپس 0;
+    اگر (unlikely (glyph == 0))
+      واپس 0;
+    ورنہ
+      واپس sids[glyph - 1];
   }
 
-  void collect_glyph_to_sid_map (glyph_to_sid_map_t *mapping, unsigned int num_glyphs) const
+  خالی collect_glyph_مقصد_sid_map (glyph_مقصد_sid_map_t *mapping, غیرعلامتی صحیح عدد_glyphs) ثابت
   {
-    if (!mapping->resize_dirty  (num_glyphs)) return;
-    for (hb_codepoint_t gid = 1; gid < num_glyphs; gid++)
+    اگر (!mapping->resize_dirty  (عدد_glyphs)) واپس;
+    برائے (hb_codepoint_t gid = 1; gid < عدد_glyphs; gid++)
       mapping->arrayZ[gid] = {sids[gid - 1], gid};
   }
 
-  hb_codepoint_t get_glyph (hb_codepoint_t sid, unsigned int num_glyphs) const
+  hb_codepoint_t get_glyph (hb_codepoint_t sid, غیرعلامتی صحیح عدد_glyphs) ثابت
   {
-    if (sid == 0)
-      return 0;
+    اگر (sid == 0)
+      واپس 0;
 
-    for (unsigned int glyph = 1; glyph < num_glyphs; glyph++)
+    برائے (غیرعلامتی صحیح glyph = 1; glyph < عدد_glyphs; glyph++)
     {
-      if (sids[glyph-1] == sid)
-	return glyph;
+      اگر (sids[glyph-1] == sid)
+	واپس glyph;
     }
-    return 0;
+    واپس 0;
   }
 
-  static size_t get_size (unsigned int num_glyphs)
+  ساکن size_t get_سائز (غیرعلامتی صحیح عدد_glyphs)
   {
-    assert (num_glyphs > 0);
-    return UnsizedArrayOf<HBUINT16>::get_size (num_glyphs - 1);
+    أكد (عدد_glyphs > 0);
+    واپس Unsized_Array_کا<HBUINT16>::get_سائز (عدد_glyphs - 1);
   }
 
-  UnsizedArrayOf<HBUINT16> sids;
+  Unsized_Array_کا<HBUINT16> sids;
 
-  DEFINE_SIZE_ARRAY(0, sids);
+  DEFINE_سائز_ARRAY(0, sids);
 };
 
-template <typename TYPE>
-struct Charset_Range {
-  bool sanitize (hb_sanitize_context_t *c) const
+سانچہ <قسم_نام TYPE>
+ساخت Charset_Range {
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ));
   }
 
-  HBUINT16  first;
-  TYPE      nLeft;
+  HBUINT16  پہلا;
+  TYPE      n_بایاں;
 
-  DEFINE_SIZE_STATIC (HBUINT16::static_size + TYPE::static_size);
+  DEFINE_سائز_STATIC (HBUINT16::static_سائز + TYPE::static_سائز);
 };
 
-template <typename TYPE>
-struct Charset1_2 {
-  bool sanitize (hb_sanitize_context_t *c, unsigned int num_glyphs, unsigned *num_charset_entries) const
+سانچہ <قسم_نام TYPE>
+ساخت Charset1_2 {
+  منطقی sanitize (hb_sanitize_context_t *c, غیرعلامتی صحیح عدد_glyphs, غیرعلامتی *عدد_charset_entries) ثابت
   {
-    TRACE_SANITIZE (this);
-    num_glyphs--;
-    unsigned i;
-    for (i = 0; num_glyphs > 0; i++)
+    TRACE_SANITIZE (یہ);
+    عدد_glyphs--;
+    غیرعلامتی i;
+    برائے (i = 0; عدد_glyphs > 0; i++)
     {
-      if (unlikely (!(ranges[i].sanitize (c) &&
+      اگر (unlikely (!(ranges[i].sanitize (c) &&
 		      hb_barrier () &&
-		      (num_glyphs >= ranges[i].nLeft + 1))))
-	return_trace (false);
-      num_glyphs -= (ranges[i].nLeft + 1);
+		      (عدد_glyphs >= ranges[i].n_بایاں + 1))))
+	return_trace (جھوٹ);
+      عدد_glyphs -= (ranges[i].n_بایاں + 1);
     }
-    if (num_charset_entries)
-      *num_charset_entries = i;
-    return_trace (true);
+    اگر (عدد_charset_entries)
+      *عدد_charset_entries = i;
+    return_trace (سچ);
   }
 
-  hb_codepoint_t get_sid (hb_codepoint_t glyph, unsigned num_glyphs,
-			  code_pair_t *cache = nullptr) const
+  hb_codepoint_t get_sid (hb_codepoint_t glyph, غیرعلامتی عدد_glyphs,
+			  رمز_pair_t *cache = خالی_اشاریہ) ثابت
   {
-    if (unlikely (glyph >= num_glyphs)) return 0;
-    unsigned i;
-    hb_codepoint_t start_glyph;
-    if (cache && likely (cache->glyph <= glyph))
+    اگر (unlikely (glyph >= عدد_glyphs)) واپس 0;
+    غیرعلامتی i;
+    hb_codepoint_t آغاز_glyph;
+    اگر (cache && likely (cache->glyph <= glyph))
     {
-      i = cache->code;
-      start_glyph = cache->glyph;
+      i = cache->رمز;
+      آغاز_glyph = cache->glyph;
     }
-    else
+    ورنہ
     {
-      if (unlikely (glyph == 0)) return 0;
+      اگر (unlikely (glyph == 0)) واپس 0;
       i = 0;
-      start_glyph = 1;
+      آغاز_glyph = 1;
     }
-    glyph -= start_glyph;
-    for (;; i++)
+    glyph -= آغاز_glyph;
+    برائے (;; i++)
     {
-      unsigned count = ranges[i].nLeft;
-      if (glyph <= count)
+      غیرعلامتی گنتی = ranges[i].n_بایاں;
+      اگر (glyph <= گنتی)
       {
-        if (cache)
-	  *cache = {i, start_glyph};
-	return ranges[i].first + glyph;
+        اگر (cache)
+	  *cache = {i, آغاز_glyph};
+	واپس ranges[i].پہلا + glyph;
       }
-      count++;
-      start_glyph += count;
-      glyph -= count;
+      گنتی++;
+      آغاز_glyph += گنتی;
+      glyph -= گنتی;
     }
 
-    return 0;
+    واپس 0;
   }
 
-  void collect_glyph_to_sid_map (glyph_to_sid_map_t *mapping, unsigned int num_glyphs) const
+  خالی collect_glyph_مقصد_sid_map (glyph_مقصد_sid_map_t *mapping, غیرعلامتی صحیح عدد_glyphs) ثابت
   {
-    if (!mapping->resize_dirty  (num_glyphs)) return;
+    اگر (!mapping->resize_dirty  (عدد_glyphs)) واپس;
 
     hb_codepoint_t gid = 1;
-    if (gid >= num_glyphs)
-      return;
+    اگر (gid >= عدد_glyphs)
+      واپس;
 
-    for (unsigned i = 0;; i++)
+    برائے (غیرعلامتی i = 0;; i++)
     {
-      hb_codepoint_t sid = ranges[i].first;
-      unsigned count = ranges[i].nLeft + 1;
-      unsigned last = gid + count;
-      for (unsigned j = 0; j < count; j++)
-	mapping->arrayZ[gid++] = {sid++, last - 1};
+      hb_codepoint_t sid = ranges[i].پہلا;
+      غیرعلامتی گنتی = ranges[i].n_بایاں + 1;
+      غیرعلامتی آخری = gid + گنتی;
+      برائے (غیرعلامتی j = 0; j < گنتی; j++)
+	mapping->arrayZ[gid++] = {sid++, آخری - 1};
 
-      if (gid >= num_glyphs)
-        break;
+      اگر (gid >= عدد_glyphs)
+        توڑو;
     }
   }
 
-  hb_codepoint_t get_glyph (hb_codepoint_t sid, unsigned int num_glyphs) const
+  hb_codepoint_t get_glyph (hb_codepoint_t sid, غیرعلامتی صحیح عدد_glyphs) ثابت
   {
-    if (sid == 0) return 0;
+    اگر (sid == 0) واپس 0;
     hb_codepoint_t  glyph = 1;
-    for (unsigned int i = 0;; i++)
+    برائے (غیرعلامتی صحیح i = 0;; i++)
     {
-      if (glyph >= num_glyphs)
-	return 0;
-      if ((ranges[i].first <= sid) && (sid <= ranges[i].first + ranges[i].nLeft))
-	return glyph + (sid - ranges[i].first);
-      glyph += (ranges[i].nLeft + 1);
+      اگر (glyph >= عدد_glyphs)
+	واپس 0;
+      اگر ((ranges[i].پہلا <= sid) && (sid <= ranges[i].پہلا + ranges[i].n_بایاں))
+	واپس glyph + (sid - ranges[i].پہلا);
+      glyph += (ranges[i].n_بایاں + 1);
     }
 
-    return 0;
+    واپس 0;
   }
 
-  size_t get_size (unsigned int num_glyphs) const
+  size_t get_سائز (غیرعلامتی صحیح عدد_glyphs) ثابت
   {
-    int glyph = (int) num_glyphs;
-    unsigned num_ranges = 0;
+    صحیح glyph = (صحیح) عدد_glyphs;
+    غیرعلامتی عدد_ranges = 0;
 
-    assert (glyph > 0);
+    أكد (glyph > 0);
     glyph--;
-    for (unsigned int i = 0; glyph > 0; i++)
+    برائے (غیرعلامتی صحیح i = 0; glyph > 0; i++)
     {
-      glyph -= (ranges[i].nLeft + 1);
-      num_ranges++;
+      glyph -= (ranges[i].n_بایاں + 1);
+      عدد_ranges++;
     }
 
-    return get_size_for_ranges (num_ranges);
+    واپس get_سائز_for_ranges (عدد_ranges);
   }
 
-  static size_t get_size_for_ranges (unsigned int num_ranges)
+  ساکن size_t get_سائز_for_ranges (غیرعلامتی صحیح عدد_ranges)
   {
-    return UnsizedArrayOf<Charset_Range<TYPE> >::get_size (num_ranges);
+    واپس Unsized_Array_کا<Charset_Range<TYPE> >::get_سائز (عدد_ranges);
   }
 
-  UnsizedArrayOf<Charset_Range<TYPE>> ranges;
+  Unsized_Array_کا<Charset_Range<TYPE>> ranges;
 
-  DEFINE_SIZE_ARRAY (0, ranges);
+  DEFINE_سائز_ARRAY (0, ranges);
 };
 
-typedef Charset1_2<HBUINT8>     Charset1;
-typedef Charset1_2<HBUINT16>    Charset2;
-typedef Charset_Range<HBUINT8>  Charset1_Range;
-typedef Charset_Range<HBUINT16> Charset2_Range;
+قسمتعریف Charset1_2<HBUINT8>     Charset1;
+قسمتعریف Charset1_2<HBUINT16>    Charset2;
+قسمتعریف Charset_Range<HBUINT8>  Charset1_Range;
+قسمتعریف Charset_Range<HBUINT16> Charset2_Range;
 
-struct Charset
+ساخت Charset
 {
   /* serialize a fullset Charset */
-  bool serialize (hb_serialize_context_t *c, const Charset &src, unsigned int num_glyphs)
+  منطقی serialize (hb_serialize_context_t *c, ثابت Charset &src, غیرعلامتی صحیح عدد_glyphs)
   {
-    TRACE_SERIALIZE (this);
-    return_trace (c->embed ((const char *) &src, src.get_size (num_glyphs)));
+    TRACE_SERIALIZE (یہ);
+    return_trace (c->embed ((ثابت حرف *) &src, src.get_سائز (عدد_glyphs)));
   }
 
   /* serialize a subset Charset */
-  bool serialize (hb_serialize_context_t *c,
+  منطقی serialize (hb_serialize_context_t *c,
 		  uint8_t format,
-		  unsigned int num_glyphs,
-		  const hb_vector_t<code_pair_t>& sid_ranges)
+		  غیرعلامتی صحیح عدد_glyphs,
+		  ثابت hb_سمتیہ_t<رمز_pair_t>& sid_ranges)
   {
-    TRACE_SERIALIZE (this);
-    Charset *dest = c->extend_min (this);
-    if (unlikely (!dest)) return_trace (false);
+    TRACE_SERIALIZE (یہ);
+    Charset *dest = c->extend_min (یہ);
+    اگر (unlikely (!dest)) return_trace (جھوٹ);
     dest->format = format;
-    switch (format)
+    انتخاب (format)
     {
-    case 0:
+    حالت 0:
     {
-      Charset0 *fmt0 = c->allocate_size<Charset0> (Charset0::get_size (num_glyphs), false);
-      if (unlikely (!fmt0)) return_trace (false);
-      unsigned int glyph = 0;
-      for (unsigned int i = 0; i < sid_ranges.length; i++)
+      Charset0 *fmt0 = c->allocate_سائز<Charset0> (Charset0::get_سائز (عدد_glyphs), جھوٹ);
+      اگر (unlikely (!fmt0)) return_trace (جھوٹ);
+      غیرعلامتی صحیح glyph = 0;
+      برائے (غیرعلامتی صحیح i = 0; i < sid_ranges.لمبائی; i++)
       {
-	hb_codepoint_t sid = sid_ranges.arrayZ[i].code;
-	for (int left = (int)sid_ranges.arrayZ[i].glyph; left >= 0; left--)
+	hb_codepoint_t sid = sid_ranges.arrayZ[i].رمز;
+	برائے (صحیح بائیں = (صحیح)sid_ranges.arrayZ[i].glyph; بائیں >= 0; بائیں--)
 	  fmt0->sids[glyph++] = sid++;
       }
     }
-    break;
+    توڑو;
 
-    case 1:
+    حالت 1:
     {
-      Charset1 *fmt1 = c->allocate_size<Charset1> (Charset1::get_size_for_ranges (sid_ranges.length), false);
-      if (unlikely (!fmt1)) return_trace (false);
+      Charset1 *fmt1 = c->allocate_سائز<Charset1> (Charset1::get_سائز_for_ranges (sid_ranges.لمبائی), جھوٹ);
+      اگر (unlikely (!fmt1)) return_trace (جھوٹ);
       hb_codepoint_t all_glyphs = 0;
-      for (unsigned int i = 0; i < sid_ranges.length; i++)
+      برائے (غیرعلامتی صحیح i = 0; i < sid_ranges.لمبائی; i++)
       {
-        auto &_ = sid_ranges.arrayZ[i];
+        خودکار &_ = sid_ranges.arrayZ[i];
         all_glyphs |= _.glyph;
-	fmt1->ranges[i].first = _.code;
-	fmt1->ranges[i].nLeft = _.glyph;
+	fmt1->ranges[i].پہلا = _.رمز;
+	fmt1->ranges[i].n_بایاں = _.glyph;
       }
-      if (unlikely (!(all_glyphs <= 0xFF)))
-	return_trace (false);
+      اگر (unlikely (!(all_glyphs <= 0xFF)))
+	return_trace (جھوٹ);
     }
-    break;
+    توڑو;
 
-    case 2:
+    حالت 2:
     {
-      Charset2 *fmt2 = c->allocate_size<Charset2> (Charset2::get_size_for_ranges (sid_ranges.length), false);
-      if (unlikely (!fmt2)) return_trace (false);
+      Charset2 *fmt2 = c->allocate_سائز<Charset2> (Charset2::get_سائز_for_ranges (sid_ranges.لمبائی), جھوٹ);
+      اگر (unlikely (!fmt2)) return_trace (جھوٹ);
       hb_codepoint_t all_glyphs = 0;
-      for (unsigned int i = 0; i < sid_ranges.length; i++)
+      برائے (غیرعلامتی صحیح i = 0; i < sid_ranges.لمبائی; i++)
       {
-        auto &_ = sid_ranges.arrayZ[i];
+        خودکار &_ = sid_ranges.arrayZ[i];
         all_glyphs |= _.glyph;
-	fmt2->ranges[i].first = _.code;
-	fmt2->ranges[i].nLeft = _.glyph;
+	fmt2->ranges[i].پہلا = _.رمز;
+	fmt2->ranges[i].n_بایاں = _.glyph;
       }
-      if (unlikely (!(all_glyphs <= 0xFFFF)))
-	return_trace (false);
+      اگر (unlikely (!(all_glyphs <= 0xFFFF)))
+	return_trace (جھوٹ);
     }
-    break;
+    توڑو;
 
     }
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  size_t get_size (unsigned int num_glyphs) const
+  size_t get_سائز (غیرعلامتی صحیح عدد_glyphs) ثابت
   {
-    switch (format)
+    انتخاب (format)
     {
-    case 0: hb_barrier (); return hb_unsigned_add_saturate (min_size, u.format0.get_size (num_glyphs));
-    case 1: hb_barrier (); return hb_unsigned_add_saturate (min_size, u.format1.get_size (num_glyphs));
-    case 2: hb_barrier (); return hb_unsigned_add_saturate (min_size, u.format2.get_size (num_glyphs));
-    default:return 0;
+    حالت 0: hb_barrier (); واپس hb_unsigned_جوڑو_saturate (min_سائز, u.format0.get_سائز (عدد_glyphs));
+    حالت 1: hb_barrier (); واپس hb_unsigned_جوڑو_saturate (min_سائز, u.format1.get_سائز (عدد_glyphs));
+    حالت 2: hb_barrier (); واپس hb_unsigned_جوڑو_saturate (min_سائز, u.format2.get_سائز (عدد_glyphs));
+    طےشدہ:واپس 0;
     }
   }
 
-  hb_codepoint_t get_sid (hb_codepoint_t glyph, unsigned int num_glyphs,
-			  code_pair_t *cache = nullptr) const
+  hb_codepoint_t get_sid (hb_codepoint_t glyph, غیرعلامتی صحیح عدد_glyphs,
+			  رمز_pair_t *cache = خالی_اشاریہ) ثابت
   {
-    switch (format)
+    انتخاب (format)
     {
-    case 0: hb_barrier (); return u.format0.get_sid (glyph, num_glyphs);
-    case 1: hb_barrier (); return u.format1.get_sid (glyph, num_glyphs, cache);
-    case 2: hb_barrier (); return u.format2.get_sid (glyph, num_glyphs, cache);
-    default:return 0;
+    حالت 0: hb_barrier (); واپس u.format0.get_sid (glyph, عدد_glyphs);
+    حالت 1: hb_barrier (); واپس u.format1.get_sid (glyph, عدد_glyphs, cache);
+    حالت 2: hb_barrier (); واپس u.format2.get_sid (glyph, عدد_glyphs, cache);
+    طےشدہ:واپس 0;
     }
   }
 
-  void collect_glyph_to_sid_map (glyph_to_sid_map_t *mapping, unsigned int num_glyphs) const
+  خالی collect_glyph_مقصد_sid_map (glyph_مقصد_sid_map_t *mapping, غیرعلامتی صحیح عدد_glyphs) ثابت
   {
-    switch (format)
+    انتخاب (format)
     {
-    case 0: hb_barrier (); u.format0.collect_glyph_to_sid_map (mapping, num_glyphs); return;
-    case 1: hb_barrier (); u.format1.collect_glyph_to_sid_map (mapping, num_glyphs); return;
-    case 2: hb_barrier (); u.format2.collect_glyph_to_sid_map (mapping, num_glyphs); return;
-    default:return;
+    حالت 0: hb_barrier (); u.format0.collect_glyph_مقصد_sid_map (mapping, عدد_glyphs); واپس;
+    حالت 1: hb_barrier (); u.format1.collect_glyph_مقصد_sid_map (mapping, عدد_glyphs); واپس;
+    حالت 2: hb_barrier (); u.format2.collect_glyph_مقصد_sid_map (mapping, عدد_glyphs); واپس;
+    طےشدہ:واپس;
     }
   }
 
-  hb_codepoint_t get_glyph (hb_codepoint_t sid, unsigned int num_glyphs) const
+  hb_codepoint_t get_glyph (hb_codepoint_t sid, غیرعلامتی صحیح عدد_glyphs) ثابت
   {
-    switch (format)
+    انتخاب (format)
     {
-    case 0: hb_barrier (); return u.format0.get_glyph (sid, num_glyphs);
-    case 1: hb_barrier (); return u.format1.get_glyph (sid, num_glyphs);
-    case 2: hb_barrier (); return u.format2.get_glyph (sid, num_glyphs);
-    default:return 0;
+    حالت 0: hb_barrier (); واپس u.format0.get_glyph (sid, عدد_glyphs);
+    حالت 1: hb_barrier (); واپس u.format1.get_glyph (sid, عدد_glyphs);
+    حالت 2: hb_barrier (); واپس u.format2.get_glyph (sid, عدد_glyphs);
+    طےشدہ:واپس 0;
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned *num_charset_entries) const
+  منطقی sanitize (hb_sanitize_context_t *c, غیرعلامتی *عدد_charset_entries) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
-      return_trace (false);
+    TRACE_SANITIZE (یہ);
+    اگر (unlikely (!c->check_struct (یہ)))
+      return_trace (جھوٹ);
     hb_barrier ();
 
-    switch (format)
+    انتخاب (format)
     {
-    case 0: hb_barrier (); return_trace (u.format0.sanitize (c, c->get_num_glyphs (), num_charset_entries));
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c, c->get_num_glyphs (), num_charset_entries));
-    case 2: hb_barrier (); return_trace (u.format2.sanitize (c, c->get_num_glyphs (), num_charset_entries));
-    default:return_trace (false);
+    حالت 0: hb_barrier (); return_trace (u.format0.sanitize (c, c->get_عدد_glyphs (), عدد_charset_entries));
+    حالت 1: hb_barrier (); return_trace (u.format1.sanitize (c, c->get_عدد_glyphs (), عدد_charset_entries));
+    حالت 2: hb_barrier (); return_trace (u.format2.sanitize (c, c->get_عدد_glyphs (), عدد_charset_entries));
+    طےشدہ:return_trace (جھوٹ);
     }
   }
 
   HBUINT8       format;
-  union {
+  اتحاد {
     Charset0    format0;
     Charset1    format1;
     Charset2    format2;
   } u;
 
-  DEFINE_SIZE_MIN (1);
+  DEFINE_سائز_MIN (1);
 };
 
-struct CFF1StringIndex : CFF1Index
+ساخت CFF1_String_اشاریہ : CFF1_اشاریہ
 {
-  bool serialize (hb_serialize_context_t *c, const CFF1StringIndex &strings,
-		  const hb_vector_t<unsigned> &sidmap)
+  منطقی serialize (hb_serialize_context_t *c, ثابت CFF1_String_اشاریہ &لڑیاں,
+		  ثابت hb_سمتیہ_t<غیرعلامتی> &sidmap)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely ((strings.count == 0) || (sidmap.length == 0)))
+    TRACE_SERIALIZE (یہ);
+    اگر (unlikely ((لڑیاں.گنتی == 0) || (sidmap.لمبائی == 0)))
     {
-      if (unlikely (!c->extend_min (this->count)))
-	return_trace (false);
-      count = 0;
-      return_trace (true);
+      اگر (unlikely (!c->extend_min (یہ->گنتی)))
+	return_trace (جھوٹ);
+      گنتی = 0;
+      return_trace (سچ);
     }
 
-    if (unlikely (sidmap.in_error ())) return_trace (false);
+    اگر (unlikely (sidmap.اندر_error ())) return_trace (جھوٹ);
 
     // Save this in a vector since serialize() iterates it twice.
-    hb_vector_t<hb_ubytes_t> bytesArray (+ hb_iter (sidmap)
-					 | hb_map (strings));
+    hb_سمتیہ_t<hb_ubytes_t> بائٹیں_Array (+ hb_iter (sidmap)
+					 | hb_map (لڑیاں));
 
-    if (unlikely (bytesArray.in_error ())) return_trace (false);
+    اگر (unlikely (بائٹیں_Array.اندر_error ())) return_trace (جھوٹ);
 
-    bool result = CFF1Index::serialize (c, bytesArray);
-    return_trace (result);
+    منطقی نتیجہ = CFF1_اشاریہ::serialize (c, بائٹیں_Array);
+    return_trace (نتیجہ);
   }
 };
 
-struct cff1_top_dict_interp_env_t : num_interp_env_t
+ساخت cff1_چوٹی_dict_interp_env_t : عدد_interp_env_t
 {
-  cff1_top_dict_interp_env_t ()
-    : num_interp_env_t(), prev_offset(0), last_offset(0) {}
-  cff1_top_dict_interp_env_t (const hb_ubytes_t &bytes)
-    : num_interp_env_t(bytes), prev_offset(0), last_offset(0) {}
+  cff1_چوٹی_dict_interp_env_t ()
+    : عدد_interp_env_t(), پچھلا_انحراف(0), آخری_انحراف(0) {}
+  cff1_چوٹی_dict_interp_env_t (ثابت hb_ubytes_t &بائٹیں)
+    : عدد_interp_env_t(بائٹیں), پچھلا_انحراف(0), آخری_انحراف(0) {}
 
-  unsigned int prev_offset;
-  unsigned int last_offset;
+  غیرعلامتی صحیح پچھلا_انحراف;
+  غیرعلامتی صحیح آخری_انحراف;
 };
 
-struct name_dict_values_t
+ساخت name_dict_اقدار_t
 {
-  enum name_dict_val_index_t
+  شمار name_dict_val_اشاریہ_t
   {
-      version,
+      نسخہ,
       notice,
       copyright,
-      fullName,
+      بھرا_Name,
       familyName,
-      weight,
+      وزن,
       postscript,
       fontName,
-      baseFontName,
+      بنیاد_Font_Name,
       registry,
       ordering,
 
-      ValCount
+      Val_گنتی
   };
 
-  void init ()
+  خالی init ()
   {
-    for (unsigned int i = 0; i < ValCount; i++)
+    برائے (غیرعلامتی صحیح i = 0; i < Val_گنتی; i++)
       values[i] = CFF_UNDEF_SID;
   }
 
-  unsigned int& operator[] (unsigned int i)
-  { assert (i < ValCount); return values[i]; }
+  غیرعلامتی صحیح& عامل[] (غیرعلامتی صحیح i)
+  { أكد (i < Val_گنتی); واپس values[i]; }
 
-  unsigned int operator[] (unsigned int i) const
-  { assert (i < ValCount); return values[i]; }
+  غیرعلامتی صحیح عامل[] (غیرعلامتی صحیح i) ثابت
+  { أكد (i < Val_گنتی); واپس values[i]; }
 
-  static enum name_dict_val_index_t name_op_to_index (op_code_t op)
+  ساکن شمار name_dict_val_اشاریہ_t name_op_مقصد_اشاریہ (op_رمز_t op)
   {
-    switch (op) {
-      default: // can't happen - just make some compiler happy
-      case OpCode_version:
-	return version;
-      case OpCode_Notice:
-	return notice;
-      case OpCode_Copyright:
-	return copyright;
-      case OpCode_FullName:
-	return fullName;
-      case OpCode_FamilyName:
-	return familyName;
-      case OpCode_Weight:
-	return weight;
-      case OpCode_PostScript:
-	return postscript;
-      case OpCode_FontName:
-	return fontName;
-      case OpCode_BaseFontName:
-	return baseFontName;
+    انتخاب (op) {
+      طےشدہ: // can't happen - just make some compiler happy
+      حالت Op_رمز_نسخہ:
+	واپس نسخہ;
+      حالت Op_رمز_Notice:
+	واپس notice;
+      حالت Op_رمز_Copyright:
+	واپس copyright;
+      حالت Op_رمز_بھرا_Name:
+	واپس بھرا_Name;
+      حالت Op_رمز_Family_Name:
+	واپس familyName;
+      حالت Op_رمز_وزن:
+	واپس وزن;
+      حالت Op_رمز_Post_Script:
+	واپس postscript;
+      حالت Op_رمز_Font_Name:
+	واپس fontName;
+      حالت Op_رمز_بنیاد_Font_Name:
+	واپس بنیاد_Font_Name;
     }
   }
 
-  unsigned int  values[ValCount];
+  غیرعلامتی صحیح  values[Val_گنتی];
 };
 
-struct cff1_top_dict_val_t : op_str_t
+ساخت cff1_چوٹی_dict_val_t : op_str_t
 {
-  unsigned int  last_arg_offset;
+  غیرعلامتی صحیح  آخری_arg_انحراف;
 };
 
-struct cff1_top_dict_values_t : top_dict_values_t<cff1_top_dict_val_t>
+ساخت cff1_چوٹی_dict_اقدار_t : چوٹی_dict_اقدار_t<cff1_چوٹی_dict_val_t>
 {
-  void init ()
+  خالی init ()
   {
-    top_dict_values_t<cff1_top_dict_val_t>::init ();
+    چوٹی_dict_اقدار_t<cff1_چوٹی_dict_val_t>::init ();
 
     nameSIDs.init ();
     ros_supplement = 0;
-    cidCount = 8720;
-    EncodingOffset = 0;
-    CharsetOffset = 0;
-    FDSelectOffset = 0;
-    privateDictInfo.init ();
+    cid_گنتی = 8720;
+    Encoding_انحراف = 0;
+    Charset_انحراف = 0;
+    FDSelect_انحراف = 0;
+    نجی_Dict_Info.init ();
   }
-  void fini () { top_dict_values_t<cff1_top_dict_val_t>::fini (); }
+  خالی fini () { چوٹی_dict_اقدار_t<cff1_چوٹی_dict_val_t>::fini (); }
 
-  bool is_CID () const
-  { return nameSIDs[name_dict_values_t::registry] != CFF_UNDEF_SID; }
+  منطقی is_CID () ثابت
+  { واپس nameSIDs[name_dict_اقدار_t::registry] != CFF_UNDEF_SID; }
 
-  name_dict_values_t  nameSIDs;
-  unsigned int    ros_supplement_offset;
-  unsigned int    ros_supplement;
-  unsigned int    cidCount;
+  name_dict_اقدار_t  nameSIDs;
+  غیرعلامتی صحیح    ros_supplement_انحراف;
+  غیرعلامتی صحیح    ros_supplement;
+  غیرعلامتی صحیح    cid_گنتی;
 
-  int             EncodingOffset;
-  int             CharsetOffset;
-  int             FDSelectOffset;
-  table_info_t    privateDictInfo;
+  صحیح             Encoding_انحراف;
+  صحیح             Charset_انحراف;
+  صحیح             FDSelect_انحراف;
+  جدول_info_t    نجی_Dict_Info;
 };
 
-struct cff1_top_dict_opset_t : top_dict_opset_t<cff1_top_dict_val_t>
+ساخت cff1_چوٹی_dict_opset_t : چوٹی_dict_opset_t<cff1_چوٹی_dict_val_t>
 {
-  static void process_op (op_code_t op, cff1_top_dict_interp_env_t& env, cff1_top_dict_values_t& dictval)
+  ساکن خالی process_op (op_رمز_t op, cff1_چوٹی_dict_interp_env_t& env, cff1_چوٹی_dict_اقدار_t& dictval)
   {
-    cff1_top_dict_val_t  val {};
+    cff1_چوٹی_dict_val_t  val {};
 
-    switch (op) {
-      case OpCode_version:
-      case OpCode_Notice:
-      case OpCode_Copyright:
-      case OpCode_FullName:
-      case OpCode_FontName:
-      case OpCode_FamilyName:
-      case OpCode_Weight:
-      case OpCode_PostScript:
-      case OpCode_BaseFontName:
-	dictval.nameSIDs[name_dict_values_t::name_op_to_index (op)] = env.argStack.pop_uint ();
-	env.clear_args ();
-	break;
-      case OpCode_isFixedPitch:
-      case OpCode_ItalicAngle:
-      case OpCode_UnderlinePosition:
-      case OpCode_UnderlineThickness:
-      case OpCode_PaintType:
-      case OpCode_CharstringType:
-      case OpCode_UniqueID:
-      case OpCode_StrokeWidth:
-      case OpCode_SyntheticBase:
-      case OpCode_CIDFontVersion:
-      case OpCode_CIDFontRevision:
-      case OpCode_CIDFontType:
-      case OpCode_UIDBase:
-      case OpCode_FontBBox:
-      case OpCode_XUID:
-      case OpCode_BaseFontBlend:
-	env.clear_args ();
-	break;
+    انتخاب (op) {
+      حالت Op_رمز_نسخہ:
+      حالت Op_رمز_Notice:
+      حالت Op_رمز_Copyright:
+      حالت Op_رمز_بھرا_Name:
+      حالت Op_رمز_Font_Name:
+      حالت Op_رمز_Family_Name:
+      حالت Op_رمز_وزن:
+      حالت Op_رمز_Post_Script:
+      حالت Op_رمز_بنیاد_Font_Name:
+	dictval.nameSIDs[name_dict_اقدار_t::name_op_مقصد_اشاریہ (op)] = env.arg_ڈھیر.نکالو_uint ();
+	env.clear_دلائل ();
+	توڑو;
+      حالت Op_رمز_is_Fixed_Pitch:
+      حالت Op_رمز_Italic_Angle:
+      حالت Op_رمز_Underline_Position:
+      حالت Op_رمز_Underline_Thickness:
+      حالت Op_رمز_Paint_Type:
+      حالت Op_رمز_Charstring_Type:
+      حالت Op_رمز_Unique_ID:
+      حالت Op_رمز_Stroke_چوڑائی:
+      حالت Op_رمز_Synthetic_بنیاد:
+      حالت Op_رمز_CIDFont_نسخہ:
+      حالت Op_رمز_CIDFont_Revision:
+      حالت Op_رمز_CIDFont_Type:
+      حالت Op_رمز_UIDBase:
+      حالت Op_رمز_Font_BBox:
+      حالت Op_رمز_XUID:
+      حالت Op_رمز_بنیاد_Font_Blend:
+	env.clear_دلائل ();
+	توڑو;
 
-      case OpCode_CIDCount:
-	dictval.cidCount = env.argStack.pop_uint ();
-	env.clear_args ();
-	break;
+      حالت Op_رمز_CIDCount:
+	dictval.cid_گنتی = env.arg_ڈھیر.نکالو_uint ();
+	env.clear_دلائل ();
+	توڑو;
 
-      case OpCode_ROS:
-	dictval.ros_supplement = env.argStack.pop_uint ();
-	dictval.nameSIDs[name_dict_values_t::ordering] = env.argStack.pop_uint ();
-	dictval.nameSIDs[name_dict_values_t::registry] = env.argStack.pop_uint ();
-	env.clear_args ();
-	if (unlikely (env.in_error ())) return;
-	assert (env.last_offset > dictval.opStart);
-	val.last_arg_offset = (env.last_offset - 1) - dictval.opStart;  /* offset to the last argument */
-	break;
+      حالت Op_رمز_ROS:
+	dictval.ros_supplement = env.arg_ڈھیر.نکالو_uint ();
+	dictval.nameSIDs[name_dict_اقدار_t::ordering] = env.arg_ڈھیر.نکالو_uint ();
+	dictval.nameSIDs[name_dict_اقدار_t::registry] = env.arg_ڈھیر.نکالو_uint ();
+	env.clear_دلائل ();
+	اگر (unlikely (env.اندر_error ())) واپس;
+	أكد (env.آخری_انحراف > dictval.op_آغاز);
+	val.آخری_arg_انحراف = (env.آخری_انحراف - 1) - dictval.op_آغاز;  /* offset to the last argument */
+	توڑو;
 
-      case OpCode_Encoding:
-	dictval.EncodingOffset = env.argStack.pop_int ();
-	env.clear_args ();
-	if (unlikely (dictval.EncodingOffset == 0)) return;
-	break;
+      حالت Op_رمز_Encoding:
+	dictval.Encoding_انحراف = env.arg_ڈھیر.نکالو_int ();
+	env.clear_دلائل ();
+	اگر (unlikely (dictval.Encoding_انحراف == 0)) واپس;
+	توڑو;
 
-      case OpCode_charset:
-	dictval.CharsetOffset = env.argStack.pop_int ();
-	env.clear_args ();
-	if (unlikely (dictval.CharsetOffset == 0)) return;
-	break;
+      حالت Op_رمز_charset:
+	dictval.Charset_انحراف = env.arg_ڈھیر.نکالو_int ();
+	env.clear_دلائل ();
+	اگر (unlikely (dictval.Charset_انحراف == 0)) واپس;
+	توڑو;
 
-      case OpCode_FDSelect:
-	dictval.FDSelectOffset = env.argStack.pop_int ();
-	env.clear_args ();
-	break;
+      حالت Op_رمز_FDSelect:
+	dictval.FDSelect_انحراف = env.arg_ڈھیر.نکالو_int ();
+	env.clear_دلائل ();
+	توڑو;
 
-      case OpCode_Private:
-	dictval.privateDictInfo.offset = env.argStack.pop_int ();
-	dictval.privateDictInfo.size = env.argStack.pop_uint ();
-	env.clear_args ();
-	break;
+      حالت Op_رمز_نجی:
+	dictval.نجی_Dict_Info.انحراف = env.arg_ڈھیر.نکالو_int ();
+	dictval.نجی_Dict_Info.سائز = env.arg_ڈھیر.نکالو_uint ();
+	env.clear_دلائل ();
+	توڑو;
 
-      default:
-	env.last_offset = env.str_ref.get_offset ();
-	top_dict_opset_t<cff1_top_dict_val_t>::process_op (op, env, dictval);
+      طےشدہ:
+	env.آخری_انحراف = env.str_ref.get_انحراف ();
+	چوٹی_dict_opset_t<cff1_چوٹی_dict_val_t>::process_op (op, env, dictval);
 	/* Record this operand below if stack is empty, otherwise done */
-	if (!env.argStack.is_empty ()) return;
-	break;
+	اگر (!env.arg_ڈھیر.is_empty ()) واپس;
+	توڑو;
     }
 
-    if (unlikely (env.in_error ())) return;
+    اگر (unlikely (env.اندر_error ())) واپس;
 
-    dictval.add_op (op, env.str_ref, val);
+    dictval.جوڑو_op (op, env.str_ref, val);
   }
 };
 
-struct cff1_font_dict_values_t : dict_values_t<op_str_t>
+ساخت cff1_font_dict_اقدار_t : dict_اقدار_t<op_str_t>
 {
-  void init ()
+  خالی init ()
   {
-    dict_values_t<op_str_t>::init ();
-    privateDictInfo.init ();
+    dict_اقدار_t<op_str_t>::init ();
+    نجی_Dict_Info.init ();
     fontName = CFF_UNDEF_SID;
   }
-  void fini () { dict_values_t<op_str_t>::fini (); }
+  خالی fini () { dict_اقدار_t<op_str_t>::fini (); }
 
-  table_info_t       privateDictInfo;
-  unsigned int    fontName;
+  جدول_info_t       نجی_Dict_Info;
+  غیرعلامتی صحیح    fontName;
 };
 
-struct cff1_font_dict_opset_t : dict_opset_t
+ساخت cff1_font_dict_opset_t : dict_opset_t
 {
-  static void process_op (op_code_t op, num_interp_env_t& env, cff1_font_dict_values_t& dictval)
+  ساکن خالی process_op (op_رمز_t op, عدد_interp_env_t& env, cff1_font_dict_اقدار_t& dictval)
   {
-    switch (op) {
-      case OpCode_FontName:
-	dictval.fontName = env.argStack.pop_uint ();
-	env.clear_args ();
-	break;
-      case OpCode_FontMatrix:
-      case OpCode_PaintType:
-	env.clear_args ();
-	break;
-      case OpCode_Private:
-	dictval.privateDictInfo.offset = env.argStack.pop_uint ();
-	dictval.privateDictInfo.size = env.argStack.pop_uint ();
-	env.clear_args ();
-	break;
+    انتخاب (op) {
+      حالت Op_رمز_Font_Name:
+	dictval.fontName = env.arg_ڈھیر.نکالو_uint ();
+	env.clear_دلائل ();
+	توڑو;
+      حالت Op_رمز_Font_میٹرکس:
+      حالت Op_رمز_Paint_Type:
+	env.clear_دلائل ();
+	توڑو;
+      حالت Op_رمز_نجی:
+	dictval.نجی_Dict_Info.انحراف = env.arg_ڈھیر.نکالو_uint ();
+	dictval.نجی_Dict_Info.سائز = env.arg_ڈھیر.نکالو_uint ();
+	env.clear_دلائل ();
+	توڑو;
 
-      default:
+      طےشدہ:
 	dict_opset_t::process_op (op, env);
-	if (!env.argStack.is_empty ()) return;
-	break;
+	اگر (!env.arg_ڈھیر.is_empty ()) واپس;
+	توڑو;
     }
 
-    if (unlikely (env.in_error ())) return;
+    اگر (unlikely (env.اندر_error ())) واپس;
 
-    dictval.add_op (op, env.str_ref);
+    dictval.جوڑو_op (op, env.str_ref);
   }
 };
 
-template <typename VAL>
-struct cff1_private_dict_values_base_t : dict_values_t<VAL>
+سانچہ <قسم_نام VAL>
+ساخت cff1_نجی_dict_اقدار_بنیاد_t : dict_اقدار_t<VAL>
 {
-  void init ()
+  خالی init ()
   {
-    dict_values_t<VAL>::init ();
-    subrsOffset = 0;
+    dict_اقدار_t<VAL>::init ();
+    subrs_انحراف = 0;
     localSubrs = &Null (CFF1Subrs);
   }
-  void fini () { dict_values_t<VAL>::fini (); }
+  خالی fini () { dict_اقدار_t<VAL>::fini (); }
 
-  int                 subrsOffset;
-  const CFF1Subrs    *localSubrs;
+  صحیح                 subrs_انحراف;
+  ثابت CFF1Subrs    *localSubrs;
 };
 
-typedef cff1_private_dict_values_base_t<op_str_t> cff1_private_dict_values_subset_t;
-typedef cff1_private_dict_values_base_t<num_dict_val_t> cff1_private_dict_values_t;
+قسمتعریف cff1_نجی_dict_اقدار_بنیاد_t<op_str_t> cff1_نجی_dict_اقدار_subset_t;
+قسمتعریف cff1_نجی_dict_اقدار_بنیاد_t<عدد_dict_val_t> cff1_نجی_dict_اقدار_t;
 
-struct cff1_private_dict_opset_t : dict_opset_t
+ساخت cff1_نجی_dict_opset_t : dict_opset_t
 {
-  static void process_op (op_code_t op, num_interp_env_t& env, cff1_private_dict_values_t& dictval)
+  ساکن خالی process_op (op_رمز_t op, عدد_interp_env_t& env, cff1_نجی_dict_اقدار_t& dictval)
   {
-    num_dict_val_t val;
+    عدد_dict_val_t val;
     val.init ();
 
-    switch (op) {
-      case OpCode_BlueValues:
-      case OpCode_OtherBlues:
-      case OpCode_FamilyBlues:
-      case OpCode_FamilyOtherBlues:
-      case OpCode_StemSnapH:
-      case OpCode_StemSnapV:
-      case OpCode_StdHW:
-      case OpCode_StdVW:
-      case OpCode_BlueScale:
-      case OpCode_BlueShift:
-      case OpCode_BlueFuzz:
-      case OpCode_ForceBold:
-      case OpCode_LanguageGroup:
-      case OpCode_ExpansionFactor:
-      case OpCode_initialRandomSeed:
-      case OpCode_defaultWidthX:
-      case OpCode_nominalWidthX:
-	env.clear_args ();
-	break;
-      case OpCode_Subrs:
-	dictval.subrsOffset = env.argStack.pop_int ();
-	env.clear_args ();
-	break;
+    انتخاب (op) {
+      حالت Op_رمز_Blue_اقدار:
+      حالت Op_رمز_Other_Blues:
+      حالت Op_رمز_Family_Blues:
+      حالت Op_رمز_Family_Other_Blues:
+      حالت Op_رمز_Stem_Snap_H:
+      حالت Op_رمز_Stem_Snap_V:
+      حالت Op_رمز_Std_HW:
+      حالت Op_رمز_Std_VW:
+      حالت Op_رمز_Blue_Scale:
+      حالت Op_رمز_Blue_سرکاؤ:
+      حالت Op_رمز_Blue_Fuzz:
+      حالت Op_رمز_Force_Bold:
+      حالت Op_رمز_Language_گروہ:
+      حالت Op_رمز_Expansion_ضربی_عدد:
+      حالت Op_رمز_initial_Random_بیج:
+      حالت Op_رمز_default_چوڑائی_X:
+      حالت Op_رمز_nominal_چوڑائی_X:
+	env.clear_دلائل ();
+	توڑو;
+      حالت Op_رمز_Subrs:
+	dictval.subrs_انحراف = env.arg_ڈھیر.نکالو_int ();
+	env.clear_دلائل ();
+	توڑو;
 
-      default:
+      طےشدہ:
 	dict_opset_t::process_op (op, env);
-	if (!env.argStack.is_empty ()) return;
-	break;
+	اگر (!env.arg_ڈھیر.is_empty ()) واپس;
+	توڑو;
     }
 
-    if (unlikely (env.in_error ())) return;
+    اگر (unlikely (env.اندر_error ())) واپس;
 
-    dictval.add_op (op, env.str_ref, val);
+    dictval.جوڑو_op (op, env.str_ref, val);
   }
 };
 
-struct cff1_private_dict_opset_subset_t : dict_opset_t
+ساخت cff1_نجی_dict_opset_subset_t : dict_opset_t
 {
-  static void process_op (op_code_t op, num_interp_env_t& env, cff1_private_dict_values_subset_t& dictval)
+  ساکن خالی process_op (op_رمز_t op, عدد_interp_env_t& env, cff1_نجی_dict_اقدار_subset_t& dictval)
   {
-    switch (op) {
-      case OpCode_BlueValues:
-      case OpCode_OtherBlues:
-      case OpCode_FamilyBlues:
-      case OpCode_FamilyOtherBlues:
-      case OpCode_StemSnapH:
-      case OpCode_StemSnapV:
-      case OpCode_StdHW:
-      case OpCode_StdVW:
-      case OpCode_BlueScale:
-      case OpCode_BlueShift:
-      case OpCode_BlueFuzz:
-      case OpCode_ForceBold:
-      case OpCode_LanguageGroup:
-      case OpCode_ExpansionFactor:
-      case OpCode_initialRandomSeed:
-      case OpCode_defaultWidthX:
-      case OpCode_nominalWidthX:
-	env.clear_args ();
-	break;
+    انتخاب (op) {
+      حالت Op_رمز_Blue_اقدار:
+      حالت Op_رمز_Other_Blues:
+      حالت Op_رمز_Family_Blues:
+      حالت Op_رمز_Family_Other_Blues:
+      حالت Op_رمز_Stem_Snap_H:
+      حالت Op_رمز_Stem_Snap_V:
+      حالت Op_رمز_Std_HW:
+      حالت Op_رمز_Std_VW:
+      حالت Op_رمز_Blue_Scale:
+      حالت Op_رمز_Blue_سرکاؤ:
+      حالت Op_رمز_Blue_Fuzz:
+      حالت Op_رمز_Force_Bold:
+      حالت Op_رمز_Language_گروہ:
+      حالت Op_رمز_Expansion_ضربی_عدد:
+      حالت Op_رمز_initial_Random_بیج:
+      حالت Op_رمز_default_چوڑائی_X:
+      حالت Op_رمز_nominal_چوڑائی_X:
+	env.clear_دلائل ();
+	توڑو;
 
-      case OpCode_Subrs:
-	dictval.subrsOffset = env.argStack.pop_int ();
-	env.clear_args ();
-	break;
+      حالت Op_رمز_Subrs:
+	dictval.subrs_انحراف = env.arg_ڈھیر.نکالو_int ();
+	env.clear_دلائل ();
+	توڑو;
 
-      default:
+      طےشدہ:
 	dict_opset_t::process_op (op, env);
-	if (!env.argStack.is_empty ()) return;
-	break;
+	اگر (!env.arg_ڈھیر.is_empty ()) واپس;
+	توڑو;
     }
 
-    if (unlikely (env.in_error ())) return;
+    اگر (unlikely (env.اندر_error ())) واپس;
 
-    dictval.add_op (op, env.str_ref);
+    dictval.جوڑو_op (op, env.str_ref);
   }
 };
 
-typedef dict_interpreter_t<cff1_top_dict_opset_t, cff1_top_dict_values_t, cff1_top_dict_interp_env_t> cff1_top_dict_interpreter_t;
-typedef dict_interpreter_t<cff1_font_dict_opset_t, cff1_font_dict_values_t> cff1_font_dict_interpreter_t;
+قسمتعریف dict_interpreter_t<cff1_چوٹی_dict_opset_t, cff1_چوٹی_dict_اقدار_t, cff1_چوٹی_dict_interp_env_t> cff1_چوٹی_dict_interpreter_t;
+قسمتعریف dict_interpreter_t<cff1_font_dict_opset_t, cff1_font_dict_اقدار_t> cff1_font_dict_interpreter_t;
 
-typedef CFF1Index CFF1NameIndex;
-typedef CFF1Index CFF1TopDictIndex;
+قسمتعریف CFF1_اشاریہ CFF1_Name_اشاریہ;
+قسمتعریف CFF1_اشاریہ CFF1_چوٹی_Dict_اشاریہ;
 
-struct cff1_font_dict_values_mod_t
+ساخت cff1_font_dict_اقدار_mod_t
 {
-  cff1_font_dict_values_mod_t() { init (); }
+  cff1_font_dict_اقدار_mod_t() { init (); }
 
-  void init () { init ( &Null (cff1_font_dict_values_t), CFF_UNDEF_SID ); }
+  خالی init () { init ( &Null (cff1_font_dict_اقدار_t), CFF_UNDEF_SID ); }
 
-  void init (const cff1_font_dict_values_t *base_,
-	     unsigned int fontName_)
+  خالی init (ثابت cff1_font_dict_اقدار_t *بنیاد_2,
+	     غیرعلامتی صحیح fontName_)
   {
-    base = base_;
+    بنیاد = بنیاد_2;
     fontName = fontName_;
-    privateDictInfo.init ();
+    نجی_Dict_Info.init ();
   }
 
-  unsigned get_count () const { return base->get_count (); }
+  غیرعلامتی get_گنتی () ثابت { واپس بنیاد->get_گنتی (); }
 
-  const op_str_t &operator [] (unsigned int i) const { return (*base)[i]; }
+  ثابت op_str_t &عامل [] (غیرعلامتی صحیح i) ثابت { واپس (*بنیاد)[i]; }
 
-  const cff1_font_dict_values_t    *base;
-  table_info_t		   privateDictInfo;
-  unsigned int		fontName;
+  ثابت cff1_font_dict_اقدار_t    *بنیاد;
+  جدول_info_t		   نجی_Dict_Info;
+  غیرعلامتی صحیح		fontName;
 };
 
-struct CFF1FDArray : FDArray<HBUINT16>
+ساخت CFF1FDArray : FDArray<HBUINT16>
 {
   /* FDArray::serialize() requires this partial specialization to compile */
-  template <typename ITER, typename OP_SERIALIZER>
-  bool serialize (hb_serialize_context_t *c, ITER it, OP_SERIALIZER& opszr)
-  { return FDArray<HBUINT16>::serialize<cff1_font_dict_values_mod_t, cff1_font_dict_values_mod_t> (c, it, opszr); }
+  سانچہ <قسم_نام ITER, قسم_نام OP_SERIALIZER>
+  منطقی serialize (hb_serialize_context_t *c, ITER it, OP_SERIALIZER& opszr)
+  { واپس FDArray<HBUINT16>::serialize<cff1_font_dict_اقدار_mod_t, cff1_font_dict_اقدار_mod_t> (c, it, opszr); }
 };
 
 } /* namespace CFF */
 
-namespace OT {
+نامخلا OT {
 
-using namespace CFF;
+استعمال نامخلا CFF;
 
-struct cff1
+ساخت cff1
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_CFF1;
+  ساکن constexpr hb_لیبل_t جدول_لیبل = HB_OT_لیبل_CFF1;
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ) &&
 		  hb_barrier () &&
-		  likely (version.major == 1));
+		  likely (نسخہ.major == 1));
   }
 
-  template <typename PRIVOPSET, typename PRIVDICTVAL>
-  struct accelerator_templ_t
+  سانچہ <قسم_نام PRIVOPSET, قسم_نام PRIVDICTVAL>
+  ساخت accelerator_templ_t
   {
-    static constexpr hb_tag_t tableTag = cff1::tableTag;
+    ساکن constexpr hb_لیبل_t جدول_لیبل = cff1::جدول_لیبل;
 
     accelerator_templ_t (hb_face_t *face)
     {
-      if (!face) return;
+      اگر (!face) واپس;
 
-      topDict.init ();
+      چوٹی_Dict_2.init ();
       fontDicts.init ();
-      privateDicts.init ();
+      نجی_Dicts.init ();
 
-      this->blob = sc.reference_table<cff1> (face);
+      یہ->blob = sc.reference_جدول<cff1> (face);
 
       /* setup for run-time sanitization */
-      sc.init (this->blob);
-      sc.start_processing ();
+      sc.init (یہ->blob);
+      sc.آغاز_processing ();
 
-      const OT::cff1 *cff = this->blob->template as<OT::cff1> ();
+      ثابت OT::cff1 *cff = یہ->blob->سانچہ as<OT::cff1> ();
 
-      if (cff == &Null (OT::cff1))
-        goto fail;
+      اگر (cff == &Null (OT::cff1))
+        جاؤ fail;
 
-      nameIndex = &cff->nameIndex (cff);
-      if ((nameIndex == &Null (CFF1NameIndex)) || !nameIndex->sanitize (&sc))
-        goto fail;
+      name_اشاریہ = &cff->name_اشاریہ (cff);
+      اگر ((name_اشاریہ == &Null (CFF1_Name_اشاریہ)) || !name_اشاریہ->sanitize (&sc))
+        جاؤ fail;
       hb_barrier ();
 
-      topDictIndex = &StructAtOffsetOrNull<CFF1TopDictIndex> (nameIndex, nameIndex->get_size (), sc);
-      if (topDictIndex == &Null (CFF1TopDictIndex) || (topDictIndex->count == 0))
-        goto fail;
+      چوٹی_Dict_اشاریہ = &Struct_At_انحراف_Or_Null<CFF1_چوٹی_Dict_اشاریہ> (name_اشاریہ, name_اشاریہ->get_سائز (), sc);
+      اگر (چوٹی_Dict_اشاریہ == &Null (CFF1_چوٹی_Dict_اشاریہ) || (چوٹی_Dict_اشاریہ->گنتی == 0))
+        جاؤ fail;
       hb_barrier ();
 
       { /* parse top dict */
-	const hb_ubytes_t topDictStr = (*topDictIndex)[0];
-	if (unlikely (!topDictStr.sanitize (&sc)))   goto fail;
+	ثابت hb_ubytes_t چوٹی_Dict_Str = (*چوٹی_Dict_اشاریہ)[0];
+	اگر (unlikely (!چوٹی_Dict_Str.sanitize (&sc)))   جاؤ fail;
 	hb_barrier ();
-	cff1_top_dict_interp_env_t env (topDictStr);
-	cff1_top_dict_interpreter_t top_interp (env);
-	if (unlikely (!top_interp.interpret (topDict)))   goto fail;
+	cff1_چوٹی_dict_interp_env_t env (چوٹی_Dict_Str);
+	cff1_چوٹی_dict_interpreter_t چوٹی_interp (env);
+	اگر (unlikely (!چوٹی_interp.interpret (چوٹی_Dict_2)))   جاؤ fail;
       }
 
-      if (is_predef_charset ())
+      اگر (is_predef_charset ())
 	charset = &Null (Charset);
-      else
+      ورنہ
       {
-	charset = &StructAtOffsetOrNull<Charset> (cff, topDict.CharsetOffset, sc, &num_charset_entries);
-	if (unlikely (charset == &Null (Charset)))   goto fail;
+	charset = &Struct_At_انحراف_Or_Null<Charset> (cff, چوٹی_Dict_2.Charset_انحراف, sc, &عدد_charset_entries);
+	اگر (unlikely (charset == &Null (Charset)))   جاؤ fail;
       }
 
-      fdCount = 1;
-      if (is_CID ())
+      fd_گنتی = 1;
+      اگر (is_CID ())
       {
-	fdArray = &StructAtOffsetOrNull<CFF1FDArray> (cff, topDict.FDArrayOffset, sc);
-	fdSelect = &StructAtOffsetOrNull<CFF1FDSelect> (cff, topDict.FDSelectOffset, sc, fdArray->count);
-	if (unlikely (fdArray == &Null (CFF1FDArray) ||
+	fdArray = &Struct_At_انحراف_Or_Null<CFF1FDArray> (cff, چوٹی_Dict_2.FDArray_انحراف, sc);
+	fdSelect = &Struct_At_انحراف_Or_Null<CFF1FDSelect> (cff, چوٹی_Dict_2.FDSelect_انحراف, sc, fdArray->گنتی);
+	اگر (unlikely (fdArray == &Null (CFF1FDArray) ||
 		      fdSelect == &Null (CFF1FDSelect)))
-	  goto fail;
+	  جاؤ fail;
 
-	fdCount = fdArray->count;
+	fd_گنتی = fdArray->گنتی;
       }
-      else
+      ورنہ
       {
 	fdArray = &Null (CFF1FDArray);
 	fdSelect = &Null (CFF1FDSelect);
       }
 
       encoding = &Null (Encoding);
-      if (is_CID ())
+      اگر (is_CID ())
       {
-	if (unlikely (charset == &Null (Charset)))   goto fail;
+	اگر (unlikely (charset == &Null (Charset)))   جاؤ fail;
       }
-      else
+      ورنہ
       {
-	if (!is_predef_encoding ())
+	اگر (!is_predef_encoding ())
 	{
-	  encoding = &StructAtOffsetOrNull<Encoding> (cff, topDict.EncodingOffset, sc);
-	  if (unlikely (encoding == &Null (Encoding)))   goto fail;
+	  encoding = &Struct_At_انحراف_Or_Null<Encoding> (cff, چوٹی_Dict_2.Encoding_انحراف, sc);
+	  اگر (unlikely (encoding == &Null (Encoding)))   جاؤ fail;
 	}
       }
 
-      stringIndex = &StructAtOffsetOrNull<CFF1StringIndex> (topDictIndex, topDictIndex->get_size (), sc);
-      if (stringIndex == &Null (CFF1StringIndex))
-        goto fail;
+      string_اشاریہ = &Struct_At_انحراف_Or_Null<CFF1_String_اشاریہ> (چوٹی_Dict_اشاریہ, چوٹی_Dict_اشاریہ->get_سائز (), sc);
+      اگر (string_اشاریہ == &Null (CFF1_String_اشاریہ))
+        جاؤ fail;
 
-      globalSubrs = &StructAtOffsetOrNull<CFF1Subrs> (stringIndex, stringIndex->get_size (), sc);
-      charStrings = &StructAtOffsetOrNull<CFF1CharStrings> (cff, topDict.charStringsOffset, sc);
-      if (charStrings == &Null (CFF1CharStrings))
-        goto fail;
+      globalSubrs = &Struct_At_انحراف_Or_Null<CFF1Subrs> (string_اشاریہ, string_اشاریہ->get_سائز (), sc);
+      char_لڑیاں = &Struct_At_انحراف_Or_Null<CFF1_Char_لڑیاں> (cff, چوٹی_Dict_2.char_لڑیاں_انحراف, sc);
+      اگر (char_لڑیاں == &Null (CFF1_Char_لڑیاں))
+        جاؤ fail;
 
-      num_glyphs = charStrings->count;
-      if (num_glyphs != sc.get_num_glyphs ())
-        goto fail;
+      عدد_glyphs = char_لڑیاں->گنتی;
+      اگر (عدد_glyphs != sc.get_عدد_glyphs ())
+        جاؤ fail;
 
-      if (unlikely (!privateDicts.resize (fdCount)))
-        goto fail;
-      for (unsigned int i = 0; i < fdCount; i++)
-	privateDicts[i].init ();
+      اگر (unlikely (!نجی_Dicts.resize (fd_گنتی)))
+        جاؤ fail;
+      برائے (غیرعلامتی صحیح i = 0; i < fd_گنتی; i++)
+	نجی_Dicts[i].init ();
 
       // parse CID font dicts and gather private dicts
-      if (is_CID ())
+      اگر (is_CID ())
       {
-	for (unsigned int i = 0; i < fdCount; i++)
+	برائے (غیرعلامتی صحیح i = 0; i < fd_گنتی; i++)
 	{
 	  hb_ubytes_t fontDictStr = (*fdArray)[i];
-	  if (unlikely (!fontDictStr.sanitize (&sc)))   goto fail;
+	  اگر (unlikely (!fontDictStr.sanitize (&sc)))   جاؤ fail;
 	  hb_barrier ();
-	  cff1_font_dict_values_t *font;
-	  cff1_top_dict_interp_env_t env (fontDictStr);
+	  cff1_font_dict_اقدار_t *font;
+	  cff1_چوٹی_dict_interp_env_t env (fontDictStr);
 	  cff1_font_dict_interpreter_t font_interp (env);
 	  font = fontDicts.push ();
-	  if (unlikely (fontDicts.in_error ()))   goto fail;
+	  اگر (unlikely (fontDicts.اندر_error ()))   جاؤ fail;
 
 	  font->init ();
-	  if (unlikely (!font_interp.interpret (*font)))   goto fail;
-	  PRIVDICTVAL *priv = &privateDicts[i];
-	  const hb_ubytes_t privDictStr = StructAtOffsetOrNull<UnsizedByteStr> (cff, font->privateDictInfo.offset, sc, font->privateDictInfo.size).as_ubytes (font->privateDictInfo.size);
-	  if (unlikely (font->privateDictInfo.size &&
-			privDictStr == (const unsigned char *) &Null (UnsizedByteStr))) goto fail;
-	  num_interp_env_t env2 (privDictStr);
+	  اگر (unlikely (!font_interp.interpret (*font)))   جاؤ fail;
+	  PRIVDICTVAL *priv = &نجی_Dicts[i];
+	  ثابت hb_ubytes_t privDictStr = Struct_At_انحراف_Or_Null<UnsizedByteStr> (cff, font->نجی_Dict_Info.انحراف, sc, font->نجی_Dict_Info.سائز).as_ubytes (font->نجی_Dict_Info.سائز);
+	  اگر (unlikely (font->نجی_Dict_Info.سائز &&
+			privDictStr == (ثابت غیرعلامتی حرف *) &Null (UnsizedByteStr))) جاؤ fail;
+	  عدد_interp_env_t env2 (privDictStr);
 	  dict_interpreter_t<PRIVOPSET, PRIVDICTVAL> priv_interp (env2);
 	  priv->init ();
-	  if (unlikely (!priv_interp.interpret (*priv)))   goto fail;
+	  اگر (unlikely (!priv_interp.interpret (*priv)))   جاؤ fail;
 
-	  priv->localSubrs = &StructAtOffsetOrNull<CFF1Subrs> (&privDictStr, priv->subrsOffset, sc);
+	  priv->localSubrs = &Struct_At_انحراف_Or_Null<CFF1Subrs> (&privDictStr, priv->subrs_انحراف, sc);
 	}
       }
-      else  /* non-CID */
+      ورنہ  /* non-CID */
       {
-	cff1_top_dict_values_t *font = &topDict;
-	PRIVDICTVAL *priv = &privateDicts[0];
+	cff1_چوٹی_dict_اقدار_t *font = &چوٹی_Dict_2;
+	PRIVDICTVAL *priv = &نجی_Dicts[0];
 
-	const hb_ubytes_t privDictStr = StructAtOffsetOrNull<UnsizedByteStr> (cff, font->privateDictInfo.offset, sc, font->privateDictInfo.size).as_ubytes (font->privateDictInfo.size);
-	if (font->privateDictInfo.size &&
-	    unlikely (privDictStr == (const unsigned char *) &Null (UnsizedByteStr))) goto fail;
-	num_interp_env_t env (privDictStr);
+	ثابت hb_ubytes_t privDictStr = Struct_At_انحراف_Or_Null<UnsizedByteStr> (cff, font->نجی_Dict_Info.انحراف, sc, font->نجی_Dict_Info.سائز).as_ubytes (font->نجی_Dict_Info.سائز);
+	اگر (font->نجی_Dict_Info.سائز &&
+	    unlikely (privDictStr == (ثابت غیرعلامتی حرف *) &Null (UnsizedByteStr))) جاؤ fail;
+	عدد_interp_env_t env (privDictStr);
 	dict_interpreter_t<PRIVOPSET, PRIVDICTVAL> priv_interp (env);
 	priv->init ();
-	if (unlikely (!priv_interp.interpret (*priv)))   goto fail;
+	اگر (unlikely (!priv_interp.interpret (*priv)))   جاؤ fail;
 
-	priv->localSubrs = &StructAtOffsetOrNull<CFF1Subrs> (&privDictStr, priv->subrsOffset, sc);
+	priv->localSubrs = &Struct_At_انحراف_Or_Null<CFF1Subrs> (&privDictStr, priv->subrs_انحراف, sc);
 	hb_barrier ();
       }
 
-      return;
+      واپس;
 
       fail:
         _fini ();
     }
     ~accelerator_templ_t () { _fini (); }
-    void _fini ()
+    خالی _fini ()
     {
-      sc.end_processing ();
-      topDict.fini ();
+      sc.انتہا_processing ();
+      چوٹی_Dict_2.fini ();
       fontDicts.fini ();
-      privateDicts.fini ();
+      نجی_Dicts.fini ();
       hb_blob_destroy (blob);
-      blob = nullptr;
+      blob = خالی_اشاریہ;
     }
 
-    hb_blob_t *get_blob () const { return blob; }
+    hb_blob_t *get_blob () ثابت { واپس blob; }
 
-    bool is_valid () const { return blob; }
-    bool   is_CID () const { return topDict.is_CID (); }
+    منطقی is_valid () ثابت { واپس blob; }
+    منطقی   is_CID () ثابت { واپس چوٹی_Dict_2.is_CID (); }
 
-    bool is_predef_charset () const { return topDict.CharsetOffset <= ExpertSubsetCharset; }
+    منطقی is_predef_charset () ثابت { واپس چوٹی_Dict_2.Charset_انحراف <= ExpertSubsetCharset; }
 
-    unsigned int std_code_to_glyph (hb_codepoint_t code) const
+    غیرعلامتی صحیح std_رمز_مقصد_glyph (hb_codepoint_t رمز) ثابت
     {
-      hb_codepoint_t sid = lookup_standard_encoding_for_sid (code);
-      if (unlikely (sid == CFF_UNDEF_SID))
-	return 0;
+      hb_codepoint_t sid = lookup_standard_encoding_for_sid (رمز);
+      اگر (unlikely (sid == CFF_UNDEF_SID))
+	واپس 0;
 
-      if (charset != &Null (Charset))
-	return charset->get_glyph (sid, num_glyphs);
-      else if ((topDict.CharsetOffset == ISOAdobeCharset)
-	      && (code <= 228 /*zcaron*/)) return sid;
-      return 0;
+      اگر (charset != &Null (Charset))
+	واپس charset->get_glyph (sid, عدد_glyphs);
+      ورنہ اگر ((چوٹی_Dict_2.Charset_انحراف == ISOAdobeCharset)
+	      && (رمز <= 228 /*zcaron*/)) واپس sid;
+      واپس 0;
     }
 
-    bool is_predef_encoding () const { return topDict.EncodingOffset <= ExpertEncoding; }
+    منطقی is_predef_encoding () ثابت { واپس چوٹی_Dict_2.Encoding_انحراف <= ExpertEncoding; }
 
-    hb_codepoint_t glyph_to_code (hb_codepoint_t glyph,
-				  code_pair_t *glyph_to_sid_cache = nullptr) const
+    hb_codepoint_t glyph_مقصد_رمز (hb_codepoint_t glyph,
+				  رمز_pair_t *glyph_مقصد_sid_cache = خالی_اشاریہ) ثابت
     {
-      if (encoding != &Null (Encoding))
-	return encoding->get_code (glyph);
-      else
+      اگر (encoding != &Null (Encoding))
+	واپس encoding->get_رمز (glyph);
+      ورنہ
       {
-	hb_codepoint_t sid = glyph_to_sid (glyph, glyph_to_sid_cache);
-	if (sid == 0) return 0;
-	hb_codepoint_t code = 0;
-	switch (topDict.EncodingOffset)
+	hb_codepoint_t sid = glyph_مقصد_sid (glyph, glyph_مقصد_sid_cache);
+	اگر (sid == 0) واپس 0;
+	hb_codepoint_t رمز = 0;
+	انتخاب (چوٹی_Dict_2.Encoding_انحراف)
 	{
-	case StandardEncoding:
-	  code = lookup_standard_encoding_for_code (sid);
-	  break;
-	case ExpertEncoding:
-	  code = lookup_expert_encoding_for_code (sid);
-	  break;
-	default:
-	  break;
+	حالت StandardEncoding:
+	  رمز = lookup_standard_encoding_for_رمز (sid);
+	  توڑو;
+	حالت ExpertEncoding:
+	  رمز = lookup_expert_encoding_for_رمز (sid);
+	  توڑو;
+	طےشدہ:
+	  توڑو;
 	}
-	return code;
+	واپس رمز;
       }
     }
 
-    glyph_to_sid_map_t *create_glyph_to_sid_map () const
+    glyph_مقصد_sid_map_t *create_glyph_مقصد_sid_map () ثابت
     {
-      if (charset != &Null (Charset))
+      اگر (charset != &Null (Charset))
       {
-	auto *mapping = (glyph_to_sid_map_t *) hb_malloc (sizeof (glyph_to_sid_map_t));
-	if (unlikely (!mapping)) return nullptr;
-	mapping = new (mapping) glyph_to_sid_map_t ();
-	mapping->push (code_pair_t {0, 1});
-	charset->collect_glyph_to_sid_map (mapping, num_glyphs);
-	return mapping;
+	خودکار *mapping = (glyph_مقصد_sid_map_t *) hb_malloc (حجم (glyph_مقصد_sid_map_t));
+	اگر (unlikely (!mapping)) واپس خالی_اشاریہ;
+	mapping = نیا (mapping) glyph_مقصد_sid_map_t ();
+	mapping->push (رمز_pair_t {0, 1});
+	charset->collect_glyph_مقصد_sid_map (mapping, عدد_glyphs);
+	واپس mapping;
       }
-      else
-	return nullptr;
+      ورنہ
+	واپس خالی_اشاریہ;
     }
 
-    hb_codepoint_t glyph_to_sid (hb_codepoint_t glyph,
-				 code_pair_t *cache = nullptr) const
+    hb_codepoint_t glyph_مقصد_sid (hb_codepoint_t glyph,
+				 رمز_pair_t *cache = خالی_اشاریہ) ثابت
     {
-      if (charset != &Null (Charset))
-	return charset->get_sid (glyph, num_glyphs, cache);
-      else
+      اگر (charset != &Null (Charset))
+	واپس charset->get_sid (glyph, عدد_glyphs, cache);
+      ورنہ
       {
 	hb_codepoint_t sid = 0;
-	switch (topDict.CharsetOffset)
+	انتخاب (چوٹی_Dict_2.Charset_انحراف)
 	{
-	  case ISOAdobeCharset:
-	    if (glyph <= 228 /*zcaron*/) sid = glyph;
-	    break;
-	  case ExpertCharset:
+	  حالت ISOAdobeCharset:
+	    اگر (glyph <= 228 /*zcaron*/) sid = glyph;
+	    توڑو;
+	  حالت ExpertCharset:
 	    sid = lookup_expert_charset_for_sid (glyph);
-	    break;
-	  case ExpertSubsetCharset:
+	    توڑو;
+	  حالت ExpertSubsetCharset:
 	      sid = lookup_expert_subset_charset_for_sid (glyph);
-	    break;
-	  default:
-	    break;
+	    توڑو;
+	  طےشدہ:
+	    توڑو;
 	}
-	return sid;
+	واپس sid;
       }
     }
 
-    hb_codepoint_t sid_to_glyph (hb_codepoint_t sid) const
+    hb_codepoint_t sid_مقصد_glyph (hb_codepoint_t sid) ثابت
     {
-      if (charset != &Null (Charset))
-	return charset->get_glyph (sid, num_glyphs);
-      else
+      اگر (charset != &Null (Charset))
+	واپس charset->get_glyph (sid, عدد_glyphs);
+      ورنہ
       {
 	hb_codepoint_t glyph = 0;
-	switch (topDict.CharsetOffset)
+	انتخاب (چوٹی_Dict_2.Charset_انحراف)
 	{
-	  case ISOAdobeCharset:
-	    if (sid <= 228 /*zcaron*/) glyph = sid;
-	    break;
-	  case ExpertCharset:
+	  حالت ISOAdobeCharset:
+	    اگر (sid <= 228 /*zcaron*/) glyph = sid;
+	    توڑو;
+	  حالت ExpertCharset:
 	    glyph = lookup_expert_charset_for_glyph (sid);
-	    break;
-	  case ExpertSubsetCharset:
+	    توڑو;
+	  حالت ExpertSubsetCharset:
 	    glyph = lookup_expert_subset_charset_for_glyph (sid);
-	    break;
-	  default:
-	    break;
+	    توڑو;
+	  طےشدہ:
+	    توڑو;
 	}
-	return glyph;
+	واپس glyph;
       }
     }
 
-    protected:
+    محفوظ:
     hb_sanitize_context_t   sc;
 
-    public:
-    hb_blob_t               *blob = nullptr;
-    const Encoding	    *encoding = nullptr;
-    const Charset	    *charset = nullptr;
-    const CFF1NameIndex     *nameIndex = nullptr;
-    const CFF1TopDictIndex  *topDictIndex = nullptr;
-    const CFF1StringIndex   *stringIndex = nullptr;
-    const CFF1Subrs	    *globalSubrs = nullptr;
-    const CFF1CharStrings   *charStrings = nullptr;
-    const CFF1FDArray       *fdArray = nullptr;
-    const CFF1FDSelect      *fdSelect = nullptr;
-    unsigned int	     fdCount = 0;
+    عوامی:
+    hb_blob_t               *blob = خالی_اشاریہ;
+    ثابت Encoding	    *encoding = خالی_اشاریہ;
+    ثابت Charset	    *charset = خالی_اشاریہ;
+    ثابت CFF1_Name_اشاریہ     *name_اشاریہ = خالی_اشاریہ;
+    ثابت CFF1_چوٹی_Dict_اشاریہ  *چوٹی_Dict_اشاریہ = خالی_اشاریہ;
+    ثابت CFF1_String_اشاریہ   *string_اشاریہ = خالی_اشاریہ;
+    ثابت CFF1Subrs	    *globalSubrs = خالی_اشاریہ;
+    ثابت CFF1_Char_لڑیاں   *char_لڑیاں = خالی_اشاریہ;
+    ثابت CFF1FDArray       *fdArray = خالی_اشاریہ;
+    ثابت CFF1FDSelect      *fdSelect = خالی_اشاریہ;
+    غیرعلامتی صحیح	     fd_گنتی = 0;
 
-    cff1_top_dict_values_t   topDict;
-    hb_vector_t<cff1_font_dict_values_t>
+    cff1_چوٹی_dict_اقدار_t   چوٹی_Dict_2;
+    hb_سمتیہ_t<cff1_font_dict_اقدار_t>
 			     fontDicts;
-    hb_vector_t<PRIVDICTVAL> privateDicts;
+    hb_سمتیہ_t<PRIVDICTVAL> نجی_Dicts;
 
-    unsigned int	     num_glyphs = 0;
-    unsigned int	     num_charset_entries = 0;
+    غیرعلامتی صحیح	     عدد_glyphs = 0;
+    غیرعلامتی صحیح	     عدد_charset_entries = 0;
   };
 
-  struct accelerator_t : accelerator_templ_t<cff1_private_dict_opset_t, cff1_private_dict_values_t>
+  ساخت accelerator_t : accelerator_templ_t<cff1_نجی_dict_opset_t, cff1_نجی_dict_اقدار_t>
   {
     accelerator_t (hb_face_t *face) : SUPER (face)
     {
-      glyph_names.set_relaxed (nullptr);
+      glyph_نام.سیٹ_relaxed (خالی_اشاریہ);
 
-      if (!is_valid ()) return;
-      if (is_CID ()) return;
+      اگر (!is_valid ()) واپس;
+      اگر (is_CID ()) واپس;
     }
     ~accelerator_t ()
     {
-      hb_sorted_vector_t<gname_t> *names = glyph_names.get_relaxed ();
-      if (names)
+      hb_sorted_سمتیہ_t<gname_t> *نام = glyph_نام.get_relaxed ();
+      اگر (نام)
       {
-	names->fini ();
-	hb_free (names);
+	نام->fini ();
+	hb_free (نام);
       }
     }
 
-    bool get_glyph_name (hb_codepoint_t glyph,
-			 char *buf, unsigned int buf_len) const
+    منطقی get_glyph_name (hb_codepoint_t glyph,
+			 حرف *buf, غیرعلامتی صحیح buf_len) ثابت
     {
-      if (unlikely (glyph >= num_glyphs)) return false;
-      if (unlikely (!is_valid ())) return false;
-      if (is_CID()) return false;
-      if (unlikely (!buf_len)) return true;
-      hb_codepoint_t sid = glyph_to_sid (glyph);
-      const char *str;
+      اگر (unlikely (glyph >= عدد_glyphs)) واپس جھوٹ;
+      اگر (unlikely (!is_valid ())) واپس جھوٹ;
+      اگر (is_CID()) واپس جھوٹ;
+      اگر (unlikely (!buf_len)) واپس سچ;
+      hb_codepoint_t sid = glyph_مقصد_sid (glyph);
+      ثابت حرف *str;
       size_t str_len;
-      if (sid < cff1_std_strings_length)
+      اگر (sid < cff1_std_لڑیاں_لمبائی)
       {
-	hb_bytes_t byte_str = cff1_std_strings (sid);
+	hb_بائٹیں_t byte_str = cff1_std_لڑیاں (sid);
 	str = byte_str.arrayZ;
-	str_len = byte_str.length;
+	str_len = byte_str.لمبائی;
       }
-      else
+      ورنہ
       {
-	hb_ubytes_t ubyte_str = (*stringIndex)[sid - cff1_std_strings_length];
-	str = (const char *)ubyte_str.arrayZ;
-	str_len = ubyte_str.length;
+	hb_ubytes_t ubyte_str = (*string_اشاریہ)[sid - cff1_std_لڑیاں_لمبائی];
+	str = (ثابت حرف *)ubyte_str.arrayZ;
+	str_len = ubyte_str.لمبائی;
       }
-      if (!str_len) return false;
-      unsigned int len = hb_min (buf_len - 1, str_len);
-      strncpy (buf, (const char*)str, len);
+      اگر (!str_len) واپس جھوٹ;
+      غیرعلامتی صحیح len = hb_min (buf_len - 1, str_len);
+      strncpy (buf, (ثابت حرف*)str, len);
       buf[len] = '\0';
-      return true;
+      واپس سچ;
     }
 
-    bool get_glyph_from_name (const char *name, int len,
-			      hb_codepoint_t *glyph) const
+    منطقی get_glyph_from_name (ثابت حرف *name, صحیح len,
+			      hb_codepoint_t *glyph) ثابت
     {
-      if (unlikely (!is_valid ())) return false;
-      if (is_CID()) return false;
-      if (len < 0) len = strlen (name);
-      if (unlikely (!len)) return false;
+      اگر (unlikely (!is_valid ())) واپس جھوٹ;
+      اگر (is_CID()) واپس جھوٹ;
+      اگر (len < 0) len = لڑی_لمبائی (name);
+      اگر (unlikely (!len)) واپس جھوٹ;
 
     retry:
-      hb_sorted_vector_t<gname_t> *names = glyph_names.get_acquire ();
-      if (unlikely (!names))
+      hb_sorted_سمتیہ_t<gname_t> *نام = glyph_نام.get_acquire ();
+      اگر (unlikely (!نام))
       {
-	names = (hb_sorted_vector_t<gname_t> *) hb_calloc (1, sizeof (hb_sorted_vector_t<gname_t>));
-	if (likely (names))
+	نام = (hb_sorted_سمتیہ_t<gname_t> *) hb_calloc (1, حجم (hb_sorted_سمتیہ_t<gname_t>));
+	اگر (likely (نام))
 	{
-	  names->init ();
+	  نام->init ();
 	  /* TODO */
 
 	  /* fill glyph names */
-	  code_pair_t glyph_to_sid_cache {0, HB_CODEPOINT_INVALID};
-	  for (hb_codepoint_t gid = 0; gid < num_glyphs; gid++)
+	  رمز_pair_t glyph_مقصد_sid_cache {0, HB_CODEPOINT_INVALID};
+	  برائے (hb_codepoint_t gid = 0; gid < عدد_glyphs; gid++)
 	  {
-	    hb_codepoint_t	sid = glyph_to_sid (gid, &glyph_to_sid_cache);
+	    hb_codepoint_t	sid = glyph_مقصد_sid (gid, &glyph_مقصد_sid_cache);
 	    gname_t	gname;
 	    gname.sid = sid;
-	    if (sid < cff1_std_strings_length)
-	      gname.name = cff1_std_strings (sid);
-	    else
+	    اگر (sid < cff1_std_لڑیاں_لمبائی)
+	      gname.name = cff1_std_لڑیاں (sid);
+	    ورنہ
 	    {
-	      hb_ubytes_t	ustr = (*stringIndex)[sid - cff1_std_strings_length];
-	      gname.name = hb_bytes_t ((const char*) ustr.arrayZ, ustr.length);
+	      hb_ubytes_t	ustr = (*string_اشاریہ)[sid - cff1_std_لڑیاں_لمبائی];
+	      gname.name = hb_بائٹیں_t ((ثابت حرف*) ustr.arrayZ, ustr.لمبائی);
 	    }
-	    if (unlikely (!gname.name.arrayZ))
-	      gname.name = hb_bytes_t ("", 0); /* To avoid nullptr. */
-	    names->push (gname);
+	    اگر (unlikely (!gname.name.arrayZ))
+	      gname.name = hb_بائٹیں_t ("", 0); /* To avoid nullptr. */
+	    نام->push (gname);
 	  }
-	  names->qsort ();
+	  نام->qsort ();
 	}
-	if (unlikely (!glyph_names.cmpexch (nullptr, names)))
+	اگر (unlikely (!glyph_نام.cmpexch (خالی_اشاریہ, نام)))
 	{
-	  if (names)
+	  اگر (نام)
 	  {
-	    names->fini ();
-	    hb_free (names);
+	    نام->fini ();
+	    hb_free (نام);
 	  }
-	  goto retry;
+	  جاؤ retry;
 	}
       }
 
-      gname_t key = { hb_bytes_t (name, len), 0 };
-      const gname_t *gname = names ? names->bsearch (key) : nullptr;
-      if (!gname) return false;
-      hb_codepoint_t gid = sid_to_glyph (gname->sid);
-      if (!gid && gname->sid) return false;
+      gname_t key = { hb_بائٹیں_t (name, len), 0 };
+      ثابت gname_t *gname = نام ? نام->bsearch (key) : خالی_اشاریہ;
+      اگر (!gname) واپس جھوٹ;
+      hb_codepoint_t gid = sid_مقصد_glyph (gname->sid);
+      اگر (!gid && gname->sid) واپس جھوٹ;
       *glyph = gid;
-      return true;
+      واپس سچ;
     }
 
-    HB_INTERNAL bool get_extents (hb_font_t *font, hb_codepoint_t glyph, hb_glyph_extents_t *extents, int64_t *budget = nullptr) const;
-    HB_INTERNAL bool get_path (hb_font_t *font, hb_codepoint_t glyph, hb_draw_session_t &draw_session, int64_t *budget = nullptr) const;
+    HB_اندرونی منطقی get_extents (hb_font_t *font, hb_codepoint_t glyph, hb_glyph_extents_t *extents, int64_t *budget = خالی_اشاریہ) ثابت;
+    HB_اندرونی منطقی get_راستہ (hb_font_t *font, hb_codepoint_t glyph, hb_draw_session_t &draw_session, int64_t *budget = خالی_اشاریہ) ثابت;
 
-    private:
-    struct gname_t
+    نجی:
+    ساخت gname_t
     {
-      hb_bytes_t	name;
+      hb_بائٹیں_t	name;
       uint16_t		sid;
 
-      static int cmp (const void *a_, const void *b_)
+      ساکن صحیح cmp (ثابت خالی *a_, ثابت خالی *b_)
       {
-	const gname_t *a = (const gname_t *)a_;
-	const gname_t *b = (const gname_t *)b_;
-	unsigned minlen = hb_min (a->name.length, b->name.length);
-	int ret = strncmp (a->name.arrayZ, b->name.arrayZ, minlen);
-	if (ret) return ret;
-	return a->name.length - b->name.length;
+	ثابت gname_t *a = (ثابت gname_t *)a_;
+	ثابت gname_t *b = (ثابت gname_t *)b_;
+	غیرعلامتی minlen = hb_min (a->name.لمبائی, b->name.لمبائی);
+	صحیح ret = لڑی_موازنہ (a->name.arrayZ, b->name.arrayZ, minlen);
+	اگر (ret) واپس ret;
+	واپس a->name.لمبائی - b->name.لمبائی;
       }
 
-      int cmp (const gname_t &a) const { return cmp (&a, this); }
+      صحیح cmp (ثابت gname_t &a) ثابت { واپس cmp (&a, یہ); }
     };
 
-    mutable hb_atomic_t<hb_sorted_vector_t<gname_t> *> glyph_names;
+    تغیرپذیر hb_atomic_t<hb_sorted_سمتیہ_t<gname_t> *> glyph_نام;
 
-    typedef accelerator_templ_t<cff1_private_dict_opset_t, cff1_private_dict_values_t> SUPER;
+    قسمتعریف accelerator_templ_t<cff1_نجی_dict_opset_t, cff1_نجی_dict_اقدار_t> SUPER;
   };
 
-  struct accelerator_subset_t : accelerator_templ_t<cff1_private_dict_opset_subset_t, cff1_private_dict_values_subset_t>
+  ساخت accelerator_subset_t : accelerator_templ_t<cff1_نجی_dict_opset_subset_t, cff1_نجی_dict_اقدار_subset_t>
   {
     accelerator_subset_t (hb_face_t *face) : SUPER (face) {}
     ~accelerator_subset_t ()
     {
-      if (cff_accelerator)
+      اگر (cff_accelerator)
 	cff_subset_accelerator_t::destroy (cff_accelerator);
     }
 
-    HB_INTERNAL bool subset (hb_subset_context_t *c) const;
-    HB_INTERNAL bool serialize (hb_serialize_context_t *c,
-				struct cff1_subset_plan &plan) const;
-    HB_INTERNAL bool get_seac_components (hb_codepoint_t glyph, hb_codepoint_t *base, hb_codepoint_t *accent) const;
+    HB_اندرونی منطقی subset (hb_subset_context_t *c) ثابت;
+    HB_اندرونی منطقی serialize (hb_serialize_context_t *c,
+				ساخت cff1_subset_plan &plan) ثابت;
+    HB_اندرونی منطقی get_seac_components (hb_codepoint_t glyph, hb_codepoint_t *بنیاد, hb_codepoint_t *accent) ثابت;
 
-    mutable CFF::cff_subset_accelerator_t* cff_accelerator = nullptr;
+    تغیرپذیر CFF::cff_subset_accelerator_t* cff_accelerator = خالی_اشاریہ;
 
-    typedef accelerator_templ_t<cff1_private_dict_opset_subset_t, cff1_private_dict_values_subset_t> SUPER;
+    قسمتعریف accelerator_templ_t<cff1_نجی_dict_opset_subset_t, cff1_نجی_dict_اقدار_subset_t> SUPER;
   };
 
-  protected:
-  HB_INTERNAL static hb_codepoint_t lookup_standard_encoding_for_code (hb_codepoint_t sid);
-  HB_INTERNAL static hb_codepoint_t lookup_expert_encoding_for_code (hb_codepoint_t sid);
-  HB_INTERNAL static hb_codepoint_t lookup_expert_charset_for_sid (hb_codepoint_t glyph);
-  HB_INTERNAL static hb_codepoint_t lookup_expert_subset_charset_for_sid (hb_codepoint_t glyph);
-  HB_INTERNAL static hb_codepoint_t lookup_expert_charset_for_glyph (hb_codepoint_t sid);
-  HB_INTERNAL static hb_codepoint_t lookup_expert_subset_charset_for_glyph (hb_codepoint_t sid);
-  HB_INTERNAL static hb_codepoint_t lookup_standard_encoding_for_sid (hb_codepoint_t code);
+  محفوظ:
+  HB_اندرونی ساکن hb_codepoint_t lookup_standard_encoding_for_رمز (hb_codepoint_t sid);
+  HB_اندرونی ساکن hb_codepoint_t lookup_expert_encoding_for_رمز (hb_codepoint_t sid);
+  HB_اندرونی ساکن hb_codepoint_t lookup_expert_charset_for_sid (hb_codepoint_t glyph);
+  HB_اندرونی ساکن hb_codepoint_t lookup_expert_subset_charset_for_sid (hb_codepoint_t glyph);
+  HB_اندرونی ساکن hb_codepoint_t lookup_expert_charset_for_glyph (hb_codepoint_t sid);
+  HB_اندرونی ساکن hb_codepoint_t lookup_expert_subset_charset_for_glyph (hb_codepoint_t sid);
+  HB_اندرونی ساکن hb_codepoint_t lookup_standard_encoding_for_sid (hb_codepoint_t رمز);
 
-  public:
-  FixedVersion<HBUINT8> version;	  /* Version of CFF table. set to 0x0100u */
-  NNOffsetTo<CFF1NameIndex, HBUINT8> nameIndex; /* headerSize = Offset to Name INDEX. */
-  HBUINT8	       offSize;	  /* offset size (unused?) */
+  عوامی:
+  Fixed_نسخہ<HBUINT8> نسخہ;	  /* Version of CFF table. set to 0x0100u */
+  NNOffset_مقصد<CFF1_Name_اشاریہ, HBUINT8> name_اشاریہ; /* headerSize = Offset to Name INDEX. */
+  HBUINT8	       off_سائز;	  /* offset size (unused?) */
 
-  public:
-  DEFINE_SIZE_STATIC (4);
+  عوامی:
+  DEFINE_سائز_STATIC (4);
 };
 
-struct cff1_accelerator_t : cff1::accelerator_t {
+ساخت cff1_accelerator_t : cff1::accelerator_t {
   cff1_accelerator_t (hb_face_t *face) : cff1::accelerator_t (face) {}
 };
 
-struct cff1_subset_accelerator_t : cff1::accelerator_subset_t {
+ساخت cff1_subset_accelerator_t : cff1::accelerator_subset_t {
   cff1_subset_accelerator_t (hb_face_t *face) : cff1::accelerator_subset_t (face) {}
 
-  void depend (hb_depend_data_builder_t *builder) const
+  خالی depend (hb_depend_ڈیٹا_builder_t *builder) ثابت
   {
-    if (!is_valid ()) return;
-    for (hb_codepoint_t gid = 0; gid < num_glyphs; gid++)
+    اگر (!is_valid ()) واپس;
+    برائے (hb_codepoint_t gid = 0; gid < عدد_glyphs; gid++)
     {
-      hb_codepoint_t base_gid, accent_gid;
-      if (get_seac_components (gid, &base_gid, &accent_gid))
+      hb_codepoint_t بنیاد_gid, accent_gid;
+      اگر (get_seac_components (gid, &بنیاد_gid, &accent_gid))
       {
-        builder->add_depend (gid, HB_TAG('C','F','F',' '), base_gid);
-        builder->add_depend (gid, HB_TAG('C','F','F',' '), accent_gid);
+        builder->جوڑو_depend (gid, HB_لیبل('C','F','F',' '), بنیاد_gid);
+        builder->جوڑو_depend (gid, HB_لیبل('C','F','F',' '), accent_gid);
       }
     }
   }
@@ -1556,4 +1556,4 @@ struct cff1_subset_accelerator_t : cff1::accelerator_subset_t {
 
 } /* namespace OT */
 
-#endif /* HB_OT_CFF1_TABLE_HH */
+#اگر_ختم /* HB_OT_CFF1_TABLE_HH */

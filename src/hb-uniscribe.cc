@@ -24,30 +24,30 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#شامل "hb.hh"
 
-#ifdef HAVE_UNISCRIBE
+#اگر_تعریف_شدہ HAVE_UNISCRIBE
 
-#ifdef HB_NO_OT_TAG
-#error "Cannot compile 'uniscribe' shaper with HB_NO_OT_TAG."
-#endif
+#اگر_تعریف_شدہ HB_NO_OT_لیبل
+#غلطی "Cannot compile 'uniscribe' shaper with HB_NO_OT_TAG."
+#اگر_ختم
 
-#include "hb-shaper-impl.hh"
+#شامل "hb-shaper-impl.hh"
 
-#include <windows.h>
-#include <usp10.h>
-#include <rpc.h>
+#شامل <windows.h>
+#شامل <usp10.h>
+#شامل <rpc.h>
 
-#ifndef E_NOT_SUFFICIENT_BUFFER
-#define E_NOT_SUFFICIENT_BUFFER HRESULT_FROM_WIN32 (ERROR_INSUFFICIENT_BUFFER)
-#endif
+#اگر_غیر_تعریف_شدہ E_NOT_SUFFICIENT_بفر
+#تعریف_کرو E_NOT_SUFFICIENT_بفر HRESULT_FROM_WIN32 (ERROR_INSUFFICIENT_بفر)
+#اگر_ختم
 
-#include "hb-uniscribe.h"
+#شامل "hb-uniscribe.h"
 
-#include "hb-ms-feature-ranges.hh"
-#include "hb-open-file.hh"
-#include "hb-ot-name-table.hh"
-#include "hb-ot-layout.h"
+#شامل "hb-ms-feature-ranges.hh"
+#شامل "hb-open-file.hh"
+#شامل "hb-ot-name-table.hh"
+#شامل "hb-ot-layout.h"
 
 
 /**
@@ -59,53 +59,53 @@
  * Functions for using HarfBuzz with Windows fonts.
  **/
 
-typedef HRESULT (WINAPI *SIOT) /*ScriptItemizeOpenType*/(
-  const WCHAR *pwcInChars,
-  int cInChars,
-  int cMaxItems,
-  const SCRIPT_CONTROL *psControl,
-  const SCRIPT_STATE *psState,
-  SCRIPT_ITEM *pItems,
-  OPENTYPE_TAG *pScriptTags,
-  int *pcItems
+قسمتعریف HRESULT (WINAPI *SIOT) /*ScriptItemizeOpenType*/(
+  ثابت WCHAR *pwc_اندر_Chars,
+  صحیح c_اندر_Chars,
+  صحیح c_Max_اشیاء,
+  ثابت SCRIPT_CONTROL *psControl,
+  ثابت SCRIPT_STATE *psState,
+  SCRIPT_شے *p_اشیاء,
+  OPENTYPE_لیبل *p_Script_لیبل_فہرست,
+  صحیح *pc_اشیاء
 );
 
-typedef HRESULT (WINAPI *SSOT) /*ScriptShapeOpenType*/(
+قسمتعریف HRESULT (WINAPI *SSOT) /*ScriptShapeOpenType*/(
   HDC hdc,
   SCRIPT_CACHE *psc,
   SCRIPT_ANALYSIS *psa,
-  OPENTYPE_TAG tagScript,
-  OPENTYPE_TAG tagLangSys,
-  int *rcRangeChars,
+  OPENTYPE_لیبل لیبل_Script,
+  OPENTYPE_لیبل لیبل_Lang_Sys,
+  صحیح *rcRangeChars,
   TEXTRANGE_PROPERTIES **rpRangeProperties,
-  int cRanges,
-  const WCHAR *pwcChars,
-  int cChars,
-  int cMaxGlyphs,
-  WORD *pwLogClust,
+  صحیح cRanges,
+  ثابت WCHAR *pwcChars,
+  صحیح cChars,
+  صحیح cMaxGlyphs,
+  لفظ *pwLogClust,
   SCRIPT_CHARPROP *pCharProps,
-  WORD *pwOutGlyphs,
-  SCRIPT_GLYPHPROP *pOutGlyphProps,
-  int *pcGlyphs
+  لفظ *pw_برآمد_Glyphs,
+  SCRIPT_GLYPHPROP *p_برآمد_Glyph_Props,
+  صحیح *pcGlyphs
 );
 
-typedef HRESULT (WINAPI *SPOT) /*ScriptPlaceOpenType*/(
+قسمتعریف HRESULT (WINAPI *SPOT) /*ScriptPlaceOpenType*/(
   HDC hdc,
   SCRIPT_CACHE *psc,
   SCRIPT_ANALYSIS *psa,
-  OPENTYPE_TAG tagScript,
-  OPENTYPE_TAG tagLangSys,
-  int *rcRangeChars,
+  OPENTYPE_لیبل لیبل_Script,
+  OPENTYPE_لیبل لیبل_Lang_Sys,
+  صحیح *rcRangeChars,
   TEXTRANGE_PROPERTIES **rpRangeProperties,
-  int cRanges,
-  const WCHAR *pwcChars,
-  WORD *pwLogClust,
+  صحیح cRanges,
+  ثابت WCHAR *pwcChars,
+  لفظ *pwLogClust,
   SCRIPT_CHARPROP *pCharProps,
-  int cChars,
-  const WORD *pwGlyphs,
-  const SCRIPT_GLYPHPROP *pGlyphProps,
-  int cGlyphs,
-  int *piAdvance,
+  صحیح cChars,
+  ثابت لفظ *pwGlyphs,
+  ثابت SCRIPT_GLYPHPROP *pGlyphProps,
+  صحیح cGlyphs,
+  صحیح *piAdvance,
   GOFFSET *pGoffset,
   ABC *pABC
 );
@@ -113,86 +113,86 @@ typedef HRESULT (WINAPI *SPOT) /*ScriptPlaceOpenType*/(
 
 /* Fallback implementations. */
 
-static HRESULT WINAPI
+ساکن HRESULT WINAPI
 hb_ScriptItemizeOpenType(
-  const WCHAR *pwcInChars,
-  int cInChars,
-  int cMaxItems,
-  const SCRIPT_CONTROL *psControl,
-  const SCRIPT_STATE *psState,
-  SCRIPT_ITEM *pItems,
-  OPENTYPE_TAG *pScriptTags,
-  int *pcItems
+  ثابت WCHAR *pwc_اندر_Chars,
+  صحیح c_اندر_Chars,
+  صحیح c_Max_اشیاء,
+  ثابت SCRIPT_CONTROL *psControl,
+  ثابت SCRIPT_STATE *psState,
+  SCRIPT_شے *p_اشیاء,
+  OPENTYPE_لیبل *p_Script_لیبل_فہرست,
+  صحیح *pc_اشیاء
 )
 {
 {
-  return ScriptItemize (pwcInChars,
-			cInChars,
-			cMaxItems,
+  واپس ScriptItemize (pwc_اندر_Chars,
+			c_اندر_Chars,
+			c_Max_اشیاء,
 			psControl,
 			psState,
-			pItems,
-			pcItems);
+			p_اشیاء,
+			pc_اشیاء);
 }
 }
 
-static HRESULT WINAPI
+ساکن HRESULT WINAPI
 hb_ScriptShapeOpenType(
   HDC hdc,
   SCRIPT_CACHE *psc,
   SCRIPT_ANALYSIS *psa,
-  OPENTYPE_TAG tagScript,
-  OPENTYPE_TAG tagLangSys,
-  int *rcRangeChars,
+  OPENTYPE_لیبل لیبل_Script,
+  OPENTYPE_لیبل لیبل_Lang_Sys,
+  صحیح *rcRangeChars,
   TEXTRANGE_PROPERTIES **rpRangeProperties,
-  int cRanges,
-  const WCHAR *pwcChars,
-  int cChars,
-  int cMaxGlyphs,
-  WORD *pwLogClust,
+  صحیح cRanges,
+  ثابت WCHAR *pwcChars,
+  صحیح cChars,
+  صحیح cMaxGlyphs,
+  لفظ *pwLogClust,
   SCRIPT_CHARPROP *pCharProps,
-  WORD *pwOutGlyphs,
-  SCRIPT_GLYPHPROP *pOutGlyphProps,
-  int *pcGlyphs
+  لفظ *pw_برآمد_Glyphs,
+  SCRIPT_GLYPHPROP *p_برآمد_Glyph_Props,
+  صحیح *pcGlyphs
 )
 {
-  SCRIPT_VISATTR *psva = (SCRIPT_VISATTR *) pOutGlyphProps;
-  return ScriptShape (hdc,
+  SCRIPT_VISATTR *psva = (SCRIPT_VISATTR *) p_برآمد_Glyph_Props;
+  واپس ScriptShape (hdc,
 		      psc,
 		      pwcChars,
 		      cChars,
 		      cMaxGlyphs,
 		      psa,
-		      pwOutGlyphs,
+		      pw_برآمد_Glyphs,
 		      pwLogClust,
 		      psva,
 		      pcGlyphs);
 }
 
-static HRESULT WINAPI
-hb_ScriptPlaceOpenType(
+ساکن HRESULT WINAPI
+hb_Script_رکھو_Open_Type(
   HDC hdc,
   SCRIPT_CACHE *psc,
   SCRIPT_ANALYSIS *psa,
-  OPENTYPE_TAG tagScript,
-  OPENTYPE_TAG tagLangSys,
-  int *rcRangeChars,
+  OPENTYPE_لیبل لیبل_Script,
+  OPENTYPE_لیبل لیبل_Lang_Sys,
+  صحیح *rcRangeChars,
   TEXTRANGE_PROPERTIES **rpRangeProperties,
-  int cRanges,
-  const WCHAR *pwcChars,
-  WORD *pwLogClust,
+  صحیح cRanges,
+  ثابت WCHAR *pwcChars,
+  لفظ *pwLogClust,
   SCRIPT_CHARPROP *pCharProps,
-  int cChars,
-  const WORD *pwGlyphs,
-  const SCRIPT_GLYPHPROP *pGlyphProps,
-  int cGlyphs,
-  int *piAdvance,
+  صحیح cChars,
+  ثابت لفظ *pwGlyphs,
+  ثابت SCRIPT_GLYPHPROP *pGlyphProps,
+  صحیح cGlyphs,
+  صحیح *piAdvance,
   GOFFSET *pGoffset,
   ABC *pABC
 )
 {
   SCRIPT_VISATTR *psva = (SCRIPT_VISATTR *) pGlyphProps;
-  return ScriptPlace (hdc,
+  واپس Script_رکھو (hdc,
 		      psc,
 		      pwGlyphs,
 		      cGlyphs,
@@ -204,78 +204,78 @@ hb_ScriptPlaceOpenType(
 }
 
 
-struct hb_uniscribe_shaper_funcs_t
+ساخت hb_uniscribe_shaper_funcs_t
 {
   SIOT ScriptItemizeOpenType;
   SSOT ScriptShapeOpenType;
-  SPOT ScriptPlaceOpenType;
+  SPOT Script_رکھو_Open_Type;
 
-  void init ()
+  خالی init ()
   {
     HMODULE hinstLib;
-    this->ScriptItemizeOpenType = nullptr;
-    this->ScriptShapeOpenType   = nullptr;
-    this->ScriptPlaceOpenType   = nullptr;
+    یہ->ScriptItemizeOpenType = خالی_اشاریہ;
+    یہ->ScriptShapeOpenType   = خالی_اشاریہ;
+    یہ->Script_رکھو_Open_Type   = خالی_اشاریہ;
 
-    hinstLib = GetModuleHandle (TEXT ("usp10.dll"));
-    if (hinstLib)
+    hinstLib = GetModuleHandle (متن_2 ("usp10.dll"));
+    اگر (hinstLib)
     {
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wcast-function-type"
-      this->ScriptItemizeOpenType = (SIOT) GetProcAddress (hinstLib, "ScriptItemizeOpenType");
-      this->ScriptShapeOpenType   = (SSOT) GetProcAddress (hinstLib, "ScriptShapeOpenType");
-      this->ScriptPlaceOpenType   = (SPOT) GetProcAddress (hinstLib, "ScriptPlaceOpenType");
-#pragma GCC diagnostic pop
+#ہدایت GCC diagnostic push
+#ہدایت GCC diagnostic ignored "-Wcast-function-type"
+      یہ->ScriptItemizeOpenType = (SIOT) Get_Proc_پتہ (hinstLib, "ScriptItemizeOpenType");
+      یہ->ScriptShapeOpenType   = (SSOT) Get_Proc_پتہ (hinstLib, "ScriptShapeOpenType");
+      یہ->Script_رکھو_Open_Type   = (SPOT) Get_Proc_پتہ (hinstLib, "ScriptPlaceOpenType");
+#ہدایت GCC diagnostic نکالو
     }
-    if (!this->ScriptItemizeOpenType ||
-	!this->ScriptShapeOpenType   ||
-	!this->ScriptPlaceOpenType)
+    اگر (!یہ->ScriptItemizeOpenType ||
+	!یہ->ScriptShapeOpenType   ||
+	!یہ->Script_رکھو_Open_Type)
     {
-      DEBUG_MSG (UNISCRIBE, nullptr, "OpenType versions of functions not found; falling back.");
-      this->ScriptItemizeOpenType = hb_ScriptItemizeOpenType;
-      this->ScriptShapeOpenType   = hb_ScriptShapeOpenType;
-      this->ScriptPlaceOpenType   = hb_ScriptPlaceOpenType;
+      DEBUG_پیغام (UNISCRIBE, خالی_اشاریہ, "OpenType versions of functions not found; falling back.");
+      یہ->ScriptItemizeOpenType = hb_ScriptItemizeOpenType;
+      یہ->ScriptShapeOpenType   = hb_ScriptShapeOpenType;
+      یہ->Script_رکھو_Open_Type   = hb_Script_رکھو_Open_Type;
     }
   }
 };
 
-static inline void free_static_uniscribe_shaper_funcs ();
+ساکن اندرونی خالی free_static_uniscribe_shaper_funcs ();
 
-static struct hb_uniscribe_shaper_funcs_lazy_loader_t : hb_lazy_loader_t<hb_uniscribe_shaper_funcs_t,
+ساکن ساخت hb_uniscribe_shaper_funcs_lazy_loader_t : hb_lazy_loader_t<hb_uniscribe_shaper_funcs_t,
 									 hb_uniscribe_shaper_funcs_lazy_loader_t>
 {
-  static hb_uniscribe_shaper_funcs_t *create ()
+  ساکن hb_uniscribe_shaper_funcs_t *create ()
   {
-    hb_uniscribe_shaper_funcs_t *funcs = (hb_uniscribe_shaper_funcs_t *) hb_calloc (1, sizeof (hb_uniscribe_shaper_funcs_t));
-    if (unlikely (!funcs))
-      return nullptr;
+    hb_uniscribe_shaper_funcs_t *funcs = (hb_uniscribe_shaper_funcs_t *) hb_calloc (1, حجم (hb_uniscribe_shaper_funcs_t));
+    اگر (unlikely (!funcs))
+      واپس خالی_اشاریہ;
 
     funcs->init ();
 
     hb_atexit (free_static_uniscribe_shaper_funcs);
 
-    return funcs;
+    واپس funcs;
   }
-  static void destroy (hb_uniscribe_shaper_funcs_t *p)
+  ساکن خالی destroy (hb_uniscribe_shaper_funcs_t *p)
   {
-    hb_free ((void *) p);
+    hb_free ((خالی *) p);
   }
-  static hb_uniscribe_shaper_funcs_t *get_null ()
+  ساکن hb_uniscribe_shaper_funcs_t *get_null ()
   {
-    return nullptr;
+    واپس خالی_اشاریہ;
   }
 } static_uniscribe_shaper_funcs;
 
-static inline
-void free_static_uniscribe_shaper_funcs ()
+ساکن اندرونی
+خالی free_static_uniscribe_shaper_funcs ()
 {
   static_uniscribe_shaper_funcs.free_instance ();
 }
 
-static hb_uniscribe_shaper_funcs_t *
+ساکن hb_uniscribe_shaper_funcs_t *
 hb_uniscribe_shaper_get_funcs ()
 {
-  return static_uniscribe_shaper_funcs.get_unconst ();
+  واپس static_uniscribe_shaper_funcs.get_unconst ();
 }
 
 
@@ -283,27 +283,27 @@ hb_uniscribe_shaper_get_funcs ()
  * shaper face data
  */
 
-struct hb_uniscribe_face_data_t {
+ساخت hb_uniscribe_face_ڈیٹا_t {
   HANDLE fh;
   hb_uniscribe_shaper_funcs_t *funcs;
   wchar_t face_name[LF_FACESIZE];
 };
 
 /* face_name should point to a wchar_t[LF_FACESIZE] object. */
-static void
-_hb_generate_unique_face_name (wchar_t *face_name, unsigned int *plen)
+ساکن خالی
+_hb_generate_unique_face_name (wchar_t *face_name, غیرعلامتی صحیح *plen)
 {
   /* We'll create a private name for the font from a UUID using a simple,
    * somewhat base64-like encoding scheme */
-  const char *enc = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-";
+  ثابت حرف *enc = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-";
   UUID id;
   UuidCreate ((UUID*) &id);
   static_assert ((2 + 3 * (16/2) < LF_FACESIZE), "");
-  unsigned int name_str_len = 0;
+  غیرعلامتی صحیح name_str_len = 0;
   face_name[name_str_len++] = 'F';
   face_name[name_str_len++] = '_';
-  unsigned char *p = (unsigned char *) &id;
-  for (unsigned int i = 0; i < 16; i += 2)
+  غیرعلامتی حرف *p = (غیرعلامتی حرف *) &id;
+  برائے (غیرعلامتی صحیح i = 0; i < 16; i += 2)
   {
     /* Spread the 16 bits from two bytes of the UUID across three chars of face_name,
      * using the bits in groups of 5,5,6 to select chars from enc.
@@ -315,13 +315,13 @@ _hb_generate_unique_face_name (wchar_t *face_name, unsigned int *plen)
     face_name[name_str_len++] = enc[p[i + 1] & 0x3f];
   }
   face_name[name_str_len] = 0;
-  if (plen)
+  اگر (plen)
     *plen = name_str_len;
 }
 
 /* Destroys blob. */
-static hb_blob_t *
-_hb_rename_font (hb_blob_t *blob_in, wchar_t *new_name)
+ساکن hb_blob_t *
+_hb_rename_font (hb_blob_t *blob_اندر, wchar_t *new_name)
 {
   /* Create a copy of the font data, with the 'name' table replaced by a
    * table that names the font with our private F_* name created above.
@@ -332,70 +332,70 @@ _hb_rename_font (hb_blob_t *blob_in, wchar_t *new_name)
    * full, PS. All of them point to the same name data with our unique name.
    */
 
-  hb_unique_ptr_t<hb_blob_t> blob (hb_sanitize_context_t ().sanitize_blob<OT::OpenTypeFontFile> (blob_in));
+  hb_unique_ptr_t<hb_blob_t> blob (hb_sanitize_context_t ().sanitize_blob<OT::OpenTypeFontFile> (blob_اندر));
 
-  unsigned int length, new_length, name_str_len;
-  const char *orig_sfnt_data = hb_blob_get_data (blob, &length);
+  غیرعلامتی صحیح لمبائی, new_لمبائی, name_str_len;
+  ثابت حرف *orig_sfnt_ڈیٹا = hb_blob_get_ڈیٹا (blob, &لمبائی);
 
   _hb_generate_unique_face_name (new_name, &name_str_len);
 
-  static const uint16_t name_IDs[] = { 1, 2, 3, 4, 6 };
+  ساکن ثابت uint16_t name_IDs[] = { 1, 2, 3, 4, 6 };
 
-  unsigned int name_table_length = OT::name::min_size +
-				   ARRAY_LENGTH (name_IDs) * OT::NameRecord::static_size +
+  غیرعلامتی صحیح name_جدول_لمبائی = OT::name::min_سائز +
+				   ARRAY_لمبائی (name_IDs) * OT::Name_ریکارڈ::static_سائز +
 				   name_str_len * 2; /* for name data in UTF16BE form */
-  unsigned int padded_name_table_length = ((name_table_length + 3) & ~3);
-  unsigned int name_table_offset = (length + 3) & ~3;
+  غیرعلامتی صحیح padded_name_جدول_لمبائی = ((name_جدول_لمبائی + 3) & ~3);
+  غیرعلامتی صحیح name_جدول_انحراف = (لمبائی + 3) & ~3;
 
-  new_length = name_table_offset + padded_name_table_length;
-  void *new_sfnt_data = hb_calloc (1, new_length);
-  if (!new_sfnt_data)
-    return nullptr;
-  auto sfnt_guard = hb_make_scope_guard ([&]() { hb_free (new_sfnt_data); });
+  new_لمبائی = name_جدول_انحراف + padded_name_جدول_لمبائی;
+  خالی *new_sfnt_ڈیٹا = hb_calloc (1, new_لمبائی);
+  اگر (!new_sfnt_ڈیٹا)
+    واپس خالی_اشاریہ;
+  خودکار sfnt_guard = hb_make_scope_guard ([&]() { hb_free (new_sfnt_ڈیٹا); });
 
-  hb_memcpy(new_sfnt_data, orig_sfnt_data, length);
+  hb_memcpy(new_sfnt_ڈیٹا, orig_sfnt_ڈیٹا, لمبائی);
 
-  OT::name &name = StructAtOffset<OT::name> (new_sfnt_data, name_table_offset);
+  OT::name &name = Struct_At_انحراف<OT::name> (new_sfnt_ڈیٹا, name_جدول_انحراف);
   name.format = 0;
-  name.count = ARRAY_LENGTH (name_IDs);
-  name.stringOffset = name.get_size ();
-  for (unsigned int i = 0; i < ARRAY_LENGTH (name_IDs); i++)
+  name.گنتی = ARRAY_لمبائی (name_IDs);
+  name.string_انحراف = name.get_سائز ();
+  برائے (غیرعلامتی صحیح i = 0; i < ARRAY_لمبائی (name_IDs); i++)
   {
-    OT::NameRecord &record = name.nameRecordZ[i];
-    record.platformID = 3;
-    record.encodingID = 1;
-    record.languageID = 0x0409u; /* English */
-    record.nameID = name_IDs[i];
-    record.length = name_str_len * 2;
-    record.offset = 0;
+    OT::Name_ریکارڈ &ریکارڈ = name.name_ریکارڈ_Z[i];
+    ریکارڈ.platformID = 3;
+    ریکارڈ.encodingID = 1;
+    ریکارڈ.languageID = 0x0409u; /* English */
+    ریکارڈ.nameID = name_IDs[i];
+    ریکارڈ.لمبائی = name_str_len * 2;
+    ریکارڈ.انحراف = 0;
   }
 
   /* Copy string data from new_name, converting wchar_t to UTF16BE. */
-  unsigned char *p = &StructAfter<unsigned char> (name);
-  for (unsigned int i = 0; i < name_str_len; i++)
+  غیرعلامتی حرف *p = &StructAfter<غیرعلامتی حرف> (name);
+  برائے (غیرعلامتی صحیح i = 0; i < name_str_len; i++)
   {
     *p++ = new_name[i] >> 8;
     *p++ = new_name[i] & 0xff;
   }
 
   /* Adjust name table entry to point to new name table */
-  const OT::OpenTypeFontFile &file = * (OT::OpenTypeFontFile *) (new_sfnt_data);
-  unsigned int face_count = file.get_face_count ();
-  for (unsigned int face_index = 0; face_index < face_count; face_index++)
+  ثابت OT::OpenTypeFontFile &file = * (OT::OpenTypeFontFile *) (new_sfnt_ڈیٹا);
+  غیرعلامتی صحیح face_گنتی = file.get_face_گنتی ();
+  برائے (غیرعلامتی صحیح face_اشاریہ = 0; face_اشاریہ < face_گنتی; face_اشاریہ++)
   {
     /* Note: doing multiple edits (ie. TTC) can be unsafe.  There may be
      * toe-stepping.  But we don't really care. */
-    const OT::OpenTypeFontFace &face = file.get_face (face_index);
-    unsigned int index;
-    if (face.find_table_index (HB_OT_TAG_name, &index))
+    ثابت OT::OpenTypeFontFace &face = file.get_face (face_اشاریہ);
+    غیرعلامتی صحیح اشاریہ_2;
+    اگر (face.ڈھونڈو_جدول_اشاریہ (HB_OT_لیبل_name, &اشاریہ_2))
     {
-      OT::TableRecord &record = const_cast<OT::TableRecord &> (face.get_table (index));
-      record.checkSum.set_for_data (&name, padded_name_table_length);
-      record.offset = name_table_offset;
-      record.length = name_table_length;
+      OT::جدول_ریکارڈ &ریکارڈ = const_cast<OT::جدول_ریکارڈ &> (face.get_جدول (اشاریہ_2));
+      ریکارڈ.check_مجموع.سیٹ_for_ڈیٹا (&name, padded_name_جدول_لمبائی);
+      ریکارڈ.انحراف = name_جدول_انحراف;
+      ریکارڈ.لمبائی = name_جدول_لمبائی;
     }
-    else if (face_index == 0) /* Fail if first face doesn't have 'name' table. */
-      return nullptr;
+    ورنہ اگر (face_اشاریہ == 0) /* Fail if first face doesn't have 'name' table. */
+      واپس خالی_اشاریہ;
   }
 
   /* The checkSumAdjustment field in the 'head' table is now wrong,
@@ -403,54 +403,54 @@ _hb_rename_font (hb_blob_t *blob_in, wchar_t *new_name)
    * bother. */
 
   sfnt_guard.release ();
-  return hb_blob_create ((const char *) new_sfnt_data, new_length,
-			 HB_MEMORY_MODE_WRITABLE, new_sfnt_data, hb_free);
+  واپس hb_blob_create ((ثابت حرف *) new_sfnt_ڈیٹا, new_لمبائی,
+			 HB_حافظہ_منوال_WRITABLE, new_sfnt_ڈیٹا, hb_free);
 }
 
-hb_uniscribe_face_data_t *
-_hb_uniscribe_shaper_face_data_create (hb_face_t *face)
+hb_uniscribe_face_ڈیٹا_t *
+hb_uniscribe_shaper_face_ڈیٹا_create (hb_face_t *face)
 {
-  hb_uniscribe_face_data_t *data = (hb_uniscribe_face_data_t *) hb_calloc (1, sizeof (hb_uniscribe_face_data_t));
-  if (unlikely (!data))
-    return nullptr;
+  hb_uniscribe_face_ڈیٹا_t *ڈیٹا = (hb_uniscribe_face_ڈیٹا_t *) hb_calloc (1, حجم (hb_uniscribe_face_ڈیٹا_t));
+  اگر (unlikely (!ڈیٹا))
+    واپس خالی_اشاریہ;
 
-  data->funcs = hb_uniscribe_shaper_get_funcs ();
-  if (unlikely (!data->funcs))
+  ڈیٹا->funcs = hb_uniscribe_shaper_get_funcs ();
+  اگر (unlikely (!ڈیٹا->funcs))
   {
-    hb_free (data);
-    return nullptr;
+    hb_free (ڈیٹا);
+    واپس خالی_اشاریہ;
   }
 
   hb_blob_t *blob = hb_face_reference_blob (face);
-  if (unlikely (!hb_blob_get_length (blob)))
-    DEBUG_MSG (UNISCRIBE, face, "Face has empty blob");
+  اگر (unlikely (!hb_blob_get_لمبائی (blob)))
+    DEBUG_پیغام (UNISCRIBE, face, "Face has empty blob");
 
-  blob = _hb_rename_font (blob, data->face_name);
-  if (unlikely (!blob))
+  blob = _hb_rename_font (blob, ڈیٹا->face_name);
+  اگر (unlikely (!blob))
   {
-    hb_free (data);
-    return nullptr;
+    hb_free (ڈیٹا);
+    واپس خالی_اشاریہ;
   }
 
-  DWORD num_fonts_installed;
-  data->fh = AddFontMemResourceEx ((void *) hb_blob_get_data (blob, nullptr),
-				   hb_blob_get_length (blob),
-				   0, &num_fonts_installed);
-  if (unlikely (!data->fh))
+  DWORD عدد_fonts_installed;
+  ڈیٹا->fh = جوڑو_Font_Mem_Resource_Ex ((خالی *) hb_blob_get_ڈیٹا (blob, خالی_اشاریہ),
+				   hb_blob_get_لمبائی (blob),
+				   0, &عدد_fonts_installed);
+  اگر (unlikely (!ڈیٹا->fh))
   {
-    DEBUG_MSG (UNISCRIBE, face, "Face AddFontMemResourceEx() failed");
-    hb_free (data);
-    return nullptr;
+    DEBUG_پیغام (UNISCRIBE, face, "Face AddFontMemResourceEx() failed");
+    hb_free (ڈیٹا);
+    واپس خالی_اشاریہ;
   }
 
-  return data;
+  واپس ڈیٹا;
 }
 
-void
-_hb_uniscribe_shaper_face_data_destroy (hb_uniscribe_face_data_t *data)
+خالی
+hb_uniscribe_shaper_face_ڈیٹا_destroy (hb_uniscribe_face_ڈیٹا_t *ڈیٹا)
 {
-  RemoveFontMemResourceEx (data->fh);
-  hb_free (data);
+  RemoveFontMemResourceEx (ڈیٹا->fh);
+  hb_free (ڈیٹا);
 }
 
 
@@ -458,80 +458,80 @@ _hb_uniscribe_shaper_face_data_destroy (hb_uniscribe_face_data_t *data)
  * shaper font data
  */
 
-struct hb_uniscribe_font_data_t
+ساخت hb_uniscribe_font_ڈیٹا_t
 {
   HDC hdc;
-  mutable LOGFONTW log_font;
+  تغیرپذیر LOGFONTW log_font;
   HFONT hfont;
-  mutable SCRIPT_CACHE script_cache;
-  double x_mult, y_mult; /* From LOGFONT space to HB space. */
+  تغیرپذیر SCRIPT_CACHE script_cache;
+  دوہرا x_mult, y_mult; /* From LOGFONT space to HB space. */
 };
 
-static bool
+ساکن منطقی
 populate_log_font (LOGFONTW  *lf,
 		   hb_font_t *font,
-		   unsigned int font_size)
+		   غیرعلامتی صحیح font_سائز)
 {
-  hb_memset (lf, 0, sizeof (*lf));
-  lf->lfHeight = - (int) font_size;
-  lf->lfCharSet = DEFAULT_CHARSET;
+  hb_memset (lf, 0, حجم (*lf));
+  lf->lf_اونچائی = - (صحیح) font_سائز;
+  lf->lf_Char_سیٹ = DEFAULT_CHARSET;
 
-  hb_memcpy (lf->lfFaceName, font->face->data.uniscribe->face_name, sizeof (lf->lfFaceName));
+  hb_memcpy (lf->lfFaceName, font->face->ڈیٹا.uniscribe->face_name, حجم (lf->lfFaceName));
 
-  return true;
+  واپس سچ;
 }
 
-hb_uniscribe_font_data_t *
-_hb_uniscribe_shaper_font_data_create (hb_font_t *font)
+hb_uniscribe_font_ڈیٹا_t *
+hb_uniscribe_shaper_font_ڈیٹا_create (hb_font_t *font)
 {
-  hb_uniscribe_font_data_t *data = (hb_uniscribe_font_data_t *) hb_calloc (1, sizeof (hb_uniscribe_font_data_t));
-  if (unlikely (!data))
-    return nullptr;
+  hb_uniscribe_font_ڈیٹا_t *ڈیٹا = (hb_uniscribe_font_ڈیٹا_t *) hb_calloc (1, حجم (hb_uniscribe_font_ڈیٹا_t));
+  اگر (unlikely (!ڈیٹا))
+    واپس خالی_اشاریہ;
 
-  int font_size = font->face->get_upem (); /* Default... */
+  صحیح font_سائز = font->face->get_upem (); /* Default... */
   /* No idea if the following is even a good idea. */
-  if (font->y_ppem)
-    font_size = font->y_ppem;
+  اگر (font->y_ppem)
+    font_سائز = font->y_ppem;
 
-  if (font_size < 0)
-    font_size = -font_size;
-  data->x_mult = (double) font->x_scale / font_size;
-  data->y_mult = (double) font->y_scale / font_size;
+  اگر (font_سائز < 0)
+    font_سائز = -font_سائز;
+  ڈیٹا->x_mult = (دوہرا) font->x_scale / font_سائز;
+  ڈیٹا->y_mult = (دوہرا) font->y_scale / font_سائز;
 
-  data->hdc = GetDC (nullptr);
+  ڈیٹا->hdc = GetDC (خالی_اشاریہ);
 
-  if (unlikely (!populate_log_font (&data->log_font, font, font_size))) {
-    DEBUG_MSG (UNISCRIBE, font, "Font populate_log_font() failed");
-    _hb_uniscribe_shaper_font_data_destroy (data);
-    return nullptr;
+  اگر (unlikely (!populate_log_font (&ڈیٹا->log_font, font, font_سائز))) {
+    DEBUG_پیغام (UNISCRIBE, font, "Font populate_log_font() failed");
+    hb_uniscribe_shaper_font_ڈیٹا_destroy (ڈیٹا);
+    واپس خالی_اشاریہ;
   }
 
-  data->hfont = CreateFontIndirectW (&data->log_font);
-  if (unlikely (!data->hfont)) {
-    DEBUG_MSG (UNISCRIBE, font, "Font CreateFontIndirectW() failed");
-    _hb_uniscribe_shaper_font_data_destroy (data);
-     return nullptr;
+  ڈیٹا->hfont = Create_Font_بالواسطہ_W (&ڈیٹا->log_font);
+  اگر (unlikely (!ڈیٹا->hfont)) {
+    DEBUG_پیغام (UNISCRIBE, font, "Font CreateFontIndirectW() failed");
+    hb_uniscribe_shaper_font_ڈیٹا_destroy (ڈیٹا);
+     واپس خالی_اشاریہ;
   }
 
-  if (!SelectObject (data->hdc, data->hfont)) {
-    DEBUG_MSG (UNISCRIBE, font, "Font SelectObject() failed");
-    _hb_uniscribe_shaper_font_data_destroy (data);
-     return nullptr;
+  اگر (!SelectObject (ڈیٹا->hdc, ڈیٹا->hfont)) {
+    DEBUG_پیغام (UNISCRIBE, font, "Font SelectObject() failed");
+    hb_uniscribe_shaper_font_ڈیٹا_destroy (ڈیٹا);
+     واپس خالی_اشاریہ;
   }
 
-  return data;
+  واپس ڈیٹا;
 }
 
-void
-_hb_uniscribe_shaper_font_data_destroy (hb_uniscribe_font_data_t *data)
+خالی
+hb_uniscribe_shaper_font_ڈیٹا_destroy (hb_uniscribe_font_ڈیٹا_t *ڈیٹا)
 {
-  if (data->hdc)
-    ReleaseDC (nullptr, data->hdc);
-  if (data->hfont)
-    DeleteObject (data->hfont);
-  if (data->script_cache)
-    ScriptFreeCache (&data->script_cache);
-  hb_free (data);
+  اگر (ڈیٹا->hdc)
+    ReleaseDC (خالی_اشاریہ, ڈیٹا->hdc);
+  اگر (ڈیٹا->hfont)
+    DeleteObject (ڈیٹا->hfont);
+  اگر (ڈیٹا->script_cache)
+    ScriptFreeCache (&ڈیٹا->script_cache);
+  hb_free (ڈیٹا);
 }
 
 /**
@@ -547,8 +547,8 @@ _hb_uniscribe_shaper_font_data_destroy (hb_uniscribe_font_data_t *data)
 LOGFONTW *
 hb_uniscribe_font_get_logfontw (hb_font_t *font)
 {
-  const hb_uniscribe_font_data_t *data =  font->data.uniscribe;
-  return data ? &data->log_font : nullptr;
+  ثابت hb_uniscribe_font_ڈیٹا_t *ڈیٹا =  font->ڈیٹا.uniscribe;
+  واپس ڈیٹا ? &ڈیٹا->log_font : خالی_اشاریہ;
 }
 
 /**
@@ -564,8 +564,8 @@ hb_uniscribe_font_get_logfontw (hb_font_t *font)
 HFONT
 hb_uniscribe_font_get_hfont (hb_font_t *font)
 {
-  const hb_uniscribe_font_data_t *data =  font->data.uniscribe;
-  return data ? data->hfont : nullptr;
+  ثابت hb_uniscribe_font_ڈیٹا_t *ڈیٹا =  font->ڈیٹا.uniscribe;
+  واپس ڈیٹا ? ڈیٹا->hfont : خالی_اشاریہ;
 }
 
 
@@ -577,87 +577,87 @@ hb_uniscribe_font_get_hfont (hb_font_t *font)
 hb_bool_t
 _hb_uniscribe_shape (hb_shape_plan_t    *shape_plan,
 		     hb_font_t          *font,
-		     hb_buffer_t        *buffer,
-		     const hb_feature_t *features,
-		     unsigned int        num_features)
+		     hb_بفر_t        *بفر,
+		     ثابت hb_feature_t *features,
+		     غیرعلامتی صحیح        عدد_features)
 {
   hb_face_t *face = font->face;
-  const hb_uniscribe_face_data_t *face_data = face->data.uniscribe;
-  const hb_uniscribe_font_data_t *font_data = font->data.uniscribe;
-  hb_uniscribe_shaper_funcs_t *funcs = face_data->funcs;
+  ثابت hb_uniscribe_face_ڈیٹا_t *face_ڈیٹا = face->ڈیٹا.uniscribe;
+  ثابت hb_uniscribe_font_ڈیٹا_t *font_ڈیٹا = font->ڈیٹا.uniscribe;
+  hb_uniscribe_shaper_funcs_t *funcs = face_ڈیٹا->funcs;
 
-#define FAIL(...) \
-  HB_STMT_START { \
-    DEBUG_MSG (UNISCRIBE, nullptr, __VA_ARGS__); \
-    return false; \
-  } HB_STMT_END
+#تعریف_کرو FAIL(...) \
+  HB_STMT_آغاز { \
+    DEBUG_پیغام (UNISCRIBE, خالی_اشاریہ, __VA_ARGS__); \
+    واپس جھوٹ; \
+  } HB_STMT_انتہا
 
   HRESULT hr;
 
 retry:
 
-  unsigned int scratch_size;
-  hb_buffer_t::scratch_buffer_t *scratch = buffer->get_scratch_buffer (&scratch_size);
+  غیرعلامتی صحیح scratch_سائز;
+  hb_بفر_t::scratch_بفر_t *scratch = بفر->get_scratch_بفر (&scratch_سائز);
 
-#define ALLOCATE_ARRAY(Type, name, len) \
+#تعریف_کرو ALLOCATE_ARRAY(Type, name, len) \
   Type *name = (Type *) scratch; \
-  do { \
-    unsigned int _consumed = DIV_CEIL ((len) * sizeof (Type), sizeof (*scratch)); \
-    assert (_consumed <= scratch_size); \
+  کرو { \
+    غیرعلامتی صحیح _consumed = DIV_CEIL ((len) * حجم (Type), حجم (*scratch)); \
+    أكد (_consumed <= scratch_سائز); \
     scratch += _consumed; \
-    scratch_size -= _consumed; \
-  } while (0)
+    scratch_سائز -= _consumed; \
+  } جب (0)
 
-#define utf16_index() var1.u32
+#تعریف_کرو utf16_اشاریہ() var1.u32
 
-  ALLOCATE_ARRAY (WCHAR, pchars, buffer->len * 2);
+  ALLOCATE_ARRAY (WCHAR, pchars, بفر->len * 2);
 
-  unsigned int chars_len = 0;
-  for (unsigned int i = 0; i < buffer->len; i++)
+  غیرعلامتی صحیح chars_len = 0;
+  برائے (غیرعلامتی صحیح i = 0; i < بفر->len; i++)
   {
-    hb_codepoint_t c = buffer->info[i].codepoint;
-    buffer->info[i].utf16_index() = chars_len;
-    if (likely (c <= 0xFFFFu))
+    hb_codepoint_t c = بفر->info[i].codepoint;
+    بفر->info[i].utf16_اشاریہ() = chars_len;
+    اگر (likely (c <= 0xFFFFu))
       pchars[chars_len++] = c;
-    else if (unlikely (c > 0x10FFFFu))
+    ورنہ اگر (unlikely (c > 0x10FFFFu))
       pchars[chars_len++] = 0xFFFDu;
-    else {
+    ورنہ {
       pchars[chars_len++] = 0xD800u + ((c - 0x10000u) >> 10);
       pchars[chars_len++] = 0xDC00u + ((c - 0x10000u) & ((1u << 10) - 1));
     }
   }
 
-  ALLOCATE_ARRAY (WORD, log_clusters, chars_len);
+  ALLOCATE_ARRAY (لفظ, log_clusters, chars_len);
   ALLOCATE_ARRAY (SCRIPT_CHARPROP, char_props, chars_len);
 
-  if (num_features)
+  اگر (عدد_features)
   {
     /* Need log_clusters to assign features. */
     chars_len = 0;
-    for (unsigned int i = 0; i < buffer->len; i++)
+    برائے (غیرعلامتی صحیح i = 0; i < بفر->len; i++)
     {
-      hb_codepoint_t c = buffer->info[i].codepoint;
-      unsigned int cluster = buffer->info[i].cluster;
+      hb_codepoint_t c = بفر->info[i].codepoint;
+      غیرعلامتی صحیح cluster = بفر->info[i].cluster;
       log_clusters[chars_len++] = cluster;
-      if (hb_in_range (c, 0x10000u, 0x10FFFFu))
+      اگر (hb_اندر_range (c, 0x10000u, 0x10FFFFu))
 	log_clusters[chars_len++] = cluster; /* Surrogates. */
     }
   }
 
   /* The -2 in the following is to compensate for possible
    * alignment needed after the WORD array.  sizeof(WORD) == 2. */
-  unsigned int glyphs_size = (scratch_size * sizeof (int) - 2)
-			   / (sizeof (WORD) +
-			      sizeof (SCRIPT_GLYPHPROP) +
-			      sizeof (int) +
-			      sizeof (GOFFSET) +
-			      sizeof (uint32_t));
+  غیرعلامتی صحیح glyphs_سائز = (scratch_سائز * حجم (صحیح) - 2)
+			   / (حجم (لفظ) +
+			      حجم (SCRIPT_GLYPHPROP) +
+			      حجم (صحیح) +
+			      حجم (GOFFSET) +
+			      حجم (uint32_t));
 
-  ALLOCATE_ARRAY (WORD, glyphs, glyphs_size);
-  ALLOCATE_ARRAY (SCRIPT_GLYPHPROP, glyph_props, glyphs_size);
-  ALLOCATE_ARRAY (int, advances, glyphs_size);
-  ALLOCATE_ARRAY (GOFFSET, offsets, glyphs_size);
-  ALLOCATE_ARRAY (uint32_t, vis_clusters, glyphs_size);
+  ALLOCATE_ARRAY (لفظ, glyphs, glyphs_سائز);
+  ALLOCATE_ARRAY (SCRIPT_GLYPHPROP, glyph_props, glyphs_سائز);
+  ALLOCATE_ARRAY (صحیح, advances, glyphs_سائز);
+  ALLOCATE_ARRAY (GOFFSET, offsets, glyphs_سائز);
+  ALLOCATE_ARRAY (uint32_t, vis_clusters, glyphs_سائز);
 
   /* Note:
    * We can't touch the contents of glyph_props.  Our fallback
@@ -667,218 +667,218 @@ retry:
    * need address that issue first.
    */
 
-#undef ALLOCATE_ARRAY
+#تعریف_منسوخ ALLOCATE_ARRAY
 
-#define MAX_ITEMS 256
+#تعریف_کرو MAX_اشیاء 256
 
-  SCRIPT_ITEM items[MAX_ITEMS + 1];
+  SCRIPT_شے اشیاء[MAX_اشیاء + 1];
   SCRIPT_CONTROL bidi_control = {0};
   SCRIPT_STATE bidi_state = {0};
-  ULONG script_tags[MAX_ITEMS];
-  int item_count;
+  ULONG script_لیبل_فہرست[MAX_اشیاء];
+  صحیح شے_گنتی_2;
 
   /* MinGW32 doesn't define fMergeNeutralItems, so we bruteforce */
   //bidi_control.fMergeNeutralItems = true;
   *(uint32_t*)&bidi_control |= 1u<<24;
 
-  bidi_state.uBidiLevel = HB_DIRECTION_IS_FORWARD (buffer->props.direction) ? 0 : 1;
+  bidi_state.uBidiLevel = HB_DIRECTION_IS_FORWARD (بفر->props.direction) ? 0 : 1;
   bidi_state.fOverrideDirection = 1;
 
   hr = funcs->ScriptItemizeOpenType (pchars,
 				     chars_len,
-				     MAX_ITEMS,
+				     MAX_اشیاء,
 				     &bidi_control,
 				     &bidi_state,
-				     items,
-				     script_tags,
-				     &item_count);
-  if (unlikely (FAILED (hr)))
-    FAIL ("ScriptItemizeOpenType() failed: 0x%08lx", (unsigned long) hr);
+				     اشیاء,
+				     script_لیبل_فہرست,
+				     &شے_گنتی_2);
+  اگر (unlikely (FAILED (hr)))
+    FAIL ("ScriptItemizeOpenType() failed: 0x%08lx", (غیرعلامتی طویل) hr);
 
-#undef MAX_ITEMS
+#تعریف_منسوخ MAX_اشیاء
 
-  hb_tag_t lang_tag;
-  unsigned int lang_count = 1;
-  hb_ot_tags_from_script_and_language (buffer->props.script,
-				       buffer->props.language,
-				       nullptr, nullptr,
-				       &lang_count, &lang_tag);
-  OPENTYPE_TAG language_tag = hb_uint32_swap (lang_count ? lang_tag : HB_TAG_NONE);
+  hb_لیبل_t lang_لیبل;
+  غیرعلامتی صحیح lang_گنتی = 1;
+  hb_ot_لیبل_فہرست_from_script_and_language (بفر->props.script,
+				       بفر->props.language,
+				       خالی_اشاریہ, خالی_اشاریہ,
+				       &lang_گنتی, &lang_لیبل);
+  OPENTYPE_لیبل language_لیبل = hb_uint32_تبادلہ (lang_گنتی ? lang_لیبل : HB_لیبل_NONE);
 
   /*
    * Set up features.
    */
-  static_assert ((sizeof (TEXTRANGE_PROPERTIES) == sizeof (hb_ms_features_t)), "");
-  static_assert ((sizeof (OPENTYPE_FEATURE_RECORD) == sizeof (hb_ms_feature_t)), "");
-  hb_vector_t<hb_ms_feature_t> feature_records;
-  hb_vector_t<hb_ms_range_record_t> range_records;
-  bool has_features = false;
-  if (num_features)
-    has_features = hb_ms_setup_features (features,
-					 num_features,
-					 feature_records,
-					 range_records);
+  static_assert ((حجم (TEXTRANGE_PROPERTIES) == حجم (hb_ms_features_t)), "");
+  static_assert ((حجم (OPENTYPE_FEATURE_ریکارڈ) == حجم (hb_ms_feature_t)), "");
+  hb_سمتیہ_t<hb_ms_feature_t> feature_اندراجات;
+  hb_سمتیہ_t<hb_ms_range_ریکارڈ_t> range_اندراجات;
+  منطقی has_features = جھوٹ;
+  اگر (عدد_features)
+    has_features = hb_ms_تیاری_features (features,
+					 عدد_features,
+					 feature_اندراجات,
+					 range_اندراجات);
 
-  hb_vector_t<hb_ms_features_t*> range_properties;
-  hb_vector_t<uint32_t> range_char_counts;
+  hb_سمتیہ_t<hb_ms_features_t*> range_properties;
+  hb_سمتیہ_t<uint32_t> range_char_counts;
 
-  unsigned int glyphs_offset = 0;
-  unsigned int glyphs_len;
-  bool backward = HB_DIRECTION_IS_BACKWARD (buffer->props.direction);
-  for (int i = 0; i < item_count; i++)
+  غیرعلامتی صحیح glyphs_انحراف = 0;
+  غیرعلامتی صحیح glyphs_len;
+  منطقی backward = HB_DIRECTION_IS_BACKWARD (بفر->props.direction);
+  برائے (صحیح i = 0; i < شے_گنتی_2; i++)
   {
-    unsigned int chars_offset = items[i].iCharPos;
-    unsigned int item_chars_len = items[i + 1].iCharPos - chars_offset;
+    غیرعلامتی صحیح chars_انحراف = اشیاء[i].iCharPos;
+    غیرعلامتی صحیح شے_chars_len = اشیاء[i + 1].iCharPos - chars_انحراف;
 
-    if (has_features)
-      hb_ms_make_feature_ranges (feature_records,
-				 range_records,
-				 item_chars_len,
-				 chars_offset,
+    اگر (has_features)
+      hb_ms_make_feature_ranges (feature_اندراجات,
+				 range_اندراجات,
+				 شے_chars_len,
+				 chars_انحراف,
 				 log_clusters,
 				 range_properties,
 				 range_char_counts);
 
     /* Asking for glyphs in logical order circumvents at least
      * one bug in Uniscribe. */
-    items[i].a.fLogicalOrder = true;
+    اشیاء[i].a.f_Logical_ترتیب = سچ;
 
   retry_shape:
-    hr = funcs->ScriptShapeOpenType (font_data->hdc,
-				     &font_data->script_cache,
-				     &items[i].a,
-				     script_tags[i],
-				     language_tag,
-				     (int *) range_char_counts.arrayZ,
+    hr = funcs->ScriptShapeOpenType (font_ڈیٹا->hdc,
+				     &font_ڈیٹا->script_cache,
+				     &اشیاء[i].a,
+				     script_لیبل_فہرست[i],
+				     language_لیبل,
+				     (صحیح *) range_char_counts.arrayZ,
 				     (TEXTRANGE_PROPERTIES**) range_properties.arrayZ,
-				     range_properties.length,
-				     pchars + chars_offset,
-				     item_chars_len,
-				     glyphs_size - glyphs_offset,
+				     range_properties.لمبائی,
+				     pchars + chars_انحراف,
+				     شے_chars_len,
+				     glyphs_سائز - glyphs_انحراف,
 				     /* out */
-				     log_clusters + chars_offset,
-				     char_props + chars_offset,
-				     glyphs + glyphs_offset,
-				     glyph_props + glyphs_offset,
-				     (int *) &glyphs_len);
+				     log_clusters + chars_انحراف,
+				     char_props + chars_انحراف,
+				     glyphs + glyphs_انحراف,
+				     glyph_props + glyphs_انحراف,
+				     (صحیح *) &glyphs_len);
 
-    if (unlikely (items[i].a.fNoGlyphIndex))
+    اگر (unlikely (اشیاء[i].a.f_No_Glyph_اشاریہ))
       FAIL ("ScriptShapeOpenType() set fNoGlyphIndex");
-    if (unlikely (hr == E_OUTOFMEMORY || hr == E_NOT_SUFFICIENT_BUFFER))
+    اگر (unlikely (hr == E_OUTOFMEMORY || hr == E_NOT_SUFFICIENT_بفر))
     {
-      if (unlikely (!buffer->ensure (buffer->allocated * 2)))
+      اگر (unlikely (!بفر->ensure (بفر->allocated * 2)))
 	FAIL ("Buffer resize failed");
-      goto retry;
+      جاؤ retry;
     }
-    if (unlikely (hr == USP_E_SCRIPT_NOT_IN_FONT))
+    اگر (unlikely (hr == USP_E_SCRIPT_NOT_اندر_FONT))
     {
-      if (items[i].a.eScript == SCRIPT_UNDEFINED)
+      اگر (اشیاء[i].a.eScript == SCRIPT_UNDEFINED)
 	FAIL ("ScriptShapeOpenType() failed: Font doesn't support script");
-      items[i].a.eScript = SCRIPT_UNDEFINED;
-      goto retry_shape;
+      اشیاء[i].a.eScript = SCRIPT_UNDEFINED;
+      جاؤ retry_shape;
     }
-    if (unlikely (FAILED (hr)))
+    اگر (unlikely (FAILED (hr)))
     {
-      FAIL ("ScriptShapeOpenType() failed: 0x%08lx", (unsigned long) hr);
+      FAIL ("ScriptShapeOpenType() failed: 0x%08lx", (غیرعلامتی طویل) hr);
     }
 
-    for (unsigned int j = chars_offset; j < chars_offset + item_chars_len; j++)
-      log_clusters[j] += glyphs_offset;
+    برائے (غیرعلامتی صحیح j = chars_انحراف; j < chars_انحراف + شے_chars_len; j++)
+      log_clusters[j] += glyphs_انحراف;
 
-    hr = funcs->ScriptPlaceOpenType (font_data->hdc,
-				     &font_data->script_cache,
-				     &items[i].a,
-				     script_tags[i],
-				     language_tag,
-				     (int *) range_char_counts.arrayZ,
+    hr = funcs->Script_رکھو_Open_Type (font_ڈیٹا->hdc,
+				     &font_ڈیٹا->script_cache,
+				     &اشیاء[i].a,
+				     script_لیبل_فہرست[i],
+				     language_لیبل,
+				     (صحیح *) range_char_counts.arrayZ,
 				     (TEXTRANGE_PROPERTIES**) range_properties.arrayZ,
-				     range_properties.length,
-				     pchars + chars_offset,
-				     log_clusters + chars_offset,
-				     char_props + chars_offset,
-				     item_chars_len,
-				     glyphs + glyphs_offset,
-				     glyph_props + glyphs_offset,
+				     range_properties.لمبائی,
+				     pchars + chars_انحراف,
+				     log_clusters + chars_انحراف,
+				     char_props + chars_انحراف,
+				     شے_chars_len,
+				     glyphs + glyphs_انحراف,
+				     glyph_props + glyphs_انحراف,
 				     glyphs_len,
 				     /* out */
-				     advances + glyphs_offset,
-				     offsets + glyphs_offset,
-				     nullptr);
-    if (unlikely (FAILED (hr)))
-      FAIL ("ScriptPlaceOpenType() failed: 0x%08lx", (unsigned long) hr);
+				     advances + glyphs_انحراف,
+				     offsets + glyphs_انحراف,
+				     خالی_اشاریہ);
+    اگر (unlikely (FAILED (hr)))
+      FAIL ("ScriptPlaceOpenType() failed: 0x%08lx", (غیرعلامتی طویل) hr);
 
-    if (DEBUG_ENABLED (UNISCRIBE))
+    اگر (DEBUG_ENABLED (UNISCRIBE))
       fprintf (stderr, "Item %d RTL %d LayoutRTL %d LogicalOrder %d ScriptTag %c%c%c%c\n",
 	       i,
-	       items[i].a.fRTL,
-	       items[i].a.fLayoutRTL,
-	       items[i].a.fLogicalOrder,
-	       HB_UNTAG (hb_uint32_swap (script_tags[i])));
+	       اشیاء[i].a.fRTL,
+	       اشیاء[i].a.fLayoutRTL,
+	       اشیاء[i].a.f_Logical_ترتیب,
+	       HB_UNTAG (hb_uint32_تبادلہ (script_لیبل_فہرست[i])));
 
-    glyphs_offset += glyphs_len;
+    glyphs_انحراف += glyphs_len;
   }
-  glyphs_len = glyphs_offset;
+  glyphs_len = glyphs_انحراف;
 
   /* Ok, we've got everything we need, now compose output buffer,
    * very, *very*, carefully! */
 
   /* Calculate visual-clusters.  That's what we ship. */
-  for (unsigned int i = 0; i < glyphs_len; i++)
+  برائے (غیرعلامتی صحیح i = 0; i < glyphs_len; i++)
     vis_clusters[i] = (uint32_t) -1;
-  for (unsigned int i = 0; i < buffer->len; i++) {
-    uint32_t *p = &vis_clusters[log_clusters[buffer->info[i].utf16_index()]];
-    *p = hb_min (*p, buffer->info[i].cluster);
+  برائے (غیرعلامتی صحیح i = 0; i < بفر->len; i++) {
+    uint32_t *p = &vis_clusters[log_clusters[بفر->info[i].utf16_اشاریہ()]];
+    *p = hb_min (*p, بفر->info[i].cluster);
   }
-  for (unsigned int i = 1; i < glyphs_len; i++)
-    if (vis_clusters[i] == (uint32_t) -1)
+  برائے (غیرعلامتی صحیح i = 1; i < glyphs_len; i++)
+    اگر (vis_clusters[i] == (uint32_t) -1)
       vis_clusters[i] = vis_clusters[i - 1];
 
-#undef utf16_index
+#تعریف_منسوخ utf16_اشاریہ
 
-  if (unlikely (!buffer->ensure (glyphs_len)))
+  اگر (unlikely (!بفر->ensure (glyphs_len)))
     FAIL ("Buffer in error");
 
-#undef FAIL
+#تعریف_منسوخ FAIL
 
   /* Set glyph infos */
-  buffer->len = 0;
-  for (unsigned int i = 0; i < glyphs_len; i++)
+  بفر->len = 0;
+  برائے (غیرعلامتی صحیح i = 0; i < glyphs_len; i++)
   {
-    hb_glyph_info_t *info = &buffer->info[buffer->len++];
+    hb_glyph_info_t *info = &بفر->info[بفر->len++];
 
     info->codepoint = glyphs[i];
     info->cluster = vis_clusters[i];
 
     /* The rest is crap.  Let's store position info there for now. */
-    info->mask = advances[i];
+    info->نقاب = advances[i];
     info->var1.i32 = offsets[i].du;
     info->var2.i32 = offsets[i].dv;
   }
 
   /* Set glyph positions */
-  buffer->clear_positions ();
-  double x_mult = font_data->x_mult, y_mult = font_data->y_mult;
-  for (unsigned int i = 0; i < glyphs_len; i++)
+  بفر->clear_positions ();
+  دوہرا x_mult = font_ڈیٹا->x_mult, y_mult = font_ڈیٹا->y_mult;
+  برائے (غیرعلامتی صحیح i = 0; i < glyphs_len; i++)
   {
-    hb_glyph_info_t *info = &buffer->info[i];
-    hb_glyph_position_t *pos = &buffer->pos[i];
+    hb_glyph_info_t *info = &بفر->info[i];
+    hb_glyph_position_t *pos = &بفر->pos[i];
 
     /* TODO vertical */
-    pos->x_advance = hb_clamp_to<hb_position_t> (x_mult * (int32_t) info->mask);
-    double x_offset = backward ? -(double) info->var1.i32 : info->var1.i32;
-    pos->x_offset = hb_clamp_to<hb_position_t> (x_mult * x_offset);
-    pos->y_offset = hb_clamp_to<hb_position_t> (y_mult * info->var2.i32);
+    pos->x_advance = hb_clamp_مقصد<hb_position_t> (x_mult * (int32_t) info->نقاب);
+    دوہرا x_انحراف_2 = backward ? -(دوہرا) info->var1.i32 : info->var1.i32;
+    pos->x_انحراف_2 = hb_clamp_مقصد<hb_position_t> (x_mult * x_انحراف_2);
+    pos->y_انحراف_2 = hb_clamp_مقصد<hb_position_t> (y_mult * info->var2.i32);
   }
 
-  if (backward)
-    hb_buffer_reverse (buffer);
+  اگر (backward)
+    hb_بفر_الٹ (بفر);
 
-  buffer->clear_glyph_flags ();
-  buffer->unsafe_to_break ();
+  بفر->clear_glyph_flags ();
+  بفر->unsafe_مقصد_break ();
 
   /* Wow, done! */
-  return true;
+  واپس سچ;
 }
 
 
-#endif
+#اگر_ختم

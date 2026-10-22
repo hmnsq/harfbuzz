@@ -24,175 +24,175 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#شامل "hb.hh"
 
-#include "hb-vector-draw.hh"
-#include "hb-vector-path.hh"
+#شامل "hb-vector-draw.hh"
+#شامل "hb-vector-path.hh"
 
-#include <math.h>
-#include <string.h>
+#شامل <math.h>
+#شامل <string.h>
 
-HB_UNUSED static inline bool
-hb_vector_svg_buffer_contains (const hb_vector_buf_t &buf, const char *needle)
+HB_غیر_مستعمل ساکن اندرونی منطقی
+hb_سمتیہ_svg_بفر_شامل_ہے (ثابت hb_سمتیہ_buf_t &buf, ثابت حرف *needle)
 {
-  unsigned nlen = (unsigned) strlen (needle);
-  if (!nlen || buf.length < nlen)
-    return false;
+  غیرعلامتی nlen = (غیرعلامتی) لڑی_لمبائی (needle);
+  اگر (!nlen || buf.لمبائی < nlen)
+    واپس جھوٹ;
 
-  for (unsigned i = 0; i + nlen <= buf.length; i++)
-    if (buf.arrayZ[i] == needle[0] &&
+  برائے (غیرعلامتی i = 0; i + nlen <= buf.لمبائی; i++)
+    اگر (buf.arrayZ[i] == needle[0] &&
         !memcmp (buf.arrayZ + i, needle, nlen))
-      return true;
-  return false;
+      واپس سچ;
+  واپس جھوٹ;
 }
 
 /* ---- SVG draw callbacks ---- */
 
-static void hb_vector_draw_svg_move_to (hb_draw_funcs_t *, void *dd, hb_draw_state_t *, float x, float y, void *)
+ساکن خالی hb_سمتیہ_draw_svg_move_مقصد (hb_draw_funcs_t *, خالی *dd, hb_draw_state_t *, اعشاری x, اعشاری y, خالی *)
 {
-  auto *d = (hb_vector_draw_t *) dd;
-  if (unlikely (!d->begin_path_command ())) return;
-  d->path.append_c ('M'); d->append_xy_svg (x, y);
-  d->end_path_command ();
+  خودکار *d = (hb_سمتیہ_draw_t *) dd;
+  اگر (unlikely (!d->begin_راستہ_command ())) واپس;
+  d->راستہ.append_c ('M'); d->append_xy_svg (x, y);
+  d->انتہا_راستہ_command ();
 }
 
-static void hb_vector_draw_svg_line_to (hb_draw_funcs_t *, void *dd, hb_draw_state_t *, float x, float y, void *)
+ساکن خالی hb_سمتیہ_draw_svg_سطر_مقصد (hb_draw_funcs_t *, خالی *dd, hb_draw_state_t *, اعشاری x, اعشاری y, خالی *)
 {
-  auto *d = (hb_vector_draw_t *) dd;
-  if (unlikely (!d->begin_path_command ())) return;
-  d->path.append_c ('L'); d->append_xy_svg (x, y);
-  d->end_path_command ();
+  خودکار *d = (hb_سمتیہ_draw_t *) dd;
+  اگر (unlikely (!d->begin_راستہ_command ())) واپس;
+  d->راستہ.append_c ('L'); d->append_xy_svg (x, y);
+  d->انتہا_راستہ_command ();
 }
 
-static void hb_vector_draw_svg_quadratic_to (hb_draw_funcs_t *, void *dd, hb_draw_state_t *, float cx, float cy, float x, float y, void *)
+ساکن خالی hb_سمتیہ_draw_svg_quadratic_مقصد (hb_draw_funcs_t *, خالی *dd, hb_draw_state_t *, اعشاری cx, اعشاری cy, اعشاری x, اعشاری y, خالی *)
 {
-  auto *d = (hb_vector_draw_t *) dd;
-  if (unlikely (!d->begin_path_command ())) return;
-  d->path.append_c ('Q'); d->append_xy_svg (cx, cy); d->path.append_c (' '); d->append_xy_svg (x, y);
-  d->end_path_command ();
+  خودکار *d = (hb_سمتیہ_draw_t *) dd;
+  اگر (unlikely (!d->begin_راستہ_command ())) واپس;
+  d->راستہ.append_c ('Q'); d->append_xy_svg (cx, cy); d->راستہ.append_c (' '); d->append_xy_svg (x, y);
+  d->انتہا_راستہ_command ();
 }
 
-static void hb_vector_draw_svg_cubic_to (hb_draw_funcs_t *, void *dd, hb_draw_state_t *, float c1x, float c1y, float c2x, float c2y, float x, float y, void *)
+ساکن خالی hb_سمتیہ_draw_svg_cubic_مقصد (hb_draw_funcs_t *, خالی *dd, hb_draw_state_t *, اعشاری c1x, اعشاری c1y, اعشاری c2x, اعشاری c2y, اعشاری x, اعشاری y, خالی *)
 {
-  auto *d = (hb_vector_draw_t *) dd;
-  if (unlikely (!d->begin_path_command ())) return;
-  d->path.append_c ('C'); d->append_xy_svg (c1x, c1y); d->path.append_c (' '); d->append_xy_svg (c2x, c2y); d->path.append_c (' '); d->append_xy_svg (x, y);
-  d->end_path_command ();
+  خودکار *d = (hb_سمتیہ_draw_t *) dd;
+  اگر (unlikely (!d->begin_راستہ_command ())) واپس;
+  d->راستہ.append_c ('C'); d->append_xy_svg (c1x, c1y); d->راستہ.append_c (' '); d->append_xy_svg (c2x, c2y); d->راستہ.append_c (' '); d->append_xy_svg (x, y);
+  d->انتہا_راستہ_command ();
 }
 
-static void hb_vector_draw_svg_close_path (hb_draw_funcs_t *, void *dd, hb_draw_state_t *, void *)
+ساکن خالی hb_سمتیہ_draw_svg_close_راستہ (hb_draw_funcs_t *, خالی *dd, hb_draw_state_t *, خالی *)
 {
-  auto *d = (hb_vector_draw_t *) dd;
-  if (unlikely (!d->begin_path_command ())) return;
-  d->path.append_c ('Z');
-  d->end_path_command ();
+  خودکار *d = (hb_سمتیہ_draw_t *) dd;
+  اگر (unlikely (!d->begin_راستہ_command ())) واپس;
+  d->راستہ.append_c ('Z');
+  d->انتہا_راستہ_command ();
 }
 
 
 /* ---- PDF draw callbacks ---- */
 
-static void hb_vector_draw_pdf_move_to (hb_draw_funcs_t *, void *dd, hb_draw_state_t *, float x, float y, void *)
+ساکن خالی hb_سمتیہ_draw_pdf_move_مقصد (hb_draw_funcs_t *, خالی *dd, hb_draw_state_t *, اعشاری x, اعشاری y, خالی *)
 {
-  auto *d = (hb_vector_draw_t *) dd;
-  if (unlikely (!d->begin_path_command ())) return;
-  d->append_xy_pdf (x, y); d->path.append_str (" m\n");
-  d->end_path_command ();
+  خودکار *d = (hb_سمتیہ_draw_t *) dd;
+  اگر (unlikely (!d->begin_راستہ_command ())) واپس;
+  d->append_xy_pdf (x, y); d->راستہ.append_str (" m\n");
+  d->انتہا_راستہ_command ();
 }
 
-static void hb_vector_draw_pdf_line_to (hb_draw_funcs_t *, void *dd, hb_draw_state_t *, float x, float y, void *)
+ساکن خالی hb_سمتیہ_draw_pdf_سطر_مقصد (hb_draw_funcs_t *, خالی *dd, hb_draw_state_t *, اعشاری x, اعشاری y, خالی *)
 {
-  auto *d = (hb_vector_draw_t *) dd;
-  if (unlikely (!d->begin_path_command ())) return;
-  d->append_xy_pdf (x, y); d->path.append_str (" l\n");
-  d->end_path_command ();
+  خودکار *d = (hb_سمتیہ_draw_t *) dd;
+  اگر (unlikely (!d->begin_راستہ_command ())) واپس;
+  d->append_xy_pdf (x, y); d->راستہ.append_str (" l\n");
+  d->انتہا_راستہ_command ();
 }
 
 /* No quadratic_to — null fallback auto-promotes to cubic. */
 
-static void hb_vector_draw_pdf_cubic_to (hb_draw_funcs_t *, void *dd, hb_draw_state_t *, float c1x, float c1y, float c2x, float c2y, float x, float y, void *)
+ساکن خالی hb_سمتیہ_draw_pdf_cubic_مقصد (hb_draw_funcs_t *, خالی *dd, hb_draw_state_t *, اعشاری c1x, اعشاری c1y, اعشاری c2x, اعشاری c2y, اعشاری x, اعشاری y, خالی *)
 {
-  auto *d = (hb_vector_draw_t *) dd;
-  if (unlikely (!d->begin_path_command ())) return;
-  d->append_xy_pdf (c1x, c1y); d->path.append_c (' '); d->append_xy_pdf (c2x, c2y); d->path.append_c (' '); d->append_xy_pdf (x, y); d->path.append_str (" c\n");
-  d->end_path_command ();
+  خودکار *d = (hb_سمتیہ_draw_t *) dd;
+  اگر (unlikely (!d->begin_راستہ_command ())) واپس;
+  d->append_xy_pdf (c1x, c1y); d->راستہ.append_c (' '); d->append_xy_pdf (c2x, c2y); d->راستہ.append_c (' '); d->append_xy_pdf (x, y); d->راستہ.append_str (" c\n");
+  d->انتہا_راستہ_command ();
 }
 
-static void hb_vector_draw_pdf_close_path (hb_draw_funcs_t *, void *dd, hb_draw_state_t *, void *)
+ساکن خالی hb_سمتیہ_draw_pdf_close_راستہ (hb_draw_funcs_t *, خالی *dd, hb_draw_state_t *, خالی *)
 {
-  auto *d = (hb_vector_draw_t *) dd;
-  if (unlikely (!d->begin_path_command ())) return;
-  d->path.append_str ("h\n");
-  d->end_path_command ();
+  خودکار *d = (hb_سمتیہ_draw_t *) dd;
+  اگر (unlikely (!d->begin_راستہ_command ())) واپس;
+  d->راستہ.append_str ("h\n");
+  d->انتہا_راستہ_command ();
 }
 
-static hb_bool_t
-hb_vector_draw_set_budget (hb_draw_funcs_t *, void *draw_data,
-			   int64_t budget, void *)
+ساکن hb_bool_t
+hb_سمتیہ_draw_سیٹ_budget (hb_draw_funcs_t *, خالی *draw_ڈیٹا,
+			   int64_t budget, خالی *)
 {
-  auto *draw = (hb_vector_draw_t *) draw_data;
+  خودکار *draw = (hb_سمتیہ_draw_t *) draw_ڈیٹا;
   draw->budget = budget;
   draw->recharge_budget ();
-  return true;
+  واپس سچ;
 }
 
-static int64_t
-hb_vector_draw_get_budget (hb_draw_funcs_t *, void *draw_data, void *)
+ساکن int64_t
+hb_سمتیہ_draw_get_budget (hb_draw_funcs_t *, خالی *draw_ڈیٹا, خالی *)
 {
-  return ((hb_vector_draw_t *) draw_data)->budget;
+  واپس ((hb_سمتیہ_draw_t *) draw_ڈیٹا)->budget;
 }
 
-static int64_t *
-hb_vector_draw_get_budget_remaining (hb_draw_funcs_t *, void *draw_data, void *)
+ساکن int64_t *
+hb_سمتیہ_draw_get_budget_بقایا (hb_draw_funcs_t *, خالی *draw_ڈیٹا, خالی *)
 {
-  return &((hb_vector_draw_t *) draw_data)->budget_remaining;
+  واپس &((hb_سمتیہ_draw_t *) draw_ڈیٹا)->budget_بقایا;
 }
 
 
 /* ---- Lazy loaders ---- */
 
-static inline void free_static_vector_draw_svg_funcs ();
-static struct hb_vector_draw_svg_funcs_lazy_loader_t
-  : hb_draw_funcs_lazy_loader_t<hb_vector_draw_svg_funcs_lazy_loader_t>
+ساکن اندرونی خالی free_static_سمتیہ_draw_svg_funcs ();
+ساکن ساخت hb_سمتیہ_draw_svg_funcs_lazy_loader_t
+  : hb_draw_funcs_lazy_loader_t<hb_سمتیہ_draw_svg_funcs_lazy_loader_t>
 {
-  static hb_draw_funcs_t *create ()
+  ساکن hb_draw_funcs_t *create ()
   {
     hb_draw_funcs_t *funcs = hb_draw_funcs_create ();
-    hb_draw_funcs_set_move_to_func (funcs, (hb_draw_move_to_func_t) hb_vector_draw_svg_move_to, nullptr, nullptr);
-    hb_draw_funcs_set_line_to_func (funcs, (hb_draw_line_to_func_t) hb_vector_draw_svg_line_to, nullptr, nullptr);
-    hb_draw_funcs_set_quadratic_to_func (funcs, (hb_draw_quadratic_to_func_t) hb_vector_draw_svg_quadratic_to, nullptr, nullptr);
-    hb_draw_funcs_set_cubic_to_func (funcs, (hb_draw_cubic_to_func_t) hb_vector_draw_svg_cubic_to, nullptr, nullptr);
-    hb_draw_funcs_set_close_path_func (funcs, (hb_draw_close_path_func_t) hb_vector_draw_svg_close_path, nullptr, nullptr);
-    hb_draw_funcs_set_set_budget_func (funcs, hb_vector_draw_set_budget, nullptr, nullptr);
-    hb_draw_funcs_set_get_budget_func (funcs, hb_vector_draw_get_budget, nullptr, nullptr);
-    hb_draw_funcs_set_get_budget_remaining_func (funcs, hb_vector_draw_get_budget_remaining, nullptr, nullptr);
+    hb_draw_funcs_سیٹ_move_مقصد_func (funcs, (hb_draw_move_مقصد_func_t) hb_سمتیہ_draw_svg_move_مقصد, خالی_اشاریہ, خالی_اشاریہ);
+    hb_draw_funcs_سیٹ_سطر_مقصد_func (funcs, (hb_draw_سطر_مقصد_func_t) hb_سمتیہ_draw_svg_سطر_مقصد, خالی_اشاریہ, خالی_اشاریہ);
+    hb_draw_funcs_سیٹ_quadratic_مقصد_func (funcs, (hb_draw_quadratic_مقصد_func_t) hb_سمتیہ_draw_svg_quadratic_مقصد, خالی_اشاریہ, خالی_اشاریہ);
+    hb_draw_funcs_سیٹ_cubic_مقصد_func (funcs, (hb_draw_cubic_مقصد_func_t) hb_سمتیہ_draw_svg_cubic_مقصد, خالی_اشاریہ, خالی_اشاریہ);
+    hb_draw_funcs_سیٹ_close_راستہ_func (funcs, (hb_draw_close_راستہ_func_t) hb_سمتیہ_draw_svg_close_راستہ, خالی_اشاریہ, خالی_اشاریہ);
+    hb_draw_funcs_سیٹ_سیٹ_budget_func (funcs, hb_سمتیہ_draw_سیٹ_budget, خالی_اشاریہ, خالی_اشاریہ);
+    hb_draw_funcs_سیٹ_get_budget_func (funcs, hb_سمتیہ_draw_get_budget, خالی_اشاریہ, خالی_اشاریہ);
+    hb_draw_funcs_سیٹ_get_budget_بقایا_func (funcs, hb_سمتیہ_draw_get_budget_بقایا, خالی_اشاریہ, خالی_اشاریہ);
     hb_draw_funcs_make_immutable (funcs);
-    hb_atexit (free_static_vector_draw_svg_funcs);
-    return funcs;
+    hb_atexit (free_static_سمتیہ_draw_svg_funcs);
+    واپس funcs;
   }
-} static_vector_draw_svg_funcs;
-static inline void free_static_vector_draw_svg_funcs () { static_vector_draw_svg_funcs.free_instance (); }
+} static_سمتیہ_draw_svg_funcs;
+ساکن اندرونی خالی free_static_سمتیہ_draw_svg_funcs () { static_سمتیہ_draw_svg_funcs.free_instance (); }
 
-static inline void free_static_vector_draw_pdf_funcs ();
-static struct hb_vector_draw_pdf_funcs_lazy_loader_t
-  : hb_draw_funcs_lazy_loader_t<hb_vector_draw_pdf_funcs_lazy_loader_t>
+ساکن اندرونی خالی free_static_سمتیہ_draw_pdf_funcs ();
+ساکن ساخت hb_سمتیہ_draw_pdf_funcs_lazy_loader_t
+  : hb_draw_funcs_lazy_loader_t<hb_سمتیہ_draw_pdf_funcs_lazy_loader_t>
 {
-  static hb_draw_funcs_t *create ()
+  ساکن hb_draw_funcs_t *create ()
   {
     hb_draw_funcs_t *funcs = hb_draw_funcs_create ();
-    hb_draw_funcs_set_move_to_func (funcs, (hb_draw_move_to_func_t) hb_vector_draw_pdf_move_to, nullptr, nullptr);
-    hb_draw_funcs_set_line_to_func (funcs, (hb_draw_line_to_func_t) hb_vector_draw_pdf_line_to, nullptr, nullptr);
+    hb_draw_funcs_سیٹ_move_مقصد_func (funcs, (hb_draw_move_مقصد_func_t) hb_سمتیہ_draw_pdf_move_مقصد, خالی_اشاریہ, خالی_اشاریہ);
+    hb_draw_funcs_سیٹ_سطر_مقصد_func (funcs, (hb_draw_سطر_مقصد_func_t) hb_سمتیہ_draw_pdf_سطر_مقصد, خالی_اشاریہ, خالی_اشاریہ);
     /* No quadratic_to: null fallback auto-promotes to cubic. */
-    hb_draw_funcs_set_cubic_to_func (funcs, (hb_draw_cubic_to_func_t) hb_vector_draw_pdf_cubic_to, nullptr, nullptr);
-    hb_draw_funcs_set_close_path_func (funcs, (hb_draw_close_path_func_t) hb_vector_draw_pdf_close_path, nullptr, nullptr);
-    hb_draw_funcs_set_set_budget_func (funcs, hb_vector_draw_set_budget, nullptr, nullptr);
-    hb_draw_funcs_set_get_budget_func (funcs, hb_vector_draw_get_budget, nullptr, nullptr);
-    hb_draw_funcs_set_get_budget_remaining_func (funcs, hb_vector_draw_get_budget_remaining, nullptr, nullptr);
+    hb_draw_funcs_سیٹ_cubic_مقصد_func (funcs, (hb_draw_cubic_مقصد_func_t) hb_سمتیہ_draw_pdf_cubic_مقصد, خالی_اشاریہ, خالی_اشاریہ);
+    hb_draw_funcs_سیٹ_close_راستہ_func (funcs, (hb_draw_close_راستہ_func_t) hb_سمتیہ_draw_pdf_close_راستہ, خالی_اشاریہ, خالی_اشاریہ);
+    hb_draw_funcs_سیٹ_سیٹ_budget_func (funcs, hb_سمتیہ_draw_سیٹ_budget, خالی_اشاریہ, خالی_اشاریہ);
+    hb_draw_funcs_سیٹ_get_budget_func (funcs, hb_سمتیہ_draw_get_budget, خالی_اشاریہ, خالی_اشاریہ);
+    hb_draw_funcs_سیٹ_get_budget_بقایا_func (funcs, hb_سمتیہ_draw_get_budget_بقایا, خالی_اشاریہ, خالی_اشاریہ);
     hb_draw_funcs_make_immutable (funcs);
-    hb_atexit (free_static_vector_draw_pdf_funcs);
-    return funcs;
+    hb_atexit (free_static_سمتیہ_draw_pdf_funcs);
+    واپس funcs;
   }
-} static_vector_draw_pdf_funcs;
-static inline void free_static_vector_draw_pdf_funcs () { static_vector_draw_pdf_funcs.free_instance (); }
+} static_سمتیہ_draw_pdf_funcs;
+ساکن اندرونی خالی free_static_سمتیہ_draw_pdf_funcs () { static_سمتیہ_draw_pdf_funcs.free_instance (); }
 
 
 
@@ -206,26 +206,26 @@ static inline void free_static_vector_draw_pdf_funcs () { static_vector_draw_pdf
  *
  * Since: 13.0.0
  */
-hb_vector_draw_t *
-hb_vector_draw_create_or_fail (hb_vector_format_t format)
+hb_سمتیہ_draw_t *
+hb_سمتیہ_draw_create_or_fail (hb_سمتیہ_format_t format)
 {
-  switch (format)
+  انتخاب (format)
   {
-    case HB_VECTOR_FORMAT_SVG:
-    case HB_VECTOR_FORMAT_PDF:
-      break;
-    case HB_VECTOR_FORMAT_INVALID: default:
-      return nullptr;
+    حالت HB_سمتیہ_FORMAT_SVG:
+    حالت HB_سمتیہ_FORMAT_PDF:
+      توڑو;
+    حالت HB_سمتیہ_FORMAT_INVALID: طےشدہ:
+      واپس خالی_اشاریہ;
   }
 
-  hb_vector_draw_t *draw = hb_object_create<hb_vector_draw_t> ();
-  if (unlikely (!draw))
-    return nullptr;
+  hb_سمتیہ_draw_t *draw = hb_object_create<hb_سمتیہ_draw_t> ();
+  اگر (unlikely (!draw))
+    واپس خالی_اشاریہ;
   draw->format = format;
   draw->defs.alloc (2048);
   draw->body.alloc (8192);
-  draw->path.alloc (2048);
-  return draw;
+  draw->راستہ.alloc (2048);
+  واپس draw;
 }
 
 /**
@@ -238,10 +238,10 @@ hb_vector_draw_create_or_fail (hb_vector_format_t format)
  *
  * Since: 13.0.0
  */
-hb_vector_draw_t *
-hb_vector_draw_reference (hb_vector_draw_t *draw)
+hb_سمتیہ_draw_t *
+hb_سمتیہ_draw_reference (hb_سمتیہ_draw_t *draw)
 {
-  return hb_object_reference (draw);
+  واپس hb_object_reference (draw);
 }
 
 /**
@@ -252,11 +252,11 @@ hb_vector_draw_reference (hb_vector_draw_t *draw)
  *
  * Since: 13.0.0
  */
-void
-hb_vector_draw_destroy (hb_vector_draw_t *draw)
+خالی
+hb_سمتیہ_draw_destroy (hb_سمتیہ_draw_t *draw)
 {
-  if (!hb_object_should_destroy (draw))
-    return;
+  اگر (!hb_object_should_destroy (draw))
+    واپس;
 
   hb_blob_destroy (draw->recycled_blob);
   hb_object_actually_destroy (draw);
@@ -278,13 +278,13 @@ hb_vector_draw_destroy (hb_vector_draw_t *draw)
  * Since: 13.0.0
  */
 hb_bool_t
-hb_vector_draw_set_user_data (hb_vector_draw_t   *draw,
-                              hb_user_data_key_t *key,
-                              void               *data,
+hb_سمتیہ_draw_سیٹ_user_ڈیٹا (hb_سمتیہ_draw_t   *draw,
+                              hb_user_ڈیٹا_کلید_t *key,
+                              خالی               *ڈیٹا,
                               hb_destroy_func_t   destroy,
                               hb_bool_t           replace)
 {
-  return hb_object_set_user_data (draw, key, data, destroy, replace);
+  واپس hb_object_سیٹ_user_ڈیٹا (draw, key, ڈیٹا, destroy, replace);
 }
 
 /**
@@ -298,11 +298,11 @@ hb_vector_draw_set_user_data (hb_vector_draw_t   *draw,
  *
  * Since: 13.0.0
  */
-void *
-hb_vector_draw_get_user_data (const hb_vector_draw_t   *draw,
-                              hb_user_data_key_t *key)
+خالی *
+hb_سمتیہ_draw_get_user_ڈیٹا (ثابت hb_سمتیہ_draw_t   *draw,
+                              hb_user_ڈیٹا_کلید_t *key)
 {
-  return hb_object_get_user_data (draw, key);
+  واپس hb_object_get_user_ڈیٹا (draw, key);
 }
 
 /**
@@ -319,11 +319,11 @@ hb_vector_draw_get_user_data (const hb_vector_draw_t   *draw,
  *
  * Since: 13.0.0
  */
-void
-hb_vector_draw_set_transform (hb_vector_draw_t *draw,
-                              float xx, float yx,
-                              float xy, float yy,
-                              float dx, float dy)
+خالی
+hb_سمتیہ_draw_سیٹ_transform (hb_سمتیہ_draw_t *draw,
+                              اعشاری xx, اعشاری yx,
+                              اعشاری xy, اعشاری yy,
+                              اعشاری dx, اعشاری dy)
 {
   draw->transform = {xx, yx, xy, yy, dx, dy};
 }
@@ -342,18 +342,18 @@ hb_vector_draw_set_transform (hb_vector_draw_t *draw,
  *
  * Since: 13.0.0
  */
-void
-hb_vector_draw_get_transform (const hb_vector_draw_t *draw,
-                              float *xx, float *yx,
-                              float *xy, float *yy,
-                              float *dx, float *dy)
+خالی
+hb_سمتیہ_draw_get_transform (ثابت hb_سمتیہ_draw_t *draw,
+                              اعشاری *xx, اعشاری *yx,
+                              اعشاری *xy, اعشاری *yy,
+                              اعشاری *dx, اعشاری *dy)
 {
-  if (xx) *xx = draw->transform.xx;
-  if (yx) *yx = draw->transform.yx;
-  if (xy) *xy = draw->transform.xy;
-  if (yy) *yy = draw->transform.yy;
-  if (dx) *dx = draw->transform.x0;
-  if (dy) *dy = draw->transform.y0;
+  اگر (xx) *xx = draw->transform.xx;
+  اگر (yx) *yx = draw->transform.yx;
+  اگر (xy) *xy = draw->transform.xy;
+  اگر (yy) *yy = draw->transform.yy;
+  اگر (dx) *dx = draw->transform.x0;
+  اگر (dy) *dy = draw->transform.y0;
 }
 
 /**
@@ -366,13 +366,13 @@ hb_vector_draw_get_transform (const hb_vector_draw_t *draw,
  *
  * Since: 13.0.0
  */
-void
-hb_vector_draw_set_scale_factor (hb_vector_draw_t *draw,
-                                 float x_scale_factor,
-                                 float y_scale_factor)
+خالی
+hb_سمتیہ_draw_سیٹ_scale_ضربی_عدد (hb_سمتیہ_draw_t *draw,
+                                 اعشاری x_scale_ضربی_عدد,
+                                 اعشاری y_scale_ضربی_عدد)
 {
-  draw->x_scale_factor = x_scale_factor > 0.f ? x_scale_factor : 1.f;
-  draw->y_scale_factor = y_scale_factor > 0.f ? y_scale_factor : 1.f;
+  draw->x_scale_ضربی_عدد = x_scale_ضربی_عدد > 0.f ? x_scale_ضربی_عدد : 1.f;
+  draw->y_scale_ضربی_عدد = y_scale_ضربی_عدد > 0.f ? y_scale_ضربی_عدد : 1.f;
 }
 
 /**
@@ -385,13 +385,13 @@ hb_vector_draw_set_scale_factor (hb_vector_draw_t *draw,
  *
  * Since: 13.0.0
  */
-void
-hb_vector_draw_get_scale_factor (const hb_vector_draw_t *draw,
-                                 float *x_scale_factor,
-                                 float *y_scale_factor)
+خالی
+hb_سمتیہ_draw_get_scale_ضربی_عدد (ثابت hb_سمتیہ_draw_t *draw,
+                                 اعشاری *x_scale_ضربی_عدد,
+                                 اعشاری *y_scale_ضربی_عدد)
 {
-  if (x_scale_factor) *x_scale_factor = draw->x_scale_factor;
-  if (y_scale_factor) *y_scale_factor = draw->y_scale_factor;
+  اگر (x_scale_ضربی_عدد) *x_scale_ضربی_عدد = draw->x_scale_ضربی_عدد;
+  اگر (y_scale_ضربی_عدد) *y_scale_ضربی_عدد = draw->y_scale_ضربی_عدد;
 }
 
 /**
@@ -403,19 +403,19 @@ hb_vector_draw_get_scale_factor (const hb_vector_draw_t *draw,
  *
  * Since: 13.0.0
  */
-void
-hb_vector_draw_set_extents (hb_vector_draw_t *draw,
-                            const hb_vector_extents_t *extents)
+خالی
+hb_سمتیہ_draw_سیٹ_extents (hb_سمتیہ_draw_t *draw,
+                            ثابت hb_سمتیہ_extents_t *extents)
 {
-  if (!extents)
+  اگر (!extents)
   {
     draw->extents = {0, 0, 0, 0};
-    draw->has_extents = false;
-    return;
+    draw->has_extents = جھوٹ;
+    واپس;
   }
 
-  if (extents->width == 0.f || extents->height == 0.f)
-    return;
+  اگر (extents->چوڑائی == 0.f || extents->اونچائی == 0.f)
+    واپس;
 
   /* Caller-supplied extents are in input-space; divide by
    * scale_factor so they end up in output-space, matching
@@ -424,29 +424,29 @@ hb_vector_draw_set_extents (hb_vector_draw_t *draw,
    * same divide).  Normalize so origin is the min corner and
    * width/height are positive — callers may pass a
    * glyph-extents-style box with negative height. */
-  float x0 = extents->x / draw->x_scale_factor;
-  float y0 = extents->y / draw->y_scale_factor;
-  float x1 = x0 + extents->width  / draw->x_scale_factor;
-  float y1 = y0 + extents->height / draw->y_scale_factor;
-  hb_vector_extents_t e = {
+  اعشاری x0 = extents->x / draw->x_scale_ضربی_عدد;
+  اعشاری y0 = extents->y / draw->y_scale_ضربی_عدد;
+  اعشاری x1 = x0 + extents->چوڑائی  / draw->x_scale_ضربی_عدد;
+  اعشاری y1 = y0 + extents->اونچائی / draw->y_scale_ضربی_عدد;
+  hb_سمتیہ_extents_t e = {
     hb_min (x0, x1), hb_min (y0, y1),
     fabsf (x1 - x0), fabsf (y1 - y0),
   };
 
-  if (draw->has_extents)
+  اگر (draw->has_extents)
   {
-    float x0 = hb_min (draw->extents.x, e.x);
-    float y0 = hb_min (draw->extents.y, e.y);
-    float x1 = hb_max (draw->extents.x + draw->extents.width,
-                       e.x + e.width);
-    float y1 = hb_max (draw->extents.y + draw->extents.height,
-                       e.y + e.height);
+    اعشاری x0 = hb_min (draw->extents.x, e.x);
+    اعشاری y0 = hb_min (draw->extents.y, e.y);
+    اعشاری x1 = hb_max (draw->extents.x + draw->extents.چوڑائی,
+                       e.x + e.چوڑائی);
+    اعشاری y1 = hb_max (draw->extents.y + draw->extents.اونچائی,
+                       e.y + e.اونچائی);
     draw->extents = {x0, y0, x1 - x0, y1 - y0};
   }
-  else
+  ورنہ
   {
     draw->extents = e;
-    draw->has_extents = true;
+    draw->has_extents = سچ;
   }
 }
 
@@ -462,15 +462,15 @@ hb_vector_draw_set_extents (hb_vector_draw_t *draw,
  * Since: 13.0.0
  */
 hb_bool_t
-hb_vector_draw_get_extents (const hb_vector_draw_t *draw,
-                            hb_vector_extents_t *extents)
+hb_سمتیہ_draw_get_extents (ثابت hb_سمتیہ_draw_t *draw,
+                            hb_سمتیہ_extents_t *extents)
 {
-  if (!draw->has_extents)
-    return false;
+  اگر (!draw->has_extents)
+    واپس جھوٹ;
 
-  if (extents)
+  اگر (extents)
     *extents = draw->extents;
-  return true;
+  واپس سچ;
 }
 
 /**
@@ -485,18 +485,18 @@ hb_vector_draw_get_extents (const hb_vector_draw_t *draw,
  * Since: 13.0.0
  */
 hb_bool_t
-hb_vector_draw_set_glyph_extents (hb_vector_draw_t *draw,
-                                  const hb_glyph_extents_t *glyph_extents)
+hb_سمتیہ_draw_سیٹ_glyph_extents (hb_سمتیہ_draw_t *draw,
+                                  ثابت hb_glyph_extents_t *glyph_extents)
 {
   hb_bool_t has_extents = draw->has_extents;
-  hb_bool_t ret = hb_vector_set_glyph_extents_common (draw->transform,
-						   draw->x_scale_factor,
-						   draw->y_scale_factor,
+  hb_bool_t ret = hb_سمتیہ_سیٹ_glyph_extents_common (draw->transform,
+						   draw->x_scale_ضربی_عدد,
+						   draw->y_scale_ضربی_عدد,
 						   glyph_extents,
 						   &draw->extents,
 						   &has_extents);
   draw->has_extents = has_extents;
-  return ret;
+  واپس ret;
 }
 
 /**
@@ -509,10 +509,10 @@ hb_vector_draw_set_glyph_extents (hb_vector_draw_t *draw,
  *
  * Since: 14.2.0
  */
-hb_vector_format_t
-hb_vector_draw_get_format (const hb_vector_draw_t *draw)
+hb_سمتیہ_format_t
+hb_سمتیہ_draw_get_format (ثابت hb_سمتیہ_draw_t *draw)
 {
-  return draw->format;
+  واپس draw->format;
 }
 
 /**
@@ -527,13 +527,13 @@ hb_vector_draw_get_format (const hb_vector_draw_t *draw)
  * Since: 14.2.0
  */
 hb_draw_funcs_t *
-hb_vector_draw_get_funcs (const hb_vector_draw_t *draw)
+hb_سمتیہ_draw_get_funcs (ثابت hb_سمتیہ_draw_t *draw)
 {
-  switch (draw ? draw->format : HB_VECTOR_FORMAT_INVALID)
+  انتخاب (draw ? draw->format : HB_سمتیہ_FORMAT_INVALID)
   {
-    case HB_VECTOR_FORMAT_SVG: return static_vector_draw_svg_funcs.get_unconst ();
-    case HB_VECTOR_FORMAT_PDF: return static_vector_draw_pdf_funcs.get_unconst ();
-    case HB_VECTOR_FORMAT_INVALID: default: return nullptr;
+    حالت HB_سمتیہ_FORMAT_SVG: واپس static_سمتیہ_draw_svg_funcs.get_unconst ();
+    حالت HB_سمتیہ_FORMAT_PDF: واپس static_سمتیہ_draw_pdf_funcs.get_unconst ();
+    حالت HB_سمتیہ_FORMAT_INVALID: طےشدہ: واپس خالی_اشاریہ;
   }
 }
 
@@ -547,10 +547,10 @@ hb_vector_draw_get_funcs (const hb_vector_draw_t *draw)
  *
  * Since: 14.2.0
  */
-void
-hb_vector_draw_new_path (hb_vector_draw_t *draw)
+خالی
+hb_سمتیہ_draw_new_راستہ (hb_سمتیہ_draw_t *draw)
 {
-  draw->new_path ();
+  draw->new_راستہ ();
 }
 
 /**
@@ -574,21 +574,21 @@ hb_vector_draw_new_path (hb_vector_draw_t *draw)
  * Since: 14.2.0
  */
 hb_bool_t
-hb_vector_draw_glyph_or_fail (hb_vector_draw_t *draw,
+hb_سمتیہ_draw_glyph_or_fail (hb_سمتیہ_draw_t *draw,
                       hb_font_t *font,
                       hb_codepoint_t glyph,
-                      hb_vector_extents_mode_t extents_mode)
+                      hb_سمتیہ_extents_منوال_t extents_منوال)
 {
 
-  if (extents_mode == HB_VECTOR_EXTENTS_MODE_EXPAND)
+  اگر (extents_منوال == HB_سمتیہ_EXTENTS_منوال_EXPAND)
   {
     hb_glyph_extents_t ge;
-    if (hb_font_get_glyph_extents (font, glyph, &ge))
+    اگر (hb_font_get_glyph_extents (font, glyph, &ge))
     {
       hb_bool_t has_extents = draw->has_extents;
-      hb_vector_set_glyph_extents_common (draw->transform,
-					  draw->x_scale_factor,
-					  draw->y_scale_factor,
+      hb_سمتیہ_سیٹ_glyph_extents_common (draw->transform,
+					  draw->x_scale_ضربی_عدد,
+					  draw->y_scale_ضربی_عدد,
 					  &ge,
 					  &draw->extents,
 					  &has_extents);
@@ -596,8 +596,8 @@ hb_vector_draw_glyph_or_fail (hb_vector_draw_t *draw,
     }
   }
 
-  draw->new_path ();
-  return hb_font_draw_glyph_or_fail (font, glyph, hb_vector_draw_get_funcs (draw), draw);
+  draw->new_راستہ ();
+  واپس hb_font_draw_glyph_or_fail (font, glyph, hb_سمتیہ_draw_get_funcs (draw), draw);
 }
 
 /**
@@ -612,13 +612,13 @@ hb_vector_draw_glyph_or_fail (hb_vector_draw_t *draw,
  *
  * Since: 14.2.0
  */
-void
-hb_vector_draw_glyph (hb_vector_draw_t *draw,
+خالی
+hb_سمتیہ_draw_glyph (hb_سمتیہ_draw_t *draw,
                       hb_font_t *font,
                       hb_codepoint_t glyph,
-                      hb_vector_extents_mode_t extents_mode)
+                      hb_سمتیہ_extents_منوال_t extents_منوال)
 {
-  hb_vector_draw_glyph_or_fail (draw, font, glyph, extents_mode);
+  hb_سمتیہ_draw_glyph_or_fail (draw, font, glyph, extents_منوال);
 }
 
 
@@ -631,11 +631,11 @@ hb_vector_draw_glyph (hb_vector_draw_t *draw,
  *
  * Since: 14.2.0
  */
-void
-hb_vector_draw_set_precision (hb_vector_draw_t *draw,
-                             unsigned precision)
+خالی
+hb_سمتیہ_draw_سیٹ_precision (hb_سمتیہ_draw_t *draw,
+                             غیرعلامتی precision)
 {
-  draw->set_precision (precision);
+  draw->سیٹ_precision (precision);
 }
 
 /**
@@ -649,10 +649,10 @@ hb_vector_draw_set_precision (hb_vector_draw_t *draw,
  *
  * Since: 14.2.0
  */
-unsigned
-hb_vector_draw_get_precision (const hb_vector_draw_t *draw)
+غیرعلامتی
+hb_سمتیہ_draw_get_precision (ثابت hb_سمتیہ_draw_t *draw)
 {
-  return draw->get_precision ();
+  واپس draw->get_precision ();
 }
 
 /**
@@ -665,11 +665,11 @@ hb_vector_draw_get_precision (const hb_vector_draw_t *draw)
  *
  * Since: 14.2.0
  */
-void
-hb_vector_draw_set_foreground (hb_vector_draw_t *draw,
+خالی
+hb_سمتیہ_draw_سیٹ_foreground (hb_سمتیہ_draw_t *draw,
                                hb_color_t foreground)
 {
-  draw->flush_path ();
+  draw->flush_راستہ ();
   draw->foreground = foreground;
 }
 
@@ -684,9 +684,9 @@ hb_vector_draw_set_foreground (hb_vector_draw_t *draw,
  * Since: 14.2.0
  */
 hb_color_t
-hb_vector_draw_get_foreground (const hb_vector_draw_t *draw)
+hb_سمتیہ_draw_get_foreground (ثابت hb_سمتیہ_draw_t *draw)
 {
-  return draw->foreground;
+  واپس draw->foreground;
 }
 
 /**
@@ -700,8 +700,8 @@ hb_vector_draw_get_foreground (const hb_vector_draw_t *draw)
  *
  * Since: 14.2.0
  */
-void
-hb_vector_draw_set_background (hb_vector_draw_t *draw,
+خالی
+hb_سمتیہ_draw_سیٹ_background (hb_سمتیہ_draw_t *draw,
                                hb_color_t background)
 {
   draw->background = background;
@@ -718,205 +718,205 @@ hb_vector_draw_set_background (hb_vector_draw_t *draw,
  * Since: 14.2.0
  */
 hb_color_t
-hb_vector_draw_get_background (const hb_vector_draw_t *draw)
+hb_سمتیہ_draw_get_background (ثابت hb_سمتیہ_draw_t *draw)
 {
-  return draw->background;
+  واپس draw->background;
 }
 
-static hb_blob_t *
-hb_vector_draw_render_pdf (hb_vector_draw_t *draw)
+ساکن hb_blob_t *
+hb_سمتیہ_draw_render_pdf (hb_سمتیہ_draw_t *draw)
 {
-  draw->flush_path ();
-  if (!draw->has_extents)
-    return nullptr;
+  draw->flush_راستہ ();
+  اگر (!draw->has_extents)
+    واپس خالی_اشاریہ;
 
   /* Collect the content stream.  The path coordinates are in
    * SVG space (Y-down).  Prepend a CTM that flips Y so the
    * PDF page (Y-up) renders correctly. */
-  float ex = draw->extents.x;
-  float ey = draw->extents.y;
-  float ew = draw->extents.width;
-  float eh = draw->extents.height;
+  اعشاری ex = draw->extents.x;
+  اعشاری ey = draw->extents.y;
+  اعشاری ew = draw->extents.چوڑائی;
+  اعشاری eh = draw->extents.اونچائی;
 
-  hb_vector_buf_t stream;
-  stream.alloc (draw->body.length + draw->path.length + 256);
+  hb_سمتیہ_buf_t دھارا;
+  دھارا.alloc (draw->body.لمبائی + draw->راستہ.لمبائی + 256);
 
   /* Background rect. */
-  if (hb_color_get_alpha (draw->background))
+  اگر (hb_color_get_alpha (draw->background))
   {
-    float a = hb_color_get_alpha (draw->background) / 255.f;
-    if (a < 1.f - 1.f / 512.f)
+    اعشاری a = hb_color_get_alpha (draw->background) / 255.f;
+    اگر (a < 1.f - 1.f / 512.f)
     {
-      stream.append_num (a, 4);
-      stream.append_str (" ca gs\n");
+      دھارا.append_عدد (a, 4);
+      دھارا.append_str (" ca gs\n");
     }
-    stream.append_num (hb_color_get_red (draw->background) / 255.f, 4);
-    stream.append_c (' ');
-    stream.append_num (hb_color_get_green (draw->background) / 255.f, 4);
-    stream.append_c (' ');
-    stream.append_num (hb_color_get_blue (draw->background) / 255.f, 4);
-    stream.append_str (" rg\n");
-    stream.append_num (ex);
-    stream.append_c (' ');
-    stream.append_num (-(ey + eh));
-    stream.append_c (' ');
-    stream.append_num (ew);
-    stream.append_c (' ');
-    stream.append_num (eh);
-    stream.append_str (" re f\n");
+    دھارا.append_عدد (hb_color_get_red (draw->background) / 255.f, 4);
+    دھارا.append_c (' ');
+    دھارا.append_عدد (hb_color_get_green (draw->background) / 255.f, 4);
+    دھارا.append_c (' ');
+    دھارا.append_عدد (hb_color_get_blue (draw->background) / 255.f, 4);
+    دھارا.append_str (" rg\n");
+    دھارا.append_عدد (ex);
+    دھارا.append_c (' ');
+    دھارا.append_عدد (-(ey + eh));
+    دھارا.append_c (' ');
+    دھارا.append_عدد (ew);
+    دھارا.append_c (' ');
+    دھارا.append_عدد (eh);
+    دھارا.append_str (" re f\n");
   }
 
-  draw->flush_path ();
-  if (draw->body.length)
-    stream.append_len (draw->body.arrayZ, draw->body.length);
+  draw->flush_راستہ ();
+  اگر (draw->body.لمبائی)
+    دھارا.append_len (draw->body.arrayZ, draw->body.لمبائی);
 
   /* Build PDF objects, tracking byte offsets for xref. */
-  hb_vector_buf_t out;
-  hb_buf_recover_recycled (draw->recycled_blob, &out);
-  out.alloc (stream.length + 512);
+  hb_سمتیہ_buf_t برآمد;
+  hb_buf_recover_recycled (draw->recycled_blob, &برآمد);
+  برآمد.alloc (دھارا.لمبائی + 512);
 
-  unsigned offsets[5]; /* objects 1-4, plus end */
+  غیرعلامتی offsets[5]; /* objects 1-4, plus end */
 
-  out.append_str ("%PDF-1.4\n%\xC0\xC1\xC2\xC3\n");
+  برآمد.append_str ("%PDF-1.4\n%\xC0\xC1\xC2\xC3\n");
 
   /* Object 1: Catalog */
-  offsets[0] = out.length;
-  out.append_str ("1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n");
+  offsets[0] = برآمد.لمبائی;
+  برآمد.append_str ("1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n");
 
   /* Object 2: Pages */
-  offsets[1] = out.length;
-  out.append_str ("2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n");
+  offsets[1] = برآمد.لمبائی;
+  برآمد.append_str ("2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n");
 
   /* Object 3: Page.  Extents are in SVG space (y = -font_y).
    * Convert back: font Y range = [-(ey+eh) .. -ey]. */
-  offsets[2] = out.length;
-  out.append_str ("3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [");
-  out.append_num (ex);
-  out.append_c (' ');
-  out.append_num (-(ey + eh));
-  out.append_c (' ');
-  out.append_num (ex + ew);
-  out.append_c (' ');
-  out.append_num (-ey);
-  out.append_str ("] /Contents 4 0 R");
-  if (draw->pdf_extgstate_dict.length)
+  offsets[2] = برآمد.لمبائی;
+  برآمد.append_str ("3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [");
+  برآمد.append_عدد (ex);
+  برآمد.append_c (' ');
+  برآمد.append_عدد (-(ey + eh));
+  برآمد.append_c (' ');
+  برآمد.append_عدد (ex + ew);
+  برآمد.append_c (' ');
+  برآمد.append_عدد (-ey);
+  برآمد.append_str ("] /Contents 4 0 R");
+  اگر (draw->pdf_extgstate_dict.لمبائی)
   {
-    out.append_str (" /Resources << /ExtGState << ");
-    out.append_len (draw->pdf_extgstate_dict.arrayZ, draw->pdf_extgstate_dict.length);
-    out.append_str (">> >>");
+    برآمد.append_str (" /Resources << /ExtGState << ");
+    برآمد.append_len (draw->pdf_extgstate_dict.arrayZ, draw->pdf_extgstate_dict.لمبائی);
+    برآمد.append_str (">> >>");
   }
-  out.append_str (" >>\nendobj\n");
+  برآمد.append_str (" >>\nendobj\n");
 
   /* Object 4: Content stream */
-  offsets[3] = out.length;
-  out.append_str ("4 0 obj\n<< /Length ");
-  out.append_unsigned (stream.length);
-  out.append_str (" >>\nstream\n");
-  out.append_len (stream.arrayZ, stream.length);
-  out.append_str ("endstream\nendobj\n");
+  offsets[3] = برآمد.لمبائی;
+  برآمد.append_str ("4 0 obj\n<< /Length ");
+  برآمد.append_unsigned (دھارا.لمبائی);
+  برآمد.append_str (" >>\nstream\n");
+  برآمد.append_len (دھارا.arrayZ, دھارا.لمبائی);
+  برآمد.append_str ("endstream\nendobj\n");
 
   /* Cross-reference table */
-  unsigned xref_offset = out.length;
-  out.append_str ("xref\n0 5\n");
-  out.append_str ("0000000000 65535 f \n");
-  for (unsigned i = 0; i < 4; i++)
+  غیرعلامتی xref_انحراف = برآمد.لمبائی;
+  برآمد.append_str ("xref\n0 5\n");
+  برآمد.append_str ("0000000000 65535 f \n");
+  برائے (غیرعلامتی i = 0; i < 4; i++)
   {
-    char tmp[21];
-    snprintf (tmp, sizeof (tmp), "%010u 00000 n \n", offsets[i]);
-    out.append_len (tmp, 20);
+    حرف tmp[21];
+    snprintf (tmp, حجم (tmp), "%010u 00000 n \n", offsets[i]);
+    برآمد.append_len (tmp, 20);
   }
 
   /* Trailer */
-  out.append_str ("trailer\n<< /Size 5 /Root 1 0 R >>\nstartxref\n");
-  out.append_unsigned (xref_offset);
-  out.append_str ("\n%%EOF\n");
+  برآمد.append_str ("trailer\n<< /Size 5 /Root 1 0 R >>\nstartxref\n");
+  برآمد.append_unsigned (xref_انحراف);
+  برآمد.append_str ("\n%%EOF\n");
 
-  hb_blob_t *blob = hb_buf_blob_from (&draw->recycled_blob, &out);
+  hb_blob_t *blob = hb_buf_blob_from (&draw->recycled_blob, &برآمد);
 
-  return blob;
+  واپس blob;
 }
 
-static hb_blob_t *
-hb_vector_draw_render_svg (hb_vector_draw_t *draw)
+ساکن hb_blob_t *
+hb_سمتیہ_draw_render_svg (hb_سمتیہ_draw_t *draw)
 {
-  draw->flush_path ();
-  if (!draw->has_extents)
-    return nullptr;
+  draw->flush_راستہ ();
+  اگر (!draw->has_extents)
+    واپس خالی_اشاریہ;
 
-  hb_vector_buf_t out;
-  hb_buf_recover_recycled (draw->recycled_blob, &out);
-  unsigned estimated = draw->defs.length +
-		       (draw->body.length ? draw->body.length : draw->path.length) +
+  hb_سمتیہ_buf_t برآمد;
+  hb_buf_recover_recycled (draw->recycled_blob, &برآمد);
+  غیرعلامتی estimated = draw->defs.لمبائی +
+		       (draw->body.لمبائی ? draw->body.لمبائی : draw->راستہ.لمبائی) +
 		       256;
-  out.alloc (estimated);
+  برآمد.alloc (estimated);
   /* Extents are in Y-up (font) space.  SVG is Y-down.
    * The global scale(1,-1) wrapper flips content; the
    * viewBox maps the flipped range. */
-  float vb_x = draw->extents.x;
-  float vb_y = -(draw->extents.y + draw->extents.height);
-  float vb_w = draw->extents.width;
-  float vb_h = draw->extents.height;
-  out.append_str ("<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"");
-  out.append_num (vb_x);
-  out.append_c (' ');
-  out.append_num (vb_y);
-  out.append_c (' ');
-  out.append_num (vb_w);
-  out.append_c (' ');
-  out.append_num (vb_h);
-  out.append_str ("\" width=\"");
-  out.append_num (vb_w);
-  out.append_str ("\" height=\"");
-  out.append_num (vb_h);
-  out.append_str ("\">\n");
+  اعشاری vb_x = draw->extents.x;
+  اعشاری vb_y = -(draw->extents.y + draw->extents.اونچائی);
+  اعشاری vb_w = draw->extents.چوڑائی;
+  اعشاری vb_h = draw->extents.اونچائی;
+  برآمد.append_str ("<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"");
+  برآمد.append_عدد (vb_x);
+  برآمد.append_c (' ');
+  برآمد.append_عدد (vb_y);
+  برآمد.append_c (' ');
+  برآمد.append_عدد (vb_w);
+  برآمد.append_c (' ');
+  برآمد.append_عدد (vb_h);
+  برآمد.append_str ("\" width=\"");
+  برآمد.append_عدد (vb_w);
+  برآمد.append_str ("\" height=\"");
+  برآمد.append_عدد (vb_h);
+  برآمد.append_str ("\">\n");
 
-  if (draw->defs.length)
+  اگر (draw->defs.لمبائی)
   {
-    out.append_str ("<defs>\n");
-    out.append_len (draw->defs.arrayZ, draw->defs.length);
-    out.append_str ("</defs>\n");
+    برآمد.append_str ("<defs>\n");
+    برآمد.append_len (draw->defs.arrayZ, draw->defs.لمبائی);
+    برآمد.append_str ("</defs>\n");
   }
 
   /* Background rect. */
-  if (hb_color_get_alpha (draw->background))
+  اگر (hb_color_get_alpha (draw->background))
   {
-    out.append_str ("<rect x=\"");
-    out.append_num (vb_x);
-    out.append_str ("\" y=\"");
-    out.append_num (vb_y);
-    out.append_str ("\" width=\"");
-    out.append_num (vb_w);
-    out.append_str ("\" height=\"");
-    out.append_num (vb_h);
-    out.append_str ("\" fill=\"rgb(");
-    out.append_unsigned (hb_color_get_red (draw->background));
-    out.append_c (',');
-    out.append_unsigned (hb_color_get_green (draw->background));
-    out.append_c (',');
-    out.append_unsigned (hb_color_get_blue (draw->background));
-    out.append_str (")\"");
-    if (hb_color_get_alpha (draw->background) < 255)
+    برآمد.append_str ("<rect x=\"");
+    برآمد.append_عدد (vb_x);
+    برآمد.append_str ("\" y=\"");
+    برآمد.append_عدد (vb_y);
+    برآمد.append_str ("\" width=\"");
+    برآمد.append_عدد (vb_w);
+    برآمد.append_str ("\" height=\"");
+    برآمد.append_عدد (vb_h);
+    برآمد.append_str ("\" fill=\"rgb(");
+    برآمد.append_unsigned (hb_color_get_red (draw->background));
+    برآمد.append_c (',');
+    برآمد.append_unsigned (hb_color_get_green (draw->background));
+    برآمد.append_c (',');
+    برآمد.append_unsigned (hb_color_get_blue (draw->background));
+    برآمد.append_str (")\"");
+    اگر (hb_color_get_alpha (draw->background) < 255)
     {
-      out.append_str (" fill-opacity=\"");
-      out.append_num (hb_color_get_alpha (draw->background) / 255.f, 4);
-      out.append_c ('"');
+      برآمد.append_str (" fill-opacity=\"");
+      برآمد.append_عدد (hb_color_get_alpha (draw->background) / 255.f, 4);
+      برآمد.append_c ('"');
     }
-    out.append_str ("/>\n");
+    برآمد.append_str ("/>\n");
   }
 
-  draw->flush_path ();
-  if (draw->body.length)
+  draw->flush_راستہ ();
+  اگر (draw->body.لمبائی)
   {
-    out.append_str ("<g transform=\"scale(1,-1)\">\n");
-    out.append_len (draw->body.arrayZ, draw->body.length);
-    out.append_str ("</g>\n");
+    برآمد.append_str ("<g transform=\"scale(1,-1)\">\n");
+    برآمد.append_len (draw->body.arrayZ, draw->body.لمبائی);
+    برآمد.append_str ("</g>\n");
   }
 
-  out.append_str ("</svg>\n");
+  برآمد.append_str ("</svg>\n");
 
-  hb_blob_t *blob = hb_buf_blob_from (&draw->recycled_blob, &out);
+  hb_blob_t *blob = hb_buf_blob_from (&draw->recycled_blob, &برآمد);
 
-  return blob;
+  واپس blob;
 }
 
 /**
@@ -932,19 +932,19 @@ hb_vector_draw_render_svg (hb_vector_draw_t *draw)
  * Since: 13.0.0
  */
 hb_blob_t *
-hb_vector_draw_render (hb_vector_draw_t *draw)
+hb_سمتیہ_draw_render (hb_سمتیہ_draw_t *draw)
 {
-  HB_SCOPE_GUARD (hb_vector_draw_clear (draw));
-  switch (draw->format)
+  HB_SCOPE_GUARD (hb_سمتیہ_draw_clear (draw));
+  انتخاب (draw->format)
   {
-    case HB_VECTOR_FORMAT_SVG:
-      return hb_vector_draw_render_svg (draw);
+    حالت HB_سمتیہ_FORMAT_SVG:
+      واپس hb_سمتیہ_draw_render_svg (draw);
 
-    case HB_VECTOR_FORMAT_PDF:
-      return hb_vector_draw_render_pdf (draw);
+    حالت HB_سمتیہ_FORMAT_PDF:
+      واپس hb_سمتیہ_draw_render_pdf (draw);
 
-    case HB_VECTOR_FORMAT_INVALID: default:
-      return nullptr;
+    حالت HB_سمتیہ_FORMAT_INVALID: طےشدہ:
+      واپس خالی_اشاریہ;
   }
 }
 
@@ -959,16 +959,16 @@ hb_vector_draw_render (hb_vector_draw_t *draw)
  *
  * Since: 14.2.0
  */
-void
-hb_vector_draw_clear (hb_vector_draw_t *draw)
+خالی
+hb_سمتیہ_draw_clear (hb_سمتیہ_draw_t *draw)
 {
   draw->extents = {0, 0, 0, 0};
-  draw->has_extents = false;
+  draw->has_extents = جھوٹ;
   draw->defs.clear ();
   draw->body.clear ();
-  draw->path.clear ();
+  draw->راستہ.clear ();
   draw->pdf_extgstate_dict.clear ();
-  draw->pdf_extgstate_count = 0;
+  draw->pdf_extgstate_گنتی = 0;
   draw->recharge_budget ();
 }
 
@@ -981,17 +981,17 @@ hb_vector_draw_clear (hb_vector_draw_t *draw)
  *
  * Since: 13.0.0
  */
-void
-hb_vector_draw_reset (hb_vector_draw_t *draw)
+خالی
+hb_سمتیہ_draw_reset (hb_سمتیہ_draw_t *draw)
 {
   draw->transform = {1, 0, 0, 1, 0, 0};
-  draw->x_scale_factor = 1.f;
-  draw->y_scale_factor = 1.f;
+  draw->x_scale_ضربی_عدد = 1.f;
+  draw->y_scale_ضربی_عدد = 1.f;
   draw->foreground = HB_COLOR (0, 0, 0, 255);
   draw->background = HB_COLOR (0, 0, 0, 0);
-  draw->set_precision (2);
+  draw->سیٹ_precision (2);
   draw->budget = HB_BUDGET_DEFAULT;
-  hb_vector_draw_clear (draw);
+  hb_سمتیہ_draw_clear (draw);
 }
 
 /**
@@ -1007,13 +1007,13 @@ hb_vector_draw_reset (hb_vector_draw_t *draw)
  *
  * Since: 13.0.0
  */
-void
-hb_vector_draw_recycle_blob (hb_vector_draw_t *draw,
+خالی
+hb_سمتیہ_draw_recycle_blob (hb_سمتیہ_draw_t *draw,
                              hb_blob_t *blob)
 {
   hb_blob_destroy (draw->recycled_blob);
-  draw->recycled_blob = nullptr;
-  if (!blob || blob == hb_blob_get_empty ())
-    return;
+  draw->recycled_blob = خالی_اشاریہ;
+  اگر (!blob || blob == hb_blob_get_خالی_خانے ())
+    واپس;
   draw->recycled_blob = blob;
 }

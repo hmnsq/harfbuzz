@@ -1,61 +1,61 @@
-#ifndef OT_LAYOUT_GSUB_LIGATURESUBST_HH
-#define OT_LAYOUT_GSUB_LIGATURESUBST_HH
+#اگر_غیر_تعریف_شدہ OT_LAYOUT_GSUB_LIGATURESUBST_HH
+#تعریف_کرو OT_LAYOUT_GSUB_LIGATURESUBST_HH
 
-#include "Common.hh"
-#include "LigatureSubstFormat1.hh"
+#شامل "Common.hh"
+#شامل "LigatureSubstFormat1.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+نامخلا OT {
+نامخلا Layout {
+نامخلا GSUB_impl {
 
-struct LigatureSubst
+ساخت LigatureSubst
 {
-  protected:
-  union {
-  struct { HBUINT16 v; }		format;         /* Format identifier */
+  محفوظ:
+  اتحاد {
+  ساخت { HBUINT16 v; }		format;         /* Format identifier */
   LigatureSubstFormat1_2<SmallTypes>	format1;
-#ifndef HB_NO_BEYOND_64K
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
   LigatureSubstFormat1_2<MediumTypes>	format2;
-#endif
+#اگر_ختم
   } u;
 
-  public:
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  عوامی:
+  سانچہ <قسم_نام context_t, قسم_نام ...Ts>
+  قسم_نام context_t::return_t dispatch (context_t *c, Ts&&... ds) ثابت
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-#ifndef HB_NO_BEYOND_64K
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-#endif
-    default:return_trace (c->default_return_value ());
+    اگر (unlikely (!c->may_dispatch (یہ, &u.format.v))) واپس c->no_dispatch_return_قدر ();
+    TRACE_DISPATCH (یہ, u.format.v);
+    انتخاب (u.format.v) {
+    حالت 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    حالت 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+#اگر_ختم
+    طےشدہ:return_trace (c->default_return_قدر ());
     }
   }
 
   /* TODO This function should be done using iterators. While at it perhaps
    * using iterator of arrays of hb_codepoint_t instead. */
-  template <typename GlyphID>
-  bool serialize (hb_serialize_context_t *c,
-                  hb_sorted_array_t<GlyphID> first_glyphs,
-                  hb_array_t<const unsigned int> ligature_per_first_glyph_count_list,
+  سانچہ <قسم_نام GlyphID>
+  منطقی serialize (hb_serialize_context_t *c,
+                  hb_sorted_array_t<GlyphID> پہلا_glyphs,
+                  hb_array_t<ثابت غیرعلامتی صحیح> ligature_فی_پہلا_glyph_گنتی_list,
                   hb_array_t<GlyphID> ligatures_list,
-                  hb_array_t<const unsigned int> component_count_list,
+                  hb_array_t<ثابت غیرعلامتی صحیح> component_گنتی_list,
                   hb_array_t<GlyphID> component_list /* Starting from second for each ligature */)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (u.format.v))) return_trace (false);
-    unsigned int format = 1;
+    TRACE_SERIALIZE (یہ);
+    اگر (unlikely (!c->extend_min (u.format.v))) return_trace (جھوٹ);
+    غیرعلامتی صحیح format = 1;
     u.format.v = format;
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.serialize (c,
-                                               first_glyphs,
-                                               ligature_per_first_glyph_count_list,
+    انتخاب (u.format.v) {
+    حالت 1: hb_barrier (); return_trace (u.format1.serialize (c,
+                                               پہلا_glyphs,
+                                               ligature_فی_پہلا_glyph_گنتی_list,
                                                ligatures_list,
-                                               component_count_list,
+                                               component_گنتی_list,
                                                component_list));
-    default:return_trace (false);
+    طےشدہ:return_trace (جھوٹ);
     }
   }
 
@@ -68,4 +68,4 @@ struct LigatureSubst
 }
 }
 
-#endif  /* OT_LAYOUT_GSUB_LIGATURESUBST_HH */
+#اگر_ختم  /* OT_LAYOUT_GSUB_LIGATURESUBST_HH */

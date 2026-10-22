@@ -23,636 +23,636 @@
  *
  * Adobe Author(s): Michiharu Ariza
  */
-#ifndef HB_CFF_INTERP_COMMON_HH
-#define HB_CFF_INTERP_COMMON_HH
+#اگر_غیر_تعریف_شدہ HB_CFF_INTERP_COMMON_HH
+#تعریف_کرو HB_CFF_INTERP_COMMON_HH
 
-extern HB_INTERNAL const unsigned char *endchar_str;
+خارجی HB_اندرونی ثابت غیرعلامتی حرف *endchar_str;
 
-namespace CFF {
+نامخلا CFF {
 
-using namespace OT;
+استعمال نامخلا OT;
 
-typedef unsigned int op_code_t;
+قسمتعریف غیرعلامتی صحیح op_رمز_t;
 
 
 /* === Dict operators === */
 
 /* One byte operators (0-31) */
-#define OpCode_version		  0 /* CFF Top */
-#define OpCode_Notice		  1 /* CFF Top */
-#define OpCode_FullName		  2 /* CFF Top */
-#define OpCode_FamilyName	  3 /* CFF Top */
-#define OpCode_Weight		  4 /* CFF Top */
-#define OpCode_FontBBox		  5 /* CFF Top */
-#define OpCode_BlueValues	  6 /* CFF Private, CFF2 Private */
-#define OpCode_OtherBlues	  7 /* CFF Private, CFF2 Private */
-#define OpCode_FamilyBlues	  8 /* CFF Private, CFF2 Private */
-#define OpCode_FamilyOtherBlues	  9 /* CFF Private, CFF2 Private */
-#define OpCode_StdHW		 10 /* CFF Private, CFF2 Private */
-#define OpCode_StdVW		 11 /* CFF Private, CFF2 Private */
-#define OpCode_escape		 12 /* All. Shared with CS */
-#define OpCode_UniqueID		 13 /* CFF Top */
-#define OpCode_XUID		 14 /* CFF Top */
-#define OpCode_charset		 15 /* CFF Top (0) */
-#define OpCode_Encoding		 16 /* CFF Top (0) */
-#define OpCode_CharStrings	 17 /* CFF Top, CFF2 Top */
-#define OpCode_Private		 18 /* CFF Top, CFF2 FD */
-#define OpCode_Subrs		 19 /* CFF Private, CFF2 Private */
-#define OpCode_defaultWidthX	 20 /* CFF Private (0) */
-#define OpCode_nominalWidthX	 21 /* CFF Private (0) */
-#define OpCode_vsindexdict	 22 /* CFF2 Private/CS */
-#define OpCode_blenddict	 23 /* CFF2 Private/CS */
-#define OpCode_vstore		 24 /* CFF2 Top */
-#define OpCode_reserved25	 25
-#define OpCode_reserved26	 26
-#define OpCode_reserved27	 27
+#تعریف_کرو Op_رمز_نسخہ		  0 /* CFF Top */
+#تعریف_کرو Op_رمز_Notice		  1 /* CFF Top */
+#تعریف_کرو Op_رمز_بھرا_Name		  2 /* CFF Top */
+#تعریف_کرو Op_رمز_Family_Name	  3 /* CFF Top */
+#تعریف_کرو Op_رمز_وزن		  4 /* CFF Top */
+#تعریف_کرو Op_رمز_Font_BBox		  5 /* CFF Top */
+#تعریف_کرو Op_رمز_Blue_اقدار	  6 /* CFF Private, CFF2 Private */
+#تعریف_کرو Op_رمز_Other_Blues	  7 /* CFF Private, CFF2 Private */
+#تعریف_کرو Op_رمز_Family_Blues	  8 /* CFF Private, CFF2 Private */
+#تعریف_کرو Op_رمز_Family_Other_Blues	  9 /* CFF Private, CFF2 Private */
+#تعریف_کرو Op_رمز_Std_HW		 10 /* CFF Private, CFF2 Private */
+#تعریف_کرو Op_رمز_Std_VW		 11 /* CFF Private, CFF2 Private */
+#تعریف_کرو Op_رمز_escape		 12 /* All. Shared with CS */
+#تعریف_کرو Op_رمز_Unique_ID		 13 /* CFF Top */
+#تعریف_کرو Op_رمز_XUID		 14 /* CFF Top */
+#تعریف_کرو Op_رمز_charset		 15 /* CFF Top (0) */
+#تعریف_کرو Op_رمز_Encoding		 16 /* CFF Top (0) */
+#تعریف_کرو Op_رمز_Char_لڑیاں	 17 /* CFF Top, CFF2 Top */
+#تعریف_کرو Op_رمز_نجی		 18 /* CFF Top, CFF2 FD */
+#تعریف_کرو Op_رمز_Subrs		 19 /* CFF Private, CFF2 Private */
+#تعریف_کرو Op_رمز_default_چوڑائی_X	 20 /* CFF Private (0) */
+#تعریف_کرو Op_رمز_nominal_چوڑائی_X	 21 /* CFF Private (0) */
+#تعریف_کرو Op_رمز_vsindexdict	 22 /* CFF2 Private/CS */
+#تعریف_کرو Op_رمز_blenddict	 23 /* CFF2 Private/CS */
+#تعریف_کرو Op_رمز_vstore		 24 /* CFF2 Top */
+#تعریف_کرو Op_رمز_reserved25	 25
+#تعریف_کرو Op_رمز_reserved26	 26
+#تعریف_کرو Op_رمز_reserved27	 27
 
 /* Numbers */
-#define OpCode_shortint		 28 /* 16-bit integer, All */
-#define OpCode_longintdict	 29 /* 32-bit integer, All */
-#define OpCode_BCD		 30 /* Real number, CFF2 Top/FD */
-#define OpCode_reserved31	 31
+#تعریف_کرو Op_رمز_shortint		 28 /* 16-bit integer, All */
+#تعریف_کرو Op_رمز_longintdict	 29 /* 32-bit integer, All */
+#تعریف_کرو Op_رمز_BCD		 30 /* Real number, CFF2 Top/FD */
+#تعریف_کرو Op_رمز_reserved31	 31
 
 /* 1-byte integers */
-#define OpCode_OneByteIntFirst	 32 /* All. beginning of the range of first byte ints */
-#define OpCode_OneByteIntLast	246 /* All. ending of the range of first byte int */
+#تعریف_کرو Op_رمز_One_Byte_Int_پہلا	 32 /* All. beginning of the range of first byte ints */
+#تعریف_کرو Op_رمز_One_Byte_Int_آخری	246 /* All. ending of the range of first byte int */
 
 /* 2-byte integers */
-#define OpCode_TwoBytePosInt0	247 /* All. first byte of two byte positive int (+108 to +1131) */
-#define OpCode_TwoBytePosInt1	248
-#define OpCode_TwoBytePosInt2	249
-#define OpCode_TwoBytePosInt3	250
+#تعریف_کرو Op_رمز_Two_Byte_Pos_Int0	247 /* All. first byte of two byte positive int (+108 to +1131) */
+#تعریف_کرو Op_رمز_Two_Byte_Pos_Int1	248
+#تعریف_کرو Op_رمز_Two_Byte_Pos_Int2	249
+#تعریف_کرو Op_رمز_Two_Byte_Pos_Int3	250
 
-#define OpCode_TwoByteNegInt0	251 /* All. first byte of two byte negative int (-1131 to -108) */
-#define OpCode_TwoByteNegInt1	252
-#define OpCode_TwoByteNegInt2	253
-#define OpCode_TwoByteNegInt3	254
+#تعریف_کرو Op_رمز_Two_Byte_Neg_Int0	251 /* All. first byte of two byte negative int (-1131 to -108) */
+#تعریف_کرو Op_رمز_Two_Byte_Neg_Int1	252
+#تعریف_کرو Op_رمز_Two_Byte_Neg_Int2	253
+#تعریف_کرو Op_رمز_Two_Byte_Neg_Int3	254
 
 /* Two byte escape operators 12, (0-41) */
-#define OpCode_ESC_Base		256
-#define Make_OpCode_ESC(byte2)	((op_code_t)(OpCode_ESC_Base + (byte2)))
+#تعریف_کرو Op_رمز_ESC_بنیاد		256
+#تعریف_کرو Make_Op_رمز_ESC(byte2)	((op_رمز_t)(Op_رمز_ESC_بنیاد + (byte2)))
 
-inline op_code_t Unmake_OpCode_ESC (op_code_t op)  { return (op_code_t)(op - OpCode_ESC_Base); }
-inline bool Is_OpCode_ESC (op_code_t op) { return op >= OpCode_ESC_Base; }
-inline unsigned int OpCode_Size (op_code_t op) { return Is_OpCode_ESC (op) ? 2: 1; }
+اندرونی op_رمز_t Unmake_Op_رمز_ESC (op_رمز_t op)  { واپس (op_رمز_t)(op - Op_رمز_ESC_بنیاد); }
+اندرونی منطقی Is_Op_رمز_ESC (op_رمز_t op) { واپس op >= Op_رمز_ESC_بنیاد; }
+اندرونی غیرعلامتی صحیح Op_رمز_سائز (op_رمز_t op) { واپس Is_Op_رمز_ESC (op) ? 2: 1; }
 
-#define OpCode_Copyright	Make_OpCode_ESC(0) /* CFF Top */
-#define OpCode_isFixedPitch	Make_OpCode_ESC(1) /* CFF Top (false) */
-#define OpCode_ItalicAngle	Make_OpCode_ESC(2) /* CFF Top (0) */
-#define OpCode_UnderlinePosition Make_OpCode_ESC(3) /* CFF Top (-100) */
-#define OpCode_UnderlineThickness Make_OpCode_ESC(4) /* CFF Top (50) */
-#define OpCode_PaintType	Make_OpCode_ESC(5) /* CFF Top (0) */
-#define OpCode_CharstringType	Make_OpCode_ESC(6) /* CFF Top (2) */
-#define OpCode_FontMatrix	Make_OpCode_ESC(7) /* CFF Top, CFF2 Top (.001 0 0 .001 0 0)*/
-#define OpCode_StrokeWidth	Make_OpCode_ESC(8) /* CFF Top (0) */
-#define OpCode_BlueScale	Make_OpCode_ESC(9) /* CFF Private, CFF2 Private (0.039625) */
-#define OpCode_BlueShift	Make_OpCode_ESC(10) /* CFF Private, CFF2 Private (7) */
-#define OpCode_BlueFuzz		Make_OpCode_ESC(11) /* CFF Private, CFF2 Private (1) */
-#define OpCode_StemSnapH	Make_OpCode_ESC(12) /* CFF Private, CFF2 Private */
-#define OpCode_StemSnapV	Make_OpCode_ESC(13) /* CFF Private, CFF2 Private */
-#define OpCode_ForceBold	Make_OpCode_ESC(14) /* CFF Private (false) */
-#define OpCode_reservedESC15	Make_OpCode_ESC(15)
-#define OpCode_reservedESC16	Make_OpCode_ESC(16)
-#define OpCode_LanguageGroup	Make_OpCode_ESC(17) /* CFF Private, CFF2 Private (0) */
-#define OpCode_ExpansionFactor	Make_OpCode_ESC(18) /* CFF Private, CFF2 Private (0.06) */
-#define OpCode_initialRandomSeed Make_OpCode_ESC(19) /* CFF Private (0) */
-#define OpCode_SyntheticBase	Make_OpCode_ESC(20) /* CFF Top */
-#define OpCode_PostScript	Make_OpCode_ESC(21) /* CFF Top */
-#define OpCode_BaseFontName	Make_OpCode_ESC(22) /* CFF Top */
-#define OpCode_BaseFontBlend	Make_OpCode_ESC(23) /* CFF Top */
-#define OpCode_reservedESC24	Make_OpCode_ESC(24)
-#define OpCode_reservedESC25	Make_OpCode_ESC(25)
-#define OpCode_reservedESC26	Make_OpCode_ESC(26)
-#define OpCode_reservedESC27	Make_OpCode_ESC(27)
-#define OpCode_reservedESC28	Make_OpCode_ESC(28)
-#define OpCode_reservedESC29	Make_OpCode_ESC(29)
-#define OpCode_ROS		Make_OpCode_ESC(30) /* CFF Top_CID */
-#define OpCode_CIDFontVersion	Make_OpCode_ESC(31) /* CFF Top_CID (0) */
-#define OpCode_CIDFontRevision	Make_OpCode_ESC(32) /* CFF Top_CID (0) */
-#define OpCode_CIDFontType	Make_OpCode_ESC(33) /* CFF Top_CID (0) */
-#define OpCode_CIDCount		Make_OpCode_ESC(34) /* CFF Top_CID (8720) */
-#define OpCode_UIDBase		Make_OpCode_ESC(35) /* CFF Top_CID */
-#define OpCode_FDArray		Make_OpCode_ESC(36) /* CFF Top_CID, CFF2 Top */
-#define OpCode_FDSelect		Make_OpCode_ESC(37) /* CFF Top_CID, CFF2 Top */
-#define OpCode_FontName		Make_OpCode_ESC(38) /* CFF Top_CID */
+#تعریف_کرو Op_رمز_Copyright	Make_Op_رمز_ESC(0) /* CFF Top */
+#تعریف_کرو Op_رمز_is_Fixed_Pitch	Make_Op_رمز_ESC(1) /* CFF Top (false) */
+#تعریف_کرو Op_رمز_Italic_Angle	Make_Op_رمز_ESC(2) /* CFF Top (0) */
+#تعریف_کرو Op_رمز_Underline_Position Make_Op_رمز_ESC(3) /* CFF Top (-100) */
+#تعریف_کرو Op_رمز_Underline_Thickness Make_Op_رمز_ESC(4) /* CFF Top (50) */
+#تعریف_کرو Op_رمز_Paint_Type	Make_Op_رمز_ESC(5) /* CFF Top (0) */
+#تعریف_کرو Op_رمز_Charstring_Type	Make_Op_رمز_ESC(6) /* CFF Top (2) */
+#تعریف_کرو Op_رمز_Font_میٹرکس	Make_Op_رمز_ESC(7) /* CFF Top, CFF2 Top (.001 0 0 .001 0 0)*/
+#تعریف_کرو Op_رمز_Stroke_چوڑائی	Make_Op_رمز_ESC(8) /* CFF Top (0) */
+#تعریف_کرو Op_رمز_Blue_Scale	Make_Op_رمز_ESC(9) /* CFF Private, CFF2 Private (0.039625) */
+#تعریف_کرو Op_رمز_Blue_سرکاؤ	Make_Op_رمز_ESC(10) /* CFF Private, CFF2 Private (7) */
+#تعریف_کرو Op_رمز_Blue_Fuzz		Make_Op_رمز_ESC(11) /* CFF Private, CFF2 Private (1) */
+#تعریف_کرو Op_رمز_Stem_Snap_H	Make_Op_رمز_ESC(12) /* CFF Private, CFF2 Private */
+#تعریف_کرو Op_رمز_Stem_Snap_V	Make_Op_رمز_ESC(13) /* CFF Private, CFF2 Private */
+#تعریف_کرو Op_رمز_Force_Bold	Make_Op_رمز_ESC(14) /* CFF Private (false) */
+#تعریف_کرو Op_رمز_reserved_ESC15	Make_Op_رمز_ESC(15)
+#تعریف_کرو Op_رمز_reserved_ESC16	Make_Op_رمز_ESC(16)
+#تعریف_کرو Op_رمز_Language_گروہ	Make_Op_رمز_ESC(17) /* CFF Private, CFF2 Private (0) */
+#تعریف_کرو Op_رمز_Expansion_ضربی_عدد	Make_Op_رمز_ESC(18) /* CFF Private, CFF2 Private (0.06) */
+#تعریف_کرو Op_رمز_initial_Random_بیج Make_Op_رمز_ESC(19) /* CFF Private (0) */
+#تعریف_کرو Op_رمز_Synthetic_بنیاد	Make_Op_رمز_ESC(20) /* CFF Top */
+#تعریف_کرو Op_رمز_Post_Script	Make_Op_رمز_ESC(21) /* CFF Top */
+#تعریف_کرو Op_رمز_بنیاد_Font_Name	Make_Op_رمز_ESC(22) /* CFF Top */
+#تعریف_کرو Op_رمز_بنیاد_Font_Blend	Make_Op_رمز_ESC(23) /* CFF Top */
+#تعریف_کرو Op_رمز_reserved_ESC24	Make_Op_رمز_ESC(24)
+#تعریف_کرو Op_رمز_reserved_ESC25	Make_Op_رمز_ESC(25)
+#تعریف_کرو Op_رمز_reserved_ESC26	Make_Op_رمز_ESC(26)
+#تعریف_کرو Op_رمز_reserved_ESC27	Make_Op_رمز_ESC(27)
+#تعریف_کرو Op_رمز_reserved_ESC28	Make_Op_رمز_ESC(28)
+#تعریف_کرو Op_رمز_reserved_ESC29	Make_Op_رمز_ESC(29)
+#تعریف_کرو Op_رمز_ROS		Make_Op_رمز_ESC(30) /* CFF Top_CID */
+#تعریف_کرو Op_رمز_CIDFont_نسخہ	Make_Op_رمز_ESC(31) /* CFF Top_CID (0) */
+#تعریف_کرو Op_رمز_CIDFont_Revision	Make_Op_رمز_ESC(32) /* CFF Top_CID (0) */
+#تعریف_کرو Op_رمز_CIDFont_Type	Make_Op_رمز_ESC(33) /* CFF Top_CID (0) */
+#تعریف_کرو Op_رمز_CIDCount		Make_Op_رمز_ESC(34) /* CFF Top_CID (8720) */
+#تعریف_کرو Op_رمز_UIDBase		Make_Op_رمز_ESC(35) /* CFF Top_CID */
+#تعریف_کرو Op_رمز_FDArray		Make_Op_رمز_ESC(36) /* CFF Top_CID, CFF2 Top */
+#تعریف_کرو Op_رمز_FDSelect		Make_Op_رمز_ESC(37) /* CFF Top_CID, CFF2 Top */
+#تعریف_کرو Op_رمز_Font_Name		Make_Op_رمز_ESC(38) /* CFF Top_CID */
 
 
 /* === CharString operators === */
 
-#define OpCode_hstem		  1 /* CFF, CFF2 */
-#define OpCode_Reserved2	  2
-#define OpCode_vstem		  3 /* CFF, CFF2 */
-#define OpCode_vmoveto		  4 /* CFF, CFF2 */
-#define OpCode_rlineto		  5 /* CFF, CFF2 */
-#define OpCode_hlineto		  6 /* CFF, CFF2 */
-#define OpCode_vlineto		  7 /* CFF, CFF2 */
-#define OpCode_rrcurveto	  8 /* CFF, CFF2 */
-#define OpCode_Reserved9	  9
-#define OpCode_callsubr		 10 /* CFF, CFF2 */
-#define OpCode_return		 11 /* CFF */
+#تعریف_کرو Op_رمز_hstem		  1 /* CFF, CFF2 */
+#تعریف_کرو Op_رمز_Reserved2	  2
+#تعریف_کرو Op_رمز_vstem		  3 /* CFF, CFF2 */
+#تعریف_کرو Op_رمز_vmoveto		  4 /* CFF, CFF2 */
+#تعریف_کرو Op_رمز_rlineto		  5 /* CFF, CFF2 */
+#تعریف_کرو Op_رمز_hlineto		  6 /* CFF, CFF2 */
+#تعریف_کرو Op_رمز_vlineto		  7 /* CFF, CFF2 */
+#تعریف_کرو Op_رمز_rrcurveto	  8 /* CFF, CFF2 */
+#تعریف_کرو Op_رمز_Reserved9	  9
+#تعریف_کرو Op_رمز_callsubr		 10 /* CFF, CFF2 */
+#تعریف_کرو Op_رمز_return		 11 /* CFF */
 //#define OpCode_escape		 12 /* CFF, CFF2 */
-#define OpCode_Reserved13	 13
-#define OpCode_endchar		 14 /* CFF */
-#define OpCode_vsindexcs	 15 /* CFF2 */
-#define OpCode_blendcs		 16 /* CFF2 */
-#define OpCode_Reserved17	 17
-#define OpCode_hstemhm		 18 /* CFF, CFF2 */
-#define OpCode_hintmask		 19 /* CFF, CFF2 */
-#define OpCode_cntrmask		 20 /* CFF, CFF2 */
-#define OpCode_rmoveto		 21 /* CFF, CFF2 */
-#define OpCode_hmoveto		 22 /* CFF, CFF2 */
-#define OpCode_vstemhm		 23 /* CFF, CFF2 */
-#define OpCode_rcurveline	 24 /* CFF, CFF2 */
-#define OpCode_rlinecurve	 25 /* CFF, CFF2 */
-#define OpCode_vvcurveto	 26 /* CFF, CFF2 */
-#define OpCode_hhcurveto	 27 /* CFF, CFF2 */
+#تعریف_کرو Op_رمز_Reserved13	 13
+#تعریف_کرو Op_رمز_endchar		 14 /* CFF */
+#تعریف_کرو Op_رمز_vsindexcs	 15 /* CFF2 */
+#تعریف_کرو Op_رمز_blendcs		 16 /* CFF2 */
+#تعریف_کرو Op_رمز_Reserved17	 17
+#تعریف_کرو Op_رمز_hstemhm		 18 /* CFF, CFF2 */
+#تعریف_کرو Op_رمز_hintmask		 19 /* CFF, CFF2 */
+#تعریف_کرو Op_رمز_cntrmask		 20 /* CFF, CFF2 */
+#تعریف_کرو Op_رمز_rmoveto		 21 /* CFF, CFF2 */
+#تعریف_کرو Op_رمز_hmoveto		 22 /* CFF, CFF2 */
+#تعریف_کرو Op_رمز_vstemhm		 23 /* CFF, CFF2 */
+#تعریف_کرو Op_رمز_rcurveline	 24 /* CFF, CFF2 */
+#تعریف_کرو Op_رمز_rlinecurve	 25 /* CFF, CFF2 */
+#تعریف_کرو Op_رمز_vvcurveto	 26 /* CFF, CFF2 */
+#تعریف_کرو Op_رمز_hhcurveto	 27 /* CFF, CFF2 */
 //#define OpCode_shortint	 28 /* CFF, CFF2 */
-#define OpCode_callgsubr	 29 /* CFF, CFF2 */
-#define OpCode_vhcurveto	 30 /* CFF, CFF2 */
-#define OpCode_hvcurveto	 31 /* CFF, CFF2 */
+#تعریف_کرو Op_رمز_callgsubr	 29 /* CFF, CFF2 */
+#تعریف_کرو Op_رمز_vhcurveto	 30 /* CFF, CFF2 */
+#تعریف_کرو Op_رمز_hvcurveto	 31 /* CFF, CFF2 */
 
-#define OpCode_fixedcs		255 /* 32-bit fixed */
+#تعریف_کرو Op_رمز_fixedcs		255 /* 32-bit fixed */
 
 /* Two byte escape operators 12, (0-41) */
-#define OpCode_dotsection	Make_OpCode_ESC(0) /* CFF (obsoleted) */
-#define OpCode_ReservedESC1	Make_OpCode_ESC(1)
-#define OpCode_ReservedESC2	Make_OpCode_ESC(2)
-#define OpCode_and		Make_OpCode_ESC(3) /* CFF */
-#define OpCode_or		Make_OpCode_ESC(4) /* CFF */
-#define OpCode_not		Make_OpCode_ESC(5) /* CFF */
-#define OpCode_ReservedESC6	Make_OpCode_ESC(6)
-#define OpCode_ReservedESC7	Make_OpCode_ESC(7)
-#define OpCode_ReservedESC8	Make_OpCode_ESC(8)
-#define OpCode_abs		Make_OpCode_ESC(9) /* CFF */
-#define OpCode_add		Make_OpCode_ESC(10) /* CFF */
-#define OpCode_sub		Make_OpCode_ESC(11) /* CFF */
-#define OpCode_div		Make_OpCode_ESC(12) /* CFF */
-#define OpCode_ReservedESC13	Make_OpCode_ESC(13)
-#define OpCode_neg		Make_OpCode_ESC(14) /* CFF */
-#define OpCode_eq		Make_OpCode_ESC(15) /* CFF */
-#define OpCode_ReservedESC16	Make_OpCode_ESC(16)
-#define OpCode_ReservedESC17	Make_OpCode_ESC(17)
-#define OpCode_drop		Make_OpCode_ESC(18) /* CFF */
-#define OpCode_ReservedESC19	Make_OpCode_ESC(19)
-#define OpCode_put		Make_OpCode_ESC(20) /* CFF */
-#define OpCode_get		Make_OpCode_ESC(21) /* CFF */
-#define OpCode_ifelse		Make_OpCode_ESC(22) /* CFF */
-#define OpCode_random		Make_OpCode_ESC(23) /* CFF */
-#define OpCode_mul		Make_OpCode_ESC(24) /* CFF */
+#تعریف_کرو Op_رمز_dotsection	Make_Op_رمز_ESC(0) /* CFF (obsoleted) */
+#تعریف_کرو Op_رمز_Reserved_ESC1	Make_Op_رمز_ESC(1)
+#تعریف_کرو Op_رمز_Reserved_ESC2	Make_Op_رمز_ESC(2)
+#تعریف_کرو Op_رمز_and		Make_Op_رمز_ESC(3) /* CFF */
+#تعریف_کرو Op_رمز_or		Make_Op_رمز_ESC(4) /* CFF */
+#تعریف_کرو Op_رمز_not		Make_Op_رمز_ESC(5) /* CFF */
+#تعریف_کرو Op_رمز_Reserved_ESC6	Make_Op_رمز_ESC(6)
+#تعریف_کرو Op_رمز_Reserved_ESC7	Make_Op_رمز_ESC(7)
+#تعریف_کرو Op_رمز_Reserved_ESC8	Make_Op_رمز_ESC(8)
+#تعریف_کرو Op_رمز_abs		Make_Op_رمز_ESC(9) /* CFF */
+#تعریف_کرو Op_رمز_جوڑو		Make_Op_رمز_ESC(10) /* CFF */
+#تعریف_کرو Op_رمز_sub		Make_Op_رمز_ESC(11) /* CFF */
+#تعریف_کرو Op_رمز_div		Make_Op_رمز_ESC(12) /* CFF */
+#تعریف_کرو Op_رمز_Reserved_ESC13	Make_Op_رمز_ESC(13)
+#تعریف_کرو Op_رمز_neg		Make_Op_رمز_ESC(14) /* CFF */
+#تعریف_کرو Op_رمز_eq		Make_Op_رمز_ESC(15) /* CFF */
+#تعریف_کرو Op_رمز_Reserved_ESC16	Make_Op_رمز_ESC(16)
+#تعریف_کرو Op_رمز_Reserved_ESC17	Make_Op_رمز_ESC(17)
+#تعریف_کرو Op_رمز_drop		Make_Op_رمز_ESC(18) /* CFF */
+#تعریف_کرو Op_رمز_Reserved_ESC19	Make_Op_رمز_ESC(19)
+#تعریف_کرو Op_رمز_put		Make_Op_رمز_ESC(20) /* CFF */
+#تعریف_کرو Op_رمز_get		Make_Op_رمز_ESC(21) /* CFF */
+#تعریف_کرو Op_رمز_ifelse		Make_Op_رمز_ESC(22) /* CFF */
+#تعریف_کرو Op_رمز_random		Make_Op_رمز_ESC(23) /* CFF */
+#تعریف_کرو Op_رمز_mul		Make_Op_رمز_ESC(24) /* CFF */
 //#define OpCode_reservedESC25	Make_OpCode_ESC(25)
-#define OpCode_sqrt		Make_OpCode_ESC(26) /* CFF */
-#define OpCode_dup		Make_OpCode_ESC(27) /* CFF */
-#define OpCode_exch		Make_OpCode_ESC(28) /* CFF */
-#define OpCode_index		Make_OpCode_ESC(29) /* CFF */
-#define OpCode_roll		Make_OpCode_ESC(30) /* CFF */
-#define OpCode_reservedESC31	Make_OpCode_ESC(31)
-#define OpCode_reservedESC32	Make_OpCode_ESC(32)
-#define OpCode_reservedESC33	Make_OpCode_ESC(33)
-#define OpCode_hflex		Make_OpCode_ESC(34) /* CFF, CFF2 */
-#define OpCode_flex		Make_OpCode_ESC(35) /* CFF, CFF2 */
-#define OpCode_hflex1		Make_OpCode_ESC(36) /* CFF, CFF2 */
-#define OpCode_flex1		Make_OpCode_ESC(37) /* CFF, CFF2 */
+#تعریف_کرو Op_رمز_sqrt		Make_Op_رمز_ESC(26) /* CFF */
+#تعریف_کرو Op_رمز_dup		Make_Op_رمز_ESC(27) /* CFF */
+#تعریف_کرو Op_رمز_exch		Make_Op_رمز_ESC(28) /* CFF */
+#تعریف_کرو Op_رمز_اشاریہ		Make_Op_رمز_ESC(29) /* CFF */
+#تعریف_کرو Op_رمز_roll		Make_Op_رمز_ESC(30) /* CFF */
+#تعریف_کرو Op_رمز_reserved_ESC31	Make_Op_رمز_ESC(31)
+#تعریف_کرو Op_رمز_reserved_ESC32	Make_Op_رمز_ESC(32)
+#تعریف_کرو Op_رمز_reserved_ESC33	Make_Op_رمز_ESC(33)
+#تعریف_کرو Op_رمز_hflex		Make_Op_رمز_ESC(34) /* CFF, CFF2 */
+#تعریف_کرو Op_رمز_flex		Make_Op_رمز_ESC(35) /* CFF, CFF2 */
+#تعریف_کرو Op_رمز_hflex1		Make_Op_رمز_ESC(36) /* CFF, CFF2 */
+#تعریف_کرو Op_رمز_flex1		Make_Op_رمز_ESC(37) /* CFF, CFF2 */
 
 
-#define OpCode_Invalid		0xFFFFu
+#تعریف_کرو Op_رمز_Invalid		0xFFFFu
 
 
-struct number_t
+ساخت نمبر_t
 {
-  void set_int (int v)       { value = v; }
-  bool to_int (int *v) const
+  خالی سیٹ_int (صحیح v)       { value = v; }
+  منطقی مقصد_int (صحیح *v) ثابت
   {
-    if (unlikely (!(value >= INT_MIN && value <= INT_MAX)))
+    اگر (unlikely (!(value >= INT_MIN && value <= زیادہ_سے_زیادہ_عدد)))
     {
       *v = 0;
-      return false;
+      واپس جھوٹ;
     }
-    *v = (int) value;
-    return true;
+    *v = (صحیح) value;
+    واپس سچ;
   }
-  int to_int () const
+  صحیح مقصد_int () ثابت
   {
-    int v;
-    if (likely (to_int (&v))) return v;
-    return value < 0 ? INT_MIN : value > 0 ? INT_MAX : 0;
+    صحیح v;
+    اگر (likely (مقصد_int (&v))) واپس v;
+    واپس value < 0 ? INT_MIN : value > 0 ? زیادہ_سے_زیادہ_عدد : 0;
   }
 
-  void set_fixed (int32_t v) { value = v / 65536.0; }
-  int32_t to_fixed () const
-  { return (int32_t) hb_clamp (value * 65536.0, (double) INT32_MIN, (double) INT32_MAX); }
+  خالی سیٹ_fixed (int32_t v) { value = v / 65536.0; }
+  int32_t مقصد_fixed () ثابت
+  { واپس (int32_t) hb_clamp (value * 65536.0, (دوہرا) INT32_MIN, (دوہرا) INT32_MAX); }
 
-  void set_real (double v)   { value = v; }
-  double to_real () const    { return value; }
+  خالی سیٹ_real (دوہرا v)   { value = v; }
+  دوہرا مقصد_real () ثابت    { واپس value; }
 
-  bool in_int_range () const
-  { return value >= INT16_MIN && value <= INT16_MAX && (double) (int16_t) value == value; }
+  منطقی اندر_int_range () ثابت
+  { واپس value >= INT16_MIN && value <= INT16_MAX && (دوہرا) (int16_t) value == value; }
 
-  bool operator >  (const number_t &n) const { return value > n.to_real (); }
-  bool operator <  (const number_t &n) const { return n > *this; }
-  bool operator >= (const number_t &n) const { return !(*this < n); }
-  bool operator <= (const number_t &n) const { return !(*this > n); }
+  منطقی عامل >  (ثابت نمبر_t &n) ثابت { واپس value > n.مقصد_real (); }
+  منطقی عامل <  (ثابت نمبر_t &n) ثابت { واپس n > *یہ; }
+  منطقی عامل >= (ثابت نمبر_t &n) ثابت { واپس !(*یہ < n); }
+  منطقی عامل <= (ثابت نمبر_t &n) ثابت { واپس !(*یہ > n); }
 
-  const number_t &operator += (const number_t &n)
+  ثابت نمبر_t &عامل += (ثابت نمبر_t &n)
   {
-    set_real (to_real () + n.to_real ());
+    سیٹ_real (مقصد_real () + n.مقصد_real ());
 
-    return *this;
+    واپس *یہ;
   }
 
-  protected:
-  double value = 0.;
+  محفوظ:
+  دوہرا value = 0.;
 };
 
 /* byte string */
-struct UnsizedByteStr : UnsizedArrayOf <HBUINT8>
+ساخت UnsizedByteStr : Unsized_Array_کا <HBUINT8>
 {
-  hb_ubytes_t as_ubytes (unsigned l) const
-  { return hb_ubytes_t ((const unsigned char *) this, l); }
+  hb_ubytes_t as_ubytes (غیرعلامتی l) ثابت
+  { واپس hb_ubytes_t ((ثابت غیرعلامتی حرف *) یہ, l); }
 
   // encode 2-byte int (Dict/CharString) or 4-byte int (Dict)
-  template <typename T, typename V>
-  static bool serialize_int (hb_serialize_context_t *c, op_code_t intOp, V value)
+  سانچہ <قسم_نام T, قسم_نام V>
+  ساکن منطقی serialize_int (hb_serialize_context_t *c, op_رمز_t intOp, V value)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (یہ);
 
-    HBUINT8 *p = c->allocate_size<HBUINT8> (1);
-    if (unlikely (!p)) return_trace (false);
+    HBUINT8 *p = c->allocate_سائز<HBUINT8> (1);
+    اگر (unlikely (!p)) return_trace (جھوٹ);
     *p = intOp;
 
-    T *ip = c->allocate_size<T> (T::static_size);
-    if (unlikely (!ip)) return_trace (false);
-    return_trace (c->check_assign (*ip, value, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    T *ip = c->allocate_سائز<T> (T::static_سائز);
+    اگر (unlikely (!ip)) return_trace (جھوٹ);
+    return_trace (c->check_تفویض (*ip, value, HB_SERIALIZE_ERROR_INT_حد_سے_تجاوز));
   }
 
-  template <typename V>
-  static bool serialize_int4 (hb_serialize_context_t *c, V value)
-  { return serialize_int<HBINT32> (c, OpCode_longintdict, value); }
+  سانچہ <قسم_نام V>
+  ساکن منطقی serialize_int4 (hb_serialize_context_t *c, V value)
+  { واپس serialize_int<HBINT32> (c, Op_رمز_longintdict, value); }
 
-  template <typename V>
-  static bool serialize_int2 (hb_serialize_context_t *c, V value)
-  { return serialize_int<HBINT16> (c, OpCode_shortint, value); }
+  سانچہ <قسم_نام V>
+  ساکن منطقی serialize_int2 (hb_serialize_context_t *c, V value)
+  { واپس serialize_int<HBINT16> (c, Op_رمز_shortint, value); }
 
   /* Defining null_size allows a Null object may be created. Should be safe because:
    * A descendent struct Dict uses a Null pointer to indicate a missing table,
    * checked before access.
    */
-  DEFINE_SIZE_MIN(0);
+  DEFINE_سائز_MIN(0);
 };
 
 /* A byte string associated with the current offset and an error condition */
-struct byte_str_ref_t
+ساخت byte_str_ref_t
 {
   byte_str_ref_t ()
     : str () {}
 
-  byte_str_ref_t (const hb_ubytes_t &str_, unsigned int offset_ = 0)
-    : str (str_) { set_offset (offset_); }
+  byte_str_ref_t (ثابت hb_ubytes_t &str_, غیرعلامتی صحیح انحراف_3 = 0)
+    : str (str_) { سیٹ_انحراف (انحراف_3); }
 
-  void reset (const hb_ubytes_t &str_, unsigned int offset_ = 0)
+  خالی reset (ثابت hb_ubytes_t &str_, غیرعلامتی صحیح انحراف_3 = 0)
   {
     str = str_;
-    set_offset (offset_);
+    سیٹ_انحراف (انحراف_3);
   }
 
-  const unsigned char& operator [] (int i) {
-    if (unlikely ((unsigned int) (get_offset () + i) >= str.length))
+  ثابت غیرعلامتی حرف& عامل [] (صحیح i) {
+    اگر (unlikely ((غیرعلامتی صحیح) (get_انحراف () + i) >= str.لمبائی))
     {
-      set_error ();
-      return Null (unsigned char);
+      سیٹ_error ();
+      واپس Null (غیرعلامتی حرف);
     }
-    return str.arrayZ[get_offset () + i];
+    واپس str.arrayZ[get_انحراف () + i];
   }
 
-  unsigned char head_unchecked () const { return str.arrayZ[get_offset ()]; }
+  غیرعلامتی حرف سر_unchecked () ثابت { واپس str.arrayZ[get_انحراف ()]; }
 
   /* Conversion to hb_ubytes_t */
-  operator hb_ubytes_t () const { return str.sub_array (get_offset ()); }
+  عامل hb_ubytes_t () ثابت { واپس str.sub_array (get_انحراف ()); }
 
-  hb_ubytes_t sub_array (unsigned int offset_, unsigned int len_) const
-  { return str.sub_array (offset_, len_); }
+  hb_ubytes_t sub_array (غیرعلامتی صحیح انحراف_3, غیرعلامتی صحیح len_) ثابت
+  { واپس str.sub_array (انحراف_3, len_); }
 
-  bool avail (unsigned int count=1) const
-  { return get_offset () + count <= str.length; }
-  void inc (unsigned int count=1)
+  منطقی avail (غیرعلامتی صحیح گنتی=1) ثابت
+  { واپس get_انحراف () + گنتی <= str.لمبائی; }
+  خالی inc (غیرعلامتی صحیح گنتی=1)
   {
     /* Automatically puts us in error if count is out-of-range. */
-    set_offset (get_offset () + count);
+    سیٹ_انحراف (get_انحراف () + گنتی);
   }
 
   /* We (ab)use ubytes backwards_length as a cursor (called offset),
    * as well as to store error condition. */
 
-  unsigned get_offset () const { return str.backwards_length; }
-  void set_offset (unsigned offset) { str.backwards_length = offset; }
+  غیرعلامتی get_انحراف () ثابت { واپس str.backwards_لمبائی; }
+  خالی سیٹ_انحراف (غیرعلامتی انحراف) { str.backwards_لمبائی = انحراف; }
 
-  void set_error ()      { str.backwards_length = str.length + 1; }
-  bool in_error () const { return str.backwards_length > str.length; }
+  خالی سیٹ_error ()      { str.backwards_لمبائی = str.لمبائی + 1; }
+  منطقی اندر_error () ثابت { واپس str.backwards_لمبائی > str.لمبائی; }
 
-  unsigned total_size () const { return str.length; }
+  غیرعلامتی کل_سائز () ثابت { واپس str.لمبائی; }
 
-  protected:
+  محفوظ:
   hb_ubytes_t       str;
 };
 
-/* stack */
-template <typename ELEM, int LIMIT>
-struct cff_stack_t
+/*ڈھیر*/
+سانچہ <قسم_نام ELEM, صحیح حد_بندی_2>
+ساخت cff_ڈھیر_t
 {
-  ELEM& operator [] (unsigned int i)
+  ELEM& عامل [] (غیرعلامتی صحیح i)
   {
-    if (unlikely (i >= length))
+    اگر (unlikely (i >= لمبائی))
     {
-      set_error ();
-      return Crap (ELEM);
+      سیٹ_error ();
+      واپس Crap (ELEM);
     }
-    return arrayZ[i];
+    واپس arrayZ[i];
   }
 
-  void push (const ELEM &v)
+  خالی push (ثابت ELEM &v)
   {
-    if (likely (length < LIMIT))
-      arrayZ[length++] = v;
-    else
-      set_error ();
+    اگر (likely (لمبائی < حد_بندی_2))
+      arrayZ[لمبائی++] = v;
+    ورنہ
+      سیٹ_error ();
   }
   ELEM &push ()
   {
-    if (likely (length < LIMIT))
-      return arrayZ[length++];
-    else
+    اگر (likely (لمبائی < حد_بندی_2))
+      واپس arrayZ[لمبائی++];
+    ورنہ
     {
-      set_error ();
-      return Crap (ELEM);
+      سیٹ_error ();
+      واپس Crap (ELEM);
     }
   }
 
-  ELEM& pop ()
+  ELEM& نکالو ()
   {
-    if (likely (length > 0))
-      return arrayZ[--length];
-    else
+    اگر (likely (لمبائی > 0))
+      واپس arrayZ[--لمبائی];
+    ورنہ
     {
-      set_error ();
-      return Crap (ELEM);
+      سیٹ_error ();
+      واپس Crap (ELEM);
     }
   }
-  void pop (unsigned int n)
+  خالی نکالو (غیرعلامتی صحیح n)
   {
-    if (likely (length >= n))
-      length -= n;
-    else
-      set_error ();
+    اگر (likely (لمبائی >= n))
+      لمبائی -= n;
+    ورنہ
+      سیٹ_error ();
   }
 
-  const ELEM& peek ()
+  ثابت ELEM& peek ()
   {
-    if (unlikely (length == 0))
+    اگر (unlikely (لمبائی == 0))
     {
-      set_error ();
-      return Null (ELEM);
+      سیٹ_error ();
+      واپس Null (ELEM);
     }
-    return arrayZ[length - 1];
+    واپس arrayZ[لمبائی - 1];
   }
 
-  void unpop ()
+  خالی unpop ()
   {
-    if (likely (length < LIMIT))
-      length++;
-    else
-      set_error ();
+    اگر (likely (لمبائی < حد_بندی_2))
+      لمبائی++;
+    ورنہ
+      سیٹ_error ();
   }
 
-  void clear () { length = 0; }
+  خالی clear () { لمبائی = 0; }
 
-  bool in_error () const { return (error); }
-  void set_error ()      { error = true; }
+  منطقی اندر_error () ثابت { واپس (error); }
+  خالی سیٹ_error ()      { error = سچ; }
 
-  unsigned int get_count () const { return length; }
-  bool is_empty () const          { return !length; }
+  غیرعلامتی صحیح get_گنتی () ثابت { واپس لمبائی; }
+  منطقی is_empty () ثابت          { واپس !لمبائی; }
 
-  hb_array_t<const ELEM> sub_array (unsigned start, unsigned length) const
-  { return hb_array_t<const ELEM> (arrayZ).sub_array (start, length); }
+  hb_array_t<ثابت ELEM> sub_array (غیرعلامتی آغاز, غیرعلامتی لمبائی) ثابت
+  { واپس hb_array_t<ثابت ELEM> (arrayZ).sub_array (آغاز, لمبائی); }
 
-  bool error = false;
-  unsigned int length = 0;
-  ELEM arrayZ[LIMIT];
+  منطقی error = جھوٹ;
+  غیرعلامتی صحیح لمبائی = 0;
+  ELEM arrayZ[حد_بندی_2];
 };
 
 /* argument stack */
-template <typename ARG=number_t>
-struct arg_stack_t : cff_stack_t<ARG, 513>
+سانچہ <قسم_نام ARG=نمبر_t>
+ساخت arg_ڈھیر_t : cff_ڈھیر_t<ARG, 513>
 {
-  void push_int (int v)
+  خالی ڈالو_int (صحیح v)
   {
     ARG &n = S::push ();
-    n.set_int (v);
+    n.سیٹ_int (v);
   }
 
-  void push_fixed (int32_t v)
+  خالی ڈالو_fixed (int32_t v)
   {
     ARG &n = S::push ();
-    n.set_fixed (v);
+    n.سیٹ_fixed (v);
   }
 
-  void push_real (double v)
+  خالی ڈالو_real (دوہرا v)
   {
     ARG &n = S::push ();
-    n.set_real (v);
+    n.سیٹ_real (v);
   }
 
-  ARG& pop_num () { return this->pop (); }
+  ARG& نکالو_عدد () { واپس یہ->نکالو (); }
 
-  int pop_int ()
+  صحیح نکالو_int ()
   {
-    int v;
-    if (unlikely (!this->pop ().to_int (&v)))
-      S::set_error ();
-    return v;
+    صحیح v;
+    اگر (unlikely (!یہ->نکالو ().مقصد_int (&v)))
+      S::سیٹ_error ();
+    واپس v;
   }
 
-  unsigned int pop_uint ()
+  غیرعلامتی صحیح نکالو_uint ()
   {
-    int i = pop_int ();
-    if (unlikely (i < 0))
+    صحیح i = نکالو_int ();
+    اگر (unlikely (i < 0))
     {
       i = 0;
-      S::set_error ();
+      S::سیٹ_error ();
     }
-    return (unsigned) i;
+    واپس (غیرعلامتی) i;
   }
 
-  void push_longint_from_substr (byte_str_ref_t& str_ref)
+  خالی ڈالو_longint_from_substr (byte_str_ref_t& str_ref)
   {
-    push_int ((int) ((uint32_t (str_ref[0]) << 24) | (str_ref[1] << 16) | (str_ref[2] << 8) | (str_ref[3])));
+    ڈالو_int ((صحیح) ((uint32_t (str_ref[0]) << 24) | (str_ref[1] << 16) | (str_ref[2] << 8) | (str_ref[3])));
     str_ref.inc (4);
   }
 
-  bool push_fixed_from_substr (byte_str_ref_t& str_ref)
+  منطقی ڈالو_fixed_from_substr (byte_str_ref_t& str_ref)
   {
-    if (unlikely (!str_ref.avail (4)))
-      return false;
-    push_fixed ((int32_t)*(const HBUINT32*)&str_ref[0]);
+    اگر (unlikely (!str_ref.avail (4)))
+      واپس جھوٹ;
+    ڈالو_fixed ((int32_t)*(ثابت HBUINT32*)&str_ref[0]);
     str_ref.inc (4);
-    return true;
+    واپس سچ;
   }
 
-  private:
-  typedef cff_stack_t<ARG, 513> S;
+  نجی:
+  قسمتعریف cff_ڈھیر_t<ARG, 513> S;
 };
 
 /* an operator prefixed by its operands in a byte string */
-struct op_str_t
+ساخت op_str_t
 {
   /* This used to have a hb_ubytes_t. Using a pointer and length
    * in a particular order, saves 8 bytes in this struct and more
    * in our parsed_cs_op_t subclass. */
 
-  const unsigned char *ptr = nullptr;
+  ثابت غیرعلامتی حرف *ptr = خالی_اشاریہ;
 
-  op_code_t  op = OpCode_Invalid;
+  op_رمز_t  op = Op_رمز_Invalid;
 
-  uint8_t length = 0;
+  uint8_t لمبائی = 0;
 };
 
 /* base of OP_SERIALIZER */
-struct op_serializer_t
+ساخت op_serializer_t
 {
-  protected:
-  bool copy_opstr (hb_serialize_context_t *c, const op_str_t& opstr) const
+  محفوظ:
+  منطقی copy_opstr (hb_serialize_context_t *c, ثابت op_str_t& opstr) ثابت
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (یہ);
 
-    unsigned char *d = c->allocate_size<unsigned char> (opstr.length);
-    if (unlikely (!d)) return_trace (false);
+    غیرعلامتی حرف *d = c->allocate_سائز<غیرعلامتی حرف> (opstr.لمبائی);
+    اگر (unlikely (!d)) return_trace (جھوٹ);
     /* Faster than hb_memcpy for small strings. */
-    for (unsigned i = 0; i < opstr.length; i++)
+    برائے (غیرعلامتی i = 0; i < opstr.لمبائی; i++)
       d[i] = opstr.ptr[i];
-    return_trace (true);
+    return_trace (سچ);
   }
 };
 
-template <typename VAL>
-struct parsed_values_t
+سانچہ <قسم_نام VAL>
+ساخت parsed_اقدار_t
 {
-  void init ()
+  خالی init ()
   {
-    opStart = 0;
+    op_آغاز = 0;
     values.init ();
   }
-  void fini () { values.fini (); }
+  خالی fini () { values.fini (); }
 
-  void alloc (unsigned n)
+  خالی alloc (غیرعلامتی n)
   {
     values.alloc_exact (n);
   }
 
-  void add_op (op_code_t op, const byte_str_ref_t& str_ref = byte_str_ref_t (), const VAL &v = VAL ())
+  خالی جوڑو_op (op_رمز_t op, ثابت byte_str_ref_t& str_ref = byte_str_ref_t (), ثابت VAL &v = VAL ())
   {
     VAL *val = values.push (v);
     val->op = op;
-    auto arr = str_ref.sub_array (opStart, str_ref.get_offset () - opStart);
+    خودکار arr = str_ref.sub_array (op_آغاز, str_ref.get_انحراف () - op_آغاز);
     val->ptr = arr.arrayZ;
-    val->length = arr.length;
-    opStart = str_ref.get_offset ();
+    val->لمبائی = arr.لمبائی;
+    op_آغاز = str_ref.get_انحراف ();
   }
 
-  bool has_op (op_code_t op) const
+  منطقی has_op (op_رمز_t op) ثابت
   {
-    for (const auto& v : values)
-      if (v.op == op) return true;
-    return false;
+    برائے (ثابت خودکار& v : values)
+      اگر (v.op == op) واپس سچ;
+    واپس جھوٹ;
   }
 
-  unsigned get_count () const { return values.length; }
-  const VAL &operator [] (unsigned int i) const { return values[i]; }
+  غیرعلامتی get_گنتی () ثابت { واپس values.لمبائی; }
+  ثابت VAL &عامل [] (غیرعلامتی صحیح i) ثابت { واپس values[i]; }
 
-  unsigned int       opStart;
-  hb_vector_t<VAL>   values;
+  غیرعلامتی صحیح       op_آغاز;
+  hb_سمتیہ_t<VAL>   values;
 };
 
-template <typename ARG=number_t>
-struct interp_env_t
+سانچہ <قسم_نام ARG=نمبر_t>
+ساخت interp_env_t
 {
   interp_env_t () {}
-  interp_env_t (const hb_ubytes_t &str_)
+  interp_env_t (ثابت hb_ubytes_t &str_)
   {
     str_ref.reset (str_);
   }
-  bool in_error () const
-  { return str_ref.in_error () || argStack.in_error (); }
+  منطقی اندر_error () ثابت
+  { واپس str_ref.اندر_error () || arg_ڈھیر.اندر_error (); }
 
-  void set_error () { str_ref.set_error (); }
+  خالی سیٹ_error () { str_ref.سیٹ_error (); }
 
-  op_code_t fetch_op ()
+  op_رمز_t fetch_op ()
   {
-    op_code_t  op = OpCode_Invalid;
-    if (unlikely (!str_ref.avail ()))
-      return OpCode_Invalid;
-    op = (op_code_t) str_ref.head_unchecked ();
+    op_رمز_t  op = Op_رمز_Invalid;
+    اگر (unlikely (!str_ref.avail ()))
+      واپس Op_رمز_Invalid;
+    op = (op_رمز_t) str_ref.سر_unchecked ();
     str_ref.inc ();
-    if (op == OpCode_escape) {
-      if (unlikely (!str_ref.avail ()))
-	return OpCode_Invalid;
-      op = Make_OpCode_ESC (str_ref.head_unchecked ());
+    اگر (op == Op_رمز_escape) {
+      اگر (unlikely (!str_ref.avail ()))
+	واپس Op_رمز_Invalid;
+      op = Make_Op_رمز_ESC (str_ref.سر_unchecked ());
       str_ref.inc ();
     }
-    return op;
+    واپس op;
   }
 
-  const ARG& eval_arg (unsigned int i) { return argStack[i]; }
+  ثابت ARG& eval_arg (غیرعلامتی صحیح i) { واپس arg_ڈھیر[i]; }
 
-  ARG& pop_arg () { return argStack.pop (); }
-  void pop_n_args (unsigned int n) { argStack.pop (n); }
+  ARG& نکالو_arg () { واپس arg_ڈھیر.نکالو (); }
+  خالی نکالو_n_دلائل (غیرعلامتی صحیح n) { arg_ڈھیر.نکالو (n); }
 
-  void clear_args () { pop_n_args (argStack.get_count ()); }
+  خالی clear_دلائل () { نکالو_n_دلائل (arg_ڈھیر.get_گنتی ()); }
 
   byte_str_ref_t
 		str_ref;
-  arg_stack_t<ARG>
-		argStack;
+  arg_ڈھیر_t<ARG>
+		arg_ڈھیر;
 };
 
-using num_interp_env_t =  interp_env_t<>;
+استعمال عدد_interp_env_t =  interp_env_t<>;
 
-template <typename ARG=number_t>
-struct opset_t
+سانچہ <قسم_نام ARG=نمبر_t>
+ساخت opset_t
 {
-  static void process_op (op_code_t op, interp_env_t<ARG>& env)
+  ساکن خالی process_op (op_رمز_t op, interp_env_t<ARG>& env)
   {
-    switch (op) {
-      case OpCode_shortint:
-	env.argStack.push_int ((int16_t)((env.str_ref[0] << 8) | env.str_ref[1]));
+    انتخاب (op) {
+      حالت Op_رمز_shortint:
+	env.arg_ڈھیر.ڈالو_int ((int16_t)((env.str_ref[0] << 8) | env.str_ref[1]));
 	env.str_ref.inc (2);
-	break;
+	توڑو;
 
-      case OpCode_TwoBytePosInt0: case OpCode_TwoBytePosInt1:
-      case OpCode_TwoBytePosInt2: case OpCode_TwoBytePosInt3:
-	env.argStack.push_int ((int16_t)((op - OpCode_TwoBytePosInt0) * 256 + env.str_ref[0] + 108));
+      حالت Op_رمز_Two_Byte_Pos_Int0: حالت Op_رمز_Two_Byte_Pos_Int1:
+      حالت Op_رمز_Two_Byte_Pos_Int2: حالت Op_رمز_Two_Byte_Pos_Int3:
+	env.arg_ڈھیر.ڈالو_int ((int16_t)((op - Op_رمز_Two_Byte_Pos_Int0) * 256 + env.str_ref[0] + 108));
 	env.str_ref.inc ();
-	break;
+	توڑو;
 
-      case OpCode_TwoByteNegInt0: case OpCode_TwoByteNegInt1:
-      case OpCode_TwoByteNegInt2: case OpCode_TwoByteNegInt3:
-	env.argStack.push_int ((-(int16_t)(op - OpCode_TwoByteNegInt0) * 256 - env.str_ref[0] - 108));
+      حالت Op_رمز_Two_Byte_Neg_Int0: حالت Op_رمز_Two_Byte_Neg_Int1:
+      حالت Op_رمز_Two_Byte_Neg_Int2: حالت Op_رمز_Two_Byte_Neg_Int3:
+	env.arg_ڈھیر.ڈالو_int ((-(int16_t)(op - Op_رمز_Two_Byte_Neg_Int0) * 256 - env.str_ref[0] - 108));
 	env.str_ref.inc ();
-	break;
+	توڑو;
 
-      default:
+      طےشدہ:
 	/* 1-byte integer */
-	if (likely ((OpCode_OneByteIntFirst <= op) && (op <= OpCode_OneByteIntLast)))
+	اگر (likely ((Op_رمز_One_Byte_Int_پہلا <= op) && (op <= Op_رمز_One_Byte_Int_آخری)))
 	{
-	  env.argStack.push_int ((int)op - 139);
-	} else {
+	  env.arg_ڈھیر.ڈالو_int ((صحیح)op - 139);
+	} ورنہ {
 	  /* invalid unknown operator */
-	  env.clear_args ();
+	  env.clear_دلائل ();
 	}
-	break;
+	توڑو;
     }
   }
 };
 
-template <typename ENV>
-struct interpreter_t
+سانچہ <قسم_نام ENV>
+ساخت interpreter_t
 {
   interpreter_t (ENV& env_) : env (env_) {}
   ENV& env;
@@ -660,4 +660,4 @@ struct interpreter_t
 
 } /* namespace CFF */
 
-#endif /* HB_CFF_INTERP_COMMON_HH */
+#اگر_ختم /* HB_CFF_INTERP_COMMON_HH */

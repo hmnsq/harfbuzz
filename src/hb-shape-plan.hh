@@ -24,63 +24,63 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_SHAPE_PLAN_HH
-#define HB_SHAPE_PLAN_HH
+#اگر_غیر_تعریف_شدہ HB_SHAPE_PLAN_HH
+#تعریف_کرو HB_SHAPE_PLAN_HH
 
-#include "hb.hh"
-#include "hb-shaper.hh"
-#include "hb-ot-shape.hh"
+#شامل "hb.hh"
+#شامل "hb-shaper.hh"
+#شامل "hb-ot-shape.hh"
 
-struct hb_shape_plan_key_t
+ساخت hb_shape_plan_کلید_t
 {
   hb_segment_properties_t  props;
 
-  const hb_feature_t      *user_features;
-  unsigned int             num_user_features;
+  ثابت hb_feature_t      *user_features;
+  غیرعلامتی صحیح             عدد_user_features;
 
-#ifndef HB_NO_OT_SHAPE
-  hb_ot_shape_plan_key_t   ot;
-#endif
+#اگر_غیر_تعریف_شدہ HB_NO_OT_SHAPE
+  hb_ot_shape_plan_کلید_t   ot;
+#اگر_ختم
 
   hb_shape_func_t         *shaper_func;
-  const char              *shaper_name;
+  ثابت حرف              *shaper_name;
 
-  HB_INTERNAL bool init (bool                           copy,
+  HB_اندرونی منطقی init (منطقی                           copy,
 			 hb_face_t                     *face,
-			 const hb_segment_properties_t *props,
-			 const hb_feature_t            *user_features,
-			 unsigned int                   num_user_features,
-			 const int                     *coords,
-			 unsigned int                   num_coords,
-			 const char * const            *shaper_list);
+			 ثابت hb_segment_properties_t *props,
+			 ثابت hb_feature_t            *user_features,
+			 غیرعلامتی صحیح                   عدد_user_features,
+			 ثابت صحیح                     *coords,
+			 غیرعلامتی صحیح                   عدد_coords,
+			 ثابت حرف * ثابت            *shaper_list);
 
-  HB_INTERNAL void fini ()
+  HB_اندرونی خالی fini ()
   {
-    hb_free ((void *) user_features);
-    user_features = nullptr;
-#ifndef HB_NO_OT_SHAPE
+    hb_free ((خالی *) user_features);
+    user_features = خالی_اشاریہ;
+#اگر_غیر_تعریف_شدہ HB_NO_OT_SHAPE
     ot.fini ();
-#endif
+#اگر_ختم
   }
 
-  HB_INTERNAL bool user_features_match (const hb_shape_plan_key_t *other);
+  HB_اندرونی منطقی user_features_مطابقت (ثابت hb_shape_plan_کلید_t *other);
 
-  HB_INTERNAL bool equal (const hb_shape_plan_key_t *other);
+  HB_اندرونی منطقی equal (ثابت hb_shape_plan_کلید_t *other);
 };
 
-struct hb_shape_plan_t
+ساخت hb_shape_plan_t
 {
-  HB_INTERNAL ~hb_shape_plan_t ();
-  hb_object_header_t header;
+  HB_اندرونی ~hb_shape_plan_t ();
+  hb_object_سرخی_t سرخی;
   hb_face_t *face_unsafe; /* We don't carry a reference to face. */
-  hb_shape_plan_key_t key;
-#ifndef HB_NO_OT_SHAPE
+  hb_shape_plan_کلید_t key;
+#اگر_غیر_تعریف_شدہ HB_NO_OT_SHAPE
   hb_ot_shape_plan_t ot;
-#endif
-#ifdef HAVE_HARFRUST
-  hb_atomic_t<void *> harfrust_data;
-#endif
+#اگر_ختم
+#اگر_تعریف_شدہ HAVE_HARFRUST
+  hb_atomic_t<خالی *> harfrust_ڈیٹا;
+#اگر_ختم
 };
 
 
-#endif /* HB_SHAPE_PLAN_HH */
+#اگر_ختم /* HB_SHAPE_PLAN_HH */

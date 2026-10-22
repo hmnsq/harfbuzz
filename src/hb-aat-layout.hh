@@ -24,54 +24,54 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_AAT_LAYOUT_HH
-#define HB_AAT_LAYOUT_HH
+#اگر_غیر_تعریف_شدہ HB_AAT_LAYOUT_HH
+#تعریف_کرو HB_AAT_LAYOUT_HH
 
-#include "hb.hh"
+#شامل "hb.hh"
 
-#include "hb-ot-shape.hh"
-#include "hb-aat-ltag-table.hh"
+#شامل "hb-ot-shape.hh"
+#شامل "hb-aat-ltag-table.hh"
 
 /* https://developer.apple.com/documentation/coretext/1508745-ctfontcreatewithgraphicsfont */
-#define HB_CORETEXT_DEFAULT_FONT_SIZE 12.f
+#تعریف_کرو HB_CORETEXT_DEFAULT_FONT_سائز 12.f
 
-struct hb_aat_feature_mapping_t
+ساخت hb_aat_feature_mapping_t
 {
-  hb_tag_t otFeatureTag;
+  hb_لیبل_t ot_Feature_لیبل;
   hb_aat_layout_feature_type_t aatFeatureType;
-  hb_aat_layout_feature_selector_t selectorToEnable;
-  hb_aat_layout_feature_selector_t selectorToDisable;
+  hb_aat_layout_feature_selector_t selector_مقصد_Enable;
+  hb_aat_layout_feature_selector_t selector_مقصد_Disable;
 
-  int cmp (hb_tag_t key) const
-  { return key < otFeatureTag ? -1 : key > otFeatureTag ? 1 : 0; }
+  صحیح cmp (hb_لیبل_t key) ثابت
+  { واپس key < ot_Feature_لیبل ? -1 : key > ot_Feature_لیبل ? 1 : 0; }
 };
 
-HB_INTERNAL const hb_aat_feature_mapping_t *
-hb_aat_layout_find_feature_mapping (hb_tag_t tag);
+HB_اندرونی ثابت hb_aat_feature_mapping_t *
+hb_aat_layout_ڈھونڈو_feature_mapping (hb_لیبل_t لیبل_2);
 
-HB_INTERNAL void
-hb_aat_layout_compile_map (const hb_aat_map_builder_t *mapper,
+HB_اندرونی خالی
+hb_aat_layout_compile_map (ثابت hb_aat_map_builder_t *mapper,
 			   hb_aat_map_t *map);
 
-HB_INTERNAL void
-hb_aat_layout_substitute (const hb_ot_shape_plan_t *plan,
+HB_اندرونی خالی
+hb_aat_layout_substitute (ثابت hb_ot_shape_plan_t *plan,
 			  hb_font_t *font,
-			  hb_buffer_t *buffer,
-			  const hb_feature_t *features,
-			  unsigned num_features);
+			  hb_بفر_t *بفر,
+			  ثابت hb_feature_t *features,
+			  غیرعلامتی عدد_features);
 
-HB_INTERNAL void
-hb_aat_layout_remove_deleted_glyphs (hb_buffer_t *buffer);
+HB_اندرونی خالی
+hb_aat_layout_remove_deleted_glyphs (hb_بفر_t *بفر);
 
-HB_INTERNAL void
-hb_aat_layout_position (const hb_ot_shape_plan_t *plan,
+HB_اندرونی خالی
+hb_aat_layout_position (ثابت hb_ot_shape_plan_t *plan,
 			hb_font_t *font,
-			hb_buffer_t *buffer);
+			hb_بفر_t *بفر);
 
-HB_INTERNAL void
-hb_aat_layout_track (const hb_ot_shape_plan_t *plan,
+HB_اندرونی خالی
+hb_aat_layout_track (ثابت hb_ot_shape_plan_t *plan,
 		     hb_font_t *font,
-		     hb_buffer_t *buffer);
+		     hb_بفر_t *بفر);
 
 
-#endif /* HB_AAT_LAYOUT_HH */
+#اگر_ختم /* HB_AAT_LAYOUT_HH */

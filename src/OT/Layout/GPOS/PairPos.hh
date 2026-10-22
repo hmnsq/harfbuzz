@@ -1,40 +1,40 @@
-#ifndef OT_LAYOUT_GPOS_PAIRPOS_HH
-#define OT_LAYOUT_GPOS_PAIRPOS_HH
+#اگر_غیر_تعریف_شدہ OT_LAYOUT_GPOS_PAIRPOS_HH
+#تعریف_کرو OT_LAYOUT_GPOS_PAIRPOS_HH
 
-#include "PairPosFormat1.hh"
-#include "PairPosFormat2.hh"
+#شامل "PairPosFormat1.hh"
+#شامل "PairPosFormat2.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+نامخلا OT {
+نامخلا Layout {
+نامخلا GPOS_impl {
 
-struct PairPos
+ساخت PairPos
 {
-  protected:
-  union {
-  struct { HBUINT16 v; }	format;         /* Format identifier */
+  محفوظ:
+  اتحاد {
+  ساخت { HBUINT16 v; }	format;         /* Format identifier */
   PairPosFormat1_3<SmallTypes>	format1;
   PairPosFormat2_4<SmallTypes>	format2;
-#ifndef HB_NO_BEYOND_64K
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
   PairPosFormat1_3<MediumTypes>	format3;
   PairPosFormat2_4<MediumTypes>	format4;
-#endif
+#اگر_ختم
   } u;
 
-  public:
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  عوامی:
+  سانچہ <قسم_نام context_t, قسم_نام ...Ts>
+  قسم_نام context_t::return_t dispatch (context_t *c, Ts&&... ds) ثابت
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
-    case 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
-#endif
-    default:return_trace (c->default_return_value ());
+    اگر (unlikely (!c->may_dispatch (یہ, &u.format.v))) واپس c->no_dispatch_return_قدر ();
+    TRACE_DISPATCH (یہ, u.format.v);
+    انتخاب (u.format.v) {
+    حالت 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    حالت 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    حالت 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
+    حالت 4: hb_barrier (); return_trace (c->dispatch (u.format4, std::forward<Ts> (ds)...));
+#اگر_ختم
+    طےشدہ:return_trace (c->default_return_قدر ());
     }
   }
 };
@@ -43,4 +43,4 @@ struct PairPos
 }
 }
 
-#endif  // OT_LAYOUT_GPOS_PAIRPOS_HH
+#اگر_ختم  // OT_LAYOUT_GPOS_PAIRPOS_HH

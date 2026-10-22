@@ -26,18 +26,18 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OPEN_TYPE_HH
-#define HB_OPEN_TYPE_HH
+#اگر_غیر_تعریف_شدہ HB_OPEN_TYPE_HH
+#تعریف_کرو HB_OPEN_TYPE_HH
 
-#include "hb.hh"
-#include "hb-blob.hh"
-#include "hb-face.hh"
-#include "hb-machinery.hh"
-#include "hb-meta.hh"
-#include "hb-subset.hh"
+#شامل "hb.hh"
+#شامل "hb-blob.hh"
+#شامل "hb-face.hh"
+#شامل "hb-machinery.hh"
+#شامل "hb-meta.hh"
+#شامل "hb-subset.hh"
 
 
-namespace OT {
+نامخلا OT {
 
 
 /*
@@ -54,316 +54,316 @@ namespace OT {
  */
 
 /* Integer types in big-endian order and no alignment requirement */
-template <bool BE,
-	  typename Type,
-	  unsigned int Size = sizeof (Type)>
-struct NumType
+سانچہ <منطقی BE,
+	  قسم_نام Type,
+	  غیرعلامتی صحیح سائز_2 = حجم (Type)>
+ساخت عدد_Type
 {
-  typedef Type type;
+  قسمتعریف Type type;
   /* For reason we define cast out operator for signed/unsigned, instead of Type, see:
    * https://github.com/harfbuzz/harfbuzz/pull/2875/commits/09836013995cab2b9f07577a179ad7b024130467 */
-  typedef typename std::conditional<std::is_integral<Type>::value && sizeof (Type) <= sizeof(int),
-				     typename std::conditional<std::is_signed<Type>::value, signed, unsigned>::type,
+  قسمتعریف قسم_نام std::conditional<std::is_integral<Type>::value && حجم (Type) <= حجم(صحیح),
+				     قسم_نام std::conditional<std::is_signed<Type>::value, علامتی, غیرعلامتی>::type,
 				     Type>::type WideType;
 
-  NumType () = default;
-  explicit constexpr NumType (Type V) : v {V} {}
-  NumType& operator = (Type V) { v = V; return *this; }
+  عدد_Type () = طےشدہ;
+  صریح constexpr عدد_Type (Type V) : v {V} {}
+  عدد_Type& عامل = (Type V) { v = V; واپس *یہ; }
 
-  operator WideType () const { return v; }
+  عامل WideType () ثابت { واپس v; }
 
-  bool operator == (const NumType &o) const { return (Type) v == (Type) o.v; }
-  bool operator != (const NumType &o) const { return !(*this == o); }
+  منطقی عامل == (ثابت عدد_Type &o) ثابت { واپس (Type) v == (Type) o.v; }
+  منطقی عامل != (ثابت عدد_Type &o) ثابت { واپس !(*یہ == o); }
 
-  NumType& operator += (WideType count) { *this = *this + count; return *this; }
-  NumType& operator -= (WideType count) { *this = *this - count; return *this; }
-  NumType& operator ++ () { *this += 1; return *this; }
-  NumType& operator -- () { *this -= 1; return *this; }
-  NumType operator ++ (int) { NumType c (*this); ++*this; return c; }
-  NumType operator -- (int) { NumType c (*this); --*this; return c; }
+  عدد_Type& عامل += (WideType گنتی) { *یہ = *یہ + گنتی; واپس *یہ; }
+  عدد_Type& عامل -= (WideType گنتی) { *یہ = *یہ - گنتی; واپس *یہ; }
+  عدد_Type& عامل ++ () { *یہ += 1; واپس *یہ; }
+  عدد_Type& عامل -- () { *یہ -= 1; واپس *یہ; }
+  عدد_Type عامل ++ (صحیح) { عدد_Type c (*یہ); ++*یہ; واپس c; }
+  عدد_Type عامل -- (صحیح) { عدد_Type c (*یہ); --*یہ; واپس c; }
 
-  uint32_t hash () const { return hb_array ((const char *) &v, sizeof (v)).hash (); }
-  HB_INTERNAL static int cmp (const NumType *a, const NumType *b)
-  { return b->cmp (*a); }
-  HB_INTERNAL static int cmp (const void *a, const void *b)
+  uint32_t hash () ثابت { واپس hb_array ((ثابت حرف *) &v, حجم (v)).hash (); }
+  HB_اندرونی ساکن صحیح cmp (ثابت عدد_Type *a, ثابت عدد_Type *b)
+  { واپس b->cmp (*a); }
+  HB_اندرونی ساکن صحیح cmp (ثابت خالی *a, ثابت خالی *b)
   {
-    NumType *pa = (NumType *) a;
-    NumType *pb = (NumType *) b;
+    عدد_Type *pa = (عدد_Type *) a;
+    عدد_Type *pb = (عدد_Type *) b;
 
-    return pb->cmp (*pa);
+    واپس pb->cmp (*pa);
   }
-  template <typename Type2,
+  سانچہ <قسم_نام Type2,
 	    hb_enable_if (hb_is_convertible (Type2, Type))>
-  int cmp (Type2 a) const
+  صحیح cmp (Type2 a) ثابت
   {
     Type b = v;
-    return (a > b) - (a < b);
+    واپس (a > b) - (a < b);
   }
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ));
   }
-  protected:
-  typename std::conditional<std::is_integral<Type>::value,
-			    HBInt<BE, Type, Size>,
-			    HBFloat<BE, Type, Size>>::type v;
-  public:
-  DEFINE_SIZE_STATIC (Size);
+  محفوظ:
+  قسم_نام std::conditional<std::is_integral<Type>::value,
+			    HBInt<BE, Type, سائز_2>,
+			    HBFloat<BE, Type, سائز_2>>::type v;
+  عوامی:
+  DEFINE_سائز_STATIC (سائز_2);
 };
 
-typedef NumType<true, uint8_t>  HBUINT8;	/* 8-bit big-endian unsigned integer. */
-typedef NumType<true, int8_t>   HBINT8;		/* 8-bit big-endian signed integer. */
-typedef NumType<true, uint16_t> HBUINT16;	/* 16-bit big-endian unsigned integer. */
-typedef NumType<true, int16_t>  HBINT16;	/* 16-bit big-endian signed integer. */
-typedef NumType<true, uint32_t> HBUINT32;	/* 32-bit big-endian unsigned integer. */
-typedef NumType<true, int32_t>  HBINT32;	/* 32-bit big-endian signed integer. */
-typedef NumType<true, uint64_t> HBUINT64;	/* 64-bit big-endian unsigned integer. */
-typedef NumType<true, int64_t>  HBINT64;	/* 64-bit big-endian signed integer. */
+قسمتعریف عدد_Type<سچ, uint8_t>  HBUINT8;	/* 8-bit big-endian unsigned integer. */
+قسمتعریف عدد_Type<سچ, int8_t>   HBINT8;		/* 8-bit big-endian signed integer. */
+قسمتعریف عدد_Type<سچ, uint16_t> HBUINT16;	/* 16-bit big-endian unsigned integer. */
+قسمتعریف عدد_Type<سچ, int16_t>  HBINT16;	/* 16-bit big-endian signed integer. */
+قسمتعریف عدد_Type<سچ, uint32_t> HBUINT32;	/* 32-bit big-endian unsigned integer. */
+قسمتعریف عدد_Type<سچ, int32_t>  HBINT32;	/* 32-bit big-endian signed integer. */
+قسمتعریف عدد_Type<سچ, uint64_t> HBUINT64;	/* 64-bit big-endian unsigned integer. */
+قسمتعریف عدد_Type<سچ, int64_t>  HBINT64;	/* 64-bit big-endian signed integer. */
 /* Note: we cannot defined a signed HBINT24 because there's no corresponding C type.
  * Works for unsigned, but not signed, since we rely on compiler for sign-extension. */
-typedef NumType<true, uint32_t, 3> HBUINT24;	/* 24-bit big-endian unsigned integer. */
+قسمتعریف عدد_Type<سچ, uint32_t, 3> HBUINT24;	/* 24-bit big-endian unsigned integer. */
 
-typedef NumType<false, uint16_t> HBUINT16LE;	/* 16-bit little-endian unsigned integer. */
-typedef NumType<false, int16_t>  HBINT16LE;	/* 16-bit little-endian signed integer. */
-typedef NumType<false, uint32_t> HBUINT32LE;	/* 32-bit little-endian unsigned integer. */
-typedef NumType<false, int32_t>  HBINT32LE;	/* 32-bit little-endian signed integer. */
-typedef NumType<false, uint64_t> HBUINT64LE;	/* 64-bit little-endian unsigned integer. */
-typedef NumType<false, int64_t>  HBINT64LE;	/* 64-bit little-endian signed integer. */
+قسمتعریف عدد_Type<جھوٹ, uint16_t> HBUINT16LE;	/* 16-bit little-endian unsigned integer. */
+قسمتعریف عدد_Type<جھوٹ, int16_t>  HBINT16LE;	/* 16-bit little-endian signed integer. */
+قسمتعریف عدد_Type<جھوٹ, uint32_t> HBUINT32LE;	/* 32-bit little-endian unsigned integer. */
+قسمتعریف عدد_Type<جھوٹ, int32_t>  HBINT32LE;	/* 32-bit little-endian signed integer. */
+قسمتعریف عدد_Type<جھوٹ, uint64_t> HBUINT64LE;	/* 64-bit little-endian unsigned integer. */
+قسمتعریف عدد_Type<جھوٹ, int64_t>  HBINT64LE;	/* 64-bit little-endian signed integer. */
 
-typedef NumType<true,  float>  HBFLOAT32BE;	/* 32-bit little-endian floating point number. */
-typedef NumType<true,  double> HBFLOAT64BE;	/* 64-bit little-endian floating point number. */
-typedef NumType<false, float>  HBFLOAT32LE;	/* 32-bit little-endian floating point number. */
-typedef NumType<false, double> HBFLOAT64LE;	/* 64-bit little-endian floating point number. */
+قسمتعریف عدد_Type<سچ,  اعشاری>  HBFLOAT32BE;	/* 32-bit little-endian floating point number. */
+قسمتعریف عدد_Type<سچ,  دوہرا> HBFLOAT64BE;	/* 64-bit little-endian floating point number. */
+قسمتعریف عدد_Type<جھوٹ, اعشاری>  HBFLOAT32LE;	/* 32-bit little-endian floating point number. */
+قسمتعریف عدد_Type<جھوٹ, دوہرا> HBFLOAT64LE;	/* 64-bit little-endian floating point number. */
 
 /* 15-bit unsigned number; top bit used for extension. */
-struct HBUINT15 : HBUINT16
+ساخت HBUINT15 : HBUINT16
 {
   /* TODO Flesh out; actually mask top bit. */
-  HBUINT15& operator = (uint16_t i ) { HBUINT16::operator= (i); return *this; }
-  public:
-  DEFINE_SIZE_STATIC (2);
+  HBUINT15& عامل = (uint16_t i ) { HBUINT16::عامل= (i); واپس *یہ; }
+  عوامی:
+  DEFINE_سائز_STATIC (2);
 };
 
 /* 32-bit unsigned integer with variable encoding. */
-struct HBUINT32VAR
+ساخت HBUINT32VAR
 {
-  size_t get_size () const
+  size_t get_سائز () ثابت
   {
-    unsigned b0 = v[0];
-    if (b0 < 0x80)
-      return 1;
-    else if (b0 < 0xC0)
-      return 2;
-    else if (b0 < 0xE0)
-      return 3;
-    else if (b0 < 0xF0)
-      return 4;
-    else
-      return 5;
+    غیرعلامتی b0 = v[0];
+    اگر (b0 < 0x80)
+      واپس 1;
+    ورنہ اگر (b0 < 0xC0)
+      واپس 2;
+    ورنہ اگر (b0 < 0xE0)
+      واپس 3;
+    ورنہ اگر (b0 < 0xF0)
+      واپس 4;
+    ورنہ
+      واپس 5;
   }
 
-  static size_t get_size (uint32_t v)
+  ساکن size_t get_سائز (uint32_t v)
   {
-    if (v < 0x80)
-      return 1;
-    else if (v < 0x4000)
-      return 2;
-    else if (v < 0x200000)
-      return 3;
-    else if (v < 0x10000000)
-      return 4;
-    else
-      return 5;
+    اگر (v < 0x80)
+      واپس 1;
+    ورنہ اگر (v < 0x4000)
+      واپس 2;
+    ورنہ اگر (v < 0x200000)
+      واپس 3;
+    ورنہ اگر (v < 0x10000000)
+      واپس 4;
+    ورنہ
+      واپس 5;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (یہ);
     return_trace (c->check_range (v, 1) &&
 		  hb_barrier () &&
-		  c->check_range (v, get_size ()));
+		  c->check_range (v, get_سائز ()));
   }
 
-  operator uint32_t () const
+  عامل uint32_t () ثابت
   {
-    unsigned b0 = v[0];
-    if (b0 < 0x80)
-      return b0;
-    else if (b0 < 0xC0)
-      return ((b0 & 0x3F) << 8) | v[1];
-    else if (b0 < 0xE0)
-      return ((b0 & 0x1F) << 16) | (v[1] << 8) | v[2];
-    else if (b0 < 0xF0)
-      return ((b0 & 0x0F) << 24) | (v[1] << 16) | (v[2] << 8) | v[3];
-    else
-      return (uint32_t (v[1]) << 24) | (v[2] << 16) | (v[3] << 8) | v[4];
+    غیرعلامتی b0 = v[0];
+    اگر (b0 < 0x80)
+      واپس b0;
+    ورنہ اگر (b0 < 0xC0)
+      واپس ((b0 & 0x3F) << 8) | v[1];
+    ورنہ اگر (b0 < 0xE0)
+      واپس ((b0 & 0x1F) << 16) | (v[1] << 8) | v[2];
+    ورنہ اگر (b0 < 0xF0)
+      واپس ((b0 & 0x0F) << 24) | (v[1] << 16) | (v[2] << 8) | v[3];
+    ورنہ
+      واپس (uint32_t (v[1]) << 24) | (v[2] << 16) | (v[3] << 8) | v[4];
   }
 
-  static unsigned serialize_unsafe (unsigned char *buf, uint32_t v)
+  ساکن غیرعلامتی serialize_unsafe (غیرعلامتی حرف *buf, uint32_t v)
   {
-    unsigned len = get_size (v);
-    unsigned char *p = buf + len;
-    for (unsigned i = 0; i < len; i++)
+    غیرعلامتی len = get_سائز (v);
+    غیرعلامتی حرف *p = buf + len;
+    برائے (غیرعلامتی i = 0; i < len; i++)
     {
       *--p = v & 0xFF;
       v >>= 8;
     }
 
-    if (len > 1)
+    اگر (len > 1)
       buf[0] |= ((1 << (len - 1)) - 1) << (9 - len);
 
-    return len;
+    واپس len;
   }
 
-  static bool serialize (hb_serialize_context_t *c, uint32_t v)
+  ساکن منطقی serialize (hb_serialize_context_t *c, uint32_t v)
   {
-    unsigned len = get_size (v);
-    unsigned char *buf = c->allocate_size<unsigned char> (len, false);
-    if (unlikely (!buf))
-      return false;
+    غیرعلامتی len = get_سائز (v);
+    غیرعلامتی حرف *buf = c->allocate_سائز<غیرعلامتی حرف> (len, جھوٹ);
+    اگر (unlikely (!buf))
+      واپس جھوٹ;
 
     serialize_unsafe (buf, v);
-    return true;
+    واپس سچ;
   }
 
-  protected:
-  unsigned char v[5];
+  محفوظ:
+  غیرعلامتی حرف v[5];
 
-  public:
-  DEFINE_SIZE_MIN (1);
+  عوامی:
+  DEFINE_سائز_MIN (1);
 };
 
 /* 16-bit signed integer (HBINT16) that describes a quantity in FUnits. */
-typedef HBINT16 FWORD;
+قسمتعریف HBINT16 FWORD;
 
 /* 32-bit signed integer (HBINT32) that describes a quantity in FUnits. */
-typedef HBINT32 FWORD32;
+قسمتعریف HBINT32 FWORD32;
 
 /* 16-bit unsigned integer (HBUINT16) that describes a quantity in FUnits. */
-typedef HBUINT16 UFWORD;
+قسمتعریف HBUINT16 UFWORD;
 
-template <typename Type, unsigned fraction_bits>
-struct HBFixed : Type
+سانچہ <قسم_نام Type, غیرعلامتی fraction_بٹ>
+ساخت HBFixed : Type
 {
-  static constexpr float mult = 1.f / (1 << fraction_bits);
-  static_assert (Type::static_size * 8 > fraction_bits, "");
+  ساکن constexpr اعشاری mult = 1.f / (1 << fraction_بٹ);
+  static_assert (Type::static_سائز * 8 > fraction_بٹ, "");
 
-  operator signed () const = delete;
-  operator unsigned () const = delete;
-  explicit operator float () const { return to_float (); }
-  typename Type::type to_int () const { return Type::v; }
-  void set_int (typename Type::type i ) { Type::v = i; }
-  float to_float (float offset = 0) const  { return ((int32_t) Type::v + offset) * mult; }
-  void set_float (float f) { Type::v = roundf (f / mult); }
-  public:
-  DEFINE_SIZE_STATIC (Type::static_size);
+  عامل علامتی () ثابت = حذف;
+  عامل غیرعلامتی () ثابت = حذف;
+  صریح عامل اعشاری () ثابت { واپس مقصد_float (); }
+  قسم_نام Type::type مقصد_int () ثابت { واپس Type::v; }
+  خالی سیٹ_int (قسم_نام Type::type i ) { Type::v = i; }
+  اعشاری مقصد_float (اعشاری انحراف = 0) ثابت  { واپس ((int32_t) Type::v + انحراف) * mult; }
+  خالی سیٹ_float (اعشاری f) { Type::v = roundf (f / mult); }
+  عوامی:
+  DEFINE_سائز_STATIC (Type::static_سائز);
 };
 
 /* 16-bit signed fixed number with the low 14 bits of fraction (2.14). */
-using F2DOT14 = HBFixed<HBINT16, 14>;
-using F4DOT12 = HBFixed<HBINT16, 12>;
-using F6DOT10 = HBFixed<HBINT16, 10>;
+استعمال F2DOT14 = HBFixed<HBINT16, 14>;
+استعمال F4DOT12 = HBFixed<HBINT16, 12>;
+استعمال F6DOT10 = HBFixed<HBINT16, 10>;
 
 /* 32-bit signed fixed-point number (16.16). */
-using F16DOT16 = HBFixed<HBINT32, 16>;
+استعمال F16DOT16 = HBFixed<HBINT32, 16>;
 
 /* Date represented in number of seconds since 12:00 midnight, January 1,
  * 1904. The value is represented as a signed 64-bit integer. */
-struct LONGDATETIME
+ساخت LONGDATETIME
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ));
   }
-  protected:
+  محفوظ:
   HBINT32 major;
   HBUINT32 minor;
-  public:
-  DEFINE_SIZE_STATIC (8);
+  عوامی:
+  DEFINE_سائز_STATIC (8);
 };
 
 /* Array of four uint8s (length = 32 bits) used to identify a script, language
  * system, feature, or baseline */
-struct Tag : HBUINT32
+ساخت لیبل : HBUINT32
 {
-  Tag& operator = (hb_tag_t i) { HBUINT32::operator= (i); return *this; }
+  لیبل& عامل = (hb_لیبل_t i) { HBUINT32::عامل= (i); واپس *یہ; }
   /* What the char* converters return is NOT nul-terminated.  Print using "%.4s" */
-  operator const char* () const { return reinterpret_cast<const char *> (this); }
-  operator char* ()             { return reinterpret_cast<char *> (this); }
-  public:
-  DEFINE_SIZE_STATIC (4);
+  عامل ثابت حرف* () ثابت { واپس reinterpret_cast<ثابت حرف *> (یہ); }
+  عامل حرف* ()             { واپس reinterpret_cast<حرف *> (یہ); }
+  عوامی:
+  DEFINE_سائز_STATIC (4);
 };
 
 /* Glyph index number, same as uint16 (length = 16 bits) */
-struct HBGlyphID16 : HBUINT16
+ساخت HBGlyphID16 : HBUINT16
 {
-  HBGlyphID16& operator = (uint16_t i) { HBUINT16::operator= (i); return *this; }
+  HBGlyphID16& عامل = (uint16_t i) { HBUINT16::عامل= (i); واپس *یہ; }
 };
-struct HBGlyphID24 : HBUINT24
+ساخت HBGlyphID24 : HBUINT24
 {
-  HBGlyphID24& operator = (uint32_t i) { HBUINT24::operator= (i); return *this; }
+  HBGlyphID24& عامل = (uint32_t i) { HBUINT24::عامل= (i); واپس *یہ; }
 };
 
 /* Script/language-system/feature index */
-struct Index : HBUINT16 {
-  static constexpr unsigned NOT_FOUND_INDEX = 0xFFFFu;
-  Index& operator = (uint16_t i) { HBUINT16::operator= (i); return *this; }
+ساخت اشاریہ : HBUINT16 {
+  ساکن constexpr غیرعلامتی NOT_ملا_اشاریہ = 0xFFFFu;
+  اشاریہ& عامل = (uint16_t i) { HBUINT16::عامل= (i); واپس *یہ; }
 };
-DECLARE_NULL_NAMESPACE_BYTES (OT, Index);
+DECLARE_NULL_NAMESPACE_بائٹیں (OT, اشاریہ);
 
-typedef Index NameID;
+قسمتعریف اشاریہ NameID;
 
-struct VarIdx : HBUINT32 {
-  static constexpr unsigned NO_VARIATION = 0xFFFFFFFFu;
-  static_assert (NO_VARIATION == HB_OT_LAYOUT_NO_VARIATIONS_INDEX, "");
-  VarIdx& operator = (uint32_t i) { HBUINT32::operator= (i); return *this; }
+ساخت VarIdx : HBUINT32 {
+  ساکن constexpr غیرعلامتی NO_VARIATION = 0xFFFFFFFFu;
+  static_assert (NO_VARIATION == HB_OT_LAYOUT_NO_VARIATIONS_اشاریہ, "");
+  VarIdx& عامل = (uint32_t i) { HBUINT32::عامل= (i); واپس *یہ; }
 };
-DECLARE_NULL_NAMESPACE_BYTES (OT, VarIdx);
+DECLARE_NULL_NAMESPACE_بائٹیں (OT, VarIdx);
 
 /* Offset, Null offset = 0 */
-template <typename Type, bool has_null=true>
-struct Offset : Type
+سانچہ <قسم_نام Type, منطقی has_null=سچ>
+ساخت انحراف_2 : Type
 {
-  Offset& operator = (typename Type::type i) { Type::operator= (i); return *this; }
+  انحراف_2& عامل = (قسم_نام Type::type i) { Type::عامل= (i); واپس *یہ; }
 
-  typedef Type type;
+  قسمتعریف Type type;
 
-  bool is_null () const { return has_null && 0 == *this; }
+  منطقی is_null () ثابت { واپس has_null && 0 == *یہ; }
 
-  public:
-  DEFINE_SIZE_STATIC (sizeof (Type));
+  عوامی:
+  DEFINE_سائز_STATIC (حجم (Type));
 };
 
-typedef Offset<HBUINT16> Offset16;
-typedef Offset<HBUINT24> Offset24;
-typedef Offset<HBUINT32> Offset32;
+قسمتعریف انحراف_2<HBUINT16> Offset16;
+قسمتعریف انحراف_2<HBUINT24> Offset24;
+قسمتعریف انحراف_2<HBUINT32> Offset32;
 
 
 /* CheckSum */
-struct CheckSum : HBUINT32
+ساخت Check_مجموع : HBUINT32
 {
-  CheckSum& operator = (uint32_t i) { HBUINT32::operator= (i); return *this; }
+  Check_مجموع& عامل = (uint32_t i) { HBUINT32::عامل= (i); واپس *یہ; }
 
   /* This is reference implementation from the spec. */
-  static uint32_t CalcTableChecksum (const HBUINT32 *Table, uint32_t Length)
+  ساکن uint32_t Calc_جدول_Checksum (ثابت HBUINT32 *جدول_3, uint32_t لمبائی_3)
   {
     uint32_t Sum = 0L;
-    assert (0 == (Length & 3));
-    const HBUINT32 *EndPtr = Table + Length / HBUINT32::static_size;
+    أكد (0 == (لمبائی_3 & 3));
+    ثابت HBUINT32 *انتہا_Ptr = جدول_3 + لمبائی_3 / HBUINT32::static_سائز;
 
-    while (Table < EndPtr)
-      Sum += *Table++;
-    return Sum;
+    جب (جدول_3 < انتہا_Ptr)
+      Sum += *جدول_3++;
+    واپس Sum;
   }
 
   /* Note: data should be 4byte aligned and have 4byte padding at the end. */
-  void set_for_data (const void *data, unsigned int length)
-  { *this = CalcTableChecksum ((const HBUINT32 *) data, length); }
+  خالی سیٹ_for_ڈیٹا (ثابت خالی *ڈیٹا, غیرعلامتی صحیح لمبائی)
+  { *یہ = Calc_جدول_Checksum ((ثابت HBUINT32 *) ڈیٹا, لمبائی); }
 
-  public:
-  DEFINE_SIZE_STATIC (4);
+  عوامی:
+  DEFINE_سائز_STATIC (4);
 };
 
 
@@ -371,21 +371,21 @@ struct CheckSum : HBUINT32
  * Version Numbers
  */
 
-template <typename FixedType=HBUINT16>
-struct FixedVersion
+سانچہ <قسم_نام FixedType=HBUINT16>
+ساخت Fixed_نسخہ
 {
-  uint32_t to_int () const { return (major << (sizeof (FixedType) * 8)) + minor; }
+  uint32_t مقصد_int () ثابت { واپس (major << (حجم (FixedType) * 8)) + minor; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ));
   }
 
   FixedType major;
   FixedType minor;
-  public:
-  DEFINE_SIZE_STATIC (2 * sizeof (FixedType));
+  عوامی:
+  DEFINE_سائز_STATIC (2 * حجم (FixedType));
 };
 
 
@@ -394,1737 +394,1737 @@ struct FixedVersion
  * Use: (base+offset)
  */
 
-template <typename Type, bool has_null>
-struct _hb_has_null
+سانچہ <قسم_نام Type, منطقی has_null>
+ساخت _hb_has_null
 {
-  static const Type *get_null () { return nullptr; }
-  static Type *get_crap ()       { return nullptr; }
+  ساکن ثابت Type *get_null () { واپس خالی_اشاریہ; }
+  ساکن Type *get_crap ()       { واپس خالی_اشاریہ; }
 };
-template <typename Type>
-struct _hb_has_null<Type, true>
+سانچہ <قسم_نام Type>
+ساخت _hb_has_null<Type, سچ>
 {
-  static const Type *get_null () { return &Null (Type); }
-  static       Type *get_crap () { return &Crap (Type); }
+  ساکن ثابت Type *get_null () { واپس &Null (Type); }
+  ساکن       Type *get_crap () { واپس &Crap (Type); }
 };
 
-template <typename Type, typename OffsetType, typename BaseType=void, bool has_null=true>
-struct OffsetTo : Offset<OffsetType, has_null>
+سانچہ <قسم_نام Type, قسم_نام انحراف_Type, قسم_نام بنیاد_Type=خالی, منطقی has_null=سچ>
+ساخت انحراف_مقصد : انحراف_2<انحراف_Type, has_null>
 {
-  using target_t = Type;
+  استعمال ہدف_t = Type;
 
   // Make sure Type is not unbounded; works only for types that are fully defined at OffsetTo time.
-  static_assert (has_null == false ||
-		 (hb_has_null_size (Type) || !hb_has_min_size (Type)), "");
+  static_assert (has_null == جھوٹ ||
+		 (hb_has_null_سائز_2 (Type) || !hb_has_min_سائز_2 (Type)), "");
 
-  HB_DELETE_COPY_ASSIGN (OffsetTo);
-  OffsetTo () = default;
+  HB_DELETE_COPY_تفویض (انحراف_مقصد);
+  انحراف_مقصد () = طےشدہ;
 
-  OffsetTo& operator = (typename OffsetType::type i) { OffsetType::operator= (i); return *this; }
+  انحراف_مقصد& عامل = (قسم_نام انحراف_Type::type i) { انحراف_Type::عامل= (i); واپس *یہ; }
 
-  const Type& operator () (const void *base) const
+  ثابت Type& عامل () (ثابت خالی *بنیاد) ثابت
   {
-    if (unlikely (this->is_null ())) return *_hb_has_null<Type, has_null>::get_null ();
-    return StructAtOffset<const Type> (base, *this);
+    اگر (unlikely (یہ->is_null ())) واپس *_hb_has_null<Type, has_null>::get_null ();
+    واپس Struct_At_انحراف<ثابت Type> (بنیاد, *یہ);
   }
-  Type& operator () (void *base) const
+  Type& عامل () (خالی *بنیاد) ثابت
   {
-    if (unlikely (this->is_null ())) return *_hb_has_null<Type, has_null>::get_crap ();
-    return StructAtOffset<Type> (base, *this);
+    اگر (unlikely (یہ->is_null ())) واپس *_hb_has_null<Type, has_null>::get_crap ();
+    واپس Struct_At_انحراف<Type> (بنیاد, *یہ);
   }
 
-  template <typename Base,
-	    hb_enable_if (hb_is_convertible (const Base, const BaseType *))>
-  friend const Type& operator + (const Base &base, const OffsetTo &offset) { return offset ((const void *) base); }
-  template <typename Base,
-	    hb_enable_if (hb_is_convertible (const Base, const BaseType *))>
-  friend const Type& operator + (const OffsetTo &offset, const Base &base) { return offset ((const void *) base); }
-  template <typename Base,
-	    hb_enable_if (hb_is_convertible (Base, BaseType *))>
-  friend Type& operator + (Base &&base, OffsetTo &offset) { return offset ((void *) base); }
-  template <typename Base,
-	    hb_enable_if (hb_is_convertible (Base, BaseType *))>
-  friend Type& operator + (OffsetTo &offset, Base &&base) { return offset ((void *) base); }
+  سانچہ <قسم_نام بنیاد_3,
+	    hb_enable_if (hb_is_convertible (ثابت بنیاد_3, ثابت بنیاد_Type *))>
+  دوست ثابت Type& عامل + (ثابت بنیاد_3 &بنیاد, ثابت انحراف_مقصد &انحراف) { واپس انحراف ((ثابت خالی *) بنیاد); }
+  سانچہ <قسم_نام بنیاد_3,
+	    hb_enable_if (hb_is_convertible (ثابت بنیاد_3, ثابت بنیاد_Type *))>
+  دوست ثابت Type& عامل + (ثابت انحراف_مقصد &انحراف, ثابت بنیاد_3 &بنیاد) { واپس انحراف ((ثابت خالی *) بنیاد); }
+  سانچہ <قسم_نام بنیاد_3,
+	    hb_enable_if (hb_is_convertible (بنیاد_3, بنیاد_Type *))>
+  دوست Type& عامل + (بنیاد_3 &&بنیاد, انحراف_مقصد &انحراف) { واپس انحراف ((خالی *) بنیاد); }
+  سانچہ <قسم_نام بنیاد_3,
+	    hb_enable_if (hb_is_convertible (بنیاد_3, بنیاد_Type *))>
+  دوست Type& عامل + (انحراف_مقصد &انحراف, بنیاد_3 &&بنیاد) { واپس انحراف ((خالی *) بنیاد); }
 
 
-  template <typename Base, typename ...Ts>
-  bool serialize_subset (hb_subset_context_t *c, const OffsetTo& src,
-			 const Base *src_base, Ts&&... ds)
+  سانچہ <قسم_نام بنیاد_3, قسم_نام ...Ts>
+  منطقی serialize_subset (hb_subset_context_t *c, ثابت انحراف_مقصد& src,
+			 ثابت بنیاد_3 *src_بنیاد, Ts&&... ds)
   {
-    *this = 0;
-    if (src.is_null ())
-      return false;
+    *یہ = 0;
+    اگر (src.is_null ())
+      واپس جھوٹ;
 
-    auto *s = c->serializer;
+    خودکار *s = c->serializer;
 
     s->push ();
 
-    bool ret = c->dispatch (src_base+src, std::forward<Ts> (ds)...);
+    منطقی ret = c->dispatch (src_بنیاد+src, std::forward<Ts> (ds)...);
 
-    if (ret || !has_null)
-      s->add_link (*this, s->pop_pack ());
-    else
-      s->pop_discard ();
+    اگر (ret || !has_null)
+      s->جوڑو_link (*یہ, s->نکالو_pack ());
+    ورنہ
+      s->نکالو_discard ();
 
-    return ret;
+    واپس ret;
   }
 
 
-  template <typename ...Ts>
-  bool serialize_serialize (hb_serialize_context_t *c, Ts&&... ds)
+  سانچہ <قسم_نام ...Ts>
+  منطقی serialize_serialize (hb_serialize_context_t *c, Ts&&... ds)
   {
-    *this = 0;
+    *یہ = 0;
 
     Type* obj = c->push<Type> ();
-    bool ret = obj->serialize (c, std::forward<Ts> (ds)...);
+    منطقی ret = obj->serialize (c, std::forward<Ts> (ds)...);
 
-    if (ret)
-      c->add_link (*this, c->pop_pack ());
-    else
-      c->pop_discard ();
+    اگر (ret)
+      c->جوڑو_link (*یہ, c->نکالو_pack ());
+    ورنہ
+      c->نکالو_discard ();
 
-    return ret;
+    واپس ret;
   }
 
   /* TODO: Somehow merge this with previous function into a serialize_dispatch(). */
   /* Workaround clang bug: https://bugs.llvm.org/show_bug.cgi?id=23029
    * Can't compile: whence = hb_serialize_context_t::Head followed by Ts&&...
    */
-  template <typename ...Ts>
-  bool serialize_copy (hb_serialize_context_t *c, const OffsetTo& src,
-		       const void *src_base, unsigned dst_bias,
+  سانچہ <قسم_نام ...Ts>
+  منطقی serialize_copy (hb_serialize_context_t *c, ثابت انحراف_مقصد& src,
+		       ثابت خالی *src_بنیاد, غیرعلامتی dst_bias,
 		       hb_serialize_context_t::whence_t whence,
 		       Ts&&... ds)
   {
-    *this = 0;
-    if (src.is_null ())
-      return false;
+    *یہ = 0;
+    اگر (src.is_null ())
+      واپس جھوٹ;
 
     c->push ();
 
-    bool ret = c->copy (src_base+src, std::forward<Ts> (ds)...);
+    منطقی ret = c->copy (src_بنیاد+src, std::forward<Ts> (ds)...);
 
-    c->add_link (*this, c->pop_pack (), whence, dst_bias);
+    c->جوڑو_link (*یہ, c->نکالو_pack (), whence, dst_bias);
 
-    return ret;
+    واپس ret;
   }
 
-  bool serialize_copy (hb_serialize_context_t *c, const OffsetTo& src,
-		       const void *src_base, unsigned dst_bias = 0)
-  { return serialize_copy (c, src, src_base, dst_bias, hb_serialize_context_t::Head); }
+  منطقی serialize_copy (hb_serialize_context_t *c, ثابت انحراف_مقصد& src,
+		       ثابت خالی *src_بنیاد, غیرعلامتی dst_bias = 0)
+  { واپس serialize_copy (c, src, src_بنیاد, dst_bias, hb_serialize_context_t::سر); }
 
-  bool sanitize_shallow (hb_sanitize_context_t *c, const BaseType *base) const
+  منطقی sanitize_shallow (hb_sanitize_context_t *c, ثابت بنیاد_Type *بنیاد) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this))) return_trace (false);
+    TRACE_SANITIZE (یہ);
+    اگر (unlikely (!c->check_struct (یہ))) return_trace (جھوٹ);
     hb_barrier ();
     //if (unlikely (this->is_null ())) return_trace (true);
-    if (unlikely ((const char *) base + (unsigned) *this < (const char *) base)) return_trace (false);
-    return_trace (true);
+    اگر (unlikely ((ثابت حرف *) بنیاد + (غیرعلامتی) *یہ < (ثابت حرف *) بنیاد)) return_trace (جھوٹ);
+    return_trace (سچ);
   }
 
-  template <typename ...Ts>
-#ifndef HB_OPTIMIZE_SIZE
+  سانچہ <قسم_نام ...Ts>
+#اگر_غیر_تعریف_شدہ HB_OPTIMIZE_سائز
   HB_ALWAYS_INLINE
-#endif
-  bool sanitize (hb_sanitize_context_t *c, const BaseType *base, Ts&&... ds) const
+#اگر_ختم
+  منطقی sanitize (hb_sanitize_context_t *c, ثابت بنیاد_Type *بنیاد, Ts&&... ds) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (sanitize_shallow (c, base) &&
+    TRACE_SANITIZE (یہ);
+    return_trace (sanitize_shallow (c, بنیاد) &&
 		  hb_barrier () &&
-		  (this->is_null () ||
-		   c->dispatch (StructAtOffset<Type> (base, *this), std::forward<Ts> (ds)...)));
+		  (یہ->is_null () ||
+		   c->dispatch (Struct_At_انحراف<Type> (بنیاد, *یہ), std::forward<Ts> (ds)...)));
   }
 
-  DEFINE_SIZE_STATIC (sizeof (OffsetType));
+  DEFINE_سائز_STATIC (حجم (انحراف_Type));
 };
 /* Partial specializations. */
-template <typename Type, typename BaseType=void, bool has_null=true> using Offset16To = OffsetTo<Type, HBUINT16, BaseType, has_null>;
-template <typename Type, typename BaseType=void, bool has_null=true> using Offset24To = OffsetTo<Type, HBUINT24, BaseType, has_null>;
-template <typename Type, typename BaseType=void, bool has_null=true> using Offset32To = OffsetTo<Type, HBUINT32, BaseType, has_null>;
+سانچہ <قسم_نام Type, قسم_نام بنیاد_Type=خالی, منطقی has_null=سچ> استعمال Offset16_مقصد = انحراف_مقصد<Type, HBUINT16, بنیاد_Type, has_null>;
+سانچہ <قسم_نام Type, قسم_نام بنیاد_Type=خالی, منطقی has_null=سچ> استعمال Offset24_مقصد = انحراف_مقصد<Type, HBUINT24, بنیاد_Type, has_null>;
+سانچہ <قسم_نام Type, قسم_نام بنیاد_Type=خالی, منطقی has_null=سچ> استعمال Offset32_مقصد = انحراف_مقصد<Type, HBUINT32, بنیاد_Type, has_null>;
 
-template <typename Type, typename OffsetType, typename BaseType=void> using NNOffsetTo = OffsetTo<Type, OffsetType, BaseType, false>;
-template <typename Type, typename BaseType=void> using NNOffset16To = Offset16To<Type, BaseType, false>;
-template <typename Type, typename BaseType=void> using NNOffset24To = Offset24To<Type, BaseType, false>;
-template <typename Type, typename BaseType=void> using NNOffset32To = Offset32To<Type, BaseType, false>;
+سانچہ <قسم_نام Type, قسم_نام انحراف_Type, قسم_نام بنیاد_Type=خالی> استعمال NNOffset_مقصد = انحراف_مقصد<Type, انحراف_Type, بنیاد_Type, جھوٹ>;
+سانچہ <قسم_نام Type, قسم_نام بنیاد_Type=خالی> استعمال NNOffset16_مقصد = Offset16_مقصد<Type, بنیاد_Type, جھوٹ>;
+سانچہ <قسم_نام Type, قسم_نام بنیاد_Type=خالی> استعمال NNOffset24_مقصد = Offset24_مقصد<Type, بنیاد_Type, جھوٹ>;
+سانچہ <قسم_نام Type, قسم_نام بنیاد_Type=خالی> استعمال NNOffset32_مقصد = Offset32_مقصد<Type, بنیاد_Type, جھوٹ>;
 
 
 /*
  * Array Types
  */
 
-template <typename Type>
-struct UnsizedArrayOf
+سانچہ <قسم_نام Type>
+ساخت Unsized_Array_کا
 {
-  typedef Type item_t;
-  static constexpr unsigned item_size = hb_static_size (Type);
+  قسمتعریف Type شے_t;
+  ساکن constexpr غیرعلامتی شے_سائز = hb_static_سائز (Type);
 
-  HB_DELETE_CREATE_COPY_ASSIGN (UnsizedArrayOf);
+  HB_DELETE_CREATE_COPY_تفویض (Unsized_Array_کا);
 
-  const Type& operator [] (unsigned int i) const
+  ثابت Type& عامل [] (غیرعلامتی صحیح i) ثابت
   {
-    return arrayZ[i];
+    واپس arrayZ[i];
   }
-  Type& operator [] (unsigned int i)
+  Type& عامل [] (غیرعلامتی صحیح i)
   {
-    return arrayZ[i];
+    واپس arrayZ[i];
   }
 
-  static size_t get_size (unsigned int len)
-  { return hb_unsigned_mul_saturate (len, Type::static_size); }
+  ساکن size_t get_سائز (غیرعلامتی صحیح len)
+  { واپس hb_unsigned_mul_saturate (len, Type::static_سائز); }
 
-  template <typename T> operator T * () { return arrayZ; }
-  template <typename T> operator const T * () const { return arrayZ; }
-  hb_array_t<Type> as_array (unsigned int len)
-  { return hb_array (arrayZ, len); }
-  hb_array_t<const Type> as_array (unsigned int len) const
-  { return hb_array (arrayZ, len); }
+  سانچہ <قسم_نام T> عامل T * () { واپس arrayZ; }
+  سانچہ <قسم_نام T> عامل ثابت T * () ثابت { واپس arrayZ; }
+  hb_array_t<Type> as_array (غیرعلامتی صحیح len)
+  { واپس hb_array (arrayZ, len); }
+  hb_array_t<ثابت Type> as_array (غیرعلامتی صحیح len) ثابت
+  { واپس hb_array (arrayZ, len); }
 
-  template <typename T>
-  Type &lsearch (unsigned int len, const T &x, Type &not_found = Crap (Type))
-  { return *as_array (len).lsearch (x, &not_found); }
-  template <typename T>
-  const Type &lsearch (unsigned int len, const T &x, const Type &not_found = Null (Type)) const
-  { return *as_array (len).lsearch (x, &not_found); }
-  template <typename T>
-  bool lfind (unsigned int len, const T &x, unsigned int *i = nullptr,
-	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
-  { return as_array (len).lfind (x, i, not_found, to_store); }
+  سانچہ <قسم_نام T>
+  Type &lsearch (غیرعلامتی صحیح len, ثابت T &x, Type &not_ملا = Crap (Type))
+  { واپس *as_array (len).lsearch (x, &not_ملا); }
+  سانچہ <قسم_نام T>
+  ثابت Type &lsearch (غیرعلامتی صحیح len, ثابت T &x, ثابت Type &not_ملا = Null (Type)) ثابت
+  { واپس *as_array (len).lsearch (x, &not_ملا); }
+  سانچہ <قسم_نام T>
+  منطقی lfind (غیرعلامتی صحیح len, ثابت T &x, غیرعلامتی صحیح *i = خالی_اشاریہ,
+	      hb_not_ملا_t not_ملا = HB_NOT_ملا_DONT_STORE,
+	      غیرعلامتی صحیح مقصد_store = (غیرعلامتی صحیح) -1) ثابت
+  { واپس as_array (len).lfind (x, i, not_ملا, مقصد_store); }
 
-  void qsort (unsigned int len, unsigned int start = 0, unsigned int end = (unsigned int) -1)
-  { as_array (len).qsort (start, end); }
+  خالی qsort (غیرعلامتی صحیح len, غیرعلامتی صحیح آغاز = 0, غیرعلامتی صحیح انتہا = (غیرعلامتی صحیح) -1)
+  { as_array (len).qsort (آغاز, انتہا); }
 
-  bool serialize (hb_serialize_context_t *c, unsigned int items_len, bool clear = true)
+  منطقی serialize (hb_serialize_context_t *c, غیرعلامتی صحیح اشیاء_len, منطقی clear = سچ)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_size (this, get_size (items_len), clear))) return_trace (false);
-    return_trace (true);
+    TRACE_SERIALIZE (یہ);
+    اگر (unlikely (!c->extend_سائز (یہ, get_سائز (اشیاء_len), clear))) return_trace (جھوٹ);
+    return_trace (سچ);
   }
-  template <typename Iterator,
-	    hb_requires (hb_is_source_of (Iterator, Type))>
-  bool serialize (hb_serialize_context_t *c, Iterator items)
+  سانچہ <قسم_نام Iterator,
+	    hb_requires (hb_is_ماخذ_کا (Iterator, Type))>
+  منطقی serialize (hb_serialize_context_t *c, Iterator اشیاء)
   {
-    TRACE_SERIALIZE (this);
-    unsigned count = hb_len (items);
-    if (unlikely (!serialize (c, count, false))) return_trace (false);
+    TRACE_SERIALIZE (یہ);
+    غیرعلامتی گنتی = hb_len (اشیاء);
+    اگر (unlikely (!serialize (c, گنتی, جھوٹ))) return_trace (جھوٹ);
     /* TODO Umm. Just exhaust the iterator instead?  Being extra
      * cautious right now.. */
-    for (unsigned i = 0; i < count; i++, ++items)
-      arrayZ[i] = *items;
-    return_trace (true);
+    برائے (غیرعلامتی i = 0; i < گنتی; i++, ++اشیاء)
+      arrayZ[i] = *اشیاء;
+    return_trace (سچ);
   }
 
-  UnsizedArrayOf* copy (hb_serialize_context_t *c, unsigned count) const
+  Unsized_Array_کا* copy (hb_serialize_context_t *c, غیرعلامتی گنتی) ثابت
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->start_embed (this);
-    if (unlikely (!as_array (count).copy (c))) return_trace (nullptr);
-    return_trace (out);
+    TRACE_SERIALIZE (یہ);
+    خودکار *برآمد = c->آغاز_embed (یہ);
+    اگر (unlikely (!as_array (گنتی).copy (c))) return_trace (خالی_اشاریہ);
+    return_trace (برآمد);
   }
 
-  template <typename ...Ts>
+  سانچہ <قسم_نام ...Ts>
   HB_ALWAYS_INLINE
-  bool sanitize (hb_sanitize_context_t *c, unsigned int count, Ts&&... ds) const
+  منطقی sanitize (hb_sanitize_context_t *c, غیرعلامتی صحیح گنتی, Ts&&... ds) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!sanitize_shallow (c, count))) return_trace (false);
-    if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
+    TRACE_SANITIZE (یہ);
+    اگر (unlikely (!sanitize_shallow (c, گنتی))) return_trace (جھوٹ);
+    اگر (!حجم... (Ts) && hb_is_trivially_copyable(Type)) return_trace (سچ);
     hb_barrier ();
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
-	return_trace (false);
-    return_trace (true);
+    برائے (غیرعلامتی صحیح i = 0; i < گنتی; i++)
+      اگر (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
+	return_trace (جھوٹ);
+    return_trace (سچ);
   }
 
-  bool sanitize_shallow (hb_sanitize_context_t *c, unsigned int count) const
+  منطقی sanitize_shallow (hb_sanitize_context_t *c, غیرعلامتی صحیح گنتی) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_array (arrayZ, count));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_array (arrayZ, گنتی));
   }
 
-  public:
+  عوامی:
   Type		arrayZ[HB_VAR_ARRAY];
-  public:
-  DEFINE_SIZE_UNBOUNDED (0);
+  عوامی:
+  DEFINE_سائز_UNBOUNDED (0);
 };
 
 /* Unsized array of offset's */
-template <typename Type, typename OffsetType, typename BaseType=void, bool has_null=true>
-using UnsizedArray16OfOffsetTo = UnsizedArrayOf<OffsetTo<Type, OffsetType, BaseType, has_null>>;
+سانچہ <قسم_نام Type, قسم_نام انحراف_Type, قسم_نام بنیاد_Type=خالی, منطقی has_null=سچ>
+استعمال Unsized_Array16_کا_انحراف_مقصد = Unsized_Array_کا<انحراف_مقصد<Type, انحراف_Type, بنیاد_Type, has_null>>;
 
 /* Unsized array of offsets relative to the beginning of the array itself. */
-template <typename Type, typename OffsetType, typename BaseType=void, bool has_null=true>
-struct UnsizedListOfOffset16To : UnsizedArray16OfOffsetTo<Type, OffsetType, BaseType, has_null>
+سانچہ <قسم_نام Type, قسم_نام انحراف_Type, قسم_نام بنیاد_Type=خالی, منطقی has_null=سچ>
+ساخت Unsized_List_کا_Offset16_مقصد : Unsized_Array16_کا_انحراف_مقصد<Type, انحراف_Type, بنیاد_Type, has_null>
 {
-  const Type& operator [] (int i_) const
+  ثابت Type& عامل [] (صحیح i_) ثابت
   {
-    unsigned int i = (unsigned int) i_;
-    const OffsetTo<Type, OffsetType, BaseType, has_null> *p = &this->arrayZ[i];
-    if (unlikely ((const void *) p < (const void *) this->arrayZ)) return Null (Type); /* Overflowed. */
+    غیرعلامتی صحیح i = (غیرعلامتی صحیح) i_;
+    ثابت انحراف_مقصد<Type, انحراف_Type, بنیاد_Type, has_null> *p = &یہ->arrayZ[i];
+    اگر (unlikely ((ثابت خالی *) p < (ثابت خالی *) یہ->arrayZ)) واپس Null (Type); /* Overflowed. */
     hb_barrier ();
-    return this+*p;
+    واپس یہ+*p;
   }
-  Type& operator [] (int i_)
+  Type& عامل [] (صحیح i_)
   {
-    unsigned int i = (unsigned int) i_;
-    const OffsetTo<Type, OffsetType, BaseType, has_null> *p = &this->arrayZ[i];
-    if (unlikely ((const void *) p < (const void *) this->arrayZ)) return Crap (Type); /* Overflowed. */
+    غیرعلامتی صحیح i = (غیرعلامتی صحیح) i_;
+    ثابت انحراف_مقصد<Type, انحراف_Type, بنیاد_Type, has_null> *p = &یہ->arrayZ[i];
+    اگر (unlikely ((ثابت خالی *) p < (ثابت خالی *) یہ->arrayZ)) واپس Crap (Type); /* Overflowed. */
     hb_barrier ();
-    return this+*p;
+    واپس یہ+*p;
   }
 
-  template <typename ...Ts>
-  bool sanitize (hb_sanitize_context_t *c, unsigned int count, Ts&&... ds) const
+  سانچہ <قسم_نام ...Ts>
+  منطقی sanitize (hb_sanitize_context_t *c, غیرعلامتی صحیح گنتی, Ts&&... ds) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace ((UnsizedArray16OfOffsetTo<Type, OffsetType, BaseType, has_null>
-		   ::sanitize (c, count, this, std::forward<Ts> (ds)...)));
+    TRACE_SANITIZE (یہ);
+    return_trace ((Unsized_Array16_کا_انحراف_مقصد<Type, انحراف_Type, بنیاد_Type, has_null>
+		   ::sanitize (c, گنتی, یہ, std::forward<Ts> (ds)...)));
   }
 };
 
 /* An array with sorted elements.  Supports binary searching. */
-template <typename Type>
-struct SortedUnsizedArrayOf : UnsizedArrayOf<Type>
+سانچہ <قسم_نام Type>
+ساخت Sorted_Unsized_Array_کا : Unsized_Array_کا<Type>
 {
-  hb_sorted_array_t<Type> as_array (unsigned int len)
-  { return hb_sorted_array (this->arrayZ, len); }
-  hb_sorted_array_t<const Type> as_array (unsigned int len) const
-  { return hb_sorted_array (this->arrayZ, len); }
-  operator hb_sorted_array_t<Type> ()             { return as_array (); }
-  operator hb_sorted_array_t<const Type> () const { return as_array (); }
+  hb_sorted_array_t<Type> as_array (غیرعلامتی صحیح len)
+  { واپس hb_sorted_array (یہ->arrayZ, len); }
+  hb_sorted_array_t<ثابت Type> as_array (غیرعلامتی صحیح len) ثابت
+  { واپس hb_sorted_array (یہ->arrayZ, len); }
+  عامل hb_sorted_array_t<Type> ()             { واپس as_array (); }
+  عامل hb_sorted_array_t<ثابت Type> () ثابت { واپس as_array (); }
 
-  template <typename T>
-  Type &bsearch (unsigned int len, const T &x, Type &not_found = Crap (Type))
-  { return *as_array (len).bsearch (x, &not_found); }
-  template <typename T>
-  const Type &bsearch (unsigned int len, const T &x, const Type &not_found = Null (Type)) const
-  { return *as_array (len).bsearch (x, &not_found); }
-  template <typename T>
-  bool bfind (unsigned int len, const T &x, unsigned int *i = nullptr,
-	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
-  { return as_array (len).bfind (x, i, not_found, to_store); }
+  سانچہ <قسم_نام T>
+  Type &bsearch (غیرعلامتی صحیح len, ثابت T &x, Type &not_ملا = Crap (Type))
+  { واپس *as_array (len).bsearch (x, &not_ملا); }
+  سانچہ <قسم_نام T>
+  ثابت Type &bsearch (غیرعلامتی صحیح len, ثابت T &x, ثابت Type &not_ملا = Null (Type)) ثابت
+  { واپس *as_array (len).bsearch (x, &not_ملا); }
+  سانچہ <قسم_نام T>
+  منطقی bfind (غیرعلامتی صحیح len, ثابت T &x, غیرعلامتی صحیح *i = خالی_اشاریہ,
+	      hb_not_ملا_t not_ملا = HB_NOT_ملا_DONT_STORE,
+	      غیرعلامتی صحیح مقصد_store = (غیرعلامتی صحیح) -1) ثابت
+  { واپس as_array (len).bfind (x, i, not_ملا, مقصد_store); }
 };
 
 
 /* An array with a number of elements. */
-template <typename Type, typename LenType>
-struct ArrayOf
+سانچہ <قسم_نام Type, قسم_نام LenType>
+ساخت Array_کا
 {
-  typedef Type item_t;
-  static constexpr unsigned item_size = hb_static_size (Type);
+  قسمتعریف Type شے_t;
+  ساکن constexpr غیرعلامتی شے_سائز = hb_static_سائز (Type);
 
-  HB_DELETE_CREATE_COPY_ASSIGN (ArrayOf);
+  HB_DELETE_CREATE_COPY_تفویض (Array_کا);
 
-  const Type& operator [] (int i_) const
+  ثابت Type& عامل [] (صحیح i_) ثابت
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= len)) return Null (Type);
+    غیرعلامتی صحیح i = (غیرعلامتی صحیح) i_;
+    اگر (unlikely (i >= len)) واپس Null (Type);
     hb_barrier ();
-    return arrayZ[i];
+    واپس arrayZ[i];
   }
-  Type& operator [] (int i_)
+  Type& عامل [] (صحیح i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= len)) return Crap (Type);
+    غیرعلامتی صحیح i = (غیرعلامتی صحیح) i_;
+    اگر (unlikely (i >= len)) واپس Crap (Type);
     hb_barrier ();
-    return arrayZ[i];
+    واپس arrayZ[i];
   }
 
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (len, Type::static_size, len.static_size); }
+  size_t get_سائز () ثابت
+  { واپس hb_unsigned_mul_جوڑو_saturate (len, Type::static_سائز, len.static_سائز); }
 
-  explicit operator bool () const { return len; }
+  صریح عامل منطقی () ثابت { واپس len; }
 
-  void pop () { len--; }
+  خالی نکالو () { len--; }
 
-  hb_array_t<      Type> as_array ()       { return hb_array (arrayZ, len); }
-  hb_array_t<const Type> as_array () const { return hb_array (arrayZ, len); }
+  hb_array_t<      Type> as_array ()       { واپس hb_array (arrayZ, len); }
+  hb_array_t<ثابت Type> as_array () ثابت { واپس hb_array (arrayZ, len); }
 
   /* Iterator. */
-  typedef hb_array_t<const Type>   iter_t;
-  typedef hb_array_t<      Type> writer_t;
-    iter_t   iter () const { return as_array (); }
-  writer_t writer ()       { return as_array (); }
-  operator   iter_t () const { return   iter (); }
-  operator writer_t ()       { return writer (); }
+  قسمتعریف hb_array_t<ثابت Type>   iter_t;
+  قسمتعریف hb_array_t<      Type> writer_t;
+    iter_t   iter () ثابت { واپس as_array (); }
+  writer_t writer ()       { واپس as_array (); }
+  عامل   iter_t () ثابت { واپس   iter (); }
+  عامل writer_t ()       { واپس writer (); }
 
   /* Faster range-based for loop. */
-  const Type *begin () const { return arrayZ; }
-  const Type *end () const { return arrayZ + len; }
+  ثابت Type *begin () ثابت { واپس arrayZ; }
+  ثابت Type *انتہا () ثابت { واپس arrayZ + len; }
 
-  template <typename T>
-  Type &lsearch (const T &x, Type &not_found = Crap (Type))
-  { return *as_array ().lsearch (x, &not_found); }
-  template <typename T>
-  const Type &lsearch (const T &x, const Type &not_found = Null (Type)) const
-  { return *as_array ().lsearch (x, &not_found); }
-  template <typename T>
-  bool lfind (const T &x, unsigned int *i = nullptr,
-	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
-  { return as_array ().lfind (x, i, not_found, to_store); }
+  سانچہ <قسم_نام T>
+  Type &lsearch (ثابت T &x, Type &not_ملا = Crap (Type))
+  { واپس *as_array ().lsearch (x, &not_ملا); }
+  سانچہ <قسم_نام T>
+  ثابت Type &lsearch (ثابت T &x, ثابت Type &not_ملا = Null (Type)) ثابت
+  { واپس *as_array ().lsearch (x, &not_ملا); }
+  سانچہ <قسم_نام T>
+  منطقی lfind (ثابت T &x, غیرعلامتی صحیح *i = خالی_اشاریہ,
+	      hb_not_ملا_t not_ملا = HB_NOT_ملا_DONT_STORE,
+	      غیرعلامتی صحیح مقصد_store = (غیرعلامتی صحیح) -1) ثابت
+  { واپس as_array ().lfind (x, i, not_ملا, مقصد_store); }
 
-  void qsort ()
+  خالی qsort ()
   { as_array ().qsort (); }
 
-  HB_NODISCARD bool serialize (hb_serialize_context_t *c, unsigned items_len, bool clear = true)
+  HB_NODISCARD منطقی serialize (hb_serialize_context_t *c, غیرعلامتی اشیاء_len, منطقی clear = سچ)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    c->check_assign (len, items_len, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW);
-    if (unlikely (!c->extend_size (this, get_size (), clear))) return_trace (false);
-    return_trace (true);
+    TRACE_SERIALIZE (یہ);
+    اگر (unlikely (!c->extend_min (یہ))) return_trace (جھوٹ);
+    c->check_تفویض (len, اشیاء_len, HB_SERIALIZE_ERROR_ARRAY_حد_سے_تجاوز);
+    اگر (unlikely (!c->extend_سائز (یہ, get_سائز (), clear))) return_trace (جھوٹ);
+    return_trace (سچ);
   }
-  template <typename Iterator,
-	    hb_requires (hb_is_source_of (Iterator, Type))>
-  HB_NODISCARD bool serialize (hb_serialize_context_t *c, Iterator items)
+  سانچہ <قسم_نام Iterator,
+	    hb_requires (hb_is_ماخذ_کا (Iterator, Type))>
+  HB_NODISCARD منطقی serialize (hb_serialize_context_t *c, Iterator اشیاء)
   {
-    TRACE_SERIALIZE (this);
-    unsigned count = hb_len (items);
-    if (unlikely (!serialize (c, count, false))) return_trace (false);
+    TRACE_SERIALIZE (یہ);
+    غیرعلامتی گنتی = hb_len (اشیاء);
+    اگر (unlikely (!serialize (c, گنتی, جھوٹ))) return_trace (جھوٹ);
     /* TODO Umm. Just exhaust the iterator instead?  Being extra
      * cautious right now.. */
-    for (unsigned i = 0; i < count; i++, ++items)
-      arrayZ[i] = *items;
-    return_trace (true);
+    برائے (غیرعلامتی i = 0; i < گنتی; i++, ++اشیاء)
+      arrayZ[i] = *اشیاء;
+    return_trace (سچ);
   }
 
   Type* serialize_append (hb_serialize_context_t *c)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (یہ);
     len++;
-    if (unlikely (!len || !c->extend (this)))
+    اگر (unlikely (!len || !c->extend (یہ)))
     {
       len--;
-      return_trace (nullptr);
+      return_trace (خالی_اشاریہ);
     }
     return_trace (&arrayZ[len - 1]);
   }
 
-  ArrayOf* copy (hb_serialize_context_t *c) const
+  Array_کا* copy (hb_serialize_context_t *c) ثابت
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->start_embed (this);
-    if (unlikely (!c->extend_min (out))) return_trace (nullptr);
-    c->check_assign (out->len, len, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW);
-    if (unlikely (!as_array ().copy (c))) return_trace (nullptr);
-    return_trace (out);
+    TRACE_SERIALIZE (یہ);
+    خودکار *برآمد = c->آغاز_embed (یہ);
+    اگر (unlikely (!c->extend_min (برآمد))) return_trace (خالی_اشاریہ);
+    c->check_تفویض (برآمد->len, len, HB_SERIALIZE_ERROR_ARRAY_حد_سے_تجاوز);
+    اگر (unlikely (!as_array ().copy (c))) return_trace (خالی_اشاریہ);
+    return_trace (برآمد);
   }
 
-  template <typename ...Ts>
+  سانچہ <قسم_نام ...Ts>
   HB_ALWAYS_INLINE
-  bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
+  منطقی sanitize (hb_sanitize_context_t *c, Ts&&... ds) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!sanitize_shallow (c))) return_trace (false);
-    if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
+    TRACE_SANITIZE (یہ);
+    اگر (unlikely (!sanitize_shallow (c))) return_trace (جھوٹ);
+    اگر (!حجم... (Ts) && hb_is_trivially_copyable(Type)) return_trace (سچ);
     hb_barrier ();
-    unsigned int count = len;
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
-	return_trace (false);
-    return_trace (true);
+    غیرعلامتی صحیح گنتی = len;
+    برائے (غیرعلامتی صحیح i = 0; i < گنتی; i++)
+      اگر (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
+	return_trace (جھوٹ);
+    return_trace (سچ);
   }
 
-  bool sanitize_shallow (hb_sanitize_context_t *c) const
+  منطقی sanitize_shallow (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (یہ);
     return_trace (len.sanitize (c) &&
 		  hb_barrier () &&
-		  c->check_array_sized (arrayZ, len, sizeof (LenType)));
+		  c->check_array_sized (arrayZ, len, حجم (LenType)));
   }
 
-  public:
+  عوامی:
   LenType	len;
   Type		arrayZ[HB_VAR_ARRAY];
-  public:
-  DEFINE_SIZE_ARRAY (sizeof (LenType), arrayZ);
+  عوامی:
+  DEFINE_سائز_ARRAY (حجم (LenType), arrayZ);
 };
-template <typename Type> using Array16Of = ArrayOf<Type, HBUINT16>;
-template <typename Type> using Array24Of = ArrayOf<Type, HBUINT24>;
-template <typename Type> using Array32Of = ArrayOf<Type, HBUINT32>;
-using PString = ArrayOf<HBUINT8, HBUINT8>;
+سانچہ <قسم_نام Type> استعمال Array16_کا = Array_کا<Type, HBUINT16>;
+سانچہ <قسم_نام Type> استعمال Array24_کا = Array_کا<Type, HBUINT24>;
+سانچہ <قسم_نام Type> استعمال Array32_کا = Array_کا<Type, HBUINT32>;
+استعمال PString = Array_کا<HBUINT8, HBUINT8>;
 
 /* Array of Offset's */
-template <typename Type> using Array8OfOffset24To = ArrayOf<OffsetTo<Type, HBUINT24>, HBUINT8>;
-template <typename Type> using Array16OfOffset16To = ArrayOf<OffsetTo<Type, HBUINT16>, HBUINT16>;
-template <typename Type> using Array16OfOffset32To = ArrayOf<OffsetTo<Type, HBUINT32>, HBUINT16>;
-template <typename Type> using Array32OfOffset32To = ArrayOf<OffsetTo<Type, HBUINT32>, HBUINT32>;
+سانچہ <قسم_نام Type> استعمال Array8_کا_Offset24_مقصد = Array_کا<انحراف_مقصد<Type, HBUINT24>, HBUINT8>;
+سانچہ <قسم_نام Type> استعمال Array16_کا_Offset16_مقصد = Array_کا<انحراف_مقصد<Type, HBUINT16>, HBUINT16>;
+سانچہ <قسم_نام Type> استعمال Array16_کا_Offset32_مقصد = Array_کا<انحراف_مقصد<Type, HBUINT32>, HBUINT16>;
+سانچہ <قسم_نام Type> استعمال Array32_کا_Offset32_مقصد = Array_کا<انحراف_مقصد<Type, HBUINT32>, HBUINT32>;
 
 /* Array of offsets relative to the beginning of the array itself. */
-template <typename Type, typename OffsetType>
-struct List16OfOffsetTo : ArrayOf<OffsetTo<Type, OffsetType>, HBUINT16>
+سانچہ <قسم_نام Type, قسم_نام انحراف_Type>
+ساخت List16_کا_انحراف_مقصد : Array_کا<انحراف_مقصد<Type, انحراف_Type>, HBUINT16>
 {
-  const Type& operator [] (int i_) const
+  ثابت Type& عامل [] (صحیح i_) ثابت
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= this->len)) return Null (Type);
+    غیرعلامتی صحیح i = (غیرعلامتی صحیح) i_;
+    اگر (unlikely (i >= یہ->len)) واپس Null (Type);
     hb_barrier ();
-    return this+this->arrayZ[i];
+    واپس یہ+یہ->arrayZ[i];
   }
-  const Type& operator [] (int i_)
+  ثابت Type& عامل [] (صحیح i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= this->len)) return Crap (Type);
+    غیرعلامتی صحیح i = (غیرعلامتی صحیح) i_;
+    اگر (unlikely (i >= یہ->len)) واپس Crap (Type);
     hb_barrier ();
-    return this+this->arrayZ[i];
+    واپس یہ+یہ->arrayZ[i];
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    struct List16OfOffsetTo *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
-    unsigned int count = this->len;
-    for (unsigned int i = 0; i < count; i++)
-      out->arrayZ[i].serialize_subset (c, this->arrayZ[i], this, out);
-    return_trace (true);
+    TRACE_SUBSET (یہ);
+    ساخت List16_کا_انحراف_مقصد *برآمد = c->serializer->embed (*یہ);
+    اگر (unlikely (!برآمد)) return_trace (جھوٹ);
+    غیرعلامتی صحیح گنتی = یہ->len;
+    برائے (غیرعلامتی صحیح i = 0; i < گنتی; i++)
+      برآمد->arrayZ[i].serialize_subset (c, یہ->arrayZ[i], یہ, برآمد);
+    return_trace (سچ);
   }
 
-  template <typename ...Ts>
-  bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
+  سانچہ <قسم_نام ...Ts>
+  منطقی sanitize (hb_sanitize_context_t *c, Ts&&... ds) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace ((Array16Of<OffsetTo<Type, OffsetType>>::sanitize (c, this, std::forward<Ts> (ds)...)));
+    TRACE_SANITIZE (یہ);
+    return_trace ((Array16_کا<انحراف_مقصد<Type, انحراف_Type>>::sanitize (c, یہ, std::forward<Ts> (ds)...)));
   }
 };
 
-template <typename Type>
-using List16OfOffset16To = List16OfOffsetTo<Type, HBUINT16>;
+سانچہ <قسم_نام Type>
+استعمال List16_کا_Offset16_مقصد = List16_کا_انحراف_مقصد<Type, HBUINT16>;
 
 /* An array starting at second element. */
-template <typename Type, typename LenType>
-struct HeadlessArrayOf
+سانچہ <قسم_نام Type, قسم_نام LenType>
+ساخت Headless_Array_کا
 {
-  static constexpr unsigned item_size = Type::static_size;
+  ساکن constexpr غیرعلامتی شے_سائز = Type::static_سائز;
 
-  HB_DELETE_CREATE_COPY_ASSIGN (HeadlessArrayOf);
+  HB_DELETE_CREATE_COPY_تفویض (Headless_Array_کا);
 
-  const Type& operator [] (int i_) const
+  ثابت Type& عامل [] (صحیح i_) ثابت
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= lenP1 || !i)) return Null (Type);
+    غیرعلامتی صحیح i = (غیرعلامتی صحیح) i_;
+    اگر (unlikely (i >= lenP1 || !i)) واپس Null (Type);
     hb_barrier ();
-    return arrayZ[i-1];
+    واپس arrayZ[i-1];
   }
-  Type& operator [] (int i_)
+  Type& عامل [] (صحیح i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= lenP1 || !i)) return Crap (Type);
+    غیرعلامتی صحیح i = (غیرعلامتی صحیح) i_;
+    اگر (unlikely (i >= lenP1 || !i)) واپس Crap (Type);
     hb_barrier ();
-    return arrayZ[i-1];
+    واپس arrayZ[i-1];
   }
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (get_length (), Type::static_size, lenP1.static_size); }
+  size_t get_سائز () ثابت
+  { واپس hb_unsigned_mul_جوڑو_saturate (get_لمبائی (), Type::static_سائز, lenP1.static_سائز); }
 
-  unsigned get_length () const { return lenP1 ? lenP1 - 1 : 0; }
+  غیرعلامتی get_لمبائی () ثابت { واپس lenP1 ? lenP1 - 1 : 0; }
 
-  hb_array_t<      Type> as_array ()       { return hb_array (arrayZ, get_length ()); }
-  hb_array_t<const Type> as_array () const { return hb_array (arrayZ, get_length ()); }
+  hb_array_t<      Type> as_array ()       { واپس hb_array (arrayZ, get_لمبائی ()); }
+  hb_array_t<ثابت Type> as_array () ثابت { واپس hb_array (arrayZ, get_لمبائی ()); }
 
   /* Iterator. */
-  typedef hb_array_t<const Type>   iter_t;
-  typedef hb_array_t<      Type> writer_t;
-    iter_t   iter () const { return as_array (); }
-  writer_t writer ()       { return as_array (); }
-  operator   iter_t () const { return   iter (); }
-  operator writer_t ()       { return writer (); }
+  قسمتعریف hb_array_t<ثابت Type>   iter_t;
+  قسمتعریف hb_array_t<      Type> writer_t;
+    iter_t   iter () ثابت { واپس as_array (); }
+  writer_t writer ()       { واپس as_array (); }
+  عامل   iter_t () ثابت { واپس   iter (); }
+  عامل writer_t ()       { واپس writer (); }
 
   /* Faster range-based for loop. */
-  const Type *begin () const { return arrayZ; }
-  const Type *end () const { return arrayZ + get_length (); }
+  ثابت Type *begin () ثابت { واپس arrayZ; }
+  ثابت Type *انتہا () ثابت { واپس arrayZ + get_لمبائی (); }
 
-  HB_NODISCARD bool serialize (hb_serialize_context_t *c, unsigned int items_len, bool clear = true)
+  HB_NODISCARD منطقی serialize (hb_serialize_context_t *c, غیرعلامتی صحیح اشیاء_len, منطقی clear = سچ)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    c->check_assign (lenP1, items_len + 1, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW);
-    if (unlikely (!c->extend_size (this, get_size (), clear))) return_trace (false);
-    return_trace (true);
+    TRACE_SERIALIZE (یہ);
+    اگر (unlikely (!c->extend_min (یہ))) return_trace (جھوٹ);
+    c->check_تفویض (lenP1, اشیاء_len + 1, HB_SERIALIZE_ERROR_ARRAY_حد_سے_تجاوز);
+    اگر (unlikely (!c->extend_سائز (یہ, get_سائز (), clear))) return_trace (جھوٹ);
+    return_trace (سچ);
   }
-  template <typename Iterator,
-	    hb_requires (hb_is_source_of (Iterator, Type))>
-  HB_NODISCARD bool serialize (hb_serialize_context_t *c, Iterator items)
+  سانچہ <قسم_نام Iterator,
+	    hb_requires (hb_is_ماخذ_کا (Iterator, Type))>
+  HB_NODISCARD منطقی serialize (hb_serialize_context_t *c, Iterator اشیاء)
   {
-    TRACE_SERIALIZE (this);
-    unsigned count = hb_len (items);
-    if (unlikely (!serialize (c, count, false))) return_trace (false);
+    TRACE_SERIALIZE (یہ);
+    غیرعلامتی گنتی = hb_len (اشیاء);
+    اگر (unlikely (!serialize (c, گنتی, جھوٹ))) return_trace (جھوٹ);
     /* TODO Umm. Just exhaust the iterator instead?  Being extra
      * cautious right now.. */
-    for (unsigned i = 0; i < count; i++, ++items)
-      arrayZ[i] = *items;
-    return_trace (true);
+    برائے (غیرعلامتی i = 0; i < گنتی; i++, ++اشیاء)
+      arrayZ[i] = *اشیاء;
+    return_trace (سچ);
   }
 
-  template <typename ...Ts>
+  سانچہ <قسم_نام ...Ts>
   HB_ALWAYS_INLINE
-  bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
+  منطقی sanitize (hb_sanitize_context_t *c, Ts&&... ds) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!sanitize_shallow (c))) return_trace (false);
-    if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
+    TRACE_SANITIZE (یہ);
+    اگر (unlikely (!sanitize_shallow (c))) return_trace (جھوٹ);
+    اگر (!حجم... (Ts) && hb_is_trivially_copyable(Type)) return_trace (سچ);
     hb_barrier ();
-    unsigned int count = get_length ();
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
-	return_trace (false);
-    return_trace (true);
+    غیرعلامتی صحیح گنتی = get_لمبائی ();
+    برائے (غیرعلامتی صحیح i = 0; i < گنتی; i++)
+      اگر (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
+	return_trace (جھوٹ);
+    return_trace (سچ);
   }
 
-  private:
-  bool sanitize_shallow (hb_sanitize_context_t *c) const
+  نجی:
+  منطقی sanitize_shallow (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (یہ);
     return_trace (lenP1.sanitize (c) &&
 		  hb_barrier () &&
-		  (!lenP1 || c->check_array_sized (arrayZ, lenP1 - 1, sizeof (LenType))));
+		  (!lenP1 || c->check_array_sized (arrayZ, lenP1 - 1, حجم (LenType))));
   }
 
-  public:
+  عوامی:
   LenType	lenP1;
   Type		arrayZ[HB_VAR_ARRAY];
-  public:
-  DEFINE_SIZE_ARRAY (sizeof (LenType), arrayZ);
+  عوامی:
+  DEFINE_سائز_ARRAY (حجم (LenType), arrayZ);
 };
-template <typename Type> using HeadlessArray16Of = HeadlessArrayOf<Type, HBUINT16>;
+سانچہ <قسم_نام Type> استعمال Headless_Array16_کا = Headless_Array_کا<Type, HBUINT16>;
 
 /* An array storing length-1. */
-template <typename Type, typename LenType=HBUINT16>
-struct ArrayOfM1
+سانچہ <قسم_نام Type, قسم_نام LenType=HBUINT16>
+ساخت Array_کا_M1
 {
-  HB_DELETE_CREATE_COPY_ASSIGN (ArrayOfM1);
+  HB_DELETE_CREATE_COPY_تفویض (Array_کا_M1);
 
-  const Type& operator [] (int i_) const
+  ثابت Type& عامل [] (صحیح i_) ثابت
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i > lenM1)) return Null (Type);
+    غیرعلامتی صحیح i = (غیرعلامتی صحیح) i_;
+    اگر (unlikely (i > lenM1)) واپس Null (Type);
     hb_barrier ();
-    return arrayZ[i];
+    واپس arrayZ[i];
   }
-  Type& operator [] (int i_)
+  Type& عامل [] (صحیح i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i > lenM1)) return Crap (Type);
+    غیرعلامتی صحیح i = (غیرعلامتی صحیح) i_;
+    اگر (unlikely (i > lenM1)) واپس Crap (Type);
     hb_barrier ();
-    return arrayZ[i];
+    واپس arrayZ[i];
   }
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (lenM1 + 1, Type::static_size, lenM1.static_size); }
+  size_t get_سائز () ثابت
+  { واپس hb_unsigned_mul_جوڑو_saturate (lenM1 + 1, Type::static_سائز, lenM1.static_سائز); }
 
-  template <typename ...Ts>
+  سانچہ <قسم_نام ...Ts>
   HB_ALWAYS_INLINE
-  bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
+  منطقی sanitize (hb_sanitize_context_t *c, Ts&&... ds) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!sanitize_shallow (c))) return_trace (false);
-    if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
+    TRACE_SANITIZE (یہ);
+    اگر (unlikely (!sanitize_shallow (c))) return_trace (جھوٹ);
+    اگر (!حجم... (Ts) && hb_is_trivially_copyable(Type)) return_trace (سچ);
     hb_barrier ();
-    unsigned int count = lenM1 + 1;
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
-	return_trace (false);
-    return_trace (true);
+    غیرعلامتی صحیح گنتی = lenM1 + 1;
+    برائے (غیرعلامتی صحیح i = 0; i < گنتی; i++)
+      اگر (unlikely (!c->dispatch (arrayZ[i], std::forward<Ts> (ds)...)))
+	return_trace (جھوٹ);
+    return_trace (سچ);
   }
 
-  private:
-  bool sanitize_shallow (hb_sanitize_context_t *c) const
+  نجی:
+  منطقی sanitize_shallow (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (یہ);
     return_trace (lenM1.sanitize (c) &&
 		  hb_barrier () &&
-		  (c->check_array_sized (arrayZ, lenM1 + 1, sizeof (LenType))));
+		  (c->check_array_sized (arrayZ, lenM1 + 1, حجم (LenType))));
   }
 
-  public:
+  عوامی:
   LenType	lenM1;
   Type		arrayZ[HB_VAR_ARRAY];
-  public:
-  DEFINE_SIZE_ARRAY (sizeof (LenType), arrayZ);
+  عوامی:
+  DEFINE_سائز_ARRAY (حجم (LenType), arrayZ);
 };
 
 /* An array with sorted elements.  Supports binary searching. */
-template <typename Type, typename LenType>
-struct SortedArrayOf : ArrayOf<Type, LenType>
+سانچہ <قسم_نام Type, قسم_نام LenType>
+ساخت Sorted_Array_کا : Array_کا<Type, LenType>
 {
-  hb_sorted_array_t<      Type> as_array ()       { return hb_sorted_array (this->arrayZ, this->len); }
-  hb_sorted_array_t<const Type> as_array () const { return hb_sorted_array (this->arrayZ, this->len); }
+  hb_sorted_array_t<      Type> as_array ()       { واپس hb_sorted_array (یہ->arrayZ, یہ->len); }
+  hb_sorted_array_t<ثابت Type> as_array () ثابت { واپس hb_sorted_array (یہ->arrayZ, یہ->len); }
 
   /* Iterator. */
-  typedef hb_sorted_array_t<const Type>   iter_t;
-  typedef hb_sorted_array_t<      Type> writer_t;
-    iter_t   iter () const { return as_array (); }
-  writer_t writer ()       { return as_array (); }
-  operator   iter_t () const { return   iter (); }
-  operator writer_t ()       { return writer (); }
+  قسمتعریف hb_sorted_array_t<ثابت Type>   iter_t;
+  قسمتعریف hb_sorted_array_t<      Type> writer_t;
+    iter_t   iter () ثابت { واپس as_array (); }
+  writer_t writer ()       { واپس as_array (); }
+  عامل   iter_t () ثابت { واپس   iter (); }
+  عامل writer_t ()       { واپس writer (); }
 
   /* Faster range-based for loop. */
-  const Type *begin () const { return this->arrayZ; }
-  const Type *end () const { return this->arrayZ + this->len; }
+  ثابت Type *begin () ثابت { واپس یہ->arrayZ; }
+  ثابت Type *انتہا () ثابت { واپس یہ->arrayZ + یہ->len; }
 
-  bool serialize (hb_serialize_context_t *c, unsigned int items_len)
+  منطقی serialize (hb_serialize_context_t *c, غیرعلامتی صحیح اشیاء_len)
   {
-    TRACE_SERIALIZE (this);
-    bool ret = ArrayOf<Type, LenType>::serialize (c, items_len);
+    TRACE_SERIALIZE (یہ);
+    منطقی ret = Array_کا<Type, LenType>::serialize (c, اشیاء_len);
     return_trace (ret);
   }
-  template <typename Iterator,
-	    hb_requires (hb_is_sorted_source_of (Iterator, Type))>
-  bool serialize (hb_serialize_context_t *c, Iterator items)
+  سانچہ <قسم_نام Iterator,
+	    hb_requires (hb_is_sorted_ماخذ_کا (Iterator, Type))>
+  منطقی serialize (hb_serialize_context_t *c, Iterator اشیاء)
   {
-    TRACE_SERIALIZE (this);
-    bool ret = ArrayOf<Type, LenType>::serialize (c, items);
+    TRACE_SERIALIZE (یہ);
+    منطقی ret = Array_کا<Type, LenType>::serialize (c, اشیاء);
     return_trace (ret);
   }
 
-  SortedArrayOf* copy (hb_serialize_context_t *c) const
+  Sorted_Array_کا* copy (hb_serialize_context_t *c) ثابت
   {
-    TRACE_SERIALIZE (this);
-    SortedArrayOf* out = reinterpret_cast<SortedArrayOf *> (ArrayOf<Type, LenType>::copy (c));
-    return_trace (out);
+    TRACE_SERIALIZE (یہ);
+    Sorted_Array_کا* برآمد = reinterpret_cast<Sorted_Array_کا *> (Array_کا<Type, LenType>::copy (c));
+    return_trace (برآمد);
   }
 
-  template <typename T>
-  Type &bsearch (const T &x, Type &not_found = Crap (Type))
-  { return *as_array ().bsearch (x, &not_found); }
-  template <typename T>
-  const Type &bsearch (const T &x, const Type &not_found = Null (Type)) const
-  { return *as_array ().bsearch (x, &not_found); }
-  template <typename T>
-  bool bfind (const T &x, unsigned int *i = nullptr,
-	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
-  { return as_array ().bfind (x, i, not_found, to_store); }
+  سانچہ <قسم_نام T>
+  Type &bsearch (ثابت T &x, Type &not_ملا = Crap (Type))
+  { واپس *as_array ().bsearch (x, &not_ملا); }
+  سانچہ <قسم_نام T>
+  ثابت Type &bsearch (ثابت T &x, ثابت Type &not_ملا = Null (Type)) ثابت
+  { واپس *as_array ().bsearch (x, &not_ملا); }
+  سانچہ <قسم_نام T>
+  منطقی bfind (ثابت T &x, غیرعلامتی صحیح *i = خالی_اشاریہ,
+	      hb_not_ملا_t not_ملا = HB_NOT_ملا_DONT_STORE,
+	      غیرعلامتی صحیح مقصد_store = (غیرعلامتی صحیح) -1) ثابت
+  { واپس as_array ().bfind (x, i, not_ملا, مقصد_store); }
 };
 
-template <typename Type> using SortedArray16Of = SortedArrayOf<Type, HBUINT16>;
-template <typename Type> using SortedArray24Of = SortedArrayOf<Type, HBUINT24>;
-template <typename Type> using SortedArray32Of = SortedArrayOf<Type, HBUINT32>;
+سانچہ <قسم_نام Type> استعمال Sorted_Array16_کا = Sorted_Array_کا<Type, HBUINT16>;
+سانچہ <قسم_نام Type> استعمال Sorted_Array24_کا = Sorted_Array_کا<Type, HBUINT24>;
+سانچہ <قسم_نام Type> استعمال Sorted_Array32_کا = Sorted_Array_کا<Type, HBUINT32>;
 
 /*
  * Binary-search arrays
  */
 
-template <typename LenType=HBUINT16>
-struct BinSearchHeader
+سانچہ <قسم_نام LenType=HBUINT16>
+ساخت Bin_تلاش_سرخی
 {
-  operator uint32_t () const { return len; }
+  عامل uint32_t () ثابت { واپس len; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ));
   }
 
-  BinSearchHeader& operator = (unsigned int v)
+  Bin_تلاش_سرخی& عامل = (غیرعلامتی صحیح v)
   {
     len = v;
-    assert (len == v);
-    entrySelector = hb_max (1u, hb_bit_storage (v)) - 1;
-    searchRange = 16 * (1u << entrySelector);
-    rangeShift = v * 16 > searchRange
-		 ? 16 * v - searchRange
+    أكد (len == v);
+    اندراج_Selector = hb_max (1u, hb_ثنائی_ہندسہ_storage (v)) - 1;
+    تلاش_Range = 16 * (1u << اندراج_Selector);
+    range_سرکاؤ = v * 16 > تلاش_Range
+		 ? 16 * v - تلاش_Range
 		 : 0;
-    return *this;
+    واپس *یہ;
   }
 
-  protected:
+  محفوظ:
   LenType	len;
-  LenType	searchRange;
-  LenType	entrySelector;
-  LenType	rangeShift;
+  LenType	تلاش_Range;
+  LenType	اندراج_Selector;
+  LenType	range_سرکاؤ;
 
-  public:
-  DEFINE_SIZE_STATIC (8);
+  عوامی:
+  DEFINE_سائز_STATIC (8);
 };
 
-template <typename Type, typename LenType=HBUINT16>
-using BinSearchArrayOf = SortedArrayOf<Type, BinSearchHeader<LenType>>;
+سانچہ <قسم_نام Type, قسم_نام LenType=HBUINT16>
+استعمال Bin_تلاش_Array_کا = Sorted_Array_کا<Type, Bin_تلاش_سرخی<LenType>>;
 
 
-struct VarSizedBinSearchHeader
+ساخت Var_Sized_Bin_تلاش_سرخی
 {
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ));
   }
 
-  HBUINT16	unitSize;	/* Size of a lookup unit for this search in bytes. */
+  HBUINT16	unit_سائز;	/* Size of a lookup unit for this search in bytes. */
   HBUINT16	nUnits;		/* Number of units of the preceding size to be searched. */
-  HBUINT16	searchRange;	/* The value of unitSize times the largest power of 2
+  HBUINT16	تلاش_Range;	/* The value of unitSize times the largest power of 2
 				 * that is less than or equal to the value of nUnits. */
-  HBUINT16	entrySelector;	/* The log base 2 of the largest power of 2 less than
+  HBUINT16	اندراج_Selector;	/* The log base 2 of the largest power of 2 less than
 				 * or equal to the value of nUnits. */
-  HBUINT16	rangeShift;	/* The value of unitSize times the difference of the
+  HBUINT16	range_سرکاؤ;	/* The value of unitSize times the difference of the
 				 * value of nUnits minus the largest power of 2 less
 				 * than or equal to the value of nUnits. */
-  public:
-  DEFINE_SIZE_STATIC (10);
+  عوامی:
+  DEFINE_سائز_STATIC (10);
 };
 
-template <typename Type>
-struct VarSizedBinSearchArrayOf
+سانچہ <قسم_نام Type>
+ساخت Var_Sized_Bin_تلاش_Array_کا
 {
-  static constexpr unsigned item_size = Type::static_size;
+  ساکن constexpr غیرعلامتی شے_سائز = Type::static_سائز;
 
-  HB_DELETE_CREATE_COPY_ASSIGN (VarSizedBinSearchArrayOf);
+  HB_DELETE_CREATE_COPY_تفویض (Var_Sized_Bin_تلاش_Array_کا);
 
-  bool last_is_terminator () const
+  منطقی آخری_is_terminator () ثابت
   {
-    if (unlikely (!header.nUnits)) return false;
+    اگر (unlikely (!سرخی.nUnits)) واپس جھوٹ;
 
     /* Gah.
      *
      * "The number of termination values that need to be included is table-specific.
      * The value that indicates binary search termination is 0xFFFF." */
-    const HBUINT16 *words = &StructAtOffset<HBUINT16> (&bytesZ, (header.nUnits - 1) * header.unitSize);
-    unsigned int count = Type::TerminationWordCount;
-    for (unsigned int i = 0; i < count; i++)
-      if (words[i] != 0xFFFFu)
-	return false;
-    return true;
+    ثابت HBUINT16 *الفاظ = &Struct_At_انحراف<HBUINT16> (&بائٹیں_Z, (سرخی.nUnits - 1) * سرخی.unit_سائز);
+    غیرعلامتی صحیح گنتی = Type::Termination_لفظ_گنتی;
+    برائے (غیرعلامتی صحیح i = 0; i < گنتی; i++)
+      اگر (الفاظ[i] != 0xFFFFu)
+	واپس جھوٹ;
+    واپس سچ;
   }
 
-  const Type& operator [] (int i_) const
+  ثابت Type& عامل [] (صحیح i_) ثابت
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= get_length ())) return Null (Type);
+    غیرعلامتی صحیح i = (غیرعلامتی صحیح) i_;
+    اگر (unlikely (i >= get_لمبائی ())) واپس Null (Type);
     hb_barrier ();
-    return StructAtOffset<Type> (&bytesZ, i * header.unitSize);
+    واپس Struct_At_انحراف<Type> (&بائٹیں_Z, i * سرخی.unit_سائز);
   }
-  Type& operator [] (int i_)
+  Type& عامل [] (صحیح i_)
   {
-    unsigned int i = (unsigned int) i_;
-    if (unlikely (i >= get_length ())) return Crap (Type);
+    غیرعلامتی صحیح i = (غیرعلامتی صحیح) i_;
+    اگر (unlikely (i >= get_لمبائی ())) واپس Crap (Type);
     hb_barrier ();
-    return StructAtOffset<Type> (&bytesZ, i * header.unitSize);
+    واپس Struct_At_انحراف<Type> (&بائٹیں_Z, i * سرخی.unit_سائز);
   }
-  unsigned int get_length () const
-  { return header.nUnits - last_is_terminator (); }
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (header.nUnits, header.unitSize, header.static_size); }
+  غیرعلامتی صحیح get_لمبائی () ثابت
+  { واپس سرخی.nUnits - آخری_is_terminator (); }
+  size_t get_سائز () ثابت
+  { واپس hb_unsigned_mul_جوڑو_saturate (سرخی.nUnits, سرخی.unit_سائز, سرخی.static_سائز); }
 
-  template <typename ...Ts>
+  سانچہ <قسم_نام ...Ts>
   HB_ALWAYS_INLINE
-  bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
+  منطقی sanitize (hb_sanitize_context_t *c, Ts&&... ds) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!sanitize_shallow (c))) return_trace (false);
-    if (!sizeof... (Ts) && hb_is_trivially_copyable(Type)) return_trace (true);
+    TRACE_SANITIZE (یہ);
+    اگر (unlikely (!sanitize_shallow (c))) return_trace (جھوٹ);
+    اگر (!حجم... (Ts) && hb_is_trivially_copyable(Type)) return_trace (سچ);
     hb_barrier ();
-    unsigned int count = get_length ();
-    for (unsigned int i = 0; i < count; i++)
-      if (unlikely (!(*this)[i].sanitize (c, std::forward<Ts> (ds)...)))
-	return_trace (false);
-    return_trace (true);
+    غیرعلامتی صحیح گنتی = get_لمبائی ();
+    برائے (غیرعلامتی صحیح i = 0; i < گنتی; i++)
+      اگر (unlikely (!(*یہ)[i].sanitize (c, std::forward<Ts> (ds)...)))
+	return_trace (جھوٹ);
+    return_trace (سچ);
   }
 
-  template <typename T>
-  const Type *bsearch (const T &key) const
+  سانچہ <قسم_نام T>
+  ثابت Type *bsearch (ثابت T &key) ثابت
   {
-    unsigned pos;
-    return hb_bsearch_impl (&pos,
+    غیرعلامتی pos;
+    واپس hb_bsearch_impl (&pos,
 			    key,
-			    (const void *) bytesZ,
-			    get_length (),
-			    header.unitSize,
-			    _hb_cmp_method<T, Type>)
-	   ? (const Type *) (((const char *) &bytesZ) + (pos * header.unitSize))
-	   : nullptr;
+			    (ثابت خالی *) بائٹیں_Z,
+			    get_لمبائی (),
+			    سرخی.unit_سائز,
+			    hb_cmp_طریقہ<T, Type>)
+	   ? (ثابت Type *) (((ثابت حرف *) &بائٹیں_Z) + (pos * سرخی.unit_سائز))
+	   : خالی_اشاریہ;
   }
 
-  private:
-  bool sanitize_shallow (hb_sanitize_context_t *c) const
+  نجی:
+  منطقی sanitize_shallow (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (header.sanitize (c) &&
+    TRACE_SANITIZE (یہ);
+    return_trace (سرخی.sanitize (c) &&
 		  hb_barrier () &&
-		  Type::static_size <= header.unitSize &&
-		  c->check_range (bytesZ.arrayZ,
-				  header.nUnits,
-				  header.unitSize));
+		  Type::static_سائز <= سرخی.unit_سائز &&
+		  c->check_range (بائٹیں_Z.arrayZ,
+				  سرخی.nUnits,
+				  سرخی.unit_سائز));
   }
 
-  protected:
-  VarSizedBinSearchHeader	header;
-  UnsizedArrayOf<HBUINT8>	bytesZ;
-  public:
-  DEFINE_SIZE_ARRAY (10, bytesZ);
+  محفوظ:
+  Var_Sized_Bin_تلاش_سرخی	سرخی;
+  Unsized_Array_کا<HBUINT8>	بائٹیں_Z;
+  عوامی:
+  DEFINE_سائز_ARRAY (10, بائٹیں_Z);
 };
 
 
 /* CFF INDEX */
 
-template <typename COUNT>
-struct CFFIndex
+سانچہ <قسم_نام گنتی_3>
+ساخت CFFIndex
 {
-  unsigned int offset_array_size () const
-  { return offSize * (count + 1); }
+  غیرعلامتی صحیح انحراف_array_سائز () ثابت
+  { واپس off_سائز * (گنتی + 1); }
 
-  template <typename Iterable,
+  سانچہ <قسم_نام Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  bool serialize (hb_serialize_context_t *c,
-		  const Iterable &iterable,
-		  const unsigned *p_data_size = nullptr,
-                  unsigned min_off_size = 0)
+  منطقی serialize (hb_serialize_context_t *c,
+		  ثابت Iterable &iterable,
+		  ثابت غیرعلامتی *p_ڈیٹا_سائز = خالی_اشاریہ,
+                  غیرعلامتی min_off_سائز = 0)
   {
-    TRACE_SERIALIZE (this);
-    unsigned data_size;
-    if (p_data_size)
-      data_size = *p_data_size;
-    else
-      total_size (iterable, &data_size);
+    TRACE_SERIALIZE (یہ);
+    غیرعلامتی ڈیٹا_سائز;
+    اگر (p_ڈیٹا_سائز)
+      ڈیٹا_سائز = *p_ڈیٹا_سائز;
+    ورنہ
+      کل_سائز (iterable, &ڈیٹا_سائز);
 
-    auto it = hb_iter (iterable);
-    if (unlikely (!serialize_header (c, +it, data_size, min_off_size))) return_trace (false);
-    unsigned char *ret = c->allocate_size<unsigned char> (data_size, false);
-    if (unlikely (!ret)) return_trace (false);
-    unsigned remaining = data_size;
-    for (const auto &_ : +it)
+    خودکار it = hb_iter (iterable);
+    اگر (unlikely (!serialize_سرخی (c, +it, ڈیٹا_سائز, min_off_سائز))) return_trace (جھوٹ);
+    غیرعلامتی حرف *ret = c->allocate_سائز<غیرعلامتی حرف> (ڈیٹا_سائز, جھوٹ);
+    اگر (unlikely (!ret)) return_trace (جھوٹ);
+    غیرعلامتی بقایا = ڈیٹا_سائز;
+    برائے (ثابت خودکار &_ : +it)
     {
-      unsigned len = _.length;
+      غیرعلامتی len = _.لمبائی;
 
-      if (!len)
-	continue;
+      اگر (!len)
+	جاری;
 
-      if (unlikely (len > remaining)) {
+      اگر (unlikely (len > بقایا)) {
         // We have more bytes to write then the computed data size, so the size calculation
         // must have encountered overflow.
-        return_trace (c->check_success (false, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+        return_trace (c->check_success (جھوٹ, HB_SERIALIZE_ERROR_INT_حد_سے_تجاوز));
       }
 
-      remaining -= len;
+      بقایا -= len;
 
-      if (len <= 1)
+      اگر (len <= 1)
       {
 	*ret++ = *_.arrayZ;
-	continue;
+	جاری;
       }
       hb_memcpy (ret, _.arrayZ, len);
       ret += len;
     }
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  template <typename Iterator,
+  سانچہ <قسم_نام Iterator,
 	    hb_requires (hb_is_iterator (Iterator))>
-  bool serialize_header (hb_serialize_context_t *c,
+  منطقی serialize_سرخی (hb_serialize_context_t *c,
 			 Iterator it,
-			 unsigned data_size,
-                         unsigned min_off_size = 0)
+			 غیرعلامتی ڈیٹا_سائز,
+                         غیرعلامتی min_off_سائز = 0)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (یہ);
 
-    unsigned off_size = (hb_bit_storage (data_size + 1) + 7) / 8;
-    off_size = hb_max(min_off_size, off_size);
+    غیرعلامتی off_سائز_2 = (hb_ثنائی_ہندسہ_storage (ڈیٹا_سائز + 1) + 7) / 8;
+    off_سائز_2 = hb_max(min_off_سائز, off_سائز_2);
 
     /* serialize CFFIndex header */
-    if (unlikely (!c->extend_min (this))) return_trace (false);
-    this->count = hb_len (it);
-    if (!this->count) return_trace (true);
-    if (unlikely (!c->extend (this->offSize))) return_trace (false);
-    this->offSize = off_size;
-    if (unlikely (!c->allocate_size<HBUINT8> (off_size * (this->count + 1), false)))
-      return_trace (false);
+    اگر (unlikely (!c->extend_min (یہ))) return_trace (جھوٹ);
+    یہ->گنتی = hb_len (it);
+    اگر (!یہ->گنتی) return_trace (سچ);
+    اگر (unlikely (!c->extend (یہ->off_سائز))) return_trace (جھوٹ);
+    یہ->off_سائز = off_سائز_2;
+    اگر (unlikely (!c->allocate_سائز<HBUINT8> (off_سائز_2 * (یہ->گنتی + 1), جھوٹ)))
+      return_trace (جھوٹ);
 
     /* serialize indices */
-    unsigned int offset = 1;
-    if (HB_OPTIMIZE_SIZE_VAL)
+    غیرعلامتی صحیح انحراف = 1;
+    اگر (HB_OPTIMIZE_سائز_VAL)
     {
-      unsigned int i = 0;
-      for (const auto &_ : +it)
+      غیرعلامتی صحیح i = 0;
+      برائے (ثابت خودکار &_ : +it)
       {
-	set_offset_at (i++, offset);
-	offset += hb_len_of (_);
+	سیٹ_انحراف_at (i++, انحراف);
+	انحراف += hb_len_کا (_);
       }
-      set_offset_at (i, offset);
+      سیٹ_انحراف_at (i, انحراف);
     }
-    else
-      switch (off_size)
+    ورنہ
+      انتخاب (off_سائز_2)
       {
-	case 1:
+	حالت 1:
 	{
 	  HBUINT8 *p = (HBUINT8 *) offsets;
-	  for (const auto &_ : +it)
+	  برائے (ثابت خودکار &_ : +it)
 	  {
-	    *p++ = offset;
-	    offset += hb_len_of (_);
+	    *p++ = انحراف;
+	    انحراف += hb_len_کا (_);
 	  }
-	  *p = offset;
+	  *p = انحراف;
 	}
-	break;
-	case 2:
+	توڑو;
+	حالت 2:
 	{
 	  HBUINT16 *p = (HBUINT16 *) offsets;
-	  for (const auto &_ : +it)
+	  برائے (ثابت خودکار &_ : +it)
 	  {
-	    *p++ = offset;
-	    offset += hb_len_of (_);
+	    *p++ = انحراف;
+	    انحراف += hb_len_کا (_);
 	  }
-	  *p = offset;
+	  *p = انحراف;
 	}
-	break;
-	case 3:
+	توڑو;
+	حالت 3:
 	{
 	  HBUINT24 *p = (HBUINT24 *) offsets;
-	  for (const auto &_ : +it)
+	  برائے (ثابت خودکار &_ : +it)
 	  {
-	    *p++ = offset;
-	    offset += hb_len_of (_);
+	    *p++ = انحراف;
+	    انحراف += hb_len_کا (_);
 	  }
-	  *p = offset;
+	  *p = انحراف;
 	}
-	break;
-	case 4:
+	توڑو;
+	حالت 4:
 	{
 	  HBUINT32 *p = (HBUINT32 *) offsets;
-	  for (const auto &_ : +it)
+	  برائے (ثابت خودکار &_ : +it)
 	  {
-	    *p++ = offset;
-	    offset += hb_len_of (_);
+	    *p++ = انحراف;
+	    انحراف += hb_len_کا (_);
 	  }
-	  *p = offset;
+	  *p = انحراف;
 	}
-	break;
-	default:
-	break;
+	توڑو;
+	طےشدہ:
+	توڑو;
       }
 
-    assert (offset == data_size + 1);
-    return_trace (true);
+    أكد (انحراف == ڈیٹا_سائز + 1);
+    return_trace (سچ);
   }
 
-  template <typename Iterable,
+  سانچہ <قسم_نام Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  static unsigned total_size (const Iterable &iterable, unsigned *data_size = nullptr, unsigned min_off_size = 0)
+  ساکن غیرعلامتی کل_سائز (ثابت Iterable &iterable, غیرعلامتی *ڈیٹا_سائز = خالی_اشاریہ, غیرعلامتی min_off_سائز = 0)
   {
-    auto it = + hb_iter (iterable);
-    if (!it)
+    خودکار it = + hb_iter (iterable);
+    اگر (!it)
     {
-      if (data_size) *data_size = 0;
-      return min_size;
+      اگر (ڈیٹا_سائز) *ڈیٹا_سائز = 0;
+      واپس min_سائز;
     }
 
-    unsigned total = 0;
-    for (const auto &_ : +it)
-      total += hb_len_of (_);
+    غیرعلامتی کل = 0;
+    برائے (ثابت خودکار &_ : +it)
+      کل += hb_len_کا (_);
 
-    if (data_size) *data_size = total;
+    اگر (ڈیٹا_سائز) *ڈیٹا_سائز = کل;
 
-    unsigned off_size = (hb_bit_storage (total + 1) + 7) / 8;
-    off_size = hb_max(min_off_size, off_size);
+    غیرعلامتی off_سائز_2 = (hb_ثنائی_ہندسہ_storage (کل + 1) + 7) / 8;
+    off_سائز_2 = hb_max(min_off_سائز, off_سائز_2);
 
-    return min_size + HBUINT8::static_size + (hb_len (it) + 1) * off_size + total;
+    واپس min_سائز + HBUINT8::static_سائز + (hb_len (it) + 1) * off_سائز_2 + کل;
   }
 
-  void set_offset_at (unsigned int index, unsigned int offset)
+  خالی سیٹ_انحراف_at (غیرعلامتی صحیح اشاریہ_2, غیرعلامتی صحیح انحراف)
   {
-    assert (index <= count);
+    أكد (اشاریہ_2 <= گنتی);
 
-    unsigned int size = offSize;
-    const HBUINT8 *p = offsets;
-    switch (size)
+    غیرعلامتی صحیح سائز = off_سائز;
+    ثابت HBUINT8 *p = offsets;
+    انتخاب (سائز)
     {
-      case 1: ((HBUINT8  *) p)[index] = offset; break;
-      case 2: ((HBUINT16 *) p)[index] = offset; break;
-      case 3: ((HBUINT24 *) p)[index] = offset; break;
-      case 4: ((HBUINT32 *) p)[index] = offset; break;
-      default: return;
-    }
-  }
-
-  private:
-  unsigned int offset_at (unsigned int index) const
-  {
-    assert (index <= count);
-
-    unsigned int size = offSize;
-    const HBUINT8 *p = offsets;
-    switch (size)
-    {
-      case 1: return ((HBUINT8  *) p)[index];
-      case 2: return ((HBUINT16 *) p)[index];
-      case 3: return ((HBUINT24 *) p)[index];
-      case 4: return ((HBUINT32 *) p)[index];
-      default: return 0;
+      حالت 1: ((HBUINT8  *) p)[اشاریہ_2] = انحراف; توڑو;
+      حالت 2: ((HBUINT16 *) p)[اشاریہ_2] = انحراف; توڑو;
+      حالت 3: ((HBUINT24 *) p)[اشاریہ_2] = انحراف; توڑو;
+      حالت 4: ((HBUINT32 *) p)[اشاریہ_2] = انحراف; توڑو;
+      طےشدہ: واپس;
     }
   }
 
-  const unsigned char *data_base () const
-  { return (const unsigned char *) this + min_size + offSize.static_size - 1 + offset_array_size (); }
-  public:
-
-  hb_ubytes_t operator [] (unsigned int index) const
+  نجی:
+  غیرعلامتی صحیح انحراف_at (غیرعلامتی صحیح اشاریہ_2) ثابت
   {
-    if (unlikely (index >= count)) return hb_ubytes_t ();
+    أكد (اشاریہ_2 <= گنتی);
+
+    غیرعلامتی صحیح سائز = off_سائز;
+    ثابت HBUINT8 *p = offsets;
+    انتخاب (سائز)
+    {
+      حالت 1: واپس ((HBUINT8  *) p)[اشاریہ_2];
+      حالت 2: واپس ((HBUINT16 *) p)[اشاریہ_2];
+      حالت 3: واپس ((HBUINT24 *) p)[اشاریہ_2];
+      حالت 4: واپس ((HBUINT32 *) p)[اشاریہ_2];
+      طےشدہ: واپس 0;
+    }
+  }
+
+  ثابت غیرعلامتی حرف *ڈیٹا_بنیاد () ثابت
+  { واپس (ثابت غیرعلامتی حرف *) یہ + min_سائز + off_سائز.static_سائز - 1 + انحراف_array_سائز (); }
+  عوامی:
+
+  hb_ubytes_t عامل [] (غیرعلامتی صحیح اشاریہ_2) ثابت
+  {
+    اگر (unlikely (اشاریہ_2 >= گنتی)) واپس hb_ubytes_t ();
     hb_barrier ();
-    unsigned offset0 = offset_at (index);
-    unsigned offset1 = offset_at (index + 1);
-    if (unlikely (offset1 < offset0 || offset1 > offset_at (count)))
-      return hb_ubytes_t ();
-    return hb_ubytes_t (data_base () + offset0, offset1 - offset0);
+    غیرعلامتی offset0 = انحراف_at (اشاریہ_2);
+    غیرعلامتی offset1 = انحراف_at (اشاریہ_2 + 1);
+    اگر (unlikely (offset1 < offset0 || offset1 > انحراف_at (گنتی)))
+      واپس hb_ubytes_t ();
+    واپس hb_ubytes_t (ڈیٹا_بنیاد () + offset0, offset1 - offset0);
   }
 
-  size_t get_size () const
+  size_t get_سائز () ثابت
   {
-    if (count)
-      return hb_unsigned_add_saturate (min_size, offSize.static_size,
-				       offset_array_size (), offset_at (count) - 1);
-    return min_size;  /* empty CFFIndex contains count only */
+    اگر (گنتی)
+      واپس hb_unsigned_جوڑو_saturate (min_سائز, off_سائز.static_سائز,
+				       انحراف_array_سائز (), انحراف_at (گنتی) - 1);
+    واپس min_سائز;  /* empty CFFIndex contains count only */
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (یہ);
+    return_trace (likely (c->check_struct (یہ) &&
 			  hb_barrier () &&
-			  (count == 0 || /* empty INDEX */
-			   (count < count + 1u &&
-			    c->check_struct (&offSize) && offSize >= 1 && offSize <= 4 &&
-			    c->check_array (offsets, offSize, count + 1u) &&
-			    c->check_range (data_base (), offset_at (count))))));
+			  (گنتی == 0 || /* empty INDEX */
+			   (گنتی < گنتی + 1u &&
+			    c->check_struct (&off_سائز) && off_سائز >= 1 && off_سائز <= 4 &&
+			    c->check_array (offsets, off_سائز, گنتی + 1u) &&
+			    c->check_range (ڈیٹا_بنیاد (), انحراف_at (گنتی))))));
   }
 
-  public:
-  COUNT		count;		/* Number of object data. Note there are (count+1) offsets */
-  private:
-  HBUINT8	offSize;	/* The byte size of each offset in the offsets array. */
+  عوامی:
+  گنتی_3		گنتی;		/* Number of object data. Note there are (count+1) offsets */
+  نجی:
+  HBUINT8	off_سائز;	/* The byte size of each offset in the offsets array. */
   HBUINT8	offsets[HB_VAR_ARRAY];
 				/* The array of (count + 1) offsets into objects array (1-base). */
   /* HBUINT8 data[HB_VAR_ARRAY];	Object data */
-  public:
-  DEFINE_SIZE_MIN (COUNT::static_size);
+  عوامی:
+  DEFINE_سائز_MIN (گنتی_3::static_سائز);
 };
-typedef CFFIndex<HBUINT16> CFF1Index;
-typedef CFFIndex<HBUINT32> CFF2Index;
+قسمتعریف CFFIndex<HBUINT16> CFF1_اشاریہ;
+قسمتعریف CFFIndex<HBUINT32> CFF2_اشاریہ;
 
 
 /* TupleValues */
-struct TupleValues
+ساخت Tuple_اقدار
 {
-  enum packed_value_flag_t
+  شمار packed_قدر_flag_t
   {
-    VALUES_ARE_ZEROS     = 0x80,
-    VALUES_ARE_BYTES     = 0x00,
-    VALUES_ARE_WORDS     = 0x40,
-    VALUES_ARE_LONGS     = 0xC0,
-    VALUES_SIZE_MASK     = 0xC0,
-    VALUE_RUN_COUNT_MASK = 0x3F
+    اقدار_ARE_ZEROS     = 0x80,
+    اقدار_ARE_بائٹیں     = 0x00,
+    اقدار_ARE_الفاظ     = 0x40,
+    اقدار_ARE_LONGS     = 0xC0,
+    اقدار_سائز_نقاب     = 0xC0,
+    قدر_تسلسل_گنتی_نقاب = 0x3F
   };
 
-  static unsigned compile_unsafe (hb_array_t<const int> values, /* IN */
-				  unsigned char *encoded_bytes /* OUT */)
+  ساکن غیرعلامتی compile_unsafe (hb_array_t<ثابت صحیح> values, /*اندر*/
+				  غیرعلامتی حرف *encoded_بائٹیں /*برآمد*/)
   {
-    unsigned num_values = values.length;
-    unsigned encoded_len = 0;
-    unsigned i = 0;
-    while (i < num_values)
+    غیرعلامتی عدد_اقدار_3 = values.لمبائی;
+    غیرعلامتی encoded_len = 0;
+    غیرعلامتی i = 0;
+    جب (i < عدد_اقدار_3)
     {
-      int val = values.arrayZ[i];
-      if (val == 0)
-        encoded_len += encode_value_run_as_zeroes (i, encoded_bytes + encoded_len, values);
-      else if ((int8_t) val == val)
-        encoded_len += encode_value_run_as_bytes (i, encoded_bytes + encoded_len, values);
-      else if ((int16_t) val == val)
-        encoded_len += encode_value_run_as_words (i, encoded_bytes + encoded_len, values);
-      else
-        encoded_len += encode_value_run_as_longs (i, encoded_bytes + encoded_len, values);
+      صحیح val = values.arrayZ[i];
+      اگر (val == 0)
+        encoded_len += encode_قدر_تسلسل_as_zeroes (i, encoded_بائٹیں + encoded_len, values);
+      ورنہ اگر ((int8_t) val == val)
+        encoded_len += encode_قدر_تسلسل_as_بائٹیں (i, encoded_بائٹیں + encoded_len, values);
+      ورنہ اگر ((int16_t) val == val)
+        encoded_len += encode_قدر_تسلسل_as_الفاظ (i, encoded_بائٹیں + encoded_len, values);
+      ورنہ
+        encoded_len += encode_قدر_تسلسل_as_longs (i, encoded_بائٹیں + encoded_len, values);
     }
-    return encoded_len;
+    واپس encoded_len;
   }
 
-  static unsigned encode_value_run_as_zeroes (unsigned& i,
-					      unsigned char *it,
-					      hb_array_t<const int> values)
+  ساکن غیرعلامتی encode_قدر_تسلسل_as_zeroes (غیرعلامتی& i,
+					      غیرعلامتی حرف *it,
+					      hb_array_t<ثابت صحیح> values)
   {
-    unsigned num_values = values.length;
-    unsigned run_length = 0;
-    unsigned encoded_len = 0;
-    while (i < num_values && values.arrayZ[i] == 0)
+    غیرعلامتی عدد_اقدار_3 = values.لمبائی;
+    غیرعلامتی تسلسل_لمبائی = 0;
+    غیرعلامتی encoded_len = 0;
+    جب (i < عدد_اقدار_3 && values.arrayZ[i] == 0)
     {
       i++;
-      run_length++;
+      تسلسل_لمبائی++;
     }
 
-    while (run_length >= 64)
+    جب (تسلسل_لمبائی >= 64)
     {
-      *it++ = char (VALUES_ARE_ZEROS | 63);
-      run_length -= 64;
+      *it++ = حرف (اقدار_ARE_ZEROS | 63);
+      تسلسل_لمبائی -= 64;
       encoded_len++;
     }
 
-    if (run_length)
+    اگر (تسلسل_لمبائی)
     {
-      *it++ = char (VALUES_ARE_ZEROS | (run_length - 1));
+      *it++ = حرف (اقدار_ARE_ZEROS | (تسلسل_لمبائی - 1));
       encoded_len++;
     }
-    return encoded_len;
+    واپس encoded_len;
   }
 
-  static unsigned encode_value_run_as_bytes (unsigned &i,
-					     unsigned char *it,
-					     hb_array_t<const int> values)
+  ساکن غیرعلامتی encode_قدر_تسلسل_as_بائٹیں (غیرعلامتی &i,
+					     غیرعلامتی حرف *it,
+					     hb_array_t<ثابت صحیح> values)
   {
-    unsigned start = i;
-    unsigned num_values = values.length;
-    while (i < num_values)
+    غیرعلامتی آغاز = i;
+    غیرعلامتی عدد_اقدار_3 = values.لمبائی;
+    جب (i < عدد_اقدار_3)
     {
-      int val = values.arrayZ[i];
-      if ((int8_t) val != val)
-        break;
+      صحیح val = values.arrayZ[i];
+      اگر ((int8_t) val != val)
+        توڑو;
 
       /* from fonttools: if there're 2 or more zeros in a sequence,
        * it is better to start a new run to save bytes. */
-      if (val == 0 && i + 1 < num_values && values.arrayZ[i+1] == 0)
-        break;
+      اگر (val == 0 && i + 1 < عدد_اقدار_3 && values.arrayZ[i+1] == 0)
+        توڑو;
 
       i++;
     }
-    unsigned run_length = i - start;
+    غیرعلامتی تسلسل_لمبائی = i - آغاز;
 
-    unsigned encoded_len = 0;
+    غیرعلامتی encoded_len = 0;
 
-    while (run_length >= 64)
+    جب (تسلسل_لمبائی >= 64)
     {
-      *it++ = (VALUES_ARE_BYTES | 63);
+      *it++ = (اقدار_ARE_بائٹیں | 63);
       encoded_len++;
 
-      for (unsigned j = 0; j < 64; j++)
-	it[j] = static_cast<char> (values.arrayZ[start + j]);
+      برائے (غیرعلامتی j = 0; j < 64; j++)
+	it[j] = static_cast<حرف> (values.arrayZ[آغاز + j]);
       it += 64;
       encoded_len += 64;
 
-      start += 64;
-      run_length -= 64;
+      آغاز += 64;
+      تسلسل_لمبائی -= 64;
     }
 
-    if (run_length)
+    اگر (تسلسل_لمبائی)
     {
-      *it++ = (VALUES_ARE_BYTES | (run_length - 1));
+      *it++ = (اقدار_ARE_بائٹیں | (تسلسل_لمبائی - 1));
       encoded_len++;
 
-      for (unsigned j = 0; j < run_length; j++)
-        it[j] = static_cast<char> (values.arrayZ[start + j]);
-      encoded_len += run_length;
+      برائے (غیرعلامتی j = 0; j < تسلسل_لمبائی; j++)
+        it[j] = static_cast<حرف> (values.arrayZ[آغاز + j]);
+      encoded_len += تسلسل_لمبائی;
     }
 
-    return encoded_len;
+    واپس encoded_len;
   }
 
-  static unsigned encode_value_run_as_words (unsigned &i,
-					     unsigned char *it,
-					     hb_array_t<const int> values)
+  ساکن غیرعلامتی encode_قدر_تسلسل_as_الفاظ (غیرعلامتی &i,
+					     غیرعلامتی حرف *it,
+					     hb_array_t<ثابت صحیح> values)
   {
-    unsigned start = i;
-    unsigned num_values = values.length;
-    while (i < num_values)
+    غیرعلامتی آغاز = i;
+    غیرعلامتی عدد_اقدار_3 = values.لمبائی;
+    جب (i < عدد_اقدار_3)
     {
-      int val = values.arrayZ[i];
+      صحیح val = values.arrayZ[i];
 
-      if ((int16_t) val != val)
-        break;
+      اگر ((int16_t) val != val)
+        توڑو;
 
       /* start a new run for a single zero value. */
-      if (val == 0) break;
+      اگر (val == 0) توڑو;
 
       /* From fonttools: continue word-encoded run if there's only one
        * single value in the range [-128, 127] because it is more compact.
        * Only start a new run when there're 2 continuous such values. */
-      if ((int8_t) val == val &&
-          i + 1 < num_values &&
+      اگر ((int8_t) val == val &&
+          i + 1 < عدد_اقدار_3 &&
           (int8_t) values.arrayZ[i+1] == values.arrayZ[i+1])
-        break;
+        توڑو;
 
       i++;
     }
 
-    unsigned run_length = i - start;
-    unsigned encoded_len = 0;
-    while (run_length >= 64)
+    غیرعلامتی تسلسل_لمبائی = i - آغاز;
+    غیرعلامتی encoded_len = 0;
+    جب (تسلسل_لمبائی >= 64)
     {
-      *it++ = (VALUES_ARE_WORDS | 63);
+      *it++ = (اقدار_ARE_الفاظ | 63);
       encoded_len++;
 
-      for (unsigned j = 0; j < 64; j++)
+      برائے (غیرعلامتی j = 0; j < 64; j++)
       {
-        int16_t value_val = values.arrayZ[start + j];
-        *it++ = static_cast<char> (value_val >> 8);
-        *it++ = static_cast<char> (value_val & 0xFF);
+        int16_t قدر_val = values.arrayZ[آغاز + j];
+        *it++ = static_cast<حرف> (قدر_val >> 8);
+        *it++ = static_cast<حرف> (قدر_val & 0xFF);
 
         encoded_len += 2;
       }
 
-      start += 64;
-      run_length -= 64;
+      آغاز += 64;
+      تسلسل_لمبائی -= 64;
     }
 
-    if (run_length)
+    اگر (تسلسل_لمبائی)
     {
-      *it++ = (VALUES_ARE_WORDS | (run_length - 1));
+      *it++ = (اقدار_ARE_الفاظ | (تسلسل_لمبائی - 1));
       encoded_len++;
-      while (start < i)
+      جب (آغاز < i)
       {
-        int16_t value_val = values.arrayZ[start++];
-        *it++ = static_cast<char> (value_val >> 8);
-        *it++ = static_cast<char> (value_val & 0xFF);
+        int16_t قدر_val = values.arrayZ[آغاز++];
+        *it++ = static_cast<حرف> (قدر_val >> 8);
+        *it++ = static_cast<حرف> (قدر_val & 0xFF);
 
         encoded_len += 2;
       }
     }
-    return encoded_len;
+    واپس encoded_len;
   }
 
-  static unsigned encode_value_run_as_longs (unsigned &i,
-					     unsigned char *it,
-					     hb_array_t<const int> values)
+  ساکن غیرعلامتی encode_قدر_تسلسل_as_longs (غیرعلامتی &i,
+					     غیرعلامتی حرف *it,
+					     hb_array_t<ثابت صحیح> values)
   {
-    unsigned start = i;
-    unsigned num_values = values.length;
-    while (i < num_values)
+    غیرعلامتی آغاز = i;
+    غیرعلامتی عدد_اقدار_3 = values.لمبائی;
+    جب (i < عدد_اقدار_3)
     {
-      int val = values.arrayZ[i];
+      صحیح val = values.arrayZ[i];
 
-      if ((int16_t) val == val)
-        break;
+      اگر ((int16_t) val == val)
+        توڑو;
 
       i++;
     }
 
-    unsigned run_length = i - start;
-    unsigned encoded_len = 0;
-    while (run_length >= 64)
+    غیرعلامتی تسلسل_لمبائی = i - آغاز;
+    غیرعلامتی encoded_len = 0;
+    جب (تسلسل_لمبائی >= 64)
     {
-      *it++ = (VALUES_ARE_LONGS | 63);
+      *it++ = (اقدار_ARE_LONGS | 63);
       encoded_len++;
 
-      for (unsigned j = 0; j < 64; j++)
+      برائے (غیرعلامتی j = 0; j < 64; j++)
       {
-        int32_t value_val = values.arrayZ[start + j];
-        *it++ = static_cast<char> (value_val >> 24);
-        *it++ = static_cast<char> (value_val >> 16);
-        *it++ = static_cast<char> (value_val >> 8);
-        *it++ = static_cast<char> (value_val & 0xFF);
+        int32_t قدر_val = values.arrayZ[آغاز + j];
+        *it++ = static_cast<حرف> (قدر_val >> 24);
+        *it++ = static_cast<حرف> (قدر_val >> 16);
+        *it++ = static_cast<حرف> (قدر_val >> 8);
+        *it++ = static_cast<حرف> (قدر_val & 0xFF);
 
         encoded_len += 4;
       }
 
-      start += 64;
-      run_length -= 64;
+      آغاز += 64;
+      تسلسل_لمبائی -= 64;
     }
 
-    if (run_length)
+    اگر (تسلسل_لمبائی)
     {
-      *it++ = (VALUES_ARE_LONGS | (run_length - 1));
+      *it++ = (اقدار_ARE_LONGS | (تسلسل_لمبائی - 1));
       encoded_len++;
-      while (start < i)
+      جب (آغاز < i)
       {
-        int32_t value_val = values.arrayZ[start++];
-        *it++ = static_cast<char> (value_val >> 24);
-        *it++ = static_cast<char> (value_val >> 16);
-        *it++ = static_cast<char> (value_val >> 8);
-        *it++ = static_cast<char> (value_val & 0xFF);
+        int32_t قدر_val = values.arrayZ[آغاز++];
+        *it++ = static_cast<حرف> (قدر_val >> 24);
+        *it++ = static_cast<حرف> (قدر_val >> 16);
+        *it++ = static_cast<حرف> (قدر_val >> 8);
+        *it++ = static_cast<حرف> (قدر_val & 0xFF);
 
         encoded_len += 4;
       }
     }
-    return encoded_len;
+    واپس encoded_len;
   }
 
-  template <typename T>
-#ifndef HB_OPTIMIZE_SIZE
+  سانچہ <قسم_نام T>
+#اگر_غیر_تعریف_شدہ HB_OPTIMIZE_سائز
   HB_ALWAYS_INLINE
-#endif
-  static bool decompile (const HBUINT8 *&p /* IN/OUT */,
-			 hb_vector_t<T> &values /* IN/OUT */,
-			 const HBUINT8 *end,
-			 bool consume_all = false,
-			 unsigned start = 0)
+#اگر_ختم
+  ساکن منطقی decompile (ثابت HBUINT8 *&p /* IN/OUT */,
+			 hb_سمتیہ_t<T> &values /* IN/OUT */,
+			 ثابت HBUINT8 *انتہا,
+			 منطقی consume_all = جھوٹ,
+			 غیرعلامتی آغاز = 0)
   {
-    unsigned i = 0;
-    unsigned count = consume_all ? UINT_MAX : values.length;
-    if (consume_all)
-      values.alloc ((end - p) / 2);
-    while (i < count)
+    غیرعلامتی i = 0;
+    غیرعلامتی گنتی = consume_all ? UINT_MAX : values.لمبائی;
+    اگر (consume_all)
+      values.alloc ((انتہا - p) / 2);
+    جب (i < گنتی)
     {
-      if (unlikely (p + 1 > end)) return consume_all;
-      unsigned control = *p++;
-      unsigned run_count = (control & VALUE_RUN_COUNT_MASK) + 1;
-      if (consume_all)
+      اگر (unlikely (p + 1 > انتہا)) واپس consume_all;
+      غیرعلامتی control = *p++;
+      غیرعلامتی تسلسل_گنتی = (control & قدر_تسلسل_گنتی_نقاب) + 1;
+      اگر (consume_all)
       {
-        if (unlikely (!values.resize_dirty  (values.length + run_count)))
-	  return false;
+        اگر (unlikely (!values.resize_dirty  (values.لمبائی + تسلسل_گنتی)))
+	  واپس جھوٹ;
       }
-      unsigned stop = i + run_count;
-      if (unlikely (stop > count)) return false;
+      غیرعلامتی stop = i + تسلسل_گنتی;
+      اگر (unlikely (stop > گنتی)) واپس جھوٹ;
 
-      unsigned skip = i < start ? hb_min (start - i, run_count) : 0;
+      غیرعلامتی skip = i < آغاز ? hb_min (آغاز - i, تسلسل_گنتی) : 0;
       i += skip;
 
-      if ((control & VALUES_SIZE_MASK) == VALUES_ARE_ZEROS)
+      اگر ((control & اقدار_سائز_نقاب) == اقدار_ARE_ZEROS)
       {
-	hb_memset (&values.arrayZ[i], 0, (stop - i) * sizeof (T));
+	hb_memset (&values.arrayZ[i], 0, (stop - i) * حجم (T));
 	i = stop;
       }
-      else if ((control & VALUES_SIZE_MASK) ==  VALUES_ARE_WORDS)
+      ورنہ اگر ((control & اقدار_سائز_نقاب) ==  اقدار_ARE_الفاظ)
       {
-        if (unlikely (p + run_count * HBINT16::static_size > end)) return false;
-	p += skip * HBINT16::static_size;
-#ifndef HB_OPTIMIZE_SIZE
-        for (; i + 3 < stop; i += 4)
+        اگر (unlikely (p + تسلسل_گنتی * HBINT16::static_سائز > انتہا)) واپس جھوٹ;
+	p += skip * HBINT16::static_سائز;
+#اگر_غیر_تعریف_شدہ HB_OPTIMIZE_سائز
+        برائے (; i + 3 < stop; i += 4)
 	{
-	  values.arrayZ[i] = * (const HBINT16 *) p;
-	  p += HBINT16::static_size;
-	  values.arrayZ[i + 1] = * (const HBINT16 *) p;
-	  p += HBINT16::static_size;
-	  values.arrayZ[i + 2] = * (const HBINT16 *) p;
-	  p += HBINT16::static_size;
-	  values.arrayZ[i + 3] = * (const HBINT16 *) p;
-	  p += HBINT16::static_size;
+	  values.arrayZ[i] = * (ثابت HBINT16 *) p;
+	  p += HBINT16::static_سائز;
+	  values.arrayZ[i + 1] = * (ثابت HBINT16 *) p;
+	  p += HBINT16::static_سائز;
+	  values.arrayZ[i + 2] = * (ثابت HBINT16 *) p;
+	  p += HBINT16::static_سائز;
+	  values.arrayZ[i + 3] = * (ثابت HBINT16 *) p;
+	  p += HBINT16::static_سائز;
 	}
-#endif
-        for (; i < stop; i++)
+#اگر_ختم
+        برائے (; i < stop; i++)
         {
-          values.arrayZ[i] = * (const HBINT16 *) p;
-          p += HBINT16::static_size;
+          values.arrayZ[i] = * (ثابت HBINT16 *) p;
+          p += HBINT16::static_سائز;
         }
       }
-      else if ((control & VALUES_SIZE_MASK) ==  VALUES_ARE_LONGS)
+      ورنہ اگر ((control & اقدار_سائز_نقاب) ==  اقدار_ARE_LONGS)
       {
-        if (unlikely (p + run_count * HBINT32::static_size > end)) return false;
-	p += skip * HBINT32::static_size;
-        for (; i < stop; i++)
+        اگر (unlikely (p + تسلسل_گنتی * HBINT32::static_سائز > انتہا)) واپس جھوٹ;
+	p += skip * HBINT32::static_سائز;
+        برائے (; i < stop; i++)
         {
-          values.arrayZ[i] = * (const HBINT32 *) p;
-          p += HBINT32::static_size;
+          values.arrayZ[i] = * (ثابت HBINT32 *) p;
+          p += HBINT32::static_سائز;
         }
       }
-      else if ((control & VALUES_SIZE_MASK) ==  VALUES_ARE_BYTES)
+      ورنہ اگر ((control & اقدار_سائز_نقاب) ==  اقدار_ARE_بائٹیں)
       {
-        if (unlikely (p + run_count > end)) return false;
-	p += skip * HBINT8::static_size;
-#ifndef HB_OPTIMIZE_SIZE
-	for (; i + 3 < stop; i += 4)
+        اگر (unlikely (p + تسلسل_گنتی > انتہا)) واپس جھوٹ;
+	p += skip * HBINT8::static_سائز;
+#اگر_غیر_تعریف_شدہ HB_OPTIMIZE_سائز
+	برائے (; i + 3 < stop; i += 4)
 	{
-	  values.arrayZ[i] = * (const HBINT8 *) p++;
-	  values.arrayZ[i + 1] = * (const HBINT8 *) p++;
-	  values.arrayZ[i + 2] = * (const HBINT8 *) p++;
-	  values.arrayZ[i + 3] = * (const HBINT8 *) p++;
+	  values.arrayZ[i] = * (ثابت HBINT8 *) p++;
+	  values.arrayZ[i + 1] = * (ثابت HBINT8 *) p++;
+	  values.arrayZ[i + 2] = * (ثابت HBINT8 *) p++;
+	  values.arrayZ[i + 3] = * (ثابت HBINT8 *) p++;
 	}
-#endif
-        for (; i < stop; i++)
-          values.arrayZ[i] = * (const HBINT8 *) p++;
+#اگر_ختم
+        برائے (; i < stop; i++)
+          values.arrayZ[i] = * (ثابت HBINT8 *) p++;
       }
     }
-    return true;
+    واپس سچ;
   }
 
-  static bool skip (const unsigned char *&p /* IN/OUT */,
-		    const unsigned char *end,
-		    unsigned count)
+  ساکن منطقی skip (ثابت غیرعلامتی حرف *&p /* IN/OUT */,
+		    ثابت غیرعلامتی حرف *انتہا,
+		    غیرعلامتی گنتی)
   {
-    unsigned seen = 0;
-    while (seen < count)
+    غیرعلامتی نظر_آیا = 0;
+    جب (نظر_آیا < گنتی)
     {
-      if (unlikely (p >= end)) return false;
-      unsigned control = *p++;
-      unsigned run_count = (control & VALUE_RUN_COUNT_MASK) + 1;
-      if (unlikely (run_count > count - seen)) return false;
+      اگر (unlikely (p >= انتہا)) واپس جھوٹ;
+      غیرعلامتی control = *p++;
+      غیرعلامتی تسلسل_گنتی = (control & قدر_تسلسل_گنتی_نقاب) + 1;
+      اگر (unlikely (تسلسل_گنتی > گنتی - نظر_آیا)) واپس جھوٹ;
 
-      unsigned width = 0;
-      switch (control & VALUES_SIZE_MASK)
+      غیرعلامتی چوڑائی = 0;
+      انتخاب (control & اقدار_سائز_نقاب)
       {
-	case VALUES_ARE_ZEROS: break;
-	case VALUES_ARE_BYTES: width = HBINT8::static_size; break;
-	case VALUES_ARE_WORDS: width = HBINT16::static_size; break;
-	case VALUES_ARE_LONGS: width = HBINT32::static_size; break;
+	حالت اقدار_ARE_ZEROS: توڑو;
+	حالت اقدار_ARE_بائٹیں: چوڑائی = HBINT8::static_سائز; توڑو;
+	حالت اقدار_ARE_الفاظ: چوڑائی = HBINT16::static_سائز; توڑو;
+	حالت اقدار_ARE_LONGS: چوڑائی = HBINT32::static_سائز; توڑو;
       }
-      if (unlikely (unsigned (end - p) < run_count * width)) return false;
-      p += run_count * width;
-      seen += run_count;
+      اگر (unlikely (غیرعلامتی (انتہا - p) < تسلسل_گنتی * چوڑائی)) واپس جھوٹ;
+      p += تسلسل_گنتی * چوڑائی;
+      نظر_آیا += تسلسل_گنتی;
     }
-    return true;
+    واپس سچ;
   }
 
-  struct iter_t : hb_iter_with_fallback_t<iter_t, int>
+  ساخت iter_t : hb_iter_with_fallback_t<iter_t, صحیح>
   {
-    iter_t (const unsigned char *p_, unsigned len_)
+    iter_t (ثابت غیرعلامتی حرف *p_, غیرعلامتی len_)
 	    : p (p_), endp (p_ + len_)
-    { if (likely (ensure_run ())) read_value (); }
+    { اگر (likely (ensure_تسلسل ())) read_قدر (); }
 
-    private:
-    const unsigned char *p;
-    const unsigned char * const endp;
-    int current_value = 0;
-    signed run_count = 0;
-    unsigned width = 0;
+    نجی:
+    ثابت غیرعلامتی حرف *p;
+    ثابت غیرعلامتی حرف * ثابت endp;
+    صحیح current_قدر = 0;
+    علامتی تسلسل_گنتی = 0;
+    غیرعلامتی چوڑائی = 0;
 
     HB_ALWAYS_INLINE
-    bool ensure_run ()
+    منطقی ensure_تسلسل ()
     {
-      if (likely (run_count > 0)) return true;
-      return _ensure_run ();
+      اگر (likely (تسلسل_گنتی > 0)) واپس سچ;
+      واپس ensure_تسلسل_2 ();
     }
-    bool _ensure_run ()
+    منطقی ensure_تسلسل_2 ()
     {
-      if (unlikely (p >= endp))
+      اگر (unlikely (p >= endp))
       {
-        run_count = 0;
-        current_value = 0;
-	return false;
+        تسلسل_گنتی = 0;
+        current_قدر = 0;
+	واپس جھوٹ;
       }
 
-      unsigned control = *p++;
-      run_count = (control & VALUE_RUN_COUNT_MASK) + 1;
-      width = control & VALUES_SIZE_MASK;
-      switch (width)
+      غیرعلامتی control = *p++;
+      تسلسل_گنتی = (control & قدر_تسلسل_گنتی_نقاب) + 1;
+      چوڑائی = control & اقدار_سائز_نقاب;
+      انتخاب (چوڑائی)
       {
-        case VALUES_ARE_ZEROS: width = 0; break;
-	case VALUES_ARE_BYTES: width = HBINT8::static_size;  break;
-	case VALUES_ARE_WORDS: width = HBINT16::static_size; break;
-	case VALUES_ARE_LONGS: width = HBINT32::static_size; break;
-	default: assert (false);
+        حالت اقدار_ARE_ZEROS: چوڑائی = 0; توڑو;
+	حالت اقدار_ARE_بائٹیں: چوڑائی = HBINT8::static_سائز;  توڑو;
+	حالت اقدار_ARE_الفاظ: چوڑائی = HBINT16::static_سائز; توڑو;
+	حالت اقدار_ARE_LONGS: چوڑائی = HBINT32::static_سائز; توڑو;
+	طےشدہ: أكد (جھوٹ);
       }
 
-      if (unlikely (p + run_count * width > endp))
+      اگر (unlikely (p + تسلسل_گنتی * چوڑائی > endp))
       {
-	run_count = 0;
-	current_value = 0;
-	return false;
+	تسلسل_گنتی = 0;
+	current_قدر = 0;
+	واپس جھوٹ;
       }
 
-      return true;
+      واپس سچ;
     }
-    void read_value ()
+    خالی read_قدر ()
     {
-      switch (width)
+      انتخاب (چوڑائی)
       {
-        case 0: current_value = 0; break;
-	case 1: current_value = * (const HBINT8  *) p; break;
-	case 2: current_value = * (const HBINT16 *) p; break;
-	case 4: current_value = * (const HBINT32 *) p; break;
+        حالت 0: current_قدر = 0; توڑو;
+	حالت 1: current_قدر = * (ثابت HBINT8  *) p; توڑو;
+	حالت 2: current_قدر = * (ثابت HBINT16 *) p; توڑو;
+	حالت 4: current_قدر = * (ثابت HBINT32 *) p; توڑو;
       }
-      p += width;
+      p += چوڑائی;
     }
 
-    public:
+    عوامی:
 
-    typedef int __item_t__;
-    __item_t__ __item__ () const
-    { return current_value; }
+    قسمتعریف صحیح __item_t__;
+    __item_t__ __item__ () ثابت
+    { واپس current_قدر; }
 
-    bool __more__ () const { return run_count || p < endp; }
-    void __next__ ()
+    منطقی __more__ () ثابت { واپس تسلسل_گنتی || p < endp; }
+    خالی __next__ ()
     {
-      run_count--;
-      if (unlikely (!ensure_run ()))
-	return;
-      read_value ();
+      تسلسل_گنتی--;
+      اگر (unlikely (!ensure_تسلسل ()))
+	واپس;
+      read_قدر ();
     }
-    void __forward__ (unsigned n)
+    خالی __forward__ (غیرعلامتی n)
     {
-      if (unlikely (!ensure_run ()))
-	return;
-      while (n)
+      اگر (unlikely (!ensure_تسلسل ()))
+	واپس;
+      جب (n)
       {
-	unsigned i = hb_min (n, (unsigned) run_count);
-	run_count -= i;
+	غیرعلامتی i = hb_min (n, (غیرعلامتی) تسلسل_گنتی);
+	تسلسل_گنتی -= i;
 	n -= i;
-	p += (i - 1) * width;
-	if (unlikely (!ensure_run ()))
-	  return;
-	read_value ();
+	p += (i - 1) * چوڑائی;
+	اگر (unlikely (!ensure_تسلسل ()))
+	  واپس;
+	read_قدر ();
       }
     }
-    bool operator != (const iter_t& o) const
-    { return p != o.p || run_count != o.run_count; }
-    iter_t __end__ () const
+    منطقی عامل != (ثابت iter_t& o) ثابت
+    { واپس p != o.p || تسلسل_گنتی != o.تسلسل_گنتی; }
+    iter_t __end__ () ثابت
     {
       iter_t it (endp, 0);
-      return it;
+      واپس it;
     }
   };
 
-  struct fetcher_t
+  ساخت fetcher_t
   {
-    fetcher_t (const unsigned char *p_, unsigned len_)
-	      : p (p_), end (p_ + len_) {}
+    fetcher_t (ثابت غیرعلامتی حرف *p_, غیرعلامتی len_)
+	      : p (p_), انتہا (p_ + len_) {}
 
-    private:
-    const unsigned char *p;
-    const unsigned char * const end;
-    signed run_count = 0;
-    unsigned width = 0;
+    نجی:
+    ثابت غیرعلامتی حرف *p;
+    ثابت غیرعلامتی حرف * ثابت انتہا;
+    علامتی تسلسل_گنتی = 0;
+    غیرعلامتی چوڑائی = 0;
 
     HB_ALWAYS_INLINE
-    bool ensure_run ()
+    منطقی ensure_تسلسل ()
     {
-      if (likely (run_count > 0)) return true;
-      return _ensure_run ();
+      اگر (likely (تسلسل_گنتی > 0)) واپس سچ;
+      واپس ensure_تسلسل_2 ();
     }
 
-    bool _ensure_run ()
+    منطقی ensure_تسلسل_2 ()
     {
-      if (unlikely (p >= end))
+      اگر (unlikely (p >= انتہا))
       {
-        run_count = 0;
-	return false;
+        تسلسل_گنتی = 0;
+	واپس جھوٹ;
       }
 
-      unsigned control = *p++;
-      run_count = (control & VALUE_RUN_COUNT_MASK) + 1;
-      width = control & VALUES_SIZE_MASK;
-      switch (width)
+      غیرعلامتی control = *p++;
+      تسلسل_گنتی = (control & قدر_تسلسل_گنتی_نقاب) + 1;
+      چوڑائی = control & اقدار_سائز_نقاب;
+      انتخاب (چوڑائی)
       {
-        case VALUES_ARE_ZEROS: width = 0; break;
-	case VALUES_ARE_BYTES: width = HBINT8::static_size;  break;
-	case VALUES_ARE_WORDS: width = HBINT16::static_size; break;
-	case VALUES_ARE_LONGS: width = HBINT32::static_size; break;
-	default: assert (false);
+        حالت اقدار_ARE_ZEROS: چوڑائی = 0; توڑو;
+	حالت اقدار_ARE_بائٹیں: چوڑائی = HBINT8::static_سائز;  توڑو;
+	حالت اقدار_ARE_الفاظ: چوڑائی = HBINT16::static_سائز; توڑو;
+	حالت اقدار_ARE_LONGS: چوڑائی = HBINT32::static_سائز; توڑو;
+	طےشدہ: أكد (جھوٹ);
       }
 
-      if (unlikely (p + run_count * width > end))
+      اگر (unlikely (p + تسلسل_گنتی * چوڑائی > انتہا))
       {
-	run_count = 0;
-	return false;
+	تسلسل_گنتی = 0;
+	واپس جھوٹ;
       }
 
-      return true;
+      واپس سچ;
     }
 
-    public:
-    void skip (unsigned n)
+    عوامی:
+    خالی skip (غیرعلامتی n)
     {
-      while (n)
+      جب (n)
       {
-	if (unlikely (!ensure_run ()))
-	  return;
-	unsigned i = hb_min (n, (unsigned) run_count);
-	run_count -= i;
+	اگر (unlikely (!ensure_تسلسل ()))
+	  واپس;
+	غیرعلامتی i = hb_min (n, (غیرعلامتی) تسلسل_گنتی);
+	تسلسل_گنتی -= i;
 	n -= i;
-	p += i * width;
+	p += i * چوڑائی;
       }
     }
 
-    private:
-    template <bool scaled, typename T>
-    void _add_to (hb_array_t<T> out, T scale = T (1))
+    نجی:
+    سانچہ <منطقی scaled, قسم_نام T>
+    خالی جوڑو_مقصد (hb_array_t<T> برآمد, T scale = T (1))
     {
-      unsigned n = out.length;
-      T *arrayZ = out.arrayZ;
+      غیرعلامتی n = برآمد.لمبائی;
+      T *arrayZ = برآمد.arrayZ;
 
-      for (unsigned i = 0; i < n;)
+      برائے (غیرعلامتی i = 0; i < n;)
       {
-	if (unlikely (!ensure_run ()))
-	  break;
-	unsigned count = hb_min (n - i, (unsigned) run_count);
-	switch (width)
+	اگر (unlikely (!ensure_تسلسل ()))
+	  توڑو;
+	غیرعلامتی گنتی = hb_min (n - i, (غیرعلامتی) تسلسل_گنتی);
+	انتخاب (چوڑائی)
 	{
-	  case 0:
+	  حالت 0:
 	  {
-	    arrayZ += count;
-	    break;
+	    arrayZ += گنتی;
+	    توڑو;
 	  }
-	  case 1:
+	  حالت 1:
 	  {
-	    const auto *pp = (const HBINT8 *) p;
-	    unsigned j = 0;
-#ifndef HB_OPTIMIZE_SIZE
-	    for (; j + 3 < count; j += 4)
+	    ثابت خودکار *pp = (ثابت HBINT8 *) p;
+	    غیرعلامتی j = 0;
+#اگر_غیر_تعریف_شدہ HB_OPTIMIZE_سائز
+	    برائے (; j + 3 < گنتی; j += 4)
 	    {
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	    }
-#endif
-	    for (; j < count; j++)
+#اگر_ختم
+	    برائے (; j < گنتی; j++)
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 
-	    p = (const unsigned char *) pp;
+	    p = (ثابت غیرعلامتی حرف *) pp;
 	  }
-	  break;
-	  case 2:
+	  توڑو;
+	  حالت 2:
 	  {
-	    const auto *pp = (const HBINT16 *) p;
-	    unsigned j = 0;
-#ifndef HB_OPTIMIZE_SIZE
-	    for (; j + 3 < count; j += 4)
+	    ثابت خودکار *pp = (ثابت HBINT16 *) p;
+	    غیرعلامتی j = 0;
+#اگر_غیر_تعریف_شدہ HB_OPTIMIZE_سائز
+	    برائے (; j + 3 < گنتی; j += 4)
 	    {
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 	    }
-#endif
-	    for (; j < count; j++)
+#اگر_ختم
+	    برائے (; j < گنتی; j++)
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 
-	    p = (const unsigned char *) pp;
+	    p = (ثابت غیرعلامتی حرف *) pp;
 	  }
-	  break;
-	  case 4:
+	  توڑو;
+	  حالت 4:
 	  {
-	    const auto *pp = (const HBINT32 *) p;
-	    for (unsigned j = 0; j < count; j++)
+	    ثابت خودکار *pp = (ثابت HBINT32 *) p;
+	    برائے (غیرعلامتی j = 0; j < گنتی; j++)
 	      *arrayZ++ += scaled ? *pp++ * scale : *pp++;
 
-	    p = (const unsigned char *) pp;
+	    p = (ثابت غیرعلامتی حرف *) pp;
 	  }
-	  break;
+	  توڑو;
 	}
-	run_count -= count;
-	i += count;
+	تسلسل_گنتی -= گنتی;
+	i += گنتی;
       }
     }
 
-    public:
-    template <typename T>
-    void add_to (hb_array_t<T> out, float scale = 1.0f)
+    عوامی:
+    سانچہ <قسم_نام T>
+    خالی جوڑو_مقصد_2 (hb_array_t<T> برآمد, اعشاری scale = 1.0f)
     {
-#ifndef HB_OPTIMIZE_SIZE
+#اگر_غیر_تعریف_شدہ HB_OPTIMIZE_سائز
       // The following branch is supposed to speed things up by avoiding
       // the multiplication in _add_to<> if scale is 1.0f.
       // But in practice it seems to bloat the code and slow things down.
-      if (false && scale == 1.0f)
-        _add_to<false> (out);
-      else
-#endif
-        _add_to<true> (out, (T) scale);
+      اگر (جھوٹ && scale == 1.0f)
+        جوڑو_مقصد<جھوٹ> (برآمد);
+      ورنہ
+#اگر_ختم
+        جوڑو_مقصد<سچ> (برآمد, (T) scale);
     }
   };
 };
 
-struct TupleList : CFF2Index
+ساخت TupleList : CFF2_اشاریہ
 {
-  TupleValues::iter_t operator [] (unsigned i) const
+  Tuple_اقدار::iter_t عامل [] (غیرعلامتی i) ثابت
   {
-    auto bytes = CFF2Index::operator [] (i);
-    return TupleValues::iter_t (bytes.arrayZ, bytes.length);
+    خودکار بائٹیں = CFF2_اشاریہ::عامل [] (i);
+    واپس Tuple_اقدار::iter_t (بائٹیں.arrayZ, بائٹیں.لمبائی);
   }
 
-  TupleValues::fetcher_t fetcher (unsigned i) const
+  Tuple_اقدار::fetcher_t fetcher (غیرعلامتی i) ثابت
   {
-    auto bytes = CFF2Index::operator [] (i);
-    return TupleValues::fetcher_t (bytes.arrayZ, bytes.length);
+    خودکار بائٹیں = CFF2_اشاریہ::عامل [] (i);
+    واپس Tuple_اقدار::fetcher_t (بائٹیں.arrayZ, بائٹیں.لمبائی);
   }
 };
 
 
 // Alignment
 
-template <unsigned int alignment>
-struct Align
+سانچہ <غیرعلامتی صحیح alignment>
+ساخت Align
 {
-  size_t get_size (const void *base) const
+  size_t get_سائز (ثابت خالی *بنیاد) ثابت
   {
-    unsigned offset = (const char *) this - (const char *) base;
-    return (alignment - offset) & (alignment - 1);
+    غیرعلامتی انحراف = (ثابت حرف *) یہ - (ثابت حرف *) بنیاد;
+    واپس (alignment - انحراف) & (alignment - 1);
   }
 
-  public:
-  DEFINE_SIZE_MIN (0);
+  عوامی:
+  DEFINE_سائز_MIN (0);
 };
 
 
@@ -2132,4 +2132,4 @@ struct Align
 } /* namespace OT */
 
 
-#endif /* HB_OPEN_TYPE_HH */
+#اگر_ختم /* HB_OPEN_TYPE_HH */

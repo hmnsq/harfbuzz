@@ -24,51 +24,51 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
-#include "hb-ot.h"
+#شامل "hb.hh"
+#شامل "hb-ot.h"
 
-#ifdef HB_NO_OPEN
-#define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
-#endif
+#اگر_تعریف_شدہ HB_NO_OPEN
+#تعریف_کرو hb_blob_create_from_file_or_fail(x)  hb_blob_get_خالی_خانے ()
+#اگر_ختم
 
-int
-main (int argc, char **argv)
+صحیح
+مین (صحیح argc, حرف **argv)
 {
-  if (argc != 2) {
+  اگر (argc != 2) {
     fprintf (stderr, "usage: %s font-file\n", argv[0]);
-    exit (1);
+    باہر_نکلو (1);
   }
 
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (argv[1]);
   hb_always_assert (blob);
   hb_face_t *face = hb_face_create (blob, 0 /* first face */);
   hb_blob_destroy (blob);
-  blob = nullptr;
+  blob = خالی_اشاریہ;
 
-  unsigned int count = 0;
+  غیرعلامتی صحیح گنتی = 0;
 
-#ifndef HB_NO_NAME
-  const hb_ot_name_entry_t *entries = hb_ot_name_list_names (face, &count);
+#اگر_غیر_تعریف_شدہ HB_NO_NAME
+  ثابت hb_ot_name_اندراج_t *entries = hb_ot_name_list_نام (face, &گنتی);
 
-  for (unsigned int i = 0; i < count; i++)
+  برائے (غیرعلامتی صحیح i = 0; i < گنتی; i++)
   {
-    printf ("%u	%s	",
+    لکھو ("%u	%s	",
 	    entries[i].name_id,
-	    hb_language_to_string (entries[i].language));
+	    hb_language_مقصد_string (entries[i].language));
 
-    char buf[64];
-    unsigned int buf_size = sizeof (buf);
+    حرف buf[64];
+    غیرعلامتی صحیح buf_سائز = حجم (buf);
     hb_ot_name_get_utf8 (face,
 			 entries[i].name_id,
 			 entries[i].language,
-			 &buf_size,
+			 &buf_سائز,
 			 buf);
 
-    printf ("%s\n", buf);
+    لکھو ("%s\n", buf);
   }
-#endif
+#اگر_ختم
 
   hb_face_destroy (face);
 
-  return count ? 0 : 1;
+  واپس گنتی ? 0 : 1;
 }

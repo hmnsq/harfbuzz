@@ -24,7 +24,7 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb-map.hh"
+#شامل "hb-map.hh"
 
 
 /**
@@ -53,10 +53,10 @@ hb_map_create ()
 {
   hb_map_t *map;
 
-  if (!(map = hb_object_create<hb_map_t> ()))
-    return hb_map_get_empty ();
+  اگر (!(map = hb_object_create<hb_map_t> ()))
+    واپس hb_map_get_خالی_خانے ();
 
-  return map;
+  واپس map;
 }
 
 /**
@@ -69,9 +69,9 @@ hb_map_create ()
  * Since: 1.7.7
  **/
 hb_map_t *
-hb_map_get_empty ()
+hb_map_get_خالی_خانے ()
 {
-  return const_cast<hb_map_t *> (&Null (hb_map_t));
+  واپس const_cast<hb_map_t *> (&Null (hb_map_t));
 }
 
 /**
@@ -87,7 +87,7 @@ hb_map_get_empty ()
 hb_map_t *
 hb_map_reference (hb_map_t *map)
 {
-  return hb_object_reference (map);
+  واپس hb_object_reference (map);
 }
 
 /**
@@ -100,10 +100,10 @@ hb_map_reference (hb_map_t *map)
  *
  * Since: 1.7.7
  **/
-void
+خالی
 hb_map_destroy (hb_map_t *map)
 {
-  if (!hb_object_destroy (map)) return;
+  اگر (!hb_object_destroy (map)) واپس;
 
   hb_free (map);
 }
@@ -123,13 +123,13 @@ hb_map_destroy (hb_map_t *map)
  * Since: 1.7.7
  **/
 hb_bool_t
-hb_map_set_user_data (hb_map_t           *map,
-		      hb_user_data_key_t *key,
-		      void *              data,
+hb_map_سیٹ_user_ڈیٹا (hb_map_t           *map,
+		      hb_user_ڈیٹا_کلید_t *key,
+		      خالی *              ڈیٹا,
 		      hb_destroy_func_t   destroy,
 		      hb_bool_t           replace)
 {
-  return hb_object_set_user_data (map, key, data, destroy, replace);
+  واپس hb_object_سیٹ_user_ڈیٹا (map, key, ڈیٹا, destroy, replace);
 }
 
 /**
@@ -144,11 +144,11 @@ hb_map_set_user_data (hb_map_t           *map,
  *
  * Since: 1.7.7
  **/
-void *
-hb_map_get_user_data (const hb_map_t     *map,
-		      hb_user_data_key_t *key)
+خالی *
+hb_map_get_user_ڈیٹا (ثابت hb_map_t     *map,
+		      hb_user_ڈیٹا_کلید_t *key)
 {
-  return hb_object_get_user_data (map, key);
+  واپس hb_object_get_user_ڈیٹا (map, key);
 }
 
 
@@ -163,9 +163,9 @@ hb_map_get_user_data (const hb_map_t     *map,
  * Since: 1.7.7
  **/
 hb_bool_t
-hb_map_allocation_successful (const hb_map_t  *map)
+hb_map_تخصیص_successful (ثابت hb_map_t  *map)
 {
-  return map->successful;
+  واپس map->successful;
 }
 
 /**
@@ -179,14 +179,14 @@ hb_map_allocation_successful (const hb_map_t  *map)
  * Since: 4.4.0
  **/
 hb_map_t *
-hb_map_copy (const hb_map_t *map)
+hb_map_copy (ثابت hb_map_t *map)
 {
   hb_map_t *copy = hb_map_create ();
-  if (unlikely (copy->in_error ()))
-    return hb_map_get_empty ();
+  اگر (unlikely (copy->اندر_error ()))
+    واپس hb_map_get_خالی_خانے ();
 
   *copy = *map;
-  return copy;
+  واپس copy;
 }
 
 /**
@@ -199,13 +199,13 @@ hb_map_copy (const hb_map_t *map)
  *
  * Since: 1.7.7
  **/
-void
-hb_map_set (hb_map_t       *map,
+خالی
+hb_map_سیٹ (hb_map_t       *map,
 	    hb_codepoint_t  key,
 	    hb_codepoint_t  value)
 {
   /* Immutable-safe. */
-  map->set (key, value);
+  map->سیٹ (key, value);
 }
 
 /**
@@ -218,10 +218,10 @@ hb_map_set (hb_map_t       *map,
  * Since: 1.7.7
  **/
 hb_codepoint_t
-hb_map_get (const hb_map_t *map,
+hb_map_get (ثابت hb_map_t *map,
 	    hb_codepoint_t  key)
 {
-  return map->get (key);
+  واپس map->get (key);
 }
 
 /**
@@ -233,7 +233,7 @@ hb_map_get (const hb_map_t *map,
  *
  * Since: 1.7.7
  **/
-void
+خالی
 hb_map_del (hb_map_t       *map,
 	    hb_codepoint_t  key)
 {
@@ -253,10 +253,10 @@ hb_map_del (hb_map_t       *map,
  * Since: 1.7.7
  **/
 hb_bool_t
-hb_map_has (const hb_map_t *map,
+hb_map_has (ثابت hb_map_t *map,
 	    hb_codepoint_t  key)
 {
-  return map->has (key);
+  واپس map->has (key);
 }
 
 
@@ -268,10 +268,10 @@ hb_map_has (const hb_map_t *map,
  *
  * Since: 1.7.7
  **/
-void
+خالی
 hb_map_clear (hb_map_t *map)
 {
-  return map->clear ();
+  واپس map->clear ();
 }
 
 /**
@@ -285,9 +285,9 @@ hb_map_clear (hb_map_t *map)
  * Since: 1.7.7
  **/
 hb_bool_t
-hb_map_is_empty (const hb_map_t *map)
+hb_map_is_خالی_خانے (ثابت hb_map_t *map)
 {
-  return map->is_empty ();
+  واپس map->is_empty ();
 }
 
 /**
@@ -300,10 +300,10 @@ hb_map_is_empty (const hb_map_t *map)
  *
  * Since: 1.7.7
  **/
-unsigned int
-hb_map_get_population (const hb_map_t *map)
+غیرعلامتی صحیح
+hb_map_get_population (ثابت hb_map_t *map)
 {
-  return map->get_population ();
+  واپس map->get_population ();
 }
 
 /**
@@ -319,10 +319,10 @@ hb_map_get_population (const hb_map_t *map)
  * Since: 4.3.0
  **/
 hb_bool_t
-hb_map_is_equal (const hb_map_t *map,
-		 const hb_map_t *other)
+hb_map_is_equal (ثابت hb_map_t *map,
+		 ثابت hb_map_t *other)
 {
-  return map->is_equal (*other);
+  واپس map->is_equal (*other);
 }
 
 /**
@@ -336,10 +336,10 @@ hb_map_is_equal (const hb_map_t *map,
  *
  * Since: 4.4.0
  **/
-unsigned int
-hb_map_hash (const hb_map_t *map)
+غیرعلامتی صحیح
+hb_map_hash (ثابت hb_map_t *map)
 {
-  return map->hash ();
+  واپس map->hash ();
 }
 
 /**
@@ -351,9 +351,9 @@ hb_map_hash (const hb_map_t *map)
  *
  * Since: 7.0.0
  **/
-HB_EXTERN void
+HB_EXTERN خالی
 hb_map_update (hb_map_t *map,
-	       const hb_map_t *other)
+	       ثابت hb_map_t *other)
 {
   map->update (*other);
 }
@@ -378,12 +378,12 @@ hb_map_update (hb_map_t *map,
  * Since: 7.0.0
  **/
 hb_bool_t
-hb_map_next (const hb_map_t *map,
-	     int *idx,
+hb_map_اگلا (ثابت hb_map_t *map,
+	     صحیح *idx,
 	     hb_codepoint_t *key,
 	     hb_codepoint_t *value)
 {
-  return map->next (idx, key, value);
+  واپس map->next (idx, key, value);
 }
 
 /**
@@ -395,11 +395,11 @@ hb_map_next (const hb_map_t *map,
  *
  * Since: 7.0.0
  **/
-void
-hb_map_keys (const hb_map_t *map,
-	     hb_set_t *keys)
+خالی
+hb_map_کلیدیں (ثابت hb_map_t *map,
+	     hb_سیٹ_t *کلیدیں)
 {
-  hb_copy (map->keys() , *keys);
+  hb_copy (map->کلیدیں() , *کلیدیں);
 }
 
 /**
@@ -411,9 +411,9 @@ hb_map_keys (const hb_map_t *map,
  *
  * Since: 7.0.0
  **/
-void
-hb_map_values (const hb_map_t *map,
-	       hb_set_t *values)
+خالی
+hb_map_اقدار (ثابت hb_map_t *map,
+	       hb_سیٹ_t *values)
 {
   hb_copy (map->values() , *values);
 }

@@ -24,79 +24,79 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
-#include "hb-shaper.hh"
-#include "hb-machinery.hh"
+#شامل "hb.hh"
+#شامل "hb-shaper.hh"
+#شامل "hb-machinery.hh"
 
 
-static const hb_shaper_entry_t _hb_all_shapers[] = {
-#define HB_SHAPER_IMPLEMENT(name) {#name, _hb_##name##_shape},
-#include "hb-shaper-list.hh"
-#undef HB_SHAPER_IMPLEMENT
+ساکن ثابت hb_shaper_اندراج_t _hb_all_shapers[] = {
+#تعریف_کرو HB_SHAPER_IMPLEMENT(name) {#name, _hb_##name##_shape},
+#شامل "hb-shaper-list.hh"
+#تعریف_منسوخ HB_SHAPER_IMPLEMENT
 };
-#ifndef HB_NO_SHAPER
-static_assert (0 != ARRAY_LENGTH_CONST (_hb_all_shapers), "No shaper enabled.");
-#endif
+#اگر_غیر_تعریف_شدہ HB_NO_SHAPER
+static_assert (0 != ARRAY_لمبائی_CONST (_hb_all_shapers), "No shaper enabled.");
+#اگر_ختم
 
-static inline void free_static_shapers ();
+ساکن اندرونی خالی free_static_shapers ();
 
-static struct hb_shapers_lazy_loader_t : hb_lazy_loader_t<hb_shaper_entry_t,
+ساکن ساخت hb_shapers_lazy_loader_t : hb_lazy_loader_t<hb_shaper_اندراج_t,
 							  hb_shapers_lazy_loader_t>
 {
-  static hb_shaper_entry_t *create ()
+  ساکن hb_shaper_اندراج_t *create ()
   {
-    char *env = getenv ("HB_SHAPER_LIST");
-    if (!env || !*env)
-      return nullptr;
+    حرف *env = getenv ("HB_SHAPER_LIST");
+    اگر (!env || !*env)
+      واپس خالی_اشاریہ;
 
-    hb_shaper_entry_t *shapers = (hb_shaper_entry_t *) hb_calloc (1, sizeof (_hb_all_shapers));
-    if (unlikely (!shapers))
-      return nullptr;
+    hb_shaper_اندراج_t *shapers = (hb_shaper_اندراج_t *) hb_calloc (1, حجم (_hb_all_shapers));
+    اگر (unlikely (!shapers))
+      واپس خالی_اشاریہ;
 
-    hb_memcpy (shapers, _hb_all_shapers, sizeof (_hb_all_shapers));
+    hb_memcpy (shapers, _hb_all_shapers, حجم (_hb_all_shapers));
 
      /* Reorder shaper list to prefer requested shapers. */
-    unsigned int i = 0;
-    char *end, *p = env;
-    for (;;)
+    غیرعلامتی صحیح i = 0;
+    حرف *انتہا, *p = env;
+    برائے (;;)
     {
-      end = strchr (p, ',');
-      if (!end)
-	end = p + strlen (p);
+      انتہا = strchr (p, ',');
+      اگر (!انتہا)
+	انتہا = p + لڑی_لمبائی (p);
 
-      for (unsigned int j = i; j < ARRAY_LENGTH_CONST (_hb_all_shapers); j++)
-	if (end - p == (int) strlen (shapers[j].name) &&
-	    0 == strncmp (shapers[j].name, p, end - p))
+      برائے (غیرعلامتی صحیح j = i; j < ARRAY_لمبائی_CONST (_hb_all_shapers); j++)
+	اگر (انتہا - p == (صحیح) لڑی_لمبائی (shapers[j].name) &&
+	    0 == لڑی_موازنہ (shapers[j].name, p, انتہا - p))
 	{
 	  /* Reorder this shaper to position i */
-	 struct hb_shaper_entry_t t = shapers[j];
-	 memmove (&shapers[i + 1], &shapers[i], sizeof (shapers[i]) * (j - i));
+	 ساخت hb_shaper_اندراج_t t = shapers[j];
+	 memmove (&shapers[i + 1], &shapers[i], حجم (shapers[i]) * (j - i));
 	 shapers[i] = t;
 	 i++;
 	}
 
-      if (!*end)
-	break;
-      else
-	p = end + 1;
+      اگر (!*انتہا)
+	توڑو;
+      ورنہ
+	p = انتہا + 1;
     }
 
     hb_atexit (free_static_shapers);
 
-    return shapers;
+    واپس shapers;
   }
-  static void destroy (hb_shaper_entry_t *p) { hb_free (p); }
-  static const hb_shaper_entry_t *get_null ()      { return _hb_all_shapers; }
+  ساکن خالی destroy (hb_shaper_اندراج_t *p) { hb_free (p); }
+  ساکن ثابت hb_shaper_اندراج_t *get_null ()      { واپس _hb_all_shapers; }
 } static_shapers;
 
-static inline
-void free_static_shapers ()
+ساکن اندرونی
+خالی free_static_shapers ()
 {
   static_shapers.free_instance ();
 }
 
-const hb_shaper_entry_t *
+ثابت hb_shaper_اندراج_t *
 _hb_shapers_get ()
 {
-  return static_shapers.get_unconst ();
+  واپس static_shapers.get_unconst ();
 }

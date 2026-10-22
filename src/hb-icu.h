@@ -26,27 +26,27 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_ICU_H
-#define HB_ICU_H
+#اگر_غیر_تعریف_شدہ HB_ICU_H
+#تعریف_کرو HB_ICU_H
 
-#include "hb.h"
+#شامل "hb.h"
 
-#include <unicode/uscript.h>
+#شامل <unicode/uscript.h>
 
 HB_BEGIN_DECLS
 
 
 HB_EXTERN hb_script_t
-hb_icu_script_to_script (UScriptCode script);
+hb_icu_script_مقصد_script (UScript_رمز script);
 
-HB_EXTERN UScriptCode
+HB_EXTERN UScript_رمز
 hb_icu_script_from_script (hb_script_t script);
 
 
 HB_EXTERN hb_unicode_funcs_t *
-hb_icu_get_unicode_funcs (void);
+hb_icu_get_unicode_funcs (خالی);
 
 
-HB_END_DECLS
+HB_انتہا_DECLS
 
-#endif /* HB_ICU_H */
+#اگر_ختم /* HB_ICU_H */

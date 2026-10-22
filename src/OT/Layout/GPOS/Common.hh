@@ -1,11 +1,11 @@
-#ifndef OT_LAYOUT_GPOS_COMMON_HH
-#define OT_LAYOUT_GPOS_COMMON_HH
+#اگر_غیر_تعریف_شدہ OT_LAYOUT_GPOS_COMMON_HH
+#تعریف_کرو OT_LAYOUT_GPOS_COMMON_HH
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+نامخلا OT {
+نامخلا Layout {
+نامخلا GPOS_impl {
 
-enum attach_type_t {
+شمار attach_type_t {
   ATTACH_TYPE_NONE      = 0X00,
 
   /* Each attachment should be either a mark or a cursive; can't be both. */
@@ -14,24 +14,24 @@ enum attach_type_t {
 };
 
 /* buffer **position** var allocations */
-#define attach_chain() var.i16[0] /* glyph to which this attaches to, relative to current glyphs; negative for going back, positive for forward. */
-#define attach_type() var.u8[2] /* attachment type */
+#تعریف_کرو attach_chain() var.i16[0] /* glyph to which this attaches to, relative to current glyphs; negative for going back, positive for forward. */
+#تعریف_کرو attach_type() var.u8[2] /* attachment type */
 /* Note! if attach_chain() is zero, the value of attach_type() is irrelevant. */
 
-struct ValueBase;
-struct ValueFormat;
+ساخت قدر_بنیاد;
+ساخت قدر_Format;
 
-template<typename Iterator>
-static void SinglePos_serialize (hb_serialize_context_t *c,
-                                 const ValueBase *src,
-                                 ValueFormat src_format,
+سانچہ<قسم_نام Iterator>
+ساکن خالی SinglePos_serialize (hb_serialize_context_t *c,
+                                 ثابت قدر_بنیاد *src,
+                                 قدر_Format src_format,
                                  Iterator it,
-                                 const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *layout_variation_idx_delta_map,
-                                 unsigned new_format);
+                                 ثابت hb_hashmap_t<غیرعلامتی, hb_pair_t<غیرعلامتی, صحیح>> *layout_variation_idx_delta_map,
+                                 غیرعلامتی new_format);
 
 
 }
 }
 }
 
-#endif  // OT_LAYOUT_GPOS_COMMON_HH
+#اگر_ختم  // OT_LAYOUT_GPOS_COMMON_HH

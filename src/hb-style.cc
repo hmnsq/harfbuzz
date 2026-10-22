@@ -22,17 +22,17 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#شامل "hb.hh"
 
-#ifndef HB_NO_STYLE
+#اگر_غیر_تعریف_شدہ HB_NO_STYLE
 
-#include "hb-ot-var-avar-table.hh"
-#include "hb-ot-var-fvar-table.hh"
-#include "hb-ot-stat-table.hh"
-#include "hb-ot-os2-table.hh"
-#include "hb-ot-head-table.hh"
-#include "hb-ot-post-table.hh"
-#include "hb-ot-face.hh"
+#شامل "hb-ot-var-avar-table.hh"
+#شامل "hb-ot-var-fvar-table.hh"
+#شامل "hb-ot-stat-table.hh"
+#شامل "hb-ot-os2-table.hh"
+#شامل "hb-ot-head-table.hh"
+#شامل "hb-ot-post-table.hh"
+#شامل "hb-ot-face.hh"
 
 /**
  * SECTION:hb-style
@@ -43,16 +43,16 @@
  * Functions for fetching style information from fonts.
  **/
 
-static inline float
-_hb_angle_to_ratio (float a)
+ساکن اندرونی اعشاری
+hb_angle_مقصد_تناسب (اعشاری a)
 {
-  return tanf (a * -HB_PI / 180.f);
+  واپس tanf (a * -HB_PI / 180.f);
 }
 
-static inline float
-_hb_ratio_to_angle (float r)
+ساکن اندرونی اعشاری
+hb_تناسب_مقصد_angle (اعشاری r)
 {
-  return atanf (r) * -180.f / HB_PI;
+  واپس atanf (r) * -180.f / HB_PI;
 }
 
 /**
@@ -68,67 +68,67 @@ _hb_ratio_to_angle (float r)
  *
  * Since: 3.0.0
  **/
-float
-hb_style_get_value (hb_font_t *font, hb_style_tag_t style_tag)
+اعشاری
+hb_style_get_قدر (hb_font_t *font, hb_style_لیبل_t style_لیبل)
 {
-  if (unlikely (style_tag == HB_STYLE_TAG_SLANT_RATIO))
-    return _hb_angle_to_ratio (hb_style_get_value (font, HB_STYLE_TAG_SLANT_ANGLE));
+  اگر (unlikely (style_لیبل == HB_STYLE_لیبل_SLANT_تناسب))
+    واپس hb_angle_مقصد_تناسب (hb_style_get_قدر (font, HB_STYLE_لیبل_SLANT_ANGLE));
 
   hb_face_t *face = font->face;
 
-#ifndef HB_NO_VAR
+#اگر_غیر_تعریف_شدہ HB_NO_VAR
   hb_ot_var_axis_info_t axis;
-  if (hb_ot_var_find_axis_info (face, style_tag, &axis))
+  اگر (hb_ot_var_ڈھونڈو_axis_info (face, style_لیبل, &axis))
   {
-    if (axis.axis_index < font->num_coords) return font->design_coords[axis.axis_index];
+    اگر (axis.axis_اشاریہ < font->عدد_coords) واپس font->design_coords[axis.axis_اشاریہ];
     /* If a face is variable, fvar's default_value is better than STAT records */
-    return axis.default_value;
+    واپس axis.default_قدر;
   }
-#endif
+#اگر_ختم
 
-  if (style_tag == HB_STYLE_TAG_OPTICAL_SIZE && font->ptem)
-    return font->ptem;
+  اگر (style_لیبل == HB_STYLE_لیبل_OPTICAL_سائز && font->ptem)
+    واپس font->ptem;
 
   /* STAT */
-  float value;
-  if (face->table.STAT->get_value (style_tag, &value))
-    return value;
+  اعشاری value;
+  اگر (face->جدول.STAT->get_قدر (style_لیبل, &value))
+    واپس value;
 
-  switch ((unsigned) style_tag)
+  انتخاب ((غیرعلامتی) style_لیبل)
   {
-  case HB_STYLE_TAG_ITALIC:
-    return face->table.OS2->is_italic () || face->table.head->is_italic () ? 1 : 0;
-  case HB_STYLE_TAG_OPTICAL_SIZE:
+  حالت HB_STYLE_لیبل_ITALIC:
+    واپس face->جدول.OS2->is_italic () || face->جدول.سر_2->is_italic () ? 1 : 0;
+  حالت HB_STYLE_لیبل_OPTICAL_سائز:
   {
-    unsigned int lower, design, upper;
-    return face->table.OS2->v5 ().get_optical_size (&lower, &upper)
-	   ? (float) (lower + upper) / 2.f
-	   : hb_ot_layout_get_size_params (face, &design, nullptr, nullptr, nullptr, nullptr)
+    غیرعلامتی صحیح زیریں, design, بالائی;
+    واپس face->جدول.OS2->v5 ().get_optical_سائز (&زیریں, &بالائی)
+	   ? (اعشاری) (زیریں + بالائی) / 2.f
+	   : hb_ot_layout_get_سائز_params (face, &design, خالی_اشاریہ, خالی_اشاریہ, خالی_اشاریہ, خالی_اشاریہ)
 	   ? design / 10.f
 	   : 12.f;
   }
-  case HB_STYLE_TAG_SLANT_ANGLE:
+  حالت HB_STYLE_لیبل_SLANT_ANGLE:
   {
-    float angle = face->table.post->table->italicAngle.to_float ();
+    اعشاری angle = face->جدول.post->جدول->italicAngle.مقصد_float ();
 
-    if (font->slant)
-      angle = _hb_ratio_to_angle (font->slant + _hb_angle_to_ratio (angle));
+    اگر (font->slant)
+      angle = hb_تناسب_مقصد_angle (font->slant + hb_angle_مقصد_تناسب (angle));
 
-    return angle;
+    واپس angle;
   }
-  case HB_STYLE_TAG_WIDTH:
-    return face->table.OS2->has_data ()
-	   ? face->table.OS2->get_width ()
-	   : (face->table.head->is_condensed () ? 75 :
-	      face->table.head->is_expanded () ? 125 :
+  حالت HB_STYLE_لیبل_چوڑائی:
+    واپس face->جدول.OS2->has_ڈیٹا ()
+	   ? face->جدول.OS2->get_چوڑائی ()
+	   : (face->جدول.سر_2->is_condensed () ? 75 :
+	      face->جدول.سر_2->is_expanded () ? 125 :
 	      100);
-  case HB_STYLE_TAG_WEIGHT:
-    return face->table.OS2->has_data ()
-	   ? face->table.OS2->usWeightClass
-	   : (face->table.head->is_bold () ? 700 : 400);
-  default:
-    return 0;
+  حالت HB_STYLE_لیبل_وزن:
+    واپس face->جدول.OS2->has_ڈیٹا ()
+	   ? face->جدول.OS2->us_وزن_Class
+	   : (face->جدول.سر_2->is_bold () ? 700 : 400);
+  طےشدہ:
+    واپس 0;
   }
 }
 
-#endif
+#اگر_ختم

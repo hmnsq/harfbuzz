@@ -8,21 +8,21 @@
  * Based on fontTools.cffLib.specializer
  */
 
-#ifndef HB_CFF_SPECIALIZER_HH
-#define HB_CFF_SPECIALIZER_HH
+#اگر_غیر_تعریف_شدہ HB_CFF_SPECIALIZER_HH
+#تعریف_کرو HB_CFF_SPECIALIZER_HH
 
-#include "hb.hh"
-#include "hb-cff-interp-cs-common.hh"
+#شامل "hb.hh"
+#شامل "hb-cff-interp-cs-common.hh"
 
-namespace CFF {
+نامخلا CFF {
 
 /* CharString command representation - forward declared in hb-subset-cff-common.hh */
 
 /* Specialization must preserve nonzero fractional displacements. */
-static inline bool
-is_zero (const number_t &n)
+ساکن اندرونی منطقی
+is_zero (ثابت نمبر_t &n)
 {
-  return n.to_real () == 0.;
+  واپس n.مقصد_real () == 0.;
 }
 
 /* Generalize CharString commands to canonical form
@@ -33,110 +33,110 @@ is_zero (const number_t &n)
  *
  * Based on fontTools.cffLib.specializer.generalizeCommands
  */
-static void
-generalize_commands (hb_vector_t<cs_command_t> &commands)
+ساکن خالی
+generalize_commands (hb_سمتیہ_t<cs_command_t> &commands)
 {
-  hb_vector_t<cs_command_t> result;
-  result.alloc (commands.length * 2);  /* Estimate: might expand */
+  hb_سمتیہ_t<cs_command_t> نتیجہ;
+  نتیجہ.alloc (commands.لمبائی * 2);  /* Estimate: might expand */
 
-  for (unsigned i = 0; i < commands.length; i++)
+  برائے (غیرعلامتی i = 0; i < commands.لمبائی; i++)
   {
-    auto &cmd = commands[i];
+    خودکار &cmd = commands[i];
 
-    switch (cmd.op)
+    انتخاب (cmd.op)
     {
-      case OpCode_hmoveto:
-      case OpCode_vmoveto:
+      حالت Op_رمز_hmoveto:
+      حالت Op_رمز_vmoveto:
       {
         /* Convert to rmoveto with explicit dx,dy */
-        cs_command_t gen (OpCode_rmoveto);
-        gen.args.alloc (2);
+        cs_command_t gen (Op_رمز_rmoveto);
+        gen.دلائل.alloc (2);
 
-        if (cmd.op == OpCode_hmoveto && cmd.args.length >= 1)
+        اگر (cmd.op == Op_رمز_hmoveto && cmd.دلائل.لمبائی >= 1)
         {
-          gen.args.push (cmd.args[0]);  /* dx */
-          number_t zero; zero.set_int (0);
-          gen.args.push (zero);          /* dy = 0 */
+          gen.دلائل.push (cmd.دلائل[0]);  /* dx */
+          نمبر_t zero; zero.سیٹ_int (0);
+          gen.دلائل.push (zero);          /* dy = 0 */
         }
-        else if (cmd.op == OpCode_vmoveto && cmd.args.length >= 1)
+        ورنہ اگر (cmd.op == Op_رمز_vmoveto && cmd.دلائل.لمبائی >= 1)
         {
-          number_t zero; zero.set_int (0);
-          gen.args.push (zero);          /* dx = 0 */
-          gen.args.push (cmd.args[0]);  /* dy */
+          نمبر_t zero; zero.سیٹ_int (0);
+          gen.دلائل.push (zero);          /* dx = 0 */
+          gen.دلائل.push (cmd.دلائل[0]);  /* dy */
         }
-        result.push (gen);
-        break;
+        نتیجہ.push (gen);
+        توڑو;
       }
 
-      case OpCode_hlineto:
-      case OpCode_vlineto:
+      حالت Op_رمز_hlineto:
+      حالت Op_رمز_vlineto:
       {
         /* Convert h/v lineto to rlineto, breaking into single segments
          * hlineto alternates: dx1 (→ dx1,0) dy1 (→ 0,dy1) dx2 (→ dx2,0) ...
          * vlineto alternates: dy1 (→ 0,dy1) dx1 (→ dx1,0) dy2 (→ 0,dy2) ... */
-        bool is_h = (cmd.op == OpCode_hlineto);
-        number_t zero; zero.set_int (0);
+        منطقی is_h = (cmd.op == Op_رمز_hlineto);
+        نمبر_t zero; zero.سیٹ_int (0);
 
-        for (unsigned j = 0; j < cmd.args.length; j++)
+        برائے (غیرعلامتی j = 0; j < cmd.دلائل.لمبائی; j++)
         {
-          cs_command_t seg (OpCode_rlineto);
-          seg.args.alloc (2);
+          cs_command_t seg (Op_رمز_rlineto);
+          seg.دلائل.alloc (2);
 
-          bool is_horizontal = is_h ? (j % 2 == 0) : (j % 2 == 1);
-          if (is_horizontal)
+          منطقی is_horizontal = is_h ? (j % 2 == 0) : (j % 2 == 1);
+          اگر (is_horizontal)
           {
-            seg.args.push (cmd.args[j]);  /* dx */
-            seg.args.push (zero);          /* dy = 0 */
+            seg.دلائل.push (cmd.دلائل[j]);  /* dx */
+            seg.دلائل.push (zero);          /* dy = 0 */
           }
-          else
+          ورنہ
           {
-            seg.args.push (zero);          /* dx = 0 */
-            seg.args.push (cmd.args[j]);  /* dy */
+            seg.دلائل.push (zero);          /* dx = 0 */
+            seg.دلائل.push (cmd.دلائل[j]);  /* dy */
           }
-          result.push (seg);
+          نتیجہ.push (seg);
         }
-        break;
+        توڑو;
       }
 
-      case OpCode_rlineto:
+      حالت Op_رمز_rlineto:
       {
         /* Break into single segments (dx,dy pairs) */
-        for (unsigned j = 0; j + 1 < cmd.args.length; j += 2)
+        برائے (غیرعلامتی j = 0; j + 1 < cmd.دلائل.لمبائی; j += 2)
         {
-          cs_command_t seg (OpCode_rlineto);
-          seg.args.alloc (2);
-          seg.args.push (cmd.args[j]);
-          seg.args.push (cmd.args[j + 1]);
-          result.push (seg);
+          cs_command_t seg (Op_رمز_rlineto);
+          seg.دلائل.alloc (2);
+          seg.دلائل.push (cmd.دلائل[j]);
+          seg.دلائل.push (cmd.دلائل[j + 1]);
+          نتیجہ.push (seg);
         }
-        break;
+        توڑو;
       }
 
-      case OpCode_rrcurveto:
+      حالت Op_رمز_rrcurveto:
       {
         /* Break into single segments (6 args each) */
-        for (unsigned j = 0; j + 5 < cmd.args.length; j += 6)
+        برائے (غیرعلامتی j = 0; j + 5 < cmd.دلائل.لمبائی; j += 6)
         {
-          cs_command_t seg (OpCode_rrcurveto);
-          seg.args.alloc (6);
-          for (unsigned k = 0; k < 6; k++)
-            seg.args.push (cmd.args[j + k]);
-          result.push (seg);
+          cs_command_t seg (Op_رمز_rrcurveto);
+          seg.دلائل.alloc (6);
+          برائے (غیرعلامتی k = 0; k < 6; k++)
+            seg.دلائل.push (cmd.دلائل[j + k]);
+          نتیجہ.push (seg);
         }
-        break;
+        توڑو;
       }
 
-      default:
+      طےشدہ:
         /* Keep other operators as-is */
-        result.push (cmd);
-        break;
+        نتیجہ.push (cmd);
+        توڑو;
     }
   }
 
   /* Replace commands with generalized result */
   commands.clear ();
-  for (unsigned i = 0; i < result.length; i++)
-    commands.push (result[i]);
+  برائے (غیرعلامتی i = 0; i < نتیجہ.لمبائی; i++)
+    commands.push (نتیجہ[i]);
 }
 
 /* Specialize CharString commands to optimize bytecode size
@@ -149,39 +149,39 @@ generalize_commands (hb_vector_t<cs_command_t> &commands)
  *
  * This ensures we never exceed stack depth while optimizing bytecode.
  */
-static void
-specialize_commands (hb_vector_t<cs_command_t> &commands,
-                     unsigned maxstack = 48)
+ساکن خالی
+specialize_commands (hb_سمتیہ_t<cs_command_t> &commands,
+                     غیرعلامتی maxstack = 48)
 {
-  if (commands.length == 0) return;
+  اگر (commands.لمبائی == 0) واپس;
 
   /* Pass 0: Generalize to canonical form (fontTools does this first) */
   generalize_commands (commands);
 
   /* Pass 1: Specialize rmoveto/rlineto into h/v variants */
-  for (unsigned i = 0; i < commands.length; i++)
+  برائے (غیرعلامتی i = 0; i < commands.لمبائی; i++)
   {
-    auto &cmd = commands[i];
+    خودکار &cmd = commands[i];
 
-    if ((cmd.op == OpCode_rmoveto || cmd.op == OpCode_rlineto) &&
-        cmd.args.length == 2)
+    اگر ((cmd.op == Op_رمز_rmoveto || cmd.op == Op_رمز_rlineto) &&
+        cmd.دلائل.لمبائی == 2)
     {
-      bool dx_zero = is_zero (cmd.args[0]);
-      bool dy_zero = is_zero (cmd.args[1]);
+      منطقی dx_zero = is_zero (cmd.دلائل[0]);
+      منطقی dy_zero = is_zero (cmd.دلائل[1]);
 
-      if (dx_zero && !dy_zero)
+      اگر (dx_zero && !dy_zero)
       {
         /* Vertical movement (dx=0): keep only dy */
-        cmd.op = (cmd.op == OpCode_rmoveto) ? OpCode_vmoveto : OpCode_vlineto;
+        cmd.op = (cmd.op == Op_رمز_rmoveto) ? Op_رمز_vmoveto : Op_رمز_vlineto;
         /* Shift dy to position 0 */
-        cmd.args[0] = cmd.args[1];
-        cmd.args.resize (1);
+        cmd.دلائل[0] = cmd.دلائل[1];
+        cmd.دلائل.resize (1);
       }
-      else if (!dx_zero && dy_zero)
+      ورنہ اگر (!dx_zero && dy_zero)
       {
         /* Horizontal movement (dy=0): keep only dx */
-        cmd.op = (cmd.op == OpCode_rmoveto) ? OpCode_hmoveto : OpCode_hlineto;
-        cmd.args.resize (1);  /* Keep only dx */
+        cmd.op = (cmd.op == Op_رمز_rmoveto) ? Op_رمز_hmoveto : Op_رمز_hlineto;
+        cmd.دلائل.resize (1);  /* Keep only dx */
       }
       /* else: both zero or both non-zero, keep as rmoveto/rlineto */
     }
@@ -190,24 +190,24 @@ specialize_commands (hb_vector_t<cs_command_t> &commands,
   /* Pass 2: Combine adjacent hlineto/vlineto operators
    * hlineto can take multiple args alternating with vlineto
    * This saves operator bytes */
-  for (int i = (int)commands.length - 1; i > 0; i--)
+  برائے (صحیح i = (صحیح)commands.لمبائی - 1; i > 0; i--)
   {
-    auto &cmd = commands[i];
-    auto &prev = commands[i-1];
+    خودکار &cmd = commands[i];
+    خودکار &prev = commands[i-1];
 
     /* Different starting directions can combine only after an odd number
      * of alternating arguments in the preceding command. */
-    if (((prev.op == OpCode_hlineto && cmd.op == OpCode_vlineto) ||
-         (prev.op == OpCode_vlineto && cmd.op == OpCode_hlineto)) &&
-        (prev.args.length & 1))
+    اگر (((prev.op == Op_رمز_hlineto && cmd.op == Op_رمز_vlineto) ||
+         (prev.op == Op_رمز_vlineto && cmd.op == Op_رمز_hlineto)) &&
+        (prev.دلائل.لمبائی & 1))
     {
       /* Check stack depth */
-      unsigned combined_args = prev.args.length + cmd.args.length;
-      if (combined_args < maxstack)
+      غیرعلامتی combined_دلائل = prev.دلائل.لمبائی + cmd.دلائل.لمبائی;
+      اگر (combined_دلائل < maxstack)
       {
         /* Merge into first command, keep its operator */
-        for (unsigned j = 0; j < cmd.args.length; j++)
-          prev.args.push (cmd.args[j]);
+        برائے (غیرعلامتی j = 0; j < cmd.دلائل.لمبائی; j++)
+          prev.دلائل.push (cmd.دلائل[j]);
         commands.remove_ordered (i);
         i++;  /* Adjust for removed element */
       }
@@ -215,25 +215,25 @@ specialize_commands (hb_vector_t<cs_command_t> &commands,
   }
 
   /* Pass 3: Combine adjacent identical operators */
-  for (int i = (int)commands.length - 1; i > 0; i--)
+  برائے (صحیح i = (صحیح)commands.لمبائی - 1; i > 0; i--)
   {
-    auto &cmd = commands[i];
-    auto &prev = commands[i-1];
+    خودکار &cmd = commands[i];
+    خودکار &prev = commands[i-1];
 
     /* Same-direction h/v commands can combine only after an even number
      * of alternating arguments. Other repeatable operators concatenate. */
-    if (prev.op == cmd.op &&
-        (cmd.op == OpCode_rlineto || cmd.op == OpCode_rrcurveto ||
-         ((cmd.op == OpCode_hlineto || cmd.op == OpCode_vlineto) &&
-          !(prev.args.length & 1))))
+    اگر (prev.op == cmd.op &&
+        (cmd.op == Op_رمز_rlineto || cmd.op == Op_رمز_rrcurveto ||
+         ((cmd.op == Op_رمز_hlineto || cmd.op == Op_رمز_vlineto) &&
+          !(prev.دلائل.لمبائی & 1))))
     {
       /* Check stack depth */
-      unsigned combined_args = prev.args.length + cmd.args.length;
-      if (combined_args < maxstack)
+      غیرعلامتی combined_دلائل = prev.دلائل.لمبائی + cmd.دلائل.لمبائی;
+      اگر (combined_دلائل < maxstack)
       {
         /* Merge args */
-        for (unsigned j = 0; j < cmd.args.length; j++)
-          prev.args.push (cmd.args[j]);
+        برائے (غیرعلامتی j = 0; j < cmd.دلائل.لمبائی; j++)
+          prev.دلائل.push (cmd.دلائل[j]);
         commands.remove_ordered (i);
         i++;  /* Adjust for removed element */
       }
@@ -242,36 +242,36 @@ specialize_commands (hb_vector_t<cs_command_t> &commands,
 }
 
 /* Encode commands back to binary CharString */
-static bool
-encode_commands (const hb_vector_t<cs_command_t> &commands,
+ساکن منطقی
+encode_commands (ثابت hb_سمتیہ_t<cs_command_t> &commands,
                  str_buff_t &output)
 {
-  for (const auto &cmd : commands)
+  برائے (ثابت خودکار &cmd : commands)
   {
     str_encoder_t encoder (output);
 
     /* Encode arguments */
-    for (const auto &arg : cmd.args)
-      encoder.encode_num_cs (arg);
+    برائے (ثابت خودکار &arg : cmd.دلائل)
+      encoder.encode_عدد_cs (arg);
 
     /* Encode operator */
-    if (cmd.op != OpCode_Invalid)
+    اگر (cmd.op != Op_رمز_Invalid)
       encoder.encode_op (cmd.op);
 
     /* hintmask/cntrmask are followed by raw mask bytes. */
-    if (cmd.op == OpCode_hintmask || cmd.op == OpCode_cntrmask)
+    اگر (cmd.op == Op_رمز_hintmask || cmd.op == Op_رمز_cntrmask)
     {
-      for (const auto &byte : cmd.mask_bytes)
+      برائے (ثابت خودکار &byte : cmd.نقاب_بائٹیں)
         encoder.encode_byte (byte);
     }
 
-    if (encoder.in_error ())
-      return false;
+    اگر (encoder.اندر_error ())
+      واپس جھوٹ;
   }
 
-  return true;
+  واپس سچ;
 }
 
 } /* namespace CFF */
 
-#endif /* HB_CFF_SPECIALIZER_HH */
+#اگر_ختم /* HB_CFF_SPECIALIZER_HH */

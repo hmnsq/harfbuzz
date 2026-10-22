@@ -26,51 +26,51 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb.h> instead."
-#endif
+#اگر !defined(HB_H_اندر) && !defined(HB_NO_SINGLE_سرخی_ERROR)
+#غلطی "Include <hb.h> instead."
+#اگر_ختم
 
-#ifndef HB_SHAPE_H
-#define HB_SHAPE_H
+#اگر_غیر_تعریف_شدہ HB_SHAPE_H
+#تعریف_کرو HB_SHAPE_H
 
-#include "hb-common.h"
-#include "hb-buffer.h"
-#include "hb-font.h"
+#شامل "hb-common.h"
+#شامل "hb-buffer.h"
+#شامل "hb-font.h"
 
 HB_BEGIN_DECLS
 
 
-HB_EXTERN void
+HB_EXTERN خالی
 hb_shape (hb_font_t           *font,
-	  hb_buffer_t         *buffer,
-	  const hb_feature_t  *features,
-	  unsigned int         num_features);
+	  hb_بفر_t         *بفر,
+	  ثابت hb_feature_t  *features,
+	  غیرعلامتی صحیح         عدد_features);
 
 HB_EXTERN hb_bool_t
-hb_shape_full (hb_font_t          *font,
-	       hb_buffer_t        *buffer,
-	       const hb_feature_t *features,
-	       unsigned int        num_features,
-	       const char * const *shaper_list);
+hb_shape_بھرا (hb_font_t          *font,
+	       hb_بفر_t        *بفر,
+	       ثابت hb_feature_t *features,
+	       غیرعلامتی صحیح        عدد_features,
+	       ثابت حرف * ثابت *shaper_list);
 
-#ifdef HB_EXPERIMENTAL_API
+#اگر_تعریف_شدہ HB_EXPERIMENTAL_API
 HB_EXTERN hb_bool_t
 hb_shape_justify (hb_font_t          *font,
-		  hb_buffer_t        *buffer,
-		  const hb_feature_t *features,
-		  unsigned int        num_features,
-		  const char * const *shaper_list,
-		  float               min_target_advance,
-		  float               max_target_advance,
-		  float              *advance, /* IN/OUT */
-		  hb_tag_t           *var_tag, /* OUT */
-		  float              *var_value /* OUT */);
-#endif
+		  hb_بفر_t        *بفر,
+		  ثابت hb_feature_t *features,
+		  غیرعلامتی صحیح        عدد_features,
+		  ثابت حرف * ثابت *shaper_list,
+		  اعشاری               min_ہدف_advance,
+		  اعشاری               max_ہدف_advance,
+		  اعشاری              *advance, /* IN/OUT */
+		  hb_لیبل_t           *var_لیبل, /*برآمد*/
+		  اعشاری              *var_قدر /*برآمد*/);
+#اگر_ختم
 
-HB_EXTERN const char **
-hb_shape_list_shapers (void);
+HB_EXTERN ثابت حرف **
+hb_shape_list_shapers (خالی);
 
 
-HB_END_DECLS
+HB_انتہا_DECLS
 
-#endif /* HB_SHAPE_H */
+#اگر_ختم /* HB_SHAPE_H */

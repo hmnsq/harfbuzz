@@ -1,201 +1,201 @@
-#ifndef OT_GLYF_GLYPH_HH
-#define OT_GLYF_GLYPH_HH
+#اگر_غیر_تعریف_شدہ OT_GLYF_GLYPH_HH
+#تعریف_کرو OT_GLYF_GLYPH_HH
 
 
-#include "../../hb-open-type.hh"
+#شامل "../../hb-open-type.hh"
 
-#include "GlyphHeader.hh"
-#include "SimpleGlyph.hh"
-#include "CompositeGlyph.hh"
-
-
-namespace OT {
-
-struct glyf_accelerator_t;
-
-namespace glyf_impl {
+#شامل "GlyphHeader.hh"
+#شامل "SimpleGlyph.hh"
+#شامل "CompositeGlyph.hh"
 
 
-enum phantom_point_index_t
+نامخلا OT {
+
+ساخت glyf_accelerator_t;
+
+نامخلا glyf_impl {
+
+
+شمار phantom_نقطہ_اشاریہ_t
 {
-  PHANTOM_LEFT   = 0,
-  PHANTOM_RIGHT  = 1,
-  PHANTOM_TOP    = 2,
+  PHANTOM_بایاں   = 0,
+  PHANTOM_دایاں  = 1,
+  PHANTOM_چوٹی    = 2,
   PHANTOM_BOTTOM = 3,
-  PHANTOM_COUNT  = 4
+  PHANTOM_گنتی  = 4
 };
 
-struct Glyph
+ساخت Glyph
 {
-  enum glyph_type_t {
-    EMPTY,
+  شمار glyph_type_t {
+    خالی_خانے,
     SIMPLE,
-    COMPOSITE,
+    مرکب,
   };
 
-  public:
-  composite_iter_t get_composite_iterator () const
+  عوامی:
+  مرکب_iter_t get_مرکب_iterator () ثابت
   {
-    if (type != COMPOSITE) return composite_iter_t ();
-    return CompositeGlyph (*header, bytes, extended).iter ();
+    اگر (type != مرکب) واپس مرکب_iter_t ();
+    واپس مرکب_Glyph (*سرخی, بائٹیں, extended).iter ();
   }
 
-  const hb_bytes_t trim_padding () const
+  ثابت hb_بائٹیں_t trim_padding () ثابت
   {
-    switch (type) {
-    case COMPOSITE: return CompositeGlyph (*header, bytes, extended).trim_padding ();
-    case SIMPLE:    return SimpleGlyph (*header, bytes).trim_padding ();
-    case EMPTY:     return bytes;
-    default:        return bytes;
+    انتخاب (type) {
+    حالت مرکب: واپس مرکب_Glyph (*سرخی, بائٹیں, extended).trim_padding ();
+    حالت SIMPLE:    واپس SimpleGlyph (*سرخی, بائٹیں).trim_padding ();
+    حالت خالی_خانے:     واپس بائٹیں;
+    طےشدہ:        واپس بائٹیں;
     }
   }
 
-  void drop_hints ()
+  خالی drop_hints ()
   {
-    switch (type) {
-    case COMPOSITE: CompositeGlyph (*header, bytes, extended).drop_hints (); return;
-    case SIMPLE:    SimpleGlyph (*header, bytes).drop_hints (); return;
-    case EMPTY:
-      if (bytes.length >= GlyphHeader::static_size)
-        SimpleGlyph (*header, bytes).drop_hints ();
-      return;
+    انتخاب (type) {
+    حالت مرکب: مرکب_Glyph (*سرخی, بائٹیں, extended).drop_hints (); واپس;
+    حالت SIMPLE:    SimpleGlyph (*سرخی, بائٹیں).drop_hints (); واپس;
+    حالت خالی_خانے:
+      اگر (بائٹیں.لمبائی >= Glyph_سرخی::static_سائز)
+        SimpleGlyph (*سرخی, بائٹیں).drop_hints ();
+      واپس;
     }
   }
 
-  void set_overlaps_flag ()
+  خالی سیٹ_overlaps_flag ()
   {
-    switch (type) {
-    case COMPOSITE: CompositeGlyph (*header, bytes, extended).set_overlaps_flag (); return;
-    case SIMPLE:    SimpleGlyph (*header, bytes).set_overlaps_flag (); return;
-    case EMPTY:     return;
+    انتخاب (type) {
+    حالت مرکب: مرکب_Glyph (*سرخی, بائٹیں, extended).سیٹ_overlaps_flag (); واپس;
+    حالت SIMPLE:    SimpleGlyph (*سرخی, بائٹیں).سیٹ_overlaps_flag (); واپس;
+    حالت خالی_خانے:     واپس;
     }
   }
 
-  void drop_hints_bytes (hb_bytes_t &dest_start, hb_bytes_t &dest_end) const
+  خالی drop_hints_بائٹیں (hb_بائٹیں_t &dest_آغاز, hb_بائٹیں_t &dest_انتہا) ثابت
   {
-    switch (type) {
-    case COMPOSITE: CompositeGlyph (*header, bytes, extended).drop_hints_bytes (dest_start); return;
-    case SIMPLE:    SimpleGlyph (*header, bytes).drop_hints_bytes (dest_start, dest_end); return;
-    case EMPTY:
-      dest_start = bytes;
-      dest_end = hb_bytes_t ();
-      if (bytes.length >= GlyphHeader::static_size &&
-          SimpleGlyph (*header, bytes).has_instructions_length ())
-        SimpleGlyph (*header, bytes).drop_hints_bytes (dest_start, dest_end);
-      return;
+    انتخاب (type) {
+    حالت مرکب: مرکب_Glyph (*سرخی, بائٹیں, extended).drop_hints_بائٹیں (dest_آغاز); واپس;
+    حالت SIMPLE:    SimpleGlyph (*سرخی, بائٹیں).drop_hints_بائٹیں (dest_آغاز, dest_انتہا); واپس;
+    حالت خالی_خانے:
+      dest_آغاز = بائٹیں;
+      dest_انتہا = hb_بائٹیں_t ();
+      اگر (بائٹیں.لمبائی >= Glyph_سرخی::static_سائز &&
+          SimpleGlyph (*سرخی, بائٹیں).has_instructions_لمبائی ())
+        SimpleGlyph (*سرخی, بائٹیں).drop_hints_بائٹیں (dest_آغاز, dest_انتہا);
+      واپس;
     }
   }
 
-  bool is_composite () const
-  { return type == COMPOSITE; }
+  منطقی is_مرکب () ثابت
+  { واپس type == مرکب; }
 
-  bool get_all_points_without_var (const hb_face_t *face,
-                                   contour_point_vector_t &points /* OUT */) const
+  منطقی get_all_points_without_var (ثابت hb_face_t *face,
+                                   contour_نقطہ_سمتیہ_t &points /*برآمد*/) ثابت
   {
-    switch (type) {
-    case SIMPLE:
-      if (unlikely (!SimpleGlyph (*header, bytes).get_contour_points (points, extended)))
-        return false;
-      break;
-    case COMPOSITE:
+    انتخاب (type) {
+    حالت SIMPLE:
+      اگر (unlikely (!SimpleGlyph (*سرخی, بائٹیں).get_contour_points (points, extended)))
+        واپس جھوٹ;
+      توڑو;
+    حالت مرکب:
     {
-      for (auto &item : get_composite_iterator ())
-        if (unlikely (!item.get_points (points, extended))) return false;
-      break;
+      برائے (خودکار &شے : get_مرکب_iterator ())
+        اگر (unlikely (!شے.get_points (points, extended))) واپس جھوٹ;
+      توڑو;
     }
-    case EMPTY:
-      break;
+    حالت خالی_خانے:
+      توڑو;
     }
 
     /* Init phantom points */
-    if (unlikely (!points.resize (points.length + PHANTOM_COUNT))) return false;
-    hb_array_t<contour_point_t> phantoms = points.as_array ().sub_array (points.length - PHANTOM_COUNT, PHANTOM_COUNT);
+    اگر (unlikely (!points.resize (points.لمبائی + PHANTOM_گنتی))) واپس جھوٹ;
+    hb_array_t<contour_نقطہ_t> phantoms = points.as_array ().sub_array (points.لمبائی - PHANTOM_گنتی, PHANTOM_گنتی);
     {
       // Duplicated code.
-      int lsb = 0;
-      face->table.hmtx->get_leading_bearing_without_var_unscaled (gid, &lsb);
-      int h_delta = (int) header->xMin - lsb;
-      HB_UNUSED int tsb = 0;
-#ifndef HB_NO_VERTICAL
-      face->table.vmtx->get_leading_bearing_without_var_unscaled (gid, &tsb);
-#endif
-      int v_orig  = (int) header->yMax + tsb;
-      unsigned h_adv = face->table.hmtx->get_advance_without_var_unscaled (gid);
-      unsigned v_adv =
-#ifndef HB_NO_VERTICAL
-                       face->table.vmtx->get_advance_without_var_unscaled (gid)
-#else
+      صحیح lsb = 0;
+      face->جدول.hmtx->get_leading_bearing_without_var_unscaled (gid, &lsb);
+      صحیح h_delta = (صحیح) سرخی->xMin - lsb;
+      HB_غیر_مستعمل صحیح tsb = 0;
+#اگر_غیر_تعریف_شدہ HB_NO_VERTICAL
+      face->جدول.vmtx->get_leading_bearing_without_var_unscaled (gid, &tsb);
+#اگر_ختم
+      صحیح v_orig  = (صحیح) سرخی->yMax + tsb;
+      غیرعلامتی h_adv = face->جدول.hmtx->get_advance_without_var_unscaled (gid);
+      غیرعلامتی v_adv =
+#اگر_غیر_تعریف_شدہ HB_NO_VERTICAL
+                       face->جدول.vmtx->get_advance_without_var_unscaled (gid)
+#ورنہ
                        - face->get_upem ()
-#endif
+#اگر_ختم
                        ;
-      phantoms[PHANTOM_LEFT].x = h_delta;
-      phantoms[PHANTOM_RIGHT].x = (int) h_adv + h_delta;
-      phantoms[PHANTOM_TOP].y = v_orig;
-      phantoms[PHANTOM_BOTTOM].y = v_orig - (int) v_adv;
+      phantoms[PHANTOM_بایاں].x = h_delta;
+      phantoms[PHANTOM_دایاں].x = (صحیح) h_adv + h_delta;
+      phantoms[PHANTOM_چوٹی].y = v_orig;
+      phantoms[PHANTOM_BOTTOM].y = v_orig - (صحیح) v_adv;
     }
-    return true;
+    واپس سچ;
   }
 
-  void update_mtx (const hb_subset_plan_t *plan,
-                   int xMin, int xMax,
-                   int yMin, int yMax,
-                   const contour_point_vector_t &all_points) const
+  خالی update_mtx (ثابت hb_subset_plan_t *plan,
+                   صحیح xMin, صحیح xMax,
+                   صحیح yMin, صحیح yMax,
+                   ثابت contour_نقطہ_سمتیہ_t &all_points) ثابت
   {
     hb_codepoint_t new_gid = 0;
-    if (!plan->new_gid_for_old_gid (gid, &new_gid))
-      return;
+    اگر (!plan->new_gid_for_old_gid (gid, &new_gid))
+      واپس;
 
-    if (type != EMPTY)
+    اگر (type != خالی_خانے)
     {
-      plan->bounds_width_vec[new_gid] = xMax - xMin;
-      plan->bounds_height_vec[new_gid] = yMax - yMin;
+      plan->bounds_چوڑائی_vec[new_gid] = xMax - xMin;
+      plan->bounds_اونچائی_vec[new_gid] = yMax - yMin;
     }
 
-    unsigned len = all_points.length;
-    float leftSideX = all_points[len - 4].x;
-    float rightSideX = all_points[len - 3].x;
-    float topSideY = all_points[len - 2].y;
-    float bottomSideY = all_points[len - 1].y;
+    غیرعلامتی len = all_points.لمبائی;
+    اعشاری بایاں_Side_X = all_points[len - 4].x;
+    اعشاری دایاں_Side_X = all_points[len - 3].x;
+    اعشاری چوٹی_Side_Y = all_points[len - 2].y;
+    اعشاری bottomSideY = all_points[len - 1].y;
 
     uint32_t hash = hb_hash (new_gid);
 
-    signed hori_aw = roundf (rightSideX - leftSideX);
-    if (hori_aw < 0) hori_aw = 0;
-    int lsb = roundf (xMin - leftSideX);
-    plan->hmtx_map.set_with_hash (new_gid, hash, hb_pair ((unsigned) hori_aw, lsb));
+    علامتی hori_aw = roundf (دایاں_Side_X - بایاں_Side_X);
+    اگر (hori_aw < 0) hori_aw = 0;
+    صحیح lsb = roundf (xMin - بایاں_Side_X);
+    plan->hmtx_map.سیٹ_with_hash (new_gid, hash, hb_pair ((غیرعلامتی) hori_aw, lsb));
     //flag value should be computed using non-empty glyphs
-    if (type != EMPTY && lsb != xMin)
-      plan->head_maxp_info.allXMinIsLsb = false;
+    اگر (type != خالی_خانے && lsb != xMin)
+      plan->سر_maxp_info.allXMinIsLsb = جھوٹ;
 
-    signed vert_aw = roundf (topSideY - bottomSideY);
-    if (vert_aw < 0) vert_aw = 0;
-    int tsb = roundf (topSideY - yMax);
-    plan->vmtx_map.set_with_hash (new_gid, hash, hb_pair ((unsigned) vert_aw, tsb));
+    علامتی vert_aw = roundf (چوٹی_Side_Y - bottomSideY);
+    اگر (vert_aw < 0) vert_aw = 0;
+    صحیح tsb = roundf (چوٹی_Side_Y - yMax);
+    plan->vmtx_map.سیٹ_with_hash (new_gid, hash, hb_pair ((غیرعلامتی) vert_aw, tsb));
   }
 
-  bool compile_header_bytes (const hb_subset_plan_t *plan,
-                             const contour_point_vector_t &all_points,
-                             hb_bytes_t &dest_bytes /* OUT */) const
+  منطقی compile_سرخی_بائٹیں (ثابت hb_subset_plan_t *plan,
+                             ثابت contour_نقطہ_سمتیہ_t &all_points,
+                             hb_بائٹیں_t &dest_بائٹیں /*برآمد*/) ثابت
   {
-    GlyphHeader *glyph_header = nullptr;
-    if (!plan->pinned_at_default && type != EMPTY && all_points.length >= 4)
+    Glyph_سرخی *glyph_سرخی = خالی_اشاریہ;
+    اگر (!plan->pinned_at_default && type != خالی_خانے && all_points.لمبائی >= 4)
     {
-      glyph_header = (GlyphHeader *) hb_calloc (1, GlyphHeader::static_size);
-      if (unlikely (!glyph_header)) return false;
+      glyph_سرخی = (Glyph_سرخی *) hb_calloc (1, Glyph_سرخی::static_سائز);
+      اگر (unlikely (!glyph_سرخی)) واپس جھوٹ;
     }
 
-    float xMin = 0, xMax = 0;
-    float yMin = 0, yMax = 0;
-    if (all_points.length > 4)
+    اعشاری xMin = 0, xMax = 0;
+    اعشاری yMin = 0, yMax = 0;
+    اگر (all_points.لمبائی > 4)
     {
       xMin = xMax = all_points[0].x;
       yMin = yMax = all_points[0].y;
 
-      unsigned count = all_points.length - 4;
-      for (unsigned i = 1; i < count; i++)
+      غیرعلامتی گنتی = all_points.لمبائی - 4;
+      برائے (غیرعلامتی i = 1; i < گنتی; i++)
       {
-	float x = all_points[i].x;
-	float y = all_points[i].y;
+	اعشاری x = all_points[i].x;
+	اعشاری y = all_points[i].y;
 	xMin = hb_min (xMin, x);
 	xMax = hb_max (xMax, x);
 	yMin = hb_min (yMin, y);
@@ -206,413 +206,413 @@ struct Glyph
 
     // These are destined for storage in a 16 bit field to clamp the values to
     // fit into a 16 bit signed integer.
-    int rounded_xMin = hb_clamp (roundf (xMin), -32768.0f, 32767.0f);
-    int rounded_xMax = hb_clamp (roundf (xMax), -32768.0f, 32767.0f);
-    int rounded_yMin = hb_clamp (roundf (yMin), -32768.0f, 32767.0f);
-    int rounded_yMax = hb_clamp (roundf (yMax), -32768.0f, 32767.0f);
+    صحیح rounded_xMin = hb_clamp (roundf (xMin), -32768.0f, 32767.0f);
+    صحیح rounded_xMax = hb_clamp (roundf (xMax), -32768.0f, 32767.0f);
+    صحیح rounded_yMin = hb_clamp (roundf (yMin), -32768.0f, 32767.0f);
+    صحیح rounded_yMax = hb_clamp (roundf (yMax), -32768.0f, 32767.0f);
 
     update_mtx (plan, rounded_xMin, rounded_xMax, rounded_yMin, rounded_yMax, all_points);
 
-    if (type != EMPTY)
+    اگر (type != خالی_خانے)
     {
-      plan->head_maxp_info.xMin = hb_min (plan->head_maxp_info.xMin, rounded_xMin);
-      plan->head_maxp_info.yMin = hb_min (plan->head_maxp_info.yMin, rounded_yMin);
-      plan->head_maxp_info.xMax = hb_max (plan->head_maxp_info.xMax, rounded_xMax);
-      plan->head_maxp_info.yMax = hb_max (plan->head_maxp_info.yMax, rounded_yMax);
+      plan->سر_maxp_info.xMin = hb_min (plan->سر_maxp_info.xMin, rounded_xMin);
+      plan->سر_maxp_info.yMin = hb_min (plan->سر_maxp_info.yMin, rounded_yMin);
+      plan->سر_maxp_info.xMax = hb_max (plan->سر_maxp_info.xMax, rounded_xMax);
+      plan->سر_maxp_info.yMax = hb_max (plan->سر_maxp_info.yMax, rounded_yMax);
     }
 
     /* when pinned at default, no need to compile glyph header
      * and for empty glyphs: all_points only include phantom points.
      * just update metrics and then return */
-    if (!glyph_header)
-      return true;
+    اگر (!glyph_سرخی)
+      واپس سچ;
 
-    glyph_header->numberOfContours = header->numberOfContours;
+    glyph_سرخی->نمبر_کا_Contours = سرخی->نمبر_کا_Contours;
 
-    glyph_header->xMin = rounded_xMin;
-    glyph_header->yMin = rounded_yMin;
-    glyph_header->xMax = rounded_xMax;
-    glyph_header->yMax = rounded_yMax;
+    glyph_سرخی->xMin = rounded_xMin;
+    glyph_سرخی->yMin = rounded_yMin;
+    glyph_سرخی->xMax = rounded_xMax;
+    glyph_سرخی->yMax = rounded_yMax;
 
-    dest_bytes = hb_bytes_t ((const char *)glyph_header, GlyphHeader::static_size);
-    return true;
+    dest_بائٹیں = hb_بائٹیں_t ((ثابت حرف *)glyph_سرخی, Glyph_سرخی::static_سائز);
+    واپس سچ;
   }
 
-  bool compile_bytes_with_deltas (const hb_subset_plan_t *plan,
+  منطقی compile_بائٹیں_with_deltas (ثابت hb_subset_plan_t *plan,
                                   hb_font_t *font,
-                                  const glyf_accelerator_t &glyf,
-                                  hb_bytes_t &dest_start,  /* IN/OUT */
-                                  hb_bytes_t &dest_end /* OUT */)
+                                  ثابت glyf_accelerator_t &glyf,
+                                  hb_بائٹیں_t &dest_آغاز,  /* IN/OUT */
+                                  hb_بائٹیں_t &dest_انتہا /*برآمد*/)
   {
-    contour_point_vector_t all_points, points_with_deltas;
-    unsigned composite_contours = 0;
-    head_maxp_info_t *head_maxp_info_p = &plan->head_maxp_info;
-    unsigned *composite_contours_p = &composite_contours;
+    contour_نقطہ_سمتیہ_t all_points, points_with_deltas;
+    غیرعلامتی مرکب_contours = 0;
+    سر_maxp_info_t *سر_maxp_info_p = &plan->سر_maxp_info;
+    غیرعلامتی *مرکب_contours_p = &مرکب_contours;
 
     // don't compute head/maxp values when glyph has no contours(type is EMPTY)
     // also ignore .notdef glyph when --notdef-outline is not enabled
-    if (type == EMPTY ||
+    اگر (type == خالی_خانے ||
         (gid == 0 && !(plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE)))
     {
-      head_maxp_info_p = nullptr;
-      composite_contours_p = nullptr;
+      سر_maxp_info_p = خالی_اشاریہ;
+      مرکب_contours_p = خالی_اشاریہ;
     }
 
     hb_glyf_scratch_t scratch;
-    if (!get_points (font, glyf, all_points, scratch, &points_with_deltas, head_maxp_info_p, composite_contours_p, false, false))
-      return false;
+    اگر (!get_points (font, glyf, all_points, scratch, &points_with_deltas, سر_maxp_info_p, مرکب_contours_p, جھوٹ, جھوٹ))
+      واپس جھوٹ;
 
     // .notdef, set type to empty so we only update metrics and don't compile bytes for
     // it
-    if (gid == 0 &&
+    اگر (gid == 0 &&
         !(plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE))
     {
-      type = EMPTY;
-      dest_start = hb_bytes_t ();
-      dest_end = hb_bytes_t ();
+      type = خالی_خانے;
+      dest_آغاز = hb_بائٹیں_t ();
+      dest_انتہا = hb_بائٹیں_t ();
     }
 
     //dont compile bytes when pinned at default, just recalculate bounds
-    if (!plan->pinned_at_default)
+    اگر (!plan->pinned_at_default)
     {
-      switch (type)
+      انتخاب (type)
       {
-      case COMPOSITE:
-        if (!CompositeGlyph (*header, bytes, extended).compile_bytes_with_deltas (dest_start,
+      حالت مرکب:
+        اگر (!مرکب_Glyph (*سرخی, بائٹیں, extended).compile_بائٹیں_with_deltas (dest_آغاز,
 										  points_with_deltas,
-										  dest_end))
-          return false;
-        break;
-      case SIMPLE:
-        if (!SimpleGlyph (*header, bytes).compile_bytes_with_deltas (all_points,
+										  dest_انتہا))
+          واپس جھوٹ;
+        توڑو;
+      حالت SIMPLE:
+        اگر (!SimpleGlyph (*سرخی, بائٹیں).compile_بائٹیں_with_deltas (all_points,
 								     plan->flags & HB_SUBSET_FLAGS_NO_HINTING,
-								     dest_end))
-          return false;
-        break;
-      case EMPTY:
-        dest_start = hb_bytes_t ();
-        dest_end = hb_bytes_t ();
+								     dest_انتہا))
+          واپس جھوٹ;
+        توڑو;
+      حالت خالی_خانے:
+        dest_آغاز = hb_بائٹیں_t ();
+        dest_انتہا = hb_بائٹیں_t ();
         /* Zero-contour glyphs may carry instructions for phantom points.
          * Copy them into owned memory like the other compiled glyphs. */
-        if (!(plan->flags & HB_SUBSET_FLAGS_NO_HINTING) &&
-            bytes.length >= GlyphHeader::static_size &&
-            header->numberOfContours == 0)
+        اگر (!(plan->flags & HB_SUBSET_FLAGS_NO_HINTING) &&
+            بائٹیں.لمبائی >= Glyph_سرخی::static_سائز &&
+            سرخی->نمبر_کا_Contours == 0)
         {
-          SimpleGlyph simple (*header, bytes);
-          unsigned length = simple.instructions_length ();
-          if (length)
+          SimpleGlyph simple (*سرخی, بائٹیں);
+          غیرعلامتی لمبائی = simple.instructions_لمبائی ();
+          اگر (لمبائی)
           {
-            length = simple.length (length);
-            char *p = (char *) hb_malloc (length);
-            if (unlikely (!p)) return false;
-            hb_memcpy (p, bytes.arrayZ, length);
-            dest_start = hb_bytes_t (p, length);
+            لمبائی = simple.لمبائی (لمبائی);
+            حرف *p = (حرف *) hb_malloc (لمبائی);
+            اگر (unlikely (!p)) واپس جھوٹ;
+            hb_memcpy (p, بائٹیں.arrayZ, لمبائی);
+            dest_آغاز = hb_بائٹیں_t (p, لمبائی);
           }
         }
-        break;
+        توڑو;
       }
     }
 
-    if (!compile_header_bytes (plan, all_points, dest_start))
+    اگر (!compile_سرخی_بائٹیں (plan, all_points, dest_آغاز))
     {
-      dest_end.fini ();
-      return false;
+      dest_انتہا.fini ();
+      واپس جھوٹ;
     }
-    return true;
+    واپس سچ;
   }
 
 
   /* Note: Recursively calls itself.
    * all_points includes phantom points
    */
-  template <typename accelerator_t>
-  bool get_points (hb_font_t *font, const accelerator_t &glyf_accelerator,
-		   contour_point_vector_t &all_points /* OUT */,
+  سانچہ <قسم_نام accelerator_t>
+  منطقی get_points (hb_font_t *font, ثابت accelerator_t &glyf_accelerator,
+		   contour_نقطہ_سمتیہ_t &all_points /*برآمد*/,
 		   hb_glyf_scratch_t &scratch,
-		   contour_point_vector_t *points_with_deltas = nullptr, /* OUT */
-		   head_maxp_info_t * head_maxp_info = nullptr, /* OUT */
-		   unsigned *composite_contours = nullptr, /* OUT */
-		   bool shift_points_hori = true,
-		   bool use_my_metrics = true,
-		   bool phantom_only = false,
-		   hb_array_t<const int> coords = hb_array_t<const int> (),
-		   hb_scalar_cache_t *gvar_cache = nullptr,
-		   unsigned int depth = 0,
-		   unsigned *edge_count = nullptr,
-		   int64_t *budget = nullptr) const
+		   contour_نقطہ_سمتیہ_t *points_with_deltas = خالی_اشاریہ, /*برآمد*/
+		   سر_maxp_info_t * سر_maxp_info = خالی_اشاریہ, /*برآمد*/
+		   غیرعلامتی *مرکب_contours = خالی_اشاریہ, /*برآمد*/
+		   منطقی سرکاؤ_points_hori = سچ,
+		   منطقی use_my_metrics = سچ,
+		   منطقی phantom_only = جھوٹ,
+		   hb_array_t<ثابت صحیح> coords = hb_array_t<ثابت صحیح> (),
+		   hb_scalar_cache_t *gvar_cache = خالی_اشاریہ,
+		   غیرعلامتی صحیح گہرائی = 0,
+		   غیرعلامتی *کنارہ_گنتی = خالی_اشاریہ,
+		   int64_t *budget = خالی_اشاریہ) ثابت
   {
-    if (unlikely (depth > HB_MAX_NESTING_LEVEL)) return false;
-    unsigned stack_edge_count = 0;
-    if (!edge_count) edge_count = &stack_edge_count;
-    if (unlikely (*edge_count > HB_MAX_GRAPH_EDGE_COUNT)) return false;
-    (*edge_count)++;
+    اگر (unlikely (گہرائی > HB_MAX_NESTING_LEVEL)) واپس جھوٹ;
+    غیرعلامتی ڈھیر_کنارہ_گنتی = 0;
+    اگر (!کنارہ_گنتی) کنارہ_گنتی = &ڈھیر_کنارہ_گنتی;
+    اگر (unlikely (*کنارہ_گنتی > HB_MAX_گراف_کنارہ_گنتی)) واپس جھوٹ;
+    (*کنارہ_گنتی)++;
 
-    int64_t stack_budget = HB_BUDGET_GLYPH;
-    if (!budget) budget = &stack_budget;
-    if (unlikely (!hb_budget_spend (*budget, HB_BUDGET_16))) return false;
+    int64_t ڈھیر_budget = HB_BUDGET_GLYPH;
+    اگر (!budget) budget = &ڈھیر_budget;
+    اگر (unlikely (!hb_budget_spend (*budget, HB_BUDGET_16))) واپس جھوٹ;
 
-    if (head_maxp_info)
+    اگر (سر_maxp_info)
     {
-      head_maxp_info->maxComponentDepth = hb_max (head_maxp_info->maxComponentDepth, depth);
+      سر_maxp_info->max_Component_گہرائی = hb_max (سر_maxp_info->max_Component_گہرائی, گہرائی);
     }
 
-    if (!coords && font->has_nonzero_coords)
-      coords = hb_array (font->coords, font->num_coords);
+    اگر (!coords && font->has_nonzero_coords)
+      coords = hb_array (font->coords, font->عدد_coords);
 
-    contour_point_vector_t &points = type == SIMPLE ? all_points : scratch.comp_points;
-    unsigned old_length = points.length;
+    contour_نقطہ_سمتیہ_t &points = type == SIMPLE ? all_points : scratch.comp_points;
+    غیرعلامتی old_لمبائی = points.لمبائی;
 
-    switch (type) {
-    case SIMPLE:
-      if (depth == 0 && head_maxp_info)
-        head_maxp_info->maxContours = hb_max (head_maxp_info->maxContours, (unsigned) header->numberOfContours);
-      if (depth > 0 && composite_contours)
-        *composite_contours += (unsigned) header->numberOfContours;
-      if (unlikely (!SimpleGlyph (*header, bytes).get_contour_points (all_points, extended, phantom_only, budget)))
-	return false;
-      break;
-    case COMPOSITE:
+    انتخاب (type) {
+    حالت SIMPLE:
+      اگر (گہرائی == 0 && سر_maxp_info)
+        سر_maxp_info->maxContours = hb_max (سر_maxp_info->maxContours, (غیرعلامتی) سرخی->نمبر_کا_Contours);
+      اگر (گہرائی > 0 && مرکب_contours)
+        *مرکب_contours += (غیرعلامتی) سرخی->نمبر_کا_Contours;
+      اگر (unlikely (!SimpleGlyph (*سرخی, بائٹیں).get_contour_points (all_points, extended, phantom_only, budget)))
+	واپس جھوٹ;
+      توڑو;
+    حالت مرکب:
     {
-      for (auto &item : get_composite_iterator ())
+      برائے (خودکار &شے : get_مرکب_iterator ())
       {
         /* Preparing a component is a traversal step, even if cycle
          * detection later skips its child glyph. */
-        if (unlikely (!hb_budget_spend (*budget, HB_BUDGET_16) ||
-                      !item.get_points (points, extended)))
+        اگر (unlikely (!hb_budget_spend (*budget, HB_BUDGET_16) ||
+                      !شے.get_points (points, extended)))
         {
-          points.resize (old_length);
-          return false;
+          points.resize (old_لمبائی);
+          واپس جھوٹ;
         }
       }
-      break;
+      توڑو;
     }
-    case EMPTY:
-      break;
+    حالت خالی_خانے:
+      توڑو;
     }
 
     /* Init phantom points */
-    if (unlikely (!points.resize (points.length + PHANTOM_COUNT))) return false;
-    hb_array_t<contour_point_t> phantoms = points.as_array ().sub_array (points.length - PHANTOM_COUNT, PHANTOM_COUNT);
+    اگر (unlikely (!points.resize (points.لمبائی + PHANTOM_گنتی))) واپس جھوٹ;
+    hb_array_t<contour_نقطہ_t> phantoms = points.as_array ().sub_array (points.لمبائی - PHANTOM_گنتی, PHANTOM_گنتی);
     {
       // Duplicated code.
-      int lsb = 0;
+      صحیح lsb = 0;
       glyf_accelerator.hmtx->get_leading_bearing_without_var_unscaled (gid, &lsb);
-      int h_delta = (int) header->xMin - lsb;
-      HB_UNUSED int tsb = 0;
-#ifndef HB_NO_VERTICAL
+      صحیح h_delta = (صحیح) سرخی->xMin - lsb;
+      HB_غیر_مستعمل صحیح tsb = 0;
+#اگر_غیر_تعریف_شدہ HB_NO_VERTICAL
       glyf_accelerator.vmtx->get_leading_bearing_without_var_unscaled (gid, &tsb);
-#endif
-      int v_orig  = (int) header->yMax + tsb;
-      unsigned h_adv = glyf_accelerator.hmtx->get_advance_without_var_unscaled (gid);
-      unsigned v_adv =
-#ifndef HB_NO_VERTICAL
+#اگر_ختم
+      صحیح v_orig  = (صحیح) سرخی->yMax + tsb;
+      غیرعلامتی h_adv = glyf_accelerator.hmtx->get_advance_without_var_unscaled (gid);
+      غیرعلامتی v_adv =
+#اگر_غیر_تعریف_شدہ HB_NO_VERTICAL
                        glyf_accelerator.vmtx->get_advance_without_var_unscaled (gid)
-#else
+#ورنہ
                        - font->face->get_upem ()
-#endif
+#اگر_ختم
                        ;
-      phantoms[PHANTOM_LEFT].x = h_delta;
-      phantoms[PHANTOM_RIGHT].x = (int) h_adv + h_delta;
-      phantoms[PHANTOM_TOP].y = v_orig;
-      phantoms[PHANTOM_BOTTOM].y = v_orig - (int) v_adv;
+      phantoms[PHANTOM_بایاں].x = h_delta;
+      phantoms[PHANTOM_دایاں].x = (صحیح) h_adv + h_delta;
+      phantoms[PHANTOM_چوٹی].y = v_orig;
+      phantoms[PHANTOM_BOTTOM].y = v_orig - (صحیح) v_adv;
     }
 
-#ifndef HB_NO_VAR
-    if (hb_any (coords))
+#اگر_غیر_تعریف_شدہ HB_NO_VAR
+    اگر (hb_any (coords))
     {
-      if (!glyf_accelerator.gvar->apply_deltas_to_points (gid,
+      اگر (!glyf_accelerator.gvar->apply_deltas_مقصد_points (gid,
 							  coords,
-							  points.as_array ().sub_array (old_length),
+							  points.as_array ().sub_array (old_لمبائی),
 							  scratch,
 							  gvar_cache,
 							  phantom_only && type == SIMPLE,
 							  budget))
-        return false;
+        واپس جھوٹ;
     }
-#endif
+#اگر_ختم
 
     // mainly used by CompositeGlyph calculating new X/Y offset value so no need to extend it
     // with child glyphs' points
-    if (points_with_deltas != nullptr && depth == 0 && type == COMPOSITE)
+    اگر (points_with_deltas != خالی_اشاریہ && گہرائی == 0 && type == مرکب)
     {
-      assert (old_length == 0);
+      أكد (old_لمبائی == 0);
       *points_with_deltas = points;
     }
 
-    float shift = 0;
-    switch (type) {
-    case SIMPLE:
-      if (depth == 0 && head_maxp_info)
-        head_maxp_info->maxPoints = hb_max (head_maxp_info->maxPoints, all_points.length - old_length - 4);
-      shift = phantoms[PHANTOM_LEFT].x;
-      break;
-    case COMPOSITE:
+    اعشاری سرکاؤ = 0;
+    انتخاب (type) {
+    حالت SIMPLE:
+      اگر (گہرائی == 0 && سر_maxp_info)
+        سر_maxp_info->maxPoints = hb_max (سر_maxp_info->maxPoints, all_points.لمبائی - old_لمبائی - 4);
+      سرکاؤ = phantoms[PHANTOM_بایاں].x;
+      توڑو;
+    حالت مرکب:
     {
-      hb_decycler_node_t decycler_node (scratch.decycler);
+      hb_decycler_گرہ_t decycler_گرہ (scratch.decycler);
 
-      unsigned int comp_index = 0;
-      for (auto &item : get_composite_iterator ())
+      غیرعلامتی صحیح comp_اشاریہ = 0;
+      برائے (خودکار &شے : get_مرکب_iterator ())
       {
-	hb_codepoint_t item_gid = item.get_gid (extended);
+	hb_codepoint_t شے_gid = شے.get_gid (extended);
 
-        if (unlikely (!decycler_node.visit (item_gid)))
+        اگر (unlikely (!decycler_گرہ.دورہ (شے_gid)))
 	{
-	  comp_index++;
-	  continue;
+	  comp_اشاریہ++;
+	  جاری;
 	}
 
-	unsigned old_count = all_points.length;
+	غیرعلامتی old_گنتی = all_points.لمبائی;
 
-	if (unlikely ((!phantom_only || (use_my_metrics && item.is_use_my_metrics ())) &&
-		      !glyf_accelerator.glyph_for_gid (item_gid)
+	اگر (unlikely ((!phantom_only || (use_my_metrics && شے.is_use_my_metrics ())) &&
+		      !glyf_accelerator.glyph_for_gid (شے_gid)
 				       .get_points (font,
 						    glyf_accelerator,
 						    all_points,
 						    scratch,
 						    points_with_deltas,
-						    head_maxp_info,
-						    composite_contours,
-						    shift_points_hori,
+						    سر_maxp_info,
+						    مرکب_contours,
+						    سرکاؤ_points_hori,
 						    use_my_metrics,
 						    phantom_only,
 						    coords,
 						    gvar_cache,
-						    depth + 1,
-						    edge_count,
+						    گہرائی + 1,
+						    کنارہ_گنتی,
 						    budget)))
 	{
-	  points.resize (old_length);
-	  return false;
+	  points.resize (old_لمبائی);
+	  واپس جھوٹ;
 	}
 
 	// points might have been reallocated. Relocate phantoms.
-	phantoms = points.as_array ().sub_array (points.length - PHANTOM_COUNT, PHANTOM_COUNT);
+	phantoms = points.as_array ().sub_array (points.لمبائی - PHANTOM_گنتی, PHANTOM_گنتی);
 
-	auto comp_points = all_points.as_array ().sub_array (old_count);
+	خودکار comp_points = all_points.as_array ().sub_array (old_گنتی);
 
 	/* Copy phantom points from component if USE_MY_METRICS flag set */
-	if (use_my_metrics && item.is_use_my_metrics ())
-	  for (unsigned int i = 0; i < PHANTOM_COUNT; i++)
-	    phantoms[i] = comp_points[comp_points.length - PHANTOM_COUNT + i];
+	اگر (use_my_metrics && شے.is_use_my_metrics ())
+	  برائے (غیرعلامتی صحیح i = 0; i < PHANTOM_گنتی; i++)
+	    phantoms[i] = comp_points[comp_points.لمبائی - PHANTOM_گنتی + i];
 
 	/* Each composite level transforms the whole subtree below it;
 	 * charge that work here so deep nesting is bounded by the budget
 	 * rather than by the per-draw point cap alone. */
-	if (unlikely (!hb_budget_spend (*budget, HB_BUDGET_1, comp_points.length)))
+	اگر (unlikely (!hb_budget_spend (*budget, HB_BUDGET_1, comp_points.لمبائی)))
 	{
-	  points.resize (old_length);
-	  return false;
+	  points.resize (old_لمبائی);
+	  واپس جھوٹ;
 	}
 
-	if (comp_points) // Empty in case of phantom_only
+	اگر (comp_points) // Empty in case of phantom_only
 	{
-	  float matrix[4];
-	  contour_point_t default_trans;
-	  item.get_transformation (matrix, default_trans, extended);
+	  اعشاری میٹرکس[4];
+	  contour_نقطہ_t default_trans;
+	  شے.get_transformation (میٹرکس, default_trans, extended);
 
 	  /* Apply component transformation & translation (with deltas applied) */
-	  item.transform_points (comp_points, matrix, points[old_length + comp_index]);
+	  شے.transform_points (comp_points, میٹرکس, points[old_لمبائی + comp_اشاریہ]);
 	}
 
-	if (item.is_anchored () && !phantom_only)
+	اگر (شے.is_anchored () && !phantom_only)
 	{
-	  unsigned int p1, p2;
-	  item.get_anchor_points (p1, p2, extended);
-	  if (likely (p1 < all_points.length && p2 < comp_points.length))
+	  غیرعلامتی صحیح p1, p2;
+	  شے.get_anchor_points (p1, p2, extended);
+	  اگر (likely (p1 < all_points.لمبائی && p2 < comp_points.لمبائی))
 	  {
-	    contour_point_t delta;
+	    contour_نقطہ_t delta;
 	    delta.init (all_points[p1].x - comp_points[p2].x,
 			all_points[p1].y - comp_points[p2].y);
 
-	    item.translate (delta, comp_points);
+	    شے.translate (delta, comp_points);
 	  }
 	}
 
-	all_points.resize (all_points.length - PHANTOM_COUNT);
+	all_points.resize (all_points.لمبائی - PHANTOM_گنتی);
 
-	if (all_points.length > HB_GLYF_MAX_POINTS)
+	اگر (all_points.لمبائی > HB_GLYF_MAX_POINTS)
 	{
-	  points.resize (old_length);
-	  return false;
+	  points.resize (old_لمبائی);
+	  واپس جھوٹ;
 	}
 
-	comp_index++;
+	comp_اشاریہ++;
       }
 
-      if (head_maxp_info && depth == 0)
+      اگر (سر_maxp_info && گہرائی == 0)
       {
-        if (composite_contours)
-          head_maxp_info->maxCompositeContours = hb_max (head_maxp_info->maxCompositeContours, *composite_contours);
-        head_maxp_info->maxCompositePoints = hb_max (head_maxp_info->maxCompositePoints, all_points.length);
-        head_maxp_info->maxComponentElements = hb_max (head_maxp_info->maxComponentElements, comp_index);
+        اگر (مرکب_contours)
+          سر_maxp_info->max_مرکب_Contours = hb_max (سر_maxp_info->max_مرکب_Contours, *مرکب_contours);
+        سر_maxp_info->max_مرکب_Points = hb_max (سر_maxp_info->max_مرکب_Points, all_points.لمبائی);
+        سر_maxp_info->maxComponentElements = hb_max (سر_maxp_info->maxComponentElements, comp_اشاریہ);
       }
       all_points.extend (phantoms);
-      shift = phantoms[PHANTOM_LEFT].x;
-      points.resize (old_length);
-    } break;
-    case EMPTY:
+      سرکاؤ = phantoms[PHANTOM_بایاں].x;
+      points.resize (old_لمبائی);
+    } توڑو;
+    حالت خالی_خانے:
       all_points.extend (phantoms);
-      shift = phantoms[PHANTOM_LEFT].x;
-      points.resize (old_length);
-      break;
+      سرکاؤ = phantoms[PHANTOM_بایاں].x;
+      points.resize (old_لمبائی);
+      توڑو;
     }
 
-    if (depth == 0 && shift_points_hori) /* Apply at top level */
+    اگر (گہرائی == 0 && سرکاؤ_points_hori) /* Apply at top level */
     {
       /* Undocumented rasterizer behavior:
        * Shift points horizontally by the updated left side bearing
        */
-      if (shift)
-        for (auto &point : all_points)
-	  point.x -= shift;
+      اگر (سرکاؤ)
+        برائے (خودکار &نقطہ : all_points)
+	  نقطہ.x -= سرکاؤ;
     }
 
-    return !all_points.in_error ();
+    واپس !all_points.اندر_error ();
   }
 
-  bool get_extents_without_var_scaled (hb_font_t *font, const glyf_accelerator_t &glyf_accelerator,
-				       hb_glyph_extents_t *extents) const
+  منطقی get_extents_without_var_scaled (hb_font_t *font, ثابت glyf_accelerator_t &glyf_accelerator,
+				       hb_glyph_extents_t *extents) ثابت
   {
-    if (type == EMPTY)
+    اگر (type == خالی_خانے)
     {
       *extents = {0, 0, 0, 0};
-      return true; /* Empty glyph; zero extents. */
+      واپس سچ; /* Empty glyph; zero extents. */
     }
-    return header->get_extents_without_var_scaled (font, glyf_accelerator, gid, extents);
+    واپس سرخی->get_extents_without_var_scaled (font, glyf_accelerator, gid, extents);
   }
 
-  hb_bytes_t get_bytes () const { return bytes; }
-  glyph_type_t get_type () const { return type; }
-  const GlyphHeader *get_header () const { return header; }
-  bool is_extended () const { return extended; }
+  hb_بائٹیں_t get_بائٹیں () ثابت { واپس بائٹیں; }
+  glyph_type_t get_type () ثابت { واپس type; }
+  ثابت Glyph_سرخی *get_سرخی () ثابت { واپس سرخی; }
+  منطقی is_extended () ثابت { واپس extended; }
 
-  Glyph () : bytes (),
-             header (bytes.as<GlyphHeader> ()),
+  Glyph () : بائٹیں (),
+             سرخی (بائٹیں.as<Glyph_سرخی> ()),
              gid (-1),
-             type(EMPTY),
-	     extended (false)
+             type(خالی_خانے),
+	     extended (جھوٹ)
   {}
 
-  Glyph (hb_bytes_t bytes_,
+  Glyph (hb_بائٹیں_t بائٹیں_2,
 	 hb_codepoint_t gid_,
-	 bool extended_) : bytes (bytes_),
-			   header (bytes.as<GlyphHeader> ()),
+	 منطقی extended_) : بائٹیں (بائٹیں_2),
+			   سرخی (بائٹیں.as<Glyph_سرخی> ()),
 			   gid (gid_),
 			   extended (extended_)
   {
-    int num_contours = header->numberOfContours;
-    if (unlikely (num_contours == 0)) type = EMPTY;
-    else if (num_contours > 0) type = SIMPLE;
-    else if (num_contours <= -1) type = COMPOSITE;
-    else type = EMPTY; // Spec deviation; Spec says COMPOSITE, but not seen in the wild.
+    صحیح عدد_contours = سرخی->نمبر_کا_Contours;
+    اگر (unlikely (عدد_contours == 0)) type = خالی_خانے;
+    ورنہ اگر (عدد_contours > 0) type = SIMPLE;
+    ورنہ اگر (عدد_contours <= -1) type = مرکب;
+    ورنہ type = خالی_خانے; // Spec deviation; Spec says COMPOSITE, but not seen in the wild.
   }
 
-  protected:
-  hb_bytes_t bytes;
-  const GlyphHeader *header;
+  محفوظ:
+  hb_بائٹیں_t بائٹیں;
+  ثابت Glyph_سرخی *سرخی;
   hb_codepoint_t gid;
   glyph_type_t type;
-  bool extended;
+  منطقی extended;
 };
 
 
@@ -620,4 +620,4 @@ struct Glyph
 } /* namespace OT */
 
 
-#endif /* OT_GLYF_GLYPH_HH */
+#اگر_ختم /* OT_GLYF_GLYPH_HH */

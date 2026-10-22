@@ -24,51 +24,51 @@
  * Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_VECTOR_PATH_HH
-#define HB_VECTOR_PATH_HH
+#اگر_غیر_تعریف_شدہ HB_سمتیہ_راستہ_HH
+#تعریف_کرو HB_سمتیہ_راستہ_HH
 
-#include "hb.hh"
-#include "hb-vector.hh"
-#include "hb-vector.h"
-#include "hb-draw.h"
-#include "hb-vector-buf.hh"
+#شامل "hb.hh"
+#شامل "hb-vector.hh"
+#شامل "hb-vector.h"
+#شامل "hb-draw.h"
+#شامل "hb-vector-buf.hh"
 
 /* Lightweight path sink: serializes hb_draw_* calls into an
  * external char buffer as either SVG path-data or PDF path
  * operators, depending on format.  Used by the vector paint
  * backends to accumulate arbitrary clip paths (and by the
  * SVG backend to emit glyph outlines into defs). */
-struct hb_vector_path_sink_t
+ساخت hb_سمتیہ_راستہ_sink_t
 {
-  hb_vector_buf_t *path;
-  unsigned precision;
-  float x_scale;
-  float y_scale;
+  hb_سمتیہ_buf_t *راستہ;
+  غیرعلامتی precision;
+  اعشاری x_scale;
+  اعشاری y_scale;
   int64_t *budget;
 
-  bool begin_command ()
+  منطقی begin_command ()
   {
-    return likely (!path->in_error () && !(budget && *budget < 0));
+    واپس likely (!راستہ->اندر_error () && !(budget && *budget < 0));
   }
 
-  void end_command ()
+  خالی انتہا_command ()
   {
     /* Serialized bytes are bounded by the output buffer's document-size
      * cap (in_error), not the outline work budget; stop outline traversal
      * once that cap or an allocation error trips. */
-    if (!budget) return;
-    if (unlikely (path->in_error ()))
+    اگر (!budget) واپس;
+    اگر (unlikely (راستہ->اندر_error ()))
       *budget = 0;
   }
 };
 
-HB_INTERNAL hb_draw_funcs_t *
-hb_vector_svg_path_draw_funcs_get ();
+HB_اندرونی hb_draw_funcs_t *
+hb_سمتیہ_svg_راستہ_draw_funcs_get ();
 
-HB_INTERNAL hb_draw_funcs_t *
-hb_vector_pdf_path_draw_funcs_get ();
+HB_اندرونی hb_draw_funcs_t *
+hb_سمتیہ_pdf_راستہ_draw_funcs_get ();
 
-HB_INTERNAL hb_draw_funcs_t *
-hb_vector_path_draw_funcs_get (hb_vector_format_t format);
+HB_اندرونی hb_draw_funcs_t *
+hb_سمتیہ_راستہ_draw_funcs_get (hb_سمتیہ_format_t format);
 
-#endif /* HB_VECTOR_PATH_HH */
+#اگر_ختم /* HB_VECTOR_PATH_HH */

@@ -26,322 +26,322 @@
  * Red Hat Author(s): Behdad Esfahbod
  */
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
+#اگر_تعریف_شدہ HAVE_CONFIG_H
+#شامل "config.h"
+#اگر_ختم
 
-#include "hb.h"
-#include "hb-ot.h"
+#شامل "hb.h"
+#شامل "hb-ot.h"
 
-#include <cassert>
-#include <cstdlib>
-#include <cstdio>
-#include <cstring>
+#شامل <cassert>
+#شامل <cstdlib>
+#شامل <cstdio>
+#شامل <cstring>
 
-#ifdef HB_NO_OPEN
-#define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
-#endif
+#اگر_تعریف_شدہ HB_NO_OPEN
+#تعریف_کرو hb_blob_create_from_file_or_fail(x)  hb_blob_get_خالی_خانے ()
+#اگر_ختم
 
-#if !defined(HB_NO_COLOR) && !defined(HB_NO_DRAW)
-#ifndef HB_NO_SVG
-static void
-svg_dump (hb_face_t *face, unsigned face_index)
+#اگر !defined(HB_NO_COLOR) && !defined(HB_NO_DRAW)
+#اگر_غیر_تعریف_شدہ HB_NO_SVG
+ساکن خالی
+svg_dump (hb_face_t *face, غیرعلامتی face_اشاریہ)
 {
-  unsigned glyph_count = hb_face_get_glyph_count (face);
+  غیرعلامتی glyph_گنتی = hb_face_get_glyph_گنتی (face);
 
-  for (unsigned glyph_id = 0; glyph_id < glyph_count; ++glyph_id)
+  برائے (غیرعلامتی glyph_id = 0; glyph_id < glyph_گنتی; ++glyph_id)
   {
     hb_blob_t *blob = hb_ot_color_glyph_reference_svg (face, glyph_id);
 
-    if (hb_blob_get_length (blob) == 0) continue;
+    اگر (hb_blob_get_لمبائی (blob) == 0) جاری;
 
-    unsigned length;
-    const char *data = hb_blob_get_data (blob, &length);
+    غیرعلامتی لمبائی;
+    ثابت حرف *ڈیٹا = hb_blob_get_ڈیٹا (blob, &لمبائی);
 
-    char output_path[255];
-    snprintf (output_path, sizeof output_path,
+    حرف output_راستہ[255];
+    snprintf (output_راستہ, حجم output_راستہ,
 	     "out/svg-%u-%u.svg%s",
 	     glyph_id,
-	     face_index,
+	     face_اشاریہ,
 	     // append "z" if the content is gzipped, https://stackoverflow.com/a/6059405
-	     (length > 2 && (data[0] == '\x1F') && (data[1] == '\x8B')) ? "z" : "");
+	     (لمبائی > 2 && (ڈیٹا[0] == '\x1F') && (ڈیٹا[1] == '\x8B')) ? "z" : "");
 
-    FILE *f = fopen (output_path, "wb");
-    fwrite (data, 1, length, f);
+    FILE *f = fopen (output_راستہ, "wb");
+    fwrite (ڈیٹا, 1, لمبائی, f);
     fclose (f);
 
     hb_blob_destroy (blob);
   }
 }
-#endif
+#اگر_ختم
 
 /* _png API is so easy to use unlike the below code, don't get confused */
-static void
-png_dump (hb_face_t *face, unsigned face_index)
+ساکن خالی
+png_dump (hb_face_t *face, غیرعلامتی face_اشاریہ)
 {
-  unsigned glyph_count = hb_face_get_glyph_count (face);
+  غیرعلامتی glyph_گنتی = hb_face_get_glyph_گنتی (face);
   hb_font_t *font = hb_font_create (face);
 
   /* scans the font for strikes */
-  unsigned sample_glyph_id;
+  غیرعلامتی sample_glyph_id;
   /* we don't care about different strikes for different glyphs at this point */
-  for (sample_glyph_id = 0; sample_glyph_id < glyph_count; ++sample_glyph_id)
+  برائے (sample_glyph_id = 0; sample_glyph_id < glyph_گنتی; ++sample_glyph_id)
   {
     hb_blob_t *blob = hb_ot_color_glyph_reference_png (font, sample_glyph_id);
-    unsigned blob_length = hb_blob_get_length (blob);
+    غیرعلامتی blob_لمبائی = hb_blob_get_لمبائی (blob);
     hb_blob_destroy (blob);
-    if (blob_length != 0)
-      break;
+    اگر (blob_لمبائی != 0)
+      توڑو;
   }
 
-  unsigned upem = hb_face_get_upem (face);
-  unsigned blob_length = 0;
-  unsigned strike = 0;
-  for (unsigned ppem = 1; ppem < upem; ++ppem)
+  غیرعلامتی upem = hb_face_get_upem (face);
+  غیرعلامتی blob_لمبائی = 0;
+  غیرعلامتی strike = 0;
+  برائے (غیرعلامتی ppem = 1; ppem < upem; ++ppem)
   {
-    hb_font_set_ppem (font, ppem, ppem);
+    hb_font_سیٹ_ppem (font, ppem, ppem);
     hb_blob_t *blob = hb_ot_color_glyph_reference_png (font, sample_glyph_id);
-    unsigned new_blob_length = hb_blob_get_length (blob);
+    غیرعلامتی new_blob_لمبائی = hb_blob_get_لمبائی (blob);
     hb_blob_destroy (blob);
-    if (new_blob_length != blob_length)
+    اگر (new_blob_لمبائی != blob_لمبائی)
     {
-      for (unsigned glyph_id = 0; glyph_id < glyph_count; ++glyph_id)
+      برائے (غیرعلامتی glyph_id = 0; glyph_id < glyph_گنتی; ++glyph_id)
       {
 	hb_blob_t *blob = hb_ot_color_glyph_reference_png (font, glyph_id);
 
-	if (hb_blob_get_length (blob) == 0) continue;
+	اگر (hb_blob_get_لمبائی (blob) == 0) جاری;
 
-	unsigned length;
-	const char *data = hb_blob_get_data (blob, &length);
+	غیرعلامتی لمبائی;
+	ثابت حرف *ڈیٹا = hb_blob_get_ڈیٹا (blob, &لمبائی);
 
-	char output_path[255];
-	snprintf (output_path, sizeof output_path, "out/png-%u-%u-%u.png", glyph_id, strike, face_index);
+	حرف output_راستہ[255];
+	snprintf (output_راستہ, حجم output_راستہ, "out/png-%u-%u-%u.png", glyph_id, strike, face_اشاریہ);
 
-	FILE *f = fopen (output_path, "wb");
-	fwrite (data, 1, length, f);
+	FILE *f = fopen (output_راستہ, "wb");
+	fwrite (ڈیٹا, 1, لمبائی, f);
 	fclose (f);
 
 	hb_blob_destroy (blob);
       }
 
       strike++;
-      blob_length = new_blob_length;
+      blob_لمبائی = new_blob_لمبائی;
     }
   }
 
   hb_font_destroy (font);
 }
 
-struct draw_data_t
+ساخت draw_ڈیٹا_t
 {
   FILE *f;
   hb_position_t ascender;
 };
 
-static void
-move_to (hb_draw_funcs_t *, draw_data_t *draw_data,
+ساکن خالی
+move_مقصد (hb_draw_funcs_t *, draw_ڈیٹا_t *draw_ڈیٹا,
 	 hb_draw_state_t *,
-	 float to_x, float to_y,
-	 void *)
+	 اعشاری مقصد_x, اعشاری مقصد_y,
+	 خالی *)
 {
-  fprintf (draw_data->f, "M%g,%g", to_x, draw_data->ascender - to_y);
+  fprintf (draw_ڈیٹا->f, "M%g,%g", مقصد_x, draw_ڈیٹا->ascender - مقصد_y);
 }
 
-static void
-line_to (hb_draw_funcs_t *, draw_data_t *draw_data,
+ساکن خالی
+سطر_مقصد (hb_draw_funcs_t *, draw_ڈیٹا_t *draw_ڈیٹا,
 	 hb_draw_state_t *,
-	 float to_x, float to_y,
-	 void *)
+	 اعشاری مقصد_x, اعشاری مقصد_y,
+	 خالی *)
 {
-  fprintf (draw_data->f, "L%g,%g", to_x, draw_data->ascender - to_y);
+  fprintf (draw_ڈیٹا->f, "L%g,%g", مقصد_x, draw_ڈیٹا->ascender - مقصد_y);
 }
 
-static void
-quadratic_to (hb_draw_funcs_t *, draw_data_t *draw_data,
+ساکن خالی
+quadratic_مقصد (hb_draw_funcs_t *, draw_ڈیٹا_t *draw_ڈیٹا,
 	      hb_draw_state_t *,
-	      float control_x, float control_y,
-	      float to_x, float to_y,
-	      void *)
+	      اعشاری control_x, اعشاری control_y,
+	      اعشاری مقصد_x, اعشاری مقصد_y,
+	      خالی *)
 {
-  fprintf (draw_data->f, "Q%g,%g %g,%g", control_x, draw_data->ascender - control_y,
-					to_x, draw_data->ascender - to_y);
+  fprintf (draw_ڈیٹا->f, "Q%g,%g %g,%g", control_x, draw_ڈیٹا->ascender - control_y,
+					مقصد_x, draw_ڈیٹا->ascender - مقصد_y);
 }
 
-static void
-cubic_to (hb_draw_funcs_t *, draw_data_t *draw_data,
+ساکن خالی
+cubic_مقصد (hb_draw_funcs_t *, draw_ڈیٹا_t *draw_ڈیٹا,
 	  hb_draw_state_t *,
-	  float control1_x, float control1_y,
-	  float control2_x, float control2_y,
-	  float to_x, float to_y,
-	  void *)
+	  اعشاری control1_x, اعشاری control1_y,
+	  اعشاری control2_x, اعشاری control2_y,
+	  اعشاری مقصد_x, اعشاری مقصد_y,
+	  خالی *)
 {
-  fprintf (draw_data->f, "C%g,%g %g,%g %g,%g", control1_x, draw_data->ascender - control1_y,
-					       control2_x, draw_data->ascender - control2_y,
-					       to_x, draw_data->ascender - to_y);
+  fprintf (draw_ڈیٹا->f, "C%g,%g %g,%g %g,%g", control1_x, draw_ڈیٹا->ascender - control1_y,
+					       control2_x, draw_ڈیٹا->ascender - control2_y,
+					       مقصد_x, draw_ڈیٹا->ascender - مقصد_y);
 }
 
-static void
-close_path (hb_draw_funcs_t *, draw_data_t *draw_data,
+ساکن خالی
+close_راستہ (hb_draw_funcs_t *, draw_ڈیٹا_t *draw_ڈیٹا,
 	    hb_draw_state_t *,
-	    void *)
+	    خالی *)
 {
-  fprintf (draw_data->f, "Z");
+  fprintf (draw_ڈیٹا->f, "Z");
 }
 
-static void
-layered_glyph_dump (hb_font_t *font, hb_draw_funcs_t *funcs, unsigned face_index)
+ساکن خالی
+layered_glyph_dump (hb_font_t *font, hb_draw_funcs_t *funcs, غیرعلامتی face_اشاریہ)
 {
   hb_face_t *face = hb_font_get_face (font);
-  unsigned palette_count = hb_ot_color_palette_get_count (face);
-  for (unsigned palette = 0; palette < palette_count; ++palette)
+  غیرعلامتی palette_گنتی = hb_ot_color_palette_get_گنتی (face);
+  برائے (غیرعلامتی palette = 0; palette < palette_گنتی; ++palette)
   {
-    unsigned num_colors = hb_ot_color_palette_get_colors (face, palette, 0, nullptr, nullptr);
-    if (!num_colors) continue;
+    غیرعلامتی عدد_colors = hb_ot_color_palette_get_colors (face, palette, 0, خالی_اشاریہ, خالی_اشاریہ);
+    اگر (!عدد_colors) جاری;
 
-    hb_color_t *colors = (hb_color_t*) calloc (num_colors, sizeof (hb_color_t));
-    hb_ot_color_palette_get_colors (face, palette, 0, &num_colors, colors);
-    if (!num_colors)
+    hb_color_t *colors = (hb_color_t*) صفر_حافظہ_دو (عدد_colors, حجم (hb_color_t));
+    hb_ot_color_palette_get_colors (face, palette, 0, &عدد_colors, colors);
+    اگر (!عدد_colors)
     {
-      free (colors);
-      continue;
+      آزاد (colors);
+      جاری;
     }
 
-    unsigned num_glyphs = hb_face_get_glyph_count (face);
-    for (hb_codepoint_t gid = 0; gid < num_glyphs; ++gid)
+    غیرعلامتی عدد_glyphs = hb_face_get_glyph_گنتی (face);
+    برائے (hb_codepoint_t gid = 0; gid < عدد_glyphs; ++gid)
     {
-      unsigned num_layers = hb_ot_color_glyph_get_layers (face, gid, 0, nullptr, nullptr);
-      if (!num_layers) continue;
+      غیرعلامتی عدد_layers = hb_ot_color_glyph_get_layers (face, gid, 0, خالی_اشاریہ, خالی_اشاریہ);
+      اگر (!عدد_layers) جاری;
 
-      hb_ot_color_layer_t *layers = (hb_ot_color_layer_t*) malloc (num_layers * sizeof (hb_ot_color_layer_t));
+      hb_ot_color_layer_t *layers = (hb_ot_color_layer_t*) حافظہ_دو (عدد_layers * حجم (hb_ot_color_layer_t));
 
-      hb_ot_color_glyph_get_layers (face, gid, 0, &num_layers, layers);
-      if (num_layers)
+      hb_ot_color_glyph_get_layers (face, gid, 0, &عدد_layers, layers);
+      اگر (عدد_layers)
       {
 	hb_font_extents_t font_extents;
 	hb_font_get_extents_for_direction (font, HB_DIRECTION_LTR, &font_extents);
 	hb_glyph_extents_t extents = {0, 0, 0, 0};
-	if (!hb_font_get_glyph_extents (font, gid, &extents))
+	اگر (!hb_font_get_glyph_extents (font, gid, &extents))
 	{
-	  printf ("Skip gid: %u\n", gid);
-	  continue;
+	  لکھو ("Skip gid: %u\n", gid);
+	  جاری;
 	}
 
-	char output_path[255];
-	snprintf (output_path, sizeof output_path, "out/colr-%u-%u-%u.svg", gid, palette, face_index);
-	FILE *f = fopen (output_path, "wb");
+	حرف output_راستہ[255];
+	snprintf (output_راستہ, حجم output_راستہ, "out/colr-%u-%u-%u.svg", gid, palette, face_اشاریہ);
+	FILE *f = fopen (output_راستہ, "wb");
 	fprintf (f, "<svg xmlns=\"http://www.w3.org/2000/svg\""
 		    " viewBox=\"%d %d %lld %lld\">\n",
 		    extents.x_bearing, 0,
-		    (long long) extents.x_bearing + extents.width,
-		    -(long long) extents.height);
-	draw_data_t draw_data;
-	draw_data.ascender = extents.y_bearing;
-	draw_data.f = f;
+		    (طویل طویل) extents.x_bearing + extents.چوڑائی,
+		    -(طویل طویل) extents.اونچائی);
+	draw_ڈیٹا_t draw_ڈیٹا;
+	draw_ڈیٹا.ascender = extents.y_bearing;
+	draw_ڈیٹا.f = f;
 
-	for (unsigned layer = 0; layer < num_layers; ++layer)
+	برائے (غیرعلامتی layer = 0; layer < عدد_layers; ++layer)
 	{
 	  hb_color_t color = 0x000000FF;
-	  if (layers[layer].color_index != 0xFFFF)
-	    color = colors[layers[layer].color_index];
+	  اگر (layers[layer].color_اشاریہ != 0xFFFF)
+	    color = colors[layers[layer].color_اشاریہ];
 	  fprintf (f, "<path fill=\"#%02X%02X%02X\" ",
 		   hb_color_get_red (color), hb_color_get_green (color), hb_color_get_green (color));
-	  if (hb_color_get_alpha (color) != 255)
-	    fprintf (f, "fill-opacity=\"%.3f\"", (double) hb_color_get_alpha (color) / 255.);
+	  اگر (hb_color_get_alpha (color) != 255)
+	    fprintf (f, "fill-opacity=\"%.3f\"", (دوہرا) hb_color_get_alpha (color) / 255.);
 	  fprintf (f, "d=\"");
-	  hb_font_draw_glyph (font, layers[layer].glyph, funcs, &draw_data);
+	  hb_font_draw_glyph (font, layers[layer].glyph, funcs, &draw_ڈیٹا);
 	  fprintf (f, "\"/>\n");
 	}
 
 	fprintf (f, "</svg>");
 	fclose (f);
       }
-      free (layers);
+      آزاد (layers);
     }
 
-    free (colors);
+    آزاد (colors);
   }
 }
 
-static void
-dump_glyphs (hb_font_t *font, hb_draw_funcs_t *funcs, unsigned face_index)
+ساکن خالی
+dump_glyphs (hb_font_t *font, hb_draw_funcs_t *funcs, غیرعلامتی face_اشاریہ)
 {
-  unsigned num_glyphs = hb_face_get_glyph_count (hb_font_get_face (font));
-  for (unsigned gid = 0; gid < num_glyphs; ++gid)
+  غیرعلامتی عدد_glyphs = hb_face_get_glyph_گنتی (hb_font_get_face (font));
+  برائے (غیرعلامتی gid = 0; gid < عدد_glyphs; ++gid)
   {
     hb_font_extents_t font_extents;
     hb_font_get_extents_for_direction (font, HB_DIRECTION_LTR, &font_extents);
     hb_glyph_extents_t extents = {0, 0, 0, 0};
-    if (!hb_font_get_glyph_extents (font, gid, &extents))
+    اگر (!hb_font_get_glyph_extents (font, gid, &extents))
     {
-      printf ("Skip gid: %u\n", gid);
-      continue;
+      لکھو ("Skip gid: %u\n", gid);
+      جاری;
     }
 
-    char output_path[255];
-    snprintf (output_path, sizeof output_path, "out/%u-%u.svg", face_index, gid);
-    FILE *f = fopen (output_path, "wb");
+    حرف output_راستہ[255];
+    snprintf (output_راستہ, حجم output_راستہ, "out/%u-%u.svg", face_اشاریہ, gid);
+    FILE *f = fopen (output_راستہ, "wb");
     fprintf (f, "<svg xmlns=\"http://www.w3.org/2000/svg\""
 		" viewBox=\"%d %d %lld %lld\"><path d=\"",
 		extents.x_bearing, 0,
-		(long long) extents.x_bearing + extents.width,
-		(long long) font_extents.ascender - font_extents.descender);
-    draw_data_t draw_data;
-    draw_data.ascender = font_extents.ascender;
-    draw_data.f = f;
-    hb_font_draw_glyph (font, gid, funcs, &draw_data);
+		(طویل طویل) extents.x_bearing + extents.چوڑائی,
+		(طویل طویل) font_extents.ascender - font_extents.descender);
+    draw_ڈیٹا_t draw_ڈیٹا;
+    draw_ڈیٹا.ascender = font_extents.ascender;
+    draw_ڈیٹا.f = f;
+    hb_font_draw_glyph (font, gid, funcs, &draw_ڈیٹا);
     fprintf (f, "\"/></svg>");
     fclose (f);
   }
 }
 
-static void
-dump_glyphs (hb_blob_t *blob, const char *font_name)
+ساکن خالی
+dump_glyphs (hb_blob_t *blob, ثابت حرف *font_name)
 {
   FILE *font_name_file = fopen ("out/.dumped_font_name", "r");
-  if (font_name_file)
+  اگر (font_name_file)
   {
     fprintf (stderr, "Purge or rename ./out folder if you like to run a glyph dump,\n"
 		     "run it like `rm -rf out && mkdir out && src/main font-file.ttf`\n");
-    return;
+    واپس;
   }
 
   font_name_file = fopen ("out/.dumped_font_name", "w");
-  if (!font_name_file)
+  اگر (!font_name_file)
   {
     fprintf (stderr, "./out is not accessible as a folder, create it please\n");
-    return;
+    واپس;
   }
-  fwrite (font_name, 1, strlen (font_name), font_name_file);
+  fwrite (font_name, 1, لڑی_لمبائی (font_name), font_name_file);
   fclose (font_name_file);
 
   hb_draw_funcs_t *funcs = hb_draw_funcs_create ();
-  hb_draw_funcs_set_move_to_func (funcs, (hb_draw_move_to_func_t) move_to, nullptr, nullptr);
-  hb_draw_funcs_set_line_to_func (funcs, (hb_draw_line_to_func_t) line_to, nullptr, nullptr);
-  hb_draw_funcs_set_quadratic_to_func (funcs, (hb_draw_quadratic_to_func_t) quadratic_to, nullptr, nullptr);
-  hb_draw_funcs_set_cubic_to_func (funcs, (hb_draw_cubic_to_func_t) cubic_to, nullptr, nullptr);
-  hb_draw_funcs_set_close_path_func (funcs, (hb_draw_close_path_func_t) close_path, nullptr, nullptr);
+  hb_draw_funcs_سیٹ_move_مقصد_func (funcs, (hb_draw_move_مقصد_func_t) move_مقصد, خالی_اشاریہ, خالی_اشاریہ);
+  hb_draw_funcs_سیٹ_سطر_مقصد_func (funcs, (hb_draw_سطر_مقصد_func_t) سطر_مقصد, خالی_اشاریہ, خالی_اشاریہ);
+  hb_draw_funcs_سیٹ_quadratic_مقصد_func (funcs, (hb_draw_quadratic_مقصد_func_t) quadratic_مقصد, خالی_اشاریہ, خالی_اشاریہ);
+  hb_draw_funcs_سیٹ_cubic_مقصد_func (funcs, (hb_draw_cubic_مقصد_func_t) cubic_مقصد, خالی_اشاریہ, خالی_اشاریہ);
+  hb_draw_funcs_سیٹ_close_راستہ_func (funcs, (hb_draw_close_راستہ_func_t) close_راستہ, خالی_اشاریہ, خالی_اشاریہ);
 
-  unsigned num_faces = hb_face_count (blob);
-  for (unsigned face_index = 0; face_index < num_faces; ++face_index)
+  غیرعلامتی عدد_faces = hb_face_گنتی (blob);
+  برائے (غیرعلامتی face_اشاریہ = 0; face_اشاریہ < عدد_faces; ++face_اشاریہ)
   {
-    hb_face_t *face = hb_face_create (blob, face_index);
+    hb_face_t *face = hb_face_create (blob, face_اشاریہ);
     hb_font_t *font = hb_font_create (face);
 
-    if (hb_ot_color_has_png (face))
-      printf ("Dumping png (CBDT/sbix)...\n");
-    png_dump (face, face_index);
+    اگر (hb_ot_color_has_png (face))
+      لکھو ("Dumping png (CBDT/sbix)...\n");
+    png_dump (face, face_اشاریہ);
 
-#ifndef HB_NO_SVG
-    if (hb_ot_color_has_svg (face))
-      printf ("Dumping svg (SVG )...\n");
-    svg_dump (face, face_index);
-#endif
+#اگر_غیر_تعریف_شدہ HB_NO_SVG
+    اگر (hb_ot_color_has_svg (face))
+      لکھو ("Dumping svg (SVG )...\n");
+    svg_dump (face, face_اشاریہ);
+#اگر_ختم
 
-    if (hb_ot_color_has_layers (face) && hb_ot_color_has_palettes (face))
-      printf ("Dumping layered color glyphs (COLR/CPAL)...\n");
-    layered_glyph_dump (font, funcs, face_index);
+    اگر (hb_ot_color_has_layers (face) && hb_ot_color_has_palettes (face))
+      لکھو ("Dumping layered color glyphs (COLR/CPAL)...\n");
+    layered_glyph_dump (font, funcs, face_اشاریہ);
 
-    dump_glyphs (font, funcs, face_index);
+    dump_glyphs (font, funcs, face_اشاریہ);
 
     hb_font_destroy (font);
     hb_face_destroy (face);
@@ -349,191 +349,191 @@ dump_glyphs (hb_blob_t *blob, const char *font_name)
 
   hb_draw_funcs_destroy (funcs);
 }
-#endif
+#اگر_ختم
 
-#ifndef MAIN_CC_NO_PRIVATE_API
+#اگر_غیر_تعریف_شدہ MAIN_CC_NO_نجی_API
 /* Only this part of this mini app uses private API */
-#include "hb-static.cc"
-#include "hb-open-file.hh"
-#include "hb-ot-layout-gdef-table.hh"
-#include "hb-ot-layout-gsubgpos.hh"
+#شامل "hb-static.cc"
+#شامل "hb-open-file.hh"
+#شامل "hb-ot-layout-gdef-table.hh"
+#شامل "hb-ot-layout-gsubgpos.hh"
 
-using namespace OT;
+استعمال نامخلا OT;
 
-static void
-print_layout_info_using_private_api (hb_blob_t *blob)
+ساکن خالی
+print_layout_info_using_نجی_api (hb_blob_t *blob)
 {
-  const char *font_data = hb_blob_get_data (blob, nullptr);
+  ثابت حرف *font_ڈیٹا = hb_blob_get_ڈیٹا (blob, خالی_اشاریہ);
   hb_blob_t *font_blob = hb_sanitize_context_t ().sanitize_blob<OpenTypeFontFile> (blob);
-  const OpenTypeFontFile* sanitized = font_blob->as<OpenTypeFontFile> ();
-  if (!font_blob->data)
+  ثابت OpenTypeFontFile* sanitized = font_blob->as<OpenTypeFontFile> ();
+  اگر (!font_blob->ڈیٹا)
   {
-    printf ("Sanitization of the file wasn't successful. Exit");
-    exit (1);
+    لکھو ("Sanitization of the file wasn't successful. Exit");
+    باہر_نکلو (1);
   }
-  const OpenTypeFontFile& ot = *sanitized;
+  ثابت OpenTypeFontFile& ot = *sanitized;
 
-  switch (ot.get_tag ())
+  انتخاب (ot.get_لیبل ())
   {
-  case OpenTypeFontFile::TrueTypeTag:
-    printf ("OpenType font with TrueType outlines\n");
-    break;
-  case OpenTypeFontFile::CFFTag:
-    printf ("OpenType font with CFF (Type1) outlines\n");
-    break;
-  case OpenTypeFontFile::TTCTag:
-    printf ("TrueType Collection of OpenType fonts\n");
-    break;
-  case OpenTypeFontFile::TrueTag:
-    printf ("Obsolete Apple TrueType font\n");
-    break;
-  case OpenTypeFontFile::Typ1Tag:
-    printf ("Obsolete Apple Type1 font in SFNT container\n");
-    break;
-  case OpenTypeFontFile::DFontTag:
-    printf ("DFont Mac Resource Fork\n");
-    break;
-  default:
-    printf ("Unknown font format\n");
-    break;
+  حالت OpenTypeFontFile::True_Type_لیبل:
+    لکھو ("OpenType font with TrueType outlines\n");
+    توڑو;
+  حالت OpenTypeFontFile::CFFTag:
+    لکھو ("OpenType font with CFF (Type1) outlines\n");
+    توڑو;
+  حالت OpenTypeFontFile::TTCTag:
+    لکھو ("TrueType Collection of OpenType fonts\n");
+    توڑو;
+  حالت OpenTypeFontFile::True_لیبل:
+    لکھو ("Obsolete Apple TrueType font\n");
+    توڑو;
+  حالت OpenTypeFontFile::Typ1_لیبل:
+    لکھو ("Obsolete Apple Type1 font in SFNT container\n");
+    توڑو;
+  حالت OpenTypeFontFile::DFont_لیبل:
+    لکھو ("DFont Mac Resource Fork\n");
+    توڑو;
+  طےشدہ:
+    لکھو ("Unknown font format\n");
+    توڑو;
   }
 
-  unsigned num_faces = hb_face_count (blob);
-  printf ("%u font(s) found in file\n", num_faces);
-  for (unsigned n_font = 0; n_font < num_faces; ++n_font)
+  غیرعلامتی عدد_faces = hb_face_گنتی (blob);
+  لکھو ("%u font(s) found in file\n", عدد_faces);
+  برائے (غیرعلامتی n_font = 0; n_font < عدد_faces; ++n_font)
   {
-    const OpenTypeFontFace &font = ot.get_face (n_font);
-    printf ("Font %u of %u:\n", n_font, num_faces);
+    ثابت OpenTypeFontFace &font = ot.get_face (n_font);
+    لکھو ("Font %u of %u:\n", n_font, عدد_faces);
 
-    unsigned num_tables = font.get_table_count ();
-    printf ("  %u table(s) found in font\n", num_tables);
-    for (unsigned n_table = 0; n_table < num_tables; ++n_table)
+    غیرعلامتی عدد_tables = font.get_جدول_گنتی ();
+    لکھو ("  %u table(s) found in font\n", عدد_tables);
+    برائے (غیرعلامتی n_جدول = 0; n_جدول < عدد_tables; ++n_جدول)
     {
-      const OpenTypeTable &table = font.get_table (n_table);
-      printf ("  Table %2u of %2u: %.4s (0x%08x+0x%08x)\n", n_table, num_tables,
-	      (const char *) table.tag,
-	      (unsigned) table.offset,
-	      (unsigned) table.length);
+      ثابت Open_Type_جدول &جدول = font.get_جدول (n_جدول);
+      لکھو ("  Table %2u of %2u: %.4s (0x%08x+0x%08x)\n", n_جدول, عدد_tables,
+	      (ثابت حرف *) جدول.لیبل_2,
+	      (غیرعلامتی) جدول.انحراف,
+	      (غیرعلامتی) جدول.لمبائی);
 
-      switch (table.tag)
+      انتخاب (جدول.لیبل_2)
       {
 
-      case HB_OT_TAG_GSUB:
-      case HB_OT_TAG_GPOS:
+      حالت HB_OT_لیبل_GSUB:
+      حالت HB_OT_لیبل_GPOS:
 	{
 
-	const GSUBGPOS &g = *reinterpret_cast<const GSUBGPOS *> (font_data + table.offset);
+	ثابت GSUBGPOS &g = *reinterpret_cast<ثابت GSUBGPOS *> (font_ڈیٹا + جدول.انحراف);
 
-	unsigned num_scripts = g.get_script_count ();
-	printf ("    %u script(s) found in table\n", num_scripts);
-	for (unsigned n_script = 0; n_script < num_scripts; ++n_script)
+	غیرعلامتی عدد_scripts = g.get_script_گنتی ();
+	لکھو ("    %u script(s) found in table\n", عدد_scripts);
+	برائے (غیرعلامتی n_script = 0; n_script < عدد_scripts; ++n_script)
 	{
-	  const Script &script = g.get_script (n_script);
-	  printf ("    Script %2u of %2u: %.4s\n", n_script, num_scripts,
-		  (const char *) g.get_script_tag (n_script));
+	  ثابت Script &script = g.get_script (n_script);
+	  لکھو ("    Script %2u of %2u: %.4s\n", n_script, عدد_scripts,
+		  (ثابت حرف *) g.get_script_لیبل (n_script));
 
-	  if (!script.has_default_lang_sys ())
-	    printf ("      No default language system\n");
-	  int num_langsys = script.get_lang_sys_count ();
-	  printf ("      %d language system(s) found in script\n", num_langsys);
-	  for (int n_langsys = script.has_default_lang_sys () ? -1 : 0; n_langsys < num_langsys; ++n_langsys)
+	  اگر (!script.has_default_lang_sys ())
+	    لکھو ("      No default language system\n");
+	  صحیح عدد_langsys = script.get_lang_sys_گنتی ();
+	  لکھو ("      %d language system(s) found in script\n", عدد_langsys);
+	  برائے (صحیح n_langsys = script.has_default_lang_sys () ? -1 : 0; n_langsys < عدد_langsys; ++n_langsys)
 	  {
-	    const LangSys &langsys = n_langsys == -1
+	    ثابت LangSys &langsys = n_langsys == -1
 				   ? script.get_default_lang_sys ()
 				   : script.get_lang_sys (n_langsys);
-	    if (n_langsys == -1)
-	      printf ("      Default Language System\n");
-	    else
-	      printf ("      Language System %2d of %2d: %.4s\n", n_langsys, num_langsys,
-		      (const char *) script.get_lang_sys_tag (n_langsys));
-	    if (!langsys.has_required_feature ())
-	      printf ("        No required feature\n");
-	    else
-	      printf ("        Required feature index: %u\n",
-		      langsys.get_required_feature_index ());
+	    اگر (n_langsys == -1)
+	      لکھو ("      Default Language System\n");
+	    ورنہ
+	      لکھو ("      Language System %2d of %2d: %.4s\n", n_langsys, عدد_langsys,
+		      (ثابت حرف *) script.get_lang_sys_لیبل (n_langsys));
+	    اگر (!langsys.has_required_feature ())
+	      لکھو ("        No required feature\n");
+	    ورنہ
+	      لکھو ("        Required feature index: %u\n",
+		      langsys.get_required_feature_اشاریہ ());
 
-	    unsigned num_features = langsys.get_feature_count ();
-	    printf ("        %u feature(s) found in language system\n", num_features);
-	    for (unsigned n_feature = 0; n_feature < num_features; ++n_feature)
+	    غیرعلامتی عدد_features = langsys.get_feature_گنتی ();
+	    لکھو ("        %u feature(s) found in language system\n", عدد_features);
+	    برائے (غیرعلامتی n_feature = 0; n_feature < عدد_features; ++n_feature)
 	    {
-	      printf ("        Feature index %2u of %2u: %u\n", n_feature, num_features,
-		      langsys.get_feature_index (n_feature));
+	      لکھو ("        Feature index %2u of %2u: %u\n", n_feature, عدد_features,
+		      langsys.get_feature_اشاریہ (n_feature));
 	    }
 	  }
 	}
 
-	unsigned num_features = g.get_feature_count ();
-	printf ("    %u feature(s) found in table\n", num_features);
-	for (unsigned n_feature = 0; n_feature < num_features; ++n_feature)
+	غیرعلامتی عدد_features = g.get_feature_گنتی ();
+	لکھو ("    %u feature(s) found in table\n", عدد_features);
+	برائے (غیرعلامتی n_feature = 0; n_feature < عدد_features; ++n_feature)
 	{
-	  const Feature &feature = g.get_feature (n_feature);
-	  unsigned num_lookups = feature.get_lookup_count ();
-	  printf ("    Feature %2u of %2u: %c%c%c%c\n", n_feature, num_features,
-		  HB_UNTAG (g.get_feature_tag (n_feature)));
+	  ثابت Feature &feature = g.get_feature (n_feature);
+	  غیرعلامتی عدد_lookups = feature.get_lookup_گنتی ();
+	  لکھو ("    Feature %2u of %2u: %c%c%c%c\n", n_feature, عدد_features,
+		  HB_UNTAG (g.get_feature_لیبل (n_feature)));
 
-	  printf ("        %u lookup(s) found in feature\n", num_lookups);
-	  for (unsigned n_lookup = 0; n_lookup < num_lookups; ++n_lookup) {
-	    printf ("        Lookup index %2u of %2u: %u\n", n_lookup, num_lookups,
-		    feature.get_lookup_index (n_lookup));
+	  لکھو ("        %u lookup(s) found in feature\n", عدد_lookups);
+	  برائے (غیرعلامتی n_lookup = 0; n_lookup < عدد_lookups; ++n_lookup) {
+	    لکھو ("        Lookup index %2u of %2u: %u\n", n_lookup, عدد_lookups,
+		    feature.get_lookup_اشاریہ (n_lookup));
 	  }
 	}
 
-	unsigned num_lookups = g.get_lookup_count ();
-	printf ("    %u lookup(s) found in table\n", num_lookups);
-	for (unsigned n_lookup = 0; n_lookup < num_lookups; ++n_lookup)
+	غیرعلامتی عدد_lookups = g.get_lookup_گنتی ();
+	لکھو ("    %u lookup(s) found in table\n", عدد_lookups);
+	برائے (غیرعلامتی n_lookup = 0; n_lookup < عدد_lookups; ++n_lookup)
 	{
-	  const Lookup &lookup = g.get_lookup (n_lookup);
-	  printf ("    Lookup %2u of %2u: type %u, props 0x%04X\n", n_lookup, num_lookups,
+	  ثابت Lookup &lookup = g.get_lookup (n_lookup);
+	  لکھو ("    Lookup %2u of %2u: type %u, props 0x%04X\n", n_lookup, عدد_lookups,
 		  lookup.get_type (), lookup.get_props ());
 	}
 
 	}
-	break;
+	توڑو;
 
-      case GDEF::tableTag:
+      حالت GDEF::جدول_لیبل:
 	{
 
-	const GDEF &gdef = *reinterpret_cast<const GDEF *> (font_data + table.offset);
+	ثابت GDEF &gdef = *reinterpret_cast<ثابت GDEF *> (font_ڈیٹا + جدول.انحراف);
 
-	printf ("    Has %sglyph classes\n",
+	لکھو ("    Has %sglyph classes\n",
 		  gdef.has_glyph_classes () ? "" : "no ");
-	printf ("    Has %smark attachment types\n",
+	لکھو ("    Has %smark attachment types\n",
 		  gdef.has_mark_attachment_types () ? "" : "no ");
-	printf ("    Has %sattach list\n",
+	لکھو ("    Has %sattach list\n",
 		  gdef.has_attach_list () ? "" : "no ");
-	printf ("    Has %slig carets\n",
+	لکھو ("    Has %slig carets\n",
 		  gdef.has_lig_carets () ? "" : "no ");
-	printf ("    Has %smark glyph sets\n",
+	لکھو ("    Has %smark glyph sets\n",
 		  gdef.has_mark_glyph_sets () ? "" : "no ");
-	break;
+	توڑو;
 	}
       }
     }
   }
 }
 /* end of private API use */
-#endif
+#اگر_ختم
 
-int
-main (int argc, char **argv)
+صحیح
+مین (صحیح argc, حرف **argv)
 {
-  if (argc != 2)
+  اگر (argc != 2)
   {
     fprintf (stderr, "usage: %s font-file.ttf\n\n"
 		     "This tools is unsupported and crashes on bad data.\nDon't use it.\n", argv[0]);
-    exit (1);
+    باہر_نکلو (1);
   }
 
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (argv[1]);
-  assert (blob);
-  printf ("Opened font file %s: %u bytes long\n", argv[1], hb_blob_get_length (blob));
-#ifndef MAIN_CC_NO_PRIVATE_API
-  print_layout_info_using_private_api (blob);
-#endif
-#if !defined(HB_NO_COLOR) && !defined(HB_NO_DRAW)
+  أكد (blob);
+  لکھو ("Opened font file %s: %u bytes long\n", argv[1], hb_blob_get_لمبائی (blob));
+#اگر_غیر_تعریف_شدہ MAIN_CC_NO_نجی_API
+  print_layout_info_using_نجی_api (blob);
+#اگر_ختم
+#اگر !defined(HB_NO_COLOR) && !defined(HB_NO_DRAW)
   dump_glyphs (blob, argv[1]);
-#endif
+#اگر_ختم
   hb_blob_destroy (blob);
 
-  return 0;
+  واپس 0;
 }

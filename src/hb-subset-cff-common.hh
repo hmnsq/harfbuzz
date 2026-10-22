@@ -24,84 +24,84 @@
  * Adobe Author(s): Michiharu Ariza
  */
 
-#ifndef HB_SUBSET_CFF_COMMON_HH
-#define HB_SUBSET_CFF_COMMON_HH
+#اگر_غیر_تعریف_شدہ HB_SUBSET_CFF_COMMON_HH
+#تعریف_کرو HB_SUBSET_CFF_COMMON_HH
 
-#include "hb.hh"
+#شامل "hb.hh"
 
-#include "hb-subset-plan.hh"
-#include "hb-cff-interp-cs-common.hh"
+#شامل "hb-subset-plan.hh"
+#شامل "hb-cff-interp-cs-common.hh"
 
-namespace CFF {
+نامخلا CFF {
 
 /* CFF2 CharStrings may omit a tail of glyphs provided by VARC, in which
  * case FDSelect only covers the CharStrings glyphs.  Use FD 0 for glyphs
  * beyond that. */
-template <typename ACC>
-static inline unsigned
-subset_get_fd (const ACC &acc, hb_codepoint_t glyph)
+سانچہ <قسم_نام ACC>
+ساکن اندرونی غیرعلامتی
+subset_get_fd (ثابت ACC &acc, hb_codepoint_t glyph)
 {
-  return likely (glyph < acc.num_glyphs) ? acc.fdSelect->get_fd (glyph) : 0;
+  واپس likely (glyph < acc.عدد_glyphs) ? acc.fdSelect->get_fd (glyph) : 0;
 }
 
 /* Used for writing a temporary charstring */
-struct str_encoder_t
+ساخت str_encoder_t
 {
   str_encoder_t (str_buff_t &buff_)
     : buff (buff_) {}
 
-  void reset () { buff.reset (); }
+  خالی reset () { buff.reset (); }
 
-  void encode_byte (unsigned char b)
+  خالی encode_byte (غیرعلامتی حرف b)
   {
-    if (likely ((signed) buff.length < buff.allocated))
-      buff.arrayZ[buff.length++] = b;
-    else
+    اگر (likely ((علامتی) buff.لمبائی < buff.allocated))
+      buff.arrayZ[buff.لمبائی++] = b;
+    ورنہ
       buff.push (b);
   }
 
-  void encode_int (int v)
+  خالی encode_int (صحیح v)
   {
-    if ((-1131 <= v) && (v <= 1131))
+    اگر ((-1131 <= v) && (v <= 1131))
     {
-      if ((-107 <= v) && (v <= 107))
+      اگر ((-107 <= v) && (v <= 107))
 	encode_byte (v + 139);
-      else if (v > 0)
+      ورنہ اگر (v > 0)
       {
 	v -= 108;
-	encode_byte ((v >> 8) + OpCode_TwoBytePosInt0);
+	encode_byte ((v >> 8) + Op_رمز_Two_Byte_Pos_Int0);
 	encode_byte (v & 0xFF);
       }
-      else
+      ورنہ
       {
 	v = -v - 108;
-	encode_byte ((v >> 8) + OpCode_TwoByteNegInt0);
+	encode_byte ((v >> 8) + Op_رمز_Two_Byte_Neg_Int0);
 	encode_byte (v & 0xFF);
       }
     }
-    else
+    ورنہ
     {
-      if (unlikely (v < -32768))
+      اگر (unlikely (v < -32768))
 	v = -32768;
-      else if (unlikely (v > 32767))
+      ورنہ اگر (unlikely (v > 32767))
 	v = 32767;
-      encode_byte (OpCode_shortint);
+      encode_byte (Op_رمز_shortint);
       encode_byte ((v >> 8) & 0xFF);
       encode_byte (v & 0xFF);
     }
   }
 
   // Encode number for CharString
-  void encode_num_cs (const number_t& n)
+  خالی encode_عدد_cs (ثابت نمبر_t& n)
   {
-    if (n.in_int_range ())
+    اگر (n.اندر_int_range ())
     {
-      encode_int (n.to_int ());
+      encode_int (n.مقصد_int ());
     }
-    else
+    ورنہ
     {
-      int32_t v = n.to_fixed ();
-      encode_byte (OpCode_fixedcs);
+      int32_t v = n.مقصد_fixed ();
+      encode_byte (Op_رمز_fixedcs);
       encode_byte ((v >> 24) & 0xFF);
       encode_byte ((v >> 16) & 0xFF);
       encode_byte ((v >> 8) & 0xFF);
@@ -110,24 +110,24 @@ struct str_encoder_t
   }
 
   // Encode number for TopDict / Private
-  void encode_num_tp (const number_t& n)
+  خالی encode_عدد_tp (ثابت نمبر_t& n)
   {
-    if (n.in_int_range ())
+    اگر (n.اندر_int_range ())
     {
       // TODO longint
-      encode_int (n.to_int ());
+      encode_int (n.مقصد_int ());
     }
-    else
+    ورنہ
     {
       // Sigh. BCD
       // https://learn.microsoft.com/en-us/typography/opentype/spec/cff2#table-5-nibble-definitions
-      double v = n.to_real ();
-      encode_byte (OpCode_BCD);
+      دوہرا v = n.مقصد_real ();
+      encode_byte (Op_رمز_BCD);
 
       // Based on:
       // https://github.com/fonttools/fonttools/blob/0738c41dfbcbc213ab9263f486ef0cccc6eb5ce5/Lib/fontTools/misc/psCharStrings.py#L267-L316
 
-      char buf[16];
+      حرف buf[16];
       /* FontTools has the following comment:
        *
        * # Note: 14 decimal digits seems to be the limitation for CFF real numbers
@@ -136,451 +136,451 @@ struct str_encoder_t
        * We use 8 here to match FontTools X-).
        */
 
-      hb_locale_t clocale HB_UNUSED;
-      hb_locale_t oldlocale HB_UNUSED;
-      oldlocale = hb_uselocale (clocale = newlocale (LC_ALL_MASK, "C", NULL));
-      snprintf (buf, sizeof (buf), "%.8G", v);
-      (void) hb_uselocale (((void) freelocale (clocale), oldlocale));
+      hb_locale_t clocale HB_غیر_مستعمل;
+      hb_locale_t oldlocale HB_غیر_مستعمل;
+      oldlocale = hb_uselocale (clocale = newlocale (LC_ALL_MASK, "C", تہی));
+      snprintf (buf, حجم (buf), "%.8G", v);
+      (خالی) hb_uselocale (((خالی) freelocale (clocale), oldlocale));
 
-      char *s = buf;
+      حرف *s = buf;
       size_t len;
-      char *comma = strchr (s, ',');
-      if (comma) // Comma for some European locales in case no uselocale available.
+      حرف *comma = strchr (s, ',');
+      اگر (comma) // Comma for some European locales in case no uselocale available.
 	*comma = '.';
-      if (s[0] == '0' && s[1] == '.')
+      اگر (s[0] == '0' && s[1] == '.')
 	s++;
-      else if (s[0] == '-' && s[1] == '0' && s[2] == '.')
+      ورنہ اگر (s[0] == '-' && s[1] == '0' && s[2] == '.')
       {
 	s[1] = '-';
 	s++;
       }
-      else if ((len = strlen (s)) > 3 && !strcmp (s + len - 3, "000"))
+      ورنہ اگر ((len = لڑی_لمبائی (s)) > 3 && !strcmp (s + len - 3, "000"))
       {
-	unsigned exponent = len - 3;
-	char *s2 = s + exponent - 1;
-	while (*s2 == '0' && exponent > 1)
+	غیرعلامتی exponent = len - 3;
+	حرف *s2 = s + exponent - 1;
+	جب (*s2 == '0' && exponent > 1)
 	{
 	  s2--;
 	  exponent++;
 	}
-	snprintf (s2 + 1, sizeof (buf) - (s2 + 1 - buf), "E%u", exponent);
+	snprintf (s2 + 1, حجم (buf) - (s2 + 1 - buf), "E%u", exponent);
       }
-      else
+      ورنہ
       {
-	char *dot = strchr (s, '.');
-	char *e = strchr (s, 'E');
-	if (dot && e)
+	حرف *dot = strchr (s, '.');
+	حرف *e = strchr (s, 'E');
+	اگر (dot && e)
 	{
 	  memmove (dot, dot + 1, e - (dot + 1));
-	  int exponent = atoi (e + 1);
-	  int new_exponent = exponent - (e - (dot + 1));
-	  if (new_exponent == 1)
+	  صحیح exponent = atoi (e + 1);
+	  صحیح new_exponent = exponent - (e - (dot + 1));
+	  اگر (new_exponent == 1)
 	  {
 	    e[-1] = '0';
 	    e[0] = '\0';
 	  }
-	  else
-	    snprintf (e - 1, sizeof (buf) - (e - 1 - buf), "E%d", new_exponent);
+	  ورنہ
+	    snprintf (e - 1, حجم (buf) - (e - 1 - buf), "E%d", new_exponent);
 	}
       }
-      if ((s[0] == '.' && s[1] == '0') || (s[0] == '-' && s[1] == '.' && s[2] == '0'))
+      اگر ((s[0] == '.' && s[1] == '0') || (s[0] == '-' && s[1] == '.' && s[2] == '0'))
       {
-	int sign = s[0] == '-';
-	char *s2 = s + sign + 1;
-	while (*s2 == '0')
+	صحیح sign = s[0] == '-';
+	حرف *s2 = s + sign + 1;
+	جب (*s2 == '0')
 	  s2++;
-	len = strlen (s2);
+	len = لڑی_لمبائی (s2);
 	memmove (s + sign, s2, len);
-	snprintf (s + sign + len, sizeof (buf) - (s + sign + len - buf), "E-%u", (unsigned) (strlen (s + sign) - 1));
+	snprintf (s + sign + len, حجم (buf) - (s + sign + len - buf), "E-%u", (غیرعلامتی) (لڑی_لمبائی (s + sign) - 1));
       }
-      hb_vector_t<char> nibbles;
-      while (*s)
+      hb_سمتیہ_t<حرف> nibbles;
+      جب (*s)
       {
-	char c = s[0];
+	حرف c = s[0];
 	s++;
 
-	switch (c)
+	انتخاب (c)
 	{
-	  case 'E':
+	  حالت 'E':
 	  {
-	    char c2 = *s;
-	    if (c2 == '-')
+	    حرف c2 = *s;
+	    اگر (c2 == '-')
 	    {
 	      s++;
 	      nibbles.push (0x0C); // E-
-	    } else {
-	      if (c2 == '+')
+	    } ورنہ {
+	      اگر (c2 == '+')
 		s++;
 	      nibbles.push (0x0B); // E
 	    }
-	    if (*s == '0')
+	    اگر (*s == '0')
 	      s++;
-	    continue;
+	    جاری;
 	  }
 
-	  case '.':
+	  حالت '.':
 	    nibbles.push (0x0A); // .
-	    continue;
+	    جاری;
 
-	  case '-':
+	  حالت '-':
 	    nibbles.push (0x0E); // -
-	    continue;
+	    جاری;
 	}
 
 	nibbles.push (c - '0');
       }
       nibbles.push (0x0F);
-      if (nibbles.length % 2)
+      اگر (nibbles.لمبائی % 2)
 	nibbles.push (0x0F);
 
-      unsigned count = nibbles.length;
-      for (unsigned i = 0; i < count; i += 2)
+      غیرعلامتی گنتی = nibbles.لمبائی;
+      برائے (غیرعلامتی i = 0; i < گنتی; i += 2)
         encode_byte ((nibbles[i] << 4) | nibbles[i+1]);
     }
   }
 
-  void encode_op (op_code_t op)
+  خالی encode_op (op_رمز_t op)
   {
-    if (Is_OpCode_ESC (op))
+    اگر (Is_Op_رمز_ESC (op))
     {
-      encode_byte (OpCode_escape);
-      encode_byte (Unmake_OpCode_ESC (op));
+      encode_byte (Op_رمز_escape);
+      encode_byte (Unmake_Op_رمز_ESC (op));
     }
-    else
+    ورنہ
       encode_byte (op);
   }
 
-  void copy_str (const unsigned char *str, unsigned length)
+  خالی copy_str (ثابت غیرعلامتی حرف *str, غیرعلامتی لمبائی)
   {
-    assert ((signed) (buff.length + length) <= buff.allocated);
-    hb_memcpy (buff.arrayZ + buff.length, str, length);
-    buff.length += length;
+    أكد ((علامتی) (buff.لمبائی + لمبائی) <= buff.allocated);
+    hb_memcpy (buff.arrayZ + buff.لمبائی, str, لمبائی);
+    buff.لمبائی += لمبائی;
   }
 
-  bool in_error () const { return buff.in_error (); }
+  منطقی اندر_error () ثابت { واپس buff.اندر_error (); }
 
-  protected:
+  محفوظ:
 
   str_buff_t &buff;
 };
 
-struct cff_sub_table_info_t {
-  cff_sub_table_info_t ()
+ساخت cff_sub_جدول_info_t {
+  cff_sub_جدول_info_t ()
     : fd_array_link (0),
-      char_strings_link (0)
+      char_لڑیاں_link (0)
   {
     fd_select.init ();
   }
 
-  table_info_t     fd_select;
+  جدول_info_t     fd_select;
   objidx_t     	   fd_array_link;
-  objidx_t     	   char_strings_link;
+  objidx_t     	   char_لڑیاں_link;
 };
 
-template <typename OPSTR=op_str_t>
-struct cff_top_dict_op_serializer_t : op_serializer_t
+سانچہ <قسم_نام OPSTR=op_str_t>
+ساخت cff_چوٹی_dict_op_serializer_t : op_serializer_t
 {
-  bool serialize (hb_serialize_context_t *c,
-		  const OPSTR &opstr,
-		  const cff_sub_table_info_t &info) const
+  منطقی serialize (hb_serialize_context_t *c,
+		  ثابت OPSTR &opstr,
+		  ثابت cff_sub_جدول_info_t &info) ثابت
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (یہ);
 
-    switch (opstr.op)
+    انتخاب (opstr.op)
     {
-      case OpCode_CharStrings:
-	return_trace (FontDict::serialize_link4_op(c, opstr.op, info.char_strings_link, whence_t::Absolute));
+      حالت Op_رمز_Char_لڑیاں:
+	return_trace (FontDict::serialize_link4_op(c, opstr.op, info.char_لڑیاں_link, whence_t::Absolute));
 
-      case OpCode_FDArray:
+      حالت Op_رمز_FDArray:
 	return_trace (FontDict::serialize_link4_op(c, opstr.op, info.fd_array_link, whence_t::Absolute));
 
-      case OpCode_FDSelect:
+      حالت Op_رمز_FDSelect:
 	return_trace (FontDict::serialize_link4_op(c, opstr.op, info.fd_select.link, whence_t::Absolute));
 
-      default:
+      طےشدہ:
 	return_trace (copy_opstr (c, opstr));
     }
-    return_trace (true);
+    return_trace (سچ);
   }
 };
 
-struct cff_font_dict_op_serializer_t : op_serializer_t
+ساخت cff_font_dict_op_serializer_t : op_serializer_t
 {
-  bool serialize (hb_serialize_context_t *c,
-		  const op_str_t &opstr,
-		  const table_info_t &privateDictInfo) const
+  منطقی serialize (hb_serialize_context_t *c,
+		  ثابت op_str_t &opstr,
+		  ثابت جدول_info_t &نجی_Dict_Info) ثابت
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (یہ);
 
-    if (opstr.op == OpCode_Private)
+    اگر (opstr.op == Op_رمز_نجی)
     {
       /* serialize the private dict size & offset as 2-byte & 4-byte integers */
-      return_trace (UnsizedByteStr::serialize_int2 (c, privateDictInfo.size) &&
-		    Dict::serialize_link4_op (c, opstr.op, privateDictInfo.link, whence_t::Absolute));
+      return_trace (UnsizedByteStr::serialize_int2 (c, نجی_Dict_Info.سائز) &&
+		    Dict::serialize_link4_op (c, opstr.op, نجی_Dict_Info.link, whence_t::Absolute));
     }
-    else
+    ورنہ
     {
-      unsigned char *d = c->allocate_size<unsigned char> (opstr.length);
-      if (unlikely (!d)) return_trace (false);
+      غیرعلامتی حرف *d = c->allocate_سائز<غیرعلامتی حرف> (opstr.لمبائی);
+      اگر (unlikely (!d)) return_trace (جھوٹ);
       /* Faster than hb_memcpy for small strings. */
-      for (unsigned i = 0; i < opstr.length; i++)
+      برائے (غیرعلامتی i = 0; i < opstr.لمبائی; i++)
 	d[i] = opstr.ptr[i];
       //hb_memcpy (d, opstr.ptr, opstr.length);
     }
-    return_trace (true);
+    return_trace (سچ);
   }
 };
 
 /* CharString command for specialization */
-struct cs_command_t
+ساخت cs_command_t
 {
-  hb_vector_t<number_t> args;
-  hb_vector_t<unsigned char> mask_bytes; /* For hintmask/cntrmask payload bytes. */
-  op_code_t op;
+  hb_سمتیہ_t<نمبر_t> دلائل;
+  hb_سمتیہ_t<غیرعلامتی حرف> نقاب_بائٹیں; /* For hintmask/cntrmask payload bytes. */
+  op_رمز_t op;
 
-  cs_command_t () : op (OpCode_Invalid) {}
-  cs_command_t (op_code_t op_) : op (op_) {}
+  cs_command_t () : op (Op_رمز_Invalid) {}
+  cs_command_t (op_رمز_t op_) : op (op_) {}
 };
 
-typedef hb_vector_t<cs_command_t> *cs_command_vec_t;
+قسمتعریف hb_سمتیہ_t<cs_command_t> *cs_command_vec_t;
 
-struct cff2_instancing_plan_t;
+ساخت cff2_instancing_plan_t;
 
-struct flatten_param_t
+ساخت flatten_param_t
 {
   flatten_param_t (str_buff_t &flatStr_,
-                   bool drop_hints_,
-                   const hb_subset_plan_t *plan_,
-                   cs_command_vec_t commands_ = nullptr)
+                   منطقی drop_hints_,
+                   ثابت hb_subset_plan_t *plan_,
+                   cs_command_vec_t commands_ = خالی_اشاریہ)
     : flatStr (flatStr_), drop_hints (drop_hints_), plan (plan_), commands (commands_) {}
 
   str_buff_t     &flatStr;
-  bool	drop_hints;
-  const hb_subset_plan_t *plan;
+  منطقی	drop_hints;
+  ثابت hb_subset_plan_t *plan;
   cs_command_vec_t commands; /* Optional: capture parsed commands for specialization */
 
   /* CFF2 partial instancing: when set, blends are rewritten against the
    * instanced variation store instead of being copied or flattened. */
-  const cff2_instancing_plan_t *instancer = nullptr;
-  bool emitted_blend = false;
+  ثابت cff2_instancing_plan_t *instancer = خالی_اشاریہ;
+  منطقی emitted_blend = جھوٹ;
 };
 
-template <typename ACC, typename ENV, typename OPSET, op_code_t endchar_op=OpCode_Invalid>
-struct subr_flattener_t
+سانچہ <قسم_نام ACC, قسم_نام ENV, قسم_نام OPSET, op_رمز_t endchar_op=Op_رمز_Invalid>
+ساخت subr_flattener_t
 {
-  subr_flattener_t (const ACC &acc_,
-		    const hb_subset_plan_t *plan_)
+  subr_flattener_t (ثابت ACC &acc_,
+		    ثابت hb_subset_plan_t *plan_)
 		   : acc (acc_), plan (plan_) {}
 
-  bool flatten (str_buff_vec_t &flat_charstrings,
-                hb_vector_t<hb_vector_t<cs_command_t>> *command_capture = nullptr)
+  منطقی flatten (str_buff_vec_t &flat_charstrings,
+                hb_سمتیہ_t<hb_سمتیہ_t<cs_command_t>> *command_capture = خالی_اشاریہ)
   {
-    unsigned count = plan->num_output_glyphs ();
-    if (!flat_charstrings.resize_exact (count))
-      return false;
-    for (unsigned int i = 0; i < count; i++)
+    غیرعلامتی گنتی = plan->عدد_output_glyphs ();
+    اگر (!flat_charstrings.resize_exact (گنتی))
+      واپس جھوٹ;
+    برائے (غیرعلامتی صحیح i = 0; i < گنتی; i++)
     {
       hb_codepoint_t  glyph;
-      if (!plan->old_gid_for_new_gid (i, &glyph))
+      اگر (!plan->old_gid_for_new_gid (i, &glyph))
       {
 	/* add an endchar only charstring for a missing glyph if CFF1 */
-	if (endchar_op != OpCode_Invalid) flat_charstrings[i].push (endchar_op);
-	continue;
+	اگر (endchar_op != Op_رمز_Invalid) flat_charstrings[i].push (endchar_op);
+	جاری;
       }
-      const hb_ubytes_t str = (*acc.charStrings)[glyph];
-      unsigned int fd = subset_get_fd (acc, glyph);
-      if (unlikely (fd >= acc.fdCount))
-	return false;
+      ثابت hb_ubytes_t str = (*acc.char_لڑیاں)[glyph];
+      غیرعلامتی صحیح fd = subset_get_fd (acc, glyph);
+      اگر (unlikely (fd >= acc.fd_گنتی))
+	واپس جھوٹ;
 
 
       ENV env (str, acc, fd,
-	       plan->normalized_coords.arrayZ, plan->normalized_coords.length);
+	       plan->normalized_coords.arrayZ, plan->normalized_coords.لمبائی);
       cs_interpreter_t<ENV, OPSET, flatten_param_t> interp (env);
       flatten_param_t  param = {
         flat_charstrings.arrayZ[i],
-        (bool) (plan->flags & HB_SUBSET_FLAGS_NO_HINTING),
+        (منطقی) (plan->flags & HB_SUBSET_FLAGS_NO_HINTING),
 	plan,
-	command_capture ? &(*command_capture)[i] : nullptr
+	command_capture ? &(*command_capture)[i] : خالی_اشاریہ
       };
-      if (unlikely (!interp.interpret (param)))
-	return false;
+      اگر (unlikely (!interp.interpret (param)))
+	واپس جھوٹ;
     }
-    return true;
+    واپس سچ;
   }
 
-  const ACC &acc;
-  const hb_subset_plan_t *plan;
+  ثابت ACC &acc;
+  ثابت hb_subset_plan_t *plan;
 };
 
-struct subr_closures_t
+ساخت subr_closures_t
 {
-  subr_closures_t (unsigned int fd_count) : global_closure (), local_closures ()
+  subr_closures_t (غیرعلامتی صحیح fd_گنتی_2) : global_احاطہ (), local_closures ()
   {
-    local_closures.resize_exact (fd_count);
+    local_closures.resize_exact (fd_گنتی_2);
   }
 
-  void reset ()
+  خالی reset ()
   {
-    global_closure.clear();
-    for (unsigned int i = 0; i < local_closures.length; i++)
+    global_احاطہ.clear();
+    برائے (غیرعلامتی صحیح i = 0; i < local_closures.لمبائی; i++)
       local_closures[i].clear();
   }
 
-  bool in_error () const { return local_closures.in_error (); }
-  hb_set_t  global_closure;
-  hb_vector_t<hb_set_t> local_closures;
+  منطقی اندر_error () ثابت { واپس local_closures.اندر_error (); }
+  hb_سیٹ_t  global_احاطہ;
+  hb_سمتیہ_t<hb_سیٹ_t> local_closures;
 };
 
-struct parsed_cs_op_t : op_str_t
+ساخت parsed_cs_op_t : op_str_t
 {
-  parsed_cs_op_t (unsigned int subr_num_ = 0) :
-    subr_num (subr_num_) {}
+  parsed_cs_op_t (غیرعلامتی صحیح subr_عدد = 0) :
+    subr_عدد_2 (subr_عدد) {}
 
-  bool is_hinting () const { return hinting_flag; }
-  void set_hinting ()       { hinting_flag = true; }
+  منطقی is_hinting () ثابت { واپس hinting_flag; }
+  خالی سیٹ_hinting ()       { hinting_flag = سچ; }
 
   /* The layout of this struct is designed to fit within the
    * padding of op_str_t! */
 
-  protected:
-  bool	  hinting_flag = false;
+  محفوظ:
+  منطقی	  hinting_flag = جھوٹ;
 
-  public:
-  uint16_t subr_num;
+  عوامی:
+  uint16_t subr_عدد_2;
 };
 
-struct parsed_cs_str_t : parsed_values_t<parsed_cs_op_t>
+ساخت parsed_cs_str_t : parsed_اقدار_t<parsed_cs_op_t>
 {
   parsed_cs_str_t () :
-    parsed (false),
-    hint_dropped (false),
-    has_prefix_ (false),
-    has_calls_ (false),
-    coalescing_ (false)
+    parsed (جھوٹ),
+    hint_dropped (جھوٹ),
+    has_سابقہ (جھوٹ),
+    has_calls_ (جھوٹ),
+    coalescing_ (جھوٹ)
   {
     SUPER::init ();
   }
 
   HB_ALWAYS_INLINE
-  void add_op (op_code_t op, const byte_str_ref_t& str_ref)
+  خالی جوڑو_op (op_رمز_t op, ثابت byte_str_ref_t& str_ref)
   {
-    if (is_parsed ()) return;
-    if (coalescing_)
+    اگر (is_parsed ()) واپس;
+    اگر (coalescing_)
     {
       /* Do not record individual tokens; only note their boundaries.
        * Bytes are flushed as verbatim segments at call sites and at
        * the end of the string.  Only enabled when per-op granularity
        * is not needed later for hint analysis. */
-      penultimate_end_ = last_end_;
-      last_end_ = str_ref.get_offset ();
-      if (unlikely (op == OpCode_return || op == OpCode_endchar))
-	flush_segment (str_ref, last_end_);
-      return;
+      penultimate_انتہا = آخری_انتہا_2;
+      آخری_انتہا_2 = str_ref.get_انحراف ();
+      اگر (unlikely (op == Op_رمز_return || op == Op_رمز_endchar))
+	flush_segment (str_ref, آخری_انتہا_2);
+      واپس;
     }
-    SUPER::add_op (op, str_ref);
+    SUPER::جوڑو_op (op, str_ref);
   }
 
-  void add_call_op (op_code_t op, const byte_str_ref_t& str_ref, unsigned int subr_num)
+  خالی جوڑو_call_op (op_رمز_t op, ثابت byte_str_ref_t& str_ref, غیرعلامتی صحیح subr_عدد_2)
   {
-    if (is_parsed ()) return;
-    has_calls_ = true;
+    اگر (is_parsed ()) واپس;
+    has_calls_ = سچ;
 
-    if (coalescing_)
+    اگر (coalescing_)
     {
       /* Flush bytes preceding the subroutine-number token, then skip
        * over the number: it is re-encoded with the new bias. */
-      flush_segment (str_ref, penultimate_end_);
-      opStart = last_end_;
-      SUPER::add_op (op, str_ref, {subr_num});
-      penultimate_end_ = last_end_ = str_ref.get_offset ();
-      return;
+      flush_segment (str_ref, penultimate_انتہا);
+      op_آغاز = آخری_انتہا_2;
+      SUPER::جوڑو_op (op, str_ref, {subr_عدد_2});
+      penultimate_انتہا = آخری_انتہا_2 = str_ref.get_انحراف ();
+      واپس;
     }
 
     /* Pop the subroutine number. */
-    values.pop ();
+    values.نکالو ();
 
-    SUPER::add_op (op, str_ref, {subr_num});
+    SUPER::جوڑو_op (op, str_ref, {subr_عدد_2});
   }
 
   /* Flush pending bytes [opStart, end) as verbatim segment entries. */
-  void flush_segment (const byte_str_ref_t& str_ref, unsigned end)
+  خالی flush_segment (ثابت byte_str_ref_t& str_ref, غیرعلامتی انتہا)
   {
-    unsigned start = opStart;
-    if (end <= start) return;
-    while (start < end)
+    غیرعلامتی آغاز = op_آغاز;
+    اگر (انتہا <= آغاز) واپس;
+    جب (آغاز < انتہا)
     {
-      auto arr = str_ref.sub_array (start, hb_min (end - start, 255u));
-      if (unlikely (!arr.length)) break;
+      خودکار arr = str_ref.sub_array (آغاز, hb_min (انتہا - آغاز, 255u));
+      اگر (unlikely (!arr.لمبائی)) توڑو;
       parsed_cs_op_t *val = values.push ();
       val->ptr = arr.arrayZ;
-      val->length = arr.length;
-      start += arr.length;
+      val->لمبائی = arr.لمبائی;
+      آغاز += arr.لمبائی;
     }
-    opStart = end;
+    op_آغاز = انتہا;
   }
 
   /* For coalescing mode: flush any pending bytes through the current
    * position; used where the string ends without an explicit
    * return/endchar op (CFF2). */
-  void flush_coalesced (const byte_str_ref_t& str_ref)
+  خالی flush_coalesced (ثابت byte_str_ref_t& str_ref)
   {
-    if (coalescing_ && !is_parsed ())
-      flush_segment (str_ref, str_ref.get_offset ());
+    اگر (coalescing_ && !is_parsed ())
+      flush_segment (str_ref, str_ref.get_انحراف ());
   }
 
-  void enable_coalescing () { coalescing_ = true; }
-  bool is_coalescing () const { return coalescing_; }
+  خالی enable_coalescing () { coalescing_ = سچ; }
+  منطقی is_coalescing () ثابت { واپس coalescing_; }
 
-  void set_prefix (const number_t &num, op_code_t op = OpCode_Invalid)
+  خالی سیٹ_سابقہ (ثابت نمبر_t &عدد, op_رمز_t op = Op_رمز_Invalid)
   {
-    has_prefix_ = true;
-    prefix_op_ = op;
-    prefix_num_ = num;
+    has_سابقہ = سچ;
+    سابقہ_op = op;
+    سابقہ_عدد = عدد;
   }
 
-  bool at_end (unsigned int pos) const
+  منطقی at_انتہا (غیرعلامتی صحیح pos) ثابت
   {
-    return ((pos + 1 >= values.length) /* CFF2 */
-	|| (values[pos + 1].op == OpCode_return));
+    واپس ((pos + 1 >= values.لمبائی) /* CFF2 */
+	|| (values[pos + 1].op == Op_رمز_return));
   }
 
-  bool is_parsed () const { return parsed; }
-  void set_parsed ()      { parsed = true; }
+  منطقی is_parsed () ثابت { واپس parsed; }
+  خالی سیٹ_parsed ()      { parsed = سچ; }
 
-  bool is_hint_dropped () const { return hint_dropped; }
-  void set_hint_dropped ()      { hint_dropped = true; }
+  منطقی is_hint_dropped () ثابت { واپس hint_dropped; }
+  خالی سیٹ_hint_dropped ()      { hint_dropped = سچ; }
 
-  bool is_vsindex_dropped () const { return vsindex_dropped; }
-  void set_vsindex_dropped ()      { vsindex_dropped = true; }
+  منطقی is_vsindex_dropped () ثابت { واپس vsindex_dropped; }
+  خالی سیٹ_vsindex_dropped ()      { vsindex_dropped = سچ; }
 
-  bool has_prefix () const          { return has_prefix_; }
-  op_code_t prefix_op () const         { return prefix_op_; }
-  const number_t &prefix_num () const { return prefix_num_; }
+  منطقی has_سابقہ_2 () ثابت          { واپس has_سابقہ; }
+  op_رمز_t سابقہ_op_2 () ثابت         { واپس سابقہ_op; }
+  ثابت نمبر_t &سابقہ_عدد_2 () ثابت { واپس سابقہ_عدد; }
 
-  bool has_calls () const          { return has_calls_; }
+  منطقی has_calls () ثابت          { واپس has_calls_; }
 
-  void compact ()
+  خالی compact ()
   {
-    unsigned count = values.length;
-    if (!count) return;
-    auto &opstr = values.arrayZ;
-    unsigned j = 0;
-    for (unsigned i = 1; i < count; i++)
+    غیرعلامتی گنتی = values.لمبائی;
+    اگر (!گنتی) واپس;
+    خودکار &opstr = values.arrayZ;
+    غیرعلامتی j = 0;
+    برائے (غیرعلامتی i = 1; i < گنتی; i++)
     {
       /* See if we can combine op j and op i. */
-      bool combine =
-        (opstr[j].op != OpCode_callsubr && opstr[j].op != OpCode_callgsubr) &&
-        (opstr[i].op != OpCode_callsubr && opstr[i].op != OpCode_callgsubr) &&
+      منطقی combine =
+        (opstr[j].op != Op_رمز_callsubr && opstr[j].op != Op_رمز_callgsubr) &&
+        (opstr[i].op != Op_رمز_callsubr && opstr[i].op != Op_رمز_callgsubr) &&
         (opstr[j].is_hinting () == opstr[i].is_hinting ()) &&
-        (opstr[j].ptr + opstr[j].length == opstr[i].ptr) &&
-        (opstr[j].length + opstr[i].length <= 255);
+        (opstr[j].ptr + opstr[j].لمبائی == opstr[i].ptr) &&
+        (opstr[j].لمبائی + opstr[i].لمبائی <= 255);
 
-      if (combine)
+      اگر (combine)
       {
-	opstr[j].length += opstr[i].length;
-	opstr[j].op = OpCode_Invalid;
+	opstr[j].لمبائی += opstr[i].لمبائی;
+	opstr[j].op = Op_رمز_Invalid;
       }
-      else
+      ورنہ
       {
 	opstr[++j] = opstr[i];
       }
@@ -588,51 +588,51 @@ struct parsed_cs_str_t : parsed_values_t<parsed_cs_op_t>
     values.shrink (j + 1);
   }
 
-  protected:
-  bool    parsed : 1;
-  bool    hint_dropped : 1;
-  bool    vsindex_dropped : 1;
-  bool    has_prefix_ : 1;
-  bool    has_calls_ : 1;
+  محفوظ:
+  منطقی    parsed : 1;
+  منطقی    hint_dropped : 1;
+  منطقی    vsindex_dropped : 1;
+  منطقی    has_سابقہ : 1;
+  منطقی    has_calls_ : 1;
   /* Record verbatim byte segments instead of individual tokens,
    * making a separate compact() pass unnecessary; incompatible with
    * hint analysis. */
-  bool    coalescing_ : 1;
+  منطقی    coalescing_ : 1;
   /* End offsets of the last two tokens seen (coalescing mode). */
-  unsigned penultimate_end_ = 0;
-  unsigned last_end_ = 0;
-  op_code_t	prefix_op_;
-  number_t	prefix_num_;
+  غیرعلامتی penultimate_انتہا = 0;
+  غیرعلامتی آخری_انتہا_2 = 0;
+  op_رمز_t	سابقہ_op;
+  نمبر_t	سابقہ_عدد;
 
-  private:
-  typedef parsed_values_t<parsed_cs_op_t> SUPER;
+  نجی:
+  قسمتعریف parsed_اقدار_t<parsed_cs_op_t> SUPER;
 };
 
-struct parsed_cs_str_vec_t : hb_vector_t<parsed_cs_str_t>
+ساخت parsed_cs_str_vec_t : hb_سمتیہ_t<parsed_cs_str_t>
 {
-  private:
-  typedef hb_vector_t<parsed_cs_str_t> SUPER;
+  نجی:
+  قسمتعریف hb_سمتیہ_t<parsed_cs_str_t> SUPER;
 };
 
-struct cff_subset_accelerator_t
+ساخت cff_subset_accelerator_t
 {
-  static cff_subset_accelerator_t* create (
+  ساکن cff_subset_accelerator_t* create (
       hb_blob_t* original_blob,
-      const parsed_cs_str_vec_t& parsed_charstrings,
-      const parsed_cs_str_vec_t& parsed_global_subrs,
-      const hb_vector_t<parsed_cs_str_vec_t>& parsed_local_subrs) {
+      ثابت parsed_cs_str_vec_t& parsed_charstrings,
+      ثابت parsed_cs_str_vec_t& parsed_global_subrs,
+      ثابت hb_سمتیہ_t<parsed_cs_str_vec_t>& parsed_local_subrs) {
     cff_subset_accelerator_t* accel =
-        (cff_subset_accelerator_t*) hb_malloc (sizeof(cff_subset_accelerator_t));
-    if (unlikely (!accel)) return nullptr;
-    new (accel) cff_subset_accelerator_t (original_blob,
+        (cff_subset_accelerator_t*) hb_malloc (حجم(cff_subset_accelerator_t));
+    اگر (unlikely (!accel)) واپس خالی_اشاریہ;
+    نیا (accel) cff_subset_accelerator_t (original_blob,
                                           parsed_charstrings,
                                           parsed_global_subrs,
                                           parsed_local_subrs);
-    return accel;
+    واپس accel;
   }
 
-  static void destroy (void* value) {
-    if (!value) return;
+  ساکن خالی destroy (خالی* value) {
+    اگر (!value) واپس;
 
     cff_subset_accelerator_t* accel = (cff_subset_accelerator_t*) value;
     accel->~cff_subset_accelerator_t ();
@@ -641,9 +641,9 @@ struct cff_subset_accelerator_t
 
   cff_subset_accelerator_t(
       hb_blob_t* original_blob_,
-      const parsed_cs_str_vec_t& parsed_charstrings_,
-      const parsed_cs_str_vec_t& parsed_global_subrs_,
-      const hb_vector_t<parsed_cs_str_vec_t>& parsed_local_subrs_)
+      ثابت parsed_cs_str_vec_t& parsed_charstrings_,
+      ثابت parsed_cs_str_vec_t& parsed_global_subrs_,
+      ثابت hb_سمتیہ_t<parsed_cs_str_vec_t>& parsed_local_subrs_)
   {
     parsed_charstrings = parsed_charstrings_;
     parsed_global_subrs = parsed_global_subrs_;
@@ -657,84 +657,84 @@ struct cff_subset_accelerator_t
   ~cff_subset_accelerator_t()
   {
     hb_blob_destroy (original_blob);
-    auto *mapping = glyph_to_sid_map.get_relaxed ();
-    if (mapping)
+    خودکار *mapping = glyph_مقصد_sid_map.get_relaxed ();
+    اگر (mapping)
     {
-      mapping->~glyph_to_sid_map_t ();
+      mapping->~glyph_مقصد_sid_map_t ();
       hb_free (mapping);
     }
   }
 
   parsed_cs_str_vec_t parsed_charstrings;
   parsed_cs_str_vec_t parsed_global_subrs;
-  hb_vector_t<parsed_cs_str_vec_t> parsed_local_subrs;
-  mutable hb_atomic_t<glyph_to_sid_map_t *> glyph_to_sid_map;
+  hb_سمتیہ_t<parsed_cs_str_vec_t> parsed_local_subrs;
+  تغیرپذیر hb_atomic_t<glyph_مقصد_sid_map_t *> glyph_مقصد_sid_map;
 
- private:
+ نجی:
   hb_blob_t* original_blob;
 };
 
-struct subr_subset_param_t
+ساخت subr_subset_param_t
 {
   subr_subset_param_t (parsed_cs_str_t *parsed_charstring_,
 		       parsed_cs_str_vec_t *parsed_global_subrs_,
 		       parsed_cs_str_vec_t *parsed_local_subrs_,
-		       hb_set_t *global_closure_,
-		       hb_set_t *local_closure_,
-		       bool drop_hints_,
-		       bool coalesce_ = false) :
+		       hb_سیٹ_t *global_احاطہ_2,
+		       hb_سیٹ_t *local_احاطہ,
+		       منطقی drop_hints_,
+		       منطقی coalesce_ = جھوٹ) :
       current_parsed_str (parsed_charstring_),
       parsed_charstring (parsed_charstring_),
       parsed_global_subrs (parsed_global_subrs_),
       parsed_local_subrs (parsed_local_subrs_),
-      global_closure (global_closure_),
-      local_closure (local_closure_),
+      global_احاطہ (global_احاطہ_2),
+      local_احاطہ_2 (local_احاطہ),
       drop_hints (drop_hints_),
       coalesce (coalesce_)
   {
-    if (coalesce) parsed_charstring->enable_coalescing ();
+    اگر (coalesce) parsed_charstring->enable_coalescing ();
   }
 
   parsed_cs_str_t *get_parsed_str_for_context (call_context_t &context)
   {
-    switch (context.type)
+    انتخاب (context.type)
     {
-      case CSType_CharString:
-	return parsed_charstring;
+      حالت CSType_CharString:
+	واپس parsed_charstring;
 
-      case CSType_LocalSubr:
-	if (likely (context.subr_num < parsed_local_subrs->length))
-	  return &(*parsed_local_subrs)[context.subr_num];
-	break;
+      حالت CSType_LocalSubr:
+	اگر (likely (context.subr_عدد_2 < parsed_local_subrs->لمبائی))
+	  واپس &(*parsed_local_subrs)[context.subr_عدد_2];
+	توڑو;
 
-      case CSType_GlobalSubr:
-	if (likely (context.subr_num < parsed_global_subrs->length))
-	  return &(*parsed_global_subrs)[context.subr_num];
-	break;
+      حالت CSType_GlobalSubr:
+	اگر (likely (context.subr_عدد_2 < parsed_global_subrs->لمبائی))
+	  واپس &(*parsed_global_subrs)[context.subr_عدد_2];
+	توڑو;
     }
-    return nullptr;
+    واپس خالی_اشاریہ;
   }
 
-  template <typename ENV>
-  void set_current_str (ENV &env, bool calling)
+  سانچہ <قسم_نام ENV>
+  خالی سیٹ_current_str (ENV &env, منطقی calling)
   {
     parsed_cs_str_t *parsed_str = get_parsed_str_for_context (env.context);
-    if (unlikely (!parsed_str))
+    اگر (unlikely (!parsed_str))
     {
-      env.set_error ();
-      return;
+      env.سیٹ_error ();
+      واپس;
     }
     /* If the called subroutine is parsed partially but not completely yet,
      * it must be because we are calling it recursively.
      * Handle it as an error. */
-    if (unlikely (calling && !parsed_str->is_parsed () && (parsed_str->values.length > 0)))
-      env.set_error ();
-    else
+    اگر (unlikely (calling && !parsed_str->is_parsed () && (parsed_str->values.لمبائی > 0)))
+      env.سیٹ_error ();
+    ورنہ
     {
-      if (!parsed_str->is_parsed ())
+      اگر (!parsed_str->is_parsed ())
       {
-        parsed_str->alloc (env.str_ref.total_size ());
-        if (coalesce) parsed_str->enable_coalescing ();
+        parsed_str->alloc (env.str_ref.کل_سائز ());
+        اگر (coalesce) parsed_str->enable_coalescing ();
       }
       current_parsed_str = parsed_str;
     }
@@ -745,71 +745,71 @@ struct subr_subset_param_t
   parsed_cs_str_t	*parsed_charstring;
   parsed_cs_str_vec_t	*parsed_global_subrs;
   parsed_cs_str_vec_t	*parsed_local_subrs;
-  hb_set_t      *global_closure;
-  hb_set_t      *local_closure;
-  bool	  drop_hints;
-  bool	  coalesce;
+  hb_سیٹ_t      *global_احاطہ;
+  hb_سیٹ_t      *local_احاطہ_2;
+  منطقی	  drop_hints;
+  منطقی	  coalesce;
 };
 
-struct subr_remap_t : hb_inc_bimap_t
+ساخت subr_remap_t : hb_inc_bimap_t
 {
-  void create (const hb_set_t *closure)
+  خالی create (ثابت hb_سیٹ_t *احاطہ)
   {
     /* create a remapping of subroutine numbers from old to new.
      * no optimization based on usage counts. fonttools doesn't appear doing that either.
      */
 
-    alloc (closure->get_population ());
-    for (auto old_num : *closure)
-      add (old_num);
+    alloc (احاطہ->get_population ());
+    برائے (خودکار old_عدد : *احاطہ)
+      جوڑو (old_عدد);
 
-    if (get_population () < 1240)
+    اگر (get_population () < 1240)
       bias = 107;
-    else if (get_population () < 33900)
+    ورنہ اگر (get_population () < 33900)
       bias = 1131;
-    else
+    ورنہ
       bias = 32768;
   }
 
-  int biased_num (unsigned int old_num) const
+  صحیح biased_عدد (غیرعلامتی صحیح old_عدد) ثابت
   {
-    hb_codepoint_t new_num = get (old_num);
-    return (int)new_num - bias;
+    hb_codepoint_t new_عدد = get (old_عدد);
+    واپس (صحیح)new_عدد - bias;
   }
 
-  protected:
-  int bias;
+  محفوظ:
+  صحیح bias;
 };
 
-struct subr_remaps_t
+ساخت subr_remaps_t
 {
-  subr_remaps_t (unsigned int fdCount)
+  subr_remaps_t (غیرعلامتی صحیح fd_گنتی)
   {
-    local_remaps.resize (fdCount);
+    local_remaps.resize (fd_گنتی);
   }
 
-  bool in_error()
+  منطقی اندر_error()
   {
-    return local_remaps.in_error ();
+    واپس local_remaps.اندر_error ();
   }
 
-  void create (subr_closures_t& closures)
+  خالی create (subr_closures_t& closures)
   {
-    global_remap.create (&closures.global_closure);
-    for (unsigned int i = 0; i < local_remaps.length; i++)
+    global_remap.create (&closures.global_احاطہ);
+    برائے (غیرعلامتی صحیح i = 0; i < local_remaps.لمبائی; i++)
       local_remaps.arrayZ[i].create (&closures.local_closures[i]);
   }
 
   subr_remap_t	       global_remap;
-  hb_vector_t<subr_remap_t>  local_remaps;
+  hb_سمتیہ_t<subr_remap_t>  local_remaps;
 };
 
-template <typename SUBSETTER, typename SUBRS, typename ACC, typename ENV, typename OPSET, op_code_t endchar_op=OpCode_Invalid>
-struct subr_subsetter_t
+سانچہ <قسم_نام SUBSETTER, قسم_نام SUBRS, قسم_نام ACC, قسم_نام ENV, قسم_نام OPSET, op_رمز_t endchar_op=Op_رمز_Invalid>
+ساخت subr_subsetter_t
 {
-  subr_subsetter_t (ACC &acc_, const hb_subset_plan_t *plan_)
-      : acc (acc_), plan (plan_), closures(acc_.fdCount),
-        remaps(acc_.fdCount)
+  subr_subsetter_t (ACC &acc_, ثابت hb_subset_plan_t *plan_)
+      : acc (acc_), plan (plan_), closures(acc_.fd_گنتی),
+        remaps(acc_.fd_گنتی)
   {}
 
   /* Subroutine subsetting with --no-desubroutinize runs in phases:
@@ -826,109 +826,109 @@ struct subr_subsetter_t
    * Assumption: a callsubr/callgsubr operator must immediately follow a (biased) subroutine number
    * within the same charstring/subroutine, e.g., not split across a charstring and a subroutine.
    */
-  bool subset (void)
+  منطقی subset (خالی)
   {
-    unsigned fd_count = acc.fdCount;
-    const cff_subset_accelerator_t* cff_accelerator = nullptr;
-    if (acc.cff_accelerator) {
+    غیرعلامتی fd_گنتی_2 = acc.fd_گنتی;
+    ثابت cff_subset_accelerator_t* cff_accelerator = خالی_اشاریہ;
+    اگر (acc.cff_accelerator) {
       cff_accelerator = acc.cff_accelerator;
-      fd_count = cff_accelerator->parsed_local_subrs.length;
+      fd_گنتی_2 = cff_accelerator->parsed_local_subrs.لمبائی;
     }
 
-    if (cff_accelerator) {
+    اگر (cff_accelerator) {
       // If we are not dropping hinting then charstrings are not modified so we can
       // just use a reference to the cached copies.
-      cached_charstrings.resize_exact (plan->num_output_glyphs ());
+      cached_charstrings.resize_exact (plan->عدد_output_glyphs ());
       parsed_global_subrs = &cff_accelerator->parsed_global_subrs;
       parsed_local_subrs = &cff_accelerator->parsed_local_subrs;
-    } else {
-      parsed_charstrings.resize_exact (plan->num_output_glyphs ());
-      parsed_global_subrs_storage.resize_exact (acc.globalSubrs->count);
+    } ورنہ {
+      parsed_charstrings.resize_exact (plan->عدد_output_glyphs ());
+      parsed_global_subrs_storage.resize_exact (acc.globalSubrs->گنتی);
 
-      if (unlikely (!parsed_local_subrs_storage.resize (fd_count))) return false;
+      اگر (unlikely (!parsed_local_subrs_storage.resize (fd_گنتی_2))) واپس جھوٹ;
 
-      for (unsigned int i = 0; i < acc.fdCount; i++)
+      برائے (غیرعلامتی صحیح i = 0; i < acc.fd_گنتی; i++)
       {
-        unsigned count = acc.privateDicts[i].localSubrs->count;
-        parsed_local_subrs_storage[i].resize (count);
-        if (unlikely (parsed_local_subrs_storage[i].in_error ())) return false;
+        غیرعلامتی گنتی = acc.نجی_Dicts[i].localSubrs->گنتی;
+        parsed_local_subrs_storage[i].resize (گنتی);
+        اگر (unlikely (parsed_local_subrs_storage[i].اندر_error ())) واپس جھوٹ;
       }
 
       parsed_global_subrs = &parsed_global_subrs_storage;
       parsed_local_subrs = &parsed_local_subrs_storage;
     }
 
-    if (unlikely (remaps.in_error()
-                  || cached_charstrings.in_error ()
-                  || parsed_charstrings.in_error ()
-                  || parsed_global_subrs->in_error ()
-                  || closures.in_error ())) {
-      return false;
+    اگر (unlikely (remaps.اندر_error()
+                  || cached_charstrings.اندر_error ()
+                  || parsed_charstrings.اندر_error ()
+                  || parsed_global_subrs->اندر_error ()
+                  || closures.اندر_error ())) {
+      واپس جھوٹ;
     }
 
     /* When hints are not analyzed (not dropping hints, not populating
      * the accelerator), coalesce parsed tokens as they are added,
      * instead of a separate compact() pass. */
-    bool coalesce = !(plan->flags & HB_SUBSET_FLAGS_NO_HINTING) &&
+    منطقی coalesce = !(plan->flags & HB_SUBSET_FLAGS_NO_HINTING) &&
 		    !plan->inprogress_accelerator;
 
     /* phase 1 & 2 */
-    for (auto _ : plan->new_to_old_gid_list)
+    برائے (خودکار _ : plan->new_مقصد_old_gid_list)
     {
-      hb_codepoint_t new_glyph = _.first;
+      hb_codepoint_t new_glyph = _.پہلا;
       hb_codepoint_t old_glyph = _.second;
 
-      const hb_ubytes_t str = (*acc.charStrings)[old_glyph];
-      unsigned int fd = subset_get_fd (acc, old_glyph);
-      if (unlikely (fd >= acc.fdCount))
-        return false;
+      ثابت hb_ubytes_t str = (*acc.char_لڑیاں)[old_glyph];
+      غیرعلامتی صحیح fd = subset_get_fd (acc, old_glyph);
+      اگر (unlikely (fd >= acc.fd_گنتی))
+        واپس جھوٹ;
 
-      if (cff_accelerator)
+      اگر (cff_accelerator)
       {
         // parsed string already exists in accelerator, copy it and move
         // on.
-        if (cached_charstrings)
+        اگر (cached_charstrings)
           cached_charstrings[new_glyph] = &cff_accelerator->parsed_charstrings[old_glyph];
-        else
+        ورنہ
           parsed_charstrings[new_glyph] = cff_accelerator->parsed_charstrings[old_glyph];
 
-        continue;
+        جاری;
       }
 
       ENV env (str, acc, fd);
       cs_interpreter_t<ENV, OPSET, subr_subset_param_t> interp (env);
 
-      parsed_charstrings[new_glyph].alloc (str.length);
+      parsed_charstrings[new_glyph].alloc (str.لمبائی);
       subr_subset_param_t  param (&parsed_charstrings[new_glyph],
                                   &parsed_global_subrs_storage,
                                   &parsed_local_subrs_storage[fd],
-                                  &closures.global_closure,
+                                  &closures.global_احاطہ,
                                   &closures.local_closures[fd],
                                   plan->flags & HB_SUBSET_FLAGS_NO_HINTING,
                                   coalesce);
 
-      if (unlikely (!interp.interpret (param)))
-        return false;
+      اگر (unlikely (!interp.interpret (param)))
+        واپس جھوٹ;
 
       /* complete parsed string esp. copy CFF1 width or CFF2 vsindex to the parsed charstring for encoding */
       SUBSETTER::complete_parsed_str (interp.env, param, parsed_charstrings[new_glyph]);
 
       /* mark hint ops and arguments for drop */
-      if ((plan->flags & HB_SUBSET_FLAGS_NO_HINTING) || plan->inprogress_accelerator)
+      اگر ((plan->flags & HB_SUBSET_FLAGS_NO_HINTING) || plan->inprogress_accelerator)
       {
 	subr_subset_param_t  param (&parsed_charstrings[new_glyph],
 				    &parsed_global_subrs_storage,
 				    &parsed_local_subrs_storage[fd],
-				    &closures.global_closure,
+				    &closures.global_احاطہ,
 				    &closures.local_closures[fd],
 				    plan->flags & HB_SUBSET_FLAGS_NO_HINTING);
 
 	drop_hints_param_t  drop;
-	if (drop_hints_in_str (parsed_charstrings[new_glyph], param, drop))
+	اگر (drop_hints_اندر_str (parsed_charstrings[new_glyph], param, drop))
 	{
-	  parsed_charstrings[new_glyph].set_hint_dropped ();
-	  if (drop.vsindex_dropped)
-	    parsed_charstrings[new_glyph].set_vsindex_dropped ();
+	  parsed_charstrings[new_glyph].سیٹ_hint_dropped ();
+	  اگر (drop.vsindex_dropped)
+	    parsed_charstrings[new_glyph].سیٹ_vsindex_dropped ();
 	}
       }
 
@@ -940,7 +940,7 @@ struct subr_subsetter_t
        *
        * Not needed when tokens were coalesced during parsing.
        */
-      if (!coalesce)
+      اگر (!coalesce)
 	parsed_charstrings[new_glyph].compact ();
     }
 
@@ -950,191 +950,191 @@ struct subr_subsetter_t
      *
      * Or if we are dropping hinting, redo closure to get actually used subrs.
      */
-    if ((cff_accelerator ||
+    اگر ((cff_accelerator ||
 	(!cff_accelerator && plan->flags & HB_SUBSET_FLAGS_NO_HINTING)) &&
-        !closure_subroutines(*parsed_global_subrs,
+        !احاطہ_subroutines(*parsed_global_subrs,
                              *parsed_local_subrs))
-      return false;
+      واپس جھوٹ;
 
     remaps.create (closures);
 
     populate_subset_accelerator ();
-    return true;
+    واپس سچ;
   }
 
-  bool encode_charstrings (str_buff_vec_t &buffArray, bool encode_prefix = true) const
+  منطقی encode_charstrings (str_buff_vec_t &buffArray, منطقی encode_سابقہ = سچ) ثابت
   {
-    unsigned num_glyphs = plan->num_output_glyphs ();
-    if (unlikely (!buffArray.resize_exact (num_glyphs)))
-      return false;
-    hb_codepoint_t last = 0;
-    for (auto _ : plan->new_to_old_gid_list)
+    غیرعلامتی عدد_glyphs = plan->عدد_output_glyphs ();
+    اگر (unlikely (!buffArray.resize_exact (عدد_glyphs)))
+      واپس جھوٹ;
+    hb_codepoint_t آخری = 0;
+    برائے (خودکار _ : plan->new_مقصد_old_gid_list)
     {
-      hb_codepoint_t gid = _.first;
+      hb_codepoint_t gid = _.پہلا;
       hb_codepoint_t old_glyph = _.second;
 
-      if (endchar_op != OpCode_Invalid)
-        for (; last < gid; last++)
+      اگر (endchar_op != Op_رمز_Invalid)
+        برائے (; آخری < gid; آخری++)
 	{
 	  // Hack to point vector to static string.
-	  auto &b = buffArray.arrayZ[last];
-	  b.set_storage (const_cast<unsigned char *>(endchar_str), 1);
+	  خودکار &b = buffArray.arrayZ[آخری];
+	  b.سیٹ_storage (const_cast<غیرعلامتی حرف *>(endchar_str), 1);
 	}
 
-      last++; // Skip over gid
-      unsigned int  fd = subset_get_fd (acc, old_glyph);
-      if (unlikely (fd >= acc.fdCount))
-	return false;
-      if (unlikely (!encode_str (get_parsed_charstring (gid), fd, buffArray.arrayZ[gid], encode_prefix)))
-	return false;
+      آخری++; // Skip over gid
+      غیرعلامتی صحیح  fd = subset_get_fd (acc, old_glyph);
+      اگر (unlikely (fd >= acc.fd_گنتی))
+	واپس جھوٹ;
+      اگر (unlikely (!encode_str (get_parsed_charstring (gid), fd, buffArray.arrayZ[gid], encode_سابقہ)))
+	واپس جھوٹ;
     }
-    if (endchar_op != OpCode_Invalid)
-      for (; last < num_glyphs; last++)
+    اگر (endchar_op != Op_رمز_Invalid)
+      برائے (; آخری < عدد_glyphs; آخری++)
       {
 	// Hack to point vector to static string.
-	auto &b = buffArray.arrayZ[last];
-	b.set_storage (const_cast<unsigned char *>(endchar_str), 1);
+	خودکار &b = buffArray.arrayZ[آخری];
+	b.سیٹ_storage (const_cast<غیرعلامتی حرف *>(endchar_str), 1);
       }
 
-    return true;
+    واپس سچ;
   }
 
-  bool encode_subrs (const parsed_cs_str_vec_t &subrs, const subr_remap_t& remap, unsigned int fd, str_buff_vec_t &buffArray) const
+  منطقی encode_subrs (ثابت parsed_cs_str_vec_t &subrs, ثابت subr_remap_t& remap, غیرعلامتی صحیح fd, str_buff_vec_t &buffArray) ثابت
   {
-    unsigned int  count = remap.get_population ();
+    غیرعلامتی صحیح  گنتی = remap.get_population ();
 
-    if (unlikely (!buffArray.resize_exact (count)))
-      return false;
-    for (unsigned int new_num = 0; new_num < count; new_num++)
+    اگر (unlikely (!buffArray.resize_exact (گنتی)))
+      واپس جھوٹ;
+    برائے (غیرعلامتی صحیح new_عدد = 0; new_عدد < گنتی; new_عدد++)
     {
-      hb_codepoint_t old_num = remap.backward (new_num);
-      assert (old_num != CFF_UNDEF_CODE);
+      hb_codepoint_t old_عدد = remap.backward (new_عدد);
+      أكد (old_عدد != CFF_UNDEF_رمز);
 
-      if (unlikely (!encode_str (subrs[old_num], fd, buffArray[new_num])))
-	return false;
+      اگر (unlikely (!encode_str (subrs[old_عدد], fd, buffArray[new_عدد])))
+	واپس جھوٹ;
     }
-    return true;
+    واپس سچ;
   }
 
-  bool encode_globalsubrs (str_buff_vec_t &buffArray)
+  منطقی encode_globalsubrs (str_buff_vec_t &buffArray)
   {
-    return encode_subrs (*parsed_global_subrs, remaps.global_remap, 0, buffArray);
+    واپس encode_subrs (*parsed_global_subrs, remaps.global_remap, 0, buffArray);
   }
 
-  bool encode_localsubrs (unsigned int fd, str_buff_vec_t &buffArray) const
+  منطقی encode_localsubrs (غیرعلامتی صحیح fd, str_buff_vec_t &buffArray) ثابت
   {
-    return encode_subrs ((*parsed_local_subrs)[fd], remaps.local_remaps[fd], fd, buffArray);
+    واپس encode_subrs ((*parsed_local_subrs)[fd], remaps.local_remaps[fd], fd, buffArray);
   }
 
-  protected:
-  struct drop_hints_param_t
+  محفوظ:
+  ساخت drop_hints_param_t
   {
     drop_hints_param_t ()
-      : seen_moveto (false),
-	ends_in_hint (false),
-	all_dropped (false),
-	vsindex_dropped (false) {}
+      : نظر_آیا_moveto (جھوٹ),
+	سرے_اندر_hint (جھوٹ),
+	all_dropped (جھوٹ),
+	vsindex_dropped (جھوٹ) {}
 
-    bool  seen_moveto;
-    bool  ends_in_hint;
-    bool  all_dropped;
-    bool  vsindex_dropped;
+    منطقی  نظر_آیا_moveto;
+    منطقی  سرے_اندر_hint;
+    منطقی  all_dropped;
+    منطقی  vsindex_dropped;
   };
 
-  bool drop_hints_in_subr (parsed_cs_str_t &str, unsigned int pos,
-			   parsed_cs_str_vec_t &subrs, unsigned int subr_num,
-			   const subr_subset_param_t &param, drop_hints_param_t &drop)
+  منطقی drop_hints_اندر_subr (parsed_cs_str_t &str, غیرعلامتی صحیح pos,
+			   parsed_cs_str_vec_t &subrs, غیرعلامتی صحیح subr_عدد_2,
+			   ثابت subr_subset_param_t &param, drop_hints_param_t &drop)
   {
-    drop.ends_in_hint = false;
-    bool has_hint = drop_hints_in_str (subrs[subr_num], param, drop);
+    drop.سرے_اندر_hint = جھوٹ;
+    منطقی has_hint = drop_hints_اندر_str (subrs[subr_عدد_2], param, drop);
 
     /* if this subr ends with a stem hint (i.e., not a number; potential argument for moveto),
      * then this entire subroutine must be a hint. drop its call. */
-    if (drop.ends_in_hint)
+    اگر (drop.سرے_اندر_hint)
     {
-      str.values[pos].set_hinting ();
+      str.values[pos].سیٹ_hinting ();
       /* if this subr call is at the end of the parent subr, propagate the flag
        * otherwise reset the flag */
-      if (!str.at_end (pos))
-	drop.ends_in_hint = false;
+      اگر (!str.at_انتہا (pos))
+	drop.سرے_اندر_hint = جھوٹ;
     }
-    else if (drop.all_dropped)
+    ورنہ اگر (drop.all_dropped)
     {
-      str.values[pos].set_hinting ();
+      str.values[pos].سیٹ_hinting ();
     }
 
-    return has_hint;
+    واپس has_hint;
   }
 
   /* returns true if it sees a hint op before the first moveto */
-  bool drop_hints_in_str (parsed_cs_str_t &str, const subr_subset_param_t &param, drop_hints_param_t &drop)
+  منطقی drop_hints_اندر_str (parsed_cs_str_t &str, ثابت subr_subset_param_t &param, drop_hints_param_t &drop)
   {
-    bool  seen_hint = false;
+    منطقی  نظر_آیا_hint = جھوٹ;
 
-    unsigned count = str.values.length;
-    auto *values = str.values.arrayZ;
-    for (unsigned int pos = 0; pos < count; pos++)
+    غیرعلامتی گنتی = str.values.لمبائی;
+    خودکار *values = str.values.arrayZ;
+    برائے (غیرعلامتی صحیح pos = 0; pos < گنتی; pos++)
     {
-      bool  has_hint = false;
-      switch (values[pos].op)
+      منطقی  has_hint = جھوٹ;
+      انتخاب (values[pos].op)
       {
-	case OpCode_callsubr:
-	  has_hint = drop_hints_in_subr (str, pos,
-					*param.parsed_local_subrs, values[pos].subr_num,
+	حالت Op_رمز_callsubr:
+	  has_hint = drop_hints_اندر_subr (str, pos,
+					*param.parsed_local_subrs, values[pos].subr_عدد_2,
 					param, drop);
-	  break;
+	  توڑو;
 
-	case OpCode_callgsubr:
-	  has_hint = drop_hints_in_subr (str, pos,
-					*param.parsed_global_subrs, values[pos].subr_num,
+	حالت Op_رمز_callgsubr:
+	  has_hint = drop_hints_اندر_subr (str, pos,
+					*param.parsed_global_subrs, values[pos].subr_عدد_2,
 					param, drop);
-	  break;
+	  توڑو;
 
-	case OpCode_rmoveto:
-	case OpCode_hmoveto:
-	case OpCode_vmoveto:
-	  drop.seen_moveto = true;
-	  break;
+	حالت Op_رمز_rmoveto:
+	حالت Op_رمز_hmoveto:
+	حالت Op_رمز_vmoveto:
+	  drop.نظر_آیا_moveto = سچ;
+	  توڑو;
 
-	case OpCode_hintmask:
-	case OpCode_cntrmask:
-	  if (drop.seen_moveto)
+	حالت Op_رمز_hintmask:
+	حالت Op_رمز_cntrmask:
+	  اگر (drop.نظر_آیا_moveto)
 	  {
-	    values[pos].set_hinting ();
-	    break;
+	    values[pos].سیٹ_hinting ();
+	    توڑو;
 	  }
 	  HB_FALLTHROUGH;
 
-	case OpCode_hstemhm:
-	case OpCode_vstemhm:
-	case OpCode_hstem:
-	case OpCode_vstem:
-	  has_hint = true;
-	  values[pos].set_hinting ();
-	  if (str.at_end (pos))
-	    drop.ends_in_hint = true;
-	  break;
+	حالت Op_رمز_hstemhm:
+	حالت Op_رمز_vstemhm:
+	حالت Op_رمز_hstem:
+	حالت Op_رمز_vstem:
+	  has_hint = سچ;
+	  values[pos].سیٹ_hinting ();
+	  اگر (str.at_انتہا (pos))
+	    drop.سرے_اندر_hint = سچ;
+	  توڑو;
 
-	case OpCode_dotsection:
-	  values[pos].set_hinting ();
-	  break;
+	حالت Op_رمز_dotsection:
+	  values[pos].سیٹ_hinting ();
+	  توڑو;
 
-	default:
+	طےشدہ:
 	  /* NONE */
-	  break;
+	  توڑو;
       }
-      if (has_hint)
+      اگر (has_hint)
       {
-	for (int i = pos - 1; i >= 0; i--)
+	برائے (صحیح i = pos - 1; i >= 0; i--)
 	{
-	  parsed_cs_op_t  &csop = values[(unsigned)i];
-	  if (csop.is_hinting ())
-	    break;
-	  csop.set_hinting ();
-	  if (csop.op == OpCode_vsindexcs)
-	    drop.vsindex_dropped = true;
+	  parsed_cs_op_t  &csop = values[(غیرعلامتی)i];
+	  اگر (csop.is_hinting ())
+	    توڑو;
+	  csop.سیٹ_hinting ();
+	  اگر (csop.op == Op_رمز_vsindexcs)
+	    drop.vsindex_dropped = سچ;
 	}
-	seen_hint |= has_hint;
+	نظر_آیا_hint |= has_hint;
       }
     }
 
@@ -1142,147 +1142,147 @@ struct subr_subsetter_t
      * It may happen even after seeing the first moveto if a subr contains
      * only (usually one) hintmask operator, then calls to this subr can be dropped.
      */
-    drop.all_dropped = true;
-    for (unsigned int pos = 0; pos < count; pos++)
+    drop.all_dropped = سچ;
+    برائے (غیرعلامتی صحیح pos = 0; pos < گنتی; pos++)
     {
       parsed_cs_op_t  &csop = values[pos];
-      if (csop.op == OpCode_return)
-	break;
-      if (!csop.is_hinting ())
+      اگر (csop.op == Op_رمز_return)
+	توڑو;
+      اگر (!csop.is_hinting ())
       {
-	drop.all_dropped = false;
-	break;
+	drop.all_dropped = جھوٹ;
+	توڑو;
       }
     }
 
-    return seen_hint;
+    واپس نظر_آیا_hint;
   }
 
-  bool closure_subroutines (const parsed_cs_str_vec_t& global_subrs,
-                            const hb_vector_t<parsed_cs_str_vec_t>& local_subrs)
+  منطقی احاطہ_subroutines (ثابت parsed_cs_str_vec_t& global_subrs,
+                            ثابت hb_سمتیہ_t<parsed_cs_str_vec_t>& local_subrs)
   {
     closures.reset ();
-    for (auto _ : plan->new_to_old_gid_list)
+    برائے (خودکار _ : plan->new_مقصد_old_gid_list)
     {
-      hb_codepoint_t new_glyph = _.first;
+      hb_codepoint_t new_glyph = _.پہلا;
       hb_codepoint_t old_glyph = _.second;
-      unsigned int fd = subset_get_fd (acc, old_glyph);
-      if (unlikely (fd >= acc.fdCount))
-        return false;
+      غیرعلامتی صحیح fd = subset_get_fd (acc, old_glyph);
+      اگر (unlikely (fd >= acc.fd_گنتی))
+        واپس جھوٹ;
 
       // Note: const cast is safe here because the collect_subr_refs_in_str only performs a
       //       closure and does not modify any of the charstrings.
       subr_subset_param_t  param (const_cast<parsed_cs_str_t*> (&get_parsed_charstring (new_glyph)),
                                   const_cast<parsed_cs_str_vec_t*> (&global_subrs),
                                   const_cast<parsed_cs_str_vec_t*> (&local_subrs[fd]),
-                                  &closures.global_closure,
+                                  &closures.global_احاطہ,
                                   &closures.local_closures[fd],
                                   plan->flags & HB_SUBSET_FLAGS_NO_HINTING);
-      collect_subr_refs_in_str (get_parsed_charstring (new_glyph), param);
+      collect_subr_refs_اندر_str (get_parsed_charstring (new_glyph), param);
     }
 
-    return true;
+    واپس سچ;
   }
 
-  void collect_subr_refs_in_subr (unsigned int subr_num, parsed_cs_str_vec_t &subrs,
-				  hb_set_t *closure,
-				  const subr_subset_param_t &param)
+  خالی collect_subr_refs_اندر_subr (غیرعلامتی صحیح subr_عدد_2, parsed_cs_str_vec_t &subrs,
+				  hb_سیٹ_t *احاطہ,
+				  ثابت subr_subset_param_t &param)
   {
-    if (closure->has (subr_num))
-      return;
-    closure->add (subr_num);
-    collect_subr_refs_in_str (subrs[subr_num], param);
+    اگر (احاطہ->has (subr_عدد_2))
+      واپس;
+    احاطہ->جوڑو (subr_عدد_2);
+    collect_subr_refs_اندر_str (subrs[subr_عدد_2], param);
   }
 
-  void collect_subr_refs_in_str (const parsed_cs_str_t &str,
-                                 const subr_subset_param_t &param)
+  خالی collect_subr_refs_اندر_str (ثابت parsed_cs_str_t &str,
+                                 ثابت subr_subset_param_t &param)
   {
-    if (!str.has_calls ())
-      return;
+    اگر (!str.has_calls ())
+      واپس;
 
-    for (auto &opstr : str.values)
+    برائے (خودکار &opstr : str.values)
     {
-      if (!param.drop_hints || !opstr.is_hinting ())
+      اگر (!param.drop_hints || !opstr.is_hinting ())
       {
-	switch (opstr.op)
+	انتخاب (opstr.op)
 	{
-	  case OpCode_callsubr:
-	    collect_subr_refs_in_subr (opstr.subr_num, *param.parsed_local_subrs,
-				       param.local_closure, param);
-	    break;
+	  حالت Op_رمز_callsubr:
+	    collect_subr_refs_اندر_subr (opstr.subr_عدد_2, *param.parsed_local_subrs,
+				       param.local_احاطہ_2, param);
+	    توڑو;
 
-	  case OpCode_callgsubr:
-	    collect_subr_refs_in_subr (opstr.subr_num, *param.parsed_global_subrs,
-				       param.global_closure, param);
-	    break;
+	  حالت Op_رمز_callgsubr:
+	    collect_subr_refs_اندر_subr (opstr.subr_عدد_2, *param.parsed_global_subrs,
+				       param.global_احاطہ, param);
+	    توڑو;
 
-	  default: break;
+	  طےشدہ: توڑو;
 	}
       }
     }
   }
 
-  bool encode_str (const parsed_cs_str_t &str, const unsigned int fd, str_buff_t &buff, bool encode_prefix = true) const
+  منطقی encode_str (ثابت parsed_cs_str_t &str, ثابت غیرعلامتی صحیح fd, str_buff_t &buff, منطقی encode_سابقہ = سچ) ثابت
   {
     str_encoder_t  encoder (buff);
     encoder.reset ();
-    bool hinting = !(plan->flags & HB_SUBSET_FLAGS_NO_HINTING);
+    منطقی hinting = !(plan->flags & HB_SUBSET_FLAGS_NO_HINTING);
     /* if a prefix (CFF1 width or CFF2 vsindex) has been removed along with hints,
      * re-insert it at the beginning of charstreing */
-    if (encode_prefix && str.has_prefix () && !hinting && str.is_hint_dropped ())
+    اگر (encode_سابقہ && str.has_سابقہ_2 () && !hinting && str.is_hint_dropped ())
     {
-      encoder.encode_num_cs (str.prefix_num ());
-      if (str.prefix_op () != OpCode_Invalid)
-	encoder.encode_op (str.prefix_op ());
+      encoder.encode_عدد_cs (str.سابقہ_عدد_2 ());
+      اگر (str.سابقہ_op_2 () != Op_رمز_Invalid)
+	encoder.encode_op (str.سابقہ_op_2 ());
     }
 
-    unsigned size = 0;
-    for (auto &opstr : str.values)
+    غیرعلامتی سائز = 0;
+    برائے (خودکار &opstr : str.values)
     {
-      size += opstr.length;
-      if (opstr.op == OpCode_callsubr || opstr.op == OpCode_callgsubr)
-        size += 3;
+      سائز += opstr.لمبائی;
+      اگر (opstr.op == Op_رمز_callsubr || opstr.op == Op_رمز_callgsubr)
+        سائز += 3;
     }
-    if (!buff.alloc_exact (buff.length + size))
-      return false;
+    اگر (!buff.alloc_exact (buff.لمبائی + سائز))
+      واپس جھوٹ;
 
-    for (auto &opstr : str.values)
+    برائے (خودکار &opstr : str.values)
     {
-      if (hinting || !opstr.is_hinting ())
+      اگر (hinting || !opstr.is_hinting ())
       {
-	switch (opstr.op)
+	انتخاب (opstr.op)
 	{
-	  case OpCode_callsubr:
-	    encoder.encode_int (remaps.local_remaps[fd].biased_num (opstr.subr_num));
-	    encoder.copy_str (opstr.ptr, opstr.length);
-	    break;
+	  حالت Op_رمز_callsubr:
+	    encoder.encode_int (remaps.local_remaps[fd].biased_عدد (opstr.subr_عدد_2));
+	    encoder.copy_str (opstr.ptr, opstr.لمبائی);
+	    توڑو;
 
-	  case OpCode_callgsubr:
-	    encoder.encode_int (remaps.global_remap.biased_num (opstr.subr_num));
-	    encoder.copy_str (opstr.ptr, opstr.length);
-	    break;
+	  حالت Op_رمز_callgsubr:
+	    encoder.encode_int (remaps.global_remap.biased_عدد (opstr.subr_عدد_2));
+	    encoder.copy_str (opstr.ptr, opstr.لمبائی);
+	    توڑو;
 
-	  default:
-	    encoder.copy_str (opstr.ptr, opstr.length);
-	    break;
+	  طےشدہ:
+	    encoder.copy_str (opstr.ptr, opstr.لمبائی);
+	    توڑو;
 	}
       }
     }
-    return !encoder.in_error ();
+    واپس !encoder.اندر_error ();
   }
 
-  void compact_parsed_subrs () const
+  خالی compact_parsed_subrs () ثابت
   {
-    for (auto &cs : parsed_global_subrs_storage)
+    برائے (خودکار &cs : parsed_global_subrs_storage)
       cs.compact ();
-    for (auto &vec : parsed_local_subrs_storage)
-      for (auto &cs : vec)
+    برائے (خودکار &vec : parsed_local_subrs_storage)
+      برائے (خودکار &cs : vec)
 	cs.compact ();
   }
 
-  void populate_subset_accelerator () const
+  خالی populate_subset_accelerator () ثابت
   {
-    if (!plan->inprogress_accelerator) return;
+    اگر (!plan->inprogress_accelerator) واپس;
 
     compact_parsed_subrs ();
 
@@ -1293,52 +1293,52 @@ struct subr_subsetter_t
                                          parsed_local_subrs_storage);
   }
 
-  const parsed_cs_str_t& get_parsed_charstring (unsigned i) const
+  ثابت parsed_cs_str_t& get_parsed_charstring (غیرعلامتی i) ثابت
   {
-    if (cached_charstrings) return *(cached_charstrings[i]);
-    return parsed_charstrings[i];
+    اگر (cached_charstrings) واپس *(cached_charstrings[i]);
+    واپس parsed_charstrings[i];
   }
 
-  protected:
-  const ACC			&acc;
-  const hb_subset_plan_t	*plan;
+  محفوظ:
+  ثابت ACC			&acc;
+  ثابت hb_subset_plan_t	*plan;
 
   subr_closures_t		closures;
 
-  hb_vector_t<const parsed_cs_str_t*>     cached_charstrings;
-  const parsed_cs_str_vec_t*              parsed_global_subrs;
-  const hb_vector_t<parsed_cs_str_vec_t>* parsed_local_subrs;
+  hb_سمتیہ_t<ثابت parsed_cs_str_t*>     cached_charstrings;
+  ثابت parsed_cs_str_vec_t*              parsed_global_subrs;
+  ثابت hb_سمتیہ_t<parsed_cs_str_vec_t>* parsed_local_subrs;
 
   subr_remaps_t			remaps;
 
-  private:
+  نجی:
 
   parsed_cs_str_vec_t		parsed_charstrings;
   parsed_cs_str_vec_t		parsed_global_subrs_storage;
-  hb_vector_t<parsed_cs_str_vec_t>  parsed_local_subrs_storage;
-  typedef typename SUBRS::count_type subr_count_type;
+  hb_سمتیہ_t<parsed_cs_str_vec_t>  parsed_local_subrs_storage;
+  قسمتعریف قسم_نام SUBRS::گنتی_type subr_گنتی_type;
 };
 
 } /* namespace CFF */
 
-HB_INTERNAL bool
-hb_plan_subset_cff_fdselect (const hb_subset_plan_t *plan,
-			    unsigned int fdCount,
-			    const CFF::FDSelect &src, /* IN */
-			    unsigned int src_num_glyphs,
-			    unsigned int &subset_fd_count /* OUT */,
-			    unsigned int &subset_fdselect_size /* OUT */,
-			    unsigned int &subset_fdselect_format /* OUT */,
-			    hb_vector_t<CFF::code_pair_t> &fdselect_ranges /* OUT */,
-			    hb_inc_bimap_t &fdmap /* OUT */);
+HB_اندرونی منطقی
+hb_plan_subset_cff_fdselect (ثابت hb_subset_plan_t *plan,
+			    غیرعلامتی صحیح fd_گنتی,
+			    ثابت CFF::FDSelect &src, /*اندر*/
+			    غیرعلامتی صحیح src_عدد_glyphs,
+			    غیرعلامتی صحیح &subset_fd_گنتی /*برآمد*/,
+			    غیرعلامتی صحیح &subset_fdselect_سائز /*برآمد*/,
+			    غیرعلامتی صحیح &subset_fdselect_format /*برآمد*/,
+			    hb_سمتیہ_t<CFF::رمز_pair_t> &fdselect_ranges /*برآمد*/,
+			    hb_inc_bimap_t &fdmap /*برآمد*/);
 
-HB_INTERNAL bool
+HB_اندرونی منطقی
 hb_serialize_cff_fdselect (hb_serialize_context_t *c,
-			  unsigned int num_glyphs,
-			  const CFF::FDSelect &src,
-			  unsigned int fd_count,
-			  unsigned int fdselect_format,
-			  unsigned int size,
-			  const hb_vector_t<CFF::code_pair_t> &fdselect_ranges);
+			  غیرعلامتی صحیح عدد_glyphs,
+			  ثابت CFF::FDSelect &src,
+			  غیرعلامتی صحیح fd_گنتی_2,
+			  غیرعلامتی صحیح fdselect_format,
+			  غیرعلامتی صحیح سائز,
+			  ثابت hb_سمتیہ_t<CFF::رمز_pair_t> &fdselect_ranges);
 
-#endif /* HB_SUBSET_CFF_COMMON_HH */
+#اگر_ختم /* HB_SUBSET_CFF_COMMON_HH */

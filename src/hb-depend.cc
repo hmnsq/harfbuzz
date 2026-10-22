@@ -24,19 +24,19 @@
  * Adobe Author(s): Skef Iterum
  */
 
-#include "hb.hh"
+#شامل "hb.hh"
 
-#include "hb-depend.hh"
+#شامل "hb-depend.hh"
 
-#include "hb-face.hh"
-#include "hb-ot-cmap-table.hh"
-#include "hb-ot-glyf-table.hh"
-#include "hb-ot-layout-gsub-table.hh"
-#include "hb-ot-math-table.hh"
-#include "hb-ot-cff1-table.hh"
-#include "hb-ot-var-varc-table.hh"
-#include "OT/Color/COLR/COLR.hh"
-#include "OT/Color/COLR/colrv1-depend.hh"
+#شامل "hb-face.hh"
+#شامل "hb-ot-cmap-table.hh"
+#شامل "hb-ot-glyf-table.hh"
+#شامل "hb-ot-layout-gsub-table.hh"
+#شامل "hb-ot-math-table.hh"
+#شامل "hb-ot-cff1-table.hh"
+#شامل "hb-ot-var-varc-table.hh"
+#شامل "OT/Color/COLR/COLR.hh"
+#شامل "OT/Color/COLR/colrv1-depend.hh"
 
 /**
  * SECTION:hb-subset-depend
@@ -63,15 +63,15 @@
 
 hb_subset_depend_t::hb_subset_depend_t (hb_face_t *f)
 {
-  if (unlikely (!data.glyph_dependencies.resize_exact (f->get_num_glyphs ()))) {
-    successful = false;
-    return;
+  اگر (unlikely (!ڈیٹا.glyph_dependencies.resize_exact (f->get_عدد_glyphs ()))) {
+    successful = جھوٹ;
+    واپس;
   }
-  successful = hb_depend_data_builder_t (data).compile (f);
+  successful = hb_depend_ڈیٹا_builder_t (ڈیٹا).compile (f);
 }
 
-bool
-hb_depend_data_builder_t::compile (hb_face_t *face)
+منطقی
+hb_depend_ڈیٹا_builder_t::compile (hb_face_t *face)
 {
   /* Extract dependencies from all relevant OpenType tables.
    * Note: cmap (UVS) dependencies are not extracted - UVS closure is handled
@@ -82,26 +82,26 @@ hb_depend_data_builder_t::compile (hb_face_t *face)
    * in libharfbuzz, after which get_relaxed() safely returns the already-
    * constructed accelerator without instantiating the GSUB_accelerator_t
    * constructor (which references a hidden is_blocklisted symbol) in this TU. */
-  if (hb_ot_layout_has_substitution (face))
-    face->table.GSUB.get_relaxed ()->depend (this, face);
-#ifndef HB_NO_MATH
-  face->table.MATH->depend (this);
-#endif
-#ifndef HB_NO_COLOR
-  face->table.COLR->depend (this);
-#endif
-  face->table.glyf->depend (this);
-#ifndef HB_NO_CFF
-  OT::cff1_subset_accelerator_t (face).depend (this);
-#endif
-#ifndef HB_NO_VAR_COMPOSITES
-  face->table.VARC->depend (this);
-#endif
-  return successful;
+  اگر (hb_ot_layout_has_substitution (face))
+    face->جدول.GSUB.get_relaxed ()->depend (یہ, face);
+#اگر_غیر_تعریف_شدہ HB_NO_MATH
+  face->جدول.MATH->depend (یہ);
+#اگر_ختم
+#اگر_غیر_تعریف_شدہ HB_NO_COLOR
+  face->جدول.COLR->depend (یہ);
+#اگر_ختم
+  face->جدول.glyf->depend (یہ);
+#اگر_غیر_تعریف_شدہ HB_NO_CFF
+  OT::cff1_subset_accelerator_t (face).depend (یہ);
+#اگر_ختم
+#اگر_غیر_تعریف_شدہ HB_NO_VAR_COMPOSITES
+  face->جدول.VARC->depend (یہ);
+#اگر_ختم
+  واپس successful;
 }
 
 
-#ifndef HB_NO_SUBSET_DEPEND
+#اگر_غیر_تعریف_شدہ HB_NO_SUBSET_DEPEND
 
 /**
  * hb_subset_depend_from_face_or_fail:
@@ -132,16 +132,16 @@ hb_subset_depend_t *
 hb_subset_depend_from_face_or_fail (hb_face_t *face)
 {
   hb_subset_depend_t *depend;
-  if (unlikely (!(depend = hb_object_create<hb_subset_depend_t> (face))))
-    return nullptr;
+  اگر (unlikely (!(depend = hb_object_create<hb_subset_depend_t> (face))))
+    واپس خالی_اشاریہ;
 
-  if (unlikely (depend->in_error ()))
+  اگر (unlikely (depend->اندر_error ()))
   {
     hb_subset_depend_destroy (depend);
-    return nullptr;
+    واپس خالی_اشاریہ;
   }
 
-  return depend;
+  واپس depend;
 }
 
 /**
@@ -173,31 +173,31 @@ hb_subset_depend_from_face_or_fail (hb_face_t *face)
  *
  * Since: 14.3.0
  **/
-unsigned int
+غیرعلامتی صحیح
 hb_subset_depend_lookup_glyph (hb_subset_depend_t *depend,
                                 hb_codepoint_t gid,
-                                unsigned int start_offset,
-                                unsigned int *entry_count,
-                                hb_subset_depend_entry_t *entries)
+                                غیرعلامتی صحیح آغاز_انحراف,
+                                غیرعلامتی صحیح *اندراج_گنتی,
+                                hb_subset_depend_اندراج_t *entries)
 {
-  unsigned int total = depend->data.get_glyph_entry_count (gid);
-  if (entry_count)
+  غیرعلامتی صحیح کل = depend->ڈیٹا.get_glyph_اندراج_گنتی (gid);
+  اگر (اندراج_گنتی)
   {
-    unsigned int count = hb_min (*entry_count,
-                                  start_offset < total ? total - start_offset : 0u);
-    for (unsigned int i = 0; i < count; i++)
+    غیرعلامتی صحیح گنتی = hb_min (*اندراج_گنتی,
+                                  آغاز_انحراف < کل ? کل - آغاز_انحراف : 0u);
+    برائے (غیرعلامتی صحیح i = 0; i < گنتی; i++)
     {
       uint8_t flags_byte = 0;
-      depend->data.get_glyph_entry (gid, start_offset + i,
-                                    &entries[i].table_tag, &entries[i].dependent,
-                                    &entries[i].layout_tag, &entries[i].ligature_set_index,
-                                    &entries[i].context_set_index,
+      depend->ڈیٹا.get_glyph_اندراج (gid, آغاز_انحراف + i,
+                                    &entries[i].جدول_لیبل_2, &entries[i].dependent,
+                                    &entries[i].layout_لیبل, &entries[i].ligature_سیٹ_اشاریہ,
+                                    &entries[i].context_سیٹ_اشاریہ,
                                     &flags_byte);
-      entries[i].flags = (hb_subset_depend_edge_flags_t) flags_byte;
+      entries[i].flags = (hb_subset_depend_کنارہ_flags_t) flags_byte;
     }
-    *entry_count = count;
+    *اندراج_گنتی = گنتی;
   }
-  return total;
+  واپس کل;
 }
 
 /**
@@ -224,13 +224,13 @@ hb_subset_depend_lookup_glyph (hb_subset_depend_t *depend,
  * Since: 14.3.0
  **/
 hb_bool_t
-hb_subset_depend_lookup_set (hb_subset_depend_t *depend, hb_codepoint_t index,
-                              hb_set_t *out)
+hb_subset_depend_lookup_سیٹ (hb_subset_depend_t *depend, hb_codepoint_t اشاریہ_2,
+                              hb_سیٹ_t *برآمد)
 {
-  const hb_set_t *s = depend->get_set_from_index (index);
-  if (!s) return false;
-  out->set (*s);
-  return true;
+  ثابت hb_سیٹ_t *s = depend->get_سیٹ_from_اشاریہ (اشاریہ_2);
+  اگر (!s) واپس جھوٹ;
+  برآمد->سیٹ (*s);
+  واپس سچ;
 }
 
 /**
@@ -242,12 +242,12 @@ hb_subset_depend_lookup_set (hb_subset_depend_t *depend, hb_codepoint_t index,
  *
  * Since: 14.3.0
  **/
-void
+خالی
 hb_subset_depend_destroy (hb_subset_depend_t *depend)
 {
-  if (!hb_object_destroy (depend)) return;
+  اگر (!hb_object_destroy (depend)) واپس;
 
   hb_free (depend);
 }
 
-#endif /* !HB_NO_SUBSET_DEPEND */
+#اگر_ختم /* !HB_NO_SUBSET_DEPEND */

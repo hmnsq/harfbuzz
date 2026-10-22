@@ -8,29 +8,29 @@ Input files:
 * https://unicode.org/Public/UCD/latest/ucd/Blocks.txt
 """
 
-import os.path, sys
+درآمد os.راستہ, sys
 
-import packTab
+درآمد packTab
 
-if len(sys.argv) > 1 and sys.argv[1] == "--rust":
-	del sys.argv[1]
+اگر لمبائی(sys.argv) > 1 اور sys.argv[1] == "--rust":
+	مٹاؤ sys.argv[1]
 	language = packTab.languages["rust"]
-else:
+ورنہ:
 	language = packTab.languages["c"]
 
-if len (sys.argv) != 4:
+اگر لمبائی (sys.argv) != 4:
 	sys.exit (__doc__)
 
-files = [open (x, encoding='utf-8') for x in sys.argv[1:]]
+files = [open (x, encoding='utf-8') برائے x میں sys.argv[1:]]
 
-headers = [[files[0].readline (), files[0].readline ()], [files[2].readline (), files[2].readline ()]]
-headers.append (["UnicodeData.txt does not have a header."])
-while files[0].readline ().find ('##################') < 0:
-	pass
+سرخیاں = [[files[0].readline (), files[0].readline ()], [files[2].readline (), files[2].readline ()]]
+سرخیاں.append (["UnicodeData.txt does not have a header."])
+جب files[0].readline ().ڈھونڈو ('##################') < 0:
+	گزرو
 
-blocks = {}
+بلاکیں = {}
 # Keep this in sync with hb_arabic_joiner_type_t in hb-ot-shaper-arabic.cc.
-JOINING_CODE = {
+JOINING_رمز = {
 	"JOINING_TYPE_U": 0,
 	"JOINING_TYPE_L": 1,
 	"JOINING_TYPE_R": 2,
@@ -42,99 +42,99 @@ JOINING_CODE = {
 	"JOINING_TYPE_X": 7,
 }
 
-def read_blocks(f):
-	global blocks
-	for line in f:
+تعریف read_بلاکیں(f):
+	عام بلاکیں
+	برائے سطر میں f:
 
-		j = line.find ('#')
-		if j >= 0:
-			line = line[:j]
+		j = سطر.ڈھونڈو ('#')
+		اگر j >= 0:
+			سطر = سطر[:j]
 
-		fields = [x.strip () for x in line.split (';')]
-		if len (fields) == 1:
-			continue
+		fields = [x.strip () برائے x میں سطر.بانٹو (';')]
+		اگر لمبائی (fields) == 1:
+			جاری
 
-		uu = fields[0].split ('..')
-		start = int (uu[0], 16)
-		if len (uu) == 1:
-			end = start
-		else:
-			end = int (uu[1], 16)
+		uu = fields[0].بانٹو ('..')
+		آغاز = صحیح (uu[0], 16)
+		اگر لمبائی (uu) == 1:
+			انتہا = آغاز
+		ورنہ:
+			انتہا = صحیح (uu[1], 16)
 
 		t = fields[1]
 
-		for u in range (start, end + 1):
-			blocks[u] = t
+		برائے u میں سلسلہ (آغاز, انتہا + 1):
+			بلاکیں[u] = t
 
-def print_joining_table(f):
+تعریف print_joining_جدول(f):
 
-	values = {}
-	for line in f:
+	اقدار = {}
+	برائے سطر میں f:
 
-		if line[0] == '#':
-			continue
+		اگر سطر[0] == '#':
+			جاری
 
-		fields = [x.strip () for x in line.split (';')]
-		if len (fields) == 1:
-			continue
+		fields = [x.strip () برائے x میں سطر.بانٹو (';')]
+		اگر لمبائی (fields) == 1:
+			جاری
 
-		u = int (fields[0], 16)
+		u = صحیح (fields[0], 16)
 
-		if fields[3] in ["ALAPH", "DALATH RISH"]:
-			value = "JOINING_GROUP_" + fields[3].replace(' ', '_')
-		else:
-			value = "JOINING_TYPE_" + fields[2]
-		values[u] = value
+		اگر fields[3] میں ["ALAPH", "DALATH RISH"]:
+			قدر_2 = "JOINING_GROUP_" + fields[3].replace(' ', '_')
+		ورنہ:
+			قدر_2 = "JOINING_TYPE_" + fields[2]
+		اقدار[u] = قدر_2
 
-	code = packTab.Code ('_hb_arabic_joining')
-	data = {u: JOINING_CODE[v] for u, v in values.items ()}
-	sol = packTab.pack_table (data, default=JOINING_CODE['JOINING_TYPE_X'], compression=9)
-	if language.name == "c":
-		sol.genCode (code, 'joining_type', language=language, private=True)
+	رمز = packTab.رمز_2 ('_hb_arabic_joining')
+	ڈیٹا = {u: JOINING_رمز[v] برائے u, v میں اقدار.اشیاء ()}
+	sol = packTab.pack_جدول (ڈیٹا, طےشدہ=JOINING_رمز['JOINING_TYPE_X'], compression=9)
+	اگر language.name == "c":
+		sol.gen_رمز (رمز, 'joining_type', language=language, نجی=سچ)
 
-		print ("#include \"hb.hh\"")
-		print ()
-		code.print_code (file=sys.stdout, language=language, private=True)
-		print ()
-		print ("static unsigned int")
-		print ("joining_type (hb_codepoint_t u)")
-		print ("{")
-		print ("  return _hb_arabic_joining_joining_type (u);")
-		print ("}")
-		print ()
-	elif language.name == "rust":
-		sol.genCode (code, 'joining_type_u8', language=language, private=False)
+		چھاپو ("#include \"hb.hh\"")
+		چھاپو ()
+		رمز.print_رمز (file=sys.stdout, language=language, نجی=سچ)
+		چھاپو ()
+		چھاپو ("static unsigned int")
+		چھاپو ("joining_type (hb_codepoint_t u)")
+		چھاپو ("{")
+		چھاپو ("  return _hb_arabic_joining_joining_type (u);")
+		چھاپو ("}")
+		چھاپو ()
+	وگرنہ_اگر language.name == "rust":
+		sol.gen_رمز (رمز, 'joining_type_u8', language=language, نجی=جھوٹ)
 
-		print ("#![allow(unused_parens)]")
-		print ("#![allow(clippy::unnecessary_cast, clippy::unreadable_literal, clippy::double_parens)]")
-		print ()
-		print ("use crate::unicode::Codepoint;")
-		print ()
-		print (
+		چھاپو ("#![allow(unused_parens)]")
+		چھاپو ("#![allow(clippy::unnecessary_cast, clippy::unreadable_literal, clippy::double_parens)]")
+		چھاپو ()
+		چھاپو ("use crate::unicode::Codepoint;")
+		چھاپو ()
+		چھاپو (
 			"use super::ot_shaper_arabic::hb_arabic_joining_type_t::{"
 			"self, D, GroupAlaph, GroupDalathRish, L, R, T, U, X};"
 		)
-		print ()
-		code.print_code (file=sys.stdout, language=language, private=False)
-		print ()
-		print ("#[inline]")
-		print ("pub(crate) fn joining_type (u: Codepoint) -> hb_arabic_joining_type_t")
-		print ("{")
-		print ("  match _hb_arabic_joining_joining_type_u8 (u as usize) {")
-		print ("    0 => U,")
-		print ("    1 => L,")
-		print ("    2 => R,")
-		print ("    3 => D,")
-		print ("    4 => GroupAlaph,")
-		print ("    5 => GroupDalathRish,")
-		print ("    6 => T,")
-		print ("    7 => X,")
-		print ("    _ => unreachable! (),")
-		print ("  }")
-		print ("}")
-		print ()
-	else:
-		assert False, "Unknown language: %s" % language.name
+		چھاپو ()
+		رمز.print_رمز (file=sys.stdout, language=language, نجی=جھوٹ)
+		چھاپو ()
+		چھاپو ("#[inline]")
+		چھاپو ("pub(crate) fn joining_type (u: Codepoint) -> hb_arabic_joining_type_t")
+		چھاپو ("{")
+		چھاپو ("  match _hb_arabic_joining_joining_type_u8 (u as usize) {")
+		چھاپو ("    0 => U,")
+		چھاپو ("    1 => L,")
+		چھاپو ("    2 => R,")
+		چھاپو ("    3 => D,")
+		چھاپو ("    4 => GroupAlaph,")
+		چھاپو ("    5 => GroupDalathRish,")
+		چھاپو ("    6 => T,")
+		چھاپو ("    7 => X,")
+		چھاپو ("    _ => unreachable! (),")
+		چھاپو ("  }")
+		چھاپو ("}")
+		چھاپو ()
+	ورنہ:
+		أكد جھوٹ, "Unknown language: %s" % language.name
 
 LIGATURES = (
 	0xF2EE, 0xFC08, 0xFC0E, 0xFC12, 0xFC32, 0xFC3F, 0xFC40, 0xFC41, 0xFC42,
@@ -147,250 +147,250 @@ LIGATURES = (
 	0xFEFC, 0xF201, 0xF211, 0xF2EE,
 )
 
-def read_shaping_table(f):
+تعریف read_shaping_جدول(f):
 
 	shapes = {}
 	ligatures = {}
-	names = {}
-	lines = f.readlines()
-	lines += [
+	نام = {}
+	سطریں = f.readlines()
+	سطریں += [
 		"F201;PUA ARABIC LIGATURE LELLAH ISOLATED FORM;Lo;0;AL;<isolated> 0644 0644 0647;;;;N;;;;;",
 		"F211;PUA ARABIC LIGATURE LAM WITH MEEM WITH JEEM INITIAL FORM;Lo;0;AL;<initial> 0644 0645 062C;;;;N;;;;;",
 		"F2EE;PUA ARABIC LIGATURE SHADDA WITH FATHATAN ISOLATED FORM;Lo;0;AL;<isolated> 0020 064B 0651;;;;N;;;;;",
 	]
-	for line in lines:
+	برائے سطر میں سطریں:
 
-		fields = [x.strip () for x in line.split (';')]
-		if fields[5][0:1] != '<':
-			continue
+		fields = [x.strip () برائے x میں سطر.بانٹو (';')]
+		اگر fields[5][0:1] != '<':
+			جاری
 
-		items = fields[5].split (' ')
-		shape, items = items[0][1:-1], tuple (int (x, 16) for x in items[1:])
-		c = int (fields[0], 16)
+		اشیاء = fields[5].بانٹو (' ')
+		shape, اشیاء = اشیاء[0][1:-1], tuple (صحیح (x, 16) برائے x میں اشیاء[1:])
+		c = صحیح (fields[0], 16)
 
-		if not shape in ['initial', 'medial', 'isolated', 'final']:
-			continue
+		اگر نہیں shape میں ['initial', 'medial', 'isolated', 'final']:
+			جاری
 
-		if len (items) != 1:
+		اگر لمبائی (اشیاء) != 1:
 			# Mark ligatures start with space and are in visual order, so we
 			# remove the space and reverse the items.
-			if items[0] == 0x0020:
-				items = items[:0:-1]
-				shape = None
+			اگر اشیاء[0] == 0x0020:
+				اشیاء = اشیاء[:0:-1]
+				shape = کچھ_نہیں
 			# We only care about a subset of ligatures
-			if c not in LIGATURES:
-				continue
+			اگر c نہیں میں LIGATURES:
+				جاری
 
 			# Save ligature
-			names[c] = fields[1]
-			if items not in ligatures:
-				ligatures[items] = {}
-			ligatures[items][shape] = c
-		else:
+			نام[c] = fields[1]
+			اگر اشیاء نہیں میں ligatures:
+				ligatures[اشیاء] = {}
+			ligatures[اشیاء][shape] = c
+		ورنہ:
 			# Save shape
-			if items[0] not in names:
-				names[items[0]] = fields[1]
-			else:
-				names[items[0]] = os.path.commonprefix ([names[items[0]], fields[1]]).strip ()
-			if items[0] not in shapes:
-				shapes[items[0]] = {}
-			shapes[items[0]][shape] = c
+			اگر اشیاء[0] نہیں میں نام:
+				نام[اشیاء[0]] = fields[1]
+			ورنہ:
+				نام[اشیاء[0]] = os.راستہ.commonprefix ([نام[اشیاء[0]], fields[1]]).strip ()
+			اگر اشیاء[0] نہیں میں shapes:
+				shapes[اشیاء[0]] = {}
+			shapes[اشیاء[0]][shape] = c
 
 	ligas_2 = {}
 	ligas_3 = {}
 	ligas_mark_2 = {}
-	for key in ligatures.keys ():
-		for shape in ligatures[key]:
-			c = ligatures[key][shape]
-			if len(key) == 3:
-				if shape == 'isolated':
-					liga = (shapes[key[0]]['initial'], shapes[key[1]]['medial'], shapes[key[2]]['final'])
-				elif shape == 'final':
-					liga = (shapes[key[0]]['medial'], shapes[key[1]]['medial'], shapes[key[2]]['final'])
-				elif shape == 'initial':
-					liga = (shapes[key[0]]['initial'], shapes[key[1]]['medial'], shapes[key[2]]['medial'])
-				else:
-					raise Exception ("Unexpected shape", shape)
-				if liga[0] not in ligas_3:
+	برائے کلید_2 میں ligatures.کلیدیں ():
+		برائے shape میں ligatures[کلید_2]:
+			c = ligatures[کلید_2][shape]
+			اگر لمبائی(کلید_2) == 3:
+				اگر shape == 'isolated':
+					liga = (shapes[کلید_2[0]]['initial'], shapes[کلید_2[1]]['medial'], shapes[کلید_2[2]]['final'])
+				وگرنہ_اگر shape == 'final':
+					liga = (shapes[کلید_2[0]]['medial'], shapes[کلید_2[1]]['medial'], shapes[کلید_2[2]]['final'])
+				وگرنہ_اگر shape == 'initial':
+					liga = (shapes[کلید_2[0]]['initial'], shapes[کلید_2[1]]['medial'], shapes[کلید_2[2]]['medial'])
+				ورنہ:
+					اٹھاؤ Exception ("Unexpected shape", shape)
+				اگر liga[0] نہیں میں ligas_3:
 					ligas_3[liga[0]] = []
 				ligas_3[liga[0]].append ((liga[1], liga[2], c))
-			elif len(key) == 2:
-				if shape is None:
-					liga = key
-					if liga[0] not in ligas_mark_2:
+			وگرنہ_اگر لمبائی(کلید_2) == 2:
+				اگر shape ہے کچھ_نہیں:
+					liga = کلید_2
+					اگر liga[0] نہیں میں ligas_mark_2:
 						ligas_mark_2[liga[0]] = []
 					ligas_mark_2[liga[0]].append ((liga[1], c))
-					continue
-				elif shape == 'isolated':
-					liga = (shapes[key[0]]['initial'], shapes[key[1]]['final'])
-				elif shape == 'final':
-					liga = (shapes[key[0]]['medial'], shapes[key[1]]['final'])
-				elif shape == 'initial':
-					liga = (shapes[key[0]]['initial'], shapes[key[1]]['medial'])
-				else:
-					raise Exception ("Unexpected shape", shape)
-				if liga[0] not in ligas_2:
+					جاری
+				وگرنہ_اگر shape == 'isolated':
+					liga = (shapes[کلید_2[0]]['initial'], shapes[کلید_2[1]]['final'])
+				وگرنہ_اگر shape == 'final':
+					liga = (shapes[کلید_2[0]]['medial'], shapes[کلید_2[1]]['final'])
+				وگرنہ_اگر shape == 'initial':
+					liga = (shapes[کلید_2[0]]['initial'], shapes[کلید_2[1]]['medial'])
+				ورنہ:
+					اٹھاؤ Exception ("Unexpected shape", shape)
+				اگر liga[0] نہیں میں ligas_2:
 					ligas_2[liga[0]] = []
 				ligas_2[liga[0]].append ((liga[1], c))
-			else:
-				raise Exception ("Unexpected number of ligature components", key)
+			ورنہ:
+				اٹھاؤ Exception ("Unexpected number of ligature components", کلید_2)
 
-	return shapes, names, ligas_2, ligas_mark_2, ligas_3
-
-
-def print_shaping_table(f):
-
-	shapes, names, ligas_2, ligas_mark_2, ligas_3 = read_shaping_table (f)
-
-	print ()
-	print ("static const uint16_t shaping_table[][4] =")
-	print ("{")
-
-	keys = shapes.keys ()
-	min_u, max_u = min (keys), max (keys)
-	for u in range (min_u, max_u + 1):
-		s = [shapes[u][shape] if u in shapes and shape in shapes[u] else 0
-		     for shape in  ['initial', 'medial', 'final', 'isolated']]
-		value = ', '.join ("0x%04Xu" % c for c in s)
-		print ("  {%s}, /* U+%04X %s */" % (value, u, names[u] if u in names else ""))
-
-	print ("};")
-	print ()
-	print ("#define SHAPING_TABLE_FIRST	0x%04Xu" % min_u)
-	print ("#define SHAPING_TABLE_LAST	0x%04Xu" % max_u)
-	print ()
-
-	max_i = max (len (ligas_2[l]) for l in ligas_2)
-	print ()
-	print ("static const struct ligature_set_t {")
-	print (" uint16_t first;")
-	print (" struct ligature_pairs_t {")
-	print ("   uint16_t components[1];")
-	print ("   uint16_t ligature;")
-	print (" } ligatures[%d];" % max_i)
-	print ("} ligature_table[] =")
-	print ("{")
-	for first in sorted (ligas_2.keys ()):
-
-		print ("  { 0x%04Xu, {" % (first))
-		for liga in ligas_2[first]:
-			print ("    { {0x%04Xu}, 0x%04Xu }, /* %s */" % (liga[0], liga[1], names[liga[1]]))
-		print ("  }},")
-
-	print ("};")
-	print ()
-
-	max_i = max (len (ligas_mark_2[l]) for l in ligas_mark_2)
-	print ()
-	print ("static const struct ligature_mark_set_t {")
-	print (" uint16_t first;")
-	print (" struct ligature_pairs_t {")
-	print ("   uint16_t components[1];")
-	print ("   uint16_t ligature;")
-	print (" } ligatures[%d];" % max_i)
-	print ("} ligature_mark_table[] =")
-	print ("{")
-	for first in sorted (ligas_mark_2.keys ()):
-
-		print ("  { 0x%04Xu, {" % (first))
-		for liga in ligas_mark_2[first]:
-			print ("    { {0x%04Xu}, 0x%04Xu }, /* %s */" % (liga[0], liga[1], names[liga[1]]))
-		print ("  }},")
-
-	print ("};")
-	print ()
-
-	max_i = max (len (ligas_3[l]) for l in ligas_3)
-	print ()
-	print ("static const struct ligature_3_set_t {")
-	print (" uint16_t first;")
-	print (" struct ligature_triplets_t {")
-	print ("   uint16_t components[2];")
-	print ("   uint16_t ligature;")
-	print (" } ligatures[%d];" % max_i)
-	print ("} ligature_3_table[] =")
-	print ("{")
-	for first in sorted (ligas_3.keys ()):
-
-		print ("  { 0x%04Xu, {" % (first))
-		for liga in ligas_3[first]:
-			print ("    { {0x%04Xu, 0x%04Xu}, 0x%04Xu}, /* %s */" % (liga[0], liga[1], liga[2], names[liga[2]]))
-		print ("  }},")
-
-	print ("};")
-	print ()
+	واپس shapes, نام, ligas_2, ligas_mark_2, ligas_3
 
 
-def print_shaping_table_rust(f):
+تعریف print_shaping_جدول(f):
 
-	shapes, _, ligas_2, ligas_mark_2, ligas_3 = read_shaping_table (f)
-	min_u, max_u = min (shapes.keys ()), max (shapes.keys ())
+	shapes, نام, ligas_2, ligas_mark_2, ligas_3 = read_shaping_جدول (f)
 
-	print ()
-	print ("pub(crate) const SHAPING_TABLE: &[(u16, [u16; 4])] = &[")
-	for u in range (min_u, max_u + 1):
-		s = [shapes[u][shape] if u in shapes and shape in shapes[u] else 0
-		     for shape in ['initial', 'medial', 'final', 'isolated']]
-		if any (s):
-			value = ", ".join ("0x%04X" % c for c in s)
-			print ("    (0x%04X, [%s])," % (u, value))
-	print ("];")
+	چھاپو ()
+	چھاپو ("static const uint16_t shaping_table[][4] =")
+	چھاپو ("{")
 
-	print ()
-	print ("pub(crate) const LIGATURE_3_TABLE: &[([u16; 3], u16)] = &[")
-	for first in sorted (ligas_3.keys ()):
-		for liga in ligas_3[first]:
-			print ("    ([0x%04X, 0x%04X, 0x%04X], 0x%04X)," %
-			       (first, liga[0], liga[1], liga[2]))
-	print ("];")
+	کلیدیں = shapes.کلیدیں ()
+	min_u, max_u = min (کلیدیں), max (کلیدیں)
+	برائے u میں سلسلہ (min_u, max_u + 1):
+		s = [shapes[u][shape] اگر u میں shapes اور shape میں shapes[u] ورنہ 0
+		     برائے shape میں  ['initial', 'medial', 'final', 'isolated']]
+		قدر_2 = ', '.join ("0x%04Xu" % c برائے c میں s)
+		چھاپو ("  {%s}, /* U+%04X %s */" % (قدر_2, u, نام[u] اگر u میں نام ورنہ ""))
 
-	print ()
-	print ("pub(crate) const LIGATURE_TABLE: &[([u16; 2], u16)] = &[")
-	for first in sorted (ligas_2.keys ()):
-		for liga in ligas_2[first]:
-			print ("    ([0x%04X, 0x%04X], 0x%04X)," %
-			       (first, liga[0], liga[1]))
-	print ("];")
+	چھاپو ("};")
+	چھاپو ()
+	چھاپو ("#define SHAPING_TABLE_FIRST	0x%04Xu" % min_u)
+	چھاپو ("#define SHAPING_TABLE_LAST	0x%04Xu" % max_u)
+	چھاپو ()
 
-	print ()
-	print ("pub(crate) const LIGATURE_MARK_TABLE: &[([u16; 2], u16)] = &[")
-	for first in sorted (ligas_mark_2.keys ()):
-		for liga in ligas_mark_2[first]:
-			print ("    ([0x%04X, 0x%04X], 0x%04X)," %
-			       (first, liga[0], liga[1]))
-	print ("];")
+	max_i = max (لمبائی (ligas_2[l]) برائے l میں ligas_2)
+	چھاپو ()
+	چھاپو ("static const struct ligature_set_t {")
+	چھاپو (" uint16_t first;")
+	چھاپو (" struct ligature_pairs_t {")
+	چھاپو ("   uint16_t components[1];")
+	چھاپو ("   uint16_t ligature;")
+	چھاپو (" } ligatures[%d];" % max_i)
+	چھاپو ("} ligature_table[] =")
+	چھاپو ("{")
+	برائے پہلا میں sorted (ligas_2.کلیدیں ()):
+
+		چھاپو ("  { 0x%04Xu, {" % (پہلا))
+		برائے liga میں ligas_2[پہلا]:
+			چھاپو ("    { {0x%04Xu}, 0x%04Xu }, /* %s */" % (liga[0], liga[1], نام[liga[1]]))
+		چھاپو ("  }},")
+
+	چھاپو ("};")
+	چھاپو ()
+
+	max_i = max (لمبائی (ligas_mark_2[l]) برائے l میں ligas_mark_2)
+	چھاپو ()
+	چھاپو ("static const struct ligature_mark_set_t {")
+	چھاپو (" uint16_t first;")
+	چھاپو (" struct ligature_pairs_t {")
+	چھاپو ("   uint16_t components[1];")
+	چھاپو ("   uint16_t ligature;")
+	چھاپو (" } ligatures[%d];" % max_i)
+	چھاپو ("} ligature_mark_table[] =")
+	چھاپو ("{")
+	برائے پہلا میں sorted (ligas_mark_2.کلیدیں ()):
+
+		چھاپو ("  { 0x%04Xu, {" % (پہلا))
+		برائے liga میں ligas_mark_2[پہلا]:
+			چھاپو ("    { {0x%04Xu}, 0x%04Xu }, /* %s */" % (liga[0], liga[1], نام[liga[1]]))
+		چھاپو ("  }},")
+
+	چھاپو ("};")
+	چھاپو ()
+
+	max_i = max (لمبائی (ligas_3[l]) برائے l میں ligas_3)
+	چھاپو ()
+	چھاپو ("static const struct ligature_3_set_t {")
+	چھاپو (" uint16_t first;")
+	چھاپو (" struct ligature_triplets_t {")
+	چھاپو ("   uint16_t components[2];")
+	چھاپو ("   uint16_t ligature;")
+	چھاپو (" } ligatures[%d];" % max_i)
+	چھاپو ("} ligature_3_table[] =")
+	چھاپو ("{")
+	برائے پہلا میں sorted (ligas_3.کلیدیں ()):
+
+		چھاپو ("  { 0x%04Xu, {" % (پہلا))
+		برائے liga میں ligas_3[پہلا]:
+			چھاپو ("    { {0x%04Xu, 0x%04Xu}, 0x%04Xu}, /* %s */" % (liga[0], liga[1], liga[2], نام[liga[2]]))
+		چھاپو ("  }},")
+
+	چھاپو ("};")
+	چھاپو ()
+
+
+تعریف print_shaping_جدول_rust(f):
+
+	shapes, _, ligas_2, ligas_mark_2, ligas_3 = read_shaping_جدول (f)
+	min_u, max_u = min (shapes.کلیدیں ()), max (shapes.کلیدیں ())
+
+	چھاپو ()
+	چھاپو ("pub(crate) const SHAPING_TABLE: &[(u16, [u16; 4])] = &[")
+	برائے u میں سلسلہ (min_u, max_u + 1):
+		s = [shapes[u][shape] اگر u میں shapes اور shape میں shapes[u] ورنہ 0
+		     برائے shape میں ['initial', 'medial', 'final', 'isolated']]
+		اگر any (s):
+			قدر_2 = ", ".join ("0x%04X" % c برائے c میں s)
+			چھاپو ("    (0x%04X, [%s])," % (u, قدر_2))
+	چھاپو ("];")
+
+	چھاپو ()
+	چھاپو ("pub(crate) const LIGATURE_3_TABLE: &[([u16; 3], u16)] = &[")
+	برائے پہلا میں sorted (ligas_3.کلیدیں ()):
+		برائے liga میں ligas_3[پہلا]:
+			چھاپو ("    ([0x%04X, 0x%04X, 0x%04X], 0x%04X)," %
+			       (پہلا, liga[0], liga[1], liga[2]))
+	چھاپو ("];")
+
+	چھاپو ()
+	چھاپو ("pub(crate) const LIGATURE_TABLE: &[([u16; 2], u16)] = &[")
+	برائے پہلا میں sorted (ligas_2.کلیدیں ()):
+		برائے liga میں ligas_2[پہلا]:
+			چھاپو ("    ([0x%04X, 0x%04X], 0x%04X)," %
+			       (پہلا, liga[0], liga[1]))
+	چھاپو ("];")
+
+	چھاپو ()
+	چھاپو ("pub(crate) const LIGATURE_MARK_TABLE: &[([u16; 2], u16)] = &[")
+	برائے پہلا میں sorted (ligas_mark_2.کلیدیں ()):
+		برائے liga میں ligas_mark_2[پہلا]:
+			چھاپو ("    ([0x%04X, 0x%04X], 0x%04X)," %
+			       (پہلا, liga[0], liga[1]))
+	چھاپو ("];")
 
 
 
-print ("/* == Start of generated table == */")
-print ("/*")
-print (" * The following table is generated by running:")
-print (" *")
-print (" *   ./gen-arabic-table.py %sArabicShaping.txt UnicodeData.txt Blocks.txt" %
-		("--rust " if language.name == "rust" else ""))
-print (" *")
-print (" * on files with these headers:")
-print (" *")
-for h in headers:
-	for l in h:
-		print (" * %s" % (l.strip()))
-print (" */")
-print ()
-read_blocks (files[2])
-if language.name == "c":
-	print ("#ifndef HB_OT_SHAPER_ARABIC_TABLE_HH")
-	print ("#define HB_OT_SHAPER_ARABIC_TABLE_HH")
-	print ()
+چھاپو ("/* == Start of generated table == */")
+چھاپو ("/*")
+چھاپو (" * The following table is generated by running:")
+چھاپو (" *")
+چھاپو (" *   ./gen-arabic-table.py %sArabicShaping.txt UnicodeData.txt Blocks.txt" %
+		("--rust " اگر language.name == "rust" ورنہ ""))
+چھاپو (" *")
+چھاپو (" * on files with these headers:")
+چھاپو (" *")
+برائے h میں سرخیاں:
+	برائے l میں h:
+		چھاپو (" * %s" % (l.strip()))
+چھاپو (" */")
+چھاپو ()
+read_بلاکیں (files[2])
+اگر language.name == "c":
+	چھاپو ("#ifndef HB_OT_SHAPER_ARABIC_TABLE_HH")
+	چھاپو ("#define HB_OT_SHAPER_ARABIC_TABLE_HH")
+	چھاپو ()
 
-	print_joining_table (files[0])
-	print_shaping_table (files[1])
+	print_joining_جدول (files[0])
+	print_shaping_جدول (files[1])
 
-	print ()
-	print ("#endif /* HB_OT_SHAPER_ARABIC_TABLE_HH */")
-elif language.name == "rust":
-	print_joining_table (files[0])
-	print_shaping_table_rust (files[1])
-else:
-	assert False, "Unknown language: %s" % language.name
-print ()
-print ("/* == End of generated table == */")
+	چھاپو ()
+	چھاپو ("#endif /* HB_OT_SHAPER_ARABIC_TABLE_HH */")
+وگرنہ_اگر language.name == "rust":
+	print_joining_جدول (files[0])
+	print_shaping_جدول_rust (files[1])
+ورنہ:
+	أكد جھوٹ, "Unknown language: %s" % language.name
+چھاپو ()
+چھاپو ("/* == End of generated table == */")

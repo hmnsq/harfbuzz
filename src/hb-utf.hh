@@ -24,22 +24,22 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_UTF_HH
-#define HB_UTF_HH
+#اگر_غیر_تعریف_شدہ HB_UTF_HH
+#تعریف_کرو HB_UTF_HH
 
-#include "hb.hh"
+#شامل "hb.hh"
 
-#include "hb-open-type.hh"
+#شامل "hb-open-type.hh"
 
 
-struct hb_utf8_t
+ساخت hb_utf8_t
 {
-  typedef uint8_t codepoint_t;
-  static constexpr unsigned max_len = 4;
+  قسمتعریف uint8_t codepoint_t;
+  ساکن constexpr غیرعلامتی max_len = 4;
 
-  static inline const codepoint_t *
-  next (const codepoint_t *text,
-	const codepoint_t *end,
+  ساکن اندرونی ثابت codepoint_t *
+  next (ثابت codepoint_t *متن,
+	ثابت codepoint_t *انتہا,
 	hb_codepoint_t *unicode,
 	hb_codepoint_t replacement)
   {
@@ -47,437 +47,437 @@ struct hb_utf8_t
      * Based on ideas from ICU's U8_NEXT.
      * Generates one "replacement" for each ill-formed byte. */
 
-    hb_codepoint_t c = *text++;
+    hb_codepoint_t c = *متن++;
 
-    if (c > 0x7Fu)
+    اگر (c > 0x7Fu)
     {
-      if (hb_in_range<hb_codepoint_t> (c, 0xC2u, 0xDFu)) /* Two-byte */
+      اگر (hb_اندر_range<hb_codepoint_t> (c, 0xC2u, 0xDFu)) /* Two-byte */
       {
-	unsigned int t1;
-	if (likely (text < end &&
-		    (t1 = text[0] - 0x80u) <= 0x3Fu))
+	غیرعلامتی صحیح t1;
+	اگر (likely (متن < انتہا &&
+		    (t1 = متن[0] - 0x80u) <= 0x3Fu))
 	{
 	  c = ((c&0x1Fu)<<6) | t1;
-	  text++;
+	  متن++;
 	}
-	else
-	  goto error;
+	ورنہ
+	  جاؤ error;
       }
-      else if (hb_in_range<hb_codepoint_t> (c, 0xE0u, 0xEFu)) /* Three-byte */
+      ورنہ اگر (hb_اندر_range<hb_codepoint_t> (c, 0xE0u, 0xEFu)) /* Three-byte */
       {
-	unsigned int t1, t2;
-	if (likely (1 < end - text &&
-		    (t1 = text[0] - 0x80u) <= 0x3Fu &&
-		    (t2 = text[1] - 0x80u) <= 0x3Fu))
+	غیرعلامتی صحیح t1, t2;
+	اگر (likely (1 < انتہا - متن &&
+		    (t1 = متن[0] - 0x80u) <= 0x3Fu &&
+		    (t2 = متن[1] - 0x80u) <= 0x3Fu))
 	{
 	  c = ((c&0xFu)<<12) | (t1<<6) | t2;
-	  if (unlikely (c < 0x0800u || hb_in_range<hb_codepoint_t> (c, 0xD800u, 0xDFFFu)))
-	    goto error;
-	  text += 2;
+	  اگر (unlikely (c < 0x0800u || hb_اندر_range<hb_codepoint_t> (c, 0xD800u, 0xDFFFu)))
+	    جاؤ error;
+	  متن += 2;
 	}
-	else
-	  goto error;
+	ورنہ
+	  جاؤ error;
       }
-      else if (hb_in_range<hb_codepoint_t> (c, 0xF0u, 0xF4u)) /* Four-byte */
+      ورنہ اگر (hb_اندر_range<hb_codepoint_t> (c, 0xF0u, 0xF4u)) /* Four-byte */
       {
-	unsigned int t1, t2, t3;
-	if (likely (2 < end - text &&
-		    (t1 = text[0] - 0x80u) <= 0x3Fu &&
-		    (t2 = text[1] - 0x80u) <= 0x3Fu &&
-		    (t3 = text[2] - 0x80u) <= 0x3Fu))
+	غیرعلامتی صحیح t1, t2, t3;
+	اگر (likely (2 < انتہا - متن &&
+		    (t1 = متن[0] - 0x80u) <= 0x3Fu &&
+		    (t2 = متن[1] - 0x80u) <= 0x3Fu &&
+		    (t3 = متن[2] - 0x80u) <= 0x3Fu))
 	{
 	  c = ((c&0x7u)<<18) | (t1<<12) | (t2<<6) | t3;
-	  if (unlikely (!hb_in_range<hb_codepoint_t> (c, 0x10000u, 0x10FFFFu)))
-	    goto error;
-	  text += 3;
+	  اگر (unlikely (!hb_اندر_range<hb_codepoint_t> (c, 0x10000u, 0x10FFFFu)))
+	    جاؤ error;
+	  متن += 3;
 	}
-	else
-	  goto error;
+	ورنہ
+	  جاؤ error;
       }
-      else
-	goto error;
+      ورنہ
+	جاؤ error;
     }
 
     *unicode = c;
-    return text;
+    واپس متن;
 
   error:
     *unicode = replacement;
-    return text;
+    واپس متن;
   }
 
-  static inline const codepoint_t *
-  prev (const codepoint_t *text,
-	const codepoint_t *start,
+  ساکن اندرونی ثابت codepoint_t *
+  prev (ثابت codepoint_t *متن,
+	ثابت codepoint_t *آغاز,
 	hb_codepoint_t *unicode,
 	hb_codepoint_t replacement)
   {
-    const codepoint_t *end = text--;
-    while (start < text && (*text & 0xc0) == 0x80 && end - text < 4)
-      text--;
+    ثابت codepoint_t *انتہا = متن--;
+    جب (آغاز < متن && (*متن & 0xc0) == 0x80 && انتہا - متن < 4)
+      متن--;
 
-    if (likely (next (text, end, unicode, replacement) == end))
-      return text;
+    اگر (likely (next (متن, انتہا, unicode, replacement) == انتہا))
+      واپس متن;
 
     *unicode = replacement;
-    return end - 1;
+    واپس انتہا - 1;
   }
 
-  static unsigned int
-  strlen (const codepoint_t *text)
-  { return ::strlen ((const char *) text); }
+  ساکن غیرعلامتی صحیح
+  لڑی_لمبائی (ثابت codepoint_t *متن)
+  { واپس ::لڑی_لمبائی ((ثابت حرف *) متن); }
 
-  static unsigned int
+  ساکن غیرعلامتی صحیح
   encode_len (hb_codepoint_t unicode)
   {
-    if (unicode <   0x0080u) return 1;
-    if (unicode <   0x0800u) return 2;
-    if (unicode <  0x10000u) return 3;
-    if (unicode < 0x110000u) return 4;
-    return 3;
+    اگر (unicode <   0x0080u) واپس 1;
+    اگر (unicode <   0x0800u) واپس 2;
+    اگر (unicode <  0x10000u) واپس 3;
+    اگر (unicode < 0x110000u) واپس 4;
+    واپس 3;
   }
 
-  static codepoint_t *
-  encode (codepoint_t *text,
-	  const codepoint_t *end,
+  ساکن codepoint_t *
+  encode (codepoint_t *متن,
+	  ثابت codepoint_t *انتہا,
 	  hb_codepoint_t unicode)
   {
-    if (unlikely (unicode >= 0xD800u && (unicode <= 0xDFFFu || unicode > 0x10FFFFu)))
+    اگر (unlikely (unicode >= 0xD800u && (unicode <= 0xDFFFu || unicode > 0x10FFFFu)))
       unicode = 0xFFFDu;
-    if (unicode < 0x0080u)
-     *text++ = unicode;
-    else if (unicode < 0x0800u)
+    اگر (unicode < 0x0080u)
+     *متن++ = unicode;
+    ورنہ اگر (unicode < 0x0800u)
     {
-      if (end - text >= 2)
+      اگر (انتہا - متن >= 2)
       {
-	*text++ =  0xC0u + (0x1Fu & (unicode >>  6));
-	*text++ =  0x80u + (0x3Fu & (unicode      ));
+	*متن++ =  0xC0u + (0x1Fu & (unicode >>  6));
+	*متن++ =  0x80u + (0x3Fu & (unicode      ));
       }
     }
-    else if (unicode < 0x10000u)
+    ورنہ اگر (unicode < 0x10000u)
     {
-      if (end - text >= 3)
+      اگر (انتہا - متن >= 3)
       {
-	*text++ =  0xE0u + (0x0Fu & (unicode >> 12));
-	*text++ =  0x80u + (0x3Fu & (unicode >>  6));
-	*text++ =  0x80u + (0x3Fu & (unicode      ));
+	*متن++ =  0xE0u + (0x0Fu & (unicode >> 12));
+	*متن++ =  0x80u + (0x3Fu & (unicode >>  6));
+	*متن++ =  0x80u + (0x3Fu & (unicode      ));
       }
     }
-    else
+    ورنہ
     {
-      if (end - text >= 4)
+      اگر (انتہا - متن >= 4)
       {
-	*text++ =  0xF0u + (0x07u & (unicode >> 18));
-	*text++ =  0x80u + (0x3Fu & (unicode >> 12));
-	*text++ =  0x80u + (0x3Fu & (unicode >>  6));
-	*text++ =  0x80u + (0x3Fu & (unicode      ));
+	*متن++ =  0xF0u + (0x07u & (unicode >> 18));
+	*متن++ =  0x80u + (0x3Fu & (unicode >> 12));
+	*متن++ =  0x80u + (0x3Fu & (unicode >>  6));
+	*متن++ =  0x80u + (0x3Fu & (unicode      ));
       }
     }
-    return text;
+    واپس متن;
   }
 };
 
 
-template <typename TCodepoint>
-struct hb_utf16_xe_t
+سانچہ <قسم_نام TCodepoint>
+ساخت hb_utf16_xe_t
 {
-  static_assert (sizeof (TCodepoint) == 2, "");
-  typedef TCodepoint codepoint_t;
-  static constexpr unsigned max_len = 2;
+  static_assert (حجم (TCodepoint) == 2, "");
+  قسمتعریف TCodepoint codepoint_t;
+  ساکن constexpr غیرعلامتی max_len = 2;
 
-  static inline const codepoint_t *
-  next (const codepoint_t *text,
-	const codepoint_t *end,
+  ساکن اندرونی ثابت codepoint_t *
+  next (ثابت codepoint_t *متن,
+	ثابت codepoint_t *انتہا,
 	hb_codepoint_t *unicode,
 	hb_codepoint_t replacement)
   {
-    hb_codepoint_t c = *text++;
+    hb_codepoint_t c = *متن++;
 
-    if (likely (!hb_in_range<hb_codepoint_t> (c, 0xD800u, 0xDFFFu)))
+    اگر (likely (!hb_اندر_range<hb_codepoint_t> (c, 0xD800u, 0xDFFFu)))
     {
       *unicode = c;
-      return text;
+      واپس متن;
     }
 
-    if (likely (c <= 0xDBFFu && text < end))
+    اگر (likely (c <= 0xDBFFu && متن < انتہا))
     {
       /* High-surrogate in c */
-      hb_codepoint_t l = *text;
-      if (likely (hb_in_range<hb_codepoint_t> (l, 0xDC00u, 0xDFFFu)))
+      hb_codepoint_t l = *متن;
+      اگر (likely (hb_اندر_range<hb_codepoint_t> (l, 0xDC00u, 0xDFFFu)))
       {
 	/* Low-surrogate in l */
 	*unicode = (c << 10) + l - ((0xD800u << 10) - 0x10000u + 0xDC00u);
-	 text++;
-	 return text;
+	 متن++;
+	 واپس متن;
       }
     }
 
     /* Lonely / out-of-order surrogate. */
     *unicode = replacement;
-    return text;
+    واپس متن;
   }
 
-  static inline const codepoint_t *
-  prev (const codepoint_t *text,
-	const codepoint_t *start,
+  ساکن اندرونی ثابت codepoint_t *
+  prev (ثابت codepoint_t *متن,
+	ثابت codepoint_t *آغاز,
 	hb_codepoint_t *unicode,
 	hb_codepoint_t replacement)
   {
-    hb_codepoint_t c = *--text;
+    hb_codepoint_t c = *--متن;
 
-    if (likely (!hb_in_range<hb_codepoint_t> (c, 0xD800u, 0xDFFFu)))
+    اگر (likely (!hb_اندر_range<hb_codepoint_t> (c, 0xD800u, 0xDFFFu)))
     {
       *unicode = c;
-      return text;
+      واپس متن;
     }
 
-    if (likely (c >= 0xDC00u && start < text))
+    اگر (likely (c >= 0xDC00u && آغاز < متن))
     {
       /* Low-surrogate in c */
-      hb_codepoint_t h = text[-1];
-      if (likely (hb_in_range<hb_codepoint_t> (h, 0xD800u, 0xDBFFu)))
+      hb_codepoint_t h = متن[-1];
+      اگر (likely (hb_اندر_range<hb_codepoint_t> (h, 0xD800u, 0xDBFFu)))
       {
 	/* High-surrogate in h */
 	*unicode = (h << 10) + c - ((0xD800u << 10) - 0x10000u + 0xDC00u);
-	text--;
-	return text;
+	متن--;
+	واپس متن;
       }
     }
 
     /* Lonely / out-of-order surrogate. */
     *unicode = replacement;
-    return text;
+    واپس متن;
   }
 
 
-  static unsigned int
-  strlen (const codepoint_t *text)
+  ساکن غیرعلامتی صحیح
+  لڑی_لمبائی (ثابت codepoint_t *متن)
   {
-    unsigned int l = 0;
-    while (*text++) l++;
-    return l;
+    غیرعلامتی صحیح l = 0;
+    جب (*متن++) l++;
+    واپس l;
   }
 
-  static unsigned int
+  ساکن غیرعلامتی صحیح
   encode_len (hb_codepoint_t unicode)
   {
-    return unicode < 0x10000 ? 1 : 2;
+    واپس unicode < 0x10000 ? 1 : 2;
   }
 
-  static codepoint_t *
-  encode (codepoint_t *text,
-	  const codepoint_t *end,
+  ساکن codepoint_t *
+  encode (codepoint_t *متن,
+	  ثابت codepoint_t *انتہا,
 	  hb_codepoint_t unicode)
   {
-    if (unlikely (unicode >= 0xD800u && (unicode <= 0xDFFFu || unicode > 0x10FFFFu)))
+    اگر (unlikely (unicode >= 0xD800u && (unicode <= 0xDFFFu || unicode > 0x10FFFFu)))
       unicode = 0xFFFDu;
-    if (unicode < 0x10000u)
-     *text++ = unicode;
-    else if (end - text >= 2)
+    اگر (unicode < 0x10000u)
+     *متن++ = unicode;
+    ورنہ اگر (انتہا - متن >= 2)
     {
       unicode -= 0x10000u;
-      *text++ =  0xD800u + (unicode >> 10);
-      *text++ =  0xDC00u + (unicode & 0x03FFu);
+      *متن++ =  0xD800u + (unicode >> 10);
+      *متن++ =  0xDC00u + (unicode & 0x03FFu);
     }
-    return text;
+    واپس متن;
   }
 };
 
-typedef hb_utf16_xe_t<uint16_t> hb_utf16_t;
-typedef hb_utf16_xe_t<OT::HBUINT16> hb_utf16_be_t;
+قسمتعریف hb_utf16_xe_t<uint16_t> hb_utf16_t;
+قسمتعریف hb_utf16_xe_t<OT::HBUINT16> hb_utf16_be_t;
 
 
-template <typename TCodepoint, bool validate=true>
-struct hb_utf32_xe_t
+سانچہ <قسم_نام TCodepoint, منطقی validate=سچ>
+ساخت hb_utf32_xe_t
 {
-  static_assert (sizeof (TCodepoint) == 4, "");
-  typedef TCodepoint codepoint_t;
-  static constexpr unsigned max_len = 1;
+  static_assert (حجم (TCodepoint) == 4, "");
+  قسمتعریف TCodepoint codepoint_t;
+  ساکن constexpr غیرعلامتی max_len = 1;
 
-  static inline const TCodepoint *
-  next (const TCodepoint *text,
-	const TCodepoint *end HB_UNUSED,
+  ساکن اندرونی ثابت TCodepoint *
+  next (ثابت TCodepoint *متن,
+	ثابت TCodepoint *انتہا HB_غیر_مستعمل,
 	hb_codepoint_t *unicode,
 	hb_codepoint_t replacement)
   {
-    hb_codepoint_t c = *unicode = *text++;
-    if (validate && unlikely (c >= 0xD800u && (c <= 0xDFFFu || c > 0x10FFFFu)))
+    hb_codepoint_t c = *unicode = *متن++;
+    اگر (validate && unlikely (c >= 0xD800u && (c <= 0xDFFFu || c > 0x10FFFFu)))
       *unicode = replacement;
-    return text;
+    واپس متن;
   }
 
-  static inline const TCodepoint *
-  prev (const TCodepoint *text,
-	const TCodepoint *start HB_UNUSED,
+  ساکن اندرونی ثابت TCodepoint *
+  prev (ثابت TCodepoint *متن,
+	ثابت TCodepoint *آغاز HB_غیر_مستعمل,
 	hb_codepoint_t *unicode,
 	hb_codepoint_t replacement)
   {
-    hb_codepoint_t c = *unicode = *--text;
-    if (validate && unlikely (c >= 0xD800u && (c <= 0xDFFFu || c > 0x10FFFFu)))
+    hb_codepoint_t c = *unicode = *--متن;
+    اگر (validate && unlikely (c >= 0xD800u && (c <= 0xDFFFu || c > 0x10FFFFu)))
       *unicode = replacement;
-    return text;
+    واپس متن;
   }
 
-  static unsigned int
-  strlen (const TCodepoint *text)
+  ساکن غیرعلامتی صحیح
+  لڑی_لمبائی (ثابت TCodepoint *متن)
   {
-    unsigned int l = 0;
-    while (*text++) l++;
-    return l;
+    غیرعلامتی صحیح l = 0;
+    جب (*متن++) l++;
+    واپس l;
   }
 
-  static unsigned int
-  encode_len (hb_codepoint_t unicode HB_UNUSED)
+  ساکن غیرعلامتی صحیح
+  encode_len (hb_codepoint_t unicode HB_غیر_مستعمل)
   {
-    return 1;
+    واپس 1;
   }
 
-  static codepoint_t *
-  encode (codepoint_t *text,
-	  const codepoint_t *end HB_UNUSED,
+  ساکن codepoint_t *
+  encode (codepoint_t *متن,
+	  ثابت codepoint_t *انتہا HB_غیر_مستعمل,
 	  hb_codepoint_t unicode)
   {
-    if (validate && unlikely (unicode >= 0xD800u && (unicode <= 0xDFFFu || unicode > 0x10FFFFu)))
+    اگر (validate && unlikely (unicode >= 0xD800u && (unicode <= 0xDFFFu || unicode > 0x10FFFFu)))
       unicode = 0xFFFDu;
-    *text++ = unicode;
-    return text;
+    *متن++ = unicode;
+    واپس متن;
   }
 };
 
-typedef hb_utf32_xe_t<uint32_t> hb_utf32_t;
-typedef hb_utf32_xe_t<uint32_t, false> hb_utf32_novalidate_t;
+قسمتعریف hb_utf32_xe_t<uint32_t> hb_utf32_t;
+قسمتعریف hb_utf32_xe_t<uint32_t, جھوٹ> hb_utf32_novalidate_t;
 
 
-struct hb_latin1_t
+ساخت hb_latin1_t
 {
-  typedef uint8_t codepoint_t;
-  static constexpr unsigned max_len = 1;
+  قسمتعریف uint8_t codepoint_t;
+  ساکن constexpr غیرعلامتی max_len = 1;
 
-  static inline const codepoint_t *
-  next (const codepoint_t *text,
-	const codepoint_t *end HB_UNUSED,
+  ساکن اندرونی ثابت codepoint_t *
+  next (ثابت codepoint_t *متن,
+	ثابت codepoint_t *انتہا HB_غیر_مستعمل,
 	hb_codepoint_t *unicode,
-	hb_codepoint_t replacement HB_UNUSED)
+	hb_codepoint_t replacement HB_غیر_مستعمل)
   {
-    *unicode = *text++;
-    return text;
+    *unicode = *متن++;
+    واپس متن;
   }
 
-  static inline const codepoint_t *
-  prev (const codepoint_t *text,
-	const codepoint_t *start HB_UNUSED,
+  ساکن اندرونی ثابت codepoint_t *
+  prev (ثابت codepoint_t *متن,
+	ثابت codepoint_t *آغاز HB_غیر_مستعمل,
 	hb_codepoint_t *unicode,
-	hb_codepoint_t replacement HB_UNUSED)
+	hb_codepoint_t replacement HB_غیر_مستعمل)
   {
-    *unicode = *--text;
-    return text;
+    *unicode = *--متن;
+    واپس متن;
   }
 
-  static unsigned int
-  strlen (const codepoint_t *text)
+  ساکن غیرعلامتی صحیح
+  لڑی_لمبائی (ثابت codepoint_t *متن)
   {
-    unsigned int l = 0;
-    while (*text++) l++;
-    return l;
+    غیرعلامتی صحیح l = 0;
+    جب (*متن++) l++;
+    واپس l;
   }
 
-  static unsigned int
-  encode_len (hb_codepoint_t unicode HB_UNUSED)
+  ساکن غیرعلامتی صحیح
+  encode_len (hb_codepoint_t unicode HB_غیر_مستعمل)
   {
-    return 1;
+    واپس 1;
   }
 
-  static codepoint_t *
-  encode (codepoint_t *text,
-	  const codepoint_t *end HB_UNUSED,
+  ساکن codepoint_t *
+  encode (codepoint_t *متن,
+	  ثابت codepoint_t *انتہا HB_غیر_مستعمل,
 	  hb_codepoint_t unicode)
   {
-    if (unlikely (unicode >= 0x0100u))
+    اگر (unlikely (unicode >= 0x0100u))
       unicode = '?';
-    *text++ = unicode;
-    return text;
+    *متن++ = unicode;
+    واپس متن;
   }
 };
 
 
-struct hb_ascii_t
+ساخت hb_ascii_t
 {
-  typedef uint8_t codepoint_t;
-  static constexpr unsigned max_len = 1;
+  قسمتعریف uint8_t codepoint_t;
+  ساکن constexpr غیرعلامتی max_len = 1;
 
-  static inline const codepoint_t *
-  next (const codepoint_t *text,
-	const codepoint_t *end HB_UNUSED,
+  ساکن اندرونی ثابت codepoint_t *
+  next (ثابت codepoint_t *متن,
+	ثابت codepoint_t *انتہا HB_غیر_مستعمل,
 	hb_codepoint_t *unicode,
 	hb_codepoint_t replacement)
   {
-    *unicode = *text++;
-    if (*unicode >= 0x0080u)
+    *unicode = *متن++;
+    اگر (*unicode >= 0x0080u)
       *unicode = replacement;
-    return text;
+    واپس متن;
   }
 
-  static inline const codepoint_t *
-  prev (const codepoint_t *text,
-	const codepoint_t *start HB_UNUSED,
+  ساکن اندرونی ثابت codepoint_t *
+  prev (ثابت codepoint_t *متن,
+	ثابت codepoint_t *آغاز HB_غیر_مستعمل,
 	hb_codepoint_t *unicode,
 	hb_codepoint_t replacement)
   {
-    *unicode = *--text;
-    if (*unicode >= 0x0080u)
+    *unicode = *--متن;
+    اگر (*unicode >= 0x0080u)
       *unicode = replacement;
-    return text;
+    واپس متن;
   }
 
-  static unsigned int
-  strlen (const codepoint_t *text)
+  ساکن غیرعلامتی صحیح
+  لڑی_لمبائی (ثابت codepoint_t *متن)
   {
-    unsigned int l = 0;
-    while (*text++) l++;
-    return l;
+    غیرعلامتی صحیح l = 0;
+    جب (*متن++) l++;
+    واپس l;
   }
 
-  static unsigned int
-  encode_len (hb_codepoint_t unicode HB_UNUSED)
+  ساکن غیرعلامتی صحیح
+  encode_len (hb_codepoint_t unicode HB_غیر_مستعمل)
   {
-    return 1;
+    واپس 1;
   }
 
-  static codepoint_t *
-  encode (codepoint_t *text,
-	  const codepoint_t *end HB_UNUSED,
+  ساکن codepoint_t *
+  encode (codepoint_t *متن,
+	  ثابت codepoint_t *انتہا HB_غیر_مستعمل,
 	  hb_codepoint_t unicode)
   {
-    if (unlikely (unicode >= 0x0080u))
+    اگر (unlikely (unicode >= 0x0080u))
       unicode = '?';
-    *text++ = unicode;
-    return text;
+    *متن++ = unicode;
+    واپس متن;
   }
 };
 
-template <typename utf_t>
-static inline const typename utf_t::codepoint_t *
-hb_utf_offset_to_pointer (const typename utf_t::codepoint_t *start,
-			  const typename utf_t::codepoint_t *text,
-			  unsigned text_len,
-			  signed offset)
+سانچہ <قسم_نام utf_t>
+ساکن اندرونی ثابت قسم_نام utf_t::codepoint_t *
+hb_utf_انحراف_مقصد_اشارہ_گر (ثابت قسم_نام utf_t::codepoint_t *آغاز,
+			  ثابت قسم_نام utf_t::codepoint_t *متن,
+			  غیرعلامتی متن_len,
+			  علامتی انحراف)
 {
   hb_codepoint_t unicode;
 
-  while (offset-- > 0)
-    start = utf_t::next (start,
-			 text + text_len,
+  جب (انحراف-- > 0)
+    آغاز = utf_t::next (آغاز,
+			 متن + متن_len,
 			 &unicode,
-			 HB_BUFFER_REPLACEMENT_CODEPOINT_DEFAULT);
+			 HB_بفر_REPLACEMENT_CODEPOINT_DEFAULT);
 
-  while (offset++ < 0)
-    start = utf_t::prev (start,
-			 text,
+  جب (انحراف++ < 0)
+    آغاز = utf_t::prev (آغاز,
+			 متن,
 			 &unicode,
-			 HB_BUFFER_REPLACEMENT_CODEPOINT_DEFAULT);
+			 HB_بفر_REPLACEMENT_CODEPOINT_DEFAULT);
 
-  return start;
+  واپس آغاز;
 }
 
 
-#endif /* HB_UTF_HH */
+#اگر_ختم /* HB_UTF_HH */

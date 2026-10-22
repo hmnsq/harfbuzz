@@ -24,25 +24,25 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef HB_OT_OS2_UNICODE_RANGES_HH
-#define HB_OT_OS2_UNICODE_RANGES_HH
+#اگر_غیر_تعریف_شدہ HB_OT_OS2_UNICODE_RANGES_HH
+#تعریف_کرو HB_OT_OS2_UNICODE_RANGES_HH
 
-#include "hb.hh"
+#شامل "hb.hh"
 
-namespace OT {
+نامخلا OT {
 
-struct OS2Range
+ساخت OS2Range
 {
-  int cmp (hb_codepoint_t key) const
-  { return (key < first) ? -1 : key <= last ? 0 : +1; }
+  صحیح cmp (hb_codepoint_t key) ثابت
+  { واپس (key < پہلا) ? -1 : key <= آخری ? 0 : +1; }
 
-  hb_codepoint_t first;
-  hb_codepoint_t last;
-  unsigned int bit;
+  hb_codepoint_t پہلا;
+  hb_codepoint_t آخری;
+  غیرعلامتی صحیح bit;
 };
 
 /* Note: The contents of this array was generated using gen-os2-unicode-ranges.py. */
-static const OS2Range _hb_os2_unicode_ranges[] =
+ساکن ثابت OS2Range _hb_os2_unicode_ranges[] =
 {
   {     0x0,     0x7F,   0}, // Basic Latin
   {    0x80,     0xFF,   1}, // Latin-1 Supplement
@@ -209,7 +209,7 @@ static const OS2Range _hb_os2_unicode_ranges[] =
   { 0x1F030,  0x1F09F, 122}, // Domino Tiles
   { 0x20000,  0x2A6DF,  59}, // CJK Unified Ideographs Extension B
   { 0x2F800,  0x2FA1F,  61}, // CJK Compatibility Ideographs Supplement
-  { 0xE0000,  0xE007F,  92}, // Tags
+  { 0xE0000,  0xE007F,  92}, //لیبل_فہرست
   { 0xE0100,  0xE01EF,  91}, // Variation Selectors Supplement
   { 0xF0000,  0xFFFFD,  90}, // Private Use (plane 15)
   {0x100000, 0x10FFFD,  90}, // Private Use (plane 16)
@@ -219,13 +219,13 @@ static const OS2Range _hb_os2_unicode_ranges[] =
  * _hb_ot_os2_get_unicode_range_bit:
  * Returns the bit to be set in os/2 ulUnicodeOS2Range for a given codepoint.
  **/
-static unsigned int
-_hb_ot_os2_get_unicode_range_bit (hb_codepoint_t cp)
+ساکن غیرعلامتی صحیح
+hb_ot_os2_get_unicode_range_ثنائی_ہندسہ (hb_codepoint_t cp)
 {
-  auto *range = hb_sorted_array (_hb_os2_unicode_ranges).bsearch (cp);
-  return range ? range->bit : (unsigned) -1;
+  خودکار *range = hb_sorted_array (_hb_os2_unicode_ranges).bsearch (cp);
+  واپس range ? range->bit : (غیرعلامتی) -1;
 }
 
 } /* namespace OT */
 
-#endif /* HB_OT_OS2_UNICODE_RANGES_HH */
+#اگر_ختم /* HB_OT_OS2_UNICODE_RANGES_HH */

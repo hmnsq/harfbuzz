@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 
-import sys
-from fontTools.ttLib import TTFont
-from fontTools.ttLib.tables.DefaultTable import DefaultTable
+درآمد sys
+سے fontTools.ttLib درآمد TTFont
+سے fontTools.ttLib.tables.Default_جدول درآمد Default_جدول
 
-if len(sys.argv) == 1:
-    print("usage: python addTable.py input.ttf output.ttf Wasm.bin")
+اگر لمبائی(sys.argv) == 1:
+    چھاپو("usage: python addTable.py input.ttf output.ttf Wasm.bin")
     sys.exit(1)
 
 font = TTFont(sys.argv[1])
 
-wasm_table = DefaultTable("Wasm")
-wasm_table.data = open(sys.argv[3], "rb").read()
+wasm_جدول = Default_جدول("Wasm")
+wasm_جدول.ڈیٹا = open(sys.argv[3], "rb").اقرأ()
 
-font["Wasm"] = wasm_table
+font["Wasm"] = wasm_جدول
 
 font.save(sys.argv[2])

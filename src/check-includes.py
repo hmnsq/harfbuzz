@@ -1,64 +1,64 @@
 #!/usr/bin/env python3
 
-import os
-import re
-import sys
+درآمد os
+درآمد re
+درآمد sys
 
 srcdir = sys.argv[1]
-base_srcdir = sys.argv[2]
+بنیاد_srcdir = sys.argv[2]
 builddir = sys.argv[3]
 
 os.chdir(srcdir)
 
 
-def removeprefix(s):
-    abs_path = os.path.join(base_srcdir, s)
-    return os.path.relpath(abs_path, srcdir)
+تعریف removeprefix(s):
+    abs_راستہ = os.راستہ.join(بنیاد_srcdir, s)
+    واپس os.راستہ.relpath(abs_راستہ, srcdir)
 
 
-HBHEADERS = [os.path.basename(x) for x in os.getenv("HBHEADERS", "").split()] or [
-    x for x in os.listdir(".") if x.startswith("hb") and x.endswith(".h")
+HBHEADERS = [os.راستہ.basename(x) برائے x میں os.getenv("HBHEADERS", "").بانٹو()] یا [
+    x برائے x میں os.listdir(".") اگر x.startswith("hb") اور x.endswith(".h")
 ]
 
-HBSOURCES = [removeprefix(x) for x in os.getenv("HBSOURCES", "").split()] or [
-    x for x in os.listdir(".") if x.startswith("hb") and x.endswith((".cc", ".hh"))
+HBSOURCES = [removeprefix(x) برائے x میں os.getenv("HBSOURCES", "").بانٹو()] یا [
+    x برائے x میں os.listdir(".") اگر x.startswith("hb") اور x.endswith((".cc", ".hh"))
 ]
 
 
 stat = 0
 
-print(
+چھاپو(
     'Checking that public header files #include "hb-common.h" or "hb.h" first (or none)'
 )
-for x in HBHEADERS:
-    if x == "hb.h" or x == "hb-common.h":
-        continue
-    print(f"Checking {x}")
-    with open(x, "r", encoding="utf-8") as f:
-        content = f.read()
-    first = re.findall(r"#.*include.*", content)[0]
-    if first not in ['#include "hb.h"', '#include "hb-common.h"']:
-        print("failure on %s" % x)
+برائے x میں HBHEADERS:
+    اگر x == "hb.h" یا x == "hb-common.h":
+        جاری
+    چھاپو(f"Checking {x}")
+    ساتھ open(x, "r", encoding="utf-8") بطور f:
+        content = f.اقرأ()
+    پہلا = re.findall(r"#.*include.*", content)[0]
+    اگر پہلا نہیں میں ['#include "hb.h"', '#include "hb-common.h"']:
+        چھاپو("failure on %s" % x)
         stat = 1
 
-print("Checking that source files #include a private header first (or none)")
-for x in HBSOURCES:
-    print(f"Checking {x}")
-    with open(x, "r", encoding="utf-8") as f:
-        content = f.read()
+چھاپو("Checking that source files #include a private header first (or none)")
+برائے x میں HBSOURCES:
+    چھاپو(f"Checking {x}")
+    ساتھ open(x, "r", encoding="utf-8") بطور f:
+        content = f.اقرأ()
     includes = re.findall(r"#.*include.*", content)
-    if includes:
-        if not len(re.findall(r'".*\.hh"', includes[0])):
-            print("failure on %s" % x)
+    اگر includes:
+        اگر نہیں لمبائی(re.findall(r'".*\.hh"', includes[0])):
+            چھاپو("failure on %s" % x)
             stat = 1
 
-print("Checking that there is no #include <hb-*.h>")
-for x in HBHEADERS + HBSOURCES:
-    print(f"Checking {x}")
-    with open(x, "r", encoding="utf-8") as f:
-        content = f.read()
-    if re.findall("#.*include.*<.*hb", content):
-        print("failure on %s" % x)
+چھاپو("Checking that there is no #include <hb-*.h>")
+برائے x میں HBHEADERS + HBSOURCES:
+    چھاپو(f"Checking {x}")
+    ساتھ open(x, "r", encoding="utf-8") بطور f:
+        content = f.اقرأ()
+    اگر re.findall("#.*include.*<.*hb", content):
+        چھاپو("failure on %s" % x)
         stat = 1
 
 sys.exit(stat)

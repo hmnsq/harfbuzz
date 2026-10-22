@@ -26,12 +26,12 @@
  * Facebook Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_ITER_HH
-#define HB_ITER_HH
+#اگر_غیر_تعریف_شدہ HB_ITER_HH
+#تعریف_کرو HB_ITER_HH
 
-#include "hb.hh"
-#include "hb-algs.hh"
-#include "hb-meta.hh"
+#شامل "hb.hh"
+#شامل "hb-algs.hh"
+#شامل "hb-meta.hh"
 
 
 /* Unified iterator object.
@@ -55,195 +55,195 @@
  */
 
 /* Base class for all iterators. */
-template <typename iter_t, typename Item = typename iter_t::__item_t__>
-struct hb_iter_t
+سانچہ <قسم_نام iter_t, قسم_نام شے_3 = قسم_نام iter_t::__item_t__>
+ساخت hb_iter_t
 {
-  typedef Item item_t;
-  constexpr unsigned get_item_size () const { return hb_static_size (Item); }
-  static constexpr bool is_iterator = true;
-  static constexpr bool is_random_access_iterator = false;
-  static constexpr bool is_sorted_iterator = false;
-  static constexpr bool has_fast_len = false; // Should be checked in combination with is_random_access_iterator.
+  قسمتعریف شے_3 شے_t;
+  constexpr غیرعلامتی get_شے_سائز () ثابت { واپس hb_static_سائز (شے_3); }
+  ساکن constexpr منطقی is_iterator = سچ;
+  ساکن constexpr منطقی is_random_access_iterator = جھوٹ;
+  ساکن constexpr منطقی is_sorted_iterator = جھوٹ;
+  ساکن constexpr منطقی has_fast_len = جھوٹ; // Should be checked in combination with is_random_access_iterator.
 
-  private:
+  نجی:
   /* https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern */
-  const iter_t* thiz () const { return static_cast<const iter_t *> (this); }
-	iter_t* thiz ()       { return static_cast<      iter_t *> (this); }
-  public:
+  ثابت iter_t* thiz () ثابت { واپس static_cast<ثابت iter_t *> (یہ); }
+	iter_t* thiz ()       { واپس static_cast<      iter_t *> (یہ); }
+  عوامی:
 
   /* Operators. */
-  iter_t iter () const { return *thiz(); }
-  iter_t operator + () const { return *thiz(); }
-  iter_t _begin () const { return *thiz(); }
-  iter_t begin () const { return _begin (); }
-  iter_t _end () const { return thiz()->__end__ (); }
-  iter_t end () const { return _end (); }
-  explicit operator bool () const { return thiz()->__more__ (); }
-  unsigned len () const { return thiz()->__len__ (); }
+  iter_t iter () ثابت { واپس *thiz(); }
+  iter_t عامل + () ثابت { واپس *thiz(); }
+  iter_t _begin () ثابت { واپس *thiz(); }
+  iter_t begin () ثابت { واپس _begin (); }
+  iter_t انتہا_3 () ثابت { واپس thiz()->__end__ (); }
+  iter_t انتہا () ثابت { واپس انتہا_3 (); }
+  صریح عامل منطقی () ثابت { واپس thiz()->__more__ (); }
+  غیرعلامتی len () ثابت { واپس thiz()->__len__ (); }
   /* The following can only be enabled if item_t is reference type.  Otherwise
    * it will be returning pointer to temporary rvalue. */
-  template <typename T = item_t,
+  سانچہ <قسم_نام T = شے_t,
 	    hb_enable_if (std::is_reference<T>::value)>
-  hb_remove_reference<item_t>* operator -> () const { return std::addressof (**thiz()); }
-  item_t operator * () const { return thiz()->__item__ (); }
-  item_t operator * () { return thiz()->__item__ (); }
-  item_t operator [] (unsigned i) const { return thiz()->__item_at__ (i); }
-  item_t operator [] (unsigned i) { return thiz()->__item_at__ (i); }
-  iter_t& operator += (unsigned count) &  { thiz()->__forward__ (count); return *thiz(); }
-  iter_t  operator += (unsigned count) && { thiz()->__forward__ (count); return *thiz(); }
-  iter_t& operator ++ () &  { thiz()->__next__ (); return *thiz(); }
-  iter_t  operator ++ () && { thiz()->__next__ (); return *thiz(); }
-  iter_t& operator -= (unsigned count) &  { thiz()->__rewind__ (count); return *thiz(); }
-  iter_t  operator -= (unsigned count) && { thiz()->__rewind__ (count); return *thiz(); }
-  iter_t& operator -- () &  { thiz()->__prev__ (); return *thiz(); }
-  iter_t  operator -- () && { thiz()->__prev__ (); return *thiz(); }
-  iter_t operator + (unsigned count) const { auto c = thiz()->iter (); c += count; return c; }
-  friend iter_t operator + (unsigned count, const iter_t &it) { return it + count; }
-  iter_t operator ++ (int) { iter_t c (*thiz()); ++*thiz(); return c; }
-  iter_t operator - (unsigned count) const { auto c = thiz()->iter (); c -= count; return c; }
-  iter_t operator -- (int) { iter_t c (*thiz()); --*thiz(); return c; }
-  template <typename T>
-  iter_t& operator >> (T &v) &  { v = **thiz(); ++*thiz(); return *thiz(); }
-  template <typename T>
-  iter_t  operator >> (T &v) && { v = **thiz(); ++*thiz(); return *thiz(); }
-  template <typename T>
-  iter_t& operator << (const T v) &  { **thiz() = v; ++*thiz(); return *thiz(); }
-  template <typename T>
-  iter_t  operator << (const T v) && { **thiz() = v; ++*thiz(); return *thiz(); }
+  hb_remove_reference<شے_t>* عامل -> () ثابت { واپس std::addressof (**thiz()); }
+  شے_t عامل * () ثابت { واپس thiz()->__item__ (); }
+  شے_t عامل * () { واپس thiz()->__item__ (); }
+  شے_t عامل [] (غیرعلامتی i) ثابت { واپس thiz()->__item_at__ (i); }
+  شے_t عامل [] (غیرعلامتی i) { واپس thiz()->__item_at__ (i); }
+  iter_t& عامل += (غیرعلامتی گنتی) &  { thiz()->__forward__ (گنتی); واپس *thiz(); }
+  iter_t  عامل += (غیرعلامتی گنتی) && { thiz()->__forward__ (گنتی); واپس *thiz(); }
+  iter_t& عامل ++ () &  { thiz()->__next__ (); واپس *thiz(); }
+  iter_t  عامل ++ () && { thiz()->__next__ (); واپس *thiz(); }
+  iter_t& عامل -= (غیرعلامتی گنتی) &  { thiz()->__rewind__ (گنتی); واپس *thiz(); }
+  iter_t  عامل -= (غیرعلامتی گنتی) && { thiz()->__rewind__ (گنتی); واپس *thiz(); }
+  iter_t& عامل -- () &  { thiz()->__prev__ (); واپس *thiz(); }
+  iter_t  عامل -- () && { thiz()->__prev__ (); واپس *thiz(); }
+  iter_t عامل + (غیرعلامتی گنتی) ثابت { خودکار c = thiz()->iter (); c += گنتی; واپس c; }
+  دوست iter_t عامل + (غیرعلامتی گنتی, ثابت iter_t &it) { واپس it + گنتی; }
+  iter_t عامل ++ (صحیح) { iter_t c (*thiz()); ++*thiz(); واپس c; }
+  iter_t عامل - (غیرعلامتی گنتی) ثابت { خودکار c = thiz()->iter (); c -= گنتی; واپس c; }
+  iter_t عامل -- (صحیح) { iter_t c (*thiz()); --*thiz(); واپس c; }
+  سانچہ <قسم_نام T>
+  iter_t& عامل >> (T &v) &  { v = **thiz(); ++*thiz(); واپس *thiz(); }
+  سانچہ <قسم_نام T>
+  iter_t  عامل >> (T &v) && { v = **thiz(); ++*thiz(); واپس *thiz(); }
+  سانچہ <قسم_نام T>
+  iter_t& عامل << (ثابت T v) &  { **thiz() = v; ++*thiz(); واپس *thiz(); }
+  سانچہ <قسم_نام T>
+  iter_t  عامل << (ثابت T v) && { **thiz() = v; ++*thiz(); واپس *thiz(); }
 
-  protected:
-  hb_iter_t () = default;
-  hb_iter_t (const hb_iter_t &o HB_UNUSED) = default;
-  hb_iter_t (hb_iter_t &&o HB_UNUSED) = default;
-  hb_iter_t& operator = (const hb_iter_t &o HB_UNUSED) = default;
-  hb_iter_t& operator = (hb_iter_t &&o HB_UNUSED) = default;
+  محفوظ:
+  hb_iter_t () = طےشدہ;
+  hb_iter_t (ثابت hb_iter_t &o HB_غیر_مستعمل) = طےشدہ;
+  hb_iter_t (hb_iter_t &&o HB_غیر_مستعمل) = طےشدہ;
+  hb_iter_t& عامل = (ثابت hb_iter_t &o HB_غیر_مستعمل) = طےشدہ;
+  hb_iter_t& عامل = (hb_iter_t &&o HB_غیر_مستعمل) = طےشدہ;
 };
 
-#define HB_ITER_USING(Name) \
-  using item_t = typename Name::item_t; \
-  using Name::_begin; \
-  using Name::begin; \
-  using Name::_end; \
-  using Name::end; \
-  using Name::get_item_size; \
-  using Name::is_iterator; \
-  using Name::iter; \
-  using Name::operator bool; \
-  using Name::len; \
-  using Name::operator ->; \
-  using Name::operator *; \
-  using Name::operator []; \
-  using Name::operator +=; \
-  using Name::operator ++; \
-  using Name::operator -=; \
-  using Name::operator --; \
-  using Name::operator +; \
-  using Name::operator -; \
-  using Name::operator >>; \
-  using Name::operator <<; \
-  static_assert (true, "")
+#تعریف_کرو HB_ITER_USING(Name) \
+  استعمال شے_t = قسم_نام Name::شے_t; \
+  استعمال Name::_begin; \
+  استعمال Name::begin; \
+  استعمال Name::انتہا_3; \
+  استعمال Name::انتہا; \
+  استعمال Name::get_شے_سائز; \
+  استعمال Name::is_iterator; \
+  استعمال Name::iter; \
+  استعمال Name::عامل منطقی; \
+  استعمال Name::len; \
+  استعمال Name::عامل ->; \
+  استعمال Name::عامل *; \
+  استعمال Name::عامل []; \
+  استعمال Name::عامل +=; \
+  استعمال Name::عامل ++; \
+  استعمال Name::عامل -=; \
+  استعمال Name::عامل --; \
+  استعمال Name::عامل +; \
+  استعمال Name::عامل -; \
+  استعمال Name::عامل >>; \
+  استعمال Name::عامل <<; \
+  static_assert (سچ, "")
 
 /* Returns iterator / item type of a type. */
-template <typename Iterable>
-using hb_iter_type = decltype (hb_deref (hb_declval (Iterable)).iter ());
-template <typename Iterable>
-using hb_item_type = decltype (*hb_deref (hb_declval (Iterable)).iter ());
+سانچہ <قسم_نام Iterable>
+استعمال hb_iter_type = decltype (hb_deref (hb_declval (Iterable)).iter ());
+سانچہ <قسم_نام Iterable>
+استعمال hb_شے_type = decltype (*hb_deref (hb_declval (Iterable)).iter ());
 
 
-template <typename> struct hb_array_t;
-template <typename> struct hb_sorted_array_t;
+سانچہ <قسم_نام> ساخت hb_array_t;
+سانچہ <قسم_نام> ساخت hb_sorted_array_t;
 
-struct
+ساخت
 {
-  template <typename T> hb_iter_type<T>
-  operator () (T&& c) const
-  { return hb_deref (std::forward<T> (c)).iter (); }
+  سانچہ <قسم_نام T> hb_iter_type<T>
+  عامل () (T&& c) ثابت
+  { واپس hb_deref (std::forward<T> (c)).iter (); }
 
   /* Specialization for C arrays. */
 
-  template <typename Type> inline hb_array_t<Type>
-  operator () (Type *array, unsigned int length) const
-  { return hb_array_t<Type> (array, length); }
+  سانچہ <قسم_نام Type> اندرونی hb_array_t<Type>
+  عامل () (Type *array, غیرعلامتی صحیح لمبائی) ثابت
+  { واپس hb_array_t<Type> (array, لمبائی); }
 
-  template <typename Type, unsigned int length> hb_array_t<Type>
-  operator () (Type (&array)[length]) const
-  { return hb_array_t<Type> (array, length); }
+  سانچہ <قسم_نام Type, غیرعلامتی صحیح لمبائی> hb_array_t<Type>
+  عامل () (Type (&array)[لمبائی]) ثابت
+  { واپس hb_array_t<Type> (array, لمبائی); }
 
 }
 HB_FUNCOBJ (hb_iter);
-struct
+ساخت
 {
-  template <typename T> auto
-  impl (T&& c, hb_priority<1>) const HB_RETURN (unsigned, c.len ())
+  سانچہ <قسم_نام T> خودکار
+  impl (T&& c, hb_ترجیح<1>) ثابت HB_RETURN (غیرعلامتی, c.len ())
 
-  template <typename T> auto
-  impl (T&& c, hb_priority<0>) const HB_RETURN (unsigned, c.len)
+  سانچہ <قسم_نام T> خودکار
+  impl (T&& c, hb_ترجیح<0>) ثابت HB_RETURN (غیرعلامتی, c.len)
 
-  public:
+  عوامی:
 
-  template <typename T> auto
-  operator () (T&& c) const HB_RETURN (unsigned, impl (std::forward<T> (c), hb_prioritize))
+  سانچہ <قسم_نام T> خودکار
+  عامل () (T&& c) ثابت HB_RETURN (غیرعلامتی, impl (std::forward<T> (c), hb_prioritize))
 }
 HB_FUNCOBJ (hb_len);
 
 /* Mixin to fill in what the subclass doesn't provide. */
-template <typename iter_t, typename item_t = typename iter_t::__item_t__>
-struct hb_iter_fallback_mixin_t
+سانچہ <قسم_نام iter_t, قسم_نام شے_t = قسم_نام iter_t::__item_t__>
+ساخت hb_iter_fallback_mixin_t
 {
-  private:
+  نجی:
   /* https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern */
-  const iter_t* thiz () const { return static_cast<const iter_t *> (this); }
-	iter_t* thiz ()       { return static_cast<      iter_t *> (this); }
-  public:
+  ثابت iter_t* thiz () ثابت { واپس static_cast<ثابت iter_t *> (یہ); }
+	iter_t* thiz ()       { واپس static_cast<      iter_t *> (یہ); }
+  عوامی:
 
   /* Access: Implement __item__(), or __item_at__() if random-access. */
-  item_t __item__ () const { return (*thiz())[0]; }
-  item_t __item_at__ (unsigned i) const { return *(*thiz() + i); }
+  شے_t __item__ () ثابت { واپس (*thiz())[0]; }
+  شے_t __item_at__ (غیرعلامتی i) ثابت { واپس *(*thiz() + i); }
 
   /* Termination: Implement __more__(), or __len__() if random-access. */
-  bool __more__ () const { return bool (thiz()->len ()); }
-  unsigned __len__ () const
-  { iter_t c (*thiz()); unsigned l = 0; while (c) { c++; l++; } return l; }
+  منطقی __more__ () ثابت { واپس منطقی (thiz()->len ()); }
+  غیرعلامتی __len__ () ثابت
+  { iter_t c (*thiz()); غیرعلامتی l = 0; جب (c) { c++; l++; } واپس l; }
 
   /* Advancing: Implement __next__(), or __forward__() if random-access. */
-  void __next__ () { *thiz() += 1; }
-  void __forward__ (unsigned n) { while (*thiz() && n--) ++*thiz(); }
+  خالی __next__ () { *thiz() += 1; }
+  خالی __forward__ (غیرعلامتی n) { جب (*thiz() && n--) ++*thiz(); }
 
   /* Rewinding: Implement __prev__() or __rewind__() if bidirectional. */
-  void __prev__ () { *thiz() -= 1; }
-  void __rewind__ (unsigned n) { while (*thiz() && n--) --*thiz(); }
+  خالی __prev__ () { *thiz() -= 1; }
+  خالی __rewind__ (غیرعلامتی n) { جب (*thiz() && n--) --*thiz(); }
 
   /* Range-based for: Implement __end__() if can be done faster,
    * and operator!=. */
-  iter_t __end__ () const
+  iter_t __end__ () ثابت
   {
-    if (thiz()->is_random_access_iterator)
-      return *thiz() + thiz()->len ();
+    اگر (thiz()->is_random_access_iterator)
+      واپس *thiz() + thiz()->len ();
     /* Above expression loops twice. Following loops once. */
-    auto it = *thiz();
-    while (it) ++it;
-    return it;
+    خودکار it = *thiz();
+    جب (it) ++it;
+    واپس it;
   }
 
-  protected:
-  hb_iter_fallback_mixin_t () = default;
-  hb_iter_fallback_mixin_t (const hb_iter_fallback_mixin_t &o HB_UNUSED) = default;
-  hb_iter_fallback_mixin_t (hb_iter_fallback_mixin_t &&o HB_UNUSED) = default;
-  hb_iter_fallback_mixin_t& operator = (const hb_iter_fallback_mixin_t &o HB_UNUSED) = default;
-  hb_iter_fallback_mixin_t& operator = (hb_iter_fallback_mixin_t &&o HB_UNUSED) = default;
+  محفوظ:
+  hb_iter_fallback_mixin_t () = طےشدہ;
+  hb_iter_fallback_mixin_t (ثابت hb_iter_fallback_mixin_t &o HB_غیر_مستعمل) = طےشدہ;
+  hb_iter_fallback_mixin_t (hb_iter_fallback_mixin_t &&o HB_غیر_مستعمل) = طےشدہ;
+  hb_iter_fallback_mixin_t& عامل = (ثابت hb_iter_fallback_mixin_t &o HB_غیر_مستعمل) = طےشدہ;
+  hb_iter_fallback_mixin_t& عامل = (hb_iter_fallback_mixin_t &&o HB_غیر_مستعمل) = طےشدہ;
 };
 
-template <typename iter_t, typename item_t = typename iter_t::__item_t__>
-struct hb_iter_with_fallback_t :
-  hb_iter_t<iter_t, item_t>,
-  hb_iter_fallback_mixin_t<iter_t, item_t>
+سانچہ <قسم_نام iter_t, قسم_نام شے_t = قسم_نام iter_t::__item_t__>
+ساخت hb_iter_with_fallback_t :
+  hb_iter_t<iter_t, شے_t>,
+  hb_iter_fallback_mixin_t<iter_t, شے_t>
 {
-  protected:
-  hb_iter_with_fallback_t () = default;
-  hb_iter_with_fallback_t (const hb_iter_with_fallback_t &o HB_UNUSED) = default;
-  hb_iter_with_fallback_t (hb_iter_with_fallback_t &&o HB_UNUSED) = default;
-  hb_iter_with_fallback_t& operator = (const hb_iter_with_fallback_t &o HB_UNUSED) = default;
-  hb_iter_with_fallback_t& operator = (hb_iter_with_fallback_t &&o HB_UNUSED) = default;
+  محفوظ:
+  hb_iter_with_fallback_t () = طےشدہ;
+  hb_iter_with_fallback_t (ثابت hb_iter_with_fallback_t &o HB_غیر_مستعمل) = طےشدہ;
+  hb_iter_with_fallback_t (hb_iter_with_fallback_t &&o HB_غیر_مستعمل) = طےشدہ;
+  hb_iter_with_fallback_t& عامل = (ثابت hb_iter_with_fallback_t &o HB_غیر_مستعمل) = طےشدہ;
+  hb_iter_with_fallback_t& عامل = (hb_iter_with_fallback_t &&o HB_غیر_مستعمل) = طےشدہ;
 };
 
 /*
@@ -252,109 +252,109 @@ struct hb_iter_with_fallback_t :
 
 /* hb_is_iterator() / hb_is_iterator_of() */
 
-template<typename Iter, typename Item>
-struct hb_is_iterator_of
+سانچہ<قسم_نام Iter, قسم_نام شے_3>
+ساخت hb_is_iterator_کا
 {
-  template <typename Item2 = Item>
-  static hb_true_type impl (hb_priority<2>, hb_iter_t<Iter, hb_type_identity<Item2>> *);
-  static hb_false_type impl (hb_priority<0>, const void *);
+  سانچہ <قسم_نام Item2 = شے_3>
+  ساکن hb_true_type impl (hb_ترجیح<2>, hb_iter_t<Iter, hb_type_شناختی_عنصر<Item2>> *);
+  ساکن hb_false_type impl (hb_ترجیح<0>, ثابت خالی *);
 
-  public:
-  static constexpr bool value = decltype (impl (hb_prioritize, hb_declval (Iter*)))::value;
+  عوامی:
+  ساکن constexpr منطقی value = decltype (impl (hb_prioritize, hb_declval (Iter*)))::value;
 };
-#define hb_is_iterator_of(Iter, Item) hb_is_iterator_of<Iter, Item>::value
-#define hb_is_iterator(Iter) hb_is_iterator_of (Iter, typename Iter::item_t)
-#define hb_is_sorted_iterator_of(Iter, Item) (hb_is_iterator_of<Iter, Item>::value && Iter::is_sorted_iterator)
-#define hb_is_sorted_iterator(Iter) hb_is_sorted_iterator_of (Iter, typename Iter::item_t)
+#تعریف_کرو hb_is_iterator_کا(Iter, شے_3) hb_is_iterator_کا<Iter, شے_3>::value
+#تعریف_کرو hb_is_iterator(Iter) hb_is_iterator_کا (Iter, قسم_نام Iter::شے_t)
+#تعریف_کرو hb_is_sorted_iterator_کا(Iter, شے_3) (hb_is_iterator_کا<Iter, شے_3>::value && Iter::is_sorted_iterator)
+#تعریف_کرو hb_is_sorted_iterator(Iter) hb_is_sorted_iterator_کا (Iter, قسم_نام Iter::شے_t)
 
 /* hb_is_iterable() */
 
-template <typename T>
-struct hb_is_iterable
+سانچہ <قسم_نام T>
+ساخت hb_is_iterable
 {
-  private:
+  نجی:
 
-  template <typename U>
-  static auto impl (hb_priority<1>) -> decltype (hb_declval (U).iter (), hb_true_type ());
+  سانچہ <قسم_نام U>
+  ساکن خودکار impl (hb_ترجیح<1>) -> decltype (hb_declval (U).iter (), hb_true_type ());
 
-  template <typename>
-  static hb_false_type impl (hb_priority<0>);
+  سانچہ <قسم_نام>
+  ساکن hb_false_type impl (hb_ترجیح<0>);
 
-  public:
-  static constexpr bool value = decltype (impl<T> (hb_prioritize))::value;
+  عوامی:
+  ساکن constexpr منطقی value = decltype (impl<T> (hb_prioritize))::value;
 };
-#define hb_is_iterable(Iterable) hb_is_iterable<Iterable>::value
+#تعریف_کرو hb_is_iterable(Iterable) hb_is_iterable<Iterable>::value
 
 /* hb_is_source_of() / hb_is_sink_of() */
 
-template<typename Iter, typename Item>
-struct hb_is_source_of
+سانچہ<قسم_نام Iter, قسم_نام شے_3>
+ساخت hb_is_ماخذ_کا
 {
-  private:
-  template <typename Iter2 = Iter,
-	    hb_enable_if (hb_is_convertible (typename Iter2::item_t, hb_add_lvalue_reference<const Item>))>
-  static hb_true_type impl (hb_priority<2>);
-  template <typename Iter2 = Iter>
-  static auto impl (hb_priority<1>) -> decltype (hb_declval (Iter2) >> hb_declval (Item &), hb_true_type ());
-  static hb_false_type impl (hb_priority<0>);
+  نجی:
+  سانچہ <قسم_نام Iter2 = Iter,
+	    hb_enable_if (hb_is_convertible (قسم_نام Iter2::شے_t, hb_جوڑو_lvalue_reference<ثابت شے_3>))>
+  ساکن hb_true_type impl (hb_ترجیح<2>);
+  سانچہ <قسم_نام Iter2 = Iter>
+  ساکن خودکار impl (hb_ترجیح<1>) -> decltype (hb_declval (Iter2) >> hb_declval (شے_3 &), hb_true_type ());
+  ساکن hb_false_type impl (hb_ترجیح<0>);
 
-  public:
-  static constexpr bool value = decltype (impl (hb_prioritize))::value;
+  عوامی:
+  ساکن constexpr منطقی value = decltype (impl (hb_prioritize))::value;
 };
-#define hb_is_source_of(Iter, Item) hb_is_source_of<Iter, Item>::value
+#تعریف_کرو hb_is_ماخذ_کا(Iter, شے_3) hb_is_ماخذ_کا<Iter, شے_3>::value
 
-template<typename Iter, typename Item>
-struct hb_is_sink_of
+سانچہ<قسم_نام Iter, قسم_نام شے_3>
+ساخت hb_is_sink_کا
 {
-  private:
-  template <typename Iter2 = Iter,
-	    hb_enable_if (hb_is_convertible (typename Iter2::item_t, hb_add_lvalue_reference<Item>))>
-  static hb_true_type impl (hb_priority<2>);
-  template <typename Iter2 = Iter>
-  static auto impl (hb_priority<1>) -> decltype (hb_declval (Iter2) << hb_declval (Item), hb_true_type ());
-  static hb_false_type impl (hb_priority<0>);
+  نجی:
+  سانچہ <قسم_نام Iter2 = Iter,
+	    hb_enable_if (hb_is_convertible (قسم_نام Iter2::شے_t, hb_جوڑو_lvalue_reference<شے_3>))>
+  ساکن hb_true_type impl (hb_ترجیح<2>);
+  سانچہ <قسم_نام Iter2 = Iter>
+  ساکن خودکار impl (hb_ترجیح<1>) -> decltype (hb_declval (Iter2) << hb_declval (شے_3), hb_true_type ());
+  ساکن hb_false_type impl (hb_ترجیح<0>);
 
-  public:
-  static constexpr bool value = decltype (impl (hb_prioritize))::value;
+  عوامی:
+  ساکن constexpr منطقی value = decltype (impl (hb_prioritize))::value;
 };
-#define hb_is_sink_of(Iter, Item) hb_is_sink_of<Iter, Item>::value
+#تعریف_کرو hb_is_sink_کا(Iter, شے_3) hb_is_sink_کا<Iter, شے_3>::value
 
 /* This is commonly used, so define: */
-#define hb_is_sorted_source_of(Iter, Item) \
-	(hb_is_source_of(Iter, Item) && Iter::is_sorted_iterator)
+#تعریف_کرو hb_is_sorted_ماخذ_کا(Iter, شے_3) \
+	(hb_is_ماخذ_کا(Iter, شے_3) && Iter::is_sorted_iterator)
 
 
-struct
+ساخت
 {
-  template <typename Iterable,
+  سانچہ <قسم_نام Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  unsigned operator () (const Iterable &_) const { return hb_len (hb_iter (_)); }
+  غیرعلامتی عامل () (ثابت Iterable &_) ثابت { واپس hb_len (hb_iter (_)); }
 
-  unsigned operator () (unsigned _) const { return _; }
+  غیرعلامتی عامل () (غیرعلامتی _) ثابت { واپس _; }
 }
-HB_FUNCOBJ (hb_len_of);
+HB_FUNCOBJ (hb_len_کا);
 
 /* Range-based 'for' for iterables. */
 
-template <typename Iterable,
+سانچہ <قسم_نام Iterable,
 	  hb_requires (hb_is_iterable (Iterable))>
-static inline auto begin (Iterable&& iterable) HB_AUTO_RETURN (hb_iter (iterable).begin ())
+ساکن اندرونی خودکار begin (Iterable&& iterable) HB_AUTO_RETURN (hb_iter (iterable).begin ())
 
-template <typename Iterable,
+سانچہ <قسم_نام Iterable,
 	  hb_requires (hb_is_iterable (Iterable))>
-static inline auto end (Iterable&& iterable) HB_AUTO_RETURN (hb_iter (iterable).end ())
+ساکن اندرونی خودکار انتہا (Iterable&& iterable) HB_AUTO_RETURN (hb_iter (iterable).انتہا ())
 
 /* begin()/end() are NOT looked up non-ADL.  So each namespace must declare them.
  * Do it for namespace OT. */
-namespace OT {
+نامخلا OT {
 
-template <typename Iterable,
+سانچہ <قسم_نام Iterable,
 	  hb_requires (hb_is_iterable (Iterable))>
-static inline auto begin (Iterable&& iterable) HB_AUTO_RETURN (hb_iter (iterable).begin ())
+ساکن اندرونی خودکار begin (Iterable&& iterable) HB_AUTO_RETURN (hb_iter (iterable).begin ())
 
-template <typename Iterable,
+سانچہ <قسم_نام Iterable,
 	  hb_requires (hb_is_iterable (Iterable))>
-static inline auto end (Iterable&& iterable) HB_AUTO_RETURN (hb_iter (iterable).end ())
+ساکن اندرونی خودکار انتہا (Iterable&& iterable) HB_AUTO_RETURN (hb_iter (iterable).انتہا ())
 
 }
 
@@ -363,196 +363,196 @@ static inline auto end (Iterable&& iterable) HB_AUTO_RETURN (hb_iter (iterable).
  * Adaptors, combiners, etc.
  */
 
-template <typename Lhs, typename Rhs,
+سانچہ <قسم_نام Lhs, قسم_نام Rhs,
 	  hb_requires (hb_is_iterator (Lhs))>
-static inline auto
-operator | (Lhs&& lhs, Rhs&& rhs) HB_AUTO_RETURN (std::forward<Rhs> (rhs) (std::forward<Lhs> (lhs)))
+ساکن اندرونی خودکار
+عامل | (Lhs&& lhs, Rhs&& rhs) HB_AUTO_RETURN (std::forward<Rhs> (rhs) (std::forward<Lhs> (lhs)))
 
 /* hb_map(), hb_filter(), hb_reduce() */
 
-enum  class hb_function_sortedness_t {
+شمار  جماعت hb_function_sortedness_t {
   NOT_SORTED,
-  RETAINS_SORTING,
+  RETAINS_ترتیب_کاری,
   SORTED,
 };
 
-template <typename Iter, typename Proj, hb_function_sortedness_t Sorted,
+سانچہ <قسم_نام Iter, قسم_نام Proj, hb_function_sortedness_t Sorted,
 	 hb_requires (hb_is_iterator (Iter))>
-struct hb_map_iter_t :
+ساخت hb_map_iter_t :
   hb_iter_t<hb_map_iter_t<Iter, Proj, Sorted>,
 	    decltype (hb_get (hb_declval (Proj), *hb_declval (Iter)))>
 {
-  hb_map_iter_t (const Iter& it, Proj f_) : it (it), f (f_) {}
+  hb_map_iter_t (ثابت Iter& it, Proj f_) : it (it), f (f_) {}
 
-  typedef decltype (hb_get (hb_declval (Proj), *hb_declval (Iter))) __item_t__;
-  static constexpr bool is_random_access_iterator = Iter::is_random_access_iterator;
-  static constexpr bool is_sorted_iterator =
-    Sorted == hb_function_sortedness_t::SORTED ? true :
-    Sorted == hb_function_sortedness_t::RETAINS_SORTING ? Iter::is_sorted_iterator :
-    false;
-  __item_t__ __item__ () const { return hb_get (f.get (), *it); }
-  __item_t__ __item_at__ (unsigned i) const { return hb_get (f.get (), it[i]); }
-  bool __more__ () const { return bool (it); }
-  unsigned __len__ () const { return it.len (); }
-  void __next__ () { ++it; }
-  void __forward__ (unsigned n) { it += n; }
-  void __prev__ () { --it; }
-  void __rewind__ (unsigned n) { it -= n; }
-  hb_map_iter_t __end__ () const { return hb_map_iter_t (it._end (), f); }
-  bool operator != (const hb_map_iter_t& o) const
-  { return it != o.it; }
+  قسمتعریف decltype (hb_get (hb_declval (Proj), *hb_declval (Iter))) __item_t__;
+  ساکن constexpr منطقی is_random_access_iterator = Iter::is_random_access_iterator;
+  ساکن constexpr منطقی is_sorted_iterator =
+    Sorted == hb_function_sortedness_t::SORTED ? سچ :
+    Sorted == hb_function_sortedness_t::RETAINS_ترتیب_کاری ? Iter::is_sorted_iterator :
+    جھوٹ;
+  __item_t__ __item__ () ثابت { واپس hb_get (f.get (), *it); }
+  __item_t__ __item_at__ (غیرعلامتی i) ثابت { واپس hb_get (f.get (), it[i]); }
+  منطقی __more__ () ثابت { واپس منطقی (it); }
+  غیرعلامتی __len__ () ثابت { واپس it.len (); }
+  خالی __next__ () { ++it; }
+  خالی __forward__ (غیرعلامتی n) { it += n; }
+  خالی __prev__ () { --it; }
+  خالی __rewind__ (غیرعلامتی n) { it -= n; }
+  hb_map_iter_t __end__ () ثابت { واپس hb_map_iter_t (it.انتہا_3 (), f); }
+  منطقی عامل != (ثابت hb_map_iter_t& o) ثابت
+  { واپس it != o.it; }
 
-  private:
+  نجی:
   Iter it;
-  mutable hb_reference_wrapper<Proj> f;
+  تغیرپذیر hb_reference_wrapper<Proj> f;
 };
 
-template <typename Proj, hb_function_sortedness_t Sorted>
-struct hb_map_iter_factory_t
+سانچہ <قسم_نام Proj, hb_function_sortedness_t Sorted>
+ساخت hb_map_iter_factory_t
 {
   hb_map_iter_factory_t (Proj f) : f (f) {}
 
-  template <typename Iter,
+  سانچہ <قسم_نام Iter,
 	    hb_requires (hb_is_iterator (Iter))>
   hb_map_iter_t<Iter, Proj, Sorted>
-  operator () (Iter it)
-  { return hb_map_iter_t<Iter, Proj, Sorted> (it, f); }
+  عامل () (Iter it)
+  { واپس hb_map_iter_t<Iter, Proj, Sorted> (it, f); }
 
-  private:
+  نجی:
   Proj f;
 };
-struct
+ساخت
 {
-  template <typename Proj>
+  سانچہ <قسم_نام Proj>
   hb_map_iter_factory_t<Proj, hb_function_sortedness_t::NOT_SORTED>
-  operator () (Proj&& f) const
-  { return hb_map_iter_factory_t<Proj, hb_function_sortedness_t::NOT_SORTED> (f); }
+  عامل () (Proj&& f) ثابت
+  { واپس hb_map_iter_factory_t<Proj, hb_function_sortedness_t::NOT_SORTED> (f); }
 }
 HB_FUNCOBJ (hb_map);
-struct
+ساخت
 {
-  template <typename Proj>
-  hb_map_iter_factory_t<Proj, hb_function_sortedness_t::RETAINS_SORTING>
-  operator () (Proj&& f) const
-  { return hb_map_iter_factory_t<Proj, hb_function_sortedness_t::RETAINS_SORTING> (f); }
+  سانچہ <قسم_نام Proj>
+  hb_map_iter_factory_t<Proj, hb_function_sortedness_t::RETAINS_ترتیب_کاری>
+  عامل () (Proj&& f) ثابت
+  { واپس hb_map_iter_factory_t<Proj, hb_function_sortedness_t::RETAINS_ترتیب_کاری> (f); }
 }
-HB_FUNCOBJ (hb_map_retains_sorting);
-struct
+HB_FUNCOBJ (hb_map_retains_ترتیب_کاری);
+ساخت
 {
-  template <typename Proj>
+  سانچہ <قسم_نام Proj>
   hb_map_iter_factory_t<Proj, hb_function_sortedness_t::SORTED>
-  operator () (Proj&& f) const
-  { return hb_map_iter_factory_t<Proj, hb_function_sortedness_t::SORTED> (f); }
+  عامل () (Proj&& f) ثابت
+  { واپس hb_map_iter_factory_t<Proj, hb_function_sortedness_t::SORTED> (f); }
 }
 HB_FUNCOBJ (hb_map_sorted);
 
-template <typename Iter, typename Pred, typename Proj,
+سانچہ <قسم_نام Iter, قسم_نام Pred, قسم_نام Proj,
 	 hb_requires (hb_is_iterator (Iter))>
-struct hb_filter_iter_t :
+ساخت hb_filter_iter_t :
   hb_iter_with_fallback_t<hb_filter_iter_t<Iter, Pred, Proj>,
-			  typename Iter::item_t>
+			  قسم_نام Iter::شے_t>
 {
-  hb_filter_iter_t (const Iter& it_, Pred p_, Proj f_) : it (it_), p (p_), f (f_)
-  { while (it && !hb_has (p.get (), hb_get (f.get (), *it))) ++it; }
+  hb_filter_iter_t (ثابت Iter& it_, Pred p_, Proj f_) : it (it_), p (p_), f (f_)
+  { جب (it && !hb_has (p.get (), hb_get (f.get (), *it))) ++it; }
 
-  typedef typename Iter::item_t __item_t__;
-  static constexpr bool is_sorted_iterator = Iter::is_sorted_iterator;
-  __item_t__ __item__ () const { return *it; }
-  bool __more__ () const { return bool (it); }
-  void __next__ () { do ++it; while (it && !hb_has (p.get (), hb_get (f.get (), *it))); }
-  void __prev__ ()
+  قسمتعریف قسم_نام Iter::شے_t __item_t__;
+  ساکن constexpr منطقی is_sorted_iterator = Iter::is_sorted_iterator;
+  __item_t__ __item__ () ثابت { واپس *it; }
+  منطقی __more__ () ثابت { واپس منطقی (it); }
+  خالی __next__ () { کرو ++it; جب (it && !hb_has (p.get (), hb_get (f.get (), *it))); }
+  خالی __prev__ ()
   {
-    unsigned count = 0;
-    do
+    غیرعلامتی گنتی = 0;
+    کرو
     {
       Iter old = it;
       --it;
-      if (!(it != old))
+      اگر (!(it != old))
       {
-	it += count;
-	return;
+	it += گنتی;
+	واپس;
       }
-      count++;
+      گنتی++;
     }
-    while (!hb_has (p.get (), hb_get (f.get (), *it)));
+    جب (!hb_has (p.get (), hb_get (f.get (), *it)));
   }
-  hb_filter_iter_t __end__ () const { return hb_filter_iter_t (it._end (), p, f); }
-  bool operator != (const hb_filter_iter_t& o) const
-  { return it != o.it; }
+  hb_filter_iter_t __end__ () ثابت { واپس hb_filter_iter_t (it.انتہا_3 (), p, f); }
+  منطقی عامل != (ثابت hb_filter_iter_t& o) ثابت
+  { واپس it != o.it; }
 
-  private:
+  نجی:
   Iter it;
-  mutable hb_reference_wrapper<Pred> p;
-  mutable hb_reference_wrapper<Proj> f;
+  تغیرپذیر hb_reference_wrapper<Pred> p;
+  تغیرپذیر hb_reference_wrapper<Proj> f;
 };
-template <typename Pred, typename Proj>
-struct hb_filter_iter_factory_t
+سانچہ <قسم_نام Pred, قسم_نام Proj>
+ساخت hb_filter_iter_factory_t
 {
   hb_filter_iter_factory_t (Pred p, Proj f) : p (p), f (f) {}
 
-  template <typename Iter,
+  سانچہ <قسم_نام Iter,
 	    hb_requires (hb_is_iterator (Iter))>
   hb_filter_iter_t<Iter, Pred, Proj>
-  operator () (Iter it)
-  { return hb_filter_iter_t<Iter, Pred, Proj> (it, p, f); }
+  عامل () (Iter it)
+  { واپس hb_filter_iter_t<Iter, Pred, Proj> (it, p, f); }
 
-  private:
+  نجی:
   Pred p;
   Proj f;
 };
-struct
+ساخت
 {
-  template <typename Pred = decltype ((hb_identity)),
-	    typename Proj = decltype ((hb_identity))>
+  سانچہ <قسم_نام Pred = decltype ((hb_شناختی_عنصر)),
+	    قسم_نام Proj = decltype ((hb_شناختی_عنصر))>
   hb_filter_iter_factory_t<Pred, Proj>
-  operator () (Pred&& p = hb_identity, Proj&& f = hb_identity) const
-  { return hb_filter_iter_factory_t<Pred, Proj> (p, f); }
+  عامل () (Pred&& p = hb_شناختی_عنصر, Proj&& f = hb_شناختی_عنصر) ثابت
+  { واپس hb_filter_iter_factory_t<Pred, Proj> (p, f); }
 }
 HB_FUNCOBJ (hb_filter);
 
-template <typename Redu, typename InitT>
-struct hb_reduce_t
+سانچہ <قسم_نام Redu, قسم_نام InitT>
+ساخت hb_reduce_t
 {
-  hb_reduce_t (Redu r, InitT init_value) : r (r), init_value (init_value) {}
+  hb_reduce_t (Redu r, InitT init_قدر) : r (r), init_قدر (init_قدر) {}
 
-  template <typename Iter,
+  سانچہ <قسم_نام Iter,
 	    hb_requires (hb_is_iterator (Iter)),
-	    typename AccuT = hb_decay<decltype (hb_declval (Redu) (hb_declval (InitT), hb_declval (typename Iter::item_t)))>>
+	    قسم_نام AccuT = hb_decay<decltype (hb_declval (Redu) (hb_declval (InitT), hb_declval (قسم_نام Iter::شے_t)))>>
   AccuT
-  operator () (Iter it)
+  عامل () (Iter it)
   {
-    AccuT value = init_value;
-    for (; it; ++it)
+    AccuT value = init_قدر;
+    برائے (; it; ++it)
       value = r (value, *it);
-    return value;
+    واپس value;
   }
 
-  private:
+  نجی:
   Redu r;
-  InitT init_value;
+  InitT init_قدر;
 };
-struct
+ساخت
 {
-  template <typename Redu, typename InitT>
+  سانچہ <قسم_نام Redu, قسم_نام InitT>
   hb_reduce_t<Redu, InitT>
-  operator () (Redu&& r, InitT init_value) const
-  { return hb_reduce_t<Redu, InitT> (r, init_value); }
+  عامل () (Redu&& r, InitT init_قدر) ثابت
+  { واپس hb_reduce_t<Redu, InitT> (r, init_قدر); }
 }
 HB_FUNCOBJ (hb_reduce);
 
 
 /* hb_zip() */
 
-template <typename A, typename B>
-struct hb_zip_iter_t :
+سانچہ <قسم_نام A, قسم_نام B>
+ساخت hb_zip_iter_t :
   hb_iter_t<hb_zip_iter_t<A, B>,
-	    hb_pair_t<typename A::item_t, typename B::item_t>>
+	    hb_pair_t<قسم_نام A::شے_t, قسم_نام B::شے_t>>
 {
   hb_zip_iter_t () {}
-  hb_zip_iter_t (const A& a, const B& b) : a (a), b (b) {}
+  hb_zip_iter_t (ثابت A& a, ثابت B& b) : a (a), b (b) {}
 
-  typedef hb_pair_t<typename A::item_t, typename B::item_t> __item_t__;
-  static constexpr bool is_random_access_iterator =
+  قسمتعریف hb_pair_t<قسم_نام A::شے_t, قسم_نام B::شے_t> __item_t__;
+  ساکن constexpr منطقی is_random_access_iterator =
     A::is_random_access_iterator &&
     B::is_random_access_iterator;
   /* Note.  The following categorization is only valid if A is strictly sorted,
@@ -579,452 +579,452 @@ struct hb_zip_iter_t :
    * This semantical limitation does NOT affect logic in any other place I
    * know of as of this writing.
    */
-  static constexpr bool is_sorted_iterator = A::is_sorted_iterator;
+  ساکن constexpr منطقی is_sorted_iterator = A::is_sorted_iterator;
 
-  __item_t__ __item__ () const { return __item_t__ (*a, *b); }
-  __item_t__ __item_at__ (unsigned i) const { return __item_t__ (a[i], b[i]); }
-  bool __more__ () const { return bool (a) && bool (b); }
-  unsigned __len__ () const { return hb_min (a.len (), b.len ()); }
-  void __next__ () { ++a; ++b; }
-  void __forward__ (unsigned n) { a += n; b += n; }
-  void __prev__ () { --a; --b; }
-  void __rewind__ (unsigned n) { a -= n; b -= n; }
-  hb_zip_iter_t __end__ () const { return hb_zip_iter_t (a._end (), b._end ()); }
+  __item_t__ __item__ () ثابت { واپس __item_t__ (*a, *b); }
+  __item_t__ __item_at__ (غیرعلامتی i) ثابت { واپس __item_t__ (a[i], b[i]); }
+  منطقی __more__ () ثابت { واپس منطقی (a) && منطقی (b); }
+  غیرعلامتی __len__ () ثابت { واپس hb_min (a.len (), b.len ()); }
+  خالی __next__ () { ++a; ++b; }
+  خالی __forward__ (غیرعلامتی n) { a += n; b += n; }
+  خالی __prev__ () { --a; --b; }
+  خالی __rewind__ (غیرعلامتی n) { a -= n; b -= n; }
+  hb_zip_iter_t __end__ () ثابت { واپس hb_zip_iter_t (a.انتہا_3 (), b.انتہا_3 ()); }
   /* Note, we should stop if ANY of the iters reaches end.  As such two compare
    * unequal if both items are unequal, NOT if either is unequal. */
-  bool operator != (const hb_zip_iter_t& o) const
-  { return a != o.a && b != o.b; }
+  منطقی عامل != (ثابت hb_zip_iter_t& o) ثابت
+  { واپس a != o.a && b != o.b; }
 
-  private:
+  نجی:
   A a;
   B b;
 };
-struct
+ساخت
 { HB_PARTIALIZE(2);
-  template <typename A, typename B,
+  سانچہ <قسم_نام A, قسم_نام B,
 	    hb_requires (hb_is_iterable (A) && hb_is_iterable (B))>
   hb_zip_iter_t<hb_iter_type<A>, hb_iter_type<B>>
-  operator () (A&& a, B&& b) const
-  { return hb_zip_iter_t<hb_iter_type<A>, hb_iter_type<B>> (hb_iter (a), hb_iter (b)); }
+  عامل () (A&& a, B&& b) ثابت
+  { واپس hb_zip_iter_t<hb_iter_type<A>, hb_iter_type<B>> (hb_iter (a), hb_iter (b)); }
 }
 HB_FUNCOBJ (hb_zip);
 
 /* hb_concat() */
 
-template <typename A, typename B>
-struct hb_concat_iter_t :
-    hb_iter_t<hb_concat_iter_t<A, B>, typename A::item_t>
+سانچہ <قسم_نام A, قسم_نام B>
+ساخت hb_concat_iter_t :
+    hb_iter_t<hb_concat_iter_t<A, B>, قسم_نام A::شے_t>
 {
   hb_concat_iter_t () {}
   hb_concat_iter_t (A& a, B& b) : a (a), b (b) {}
-  hb_concat_iter_t (const A& a, const B& b) : a (a), b (b) {}
+  hb_concat_iter_t (ثابت A& a, ثابت B& b) : a (a), b (b) {}
 
 
-  typedef typename A::item_t __item_t__;
-  static constexpr bool is_random_access_iterator =
+  قسمتعریف قسم_نام A::شے_t __item_t__;
+  ساکن constexpr منطقی is_random_access_iterator =
     A::is_random_access_iterator &&
     B::is_random_access_iterator;
-  static constexpr bool is_sorted_iterator = false;
+  ساکن constexpr منطقی is_sorted_iterator = جھوٹ;
 
-  __item_t__ __item__ () const
+  __item_t__ __item__ () ثابت
   {
-    if (!a)
-      return *b;
-    return *a;
+    اگر (!a)
+      واپس *b;
+    واپس *a;
   }
 
-  __item_t__ __item_at__ (unsigned i) const
+  __item_t__ __item_at__ (غیرعلامتی i) ثابت
   {
-    unsigned a_len = a.len ();
-    if (i < a_len)
-      return a[i];
-    return b[i - a_len];
+    غیرعلامتی a_len = a.len ();
+    اگر (i < a_len)
+      واپس a[i];
+    واپس b[i - a_len];
   }
 
-  bool __more__ () const { return bool (a) || bool (b); }
+  منطقی __more__ () ثابت { واپس منطقی (a) || منطقی (b); }
 
-  unsigned __len__ () const { return a.len () + b.len (); }
+  غیرعلامتی __len__ () ثابت { واپس a.len () + b.len (); }
 
-  void __next__ ()
+  خالی __next__ ()
   {
-    if (a)
+    اگر (a)
       ++a;
-    else
+    ورنہ
       ++b;
   }
 
-  void __forward__ (unsigned n)
+  خالی __forward__ (غیرعلامتی n)
   {
-    if (!n) return;
-    if (!is_random_access_iterator) {
-      while (n-- && *this) {
-        (*this)++;
+    اگر (!n) واپس;
+    اگر (!is_random_access_iterator) {
+      جب (n-- && *یہ) {
+        (*یہ)++;
       }
-      return;
+      واپس;
     }
 
-    unsigned a_len = a.len ();
-    if (n > a_len) {
+    غیرعلامتی a_len = a.len ();
+    اگر (n > a_len) {
       n -= a_len;
       a.__forward__ (a_len);
       b.__forward__ (n);
-    } else {
+    } ورنہ {
       a.__forward__ (n);
     }
   }
 
-  hb_concat_iter_t __end__ () const { return hb_concat_iter_t (a._end (), b._end ()); }
-  bool operator != (const hb_concat_iter_t& o) const
+  hb_concat_iter_t __end__ () ثابت { واپس hb_concat_iter_t (a.انتہا_3 (), b.انتہا_3 ()); }
+  منطقی عامل != (ثابت hb_concat_iter_t& o) ثابت
   {
-    return a != o.a
+    واپس a != o.a
         || b != o.b;
   }
 
-  private:
+  نجی:
   A a;
   B b;
 };
-struct
+ساخت
 { HB_PARTIALIZE(2);
-  template <typename A, typename B,
+  سانچہ <قسم_نام A, قسم_نام B,
 	    hb_requires (hb_is_iterable (A) && hb_is_iterable (B))>
   hb_concat_iter_t<hb_iter_type<A>, hb_iter_type<B>>
-  operator () (A&& a, B&& b) const
-  { return hb_concat_iter_t<hb_iter_type<A>, hb_iter_type<B>> (hb_iter (a), hb_iter (b)); }
+  عامل () (A&& a, B&& b) ثابت
+  { واپس hb_concat_iter_t<hb_iter_type<A>, hb_iter_type<B>> (hb_iter (a), hb_iter (b)); }
 }
 HB_FUNCOBJ (hb_concat);
 
 /* hb_apply() */
 
-template <typename Appl>
-struct hb_apply_t
+سانچہ <قسم_نام Appl>
+ساخت hb_apply_t
 {
   hb_apply_t (Appl a) : a (a) {}
 
-  template <typename Iter,
+  سانچہ <قسم_نام Iter,
 	    hb_requires (hb_is_iterator (Iter))>
-  void operator () (Iter it)
+  خالی عامل () (Iter it)
   {
-    for (; it; ++it)
-      (void) hb_invoke (a, *it);
+    برائے (; it; ++it)
+      (خالی) hb_invoke (a, *it);
   }
 
-  private:
+  نجی:
   Appl a;
 };
-struct
+ساخت
 {
-  template <typename Appl> hb_apply_t<Appl>
-  operator () (Appl&& a) const
-  { return hb_apply_t<Appl> (a); }
+  سانچہ <قسم_نام Appl> hb_apply_t<Appl>
+  عامل () (Appl&& a) ثابت
+  { واپس hb_apply_t<Appl> (a); }
 
-  template <typename Appl> hb_apply_t<Appl&>
-  operator () (Appl *a) const
-  { return hb_apply_t<Appl&> (*a); }
+  سانچہ <قسم_نام Appl> hb_apply_t<Appl&>
+  عامل () (Appl *a) ثابت
+  { واپس hb_apply_t<Appl&> (*a); }
 }
 HB_FUNCOBJ (hb_apply);
 
 /* hb_range()/hb_iota()/hb_repeat() */
 
-template <typename T, typename S>
-struct hb_range_iter_t :
+سانچہ <قسم_نام T, قسم_نام S>
+ساخت hb_range_iter_t :
   hb_iter_t<hb_range_iter_t<T, S>, T>
 {
-  hb_range_iter_t (T start, T end_, S step) : v (start), end_ (end_for (start, end_, step)), step (step) {}
+  hb_range_iter_t (T آغاز, T انتہا_4, S قدم) : v (آغاز), انتہا_4 (انتہا_for (آغاز, انتہا_4, قدم)), قدم (قدم) {}
 
-  typedef T __item_t__;
-  static constexpr bool is_random_access_iterator = true;
-  static constexpr bool is_sorted_iterator = true;
-  __item_t__ __item__ () const { return hb_ridentity (v); }
-  __item_t__ __item_at__ (unsigned j) const { return v + j * step; }
-  bool __more__ () const { return v != end_; }
-  unsigned __len__ () const { return !step ? UINT_MAX : (end_ - v) / step; }
-  void __next__ () { v += step; }
-  void __forward__ (unsigned n) { v += n * step; }
-  void __prev__ () { v -= step; }
-  void __rewind__ (unsigned n) { v -= n * step; }
-  hb_range_iter_t __end__ () const { return hb_range_iter_t (end_, end_, step); }
-  bool operator != (const hb_range_iter_t& o) const
-  { return v != o.v; }
+  قسمتعریف T __item_t__;
+  ساکن constexpr منطقی is_random_access_iterator = سچ;
+  ساکن constexpr منطقی is_sorted_iterator = سچ;
+  __item_t__ __item__ () ثابت { واپس hb_ridentity (v); }
+  __item_t__ __item_at__ (غیرعلامتی j) ثابت { واپس v + j * قدم; }
+  منطقی __more__ () ثابت { واپس v != انتہا_4; }
+  غیرعلامتی __len__ () ثابت { واپس !قدم ? UINT_MAX : (انتہا_4 - v) / قدم; }
+  خالی __next__ () { v += قدم; }
+  خالی __forward__ (غیرعلامتی n) { v += n * قدم; }
+  خالی __prev__ () { v -= قدم; }
+  خالی __rewind__ (غیرعلامتی n) { v -= n * قدم; }
+  hb_range_iter_t __end__ () ثابت { واپس hb_range_iter_t (انتہا_4, انتہا_4, قدم); }
+  منطقی عامل != (ثابت hb_range_iter_t& o) ثابت
+  { واپس v != o.v; }
 
-  private:
-  static inline T end_for (T start, T end_, S step)
+  نجی:
+  ساکن اندرونی T انتہا_for (T آغاز, T انتہا_4, S قدم)
   {
-    if (!step)
-      return end_;
-    auto res = (end_ - start) % step;
-    if (!res)
-      return end_;
-    end_ += step - res;
-    return end_;
+    اگر (!قدم)
+      واپس انتہا_4;
+    خودکار res = (انتہا_4 - آغاز) % قدم;
+    اگر (!res)
+      واپس انتہا_4;
+    انتہا_4 += قدم - res;
+    واپس انتہا_4;
   }
 
-  private:
+  نجی:
   T v;
-  T end_;
-  S step;
+  T انتہا_4;
+  S قدم;
 };
-struct
+ساخت
 {
-  template <typename T = unsigned> hb_range_iter_t<T, unsigned>
-  operator () (T end = (unsigned) -1) const
-  { return hb_range_iter_t<T, unsigned> (0, end, 1u); }
+  سانچہ <قسم_نام T = غیرعلامتی> hb_range_iter_t<T, غیرعلامتی>
+  عامل () (T انتہا = (غیرعلامتی) -1) ثابت
+  { واپس hb_range_iter_t<T, غیرعلامتی> (0, انتہا, 1u); }
 
-  template <typename T, typename S = unsigned> hb_range_iter_t<T, S>
-  operator () (T start, T end, S step = 1u) const
-  { return hb_range_iter_t<T, S> (start, end, step); }
+  سانچہ <قسم_نام T, قسم_نام S = غیرعلامتی> hb_range_iter_t<T, S>
+  عامل () (T آغاز, T انتہا, S قدم = 1u) ثابت
+  { واپس hb_range_iter_t<T, S> (آغاز, انتہا, قدم); }
 }
 HB_FUNCOBJ (hb_range);
 
-template <typename T, typename S>
-struct hb_iota_iter_t :
+سانچہ <قسم_نام T, قسم_نام S>
+ساخت hb_iota_iter_t :
   hb_iter_with_fallback_t<hb_iota_iter_t<T, S>, T>
 {
-  hb_iota_iter_t (T start, S step) : v (start), step (step) {}
+  hb_iota_iter_t (T آغاز, S قدم) : v (آغاز), قدم (قدم) {}
 
-  private:
+  نجی:
 
-  template <typename S2 = S>
-  auto
-  inc (hb_type_identity<S2> s, hb_priority<1>)
-    -> hb_void_t<decltype (hb_invoke (std::forward<hb_type_identity<S2>> (s),
+  سانچہ <قسم_نام S2 = S>
+  خودکار
+  inc (hb_type_شناختی_عنصر<S2> s, hb_ترجیح<1>)
+    -> hb_void_t<decltype (hb_invoke (std::forward<hb_type_شناختی_عنصر<S2>> (s),
                                       hb_declval<T&> ()))>
-  { v = hb_invoke (std::forward<hb_type_identity<S2>> (s), v); }
+  { v = hb_invoke (std::forward<hb_type_شناختی_عنصر<S2>> (s), v); }
 
-  void
-  inc (S s, hb_priority<0>)
+  خالی
+  inc (S s, hb_ترجیح<0>)
   { v += s; }
 
-  public:
+  عوامی:
 
-  typedef T __item_t__;
-  static constexpr bool is_random_access_iterator = true;
-  static constexpr bool is_sorted_iterator = true;
-  __item_t__ __item__ () const { return hb_ridentity (v); }
-  bool __more__ () const { return true; }
-  unsigned __len__ () const { return UINT_MAX; }
-  void __next__ () { inc (step, hb_prioritize); }
-  void __prev__ () { v -= step; }
-  hb_iota_iter_t __end__ () const { return *this; }
-  bool operator != (const hb_iota_iter_t& o) const { return true; }
+  قسمتعریف T __item_t__;
+  ساکن constexpr منطقی is_random_access_iterator = سچ;
+  ساکن constexpr منطقی is_sorted_iterator = سچ;
+  __item_t__ __item__ () ثابت { واپس hb_ridentity (v); }
+  منطقی __more__ () ثابت { واپس سچ; }
+  غیرعلامتی __len__ () ثابت { واپس UINT_MAX; }
+  خالی __next__ () { inc (قدم, hb_prioritize); }
+  خالی __prev__ () { v -= قدم; }
+  hb_iota_iter_t __end__ () ثابت { واپس *یہ; }
+  منطقی عامل != (ثابت hb_iota_iter_t& o) ثابت { واپس سچ; }
 
-  private:
+  نجی:
   T v;
-  S step;
+  S قدم;
 };
-struct
+ساخت
 {
-  template <typename T = unsigned, typename S = unsigned> hb_iota_iter_t<T, S>
-  operator () (T start = 0u, S step = 1u) const
-  { return hb_iota_iter_t<T, S> (start, step); }
+  سانچہ <قسم_نام T = غیرعلامتی, قسم_نام S = غیرعلامتی> hb_iota_iter_t<T, S>
+  عامل () (T آغاز = 0u, S قدم = 1u) ثابت
+  { واپس hb_iota_iter_t<T, S> (آغاز, قدم); }
 }
 HB_FUNCOBJ (hb_iota);
 
-template <typename T>
-struct hb_repeat_iter_t :
+سانچہ <قسم_نام T>
+ساخت hb_repeat_iter_t :
   hb_iter_t<hb_repeat_iter_t<T>, T>
 {
   hb_repeat_iter_t (T value) : v (value) {}
 
-  typedef T __item_t__;
-  static constexpr bool is_random_access_iterator = true;
-  static constexpr bool is_sorted_iterator = true;
-  __item_t__ __item__ () const { return v; }
-  __item_t__ __item_at__ (unsigned j) const { return v; }
-  bool __more__ () const { return true; }
-  unsigned __len__ () const { return UINT_MAX; }
-  void __next__ () {}
-  void __forward__ (unsigned) {}
-  void __prev__ () {}
-  void __rewind__ (unsigned) {}
-  hb_repeat_iter_t __end__ () const { return *this; }
-  bool operator != (const hb_repeat_iter_t& o) const { return true; }
+  قسمتعریف T __item_t__;
+  ساکن constexpr منطقی is_random_access_iterator = سچ;
+  ساکن constexpr منطقی is_sorted_iterator = سچ;
+  __item_t__ __item__ () ثابت { واپس v; }
+  __item_t__ __item_at__ (غیرعلامتی j) ثابت { واپس v; }
+  منطقی __more__ () ثابت { واپس سچ; }
+  غیرعلامتی __len__ () ثابت { واپس UINT_MAX; }
+  خالی __next__ () {}
+  خالی __forward__ (غیرعلامتی) {}
+  خالی __prev__ () {}
+  خالی __rewind__ (غیرعلامتی) {}
+  hb_repeat_iter_t __end__ () ثابت { واپس *یہ; }
+  منطقی عامل != (ثابت hb_repeat_iter_t& o) ثابت { واپس سچ; }
 
-  private:
+  نجی:
   T v;
 };
-struct
+ساخت
 {
-  template <typename T> hb_repeat_iter_t<T>
-  operator () (T value) const
-  { return hb_repeat_iter_t<T> (value); }
+  سانچہ <قسم_نام T> hb_repeat_iter_t<T>
+  عامل () (T value) ثابت
+  { واپس hb_repeat_iter_t<T> (value); }
 }
 HB_FUNCOBJ (hb_repeat);
 
 /* hb_enumerate()/hb_take() */
 
-struct
+ساخت
 {
-  template <typename Iterable,
-	    typename Index = unsigned,
+  سانچہ <قسم_نام Iterable,
+	    قسم_نام اشاریہ = غیرعلامتی,
 	    hb_requires (hb_is_iterable (Iterable))>
-  auto operator () (Iterable&& it, Index start = 0u) const HB_AUTO_RETURN
-  ( hb_zip (hb_iota (start), it) )
+  خودکار عامل () (Iterable&& it, اشاریہ آغاز = 0u) ثابت HB_AUTO_RETURN
+  ( hb_zip (hb_iota (آغاز), it) )
 }
 HB_FUNCOBJ (hb_enumerate);
 
-struct
+ساخت
 { HB_PARTIALIZE(2);
-  template <typename Iterable,
+  سانچہ <قسم_نام Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  auto operator () (Iterable&& it, unsigned count) const HB_AUTO_RETURN
-  ( hb_zip (hb_range (count), it) | hb_map_retains_sorting (hb_second) )
+  خودکار عامل () (Iterable&& it, غیرعلامتی گنتی) ثابت HB_AUTO_RETURN
+  ( hb_zip (hb_range (گنتی), it) | hb_map_retains_ترتیب_کاری (hb_دوسرا) )
 
   /* Specialization arrays. */
 
-  template <typename Type> inline hb_array_t<Type>
-  operator () (hb_array_t<Type> array, unsigned count) const
-  { return array.sub_array (0, count); }
+  سانچہ <قسم_نام Type> اندرونی hb_array_t<Type>
+  عامل () (hb_array_t<Type> array, غیرعلامتی گنتی) ثابت
+  { واپس array.sub_array (0, گنتی); }
 
-  template <typename Type> inline hb_sorted_array_t<Type>
-  operator () (hb_sorted_array_t<Type> array, unsigned count) const
-  { return array.sub_array (0, count); }
+  سانچہ <قسم_نام Type> اندرونی hb_sorted_array_t<Type>
+  عامل () (hb_sorted_array_t<Type> array, غیرعلامتی گنتی) ثابت
+  { واپس array.sub_array (0, گنتی); }
 }
 HB_FUNCOBJ (hb_take);
 
-struct
+ساخت
 { HB_PARTIALIZE(2);
-  template <typename Iter,
+  سانچہ <قسم_نام Iter,
 	    hb_requires (hb_is_iterator (Iter))>
-  auto operator () (Iter it, unsigned count) const HB_AUTO_RETURN
+  خودکار عامل () (Iter it, غیرعلامتی گنتی) ثابت HB_AUTO_RETURN
   (
-    + hb_iota (it, hb_add (count))
-    | hb_map (hb_take (count))
-    | hb_take ((hb_len (it) + count - 1) / count)
+    + hb_iota (it, hb_جوڑو (گنتی))
+    | hb_map (hb_take (گنتی))
+    | hb_take ((hb_len (it) + گنتی - 1) / گنتی)
   )
 }
 HB_FUNCOBJ (hb_chop);
 
 /* hb_sink() */
 
-template <typename Sink>
-struct hb_sink_t
+سانچہ <قسم_نام Sink>
+ساخت hb_sink_t
 {
   hb_sink_t (Sink s) : s (s) {}
 
-  template <typename Iter,
+  سانچہ <قسم_نام Iter,
 	    hb_requires (hb_is_iterator (Iter))>
-  void operator () (Iter it)
+  خالی عامل () (Iter it)
   {
-    for (; it; ++it)
+    برائے (; it; ++it)
       s << *it;
   }
 
-  private:
+  نجی:
   Sink s;
 };
-struct
+ساخت
 {
-  template <typename Sink> hb_sink_t<Sink>
-  operator () (Sink&& s) const
-  { return hb_sink_t<Sink> (s); }
+  سانچہ <قسم_نام Sink> hb_sink_t<Sink>
+  عامل () (Sink&& s) ثابت
+  { واپس hb_sink_t<Sink> (s); }
 
-  template <typename Sink> hb_sink_t<Sink&>
-  operator () (Sink *s) const
-  { return hb_sink_t<Sink&> (*s); }
+  سانچہ <قسم_نام Sink> hb_sink_t<Sink&>
+  عامل () (Sink *s) ثابت
+  { واپس hb_sink_t<Sink&> (*s); }
 }
 HB_FUNCOBJ (hb_sink);
 
 /* hb-drain: hb_sink to void / blackhole / /dev/null. */
 
-struct
+ساخت
 {
-  template <typename Iter,
+  سانچہ <قسم_نام Iter,
 	    hb_requires (hb_is_iterator (Iter))>
-  void operator () (Iter it) const
+  خالی عامل () (Iter it) ثابت
   {
-    for (; it; ++it)
-      (void) *it;
+    برائے (; it; ++it)
+      (خالی) *it;
   }
 }
 HB_FUNCOBJ (hb_drain);
 
 /* hb_unzip(): unzip and sink to two sinks. */
 
-template <typename Sink1, typename Sink2>
-struct hb_unzip_t
+سانچہ <قسم_نام Sink1, قسم_نام Sink2>
+ساخت hb_unzip_t
 {
   hb_unzip_t (Sink1 s1, Sink2 s2) : s1 (s1), s2 (s2) {}
 
-  template <typename Iter,
+  سانچہ <قسم_نام Iter,
 	    hb_requires (hb_is_iterator (Iter))>
-  void operator () (Iter it)
+  خالی عامل () (Iter it)
   {
-    for (; it; ++it)
+    برائے (; it; ++it)
     {
-      const auto &v = *it;
-      s1 << v.first;
+      ثابت خودکار &v = *it;
+      s1 << v.پہلا;
       s2 << v.second;
     }
   }
 
-  private:
+  نجی:
   Sink1 s1;
   Sink2 s2;
 };
-struct
+ساخت
 {
-  template <typename Sink1, typename Sink2> hb_unzip_t<Sink1, Sink2>
-  operator () (Sink1&& s1, Sink2&& s2) const
-  { return hb_unzip_t<Sink1, Sink2> (s1, s2); }
+  سانچہ <قسم_نام Sink1, قسم_نام Sink2> hb_unzip_t<Sink1, Sink2>
+  عامل () (Sink1&& s1, Sink2&& s2) ثابت
+  { واپس hb_unzip_t<Sink1, Sink2> (s1, s2); }
 
-  template <typename Sink1, typename Sink2> hb_unzip_t<Sink1&, Sink2&>
-  operator () (Sink1 *s1, Sink2 *s2) const
-  { return hb_unzip_t<Sink1&, Sink2&> (*s1, *s2); }
+  سانچہ <قسم_نام Sink1, قسم_نام Sink2> hb_unzip_t<Sink1&, Sink2&>
+  عامل () (Sink1 *s1, Sink2 *s2) ثابت
+  { واپس hb_unzip_t<Sink1&, Sink2&> (*s1, *s2); }
 }
 HB_FUNCOBJ (hb_unzip);
 
 
 /* hb-all, hb-any, hb-none. */
 
-struct
+ساخت
 {
-  template <typename Iterable,
-	    typename Pred = decltype ((hb_identity)),
-	    typename Proj = decltype ((hb_identity)),
+  سانچہ <قسم_نام Iterable,
+	    قسم_نام Pred = decltype ((hb_شناختی_عنصر)),
+	    قسم_نام Proj = decltype ((hb_شناختی_عنصر)),
 	    hb_requires (hb_is_iterable (Iterable))>
-  bool operator () (Iterable&& c,
-		    Pred&& p = hb_identity,
-		    Proj&& f = hb_identity) const
+  منطقی عامل () (Iterable&& c,
+		    Pred&& p = hb_شناختی_عنصر,
+		    Proj&& f = hb_شناختی_عنصر) ثابت
   {
-    for (auto it = hb_iter (c); it; ++it)
-      if (!hb_match (p, hb_get (f, *it)))
-	return false;
-    return true;
+    برائے (خودکار it = hb_iter (c); it; ++it)
+      اگر (!hb_مطابقت (p, hb_get (f, *it)))
+	واپس جھوٹ;
+    واپس سچ;
   }
 }
 HB_FUNCOBJ (hb_all);
-struct
+ساخت
 {
-  template <typename Iterable,
-	    typename Pred = decltype ((hb_identity)),
-	    typename Proj = decltype ((hb_identity)),
+  سانچہ <قسم_نام Iterable,
+	    قسم_نام Pred = decltype ((hb_شناختی_عنصر)),
+	    قسم_نام Proj = decltype ((hb_شناختی_عنصر)),
 	    hb_requires (hb_is_iterable (Iterable))>
-  bool operator () (Iterable&& c,
-		    Pred&& p = hb_identity,
-		    Proj&& f = hb_identity) const
+  منطقی عامل () (Iterable&& c,
+		    Pred&& p = hb_شناختی_عنصر,
+		    Proj&& f = hb_شناختی_عنصر) ثابت
   {
-    for (auto it = hb_iter (c); it; ++it)
-      if (hb_match (p, hb_get (f, *it)))
-	return true;
-    return false;
+    برائے (خودکار it = hb_iter (c); it; ++it)
+      اگر (hb_مطابقت (p, hb_get (f, *it)))
+	واپس سچ;
+    واپس جھوٹ;
   }
 }
 HB_FUNCOBJ (hb_any);
-struct
+ساخت
 {
-  template <typename Iterable,
-	    typename Pred = decltype ((hb_identity)),
-	    typename Proj = decltype ((hb_identity)),
+  سانچہ <قسم_نام Iterable,
+	    قسم_نام Pred = decltype ((hb_شناختی_عنصر)),
+	    قسم_نام Proj = decltype ((hb_شناختی_عنصر)),
 	    hb_requires (hb_is_iterable (Iterable))>
-  bool operator () (Iterable&& c,
-		    Pred&& p = hb_identity,
-		    Proj&& f = hb_identity) const
+  منطقی عامل () (Iterable&& c,
+		    Pred&& p = hb_شناختی_عنصر,
+		    Proj&& f = hb_شناختی_عنصر) ثابت
   {
-    for (auto it = hb_iter (c); it; ++it)
-      if (hb_match (p, hb_get (f, *it)))
-	return false;
-    return true;
+    برائے (خودکار it = hb_iter (c); it; ++it)
+      اگر (hb_مطابقت (p, hb_get (f, *it)))
+	واپس جھوٹ;
+    واپس سچ;
   }
 }
 HB_FUNCOBJ (hb_none);
@@ -1033,21 +1033,21 @@ HB_FUNCOBJ (hb_none);
  * Algorithms operating on iterators.
  */
 
-template <typename C, typename V,
+سانچہ <قسم_نام C, قسم_نام V,
 	  hb_requires (hb_is_iterable (C))>
-inline void
-hb_fill (C&& c, const V &v)
+اندرونی خالی
+hb_fill (C&& c, ثابت V &v)
 {
-  for (auto i = hb_iter (c); i; i++)
+  برائے (خودکار i = hb_iter (c); i; i++)
     *i = v;
 }
 
-template <typename S, typename D>
-inline void
+سانچہ <قسم_نام S, قسم_نام D>
+اندرونی خالی
 hb_copy (S&& is, D&& id)
 {
   hb_iter (is) | hb_sink (id);
 }
 
 
-#endif /* HB_ITER_HH */
+#اگر_ختم /* HB_ITER_HH */

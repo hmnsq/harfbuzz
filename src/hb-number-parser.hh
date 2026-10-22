@@ -23,19 +23,19 @@
  *
  */
 
-#ifndef HB_NUMBER_PARSER_HH
-#define HB_NUMBER_PARSER_HH
+#اگر_غیر_تعریف_شدہ HB_نمبر_PARSER_HH
+#تعریف_کرو HB_نمبر_PARSER_HH
 
-#include "hb.hh"
+#شامل "hb.hh"
 
 // Handles 0..308; anything larger overflows double and returns HUGE_VAL.
-static inline double
-_pow10 (unsigned exponent)
+ساکن اندرونی دوہرا
+_pow10 (غیرعلامتی exponent)
 {
   // DBL_MAX is between 10^308 and 10^309
-  if (unlikely (exponent > 308)) return HUGE_VAL;
+  اگر (unlikely (exponent > 308)) واپس HUGE_VAL;
 
-  static const double _powers_of_10[] =
+  ساکن ثابت دوہرا powers_کا_10[] =
   {
     1.0e+256,
     1.0e+128,
@@ -47,43 +47,43 @@ _pow10 (unsigned exponent)
     100.,
     10.
   };
-  unsigned mask = 1 << (ARRAY_LENGTH (_powers_of_10) - 1);
-  double result = 1;
-  for (const double *power = _powers_of_10; mask; ++power, mask >>= 1)
-    if (exponent & mask) result *= *power;
-  return result;
+  غیرعلامتی نقاب = 1 << (ARRAY_لمبائی (powers_کا_10) - 1);
+  دوہرا نتیجہ = 1;
+  برائے (ثابت دوہرا *power = powers_کا_10; نقاب; ++power, نقاب >>= 1)
+    اگر (exponent & نقاب) نتیجہ *= *power;
+  واپس نتیجہ;
 }
 
-struct _hb_fraction
+ساخت _hb_fraction
 {
-  void add (int digit)
+  خالی جوڑو (صحیح digit)
   {
-    if (likely (fraction <= MAX_FRACT / 10))
+    اگر (likely (fraction <= MAX_FRACT / 10))
     {
       fraction = fraction * 10. + digit;
-      ++count;
+      ++گنتی;
     }
-    else if (drop < 0) drop = digit;
-    else if (digit != 0) sticky = true;
+    ورنہ اگر (drop < 0) drop = digit;
+    ورنہ اگر (digit != 0) sticky = سچ;
   }
 
-  double get_value () const
+  دوہرا get_قدر () ثابت
   {
-    double result = fraction;
+    دوہرا نتیجہ = fraction;
     // Round-to-nearest-even using the recorded tail
-    if (drop > 5 || (drop == 5 && ((((uint64_t) fraction) & 1) || sticky)))
-      result += 1;
-    return result / _pow10 (count);
+    اگر (drop > 5 || (drop == 5 && ((((uint64_t) fraction) & 1) || sticky)))
+      نتیجہ += 1;
+    واپس نتیجہ / _pow10 (گنتی);
   }
 
-  bool is_empty () const { return !count; }
+  منطقی is_empty () ثابت { واپس !گنتی; }
 
-private:
-  unsigned count = 0;
-  double fraction = 0;
-  int drop = -1; // drop is the first digit we couldn't accumulate
-  bool sticky = false; // sticky is set when any later digit was nonzero.
-  static constexpr uint64_t MAX_FRACT = 0xFFFFFFFFFFFFFull; /* 2^52-1 */
+نجی:
+  غیرعلامتی گنتی = 0;
+  دوہرا fraction = 0;
+  صحیح drop = -1; // drop is the first digit we couldn't accumulate
+  منطقی sticky = جھوٹ; // sticky is set when any later digit was nonzero.
+  ساکن constexpr uint64_t MAX_FRACT = 0xFFFFFFFFFFFFFull; /* 2^52-1 */
 };
 
 // A variant of strtod that also gets end of buffer in its second argument.
@@ -99,115 +99,115 @@ private:
 // On success, *end_ptr is set just past the longest well-formed prefix.
 // On no match, *end_ptr is left at the original p (matching strtod's
 // "no conversion performed" behavior, so the caller's pointer is unchanged).
-static inline double
-hb_strtod (const char *p, const char **end_ptr /* IN/OUT */)
+ساکن اندرونی دوہرا
+hb_strtod (ثابت حرف *p, ثابت حرف **end_ptr /* IN/OUT */)
 {
-  const char *p_original = p;
-  const char *pe = *end_ptr;
+  ثابت حرف *p_original = p;
+  ثابت حرف *pe = *end_ptr;
 
   // Skip leading whitespace
-  while (p < pe && ISSPACE (*p))
+  جب (p < pe && ISSPACE (*p))
     p++;
 
   // Sign
-  bool neg = false;
-  if (p < pe && (*p == '+' || *p == '-'))
+  منطقی neg = جھوٹ;
+  اگر (p < pe && (*p == '+' || *p == '-'))
   {
     neg = (*p == '-');
     p++;
   }
 
-  double value = 0;
+  دوہرا value = 0;
 
   // Integer and fraction
   {
-    const char *int_start = p;
-    while (p < pe && '0' <= *p && *p <= '9')
+    ثابت حرف *int_آغاز = p;
+    جب (p < pe && '0' <= *p && *p <= '9')
     {
       value = value * 10. + (*p - '0');
       p++;
     }
-    bool has_int = p > int_start;
+    منطقی has_int = p > int_آغاز;
 
     _hb_fraction frac;
-    if (p < pe && *p == '.')
+    اگر (p < pe && *p == '.')
     {
       p++;
-      while (p < pe && '0' <= *p && *p <= '9')
+      جب (p < pe && '0' <= *p && *p <= '9')
       {
-	frac.add (*p - '0');
+	frac.جوڑو (*p - '0');
 	p++;
       }
     }
 
-    if (!frac.is_empty ()) value += frac.get_value ();
-    else if (!has_int)
+    اگر (!frac.is_empty ()) value += frac.get_قدر ();
+    ورنہ اگر (!has_int)
     {
       // Nothing could be parsed
       *end_ptr = p_original;
-      return .0;
+      واپس .0;
     }
   }
 
   // Exponent
-  unsigned exp = 0;
-  bool exp_neg = false, exp_overflow = false;
-  if (p < pe && (*p == 'e' || *p == 'E'))
+  غیرعلامتی قوت_نما = 0;
+  منطقی exp_neg = جھوٹ, exp_حد_سے_تجاوز = جھوٹ;
+  اگر (p < pe && (*p == 'e' || *p == 'E'))
   {
-    constexpr unsigned MAX_EXP = 0x7FFu; /* 2^11-1 */
-    const char *before_exponent = p;
+    constexpr غیرعلامتی MAX_EXP = 0x7FFu; /* 2^11-1 */
+    ثابت حرف *before_exponent = p;
     p++;
-    if (p < pe && (*p == '+' || *p == '-'))
+    اگر (p < pe && (*p == '+' || *p == '-'))
     {
       exp_neg = (*p == '-');
       p++;
     }
 
-    if (p < pe && '0' <= *p && *p <= '9')
-      do
+    اگر (p < pe && '0' <= *p && *p <= '9')
+      کرو
       {
-	if (likely (exp * 10 + (*p - '0') <= MAX_EXP))
-	  exp = exp * 10 + (*p - '0');
-	else
-	  exp_overflow = true;
+	اگر (likely (قوت_نما * 10 + (*p - '0') <= MAX_EXP))
+	  قوت_نما = قوت_نما * 10 + (*p - '0');
+	ورنہ
+	  exp_حد_سے_تجاوز = سچ;
 	p++;
-      } while (p < pe && '0' <= *p && *p <= '9');
-    else
+      } جب (p < pe && '0' <= *p && *p <= '9');
+    ورنہ
       p = before_exponent; // rewind
   }
   *end_ptr = p;
 
-  if (neg) value *= -1.;
+  اگر (neg) value *= -1.;
 
-  if (unlikely (exp_overflow))
+  اگر (unlikely (exp_حد_سے_تجاوز))
   {
-    if (value == 0) return value;
-    if (exp_neg)    return neg ? -.0 : .0;
-    else            return neg ? -DBL_MAX : DBL_MAX;
+    اگر (value == 0) واپس value;
+    اگر (exp_neg)    واپس neg ? -.0 : .0;
+    ورنہ            واپس neg ? -DBL_MAX : DBL_MAX;
   }
 
-  if (exp)
+  اگر (قوت_نما)
   {
-    if (exp_neg)
+    اگر (exp_neg)
     {
       // 10^308 is the largest finite power of ten, so two reductions of 308 suffice.
-      if (unlikely (exp > 308))
+      اگر (unlikely (قوت_نما > 308))
       {
 	value /= 1e308;
-	exp -= 308;
-	if (unlikely (exp > 308))
+	قوت_نما -= 308;
+	اگر (unlikely (قوت_نما > 308))
 	{
 	  value /= 1e308;
-	  exp -= 308;
+	  قوت_نما -= 308;
 	}
       }
-      value /= _pow10 (exp);
+      value /= _pow10 (قوت_نما);
     }
-    else
-      value *= _pow10 (exp);
+    ورنہ
+      value *= _pow10 (قوت_نما);
   }
 
-  return value;
+  واپس value;
 }
 
-#endif /* HB_NUMBER_PARSER_HH */
+#اگر_ختم /* HB_NUMBER_PARSER_HH */

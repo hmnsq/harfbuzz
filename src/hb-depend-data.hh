@@ -24,35 +24,35 @@
  * Adobe Author(s): Skef Iterum
  */
 
-#ifndef HB_DEPEND_DATA_HH
-#define HB_DEPEND_DATA_HH
+#اگر_غیر_تعریف_شدہ HB_DEPEND_ڈیٹا_HH
+#تعریف_کرو HB_DEPEND_ڈیٹا_HH
 
 /* This file exists to break include cycles: hb-ot-layout-gsubgpos.hh needs
  * hb_depend_data_builder_t for hb_depend_context_t, but hb-depend.hh pulls
  * in table headers that include hb-ot-layout-gsubgpos.hh. */
 
-#include "hb.hh"
+#شامل "hb.hh"
 
-#include "hb-multimap.hh"
+#شامل "hb-multimap.hh"
 
 /* hb_subset_depend_edge_flags_t is defined in hb-depend.h (public header).
  * We redeclare it here under the same include-guard so internal code that
  * includes hb-depend-data.hh without going through hb-depend.h still gets
  * the type. The definitions must stay in sync. */
-#ifndef HB_SUBSET_DEPEND_EDGE_FLAGS_T_DEFINED
-#define HB_SUBSET_DEPEND_EDGE_FLAGS_T_DEFINED
-typedef enum {
-  HB_SUBSET_DEPEND_EDGE_FLAG_NONE                   = 0x00u,
-  HB_SUBSET_DEPEND_EDGE_FLAG_FROM_CONTEXT_POSITION  = 0x01u,
-  HB_SUBSET_DEPEND_EDGE_FLAG_FROM_NESTED_CONTEXT    = 0x02u,
-} hb_subset_depend_edge_flags_t;
-#endif
+#اگر_غیر_تعریف_شدہ HB_SUBSET_DEPEND_کنارہ_FLAGS_T_DEFINED
+#تعریف_کرو HB_SUBSET_DEPEND_کنارہ_FLAGS_T_DEFINED
+قسمتعریف شمار {
+  HB_SUBSET_DEPEND_کنارہ_FLAG_NONE                   = 0x00u,
+  HB_SUBSET_DEPEND_کنارہ_FLAG_FROM_CONTEXT_POSITION  = 0x01u,
+  HB_SUBSET_DEPEND_کنارہ_FLAG_FROM_NESTED_CONTEXT    = 0x02u,
+} hb_subset_depend_کنارہ_flags_t;
+#اگر_ختم
 /* Apply operator overloads now that hb.hh (and thus hb-algs.hh) is available. */
-HB_MARK_AS_FLAG_T (hb_subset_depend_edge_flags_t);
+HB_MARK_AS_FLAG_T (hb_subset_depend_کنارہ_flags_t);
 
 /* High bit of a context-set element marks it as an index into the sets array
  * rather than a raw glyph ID. */
-#define HB_DEPEND_CONTEXT_SET_FLAG 0x80000000u
+#تعریف_کرو HB_DEPEND_CONTEXT_سیٹ_FLAG 0x80000000u
 
 /**
  * hb_depend_edge_t:
@@ -68,56 +68,56 @@ HB_MARK_AS_FLAG_T (hb_subset_depend_edge_flags_t);
  * - context_set: Index into sets array for context requirements, else INVALID
  * - flags: Edge flags (FROM_CONTEXT_POSITION, FROM_NESTED_CONTEXT)
  */
-struct hb_depend_edge_t {
-  hb_depend_edge_t() = delete;
-  hb_depend_edge_t(hb_tag_t table_tag,
+ساخت hb_depend_کنارہ_t {
+  hb_depend_کنارہ_t() = حذف;
+  hb_depend_کنارہ_t(hb_لیبل_t جدول_لیبل_2,
                    hb_codepoint_t dependent,
-                   hb_tag_t layout_tag,
-                   hb_codepoint_t ligature_set,
-                   hb_codepoint_t context_set,
-                   hb_subset_depend_edge_flags_t flags = HB_SUBSET_DEPEND_EDGE_FLAG_NONE) : table_tag(table_tag),
-     dependent(dependent), layout_tag(layout_tag),
-     ligature_set(ligature_set), context_set(context_set),
+                   hb_لیبل_t layout_لیبل,
+                   hb_codepoint_t ligature_سیٹ_2,
+                   hb_codepoint_t context_سیٹ,
+                   hb_subset_depend_کنارہ_flags_t flags = HB_SUBSET_DEPEND_کنارہ_FLAG_NONE) : جدول_لیبل_2(جدول_لیبل_2),
+     dependent(dependent), layout_لیبل(layout_لیبل),
+     ligature_سیٹ_2(ligature_سیٹ_2), context_سیٹ(context_سیٹ),
      flags(flags)
      {}
 
-  bool operator == (const hb_depend_edge_t &o) const
+  منطقی عامل == (ثابت hb_depend_کنارہ_t &o) ثابت
   {
     /* NOTE: flags intentionally excluded from equality comparison.
      * Flags are metadata about how an edge was discovered (e.g.,
      * FROM_CONTEXT_POSITION, FROM_NESTED_CONTEXT), not part of the
      * edge's identity. Multiple discoveries of the same edge via
      * different paths should be treated as duplicates. */
-    return table_tag == o.table_tag &&
+    واپس جدول_لیبل_2 == o.جدول_لیبل_2 &&
            dependent == o.dependent &&
-           layout_tag == o.layout_tag &&
-           ligature_set == o.ligature_set &&
-           context_set == o.context_set;
+           layout_لیبل == o.layout_لیبل &&
+           ligature_سیٹ_2 == o.ligature_سیٹ_2 &&
+           context_سیٹ == o.context_سیٹ;
   }
 
-  uint32_t hash () const
+  uint32_t hash () ثابت
   {
     /* FNV-1a hash of all identity fields (excludes flags) */
     uint32_t current = 0x84222325;  /* FNV-1a offset basis */
-    current = current ^ hb_hash (table_tag);
+    current = current ^ hb_hash (جدول_لیبل_2);
     current = current * 16777619;   /* FNV-1a prime */
     current = current ^ hb_hash (dependent);
     current = current * 16777619;
-    current = current ^ hb_hash (layout_tag);
+    current = current ^ hb_hash (layout_لیبل);
     current = current * 16777619;
-    current = current ^ hb_hash (ligature_set);
+    current = current ^ hb_hash (ligature_سیٹ_2);
     current = current * 16777619;
-    current = current ^ hb_hash (context_set);
+    current = current ^ hb_hash (context_سیٹ);
     current = current * 16777619;
-    return current;
+    واپس current;
   }
 
-  hb_tag_t table_tag;
+  hb_لیبل_t جدول_لیبل_2;
   hb_codepoint_t dependent;
-  hb_tag_t layout_tag;
-  hb_codepoint_t ligature_set;
-  hb_codepoint_t context_set;
-  hb_subset_depend_edge_flags_t flags;
+  hb_لیبل_t layout_لیبل;
+  hb_codepoint_t ligature_سیٹ_2;
+  hb_codepoint_t context_سیٹ;
+  hb_subset_depend_کنارہ_flags_t flags;
 };
 
 /**
@@ -126,35 +126,35 @@ struct hb_depend_edge_t {
  * Key structure for edge deduplication. Combines source glyph with edge record.
  * Uses the record's equality and hash operators for comparison.
  */
-struct hb_depend_edge_key_t {
-  hb_codepoint_t source;
-  hb_depend_edge_t record;
+ساخت hb_depend_کنارہ_کلید_t {
+  hb_codepoint_t ماخذ;
+  hb_depend_کنارہ_t ریکارڈ;
 
-  hb_depend_edge_key_t () : source (0), record (0, 0, 0, HB_CODEPOINT_INVALID, HB_CODEPOINT_INVALID, HB_SUBSET_DEPEND_EDGE_FLAG_NONE) {}
+  hb_depend_کنارہ_کلید_t () : ماخذ (0), ریکارڈ (0, 0, 0, HB_CODEPOINT_INVALID, HB_CODEPOINT_INVALID, HB_SUBSET_DEPEND_کنارہ_FLAG_NONE) {}
 
-  hb_depend_edge_key_t (hb_codepoint_t source,
-              hb_tag_t table_tag,
-              hb_tag_t layout_tag,
+  hb_depend_کنارہ_کلید_t (hb_codepoint_t ماخذ,
+              hb_لیبل_t جدول_لیبل_2,
+              hb_لیبل_t layout_لیبل,
               hb_codepoint_t dependent,
-              hb_codepoint_t ligature_set,
-              hb_codepoint_t context_set)
-    : source (source),
-      record (table_tag, dependent, layout_tag, ligature_set, context_set, HB_SUBSET_DEPEND_EDGE_FLAG_NONE) {}
+              hb_codepoint_t ligature_سیٹ_2,
+              hb_codepoint_t context_سیٹ)
+    : ماخذ (ماخذ),
+      ریکارڈ (جدول_لیبل_2, dependent, layout_لیبل, ligature_سیٹ_2, context_سیٹ, HB_SUBSET_DEPEND_کنارہ_FLAG_NONE) {}
 
-  bool operator == (const hb_depend_edge_key_t &o) const
+  منطقی عامل == (ثابت hb_depend_کنارہ_کلید_t &o) ثابت
   {
-    return source == o.source && record == o.record;
+    واپس ماخذ == o.ماخذ && ریکارڈ == o.ریکارڈ;
   }
 
-  uint32_t hash () const
+  uint32_t hash () ثابت
   {
     /* Combine source hash with record hash */
     uint32_t current = 0x84222325;  /* FNV-1a offset basis */
-    current = current ^ hb_hash (source);
+    current = current ^ hb_hash (ماخذ);
     current = current * 16777619;   /* FNV-1a prime */
-    current = current ^ record.hash ();
+    current = current ^ ریکارڈ.hash ();
     current = current * 16777619;
-    return current;
+    واپس current;
   }
 };
 
@@ -163,8 +163,8 @@ struct hb_depend_edge_key_t {
  *
  * Internal structure holding all dependency edges for a single glyph.
  */
-struct hb_depend_glyph_record_t {
-  hb_vector_t<hb_depend_edge_t> dependencies;
+ساخت hb_depend_glyph_ریکارڈ_t {
+  hb_سمتیہ_t<hb_depend_کنارہ_t> dependencies;
 };
 
 /**
@@ -174,23 +174,23 @@ struct hb_depend_glyph_record_t {
  * Used during GSUB dependency analysis to record the feature tags that
  * activate each lookup.
  */
-struct hb_depend_lookup_revmap_t
+ساخت hb_depend_lookup_revmap_t
 {
-  hb_depend_lookup_revmap_t () = default;
-  explicit hb_depend_lookup_revmap_t (bool full) : full (full) {}
-  hb_depend_lookup_revmap_t (const hb_depend_lookup_revmap_t &o) : full(o.full),
+  hb_depend_lookup_revmap_t () = طےشدہ;
+  صریح hb_depend_lookup_revmap_t (منطقی بھرا) : بھرا (بھرا) {}
+  hb_depend_lookup_revmap_t (ثابت hb_depend_lookup_revmap_t &o) : بھرا(o.بھرا),
                                                                      fv_indexes(o.fv_indexes) {}
-  hb_depend_lookup_revmap_t (hb_depend_lookup_revmap_t &&o) : full(o.full),
+  hb_depend_lookup_revmap_t (hb_depend_lookup_revmap_t &&o) : بھرا(o.بھرا),
                                                                 fv_indexes(std::move(o.fv_indexes)) {}
-  hb_depend_lookup_revmap_t& operator = (const hb_depend_lookup_revmap_t &o)
+  hb_depend_lookup_revmap_t& عامل = (ثابت hb_depend_lookup_revmap_t &o)
   {
-    full = o.full;
+    بھرا = o.بھرا;
     fv_indexes = o.fv_indexes;
-    return *this;
+    واپس *یہ;
   }
 
-  bool full = true;
-  hb_set_t fv_indexes;
+  منطقی بھرا = سچ;
+  hb_سیٹ_t fv_indexes;
 };
 
 /**
@@ -203,63 +203,63 @@ struct hb_depend_lookup_revmap_t
  *
  * Constructed via hb_depend_data_builder_t; immutable thereafter.
  */
-struct hb_depend_data_t
+ساخت hb_depend_ڈیٹا_t
 {
   /* Set storage: vector of heap-allocated sets (both ligature and context sets).
    * Using unique_ptr follows HarfBuzz pattern and provides stable pointers. */
-  hb_vector_t<hb::unique_ptr<hb_set_t>> sets;
+  hb_سمتیہ_t<hb::unique_ptr<hb_سیٹ_t>> sets;
 
-  hb_vector_t<hb_depend_glyph_record_t> glyph_dependencies;
+  hb_سمتیہ_t<hb_depend_glyph_ریکارڈ_t> glyph_dependencies;
 
-  const hb_set_t *get_set_from_index (hb_codepoint_t index)
+  ثابت hb_سیٹ_t *get_سیٹ_from_اشاریہ (hb_codepoint_t اشاریہ_2)
   {
-    if (index < sets.length)
-      return sets[index].get ();
-    return nullptr;
+    اگر (اشاریہ_2 < sets.لمبائی)
+      واپس sets[اشاریہ_2].get ();
+    واپس خالی_اشاریہ;
   }
 
-  unsigned int get_glyph_entry_count (hb_codepoint_t gid) const
+  غیرعلامتی صحیح get_glyph_اندراج_گنتی (hb_codepoint_t gid) ثابت
   {
-    if (gid < glyph_dependencies.length)
-      return glyph_dependencies[gid].dependencies.length;
-    return 0;
+    اگر (gid < glyph_dependencies.لمبائی)
+      واپس glyph_dependencies[gid].dependencies.لمبائی;
+    واپس 0;
   }
 
-  bool get_glyph_entry (hb_codepoint_t gid, unsigned int index,
-                        hb_tag_t *table_tag, hb_codepoint_t *dependent,
-                        hb_tag_t *layout_tag, hb_codepoint_t *ligature_set,
-                        hb_codepoint_t *context_set, uint8_t *flags)
+  منطقی get_glyph_اندراج (hb_codepoint_t gid, غیرعلامتی صحیح اشاریہ_2,
+                        hb_لیبل_t *جدول_لیبل_2, hb_codepoint_t *dependent,
+                        hb_لیبل_t *layout_لیبل, hb_codepoint_t *ligature_سیٹ_2,
+                        hb_codepoint_t *context_سیٹ, uint8_t *flags)
   {
-    if (gid < glyph_dependencies.length &&
-        index < glyph_dependencies[gid].dependencies.length) {
-      auto &d = glyph_dependencies[gid].dependencies[index];
-      *table_tag = d.table_tag;
+    اگر (gid < glyph_dependencies.لمبائی &&
+        اشاریہ_2 < glyph_dependencies[gid].dependencies.لمبائی) {
+      خودکار &d = glyph_dependencies[gid].dependencies[اشاریہ_2];
+      *جدول_لیبل_2 = d.جدول_لیبل_2;
       *dependent = d.dependent;
-      *layout_tag = d.layout_tag;
-      *ligature_set = d.ligature_set;
-      *context_set = d.context_set;
-      if (flags) *flags = d.flags;
-      return true;
+      *layout_لیبل = d.layout_لیبل;
+      *ligature_سیٹ_2 = d.ligature_سیٹ_2;
+      *context_سیٹ = d.context_سیٹ;
+      اگر (flags) *flags = d.flags;
+      واپس سچ;
     }
-    return false;
+    واپس جھوٹ;
   }
 
-  void print ()
+  خالی print ()
   {
-    for (unsigned i = 0; i < glyph_dependencies.length; i++) {
-      auto &gd = glyph_dependencies[i];
-      if (!gd.dependencies.length)
-        continue;
-      printf ("GID %u:\n", i);
-      for (auto &d : gd.dependencies) {
-        if (d.table_tag == HB_OT_TAG_GSUB) {
-          printf ("  layout %c%c%c%c -> %u", HB_UNTAG(d.layout_tag), d.dependent);
-          if (d.ligature_set != HB_CODEPOINT_INVALID)
-            printf ("  (ligature)");
-        } else {
-          printf ("  %c%c%c%c -> %u", HB_UNTAG(d.table_tag), d.dependent);
+    برائے (غیرعلامتی i = 0; i < glyph_dependencies.لمبائی; i++) {
+      خودکار &gd = glyph_dependencies[i];
+      اگر (!gd.dependencies.لمبائی)
+        جاری;
+      لکھو ("GID %u:\n", i);
+      برائے (خودکار &d : gd.dependencies) {
+        اگر (d.جدول_لیبل_2 == HB_OT_لیبل_GSUB) {
+          لکھو ("  layout %c%c%c%c -> %u", HB_UNTAG(d.layout_لیبل), d.dependent);
+          اگر (d.ligature_سیٹ_2 != HB_CODEPOINT_INVALID)
+            لکھو ("  (ligature)");
+        } ورنہ {
+          لکھو ("  %c%c%c%c -> %u", HB_UNTAG(d.جدول_لیبل_2), d.dependent);
         }
-        printf ("\n");
+        لکھو ("\n");
       }
     }
   }
@@ -281,83 +281,83 @@ struct hb_depend_data_t
  * - current_context_set_index: Context requirements for current rule
  * - current_edge_flags: Flags to apply to edges being recorded
  */
-struct hb_depend_data_builder_t
+ساخت hb_depend_ڈیٹا_builder_t
 {
-  hb_depend_data_builder_t (hb_depend_data_t &data_)
-    : current_context_set_index (HB_CODEPOINT_INVALID),
-      current_edge_flags (HB_SUBSET_DEPEND_EDGE_FLAG_NONE),
-      data (data_) {}
+  hb_depend_ڈیٹا_builder_t (hb_depend_ڈیٹا_t &ڈیٹا_2)
+    : current_context_سیٹ_اشاریہ (HB_CODEPOINT_INVALID),
+      current_کنارہ_flags (HB_SUBSET_DEPEND_کنارہ_FLAG_NONE),
+      ڈیٹا (ڈیٹا_2) {}
 
   /* Forward to data for use during construction (e.g. from hb_depend_context_t) */
-  const hb_set_t *get_set_from_index (hb_codepoint_t index)
-  { return data.get_set_from_index (index); }
+  ثابت hb_سیٹ_t *get_سیٹ_from_اشاریہ (hb_codepoint_t اشاریہ_2)
+  { واپس ڈیٹا.get_سیٹ_from_اشاریہ (اشاریہ_2); }
 
   /* Discard an unused set that was allocated but had no edges added. */
-  void discard_set (hb_codepoint_t set_index)
+  خالی discard_سیٹ (hb_codepoint_t سیٹ_اشاریہ)
   {
-    if (set_index >= data.sets.length)
+    اگر (سیٹ_اشاریہ >= ڈیٹا.sets.لمبائی)
     {
-      DEBUG_MSG (SUBSET, nullptr, "Attempting to discard invalid set %u (max is %u)",
-                 set_index, data.sets.length - 1);
-      return;
+      DEBUG_پیغام (SUBSET, خالی_اشاریہ, "Attempting to discard invalid set %u (max is %u)",
+                 سیٹ_اشاریہ, ڈیٹا.sets.لمبائی - 1);
+      واپس;
     }
-    set_to_index.del (data.sets[set_index].get ());
-    data.sets[set_index]->clear ();
-    check_success (free_set_list.push_or_fail (set_index));
+    سیٹ_مقصد_اشاریہ.del (ڈیٹا.sets[سیٹ_اشاریہ].get ());
+    ڈیٹا.sets[سیٹ_اشاریہ]->clear ();
+    check_success (free_سیٹ_list.ڈالو_or_fail (سیٹ_اشاریہ));
   }
 
-  hb_codepoint_t new_set (const hb_set_t &set)
+  hb_codepoint_t new_سیٹ (ثابت hb_سیٹ_t &سیٹ)
   {
-    hb_codepoint_t set_index;
+    hb_codepoint_t سیٹ_اشاریہ;
 
-    if (free_set_list.length > 0)
+    اگر (free_سیٹ_list.لمبائی > 0)
     {
-      set_index = free_set_list.pop ();
-      data.sets[set_index]->set (set);
-      if (unlikely (data.sets[set_index]->in_error ()))
-	return fail_invalid ();
+      سیٹ_اشاریہ = free_سیٹ_list.نکالو ();
+      ڈیٹا.sets[سیٹ_اشاریہ]->سیٹ (سیٹ);
+      اگر (unlikely (ڈیٹا.sets[سیٹ_اشاریہ]->اندر_error ()))
+	واپس fail_invalid ();
     }
-    else
+    ورنہ
     {
-      set_index = data.sets.length;
-      hb_set_t *new_set = hb_set_create ();
-      if (unlikely (!new_set))
-	return fail_invalid ();
-      new_set->set (set);
-      if (unlikely (new_set->in_error ()))
+      سیٹ_اشاریہ = ڈیٹا.sets.لمبائی;
+      hb_سیٹ_t *new_سیٹ = hb_سیٹ_create ();
+      اگر (unlikely (!new_سیٹ))
+	واپس fail_invalid ();
+      new_سیٹ->سیٹ (سیٹ);
+      اگر (unlikely (new_سیٹ->اندر_error ()))
       {
-	hb_set_destroy (new_set);
-	return fail_invalid ();
+	hb_سیٹ_destroy (new_سیٹ);
+	واپس fail_invalid ();
       }
-      if (unlikely (!data.sets.push_or_fail (hb::unique_ptr<hb_set_t> {new_set})))
-	return fail_invalid ();
+      اگر (unlikely (!ڈیٹا.sets.ڈالو_or_fail (hb::unique_ptr<hb_سیٹ_t> {new_سیٹ})))
+	واپس fail_invalid ();
     }
 
-    return set_index;
+    واپس سیٹ_اشاریہ;
   }
 
   /* Find an existing dependency set with the same contents, or create one. */
-  hb_codepoint_t find_or_create_set (const hb_set_t &set, bool *created = nullptr)
+  hb_codepoint_t ڈھونڈو_or_create_سیٹ (ثابت hb_سیٹ_t &سیٹ, منطقی *created = خالی_اشاریہ)
   {
-    hb_codepoint_t *existing_idx = nullptr;
-    if (set_to_index.has (&set, &existing_idx))
+    hb_codepoint_t *existing_idx = خالی_اشاریہ;
+    اگر (سیٹ_مقصد_اشاریہ.has (&سیٹ, &existing_idx))
     {
-      if (created) *created = false;
-      return *existing_idx;
+      اگر (created) *created = جھوٹ;
+      واپس *existing_idx;
     }
 
-    hb_codepoint_t new_idx = new_set (set);
-    if (unlikely (new_idx == HB_CODEPOINT_INVALID))
-      return HB_CODEPOINT_INVALID;
+    hb_codepoint_t new_idx = new_سیٹ (سیٹ);
+    اگر (unlikely (new_idx == HB_CODEPOINT_INVALID))
+      واپس HB_CODEPOINT_INVALID;
 
-    if (unlikely (!set_to_index.set (data.sets[new_idx].get (), new_idx)))
-      return fail_invalid ();
-    if (created) *created = true;
-    return new_idx;
+    اگر (unlikely (!سیٹ_مقصد_اشاریہ.سیٹ (ڈیٹا.sets[new_idx].get (), new_idx)))
+      واپس fail_invalid ();
+    اگر (created) *created = سچ;
+    واپس new_idx;
   }
 
-  hb_codepoint_t find_or_create_context_set (const hb_set_t &set)
-  { return find_or_create_set (set); }
+  hb_codepoint_t ڈھونڈو_or_create_context_سیٹ (ثابت hb_سیٹ_t &سیٹ)
+  { واپس ڈھونڈو_or_create_سیٹ (سیٹ); }
 
   /* Build a context set from context information.
    * Encodes backtrack and lookahead requirements as a flattened set.
@@ -368,301 +368,301 @@ struct hb_depend_data_builder_t
    * 2. Second pass: create disjunction sets, subtracting direct requirements
    * 3. Combine: add direct requirements and filtered disjunction references
    */
-  hb_codepoint_t build_context_set (const hb_vector_t<hb_set_t> *backtrack_sets,
-                                     const hb_vector_t<hb_set_t> *lookahead_sets)
+  hb_codepoint_t build_context_سیٹ (ثابت hb_سمتیہ_t<hb_سیٹ_t> *backtrack_sets,
+                                     ثابت hb_سمتیہ_t<hb_سیٹ_t> *lookahead_sets)
   {
-    if ((!backtrack_sets || backtrack_sets->length == 0) &&
-        (!lookahead_sets || lookahead_sets->length == 0))
-      return HB_CODEPOINT_INVALID;
+    اگر ((!backtrack_sets || backtrack_sets->لمبائی == 0) &&
+        (!lookahead_sets || lookahead_sets->لمبائی == 0))
+      واپس HB_CODEPOINT_INVALID;
 
     /* First pass: collect all direct (single-glyph) requirements */
-    hb_set_t direct_requirements;
+    hb_سیٹ_t براہ_راست_requirements;
 
-    if (backtrack_sets)
+    اگر (backtrack_sets)
     {
-      for (const auto &back_set : *backtrack_sets)
+      برائے (ثابت خودکار &عقب_سیٹ : *backtrack_sets)
       {
-        if (back_set.get_population () == 1)
-          direct_requirements.add (back_set.get_min ());
+        اگر (عقب_سیٹ.get_population () == 1)
+          براہ_راست_requirements.جوڑو (عقب_سیٹ.get_min ());
       }
     }
 
-    if (lookahead_sets)
+    اگر (lookahead_sets)
     {
-      for (const auto &look_set : *lookahead_sets)
+      برائے (ثابت خودکار &look_سیٹ : *lookahead_sets)
       {
-        if (look_set.get_population () == 1)
-          direct_requirements.add (look_set.get_min ());
+        اگر (look_سیٹ.get_population () == 1)
+          براہ_راست_requirements.جوڑو (look_سیٹ.get_min ());
       }
     }
 
     /* Second pass: create disjunction sets, filtering out direct requirements */
-    hb_set_t context_elements;
+    hb_سیٹ_t context_elements;
 
-    if (backtrack_sets)
+    اگر (backtrack_sets)
     {
-      for (const auto &back_set : *backtrack_sets)
+      برائے (ثابت خودکار &عقب_سیٹ : *backtrack_sets)
       {
-        if (back_set.get_population () > 1)
+        اگر (عقب_سیٹ.get_population () > 1)
         {
-          hb_set_t filtered_set;
-          filtered_set.set (back_set);
-          filtered_set.subtract (direct_requirements);
-          if (unlikely (filtered_set.in_error ()))
-            return fail_invalid ();
+          hb_سیٹ_t filtered_سیٹ;
+          filtered_سیٹ.سیٹ (عقب_سیٹ);
+          filtered_سیٹ.تفریق (براہ_راست_requirements);
+          اگر (unlikely (filtered_سیٹ.اندر_error ()))
+            واپس fail_invalid ();
 
-          if (!filtered_set.is_empty ())
+          اگر (!filtered_سیٹ.is_empty ())
           {
-            hb_codepoint_t set_idx = find_or_create_context_set (filtered_set);
-            if (unlikely (set_idx == HB_CODEPOINT_INVALID))
-              return HB_CODEPOINT_INVALID;
-            context_elements.add (HB_DEPEND_CONTEXT_SET_FLAG | set_idx);
+            hb_codepoint_t سیٹ_idx = ڈھونڈو_or_create_context_سیٹ (filtered_سیٹ);
+            اگر (unlikely (سیٹ_idx == HB_CODEPOINT_INVALID))
+              واپس HB_CODEPOINT_INVALID;
+            context_elements.جوڑو (HB_DEPEND_CONTEXT_سیٹ_FLAG | سیٹ_idx);
           }
         }
       }
     }
 
-    if (lookahead_sets)
+    اگر (lookahead_sets)
     {
-      for (const auto &look_set : *lookahead_sets)
+      برائے (ثابت خودکار &look_سیٹ : *lookahead_sets)
       {
-        if (look_set.get_population () > 1)
+        اگر (look_سیٹ.get_population () > 1)
         {
-          hb_set_t filtered_set;
-          filtered_set.set (look_set);
-          filtered_set.subtract (direct_requirements);
-          if (unlikely (filtered_set.in_error ()))
-            return fail_invalid ();
+          hb_سیٹ_t filtered_سیٹ;
+          filtered_سیٹ.سیٹ (look_سیٹ);
+          filtered_سیٹ.تفریق (براہ_راست_requirements);
+          اگر (unlikely (filtered_سیٹ.اندر_error ()))
+            واپس fail_invalid ();
 
-          if (!filtered_set.is_empty ())
+          اگر (!filtered_سیٹ.is_empty ())
           {
-            hb_codepoint_t set_idx = find_or_create_context_set (filtered_set);
-            if (unlikely (set_idx == HB_CODEPOINT_INVALID))
-              return HB_CODEPOINT_INVALID;
-            context_elements.add (HB_DEPEND_CONTEXT_SET_FLAG | set_idx);
+            hb_codepoint_t سیٹ_idx = ڈھونڈو_or_create_context_سیٹ (filtered_سیٹ);
+            اگر (unlikely (سیٹ_idx == HB_CODEPOINT_INVALID))
+              واپس HB_CODEPOINT_INVALID;
+            context_elements.جوڑو (HB_DEPEND_CONTEXT_سیٹ_FLAG | سیٹ_idx);
           }
         }
       }
     }
 
-    context_elements.union_ (direct_requirements);
-    if (unlikely (direct_requirements.in_error () ||
-                  context_elements.in_error ()))
-      return fail_invalid ();
+    context_elements.union_ (براہ_راست_requirements);
+    اگر (unlikely (براہ_راست_requirements.اندر_error () ||
+                  context_elements.اندر_error ()))
+      واپس fail_invalid ();
 
-    if (context_elements.is_empty ())
-      return HB_CODEPOINT_INVALID;
+    اگر (context_elements.is_empty ())
+      واپس HB_CODEPOINT_INVALID;
 
-    return find_or_create_context_set (context_elements);
+    واپس ڈھونڈو_or_create_context_سیٹ (context_elements);
   }
 
-  static uint64_t encode_edge_ref (hb_codepoint_t source, unsigned int index)
-  { return (uint64_t (source) + 1) << 32 | index; }
+  ساکن uint64_t encode_کنارہ_ref (hb_codepoint_t ماخذ, غیرعلامتی صحیح اشاریہ_2)
+  { واپس (uint64_t (ماخذ) + 1) << 32 | اشاریہ_2; }
 
-  static void decode_edge_ref (uint64_t ref,
-			       hb_codepoint_t *source,
-			       unsigned int *index)
+  ساکن خالی decode_کنارہ_ref (uint64_t ref,
+			       hb_codepoint_t *ماخذ,
+			       غیرعلامتی صحیح *اشاریہ_2)
   {
-    *source = (ref >> 32) - 1;
-    *index = ref;
+    *ماخذ = (ref >> 32) - 1;
+    *اشاریہ_2 = ref;
   }
 
-  uint32_t edge_hash (hb_codepoint_t source, const hb_depend_edge_t &record) const
+  uint32_t کنارہ_hash (hb_codepoint_t ماخذ, ثابت hb_depend_کنارہ_t &ریکارڈ) ثابت
   {
-    hb_depend_edge_key_t key (source, record.table_tag, record.layout_tag,
-			      record.dependent, record.ligature_set,
-			      record.context_set);
-    return key.hash ();
+    hb_depend_کنارہ_کلید_t key (ماخذ, ریکارڈ.جدول_لیبل_2, ریکارڈ.layout_لیبل,
+			      ریکارڈ.dependent, ریکارڈ.ligature_سیٹ_2,
+			      ریکارڈ.context_سیٹ);
+    واپس key.hash ();
   }
 
-  bool resize_edge_slots ()
+  منطقی resize_کنارہ_slots ()
   {
-    unsigned int new_size = edge_slots.length ? edge_slots.length * 2 : 8;
-    if (unlikely (new_size < edge_slots.length))
-      return fail ();
+    غیرعلامتی صحیح new_سائز = کنارہ_slots.لمبائی ? کنارہ_slots.لمبائی * 2 : 8;
+    اگر (unlikely (new_سائز < کنارہ_slots.لمبائی))
+      واپس fail ();
 
-    hb_vector_t<uint64_t> new_slots;
-    if (unlikely (!new_slots.resize_exact (new_size)))
-      return fail ();
+    hb_سمتیہ_t<uint64_t> new_slots;
+    اگر (unlikely (!new_slots.resize_exact (new_سائز)))
+      واپس fail ();
 
-    for (uint64_t ref : edge_slots)
+    برائے (uint64_t ref : کنارہ_slots)
     {
-      if (!ref)
-	continue;
+      اگر (!ref)
+	جاری;
 
-      hb_codepoint_t source;
-      unsigned int index;
-      decode_edge_ref (ref, &source, &index);
-      const hb_depend_edge_t &record = data.glyph_dependencies[source].dependencies[index];
-      unsigned int slot = edge_hash (source, record) & (new_size - 1);
-      unsigned int step = 0;
-      while (new_slots[slot])
-	slot = (slot + ++step) & (new_size - 1);
-      new_slots[slot] = ref;
+      hb_codepoint_t ماخذ;
+      غیرعلامتی صحیح اشاریہ_2;
+      decode_کنارہ_ref (ref, &ماخذ, &اشاریہ_2);
+      ثابت hb_depend_کنارہ_t &ریکارڈ = ڈیٹا.glyph_dependencies[ماخذ].dependencies[اشاریہ_2];
+      غیرعلامتی صحیح خانہ = کنارہ_hash (ماخذ, ریکارڈ) & (new_سائز - 1);
+      غیرعلامتی صحیح قدم = 0;
+      جب (new_slots[خانہ])
+	خانہ = (خانہ + ++قدم) & (new_سائز - 1);
+      new_slots[خانہ] = ref;
     }
 
-    edge_slots = std::move (new_slots);
-    return true;
+    کنارہ_slots = std::move (new_slots);
+    واپس سچ;
   }
 
-  bool add_edge (hb_codepoint_t source, const hb_depend_edge_t &record)
+  منطقی جوڑو_کنارہ (hb_codepoint_t ماخذ, ثابت hb_depend_کنارہ_t &ریکارڈ)
   {
     /* Store only a source and per-glyph edge index in each bucket.  The edge
      * itself already lives in the output vector, where it can be compared to
      * resolve hash collisions exactly.  Adding one to the encoded source
      * reserves zero as the empty-bucket value. */
-    if (unlikely (!edge_slots.length ||
-		  uint64_t (edge_population) * 3 / 2 >= edge_slots.length - 1))
-      if (unlikely (!resize_edge_slots ()))
-	return false;
+    اگر (unlikely (!کنارہ_slots.لمبائی ||
+		  uint64_t (کنارہ_population) * 3 / 2 >= کنارہ_slots.لمبائی - 1))
+      اگر (unlikely (!resize_کنارہ_slots ()))
+	واپس جھوٹ;
 
-    unsigned int slot = edge_hash (source, record) & (edge_slots.length - 1);
-    unsigned int step = 0;
-    while (uint64_t ref = edge_slots[slot])
+    غیرعلامتی صحیح خانہ = کنارہ_hash (ماخذ, ریکارڈ) & (کنارہ_slots.لمبائی - 1);
+    غیرعلامتی صحیح قدم = 0;
+    جب (uint64_t ref = کنارہ_slots[خانہ])
     {
-      hb_codepoint_t existing_source;
-      unsigned int existing_index;
-      decode_edge_ref (ref, &existing_source, &existing_index);
-      if (existing_source == source &&
-	  data.glyph_dependencies[source].dependencies[existing_index] == record)
-	return false;
-      slot = (slot + ++step) & (edge_slots.length - 1);
+      hb_codepoint_t existing_ماخذ;
+      غیرعلامتی صحیح existing_اشاریہ;
+      decode_کنارہ_ref (ref, &existing_ماخذ, &existing_اشاریہ);
+      اگر (existing_ماخذ == ماخذ &&
+	  ڈیٹا.glyph_dependencies[ماخذ].dependencies[existing_اشاریہ] == ریکارڈ)
+	واپس جھوٹ;
+      خانہ = (خانہ + ++قدم) & (کنارہ_slots.لمبائی - 1);
     }
 
-    auto &dependencies = data.glyph_dependencies[source].dependencies;
-    unsigned int index = dependencies.length;
-    if (unlikely (!dependencies.push_or_fail (record)))
-      return fail ();
+    خودکار &dependencies = ڈیٹا.glyph_dependencies[ماخذ].dependencies;
+    غیرعلامتی صحیح اشاریہ_2 = dependencies.لمبائی;
+    اگر (unlikely (!dependencies.ڈالو_or_fail (ریکارڈ)))
+      واپس fail ();
 
-    edge_slots[slot] = encode_edge_ref (source, index);
-    edge_population++;
-    return true;
+    کنارہ_slots[خانہ] = encode_کنارہ_ref (ماخذ, اشاریہ_2);
+    کنارہ_population++;
+    واپس سچ;
   }
 
-  bool add_depend_layout (hb_codepoint_t target, hb_tag_t table_tag,
-                          hb_tag_t layout_tag,
+  منطقی جوڑو_depend_layout (hb_codepoint_t target, hb_لیبل_t جدول_لیبل_2,
+                          hb_لیبل_t layout_لیبل,
                           hb_codepoint_t dependent,
-                          hb_codepoint_t lig_set = HB_CODEPOINT_INVALID,
-                          hb_codepoint_t context_set = HB_CODEPOINT_INVALID,
-                          hb_subset_depend_edge_flags_t flags = HB_SUBSET_DEPEND_EDGE_FLAG_NONE)
+                          hb_codepoint_t lig_سیٹ = HB_CODEPOINT_INVALID,
+                          hb_codepoint_t context_سیٹ = HB_CODEPOINT_INVALID,
+                          hb_subset_depend_کنارہ_flags_t flags = HB_SUBSET_DEPEND_کنارہ_FLAG_NONE)
   {
-    if (target >= data.glyph_dependencies.length) {
-      DEBUG_MSG (SUBSET, nullptr, "Dependency glyph %u for %c%c%c%c too large",
-                 target, HB_UNTAG(table_tag));
-      return false;
+    اگر (target >= ڈیٹا.glyph_dependencies.لمبائی) {
+      DEBUG_پیغام (SUBSET, خالی_اشاریہ, "Dependency glyph %u for %c%c%c%c too large",
+                 target, HB_UNTAG(جدول_لیبل_2));
+      واپس جھوٹ;
     }
 
-    return add_edge (target, hb_depend_edge_t (table_tag, dependent, layout_tag,
-					      lig_set, context_set, flags));
+    واپس جوڑو_کنارہ (target, hb_depend_کنارہ_t (جدول_لیبل_2, dependent, layout_لیبل,
+					      lig_سیٹ, context_سیٹ, flags));
   }
 
-  bool add_gsub_lookup (hb_codepoint_t target, hb_codepoint_t lookup_index,
+  منطقی جوڑو_gsub_lookup (hb_codepoint_t target, hb_codepoint_t lookup_اشاریہ,
                         hb_codepoint_t dependent,
-                        hb_codepoint_t lig_set = HB_CODEPOINT_INVALID,
-                        hb_codepoint_t context_set = HB_CODEPOINT_INVALID)
+                        hb_codepoint_t lig_سیٹ = HB_CODEPOINT_INVALID,
+                        hb_codepoint_t context_سیٹ = HB_CODEPOINT_INVALID)
   {
-    if (context_set == HB_CODEPOINT_INVALID)
-      context_set = current_context_set_index;
-    hb_subset_depend_edge_flags_t flags = current_edge_flags;
+    اگر (context_سیٹ == HB_CODEPOINT_INVALID)
+      context_سیٹ = current_context_سیٹ_اشاریہ;
+    hb_subset_depend_کنارہ_flags_t flags = current_کنارہ_flags;
 
-    bool any_added = false;
-    for (uint64_t entry : get_lookup_features (lookup_index)) {
-      hb_tag_t t = (hb_tag_t) entry;
-      if (add_depend_layout (target, HB_OT_TAG_GSUB, t, dependent, lig_set, context_set, flags))
-        any_added = true;
+    منطقی any_added = جھوٹ;
+    برائے (uint64_t اندراج_2 : get_lookup_features (lookup_اشاریہ)) {
+      hb_لیبل_t t = (hb_لیبل_t) اندراج_2;
+      اگر (جوڑو_depend_layout (target, HB_OT_لیبل_GSUB, t, dependent, lig_سیٹ, context_سیٹ, flags))
+        any_added = سچ;
     }
-    return any_added;
+    واپس any_added;
   }
 
-  bool init_lookup_features (unsigned lookup_count)
+  منطقی init_lookup_features (غیرعلامتی lookup_گنتی)
   {
-    return check_success (lookup_feature_offsets.resize (lookup_count + 1));
+    واپس check_success (lookup_feature_offsets.resize (lookup_گنتی + 1));
   }
 
-  bool add_lookup_feature (hb_codepoint_t lookup_index, hb_tag_t feature_tag)
+  منطقی جوڑو_lookup_feature (hb_codepoint_t lookup_اشاریہ, hb_لیبل_t feature_لیبل)
   {
-    if (feature_tag == HB_SET_VALUE_INVALID)
-      return true;
+    اگر (feature_لیبل == HB_سیٹ_قدر_INVALID)
+      واپس سچ;
 
-    if (unlikely (!lookup_feature_offsets.length ||
-		  lookup_index >= lookup_feature_offsets.length - 1))
-      return fail ();
+    اگر (unlikely (!lookup_feature_offsets.لمبائی ||
+		  lookup_اشاریہ >= lookup_feature_offsets.لمبائی - 1))
+      واپس fail ();
 
-    uint64_t entry = ((uint64_t) lookup_index << 32) | feature_tag;
-    return check_success (lookup_features.push_or_fail (entry));
+    uint64_t اندراج_2 = ((uint64_t) lookup_اشاریہ << 32) | feature_لیبل;
+    واپس check_success (lookup_features.ڈالو_or_fail (اندراج_2));
   }
 
-  bool finish_lookup_features ()
+  منطقی اختتام_lookup_features ()
   {
     lookup_features.qsort ([] (uint64_t a, uint64_t b) {
-      return a < b ? -1 : a > b ? 1 : 0;
+      واپس a < b ? -1 : a > b ? 1 : 0;
     });
 
-    unsigned write = 0;
-    for (uint64_t entry : lookup_features)
-      if (!write || entry != lookup_features[write - 1])
-	lookup_features[write++] = entry;
-    lookup_features.shrink (write, false);
+    غیرعلامتی اكتب = 0;
+    برائے (uint64_t اندراج_2 : lookup_features)
+      اگر (!اكتب || اندراج_2 != lookup_features[اكتب - 1])
+	lookup_features[اكتب++] = اندراج_2;
+    lookup_features.shrink (اكتب, جھوٹ);
 
-    unsigned feature_index = 0;
-    unsigned lookup_count = lookup_feature_offsets.length - 1;
-    for (unsigned lookup_index = 0; lookup_index < lookup_count; lookup_index++)
+    غیرعلامتی feature_اشاریہ = 0;
+    غیرعلامتی lookup_گنتی = lookup_feature_offsets.لمبائی - 1;
+    برائے (غیرعلامتی lookup_اشاریہ = 0; lookup_اشاریہ < lookup_گنتی; lookup_اشاریہ++)
     {
-      lookup_feature_offsets[lookup_index] = feature_index;
-      while (feature_index < lookup_features.length &&
-	     lookup_features[feature_index] >> 32 == lookup_index)
-	feature_index++;
+      lookup_feature_offsets[lookup_اشاریہ] = feature_اشاریہ;
+      جب (feature_اشاریہ < lookup_features.لمبائی &&
+	     lookup_features[feature_اشاریہ] >> 32 == lookup_اشاریہ)
+	feature_اشاریہ++;
     }
-    lookup_feature_offsets[lookup_count] = feature_index;
-    return true;
+    lookup_feature_offsets[lookup_گنتی] = feature_اشاریہ;
+    واپس سچ;
   }
 
-  hb_array_t<const uint64_t> get_lookup_features (hb_codepoint_t lookup_index) const
+  hb_array_t<ثابت uint64_t> get_lookup_features (hb_codepoint_t lookup_اشاریہ) ثابت
   {
-    if (unlikely (!lookup_feature_offsets.length ||
-		  lookup_index >= lookup_feature_offsets.length - 1))
-      return {};
+    اگر (unlikely (!lookup_feature_offsets.لمبائی ||
+		  lookup_اشاریہ >= lookup_feature_offsets.لمبائی - 1))
+      واپس {};
 
-    unsigned start = lookup_feature_offsets[lookup_index];
-    unsigned end = lookup_feature_offsets[lookup_index + 1];
-    return lookup_features.as_array ().sub_array (start, end - start);
+    غیرعلامتی آغاز = lookup_feature_offsets[lookup_اشاریہ];
+    غیرعلامتی انتہا = lookup_feature_offsets[lookup_اشاریہ + 1];
+    واپس lookup_features.as_array ().sub_array (آغاز, انتہا - آغاز);
   }
 
-  void add_depend (hb_codepoint_t target, hb_tag_t table_tag,
+  خالی جوڑو_depend (hb_codepoint_t target, hb_لیبل_t جدول_لیبل_2,
                    hb_codepoint_t dependent,
-                   hb_codepoint_t lig_set = HB_CODEPOINT_INVALID,
-                   hb_codepoint_t context_set = HB_CODEPOINT_INVALID,
-                   hb_subset_depend_edge_flags_t flags = HB_SUBSET_DEPEND_EDGE_FLAG_NONE)
+                   hb_codepoint_t lig_سیٹ = HB_CODEPOINT_INVALID,
+                   hb_codepoint_t context_سیٹ = HB_CODEPOINT_INVALID,
+                   hb_subset_depend_کنارہ_flags_t flags = HB_SUBSET_DEPEND_کنارہ_FLAG_NONE)
   {
-    add_depend_layout (target, table_tag, HB_CODEPOINT_INVALID, dependent, lig_set,
-                       context_set, flags);
+    جوڑو_depend_layout (target, جدول_لیبل_2, HB_CODEPOINT_INVALID, dependent, lig_سیٹ,
+                       context_سیٹ, flags);
   }
 
   hb_codepoint_t get_nominal_glyph (hb_codepoint_t cp)
-  { return hb_map_get (&nominal_glyphs, cp); }
+  { واپس hb_map_get (&nominal_glyphs, cp); }
 
-  HB_INTERNAL bool compile (hb_face_t *face);
+  HB_اندرونی منطقی compile (hb_face_t *face);
 
-  bool fail () { successful = false; return false; }
-  hb_codepoint_t fail_invalid () { fail (); return HB_CODEPOINT_INVALID; }
-  bool check_success (bool s) { successful = (successful && s); return successful; }
+  منطقی fail () { successful = جھوٹ; واپس جھوٹ; }
+  hb_codepoint_t fail_invalid () { fail (); واپس HB_CODEPOINT_INVALID; }
+  منطقی check_success (منطقی s) { successful = (successful && s); واپس successful; }
 
-  HB_INTERNAL void get_gsub_dependencies (hb_face_t *face);
+  HB_اندرونی خالی get_gsub_dependencies (hb_face_t *face);
 
-  bool successful = true;
-  hb_set_t unicodes;
+  منطقی successful = سچ;
+  hb_سیٹ_t unicodes;
   hb_map_t nominal_glyphs;
-  hb_vector_t<uint64_t> lookup_features;
-  hb_vector_t<unsigned> lookup_feature_offsets;
-  hb_vector_t<uint64_t> edge_slots;
-  unsigned int edge_population = 0;
-  hb_hashmap_t<const hb_set_t*, hb_codepoint_t> set_to_index;
-  hb_vector_t<hb_codepoint_t> free_set_list;
-  hb_codepoint_t current_context_set_index;
-  hb_subset_depend_edge_flags_t current_edge_flags;
+  hb_سمتیہ_t<uint64_t> lookup_features;
+  hb_سمتیہ_t<غیرعلامتی> lookup_feature_offsets;
+  hb_سمتیہ_t<uint64_t> کنارہ_slots;
+  غیرعلامتی صحیح کنارہ_population = 0;
+  hb_hashmap_t<ثابت hb_سیٹ_t*, hb_codepoint_t> سیٹ_مقصد_اشاریہ;
+  hb_سمتیہ_t<hb_codepoint_t> free_سیٹ_list;
+  hb_codepoint_t current_context_سیٹ_اشاریہ;
+  hb_subset_depend_کنارہ_flags_t current_کنارہ_flags;
 
-  hb_depend_data_t &data;
+  hb_depend_ڈیٹا_t &ڈیٹا;
 };
 
 
-#endif /* HB_DEPEND_DATA_HH */
+#اگر_ختم /* HB_DEPEND_DATA_HH */

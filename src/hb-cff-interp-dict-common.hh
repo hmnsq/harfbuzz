@@ -23,179 +23,179 @@
  *
  * Adobe Author(s): Michiharu Ariza
  */
-#ifndef HB_CFF_INTERP_DICT_COMMON_HH
-#define HB_CFF_INTERP_DICT_COMMON_HH
+#اگر_غیر_تعریف_شدہ HB_CFF_INTERP_DICT_COMMON_HH
+#تعریف_کرو HB_CFF_INTERP_DICT_COMMON_HH
 
-#include "hb-cff-interp-common.hh"
+#شامل "hb-cff-interp-common.hh"
 
-namespace CFF {
+نامخلا CFF {
 
-using namespace OT;
+استعمال نامخلا OT;
 
 /* an opstr and the parsed out dict value(s) */
-struct dict_val_t : op_str_t
+ساخت dict_val_t : op_str_t
 {
-  void init () {}
-  void fini () {}
+  خالی init () {}
+  خالی fini () {}
 };
 
-typedef dict_val_t num_dict_val_t;
+قسمتعریف dict_val_t عدد_dict_val_t;
 
-template <typename VAL> struct dict_values_t : parsed_values_t<VAL> {};
+سانچہ <قسم_نام VAL> ساخت dict_اقدار_t : parsed_اقدار_t<VAL> {};
 
-template <typename OPSTR=op_str_t>
-struct top_dict_values_t : dict_values_t<OPSTR>
+سانچہ <قسم_نام OPSTR=op_str_t>
+ساخت چوٹی_dict_اقدار_t : dict_اقدار_t<OPSTR>
 {
-  void init ()
+  خالی init ()
   {
-    dict_values_t<OPSTR>::init ();
-    charStringsOffset = 0;
-    FDArrayOffset = 0;
+    dict_اقدار_t<OPSTR>::init ();
+    char_لڑیاں_انحراف = 0;
+    FDArray_انحراف = 0;
   }
-  void fini () { dict_values_t<OPSTR>::fini (); }
+  خالی fini () { dict_اقدار_t<OPSTR>::fini (); }
 
-  int  charStringsOffset;
-  int  FDArrayOffset;
+  صحیح  char_لڑیاں_انحراف;
+  صحیح  FDArray_انحراف;
 };
 
-struct dict_opset_t : opset_t<number_t>
+ساخت dict_opset_t : opset_t<نمبر_t>
 {
-  static void process_op (op_code_t op, interp_env_t<number_t>& env)
+  ساکن خالی process_op (op_رمز_t op, interp_env_t<نمبر_t>& env)
   {
-    switch (op) {
-      case OpCode_longintdict:  /* 5-byte integer */
-	env.argStack.push_longint_from_substr (env.str_ref);
-	break;
+    انتخاب (op) {
+      حالت Op_رمز_longintdict:  /* 5-byte integer */
+	env.arg_ڈھیر.ڈالو_longint_from_substr (env.str_ref);
+	توڑو;
 
-      case OpCode_BCD:  /* real number */
-	env.argStack.push_real (parse_bcd (env.str_ref));
-	break;
+      حالت Op_رمز_BCD:  /* real number */
+	env.arg_ڈھیر.ڈالو_real (parse_bcd (env.str_ref));
+	توڑو;
 
-      default:
-	opset_t<number_t>::process_op (op, env);
-	break;
+      طےشدہ:
+	opset_t<نمبر_t>::process_op (op, env);
+	توڑو;
     }
   }
 
   /* Turns CFF's BCD format into strtod understandable string */
-  static double parse_bcd (byte_str_ref_t& str_ref)
+  ساکن دوہرا parse_bcd (byte_str_ref_t& str_ref)
   {
-    if (unlikely (str_ref.in_error ())) return .0;
+    اگر (unlikely (str_ref.اندر_error ())) واپس .0;
 
-    enum Nibble { DECIMAL=10, EXP_POS, EXP_NEG, RESERVED, NEG, END };
+    شمار Nibble { DECIMAL=10, EXP_POS, EXP_NEG, RESERVED, NEG, انتہا_2 };
 
-    char buf[32] = {0};
-    unsigned char byte = 0;
-    for (unsigned i = 0, count = 0; count < ARRAY_LENGTH (buf); ++i, ++count)
+    حرف buf[32] = {0};
+    غیرعلامتی حرف byte = 0;
+    برائے (غیرعلامتی i = 0, گنتی = 0; گنتی < ARRAY_لمبائی (buf); ++i, ++گنتی)
     {
-      unsigned nibble;
-      if (!(i & 1))
+      غیرعلامتی nibble;
+      اگر (!(i & 1))
       {
-	if (unlikely (!str_ref.avail ())) break;
+	اگر (unlikely (!str_ref.avail ())) توڑو;
 
 	byte = str_ref[0];
 	str_ref.inc ();
 	nibble = byte >> 4;
       }
-      else
+      ورنہ
 	nibble = byte & 0x0F;
 
-      if (unlikely (nibble == RESERVED)) break;
-      else if (nibble == END)
+      اگر (unlikely (nibble == RESERVED)) توڑو;
+      ورنہ اگر (nibble == انتہا_2)
       {
-	const char *p = buf;
-	double pv;
-	if (unlikely (!hb_parse_double (&p, p + count, &pv, true/* whole buffer */)))
-	  break;
-	return pv;
+	ثابت حرف *p = buf;
+	دوہرا pv;
+	اگر (unlikely (!hb_parse_double (&p, p + گنتی, &pv, سچ/* whole buffer */)))
+	  توڑو;
+	واپس pv;
       }
-      else
+      ورنہ
       {
-	buf[count] = "0123456789.EE?-?"[nibble];
-	if (nibble == EXP_NEG)
+	buf[گنتی] = "0123456789.EE?-?"[nibble];
+	اگر (nibble == EXP_NEG)
 	{
-	  ++count;
-	  if (unlikely (count == ARRAY_LENGTH (buf))) break;
-	  buf[count] = '-';
+	  ++گنتی;
+	  اگر (unlikely (گنتی == ARRAY_لمبائی (buf))) توڑو;
+	  buf[گنتی] = '-';
 	}
       }
     }
 
-    str_ref.set_error ();
-    return .0;
+    str_ref.سیٹ_error ();
+    واپس .0;
   }
 
-  static bool is_hint_op (op_code_t op)
+  ساکن منطقی is_hint_op (op_رمز_t op)
   {
-    switch (op)
+    انتخاب (op)
     {
-      case OpCode_BlueValues:
-      case OpCode_OtherBlues:
-      case OpCode_FamilyBlues:
-      case OpCode_FamilyOtherBlues:
-      case OpCode_StemSnapH:
-      case OpCode_StemSnapV:
-      case OpCode_StdHW:
-      case OpCode_StdVW:
-      case OpCode_BlueScale:
-      case OpCode_BlueShift:
-      case OpCode_BlueFuzz:
-      case OpCode_ForceBold:
-      case OpCode_LanguageGroup:
-      case OpCode_ExpansionFactor:
-	return true;
-      default:
-	return false;
+      حالت Op_رمز_Blue_اقدار:
+      حالت Op_رمز_Other_Blues:
+      حالت Op_رمز_Family_Blues:
+      حالت Op_رمز_Family_Other_Blues:
+      حالت Op_رمز_Stem_Snap_H:
+      حالت Op_رمز_Stem_Snap_V:
+      حالت Op_رمز_Std_HW:
+      حالت Op_رمز_Std_VW:
+      حالت Op_رمز_Blue_Scale:
+      حالت Op_رمز_Blue_سرکاؤ:
+      حالت Op_رمز_Blue_Fuzz:
+      حالت Op_رمز_Force_Bold:
+      حالت Op_رمز_Language_گروہ:
+      حالت Op_رمز_Expansion_ضربی_عدد:
+	واپس سچ;
+      طےشدہ:
+	واپس جھوٹ;
     }
   }
 };
 
-template <typename VAL=op_str_t>
-struct top_dict_opset_t : dict_opset_t
+سانچہ <قسم_نام VAL=op_str_t>
+ساخت چوٹی_dict_opset_t : dict_opset_t
 {
-  static void process_op (op_code_t op, interp_env_t<number_t>& env, top_dict_values_t<VAL> & dictval)
+  ساکن خالی process_op (op_رمز_t op, interp_env_t<نمبر_t>& env, چوٹی_dict_اقدار_t<VAL> & dictval)
   {
-    switch (op) {
-      case OpCode_CharStrings:
-	dictval.charStringsOffset = env.argStack.pop_int ();
-	env.clear_args ();
-	break;
-      case OpCode_FDArray:
-	dictval.FDArrayOffset = env.argStack.pop_int ();
-	env.clear_args ();
-	break;
-      case OpCode_FontMatrix:
-	env.clear_args ();
-	break;
-      default:
+    انتخاب (op) {
+      حالت Op_رمز_Char_لڑیاں:
+	dictval.char_لڑیاں_انحراف = env.arg_ڈھیر.نکالو_int ();
+	env.clear_دلائل ();
+	توڑو;
+      حالت Op_رمز_FDArray:
+	dictval.FDArray_انحراف = env.arg_ڈھیر.نکالو_int ();
+	env.clear_دلائل ();
+	توڑو;
+      حالت Op_رمز_Font_میٹرکس:
+	env.clear_دلائل ();
+	توڑو;
+      طےشدہ:
 	dict_opset_t::process_op (op, env);
-	break;
+	توڑو;
     }
   }
 };
 
-template <typename OPSET, typename PARAM, typename ENV=num_interp_env_t>
-struct dict_interpreter_t : interpreter_t<ENV>
+سانچہ <قسم_نام OPSET, قسم_نام PARAM, قسم_نام ENV=عدد_interp_env_t>
+ساخت dict_interpreter_t : interpreter_t<ENV>
 {
   dict_interpreter_t (ENV& env_) : interpreter_t<ENV> (env_) {}
 
-  bool interpret (PARAM& param)
+  منطقی interpret (PARAM& param)
   {
     param.init ();
-    while (SUPER::env.str_ref.avail ())
+    جب (SUPER::env.str_ref.avail ())
     {
       OPSET::process_op (SUPER::env.fetch_op (), SUPER::env, param);
-      if (unlikely (SUPER::env.in_error ()))
-	return false;
+      اگر (unlikely (SUPER::env.اندر_error ()))
+	واپس جھوٹ;
     }
 
-    return true;
+    واپس سچ;
   }
 
-  private:
-  typedef interpreter_t<ENV> SUPER;
+  نجی:
+  قسمتعریف interpreter_t<ENV> SUPER;
 };
 
 } /* namespace CFF */
 
-#endif /* HB_CFF_INTERP_DICT_COMMON_HH */
+#اگر_ختم /* HB_CFF_INTERP_DICT_COMMON_HH */

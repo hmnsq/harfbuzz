@@ -23,179 +23,179 @@
  *
  */
 
-#include "hb.hh"
-#include "hb-vector.hh"
-#include "hb-set.hh"
-#include "hb-map.hh"
-#include <string>
+#شامل "hb.hh"
+#شامل "hb-vector.hh"
+#شامل "hb-set.hh"
+#شامل "hb-map.hh"
+#شامل <string>
 
 
-int
-main (int argc, char **argv)
+صحیح
+مین (صحیح argc, حرف **argv)
 {
-  hb_always_assert (sizeof (hb_vector_t<int>) == sizeof (hb_sorted_vector_t<int>));
+  hb_always_assert (حجم (hb_سمتیہ_t<صحیح>) == حجم (hb_sorted_سمتیہ_t<صحیح>));
 
   /* Test copy constructor. */
   {
-    hb_vector_t<int> v1 {1, 2};
-    hb_vector_t<int> v2 {v1};
-    hb_vector_t<int> V2 {v1};
-    hb_always_assert (v1.length == 2);
+    hb_سمتیہ_t<صحیح> v1 {1, 2};
+    hb_سمتیہ_t<صحیح> v2 {v1};
+    hb_سمتیہ_t<صحیح> V2 {v1};
+    hb_always_assert (v1.لمبائی == 2);
     hb_always_assert (v1[0] == 1);
     hb_always_assert (v1[1] == 2);
-    hb_always_assert (v2.length == 2);
+    hb_always_assert (v2.لمبائی == 2);
     hb_always_assert (v2[0] == 1);
     hb_always_assert (v2[1] == 2);
   }
 
   /* Test copy assignment. */
   {
-    hb_vector_t<int> v1 {1, 2};
-    hb_vector_t<int> v2 = v1;
-    hb_vector_t<int> V2 = v1;
-    hb_always_assert (v1.length == 2);
+    hb_سمتیہ_t<صحیح> v1 {1, 2};
+    hb_سمتیہ_t<صحیح> v2 = v1;
+    hb_سمتیہ_t<صحیح> V2 = v1;
+    hb_always_assert (v1.لمبائی == 2);
     hb_always_assert (v1[0] == 1);
     hb_always_assert (v1[1] == 2);
-    hb_always_assert (v2.length == 2);
+    hb_always_assert (v2.لمبائی == 2);
     hb_always_assert (v2[0] == 1);
     hb_always_assert (v2[1] == 2);
   }
 
   /* Self-copy assignment must preserve both trivial and nontrivial items. */
   {
-    hb_vector_t<int> v {1, 2};
-    const auto &self = v;
+    hb_سمتیہ_t<صحیح> v {1, 2};
+    ثابت خودکار &self = v;
     v = self;
-    hb_always_assert (v.length == 2);
+    hb_always_assert (v.لمبائی == 2);
     hb_always_assert (v[0] == 1);
     hb_always_assert (v[1] == 2);
   }
   {
-    hb_vector_t<std::string> v;
+    hb_سمتیہ_t<std::string> v;
     v.push (std::string ("one"));
     v.push (std::string ("two"));
-    const auto &self = v;
+    ثابت خودکار &self = v;
     v = self;
-    hb_always_assert (v.length == 2);
+    hb_always_assert (v.لمبائی == 2);
     hb_always_assert (v[0] == "one");
     hb_always_assert (v[1] == "two");
   }
 
   /* Test pushing an element of the vector itself while it grows. */
   {
-    hb_vector_t<int> v {7};
-    for (unsigned i = 0; i < 1000; i++)
+    hb_سمتیہ_t<صحیح> v {7};
+    برائے (غیرعلامتی i = 0; i < 1000; i++)
       v.push (v.arrayZ[0]);
-    hb_always_assert (v.length == 1001);
-    for (unsigned i = 0; i < v.length; i++)
+    hb_always_assert (v.لمبائی == 1001);
+    برائے (غیرعلامتی i = 0; i < v.لمبائی; i++)
       hb_always_assert (v[i] == 7);
   }
   {
-    hb_vector_t<std::string> v;
+    hb_سمتیہ_t<std::string> v;
     v.push (std::string ("a string longer than the small-string buffer"));
-    for (unsigned i = 0; i < 1000; i++)
+    برائے (غیرعلامتی i = 0; i < 1000; i++)
       v.push (v.arrayZ[i]);
-    hb_always_assert (v.length == 1001);
-    for (unsigned i = 0; i < v.length; i++)
+    hb_always_assert (v.لمبائی == 1001);
+    برائے (غیرعلامتی i = 0; i < v.لمبائی; i++)
       hb_always_assert (v[i] == "a string longer than the small-string buffer");
   }
   {
-    hb_vector_t<hb_vector_t<int>> v;
-    v.push (hb_vector_t<int> {1, 2, 3});
-    for (unsigned i = 0; i < 1000; i++)
+    hb_سمتیہ_t<hb_سمتیہ_t<صحیح>> v;
+    v.push (hb_سمتیہ_t<صحیح> {1, 2, 3});
+    برائے (غیرعلامتی i = 0; i < 1000; i++)
       v.push (v.arrayZ[0]);
-    hb_always_assert (v.length == 1001);
-    for (unsigned i = 0; i < v.length; i++)
-      hb_always_assert (v[i].length == 3 && v[i][2] == 3);
+    hb_always_assert (v.لمبائی == 1001);
+    برائے (غیرعلامتی i = 0; i < v.لمبائی; i++)
+      hb_always_assert (v[i].لمبائی == 3 && v[i][2] == 3);
   }
   {
-    hb_vector_t<hb_vector_t<int>> v {hb_vector_t<int> {1, 2, 3}};
+    hb_سمتیہ_t<hb_سمتیہ_t<صحیح>> v {hb_سمتیہ_t<صحیح> {1, 2, 3}};
     v.push (std::move (v[0]));
-    hb_always_assert (v.length == 2 && v[0].length == 0);
-    hb_always_assert (v[1].length == 3 && v[1][2] == 3);
+    hb_always_assert (v.لمبائی == 2 && v[0].لمبائی == 0);
+    hb_always_assert (v[1].لمبائی == 3 && v[1][2] == 3);
   }
   {
-    hb_vector_t<std::string> v {"one"};
+    hb_سمتیہ_t<std::string> v {"one"};
     v.push (3, v[0][0]);
-    hb_always_assert (v.length == 2);
+    hb_always_assert (v.لمبائی == 2);
     hb_always_assert (v[0] == "one" && v[1] == "ooo");
   }
   {
-    hb_vector_t<int> v {1, 2, 3};
+    hb_سمتیہ_t<صحیح> v {1, 2, 3};
     v.extend (v.as_array ());
-    hb_always_assert (v.length == 6);
+    hb_always_assert (v.لمبائی == 6);
     hb_always_assert (v[3] == 1 && v[4] == 2 && v[5] == 3);
   }
   {
-    hb_vector_t<int> v {1, 2, 3};
-    v.extend (hb_array_t<const int> (v.arrayZ + 1, 2));
-    hb_always_assert (v.length == 5);
+    hb_سمتیہ_t<صحیح> v {1, 2, 3};
+    v.extend (hb_array_t<ثابت صحیح> (v.arrayZ + 1, 2));
+    hb_always_assert (v.لمبائی == 5);
     hb_always_assert (v[3] == 2 && v[4] == 3);
   }
   {
-    hb_vector_t<std::string> v {"one", "two", "three"};
+    hb_سمتیہ_t<std::string> v {"one", "two", "three"};
     v.extend (v.as_array ());
-    hb_always_assert (v.length == 6);
-    for (unsigned i = 0; i < 3; i++)
+    hb_always_assert (v.لمبائی == 6);
+    برائے (غیرعلامتی i = 0; i < 3; i++)
       hb_always_assert (v[i] == v[i + 3]);
   }
   {
-    hb_vector_t<std::string> v {"one", "two", "three"};
+    hb_سمتیہ_t<std::string> v {"one", "two", "three"};
     v.extend (v);
-    hb_always_assert (v.length == 6);
-    for (unsigned i = 0; i < 3; i++)
+    hb_always_assert (v.لمبائی == 6);
+    برائے (غیرعلامتی i = 0; i < 3; i++)
       hb_always_assert (v[i] == v[i + 3]);
   }
 
   /* A failed vector must not move from an aliased argument. */
   {
-    hb_vector_t<std::string> v {"one"};
-    v.set_error ();
-    hb_always_assert (!v.push_or_fail (std::move (v[0])));
-    hb_always_assert (v.length == 1 && v[0] == "one");
+    hb_سمتیہ_t<std::string> v {"one"};
+    v.سیٹ_error ();
+    hb_always_assert (!v.ڈالو_or_fail (std::move (v[0])));
+    hb_always_assert (v.لمبائی == 1 && v[0] == "one");
   }
 
   /* Test move constructor. */
   {
-    hb_vector_t<int> s {1, 2};
-    hb_sorted_vector_t<int> S {1, 2};
-    hb_vector_t<int> v (std::move (s));
-    hb_sorted_vector_t<int> V (std::move (S));
-    hb_always_assert (s.length == 0);
-    hb_always_assert (S.length == 0);
-    hb_always_assert (v.length == 2);
+    hb_سمتیہ_t<صحیح> s {1, 2};
+    hb_sorted_سمتیہ_t<صحیح> S {1, 2};
+    hb_سمتیہ_t<صحیح> v (std::move (s));
+    hb_sorted_سمتیہ_t<صحیح> V (std::move (S));
+    hb_always_assert (s.لمبائی == 0);
+    hb_always_assert (S.لمبائی == 0);
+    hb_always_assert (v.لمبائی == 2);
     hb_always_assert (v[0] == 1);
     hb_always_assert (v[1] == 2);
   }
 
   /* Test move assignment. */
   {
-    hb_vector_t<int> s {1, 2};
-    hb_sorted_vector_t<int> S {1, 2};
-    hb_vector_t<int> v;
-    hb_sorted_vector_t<int> V;
+    hb_سمتیہ_t<صحیح> s {1, 2};
+    hb_sorted_سمتیہ_t<صحیح> S {1, 2};
+    hb_سمتیہ_t<صحیح> v;
+    hb_sorted_سمتیہ_t<صحیح> V;
     v = std::move (s);
     V = std::move (S);
-    hb_always_assert (s.length == 0);
-    hb_always_assert (S.length == 0);
-    hb_always_assert (v.length == 2);
-    hb_always_assert (V.length == 2);
+    hb_always_assert (s.لمبائی == 0);
+    hb_always_assert (S.لمبائی == 0);
+    hb_always_assert (v.لمبائی == 2);
+    hb_always_assert (V.لمبائی == 2);
     hb_always_assert (v[0] == 1);
     hb_always_assert (v[1] == 2);
   }
 
   /* Test initializing from iterable. */
   {
-    hb_set_t s;
+    hb_سیٹ_t s;
 
-    s.add (18);
-    s.add (12);
+    s.جوڑو (18);
+    s.جوڑو (12);
 
-    hb_vector_t<int> v (s);
-    hb_sorted_vector_t<int> V (s);
+    hb_سمتیہ_t<صحیح> v (s);
+    hb_sorted_سمتیہ_t<صحیح> V (s);
 
-    hb_always_assert (v.length == 2);
-    hb_always_assert (V.length == 2);
+    hb_always_assert (v.لمبائی == 2);
+    hb_always_assert (V.لمبائی == 2);
     hb_always_assert (v[0] == 12);
     hb_always_assert (V[0] == 12);
     hb_always_assert (v[1] == 18);
@@ -204,16 +204,16 @@ main (int argc, char **argv)
 
   /* Test initializing from iterator. */
   {
-    hb_set_t s;
+    hb_سیٹ_t s;
 
-    s.add (18);
-    s.add (12);
+    s.جوڑو (18);
+    s.جوڑو (12);
 
-    hb_vector_t<int> v (hb_iter (s));
-    hb_vector_t<int> V (hb_iter (s));
+    hb_سمتیہ_t<صحیح> v (hb_iter (s));
+    hb_سمتیہ_t<صحیح> V (hb_iter (s));
 
-    hb_always_assert (v.length == 2);
-    hb_always_assert (V.length == 2);
+    hb_always_assert (v.لمبائی == 2);
+    hb_always_assert (V.لمبائی == 2);
     hb_always_assert (v[0] == 12);
     hb_always_assert (V[0] == 12);
     hb_always_assert (v[1] == 18);
@@ -222,37 +222,37 @@ main (int argc, char **argv)
 
   /* Test initializing from initializer list and swapping. */
   {
-    hb_vector_t<int> v1 {1, 2, 3};
-    hb_vector_t<int> v2 {4, 5};
-    hb_swap (v1, v2);
-    hb_always_assert (v1.length == 2);
+    hb_سمتیہ_t<صحیح> v1 {1, 2, 3};
+    hb_سمتیہ_t<صحیح> v2 {4, 5};
+    hb_تبادلہ (v1, v2);
+    hb_always_assert (v1.لمبائی == 2);
     hb_always_assert (v1[0] == 4);
-    hb_always_assert (v2.length == 3);
+    hb_always_assert (v2.لمبائی == 3);
     hb_always_assert (v2[2] == 3);
   }
 
   /* Test initializing sorted-vector from initializer list and swapping. */
   {
-    hb_sorted_vector_t<int> v1 {1, 2, 3};
-    hb_sorted_vector_t<int> v2 {4, 5};
-    hb_swap (v1, v2);
-    hb_always_assert (v1.length == 2);
+    hb_sorted_سمتیہ_t<صحیح> v1 {1, 2, 3};
+    hb_sorted_سمتیہ_t<صحیح> v2 {4, 5};
+    hb_تبادلہ (v1, v2);
+    hb_always_assert (v1.لمبائی == 2);
     hb_always_assert (v1[0] == 4);
-    hb_always_assert (v2.length == 3);
+    hb_always_assert (v2.لمبائی == 3);
     hb_always_assert (v2[2] == 3);
   }
 
   {
-    hb_vector_t<std::string> v;
+    hb_سمتیہ_t<std::string> v;
 
     std::string s;
-    for (unsigned i = 1; i < 100; i++)
+    برائے (غیرعلامتی i = 1; i < 100; i++)
     {
       s += "x";
       v.push (s);
     }
 
-    hb_vector_t<std::string> v2;
+    hb_سمتیہ_t<std::string> v2;
 
     v2 = v;
 
@@ -261,8 +261,8 @@ main (int argc, char **argv)
   }
 
   {
-    hb_vector_t<hb_set_t> v;
-    hb_set_t s {1, 5, 7};
+    hb_سمتیہ_t<hb_سیٹ_t> v;
+    hb_سیٹ_t s {1, 5, 7};
     v.push (s);
     v << s;
     hb_always_assert (s.get_population () == 3);
@@ -271,15 +271,15 @@ main (int argc, char **argv)
   }
 
   {
-    hb_vector_t<hb_map_t> v;
+    hb_سمتیہ_t<hb_map_t> v;
     hb_map_t m;
     v.push (m);
   }
   {
-    hb_vector_t<hb_map_t> v;
+    hb_سمتیہ_t<hb_map_t> v;
     hb_map_t m;
     v.push (m);
   }
 
-  return 0;
+  واپس 0;
 }

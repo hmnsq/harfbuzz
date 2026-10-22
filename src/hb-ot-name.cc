@@ -24,13 +24,13 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#شامل "hb.hh"
 
-#ifndef HB_NO_NAME
+#اگر_غیر_تعریف_شدہ HB_NO_NAME
 
-#include "hb-ot-name-table.hh"
+#شامل "hb-ot-name-table.hh"
 
-#include "hb-utf.hh"
+#شامل "hb-utf.hh"
 
 
 /**
@@ -55,48 +55,48 @@
  * Returns: (transfer none) (array length=num_entries): Array of available name entries.
  * Since: 2.1.0
  **/
-const hb_ot_name_entry_t *
-hb_ot_name_list_names (hb_face_t    *face,
-		       unsigned int *num_entries /* OUT */)
+ثابت hb_ot_name_اندراج_t *
+hb_ot_name_list_نام (hb_face_t    *face,
+		       غیرعلامتی صحیح *عدد_entries /*برآمد*/)
 {
-  const OT::name_accelerator_t &name = *face->table.name;
-  if (num_entries) *num_entries = name.names.length;
-  return (const hb_ot_name_entry_t *) name.names;
+  ثابت OT::name_accelerator_t &name = *face->جدول.name;
+  اگر (عدد_entries) *عدد_entries = name.نام.لمبائی;
+  واپس (ثابت hb_ot_name_اندراج_t *) name.نام;
 }
 
-template <typename utf_t>
-static inline unsigned int
+سانچہ <قسم_نام utf_t>
+ساکن اندرونی غیرعلامتی صحیح
 hb_ot_name_get_utf (hb_face_t       *face,
 		    hb_ot_name_id_t  name_id,
 		    hb_language_t    language,
-		    unsigned int    *text_size /* IN/OUT */,
-		    typename utf_t::codepoint_t *text /* OUT */)
+		    غیرعلامتی صحیح    *متن_سائز /* IN/OUT */,
+		    قسم_نام utf_t::codepoint_t *متن /*برآمد*/)
 {
-  const OT::name_accelerator_t &name = *face->table.name;
+  ثابت OT::name_accelerator_t &name = *face->جدول.name;
 
-  if (!language)
+  اگر (!language)
     language = hb_language_from_string ("en", 2);
 
-  unsigned int width;
-  int idx = name.get_index (name_id, language, &width);
-  if (idx != -1)
+  غیرعلامتی صحیح چوڑائی;
+  صحیح idx = name.get_اشاریہ (name_id, language, &چوڑائی);
+  اگر (idx != -1)
   {
-    hb_bytes_t bytes = name.get_name (idx);
+    hb_بائٹیں_t بائٹیں = name.get_name (idx);
 
-    if (width == 2) /* UTF16-BE */
-      return OT::hb_ot_name_convert_utf<hb_utf16_be_t, utf_t> (bytes, text_size, text);
+    اگر (چوڑائی == 2) /* UTF16-BE */
+      واپس OT::hb_ot_name_convert_utf<hb_utf16_be_t, utf_t> (بائٹیں, متن_سائز, متن);
 
-    if (width == 1) /* ASCII */
-      return OT::hb_ot_name_convert_utf<hb_ascii_t, utf_t> (bytes, text_size, text);
+    اگر (چوڑائی == 1) /* ASCII */
+      واپس OT::hb_ot_name_convert_utf<hb_ascii_t, utf_t> (بائٹیں, متن_سائز, متن);
   }
 
-  if (text_size)
+  اگر (متن_سائز)
   {
-    if (*text_size)
-      *text = 0;
-    *text_size = 0;
+    اگر (*متن_سائز)
+      *متن = 0;
+    *متن_سائز = 0;
   }
-  return 0;
+  واپس 0;
 }
 
 /**
@@ -116,15 +116,15 @@ hb_ot_name_get_utf (hb_face_t       *face,
  * Returns: full length of the requested string, or 0 if not found.
  * Since: 2.1.0
  **/
-unsigned int
+غیرعلامتی صحیح
 hb_ot_name_get_utf8 (hb_face_t       *face,
 		     hb_ot_name_id_t  name_id,
 		     hb_language_t    language,
-		     unsigned int    *text_size /* IN/OUT */,
-		     char            *text      /* OUT */)
+		     غیرعلامتی صحیح    *متن_سائز /* IN/OUT */,
+		     حرف            *متن      /*برآمد*/)
 {
-  return hb_ot_name_get_utf<hb_utf8_t> (face, name_id, language, text_size,
-					(hb_utf8_t::codepoint_t *) text);
+  واپس hb_ot_name_get_utf<hb_utf8_t> (face, name_id, language, متن_سائز,
+					(hb_utf8_t::codepoint_t *) متن);
 }
 
 /**
@@ -144,14 +144,14 @@ hb_ot_name_get_utf8 (hb_face_t       *face,
  * Returns: full length of the requested string, or 0 if not found.
  * Since: 2.1.0
  **/
-unsigned int
+غیرعلامتی صحیح
 hb_ot_name_get_utf16 (hb_face_t       *face,
 		      hb_ot_name_id_t  name_id,
 		      hb_language_t    language,
-		      unsigned int    *text_size /* IN/OUT */,
-		      uint16_t        *text      /* OUT */)
+		      غیرعلامتی صحیح    *متن_سائز /* IN/OUT */,
+		      uint16_t        *متن      /*برآمد*/)
 {
-  return hb_ot_name_get_utf<hb_utf16_t> (face, name_id, language, text_size, text);
+  واپس hb_ot_name_get_utf<hb_utf16_t> (face, name_id, language, متن_سائز, متن);
 }
 
 /**
@@ -171,14 +171,14 @@ hb_ot_name_get_utf16 (hb_face_t       *face,
  * Returns: full length of the requested string, or 0 if not found.
  * Since: 2.1.0
  **/
-unsigned int
+غیرعلامتی صحیح
 hb_ot_name_get_utf32 (hb_face_t       *face,
 		      hb_ot_name_id_t  name_id,
 		      hb_language_t    language,
-		      unsigned int    *text_size /* IN/OUT */,
-		      uint32_t        *text      /* OUT */)
+		      غیرعلامتی صحیح    *متن_سائز /* IN/OUT */,
+		      uint32_t        *متن      /*برآمد*/)
 {
-  return hb_ot_name_get_utf<hb_utf32_t> (face, name_id, language, text_size, text);
+  واپس hb_ot_name_get_utf<hb_utf32_t> (face, name_id, language, متن_سائز, متن);
 }
 
-#endif
+#اگر_ختم

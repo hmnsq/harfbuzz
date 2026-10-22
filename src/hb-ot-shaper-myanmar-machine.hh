@@ -1,5 +1,5 @@
 
-#line 1 "hb-ot-shaper-myanmar-machine.rl"
+#سطر 1 "hb-ot-shaper-myanmar-machine.rl"
 /*
  * Copyright © 2011,2012  Google, Inc.
  *
@@ -26,60 +26,60 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_SHAPER_MYANMAR_MACHINE_HH
-#define HB_OT_SHAPER_MYANMAR_MACHINE_HH
+#اگر_غیر_تعریف_شدہ HB_OT_SHAPER_MYANMAR_MACHINE_HH
+#تعریف_کرو HB_OT_SHAPER_MYANMAR_MACHINE_HH
 
-#include "hb.hh"
+#شامل "hb.hh"
 
-#include "hb-ot-layout.hh"
-#include "hb-ot-shaper-indic.hh"
+#شامل "hb-ot-layout.hh"
+#شامل "hb-ot-shaper-indic.hh"
 
 /* buffer var allocations */
-#define myanmar_category() ot_shaper_var_u8_category() /* myanmar_category_t */
-#define myanmar_position() ot_shaper_var_u8_auxiliary() /* myanmar_position_t */
+#تعریف_کرو myanmar_category() ot_shaper_var_u8_category() /* myanmar_category_t */
+#تعریف_کرو myanmar_position() ot_shaper_var_u8_auxiliary() /* myanmar_position_t */
 
-using myanmar_category_t = unsigned;
-using myanmar_position_t = ot_position_t;
+استعمال myanmar_category_t = غیرعلامتی;
+استعمال myanmar_position_t = ot_position_t;
 
-#define M_Cat(Cat) myanmar_syllable_machine_ex_##Cat
+#تعریف_کرو M_Cat(Cat) myanmar_syllable_machine_ex_##Cat
 
-enum myanmar_syllable_type_t {
+شمار myanmar_syllable_type_t {
   myanmar_consonant_syllable,
   myanmar_broken_cluster,
   myanmar_non_myanmar_cluster,
 };
 
 
-#line 51 "hb-ot-shaper-myanmar-machine.hh"
-#define myanmar_syllable_machine_ex_A 9u
-#define myanmar_syllable_machine_ex_As 32u
-#define myanmar_syllable_machine_ex_C 1u
-#define myanmar_syllable_machine_ex_CS 18u
-#define myanmar_syllable_machine_ex_DB 3u
-#define myanmar_syllable_machine_ex_DOTTEDCIRCLE 11u
-#define myanmar_syllable_machine_ex_GB 10u
-#define myanmar_syllable_machine_ex_H 4u
-#define myanmar_syllable_machine_ex_IV 2u
-#define myanmar_syllable_machine_ex_MH 35u
-#define myanmar_syllable_machine_ex_ML 41u
-#define myanmar_syllable_machine_ex_MR 36u
-#define myanmar_syllable_machine_ex_MW 37u
-#define myanmar_syllable_machine_ex_MY 38u
-#define myanmar_syllable_machine_ex_PT 39u
-#define myanmar_syllable_machine_ex_Ra 15u
-#define myanmar_syllable_machine_ex_SM 8u
-#define myanmar_syllable_machine_ex_SMPst 57u
-#define myanmar_syllable_machine_ex_VAbv 20u
-#define myanmar_syllable_machine_ex_VBlw 21u
-#define myanmar_syllable_machine_ex_VPre 22u
-#define myanmar_syllable_machine_ex_VPst 23u
-#define myanmar_syllable_machine_ex_VS 40u
-#define myanmar_syllable_machine_ex_ZWJ 6u
-#define myanmar_syllable_machine_ex_ZWNJ 5u
+#سطر 51 "hb-ot-shaper-myanmar-machine.hh"
+#تعریف_کرو myanmar_syllable_machine_ex_A 9u
+#تعریف_کرو myanmar_syllable_machine_ex_As 32u
+#تعریف_کرو myanmar_syllable_machine_ex_C 1u
+#تعریف_کرو myanmar_syllable_machine_ex_CS 18u
+#تعریف_کرو myanmar_syllable_machine_ex_DB 3u
+#تعریف_کرو myanmar_syllable_machine_ex_DOTTEDCIRCLE 11u
+#تعریف_کرو myanmar_syllable_machine_ex_GB 10u
+#تعریف_کرو myanmar_syllable_machine_ex_H 4u
+#تعریف_کرو myanmar_syllable_machine_ex_IV 2u
+#تعریف_کرو myanmar_syllable_machine_ex_MH 35u
+#تعریف_کرو myanmar_syllable_machine_ex_ML 41u
+#تعریف_کرو myanmar_syllable_machine_ex_MR 36u
+#تعریف_کرو myanmar_syllable_machine_ex_MW 37u
+#تعریف_کرو myanmar_syllable_machine_ex_MY 38u
+#تعریف_کرو myanmar_syllable_machine_ex_PT 39u
+#تعریف_کرو myanmar_syllable_machine_ex_Ra 15u
+#تعریف_کرو myanmar_syllable_machine_ex_SM 8u
+#تعریف_کرو myanmar_syllable_machine_ex_SMPst 57u
+#تعریف_کرو myanmar_syllable_machine_ex_VAbv 20u
+#تعریف_کرو myanmar_syllable_machine_ex_VBlw 21u
+#تعریف_کرو myanmar_syllable_machine_ex_VPre 22u
+#تعریف_کرو myanmar_syllable_machine_ex_VPst 23u
+#تعریف_کرو myanmar_syllable_machine_ex_VS 40u
+#تعریف_کرو myanmar_syllable_machine_ex_ZWJ 6u
+#تعریف_کرو myanmar_syllable_machine_ex_ZWNJ 5u
 
 
-#line 77 "hb-ot-shaper-myanmar-machine.hh"
-static const unsigned char _myanmar_syllable_machine_trans_keys[] = {
+#سطر 77 "hb-ot-shaper-myanmar-machine.hh"
+ساکن ثابت غیرعلامتی حرف myanmar_syllable_machine_trans_کلیدیں[] = {
 	1u, 57u, 3u, 57u, 5u, 57u, 5u, 57u, 3u, 57u, 5u, 57u, 3u, 57u, 3u, 57u, 
 	3u, 57u, 3u, 57u, 3u, 57u, 5u, 57u, 1u, 15u, 3u, 57u, 3u, 57u, 3u, 57u, 
 	3u, 57u, 3u, 57u, 3u, 57u, 3u, 57u, 3u, 57u, 3u, 57u, 3u, 57u, 3u, 57u, 
@@ -89,7 +89,7 @@ static const unsigned char _myanmar_syllable_machine_trans_keys[] = {
 	3u, 57u, 3u, 57u, 3u, 57u, 1u, 57u, 1u, 15u, 0
 };
 
-static const char _myanmar_syllable_machine_key_spans[] = {
+ساکن ثابت حرف myanmar_syllable_machine_کلید_spans[] = {
 	57, 55, 53, 53, 55, 53, 55, 55, 
 	55, 55, 55, 53, 15, 55, 55, 55, 
 	55, 55, 55, 55, 55, 55, 55, 55, 
@@ -99,7 +99,7 @@ static const char _myanmar_syllable_machine_key_spans[] = {
 	55, 55, 55, 57, 15
 };
 
-static const short _myanmar_syllable_machine_index_offsets[] = {
+ساکن ثابت مختصر myanmar_syllable_machine_اشاریہ_offsets[] = {
 	0, 58, 114, 168, 222, 278, 332, 388, 
 	444, 500, 556, 612, 666, 682, 738, 794, 
 	850, 906, 962, 1018, 1074, 1130, 1186, 1242, 
@@ -109,7 +109,7 @@ static const short _myanmar_syllable_machine_index_offsets[] = {
 	2594, 2650, 2706, 2762, 2820
 };
 
-static const char _myanmar_syllable_machine_indicies[] = {
+ساکن ثابت حرف _myanmar_syllable_machine_indicies[] = {
 	1, 1, 2, 3, 4, 4, 0, 5, 
 	6, 1, 1, 0, 0, 0, 7, 0, 
 	0, 8, 0, 9, 10, 11, 12, 0, 
@@ -467,7 +467,7 @@ static const char _myanmar_syllable_machine_indicies[] = {
 	60, 60, 1, 60, 0
 };
 
-static const char _myanmar_syllable_machine_trans_targs[] = {
+ساکن ثابت حرف _myanmar_syllable_machine_trans_targs[] = {
 	0, 1, 25, 35, 0, 26, 30, 49, 
 	52, 37, 38, 39, 29, 41, 42, 44, 
 	45, 46, 27, 48, 43, 26, 0, 2, 
@@ -478,7 +478,7 @@ static const char _myanmar_syllable_machine_trans_targs[] = {
 	40, 47, 50, 51, 0
 };
 
-static const char _myanmar_syllable_machine_trans_actions[] = {
+ساکن ثابت حرف _myanmar_syllable_machine_trans_actions[] = {
 	3, 0, 0, 0, 4, 5, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 6, 7, 0, 
@@ -489,7 +489,7 @@ static const char _myanmar_syllable_machine_trans_actions[] = {
 	0, 0, 0, 0, 12
 };
 
-static const char _myanmar_syllable_machine_to_state_actions[] = {
+ساکن ثابت حرف myanmar_syllable_machine_مقصد_state_actions[] = {
 	1, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
@@ -499,7 +499,7 @@ static const char _myanmar_syllable_machine_to_state_actions[] = {
 	0, 0, 0, 0, 0
 };
 
-static const char _myanmar_syllable_machine_from_state_actions[] = {
+ساکن ثابت حرف _myanmar_syllable_machine_from_state_actions[] = {
 	2, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
@@ -509,7 +509,7 @@ static const char _myanmar_syllable_machine_from_state_actions[] = {
 	0, 0, 0, 0, 0
 };
 
-static const short _myanmar_syllable_machine_eof_trans[] = {
+ساکن ثابت مختصر _myanmar_syllable_machine_eof_trans[] = {
 	0, 23, 23, 23, 23, 23, 23, 23, 
 	23, 23, 23, 23, 23, 23, 23, 23, 
 	23, 23, 23, 23, 23, 23, 23, 23, 
@@ -519,165 +519,165 @@ static const short _myanmar_syllable_machine_eof_trans[] = {
 	48, 23, 23, 48, 61
 };
 
-static const int myanmar_syllable_machine_start = 0;
-static const int myanmar_syllable_machine_first_final = 0;
-static const int myanmar_syllable_machine_error = -1;
+ساکن ثابت صحیح myanmar_syllable_machine_آغاز = 0;
+ساکن ثابت صحیح myanmar_syllable_machine_پہلا_final = 0;
+ساکن ثابت صحیح myanmar_syllable_machine_error = -1;
 
-static const int myanmar_syllable_machine_en_main = 0;
-
-
-#line 55 "hb-ot-shaper-myanmar-machine.rl"
+ساکن ثابت صحیح myanmar_syllable_machine_en_main = 0;
 
 
+#سطر 55 "hb-ot-shaper-myanmar-machine.rl"
 
-#line 118 "hb-ot-shaper-myanmar-machine.rl"
 
 
-#define found_syllable(syllable_type) \
-  HB_STMT_START { \
-    if (0) fprintf (stderr, "syllable %u..%u %s\n", ts, te, #syllable_type); \
-    for (unsigned int i = ts; i < te; i++) \
+#سطر 118 "hb-ot-shaper-myanmar-machine.rl"
+
+
+#تعریف_کرو ملا_syllable(syllable_type) \
+  HB_STMT_آغاز { \
+    اگر (0) fprintf (stderr, "syllable %u..%u %s\n", ts, te, #syllable_type); \
+    برائے (غیرعلامتی صحیح i = ts; i < te; i++) \
       info[i].syllable() = (syllable_serial << 4) | syllable_type; \
     syllable_serial++; \
-    if (syllable_serial == 16) syllable_serial = 1; \
-  } HB_STMT_END
+    اگر (syllable_serial == 16) syllable_serial = 1; \
+  } HB_STMT_انتہا
 
-inline void
-find_syllables_myanmar (hb_buffer_t *buffer)
+اندرونی خالی
+ڈھونڈو_syllables_myanmar (hb_بفر_t *بفر)
 {
-  unsigned int p, pe, eof, ts, te, act HB_UNUSED;
-  int cs;
-  hb_glyph_info_t *info = buffer->info;
+  غیرعلامتی صحیح p, pe, eof, ts, te, act HB_غیر_مستعمل;
+  صحیح cs;
+  hb_glyph_info_t *info = بفر->info;
   
-#line 542 "hb-ot-shaper-myanmar-machine.hh"
+#سطر 542 "hb-ot-shaper-myanmar-machine.hh"
 	{
-	cs = myanmar_syllable_machine_start;
+	cs = myanmar_syllable_machine_آغاز;
 	ts = 0;
 	te = 0;
 	act = 0;
 	}
 
-#line 138 "hb-ot-shaper-myanmar-machine.rl"
+#سطر 138 "hb-ot-shaper-myanmar-machine.rl"
 
 
   p = 0;
-  pe = eof = buffer->len;
+  pe = eof = بفر->len;
 
-  unsigned int syllable_serial = 1;
+  غیرعلامتی صحیح syllable_serial = 1;
   
-#line 554 "hb-ot-shaper-myanmar-machine.hh"
+#سطر 554 "hb-ot-shaper-myanmar-machine.hh"
 	{
-	int _slen;
-	int _trans;
-	const unsigned char *_keys;
-	const char *_inds;
-	if ( p == pe )
-		goto _test_eof;
+	صحیح _slen;
+	صحیح _trans;
+	ثابت غیرعلامتی حرف *کلیدیں_2;
+	ثابت حرف *_inds;
+	اگر ( p == pe )
+		جاؤ _test_eof;
 _resume:
-	switch ( _myanmar_syllable_machine_from_state_actions[cs] ) {
-	case 2:
-#line 1 "NONE"
+	انتخاب ( _myanmar_syllable_machine_from_state_actions[cs] ) {
+	حالت 2:
+#سطر 1 "NONE"
 	{ts = p;}
-	break;
-#line 566 "hb-ot-shaper-myanmar-machine.hh"
+	توڑو;
+#سطر 566 "hb-ot-shaper-myanmar-machine.hh"
 	}
 
-	_keys = _myanmar_syllable_machine_trans_keys + (cs<<1);
-	_inds = _myanmar_syllable_machine_indicies + _myanmar_syllable_machine_index_offsets[cs];
+	کلیدیں_2 = myanmar_syllable_machine_trans_کلیدیں + (cs<<1);
+	_inds = _myanmar_syllable_machine_indicies + myanmar_syllable_machine_اشاریہ_offsets[cs];
 
-	_slen = _myanmar_syllable_machine_key_spans[cs];
-	_trans = _inds[ _slen > 0 && _keys[0] <=( info[p].myanmar_category()) &&
-		( info[p].myanmar_category()) <= _keys[1] ?
-		( info[p].myanmar_category()) - _keys[0] : _slen ];
+	_slen = myanmar_syllable_machine_کلید_spans[cs];
+	_trans = _inds[ _slen > 0 && کلیدیں_2[0] <=( info[p].myanmar_category()) &&
+		( info[p].myanmar_category()) <= کلیدیں_2[1] ?
+		( info[p].myanmar_category()) - کلیدیں_2[0] : _slen ];
 
 _eof_trans:
 	cs = _myanmar_syllable_machine_trans_targs[_trans];
 
-	if ( _myanmar_syllable_machine_trans_actions[_trans] == 0 )
-		goto _again;
+	اگر ( _myanmar_syllable_machine_trans_actions[_trans] == 0 )
+		جاؤ _again;
 
-	switch ( _myanmar_syllable_machine_trans_actions[_trans] ) {
-	case 8:
-#line 111 "hb-ot-shaper-myanmar-machine.rl"
-	{te = p+1;{ found_syllable (myanmar_consonant_syllable); }}
-	break;
-	case 4:
-#line 112 "hb-ot-shaper-myanmar-machine.rl"
-	{te = p+1;{ found_syllable (myanmar_non_myanmar_cluster); }}
-	break;
-	case 10:
-#line 113 "hb-ot-shaper-myanmar-machine.rl"
-	{te = p+1;{ found_syllable (myanmar_broken_cluster); buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }}
-	break;
-	case 3:
-#line 114 "hb-ot-shaper-myanmar-machine.rl"
-	{te = p+1;{ found_syllable (myanmar_non_myanmar_cluster); }}
-	break;
-	case 7:
-#line 111 "hb-ot-shaper-myanmar-machine.rl"
-	{te = p;p--;{ found_syllable (myanmar_consonant_syllable); }}
-	break;
-	case 9:
-#line 113 "hb-ot-shaper-myanmar-machine.rl"
-	{te = p;p--;{ found_syllable (myanmar_broken_cluster); buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }}
-	break;
-	case 12:
-#line 114 "hb-ot-shaper-myanmar-machine.rl"
-	{te = p;p--;{ found_syllable (myanmar_non_myanmar_cluster); }}
-	break;
-	case 11:
-#line 1 "NONE"
-	{	switch( act ) {
-	case 2:
-	{{p = ((te))-1;} found_syllable (myanmar_non_myanmar_cluster); }
-	break;
-	case 3:
-	{{p = ((te))-1;} found_syllable (myanmar_broken_cluster); buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }
-	break;
+	انتخاب ( _myanmar_syllable_machine_trans_actions[_trans] ) {
+	حالت 8:
+#سطر 111 "hb-ot-shaper-myanmar-machine.rl"
+	{te = p+1;{ ملا_syllable (myanmar_consonant_syllable); }}
+	توڑو;
+	حالت 4:
+#سطر 112 "hb-ot-shaper-myanmar-machine.rl"
+	{te = p+1;{ ملا_syllable (myanmar_non_myanmar_cluster); }}
+	توڑو;
+	حالت 10:
+#سطر 113 "hb-ot-shaper-myanmar-machine.rl"
+	{te = p+1;{ ملا_syllable (myanmar_broken_cluster); بفر->scratch_flags |= HB_بفر_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }}
+	توڑو;
+	حالت 3:
+#سطر 114 "hb-ot-shaper-myanmar-machine.rl"
+	{te = p+1;{ ملا_syllable (myanmar_non_myanmar_cluster); }}
+	توڑو;
+	حالت 7:
+#سطر 111 "hb-ot-shaper-myanmar-machine.rl"
+	{te = p;p--;{ ملا_syllable (myanmar_consonant_syllable); }}
+	توڑو;
+	حالت 9:
+#سطر 113 "hb-ot-shaper-myanmar-machine.rl"
+	{te = p;p--;{ ملا_syllable (myanmar_broken_cluster); بفر->scratch_flags |= HB_بفر_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }}
+	توڑو;
+	حالت 12:
+#سطر 114 "hb-ot-shaper-myanmar-machine.rl"
+	{te = p;p--;{ ملا_syllable (myanmar_non_myanmar_cluster); }}
+	توڑو;
+	حالت 11:
+#سطر 1 "NONE"
+	{	انتخاب( act ) {
+	حالت 2:
+	{{p = ((te))-1;} ملا_syllable (myanmar_non_myanmar_cluster); }
+	توڑو;
+	حالت 3:
+	{{p = ((te))-1;} ملا_syllable (myanmar_broken_cluster); بفر->scratch_flags |= HB_بفر_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE; }
+	توڑو;
 	}
 	}
-	break;
-	case 6:
-#line 1 "NONE"
+	توڑو;
+	حالت 6:
+#سطر 1 "NONE"
 	{te = p+1;}
-#line 112 "hb-ot-shaper-myanmar-machine.rl"
+#سطر 112 "hb-ot-shaper-myanmar-machine.rl"
 	{act = 2;}
-	break;
-	case 5:
-#line 1 "NONE"
+	توڑو;
+	حالت 5:
+#سطر 1 "NONE"
 	{te = p+1;}
-#line 113 "hb-ot-shaper-myanmar-machine.rl"
+#سطر 113 "hb-ot-shaper-myanmar-machine.rl"
 	{act = 3;}
-	break;
-#line 623 "hb-ot-shaper-myanmar-machine.hh"
+	توڑو;
+#سطر 623 "hb-ot-shaper-myanmar-machine.hh"
 	}
 
 _again:
-	switch ( _myanmar_syllable_machine_to_state_actions[cs] ) {
-	case 1:
-#line 1 "NONE"
+	انتخاب ( myanmar_syllable_machine_مقصد_state_actions[cs] ) {
+	حالت 1:
+#سطر 1 "NONE"
 	{ts = 0;}
-	break;
-#line 630 "hb-ot-shaper-myanmar-machine.hh"
+	توڑو;
+#سطر 630 "hb-ot-shaper-myanmar-machine.hh"
 	}
 
-	if ( ++p != pe )
-		goto _resume;
+	اگر ( ++p != pe )
+		جاؤ _resume;
 	_test_eof: {}
-	if ( p == eof )
+	اگر ( p == eof )
 	{
-	if ( _myanmar_syllable_machine_eof_trans[cs] > 0 ) {
+	اگر ( _myanmar_syllable_machine_eof_trans[cs] > 0 ) {
 		_trans = _myanmar_syllable_machine_eof_trans[cs] - 1;
-		goto _eof_trans;
+		جاؤ _eof_trans;
 	}
 	}
 
 	}
 
-#line 146 "hb-ot-shaper-myanmar-machine.rl"
+#سطر 146 "hb-ot-shaper-myanmar-machine.rl"
 
 }
 
-#undef found_syllable
+#تعریف_منسوخ ملا_syllable
 
-#endif /* HB_OT_SHAPER_MYANMAR_MACHINE_HH */
+#اگر_ختم /* HB_OT_SHAPER_MYANMAR_MACHINE_HH */

@@ -26,8 +26,8 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
-#include "hb-machinery.hh"
+#شامل "hb.hh"
+#شامل "hb-machinery.hh"
 
 
 /**
@@ -56,23 +56,23 @@
  *
  * Since: 0.9.2
  **/
-hb_tag_t
-hb_tag_from_string (const char *str, int len)
+hb_لیبل_t
+hb_لیبل_from_string (ثابت حرف *str, صحیح len)
 {
-  char tag[4];
-  unsigned int i;
+  حرف لیبل_2[4];
+  غیرعلامتی صحیح i;
 
-  if (!str || !len || !*str)
-    return HB_TAG_NONE;
+  اگر (!str || !len || !*str)
+    واپس HB_لیبل_NONE;
 
-  if (len < 0 || len > 4)
+  اگر (len < 0 || len > 4)
     len = 4;
-  for (i = 0; i < (unsigned) len && str[i]; i++)
-    tag[i] = str[i];
-  for (; i < 4; i++)
-    tag[i] = ' ';
+  برائے (i = 0; i < (غیرعلامتی) len && str[i]; i++)
+    لیبل_2[i] = str[i];
+  برائے (; i < 4; i++)
+    لیبل_2[i] = ' ';
 
-  return HB_TAG (tag[0], tag[1], tag[2], tag[3]);
+  واپس HB_لیبل (لیبل_2[0], لیبل_2[1], لیبل_2[2], لیبل_2[3]);
 }
 
 /**
@@ -85,19 +85,19 @@ hb_tag_from_string (const char *str, int len)
  *
  * Since: 0.9.5
  **/
-void
-hb_tag_to_string (hb_tag_t tag, char *buf)
+خالی
+hb_لیبل_مقصد_string (hb_لیبل_t لیبل_2, حرف *buf)
 {
-  buf[0] = (char) (uint8_t) (tag >> 24);
-  buf[1] = (char) (uint8_t) (tag >> 16);
-  buf[2] = (char) (uint8_t) (tag >>  8);
-  buf[3] = (char) (uint8_t) (tag >>  0);
+  buf[0] = (حرف) (uint8_t) (لیبل_2 >> 24);
+  buf[1] = (حرف) (uint8_t) (لیبل_2 >> 16);
+  buf[2] = (حرف) (uint8_t) (لیبل_2 >>  8);
+  buf[3] = (حرف) (uint8_t) (لیبل_2 >>  0);
 }
 
 
 /* hb_direction_t */
 
-static const char direction_strings[][4] = {
+ساکن ثابت حرف direction_لڑیاں[][4] = {
   "ltr",
   "rtl",
   "ttb",
@@ -121,20 +121,20 @@ static const char direction_strings[][4] = {
  * Since: 0.9.2
  **/
 hb_direction_t
-hb_direction_from_string (const char *str, int len)
+hb_direction_from_string (ثابت حرف *str, صحیح len)
 {
-  if (unlikely (!str || !len || !*str))
-    return HB_DIRECTION_INVALID;
+  اگر (unlikely (!str || !len || !*str))
+    واپس HB_DIRECTION_INVALID;
 
   /* Lets match loosely: just match the first letter, such that
    * all of "ltr", "left-to-right", etc work!
    */
-  char c = TOLOWER (str[0]);
-  for (unsigned int i = 0; i < ARRAY_LENGTH (direction_strings); i++)
-    if (c == direction_strings[i][0])
-      return (hb_direction_t) (HB_DIRECTION_LTR + i);
+  حرف c = TOLOWER (str[0]);
+  برائے (غیرعلامتی صحیح i = 0; i < ARRAY_لمبائی (direction_لڑیاں); i++)
+    اگر (c == direction_لڑیاں[i][0])
+      واپس (hb_direction_t) (HB_DIRECTION_LTR + i);
 
-  return HB_DIRECTION_INVALID;
+  واپس HB_DIRECTION_INVALID;
 }
 
 /**
@@ -147,24 +147,24 @@ hb_direction_from_string (const char *str, int len)
  *
  * Since: 0.9.2
  **/
-const char *
-hb_direction_to_string (hb_direction_t direction)
+ثابت حرف *
+hb_direction_مقصد_string (hb_direction_t direction)
 {
-  if (likely ((unsigned int) (direction - HB_DIRECTION_LTR)
-	      < ARRAY_LENGTH (direction_strings)))
-    return direction_strings[direction - HB_DIRECTION_LTR];
+  اگر (likely ((غیرعلامتی صحیح) (direction - HB_DIRECTION_LTR)
+	      < ARRAY_لمبائی (direction_لڑیاں)))
+    واپس direction_لڑیاں[direction - HB_DIRECTION_LTR];
 
-  return "invalid";
+  واپس "invalid";
 }
 
 
 /* hb_language_t */
 
-struct hb_language_impl_t {
-  const char s[1];
+ساخت hb_language_impl_t {
+  ثابت حرف s[1];
 };
 
-static const char canon_map[256] = {
+ساکن ثابت حرف canon_map[256] = {
    0,   0,   0,   0,   0,   0,   0,   0,    0,   0,   0,   0,   0,   0,   0,   0,
    0,   0,   0,   0,   0,   0,   0,   0,    0,   0,   0,   0,   0,   0,   0,   0,
    0,   0,   0,   0,   0,   0,   0,   0,    0,   0,   0,   0,   0,  '-',  0,   0,
@@ -175,118 +175,118 @@ static const char canon_map[256] = {
   'p', 'q', 'r', 's', 't', 'u', 'v', 'w',  'x', 'y', 'z',  0,   0,   0,   0,   0
 };
 
-static bool
+ساکن منطقی
 lang_equal (hb_language_t  v1,
-	    const void    *v2)
+	    ثابت خالی    *v2)
 {
-  const unsigned char *p1 = (const unsigned char *) v1;
-  const unsigned char *p2 = (const unsigned char *) v2;
+  ثابت غیرعلامتی حرف *p1 = (ثابت غیرعلامتی حرف *) v1;
+  ثابت غیرعلامتی حرف *p2 = (ثابت غیرعلامتی حرف *) v2;
 
-  while (*p1 && *p1 == canon_map[*p2]) {
+  جب (*p1 && *p1 == canon_map[*p2]) {
     p1++;
     p2++;
   }
 
-  return *p1 == canon_map[*p2];
+  واپس *p1 == canon_map[*p2];
 }
 
-#if 0
-static unsigned int
-lang_hash (const void *key)
+#اگر 0
+ساکن غیرعلامتی صحیح
+lang_hash (ثابت خالی *key)
 {
-  const unsigned char *p = key;
-  unsigned int h = 0;
-  while (canon_map[*p])
+  ثابت غیرعلامتی حرف *p = key;
+  غیرعلامتی صحیح h = 0;
+  جب (canon_map[*p])
     {
       h = (h << 5) - h + canon_map[*p];
       p++;
     }
 
-  return h;
+  واپس h;
 }
-#endif
+#اگر_ختم
 
 
-struct hb_language_item_t {
+ساخت hb_language_شے_t {
 
-  struct hb_language_item_t *next;
+  ساخت hb_language_شے_t *next;
   hb_language_t lang;
 
-  bool operator == (const char *s) const
-  { return lang_equal (lang, s); }
+  منطقی عامل == (ثابت حرف *s) ثابت
+  { واپس lang_equal (lang, s); }
 
-  hb_language_item_t & operator = (const char *s)
+  hb_language_شے_t & عامل = (ثابت حرف *s)
   {
     /* We can't call strdup(), because we allow custom allocators. */
-    size_t len = strlen(s) + 1;
+    size_t len = لڑی_لمبائی(s) + 1;
     lang = (hb_language_t) hb_malloc(len);
-    if (likely (lang))
+    اگر (likely (lang))
     {
-      hb_memcpy((unsigned char *) lang, s, len);
-      for (unsigned char *p = (unsigned char *) lang; *p; p++)
+      hb_memcpy((غیرعلامتی حرف *) lang, s, len);
+      برائے (غیرعلامتی حرف *p = (غیرعلامتی حرف *) lang; *p; p++)
 	*p = canon_map[*p];
     }
 
-    return *this;
+    واپس *یہ;
   }
 
-  void fini () { hb_free ((void *) lang); }
+  خالی fini () { hb_free ((خالی *) lang); }
 };
 
 
 /* Thread-safe lockfree language list */
 
-static hb_atomic_t<hb_language_item_t *> langs;
+ساکن hb_atomic_t<hb_language_شے_t *> langs;
 
-static inline void
+ساکن اندرونی خالی
 free_langs ()
 {
 retry:
-  hb_language_item_t *first_lang = langs;
-  if (unlikely (!langs.cmpexch (first_lang, nullptr)))
-    goto retry;
+  hb_language_شے_t *پہلا_lang = langs;
+  اگر (unlikely (!langs.cmpexch (پہلا_lang, خالی_اشاریہ)))
+    جاؤ retry;
 
-  while (first_lang) {
-    hb_language_item_t *next = first_lang->next;
-    first_lang->fini ();
-    hb_free (first_lang);
-    first_lang = next;
+  جب (پہلا_lang) {
+    hb_language_شے_t *next = پہلا_lang->next;
+    پہلا_lang->fini ();
+    hb_free (پہلا_lang);
+    پہلا_lang = next;
   }
 }
 
-static hb_language_item_t *
-lang_find_or_insert (const char *key)
+ساکن hb_language_شے_t *
+lang_ڈھونڈو_or_داخل_کرو (ثابت حرف *key)
 {
 retry:
-  hb_language_item_t *first_lang = langs;
+  hb_language_شے_t *پہلا_lang = langs;
 
-  for (hb_language_item_t *lang = first_lang; lang; lang = lang->next)
-    if (*lang == key)
-      return lang;
+  برائے (hb_language_شے_t *lang = پہلا_lang; lang; lang = lang->next)
+    اگر (*lang == key)
+      واپس lang;
 
   /* Not found; allocate one. */
-  hb_language_item_t *lang = (hb_language_item_t *) hb_calloc (1, sizeof (hb_language_item_t));
-  if (unlikely (!lang))
-    return nullptr;
-  lang->next = first_lang;
+  hb_language_شے_t *lang = (hb_language_شے_t *) hb_calloc (1, حجم (hb_language_شے_t));
+  اگر (unlikely (!lang))
+    واپس خالی_اشاریہ;
+  lang->next = پہلا_lang;
   *lang = key;
-  if (unlikely (!lang->lang))
+  اگر (unlikely (!lang->lang))
   {
     hb_free (lang);
-    return nullptr;
+    واپس خالی_اشاریہ;
   }
 
-  if (unlikely (!langs.cmpexch (first_lang, lang)))
+  اگر (unlikely (!langs.cmpexch (پہلا_lang, lang)))
   {
     lang->fini ();
     hb_free (lang);
-    goto retry;
+    جاؤ retry;
   }
 
-  if (!first_lang)
+  اگر (!پہلا_lang)
     hb_atexit (free_langs); /* First person registers atexit() callback. */
 
-  return lang;
+  واپس lang;
 }
 
 
@@ -305,25 +305,25 @@ retry:
  * Since: 0.9.2
  **/
 hb_language_t
-hb_language_from_string (const char *str, int len)
+hb_language_from_string (ثابت حرف *str, صحیح len)
 {
-  if (!str || !len || !*str)
-    return HB_LANGUAGE_INVALID;
+  اگر (!str || !len || !*str)
+    واپس HB_LANGUAGE_INVALID;
 
-  hb_language_item_t *item = nullptr;
-  if (len >= 0)
+  hb_language_شے_t *شے = خالی_اشاریہ;
+  اگر (len >= 0)
   {
     /* NUL-terminate it. */
-    char strbuf[64];
-    len = hb_min (len, (int) sizeof (strbuf) - 1);
+    حرف strbuf[64];
+    len = hb_min (len, (صحیح) حجم (strbuf) - 1);
     hb_memcpy (strbuf, str, len);
     strbuf[len] = '\0';
-    item = lang_find_or_insert (strbuf);
+    شے = lang_ڈھونڈو_or_داخل_کرو (strbuf);
   }
-  else
-    item = lang_find_or_insert (str);
+  ورنہ
+    شے = lang_ڈھونڈو_or_داخل_کرو (str);
 
-  return likely (item) ? item->lang : HB_LANGUAGE_INVALID;
+  واپس likely (شے) ? شے->lang : HB_LANGUAGE_INVALID;
 }
 
 /**
@@ -338,12 +338,12 @@ hb_language_from_string (const char *str, int len)
  *
  * Since: 0.9.2
  **/
-const char *
-hb_language_to_string (hb_language_t language)
+ثابت حرف *
+hb_language_مقصد_string (hb_language_t language)
 {
-  if (unlikely (!language)) return nullptr;
+  اگر (unlikely (!language)) واپس خالی_اشاریہ;
 
-  return language->s;
+  واپس language->s;
 }
 
 /**
@@ -366,16 +366,16 @@ hb_language_to_string (hb_language_t language)
 hb_language_t
 hb_language_get_default ()
 {
-  static hb_atomic_t<hb_language_t> default_language;
+  ساکن hb_atomic_t<hb_language_t> default_language;
 
   hb_language_t language = default_language;
-  if (unlikely (language == HB_LANGUAGE_INVALID))
+  اگر (unlikely (language == HB_LANGUAGE_INVALID))
   {
-    language = hb_language_from_string (hb_setlocale (LC_CTYPE, nullptr), -1);
-    (void) default_language.cmpexch (HB_LANGUAGE_INVALID, language);
+    language = hb_language_from_string (hb_setlocale (LC_CTYPE, خالی_اشاریہ), -1);
+    (خالی) default_language.cmpexch (HB_LANGUAGE_INVALID, language);
   }
 
-  return language;
+  واپس language;
 }
 
 /**
@@ -395,18 +395,18 @@ hb_bool_t
 hb_language_matches (hb_language_t language,
 		     hb_language_t specific)
 {
-  if (language == specific) return true;
-  if (!language || !specific) return false;
+  اگر (language == specific) واپس سچ;
+  اگر (!language || !specific) واپس جھوٹ;
 
-  const char *l = language->s;
-  const char *s = specific->s;
-  unsigned ll = strlen (l);
-  unsigned sl = strlen (s);
+  ثابت حرف *l = language->s;
+  ثابت حرف *s = specific->s;
+  غیرعلامتی ll = لڑی_لمبائی (l);
+  غیرعلامتی sl = لڑی_لمبائی (s);
 
-  if (ll > sl)
-    return false;
+  اگر (ll > sl)
+    واپس جھوٹ;
 
-  return strncmp (l, s, ll) == 0 &&
+  واپس لڑی_موازنہ (l, s, ll) == 0 &&
 	 (s[ll] == '\0' || s[ll] == '-');
 }
 
@@ -425,36 +425,36 @@ hb_language_matches (hb_language_t language,
  * Since: 0.9.2
  **/
 hb_script_t
-hb_script_from_iso15924_tag (hb_tag_t tag)
+hb_script_from_iso15924_لیبل (hb_لیبل_t لیبل_2)
 {
-  if (unlikely (tag == HB_TAG_NONE))
-    return HB_SCRIPT_INVALID;
+  اگر (unlikely (لیبل_2 == HB_لیبل_NONE))
+    واپس HB_SCRIPT_INVALID;
 
   /* Be lenient, adjust case (one capital letter followed by three small letters) */
-  tag = (tag & 0xDFDFDFDFu) | 0x00202020u;
+  لیبل_2 = (لیبل_2 & 0xDFDFDFDFu) | 0x00202020u;
 
-  switch (tag)
+  انتخاب (لیبل_2)
   {
     /* Script variants from https://unicode.org/iso15924/ */
-    case HB_TAG('A','r','a','n'): return HB_SCRIPT_ARABIC;
-    case HB_TAG('C','y','r','s'): return HB_SCRIPT_CYRILLIC;
-    case HB_TAG('G','e','o','k'): return HB_SCRIPT_GEORGIAN;
-    case HB_TAG('H','a','n','s'): return HB_SCRIPT_HAN;
-    case HB_TAG('H','a','n','t'): return HB_SCRIPT_HAN;
-    case HB_TAG('J','a','m','o'): return HB_SCRIPT_HANGUL;
-    case HB_TAG('L','a','t','f'): return HB_SCRIPT_LATIN;
-    case HB_TAG('L','a','t','g'): return HB_SCRIPT_LATIN;
-    case HB_TAG('S','y','r','e'): return HB_SCRIPT_SYRIAC;
-    case HB_TAG('S','y','r','j'): return HB_SCRIPT_SYRIAC;
-    case HB_TAG('S','y','r','n'): return HB_SCRIPT_SYRIAC;
+    حالت HB_لیبل('A','r','a','n'): واپس HB_SCRIPT_ARABIC;
+    حالت HB_لیبل('C','y','r','s'): واپس HB_SCRIPT_CYRILLIC;
+    حالت HB_لیبل('G','e','o','k'): واپس HB_SCRIPT_GEORGIAN;
+    حالت HB_لیبل('H','a','n','s'): واپس HB_SCRIPT_HAN;
+    حالت HB_لیبل('H','a','n','t'): واپس HB_SCRIPT_HAN;
+    حالت HB_لیبل('J','a','m','o'): واپس HB_SCRIPT_HANGUL;
+    حالت HB_لیبل('L','a','t','f'): واپس HB_SCRIPT_LATIN;
+    حالت HB_لیبل('L','a','t','g'): واپس HB_SCRIPT_LATIN;
+    حالت HB_لیبل('S','y','r','e'): واپس HB_SCRIPT_SYRIAC;
+    حالت HB_لیبل('S','y','r','j'): واپس HB_SCRIPT_SYRIAC;
+    حالت HB_لیبل('S','y','r','n'): واپس HB_SCRIPT_SYRIAC;
   }
 
   /* If it looks right, just use the tag as a script */
-  if (((uint32_t) tag & 0xE0E0E0E0u) == 0x40606060u)
-    return (hb_script_t) tag;
+  اگر (((uint32_t) لیبل_2 & 0xE0E0E0E0u) == 0x40606060u)
+    واپس (hb_script_t) لیبل_2;
 
   /* Otherwise, return unknown */
-  return HB_SCRIPT_UNKNOWN;
+  واپس HB_SCRIPT_UNKNOWN;
 }
 
 /**
@@ -473,9 +473,9 @@ hb_script_from_iso15924_tag (hb_tag_t tag)
  * Since: 0.9.2
  **/
 hb_script_t
-hb_script_from_string (const char *str, int len)
+hb_script_from_string (ثابت حرف *str, صحیح len)
 {
-  return hb_script_from_iso15924_tag (hb_tag_from_string (str, len));
+  واپس hb_script_from_iso15924_لیبل (hb_لیبل_from_string (str, len));
 }
 
 /**
@@ -489,10 +489,10 @@ hb_script_from_string (const char *str, int len)
  *
  * Since: 0.9.2
  **/
-hb_tag_t
-hb_script_to_iso15924_tag (hb_script_t script)
+hb_لیبل_t
+hb_script_مقصد_iso15924_لیبل (hb_script_t script)
 {
-  return (hb_tag_t) script;
+  واپس (hb_لیبل_t) script;
 }
 
 /**
@@ -517,93 +517,93 @@ hb_direction_t
 hb_script_get_horizontal_direction (hb_script_t script)
 {
   /* https://docs.google.com/spreadsheets/d/1Y90M0Ie3MUJ6UVCRDOypOtijlMDLNNyyLk36T6iMu0o */
-  switch ((hb_tag_t) script)
+  انتخاب ((hb_لیبل_t) script)
   {
     /* Unicode-1.1 additions */
-    case HB_SCRIPT_ARABIC:
-    case HB_SCRIPT_HEBREW:
+    حالت HB_SCRIPT_ARABIC:
+    حالت HB_SCRIPT_HEBREW:
 
     /* Unicode-3.0 additions */
-    case HB_SCRIPT_SYRIAC:
-    case HB_SCRIPT_THAANA:
+    حالت HB_SCRIPT_SYRIAC:
+    حالت HB_SCRIPT_THAANA:
 
     /* Unicode-4.0 additions */
-    case HB_SCRIPT_CYPRIOT:
+    حالت HB_SCRIPT_CYPRIOT:
 
     /* Unicode-4.1 additions */
-    case HB_SCRIPT_KHAROSHTHI:
+    حالت HB_SCRIPT_KHAROSHTHI:
 
     /* Unicode-5.0 additions */
-    case HB_SCRIPT_PHOENICIAN:
-    case HB_SCRIPT_NKO:
+    حالت HB_SCRIPT_PHOENICIAN:
+    حالت HB_SCRIPT_NKO:
 
     /* Unicode-5.1 additions */
-    case HB_SCRIPT_LYDIAN:
+    حالت HB_SCRIPT_LYDIAN:
 
     /* Unicode-5.2 additions */
-    case HB_SCRIPT_AVESTAN:
-    case HB_SCRIPT_IMPERIAL_ARAMAIC:
-    case HB_SCRIPT_INSCRIPTIONAL_PAHLAVI:
-    case HB_SCRIPT_INSCRIPTIONAL_PARTHIAN:
-    case HB_SCRIPT_OLD_SOUTH_ARABIAN:
-    case HB_SCRIPT_OLD_TURKIC:
-    case HB_SCRIPT_SAMARITAN:
+    حالت HB_SCRIPT_AVESTAN:
+    حالت HB_SCRIPT_IMPERIAL_ARAMAIC:
+    حالت HB_SCRIPT_INSCRIPTIONAL_PAHLAVI:
+    حالت HB_SCRIPT_INSCRIPTIONAL_PARTHIAN:
+    حالت HB_SCRIPT_OLD_SOUTH_ARABIAN:
+    حالت HB_SCRIPT_OLD_TURKIC:
+    حالت HB_SCRIPT_SAMARITAN:
 
     /* Unicode-6.0 additions */
-    case HB_SCRIPT_MANDAIC:
+    حالت HB_SCRIPT_MANDAIC:
 
     /* Unicode-6.1 additions */
-    case HB_SCRIPT_MEROITIC_CURSIVE:
-    case HB_SCRIPT_MEROITIC_HIEROGLYPHS:
+    حالت HB_SCRIPT_MEROITIC_CURSIVE:
+    حالت HB_SCRIPT_MEROITIC_HIEROGLYPHS:
 
     /* Unicode-7.0 additions */
-    case HB_SCRIPT_MANICHAEAN:
-    case HB_SCRIPT_MENDE_KIKAKUI:
-    case HB_SCRIPT_NABATAEAN:
-    case HB_SCRIPT_OLD_NORTH_ARABIAN:
-    case HB_SCRIPT_PALMYRENE:
-    case HB_SCRIPT_PSALTER_PAHLAVI:
+    حالت HB_SCRIPT_MANICHAEAN:
+    حالت HB_SCRIPT_MENDE_KIKAKUI:
+    حالت HB_SCRIPT_NABATAEAN:
+    حالت HB_SCRIPT_OLD_NORTH_ARABIAN:
+    حالت HB_SCRIPT_PALMYRENE:
+    حالت HB_SCRIPT_PSALTER_PAHLAVI:
 
     /* Unicode-8.0 additions */
-    case HB_SCRIPT_HATRAN:
+    حالت HB_SCRIPT_HATRAN:
 
     /* Unicode-9.0 additions */
-    case HB_SCRIPT_ADLAM:
+    حالت HB_SCRIPT_ADLAM:
 
     /* Unicode-11.0 additions */
-    case HB_SCRIPT_HANIFI_ROHINGYA:
-    case HB_SCRIPT_OLD_SOGDIAN:
-    case HB_SCRIPT_SOGDIAN:
+    حالت HB_SCRIPT_HANIFI_ROHINGYA:
+    حالت HB_SCRIPT_OLD_SOGDIAN:
+    حالت HB_SCRIPT_SOGDIAN:
 
     /* Unicode-12.0 additions */
-    case HB_SCRIPT_ELYMAIC:
+    حالت HB_SCRIPT_ELYMAIC:
 
     /* Unicode-13.0 additions */
-    case HB_SCRIPT_CHORASMIAN:
-    case HB_SCRIPT_YEZIDI:
+    حالت HB_SCRIPT_CHORASMIAN:
+    حالت HB_SCRIPT_YEZIDI:
 
     /* Unicode-14.0 additions */
-    case HB_SCRIPT_OLD_UYGHUR:
+    حالت HB_SCRIPT_OLD_UYGHUR:
 
     /* Unicode-16.0 additions */
-    case HB_SCRIPT_GARAY:
+    حالت HB_SCRIPT_GARAY:
 
     /* Unicode-17.0 additions */
-    case HB_SCRIPT_SIDETIC:
+    حالت HB_SCRIPT_SIDETIC:
 
-      return HB_DIRECTION_RTL;
+      واپس HB_DIRECTION_RTL;
 
 
     /* https://github.com/harfbuzz/harfbuzz/issues/1000 */
-    case HB_SCRIPT_OLD_HUNGARIAN:
-    case HB_SCRIPT_OLD_ITALIC:
-    case HB_SCRIPT_RUNIC:
-    case HB_SCRIPT_TIFINAGH:
+    حالت HB_SCRIPT_OLD_HUNGARIAN:
+    حالت HB_SCRIPT_OLD_ITALIC:
+    حالت HB_SCRIPT_RUNIC:
+    حالت HB_SCRIPT_TIFINAGH:
 
-      return HB_DIRECTION_INVALID;
+      واپس HB_DIRECTION_INVALID;
   }
 
-  return HB_DIRECTION_LTR;
+  واپس HB_DIRECTION_LTR;
 }
 
 
@@ -632,14 +632,14 @@ hb_script_get_horizontal_direction (hb_script_t script)
  *
  * Since: 0.9.2
  **/
-void
-hb_version (unsigned int *major,
-	    unsigned int *minor,
-	    unsigned int *micro)
+خالی
+hb_نسخہ (غیرعلامتی صحیح *major,
+	    غیرعلامتی صحیح *minor,
+	    غیرعلامتی صحیح *micro)
 {
-  *major = HB_VERSION_MAJOR;
-  *minor = HB_VERSION_MINOR;
-  *micro = HB_VERSION_MICRO;
+  *major = HB_نسخہ_MAJOR;
+  *minor = HB_نسخہ_MINOR;
+  *micro = HB_نسخہ_MICRO;
 }
 
 /**
@@ -651,10 +651,10 @@ hb_version (unsigned int *major,
  *
  * Since: 0.9.2
  **/
-const char *
-hb_version_string ()
+ثابت حرف *
+hb_نسخہ_string ()
 {
-  return HB_VERSION_STRING;
+  واپس HB_نسخہ_STRING;
 }
 
 /**
@@ -672,183 +672,183 @@ hb_version_string ()
  * Since: 0.9.30
  **/
 hb_bool_t
-hb_version_atleast (unsigned int major,
-		    unsigned int minor,
-		    unsigned int micro)
+hb_نسخہ_atleast (غیرعلامتی صحیح major,
+		    غیرعلامتی صحیح minor,
+		    غیرعلامتی صحیح micro)
 {
-  return HB_VERSION_ATLEAST (major, minor, micro);
+  واپس HB_نسخہ_ATLEAST (major, minor, micro);
 }
 
 
 
 /* hb_feature_t and hb_variation_t */
 
-static bool
-parse_space (const char **pp, const char *end)
+ساکن منطقی
+parse_space (ثابت حرف **pp, ثابت حرف *انتہا)
 {
-  while (*pp < end && ISSPACE (**pp))
+  جب (*pp < انتہا && ISSPACE (**pp))
     (*pp)++;
-  return true;
+  واپس سچ;
 }
 
-static bool
-parse_char (const char **pp, const char *end, char c)
+ساکن منطقی
+parse_char (ثابت حرف **pp, ثابت حرف *انتہا, حرف c)
 {
-  parse_space (pp, end);
+  parse_space (pp, انتہا);
 
-  if (*pp == end || **pp != c)
-    return false;
+  اگر (*pp == انتہا || **pp != c)
+    واپس جھوٹ;
 
   (*pp)++;
-  return true;
+  واپس سچ;
 }
 
-static bool
-parse_uint (const char **pp, const char *end, unsigned int *pv)
+ساکن منطقی
+parse_uint (ثابت حرف **pp, ثابت حرف *انتہا, غیرعلامتی صحیح *pv)
 {
   /* Intentionally use hb_parse_int inside instead of hb_parse_uint,
    * such that -1 turns into "big number"... */
-  int v;
-  if (unlikely (!hb_parse_int (pp, end, &v))) return false;
+  صحیح v;
+  اگر (unlikely (!hb_parse_int (pp, انتہا, &v))) واپس جھوٹ;
 
   *pv = v;
-  return true;
+  واپس سچ;
 }
 
-static bool
-parse_uint32 (const char **pp, const char *end, uint32_t *pv)
+ساکن منطقی
+parse_uint32 (ثابت حرف **pp, ثابت حرف *انتہا, uint32_t *pv)
 {
   /* Intentionally use hb_parse_int inside instead of hb_parse_uint,
    * such that -1 turns into "big number"... */
-  int v;
-  if (unlikely (!hb_parse_int (pp, end, &v))) return false;
+  صحیح v;
+  اگر (unlikely (!hb_parse_int (pp, انتہا, &v))) واپس جھوٹ;
 
   *pv = v;
-  return true;
+  واپس سچ;
 }
 
-static bool
-parse_bool (const char **pp, const char *end, uint32_t *pv)
+ساکن منطقی
+parse_bool (ثابت حرف **pp, ثابت حرف *انتہا, uint32_t *pv)
 {
-  parse_space (pp, end);
+  parse_space (pp, انتہا);
 
-  const char *p = *pp;
-  while (*pp < end && ISALPHA(**pp))
+  ثابت حرف *p = *pp;
+  جب (*pp < انتہا && ISALPHA(**pp))
     (*pp)++;
 
   /* CSS allows on/off as aliases 1/0. */
-  if (*pp - p == 2
+  اگر (*pp - p == 2
       && TOLOWER (p[0]) == 'o'
       && TOLOWER (p[1]) == 'n')
     *pv = 1;
-  else if (*pp - p == 3
+  ورنہ اگر (*pp - p == 3
 	   && TOLOWER (p[0]) == 'o'
 	   && TOLOWER (p[1]) == 'f'
 	   && TOLOWER (p[2]) == 'f')
     *pv = 0;
-  else
-    return false;
+  ورنہ
+    واپس جھوٹ;
 
-  return true;
+  واپس سچ;
 }
 
 /* hb_feature_t */
 
-static bool
-parse_feature_value_prefix (const char **pp, const char *end, hb_feature_t *feature)
+ساکن منطقی
+parse_feature_قدر_سابقہ (ثابت حرف **pp, ثابت حرف *انتہا, hb_feature_t *feature)
 {
-  if (parse_char (pp, end, '-'))
+  اگر (parse_char (pp, انتہا, '-'))
     feature->value = 0;
-  else {
-    parse_char (pp, end, '+');
+  ورنہ {
+    parse_char (pp, انتہا, '+');
     feature->value = 1;
   }
 
-  return true;
+  واپس سچ;
 }
 
-static bool
-parse_tag (const char **pp, const char *end, hb_tag_t *tag)
+ساکن منطقی
+parse_لیبل (ثابت حرف **pp, ثابت حرف *انتہا, hb_لیبل_t *لیبل_2)
 {
-  parse_space (pp, end);
+  parse_space (pp, انتہا);
 
-  char quote = 0;
+  حرف quote = 0;
 
-  if (*pp < end && (**pp == '\'' || **pp == '"'))
+  اگر (*pp < انتہا && (**pp == '\'' || **pp == '"'))
   {
     quote = **pp;
     (*pp)++;
   }
 
-  const char *p = *pp;
-  while (*pp < end && (**pp != ' ' && **pp != '=' && **pp != '[' && **pp != quote))
+  ثابت حرف *p = *pp;
+  جب (*pp < انتہا && (**pp != ' ' && **pp != '=' && **pp != '[' && **pp != quote))
     (*pp)++;
 
-  if (p == *pp || *pp - p > 4)
-    return false;
+  اگر (p == *pp || *pp - p > 4)
+    واپس جھوٹ;
 
-  *tag = hb_tag_from_string (p, *pp - p);
+  *لیبل_2 = hb_لیبل_from_string (p, *pp - p);
 
-  if (quote)
+  اگر (quote)
   {
     /* CSS expects exactly four bytes.  And we only allow quotations for
      * CSS compatibility.  So, enforce the length. */
-     if (*pp - p != 4)
-       return false;
-    if (*pp == end || **pp != quote)
-      return false;
+     اگر (*pp - p != 4)
+       واپس جھوٹ;
+    اگر (*pp == انتہا || **pp != quote)
+      واپس جھوٹ;
     (*pp)++;
   }
 
-  return true;
+  واپس سچ;
 }
 
-static bool
-parse_feature_indices (const char **pp, const char *end, hb_feature_t *feature)
+ساکن منطقی
+parse_feature_indices (ثابت حرف **pp, ثابت حرف *انتہا, hb_feature_t *feature)
 {
-  parse_space (pp, end);
+  parse_space (pp, انتہا);
 
-  bool has_start;
+  منطقی has_آغاز;
 
-  feature->start = HB_FEATURE_GLOBAL_START;
-  feature->end = HB_FEATURE_GLOBAL_END;
+  feature->آغاز = HB_FEATURE_GLOBAL_آغاز;
+  feature->انتہا = HB_FEATURE_GLOBAL_انتہا;
 
-  if (!parse_char (pp, end, '['))
-    return true;
+  اگر (!parse_char (pp, انتہا, '['))
+    واپس سچ;
 
-  has_start = parse_uint (pp, end, &feature->start);
+  has_آغاز = parse_uint (pp, انتہا, &feature->آغاز);
 
-  if (parse_char (pp, end, ':') || parse_char (pp, end, ';')) {
-    parse_uint (pp, end, &feature->end);
-  } else {
-    if (has_start)
-      feature->end = feature->start + 1;
+  اگر (parse_char (pp, انتہا, ':') || parse_char (pp, انتہا, ';')) {
+    parse_uint (pp, انتہا, &feature->انتہا);
+  } ورنہ {
+    اگر (has_آغاز)
+      feature->انتہا = feature->آغاز + 1;
   }
 
-  return parse_char (pp, end, ']');
+  واپس parse_char (pp, انتہا, ']');
 }
 
-static bool
-parse_feature_value_postfix (const char **pp, const char *end, hb_feature_t *feature)
+ساکن منطقی
+parse_feature_قدر_postfix (ثابت حرف **pp, ثابت حرف *انتہا, hb_feature_t *feature)
 {
-  bool had_equal = parse_char (pp, end, '=');
-  bool had_value = parse_uint32 (pp, end, &feature->value) ||
-		   parse_bool (pp, end, &feature->value);
+  منطقی had_equal = parse_char (pp, انتہا, '=');
+  منطقی had_قدر = parse_uint32 (pp, انتہا, &feature->value) ||
+		   parse_bool (pp, انتہا, &feature->value);
   /* CSS doesn't use equal-sign between tag and value.
    * If there was an equal-sign, then there *must* be a value.
    * A value without an equal-sign is ok, but not required. */
-  return !had_equal || had_value;
+  واپس !had_equal || had_قدر;
 }
 
-static bool
-parse_one_feature (const char **pp, const char *end, hb_feature_t *feature)
+ساکن منطقی
+parse_one_feature (ثابت حرف **pp, ثابت حرف *انتہا, hb_feature_t *feature)
 {
-  return parse_feature_value_prefix (pp, end, feature) &&
-	 parse_tag (pp, end, &feature->tag) &&
-	 parse_feature_indices (pp, end, feature) &&
-	 parse_feature_value_postfix (pp, end, feature) &&
-	 parse_space (pp, end) &&
-	 *pp == end;
+  واپس parse_feature_قدر_سابقہ (pp, انتہا, feature) &&
+	 parse_لیبل (pp, انتہا, &feature->لیبل_2) &&
+	 parse_feature_indices (pp, انتہا, feature) &&
+	 parse_feature_قدر_postfix (pp, انتہا, feature) &&
+	 parse_space (pp, انتہا) &&
+	 *pp == انتہا;
 }
 
 /**
@@ -901,24 +901,24 @@ parse_one_feature (const char **pp, const char *end, hb_feature_t *feature)
  * Since: 0.9.5
  **/
 hb_bool_t
-hb_feature_from_string (const char *str, int len,
+hb_feature_from_string (ثابت حرف *str, صحیح len,
 			hb_feature_t *feature)
 {
   hb_feature_t feat;
 
-  if (len < 0)
-    len = strlen (str);
+  اگر (len < 0)
+    len = لڑی_لمبائی (str);
 
-  if (likely (parse_one_feature (&str, str + len, &feat)))
+  اگر (likely (parse_one_feature (&str, str + len, &feat)))
   {
-    if (feature)
+    اگر (feature)
       *feature = feat;
-    return true;
+    واپس سچ;
   }
 
-  if (feature)
-    hb_memset (feature, 0, sizeof (*feature));
-  return false;
+  اگر (feature)
+    hb_memset (feature, 0, حجم (*feature));
+  واپس جھوٹ;
 }
 
 /**
@@ -936,63 +936,63 @@ hb_feature_from_string (const char *str, int len,
  *
  * Since: 0.9.5
  **/
-void
-hb_feature_to_string (hb_feature_t *feature,
-		      char *buf, unsigned int size)
+خالی
+hb_feature_مقصد_string (hb_feature_t *feature,
+		      حرف *buf, غیرعلامتی صحیح سائز)
 {
-  if (unlikely (!size)) return;
+  اگر (unlikely (!سائز)) واپس;
 
-  char s[128];
-  unsigned int len = 0;
-  if (feature->value == 0)
+  حرف s[128];
+  غیرعلامتی صحیح len = 0;
+  اگر (feature->value == 0)
     s[len++] = '-';
-  hb_tag_to_string (feature->tag, s + len);
+  hb_لیبل_مقصد_string (feature->لیبل_2, s + len);
   len += 4;
-  while (len && s[len - 1] == ' ')
+  جب (len && s[len - 1] == ' ')
     len--;
-  if (feature->start != HB_FEATURE_GLOBAL_START || feature->end != HB_FEATURE_GLOBAL_END)
+  اگر (feature->آغاز != HB_FEATURE_GLOBAL_آغاز || feature->انتہا != HB_FEATURE_GLOBAL_انتہا)
   {
     s[len++] = '[';
-    if (feature->start)
-      len += hb_max (0, snprintf (s + len, ARRAY_LENGTH (s) - len, "%u", feature->start));
-    if (feature->end != feature->start + 1) {
+    اگر (feature->آغاز)
+      len += hb_max (0, snprintf (s + len, ARRAY_لمبائی (s) - len, "%u", feature->آغاز));
+    اگر (feature->انتہا != feature->آغاز + 1) {
       s[len++] = ':';
-      if (feature->end != HB_FEATURE_GLOBAL_END)
-	len += hb_max (0, snprintf (s + len, ARRAY_LENGTH (s) - len, "%u", feature->end));
+      اگر (feature->انتہا != HB_FEATURE_GLOBAL_انتہا)
+	len += hb_max (0, snprintf (s + len, ARRAY_لمبائی (s) - len, "%u", feature->انتہا));
     }
     s[len++] = ']';
   }
-  if (feature->value > 1)
+  اگر (feature->value > 1)
   {
     s[len++] = '=';
-    len += hb_max (0, snprintf (s + len, ARRAY_LENGTH (s) - len, "%" PRIu32, feature->value));
+    len += hb_max (0, snprintf (s + len, ARRAY_لمبائی (s) - len, "%" PRIu32, feature->value));
   }
-  assert (len < ARRAY_LENGTH (s));
-  len = hb_min (len, size - 1);
+  أكد (len < ARRAY_لمبائی (s));
+  len = hb_min (len, سائز - 1);
   hb_memcpy (buf, s, len);
   buf[len] = '\0';
 }
 
 /* hb_variation_t */
 
-static bool
-parse_variation_value (const char **pp, const char *end, hb_variation_t *variation)
+ساکن منطقی
+parse_variation_قدر (ثابت حرف **pp, ثابت حرف *انتہا, hb_variation_t *variation)
 {
-  parse_char (pp, end, '='); /* Optional. */
-  double v;
-  if (unlikely (!hb_parse_double (pp, end, &v))) return false;
+  parse_char (pp, انتہا, '='); /* Optional. */
+  دوہرا v;
+  اگر (unlikely (!hb_parse_double (pp, انتہا, &v))) واپس جھوٹ;
 
   variation->value = v;
-  return true;
+  واپس سچ;
 }
 
-static bool
-parse_one_variation (const char **pp, const char *end, hb_variation_t *variation)
+ساکن منطقی
+parse_one_variation (ثابت حرف **pp, ثابت حرف *انتہا, hb_variation_t *variation)
 {
-  return parse_tag (pp, end, &variation->tag) &&
-	 parse_variation_value (pp, end, variation) &&
-	 parse_space (pp, end) &&
-	 *pp == end;
+  واپس parse_لیبل (pp, انتہا, &variation->لیبل_2) &&
+	 parse_variation_قدر (pp, انتہا, variation) &&
+	 parse_space (pp, انتہا) &&
+	 *pp == انتہا;
 }
 
 /**
@@ -1016,66 +1016,66 @@ parse_one_variation (const char **pp, const char *end, hb_variation_t *variation
  * Since: 1.4.2
  */
 hb_bool_t
-hb_variation_from_string (const char *str, int len,
+hb_variation_from_string (ثابت حرف *str, صحیح len,
 			  hb_variation_t *variation)
 {
   hb_variation_t var;
 
-  if (len < 0)
-    len = strlen (str);
+  اگر (len < 0)
+    len = لڑی_لمبائی (str);
 
-  if (likely (parse_one_variation (&str, str + len, &var)))
+  اگر (likely (parse_one_variation (&str, str + len, &var)))
   {
-    if (variation)
+    اگر (variation)
       *variation = var;
-    return true;
+    واپس سچ;
   }
 
-  if (variation)
-    hb_memset (variation, 0, sizeof (*variation));
-  return false;
+  اگر (variation)
+    hb_memset (variation, 0, حجم (*variation));
+  واپس جھوٹ;
 }
 
-#ifndef HB_NO_SETLOCALE
+#اگر_غیر_تعریف_شدہ HB_NO_SETLOCALE
 
-static inline void free_static_C_locale ();
+ساکن اندرونی خالی free_static_C_locale ();
 
-static struct hb_C_locale_lazy_loader_t : hb_lazy_loader_t<hb_remove_pointer<hb_locale_t>,
+ساکن ساخت hb_C_locale_lazy_loader_t : hb_lazy_loader_t<hb_remove_اشارہ_گر<hb_locale_t>,
 							   hb_C_locale_lazy_loader_t>
 {
-  static hb_locale_t create ()
+  ساکن hb_locale_t create ()
   {
-    hb_locale_t l = newlocale (LC_ALL_MASK, "C", NULL);
-    if (!l)
-      return l;
+    hb_locale_t l = newlocale (LC_ALL_MASK, "C", تہی);
+    اگر (!l)
+      واپس l;
 
     hb_atexit (free_static_C_locale);
 
-    return l;
+    واپس l;
   }
-  static void destroy (hb_locale_t l)
+  ساکن خالی destroy (hb_locale_t l)
   {
     freelocale (l);
   }
-  static hb_locale_t get_null ()
+  ساکن hb_locale_t get_null ()
   {
-    return (hb_locale_t) 0;
+    واپس (hb_locale_t) 0;
   }
 } static_C_locale;
 
-static inline
-void free_static_C_locale ()
+ساکن اندرونی
+خالی free_static_C_locale ()
 {
   static_C_locale.free_instance ();
 }
 
-static hb_locale_t
+ساکن hb_locale_t
 get_C_locale ()
 {
-  return static_C_locale.get_unconst ();
+  واپس static_C_locale.get_unconst ();
 }
 
-#endif
+#اگر_ختم
 
 /**
  * hb_variation_to_string:
@@ -1091,27 +1091,27 @@ get_C_locale ()
  *
  * Since: 1.4.2
  */
-void
-hb_variation_to_string (hb_variation_t *variation,
-			char *buf, unsigned int size)
+خالی
+hb_variation_مقصد_string (hb_variation_t *variation,
+			حرف *buf, غیرعلامتی صحیح سائز)
 {
-  if (unlikely (!size)) return;
+  اگر (unlikely (!سائز)) واپس;
 
-  char s[128];
-  unsigned int len = 0;
-  hb_tag_to_string (variation->tag, s + len);
+  حرف s[128];
+  غیرعلامتی صحیح len = 0;
+  hb_لیبل_مقصد_string (variation->لیبل_2, s + len);
   len += 4;
-  while (len && s[len - 1] == ' ')
+  جب (len && s[len - 1] == ' ')
     len--;
   s[len++] = '=';
 
-  hb_locale_t oldlocale HB_UNUSED;
+  hb_locale_t oldlocale HB_غیر_مستعمل;
   oldlocale = hb_uselocale (get_C_locale ());
-  len += hb_max (0, snprintf (s + len, ARRAY_LENGTH (s) - len, "%g", (double) variation->value));
-  (void) hb_uselocale (oldlocale);
+  len += hb_max (0, snprintf (s + len, ARRAY_لمبائی (s) - len, "%g", (دوہرا) variation->value));
+  (خالی) hb_uselocale (oldlocale);
 
-  assert (len < ARRAY_LENGTH (s));
-  len = hb_min (len, size - 1);
+  أكد (len < ARRAY_لمبائی (s));
+  len = hb_min (len, سائز - 1);
   hb_memcpy (buf, s, len);
   buf[len] = '\0';
 }
@@ -1129,7 +1129,7 @@ hb_variation_to_string (hb_variation_t *variation,
 uint8_t
 (hb_color_get_alpha) (hb_color_t color)
 {
-  return hb_color_get_alpha (color);
+  واپس hb_color_get_alpha (color);
 }
 
 /**
@@ -1145,7 +1145,7 @@ uint8_t
 uint8_t
 (hb_color_get_red) (hb_color_t color)
 {
-  return hb_color_get_red (color);
+  واپس hb_color_get_red (color);
 }
 
 /**
@@ -1161,7 +1161,7 @@ uint8_t
 uint8_t
 (hb_color_get_green) (hb_color_t color)
 {
-  return hb_color_get_green (color);
+  واپس hb_color_get_green (color);
 }
 
 /**
@@ -1177,7 +1177,7 @@ uint8_t
 uint8_t
 (hb_color_get_blue) (hb_color_t color)
 {
-  return hb_color_get_blue (color);
+  واپس hb_color_get_blue (color);
 }
 
 /**
@@ -1191,7 +1191,7 @@ uint8_t
  *
  * Since: 11.0.0
  **/
-void* hb_malloc(size_t size) { return hb_malloc_impl (size); }
+خالی* hb_malloc(size_t سائز) { واپس hb_malloc_impl (سائز); }
 
 /**
  * hb_calloc:
@@ -1205,7 +1205,7 @@ void* hb_malloc(size_t size) { return hb_malloc_impl (size); }
  *
  * Since: 11.0.0
  **/
-void* hb_calloc(size_t nmemb, size_t size) { return hb_calloc_impl (nmemb, size); }
+خالی* hb_calloc(size_t nmemb, size_t سائز) { واپس hb_calloc_impl (nmemb, سائز); }
 
 /**
  * hb_realloc:
@@ -1219,7 +1219,7 @@ void* hb_calloc(size_t nmemb, size_t size) { return hb_calloc_impl (nmemb, size)
  *
  * Since: 11.0.0
  **/
-void* hb_realloc(void *ptr, size_t size) { return hb_realloc_impl (ptr, size); }
+خالی* hb_realloc(خالی *ptr, size_t سائز) { واپس hb_realloc_impl (ptr, سائز); }
 
 /**
  * hb_free:
@@ -1230,14 +1230,14 @@ void* hb_realloc(void *ptr, size_t size) { return hb_realloc_impl (ptr, size); }
  *
  * Since: 11.0.0
  **/
-void  hb_free(void *ptr) { hb_free_impl (ptr); }
+خالی  hb_free(خالی *ptr) { hb_free_impl (ptr); }
 
 
 /* If there is no visibility control, then hb-static.cc will NOT
  * define anything.  Instead, we get it to define one set in here
  * only, so only libharfbuzz.so defines them, not other libs. */
-#ifdef HB_NO_VISIBILITY
-#undef HB_NO_VISIBILITY
-#include "hb-static.cc"
-#define HB_NO_VISIBILITY 1
-#endif
+#اگر_تعریف_شدہ HB_NO_VISIBILITY
+#تعریف_منسوخ HB_NO_VISIBILITY
+#شامل "hb-static.cc"
+#تعریف_کرو HB_NO_VISIBILITY 1
+#اگر_ختم

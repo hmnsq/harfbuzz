@@ -26,64 +26,64 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_LAYOUT_GPOS_TABLE_HH
-#define HB_OT_LAYOUT_GPOS_TABLE_HH
+#اگر_غیر_تعریف_شدہ HB_OT_LAYOUT_GPOS_جدول_HH
+#تعریف_کرو HB_OT_LAYOUT_GPOS_جدول_HH
 
-#include "OT/Layout/GPOS/GPOS.hh"
+#شامل "OT/Layout/GPOS/GPOS.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+نامخلا OT {
+نامخلا Layout {
+نامخلا GPOS_impl {
 
 // TODO(garretrieger): Move into new layout directory.
 /* Out-of-class implementation for methods recursing */
-#ifndef HB_NO_OT_LAYOUT
-template <typename context_t>
-/*static*/ typename context_t::return_t PosLookup::dispatch_recurse_func (context_t *c, unsigned int lookup_index)
+#اگر_غیر_تعریف_شدہ HB_NO_OT_LAYOUT
+سانچہ <قسم_نام context_t>
+/*static*/ قسم_نام context_t::return_t PosLookup::dispatch_recurse_func (context_t *c, غیرعلامتی صحیح lookup_اشاریہ)
 {
-  const PosLookup &l = c->face->table.GPOS.get_relaxed ()->table->get_lookup (lookup_index);
-  return l.dispatch (c);
+  ثابت PosLookup &l = c->face->جدول.GPOS.get_relaxed ()->جدول->get_lookup (lookup_اشاریہ);
+  واپس l.dispatch (c);
 }
 
-template <>
-inline hb_closure_lookups_context_t::return_t
-PosLookup::dispatch_recurse_func<hb_closure_lookups_context_t> (hb_closure_lookups_context_t *c, unsigned this_index)
+سانچہ <>
+اندرونی hb_احاطہ_lookups_context_t::return_t
+PosLookup::dispatch_recurse_func<hb_احاطہ_lookups_context_t> (hb_احاطہ_lookups_context_t *c, غیرعلامتی this_اشاریہ)
 {
-  const PosLookup &l = c->face->table.GPOS.get_relaxed ()->table->get_lookup (this_index);
-  return l.closure_lookups (c, this_index);
+  ثابت PosLookup &l = c->face->جدول.GPOS.get_relaxed ()->جدول->get_lookup (this_اشاریہ);
+  واپس l.احاطہ_lookups (c, this_اشاریہ);
 }
 
-template <>
-inline bool PosLookup::dispatch_recurse_func<hb_ot_apply_context_t> (hb_ot_apply_context_t *c, unsigned int lookup_index)
+سانچہ <>
+اندرونی منطقی PosLookup::dispatch_recurse_func<hb_ot_apply_context_t> (hb_ot_apply_context_t *c, غیرعلامتی صحیح lookup_اشاریہ)
 {
-  auto *gpos = c->face->table.GPOS.get_relaxed ();
-  const PosLookup &l = gpos->table->get_lookup (lookup_index);
-  unsigned int saved_lookup_props = c->lookup_props;
-  unsigned int saved_lookup_index = c->lookup_index;
-  c->set_lookup_index (lookup_index);
-  c->set_lookup_props (l.get_props ());
+  خودکار *gpos = c->face->جدول.GPOS.get_relaxed ();
+  ثابت PosLookup &l = gpos->جدول->get_lookup (lookup_اشاریہ);
+  غیرعلامتی صحیح saved_lookup_props = c->lookup_props;
+  غیرعلامتی صحیح saved_lookup_اشاریہ = c->lookup_اشاریہ;
+  c->سیٹ_lookup_اشاریہ (lookup_اشاریہ);
+  c->سیٹ_lookup_props (l.get_props ());
 
-  uint32_t stack_match_positions[8];
-  hb_vector_t<uint32_t> saved_match_positions;
-  saved_match_positions.set_storage (stack_match_positions);
-  hb_swap (c->match_positions, saved_match_positions);
+  uint32_t ڈھیر_مطابقت_positions[8];
+  hb_سمتیہ_t<uint32_t> saved_مطابقت_positions;
+  saved_مطابقت_positions.سیٹ_storage (ڈھیر_مطابقت_positions);
+  hb_تبادلہ (c->مطابقت_positions, saved_مطابقت_positions);
 
-  bool ret = false;
-  auto *accel = gpos->get_accel (lookup_index);
-  ret = accel && accel->apply (c, false);
+  منطقی ret = جھوٹ;
+  خودکار *accel = gpos->get_accel (lookup_اشاریہ);
+  ret = accel && accel->apply (c, جھوٹ);
 
-  c->set_lookup_index (saved_lookup_index);
-  c->set_lookup_props (saved_lookup_props);
+  c->سیٹ_lookup_اشاریہ (saved_lookup_اشاریہ);
+  c->سیٹ_lookup_props (saved_lookup_props);
 
-  hb_swap (c->match_positions, saved_match_positions);
+  hb_تبادلہ (c->مطابقت_positions, saved_مطابقت_positions);
 
-  return ret;
+  واپس ret;
 }
-#endif
+#اگر_ختم
 
 } /* namespace GPOS_impl */
 } /* namespace Layout */
 } /* namespace OT */
 
 
-#endif /* HB_OT_LAYOUT_GPOS_TABLE_HH */
+#اگر_ختم /* HB_OT_LAYOUT_GPOS_TABLE_HH */

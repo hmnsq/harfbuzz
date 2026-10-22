@@ -24,10 +24,10 @@
  * Facebook Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_FREE_POOL_HH
-#define HB_FREE_POOL_HH
+#اگر_غیر_تعریف_شدہ HB_FREE_POOL_HH
+#تعریف_کرو HB_FREE_POOL_HH
 
-#include "hb.hh"
+#شامل "hb.hh"
 
 /* Memory pool for persistent alloc/free of small objects.
  *
@@ -40,13 +40,13 @@
  * good enough for our purposes.  If you need something more
  * sophisticated, use a real allocator.  Or use a real language. */
 
-template <typename T, unsigned ChunkLen = 32>
-struct hb_free_pool_t
+سانچہ <قسم_نام T, غیرعلامتی ChunkLen = 32>
+ساخت hb_free_pool_t
 {
-  hb_free_pool_t () : next (nullptr) {}
+  hb_free_pool_t () : next (خالی_اشاریہ) {}
   ~hb_free_pool_t ()
   {
-    next = nullptr;
+    next = خالی_اشاریہ;
 
     + hb_iter (chunks)
     | hb_apply (hb_free)
@@ -55,11 +55,11 @@ struct hb_free_pool_t
 
   T* alloc ()
   {
-    if (unlikely (!next))
+    اگر (unlikely (!next))
     {
-      if (unlikely (!chunks.alloc (chunks.length + 1))) return nullptr;
-      chunk_t *chunk = (chunk_t *) hb_malloc (sizeof (chunk_t));
-      if (unlikely (!chunk)) return nullptr;
+      اگر (unlikely (!chunks.alloc (chunks.لمبائی + 1))) واپس خالی_اشاریہ;
+      chunk_t *chunk = (chunk_t *) hb_malloc (حجم (chunk_t));
+      اگر (unlikely (!chunk)) واپس خالی_اشاریہ;
       chunks.push (chunk);
       next = chunk->thread ();
     }
@@ -67,41 +67,41 @@ struct hb_free_pool_t
     T* obj = next;
     next = * ((T**) next);
 
-    hb_memset (obj, 0, sizeof (T));
+    hb_memset (obj, 0, حجم (T));
 
-    return obj;
+    واپس obj;
   }
 
-  void release (T* obj)
+  خالی release (T* obj)
   {
     * (T**) obj = next;
     next = obj;
   }
 
-  private:
+  نجی:
 
   static_assert (ChunkLen > 1, "");
-  static_assert (sizeof (T) >= sizeof (void *), "");
-  static_assert (alignof (T) % alignof (void *) == 0, "");
+  static_assert (حجم (T) >= حجم (خالی *), "");
+  static_assert (alignof (T) % alignof (خالی *) == 0, "");
 
-  struct chunk_t
+  ساخت chunk_t
   {
     T* thread ()
     {
-      for (unsigned i = 0; i < ARRAY_LENGTH (arrayZ) - 1; i++)
+      برائے (غیرعلامتی i = 0; i < ARRAY_لمبائی (arrayZ) - 1; i++)
 	* (T**) &arrayZ[i] = &arrayZ[i + 1];
 
-      * (T**) &arrayZ[ARRAY_LENGTH (arrayZ) - 1] = nullptr;
+      * (T**) &arrayZ[ARRAY_لمبائی (arrayZ) - 1] = خالی_اشاریہ;
 
-      return arrayZ;
+      واپس arrayZ;
     }
 
     T arrayZ[ChunkLen];
   };
 
   T* next;
-  hb_vector_t<chunk_t *> chunks;
+  hb_سمتیہ_t<chunk_t *> chunks;
 };
 
 
-#endif /* HB_FREE_POOL_HH */
+#اگر_ختم /* HB_FREE_POOL_HH */

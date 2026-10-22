@@ -22,8 +22,8 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_WASM_API_H
-#define HB_WASM_API_H
+#اگر_غیر_تعریف_شدہ HB_WASM_API_H
+#تعریف_کرو HB_WASM_API_H
 
 /*
 #include "hb.h"
@@ -32,70 +32,70 @@ HB_BEGIN_DECLS
 HB_END_DECLS
 */
 
-#include <stdint.h>
+#شامل <stdint.h>
 
 
-#ifndef HB_WASM_BEGIN_DECLS
+#اگر_غیر_تعریف_شدہ HB_WASM_BEGIN_DECLS
 # ifdef __cplusplus
-#  define HB_WASM_BEGIN_DECLS	extern "C" {
-#  define HB_WASM_END_DECLS	}
-# else /* !__cplusplus */
+#  define HB_WASM_BEGIN_DECLS	خارجی "C" {
+#  define HB_WASM_انتہا_DECLS	}
+# ورنہ /* !__cplusplus */
 #  define HB_WASM_BEGIN_DECLS
-#  define HB_WASM_END_DECLS
+#  define HB_WASM_انتہا_DECLS
 # endif /* !__cplusplus */
-#endif
+#اگر_ختم
 
 
 HB_WASM_BEGIN_DECLS
 
-#ifndef HB_WASM_API
-#define HB_WASM_API(ret_t, name) ret_t name
-#endif
-#ifndef HB_WASM_API_COMPOUND /* compound return type */
-#define HB_WASM_API_COMPOUND(ret_t, name) HB_WASM_API(ret_t, name)
-#endif
-#ifndef HB_WASM_INTERFACE
-#define HB_WASM_INTERFACE(ret_t, name) ret_t name
-#endif
-#ifndef HB_WASM_EXEC_ENV
-#define HB_WASM_EXEC_ENV
-#endif
-#ifndef HB_WASM_EXEC_ENV_COMPOUND
-#define HB_WASM_EXEC_ENV_COMPOUND HB_WASM_EXEC_ENV
-#endif
+#اگر_غیر_تعریف_شدہ HB_WASM_API
+#تعریف_کرو HB_WASM_API(ret_t, name) ret_t name
+#اگر_ختم
+#اگر_غیر_تعریف_شدہ HB_WASM_API_COMPOUND /* compound return type */
+#تعریف_کرو HB_WASM_API_COMPOUND(ret_t, name) HB_WASM_API(ret_t, name)
+#اگر_ختم
+#اگر_غیر_تعریف_شدہ HB_WASM_INTERFACE
+#تعریف_کرو HB_WASM_INTERFACE(ret_t, name) ret_t name
+#اگر_ختم
+#اگر_غیر_تعریف_شدہ HB_WASM_EXEC_ENV
+#تعریف_کرو HB_WASM_EXEC_ENV
+#اگر_ختم
+#اگر_غیر_تعریف_شدہ HB_WASM_EXEC_ENV_COMPOUND
+#تعریف_کرو HB_WASM_EXEC_ENV_COMPOUND HB_WASM_EXEC_ENV
+#اگر_ختم
 
 
-#ifndef bool_t
-#define bool_t uint32_t
-#endif
-#ifndef ptr_t
-#define ptr_t(type_t) type_t *
-#endif
-#ifndef ptr_d
-#define ptr_d(type_t, name) type_t *name
-#endif
+#اگر_غیر_تعریف_شدہ bool_t
+#تعریف_کرو bool_t uint32_t
+#اگر_ختم
+#اگر_غیر_تعریف_شدہ ptr_t
+#تعریف_کرو ptr_t(type_t) type_t *
+#اگر_ختم
+#اگر_غیر_تعریف_شدہ ptr_d
+#تعریف_کرو ptr_d(type_t, name) type_t *name
+#اگر_ختم
 
-typedef uint32_t codepoint_t;
-typedef int32_t position_t;
-typedef uint32_t mask_t;
-typedef uint32_t tag_t;
-#define TAG(c1,c2,c3,c4) ((tag_t)((((uint32_t)(c1)&0xFF)<<24)|(((uint32_t)(c2)&0xFF)<<16)|(((uint32_t)(c3)&0xFF)<<8)|((uint32_t)(c4)&0xFF)))
+قسمتعریف uint32_t codepoint_t;
+قسمتعریف int32_t position_t;
+قسمتعریف uint32_t نقاب_t;
+قسمتعریف uint32_t لیبل_t;
+#تعریف_کرو لیبل_3(c1,c2,c3,c4) ((لیبل_t)((((uint32_t)(c1)&0xFF)<<24)|(((uint32_t)(c2)&0xFF)<<16)|(((uint32_t)(c3)&0xFF)<<8)|((uint32_t)(c4)&0xFF)))
 
-typedef enum {
+قسمتعریف شمار {
   DIRECTION_INVALID = 0,
   DIRECTION_LTR = 4,
   DIRECTION_RTL,
   DIRECTION_TTB,
   DIRECTION_BTT
 } direction_t;
-#define DIRECTION_IS_VALID(dir)		((((unsigned int) (dir)) & ~3U) == 4)
-#define DIRECTION_IS_HORIZONTAL(dir)	((((unsigned int) (dir)) & ~1U) == 4)
-#define DIRECTION_IS_VERTICAL(dir)	((((unsigned int) (dir)) & ~1U) == 6)
-#define DIRECTION_IS_FORWARD(dir)	((((unsigned int) (dir)) & ~2U) == 4)
-#define DIRECTION_IS_BACKWARD(dir)	((((unsigned int) (dir)) & ~2U) == 5)
-#define DIRECTION_REVERSE(dir)		((direction_t) (((unsigned int) (dir)) ^ 1))
+#تعریف_کرو DIRECTION_IS_VALID(dir)		((((غیرعلامتی صحیح) (dir)) & ~3U) == 4)
+#تعریف_کرو DIRECTION_IS_HORIZONTAL(dir)	((((غیرعلامتی صحیح) (dir)) & ~1U) == 4)
+#تعریف_کرو DIRECTION_IS_VERTICAL(dir)	((((غیرعلامتی صحیح) (dir)) & ~1U) == 6)
+#تعریف_کرو DIRECTION_IS_FORWARD(dir)	((((غیرعلامتی صحیح) (dir)) & ~2U) == 4)
+#تعریف_کرو DIRECTION_IS_BACKWARD(dir)	((((غیرعلامتی صحیح) (dir)) & ~2U) == 5)
+#تعریف_کرو DIRECTION_الٹ(dir)		((direction_t) (((غیرعلامتی صحیح) (dir)) ^ 1))
 
-typedef tag_t script_t; /* ISO 15924 representation of Unicode scripts. */
+قسمتعریف لیبل_t script_t; /* ISO 15924 representation of Unicode scripts. */
 
 
 /* common */
@@ -106,92 +106,92 @@ HB_WASM_API (direction_t, script_get_horizontal_direction) (HB_WASM_EXEC_ENV
 
 /* blob */
 
-typedef struct
+قسمتعریف ساخت
 {
-  uint32_t length;
-  ptr_t(char) data;
+  uint32_t لمبائی;
+  ptr_t(حرف) ڈیٹا;
 } blob_t;
-#define BLOB_INIT {0, 0}
+#تعریف_کرو BLOB_INIT {0, 0}
 
-HB_WASM_API (void, blob_free) (HB_WASM_EXEC_ENV
+HB_WASM_API (خالی, blob_free) (HB_WASM_EXEC_ENV
 			       ptr_d(blob_t, blob));
 
-/* buffer */
+/*بفر*/
 
-typedef struct
+قسمتعریف ساخت
 {
   uint32_t codepoint;
-  uint32_t mask;
+  uint32_t نقاب;
   uint32_t cluster;
   uint32_t var1;
   uint32_t var2;
 } glyph_info_t;
 
-typedef struct
+قسمتعریف ساخت
 {
   position_t x_advance;
   position_t y_advance;
-  position_t x_offset;
-  position_t y_offset;
+  position_t x_انحراف_2;
+  position_t y_انحراف_2;
   uint32_t var;
 } glyph_position_t;
 
-typedef struct
+قسمتعریف ساخت
 {
-  uint32_t length;
+  uint32_t لمبائی;
   ptr_t(glyph_info_t) info;
   ptr_t(glyph_position_t) pos;
-} buffer_contents_t;
-#define BUFFER_CONTENTS_INIT {0, 0, 0}
+} بفر_contents_t;
+#تعریف_کرو بفر_CONTENTS_INIT {0, 0, 0}
 
-HB_WASM_API (bool_t, buffer_contents_realloc) (HB_WASM_EXEC_ENV
-					       ptr_d(buffer_contents_t, contents),
-					       uint32_t size);
+HB_WASM_API (bool_t, بفر_contents_realloc) (HB_WASM_EXEC_ENV
+					       ptr_d(بفر_contents_t, contents),
+					       uint32_t سائز);
 
-HB_WASM_API (void, buffer_contents_free) (HB_WASM_EXEC_ENV
-					  ptr_d(buffer_contents_t, contents));
+HB_WASM_API (خالی, بفر_contents_free) (HB_WASM_EXEC_ENV
+					  ptr_d(بفر_contents_t, contents));
 
-typedef struct buffer_t buffer_t;
+قسمتعریف ساخت بفر_t بفر_t;
 
-HB_WASM_API (bool_t, buffer_copy_contents) (HB_WASM_EXEC_ENV
-					    ptr_d(buffer_t, buffer),
-					    ptr_d(buffer_contents_t, contents));
+HB_WASM_API (bool_t, بفر_copy_contents) (HB_WASM_EXEC_ENV
+					    ptr_d(بفر_t, بفر),
+					    ptr_d(بفر_contents_t, contents));
 
-HB_WASM_API (bool_t, buffer_set_contents) (HB_WASM_EXEC_ENV
-					   ptr_d(buffer_t, buffer),
-					   ptr_d(const buffer_contents_t, contents));
+HB_WASM_API (bool_t, بفر_سیٹ_contents) (HB_WASM_EXEC_ENV
+					   ptr_d(بفر_t, بفر),
+					   ptr_d(ثابت بفر_contents_t, contents));
 
-HB_WASM_API (direction_t, buffer_get_direction) (HB_WASM_EXEC_ENV
-						 ptr_d(buffer_t, buffer));
+HB_WASM_API (direction_t, بفر_get_direction) (HB_WASM_EXEC_ENV
+						 ptr_d(بفر_t, بفر));
 
-HB_WASM_API (script_t, buffer_get_script) (HB_WASM_EXEC_ENV
-					   ptr_d(buffer_t, buffer));
+HB_WASM_API (script_t, بفر_get_script) (HB_WASM_EXEC_ENV
+					   ptr_d(بفر_t, بفر));
 
-HB_WASM_API (void, buffer_reverse) (HB_WASM_EXEC_ENV
-				    ptr_d(buffer_t, buffer));
+HB_WASM_API (خالی, بفر_الٹ) (HB_WASM_EXEC_ENV
+				    ptr_d(بفر_t, بفر));
 
-HB_WASM_API (void, buffer_reverse_clusters) (HB_WASM_EXEC_ENV
-					     ptr_d(buffer_t, buffer));
+HB_WASM_API (خالی, بفر_الٹ_clusters) (HB_WASM_EXEC_ENV
+					     ptr_d(بفر_t, بفر));
 
 /* face */
 
-typedef struct face_t face_t;
+قسمتعریف ساخت face_t face_t;
 
 HB_WASM_API (ptr_t(face_t), face_create) (HB_WASM_EXEC_ENV
 					  ptr_d(blob_t, blob),
-					  unsigned int);
+					  غیرعلامتی صحیح);
 
-HB_WASM_API (bool_t, face_copy_table) (HB_WASM_EXEC_ENV
+HB_WASM_API (bool_t, face_copy_جدول) (HB_WASM_EXEC_ENV
 				       ptr_d(face_t, face),
-				       tag_t table_tag,
+				       لیبل_t جدول_لیبل_2,
 				       ptr_d(blob_t, blob));
 
-HB_WASM_API (unsigned, face_get_upem) (HB_WASM_EXEC_ENV
+HB_WASM_API (غیرعلامتی, face_get_upem) (HB_WASM_EXEC_ENV
 				       ptr_d(face_t, face));
 
 /* font */
 
-typedef struct font_t font_t;
+قسمتعریف ساخت font_t font_t;
 
 HB_WASM_API (ptr_t(font_t), font_create) (HB_WASM_EXEC_ENV
 					  ptr_d(face_t, face));
@@ -199,7 +199,7 @@ HB_WASM_API (ptr_t(font_t), font_create) (HB_WASM_EXEC_ENV
 HB_WASM_API (ptr_t(face_t), font_get_face) (HB_WASM_EXEC_ENV
 					    ptr_d(font_t, font));
 
-HB_WASM_API (void, font_get_scale) (HB_WASM_EXEC_ENV
+HB_WASM_API (خالی, font_get_scale) (HB_WASM_EXEC_ENV
 				    ptr_d(font_t, font),
 				    ptr_d(int32_t, x_scale),
 				    ptr_d(int32_t, y_scale));
@@ -217,12 +217,12 @@ HB_WASM_API (position_t, font_get_glyph_v_advance) (HB_WASM_EXEC_ENV
 						    ptr_d(font_t, font),
 						    codepoint_t glyph);
 
-typedef struct
+قسمتعریف ساخت
 {
   position_t x_bearing;
   position_t y_bearing;
-  position_t width;
-  position_t height;
+  position_t چوڑائی;
+  position_t اونچائی;
 } glyph_extents_t;
 
 HB_WASM_API (bool_t, font_get_glyph_extents) (HB_WASM_EXEC_ENV
@@ -230,53 +230,53 @@ HB_WASM_API (bool_t, font_get_glyph_extents) (HB_WASM_EXEC_ENV
 					      codepoint_t glyph,
 					      ptr_d(glyph_extents_t, extents));
 
-HB_WASM_API (void, font_glyph_to_string) (HB_WASM_EXEC_ENV
+HB_WASM_API (خالی, font_glyph_مقصد_string) (HB_WASM_EXEC_ENV
 					  ptr_d(font_t, font),
 					  codepoint_t glyph,
-					  ptr_d(char, s), uint32_t size);
+					  ptr_d(حرف, s), uint32_t سائز);
 
 
-typedef struct
+قسمتعریف ساخت
 {
-  unsigned int length;
-  ptr_t(int) coords;
+  غیرعلامتی صحیح لمبائی;
+  ptr_t(صحیح) coords;
 } coords_t;
 
 HB_WASM_API (bool_t, font_copy_coords) (HB_WASM_EXEC_ENV
 					  ptr_d(font_t, font),
 					  ptr_d(coords_t, coords));
 
-HB_WASM_API (bool_t, font_set_coords) (HB_WASM_EXEC_ENV
+HB_WASM_API (bool_t, font_سیٹ_coords) (HB_WASM_EXEC_ENV
 					  ptr_d(font_t, font),
 					  ptr_d(coords_t, coords));
 
 /* outline */
 
-enum glyph_outline_point_type_t
+شمار glyph_outline_نقطہ_type_t
 {
-  MOVE_TO,
-  LINE_TO,
-  QUADRATIC_TO,
-  CUBIC_TO,
+  MOVE_مقصد,
+  سطر_مقصد_2,
+  QUADRATIC_مقصد,
+  CUBIC_مقصد,
 };
 
-typedef struct
+قسمتعریف ساخت
 {
-  float x;
-  float y;
+  اعشاری x;
+  اعشاری y;
   uint32_t type;
-} glyph_outline_point_t;
+} glyph_outline_نقطہ_t;
 
-typedef struct
+قسمتعریف ساخت
 {
   uint32_t n_points;
-  ptr_t(glyph_outline_point_t) points;
+  ptr_t(glyph_outline_نقطہ_t) points;
   uint32_t n_contours;
   ptr_t(uint32_t) contours;
 } glyph_outline_t;
-#define GLYPH_OUTLINE_INIT {0, 0, 0, 0}
+#تعریف_کرو GLYPH_OUTLINE_INIT {0, 0, 0, 0}
 
-HB_WASM_API (void, glyph_outline_free) (HB_WASM_EXEC_ENV
+HB_WASM_API (خالی, glyph_outline_free) (HB_WASM_EXEC_ENV
 					ptr_d(glyph_outline_t, outline));
 
 HB_WASM_API (bool_t, font_copy_glyph_outline) (HB_WASM_EXEC_ENV
@@ -287,51 +287,51 @@ HB_WASM_API (bool_t, font_copy_glyph_outline) (HB_WASM_EXEC_ENV
 
 /* shape */
 
-typedef struct
+قسمتعریف ساخت
 {
-  tag_t    tag;
-  uint32_t value;
-  uint32_t start;
-  uint32_t end;
+  لیبل_t    لیبل_2;
+  uint32_t قدر_2;
+  uint32_t آغاز;
+  uint32_t انتہا;
 } feature_t;
-#define FEATURE_GLOBAL_START	0
-#define FEATURE_GLOBAL_END	((uint32_t) -1)
+#تعریف_کرو FEATURE_GLOBAL_آغاز	0
+#تعریف_کرو FEATURE_GLOBAL_انتہا	((uint32_t) -1)
 
-typedef struct
+قسمتعریف ساخت
 {
-  uint32_t length;
+  uint32_t لمبائی;
   ptr_t(feature_t) features;
 } features_t;
-#define FEATURES_INIT {0, 0}
+#تعریف_کرو FEATURES_INIT {0, 0}
 
 HB_WASM_API (bool_t, feature_copy_contents) (HB_WASM_EXEC_ENV
-					       ptr_d(const feature_t, features),
-					       uint32_t num_features,
+					       ptr_d(ثابت feature_t, features),
+					       uint32_t عدد_features,
 					       ptr_d(features_t, output));
 
-HB_WASM_API (void, features_free) (HB_WASM_EXEC_ENV
+HB_WASM_API (خالی, features_free) (HB_WASM_EXEC_ENV
 				     ptr_d(features_t, features));
 
 HB_WASM_API (bool_t, shape_with) (HB_WASM_EXEC_ENV
 				  ptr_d(font_t, font),
-				  ptr_d(buffer_t, buffer),
-				  ptr_d(const feature_t, features),
-				  uint32_t num_features,
-				  const char *shaper);
+				  ptr_d(بفر_t, بفر),
+				  ptr_d(ثابت feature_t, features),
+				  uint32_t عدد_features,
+				  ثابت حرف *shaper);
 
 /* Implement these in your shaper. */
 
-HB_WASM_INTERFACE (ptr_t(void), shape_plan_create) (ptr_d(face_t, face));
+HB_WASM_INTERFACE (ptr_t(خالی), shape_plan_create) (ptr_d(face_t, face));
 
-HB_WASM_INTERFACE (bool_t, shape) (ptr_d(void, shape_plan),
+HB_WASM_INTERFACE (bool_t, shape) (ptr_d(خالی, shape_plan),
 				   ptr_d(font_t, font),
-				   ptr_d(buffer_t, buffer),
-				   ptr_d(const feature_t, features),
-				   uint32_t num_features);
+				   ptr_d(بفر_t, بفر),
+				   ptr_d(ثابت feature_t, features),
+				   uint32_t عدد_features);
 
-HB_WASM_INTERFACE (void, shape_plan_destroy) (ptr_d(void, shape_plan));
+HB_WASM_INTERFACE (خالی, shape_plan_destroy) (ptr_d(خالی, shape_plan));
 
 
-HB_WASM_END_DECLS
+HB_WASM_انتہا_DECLS
 
-#endif /* HB_WASM_API_H */
+#اگر_ختم /* HB_WASM_API_H */

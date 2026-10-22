@@ -26,9 +26,9 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_LAYOUT_GDEF_TABLE_HH
-#define HB_OT_LAYOUT_GDEF_TABLE_HH
+#اگر_غیر_تعریف_شدہ HB_OT_LAYOUT_GDEF_جدول_HH
+#تعریف_کرو HB_OT_LAYOUT_GDEF_جدول_HH
 
-#include "OT/Layout/GDEF/GDEF.hh"
+#شامل "OT/Layout/GDEF/GDEF.hh"
 
-#endif /* HB_OT_LAYOUT_GDEF_TABLE_HH */
+#اگر_ختم /* HB_OT_LAYOUT_GDEF_TABLE_HH */

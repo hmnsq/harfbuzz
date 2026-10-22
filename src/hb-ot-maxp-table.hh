@@ -24,13 +24,13 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_MAXP_TABLE_HH
-#define HB_OT_MAXP_TABLE_HH
+#اگر_غیر_تعریف_شدہ HB_OT_MAXP_جدول_HH
+#تعریف_کرو HB_OT_MAXP_جدول_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-dual.hh"
+#شامل "hb-open-type.hh"
+#شامل "hb-ot-dual.hh"
 
-namespace OT {
+نامخلا OT {
 
 
 /*
@@ -38,21 +38,21 @@ namespace OT {
  * https://docs.microsoft.com/en-us/typography/opentype/spec/maxp
  */
 
-#define HB_OT_TAG_maxp HB_TAG('m','a','x','p')
-#define HB_OT_TAG_MAXP HB_TAG('M','A','X','P')
+#تعریف_کرو HB_OT_لیبل_maxp HB_لیبل('m','a','x','p')
+#تعریف_کرو HB_OT_لیبل_MAXP HB_لیبل('M','A','X','P')
 
-struct maxpV1Tail
+ساخت maxp_V1_دم
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ));
   }
 
   HBUINT16 maxPoints;		  /* Maximum points in a non-composite glyph. */
   HBUINT16 maxContours;		  /* Maximum contours in a non-composite glyph. */
-  HBUINT16 maxCompositePoints;	  /* Maximum points in a composite glyph. */
-  HBUINT16 maxCompositeContours;  /* Maximum contours in a composite glyph. */
+  HBUINT16 max_مرکب_Points;	  /* Maximum points in a composite glyph. */
+  HBUINT16 max_مرکب_Contours;  /* Maximum contours in a composite glyph. */
   HBUINT16 maxZones;		  /* 1 if instructions do not use the twilight zone (Z0),
 				   * or 2 if instructions do use Z0; should be set to 2 in
 				   * most cases. */
@@ -60,154 +60,154 @@ struct maxpV1Tail
   HBUINT16 maxStorage;		  /* Number of Storage Area locations. */
   HBUINT16 maxFunctionDefs;	  /* Number of FDEFs, equal to the highest function number + 1. */
   HBUINT16 maxInstructionDefs;	  /* Number of IDEFs. */
-  HBUINT16 maxStackElements;	  /* Maximum stack depth. (This includes Font and CVT
+  HBUINT16 max_ڈھیر_Elements;	  /* Maximum stack depth. (This includes Font and CVT
 				   * Programs, as well as the instructions for each glyph.) */
-  HBUINT16 maxSizeOfInstructions; /* Maximum byte count for glyph instructions. */
+  HBUINT16 max_سائز_کا_Instructions; /* Maximum byte count for glyph instructions. */
   HBUINT16 maxComponentElements;  /* Maximum number of components referenced at
 				   * "top level" for any composite glyph. */
-  HBUINT16 maxComponentDepth;	  /* Maximum levels of recursion; 1 for simple components. */
- public:
-  DEFINE_SIZE_STATIC (26);
+  HBUINT16 max_Component_گہرائی;	  /* Maximum levels of recursion; 1 for simple components. */
+ عوامی:
+  DEFINE_سائز_STATIC (26);
 };
 
 
-template <typename Types>
-struct maxp_MAXP
+سانچہ <قسم_نام Types>
+ساخت maxp_MAXP
 {
-  unsigned int get_num_glyphs () const { return numGlyphs; }
+  غیرعلامتی صحیح get_عدد_glyphs () ثابت { واپس عدد_Glyphs; }
 
-  void set_num_glyphs (unsigned int count)
+  خالی سیٹ_عدد_glyphs (غیرعلامتی صحیح گنتی)
   {
-    numGlyphs = count;
+    عدد_Glyphs = گنتی;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
-      return_trace (false);
+    TRACE_SANITIZE (یہ);
+    اگر (unlikely (!c->check_struct (یہ)))
+      return_trace (جھوٹ);
     hb_barrier ();
-    if (version.major == 1)
+    اگر (نسخہ.major == 1)
     {
-      const maxpV1Tail &v1 = StructAfter<maxpV1Tail> (*this);
+      ثابت maxp_V1_دم &v1 = StructAfter<maxp_V1_دم> (*یہ);
       return_trace (v1.sanitize (c));
     }
-    return_trace (likely (version.major == 0 && version.minor == 0x5000u));
+    return_trace (likely (نسخہ.major == 0 && نسخہ.minor == 0x5000u));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    maxp_MAXP *maxp_prime = c->serializer->embed (this);
-    if (unlikely (!maxp_prime)) return_trace (false);
+    TRACE_SUBSET (یہ);
+    maxp_MAXP *maxp_مفرد = c->serializer->embed (یہ);
+    اگر (unlikely (!maxp_مفرد)) return_trace (جھوٹ);
 
-    maxp_prime->numGlyphs = hb_min (c->plan->num_output_glyphs (),
-				    (1u << (8 * Types::size)) - 1);
-    if (maxp_prime->version.major == 1)
+    maxp_مفرد->عدد_Glyphs = hb_min (c->plan->عدد_output_glyphs (),
+				    (1u << (8 * Types::سائز)) - 1);
+    اگر (maxp_مفرد->نسخہ.major == 1)
     {
       hb_barrier ();
-      const maxpV1Tail *src_v1 = &StructAfter<maxpV1Tail> (*this);
-      maxpV1Tail *dest_v1 = c->serializer->embed<maxpV1Tail> (src_v1);
-      if (unlikely (!dest_v1)) return_trace (false);
+      ثابت maxp_V1_دم *src_v1 = &StructAfter<maxp_V1_دم> (*یہ);
+      maxp_V1_دم *dest_v1 = c->serializer->embed<maxp_V1_دم> (src_v1);
+      اگر (unlikely (!dest_v1)) return_trace (جھوٹ);
 
-      if (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
+      اگر (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
 	drop_hint_fields (dest_v1);
 
-      if (c->plan->normalized_coords)
-        instancing_update_fields (c->plan->head_maxp_info, dest_v1);
+      اگر (c->plan->normalized_coords)
+        instancing_update_fields (c->plan->سر_maxp_info, dest_v1);
     }
 
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  void instancing_update_fields (head_maxp_info_t& maxp_info, maxpV1Tail* dest_v1) const
+  خالی instancing_update_fields (سر_maxp_info_t& maxp_info, maxp_V1_دم* dest_v1) ثابت
   {
     dest_v1->maxPoints = maxp_info.maxPoints;
     dest_v1->maxContours = maxp_info.maxContours;
-    dest_v1->maxCompositePoints = maxp_info.maxCompositePoints;
-    dest_v1->maxCompositeContours = maxp_info.maxCompositeContours;
+    dest_v1->max_مرکب_Points = maxp_info.max_مرکب_Points;
+    dest_v1->max_مرکب_Contours = maxp_info.max_مرکب_Contours;
     dest_v1->maxComponentElements = maxp_info.maxComponentElements;
-    dest_v1->maxComponentDepth = maxp_info.maxComponentDepth;
+    dest_v1->max_Component_گہرائی = maxp_info.max_Component_گہرائی;
   }
 
-  static void drop_hint_fields (maxpV1Tail* dest_v1)
+  ساکن خالی drop_hint_fields (maxp_V1_دم* dest_v1)
   {
     dest_v1->maxZones = 1;
     dest_v1->maxTwilightPoints = 0;
     dest_v1->maxStorage = 0;
     dest_v1->maxFunctionDefs = 0;
     dest_v1->maxInstructionDefs = 0;
-    dest_v1->maxStackElements = 0;
-    dest_v1->maxSizeOfInstructions = 0;
+    dest_v1->max_ڈھیر_Elements = 0;
+    dest_v1->max_سائز_کا_Instructions = 0;
   }
 
-  protected:
-  FixedVersion<>version;/* Version of the maxp table (0.5 or 1.0),
+  محفوظ:
+  Fixed_نسخہ<>نسخہ;/* Version of the maxp table (0.5 or 1.0),
 			 * 0x00005000u or 0x00010000u. */
-  typename Types::HBUINT
-		numGlyphs;
+  قسم_نام Types::HBUINT
+		عدد_Glyphs;
 			/* The number of glyphs in the font. */
 /*maxpV1Tail	v1Tail[HB_VAR_ARRAY]; */
-  public:
-  DEFINE_SIZE_STATIC (4 + Types::HBUINT::static_size);
+  عوامی:
+  DEFINE_سائز_STATIC (4 + Types::HBUINT::static_سائز);
 };
 
-struct maxp : maxp_MAXP<Layout::SmallTypes>
+ساخت maxp : maxp_MAXP<Layout::SmallTypes>
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_maxp;
+  ساکن constexpr hb_لیبل_t جدول_لیبل = HB_OT_لیبل_maxp;
 };
 
-struct MAXP : maxp_MAXP<Layout::MediumTypes>
+ساخت MAXP : maxp_MAXP<Layout::MediumTypes>
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_MAXP;
+  ساکن constexpr hb_لیبل_t جدول_لیبل = HB_OT_لیبل_MAXP;
 };
 
-struct maxp_accelerator_t
+ساخت maxp_accelerator_t
 {
   maxp_accelerator_t ()
   {
-    blob = hb_blob_get_empty ();
-    numGlyphs = 0;
+    blob = hb_blob_get_خالی_خانے ();
+    عدد_Glyphs = 0;
   }
 
   maxp_accelerator_t (hb_face_t *face) : maxp_accelerator_t ()
   {
-#ifndef HB_NO_BEYOND_64K
-    if (init_table<MAXP> (face))
-      return;
-#endif
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    اگر (init_جدول<MAXP> (face))
+      واپس;
+#اگر_ختم
 
-    init_table<maxp> (face);
+    init_جدول<maxp> (face);
   }
 
   ~maxp_accelerator_t () { hb_blob_destroy (blob); }
 
-  unsigned int get_num_glyphs () const { return numGlyphs; }
-  hb_blob_t *get_blob () const { return blob; }
+  غیرعلامتی صحیح get_عدد_glyphs () ثابت { واپس عدد_Glyphs; }
+  hb_blob_t *get_blob () ثابت { واپس blob; }
 
-  private:
-  template <typename Table>
-  bool init_table (hb_face_t *face)
+  نجی:
+  سانچہ <قسم_نام جدول_3>
+  منطقی init_جدول (hb_face_t *face)
   {
     hb_sanitize_context_t c;
-    c.set_num_glyphs (0);
-    hb_blob_ptr_t<Table> table = c.reference_table<Table> (face);
-    bool ret = table.get_length ();
-    if (ret)
+    c.سیٹ_عدد_glyphs (0);
+    hb_blob_ptr_t<جدول_3> جدول = c.reference_جدول<جدول_3> (face);
+    منطقی ret = جدول.get_لمبائی ();
+    اگر (ret)
     {
-      blob = hb_blob_reference (table.get_blob ());
-      numGlyphs = table->get_num_glyphs ();
+      blob = hb_blob_reference (جدول.get_blob ());
+      عدد_Glyphs = جدول->get_عدد_glyphs ();
     }
-    table.destroy ();
-    return ret;
+    جدول.destroy ();
+    واپس ret;
   }
 
   hb_blob_t *blob;
-  unsigned int numGlyphs;
+  غیرعلامتی صحیح عدد_Glyphs;
 };
 
 
 } /* namespace OT */
 
 
-#endif /* HB_OT_MAXP_TABLE_HH */
+#اگر_ختم /* HB_OT_MAXP_TABLE_HH */

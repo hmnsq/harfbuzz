@@ -27,30 +27,30 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#شامل "hb.hh"
 
-#ifdef HAVE_ICU
+#اگر_تعریف_شدہ HAVE_ICU
 
-#pragma GCC diagnostic push
+#ہدایت GCC diagnostic push
 
 // https://github.com/harfbuzz/harfbuzz/issues/4915
-#pragma GCC diagnostic ignored "-Wredundant-decls"
+#ہدایت GCC diagnostic ignored "-Wredundant-decls"
 
-#include "hb-icu.h"
+#شامل "hb-icu.h"
 
-#include "hb-machinery.hh"
+#شامل "hb-machinery.hh"
 
-#include <unicode/uchar.h>
-#include <unicode/unorm2.h>
-#include <unicode/ustring.h>
-#include <unicode/utf16.h>
-#include <unicode/uversion.h>
+#شامل <unicode/uchar.h>
+#شامل <unicode/unorm2.h>
+#شامل <unicode/ustring.h>
+#شامل <unicode/utf16.h>
+#شامل <unicode/uversion.h>
 
 /* ICU extra semicolon, fixed since 65, https://github.com/unicode-org/icu/commit/480bec3 */
-#if U_ICU_VERSION_MAJOR_NUM < 65 && (defined(__GNUC__) || defined(__clang__))
-#define HB_ICU_EXTRA_SEMI_IGNORED
-#pragma GCC diagnostic ignored "-Wextra-semi-stmt"
-#endif
+#اگر U_ICU_نسخہ_MAJOR_عدد < 65 && (defined(__GNUC__) || defined(__clang__))
+#تعریف_کرو HB_ICU_EXTRA_SEMI_IGNORED
+#ہدایت GCC diagnostic ignored "-Wextra-semi-stmt"
+#اگر_ختم
 
 /**
  * SECTION:hb-icu
@@ -76,12 +76,12 @@
  **/
 
 hb_script_t
-hb_icu_script_to_script (UScriptCode script)
+hb_icu_script_مقصد_script (UScript_رمز script)
 {
-  if (unlikely (script == USCRIPT_INVALID_CODE))
-    return HB_SCRIPT_INVALID;
+  اگر (unlikely (script == USCRIPT_INVALID_رمز))
+    واپس HB_SCRIPT_INVALID;
 
-  return hb_script_from_string (uscript_getShortName (script), -1);
+  واپس hb_script_from_string (uscript_getShortName (script), -1);
 }
 
 /**
@@ -94,180 +94,180 @@ hb_icu_script_to_script (UScriptCode script)
  * Return value: the UScriptCode identifier found
  *
  **/
-UScriptCode
+UScript_رمز
 hb_icu_script_from_script (hb_script_t script)
 {
-  UScriptCode out = USCRIPT_INVALID_CODE;
+  UScript_رمز برآمد = USCRIPT_INVALID_رمز;
 
-  if (unlikely (script == HB_SCRIPT_INVALID))
-    return out;
+  اگر (unlikely (script == HB_SCRIPT_INVALID))
+    واپس برآمد;
 
-  UErrorCode icu_err = U_ZERO_ERROR;
-  const unsigned char buf[5] = {HB_UNTAG (script), 0};
-  uscript_getCode ((const char *) buf, &out, 1, &icu_err);
+  UError_رمز icu_err = U_ZERO_ERROR;
+  ثابت غیرعلامتی حرف buf[5] = {HB_UNTAG (script), 0};
+  uscript_get_رمز ((ثابت حرف *) buf, &برآمد, 1, &icu_err);
 
-  return out;
+  واپس برآمد;
 }
 
 
-static hb_unicode_combining_class_t
-hb_icu_unicode_combining_class (hb_unicode_funcs_t *ufuncs HB_UNUSED,
+ساکن hb_unicode_combining_class_t
+hb_icu_unicode_combining_class (hb_unicode_funcs_t *ufuncs HB_غیر_مستعمل,
 				hb_codepoint_t      unicode,
-				void               *user_data HB_UNUSED)
+				خالی               *user_ڈیٹا HB_غیر_مستعمل)
 
 {
-  return (hb_unicode_combining_class_t) u_getCombiningClass (unicode);
+  واپس (hb_unicode_combining_class_t) u_getCombiningClass (unicode);
 }
 
-static hb_unicode_general_category_t
-hb_icu_unicode_general_category (hb_unicode_funcs_t *ufuncs HB_UNUSED,
+ساکن hb_unicode_general_category_t
+hb_icu_unicode_general_category (hb_unicode_funcs_t *ufuncs HB_غیر_مستعمل,
 				 hb_codepoint_t      unicode,
-				 void               *user_data HB_UNUSED)
+				 خالی               *user_ڈیٹا HB_غیر_مستعمل)
 {
-  switch (u_getIntPropertyValue(unicode, UCHAR_GENERAL_CATEGORY))
+  انتخاب (u_get_Int_Property_قدر(unicode, UCHAR_GENERAL_CATEGORY))
   {
-  case U_UNASSIGNED:			return HB_UNICODE_GENERAL_CATEGORY_UNASSIGNED;
+  حالت U_UNASSIGNED:			واپس HB_UNICODE_GENERAL_CATEGORY_UNASSIGNED;
 
-  case U_UPPERCASE_LETTER:		return HB_UNICODE_GENERAL_CATEGORY_UPPERCASE_LETTER;
-  case U_LOWERCASE_LETTER:		return HB_UNICODE_GENERAL_CATEGORY_LOWERCASE_LETTER;
-  case U_TITLECASE_LETTER:		return HB_UNICODE_GENERAL_CATEGORY_TITLECASE_LETTER;
-  case U_MODIFIER_LETTER:		return HB_UNICODE_GENERAL_CATEGORY_MODIFIER_LETTER;
-  case U_OTHER_LETTER:			return HB_UNICODE_GENERAL_CATEGORY_OTHER_LETTER;
+  حالت U_UPPERCASE_LETTER:		واپس HB_UNICODE_GENERAL_CATEGORY_UPPERCASE_LETTER;
+  حالت U_LOWERCASE_LETTER:		واپس HB_UNICODE_GENERAL_CATEGORY_LOWERCASE_LETTER;
+  حالت U_TITLECASE_LETTER:		واپس HB_UNICODE_GENERAL_CATEGORY_TITLECASE_LETTER;
+  حالت U_MODIFIER_LETTER:		واپس HB_UNICODE_GENERAL_CATEGORY_MODIFIER_LETTER;
+  حالت U_OTHER_LETTER:			واپس HB_UNICODE_GENERAL_CATEGORY_OTHER_LETTER;
 
-  case U_NON_SPACING_MARK:		return HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK;
-  case U_ENCLOSING_MARK:		return HB_UNICODE_GENERAL_CATEGORY_ENCLOSING_MARK;
-  case U_COMBINING_SPACING_MARK:	return HB_UNICODE_GENERAL_CATEGORY_SPACING_MARK;
+  حالت U_NON_SPACING_MARK:		واپس HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK;
+  حالت U_ENCLOSING_MARK:		واپس HB_UNICODE_GENERAL_CATEGORY_ENCLOSING_MARK;
+  حالت U_COMBINING_SPACING_MARK:	واپس HB_UNICODE_GENERAL_CATEGORY_SPACING_MARK;
 
-  case U_DECIMAL_DIGIT_NUMBER:		return HB_UNICODE_GENERAL_CATEGORY_DECIMAL_NUMBER;
-  case U_LETTER_NUMBER:			return HB_UNICODE_GENERAL_CATEGORY_LETTER_NUMBER;
-  case U_OTHER_NUMBER:			return HB_UNICODE_GENERAL_CATEGORY_OTHER_NUMBER;
+  حالت U_DECIMAL_DIGIT_نمبر:		واپس HB_UNICODE_GENERAL_CATEGORY_DECIMAL_نمبر;
+  حالت U_LETTER_نمبر:			واپس HB_UNICODE_GENERAL_CATEGORY_LETTER_نمبر;
+  حالت U_OTHER_نمبر:			واپس HB_UNICODE_GENERAL_CATEGORY_OTHER_نمبر;
 
-  case U_SPACE_SEPARATOR:		return HB_UNICODE_GENERAL_CATEGORY_SPACE_SEPARATOR;
-  case U_LINE_SEPARATOR:		return HB_UNICODE_GENERAL_CATEGORY_LINE_SEPARATOR;
-  case U_PARAGRAPH_SEPARATOR:		return HB_UNICODE_GENERAL_CATEGORY_PARAGRAPH_SEPARATOR;
+  حالت U_SPACE_SEPARATOR:		واپس HB_UNICODE_GENERAL_CATEGORY_SPACE_SEPARATOR;
+  حالت U_سطر_SEPARATOR:		واپس HB_UNICODE_GENERAL_CATEGORY_سطر_SEPARATOR;
+  حالت U_PARAGRAPH_SEPARATOR:		واپس HB_UNICODE_GENERAL_CATEGORY_PARAGRAPH_SEPARATOR;
 
-  case U_CONTROL_CHAR:			return HB_UNICODE_GENERAL_CATEGORY_CONTROL;
-  case U_FORMAT_CHAR:			return HB_UNICODE_GENERAL_CATEGORY_FORMAT;
-  case U_PRIVATE_USE_CHAR:		return HB_UNICODE_GENERAL_CATEGORY_PRIVATE_USE;
-  case U_SURROGATE:			return HB_UNICODE_GENERAL_CATEGORY_SURROGATE;
+  حالت U_CONTROL_CHAR:			واپس HB_UNICODE_GENERAL_CATEGORY_CONTROL;
+  حالت U_FORMAT_CHAR:			واپس HB_UNICODE_GENERAL_CATEGORY_FORMAT;
+  حالت U_نجی_USE_CHAR:		واپس HB_UNICODE_GENERAL_CATEGORY_نجی_USE;
+  حالت U_SURROGATE:			واپس HB_UNICODE_GENERAL_CATEGORY_SURROGATE;
 
 
-  case U_DASH_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_DASH_PUNCTUATION;
-  case U_START_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_OPEN_PUNCTUATION;
-  case U_END_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_CLOSE_PUNCTUATION;
-  case U_CONNECTOR_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_CONNECT_PUNCTUATION;
-  case U_OTHER_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_OTHER_PUNCTUATION;
+  حالت U_DASH_PUNCTUATION:		واپس HB_UNICODE_GENERAL_CATEGORY_DASH_PUNCTUATION;
+  حالت U_آغاز_PUNCTUATION:		واپس HB_UNICODE_GENERAL_CATEGORY_OPEN_PUNCTUATION;
+  حالت U_انتہا_PUNCTUATION:		واپس HB_UNICODE_GENERAL_CATEGORY_CLOSE_PUNCTUATION;
+  حالت U_CONNECTOR_PUNCTUATION:		واپس HB_UNICODE_GENERAL_CATEGORY_CONNECT_PUNCTUATION;
+  حالت U_OTHER_PUNCTUATION:		واپس HB_UNICODE_GENERAL_CATEGORY_OTHER_PUNCTUATION;
 
-  case U_MATH_SYMBOL:			return HB_UNICODE_GENERAL_CATEGORY_MATH_SYMBOL;
-  case U_CURRENCY_SYMBOL:		return HB_UNICODE_GENERAL_CATEGORY_CURRENCY_SYMBOL;
-  case U_MODIFIER_SYMBOL:		return HB_UNICODE_GENERAL_CATEGORY_MODIFIER_SYMBOL;
-  case U_OTHER_SYMBOL:			return HB_UNICODE_GENERAL_CATEGORY_OTHER_SYMBOL;
+  حالت U_MATH_علامت:			واپس HB_UNICODE_GENERAL_CATEGORY_MATH_علامت;
+  حالت U_CURRENCY_علامت:		واپس HB_UNICODE_GENERAL_CATEGORY_CURRENCY_علامت;
+  حالت U_MODIFIER_علامت:		واپس HB_UNICODE_GENERAL_CATEGORY_MODIFIER_علامت;
+  حالت U_OTHER_علامت:			واپس HB_UNICODE_GENERAL_CATEGORY_OTHER_علامت;
 
-  case U_INITIAL_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_INITIAL_PUNCTUATION;
-  case U_FINAL_PUNCTUATION:		return HB_UNICODE_GENERAL_CATEGORY_FINAL_PUNCTUATION;
+  حالت U_INITIAL_PUNCTUATION:		واپس HB_UNICODE_GENERAL_CATEGORY_INITIAL_PUNCTUATION;
+  حالت U_FINAL_PUNCTUATION:		واپس HB_UNICODE_GENERAL_CATEGORY_FINAL_PUNCTUATION;
   }
 
-  return HB_UNICODE_GENERAL_CATEGORY_UNASSIGNED;
+  واپس HB_UNICODE_GENERAL_CATEGORY_UNASSIGNED;
 }
 
-static hb_codepoint_t
-hb_icu_unicode_mirroring (hb_unicode_funcs_t *ufuncs HB_UNUSED,
+ساکن hb_codepoint_t
+hb_icu_unicode_mirroring (hb_unicode_funcs_t *ufuncs HB_غیر_مستعمل,
 			  hb_codepoint_t      unicode,
-			  void               *user_data HB_UNUSED)
+			  خالی               *user_ڈیٹا HB_غیر_مستعمل)
 {
-  return u_charMirror(unicode);
+  واپس u_charMirror(unicode);
 }
 
-static hb_script_t
-hb_icu_unicode_script (hb_unicode_funcs_t *ufuncs HB_UNUSED,
+ساکن hb_script_t
+hb_icu_unicode_script (hb_unicode_funcs_t *ufuncs HB_غیر_مستعمل,
 		       hb_codepoint_t      unicode,
-		       void               *user_data HB_UNUSED)
+		       خالی               *user_ڈیٹا HB_غیر_مستعمل)
 {
-  UErrorCode status = U_ZERO_ERROR;
-  UScriptCode scriptCode = uscript_getScript(unicode, &status);
+  UError_رمز حالت_2 = U_ZERO_ERROR;
+  UScript_رمز script_رمز = uscript_getScript(unicode, &حالت_2);
 
-  if (unlikely (U_FAILURE (status)))
-    return HB_SCRIPT_UNKNOWN;
+  اگر (unlikely (U_FAILURE (حالت_2)))
+    واپس HB_SCRIPT_UNKNOWN;
 
-  return hb_icu_script_to_script (scriptCode);
+  واپس hb_icu_script_مقصد_script (script_رمز);
 }
 
-static hb_bool_t
-hb_icu_unicode_compose (hb_unicode_funcs_t *ufuncs HB_UNUSED,
+ساکن hb_bool_t
+hb_icu_unicode_compose (hb_unicode_funcs_t *ufuncs HB_غیر_مستعمل,
 			hb_codepoint_t      a,
 			hb_codepoint_t      b,
 			hb_codepoint_t     *ab,
-			void               *user_data)
+			خالی               *user_ڈیٹا)
 {
-  const UNormalizer2 *normalizer = (const UNormalizer2 *) user_data;
+  ثابت UNormalizer2 *normalizer = (ثابت UNormalizer2 *) user_ڈیٹا;
   UChar32 ret = unorm2_composePair (normalizer, a, b);
-  if (ret < 0) return false;
+  اگر (ret < 0) واپس جھوٹ;
   *ab = ret;
-  return true;
+  واپس سچ;
 }
 
-static hb_bool_t
-hb_icu_unicode_decompose (hb_unicode_funcs_t *ufuncs HB_UNUSED,
+ساکن hb_bool_t
+hb_icu_unicode_decompose (hb_unicode_funcs_t *ufuncs HB_غیر_مستعمل,
 			  hb_codepoint_t      ab,
 			  hb_codepoint_t     *a,
 			  hb_codepoint_t     *b,
-			  void               *user_data)
+			  خالی               *user_ڈیٹا)
 {
-  const UNormalizer2 *normalizer = (const UNormalizer2 *) user_data;
+  ثابت UNormalizer2 *normalizer = (ثابت UNormalizer2 *) user_ڈیٹا;
   UChar decomposed[4];
-  int len;
-  UErrorCode icu_err = U_ZERO_ERROR;
+  صحیح len;
+  UError_رمز icu_err = U_ZERO_ERROR;
   len = unorm2_getRawDecomposition (normalizer, ab, decomposed,
-				    ARRAY_LENGTH (decomposed), &icu_err);
-  if (U_FAILURE (icu_err) || len < 0) return false;
+				    ARRAY_لمبائی (decomposed), &icu_err);
+  اگر (U_FAILURE (icu_err) || len < 0) واپس جھوٹ;
 
-  len = u_countChar32 (decomposed, len);
-  if (len == 1)
+  len = u_گنتی_Char32 (decomposed, len);
+  اگر (len == 1)
   {
     U16_GET_UNSAFE (decomposed, 0, *a);
     *b = 0;
-    return *a != ab;
+    واپس *a != ab;
   }
-  else if (len == 2)
+  ورنہ اگر (len == 2)
   {
     len = 0;
-    U16_NEXT_UNSAFE (decomposed, len, *a);
-    U16_NEXT_UNSAFE (decomposed, len, *b);
+    U16_اگلا_UNSAFE (decomposed, len, *a);
+    U16_اگلا_UNSAFE (decomposed, len, *b);
   }
-  return true;
+  واپس سچ;
 }
 
 
-static inline void free_static_icu_funcs ();
+ساکن اندرونی خالی free_static_icu_funcs ();
 
-static struct hb_icu_unicode_funcs_lazy_loader_t : hb_unicode_funcs_lazy_loader_t<hb_icu_unicode_funcs_lazy_loader_t>
+ساکن ساخت hb_icu_unicode_funcs_lazy_loader_t : hb_unicode_funcs_lazy_loader_t<hb_icu_unicode_funcs_lazy_loader_t>
 {
-  static hb_unicode_funcs_t *create ()
+  ساکن hb_unicode_funcs_t *create ()
   {
-    void *user_data = nullptr;
-    UErrorCode icu_err = U_ZERO_ERROR;
-    user_data = (void *) unorm2_getNFCInstance (&icu_err);
-    assert (user_data);
+    خالی *user_ڈیٹا = خالی_اشاریہ;
+    UError_رمز icu_err = U_ZERO_ERROR;
+    user_ڈیٹا = (خالی *) unorm2_getNFCInstance (&icu_err);
+    أكد (user_ڈیٹا);
 
-    hb_unicode_funcs_t *funcs = hb_unicode_funcs_create (nullptr);
+    hb_unicode_funcs_t *funcs = hb_unicode_funcs_create (خالی_اشاریہ);
 
-    hb_unicode_funcs_set_combining_class_func (funcs, hb_icu_unicode_combining_class, nullptr, nullptr);
-    hb_unicode_funcs_set_general_category_func (funcs, hb_icu_unicode_general_category, nullptr, nullptr);
-    hb_unicode_funcs_set_mirroring_func (funcs, hb_icu_unicode_mirroring, nullptr, nullptr);
-    hb_unicode_funcs_set_script_func (funcs, hb_icu_unicode_script, nullptr, nullptr);
-    hb_unicode_funcs_set_compose_func (funcs, hb_icu_unicode_compose, user_data, nullptr);
-    hb_unicode_funcs_set_decompose_func (funcs, hb_icu_unicode_decompose, user_data, nullptr);
+    hb_unicode_funcs_سیٹ_combining_class_func (funcs, hb_icu_unicode_combining_class, خالی_اشاریہ, خالی_اشاریہ);
+    hb_unicode_funcs_سیٹ_general_category_func (funcs, hb_icu_unicode_general_category, خالی_اشاریہ, خالی_اشاریہ);
+    hb_unicode_funcs_سیٹ_mirroring_func (funcs, hb_icu_unicode_mirroring, خالی_اشاریہ, خالی_اشاریہ);
+    hb_unicode_funcs_سیٹ_script_func (funcs, hb_icu_unicode_script, خالی_اشاریہ, خالی_اشاریہ);
+    hb_unicode_funcs_سیٹ_compose_func (funcs, hb_icu_unicode_compose, user_ڈیٹا, خالی_اشاریہ);
+    hb_unicode_funcs_سیٹ_decompose_func (funcs, hb_icu_unicode_decompose, user_ڈیٹا, خالی_اشاریہ);
 
     hb_unicode_funcs_make_immutable (funcs);
 
     hb_atexit (free_static_icu_funcs);
 
-    return funcs;
+    واپس funcs;
   }
 } static_icu_funcs;
 
-static inline
-void free_static_icu_funcs ()
+ساکن اندرونی
+خالی free_static_icu_funcs ()
 {
   static_icu_funcs.free_instance ();
 }
@@ -285,9 +285,9 @@ void free_static_icu_funcs ()
 hb_unicode_funcs_t *
 hb_icu_get_unicode_funcs ()
 {
-  return static_icu_funcs.get_unconst ();
+  واپس static_icu_funcs.get_unconst ();
 }
 
-#pragma GCC diagnostic pop
+#ہدایت GCC diagnostic نکالو
 
-#endif
+#اگر_ختم

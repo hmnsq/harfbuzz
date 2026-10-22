@@ -21,26 +21,26 @@
  * ON AN "AS IS" BASIS, AND THE COPYRIGHT HOLDER HAS NO OBLIGATION TO
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
-#ifndef HB_GEOMETRY_HH
-#define HB_GEOMETRY_HH
+#اگر_غیر_تعریف_شدہ HB_GEOMETRY_HH
+#تعریف_کرو HB_GEOMETRY_HH
 
-#include "hb.hh"
+#شامل "hb.hh"
 
-#include "hb-algs.hh"
+#شامل "hb-algs.hh"
 
-#include <cmath>
+#شامل <cmath>
 
 
-template <typename Float = float>
-struct hb_extents_t
+سانچہ <قسم_نام Float = اعشاری>
+ساخت hb_extents_t
 {
   hb_extents_t () {}
-  hb_extents_t (const hb_glyph_extents_t &extents)
+  hb_extents_t (ثابت hb_glyph_extents_t &extents)
   {
-    double x0 = (double) extents.x_bearing;
-    double y0 = (double) extents.y_bearing;
-    double x1 = x0 + (double) extents.width;
-    double y1 = y0 + (double) extents.height;
+    دوہرا x0 = (دوہرا) extents.x_bearing;
+    دوہرا y0 = (دوہرا) extents.y_bearing;
+    دوہرا x1 = x0 + (دوہرا) extents.چوڑائی;
+    دوہرا y1 = y0 + (دوہرا) extents.اونچائی;
 
     xmin = (Float) hb_min (x0, x1);
     ymin = (Float) hb_min (y0, y1);
@@ -50,16 +50,16 @@ struct hb_extents_t
   hb_extents_t (Float xmin, Float ymin, Float xmax, Float ymax) :
     xmin (xmin), ymin (ymin), xmax (xmax), ymax (ymax) {}
 
-  bool is_empty () const { return xmin >= xmax || ymin >= ymax; }
-  bool is_void () const { return xmin > xmax; }
+  منطقی is_empty () ثابت { واپس xmin >= xmax || ymin >= ymax; }
+  منطقی is_void () ثابت { واپس xmin > xmax; }
 
-  void union_ (const hb_extents_t &o)
+  خالی union_ (ثابت hb_extents_t &o)
   {
-    if (o.is_empty ()) return;
-    if (is_empty ())
+    اگر (o.is_empty ()) واپس;
+    اگر (is_empty ())
     {
-      *this = o;
-      return;
+      *یہ = o;
+      واپس;
     }
     xmin = hb_min (xmin, o.xmin);
     ymin = hb_min (ymin, o.ymin);
@@ -67,12 +67,12 @@ struct hb_extents_t
     ymax = hb_max (ymax, o.ymax);
   }
 
-  void intersect (const hb_extents_t &o)
+  خالی intersect (ثابت hb_extents_t &o)
   {
-    if (o.is_empty () || is_empty ())
+    اگر (o.is_empty () || is_empty ())
     {
-      *this = hb_extents_t {};
-      return;
+      *یہ = hb_extents_t {};
+      واپس;
     }
     xmin = hb_max (xmin, o.xmin);
     ymin = hb_max (ymin, o.ymin);
@@ -80,15 +80,15 @@ struct hb_extents_t
     ymax = hb_min (ymax, o.ymax);
   }
 
-  void
-  add_point (Float x, Float y)
+  خالی
+  جوڑو_نقطہ (Float x, Float y)
   {
-    if (unlikely (is_void ()))
+    اگر (unlikely (is_void ()))
     {
       xmin = xmax = x;
       ymin = ymax = y;
     }
-    else
+    ورنہ
     {
       xmin = hb_min (xmin, x);
       ymin = hb_min (ymin, y);
@@ -97,24 +97,24 @@ struct hb_extents_t
     }
   }
 
-  hb_glyph_extents_t to_glyph_extents (bool xneg = false, bool yneg = false) const
+  hb_glyph_extents_t مقصد_glyph_extents (منطقی xneg = جھوٹ, منطقی yneg = جھوٹ) ثابت
   {
-    double x0 = round ((double) xmin);
-    double y0 = round ((double) ymin);
-    double x1 = round ((double) xmax);
-    double y1 = round ((double) ymax);
+    دوہرا x0 = round ((دوہرا) xmin);
+    دوہرا y0 = round ((دوہرا) ymin);
+    دوہرا x1 = round ((دوہرا) xmax);
+    دوہرا y1 = round ((دوہرا) ymax);
 
-    if (unlikely (!std::isfinite (x0) ||
+    اگر (unlikely (!std::isfinite (x0) ||
 		  !std::isfinite (y0) ||
 		  !std::isfinite (x1) ||
 		  !std::isfinite (y1)))
-      return hb_glyph_extents_t {0, 0, 0, 0};
+      واپس hb_glyph_extents_t {0, 0, 0, 0};
 
-    return hb_glyph_extents_t {
-      clamp_to_hb_position (xneg ? x1 : x0),
-      clamp_to_hb_position (yneg ? y0 : y1),
-      clamp_to_hb_position (xneg ? x0 - x1 : x1 - x0),
-      clamp_to_hb_position (yneg ? y1 - y0 : y0 - y1)
+    واپس hb_glyph_extents_t {
+      clamp_مقصد_hb_position (xneg ? x1 : x0),
+      clamp_مقصد_hb_position (yneg ? y0 : y1),
+      clamp_مقصد_hb_position (xneg ? x0 - x1 : x1 - x0),
+      clamp_مقصد_hb_position (yneg ? y1 - y0 : y0 - y1)
     };
   }
 
@@ -123,17 +123,17 @@ struct hb_extents_t
   Float xmax = -1;
   Float ymax = -1;
 
-  static hb_position_t
-  clamp_to_hb_position (double v)
+  ساکن hb_position_t
+  clamp_مقصد_hb_position (دوہرا v)
   {
-    return (hb_position_t) hb_clamp (v,
-				     (double) hb_int_min (hb_position_t),
-				     (double) hb_int_max (hb_position_t));
+    واپس (hb_position_t) hb_clamp (v,
+				     (دوہرا) hb_int_min (hb_position_t),
+				     (دوہرا) hb_int_max (hb_position_t));
   }
 };
 
-template <typename Float = float>
-struct hb_transform_t
+سانچہ <قسم_نام Float = اعشاری>
+ساخت hb_transform_t
 {
   hb_transform_t () {}
   hb_transform_t (Float xx, Float yx,
@@ -141,24 +141,24 @@ struct hb_transform_t
 		  Float x0, Float y0) :
     xx (xx), yx (yx), xy (xy), yy (yy), x0 (x0), y0 (y0) {}
 
-  bool is_identity () const
+  منطقی is_شناختی_عنصر () ثابت
   {
-    return xx == 1 && yx == 0 &&
+    واپس xx == 1 && yx == 0 &&
 	   xy == 0 && yy == 1 &&
 	   x0 == 0 && y0 == 0;
   }
-  bool is_translation () const
+  منطقی is_translation () ثابت
   {
-    return xx == 1 && yx == 0 &&
+    واپس xx == 1 && yx == 0 &&
 	   xy == 0 && yy == 1;
   }
 
-  void multiply (const hb_transform_t &o, bool before=false)
+  خالی multiply (ثابت hb_transform_t &o, منطقی before=جھوٹ)
   {
     // Copied from cairo-matrix.c
-    const hb_transform_t &a = before ? o : *this;
-    const hb_transform_t &b = before ? *this : o;
-    *this = {
+    ثابت hb_transform_t &a = before ? o : *یہ;
+    ثابت hb_transform_t &b = before ? *یہ : o;
+    *یہ = {
       a.xx * b.xx + a.xy * b.yx,
       a.yx * b.xx + a.yy * b.yx,
       a.xx * b.xy + a.xy * b.yy,
@@ -169,7 +169,7 @@ struct hb_transform_t
   }
 
   HB_ALWAYS_INLINE
-  void transform_distance (Float &dx, Float &dy) const
+  خالی transform_فاصلہ (Float &dx, Float &dy) ثابت
   {
     Float new_x = xx * dx + xy * dy;
     Float new_y = yx * dx + yy * dy;
@@ -178,7 +178,7 @@ struct hb_transform_t
   }
 
   HB_ALWAYS_INLINE
-  void transform_point (Float &x, Float &y) const
+  خالی transform_نقطہ (Float &x, Float &y) ثابت
   {
     Float new_x = x0 + xx * x + xy * y;
     Float new_y = y0 + yx * x + yy * y;
@@ -186,7 +186,7 @@ struct hb_transform_t
     y = new_y;
   }
 
-  void transform_extents (hb_extents_t<Float> &extents) const
+  خالی transform_extents (hb_extents_t<Float> &extents) ثابت
   {
     Float quad_x[4], quad_y[4];
 
@@ -200,123 +200,123 @@ struct hb_transform_t
     quad_y[3] = extents.ymax;
 
     extents = hb_extents_t<Float> {};
-    for (unsigned i = 0; i < 4; i++)
+    برائے (غیرعلامتی i = 0; i < 4; i++)
     {
-      transform_point (quad_x[i], quad_y[i]);
-      extents.add_point (quad_x[i], quad_y[i]);
+      transform_نقطہ (quad_x[i], quad_y[i]);
+      extents.جوڑو_نقطہ (quad_x[i], quad_y[i]);
     }
   }
 
-  void transform (const hb_transform_t &o, bool before=false) { multiply (o, before); }
+  خالی transform (ثابت hb_transform_t &o, منطقی before=جھوٹ) { multiply (o, before); }
 
-  static hb_transform_t translation (Float x, Float y)
+  ساکن hb_transform_t translation (Float x, Float y)
   {
-    return {1, 0, 0, 1, x, y};
+    واپس {1, 0, 0, 1, x, y};
   }
-  void translate (Float x, Float y, bool before=false)
+  خالی translate (Float x, Float y, منطقی before=جھوٹ)
   {
-    if (before)
+    اگر (before)
     {
       x0 += x;
       y0 += y;
     }
-    else
+    ورنہ
     {
-      if (x == 0 && y == 0)
-	return;
+      اگر (x == 0 && y == 0)
+	واپس;
 
       x0 += xx * x + xy * y;
       y0 += yx * x + yy * y;
     }
   }
 
-  static hb_transform_t scaling (Float scaleX, Float scaleY)
+  ساکن hb_transform_t scaling (Float scaleX, Float scaleY)
   {
-    return {scaleX, 0, 0, scaleY, 0, 0};
+    واپس {scaleX, 0, 0, scaleY, 0, 0};
   }
-  void scale (Float scaleX, Float scaleY)
+  خالی scale (Float scaleX, Float scaleY)
   {
-    if (scaleX == 1 && scaleY == 1)
-      return;
+    اگر (scaleX == 1 && scaleY == 1)
+      واپس;
 
     xx *= scaleX;
     yx *= scaleX;
     xy *= scaleY;
     yy *= scaleY;
   }
-  static hb_transform_t scaling_around_center (Float scaleX, Float scaleY, Float center_x, Float center_y)
+  ساکن hb_transform_t scaling_around_center (Float scaleX, Float scaleY, Float center_x, Float center_y)
   {
-    return {scaleX, 0, 0, scaleY,
+    واپس {scaleX, 0, 0, scaleY,
 	    center_x ? (1 - scaleX) * center_x : 0,
 	    center_y ? (1 - scaleY) * center_y : 0};
   }
-  void scale_around_center (Float scaleX, Float scaleY, Float center_x, Float center_y)
+  خالی scale_around_center (Float scaleX, Float scaleY, Float center_x, Float center_y)
   {
-    if (scaleX == 1 && scaleY == 1)
-      return;
+    اگر (scaleX == 1 && scaleY == 1)
+      واپس;
 
     transform (scaling_around_center (scaleX, scaleY, center_x, center_y));
   }
 
-  static hb_transform_t rotation (Float radians)
+  ساکن hb_transform_t rotation (Float radians)
   {
     // https://github.com/fonttools/fonttools/blob/f66ee05f71c8b57b5f519ee975e95edcd1466e14/Lib/fontTools/misc/transform.py#L240
     Float c;
     Float s;
     hb_sincos (radians, s, c);
-    return {c, s, -s, c, 0, 0};
+    واپس {c, s, -s, c, 0, 0};
   }
-  void rotate (Float radians, bool before=false)
+  خالی rotate (Float radians, منطقی before=جھوٹ)
   {
-    if (radians == 0)
-      return;
+    اگر (radians == 0)
+      واپس;
 
     transform (rotation (radians), before);
   }
 
-  static hb_transform_t rotation_around_center (Float radians, Float center_x, Float center_y)
+  ساکن hb_transform_t rotation_around_center (Float radians, Float center_x, Float center_y)
   {
     Float s, c;
     hb_sincos (radians, s, c);
-    return {
+    واپس {
       c, s, -s, c,
       (1 - c) * center_x + s * center_y,
       -s * center_x +  (1 - c) * center_y
     };
   }
-  void rotate_around_center (Float radians, Float center_x, Float center_y, bool before=false)
+  خالی rotate_around_center (Float radians, Float center_x, Float center_y, منطقی before=جھوٹ)
   {
-    if (radians == 0)
-      return;
+    اگر (radians == 0)
+      واپس;
 
     transform (rotation_around_center (radians, center_x, center_y), before);
   }
 
-  static hb_transform_t skewing (Float skewX, Float skewY)
+  ساکن hb_transform_t skewing (Float skewX, Float skewY)
   {
-    return {1, skewY ? tanf (skewY) : 0, skewX ? tanf (skewX) : 0, 1, 0, 0};
+    واپس {1, skewY ? tanf (skewY) : 0, skewX ? tanf (skewX) : 0, 1, 0, 0};
   }
-  void skew (Float skewX, Float skewY)
+  خالی skew (Float skewX, Float skewY)
   {
-    if (skewX == 0 && skewY == 0)
-      return;
+    اگر (skewX == 0 && skewY == 0)
+      واپس;
 
     transform (skewing (skewX, skewY));
   }
-  static hb_transform_t skewing_around_center (Float skewX, Float skewY, Float center_x, Float center_y)
+  ساکن hb_transform_t skewing_around_center (Float skewX, Float skewY, Float center_x, Float center_y)
   {
     skewX = skewX ? tanf (skewX) : 0;
     skewY = skewY ? tanf (skewY) : 0;
-    return {
+    واپس {
 	    1, skewY, skewX, 1,
 	    center_y ? -skewX * center_y : 0,
 	    center_x ? -skewY * center_x : 0
     };
   }
-  void skew_around_center (Float skewX, Float skewY, Float center_x, Float center_y)
+  خالی skew_around_center (Float skewX, Float skewY, Float center_x, Float center_y)
   {
-    if (skewX == 0 && skewY == 0)
-	    return;
+    اگر (skewX == 0 && skewY == 0)
+	    واپس;
 
     transform (skewing_around_center (skewX, skewY, center_x, center_y));
   }
@@ -329,57 +329,57 @@ struct hb_transform_t
   Float y0 = 0;
 };
 
-#define HB_TRANSFORM_IDENTITY {1, 0, 0, 1, 0, 0}
+#تعریف_کرو HB_TRANSFORM_شناختی_عنصر {1, 0, 0, 1, 0, 0}
 
-template <typename Float = float>
-struct hb_bounds_t
+سانچہ <قسم_نام Float = اعشاری>
+ساخت hb_bounds_t
 {
-  enum status_t {
+  شمار حالت_t {
     UNBOUNDED,
     BOUNDED,
-    EMPTY,
+    خالی_خانے,
   };
 
-  hb_bounds_t (status_t status = UNBOUNDED) : status (status) {}
-  hb_bounds_t (const hb_extents_t<Float> &extents) :
-    status (extents.is_empty () ? EMPTY : BOUNDED), extents (extents) {}
+  hb_bounds_t (حالت_t حالت_2 = UNBOUNDED) : حالت_2 (حالت_2) {}
+  hb_bounds_t (ثابت hb_extents_t<Float> &extents) :
+    حالت_2 (extents.is_empty () ? خالی_خانے : BOUNDED), extents (extents) {}
 
-  void union_ (const hb_bounds_t &o)
+  خالی union_ (ثابت hb_bounds_t &o)
   {
-    if (o.status == UNBOUNDED)
-      status = UNBOUNDED;
-    else if (o.status == BOUNDED)
+    اگر (o.حالت_2 == UNBOUNDED)
+      حالت_2 = UNBOUNDED;
+    ورنہ اگر (o.حالت_2 == BOUNDED)
     {
-      if (status == EMPTY)
-	*this = o;
-      else if (status == BOUNDED)
+      اگر (حالت_2 == خالی_خانے)
+	*یہ = o;
+      ورنہ اگر (حالت_2 == BOUNDED)
         extents.union_ (o.extents);
     }
   }
 
-  void intersect (const hb_bounds_t &o)
+  خالی intersect (ثابت hb_bounds_t &o)
   {
-    if (o.status == EMPTY)
-      status = EMPTY;
-    else if (o.status == BOUNDED)
+    اگر (o.حالت_2 == خالی_خانے)
+      حالت_2 = خالی_خانے;
+    ورنہ اگر (o.حالت_2 == BOUNDED)
     {
-      if (status == UNBOUNDED)
-	*this = o;
-      else if (status == BOUNDED)
+      اگر (حالت_2 == UNBOUNDED)
+	*یہ = o;
+      ورنہ اگر (حالت_2 == BOUNDED)
       {
         extents.intersect (o.extents);
-	if (extents.is_empty ())
-	  status = EMPTY;
+	اگر (extents.is_empty ())
+	  حالت_2 = خالی_خانے;
       }
     }
   }
 
-  status_t status;
+  حالت_t حالت_2;
   hb_extents_t<Float> extents;
 };
 
-template <typename Float = float>
-struct hb_transform_decomposed_t
+سانچہ <قسم_نام Float = اعشاری>
+ساخت hb_transform_decomposed_t
 {
   Float translateX = 0;
   Float translateY = 0;
@@ -391,16 +391,16 @@ struct hb_transform_decomposed_t
   Float tCenterX = 0;
   Float tCenterY = 0;
 
-  operator bool () const
+  عامل منطقی () ثابت
   {
-    return translateX || translateY ||
+    واپس translateX || translateY ||
 	   rotation ||
 	   scaleX != 1 || scaleY != 1 ||
 	   skewX || skewY ||
 	   tCenterX || tCenterY;
   }
 
-  hb_transform_t<Float> to_transform () const
+  hb_transform_t<Float> مقصد_transform () ثابت
   {
     hb_transform_t<Float> t;
     t.translate (translateX + tCenterX, translateY + tCenterY);
@@ -408,9 +408,9 @@ struct hb_transform_decomposed_t
     t.scale (scaleX, scaleY);
     t.skew (-skewX, skewY);
     t.translate (-tCenterX, -tCenterY);
-    return t;
+    واپس t;
   }
 };
 
 
-#endif /* HB_GEOMETRY_HH */
+#اگر_ختم /* HB_GEOMETRY_HH */

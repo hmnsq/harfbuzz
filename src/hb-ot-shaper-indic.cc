@@ -24,14 +24,14 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#شامل "hb.hh"
 
-#ifndef HB_NO_OT_SHAPE
+#اگر_غیر_تعریف_شدہ HB_NO_OT_SHAPE
 
-#include "hb-ot-shaper-indic.hh"
-#include "hb-ot-shaper-indic-machine.hh"
-#include "hb-ot-shaper-vowel-constraints.hh"
-#include "hb-ot-layout.hh"
+#شامل "hb-ot-shaper-indic.hh"
+#شامل "hb-ot-shaper-indic-machine.hh"
+#شامل "hb-ot-shaper-vowel-constraints.hh"
+#شامل "hb-ot-layout.hh"
 
 
 /*
@@ -39,23 +39,23 @@
  */
 
 
-static inline void
-set_indic_properties (hb_glyph_info_t &info)
+ساکن اندرونی خالی
+سیٹ_indic_properties (hb_glyph_info_t &info)
 {
   hb_codepoint_t u = info.codepoint;
-  unsigned int type = hb_indic_get_categories (u);
+  غیرعلامتی صحیح type = hb_indic_get_categories (u);
 
   info.indic_category() = (indic_category_t) (type & 0xFFu);
   info.indic_position() = (indic_position_t) (type >> 8);
 }
 
 
-static inline bool
-is_one_of (const hb_glyph_info_t &info, unsigned int flags)
+ساکن اندرونی منطقی
+is_one_کا (ثابت hb_glyph_info_t &info, غیرعلامتی صحیح flags)
 {
   /* If it ligated, all bets are off. */
-  if (_hb_glyph_info_ligated (&info)) return false;
-  return !!(FLAG_UNSAFE (info.indic_category()) & flags);
+  اگر (_hb_glyph_info_ligated (&info)) واپس جھوٹ;
+  واپس !!(FLAG_UNSAFE (info.indic_category()) & flags);
 }
 
 /* Note:
@@ -65,50 +65,50 @@ is_one_of (const hb_glyph_info_t &info, unsigned int flags)
  * consonant syllable logic from the vowel syllable function and get it all right!
  *
  * Keep in sync with consonant_categories in the generator. */
-#define CONSONANT_FLAGS_INDIC (FLAG (I_Cat(C)) | FLAG (I_Cat(CS)) | FLAG (I_Cat(Ra)) | FLAG (I_Cat(CM)) | FLAG (I_Cat(V)) | FLAG (I_Cat(PLACEHOLDER)) | FLAG (I_Cat(DOTTEDCIRCLE)))
+#تعریف_کرو CONSONANT_FLAGS_INDIC (FLAG (I_Cat(C)) | FLAG (I_Cat(CS)) | FLAG (I_Cat(Ra)) | FLAG (I_Cat(CM)) | FLAG (I_Cat(V)) | FLAG (I_Cat(PLACEHOLDER)) | FLAG (I_Cat(DOTTEDCIRCLE)))
 
-static inline bool
-is_consonant (const hb_glyph_info_t &info)
+ساکن اندرونی منطقی
+is_consonant (ثابت hb_glyph_info_t &info)
 {
-  return is_one_of (info, CONSONANT_FLAGS_INDIC);
+  واپس is_one_کا (info, CONSONANT_FLAGS_INDIC);
 }
 
-#define JOINER_FLAGS (FLAG (I_Cat(ZWJ)) | FLAG (I_Cat(ZWNJ)))
+#تعریف_کرو JOINER_FLAGS (FLAG (I_Cat(ZWJ)) | FLAG (I_Cat(ZWNJ)))
 
-static inline bool
-is_joiner (const hb_glyph_info_t &info)
+ساکن اندرونی منطقی
+is_joiner (ثابت hb_glyph_info_t &info)
 {
-  return is_one_of (info, JOINER_FLAGS);
+  واپس is_one_کا (info, JOINER_FLAGS);
 }
 
-static inline bool
-is_halant (const hb_glyph_info_t &info)
+ساکن اندرونی منطقی
+is_halant (ثابت hb_glyph_info_t &info)
 {
-  return is_one_of (info, FLAG (I_Cat(H)));
+  واپس is_one_کا (info, FLAG (I_Cat(H)));
 }
 
-struct hb_indic_would_substitute_feature_t
+ساخت hb_indic_would_substitute_feature_t
 {
-  void init (const hb_ot_map_t *map, hb_tag_t feature_tag, bool zero_context_)
+  خالی init (ثابت hb_ot_map_t *map, hb_لیبل_t feature_لیبل, منطقی zero_context_)
   {
     zero_context = zero_context_;
     lookups = map->get_stage_lookups (0/*GSUB*/,
-				      map->get_feature_stage (0/*GSUB*/, feature_tag));
+				      map->get_feature_stage (0/*GSUB*/, feature_لیبل));
   }
 
-  bool would_substitute (const hb_codepoint_t *glyphs,
-			 unsigned int          glyphs_count,
-			 hb_face_t            *face) const
+  منطقی would_substitute (ثابت hb_codepoint_t *glyphs,
+			 غیرعلامتی صحیح          glyphs_گنتی,
+			 hb_face_t            *face) ثابت
   {
-    for (const auto &lookup : lookups)
-      if (hb_ot_layout_lookup_would_substitute (face, lookup.index, glyphs, glyphs_count, zero_context))
-	return true;
-    return false;
+    برائے (ثابت خودکار &lookup : lookups)
+      اگر (hb_ot_layout_lookup_would_substitute (face, lookup.اشاریہ_2, glyphs, glyphs_گنتی, zero_context))
+	واپس سچ;
+    واپس جھوٹ;
   }
 
-  private:
-  hb_array_t<const hb_ot_map_t::lookup_map_t> lookups;
-  bool zero_context;
+  نجی:
+  hb_array_t<ثابت hb_ot_map_t::lookup_map_t> lookups;
+  منطقی zero_context;
 };
 
 
@@ -120,49 +120,49 @@ struct hb_indic_would_substitute_feature_t
  * instead of adding a new flag in these structs.
  */
 
-enum reph_position_t {
+شمار reph_position_t {
   REPH_POS_AFTER_MAIN  = POS_AFTER_MAIN,
   REPH_POS_BEFORE_SUB  = POS_BEFORE_SUB,
   REPH_POS_AFTER_SUB   = POS_AFTER_SUB,
   REPH_POS_BEFORE_POST = POS_BEFORE_POST,
   REPH_POS_AFTER_POST  = POS_AFTER_POST
 };
-enum reph_mode_t {
-  REPH_MODE_IMPLICIT,  /* Reph formed out of initial Ra,H sequence. */
-  REPH_MODE_EXPLICIT,  /* Reph formed out of initial Ra,H,ZWJ sequence. */
-  REPH_MODE_LOG_REPHA  /* Encoded Repha character, needs reordering. */
+شمار reph_منوال_t {
+  REPH_منوال_IMPLICIT,  /* Reph formed out of initial Ra,H sequence. */
+  REPH_منوال_EXPLICIT,  /* Reph formed out of initial Ra,H,ZWJ sequence. */
+  REPH_منوال_LOG_REPHA  /* Encoded Repha character, needs reordering. */
 };
-enum blwf_mode_t {
-  BLWF_MODE_PRE_AND_POST, /* Below-forms feature applied to pre-base and post-base. */
-  BLWF_MODE_POST_ONLY     /* Below-forms feature applied to post-base only. */
+شمار blwf_منوال_t {
+  BLWF_منوال_PRE_AND_POST, /* Below-forms feature applied to pre-base and post-base. */
+  BLWF_منوال_POST_ONLY     /* Below-forms feature applied to post-base only. */
 };
-struct indic_config_t
+ساخت indic_config_t
 {
   hb_script_t     script;
-  bool            has_old_spec;
+  منطقی            has_old_spec;
   hb_codepoint_t  virama;
   reph_position_t reph_pos;
-  reph_mode_t     reph_mode;
-  blwf_mode_t     blwf_mode;
+  reph_منوال_t     reph_منوال;
+  blwf_منوال_t     blwf_منوال;
 };
 
-static const indic_config_t indic_configs[] =
+ساکن ثابت indic_config_t indic_configs[] =
 {
   /* Default.  Should be first. */
-  {HB_SCRIPT_INVALID,	false,      0,REPH_POS_BEFORE_POST,REPH_MODE_IMPLICIT, BLWF_MODE_PRE_AND_POST},
-  {HB_SCRIPT_DEVANAGARI,true, 0x094Du,REPH_POS_BEFORE_POST,REPH_MODE_IMPLICIT, BLWF_MODE_PRE_AND_POST},
-  {HB_SCRIPT_BENGALI,	true, 0x09CDu,REPH_POS_AFTER_SUB,  REPH_MODE_IMPLICIT, BLWF_MODE_PRE_AND_POST},
-  {HB_SCRIPT_GURMUKHI,	true, 0x0A4Du,REPH_POS_BEFORE_SUB, REPH_MODE_IMPLICIT, BLWF_MODE_PRE_AND_POST},
-  {HB_SCRIPT_GUJARATI,	true, 0x0ACDu,REPH_POS_BEFORE_POST,REPH_MODE_IMPLICIT, BLWF_MODE_PRE_AND_POST},
-  {HB_SCRIPT_ORIYA,	true, 0x0B4Du,REPH_POS_AFTER_MAIN, REPH_MODE_IMPLICIT, BLWF_MODE_PRE_AND_POST},
-  {HB_SCRIPT_TAMIL,	true, 0x0BCDu,REPH_POS_AFTER_POST, REPH_MODE_IMPLICIT, BLWF_MODE_PRE_AND_POST},
-  {HB_SCRIPT_TELUGU,	true, 0x0C4Du,REPH_POS_AFTER_POST, REPH_MODE_EXPLICIT, BLWF_MODE_POST_ONLY},
-  {HB_SCRIPT_KANNADA,	true, 0x0CCDu,REPH_POS_AFTER_POST, REPH_MODE_IMPLICIT, BLWF_MODE_POST_ONLY},
-  {HB_SCRIPT_MALAYALAM,	true, 0x0D4Du,REPH_POS_AFTER_MAIN, REPH_MODE_LOG_REPHA,BLWF_MODE_PRE_AND_POST},
+  {HB_SCRIPT_INVALID,	جھوٹ,      0,REPH_POS_BEFORE_POST,REPH_منوال_IMPLICIT, BLWF_منوال_PRE_AND_POST},
+  {HB_SCRIPT_DEVANAGARI,سچ, 0x094Du,REPH_POS_BEFORE_POST,REPH_منوال_IMPLICIT, BLWF_منوال_PRE_AND_POST},
+  {HB_SCRIPT_BENGALI,	سچ, 0x09CDu,REPH_POS_AFTER_SUB,  REPH_منوال_IMPLICIT, BLWF_منوال_PRE_AND_POST},
+  {HB_SCRIPT_GURMUKHI,	سچ, 0x0A4Du,REPH_POS_BEFORE_SUB, REPH_منوال_IMPLICIT, BLWF_منوال_PRE_AND_POST},
+  {HB_SCRIPT_GUJARATI,	سچ, 0x0ACDu,REPH_POS_BEFORE_POST,REPH_منوال_IMPLICIT, BLWF_منوال_PRE_AND_POST},
+  {HB_SCRIPT_ORIYA,	سچ, 0x0B4Du,REPH_POS_AFTER_MAIN, REPH_منوال_IMPLICIT, BLWF_منوال_PRE_AND_POST},
+  {HB_SCRIPT_TAMIL,	سچ, 0x0BCDu,REPH_POS_AFTER_POST, REPH_منوال_IMPLICIT, BLWF_منوال_PRE_AND_POST},
+  {HB_SCRIPT_TELUGU,	سچ, 0x0C4Du,REPH_POS_AFTER_POST, REPH_منوال_EXPLICIT, BLWF_منوال_POST_ONLY},
+  {HB_SCRIPT_KANNADA,	سچ, 0x0CCDu,REPH_POS_AFTER_POST, REPH_منوال_IMPLICIT, BLWF_منوال_POST_ONLY},
+  {HB_SCRIPT_MALAYALAM,	سچ, 0x0D4Du,REPH_POS_AFTER_MAIN, REPH_منوال_LOG_REPHA,BLWF_منوال_PRE_AND_POST},
 };
 
 
-static const hb_ot_map_feature_t
+ساکن ثابت hb_ot_map_feature_t
 indic_features[] =
 {
   /*
@@ -170,17 +170,17 @@ indic_features[] =
    * These features are applied in order, one at a time, after initial_reordering,
    * constrained to the syllable.
    */
-  {HB_TAG('n','u','k','t'), F_GLOBAL_MANUAL_JOINERS | F_PER_SYLLABLE},
-  {HB_TAG('a','k','h','n'), F_GLOBAL_MANUAL_JOINERS | F_PER_SYLLABLE},
-  {HB_TAG('r','p','h','f'),        F_MANUAL_JOINERS | F_PER_SYLLABLE},
-  {HB_TAG('r','k','r','f'), F_GLOBAL_MANUAL_JOINERS | F_PER_SYLLABLE},
-  {HB_TAG('p','r','e','f'),        F_MANUAL_JOINERS | F_PER_SYLLABLE},
-  {HB_TAG('b','l','w','f'),        F_MANUAL_JOINERS | F_PER_SYLLABLE},
-  {HB_TAG('a','b','v','f'),        F_MANUAL_JOINERS | F_PER_SYLLABLE},
-  {HB_TAG('h','a','l','f'),        F_MANUAL_JOINERS | F_PER_SYLLABLE},
-  {HB_TAG('p','s','t','f'),        F_MANUAL_JOINERS | F_PER_SYLLABLE},
-  {HB_TAG('v','a','t','u'), F_GLOBAL_MANUAL_JOINERS | F_PER_SYLLABLE},
-  {HB_TAG('c','j','c','t'), F_GLOBAL_MANUAL_JOINERS | F_PER_SYLLABLE},
+  {HB_لیبل('n','u','k','t'), F_GLOBAL_MANUAL_JOINERS | F_فی_SYLLABLE},
+  {HB_لیبل('a','k','h','n'), F_GLOBAL_MANUAL_JOINERS | F_فی_SYLLABLE},
+  {HB_لیبل('r','p','h','f'),        F_MANUAL_JOINERS | F_فی_SYLLABLE},
+  {HB_لیبل('r','k','r','f'), F_GLOBAL_MANUAL_JOINERS | F_فی_SYLLABLE},
+  {HB_لیبل('p','r','e','f'),        F_MANUAL_JOINERS | F_فی_SYLLABLE},
+  {HB_لیبل('b','l','w','f'),        F_MANUAL_JOINERS | F_فی_SYLLABLE},
+  {HB_لیبل('a','b','v','f'),        F_MANUAL_JOINERS | F_فی_SYLLABLE},
+  {HB_لیبل('h','a','l','f'),        F_MANUAL_JOINERS | F_فی_SYLLABLE},
+  {HB_لیبل('p','s','t','f'),        F_MANUAL_JOINERS | F_فی_SYLLABLE},
+  {HB_لیبل('v','a','t','u'), F_GLOBAL_MANUAL_JOINERS | F_فی_SYLLABLE},
+  {HB_لیبل('c','j','c','t'), F_GLOBAL_MANUAL_JOINERS | F_فی_SYLLABLE},
   /*
    * Other features.
    * These features are applied all at once, after final_reordering, constrained
@@ -188,18 +188,18 @@ indic_features[] =
    * Default Bengali font in Windows for example has intermixed
    * lookups for init,pres,abvs,blws features.
    */
-  {HB_TAG('i','n','i','t'),        F_MANUAL_JOINERS | F_PER_SYLLABLE},
-  {HB_TAG('p','r','e','s'), F_GLOBAL_MANUAL_JOINERS | F_PER_SYLLABLE},
-  {HB_TAG('a','b','v','s'), F_GLOBAL_MANUAL_JOINERS | F_PER_SYLLABLE},
-  {HB_TAG('b','l','w','s'), F_GLOBAL_MANUAL_JOINERS | F_PER_SYLLABLE},
-  {HB_TAG('p','s','t','s'), F_GLOBAL_MANUAL_JOINERS | F_PER_SYLLABLE},
-  {HB_TAG('h','a','l','n'), F_GLOBAL_MANUAL_JOINERS | F_PER_SYLLABLE},
+  {HB_لیبل('i','n','i','t'),        F_MANUAL_JOINERS | F_فی_SYLLABLE},
+  {HB_لیبل('p','r','e','s'), F_GLOBAL_MANUAL_JOINERS | F_فی_SYLLABLE},
+  {HB_لیبل('a','b','v','s'), F_GLOBAL_MANUAL_JOINERS | F_فی_SYLLABLE},
+  {HB_لیبل('b','l','w','s'), F_GLOBAL_MANUAL_JOINERS | F_فی_SYLLABLE},
+  {HB_لیبل('p','s','t','s'), F_GLOBAL_MANUAL_JOINERS | F_فی_SYLLABLE},
+  {HB_لیبل('h','a','l','n'), F_GLOBAL_MANUAL_JOINERS | F_فی_SYLLABLE},
 };
 
 /*
  * Must be in the same order as the indic_features array.
  */
-enum {
+شمار {
   _INDIC_NUKT,
   _INDIC_AKHN,
   INDIC_RPHF,
@@ -219,84 +219,84 @@ enum {
   _INDIC_PSTS,
   _INDIC_HALN,
 
-  INDIC_NUM_FEATURES,
+  INDIC_عدد_FEATURES,
   INDIC_BASIC_FEATURES = INDIC_INIT, /* Don't forget to update this! */
 };
 
-static bool
-setup_syllables_indic (const hb_ot_shape_plan_t *plan,
+ساکن منطقی
+تیاری_syllables_indic (ثابت hb_ot_shape_plan_t *plan,
 		       hb_font_t *font,
-		       hb_buffer_t *buffer);
-static bool
-initial_reordering_indic (const hb_ot_shape_plan_t *plan,
+		       hb_بفر_t *بفر);
+ساکن منطقی
+initial_reordering_indic (ثابت hb_ot_shape_plan_t *plan,
 			  hb_font_t *font,
-			  hb_buffer_t *buffer);
-static bool
-final_reordering_indic (const hb_ot_shape_plan_t *plan,
+			  hb_بفر_t *بفر);
+ساکن منطقی
+final_reordering_indic (ثابت hb_ot_shape_plan_t *plan,
 			hb_font_t *font,
-			hb_buffer_t *buffer);
+			hb_بفر_t *بفر);
 
-static void
+ساکن خالی
 collect_features_indic (hb_ot_shape_planner_t *plan)
 {
   hb_ot_map_builder_t *map = &plan->map;
 
   /* Do this before any lookups have been applied. */
-  map->add_gsub_pause (setup_syllables_indic);
+  map->جوڑو_gsub_pause (تیاری_syllables_indic);
 
-  map->enable_feature (HB_TAG('l','o','c','l'), F_PER_SYLLABLE);
+  map->enable_feature (HB_لیبل('l','o','c','l'), F_فی_SYLLABLE);
   /* The Indic specs do not require ccmp, but we apply it here since if
    * there is a use of it, it's typically at the beginning. */
-  map->enable_feature (HB_TAG('c','c','m','p'), F_PER_SYLLABLE);
+  map->enable_feature (HB_لیبل('c','c','m','p'), F_فی_SYLLABLE);
 
 
-  unsigned int i = 0;
-  map->add_gsub_pause (initial_reordering_indic);
+  غیرعلامتی صحیح i = 0;
+  map->جوڑو_gsub_pause (initial_reordering_indic);
 
-  for (; i < INDIC_BASIC_FEATURES; i++) {
-    map->add_feature (indic_features[i]);
-    map->add_gsub_pause (nullptr);
+  برائے (; i < INDIC_BASIC_FEATURES; i++) {
+    map->جوڑو_feature (indic_features[i]);
+    map->جوڑو_gsub_pause (خالی_اشاریہ);
   }
 
-  map->add_gsub_pause (final_reordering_indic);
+  map->جوڑو_gsub_pause (final_reordering_indic);
 
-  for (; i < INDIC_NUM_FEATURES; i++)
-    map->add_feature (indic_features[i]);
+  برائے (; i < INDIC_عدد_FEATURES; i++)
+    map->جوڑو_feature (indic_features[i]);
 }
 
-static void
+ساکن خالی
 override_features_indic (hb_ot_shape_planner_t *plan)
 {
-  plan->map.disable_feature (HB_TAG('l','i','g','a'));
-  plan->map.add_gsub_pause (hb_syllabic_clear_var); // Don't need syllables anymore, use stop to free buffer var
+  plan->map.disable_feature (HB_لیبل('l','i','g','a'));
+  plan->map.جوڑو_gsub_pause (hb_syllabic_clear_var); // Don't need syllables anymore, use stop to free buffer var
 }
 
 
-struct indic_shape_plan_t
+ساخت indic_shape_plan_t
 {
-  bool load_virama_glyph (hb_font_t *font, hb_codepoint_t *pglyph) const
+  منطقی بھرو_virama_glyph (hb_font_t *font, hb_codepoint_t *pglyph) ثابت
   {
     hb_codepoint_t glyph = virama_glyph;
-    if (unlikely (glyph == (hb_codepoint_t) -1))
+    اگر (unlikely (glyph == (hb_codepoint_t) -1))
     {
-      if (!config->virama || !font->get_nominal_glyph (config->virama, &glyph))
+      اگر (!config->virama || !font->get_nominal_glyph (config->virama, &glyph))
 	glyph = 0;
       /* Technically speaking, the spec says we should apply 'locl' to virama too.
        * Maybe one day... */
 
       /* Our get_nominal_glyph() function needs a font, so we can't get the virama glyph
        * during shape planning...  Instead, overwrite it here. */
-      virama_glyph = (int) glyph;
+      virama_glyph = (صحیح) glyph;
     }
 
     *pglyph = glyph;
-    return glyph != 0;
+    واپس glyph != 0;
   }
 
-  const indic_config_t *config;
+  ثابت indic_config_t *config;
 
-  bool is_old_spec;
-  mutable hb_atomic_t<hb_codepoint_t> virama_glyph;
+  منطقی is_old_spec;
+  تغیرپذیر hb_atomic_t<hb_codepoint_t> virama_glyph;
 
   hb_indic_would_substitute_feature_t rphf;
   hb_indic_would_substitute_feature_t pref;
@@ -304,21 +304,21 @@ struct indic_shape_plan_t
   hb_indic_would_substitute_feature_t pstf;
   hb_indic_would_substitute_feature_t vatu;
 
-  hb_mask_t mask_array[INDIC_NUM_FEATURES];
+  hb_نقاب_t نقاب_array[INDIC_عدد_FEATURES];
 };
 
-static void *
-data_create_indic (const hb_ot_shape_plan_t *plan)
+ساکن خالی *
+ڈیٹا_create_indic (ثابت hb_ot_shape_plan_t *plan)
 {
-  indic_shape_plan_t *indic_plan = (indic_shape_plan_t *) hb_calloc (1, sizeof (indic_shape_plan_t));
-  if (unlikely (!indic_plan))
-    return nullptr;
+  indic_shape_plan_t *indic_plan = (indic_shape_plan_t *) hb_calloc (1, حجم (indic_shape_plan_t));
+  اگر (unlikely (!indic_plan))
+    واپس خالی_اشاریہ;
 
   indic_plan->config = &indic_configs[0];
-  for (unsigned int i = 1; i < ARRAY_LENGTH (indic_configs); i++)
-    if (plan->props.script == indic_configs[i].script) {
+  برائے (غیرعلامتی صحیح i = 1; i < ARRAY_لمبائی (indic_configs); i++)
+    اگر (plan->props.script == indic_configs[i].script) {
       indic_plan->config = &indic_configs[i];
-      break;
+      توڑو;
     }
 
   indic_plan->is_old_spec = indic_plan->config->has_old_spec && ((plan->map.chosen_script[0] & 0x000000FFu) != '2');
@@ -333,30 +333,30 @@ data_create_indic (const hb_ot_shape_plan_t *plan)
    * So, the heuristic here is the way it is.  It should *only* be changed,
    * as we discover more cases of what Windows does.  DON'T TOUCH OTHERWISE.
    */
-  bool zero_context = !indic_plan->is_old_spec && plan->props.script != HB_SCRIPT_MALAYALAM;
-  indic_plan->rphf.init (&plan->map, HB_TAG('r','p','h','f'), zero_context);
-  indic_plan->pref.init (&plan->map, HB_TAG('p','r','e','f'), zero_context);
-  indic_plan->blwf.init (&plan->map, HB_TAG('b','l','w','f'), zero_context);
-  indic_plan->pstf.init (&plan->map, HB_TAG('p','s','t','f'), zero_context);
-  indic_plan->vatu.init (&plan->map, HB_TAG('v','a','t','u'), zero_context);
+  منطقی zero_context = !indic_plan->is_old_spec && plan->props.script != HB_SCRIPT_MALAYALAM;
+  indic_plan->rphf.init (&plan->map, HB_لیبل('r','p','h','f'), zero_context);
+  indic_plan->pref.init (&plan->map, HB_لیبل('p','r','e','f'), zero_context);
+  indic_plan->blwf.init (&plan->map, HB_لیبل('b','l','w','f'), zero_context);
+  indic_plan->pstf.init (&plan->map, HB_لیبل('p','s','t','f'), zero_context);
+  indic_plan->vatu.init (&plan->map, HB_لیبل('v','a','t','u'), zero_context);
 
-  for (unsigned int i = 0; i < ARRAY_LENGTH (indic_plan->mask_array); i++)
-    indic_plan->mask_array[i] = (indic_features[i].flags & F_GLOBAL) ?
-				 0 : plan->map.get_1_mask (indic_features[i].tag);
+  برائے (غیرعلامتی صحیح i = 0; i < ARRAY_لمبائی (indic_plan->نقاب_array); i++)
+    indic_plan->نقاب_array[i] = (indic_features[i].flags & F_GLOBAL) ?
+				 0 : plan->map.get_1_نقاب (indic_features[i].لیبل_2);
 
-  return indic_plan;
+  واپس indic_plan;
 }
 
-static void
-data_destroy_indic (void *data)
+ساکن خالی
+ڈیٹا_destroy_indic (خالی *ڈیٹا)
 {
-  hb_free (data);
+  hb_free (ڈیٹا);
 }
 
-static indic_position_t
-consonant_position_from_face (const indic_shape_plan_t *indic_plan,
-			      const hb_codepoint_t consonant,
-			      const hb_codepoint_t virama,
+ساکن indic_position_t
+consonant_position_from_face (ثابت indic_shape_plan_t *indic_plan,
+			      ثابت hb_codepoint_t consonant,
+			      ثابت hb_codepoint_t virama,
 			      hb_face_t *face)
 {
   /* For old-spec, the order of glyphs is Consonant,Virama,
@@ -374,75 +374,75 @@ consonant_position_from_face (const indic_shape_plan_t *indic_plan,
    * https://github.com/harfbuzz/harfbuzz/issues/1587
    */
   hb_codepoint_t glyphs[3] = {virama, consonant, virama};
-  if (indic_plan->blwf.would_substitute (glyphs  , 2, face) ||
+  اگر (indic_plan->blwf.would_substitute (glyphs  , 2, face) ||
       indic_plan->blwf.would_substitute (glyphs+1, 2, face) ||
       indic_plan->vatu.would_substitute (glyphs  , 2, face) ||
       indic_plan->vatu.would_substitute (glyphs+1, 2, face))
-    return POS_BELOW_C;
-  if (indic_plan->pstf.would_substitute (glyphs  , 2, face) ||
+    واپس POS_نیچے_C;
+  اگر (indic_plan->pstf.would_substitute (glyphs  , 2, face) ||
       indic_plan->pstf.would_substitute (glyphs+1, 2, face))
-    return POS_POST_C;
-  if (indic_plan->pref.would_substitute (glyphs  , 2, face) ||
+    واپس POS_POST_C;
+  اگر (indic_plan->pref.would_substitute (glyphs  , 2, face) ||
       indic_plan->pref.would_substitute (glyphs+1, 2, face))
-    return POS_POST_C;
-  return POS_BASE_C;
+    واپس POS_POST_C;
+  واپس POS_بنیاد_C;
 }
 
-static void
-setup_masks_indic (const hb_ot_shape_plan_t *plan HB_UNUSED,
-		   hb_buffer_t              *buffer,
-		   hb_font_t                *font HB_UNUSED)
+ساکن خالی
+تیاری_masks_indic (ثابت hb_ot_shape_plan_t *plan HB_غیر_مستعمل,
+		   hb_بفر_t              *بفر,
+		   hb_font_t                *font HB_غیر_مستعمل)
 {
-  HB_BUFFER_ALLOCATE_VAR (buffer, indic_category);
-  HB_BUFFER_ALLOCATE_VAR (buffer, indic_position);
+  HB_بفر_ALLOCATE_VAR (بفر, indic_category);
+  HB_بفر_ALLOCATE_VAR (بفر, indic_position);
 
   /* We cannot setup masks here.  We save information about characters
    * and setup masks later on in a pause-callback. */
 
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
-    set_indic_properties (info[i]);
+  غیرعلامتی صحیح گنتی = بفر->len;
+  hb_glyph_info_t *info = بفر->info;
+  برائے (غیرعلامتی صحیح i = 0; i < گنتی; i++)
+    سیٹ_indic_properties (info[i]);
 }
 
-static bool
-setup_syllables_indic (const hb_ot_shape_plan_t *plan HB_UNUSED,
-		       hb_font_t *font HB_UNUSED,
-		       hb_buffer_t *buffer)
+ساکن منطقی
+تیاری_syllables_indic (ثابت hb_ot_shape_plan_t *plan HB_غیر_مستعمل,
+		       hb_font_t *font HB_غیر_مستعمل,
+		       hb_بفر_t *بفر)
 {
-  HB_BUFFER_ALLOCATE_VAR (buffer, syllable);
-  find_syllables_indic (buffer);
-  foreach_syllable (buffer, start, end)
-    buffer->unsafe_to_break (start, end);
-  return false;
+  HB_بفر_ALLOCATE_VAR (بفر, syllable);
+  ڈھونڈو_syllables_indic (بفر);
+  foreach_syllable (بفر, آغاز, انتہا)
+    بفر->unsafe_مقصد_break (آغاز, انتہا);
+  واپس جھوٹ;
 }
 
-static int
-compare_indic_order (const hb_glyph_info_t *pa, const hb_glyph_info_t *pb)
+ساکن صحیح
+compare_indic_ترتیب (ثابت hb_glyph_info_t *pa, ثابت hb_glyph_info_t *pb)
 {
-  int a = pa->indic_position();
-  int b = pb->indic_position();
+  صحیح a = pa->indic_position();
+  صحیح b = pb->indic_position();
 
-  return (int) a - (int) b;
+  واپس (صحیح) a - (صحیح) b;
 }
 
 
 
-static void
-update_consonant_positions_indic (const hb_ot_shape_plan_t *plan,
+ساکن خالی
+update_consonant_positions_indic (ثابت hb_ot_shape_plan_t *plan,
 				  hb_font_t         *font,
-				  hb_buffer_t       *buffer)
+				  hb_بفر_t       *بفر)
 {
-  const indic_shape_plan_t *indic_plan = (const indic_shape_plan_t *) plan->data;
+  ثابت indic_shape_plan_t *indic_plan = (ثابت indic_shape_plan_t *) plan->ڈیٹا;
 
   hb_codepoint_t virama;
-  if (indic_plan->load_virama_glyph (font, &virama))
+  اگر (indic_plan->بھرو_virama_glyph (font, &virama))
   {
     hb_face_t *face = font->face;
-    unsigned int count = buffer->len;
-    hb_glyph_info_t *info = buffer->info;
-    for (unsigned int i = 0; i < count; i++)
-      if (info[i].indic_position() == POS_BASE_C)
+    غیرعلامتی صحیح گنتی = بفر->len;
+    hb_glyph_info_t *info = بفر->info;
+    برائے (غیرعلامتی صحیح i = 0; i < گنتی; i++)
+      اگر (info[i].indic_position() == POS_بنیاد_C)
       {
 	hb_codepoint_t consonant = info[i].codepoint;
 	info[i].indic_position() = consonant_position_from_face (indic_plan, consonant, virama, face);
@@ -454,27 +454,27 @@ update_consonant_positions_indic (const hb_ot_shape_plan_t *plan,
 /* Rules from:
  * https://docs.microsqoft.com/en-us/typography/script-development/devanagari */
 
-static void
-initial_reordering_consonant_syllable (const hb_ot_shape_plan_t *plan,
+ساکن خالی
+initial_reordering_consonant_syllable (ثابت hb_ot_shape_plan_t *plan,
 				       hb_face_t *face,
-				       hb_buffer_t *buffer,
-				       unsigned int start, unsigned int end)
+				       hb_بفر_t *بفر,
+				       غیرعلامتی صحیح آغاز, غیرعلامتی صحیح انتہا)
 {
-  const indic_shape_plan_t *indic_plan = (const indic_shape_plan_t *) plan->data;
-  hb_glyph_info_t *info = buffer->info;
+  ثابت indic_shape_plan_t *indic_plan = (ثابت indic_shape_plan_t *) plan->ڈیٹا;
+  hb_glyph_info_t *info = بفر->info;
 
   /* https://github.com/harfbuzz/harfbuzz/issues/435#issuecomment-335560167
    * // For compatibility with legacy usage in Kannada,
    * // Ra+h+ZWJ must behave like Ra+ZWJ+h...
    */
-  if (buffer->props.script == HB_SCRIPT_KANNADA &&
-      start + 3 <= end &&
-      is_one_of (info[start  ], FLAG (I_Cat(Ra))) &&
-      is_one_of (info[start+1], FLAG (I_Cat(H))) &&
-      is_one_of (info[start+2], FLAG (I_Cat(ZWJ))))
+  اگر (بفر->props.script == HB_SCRIPT_KANNADA &&
+      آغاز + 3 <= انتہا &&
+      is_one_کا (info[آغاز  ], FLAG (I_Cat(Ra))) &&
+      is_one_کا (info[آغاز+1], FLAG (I_Cat(H))) &&
+      is_one_کا (info[آغاز+2], FLAG (I_Cat(ZWJ))))
   {
-    buffer->merge_clusters (start+1, start+3);
-    hb_swap (info[start+1], info[start+2]);
+    بفر->ملاؤ_clusters (آغاز+1, آغاز+3);
+    hb_تبادلہ (info[آغاز+1], info[آغاز+2]);
   }
 
   /* 1. Find base consonant:
@@ -491,64 +491,64 @@ initial_reordering_consonant_syllable (const hb_ot_shape_plan_t *plan,
    *     base consonants.
    */
 
-  unsigned int base = end;
-  bool has_reph = false;
+  غیرعلامتی صحیح بنیاد = انتہا;
+  منطقی has_reph = جھوٹ;
 
   {
     /* -> If the syllable starts with Ra + Halant (in a script that has Reph)
      *    and has more than one consonant, Ra is excluded from candidates for
      *    base consonants. */
-    unsigned int limit = start;
-    if (indic_plan->mask_array[INDIC_RPHF] &&
-	start + 3 <= end &&
+    غیرعلامتی صحیح حد_بندی = آغاز;
+    اگر (indic_plan->نقاب_array[INDIC_RPHF] &&
+	آغاز + 3 <= انتہا &&
 	(
-	 (indic_plan->config->reph_mode == REPH_MODE_IMPLICIT && !is_joiner (info[start + 2])) ||
-	 (indic_plan->config->reph_mode == REPH_MODE_EXPLICIT && info[start + 2].indic_category() == I_Cat(ZWJ))
+	 (indic_plan->config->reph_منوال == REPH_منوال_IMPLICIT && !is_joiner (info[آغاز + 2])) ||
+	 (indic_plan->config->reph_منوال == REPH_منوال_EXPLICIT && info[آغاز + 2].indic_category() == I_Cat(ZWJ))
 	))
     {
       /* See if it matches the 'rphf' feature. */
-      hb_codepoint_t glyphs[3] = {info[start].codepoint,
-				  info[start + 1].codepoint,
-				  indic_plan->config->reph_mode == REPH_MODE_EXPLICIT ?
-				    info[start + 2].codepoint : 0};
-      if (indic_plan->rphf.would_substitute (glyphs, 2, face) ||
-	  (indic_plan->config->reph_mode == REPH_MODE_EXPLICIT &&
+      hb_codepoint_t glyphs[3] = {info[آغاز].codepoint,
+				  info[آغاز + 1].codepoint,
+				  indic_plan->config->reph_منوال == REPH_منوال_EXPLICIT ?
+				    info[آغاز + 2].codepoint : 0};
+      اگر (indic_plan->rphf.would_substitute (glyphs, 2, face) ||
+	  (indic_plan->config->reph_منوال == REPH_منوال_EXPLICIT &&
 	   indic_plan->rphf.would_substitute (glyphs, 3, face)))
       {
-	limit += 2;
-	while (limit < end && is_joiner (info[limit]))
-	  limit++;
-	base = start;
-	has_reph = true;
+	حد_بندی += 2;
+	جب (حد_بندی < انتہا && is_joiner (info[حد_بندی]))
+	  حد_بندی++;
+	بنیاد = آغاز;
+	has_reph = سچ;
       }
-    } else if (indic_plan->config->reph_mode == REPH_MODE_LOG_REPHA && info[start].indic_category() == I_Cat(Repha))
+    } ورنہ اگر (indic_plan->config->reph_منوال == REPH_منوال_LOG_REPHA && info[آغاز].indic_category() == I_Cat(Repha))
     {
-	limit += 1;
-	while (limit < end && is_joiner (info[limit]))
-	  limit++;
-	base = start;
-	has_reph = true;
+	حد_بندی += 1;
+	جب (حد_بندی < انتہا && is_joiner (info[حد_بندی]))
+	  حد_بندی++;
+	بنیاد = آغاز;
+	has_reph = سچ;
     }
 
     {
       /* -> starting from the end of the syllable, move backwards */
-      unsigned int i = end;
-      bool seen_below = false;
-      do {
+      غیرعلامتی صحیح i = انتہا;
+      منطقی نظر_آیا_نیچے = جھوٹ;
+      کرو {
 	i--;
 	/* -> until a consonant is found */
-	if (is_consonant (info[i]))
+	اگر (is_consonant (info[i]))
 	{
 	  /* -> that does not have a below-base or post-base form
 	   * (post-base forms have to follow below-base forms), */
-	  if (info[i].indic_position() != POS_BELOW_C &&
-	      (info[i].indic_position() != POS_POST_C || seen_below))
+	  اگر (info[i].indic_position() != POS_نیچے_C &&
+	      (info[i].indic_position() != POS_POST_C || نظر_آیا_نیچے))
 	  {
-	    base = i;
-	    break;
+	    بنیاد = i;
+	    توڑو;
 	  }
-	  if (info[i].indic_position() == POS_BELOW_C)
-	    seen_below = true;
+	  اگر (info[i].indic_position() == POS_نیچے_C)
+	    نظر_آیا_نیچے = سچ;
 
 	  /* -> or that is not a pre-base-reordering Ra,
 	   *
@@ -560,21 +560,21 @@ initial_reordering_consonant_syllable (const hb_ot_shape_plan_t *plan,
 
 	  /* -> or arrive at the first consonant. The consonant stopped at will
 	   * be the base. */
-	  base = i;
+	  بنیاد = i;
 	}
-	else
+	ورنہ
 	{
 	  /* A ZWJ after a Halant stops the base search, and requests an explicit
 	   * half form.
 	   * A ZWJ before a Halant, requests a subjoined form instead, and hence
 	   * search continues.  This is particularly important for Bengali
 	   * sequence Ra,H,Ya that should form Ya-Phalaa by subjoining Ya. */
-	  if (start < i &&
+	  اگر (آغاز < i &&
 	      info[i].indic_category() == I_Cat(ZWJ) &&
 	      info[i - 1].indic_category() == I_Cat(H))
-	    break;
+	    توڑو;
 	}
-      } while (i > limit);
+      } جب (i > حد_بندی);
     }
 
     /* -> If the syllable starts with Ra + Halant (in a script that has Reph)
@@ -582,9 +582,9 @@ initial_reordering_consonant_syllable (const hb_ot_shape_plan_t *plan,
      *    base consonants.
      *
      *  Only do this for unforced Reph. (ie. not for Ra,H,ZWJ. */
-    if (has_reph && base == start && limit - base <= 2) {
+    اگر (has_reph && بنیاد == آغاز && حد_بندی - بنیاد <= 2) {
       /* Have no other consonant, so Reph is not formed and Ra becomes base. */
-      has_reph = false;
+      has_reph = جھوٹ;
     }
   }
 
@@ -623,15 +623,15 @@ initial_reordering_consonant_syllable (const hb_ot_shape_plan_t *plan,
 
   /* Reorder characters */
 
-  for (unsigned int i = start; i < base; i++)
+  برائے (غیرعلامتی صحیح i = آغاز; i < بنیاد; i++)
     info[i].indic_position() = hb_min (POS_PRE_C, (indic_position_t) info[i].indic_position());
 
-  if (base < end)
-    info[base].indic_position() = POS_BASE_C;
+  اگر (بنیاد < انتہا)
+    info[بنیاد].indic_position() = POS_بنیاد_C;
 
   /* Handle beginning Ra */
-  if (has_reph)
-    info[start].indic_position() = POS_RA_TO_BECOME_REPH;
+  اگر (has_reph)
+    info[آغاز].indic_position() = POS_RA_مقصد_BECOME_REPH;
 
   /* For old-style Indic script tags, move the first post-base Halant after
    * last consonant.
@@ -661,36 +661,36 @@ initial_reordering_consonant_syllable (const hb_ot_shape_plan_t *plan,
    * With chandas.ttf
    * https://github.com/harfbuzz/harfbuzz/issues/1071
    */
-  if (indic_plan->is_old_spec)
+  اگر (indic_plan->is_old_spec)
   {
-    bool disallow_double_halants = buffer->props.script == HB_SCRIPT_KANNADA;
-    for (unsigned int i = base + 1; i < end; i++)
-      if (info[i].indic_category() == I_Cat(H))
+    منطقی disallow_double_halants = بفر->props.script == HB_SCRIPT_KANNADA;
+    برائے (غیرعلامتی صحیح i = بنیاد + 1; i < انتہا; i++)
+      اگر (info[i].indic_category() == I_Cat(H))
       {
-	unsigned int j;
-	for (j = end - 1; j > i; j--)
-	  if (is_consonant (info[j]) ||
+	غیرعلامتی صحیح j;
+	برائے (j = انتہا - 1; j > i; j--)
+	  اگر (is_consonant (info[j]) ||
 	      (disallow_double_halants && info[j].indic_category() == I_Cat(H)))
-	    break;
-	if (info[j].indic_category() != I_Cat(H) && j > i) {
+	    توڑو;
+	اگر (info[j].indic_category() != I_Cat(H) && j > i) {
 	  /* Move Halant to after last consonant. */
 	  hb_glyph_info_t t = info[i];
-	  memmove (&info[i], &info[i + 1], (j - i) * sizeof (info[0]));
+	  memmove (&info[i], &info[i + 1], (j - i) * حجم (info[0]));
 	  info[j] = t;
 	}
-	break;
+	توڑو;
       }
   }
 
   /* Attach misc marks to previous char to move with them. */
   {
-    indic_position_t last_pos = POS_START;
-    for (unsigned int i = start; i < end; i++)
+    indic_position_t آخری_pos = POS_آغاز;
+    برائے (غیرعلامتی صحیح i = آغاز; i < انتہا; i++)
     {
-      if ((FLAG_UNSAFE (info[i].indic_category()) & (JOINER_FLAGS | FLAG (I_Cat(N)) | FLAG (I_Cat(RS)) | FLAG (I_Cat(CM)) | FLAG (I_Cat(H)))))
+      اگر ((FLAG_UNSAFE (info[i].indic_category()) & (JOINER_FLAGS | FLAG (I_Cat(N)) | FLAG (I_Cat(RS)) | FLAG (I_Cat(CM)) | FLAG (I_Cat(H)))))
       {
-	info[i].indic_position() = last_pos;
-	if (unlikely (info[i].indic_category() == I_Cat(H) &&
+	info[i].indic_position() = آخری_pos;
+	اگر (unlikely (info[i].indic_category() == I_Cat(H) &&
 		      info[i].indic_position() == POS_PRE_M))
 	{
 	  /*
@@ -698,74 +698,74 @@ initial_reordering_consonant_syllable (const hb_ot_shape_plan_t *plan,
 	   * TEST: U+092B,U+093F,U+094D
 	   * We follow.
 	   */
-	  for (unsigned int j = i; j > start; j--)
-	    if (info[j - 1].indic_position() != POS_PRE_M) {
+	  برائے (غیرعلامتی صحیح j = i; j > آغاز; j--)
+	    اگر (info[j - 1].indic_position() != POS_PRE_M) {
 	      info[i].indic_position() = info[j - 1].indic_position();
-	      break;
+	      توڑو;
 	    }
 	}
-      } else if (info[i].indic_position() != POS_SMVD) {
-	if (info[i].indic_category() == I_Cat(MPst) &&
-	    i > start && info[i - 1].indic_category() == I_Cat(SM))
+      } ورنہ اگر (info[i].indic_position() != POS_SMVD) {
+	اگر (info[i].indic_category() == I_Cat(MPst) &&
+	    i > آغاز && info[i - 1].indic_category() == I_Cat(SM))
 	  info[i - 1].indic_position() = info[i].indic_position();
-	last_pos = (indic_position_t) info[i].indic_position();
+	آخری_pos = (indic_position_t) info[i].indic_position();
       }
     }
   }
   /* For post-base consonants let them own anything before them
    * since the last consonant or matra. */
   {
-    unsigned int last = base;
-    for (unsigned int i = base + 1; i < end; i++)
-      if (is_consonant (info[i]))
+    غیرعلامتی صحیح آخری = بنیاد;
+    برائے (غیرعلامتی صحیح i = بنیاد + 1; i < انتہا; i++)
+      اگر (is_consonant (info[i]))
       {
-	for (unsigned int j = last + 1; j < i; j++)
-	  if (info[j].indic_position() < POS_SMVD)
+	برائے (غیرعلامتی صحیح j = آخری + 1; j < i; j++)
+	  اگر (info[j].indic_position() < POS_SMVD)
 	    info[j].indic_position() = info[i].indic_position();
-	last = i;
-      } else if (FLAG_UNSAFE (info[i].indic_category()) & (FLAG (I_Cat(M)) | FLAG (I_Cat(MPst))))
-	last = i;
+	آخری = i;
+      } ورنہ اگر (FLAG_UNSAFE (info[i].indic_category()) & (FLAG (I_Cat(M)) | FLAG (I_Cat(MPst))))
+	آخری = i;
   }
 
 
   {
     /* Use syllable() for sort accounting temporarily. */
-    unsigned int syllable = info[start].syllable();
-    for (unsigned int i = start; i < end; i++)
-      info[i].syllable() = i - start;
+    غیرعلامتی صحیح syllable = info[آغاز].syllable();
+    برائے (غیرعلامتی صحیح i = آغاز; i < انتہا; i++)
+      info[i].syllable() = i - آغاز;
 
     /* Sit tight, rock 'n roll! */
-    hb_stable_sort (info + start, end - start, compare_indic_order);
+    hb_stable_ترتیب_دو (info + آغاز, انتہا - آغاز, compare_indic_ترتیب);
 
     /* Find base again; also flip left-matra sequence. */
-    unsigned first_left_matra = end;
-    unsigned last_left_matra = end;
-    base = end;
-    for (unsigned int i = start; i < end; i++)
+    غیرعلامتی پہلا_بایاں_matra = انتہا;
+    غیرعلامتی آخری_بایاں_matra = انتہا;
+    بنیاد = انتہا;
+    برائے (غیرعلامتی صحیح i = آغاز; i < انتہا; i++)
     {
-      if (info[i].indic_position() == POS_BASE_C)
+      اگر (info[i].indic_position() == POS_بنیاد_C)
       {
-	base = i;
-	break;
+	بنیاد = i;
+	توڑو;
       }
-      else if (info[i].indic_position() == POS_PRE_M)
+      ورنہ اگر (info[i].indic_position() == POS_PRE_M)
       {
-        if (first_left_matra == end)
-	  first_left_matra = i;
-	last_left_matra = i;
+        اگر (پہلا_بایاں_matra == انتہا)
+	  پہلا_بایاں_matra = i;
+	آخری_بایاں_matra = i;
       }
     }
     /* https://github.com/harfbuzz/harfbuzz/issues/3863 */
-    if (first_left_matra < last_left_matra)
+    اگر (پہلا_بایاں_matra < آخری_بایاں_matra)
     {
       /* No need to merge clusters, handled later. */
-      buffer->reverse_range (first_left_matra, last_left_matra + 1);
+      بفر->الٹ_range (پہلا_بایاں_matra, آخری_بایاں_matra + 1);
       /* Reverse back nuktas, etc. */
-      unsigned i = first_left_matra;
-      for (unsigned j = i; j <= last_left_matra; j++)
-	if (FLAG_UNSAFE (info[j].indic_category()) & (FLAG (I_Cat(M)) | FLAG (I_Cat(MPst))))
+      غیرعلامتی i = پہلا_بایاں_matra;
+      برائے (غیرعلامتی j = i; j <= آخری_بایاں_matra; j++)
+	اگر (FLAG_UNSAFE (info[j].indic_category()) & (FLAG (I_Cat(M)) | FLAG (I_Cat(MPst))))
 	{
-	  buffer->reverse_range (i, j + 1);
+	  بفر->الٹ_range (i, j + 1);
 	  i = j + 1;
 	}
     }
@@ -802,64 +802,64 @@ initial_reordering_consonant_syllable (const hb_ot_shape_plan_t *plan,
      * to merge things correctly.  See:
      * https://github.com/harfbuzz/harfbuzz/issues/2272
      */
-    if (indic_plan->is_old_spec || end - start > 127)
-      buffer->merge_clusters (base, end);
-    else
+    اگر (indic_plan->is_old_spec || انتہا - آغاز > 127)
+      بفر->ملاؤ_clusters (بنیاد, انتہا);
+    ورنہ
     {
       /* Note!  syllable() is a one-byte field. */
-      for (unsigned int i = base; i < end; i++)
-	if (info[i].syllable() != 255)
+      برائے (غیرعلامتی صحیح i = بنیاد; i < انتہا; i++)
+	اگر (info[i].syllable() != 255)
 	{
-	  unsigned int min = i;
-	  unsigned int max = i;
-	  unsigned int j = start + info[i].syllable();
-	  while (j != i)
+	  غیرعلامتی صحیح min = i;
+	  غیرعلامتی صحیح max = i;
+	  غیرعلامتی صحیح j = آغاز + info[i].syllable();
+	  جب (j != i)
 	  {
 	    min = hb_min (min, j);
 	    max = hb_max (max, j);
-	    unsigned int next = start + info[j].syllable();
+	    غیرعلامتی صحیح next = آغاز + info[j].syllable();
 	    info[j].syllable() = 255; /* So we don't process j later again. */
 	    j = next;
 	  }
-	  buffer->merge_clusters (hb_max (base, min), max + 1);
+	  بفر->ملاؤ_clusters (hb_max (بنیاد, min), max + 1);
 	}
     }
 
     /* Put syllable back in. */
-    for (unsigned int i = start; i < end; i++)
+    برائے (غیرعلامتی صحیح i = آغاز; i < انتہا; i++)
       info[i].syllable() = syllable;
   }
 
   /* Setup masks now */
 
   {
-    hb_mask_t mask;
+    hb_نقاب_t نقاب;
 
     /* Reph */
-    for (unsigned int i = start; i < end && info[i].indic_position() == POS_RA_TO_BECOME_REPH; i++)
-      info[i].mask |= indic_plan->mask_array[INDIC_RPHF];
+    برائے (غیرعلامتی صحیح i = آغاز; i < انتہا && info[i].indic_position() == POS_RA_مقصد_BECOME_REPH; i++)
+      info[i].نقاب |= indic_plan->نقاب_array[INDIC_RPHF];
 
     /* Pre-base */
-    mask = indic_plan->mask_array[INDIC_HALF];
-    if (!indic_plan->is_old_spec &&
-	indic_plan->config->blwf_mode == BLWF_MODE_PRE_AND_POST)
-      mask |= indic_plan->mask_array[INDIC_BLWF];
-    for (unsigned int i = start; i < base; i++)
-      info[i].mask  |= mask;
-    /* Base */
-    mask = 0;
-    if (base < end)
-      info[base].mask |= mask;
+    نقاب = indic_plan->نقاب_array[INDIC_HALF];
+    اگر (!indic_plan->is_old_spec &&
+	indic_plan->config->blwf_منوال == BLWF_منوال_PRE_AND_POST)
+      نقاب |= indic_plan->نقاب_array[INDIC_BLWF];
+    برائے (غیرعلامتی صحیح i = آغاز; i < بنیاد; i++)
+      info[i].نقاب  |= نقاب;
+    /*بنیاد*/
+    نقاب = 0;
+    اگر (بنیاد < انتہا)
+      info[بنیاد].نقاب |= نقاب;
     /* Post-base */
-    mask = indic_plan->mask_array[INDIC_BLWF] |
-	   indic_plan->mask_array[INDIC_ABVF] |
-	   indic_plan->mask_array[INDIC_PSTF];
-    for (unsigned int i = base + 1; i < end; i++)
-      info[i].mask  |= mask;
+    نقاب = indic_plan->نقاب_array[INDIC_BLWF] |
+	   indic_plan->نقاب_array[INDIC_ABVF] |
+	   indic_plan->نقاب_array[INDIC_PSTF];
+    برائے (غیرعلامتی صحیح i = بنیاد + 1; i < انتہا; i++)
+      info[i].نقاب  |= نقاب;
   }
 
-  if (indic_plan->is_old_spec &&
-      buffer->props.script == HB_SCRIPT_DEVANAGARI)
+  اگر (indic_plan->is_old_spec &&
+      بفر->props.script == HB_SCRIPT_DEVANAGARI)
   {
     /* Old-spec eye-lash Ra needs special handling.  From the
      * spec:
@@ -879,41 +879,41 @@ initial_reordering_consonant_syllable (const hb_ot_shape_plan_t *plan,
      *
      * Test case: U+0924,U+094D,U+0930,U+094d,U+200D,U+0915
      */
-    for (unsigned int i = start; i + 1 < base; i++)
-      if (info[i  ].indic_category() == I_Cat(Ra) &&
+    برائے (غیرعلامتی صحیح i = آغاز; i + 1 < بنیاد; i++)
+      اگر (info[i  ].indic_category() == I_Cat(Ra) &&
 	  info[i+1].indic_category() == I_Cat(H)  &&
-	  (i + 2 == base ||
+	  (i + 2 == بنیاد ||
 	   info[i+2].indic_category() != I_Cat(ZWJ)))
       {
-	info[i  ].mask |= indic_plan->mask_array[INDIC_BLWF];
-	info[i+1].mask |= indic_plan->mask_array[INDIC_BLWF];
+	info[i  ].نقاب |= indic_plan->نقاب_array[INDIC_BLWF];
+	info[i+1].نقاب |= indic_plan->نقاب_array[INDIC_BLWF];
       }
   }
 
-  unsigned int pref_len = 2;
-  if (indic_plan->mask_array[INDIC_PREF] && base + pref_len < end)
+  غیرعلامتی صحیح pref_len = 2;
+  اگر (indic_plan->نقاب_array[INDIC_PREF] && بنیاد + pref_len < انتہا)
   {
     /* Find a Halant,Ra sequence and mark it for pre-base-reordering processing. */
-    for (unsigned int i = base + 1; i + pref_len - 1 < end; i++) {
+    برائے (غیرعلامتی صحیح i = بنیاد + 1; i + pref_len - 1 < انتہا; i++) {
       hb_codepoint_t glyphs[2];
-      for (unsigned int j = 0; j < pref_len; j++)
+      برائے (غیرعلامتی صحیح j = 0; j < pref_len; j++)
 	glyphs[j] = info[i + j].codepoint;
-      if (indic_plan->pref.would_substitute (glyphs, pref_len, face))
+      اگر (indic_plan->pref.would_substitute (glyphs, pref_len, face))
       {
-	for (unsigned int j = 0; j < pref_len; j++)
-	  info[i++].mask |= indic_plan->mask_array[INDIC_PREF];
-	break;
+	برائے (غیرعلامتی صحیح j = 0; j < pref_len; j++)
+	  info[i++].نقاب |= indic_plan->نقاب_array[INDIC_PREF];
+	توڑو;
       }
     }
   }
 
   /* Apply ZWJ/ZWNJ effects */
-  for (unsigned int i = start + 1; i < end; i++)
-    if (is_joiner (info[i])) {
-      bool non_joiner = info[i].indic_category() == I_Cat(ZWNJ);
-      unsigned int j = i;
+  برائے (غیرعلامتی صحیح i = آغاز + 1; i < انتہا; i++)
+    اگر (is_joiner (info[i])) {
+      منطقی non_joiner = info[i].indic_category() == I_Cat(ZWNJ);
+      غیرعلامتی صحیح j = i;
 
-      do {
+      کرو {
 	j--;
 
 	/* ZWJ/ZWNJ should disable CJCT.  They do that by simply
@@ -921,82 +921,82 @@ initial_reordering_consonant_syllable (const hb_ot_shape_plan_t *plan,
 	 * feature (ie. F_MANUAL_ZWJ) */
 
 	/* A ZWNJ disables HALF. */
-	if (non_joiner)
-	  info[j].mask &= ~indic_plan->mask_array[INDIC_HALF];
+	اگر (non_joiner)
+	  info[j].نقاب &= ~indic_plan->نقاب_array[INDIC_HALF];
 
-      } while (j > start && !is_consonant (info[j]));
+      } جب (j > آغاز && !is_consonant (info[j]));
     }
 }
 
-static void
-initial_reordering_standalone_cluster (const hb_ot_shape_plan_t *plan,
+ساکن خالی
+initial_reordering_standalone_cluster (ثابت hb_ot_shape_plan_t *plan,
 				       hb_face_t *face,
-				       hb_buffer_t *buffer,
-				       unsigned int start, unsigned int end)
+				       hb_بفر_t *بفر,
+				       غیرعلامتی صحیح آغاز, غیرعلامتی صحیح انتہا)
 {
   /* We treat placeholder/dotted-circle as if they are consonants, so we
    * should just chain... */
 
-  initial_reordering_consonant_syllable (plan, face, buffer, start, end);
+  initial_reordering_consonant_syllable (plan, face, بفر, آغاز, انتہا);
 }
 
-static void
-initial_reordering_syllable_indic (const hb_ot_shape_plan_t *plan,
+ساکن خالی
+initial_reordering_syllable_indic (ثابت hb_ot_shape_plan_t *plan,
 				   hb_face_t *face,
-				   hb_buffer_t *buffer,
-				   unsigned int start, unsigned int end)
+				   hb_بفر_t *بفر,
+				   غیرعلامتی صحیح آغاز, غیرعلامتی صحیح انتہا)
 {
-  indic_syllable_type_t syllable_type = (indic_syllable_type_t) (buffer->info[start].syllable() & 0x0F);
-  switch (syllable_type)
+  indic_syllable_type_t syllable_type = (indic_syllable_type_t) (بفر->info[آغاز].syllable() & 0x0F);
+  انتخاب (syllable_type)
   {
-    case indic_vowel_syllable: /* We made the vowels look like consonants.  So let's call the consonant logic! */
-    case indic_consonant_syllable:
-     initial_reordering_consonant_syllable (plan, face, buffer, start, end);
-     break;
+    حالت indic_vowel_syllable: /* We made the vowels look like consonants.  So let's call the consonant logic! */
+    حالت indic_consonant_syllable:
+     initial_reordering_consonant_syllable (plan, face, بفر, آغاز, انتہا);
+     توڑو;
 
-    case indic_broken_cluster: /* We already inserted dotted-circles, so just call the standalone_cluster. */
-    case indic_standalone_cluster:
-     initial_reordering_standalone_cluster (plan, face, buffer, start, end);
-     break;
+    حالت indic_broken_cluster: /* We already inserted dotted-circles, so just call the standalone_cluster. */
+    حالت indic_standalone_cluster:
+     initial_reordering_standalone_cluster (plan, face, بفر, آغاز, انتہا);
+     توڑو;
 
-    case indic_symbol_cluster:
-    case indic_non_indic_cluster:
-      break;
+    حالت indic_علامت_cluster:
+    حالت indic_non_indic_cluster:
+      توڑو;
   }
 }
 
-static bool
-initial_reordering_indic (const hb_ot_shape_plan_t *plan,
+ساکن منطقی
+initial_reordering_indic (ثابت hb_ot_shape_plan_t *plan,
 			  hb_font_t *font,
-			  hb_buffer_t *buffer)
+			  hb_بفر_t *بفر)
 {
-  bool ret = false;
-  if (!buffer->message (font, "start reordering indic initial"))
-    return ret;
+  منطقی ret = جھوٹ;
+  اگر (!بفر->پیغام (font, "start reordering indic initial"))
+    واپس ret;
 
-  update_consonant_positions_indic (plan, font, buffer);
-  if (hb_syllabic_insert_dotted_circles (font, buffer,
+  update_consonant_positions_indic (plan, font, بفر);
+  اگر (hb_syllabic_داخل_کرو_dotted_circles (font, بفر,
 					 indic_broken_cluster,
 					 I_Cat(DOTTEDCIRCLE),
 					 I_Cat(Repha),
-					 POS_END))
-    ret = true;
+					 POS_انتہا))
+    ret = سچ;
 
-  foreach_syllable (buffer, start, end)
-    initial_reordering_syllable_indic (plan, font->face, buffer, start, end);
+  foreach_syllable (بفر, آغاز, انتہا)
+    initial_reordering_syllable_indic (plan, font->face, بفر, آغاز, انتہا);
 
-  (void) buffer->message (font, "end reordering indic initial");
+  (خالی) بفر->پیغام (font, "end reordering indic initial");
 
-  return ret;
+  واپس ret;
 }
 
-static void
-final_reordering_syllable_indic (const hb_ot_shape_plan_t *plan,
-				 hb_buffer_t *buffer,
-				 unsigned int start, unsigned int end)
+ساکن خالی
+final_reordering_syllable_indic (ثابت hb_ot_shape_plan_t *plan,
+				 hb_بفر_t *بفر,
+				 غیرعلامتی صحیح آغاز, غیرعلامتی صحیح انتہا)
 {
-  const indic_shape_plan_t *indic_plan = (const indic_shape_plan_t *) plan->data;
-  hb_glyph_info_t *info = buffer->info;
+  ثابت indic_shape_plan_t *indic_plan = (ثابت indic_shape_plan_t *) plan->ڈیٹا;
+  hb_glyph_info_t *info = بفر->info;
 
 
   /* This function relies heavily on halant glyphs.  Lots of ligation
@@ -1007,10 +1007,10 @@ final_reordering_syllable_indic (const hb_ot_shape_plan_t *plan,
   /* We don't call load_virama_glyph(), since we know it's already
    * loaded. */
   hb_codepoint_t virama_glyph = indic_plan->virama_glyph;
-  if (virama_glyph)
+  اگر (virama_glyph)
   {
-    for (unsigned int i = start; i < end; i++)
-      if (info[i].codepoint == virama_glyph &&
+    برائے (غیرعلامتی صحیح i = آغاز; i < انتہا; i++)
+      اگر (info[i].codepoint == virama_glyph &&
 	  _hb_glyph_info_ligated (&info[i]) &&
 	  _hb_glyph_info_multiplied (&info[i]))
       {
@@ -1029,67 +1029,67 @@ final_reordering_syllable_indic (const hb_ot_shape_plan_t *plan,
    * syllable.
    */
 
-  bool try_pref = !!indic_plan->mask_array[INDIC_PREF];
+  منطقی try_pref = !!indic_plan->نقاب_array[INDIC_PREF];
 
   /* Find base again */
-  unsigned int base;
-  for (base = start; base < end; base++)
-    if (info[base].indic_position() >= POS_BASE_C)
+  غیرعلامتی صحیح بنیاد;
+  برائے (بنیاد = آغاز; بنیاد < انتہا; بنیاد++)
+    اگر (info[بنیاد].indic_position() >= POS_بنیاد_C)
     {
-      if (try_pref && base + 1 < end)
+      اگر (try_pref && بنیاد + 1 < انتہا)
       {
-	for (unsigned int i = base + 1; i < end; i++)
-	  if ((info[i].mask & indic_plan->mask_array[INDIC_PREF]) != 0)
+	برائے (غیرعلامتی صحیح i = بنیاد + 1; i < انتہا; i++)
+	  اگر ((info[i].نقاب & indic_plan->نقاب_array[INDIC_PREF]) != 0)
 	  {
-	    if (!(_hb_glyph_info_substituted (&info[i]) &&
+	    اگر (!(_hb_glyph_info_substituted (&info[i]) &&
 		  _hb_glyph_info_ligated_and_didnt_multiply (&info[i])))
 	    {
 	      /* Ok, this was a 'pref' candidate but didn't form any.
 	       * Base is around here... */
-	      base = i;
-	      while (base < end && is_halant (info[base]))
-		base++;
-	      if (base < end)
-		info[base].indic_position() = POS_BASE_C;
+	      بنیاد = i;
+	      جب (بنیاد < انتہا && is_halant (info[بنیاد]))
+		بنیاد++;
+	      اگر (بنیاد < انتہا)
+		info[بنیاد].indic_position() = POS_بنیاد_C;
 
-	      try_pref = false;
+	      try_pref = جھوٹ;
 	    }
-	    break;
+	    توڑو;
 	  }
-	if (base == end)
-	  break;
+	اگر (بنیاد == انتہا)
+	  توڑو;
       }
       /* For Malayalam, skip over unformed below- (but NOT post-) forms. */
-      if (buffer->props.script == HB_SCRIPT_MALAYALAM)
+      اگر (بفر->props.script == HB_SCRIPT_MALAYALAM)
       {
-	for (unsigned int i = base + 1; i < end; i++)
+	برائے (غیرعلامتی صحیح i = بنیاد + 1; i < انتہا; i++)
 	{
-	  while (i < end && is_joiner (info[i]))
+	  جب (i < انتہا && is_joiner (info[i]))
 	    i++;
-	  if (i == end || !is_halant (info[i]))
-	    break;
+	  اگر (i == انتہا || !is_halant (info[i]))
+	    توڑو;
 	  i++; /* Skip halant. */
-	  while (i < end && is_joiner (info[i]))
+	  جب (i < انتہا && is_joiner (info[i]))
 	    i++;
-	  if (i < end && is_consonant (info[i]) && info[i].indic_position() == POS_BELOW_C)
+	  اگر (i < انتہا && is_consonant (info[i]) && info[i].indic_position() == POS_نیچے_C)
 	  {
-	    base = i;
-	    info[base].indic_position() = POS_BASE_C;
+	    بنیاد = i;
+	    info[بنیاد].indic_position() = POS_بنیاد_C;
 	  }
 	}
       }
 
-      if (start < base && info[base].indic_position() > POS_BASE_C)
-	base--;
-      break;
+      اگر (آغاز < بنیاد && info[بنیاد].indic_position() > POS_بنیاد_C)
+	بنیاد--;
+      توڑو;
     }
-  if (base == end && start < base &&
-      is_one_of (info[base - 1], FLAG (I_Cat(ZWJ))))
-    base--;
-  if (base < end)
-    while (start < base &&
-	   is_one_of (info[base], (FLAG (I_Cat(N)) | FLAG (I_Cat(H)))))
-      base--;
+  اگر (بنیاد == انتہا && آغاز < بنیاد &&
+      is_one_کا (info[بنیاد - 1], FLAG (I_Cat(ZWJ))))
+    بنیاد--;
+  اگر (بنیاد < انتہا)
+    جب (آغاز < بنیاد &&
+	   is_one_کا (info[بنیاد], (FLAG (I_Cat(N)) | FLAG (I_Cat(H)))))
+      بنیاد--;
 
 
   /*   o Reorder matras:
@@ -1120,43 +1120,43 @@ final_reordering_syllable_indic (const hb_ot_shape_plan_t *plan,
    * https://github.com/harfbuzz/harfbuzz/issues/1070
    */
 
-  if (start + 1 < end && start < base) /* Otherwise there can't be any pre-base matra characters. */
+  اگر (آغاز + 1 < انتہا && آغاز < بنیاد) /* Otherwise there can't be any pre-base matra characters. */
   {
     /* If we lost track of base, alas, position before last thingy. */
-    unsigned int new_pos = base == end ? base - 2 : base - 1;
+    غیرعلامتی صحیح new_pos = بنیاد == انتہا ? بنیاد - 2 : بنیاد - 1;
 
     /* Malayalam / Tamil do not have "half" forms or explicit virama forms.
      * The glyphs formed by 'half' are Chillus or ligated explicit viramas.
      * We want to position matra after them.
      */
-    if (buffer->props.script != HB_SCRIPT_MALAYALAM && buffer->props.script != HB_SCRIPT_TAMIL)
+    اگر (بفر->props.script != HB_SCRIPT_MALAYALAM && بفر->props.script != HB_SCRIPT_TAMIL)
     {
     search:
-      while (new_pos > start &&
-	     !(is_one_of (info[new_pos], (FLAG (I_Cat(M)) | FLAG (I_Cat(MPst)) | FLAG (I_Cat(H))))))
+      جب (new_pos > آغاز &&
+	     !(is_one_کا (info[new_pos], (FLAG (I_Cat(M)) | FLAG (I_Cat(MPst)) | FLAG (I_Cat(H))))))
 	new_pos--;
 
       /* If we found no Halant we are done.
        * Otherwise only proceed if the Halant does
        * not belong to the Matra itself! */
-      if (is_halant (info[new_pos]) &&
+      اگر (is_halant (info[new_pos]) &&
 	  info[new_pos].indic_position() != POS_PRE_M)
       {
-#if 0 // See comment above
+#اگر 0 // See comment above
 	/* -> If ZWJ or ZWNJ follow this halant, position is moved after it. */
-	if (new_pos + 1 < end && is_joiner (info[new_pos + 1]))
+	اگر (new_pos + 1 < انتہا && is_joiner (info[new_pos + 1]))
 	  new_pos++;
-#endif
-	if (new_pos + 1 < end)
+#اگر_ختم
+	اگر (new_pos + 1 < انتہا)
 	{
 	  /* -> If ZWJ follows this halant, matra is NOT repositioned after this halant. */
-	  if (info[new_pos + 1].indic_category() == I_Cat(ZWJ))
+	  اگر (info[new_pos + 1].indic_category() == I_Cat(ZWJ))
 	  {
 	    /* Keep searching. */
-	    if (new_pos > start)
+	    اگر (new_pos > آغاز)
 	    {
 	      new_pos--;
-	      goto search;
+	      جاؤ search;
 	    }
 	  }
 	  /* -> If ZWNJ follows this halant, position is moved after it.
@@ -1169,35 +1169,35 @@ final_reordering_syllable_indic (const hb_ot_shape_plan_t *plan,
 	   */
 	}
       }
-      else
-	new_pos = start; /* No move. */
+      ورنہ
+	new_pos = آغاز; /* No move. */
     }
 
-    if (start < new_pos && info[new_pos].indic_position () != POS_PRE_M)
+    اگر (آغاز < new_pos && info[new_pos].indic_position () != POS_PRE_M)
     {
       /* Now go see if there's actually any matras... */
-      for (unsigned int i = new_pos; i > start; i--)
-	if (info[i - 1].indic_position () == POS_PRE_M)
+      برائے (غیرعلامتی صحیح i = new_pos; i > آغاز; i--)
+	اگر (info[i - 1].indic_position () == POS_PRE_M)
 	{
-	  unsigned int old_pos = i - 1;
-	  if (old_pos < base && base <= new_pos) /* Shouldn't actually happen. */
-	    base--;
+	  غیرعلامتی صحیح old_pos = i - 1;
+	  اگر (old_pos < بنیاد && بنیاد <= new_pos) /* Shouldn't actually happen. */
+	    بنیاد--;
 
 	  hb_glyph_info_t tmp = info[old_pos];
-	  memmove (&info[old_pos], &info[old_pos + 1], (new_pos - old_pos) * sizeof (info[0]));
+	  memmove (&info[old_pos], &info[old_pos + 1], (new_pos - old_pos) * حجم (info[0]));
 	  info[new_pos] = tmp;
 
 	  /* Note: this merge_clusters() is intentionally *after* the reordering.
 	   * Indic matra reordering is special and tricky... */
-	  buffer->merge_clusters (new_pos, hb_min (end, base + 1));
+	  بفر->ملاؤ_clusters (new_pos, hb_min (انتہا, بنیاد + 1));
 
 	  new_pos--;
 	}
-    } else {
-      for (unsigned int i = start; i < base; i++)
-	if (info[i].indic_position () == POS_PRE_M) {
-	  buffer->merge_clusters (i, hb_min (end, base + 1));
-	  break;
+    } ورنہ {
+      برائے (غیرعلامتی صحیح i = آغاز; i < بنیاد; i++)
+	اگر (info[i].indic_position () == POS_PRE_M) {
+	  بفر->ملاؤ_clusters (i, hb_min (انتہا, بنیاد + 1));
+	  توڑو;
 	}
     }
   }
@@ -1221,20 +1221,20 @@ final_reordering_syllable_indic (const hb_ot_shape_plan_t *plan,
    *   move it if it did NOT ligate.  If it ligated, it's probably the font trying
    *   to make it work without the reordering.
    */
-  if (start + 1 < end &&
-      info[start].indic_position() == POS_RA_TO_BECOME_REPH &&
-      ((info[start].indic_category() == I_Cat(Repha)) ^
-       _hb_glyph_info_ligated_and_didnt_multiply (&info[start])))
+  اگر (آغاز + 1 < انتہا &&
+      info[آغاز].indic_position() == POS_RA_مقصد_BECOME_REPH &&
+      ((info[آغاز].indic_category() == I_Cat(Repha)) ^
+       _hb_glyph_info_ligated_and_didnt_multiply (&info[آغاز])))
   {
-    unsigned int new_reph_pos;
+    غیرعلامتی صحیح new_reph_pos;
     reph_position_t reph_pos = indic_plan->config->reph_pos;
 
     /*       1. If reph should be positioned after post-base consonant forms,
      *          proceed to step 5.
      */
-    if (reph_pos == REPH_POS_AFTER_POST)
+    اگر (reph_pos == REPH_POS_AFTER_POST)
     {
-      goto reph_step_5;
+      جاؤ reph_قدم_5;
     }
 
     /*       2. If the reph repositioning class is not after post-base: target
@@ -1249,16 +1249,16 @@ final_reordering_syllable_indic (const hb_ot_shape_plan_t *plan,
      *          will be found on this step.
      */
     {
-      new_reph_pos = start + 1;
-      while (new_reph_pos < base && !is_halant (info[new_reph_pos]))
+      new_reph_pos = آغاز + 1;
+      جب (new_reph_pos < بنیاد && !is_halant (info[new_reph_pos]))
 	new_reph_pos++;
 
-      if (new_reph_pos < base && is_halant (info[new_reph_pos]))
+      اگر (new_reph_pos < بنیاد && is_halant (info[new_reph_pos]))
       {
 	/* ->If ZWJ or ZWNJ are following this halant, position is moved after it. */
-	if (new_reph_pos + 1 < base && is_joiner (info[new_reph_pos + 1]))
+	اگر (new_reph_pos + 1 < بنیاد && is_joiner (info[new_reph_pos + 1]))
 	  new_reph_pos++;
-	goto reph_move;
+	جاؤ reph_move;
       }
     }
 
@@ -1266,13 +1266,13 @@ final_reordering_syllable_indic (const hb_ot_shape_plan_t *plan,
      *          first consonant not ligated with main, or find the first
      *          consonant that is not a potential pre-base-reordering Ra.
      */
-    if (reph_pos == REPH_POS_AFTER_MAIN)
+    اگر (reph_pos == REPH_POS_AFTER_MAIN)
     {
-      new_reph_pos = base;
-      while (new_reph_pos + 1 < end && info[new_reph_pos + 1].indic_position() <= POS_AFTER_MAIN)
+      new_reph_pos = بنیاد;
+      جب (new_reph_pos + 1 < انتہا && info[new_reph_pos + 1].indic_position() <= POS_AFTER_MAIN)
 	new_reph_pos++;
-      if (new_reph_pos < end)
-	goto reph_move;
+      اگر (new_reph_pos < انتہا)
+	جاؤ reph_move;
     }
 
     /*       4. If reph should be positioned before post-base consonant, find
@@ -1281,14 +1281,14 @@ final_reordering_syllable_indic (const hb_ot_shape_plan_t *plan,
      *          first matra, syllable modifier sign or vedic sign.
      */
     /* This is our take on what step 4 is trying to say (and failing, BADLY). */
-    if (reph_pos == REPH_POS_AFTER_SUB)
+    اگر (reph_pos == REPH_POS_AFTER_SUB)
     {
-      new_reph_pos = base;
-      while (new_reph_pos + 1 < end &&
+      new_reph_pos = بنیاد;
+      جب (new_reph_pos + 1 < انتہا &&
 	     !( FLAG_UNSAFE (info[new_reph_pos + 1].indic_position()) & (FLAG (POS_POST_C) | FLAG (POS_AFTER_POST) | FLAG (POS_SMVD))))
 	new_reph_pos++;
-      if (new_reph_pos < end)
-	goto reph_move;
+      اگر (new_reph_pos < انتہا)
+	جاؤ reph_move;
     }
 
     /*       5. If no consonant is found in steps 3 or 4, move reph to a position
@@ -1298,19 +1298,19 @@ final_reordering_syllable_indic (const hb_ot_shape_plan_t *plan,
      *          is post-main, it will skip above-base matras that also have a
      *          post-main position.
      */
-    reph_step_5:
+    reph_قدم_5:
     {
       /* Copied from step 2. */
-      new_reph_pos = start + 1;
-      while (new_reph_pos < base && !is_halant (info[new_reph_pos]))
+      new_reph_pos = آغاز + 1;
+      جب (new_reph_pos < بنیاد && !is_halant (info[new_reph_pos]))
 	new_reph_pos++;
 
-      if (new_reph_pos < base && is_halant (info[new_reph_pos]))
+      اگر (new_reph_pos < بنیاد && is_halant (info[new_reph_pos]))
       {
 	/* ->If ZWJ or ZWNJ are following this halant, position is moved after it. */
-	if (new_reph_pos + 1 < base && is_joiner (info[new_reph_pos + 1]))
+	اگر (new_reph_pos + 1 < بنیاد && is_joiner (info[new_reph_pos + 1]))
 	  new_reph_pos++;
-	goto reph_move;
+	جاؤ reph_move;
       }
     }
     /* See https://github.com/harfbuzz/harfbuzz/issues/2298#issuecomment-615318654 */
@@ -1318,8 +1318,8 @@ final_reordering_syllable_indic (const hb_ot_shape_plan_t *plan,
     /*       6. Otherwise, reorder reph to the end of the syllable.
      */
     {
-      new_reph_pos = end - 1;
-      while (new_reph_pos > start && info[new_reph_pos].indic_position() == POS_SMVD)
+      new_reph_pos = انتہا - 1;
+      جب (new_reph_pos > آغاز && info[new_reph_pos].indic_position() == POS_SMVD)
 	new_reph_pos--;
 
       /*
@@ -1329,29 +1329,29 @@ final_reordering_syllable_indic (const hb_ot_shape_plan_t *plan,
        * Uniscribe doesn't do this.
        * TEST: U+0930,U+094D,U+0915,U+094B,U+094D
        */
-      if (unlikely (is_halant (info[new_reph_pos])))
+      اگر (unlikely (is_halant (info[new_reph_pos])))
       {
-	for (unsigned int i = base + 1; i < new_reph_pos; i++)
-	  if (FLAG_UNSAFE (info[i].indic_category()) & (FLAG (I_Cat(M)) | FLAG (I_Cat(MPst))))
+	برائے (غیرعلامتی صحیح i = بنیاد + 1; i < new_reph_pos; i++)
+	  اگر (FLAG_UNSAFE (info[i].indic_category()) & (FLAG (I_Cat(M)) | FLAG (I_Cat(MPst))))
 	  {
 	    /* Ok, got it. */
 	    new_reph_pos--;
 	  }
       }
 
-      goto reph_move;
+      جاؤ reph_move;
     }
 
     reph_move:
     {
       /* Move */
-      buffer->merge_clusters (start, new_reph_pos + 1);
-      hb_glyph_info_t reph = info[start];
-      memmove (&info[start], &info[start + 1], (new_reph_pos - start) * sizeof (info[0]));
+      بفر->ملاؤ_clusters (آغاز, new_reph_pos + 1);
+      hb_glyph_info_t reph = info[آغاز];
+      memmove (&info[آغاز], &info[آغاز + 1], (new_reph_pos - آغاز) * حجم (info[0]));
       info[new_reph_pos] = reph;
 
-      if (start < base && base <= new_reph_pos)
-	base--;
+      اگر (آغاز < بنیاد && بنیاد <= new_reph_pos)
+	بنیاد--;
     }
   }
 
@@ -1362,10 +1362,10 @@ final_reordering_syllable_indic (const hb_ot_shape_plan_t *plan,
    *     the following rules:
    */
 
-  if (try_pref && base + 1 < end) /* Otherwise there can't be any pre-base-reordering Ra. */
+  اگر (try_pref && بنیاد + 1 < انتہا) /* Otherwise there can't be any pre-base-reordering Ra. */
   {
-    for (unsigned int i = base + 1; i < end; i++)
-      if ((info[i].mask & indic_plan->mask_array[INDIC_PREF]) != 0)
+    برائے (غیرعلامتی صحیح i = بنیاد + 1; i < انتہا; i++)
+      اگر ((info[i].نقاب & indic_plan->نقاب_array[INDIC_PREF]) != 0)
       {
 	/*       1. Only reorder a glyph produced by substitution during application
 	 *          of the <pref> feature. (Note that a font may shape a Ra consonant with
@@ -1375,7 +1375,7 @@ final_reordering_syllable_indic (const hb_ot_shape_plan_t *plan,
 	 * the <pref> feature actually did it...
 	 *
 	 * Reorder pref only if it ligated. */
-	if (_hb_glyph_info_ligated_and_didnt_multiply (&info[i]))
+	اگر (_hb_glyph_info_ligated_and_didnt_multiply (&info[i]))
 	{
 	  /*
 	   *       2. Try to find a target position the same way as for pre-base matra.
@@ -1385,152 +1385,152 @@ final_reordering_syllable_indic (const hb_ot_shape_plan_t *plan,
 	   *          consonant.
 	   */
 
-	  unsigned int new_pos = base;
+	  غیرعلامتی صحیح new_pos = بنیاد;
 	  /* Malayalam / Tamil do not have "half" forms or explicit virama forms.
 	   * The glyphs formed by 'half' are Chillus or ligated explicit viramas.
 	   * We want to position matra after them.
 	   */
-	  if (buffer->props.script != HB_SCRIPT_MALAYALAM && buffer->props.script != HB_SCRIPT_TAMIL)
+	  اگر (بفر->props.script != HB_SCRIPT_MALAYALAM && بفر->props.script != HB_SCRIPT_TAMIL)
 	  {
-	    while (new_pos > start &&
-		   !(is_one_of (info[new_pos - 1], FLAG (I_Cat(M)) | FLAG (I_Cat(MPst)) | FLAG (I_Cat(H)))))
+	    جب (new_pos > آغاز &&
+		   !(is_one_کا (info[new_pos - 1], FLAG (I_Cat(M)) | FLAG (I_Cat(MPst)) | FLAG (I_Cat(H)))))
 	      new_pos--;
 	  }
 
-	  if (new_pos > start && is_halant (info[new_pos - 1]))
+	  اگر (new_pos > آغاز && is_halant (info[new_pos - 1]))
 	  {
 	    /* -> If ZWJ or ZWNJ follow this halant, position is moved after it. */
-	    if (new_pos < end && is_joiner (info[new_pos]))
+	    اگر (new_pos < انتہا && is_joiner (info[new_pos]))
 	      new_pos++;
 	  }
 
 	  {
-	    unsigned int old_pos = i;
+	    غیرعلامتی صحیح old_pos = i;
 
-	    buffer->merge_clusters (new_pos, old_pos + 1);
+	    بفر->ملاؤ_clusters (new_pos, old_pos + 1);
 	    hb_glyph_info_t tmp = info[old_pos];
-	    memmove (&info[new_pos + 1], &info[new_pos], (old_pos - new_pos) * sizeof (info[0]));
+	    memmove (&info[new_pos + 1], &info[new_pos], (old_pos - new_pos) * حجم (info[0]));
 	    info[new_pos] = tmp;
 
-	    if (new_pos <= base && base < old_pos)
-	      base++;
+	    اگر (new_pos <= بنیاد && بنیاد < old_pos)
+	      بنیاد++;
 	  }
 	}
 
-	break;
+	توڑو;
       }
   }
 
 
   /* Apply 'init' to the Left Matra if it's a word start. */
-  if (info[start].indic_position () == POS_PRE_M)
+  اگر (info[آغاز].indic_position () == POS_PRE_M)
   {
-    if (!start ||
-	!(FLAG_UNSAFE (_hb_glyph_info_get_general_category (&info[start - 1])) &
+    اگر (!آغاز ||
+	!(FLAG_UNSAFE (_hb_glyph_info_get_general_category (&info[آغاز - 1])) &
 	 FLAG_RANGE (HB_UNICODE_GENERAL_CATEGORY_FORMAT, HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK)))
-      info[start].mask |= indic_plan->mask_array[INDIC_INIT];
-    else
-      buffer->unsafe_to_break (start - 1, start + 1);
+      info[آغاز].نقاب |= indic_plan->نقاب_array[INDIC_INIT];
+    ورنہ
+      بفر->unsafe_مقصد_break (آغاز - 1, آغاز + 1);
   }
 }
 
 
-static bool
-final_reordering_indic (const hb_ot_shape_plan_t *plan,
-			hb_font_t *font HB_UNUSED,
-			hb_buffer_t *buffer)
+ساکن منطقی
+final_reordering_indic (ثابت hb_ot_shape_plan_t *plan,
+			hb_font_t *font HB_غیر_مستعمل,
+			hb_بفر_t *بفر)
 {
-  unsigned int count = buffer->len;
-  if (unlikely (!count)) return false;
+  غیرعلامتی صحیح گنتی = بفر->len;
+  اگر (unlikely (!گنتی)) واپس جھوٹ;
 
-  if (buffer->message (font, "start reordering indic final")) {
-    foreach_syllable (buffer, start, end)
-      final_reordering_syllable_indic (plan, buffer, start, end);
-    (void) buffer->message (font, "end reordering indic final");
+  اگر (بفر->پیغام (font, "start reordering indic final")) {
+    foreach_syllable (بفر, آغاز, انتہا)
+      final_reordering_syllable_indic (plan, بفر, آغاز, انتہا);
+    (خالی) بفر->پیغام (font, "end reordering indic final");
   }
 
-  HB_BUFFER_DEALLOCATE_VAR (buffer, indic_category);
-  HB_BUFFER_DEALLOCATE_VAR (buffer, indic_position);
+  HB_بفر_DEALLOCATE_VAR (بفر, indic_category);
+  HB_بفر_DEALLOCATE_VAR (بفر, indic_position);
 
-  return false;
+  واپس جھوٹ;
 }
 
 
-static void
-preprocess_text_indic (const hb_ot_shape_plan_t *plan,
-		       hb_buffer_t              *buffer,
+ساکن خالی
+preprocess_متن_indic (ثابت hb_ot_shape_plan_t *plan,
+		       hb_بفر_t              *بفر,
 		       hb_font_t                *font)
 {
-  _hb_preprocess_text_vowel_constraints (plan, buffer, font);
+  hb_preprocess_متن_vowel_constraints (plan, بفر, font);
 }
 
-static bool
-decompose_indic (const hb_ot_shape_normalize_context_t *c,
+ساکن منطقی
+decompose_indic (ثابت hb_ot_shape_normalize_context_t *c,
 		 hb_codepoint_t  ab,
 		 hb_codepoint_t *a,
 		 hb_codepoint_t *b)
 {
-  switch (ab)
+  انتخاب (ab)
   {
     /* Don't decompose these. */
-    case 0x0931u  : return false; /* DEVANAGARI LETTER RRA */
+    حالت 0x0931u  : واپس جھوٹ; /* DEVANAGARI LETTER RRA */
     // https://github.com/harfbuzz/harfbuzz/issues/779
-    case 0x09DCu  : return false; /* BENGALI LETTER RRA */
-    case 0x09DDu  : return false; /* BENGALI LETTER RHA */
-    case 0x0B94u  : return false; /* TAMIL LETTER AU */
+    حالت 0x09DCu  : واپس جھوٹ; /* BENGALI LETTER RRA */
+    حالت 0x09DDu  : واپس جھوٹ; /* BENGALI LETTER RHA */
+    حالت 0x0B94u  : واپس جھوٹ; /* TAMIL LETTER AU */
 
 
     /*
      * Decompose split matras that don't have Unicode decompositions.
      */
 
-#if 0
+#اگر 0
     /* Gujarati */
     /* This one has no decomposition in Unicode, but needs no decomposition either. */
     /* case 0x0AC9u  : return false; */
 
     /* Oriya */
-    case 0x0B57u  : *a = no decomp, -> RIGHT; return true;
-#endif
+    حالت 0x0B57u  : *a = no decomp, -> دایاں_2; واپس سچ;
+#اگر_ختم
   }
 
-  return (bool) c->unicode->decompose (ab, a, b);
+  واپس (منطقی) c->unicode->decompose (ab, a, b);
 }
 
-static bool
-compose_indic (const hb_ot_shape_normalize_context_t *c,
+ساکن منطقی
+compose_indic (ثابت hb_ot_shape_normalize_context_t *c,
 	       hb_codepoint_t  a,
 	       hb_codepoint_t  b,
 	       hb_codepoint_t *ab)
 {
   /* Avoid recomposing split matras. */
-  if (HB_UNICODE_GENERAL_CATEGORY_IS_MARK (c->unicode->general_category (a)))
-    return false;
+  اگر (HB_UNICODE_GENERAL_CATEGORY_IS_MARK (c->unicode->general_category (a)))
+    واپس جھوٹ;
 
   /* Composition-exclusion exceptions that we want to recompose. */
-  if (a == 0x09AFu && b == 0x09BCu) { *ab = 0x09DFu; return true; }
+  اگر (a == 0x09AFu && b == 0x09BCu) { *ab = 0x09DFu; واپس سچ; }
 
-  return (bool) c->unicode->compose (a, b, ab);
+  واپس (منطقی) c->unicode->compose (a, b, ab);
 }
 
 
-const hb_ot_shaper_t _hb_ot_shaper_indic =
+ثابت hb_ot_shaper_t _hb_ot_shaper_indic =
 {
   collect_features_indic,
   override_features_indic,
-  data_create_indic,
-  data_destroy_indic,
-  preprocess_text_indic,
-  nullptr, /* postprocess_glyphs */
+  ڈیٹا_create_indic,
+  ڈیٹا_destroy_indic,
+  preprocess_متن_indic,
+  خالی_اشاریہ, /* postprocess_glyphs */
   decompose_indic,
   compose_indic,
-  setup_masks_indic,
-  nullptr, /* reorder_marks */
-  HB_TAG_NONE, /* gpos_tag */
-  HB_OT_SHAPE_NORMALIZATION_MODE_COMPOSED_DIACRITICS_NO_SHORT_CIRCUIT,
-  HB_OT_SHAPE_ZERO_WIDTH_MARKS_NONE,
-  false, /* fallback_position */
+  تیاری_masks_indic,
+  خالی_اشاریہ, /* reorder_marks */
+  HB_لیبل_NONE, /* gpos_tag */
+  HB_OT_SHAPE_NORMALIZATION_منوال_COMPOSED_DIACRITICS_NO_SHORT_CIRCUIT,
+  HB_OT_SHAPE_ZERO_چوڑائی_MARKS_NONE,
+  جھوٹ, /* fallback_position */
 };
 
 
-#endif
+#اگر_ختم

@@ -24,486 +24,486 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef HB_RESULT_HH
-#define HB_RESULT_HH
+#اگر_غیر_تعریف_شدہ HB_نتیجہ_HH
+#تعریف_کرو HB_نتیجہ_HH
 
-#include "hb.hh"
+#شامل "hb.hh"
 
 // Helper structs for Ok(...) and Err(...), not used directly
 // by users of hb_result_t.
-template <typename T>
-struct hb_result_ok_t
+سانچہ <قسم_نام T>
+ساخت hb_نتیجہ_ok_t
 {
   T value;
 };
 
-template <>
-struct hb_result_ok_t<void> {};
+سانچہ <>
+ساخت hb_نتیجہ_ok_t<خالی> {};
 
-template <typename E>
-struct hb_result_err_t
+سانچہ <قسم_نام E>
+ساخت hb_نتیجہ_err_t
 {
   E error;
 
-  template <typename OtherE>
-  constexpr bool operator == (const hb_result_err_t<OtherE>& other) const { return error == other.error; }
-  template <typename OtherE>
-  constexpr bool operator != (const hb_result_err_t<OtherE>& other) const { return error != other.error; }
+  سانچہ <قسم_نام OtherE>
+  constexpr منطقی عامل == (ثابت hb_نتیجہ_err_t<OtherE>& other) ثابت { واپس error == other.error; }
+  سانچہ <قسم_نام OtherE>
+  constexpr منطقی عامل != (ثابت hb_نتیجہ_err_t<OtherE>& other) ثابت { واپس error != other.error; }
 };
 
-template <typename X> struct _hb_is_result_tag : hb_false_type {};
-template <typename X> struct _hb_is_result_tag<hb_result_ok_t<X>> : hb_true_type {};
-template <typename X> struct _hb_is_result_tag<hb_result_err_t<X>> : hb_true_type {};
+سانچہ <قسم_نام X> ساخت hb_is_نتیجہ_لیبل : hb_false_type {};
+سانچہ <قسم_نام X> ساخت hb_is_نتیجہ_لیبل<hb_نتیجہ_ok_t<X>> : hb_true_type {};
+سانچہ <قسم_نام X> ساخت hb_is_نتیجہ_لیبل<hb_نتیجہ_err_t<X>> : hb_true_type {};
 
-template <typename T>
-static inline constexpr hb_result_ok_t<T&&> Ok (T&& v)
+سانچہ <قسم_نام T>
+ساکن اندرونی constexpr hb_نتیجہ_ok_t<T&&> Ok (T&& v)
 {
-  return hb_result_ok_t<T&&>{std::forward<T> (v)};
+  واپس hb_نتیجہ_ok_t<T&&>{std::forward<T> (v)};
 }
 
-static inline constexpr hb_result_ok_t<void> Ok ()
+ساکن اندرونی constexpr hb_نتیجہ_ok_t<خالی> Ok ()
 {
-  return hb_result_ok_t<void>{};
+  واپس hb_نتیجہ_ok_t<خالی>{};
 }
 
-template <typename E>
-static inline constexpr hb_result_err_t<E&&> Err (E&& e)
+سانچہ <قسم_نام E>
+ساکن اندرونی constexpr hb_نتیجہ_err_t<E&&> Err (E&& e)
 {
-  return hb_result_err_t<E&&>{std::forward<E> (e)};
+  واپس hb_نتیجہ_err_t<E&&>{std::forward<E> (e)};
 }
 
-template <typename T, typename E>
-struct HB_NODISCARD_STRUCT hb_result_t
+سانچہ <قسم_نام T, قسم_نام E>
+ساخت HB_NODISCARD_STRUCT hb_نتیجہ_t
 {
-  private:
-  union
+  نجی:
+  اتحاد
   {
     T val_;
     E err_;
   };
-  bool is_ok_;
+  منطقی is_ok_;
 
-  void destroy ()
+  خالی destroy ()
   {
-    if (is_ok_)
+    اگر (is_ok_)
       val_.~T ();
-    else
+    ورنہ
       err_.~E ();
   }
 
-  void init(const hb_result_t& o) {
+  خالی init(ثابت hb_نتیجہ_t& o) {
     is_ok_ = o.is_ok_;
-    if (is_ok_)
-      new (std::addressof (val_)) T (o.val_);
-    else
-      new (std::addressof (err_)) E (o.err_);
+    اگر (is_ok_)
+      نیا (std::addressof (val_)) T (o.val_);
+    ورنہ
+      نیا (std::addressof (err_)) E (o.err_);
   }
 
-  void init(hb_result_t&& o) {
+  خالی init(hb_نتیجہ_t&& o) {
     is_ok_ = o.is_ok_;
-    if (is_ok_)
-      new (std::addressof (val_)) T (std::move (o.val_));
-    else
-      new (std::addressof (err_)) E (std::move (o.err_));
+    اگر (is_ok_)
+      نیا (std::addressof (val_)) T (std::move (o.val_));
+    ورنہ
+      نیا (std::addressof (err_)) E (std::move (o.err_));
   }
 
-  public:
-  ~hb_result_t ()
+  عوامی:
+  ~hb_نتیجہ_t ()
   {
     destroy ();
   }
 
-  hb_result_t () = delete;
+  hb_نتیجہ_t () = حذف;
 
-  hb_result_t (const hb_result_t& o) : is_ok_ (false)
+  hb_نتیجہ_t (ثابت hb_نتیجہ_t& o) : is_ok_ (جھوٹ)
   {
     init (o);
   }
 
-  hb_result_t (hb_result_t&& o) noexcept (std::is_nothrow_move_constructible<T>::value &&
+  hb_نتیجہ_t (hb_نتیجہ_t&& o) noexcept (std::is_nothrow_move_constructible<T>::value &&
                                      std::is_nothrow_move_constructible<E>::value)
-      : is_ok_ (false)
+      : is_ok_ (جھوٹ)
   {
     init (std::move (o));
   }
 
-  hb_result_t& operator = (const hb_result_t& o)
+  hb_نتیجہ_t& عامل = (ثابت hb_نتیجہ_t& o)
   {
-    if (this == &o) return *this;
-    if (is_ok_ && o.is_ok_)
+    اگر (یہ == &o) واپس *یہ;
+    اگر (is_ok_ && o.is_ok_)
     {
       val_ = o.val_;
     }
-    else if (!is_ok_ && !o.is_ok_)
+    ورنہ اگر (!is_ok_ && !o.is_ok_)
     {
       err_ = o.err_;
     }
-    else
+    ورنہ
     {
       destroy ();
       init (o);
     }
-    return *this;
+    واپس *یہ;
   }
 
-  hb_result_t& operator = (hb_result_t&& o) noexcept (std::is_nothrow_move_assignable<T>::value &&
+  hb_نتیجہ_t& عامل = (hb_نتیجہ_t&& o) noexcept (std::is_nothrow_move_assignable<T>::value &&
                                                 std::is_nothrow_move_assignable<E>::value)
   {
-    if (this == &o) return *this;
-    if (is_ok_ && o.is_ok_)
+    اگر (یہ == &o) واپس *یہ;
+    اگر (is_ok_ && o.is_ok_)
     {
       val_ = std::move (o.val_);
     }
-    else if (!is_ok_ && !o.is_ok_)
+    ورنہ اگر (!is_ok_ && !o.is_ok_)
     {
       err_ = std::move (o.err_);
     }
-    else
+    ورنہ
     {
       destroy ();
       init (std::move (o));
     }
-    return *this;
+    واپس *یہ;
   }
 
   // Construct from Ok(...) tag
-  template <typename U,
+  سانچہ <قسم_نام U,
             hb_enable_if ((std::is_constructible<T, U>::value))>
-  hb_result_t (hb_result_ok_t<U>&& o) : is_ok_ (true)
+  hb_نتیجہ_t (hb_نتیجہ_ok_t<U>&& o) : is_ok_ (سچ)
   {
-    new (std::addressof (val_)) T (std::move (o.value));
+    نیا (std::addressof (val_)) T (std::move (o.value));
   }
 
-  template <typename U,
-            hb_enable_if ((std::is_constructible<T, const U&>::value))>
-  hb_result_t (const hb_result_ok_t<U>& o) : is_ok_ (true)
+  سانچہ <قسم_نام U,
+            hb_enable_if ((std::is_constructible<T, ثابت U&>::value))>
+  hb_نتیجہ_t (ثابت hb_نتیجہ_ok_t<U>& o) : is_ok_ (سچ)
   {
-    new (std::addressof (val_)) T (o.value);
+    نیا (std::addressof (val_)) T (o.value);
   }
 
   // Construct from Err(...) tag
-  template <typename F,
+  سانچہ <قسم_نام F,
             hb_enable_if ((std::is_constructible<E, F>::value))>
-  hb_result_t (hb_result_err_t<F>&& e) : is_ok_ (false)
+  hb_نتیجہ_t (hb_نتیجہ_err_t<F>&& e) : is_ok_ (جھوٹ)
   {
-    new (std::addressof (err_)) E (std::move (e.error));
+    نیا (std::addressof (err_)) E (std::move (e.error));
   }
 
-  template <typename F,
-            hb_enable_if ((std::is_constructible<E, const F&>::value))>
-  hb_result_t (const hb_result_err_t<F>& e) : is_ok_ (false)
+  سانچہ <قسم_نام F,
+            hb_enable_if ((std::is_constructible<E, ثابت F&>::value))>
+  hb_نتیجہ_t (ثابت hb_نتیجہ_err_t<F>& e) : is_ok_ (جھوٹ)
   {
-    new (std::addressof (err_)) E (e.error);
+    نیا (std::addressof (err_)) E (e.error);
   }
 
   // Construct directly from error E (when neither T or E are convertible into each other)
-  template <typename F = E,
+  سانچہ <قسم_نام F = E,
             hb_enable_if ((hb_is_same (F, E) &&
                            !(hb_is_convertible (T, E) || hb_is_convertible (E, T))))>
-  hb_result_t (F e) : is_ok_ (false)
+  hb_نتیجہ_t (F e) : is_ok_ (جھوٹ)
   {
-    new (std::addressof (err_)) E (std::move (e));
+    نیا (std::addressof (err_)) E (std::move (e));
   }
 
   // Construct directly from value T (when neither T or E are convertible into each other)
-  template <typename U = T,
+  سانچہ <قسم_نام U = T,
             hb_enable_if ((std::is_constructible<T, U>::value &&
                            !hb_is_same (hb_decay<U>, E) &&
-                           !hb_is_same (hb_decay<U>, hb_result_t) &&
-                           !_hb_is_result_tag<hb_decay<U>>::value &&
+                           !hb_is_same (hb_decay<U>, hb_نتیجہ_t) &&
+                           !hb_is_نتیجہ_لیبل<hb_decay<U>>::value &&
                            !(hb_is_convertible (T, E) || hb_is_convertible (E, T))))>
-  hb_result_t (U&& v) : is_ok_ (true)
+  hb_نتیجہ_t (U&& v) : is_ok_ (سچ)
   {
-    new (std::addressof (val_)) T (std::forward<U> (v));
+    نیا (std::addressof (val_)) T (std::forward<U> (v));
   }
 
   // Move fallible into a result if it's in_error() method returns false.
-  static hb_result_t from (T&& fallible, E error_value) {
-    if (fallible.in_error()) {
-      return Err(error_value);
+  ساکن hb_نتیجہ_t from (T&& fallible, E error_قدر) {
+    اگر (fallible.اندر_error()) {
+      واپس Err(error_قدر);
     }
-    return Ok(fallible);
+    واپس Ok(fallible);
   }
 
-  bool is_ok () const { return is_ok_; }
-  bool is_err () const { return !is_ok_; }
-  explicit operator bool () const { return is_ok (); }
+  منطقی is_ok () ثابت { واپس is_ok_; }
+  منطقی is_err () ثابت { واپس !is_ok_; }
+  صریح عامل منطقی () ثابت { واپس is_ok (); }
 
-  T& value () & { assert (is_ok_); return val_; }
-  const T& value () const & { assert (is_ok_); return val_; }
-  T value () && { assert (is_ok_); return std::move (val_); }
+  T& value () & { أكد (is_ok_); واپس val_; }
+  ثابت T& value () ثابت & { أكد (is_ok_); واپس val_; }
+  T value () && { أكد (is_ok_); واپس std::move (val_); }
 
-  T& operator * () & { return value (); }
-  const T& operator * () const & { return value (); }
-  T operator * () && { return std::move (*this).value (); }
+  T& عامل * () & { واپس value (); }
+  ثابت T& عامل * () ثابت & { واپس value (); }
+  T عامل * () && { واپس std::move (*یہ).value (); }
 
-  T* operator -> () { return std::addressof (value ()); }
-  const T* operator -> () const { return std::addressof (value ()); }
+  T* عامل -> () { واپس std::addressof (value ()); }
+  ثابت T* عامل -> () ثابت { واپس std::addressof (value ()); }
 
-  template <typename U>
-  T value_or (U&& default_value) const &
+  سانچہ <قسم_نام U>
+  T قدر_or (U&& default_قدر) ثابت &
   {
-    if (is_ok_) return val_;
-    return std::forward<U> (default_value);
+    اگر (is_ok_) واپس val_;
+    واپس std::forward<U> (default_قدر);
   }
 
-  template <typename U>
-  T value_or (U&& default_value) &&
+  سانچہ <قسم_نام U>
+  T قدر_or (U&& default_قدر) &&
   {
-    if (is_ok_) return std::move (val_);
-    return std::forward<U> (default_value);
+    اگر (is_ok_) واپس std::move (val_);
+    واپس std::forward<U> (default_قدر);
   }
 
-  T value_or_default () const &
+  T قدر_or_default () ثابت &
   {
-    if (is_ok_) return val_;
-    return T ();
+    اگر (is_ok_) واپس val_;
+    واپس T ();
   }
 
-  T value_or_default () &&
+  T قدر_or_default () &&
   {
-    if (is_ok_) return std::move (val_);
-    return T ();
+    اگر (is_ok_) واپس std::move (val_);
+    واپس T ();
   }
 
-  const E& error () const & { assert (!is_ok_); return err_; }
-  E& error () & { assert (!is_ok_); return err_; }
-  E error () && { assert (!is_ok_); return std::move (err_); }
+  ثابت E& error () ثابت & { أكد (!is_ok_); واپس err_; }
+  E& error () & { أكد (!is_ok_); واپس err_; }
+  E error () && { أكد (!is_ok_); واپس std::move (err_); }
 
-  bool operator == (const hb_result_t& o) const
+  منطقی عامل == (ثابت hb_نتیجہ_t& o) ثابت
   {
-    if (is_ok_ != o.is_ok_) return false;
-    if (is_ok_) return val_ == o.val_;
-    return err_ == o.err_;
+    اگر (is_ok_ != o.is_ok_) واپس جھوٹ;
+    اگر (is_ok_) واپس val_ == o.val_;
+    واپس err_ == o.err_;
   }
 
-  bool operator != (const hb_result_t& o) const
+  منطقی عامل != (ثابت hb_نتیجہ_t& o) ثابت
   {
-    return !(*this == o);
+    واپس !(*یہ == o);
   }
 
-  template <typename U>
-  bool operator == (const hb_result_ok_t<U>& o) const
+  سانچہ <قسم_نام U>
+  منطقی عامل == (ثابت hb_نتیجہ_ok_t<U>& o) ثابت
   {
-    return is_ok_ && val_ == o.value;
+    واپس is_ok_ && val_ == o.value;
   }
 
-  template <typename U>
-  bool operator != (const hb_result_ok_t<U>& o) const
+  سانچہ <قسم_نام U>
+  منطقی عامل != (ثابت hb_نتیجہ_ok_t<U>& o) ثابت
   {
-    return !(*this == o);
+    واپس !(*یہ == o);
   }
 
-  template <typename F>
-  bool operator == (const hb_result_err_t<F>& e) const
+  سانچہ <قسم_نام F>
+  منطقی عامل == (ثابت hb_نتیجہ_err_t<F>& e) ثابت
   {
-    return !is_ok_ && err_ == e.error;
+    واپس !is_ok_ && err_ == e.error;
   }
 
-  template <typename F>
-  bool operator != (const hb_result_err_t<F>& e) const
+  سانچہ <قسم_نام F>
+  منطقی عامل != (ثابت hb_نتیجہ_err_t<F>& e) ثابت
   {
-    return !(*this == e);
+    واپس !(*یہ == e);
   }
 
-  template <typename U>
-  bool operator == (const U&) const = delete;
+  سانچہ <قسم_نام U>
+  منطقی عامل == (ثابت U&) ثابت = حذف;
 
-  template <typename U>
-  bool operator != (const U&) const = delete;
+  سانچہ <قسم_نام U>
+  منطقی عامل != (ثابت U&) ثابت = حذف;
 };
 
 // Partial specialization for void
-template <typename E>
-struct HB_NODISCARD_STRUCT hb_result_t<void, E>
+سانچہ <قسم_نام E>
+ساخت HB_NODISCARD_STRUCT hb_نتیجہ_t<خالی, E>
 {
-  private:
-  union
+  نجی:
+  اتحاد
   {
     E err_;
   };
-  bool is_ok_;
+  منطقی is_ok_;
 
-  template <typename, typename> friend struct hb_result_t;
+  سانچہ <قسم_نام, قسم_نام> دوست ساخت hb_نتیجہ_t;
 
-  public:
-  ~hb_result_t ()
+  عوامی:
+  ~hb_نتیجہ_t ()
   {
-    if (!is_ok_)
+    اگر (!is_ok_)
       err_.~E ();
   }
 
-  hb_result_t () : is_ok_ (true) {}
-  hb_result_t (hb_result_ok_t<void>) : is_ok_ (true) {}
+  hb_نتیجہ_t () : is_ok_ (سچ) {}
+  hb_نتیجہ_t (hb_نتیجہ_ok_t<خالی>) : is_ok_ (سچ) {}
 
-  hb_result_t (const hb_result_t& o) : is_ok_ (o.is_ok_)
+  hb_نتیجہ_t (ثابت hb_نتیجہ_t& o) : is_ok_ (o.is_ok_)
   {
-    if (!is_ok_)
-      new (std::addressof (err_)) E (o.err_);
+    اگر (!is_ok_)
+      نیا (std::addressof (err_)) E (o.err_);
   }
 
-  hb_result_t (hb_result_t&& o) noexcept (std::is_nothrow_move_constructible<E>::value)
+  hb_نتیجہ_t (hb_نتیجہ_t&& o) noexcept (std::is_nothrow_move_constructible<E>::value)
       : is_ok_ (o.is_ok_)
   {
-    if (!is_ok_)
-      new (std::addressof (err_)) E (std::move (o.err_));
+    اگر (!is_ok_)
+      نیا (std::addressof (err_)) E (std::move (o.err_));
   }
 
-  hb_result_t& operator = (const hb_result_t& o)
+  hb_نتیجہ_t& عامل = (ثابت hb_نتیجہ_t& o)
   {
-    if (this == &o) return *this;
-    if (!is_ok_ && !o.is_ok_)
+    اگر (یہ == &o) واپس *یہ;
+    اگر (!is_ok_ && !o.is_ok_)
     {
       err_ = o.err_;
     }
-    else if (!is_ok_ && o.is_ok_)
+    ورنہ اگر (!is_ok_ && o.is_ok_)
     {
       err_.~E ();
-      is_ok_ = true;
+      is_ok_ = سچ;
     }
-    else if (is_ok_ && !o.is_ok_)
+    ورنہ اگر (is_ok_ && !o.is_ok_)
     {
-      new (std::addressof (err_)) E (o.err_);
-      is_ok_ = false;
+      نیا (std::addressof (err_)) E (o.err_);
+      is_ok_ = جھوٹ;
     }
-    return *this;
+    واپس *یہ;
   }
 
-  hb_result_t& operator = (hb_result_t&& o) noexcept (std::is_nothrow_move_assignable<E>::value)
+  hb_نتیجہ_t& عامل = (hb_نتیجہ_t&& o) noexcept (std::is_nothrow_move_assignable<E>::value)
   {
-    if (this == &o) return *this;
-    if (!is_ok_ && !o.is_ok_)
+    اگر (یہ == &o) واپس *یہ;
+    اگر (!is_ok_ && !o.is_ok_)
     {
       err_ = std::move (o.err_);
     }
-    else if (!is_ok_ && o.is_ok_)
+    ورنہ اگر (!is_ok_ && o.is_ok_)
     {
       err_.~E ();
-      is_ok_ = true;
+      is_ok_ = سچ;
     }
-    else if (is_ok_ && !o.is_ok_)
+    ورنہ اگر (is_ok_ && !o.is_ok_)
     {
-      new (std::addressof (err_)) E (std::move (o.err_));
-      is_ok_ = false;
+      نیا (std::addressof (err_)) E (std::move (o.err_));
+      is_ok_ = جھوٹ;
     }
-    return *this;
+    واپس *یہ;
   }
 
-  template <typename F,
+  سانچہ <قسم_نام F,
             hb_enable_if ((std::is_constructible<E, F>::value))>
-  hb_result_t (hb_result_err_t<F>&& e) : is_ok_ (false)
+  hb_نتیجہ_t (hb_نتیجہ_err_t<F>&& e) : is_ok_ (جھوٹ)
   {
-    new (std::addressof (err_)) E (std::move (e.error));
+    نیا (std::addressof (err_)) E (std::move (e.error));
   }
 
-  template <typename F,
-            hb_enable_if ((std::is_constructible<E, const F&>::value))>
-  hb_result_t (const hb_result_err_t<F>& e) : is_ok_ (false)
+  سانچہ <قسم_نام F,
+            hb_enable_if ((std::is_constructible<E, ثابت F&>::value))>
+  hb_نتیجہ_t (ثابت hb_نتیجہ_err_t<F>& e) : is_ok_ (جھوٹ)
   {
-    new (std::addressof (err_)) E (e.error);
+    نیا (std::addressof (err_)) E (e.error);
   }
 
   // Construct directly from error E
-  hb_result_t (E e) : is_ok_ (false)
+  hb_نتیجہ_t (E e) : is_ok_ (جھوٹ)
   {
-    new (std::addressof (err_)) E (std::move(e));
+    نیا (std::addressof (err_)) E (std::move(e));
   }
 
   // V is any class which has an in_error() method. This checks the result
   // of in_error() and returns either Ok() or Err(error_value).
-  template<typename V>
-  static hb_result_t<void, E> from (const V& fallible, E error_value) {
-    if (fallible.in_error()) {
-      return Err(error_value);
+  سانچہ<قسم_نام V>
+  ساکن hb_نتیجہ_t<خالی, E> from (ثابت V& fallible, E error_قدر) {
+    اگر (fallible.اندر_error()) {
+      واپس Err(error_قدر);
     }
-    return Ok();
+    واپس Ok();
   }
 
-  bool is_ok () const { return is_ok_; }
-  bool is_err () const { return !is_ok_; }
-  explicit operator bool () const { return is_ok (); }
+  منطقی is_ok () ثابت { واپس is_ok_; }
+  منطقی is_err () ثابت { واپس !is_ok_; }
+  صریح عامل منطقی () ثابت { واپس is_ok (); }
 
-  const E& error () const & { assert (!is_ok_); return err_; }
-  E& error () & { assert (!is_ok_); return err_; }
-  E error () && { assert (!is_ok_); return std::move (err_); }
+  ثابت E& error () ثابت & { أكد (!is_ok_); واپس err_; }
+  E& error () & { أكد (!is_ok_); واپس err_; }
+  E error () && { أكد (!is_ok_); واپس std::move (err_); }
 
-  void operator * () & { return; }
-  void operator * () const & { return; }
-  void operator * () && { return; }
+  خالی عامل * () & { واپس; }
+  خالی عامل * () ثابت & { واپس; }
+  خالی عامل * () && { واپس; }
 
-  bool operator == (const hb_result_t<void, E>& o) const
+  منطقی عامل == (ثابت hb_نتیجہ_t<خالی, E>& o) ثابت
   {
-    return is_ok_ == o.is_ok_ && (is_ok_ || err_ == o.err_);
+    واپس is_ok_ == o.is_ok_ && (is_ok_ || err_ == o.err_);
   }
 
-  bool operator != (const hb_result_t<void, E>& o) const
+  منطقی عامل != (ثابت hb_نتیجہ_t<خالی, E>& o) ثابت
   {
-    return !(*this == o);
+    واپس !(*یہ == o);
   }
 
-  bool operator == (hb_result_ok_t<void>) const
+  منطقی عامل == (hb_نتیجہ_ok_t<خالی>) ثابت
   {
-    return is_ok_;
+    واپس is_ok_;
   }
 
-  bool operator != (hb_result_ok_t<void>) const
+  منطقی عامل != (hb_نتیجہ_ok_t<خالی>) ثابت
   {
-    return !is_ok_;
+    واپس !is_ok_;
   }
 
-  template <typename F>
-  bool operator == (const hb_result_err_t<F>& e) const
+  سانچہ <قسم_نام F>
+  منطقی عامل == (ثابت hb_نتیجہ_err_t<F>& e) ثابت
   {
-    return !is_ok_ && err_ == e.error;
+    واپس !is_ok_ && err_ == e.error;
   }
 
-  template <typename F>
-  bool operator != (const hb_result_err_t<F>& e) const
+  سانچہ <قسم_نام F>
+  منطقی عامل != (ثابت hb_نتیجہ_err_t<F>& e) ثابت
   {
-    return !(*this == e);
+    واپس !(*یہ == e);
   }
 
-  template <typename U>
-  bool operator == (const U&) const = delete;
+  سانچہ <قسم_نام U>
+  منطقی عامل == (ثابت U&) ثابت = حذف;
 
-  template <typename U>
-  bool operator != (const U&) const = delete;
+  سانچہ <قسم_نام U>
+  منطقی عامل != (ثابت U&) ثابت = حذف;
 };
 
-template <typename U, typename T, typename E>
-static inline bool operator == (const hb_result_ok_t<U>& o, const hb_result_t<T, E>& r)
+سانچہ <قسم_نام U, قسم_نام T, قسم_نام E>
+ساکن اندرونی منطقی عامل == (ثابت hb_نتیجہ_ok_t<U>& o, ثابت hb_نتیجہ_t<T, E>& r)
 {
-  return r == o;
+  واپس r == o;
 }
-template <typename U, typename T, typename E>
-static inline bool operator != (const hb_result_ok_t<U>& o, const hb_result_t<T, E>& r)
+سانچہ <قسم_نام U, قسم_نام T, قسم_نام E>
+ساکن اندرونی منطقی عامل != (ثابت hb_نتیجہ_ok_t<U>& o, ثابت hb_نتیجہ_t<T, E>& r)
 {
-  return r != o;
+  واپس r != o;
 }
-template <typename F, typename T, typename E>
-static inline bool operator == (const hb_result_err_t<F>& e, const hb_result_t<T, E>& r)
+سانچہ <قسم_نام F, قسم_نام T, قسم_نام E>
+ساکن اندرونی منطقی عامل == (ثابت hb_نتیجہ_err_t<F>& e, ثابت hb_نتیجہ_t<T, E>& r)
 {
-  return r == e;
+  واپس r == e;
 }
-template <typename F, typename T, typename E>
-static inline bool operator != (const hb_result_err_t<F>& e, const hb_result_t<T, E>& r)
+سانچہ <قسم_نام F, قسم_نام T, قسم_نام E>
+ساکن اندرونی منطقی عامل != (ثابت hb_نتیجہ_err_t<F>& e, ثابت hb_نتیجہ_t<T, E>& r)
 {
-  return r != e;
+  واپس r != e;
 }
 
-#ifndef TRY
-#define TRY(expr)                                                             \
-  do {                                                                        \
-    auto _res = (expr);                                                       \
-    if (unlikely (!_res.is_ok())) return Err(std::move(_res).error());        \
-  } while (0)
-#endif
+#اگر_غیر_تعریف_شدہ TRY
+#تعریف_کرو TRY(اظہاریہ)                                                             \
+  کرو {                                                                        \
+    خودکار _res = (اظہاریہ);                                                       \
+    اگر (unlikely (!_res.is_ok())) واپس Err(std::move(_res).error());        \
+  } جب (0)
+#اگر_ختم
 
-#ifndef TRY_ASSIGN
-#define TRY_ASSIGN(var, ...)                                                  \
-  auto HB_PASTE(_res_, __LINE__) = (__VA_ARGS__);                             \
-  if (unlikely (!HB_PASTE(_res_, __LINE__).is_ok())) return Err(std::move(HB_PASTE(_res_, __LINE__)).error()); \
+#اگر_غیر_تعریف_شدہ TRY_تفویض
+#تعریف_کرو TRY_تفویض(var, ...)                                                  \
+  خودکار HB_PASTE(_res_, __LINE__) = (__VA_ARGS__);                             \
+  اگر (unlikely (!HB_PASTE(_res_, __LINE__).is_ok())) واپس Err(std::move(HB_PASTE(_res_, __LINE__)).error()); \
   var = *std::move(HB_PASTE(_res_, __LINE__))
-#endif
+#اگر_ختم
 
-#endif /* HB_RESULT_HH */
+#اگر_ختم /* HB_RESULT_HH */

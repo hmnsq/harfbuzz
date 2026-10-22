@@ -24,15 +24,15 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_SHAPER_IMPL_HH
-#define HB_SHAPER_IMPL_HH
+#اگر_غیر_تعریف_شدہ HB_SHAPER_IMPL_HH
+#تعریف_کرو HB_SHAPER_IMPL_HH
 
-#include "hb.hh"
+#شامل "hb.hh"
 
-#include "hb-shaper.hh"
-#include "hb-face.hh"
-#include "hb-font.hh"
-#include "hb-shape-plan.hh"
-#include "hb-buffer.hh"
+#شامل "hb-shaper.hh"
+#شامل "hb-face.hh"
+#شامل "hb-font.hh"
+#شامل "hb-shape-plan.hh"
+#شامل "hb-buffer.hh"
 
-#endif /* HB_SHAPER_IMPL_HH */
+#اگر_ختم /* HB_SHAPER_IMPL_HH */

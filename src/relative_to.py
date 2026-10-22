@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import sys
-from os import path
+درآمد sys
+سے os درآمد راستہ
 
-print(path.relpath(sys.argv[1], sys.argv[2]))
+چھاپو(راستہ.relpath(sys.argv[1], sys.argv[2]))

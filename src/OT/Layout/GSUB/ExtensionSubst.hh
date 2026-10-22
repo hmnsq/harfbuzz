@@ -1,22 +1,22 @@
-#ifndef OT_LAYOUT_GSUB_EXTENSIONSUBST_HH
-#define OT_LAYOUT_GSUB_EXTENSIONSUBST_HH
+#اگر_غیر_تعریف_شدہ OT_LAYOUT_GSUB_EXTENSIONSUBST_HH
+#تعریف_کرو OT_LAYOUT_GSUB_EXTENSIONSUBST_HH
 
 // TODO(garretrieger): move to new layout.
-#include "../../../hb-ot-layout-gsubgpos.hh"
-#include "Common.hh"
+#شامل "../../../hb-ot-layout-gsubgpos.hh"
+#شامل "Common.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+نامخلا OT {
+نامخلا Layout {
+نامخلا GSUB_impl {
 
-struct ExtensionSubst : Extension<ExtensionSubst>
+ساخت ExtensionSubst : Extension<ExtensionSubst>
 {
-  typedef struct SubstLookupSubTable SubTable;
-  bool is_reverse () const;
+  قسمتعریف ساخت Subst_Lookup_Sub_جدول Sub_جدول;
+  منطقی is_الٹ () ثابت;
 };
 
 }
 }
 }
 
-#endif  /* OT_LAYOUT_GSUB_EXTENSIONSUBST_HH */
+#اگر_ختم  /* OT_LAYOUT_GSUB_EXTENSIONSUBST_HH */

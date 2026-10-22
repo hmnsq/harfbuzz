@@ -26,12 +26,12 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_FACE_HH
-#define HB_OT_FACE_HH
+#اگر_غیر_تعریف_شدہ HB_OT_FACE_HH
+#تعریف_کرو HB_OT_FACE_HH
 
-#include "hb.hh"
+#شامل "hb.hh"
 
-#include "hb-machinery.hh"
+#شامل "hb-machinery.hh"
 
 
 /*
@@ -39,36 +39,36 @@
  */
 
 /* Declare tables. */
-#define HB_OT_TABLE(Namespace, Type) namespace Namespace { struct Type; }
-#define HB_OT_ACCELERATOR(Namespace, Type) HB_OT_TABLE (Namespace, Type##_accelerator_t)
-#include "hb-ot-face-table-list.hh"
-#undef HB_OT_ACCELERATOR
-#undef HB_OT_TABLE
+#تعریف_کرو HB_OT_جدول(Namespace, Type) نامخلا Namespace { ساخت Type; }
+#تعریف_کرو HB_OT_ACCELERATOR(Namespace, Type) HB_OT_جدول (Namespace, Type##_accelerator_t)
+#شامل "hb-ot-face-table-list.hh"
+#تعریف_منسوخ HB_OT_ACCELERATOR
+#تعریف_منسوخ HB_OT_جدول
 
-struct hb_ot_face_t
+ساخت hb_ot_face_t
 {
-  HB_INTERNAL void init0 (hb_face_t *face);
-  HB_INTERNAL void fini ();
+  HB_اندرونی خالی init0 (hb_face_t *face);
+  HB_اندرونی خالی fini ();
 
-#define HB_OT_TABLE_ORDER(Namespace, Type) \
-    HB_PASTE (ORDER_, HB_PASTE (Namespace, HB_PASTE (_, Type)))
-  enum order_t
+#تعریف_کرو HB_OT_جدول_ترتیب(Namespace, Type) \
+    HB_PASTE (ترتیب_2, HB_PASTE (Namespace, HB_PASTE (_, Type)))
+  شمار ترتیب_t
   {
-    ORDER_ZERO,
-#define HB_OT_TABLE(Namespace, Type) HB_OT_TABLE_ORDER (Namespace, Type),
-#include "hb-ot-face-table-list.hh"
-#undef HB_OT_TABLE
+    ترتیب_ZERO,
+#تعریف_کرو HB_OT_جدول(Namespace, Type) HB_OT_جدول_ترتیب (Namespace, Type),
+#شامل "hb-ot-face-table-list.hh"
+#تعریف_منسوخ HB_OT_جدول
   };
 
   hb_face_t *face; /* MUST be JUST before the lazy loaders. */
-#define HB_OT_TABLE(Namespace, Type) \
-  hb_table_lazy_loader_t<Namespace::Type, HB_OT_TABLE_ORDER (Namespace, Type)> Type;
-#define HB_OT_ACCELERATOR(Namespace, Type) \
-  hb_face_lazy_loader_t<Namespace::Type##_accelerator_t, HB_OT_TABLE_ORDER (Namespace, Type)> Type;
-#include "hb-ot-face-table-list.hh"
-#undef HB_OT_ACCELERATOR
-#undef HB_OT_TABLE
+#تعریف_کرو HB_OT_جدول(Namespace, Type) \
+  hb_جدول_lazy_loader_t<Namespace::Type, HB_OT_جدول_ترتیب (Namespace, Type)> Type;
+#تعریف_کرو HB_OT_ACCELERATOR(Namespace, Type) \
+  hb_face_lazy_loader_t<Namespace::Type##_accelerator_t, HB_OT_جدول_ترتیب (Namespace, Type)> Type;
+#شامل "hb-ot-face-table-list.hh"
+#تعریف_منسوخ HB_OT_ACCELERATOR
+#تعریف_منسوخ HB_OT_جدول
 };
 
 
-#endif /* HB_OT_FACE_HH */
+#اگر_ختم /* HB_OT_FACE_HH */

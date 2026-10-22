@@ -9,61 +9,61 @@ Each --TAG starts a new group.  The template file has %%TAG%%
 placeholders that get replaced with #include lines for that group.
 """
 
-import os, sys, shutil, pathlib
+درآمد os, sys, shutil, pathlib
 
-if len(sys.argv) < 4:
+اگر لمبائی(sys.argv) < 4:
     sys.exit(__doc__)
 
 OUTPUT = sys.argv[1]
-CURRENT_SOURCE_DIR = sys.argv[2]
+CURRENT_ماخذ_DIR = sys.argv[2]
 TEMPLATE = sys.argv[3]
 
 # Parse --TAG file... groups
 groups = {}
-current_tag = None
-for arg in sys.argv[4:]:
-    if arg.startswith('--'):
-        current_tag = arg[2:]
-        groups[current_tag] = []
-    elif current_tag is not None:
-        groups[current_tag].append(arg)
+current_لیبل = کچھ_نہیں
+برائے arg میں sys.argv[4:]:
+    اگر arg.startswith('--'):
+        current_لیبل = arg[2:]
+        groups[current_لیبل] = []
+    وگرنہ_اگر current_لیبل ہے نہیں کچھ_نہیں:
+        groups[current_لیبل].append(arg)
 
 # Build #include lines for each group
-def make_includes(files):
-    seen = set()
-    lines = []
-    for f in sorted(files):
-        if not f.endswith('.cc'):
-            continue
-        rel = pathlib.Path(os.path.relpath(os.path.abspath(f), CURRENT_SOURCE_DIR)).as_posix()
-        if rel not in seen:
-            seen.add(rel)
-            lines.append('#include "{}"'.format(rel))
-    return '\n'.join(lines)
+تعریف make_includes(files):
+    نظر_آیا = سیٹ()
+    سطریں = []
+    برائے f میں sorted(files):
+        اگر نہیں f.endswith('.cc'):
+            جاری
+        rel = pathlib.راستہ_2(os.راستہ.relpath(os.راستہ.abspath(f), CURRENT_ماخذ_DIR)).as_posix()
+        اگر rel نہیں میں نظر_آیا:
+            نظر_آیا.جوڑو(rel)
+            سطریں.append('#include "{}"'.format(rel))
+    واپس '\n'.join(سطریں)
 
 # Read template and substitute
-with open(TEMPLATE, 'r') as f:
-    content = f.read()
+ساتھ open(TEMPLATE, 'r') بطور f:
+    content = f.اقرأ()
 
-for tag, files in groups.items():
-    placeholder = '%%{}%%'.format(tag)
+برائے لیبل_2, files میں groups.اشیاء():
+    placeholder = '%%{}%%'.format(لیبل_2)
     content = content.replace(placeholder, make_includes(files))
 
-with open(OUTPUT, 'w') as f:
-    f.write(content)
+ساتھ open(OUTPUT, 'w') بطور f:
+    f.اكتب(content)
 
 # Copy back to source tree if changed
-baseline = os.path.join(CURRENT_SOURCE_DIR, os.path.basename(OUTPUT))
-try:
-    with open(baseline, 'r') as b:
-        if b.read() == content:
+baseline = os.راستہ.join(CURRENT_ماخذ_DIR, os.راستہ.basename(OUTPUT))
+کوشش:
+    ساتھ open(baseline, 'r') بطور b:
+        اگر b.اقرأ() == content:
             sys.exit(0)
-except FileNotFoundError:
-    pass
+استثنا File_Not_ملا_Error:
+    گزرو
 
-try:
+کوشش:
     shutil.copyfile(OUTPUT, baseline)
-except OSError:
-    import filecmp
-    if os.path.exists(baseline) and not filecmp.cmp(OUTPUT, baseline, shallow=False):
+استثنا OSError:
+    درآمد filecmp
+    اگر os.راستہ.exists(baseline) اور نہیں filecmp.cmp(OUTPUT, baseline, shallow=جھوٹ):
         sys.exit('{} is out of date; regenerate with a writable source tree'.format(baseline))

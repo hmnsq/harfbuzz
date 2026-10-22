@@ -1,426 +1,426 @@
-#ifndef OT_VAR_VARC_VARC_SUBSET_HH
-#define OT_VAR_VARC_VARC_SUBSET_HH
+#اگر_غیر_تعریف_شدہ OT_VAR_VARC_VARC_SUBSET_HH
+#تعریف_کرو OT_VAR_VARC_VARC_SUBSET_HH
 
-#include "VARC.hh"
+#شامل "VARC.hh"
 
-namespace OT {
+نامخلا OT {
 
-struct varc_subset_plan_t
+ساخت varc_subset_plan_t
 {
-  varc_subset_plan_t (const VARC &source_,
+  varc_subset_plan_t (ثابت VARC &ماخذ_3,
 		      hb_subset_context_t *subset_context_,
-		      const Coverage &source_coverage_,
-		      const CFF2Index &source_records_,
-		      const ConditionList &source_conditions_,
-		      const CFF2Index &source_axis_indices_,
-		      const MultiItemVariationStore &source_var_store_) :
-    source (source_),
+		      ثابت Coverage &ماخذ_coverage,
+		      ثابت CFF2_اشاریہ &ماخذ_اندراجات,
+		      ثابت ConditionList &ماخذ_conditions,
+		      ثابت CFF2_اشاریہ &ماخذ_axis_indices,
+		      ثابت Multi_شے_Variation_Store &ماخذ_var_store) :
+    ماخذ (ماخذ_3),
     subset_context (subset_context_),
-    source_coverage (source_coverage_),
-    source_records (source_records_),
-    source_conditions (source_conditions_),
-    source_axis_indices (source_axis_indices_),
-    source_var_store (source_var_store_)
+    ماخذ_coverage_2 (ماخذ_coverage),
+    ماخذ_اندراجات_2 (ماخذ_اندراجات),
+    ماخذ_conditions_2 (ماخذ_conditions),
+    ماخذ_axis_indices_2 (ماخذ_axis_indices),
+    ماخذ_var_store_2 (ماخذ_var_store)
   {}
 
-  bool collect_glyphs ()
+  منطقی collect_glyphs ()
   {
-    const hb_set_t &glyphset = subset_context->plan->_glyphset_varced;
-    for (auto _ : + hb_zip (source_coverage,
-			    hb_range ((unsigned) source_records.count)))
+    ثابت hb_سیٹ_t &glyphset = subset_context->plan->_glyphset_varced;
+    برائے (خودکار _ : + hb_zip (ماخذ_coverage_2,
+			    hb_range ((غیرعلامتی) ماخذ_اندراجات_2.گنتی)))
     {
-      hb_codepoint_t old_gid = _.first;
-      unsigned index = _.second;
-      if (glyphset.has (old_gid))
+      hb_codepoint_t old_gid = _.پہلا;
+      غیرعلامتی اشاریہ_2 = _.second;
+      اگر (glyphset.has (old_gid))
       {
 	hb_codepoint_t new_gid;
-	if (unlikely (!subset_context->plan->new_gid_for_old_gid (old_gid,
+	اگر (unlikely (!subset_context->plan->new_gid_for_old_gid (old_gid,
 								 &new_gid)))
-	  return false;
-	old_indices.push (index);
+	  واپس جھوٹ;
+	old_indices.push (اشاریہ_2);
 	new_gids.push (new_gid);
-	data_size = hb_unsigned_add_saturate (data_size,
-					      source_records[index].length);
+	ڈیٹا_سائز = hb_unsigned_جوڑو_saturate (ڈیٹا_سائز,
+					      ماخذ_اندراجات_2[اشاریہ_2].لمبائی);
       }
     }
 
-    return !old_indices.in_error () && !new_gids.in_error () &&
-	   data_size != UINT_MAX;
+    واپس !old_indices.اندر_error () && !new_gids.اندر_error () &&
+	   ڈیٹا_سائز != UINT_MAX;
   }
 
-  bool collect_indices ()
+  منطقی collect_indices ()
   {
-    for (unsigned old_index : old_indices)
+    برائے (غیرعلامتی old_اشاریہ : old_indices)
     {
-      hb_ubytes_t remaining = source_records[old_index];
-      while (remaining)
+      hb_ubytes_t بقایا = ماخذ_اندراجات_2[old_اشاریہ];
+      جب (بقایا)
       {
-	VarComponent::record_t component;
-	if (unlikely (!VarComponent::decompile_record (source, remaining,
-						       nullptr, nullptr,
+	VarComponent::ریکارڈ_t component;
+	اگر (unlikely (!VarComponent::decompile_ریکارڈ (ماخذ, بقایا,
+						       خالی_اشاریہ, خالی_اشاریہ,
 						       &component)))
-	  return false;
+	  واپس جھوٹ;
 
-	if (component.flags & (unsigned) VarComponent::flags_t::HAVE_CONDITION)
+	اگر (component.flags & (غیرعلامتی) VarComponent::flags_t::HAVE_CONDITION)
 	{
-	  if (unlikely (component.condition_index >= source_conditions.get_count ()))
-	    return false;
-	  condition_indices.add (component.condition_index);
+	  اگر (unlikely (component.condition_اشاریہ >= ماخذ_conditions_2.get_گنتی ()))
+	    واپس جھوٹ;
+	  condition_indices.جوڑو (component.condition_اشاریہ);
 	}
-	if (component.flags & (unsigned) VarComponent::flags_t::HAVE_AXES)
+	اگر (component.flags & (غیرعلامتی) VarComponent::flags_t::HAVE_AXES)
 	{
-	  if (unlikely (component.axis_indices_index >= source_axis_indices.count))
-	    return false;
-	  axis_indices.add (component.axis_indices_index);
+	  اگر (unlikely (component.axis_indices_اشاریہ >= ماخذ_axis_indices_2.گنتی))
+	    واپس جھوٹ;
+	  axis_indices.جوڑو (component.axis_indices_اشاریہ);
 	}
-	if ((component.flags & (unsigned) VarComponent::flags_t::AXIS_VALUES_HAVE_VARIATION) &&
-	    component.axis_values_var_idx != VarIdx::NO_VARIATION)
-	  var_indices.add (component.axis_values_var_idx);
-	if ((component.flags & (unsigned) VarComponent::flags_t::TRANSFORM_HAS_VARIATION) &&
+	اگر ((component.flags & (غیرعلامتی) VarComponent::flags_t::AXIS_اقدار_HAVE_VARIATION) &&
+	    component.axis_اقدار_var_idx != VarIdx::NO_VARIATION)
+	  var_indices.جوڑو (component.axis_اقدار_var_idx);
+	اگر ((component.flags & (غیرعلامتی) VarComponent::flags_t::TRANSFORM_HAS_VARIATION) &&
 	    component.transform_var_idx != VarIdx::NO_VARIATION)
-	  var_indices.add (component.transform_var_idx);
+	  var_indices.جوڑو (component.transform_var_idx);
 
-	remaining = remaining.sub_array (component.size);
+	بقایا = بقایا.sub_array (component.سائز);
       }
     }
 
-    if (unlikely (condition_indices.in_error () || axis_indices.in_error () ||
-		  var_indices.in_error ()))
-      return false;
+    اگر (unlikely (condition_indices.اندر_error () || axis_indices.اندر_error () ||
+		  var_indices.اندر_error ()))
+      واپس جھوٹ;
 
-    for (hb_codepoint_t condition_index : condition_indices)
-      if (unlikely (!source_conditions[condition_index].collect_var_indices (&var_indices)))
-	return false;
+    برائے (hb_codepoint_t condition_اشاریہ : condition_indices)
+      اگر (unlikely (!ماخذ_conditions_2[condition_اشاریہ].collect_var_indices (&var_indices)))
+	واپس جھوٹ;
 
-    return true;
+    واپس سچ;
   }
 
-  bool create_maps ()
+  منطقی create_maps ()
   {
-    const auto *plan = subset_context->plan;
-    if (!plan->user_axes_location.is_empty ())
+    ثابت خودکار *plan = subset_context->plan;
+    اگر (!plan->user_axes_location.is_empty ())
     {
       /* Instancing axes referenced by VARC is not supported. Keep this
        * restriction for avar2 as well; component coordinate overrides
        * and their variation data need special handling. */
-      axis_map = &axes_index_map;
-      for (auto _ : plan->axes_index_map)
-	if (!plan->user_axes_location.has (plan->axes_old_index_tag_map.get (_.first)))
-	  axes_index_map.set (_.first, _.second);
-      if (unlikely (axes_index_map.in_error ())) return false;
+      axis_map = &axes_اشاریہ_map;
+      برائے (خودکار _ : plan->axes_اشاریہ_map)
+	اگر (!plan->user_axes_location.has (plan->axes_old_اشاریہ_لیبل_map.get (_.پہلا)))
+	  axes_اشاریہ_map.سیٹ (_.پہلا, _.second);
+      اگر (unlikely (axes_اشاریہ_map.اندر_error ())) واپس جھوٹ;
     }
-    condition_map.add_set (&condition_indices);
-    axis_indices_map.add_set (&axis_indices);
-    return !condition_map.in_error () && !axis_indices_map.in_error () &&
-	   source_var_store.create_subset_plan (var_indices,
+    condition_map.جوڑو_سیٹ (&condition_indices);
+    axis_indices_map.جوڑو_سیٹ (&axis_indices);
+    واپس !condition_map.اندر_error () && !axis_indices_map.اندر_error () &&
+	   ماخذ_var_store_2.create_subset_plan (var_indices,
 						&var_inner_maps,
 						&varidx_map);
   }
 
-  bool compile_records ()
+  منطقی compile_اندراجات ()
   {
-    if (unlikely (!records.alloc_exact (old_indices.length)))
-      return false;
+    اگر (unlikely (!اندراجات.alloc_exact (old_indices.لمبائی)))
+      واپس جھوٹ;
 
-    bool retain_gids = subset_context->plan->flags & HB_SUBSET_FLAGS_RETAIN_GIDS;
-    if (retain_gids && auxiliary_indices_unchanged ())
+    منطقی retain_gids = subset_context->plan->flags & HB_SUBSET_FLAGS_RETAIN_GIDS;
+    اگر (retain_gids && auxiliary_indices_unchanged ())
     {
       /* The records reference the same indices, so retain them byte-for-byte. */
-      for (unsigned old_index : old_indices)
-	records.push (source_records[old_index]);
+      برائے (غیرعلامتی old_اشاریہ : old_indices)
+	اندراجات.push (ماخذ_اندراجات_2[old_اشاریہ]);
     }
-    else
+    ورنہ
     {
-      hb_vector_t<unsigned> record_offsets;
-      record_data.alloc (data_size);
-      if (unlikely (!record_offsets.alloc_exact (old_indices.length + 1)))
-	return false;
+      hb_سمتیہ_t<غیرعلامتی> ریکارڈ_offsets;
+      ریکارڈ_ڈیٹا.alloc (ڈیٹا_سائز);
+      اگر (unlikely (!ریکارڈ_offsets.alloc_exact (old_indices.لمبائی + 1)))
+	واپس جھوٹ;
 
-      for (unsigned old_index : old_indices)
+      برائے (غیرعلامتی old_اشاریہ : old_indices)
       {
-	record_offsets.push (record_data.length);
-	if (unlikely (!compile_record (source_records[old_index], retain_gids)))
-	  return false;
+	ریکارڈ_offsets.push (ریکارڈ_ڈیٹا.لمبائی);
+	اگر (unlikely (!compile_ریکارڈ (ماخذ_اندراجات_2[old_اشاریہ], retain_gids)))
+	  واپس جھوٹ;
       }
-      record_offsets.push (record_data.length);
+      ریکارڈ_offsets.push (ریکارڈ_ڈیٹا.لمبائی);
 
-      if (unlikely (record_data.in_error () || record_offsets.in_error ()))
-	return false;
-      for (unsigned i = 0; i < old_indices.length; i++)
-	records.push (hb_ubytes_t (record_data.arrayZ + record_offsets[i],
-				  record_offsets[i + 1] - record_offsets[i]));
-      data_size = record_data.length;
+      اگر (unlikely (ریکارڈ_ڈیٹا.اندر_error () || ریکارڈ_offsets.اندر_error ()))
+	واپس جھوٹ;
+      برائے (غیرعلامتی i = 0; i < old_indices.لمبائی; i++)
+	اندراجات.push (hb_ubytes_t (ریکارڈ_ڈیٹا.arrayZ + ریکارڈ_offsets[i],
+				  ریکارڈ_offsets[i + 1] - ریکارڈ_offsets[i]));
+      ڈیٹا_سائز = ریکارڈ_ڈیٹا.لمبائی;
     }
 
-    return !records.in_error ();
+    واپس !اندراجات.اندر_error ();
   }
 
-  bool select_axis_indices ()
+  منطقی select_axis_indices ()
   {
-    if (unlikely (!selected_axis_indices.alloc_exact (
+    اگر (unlikely (!selected_axis_indices.alloc_exact (
 					  axis_indices_map.get_population ()) ||
-		  (axis_map && !axis_indices_data.resize (
+		  (axis_map && !axis_indices_ڈیٹا.resize (
 					  axis_indices_map.get_population ()))))
-      return false;
-    for (unsigned i = 0; i < axis_indices_map.get_population (); i++)
+      واپس جھوٹ;
+    برائے (غیرعلامتی i = 0; i < axis_indices_map.get_population (); i++)
     {
-      hb_ubytes_t bytes = source_axis_indices[axis_indices_map.backward (i)];
-      if (axis_map)
+      hb_ubytes_t بائٹیں = ماخذ_axis_indices_2[axis_indices_map.backward (i)];
+      اگر (axis_map)
       {
-	hb_vector_t<int> indices;
-	const HBUINT8 *p = (const HBUINT8 *) bytes.arrayZ;
-	if (unlikely (!TupleValues::decompile (p, indices, p + bytes.length, true)))
-	  return false;
-	for (int &index : indices)
+	hb_سمتیہ_t<صحیح> indices;
+	ثابت HBUINT8 *p = (ثابت HBUINT8 *) بائٹیں.arrayZ;
+	اگر (unlikely (!Tuple_اقدار::decompile (p, indices, p + بائٹیں.لمبائی, سچ)))
+	  واپس جھوٹ;
+	برائے (صحیح &اشاریہ_2 : indices)
 	{
-	  if (unlikely (!axis_map->has (index))) return false;
-	  index = axis_map->get (index);
+	  اگر (unlikely (!axis_map->has (اشاریہ_2))) واپس جھوٹ;
+	  اشاریہ_2 = axis_map->get (اشاریہ_2);
 	}
-	auto &data = axis_indices_data[i];
+	خودکار &ڈیٹا = axis_indices_ڈیٹا[i];
 	/* One control byte and at most four data bytes per value. */
-	unsigned size = hb_unsigned_mul_saturate (indices.length, 5u);
-	if (unlikely (size == UINT_MAX || !data.resize_dirty (size))) return false;
-	data.shrink (TupleValues::compile_unsafe (indices.as_array (), data.arrayZ));
-	bytes = data.as_array ();
+	غیرعلامتی سائز = hb_unsigned_mul_saturate (indices.لمبائی, 5u);
+	اگر (unlikely (سائز == UINT_MAX || !ڈیٹا.resize_dirty (سائز))) واپس جھوٹ;
+	ڈیٹا.shrink (Tuple_اقدار::compile_unsafe (indices.as_array (), ڈیٹا.arrayZ));
+	بائٹیں = ڈیٹا.as_array ();
       }
-      axis_indices_data_size = hb_unsigned_add_saturate (axis_indices_data_size,
-							 bytes.length);
-      selected_axis_indices.push (bytes);
+      axis_indices_ڈیٹا_سائز = hb_unsigned_جوڑو_saturate (axis_indices_ڈیٹا_سائز,
+							 بائٹیں.لمبائی);
+      selected_axis_indices.push (بائٹیں);
     }
 
-    return axis_indices_data_size != UINT_MAX &&
-	   !selected_axis_indices.in_error ();
+    واپس axis_indices_ڈیٹا_سائز != UINT_MAX &&
+	   !selected_axis_indices.اندر_error ();
   }
 
-  const VARC &source;
+  ثابت VARC &ماخذ;
   hb_subset_context_t *subset_context;
-  const Coverage &source_coverage;
-  const CFF2Index &source_records;
-  const ConditionList &source_conditions;
-  const CFF2Index &source_axis_indices;
-  const MultiItemVariationStore &source_var_store;
+  ثابت Coverage &ماخذ_coverage_2;
+  ثابت CFF2_اشاریہ &ماخذ_اندراجات_2;
+  ثابت ConditionList &ماخذ_conditions_2;
+  ثابت CFF2_اشاریہ &ماخذ_axis_indices_2;
+  ثابت Multi_شے_Variation_Store &ماخذ_var_store_2;
 
-  hb_vector_t<unsigned> old_indices;
-  hb_sorted_vector_t<hb_codepoint_t> new_gids;
-  unsigned data_size = 0;
+  hb_سمتیہ_t<غیرعلامتی> old_indices;
+  hb_sorted_سمتیہ_t<hb_codepoint_t> new_gids;
+  غیرعلامتی ڈیٹا_سائز = 0;
 
-  hb_set_t condition_indices;
-  hb_set_t axis_indices;
-  hb_set_t var_indices;
+  hb_سیٹ_t condition_indices;
+  hb_سیٹ_t axis_indices;
+  hb_سیٹ_t var_indices;
   hb_inc_bimap_t condition_map;
   hb_inc_bimap_t axis_indices_map;
-  hb_vector_t<hb_inc_bimap_t> var_inner_maps;
+  hb_سمتیہ_t<hb_inc_bimap_t> var_inner_maps;
   hb_map_t varidx_map;
 
-  hb_vector_t<unsigned char> record_data;
-  hb_vector_t<hb_ubytes_t> records;
+  hb_سمتیہ_t<غیرعلامتی حرف> ریکارڈ_ڈیٹا;
+  hb_سمتیہ_t<hb_ubytes_t> اندراجات;
 
-  hb_vector_t<hb_ubytes_t> selected_axis_indices;
-  hb_vector_t<hb_vector_t<unsigned char>> axis_indices_data;
-  unsigned axis_indices_data_size = 0;
-  hb_map_t axes_index_map;
-  const hb_map_t *axis_map = nullptr;
+  hb_سمتیہ_t<hb_ubytes_t> selected_axis_indices;
+  hb_سمتیہ_t<hb_سمتیہ_t<غیرعلامتی حرف>> axis_indices_ڈیٹا;
+  غیرعلامتی axis_indices_ڈیٹا_سائز = 0;
+  hb_map_t axes_اشاریہ_map;
+  ثابت hb_map_t *axis_map = خالی_اشاریہ;
 
-  private:
-  bool auxiliary_indices_unchanged () const
+  نجی:
+  منطقی auxiliary_indices_unchanged () ثابت
   {
-    for (hb_codepoint_t old_index : condition_indices)
-      if (condition_map.get (old_index) != old_index)
-	return false;
-    for (hb_codepoint_t old_index : axis_indices)
-      if (axis_indices_map.get (old_index) != old_index)
-	return false;
-    for (hb_codepoint_t old_index : var_indices)
-      if (varidx_map.get (old_index) != old_index)
-	return false;
-    return true;
+    برائے (hb_codepoint_t old_اشاریہ : condition_indices)
+      اگر (condition_map.get (old_اشاریہ) != old_اشاریہ)
+	واپس جھوٹ;
+    برائے (hb_codepoint_t old_اشاریہ : axis_indices)
+      اگر (axis_indices_map.get (old_اشاریہ) != old_اشاریہ)
+	واپس جھوٹ;
+    برائے (hb_codepoint_t old_اشاریہ : var_indices)
+      اگر (varidx_map.get (old_اشاریہ) != old_اشاریہ)
+	واپس جھوٹ;
+    واپس سچ;
   }
 
-  bool append_varint (uint32_t value)
+  منطقی append_varint (uint32_t value)
   {
-    unsigned size = HBUINT32VAR::get_size (value);
-    unsigned offset = record_data.length;
-    unsigned new_length = hb_unsigned_add_saturate (offset, size);
-    if (unlikely (new_length == UINT_MAX ||
-		  !record_data.resize_dirty (new_length)))
-      return false;
-    HBUINT32VAR::serialize_unsafe (record_data.arrayZ + offset, value);
-    return true;
+    غیرعلامتی سائز = HBUINT32VAR::get_سائز (value);
+    غیرعلامتی انحراف = ریکارڈ_ڈیٹا.لمبائی;
+    غیرعلامتی new_لمبائی = hb_unsigned_جوڑو_saturate (انحراف, سائز);
+    اگر (unlikely (new_لمبائی == UINT_MAX ||
+		  !ریکارڈ_ڈیٹا.resize_dirty (new_لمبائی)))
+      واپس جھوٹ;
+    HBUINT32VAR::serialize_unsafe (ریکارڈ_ڈیٹا.arrayZ + انحراف, value);
+    واپس سچ;
   }
 
-  bool append_bytes (hb_ubytes_t record,
-		     unsigned component_size,
-		     unsigned start,
-		     unsigned end)
+  منطقی append_بائٹیں (hb_ubytes_t ریکارڈ,
+		     غیرعلامتی component_سائز,
+		     غیرعلامتی آغاز,
+		     غیرعلامتی انتہا)
   {
-    if (unlikely (start > end || end > component_size)) return false;
-    unsigned offset = record_data.length;
-    unsigned size = end - start;
-    unsigned new_length = hb_unsigned_add_saturate (offset, size);
-    if (unlikely (new_length == UINT_MAX ||
-		  !record_data.resize_dirty (new_length)))
-      return false;
-    hb_memcpy (record_data.arrayZ + offset, record.arrayZ + start, size);
-    return true;
+    اگر (unlikely (آغاز > انتہا || انتہا > component_سائز)) واپس جھوٹ;
+    غیرعلامتی انحراف = ریکارڈ_ڈیٹا.لمبائی;
+    غیرعلامتی سائز = انتہا - آغاز;
+    غیرعلامتی new_لمبائی = hb_unsigned_جوڑو_saturate (انحراف, سائز);
+    اگر (unlikely (new_لمبائی == UINT_MAX ||
+		  !ریکارڈ_ڈیٹا.resize_dirty (new_لمبائی)))
+      واپس جھوٹ;
+    hb_memcpy (ریکارڈ_ڈیٹا.arrayZ + انحراف, ریکارڈ.arrayZ + آغاز, سائز);
+    واپس سچ;
   }
 
-  bool compile_record (hb_ubytes_t record, bool retain_gids)
+  منطقی compile_ریکارڈ (hb_ubytes_t ریکارڈ, منطقی retain_gids)
   {
-    hb_ubytes_t remaining = record;
-    while (remaining)
+    hb_ubytes_t بقایا = ریکارڈ;
+    جب (بقایا)
     {
-      VarComponent::record_t component;
-      if (unlikely (!VarComponent::decompile_record (source, remaining,
-						     nullptr, nullptr,
+      VarComponent::ریکارڈ_t component;
+      اگر (unlikely (!VarComponent::decompile_ریکارڈ (ماخذ, بقایا,
+						     خالی_اشاریہ, خالی_اشاریہ,
 						     &component) ||
-		    !compile_component (remaining, component, retain_gids)))
-	return false;
-      remaining = remaining.sub_array (component.size);
+		    !compile_component (بقایا, component, retain_gids)))
+	واپس جھوٹ;
+      بقایا = بقایا.sub_array (component.سائز);
     }
-    return true;
+    واپس سچ;
   }
 
-  bool compile_component (hb_ubytes_t record,
-			  const VarComponent::record_t &component,
-			  bool retain_gids)
+  منطقی compile_component (hb_ubytes_t ریکارڈ,
+			  ثابت VarComponent::ریکارڈ_t &component,
+			  منطقی retain_gids)
   {
     hb_codepoint_t new_gid = component.gid;
-    if (unlikely ((!retain_gids &&
+    اگر (unlikely ((!retain_gids &&
 		   !subset_context->plan->new_gid_for_old_gid (component.gid,
 								 &new_gid)) ||
 		  new_gid > 0xFFFFFFu))
-      return false;
+      واپس جھوٹ;
 
     uint32_t flags = component.flags;
-    unsigned gid_size = component.gid_size;
-    if (new_gid > 0xFFFFu)
+    غیرعلامتی gid_سائز = component.gid_سائز;
+    اگر (new_gid > 0xFFFFu)
     {
-      flags |= (unsigned) VarComponent::flags_t::GID_IS_24BIT;
-      gid_size = HBGlyphID24::static_size;
+      flags |= (غیرعلامتی) VarComponent::flags_t::GID_IS_24_ثنائی_ہندسہ;
+      gid_سائز = HBGlyphID24::static_سائز;
     }
 
-    if (unlikely (!append_varint (flags))) return false;
-    unsigned gid_offset = record_data.length;
-    unsigned gid_end = hb_unsigned_add_saturate (gid_offset, gid_size);
-    if (unlikely (gid_end == UINT_MAX ||
-		  !record_data.resize_dirty (gid_end)))
-      return false;
-    unsigned char *out = record_data.arrayZ + gid_offset;
-    if (gid_size == HBGlyphID16::static_size)
-      * (HBGlyphID16 *) out = new_gid;
-    else
-      * (HBGlyphID24 *) out = new_gid;
+    اگر (unlikely (!append_varint (flags))) واپس جھوٹ;
+    غیرعلامتی gid_انحراف = ریکارڈ_ڈیٹا.لمبائی;
+    غیرعلامتی gid_انتہا = hb_unsigned_جوڑو_saturate (gid_انحراف, gid_سائز);
+    اگر (unlikely (gid_انتہا == UINT_MAX ||
+		  !ریکارڈ_ڈیٹا.resize_dirty (gid_انتہا)))
+      واپس جھوٹ;
+    غیرعلامتی حرف *برآمد = ریکارڈ_ڈیٹا.arrayZ + gid_انحراف;
+    اگر (gid_سائز == HBGlyphID16::static_سائز)
+      * (HBGlyphID16 *) برآمد = new_gid;
+    ورنہ
+      * (HBGlyphID24 *) برآمد = new_gid;
 
-    unsigned cursor = component.gid_offset + component.gid_size;
-    if (flags & (unsigned) VarComponent::flags_t::HAVE_CONDITION)
+    غیرعلامتی cursor = component.gid_انحراف + component.gid_سائز;
+    اگر (flags & (غیرعلامتی) VarComponent::flags_t::HAVE_CONDITION)
     {
-      if (unlikely (!condition_map.has (component.condition_index) ||
-		    !append_bytes (record, component.size,
-				   cursor, component.condition_offset) ||
-		    !append_varint (condition_map.get (component.condition_index))))
-	return false;
-      cursor = component.condition_offset + component.condition_size;
+      اگر (unlikely (!condition_map.has (component.condition_اشاریہ) ||
+		    !append_بائٹیں (ریکارڈ, component.سائز,
+				   cursor, component.condition_انحراف) ||
+		    !append_varint (condition_map.get (component.condition_اشاریہ))))
+	واپس جھوٹ;
+      cursor = component.condition_انحراف + component.condition_سائز;
     }
-    if (flags & (unsigned) VarComponent::flags_t::HAVE_AXES)
+    اگر (flags & (غیرعلامتی) VarComponent::flags_t::HAVE_AXES)
     {
-      if (unlikely (!axis_indices_map.has (component.axis_indices_index) ||
-		    !append_bytes (record, component.size,
-				   cursor, component.axis_indices_offset) ||
-		    !append_varint (axis_indices_map.get (component.axis_indices_index))))
-	return false;
-      cursor = component.axis_indices_offset + component.axis_indices_size;
+      اگر (unlikely (!axis_indices_map.has (component.axis_indices_اشاریہ) ||
+		    !append_بائٹیں (ریکارڈ, component.سائز,
+				   cursor, component.axis_indices_انحراف) ||
+		    !append_varint (axis_indices_map.get (component.axis_indices_اشاریہ))))
+	واپس جھوٹ;
+      cursor = component.axis_indices_انحراف + component.axis_indices_سائز;
     }
-    if (flags & (unsigned) VarComponent::flags_t::AXIS_VALUES_HAVE_VARIATION)
+    اگر (flags & (غیرعلامتی) VarComponent::flags_t::AXIS_اقدار_HAVE_VARIATION)
     {
-      uint32_t var_idx = component.axis_values_var_idx;
-      if (unlikely ((var_idx != VarIdx::NO_VARIATION && !varidx_map.has (var_idx)) ||
-		    !append_bytes (record, component.size,
-				   cursor, component.axis_values_var_offset) ||
+      uint32_t var_idx = component.axis_اقدار_var_idx;
+      اگر (unlikely ((var_idx != VarIdx::NO_VARIATION && !varidx_map.has (var_idx)) ||
+		    !append_بائٹیں (ریکارڈ, component.سائز,
+				   cursor, component.axis_اقدار_var_انحراف) ||
 		    !append_varint (var_idx == VarIdx::NO_VARIATION ?
 				    var_idx : varidx_map.get (var_idx))))
-	return false;
-      cursor = component.axis_values_var_offset + component.axis_values_var_size;
+	واپس جھوٹ;
+      cursor = component.axis_اقدار_var_انحراف + component.axis_اقدار_var_سائز;
     }
-    if (flags & (unsigned) VarComponent::flags_t::TRANSFORM_HAS_VARIATION)
+    اگر (flags & (غیرعلامتی) VarComponent::flags_t::TRANSFORM_HAS_VARIATION)
     {
       uint32_t var_idx = component.transform_var_idx;
-      if (unlikely ((var_idx != VarIdx::NO_VARIATION && !varidx_map.has (var_idx)) ||
-		    !append_bytes (record, component.size,
-				   cursor, component.transform_var_offset) ||
+      اگر (unlikely ((var_idx != VarIdx::NO_VARIATION && !varidx_map.has (var_idx)) ||
+		    !append_بائٹیں (ریکارڈ, component.سائز,
+				   cursor, component.transform_var_انحراف) ||
 		    !append_varint (var_idx == VarIdx::NO_VARIATION ?
 				    var_idx : varidx_map.get (var_idx))))
-	return false;
-      cursor = component.transform_var_offset + component.transform_var_size;
+	واپس جھوٹ;
+      cursor = component.transform_var_انحراف + component.transform_var_سائز;
     }
 
-    return append_bytes (record, component.size, cursor, component.size);
+    واپس append_بائٹیں (ریکارڈ, component.سائز, cursor, component.سائز);
   }
 };
 
-bool
-VARC::subset (hb_subset_context_t *c) const
+منطقی
+VARC::subset (hb_subset_context_t *c) ثابت
 {
-  TRACE_SUBSET (this);
-  auto fail = [&] ()
+  TRACE_SUBSET (یہ);
+  خودکار fail = [&] ()
   {
     c->serializer->err (HB_SERIALIZE_ERROR_OTHER);
-    return false;
+    واپس جھوٹ;
   };
 
-  const Coverage &source_coverage = this+coverage;
-  const CFF2Index &source_records = this+glyphRecords;
-  const ConditionList &source_conditions = this+conditionList;
-  const TupleList &source_axis_indices = this+axisIndicesList;
-  const CFF2Index &source_axis_indices_index = source_axis_indices;
-  const MultiItemVariationStore &source_var_store = this+varStore;
-  varc_subset_plan_t subset_plan (*this, c,
-				  source_coverage,
-				  source_records,
-				  source_conditions,
-				  source_axis_indices_index,
-				  source_var_store);
-  if (unlikely (!subset_plan.collect_glyphs ()))
+  ثابت Coverage &ماخذ_coverage_2 = یہ+coverage;
+  ثابت CFF2_اشاریہ &ماخذ_اندراجات_2 = یہ+glyph_اندراجات;
+  ثابت ConditionList &ماخذ_conditions_2 = یہ+conditionList;
+  ثابت TupleList &ماخذ_axis_indices_2 = یہ+axisIndicesList;
+  ثابت CFF2_اشاریہ &ماخذ_axis_indices_اشاریہ = ماخذ_axis_indices_2;
+  ثابت Multi_شے_Variation_Store &ماخذ_var_store_2 = یہ+varStore;
+  varc_subset_plan_t subset_plan (*یہ, c,
+				  ماخذ_coverage_2,
+				  ماخذ_اندراجات_2,
+				  ماخذ_conditions_2,
+				  ماخذ_axis_indices_اشاریہ,
+				  ماخذ_var_store_2);
+  اگر (unlikely (!subset_plan.collect_glyphs ()))
     return_trace (fail ());
-  if (!subset_plan.old_indices)
-    return_trace (false);
-  if (unlikely (!subset_plan.collect_indices () ||
+  اگر (!subset_plan.old_indices)
+    return_trace (جھوٹ);
+  اگر (unlikely (!subset_plan.collect_indices () ||
 		!subset_plan.create_maps () ||
-		!subset_plan.compile_records ()))
+		!subset_plan.compile_اندراجات ()))
     return_trace (fail ());
 
-  VARC *out = c->serializer->start_embed<VARC> ();
-  if (unlikely (!out || !c->serializer->extend_min (out)))
-    return_trace (false);
-  out->version = version;
+  VARC *برآمد = c->serializer->آغاز_embed<VARC> ();
+  اگر (unlikely (!برآمد || !c->serializer->extend_min (برآمد)))
+    return_trace (جھوٹ);
+  برآمد->نسخہ = نسخہ;
 
-  if (unlikely (!subset_plan.select_axis_indices ()))
+  اگر (unlikely (!subset_plan.select_axis_indices ()))
     return_trace (fail ());
 
-  if (unlikely (!out->coverage.serialize_serialize (c->serializer,
+  اگر (unlikely (!برآمد->coverage.serialize_serialize (c->serializer,
 						     subset_plan.new_gids.iter ()) ||
 		(subset_plan.condition_map.get_population () &&
-		 !out->conditionList.serialize_serialize (c->serializer,
-						       &source_conditions,
+		 !برآمد->conditionList.serialize_serialize (c->serializer,
+						       &ماخذ_conditions_2,
 						       subset_plan.condition_map,
 						       subset_plan.varidx_map,
 						       subset_plan.axis_map)) ||
 		(subset_plan.axis_indices_map.get_population () &&
-		 !out->axisIndicesList.serialize_serialize (c->serializer,
+		 !برآمد->axisIndicesList.serialize_serialize (c->serializer,
 							subset_plan.selected_axis_indices.iter (),
-							&subset_plan.axis_indices_data_size)) ||
+							&subset_plan.axis_indices_ڈیٹا_سائز)) ||
 		(subset_plan.var_indices.get_population () &&
-		 !out->varStore.serialize_serialize (c->serializer,
-						  &source_var_store,
+		 !برآمد->varStore.serialize_serialize (c->serializer,
+						  &ماخذ_var_store_2,
 						  subset_plan.var_inner_maps.as_array (),
 						  subset_plan.axis_map)) ||
-		!out->glyphRecords.serialize_serialize (c->serializer,
-						 subset_plan.records.iter (),
-						 &subset_plan.data_size)))
-    return_trace (false);
+		!برآمد->glyph_اندراجات.serialize_serialize (c->serializer,
+						 subset_plan.اندراجات.iter (),
+						 &subset_plan.ڈیٹا_سائز)))
+    return_trace (جھوٹ);
 
-  return_trace (true);
+  return_trace (سچ);
 }
 
 } /* namespace OT */
 
-#endif /* OT_VAR_VARC_VARC_SUBSET_HH */
+#اگر_ختم /* OT_VAR_VARC_VARC_SUBSET_HH */

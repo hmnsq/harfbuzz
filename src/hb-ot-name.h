@@ -22,14 +22,14 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb-ot.h> instead."
-#endif
+#اگر !defined(HB_OT_H_اندر) && !defined(HB_NO_SINGLE_سرخی_ERROR)
+#غلطی "Include <hb-ot.h> instead."
+#اگر_ختم
 
-#ifndef HB_OT_NAME_H
-#define HB_OT_NAME_H
+#اگر_غیر_تعریف_شدہ HB_OT_NAME_H
+#تعریف_کرو HB_OT_NAME_H
 
-#include "hb.h"
+#شامل "hb.h"
 
 HB_BEGIN_DECLS
 
@@ -71,14 +71,14 @@ HB_BEGIN_DECLS
  *
  * Since: 7.0.0
  **/
-typedef enum
+قسمتعریف شمار
 {
   HB_OT_NAME_ID_COPYRIGHT		= 0,
   HB_OT_NAME_ID_FONT_FAMILY		= 1,
   HB_OT_NAME_ID_FONT_SUBFAMILY		= 2,
   HB_OT_NAME_ID_UNIQUE_ID		= 3,
-  HB_OT_NAME_ID_FULL_NAME		= 4,
-  HB_OT_NAME_ID_VERSION_STRING		= 5,
+  HB_OT_NAME_ID_بھرا_NAME		= 4,
+  HB_OT_NAME_ID_نسخہ_STRING		= 5,
   HB_OT_NAME_ID_POSTSCRIPT_NAME		= 6,
   HB_OT_NAME_ID_TRADEMARK		= 7,
   HB_OT_NAME_ID_MANUFACTURER		= 8,
@@ -91,14 +91,14 @@ typedef enum
 /*HB_OT_NAME_ID_RESERVED		= 15,*/
   HB_OT_NAME_ID_TYPOGRAPHIC_FAMILY	= 16,
   HB_OT_NAME_ID_TYPOGRAPHIC_SUBFAMILY	= 17,
-  HB_OT_NAME_ID_MAC_FULL_NAME		= 18,
-  HB_OT_NAME_ID_SAMPLE_TEXT		= 19,
+  HB_OT_NAME_ID_MAC_بھرا_NAME		= 18,
+  HB_OT_NAME_ID_SAMPLE_متن		= 19,
   HB_OT_NAME_ID_CID_FINDFONT_NAME	= 20,
   HB_OT_NAME_ID_WWS_FAMILY		= 21,
   HB_OT_NAME_ID_WWS_SUBFAMILY		= 22,
   HB_OT_NAME_ID_LIGHT_BACKGROUND	= 23,
   HB_OT_NAME_ID_DARK_BACKGROUND		= 24,
-  HB_OT_NAME_ID_VARIATIONS_PS_PREFIX	= 25,
+  HB_OT_NAME_ID_VARIATIONS_PS_سابقہ	= 25,
 
   HB_OT_NAME_ID_INVALID			= 0xFFFF
 } hb_ot_name_id_predefined_t;
@@ -112,7 +112,7 @@ typedef enum
  *
  * Since: 2.0.0
  **/
-typedef unsigned int hb_ot_name_id_t;
+قسمتعریف غیرعلامتی صحیح hb_ot_name_id_t;
 
 
 /**
@@ -124,41 +124,41 @@ typedef unsigned int hb_ot_name_id_t;
  *
  * Since: 2.1.0
  **/
-typedef struct hb_ot_name_entry_t {
+قسمتعریف ساخت hb_ot_name_اندراج_t {
   hb_ot_name_id_t name_id;
   /*< private >*/
   hb_var_int_t    var;
   /*< public >*/
   hb_language_t   language;
-} hb_ot_name_entry_t;
+} hb_ot_name_اندراج_t;
 
-HB_EXTERN const hb_ot_name_entry_t *
-hb_ot_name_list_names (hb_face_t    *face,
-		       unsigned int *num_entries /* OUT */);
+HB_EXTERN ثابت hb_ot_name_اندراج_t *
+hb_ot_name_list_نام (hb_face_t    *face,
+		       غیرعلامتی صحیح *عدد_entries /*برآمد*/);
 
 
-HB_EXTERN unsigned int
+HB_EXTERN غیرعلامتی صحیح
 hb_ot_name_get_utf8 (hb_face_t       *face,
 		     hb_ot_name_id_t  name_id,
 		     hb_language_t    language,
-		     unsigned int    *text_size /* IN/OUT */,
-		     char            *text      /* OUT */);
+		     غیرعلامتی صحیح    *متن_سائز /* IN/OUT */,
+		     حرف            *متن      /*برآمد*/);
 
-HB_EXTERN unsigned int
+HB_EXTERN غیرعلامتی صحیح
 hb_ot_name_get_utf16 (hb_face_t       *face,
 		      hb_ot_name_id_t  name_id,
 		      hb_language_t    language,
-		      unsigned int    *text_size /* IN/OUT */,
-		      uint16_t        *text      /* OUT */);
+		      غیرعلامتی صحیح    *متن_سائز /* IN/OUT */,
+		      uint16_t        *متن      /*برآمد*/);
 
-HB_EXTERN unsigned int
+HB_EXTERN غیرعلامتی صحیح
 hb_ot_name_get_utf32 (hb_face_t       *face,
 		      hb_ot_name_id_t  name_id,
 		      hb_language_t    language,
-		      unsigned int    *text_size /* IN/OUT */,
-		      uint32_t        *text      /* OUT */);
+		      غیرعلامتی صحیح    *متن_سائز /* IN/OUT */,
+		      uint32_t        *متن      /*برآمد*/);
 
 
-HB_END_DECLS
+HB_انتہا_DECLS
 
-#endif /* HB_OT_NAME_H */
+#اگر_ختم /* HB_OT_NAME_H */

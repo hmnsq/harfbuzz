@@ -1,58 +1,58 @@
-#ifndef OT_VAR_VARC_COORD_SETTER_HH
-#define OT_VAR_VARC_COORD_SETTER_HH
+#اگر_غیر_تعریف_شدہ OT_VAR_VARC_COORD_SETTER_HH
+#تعریف_کرو OT_VAR_VARC_COORD_SETTER_HH
 
 
-#include "../../../hb.hh"
+#شامل "../../../hb.hh"
 
 
-namespace OT {
+نامخلا OT {
 //namespace Var {
 
 
-struct coord_setter_t
+ساخت coord_setter_t
 {
-  coord_setter_t (hb_array_t<const int> coords_)
+  coord_setter_t (hb_array_t<ثابت صحیح> coords_)
   {
-    length = coords_.length;
-    if (length <= ARRAY_LENGTH (static_coords))
-      hb_memcpy (static_coords, coords_.arrayZ, length * sizeof (int));
-    else
+    لمبائی = coords_.لمبائی;
+    اگر (لمبائی <= ARRAY_لمبائی (static_coords))
+      hb_memcpy (static_coords, coords_.arrayZ, لمبائی * حجم (صحیح));
+    ورنہ
       dynamic_coords.extend (coords_);
   }
 
-  int& operator [] (unsigned idx)
+  صحیح& عامل [] (غیرعلامتی idx)
   {
-    if (unlikely (idx >= HB_VAR_COMPOSITE_MAX_AXES))
-      return Crap(int);
+    اگر (unlikely (idx >= HB_VAR_مرکب_MAX_AXES))
+      واپس Crap(صحیح);
 
-    if (length <= ARRAY_LENGTH (static_coords))
+    اگر (لمبائی <= ARRAY_لمبائی (static_coords))
     {
-      if (idx < ARRAY_LENGTH (static_coords))
+      اگر (idx < ARRAY_لمبائی (static_coords))
       {
-        while (length <= idx)
-	  static_coords[length++] = 0;
-	return static_coords[idx];
+        جب (لمبائی <= idx)
+	  static_coords[لمبائی++] = 0;
+	واپس static_coords[idx];
       }
-      else
-        dynamic_coords.extend (hb_array (static_coords, length));
+      ورنہ
+        dynamic_coords.extend (hb_array (static_coords, لمبائی));
     }
 
-    if (dynamic_coords.length <= idx)
+    اگر (dynamic_coords.لمبائی <= idx)
     {
-      if (unlikely (!dynamic_coords.resize (idx + 1)))
-	return Crap(int);
-      length = idx + 1;
+      اگر (unlikely (!dynamic_coords.resize (idx + 1)))
+	واپس Crap(صحیح);
+      لمبائی = idx + 1;
     }
-    return dynamic_coords.arrayZ[idx];
+    واپس dynamic_coords.arrayZ[idx];
   }
 
-  hb_array_t<int> get_coords ()
-  { return length <= ARRAY_LENGTH (static_coords) ? hb_array (static_coords, length) : dynamic_coords.as_array (); }
+  hb_array_t<صحیح> get_coords ()
+  { واپس لمبائی <= ARRAY_لمبائی (static_coords) ? hb_array (static_coords, لمبائی) : dynamic_coords.as_array (); }
 
-  private:
-  hb_vector_t<int> dynamic_coords;
-  unsigned length;
-  int static_coords[sizeof (void *) * 8];
+  نجی:
+  hb_سمتیہ_t<صحیح> dynamic_coords;
+  غیرعلامتی لمبائی;
+  صحیح static_coords[حجم (خالی *) * 8];
 };
 
 
@@ -60,4 +60,4 @@ struct coord_setter_t
 
 } // namespace OT
 
-#endif /* OT_VAR_VARC_COORD_SETTER_HH */
+#اگر_ختم /* OT_VAR_VARC_COORD_SETTER_HH */

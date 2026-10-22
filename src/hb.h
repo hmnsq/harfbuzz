@@ -24,28 +24,28 @@
  * Red Hat Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_H
-#define HB_H
-#define HB_H_IN
+#اگر_غیر_تعریف_شدہ HB_H
+#تعریف_کرو HB_H
+#تعریف_کرو HB_H_اندر
 
-#include "hb-blob.h"
-#include "hb-buffer.h"
-#include "hb-common.h"
-#include "hb-deprecated.h"
-#include "hb-draw.h"
-#include "hb-face.h"
-#include "hb-font.h"
-#include "hb-map.h"
-#include "hb-paint.h"
-#include "hb-set.h"
-#include "hb-shape.h"
-#include "hb-shape-plan.h"
-#include "hb-style.h"
-#include "hb-unicode.h"
-#include "hb-version.h"
+#شامل "hb-blob.h"
+#شامل "hb-buffer.h"
+#شامل "hb-common.h"
+#شامل "hb-deprecated.h"
+#شامل "hb-draw.h"
+#شامل "hb-face.h"
+#شامل "hb-font.h"
+#شامل "hb-map.h"
+#شامل "hb-paint.h"
+#شامل "hb-set.h"
+#شامل "hb-shape.h"
+#شامل "hb-shape-plan.h"
+#شامل "hb-style.h"
+#شامل "hb-unicode.h"
+#شامل "hb-version.h"
 
 HB_BEGIN_DECLS
-HB_END_DECLS
+HB_انتہا_DECLS
 
-#undef HB_H_IN
-#endif /* HB_H */
+#تعریف_منسوخ HB_H_اندر
+#اگر_ختم /* HB_H */

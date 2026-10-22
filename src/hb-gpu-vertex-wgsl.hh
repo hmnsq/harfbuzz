@@ -1,4 +1,4 @@
-static const char *hb_gpu_vertex_wgsl =
+ساکن ثابت حرف *hb_gpu_راس_wgsl =
 "/*\n"
 " * Copyright (C) 2026  Behdad Esfahbod\n"
 " *\n"

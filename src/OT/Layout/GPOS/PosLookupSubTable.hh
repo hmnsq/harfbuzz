@@ -1,30 +1,30 @@
-#ifndef OT_LAYOUT_GPOS_POSLOOKUPSUBTABLE_HH
-#define OT_LAYOUT_GPOS_POSLOOKUPSUBTABLE_HH
+#اگر_غیر_تعریف_شدہ OT_LAYOUT_GPOS_POSLOOKUPSUBTABLE_HH
+#تعریف_کرو OT_LAYOUT_GPOS_POSLOOKUPSUBTABLE_HH
 
-#include "SinglePos.hh"
-#include "PairPos.hh"
-#include "CursivePos.hh"
-#include "MarkBasePos.hh"
-#include "MarkLigPos.hh"
-#include "MarkMarkPos.hh"
-#include "ContextPos.hh"
-#include "ChainContextPos.hh"
-#include "ExtensionPos.hh"
+#شامل "SinglePos.hh"
+#شامل "PairPos.hh"
+#شامل "CursivePos.hh"
+#شامل "MarkBasePos.hh"
+#شامل "MarkLigPos.hh"
+#شامل "MarkMarkPos.hh"
+#شامل "ContextPos.hh"
+#شامل "ChainContextPos.hh"
+#شامل "ExtensionPos.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+نامخلا OT {
+نامخلا Layout {
+نامخلا GPOS_impl {
 
-struct PosLookupSubTable
+ساخت Pos_Lookup_Sub_جدول
 {
-  friend struct ::OT::Lookup;
-  friend struct PosLookup;
+  دوست ساخت ::OT::Lookup;
+  دوست ساخت PosLookup;
 
-  enum Type {
+  شمار Type {
     Single              = 1,
     Pair                = 2,
     Cursive             = 3,
-    MarkBase            = 4,
+    Mark_بنیاد            = 4,
     MarkLig             = 5,
     MarkMark            = 6,
     Context             = 7,
@@ -32,48 +32,48 @@ struct PosLookupSubTable
     Extension           = 9
   };
 
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, unsigned int lookup_type, Ts&&... ds) const
+  سانچہ <قسم_نام context_t, قسم_نام ...Ts>
+  قسم_نام context_t::return_t dispatch (context_t *c, غیرعلامتی صحیح lookup_type, Ts&&... ds) ثابت
   {
-    TRACE_DISPATCH (this, lookup_type);
-    switch (lookup_type) {
-    case Single:                hb_barrier (); return_trace (u.single.dispatch (c, std::forward<Ts> (ds)...));
-    case Pair:                  hb_barrier (); return_trace (u.pair.dispatch (c, std::forward<Ts> (ds)...));
-    case Cursive:               hb_barrier (); return_trace (u.cursive.dispatch (c, std::forward<Ts> (ds)...));
-    case MarkBase:              hb_barrier (); return_trace (u.markBase.dispatch (c, std::forward<Ts> (ds)...));
-    case MarkLig:               hb_barrier (); return_trace (u.markLig.dispatch (c, std::forward<Ts> (ds)...));
-    case MarkMark:              hb_barrier (); return_trace (u.markMark.dispatch (c, std::forward<Ts> (ds)...));
-    case Context:               hb_barrier (); return_trace (u.context.dispatch (c, std::forward<Ts> (ds)...));
-    case ChainContext:          hb_barrier (); return_trace (u.chainContext.dispatch (c, std::forward<Ts> (ds)...));
-    case Extension:             hb_barrier (); return_trace (u.extension.dispatch (c, std::forward<Ts> (ds)...));
-    default:                    return_trace (c->default_return_value ());
+    TRACE_DISPATCH (یہ, lookup_type);
+    انتخاب (lookup_type) {
+    حالت Single:                hb_barrier (); return_trace (u.single.dispatch (c, std::forward<Ts> (ds)...));
+    حالت Pair:                  hb_barrier (); return_trace (u.pair.dispatch (c, std::forward<Ts> (ds)...));
+    حالت Cursive:               hb_barrier (); return_trace (u.cursive.dispatch (c, std::forward<Ts> (ds)...));
+    حالت Mark_بنیاد:              hb_barrier (); return_trace (u.mark_بنیاد.dispatch (c, std::forward<Ts> (ds)...));
+    حالت MarkLig:               hb_barrier (); return_trace (u.markLig.dispatch (c, std::forward<Ts> (ds)...));
+    حالت MarkMark:              hb_barrier (); return_trace (u.markMark.dispatch (c, std::forward<Ts> (ds)...));
+    حالت Context:               hb_barrier (); return_trace (u.context.dispatch (c, std::forward<Ts> (ds)...));
+    حالت ChainContext:          hb_barrier (); return_trace (u.chainContext.dispatch (c, std::forward<Ts> (ds)...));
+    حالت Extension:             hb_barrier (); return_trace (u.extension.dispatch (c, std::forward<Ts> (ds)...));
+    طےشدہ:                    return_trace (c->default_return_قدر ());
     }
   }
 
-  bool intersects (const hb_set_t *glyphs, unsigned int lookup_type) const
+  منطقی intersects (ثابت hb_سیٹ_t *glyphs, غیرعلامتی صحیح lookup_type) ثابت
   {
     hb_intersects_context_t c (glyphs);
-    return dispatch (&c, lookup_type);
+    واپس dispatch (&c, lookup_type);
   }
 
-  protected:
-  union {
+  محفوظ:
+  اتحاد {
   SinglePos             single;
   PairPos               pair;
   CursivePos            cursive;
-  MarkBasePos           markBase;
+  Mark_بنیاد_Pos           mark_بنیاد;
   MarkLigPos            markLig;
   MarkMarkPos           markMark;
   ContextPos            context;
   ChainContextPos       chainContext;
   ExtensionPos          extension;
   } u;
-  public:
-  DEFINE_SIZE_MIN (0);
+  عوامی:
+  DEFINE_سائز_MIN (0);
 };
 
 }
 }
 }
 
-#endif  /* HB_OT_LAYOUT_GPOS_POSLOOKUPSUBTABLE_HH */
+#اگر_ختم  /* HB_OT_LAYOUT_GPOS_POSLOOKUPSUBTABLE_HH */

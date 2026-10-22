@@ -27,109 +27,109 @@
  */
 
 
-#ifndef OT_LAYOUT_COMMON_COVERAGEFORMAT1_HH
-#define OT_LAYOUT_COMMON_COVERAGEFORMAT1_HH
+#اگر_غیر_تعریف_شدہ OT_LAYOUT_COMMON_COVERAGEFORMAT1_HH
+#تعریف_کرو OT_LAYOUT_COMMON_COVERAGEFORMAT1_HH
 
-namespace OT {
-namespace Layout {
-namespace Common {
+نامخلا OT {
+نامخلا Layout {
+نامخلا Common {
 
-#define NOT_COVERED             ((unsigned int) -1)
+#تعریف_کرو NOT_COVERED             ((غیرعلامتی صحیح) -1)
 
-template <typename Types>
-struct CoverageFormat1_3
+سانچہ <قسم_نام Types>
+ساخت CoverageFormat1_3
 {
-  friend struct Coverage;
+  دوست ساخت Coverage;
 
-  public:
+  عوامی:
   HBUINT16      coverageFormat; /* Format identifier--format = 1 */
-  typename Types::template SortedArrayOf<typename Types::HBGlyphID>
+  قسم_نام Types::سانچہ Sorted_Array_کا<قسم_نام Types::HBGlyphID>
                 glyphArray;     /* Array of GlyphIDs--in numerical order */
 
-  DEFINE_SIZE_ARRAY (2 + Types::HBUINT::static_size, glyphArray);
+  DEFINE_سائز_ARRAY (2 + Types::HBUINT::static_سائز, glyphArray);
 
-  private:
-  bool sanitize (hb_sanitize_context_t *c) const
+  نجی:
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (یہ);
     return_trace (glyphArray.sanitize (c));
   }
 
-  unsigned int get_coverage (hb_codepoint_t glyph_id) const
+  غیرعلامتی صحیح get_coverage (hb_codepoint_t glyph_id) ثابت
   {
-    unsigned int i;
-    glyphArray.bfind (glyph_id, &i, HB_NOT_FOUND_STORE, NOT_COVERED);
-    return i;
+    غیرعلامتی صحیح i;
+    glyphArray.bfind (glyph_id, &i, HB_NOT_ملا_STORE, NOT_COVERED);
+    واپس i;
   }
 
-  unsigned get_population () const
+  غیرعلامتی get_population () ثابت
   {
-    return glyphArray.len;
+    واپس glyphArray.len;
   }
 
-  template <typename Iterator,
-      hb_requires (hb_is_sorted_source_of (Iterator, hb_codepoint_t))>
-  bool serialize (hb_serialize_context_t *c, Iterator glyphs)
+  سانچہ <قسم_نام Iterator,
+      hb_requires (hb_is_sorted_ماخذ_کا (Iterator, hb_codepoint_t))>
+  منطقی serialize (hb_serialize_context_t *c, Iterator glyphs)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (یہ);
     return_trace (glyphArray.serialize (c, glyphs));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  منطقی intersects (ثابت hb_سیٹ_t *glyphs) ثابت
   {
-    if (glyphArray.len > glyphs->get_population () * hb_bit_storage ((unsigned) glyphArray.len))
+    اگر (glyphArray.len > glyphs->get_population () * hb_ثنائی_ہندسہ_storage ((غیرعلامتی) glyphArray.len))
     {
-      for (auto g : *glyphs)
-        if (get_coverage (g) != NOT_COVERED)
-	  return true;
-      return false;
+      برائے (خودکار g : *glyphs)
+        اگر (get_coverage (g) != NOT_COVERED)
+	  واپس سچ;
+      واپس جھوٹ;
     }
 
-    for (const auto& g : glyphArray.as_array ())
-      if (glyphs->has (g))
-        return true;
-    return false;
+    برائے (ثابت خودکار& g : glyphArray.as_array ())
+      اگر (glyphs->has (g))
+        واپس سچ;
+    واپس جھوٹ;
   }
-  bool intersects_coverage (const hb_set_t *glyphs, unsigned int index) const
-  { return glyphs->has (glyphArray[index]); }
+  منطقی intersects_coverage (ثابت hb_سیٹ_t *glyphs, غیرعلامتی صحیح اشاریہ_2) ثابت
+  { واپس glyphs->has (glyphArray[اشاریہ_2]); }
 
-  template <typename IterableOut,
-	    hb_requires (hb_is_sink_of (IterableOut, hb_codepoint_t))>
-  void intersect_set (const hb_set_t &glyphs, IterableOut&& intersect_glyphs) const
+  سانچہ <قسم_نام Iterable_برآمد,
+	    hb_requires (hb_is_sink_کا (Iterable_برآمد, hb_codepoint_t))>
+  خالی intersect_سیٹ (ثابت hb_سیٹ_t &glyphs, Iterable_برآمد&& intersect_glyphs) ثابت
   {
-    unsigned count = glyphArray.len;
-    for (unsigned i = 0; i < count; i++)
-      if (glyphs.has (glyphArray[i]))
+    غیرعلامتی گنتی = glyphArray.len;
+    برائے (غیرعلامتی i = 0; i < گنتی; i++)
+      اگر (glyphs.has (glyphArray[i]))
         intersect_glyphs << glyphArray[i];
   }
 
-  unsigned cost () const { return hb_bit_storage ((unsigned) glyphArray.len); /* bsearch cost */ }
+  غیرعلامتی لاگت () ثابت { واپس hb_ثنائی_ہندسہ_storage ((غیرعلامتی) glyphArray.len); /* bsearch cost */ }
 
-  template <typename set_t>
-  bool collect_coverage (set_t *glyphs) const
-  { return glyphs->add_sorted_array (glyphArray.as_array ()); }
+  سانچہ <قسم_نام سیٹ_t>
+  منطقی collect_coverage (سیٹ_t *glyphs) ثابت
+  { واپس glyphs->جوڑو_sorted_array (glyphArray.as_array ()); }
 
-  public:
+  عوامی:
   /* Older compilers need this to be public. */
-  struct iter_t
+  ساخت iter_t
   {
-    void init (const struct CoverageFormat1_3 &c_) { c = &c_; i = 0; }
-    bool __more__ () const { return i < c->glyphArray.len; }
-    void __next__ () { i++; }
-    hb_codepoint_t get_glyph () const { return c->glyphArray[i]; }
-    bool operator != (const iter_t& o) const
-    { return i != o.i; }
-    iter_t __end__ () const { iter_t it; it.init (*c); it.i = c->glyphArray.len; return it; }
+    خالی init (ثابت ساخت CoverageFormat1_3 &c_) { c = &c_; i = 0; }
+    منطقی __more__ () ثابت { واپس i < c->glyphArray.len; }
+    خالی __next__ () { i++; }
+    hb_codepoint_t get_glyph () ثابت { واپس c->glyphArray[i]; }
+    منطقی عامل != (ثابت iter_t& o) ثابت
+    { واپس i != o.i; }
+    iter_t __end__ () ثابت { iter_t it; it.init (*c); it.i = c->glyphArray.len; واپس it; }
 
-    private:
-    const struct CoverageFormat1_3 *c;
-    unsigned int i;
+    نجی:
+    ثابت ساخت CoverageFormat1_3 *c;
+    غیرعلامتی صحیح i;
   };
-  private:
+  نجی:
 };
 
 }
 }
 }
 
-#endif  // #ifndef OT_LAYOUT_COMMON_COVERAGEFORMAT1_HH
+#اگر_ختم  // #ifndef OT_LAYOUT_COMMON_COVERAGEFORMAT1_HH

@@ -1,35 +1,35 @@
-#ifndef OT_LAYOUT_GPOS_MARKBASEPOS_HH
-#define OT_LAYOUT_GPOS_MARKBASEPOS_HH
+#اگر_غیر_تعریف_شدہ OT_LAYOUT_GPOS_MARKBASEPOS_HH
+#تعریف_کرو OT_LAYOUT_GPOS_MARKBASEPOS_HH
 
-#include "MarkBasePosFormat1.hh"
+#شامل "MarkBasePosFormat1.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+نامخلا OT {
+نامخلا Layout {
+نامخلا GPOS_impl {
 
-struct MarkBasePos
+ساخت Mark_بنیاد_Pos
 {
-  protected:
-  union {
-  struct { HBUINT16 v; }		format;         /* Format identifier */
-  MarkBasePosFormat1_2<SmallTypes>	format1;
-#ifndef HB_NO_BEYOND_64K
-  MarkBasePosFormat1_2<MediumTypes>	format2;
-#endif
+  محفوظ:
+  اتحاد {
+  ساخت { HBUINT16 v; }		format;         /* Format identifier */
+  Mark_بنیاد_Pos_Format1_2<SmallTypes>	format1;
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+  Mark_بنیاد_Pos_Format1_2<MediumTypes>	format2;
+#اگر_ختم
   } u;
 
-  public:
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  عوامی:
+  سانچہ <قسم_نام context_t, قسم_نام ...Ts>
+  قسم_نام context_t::return_t dispatch (context_t *c, Ts&&... ds) ثابت
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-#ifndef HB_NO_BEYOND_64K
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-#endif
-    default:return_trace (c->default_return_value ());
+    اگر (unlikely (!c->may_dispatch (یہ, &u.format.v))) واپس c->no_dispatch_return_قدر ();
+    TRACE_DISPATCH (یہ, u.format.v);
+    انتخاب (u.format.v) {
+    حالت 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    حالت 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+#اگر_ختم
+    طےشدہ:return_trace (c->default_return_قدر ());
     }
   }
 };
@@ -38,4 +38,4 @@ struct MarkBasePos
 }
 }
 
-#endif /* OT_LAYOUT_GPOS_MARKBASEPOS_HH */
+#اگر_ختم /* OT_LAYOUT_GPOS_MARKBASEPOS_HH */

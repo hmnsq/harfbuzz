@@ -1,19 +1,19 @@
-#ifndef OT_LAYOUT_GSUB_COMMON_HH
-#define OT_LAYOUT_GSUB_COMMON_HH
+#اگر_غیر_تعریف_شدہ OT_LAYOUT_GSUB_COMMON_HH
+#تعریف_کرو OT_LAYOUT_GSUB_COMMON_HH
 
-#include "../../../hb-serialize.hh"
-#include "../../../hb-ot-layout-gsubgpos.hh"
+#شامل "../../../hb-serialize.hh"
+#شامل "../../../hb-ot-layout-gsubgpos.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+نامخلا OT {
+نامخلا Layout {
+نامخلا GSUB_impl {
 
-template<typename Iterator>
-static void SingleSubst_serialize (hb_serialize_context_t *c,
+سانچہ<قسم_نام Iterator>
+ساکن خالی SingleSubst_serialize (hb_serialize_context_t *c,
                                    Iterator it);
 
 }
 }
 }
 
-#endif /* OT_LAYOUT_GSUB_COMMON_HH */
+#اگر_ختم /* OT_LAYOUT_GSUB_COMMON_HH */

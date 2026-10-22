@@ -26,14 +26,14 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_HH
-#define HB_HH
+#اگر_غیر_تعریف_شدہ HB_HH
+#تعریف_کرو HB_HH
 
-#ifndef HB_NO_PRAGMA_GCC_DIAGNOSTIC
-#ifdef _MSC_VER
-#pragma warning( disable: 4068 ) /* Unknown pragma */
-#endif
-#if defined(__GNUC__) || defined(__clang__)
+#اگر_غیر_تعریف_شدہ HB_NO_PRAGMA_GCC_DIAGNOSTIC
+#اگر_تعریف_شدہ _MSC_VER
+#ہدایت warning( disable: 4068 ) /* Unknown pragma */
+#اگر_ختم
+#اگر defined(__GNUC__) || defined(__clang__)
 /* Rules:
  *
  * - All pragmas are declared GCC even if they are clang ones.  Otherwise GCC
@@ -46,120 +46,120 @@
  */
 
 /* Setup.  Don't sort order within this category. */
-#ifndef HB_NO_PRAGMA_GCC_DIAGNOSTIC_WARNING
-#pragma GCC diagnostic warning "-Wall"
-#pragma GCC diagnostic warning "-Wextra"
-#endif
-#ifndef HB_NO_PRAGMA_GCC_DIAGNOSTIC_IGNORED
-#pragma GCC diagnostic ignored "-Wpragmas"
-#pragma GCC diagnostic ignored "-Wunknown-pragmas"
-#pragma GCC diagnostic ignored "-Wunknown-warning-option"
-#endif
-#ifndef HB_NO_PRAGMA_GCC_DIAGNOSTIC_WARNING
+#اگر_غیر_تعریف_شدہ HB_NO_PRAGMA_GCC_DIAGNOSTIC_WARNING
+#ہدایت GCC diagnostic warning "-Wall"
+#ہدایت GCC diagnostic warning "-Wextra"
+#اگر_ختم
+#اگر_غیر_تعریف_شدہ HB_NO_PRAGMA_GCC_DIAGNOSTIC_IGNORED
+#ہدایت GCC diagnostic ignored "-Wpragmas"
+#ہدایت GCC diagnostic ignored "-Wunknown-pragmas"
+#ہدایت GCC diagnostic ignored "-Wunknown-warning-option"
+#اگر_ختم
+#اگر_غیر_تعریف_شدہ HB_NO_PRAGMA_GCC_DIAGNOSTIC_WARNING
 //#pragma GCC diagnostic warning "-Weverything"
-#endif
+#اگر_ختم
 
 /* Error.  Should never happen. */
-#ifndef HB_NO_PRAGMA_GCC_DIAGNOSTIC_ERROR
-#pragma GCC diagnostic error   "-Wbitwise-instead-of-logical"
-#pragma GCC diagnostic error   "-Wcast-align"
-#pragma GCC diagnostic error   "-Wcast-function-type"
-#pragma GCC diagnostic error   "-Wcast-function-type-strict"
-#pragma GCC diagnostic error   "-Wconstant-conversion"
-#pragma GCC diagnostic error   "-Wcomma"
-#pragma GCC diagnostic error   "-Wdelete-non-virtual-dtor"
-#pragma GCC diagnostic error   "-Wembedded-directive"
-#pragma GCC diagnostic error   "-Wextra-semi-stmt"
-#pragma GCC diagnostic error   "-Wformat-security"
-#pragma GCC diagnostic error   "-Wimplicit-function-declaration"
-#pragma GCC diagnostic error   "-Winit-self"
-#pragma GCC diagnostic error   "-Winjected-class-name"
-#pragma GCC diagnostic error   "-Wmissing-braces"
-#pragma GCC diagnostic error   "-Wmissing-declarations"
-#pragma GCC diagnostic error   "-Wmissing-prototypes"
-#pragma GCC diagnostic error   "-Wnarrowing"
-#pragma GCC diagnostic error   "-Wnested-externs"
-#pragma GCC diagnostic error   "-Wold-style-definition"
-#pragma GCC diagnostic error   "-Wpointer-arith"
-#pragma GCC diagnostic error   "-Wredundant-decls"
-#pragma GCC diagnostic error   "-Wreorder"
-#pragma GCC diagnostic error   "-Wsign-compare"
-#pragma GCC diagnostic error   "-Wstrict-flex-arrays"
-#pragma GCC diagnostic error   "-Wstrict-prototypes"
-#pragma GCC diagnostic error   "-Wstring-conversion"
-#pragma GCC diagnostic error   "-Wswitch-enum"
-#pragma GCC diagnostic error   "-Wtautological-overlap-compare"
-#pragma GCC diagnostic error   "-Wunneeded-internal-declaration"
-#pragma GCC diagnostic error   "-Wunused"
-#pragma GCC diagnostic error   "-Wunused-local-typedefs"
-#pragma GCC diagnostic error   "-Wunused-value"
-#pragma GCC diagnostic error   "-Wunused-variable"
-#pragma GCC diagnostic error   "-Wvla"
-#pragma GCC diagnostic error   "-Wwrite-strings"
-#endif
+#اگر_غیر_تعریف_شدہ HB_NO_PRAGMA_GCC_DIAGNOSTIC_ERROR
+#ہدایت GCC diagnostic error   "-Wbitwise-instead-of-logical"
+#ہدایت GCC diagnostic error   "-Wcast-align"
+#ہدایت GCC diagnostic error   "-Wcast-function-type"
+#ہدایت GCC diagnostic error   "-Wcast-function-type-strict"
+#ہدایت GCC diagnostic error   "-Wconstant-conversion"
+#ہدایت GCC diagnostic error   "-Wcomma"
+#ہدایت GCC diagnostic error   "-Wdelete-non-virtual-dtor"
+#ہدایت GCC diagnostic error   "-Wembedded-directive"
+#ہدایت GCC diagnostic error   "-Wextra-semi-stmt"
+#ہدایت GCC diagnostic error   "-Wformat-security"
+#ہدایت GCC diagnostic error   "-Wimplicit-function-declaration"
+#ہدایت GCC diagnostic error   "-Winit-self"
+#ہدایت GCC diagnostic error   "-Winjected-class-name"
+#ہدایت GCC diagnostic error   "-Wmissing-braces"
+#ہدایت GCC diagnostic error   "-Wmissing-declarations"
+#ہدایت GCC diagnostic error   "-Wmissing-prototypes"
+#ہدایت GCC diagnostic error   "-Wnarrowing"
+#ہدایت GCC diagnostic error   "-Wnested-externs"
+#ہدایت GCC diagnostic error   "-Wold-style-definition"
+#ہدایت GCC diagnostic error   "-Wpointer-arith"
+#ہدایت GCC diagnostic error   "-Wredundant-decls"
+#ہدایت GCC diagnostic error   "-Wreorder"
+#ہدایت GCC diagnostic error   "-Wsign-compare"
+#ہدایت GCC diagnostic error   "-Wstrict-flex-arrays"
+#ہدایت GCC diagnostic error   "-Wstrict-prototypes"
+#ہدایت GCC diagnostic error   "-Wstring-conversion"
+#ہدایت GCC diagnostic error   "-Wswitch-enum"
+#ہدایت GCC diagnostic error   "-Wtautological-overlap-compare"
+#ہدایت GCC diagnostic error   "-Wunneeded-internal-declaration"
+#ہدایت GCC diagnostic error   "-Wunused"
+#ہدایت GCC diagnostic error   "-Wunused-local-typedefs"
+#ہدایت GCC diagnostic error   "-Wunused-value"
+#ہدایت GCC diagnostic error   "-Wunused-variable"
+#ہدایت GCC diagnostic error   "-Wvla"
+#ہدایت GCC diagnostic error   "-Wwrite-strings"
+#اگر_ختم
 
 /* Warning.  To be investigated if happens. */
-#ifndef HB_NO_PRAGMA_GCC_DIAGNOSTIC_WARNING
-#pragma GCC diagnostic warning "-Wbuiltin-macro-redefined"
-#pragma GCC diagnostic warning "-Wdeprecated"
-#pragma GCC diagnostic warning "-Wdeprecated-declarations"
-#pragma GCC diagnostic warning "-Wdisabled-optimization"
-#pragma GCC diagnostic warning "-Wdouble-promotion"
-#pragma GCC diagnostic warning "-Wformat=2"
-#pragma GCC diagnostic warning "-Wformat-signedness"
-#pragma GCC diagnostic warning "-Wignored-pragma-optimize"
-#pragma GCC diagnostic warning "-Wlogical-op"
-#pragma GCC diagnostic warning "-Wmissing-format-attribute"
-#pragma GCC diagnostic warning "-Wpessimizing-move"
-#pragma GCC diagnostic warning "-Wundef"
-#pragma GCC diagnostic warning "-Wunsafe-loop-optimizations"
-#pragma GCC diagnostic warning "-Wunused-but-set-variable"
-#ifdef __clang__
+#اگر_غیر_تعریف_شدہ HB_NO_PRAGMA_GCC_DIAGNOSTIC_WARNING
+#ہدایت GCC diagnostic warning "-Wbuiltin-macro-redefined"
+#ہدایت GCC diagnostic warning "-Wdeprecated"
+#ہدایت GCC diagnostic warning "-Wdeprecated-declarations"
+#ہدایت GCC diagnostic warning "-Wdisabled-optimization"
+#ہدایت GCC diagnostic warning "-Wdouble-promotion"
+#ہدایت GCC diagnostic warning "-Wformat=2"
+#ہدایت GCC diagnostic warning "-Wformat-signedness"
+#ہدایت GCC diagnostic warning "-Wignored-pragma-optimize"
+#ہدایت GCC diagnostic warning "-Wlogical-op"
+#ہدایت GCC diagnostic warning "-Wmissing-format-attribute"
+#ہدایت GCC diagnostic warning "-Wpessimizing-move"
+#ہدایت GCC diagnostic warning "-Wundef"
+#ہدایت GCC diagnostic warning "-Wunsafe-loop-optimizations"
+#ہدایت GCC diagnostic warning "-Wunused-but-set-variable"
+#اگر_تعریف_شدہ __clang__
 // The following are too buggy on gcc
 // https://github.com/harfbuzz/harfbuzz/issues/5589
 // https://github.com/harfbuzz/harfbuzz/pull/5367
-#pragma GCC diagnostic warning "-Wmaybe-uninitialized"
-#pragma GCC diagnostic warning "-Wuninitialized"
-#else
-#pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
-#pragma GCC diagnostic ignored "-Wuninitialized"
-#endif
-#endif
+#ہدایت GCC diagnostic warning "-Wmaybe-uninitialized"
+#ہدایت GCC diagnostic warning "-Wuninitialized"
+#ورنہ
+#ہدایت GCC diagnostic ignored "-Wmaybe-uninitialized"
+#ہدایت GCC diagnostic ignored "-Wuninitialized"
+#اگر_ختم
+#اگر_ختم
 
 /* Ignored currently, but should be fixed at some point. */
-#ifndef HB_NO_PRAGMA_GCC_DIAGNOSTIC_IGNORED
-#pragma GCC diagnostic ignored "-Wconversion"			// TODO fix
-#pragma GCC diagnostic ignored "-Wshadow"			// TODO fix
-#pragma GCC diagnostic ignored "-Wunused-parameter"		// TODO fix
-#if defined(__GNUC__) && !defined(__clang__)
-#pragma GCC diagnostic ignored "-Wunused-result"		// TODO fix
-#endif
-#endif
+#اگر_غیر_تعریف_شدہ HB_NO_PRAGMA_GCC_DIAGNOSTIC_IGNORED
+#ہدایت GCC diagnostic ignored "-Wconversion"			// TODO fix
+#ہدایت GCC diagnostic ignored "-Wshadow"			// TODO fix
+#ہدایت GCC diagnostic ignored "-Wunused-parameter"		// TODO fix
+#اگر defined(__GNUC__) && !defined(__clang__)
+#ہدایت GCC diagnostic ignored "-Wunused-result"		// TODO fix
+#اگر_ختم
+#اگر_ختم
 
 /* Ignored intentionally. */
-#ifndef HB_NO_PRAGMA_GCC_DIAGNOSTIC_IGNORED
-#pragma GCC diagnostic ignored "-Warray-bounds" // https://github.com/harfbuzz/harfbuzz/issues/5738
-#pragma GCC diagnostic ignored "-Wclass-memaccess"
-#pragma GCC diagnostic ignored "-Wcast-function-type-strict" // https://github.com/harfbuzz/harfbuzz/pull/3859#issuecomment-1295409126
-#pragma GCC diagnostic ignored "-Wdangling-reference" // https://github.com/harfbuzz/harfbuzz/issues/4043
-#pragma GCC diagnostic ignored "-Wdangling-pointer" // Trigerred by hb_decycler_node_t().
-#pragma GCC diagnostic ignored "-Wformat-nonliteral"
-#pragma GCC diagnostic ignored "-Wformat-zero-length"
-#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
-#pragma GCC diagnostic ignored "-Wold-style-cast"
-#pragma GCC diagnostic ignored "-Wpacked" // Erratic impl in clang
-#pragma GCC diagnostic ignored "-Wrange-loop-analysis" // https://github.com/harfbuzz/harfbuzz/issues/2834
-#pragma GCC diagnostic ignored "-Wstrict-aliasing"
-#pragma GCC diagnostic ignored "-Wtype-limits"
-#pragma GCC diagnostic ignored "-Wunused-template"
-#pragma GCC diagnostic ignored "-Wc++11-compat" // only gcc raises it
-#endif
+#اگر_غیر_تعریف_شدہ HB_NO_PRAGMA_GCC_DIAGNOSTIC_IGNORED
+#ہدایت GCC diagnostic ignored "-Warray-bounds" // https://github.com/harfbuzz/harfbuzz/issues/5738
+#ہدایت GCC diagnostic ignored "-Wclass-memaccess"
+#ہدایت GCC diagnostic ignored "-Wcast-function-type-strict" // https://github.com/harfbuzz/harfbuzz/pull/3859#issuecomment-1295409126
+#ہدایت GCC diagnostic ignored "-Wdangling-reference" // https://github.com/harfbuzz/harfbuzz/issues/4043
+#ہدایت GCC diagnostic ignored "-Wdangling-pointer" // Trigerred by hb_decycler_node_t().
+#ہدایت GCC diagnostic ignored "-Wformat-nonliteral"
+#ہدایت GCC diagnostic ignored "-Wformat-zero-length"
+#ہدایت GCC diagnostic ignored "-Wmissing-field-initializers"
+#ہدایت GCC diagnostic ignored "-Wold-style-cast"
+#ہدایت GCC diagnostic ignored "-Wpacked" // Erratic impl in clang
+#ہدایت GCC diagnostic ignored "-Wrange-loop-analysis" // https://github.com/harfbuzz/harfbuzz/issues/2834
+#ہدایت GCC diagnostic ignored "-Wstrict-aliasing"
+#ہدایت GCC diagnostic ignored "-Wtype-limits"
+#ہدایت GCC diagnostic ignored "-Wunused-template"
+#ہدایت GCC diagnostic ignored "-Wc++11-compat" // only gcc raises it
+#اگر_ختم
 
-#endif
-#endif
+#اگر_ختم
+#اگر_ختم
 
 
-#include "hb-config.hh"
+#شامل "hb-config.hh"
 
 
 /*
@@ -168,79 +168,79 @@
  * HarfBuzz and not using our build system.
  */
 /* Enable extensions on AIX 3, Interix.  */
-#ifndef _ALL_SOURCE
-# define _ALL_SOURCE 1
-#endif
+#اگر_غیر_تعریف_شدہ ALL_ماخذ
+# define ALL_ماخذ 1
+#اگر_ختم
 /* Enable GNU extensions on systems that have them.  */
-#ifndef _GNU_SOURCE
+#اگر_غیر_تعریف_شدہ _GNU_SOURCE
 # define _GNU_SOURCE 1
-#endif
+#اگر_ختم
 /* Enable threading extensions on Solaris.  */
-#ifndef _POSIX_PTHREAD_SEMANTICS
+#اگر_غیر_تعریف_شدہ _POSIX_PTHREAD_SEMANTICS
 # define _POSIX_PTHREAD_SEMANTICS 1
-#endif
+#اگر_ختم
 /* Enable extensions on HP NonStop.  */
-#ifndef _TANDEM_SOURCE
-# define _TANDEM_SOURCE 1
-#endif
+#اگر_غیر_تعریف_شدہ TANDEM_ماخذ
+# define TANDEM_ماخذ 1
+#اگر_ختم
 /* Enable general extensions on Solaris.  */
-#ifndef __EXTENSIONS__
+#اگر_غیر_تعریف_شدہ __EXTENSIONS__
 # define __EXTENSIONS__ 1
-#endif
+#اگر_ختم
 
-#if defined (_MSC_VER) && defined (HB_DLL_EXPORT)
-#define HB_EXTERN __declspec (dllexport) extern
-#endif
+#اگر defined (_MSC_VER) && defined (HB_DLL_EXPORT)
+#تعریف_کرو HB_EXTERN __declspec (dllexport) خارجی
+#اگر_ختم
 
 // https://github.com/harfbuzz/harfbuzz/pull/4619
-#ifndef __STDC_FORMAT_MACROS
-#define __STDC_FORMAT_MACROS 1
-#endif
+#اگر_غیر_تعریف_شدہ __STDC_FORMAT_MACROS
+#تعریف_کرو __STDC_FORMAT_MACROS 1
+#اگر_ختم
 
-#include "hb.h"
-#define HB_H_IN
-#include "hb-ot.h"
-#define HB_OT_H_IN
-#include "hb-aat.h"
-#define HB_AAT_H_IN
-#define HB_SUBSET_H_IN
+#شامل "hb.h"
+#تعریف_کرو HB_H_اندر
+#شامل "hb-ot.h"
+#تعریف_کرو HB_OT_H_اندر
+#شامل "hb-aat.h"
+#تعریف_کرو HB_AAT_H_اندر
+#تعریف_کرو HB_SUBSET_H_اندر
 
-#include <cassert>
-#include <cfloat>
-#include <climits>
-#if defined(_MSC_VER) && !defined(_USE_MATH_DEFINES)
-# define _USE_MATH_DEFINES
-#endif
-#include <cmath>
-#include <cstdarg>
-#include <cstddef>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
+#شامل <cassert>
+#شامل <cfloat>
+#شامل <climits>
+#اگر defined(_MSC_VER) && !defined(USE_MATH_متعین_کرتا)
+# define USE_MATH_متعین_کرتا
+#اگر_ختم
+#شامل <cmath>
+#شامل <cstdarg>
+#شامل <cstddef>
+#شامل <cstdio>
+#شامل <cstdlib>
+#شامل <cstring>
 
-#if (defined(_MSC_VER) && _MSC_VER >= 1500) || defined(__MINGW32__)
-#ifdef __MINGW32_VERSION
-#ifndef WIN32_LEAN_AND_MEAN
-#define WIN32_LEAN_AND_MEAN 1
-#endif
-#else
-#include <intrin.h>
-#endif
-#endif
+#اگر (defined(_MSC_VER) && _MSC_VER >= 1500) || defined(__MINGW32__)
+#اگر_تعریف_شدہ __MINGW32_VERSION
+#اگر_غیر_تعریف_شدہ WIN32_LEAN_AND_اوسط
+#تعریف_کرو WIN32_LEAN_AND_اوسط 1
+#اگر_ختم
+#ورنہ
+#شامل <intrin.h>
+#اگر_ختم
+#اگر_ختم
 
-#ifdef _WIN32
-#include <windows.h>
-#include <winapifamily.h>
-#endif
+#اگر_تعریف_شدہ _WIN32
+#شامل <windows.h>
+#شامل <winapifamily.h>
+#اگر_ختم
 
-#ifndef PRId32
+#اگر_غیر_تعریف_شدہ PRId32
 # define PRId32 "d"
 # define PRIu32 "u"
 # define PRIx32 "x"
-#endif
+#اگر_ختم
 
-#define HB_PASTE1(a,b) a##b
-#define HB_PASTE(a,b) HB_PASTE1(a,b)
+#تعریف_کرو HB_PASTE1(a,b) a##b
+#تعریف_کرو HB_PASTE(a,b) HB_PASTE1(a,b)
 
 
 /*
@@ -249,96 +249,96 @@
 
 // gcc 10 has __has_builtin but not earlier versions. Sanction any gcc >= 5
 // clang defines it so no need.
-#ifdef __has_builtin
-#define hb_has_builtin __has_builtin
-#elif defined(_MSC_VER)
-#define hb_has_builtin(x) 0
-#else
-#define hb_has_builtin(x) ((defined(__GNUC__) && __GNUC__ >= 5))
-#endif
+#اگر_تعریف_شدہ __has_builtin
+#تعریف_کرو hb_has_builtin __has_builtin
+#وگرنہ_اگر defined(_MSC_VER)
+#تعریف_کرو hb_has_builtin(x) 0
+#ورنہ
+#تعریف_کرو hb_has_builtin(x) ((defined(__GNUC__) && __GNUC__ >= 5))
+#اگر_ختم
 
-#if defined(__OPTIMIZE__) && hb_has_builtin(__builtin_expect)
-#define likely(expr) __builtin_expect (bool(expr), 1)
-#define unlikely(expr) __builtin_expect (bool(expr), 0)
-#else
-#define likely(expr) (expr)
-#define unlikely(expr) (expr)
-#endif
+#اگر defined(__OPTIMIZE__) && hb_has_builtin(__builtin_expect)
+#تعریف_کرو likely(اظہاریہ) __builtin_expect (منطقی(اظہاریہ), 1)
+#تعریف_کرو unlikely(اظہاریہ) __builtin_expect (منطقی(اظہاریہ), 0)
+#ورنہ
+#تعریف_کرو likely(اظہاریہ) (اظہاریہ)
+#تعریف_کرو unlikely(اظہاریہ) (اظہاریہ)
+#اگر_ختم
 
-#if !defined(__GNUC__) && !defined(__clang__)
-#undef __attribute__
-#define __attribute__(x)
-#endif
+#اگر !defined(__GNUC__) && !defined(__clang__)
+#تعریف_منسوخ __attribute__
+#تعریف_کرو __attribute__(x)
+#اگر_ختم
 
-#if defined(__MINGW32__) && (__GNUC__ >= 3) && !defined(__clang__)
-#define HB_PRINTF_FUNC(format_idx, arg_idx) __attribute__((__format__ (gnu_printf, format_idx, arg_idx)))
-#elif defined(__GNUC__) && (__GNUC__ >= 3)
-#define HB_PRINTF_FUNC(format_idx, arg_idx) __attribute__((__format__ (__printf__, format_idx, arg_idx)))
-#else
-#define HB_PRINTF_FUNC(format_idx, arg_idx)
-#endif
-#if defined(__GNUC__) && (__GNUC__ >= 4) || (__clang__)
-#define HB_UNUSED	__attribute__((unused))
-#elif defined(_MSC_VER) /* https://github.com/harfbuzz/harfbuzz/issues/635 */
-#define HB_UNUSED __pragma(warning(suppress: 4100 4101 4189))
-#else
-#define HB_UNUSED
-#endif
+#اگر defined(__MINGW32__) && (__GNUC__ >= 3) && !defined(__clang__)
+#تعریف_کرو HB_PRINTF_FUNC(format_idx, arg_idx) __attribute__((__format__ (gnu_printf, format_idx, arg_idx)))
+#وگرنہ_اگر defined(__GNUC__) && (__GNUC__ >= 3)
+#تعریف_کرو HB_PRINTF_FUNC(format_idx, arg_idx) __attribute__((__format__ (__printf__, format_idx, arg_idx)))
+#ورنہ
+#تعریف_کرو HB_PRINTF_FUNC(format_idx, arg_idx)
+#اگر_ختم
+#اگر defined(__GNUC__) && (__GNUC__ >= 4) || (__clang__)
+#تعریف_کرو HB_غیر_مستعمل	__attribute__((غیر_مستعمل_2))
+#وگرنہ_اگر defined(_MSC_VER) /* https://github.com/harfbuzz/harfbuzz/issues/635 */
+#تعریف_کرو HB_غیر_مستعمل __pragma(warning(suppress: 4100 4101 4189))
+#ورنہ
+#تعریف_کرو HB_غیر_مستعمل
+#اگر_ختم
 
-#ifndef HB_INTERNAL
-# if !defined(HB_NO_VISIBILITY) && !defined(__MINGW32__) && !defined(__CYGWIN__) && !defined(_MSC_VER) && !defined(__SUNPRO_CC)
-#  define HB_INTERNAL __attribute__((__visibility__("hidden")))
+#اگر_غیر_تعریف_شدہ HB_اندرونی
+# اگر !defined(HB_NO_VISIBILITY) && !defined(__MINGW32__) && !defined(__CYGWIN__) && !defined(_MSC_VER) && !defined(__SUNPRO_CC)
+#  define HB_اندرونی __attribute__((__visibility__("hidden")))
 # elif defined(__MINGW32__)
    /* We use -export-symbols on mingw32, since it does not support visibility attributes. */
-#  define HB_INTERNAL
+#  define HB_اندرونی
 # elif defined (_MSC_VER) && defined (HB_DLL_EXPORT)
    /* We do not try to export internal symbols on Visual Studio */
-#  define HB_INTERNAL
-#else
-#  define HB_INTERNAL
+#  define HB_اندرونی
+#ورنہ
+#  define HB_اندرونی
 #  define HB_NO_VISIBILITY 1
 # endif
-#endif
+#اگر_ختم
 
 /* https://github.com/harfbuzz/harfbuzz/issues/1651 */
-#if defined(__clang__) && __clang_major__ < 10
-#define static_const static
-#else
-#define static_const static const
-#endif
+#اگر defined(__clang__) && __clang_major__ < 10
+#تعریف_کرو static_const ساکن
+#ورنہ
+#تعریف_کرو static_const ساکن ثابت
+#اگر_ختم
 
-#if defined(__GNUC__) && (__GNUC__ >= 3)
-#define HB_FUNC __PRETTY_FUNCTION__
-#elif defined(_MSC_VER)
-#define HB_FUNC __FUNCSIG__
-#else
-#define HB_FUNC __func__
-#endif
+#اگر defined(__GNUC__) && (__GNUC__ >= 3)
+#تعریف_کرو HB_FUNC __PRETTY_FUNCTION__
+#وگرنہ_اگر defined(_MSC_VER)
+#تعریف_کرو HB_FUNC __FUNCSIG__
+#ورنہ
+#تعریف_کرو HB_FUNC __func__
+#اگر_ختم
 
-#if defined(__SUNPRO_CC) && (__SUNPRO_CC < 0x5140)
+#اگر defined(__SUNPRO_CC) && (__SUNPRO_CC < 0x5140)
 /* https://github.com/harfbuzz/harfbuzz/issues/630 */
-#define __restrict
-#endif
+#تعریف_کرو __restrict
+#اگر_ختم
 
-#ifndef HB_ALWAYS_INLINE
-#if defined(_MSC_VER)
-#define HB_ALWAYS_INLINE __forceinline
-#else
-#define HB_ALWAYS_INLINE __attribute__((always_inline)) inline
-#endif
-#endif
+#اگر_غیر_تعریف_شدہ HB_ALWAYS_INLINE
+#اگر defined(_MSC_VER)
+#تعریف_کرو HB_ALWAYS_INLINE __forceinline
+#ورنہ
+#تعریف_کرو HB_ALWAYS_INLINE __attribute__((always_inline)) اندرونی
+#اگر_ختم
+#اگر_ختم
 
-#ifndef HB_NEVER_INLINE
-#if defined(_MSC_VER)
-#define HB_NEVER_INLINE __declspec(noinline)
-#else
-#define HB_NEVER_INLINE __attribute__((noinline))
-#endif
-#endif
+#اگر_غیر_تعریف_شدہ HB_NEVER_INLINE
+#اگر defined(_MSC_VER)
+#تعریف_کرو HB_NEVER_INLINE __declspec(noinline)
+#ورنہ
+#تعریف_کرو HB_NEVER_INLINE __attribute__((noinline))
+#اگر_ختم
+#اگر_ختم
 
-#ifndef HB_HOT
-#define HB_HOT __attribute__((hot))
-#endif
+#اگر_غیر_تعریف_شدہ HB_HOT
+#تعریف_کرو HB_HOT __attribute__((hot))
+#اگر_ختم
 
 /*
  * Borrowed from https://bugzilla.mozilla.org/show_bug.cgi?id=1215411
@@ -356,101 +356,101 @@
  *     return foo;
  * }
  */
-#if defined(__clang__) && __cplusplus >= 201103L
+#اگر defined(__clang__) && __cplusplus >= 201103L
    /* clang's fallthrough annotations are only available starting in C++11. */
 #  define HB_FALLTHROUGH [[clang::fallthrough]]
-#elif defined(__GNUC__) && (__GNUC__ >= 7)
+#وگرنہ_اگر defined(__GNUC__) && (__GNUC__ >= 7)
    /* GNU fallthrough attribute is available from GCC7 */
 #  define HB_FALLTHROUGH __attribute__((fallthrough))
-#elif defined(_MSC_VER)
+#وگرنہ_اگر defined(_MSC_VER)
    /*
     * MSVC's __fallthrough annotations are checked by /analyze (Code Analysis):
     * https://msdn.microsoft.com/en-us/library/ms235402%28VS.80%29.aspx
     */
 #  include <sal.h>
 #  define HB_FALLTHROUGH __fallthrough
-#else
+#ورنہ
 #  define HB_FALLTHROUGH /* FALLTHROUGH */
-#endif
+#اگر_ختم
 
 /* A tag to enforce use of return value for a function */
-#if __cplusplus >= 201703L
+#اگر __cplusplus >= 201703L
 #  define HB_NODISCARD [[nodiscard]]
-#elif defined(__GNUC__) || defined(__clang__)
-#  define HB_NODISCARD __attribute__((warn_unused_result))
-#elif defined(_MSC_VER)
+#وگرنہ_اگر defined(__GNUC__) || defined(__clang__)
+#  define HB_NODISCARD __attribute__((warn_غیر_مستعمل_نتیجہ))
+#وگرنہ_اگر defined(_MSC_VER)
 #  define HB_NODISCARD _Check_return_
-#else
+#ورنہ
 #  define HB_NODISCARD
-#endif
+#اگر_ختم
 
 /* Like HB_NODISCARD but can be used on structs */
-#if __cplusplus >= 201703L
+#اگر __cplusplus >= 201703L
 #  define HB_NODISCARD_STRUCT [[nodiscard]]
-#else
+#ورنہ
 #  define HB_NODISCARD_STRUCT
-#endif
+#اگر_ختم
 
-#ifdef _WIN32
+#اگر_تعریف_شدہ _WIN32
    /* We need Windows Vista for both Uniscribe backend and for
     * MemoryBarrier.  We don't support compiling on Windows XP,
     * though we run on it fine. */
-#  if defined(_WIN32_WINNT) && _WIN32_WINNT < 0x0600
+#  اگر defined(_WIN32_WINNT) && _WIN32_WINNT < 0x0600
 #    undef _WIN32_WINNT
 #  endif
 #  ifndef _WIN32_WINNT
-#    if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP)
+#    اگر WINAPI_FAMILY_تقسیم(WINAPI_تقسیم_DESKTOP)
 #      define _WIN32_WINNT 0x0600
 #    endif
 #  endif
-#  ifndef WIN32_LEAN_AND_MEAN
-#    define WIN32_LEAN_AND_MEAN 1
+#  ifndef WIN32_LEAN_AND_اوسط
+#    define WIN32_LEAN_AND_اوسط 1
 #  endif
 #  ifndef STRICT
 #    define STRICT 1
 #  endif
 
-#  if defined(_WIN32_WCE)
+#  اگر defined(_WIN32_WCE)
      /* Some things not defined on Windows CE. */
 #    define vsnprintf _vsnprintf
 #    ifndef HB_NO_GETENV
 #      define HB_NO_GETENV
 #    endif
-#    if _WIN32_WCE < 0x800
+#    اگر _WIN32_WCE < 0x800
 #      define HB_NO_SETLOCALE
 #      define HB_NO_ERRNO
 #    endif
-#  elif !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP)
+#  elif !WINAPI_FAMILY_تقسیم(WINAPI_تقسیم_DESKTOP)
 #    ifndef HB_NO_GETENV
 #      define HB_NO_GETENV
 #    endif
 #  endif
-#  if defined(_MSC_VER) && _MSC_VER < 1900
+#  اگر defined(_MSC_VER) && _MSC_VER < 1900
 #    define snprintf _snprintf
 #  endif
-#endif
+#اگر_ختم
 
-#ifdef HB_NO_GETENV
-#define getenv(Name) nullptr
-#endif
+#اگر_تعریف_شدہ HB_NO_GETENV
+#تعریف_کرو getenv(Name) خالی_اشاریہ
+#اگر_ختم
 
-#ifndef HB_NO_ERRNO
+#اگر_غیر_تعریف_شدہ HB_NO_ERRNO
 #  include <cerrno>
-#else
-static int HB_UNUSED _hb_errno = 0;
+#ورنہ
+ساکن صحیح HB_غیر_مستعمل _hb_errno = 0;
 #  undef errno
 #  define errno _hb_errno
-#endif
+#اگر_ختم
 
-#define HB_STMT_START do
-#define HB_STMT_END   while (0)
+#تعریف_کرو HB_STMT_آغاز کرو
+#تعریف_کرو HB_STMT_انتہا   جب (0)
 
-#if defined(HAVE_ATEXIT) && !defined(HB_USE_ATEXIT)
+#اگر defined(HAVE_ATEXIT) && !defined(HB_USE_ATEXIT)
 /* atexit() is only safe to be called from shared libraries on certain
  * platforms.  Whitelist.
  * https://bugs.freedesktop.org/show_bug.cgi?id=82246 */
-#  if defined(__linux) && defined(__GLIBC_PREREQ)
-#    if __GLIBC_PREREQ(2,3)
+#  اگر defined(__linux) && defined(__GLIBC_PREREQ)
+#    اگر __GLIBC_PREREQ(2,3)
 /* From atexit() manpage, it's safe with glibc 2.2.3 on Linux. */
 #      define HB_USE_ATEXIT 1
 #    endif
@@ -473,124 +473,124 @@ static int HB_UNUSED _hb_errno = 0;
  */
 #    define HB_USE_ATEXIT 1
 #  endif
-#endif /* defined(HAVE_ATEXIT) && !defined(HB_USE_ATEXIT) */
-#ifdef HB_NO_ATEXIT
+#اگر_ختم /* defined(HAVE_ATEXIT) && !defined(HB_USE_ATEXIT) */
+#اگر_تعریف_شدہ HB_NO_ATEXIT
 #  undef HB_USE_ATEXIT
-#endif
-#ifndef HB_USE_ATEXIT
+#اگر_ختم
+#اگر_غیر_تعریف_شدہ HB_USE_ATEXIT
 #  define HB_USE_ATEXIT 0
-#endif
-#ifndef hb_atexit
-#if !HB_USE_ATEXIT
-#  define hb_atexit(_) HB_STMT_START { if (0) (_) (); } HB_STMT_END
-#else /* HB_USE_ATEXIT */
+#اگر_ختم
+#اگر_غیر_تعریف_شدہ hb_atexit
+#اگر !HB_USE_ATEXIT
+#  define hb_atexit(_) HB_STMT_آغاز { اگر (0) (_) (); } HB_STMT_انتہا
+#ورنہ /* HB_USE_ATEXIT */
 #  ifdef HAVE_ATEXIT
 #    define hb_atexit atexit
-#  else
-     template <void (*function) (void)> struct hb_atexit_t { ~hb_atexit_t () { function (); } };
-#    define hb_atexit(f) static hb_atexit_t<f> _hb_atexit_##__LINE__
+#  ورنہ
+     سانچہ <خالی (*function) (خالی)> ساخت hb_atexit_t { ~hb_atexit_t () { function (); } };
+#    define hb_atexit(f) ساکن hb_atexit_t<f> _hb_atexit_##__LINE__
 #  endif
-#endif
-#endif
+#اگر_ختم
+#اگر_ختم
 
 
 // Locale business
 
-#if !defined(HB_NO_SETLOCALE) && (!defined(HAVE_NEWLOCALE) || !defined(HAVE_USELOCALE))
-#define HB_NO_SETLOCALE 1
-#endif
+#اگر !defined(HB_NO_SETLOCALE) && (!defined(HAVE_NEWLOCALE) || !defined(HAVE_USELOCALE))
+#تعریف_کرو HB_NO_SETLOCALE 1
+#اگر_ختم
 
-#ifndef HB_NO_SETLOCALE
+#اگر_غیر_تعریف_شدہ HB_NO_SETLOCALE
 
-#include <locale.h>
-#ifdef HAVE_XLOCALE_H
-#include <xlocale.h> // Needed on BSD/OS X for uselocale
-#endif
+#شامل <locale.h>
+#اگر_تعریف_شدہ HAVE_XLOCALE_H
+#شامل <xlocale.h> // Needed on BSD/OS X for uselocale
+#اگر_ختم
 
-#ifdef WIN32
-#define hb_locale_t _locale_t
-#else
-#define hb_locale_t locale_t
-#endif
-#define hb_setlocale setlocale
-#define hb_uselocale uselocale
+#اگر_تعریف_شدہ WIN32
+#تعریف_کرو hb_locale_t _locale_t
+#ورنہ
+#تعریف_کرو hb_locale_t locale_t
+#اگر_ختم
+#تعریف_کرو hb_setlocale setlocale
+#تعریف_کرو hb_uselocale uselocale
 
-#else
+#ورنہ
 
-#define hb_locale_t void *
-#define hb_setlocale(Category, Locale) "C"
-#define hb_uselocale(Locale) ((hb_locale_t) 0)
+#تعریف_کرو hb_locale_t خالی *
+#تعریف_کرو hb_setlocale(Category, Locale) "C"
+#تعریف_کرو hb_uselocale(Locale) ((hb_locale_t) 0)
 
-#endif
+#اگر_ختم
 
 
 /* Lets assert int types.  Saves trouble down the road. */
-static_assert ((sizeof (hb_codepoint_t) == 4), "");
-static_assert ((sizeof (hb_position_t) == 4), "");
-static_assert ((sizeof (hb_mask_t) == 4), "");
-static_assert ((sizeof (hb_var_int_t) == 4), "");
+static_assert ((حجم (hb_codepoint_t) == 4), "");
+static_assert ((حجم (hb_position_t) == 4), "");
+static_assert ((حجم (hb_نقاب_t) == 4), "");
+static_assert ((حجم (hb_var_int_t) == 4), "");
 
 
 /* Pie time. */
 // https://github.com/harfbuzz/harfbuzz/issues/4166
-#define HB_PI 3.14159265358979323846f
-#define HB_2_PI (2.f * HB_PI)
+#تعریف_کرو HB_PI 3.14159265358979323846f
+#تعریف_کرو HB_2_PI (2.f * HB_PI)
 
 /* Compile-time custom allocator support. */
 
-#if !defined(HB_CUSTOM_MALLOC) \
+#اگر !defined(HB_CUSTOM_MALLOC) \
   && defined(hb_malloc_impl) \
   && defined(hb_calloc_impl) \
   && defined(hb_realloc_impl) \
   && defined(hb_free_impl)
-#define HB_CUSTOM_MALLOC
-#endif
+#تعریف_کرو HB_CUSTOM_MALLOC
+#اگر_ختم
 
-#ifdef HB_CUSTOM_MALLOC
-extern "C" void* hb_malloc_impl(size_t size);
-extern "C" void* hb_calloc_impl(size_t nmemb, size_t size);
-extern "C" void* hb_realloc_impl(void *ptr, size_t size);
-extern "C" void  hb_free_impl(void *ptr);
-#else
-#define hb_malloc_impl malloc
-#define hb_calloc_impl calloc
-#define hb_realloc_impl realloc
-#define hb_free_impl free
-#endif
+#اگر_تعریف_شدہ HB_CUSTOM_MALLOC
+خارجی "C" خالی* hb_malloc_impl(size_t سائز);
+خارجی "C" خالی* hb_calloc_impl(size_t nmemb, size_t سائز);
+خارجی "C" خالی* hb_realloc_impl(خالی *ptr, size_t سائز);
+خارجی "C" خالی  hb_free_impl(خالی *ptr);
+#ورنہ
+#تعریف_کرو hb_malloc_impl حافظہ_دو
+#تعریف_کرو hb_calloc_impl صفر_حافظہ_دو
+#تعریف_کرو hb_realloc_impl realloc
+#تعریف_کرو hb_free_impl آزاد
+#اگر_ختم
 
 
 
 /* Headers we include for everyone.  Keep topologically sorted by dependency.
  * They express dependency amongst themselves, but no other file should include
  * them directly.*/
-#include "hb-limits.hh"
-#include "hb-cplusplus.hh"
-#include "hb-meta.hh"
-#include "hb-mutex.hh"
-#include "hb-number.hh"
-#include "hb-atomic.hh"	// Requires: hb-meta
-#include "hb-null.hh"	// Requires: hb-meta
-#include "hb-algs.hh"	// Requires: hb-meta hb-null hb-number
-#include "hb-iter.hh"	// Requires: hb-algs hb-meta
-#include "hb-debug.hh"	// Requires: hb-algs hb-atomic
-#include "hb-array.hh"	// Requires: hb-algs hb-iter hb-null
-#include "hb-vector.hh"	// Requires: hb-array hb-null
-#include "hb-object.hh"	// Requires: hb-atomic hb-mutex hb-vector
+#شامل "hb-limits.hh"
+#شامل "hb-cplusplus.hh"
+#شامل "hb-meta.hh"
+#شامل "hb-mutex.hh"
+#شامل "hb-number.hh"
+#شامل "hb-atomic.hh"	// Requires: hb-meta
+#شامل "hb-null.hh"	// Requires: hb-meta
+#شامل "hb-algs.hh"	// Requires: hb-meta hb-null hb-number
+#شامل "hb-iter.hh"	// Requires: hb-algs hb-meta
+#شامل "hb-debug.hh"	// Requires: hb-algs hb-atomic
+#شامل "hb-array.hh"	// Requires: hb-algs hb-iter hb-null
+#شامل "hb-vector.hh"	// Requires: hb-array hb-null
+#شامل "hb-object.hh"	// Requires: hb-atomic hb-mutex hb-vector
 
 
 /* Library-internal alias for hb::unique_ptr defined in hb-cplusplus.hh.
  * Unique-ownership RAII wrapper around an HB object; destroys on scope exit
  * via the type's hb_*_destroy() function.  Usage: hb_unique_ptr_t<hb_blob_t>.
  * Matches the hb_*_t naming used elsewhere in internal code. */
-template <typename T> using hb_unique_ptr_t = hb::unique_ptr<T>;
+سانچہ <قسم_نام T> استعمال hb_unique_ptr_t = hb::unique_ptr<T>;
 
 
 /* Our src/test-*.cc use hb_assert(), such that it's not compiled out under NDEBUG.
  * https://github.com/harfbuzz/harfbuzz/issues/5418 */
-#define hb_always_assert(x) \
-	HB_STMT_START { \
-	  if (!(x)) { fprintf(stderr, "Assertion failed: %s, at %s:%d\n", #x, __FILE__, __LINE__); abort(); } \
-	} HB_STMT_END
+#تعریف_کرو hb_always_assert(x) \
+	HB_STMT_آغاز { \
+	  اگر (!(x)) { fprintf(stderr, "Assertion failed: %s, at %s:%d\n", #x, __FILE__, __LINE__); abort(); } \
+	} HB_STMT_انتہا
 
 
-#endif /* HB_HH */
+#اگر_ختم /* HB_HH */

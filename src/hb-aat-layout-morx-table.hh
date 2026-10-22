@@ -24,86 +24,86 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_AAT_LAYOUT_MORX_TABLE_HH
-#define HB_AAT_LAYOUT_MORX_TABLE_HH
+#اگر_غیر_تعریف_شدہ HB_AAT_LAYOUT_MORX_جدول_HH
+#تعریف_کرو HB_AAT_LAYOUT_MORX_جدول_HH
 
-#include "hb-open-type.hh"
-#include "hb-aat-layout-common.hh"
-#include "hb-ot-layout.hh"
-#include "hb-aat-map.hh"
+#شامل "hb-open-type.hh"
+#شامل "hb-aat-layout-common.hh"
+#شامل "hb-ot-layout.hh"
+#شامل "hb-aat-map.hh"
 
 /*
  * morx -- Extended Glyph Metamorphosis
  * https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6morx.html
  * https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6mort.html
  */
-#define HB_AAT_TAG_morx HB_TAG('m','o','r','x')
-#define HB_AAT_TAG_mort HB_TAG('m','o','r','t')
+#تعریف_کرو HB_AAT_لیبل_morx HB_لیبل('m','o','r','x')
+#تعریف_کرو HB_AAT_لیبل_mort HB_لیبل('m','o','r','t')
 
 
-namespace AAT {
+نامخلا AAT {
 
-using namespace OT;
+استعمال نامخلا OT;
 
-template <typename Types>
-struct RearrangementSubtable
+سانچہ <قسم_نام Types>
+ساخت RearrangementSubtable
 {
-  typedef typename Types::HBUINT HBUINT;
+  قسمتعریف قسم_نام Types::HBUINT HBUINT;
 
-  typedef void EntryData;
+  قسمتعریف خالی اندراج_ڈیٹا;
 
-  enum Flags
+  شمار Flags
   {
-    MarkFirst		= 0x8000,	/* If set, make the current glyph the first
+    Mark_پہلا		= 0x8000,	/* If set, make the current glyph the first
 					 * glyph to be rearranged. */
     DontAdvance		= 0x4000,	/* If set, don't advance to the next glyph
 					 * before going to the new state. This means
 					 * that the glyph index doesn't change, even
 					 * if the glyph at that index has changed. */
-    MarkLast		= 0x2000,	/* If set, make the current glyph the last
+    Mark_آخری		= 0x2000,	/* If set, make the current glyph the last
 					 * glyph to be rearranged. */
     Reserved		= 0x1FF0,	/* These bits are reserved and should be set to 0. */
     Verb		= 0x000F,	/* The type of rearrangement specified. */
   };
 
-  bool is_action_initiable (const Entry<EntryData> &entry) const
+  منطقی is_action_initiable (ثابت اندراج_3<اندراج_ڈیٹا> &اندراج_2) ثابت
   {
-    return (entry.flags & MarkFirst);
+    واپس (اندراج_2.flags & Mark_پہلا);
   }
-  bool is_actionable (const Entry<EntryData> &entry) const
+  منطقی is_actionable (ثابت اندراج_3<اندراج_ڈیٹا> &اندراج_2) ثابت
   {
-    return (entry.flags & Verb);
+    واپس (اندراج_2.flags & Verb);
   }
 
-  struct driver_context_t
+  ساخت driver_context_t
   {
-    static constexpr bool in_place = true;
+    ساکن constexpr منطقی in_place = سچ;
 
-    driver_context_t (const RearrangementSubtable *table_) :
-	ret (false),
-	table (table_),
-	start (0), end (0) {}
+    driver_context_t (ثابت RearrangementSubtable *جدول_2) :
+	ret (جھوٹ),
+	جدول (جدول_2),
+	آغاز (0), انتہا (0) {}
 
     HB_AAT_TRANSITION_INLINE
-    void transition (hb_buffer_t *buffer,
-		     StateTableDriver<Types, EntryData, Flags> *driver,
-		     const Entry<EntryData> &entry)
+    خالی transition (hb_بفر_t *بفر,
+		     State_جدول_Driver<Types, اندراج_ڈیٹا, Flags> *driver,
+		     ثابت اندراج_3<اندراج_ڈیٹا> &اندراج_2)
     {
-      unsigned int flags = entry.flags;
+      غیرعلامتی صحیح flags = اندراج_2.flags;
 
-      if (flags & MarkFirst)
-	start = buffer->idx;
+      اگر (flags & Mark_پہلا)
+	آغاز = بفر->idx;
 
-      if (flags & MarkLast)
-	end = hb_min (buffer->idx + 1, buffer->len);
+      اگر (flags & Mark_آخری)
+	انتہا = hb_min (بفر->idx + 1, بفر->len);
 
-      if ((flags & Verb) && start < end)
+      اگر ((flags & Verb) && آغاز < انتہا)
       {
 	/* The following map has two nibbles, for start-side
 	 * and end-side. Values of 0,1,2 mean move that many
 	 * to the other side. Value of 3 means move 2 and
 	 * flip them. */
-	const unsigned char map[16] =
+	ثابت غیرعلامتی حرف map[16] =
 	{
 	  0x00,	/* 0	no change */
 	  0x10,	/* 1	Ax => xA */
@@ -123,284 +123,284 @@ struct RearrangementSubtable
 	  0x33,	/* 15	ABxCD => DCxBA */
 	};
 
-	unsigned int m = map[flags & Verb];
-	unsigned int l = hb_min (2u, m >> 4);
-	unsigned int r = hb_min (2u, m & 0x0F);
-	bool reverse_l = 3 == (m >> 4);
-	bool reverse_r = 3 == (m & 0x0F);
+	غیرعلامتی صحیح m = map[flags & Verb];
+	غیرعلامتی صحیح l = hb_min (2u, m >> 4);
+	غیرعلامتی صحیح r = hb_min (2u, m & 0x0F);
+	منطقی الٹ_l = 3 == (m >> 4);
+	منطقی الٹ_r = 3 == (m & 0x0F);
 
-	if (end - start >= l + r && end-start <= HB_MAX_CONTEXT_LENGTH)
+	اگر (انتہا - آغاز >= l + r && انتہا-آغاز <= HB_MAX_CONTEXT_لمبائی)
 	{
-	  buffer->merge_clusters (start, hb_min (buffer->idx + 1, buffer->len));
-	  buffer->merge_clusters (start, end);
+	  بفر->ملاؤ_clusters (آغاز, hb_min (بفر->idx + 1, بفر->len));
+	  بفر->ملاؤ_clusters (آغاز, انتہا);
 
-	  hb_glyph_info_t *info = buffer->info;
+	  hb_glyph_info_t *info = بفر->info;
 	  hb_glyph_info_t buf[4];
 
-	  hb_memcpy (buf, info + start, l * sizeof (buf[0]));
-	  hb_memcpy (buf + 2, info + end - r, r * sizeof (buf[0]));
+	  hb_memcpy (buf, info + آغاز, l * حجم (buf[0]));
+	  hb_memcpy (buf + 2, info + انتہا - r, r * حجم (buf[0]));
 
-	  if (l != r)
-	    memmove (info + start + r, info + start + l, (end - start - l - r) * sizeof (buf[0]));
+	  اگر (l != r)
+	    memmove (info + آغاز + r, info + آغاز + l, (انتہا - آغاز - l - r) * حجم (buf[0]));
 
-	  hb_memcpy (info + start, buf + 2, r * sizeof (buf[0]));
-	  hb_memcpy (info + end - l, buf, l * sizeof (buf[0]));
-	  if (reverse_l)
+	  hb_memcpy (info + آغاز, buf + 2, r * حجم (buf[0]));
+	  hb_memcpy (info + انتہا - l, buf, l * حجم (buf[0]));
+	  اگر (الٹ_l)
 	  {
-	    buf[0] = info[end - 1];
-	    info[end - 1] = info[end - 2];
-	    info[end - 2] = buf[0];
+	    buf[0] = info[انتہا - 1];
+	    info[انتہا - 1] = info[انتہا - 2];
+	    info[انتہا - 2] = buf[0];
 	  }
-	  if (reverse_r)
+	  اگر (الٹ_r)
 	  {
-	    buf[0] = info[start];
-	    info[start] = info[start + 1];
-	    info[start + 1] = buf[0];
+	    buf[0] = info[آغاز];
+	    info[آغاز] = info[آغاز + 1];
+	    info[آغاز + 1] = buf[0];
 	  }
 	}
       }
     }
 
-    public:
-    bool ret;
-    const RearrangementSubtable *table;
-    private:
-    unsigned int start;
-    unsigned int end;
+    عوامی:
+    منطقی ret;
+    ثابت RearrangementSubtable *جدول;
+    نجی:
+    غیرعلامتی صحیح آغاز;
+    غیرعلامتی صحیح انتہا;
   };
 
-  bool apply (hb_aat_apply_context_t *c) const
+  منطقی apply (hb_aat_apply_context_t *c) ثابت
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (یہ);
 
-    driver_context_t dc (this);
+    driver_context_t dc (یہ);
 
-    StateTableDriver<Types, EntryData, Flags> driver (machine, c->face);
+    State_جدول_Driver<Types, اندراج_ڈیٹا, Flags> driver (machine, c->face);
 
     driver.drive (&dc, c);
 
     return_trace (dc.ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (یہ);
     return_trace (machine.sanitize (c));
   }
 
-  public:
-  StateTable<Types, EntryData>	machine;
-  public:
-  DEFINE_SIZE_STATIC ((StateTable<Types, EntryData>::static_size));
+  عوامی:
+  State_جدول<Types, اندراج_ڈیٹا>	machine;
+  عوامی:
+  DEFINE_سائز_STATIC ((State_جدول<Types, اندراج_ڈیٹا>::static_سائز));
 };
 
-template <typename Types>
-struct ContextualSubtable
+سانچہ <قسم_نام Types>
+ساخت ContextualSubtable
 {
-  typedef typename Types::HBUINT HBUINT;
+  قسمتعریف قسم_نام Types::HBUINT HBUINT;
 
-  struct EntryData
+  ساخت اندراج_ڈیٹا
   {
-    typedef typename std::conditional<Types::extended, HBUINT16, HBINT16>::type OffsetType;
+    قسمتعریف قسم_نام std::conditional<Types::extended, HBUINT16, HBINT16>::type انحراف_Type;
 
-    OffsetType	markIndex;	/* Index/offset of the substitution table for the
+    انحراف_Type	mark_اشاریہ_2;	/* Index/offset of the substitution table for the
 				 * marked glyph. */
-    OffsetType	currentIndex;	/* Index/offset of the substitution table for the
+    انحراف_Type	current_اشاریہ;	/* Index/offset of the substitution table for the
 				 * current glyph. */
-    public:
-    DEFINE_SIZE_STATIC (4);
+    عوامی:
+    DEFINE_سائز_STATIC (4);
   };
 
-  enum Flags
+  شمار Flags
   {
-    SetMark		= 0x8000,	/* If set, make the current glyph the marked glyph. */
+    سیٹ_Mark		= 0x8000,	/* If set, make the current glyph the marked glyph. */
     DontAdvance		= 0x4000,	/* If set, don't advance to the next glyph before
 					 * going to the new state. */
     Reserved		= 0x3FFF,	/* These bits are reserved and should be set to 0. */
   };
 
-  bool is_action_initiable (const Entry<EntryData> &entry) const
+  منطقی is_action_initiable (ثابت اندراج_3<اندراج_ڈیٹا> &اندراج_2) ثابت
   {
-    return (entry.flags & SetMark);
+    واپس (اندراج_2.flags & سیٹ_Mark);
   }
-  bool is_actionable (const Entry<EntryData> &entry) const
+  منطقی is_actionable (ثابت اندراج_3<اندراج_ڈیٹا> &اندراج_2) ثابت
   {
-    if (Types::extended)
-      return entry.data.markIndex != 0xFFFF || entry.data.currentIndex != 0xFFFF;
-    else
-      return entry.data.markIndex || entry.data.currentIndex;
+    اگر (Types::extended)
+      واپس اندراج_2.ڈیٹا.mark_اشاریہ_2 != 0xFFFF || اندراج_2.ڈیٹا.current_اشاریہ != 0xFFFF;
+    ورنہ
+      واپس اندراج_2.ڈیٹا.mark_اشاریہ_2 || اندراج_2.ڈیٹا.current_اشاریہ;
   }
 
-  struct driver_context_t
+  ساخت driver_context_t
   {
-    static constexpr bool in_place = true;
+    ساکن constexpr منطقی in_place = سچ;
 
-    driver_context_t (const ContextualSubtable *table_,
+    driver_context_t (ثابت ContextualSubtable *جدول_2,
 			     hb_aat_apply_context_t *c_) :
-	ret (false),
+	ret (جھوٹ),
 	c (c_),
-	table (table_),
-	mark_set (false),
+	جدول (جدول_2),
+	mark_سیٹ (جھوٹ),
 	mark (0),
-	subs (table+table->substitutionTables) {}
+	subs (جدول+جدول->substitutionTables) {}
 
     HB_AAT_TRANSITION_INLINE
-    void transition (hb_buffer_t *buffer,
-		     StateTableDriver<Types, EntryData, Flags> *driver,
-		     const Entry<EntryData> &entry)
+    خالی transition (hb_بفر_t *بفر,
+		     State_جدول_Driver<Types, اندراج_ڈیٹا, Flags> *driver,
+		     ثابت اندراج_3<اندراج_ڈیٹا> &اندراج_2)
     {
       /* Looks like CoreText applies neither mark nor current substitution for
        * end-of-text if mark was not explicitly set. */
-      if (buffer->idx == buffer->len && !mark_set)
-	return;
+      اگر (بفر->idx == بفر->len && !mark_سیٹ)
+	واپس;
 
-      const HBGlyphID16 *replacement;
+      ثابت HBGlyphID16 *replacement;
 
-      replacement = nullptr;
-      if (Types::extended)
+      replacement = خالی_اشاریہ;
+      اگر (Types::extended)
       {
-	if (entry.data.markIndex != 0xFFFF)
+	اگر (اندراج_2.ڈیٹا.mark_اشاریہ_2 != 0xFFFF)
 	{
-	  const Lookup<HBGlyphID16> &lookup = subs[entry.data.markIndex];
-	  replacement = lookup.get_value (buffer->info[mark].codepoint, driver->num_glyphs);
+	  ثابت Lookup<HBGlyphID16> &lookup = subs[اندراج_2.ڈیٹا.mark_اشاریہ_2];
+	  replacement = lookup.get_قدر (بفر->info[mark].codepoint, driver->عدد_glyphs);
 	}
       }
-      else
+      ورنہ
       {
-	if (entry.data.markIndex)
+	اگر (اندراج_2.ڈیٹا.mark_اشاریہ_2)
 	{
-	  int offset = (int) entry.data.markIndex + buffer->info[mark].codepoint;
-	  const UnsizedArrayOf<HBGlyphID16> &subs_old = (const UnsizedArrayOf<HBGlyphID16> &) subs;
-	  replacement = &subs_old[Types::wordOffsetToIndex (offset, table, subs_old.arrayZ)];
-	  if (!(replacement->sanitize (&c->sanitizer) &&
+	  صحیح انحراف = (صحیح) اندراج_2.ڈیٹا.mark_اشاریہ_2 + بفر->info[mark].codepoint;
+	  ثابت Unsized_Array_کا<HBGlyphID16> &subs_old = (ثابت Unsized_Array_کا<HBGlyphID16> &) subs;
+	  replacement = &subs_old[Types::لفظ_انحراف_مقصد_اشاریہ (انحراف, جدول, subs_old.arrayZ)];
+	  اگر (!(replacement->sanitize (&c->sanitizer) &&
 		hb_barrier () &&
 		*replacement))
-	    replacement = nullptr;
+	    replacement = خالی_اشاریہ;
 	}
       }
-      if (replacement)
+      اگر (replacement)
       {
-	buffer->unsafe_to_break (mark, hb_min (buffer->idx + 1, buffer->len));
+	بفر->unsafe_مقصد_break (mark, hb_min (بفر->idx + 1, بفر->len));
 	c->replace_glyph_inplace (mark, *replacement);
-	ret = true;
+	ret = سچ;
       }
 
-      replacement = nullptr;
-      unsigned int idx = hb_min (buffer->idx, buffer->len - 1);
-      if (Types::extended)
+      replacement = خالی_اشاریہ;
+      غیرعلامتی صحیح idx = hb_min (بفر->idx, بفر->len - 1);
+      اگر (Types::extended)
       {
-	if (entry.data.currentIndex != 0xFFFF)
+	اگر (اندراج_2.ڈیٹا.current_اشاریہ != 0xFFFF)
 	{
-	  const Lookup<HBGlyphID16> &lookup = subs[entry.data.currentIndex];
-	  replacement = lookup.get_value (buffer->info[idx].codepoint, driver->num_glyphs);
+	  ثابت Lookup<HBGlyphID16> &lookup = subs[اندراج_2.ڈیٹا.current_اشاریہ];
+	  replacement = lookup.get_قدر (بفر->info[idx].codepoint, driver->عدد_glyphs);
 	}
       }
-      else
+      ورنہ
       {
-	if (entry.data.currentIndex)
+	اگر (اندراج_2.ڈیٹا.current_اشاریہ)
 	{
-	  int offset = (int) entry.data.currentIndex + buffer->info[idx].codepoint;
-	  const UnsizedArrayOf<HBGlyphID16> &subs_old = (const UnsizedArrayOf<HBGlyphID16> &) subs;
-	  replacement = &subs_old[Types::wordOffsetToIndex (offset, table, subs_old.arrayZ)];
-	  if (!(replacement->sanitize (&c->sanitizer) &&
+	  صحیح انحراف = (صحیح) اندراج_2.ڈیٹا.current_اشاریہ + بفر->info[idx].codepoint;
+	  ثابت Unsized_Array_کا<HBGlyphID16> &subs_old = (ثابت Unsized_Array_کا<HBGlyphID16> &) subs;
+	  replacement = &subs_old[Types::لفظ_انحراف_مقصد_اشاریہ (انحراف, جدول, subs_old.arrayZ)];
+	  اگر (!(replacement->sanitize (&c->sanitizer) &&
 		hb_barrier () &&
 		*replacement))
-	    replacement = nullptr;
+	    replacement = خالی_اشاریہ;
 	}
       }
-      if (replacement)
+      اگر (replacement)
       {
 	c->replace_glyph_inplace (idx, *replacement);
-	ret = true;
+	ret = سچ;
       }
 
-      if (entry.flags & SetMark)
+      اگر (اندراج_2.flags & سیٹ_Mark)
       {
-	mark_set = true;
-	mark = buffer->idx;
+	mark_سیٹ = سچ;
+	mark = بفر->idx;
       }
     }
 
-    public:
-    bool ret;
+    عوامی:
+    منطقی ret;
     hb_aat_apply_context_t *c;
-    const ContextualSubtable *table;
-    private:
-    bool mark_set;
-    unsigned int mark;
-    const UnsizedListOfOffset16To<Lookup<HBGlyphID16>, HBUINT, void, false> &subs;
+    ثابت ContextualSubtable *جدول;
+    نجی:
+    منطقی mark_سیٹ;
+    غیرعلامتی صحیح mark;
+    ثابت Unsized_List_کا_Offset16_مقصد<Lookup<HBGlyphID16>, HBUINT, خالی, جھوٹ> &subs;
   };
 
-  bool apply (hb_aat_apply_context_t *c) const
+  منطقی apply (hb_aat_apply_context_t *c) ثابت
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (یہ);
 
-    driver_context_t dc (this, c);
+    driver_context_t dc (یہ, c);
 
-    StateTableDriver<Types, EntryData, Flags> driver (machine, c->face);
+    State_جدول_Driver<Types, اندراج_ڈیٹا, Flags> driver (machine, c->face);
 
     driver.drive (&dc, c);
 
     return_trace (dc.ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (یہ);
 
-    unsigned int num_entries = 0;
-    if (unlikely (!machine.sanitize (c, &num_entries))) return_trace (false);
+    غیرعلامتی صحیح عدد_entries = 0;
+    اگر (unlikely (!machine.sanitize (c, &عدد_entries))) return_trace (جھوٹ);
     hb_barrier ();
 
-    if (!Types::extended)
-      return_trace (substitutionTables.sanitize (c, this, 0));
+    اگر (!Types::extended)
+      return_trace (substitutionTables.sanitize (c, یہ, 0));
 
-    unsigned int num_lookups = 0;
+    غیرعلامتی صحیح عدد_lookups = 0;
 
-    const Entry<EntryData> *entries = machine.get_entries ();
-    for (unsigned int i = 0; i < num_entries; i++)
+    ثابت اندراج_3<اندراج_ڈیٹا> *entries = machine.get_entries ();
+    برائے (غیرعلامتی صحیح i = 0; i < عدد_entries; i++)
     {
-      const EntryData &data = entries[i].data;
+      ثابت اندراج_ڈیٹا &ڈیٹا = entries[i].ڈیٹا;
 
-      if (data.markIndex != 0xFFFF)
-	num_lookups = hb_max (num_lookups, 1u + data.markIndex);
-      if (data.currentIndex != 0xFFFF)
-	num_lookups = hb_max (num_lookups, 1u + data.currentIndex);
+      اگر (ڈیٹا.mark_اشاریہ_2 != 0xFFFF)
+	عدد_lookups = hb_max (عدد_lookups, 1u + ڈیٹا.mark_اشاریہ_2);
+      اگر (ڈیٹا.current_اشاریہ != 0xFFFF)
+	عدد_lookups = hb_max (عدد_lookups, 1u + ڈیٹا.current_اشاریہ);
     }
 
-    return_trace (substitutionTables.sanitize (c, this, num_lookups));
+    return_trace (substitutionTables.sanitize (c, یہ, عدد_lookups));
   }
 
-  public:
-  StateTable<Types, EntryData>
+  عوامی:
+  State_جدول<Types, اندراج_ڈیٹا>
 		machine;
-  protected:
-  NNOffsetTo<UnsizedListOfOffset16To<Lookup<HBGlyphID16>, HBUINT, void, false>, HBUINT>
+  محفوظ:
+  NNOffset_مقصد<Unsized_List_کا_Offset16_مقصد<Lookup<HBGlyphID16>, HBUINT, خالی, جھوٹ>, HBUINT>
 		substitutionTables;
-  public:
-  DEFINE_SIZE_STATIC ((StateTable<Types, EntryData>::static_size + HBUINT::static_size));
+  عوامی:
+  DEFINE_سائز_STATIC ((State_جدول<Types, اندراج_ڈیٹا>::static_سائز + HBUINT::static_سائز));
 };
 
 
-template <bool extended>
-struct LigatureEntry;
+سانچہ <منطقی extended>
+ساخت Ligature_اندراج;
 
-template <>
-struct LigatureEntry<true>
+سانچہ <>
+ساخت Ligature_اندراج<سچ>
 {
 
-  struct EntryData
+  ساخت اندراج_ڈیٹا
   {
-    HBUINT16	ligActionIndex;	/* Index to the first ligActionTable entry
+    HBUINT16	lig_Action_اشاریہ;	/* Index to the first ligActionTable entry
 				 * for processing this group, if indicated
 				 * by the flags. */
-    public:
-    DEFINE_SIZE_STATIC (2);
+    عوامی:
+    DEFINE_سائز_STATIC (2);
   };
 
-  enum Flags
+  شمار Flags
   {
-    SetComponent	= 0x8000,	/* Push this glyph onto the component stack for
+    سیٹ_Component	= 0x8000,	/* Push this glyph onto the component stack for
 					 * eventual processing. */
     DontAdvance		= 0x4000,	/* Leave the glyph pointer at this glyph for the
 					   next iteration. */
@@ -409,320 +409,320 @@ struct LigatureEntry<true>
     Reserved		= 0x1FFF,	/* These bits are reserved and should be set to 0. */
   };
 
-  static bool initiateAction (const Entry<EntryData> &entry)
-  { return entry.flags & SetComponent; }
+  ساکن منطقی initiateAction (ثابت اندراج_3<اندراج_ڈیٹا> &اندراج_2)
+  { واپس اندراج_2.flags & سیٹ_Component; }
 
-  static bool performAction (const Entry<EntryData> &entry)
-  { return entry.flags & PerformAction; }
+  ساکن منطقی performAction (ثابت اندراج_3<اندراج_ڈیٹا> &اندراج_2)
+  { واپس اندراج_2.flags & PerformAction; }
 
-  static unsigned int ligActionIndex (const Entry<EntryData> &entry)
-  { return entry.data.ligActionIndex; }
+  ساکن غیرعلامتی صحیح lig_Action_اشاریہ (ثابت اندراج_3<اندراج_ڈیٹا> &اندراج_2)
+  { واپس اندراج_2.ڈیٹا.lig_Action_اشاریہ; }
 };
-template <>
-struct LigatureEntry<false>
+سانچہ <>
+ساخت Ligature_اندراج<جھوٹ>
 {
-  typedef void EntryData;
+  قسمتعریف خالی اندراج_ڈیٹا;
 
-  enum Flags
+  شمار Flags
   {
-    SetComponent	= 0x8000,	/* Push this glyph onto the component stack for
+    سیٹ_Component	= 0x8000,	/* Push this glyph onto the component stack for
 					 * eventual processing. */
     DontAdvance		= 0x4000,	/* Leave the glyph pointer at this glyph for the
 					   next iteration. */
-    Offset		= 0x3FFF,	/* Byte offset from beginning of subtable to the
+    انحراف_2		= 0x3FFF,	/* Byte offset from beginning of subtable to the
 					 * ligature action list. This value must be a
 					 * multiple of 4. */
   };
 
-  static bool initiateAction (const Entry<EntryData> &entry)
-  { return entry.flags & SetComponent; }
+  ساکن منطقی initiateAction (ثابت اندراج_3<اندراج_ڈیٹا> &اندراج_2)
+  { واپس اندراج_2.flags & سیٹ_Component; }
 
-  static bool performAction (const Entry<EntryData> &entry)
-  { return entry.flags & Offset; }
+  ساکن منطقی performAction (ثابت اندراج_3<اندراج_ڈیٹا> &اندراج_2)
+  { واپس اندراج_2.flags & انحراف_2; }
 
-  static unsigned int ligActionIndex (const Entry<EntryData> &entry)
-  { return entry.flags & Offset; }
+  ساکن غیرعلامتی صحیح lig_Action_اشاریہ (ثابت اندراج_3<اندراج_ڈیٹا> &اندراج_2)
+  { واپس اندراج_2.flags & انحراف_2; }
 };
 
 
-template <typename Types>
-struct LigatureSubtable
+سانچہ <قسم_نام Types>
+ساخت LigatureSubtable
 {
-  typedef typename Types::HBUINT HBUINT;
+  قسمتعریف قسم_نام Types::HBUINT HBUINT;
 
-  typedef LigatureEntry<Types::extended> LigatureEntryT;
-  typedef typename LigatureEntryT::EntryData EntryData;
+  قسمتعریف Ligature_اندراج<Types::extended> Ligature_اندراج_T;
+  قسمتعریف قسم_نام Ligature_اندراج_T::اندراج_ڈیٹا اندراج_ڈیٹا;
 
-  enum Flags
+  شمار Flags
   {
-    DontAdvance	= LigatureEntryT::DontAdvance,
+    DontAdvance	= Ligature_اندراج_T::DontAdvance,
   };
 
-  bool is_action_initiable (const Entry<EntryData> &entry) const
+  منطقی is_action_initiable (ثابت اندراج_3<اندراج_ڈیٹا> &اندراج_2) ثابت
   {
-    return LigatureEntryT::initiateAction (entry);
+    واپس Ligature_اندراج_T::initiateAction (اندراج_2);
   }
-  bool is_actionable (const Entry<EntryData> &entry) const
+  منطقی is_actionable (ثابت اندراج_3<اندراج_ڈیٹا> &اندراج_2) ثابت
   {
-    return LigatureEntryT::performAction (entry);
+    واپس Ligature_اندراج_T::performAction (اندراج_2);
   }
 
-  struct driver_context_t
+  ساخت driver_context_t
   {
-    static constexpr bool in_place = false;
-    enum LigActionFlags
+    ساکن constexpr منطقی in_place = جھوٹ;
+    شمار LigActionFlags
     {
-      LigActionLast	= 0x80000000,	/* This is the last action in the list. This also
+      Lig_Action_آخری	= 0x80000000,	/* This is the last action in the list. This also
 					 * implies storage. */
       LigActionStore	= 0x40000000,	/* Store the ligature at the current cumulated index
 					 * in the ligature table in place of the marked
 					 * (i.e. currently-popped) glyph. */
-      LigActionOffset	= 0x3FFFFFFF,	/* A 30-bit value which is sign-extended to 32-bits
+      Lig_Action_انحراف	= 0x3FFFFFFF,	/* A 30-bit value which is sign-extended to 32-bits
 					 * and added to the glyph ID, resulting in an index
 					 * into the component table. */
     };
 
-    driver_context_t (const LigatureSubtable *table_,
+    driver_context_t (ثابت LigatureSubtable *جدول_2,
 		      hb_aat_apply_context_t *c_) :
-	ret (false),
+	ret (جھوٹ),
 	c (c_),
-	table (table_),
-	ligAction (table+table->ligAction),
-	component (table+table->component),
-	ligature (table+table->ligature),
-	match_length (0) {}
+	جدول (جدول_2),
+	ligAction (جدول+جدول->ligAction),
+	component (جدول+جدول->component),
+	ligature (جدول+جدول->ligature),
+	مطابقت_لمبائی (0) {}
 
     HB_AAT_TRANSITION_INLINE
-    void transition (hb_buffer_t *buffer,
-		     StateTableDriver<Types, EntryData, Flags> *driver,
-		     const Entry<EntryData> &entry)
+    خالی transition (hb_بفر_t *بفر,
+		     State_جدول_Driver<Types, اندراج_ڈیٹا, Flags> *driver,
+		     ثابت اندراج_3<اندراج_ڈیٹا> &اندراج_2)
     {
-      DEBUG_MSG (APPLY, nullptr, "Ligature transition at %u", buffer->idx);
-      if (entry.flags & LigatureEntryT::SetComponent)
+      DEBUG_پیغام (APPLY, خالی_اشاریہ, "Ligature transition at %u", بفر->idx);
+      اگر (اندراج_2.flags & Ligature_اندراج_T::سیٹ_Component)
       {
 	/* Never mark same index twice, in case DontAdvance was used... */
-	if (unlikely (match_length && match_positions[(match_length - 1u) % ARRAY_LENGTH (match_positions)] == buffer->out_len))
-	  match_length--;
+	اگر (unlikely (مطابقت_لمبائی && مطابقت_positions[(مطابقت_لمبائی - 1u) % ARRAY_لمبائی (مطابقت_positions)] == بفر->برآمد_len))
+	  مطابقت_لمبائی--;
 
-	match_positions[match_length++ % ARRAY_LENGTH (match_positions)] = buffer->out_len;
-	DEBUG_MSG (APPLY, nullptr, "Set component at %u", buffer->out_len);
+	مطابقت_positions[مطابقت_لمبائی++ % ARRAY_لمبائی (مطابقت_positions)] = بفر->برآمد_len;
+	DEBUG_پیغام (APPLY, خالی_اشاریہ, "Set component at %u", بفر->برآمد_len);
       }
 
-      if (LigatureEntryT::performAction (entry))
+      اگر (Ligature_اندراج_T::performAction (اندراج_2))
       {
-	DEBUG_MSG (APPLY, nullptr, "Perform action with %u", match_length);
-	unsigned int end = buffer->out_len;
+	DEBUG_پیغام (APPLY, خالی_اشاریہ, "Perform action with %u", مطابقت_لمبائی);
+	غیرعلامتی صحیح انتہا = بفر->برآمد_len;
 
-	if (unlikely (!match_length))
-	  return;
+	اگر (unlikely (!مطابقت_لمبائی))
+	  واپس;
 
-	if (buffer->idx >= buffer->len)
-	  return; /* TODO Work on previous instead? */
+	اگر (بفر->idx >= بفر->len)
+	  واپس; /* TODO Work on previous instead? */
 
-	unsigned int cursor = match_length;
+	غیرعلامتی صحیح cursor = مطابقت_لمبائی;
 
-	unsigned int action_idx = LigatureEntryT::ligActionIndex (entry);
-	action_idx = Types::offsetToIndex (action_idx, table, ligAction.arrayZ);
-	const HBUINT32 *actionData = &ligAction[action_idx];
+	غیرعلامتی صحیح action_idx = Ligature_اندراج_T::lig_Action_اشاریہ (اندراج_2);
+	action_idx = Types::انحراف_مقصد_اشاریہ (action_idx, جدول, ligAction.arrayZ);
+	ثابت HBUINT32 *action_ڈیٹا = &ligAction[action_idx];
 
-	unsigned int ligature_idx = 0;
-	unsigned int action;
-	do
+	غیرعلامتی صحیح ligature_idx = 0;
+	غیرعلامتی صحیح action;
+	کرو
 	{
-	  if (unlikely (!cursor))
+	  اگر (unlikely (!cursor))
 	  {
 	    /* Stack underflow.  Clear the stack. */
-	    DEBUG_MSG (APPLY, nullptr, "Stack underflow");
-	    match_length = 0;
-	    break;
+	    DEBUG_پیغام (APPLY, خالی_اشاریہ, "Stack underflow");
+	    مطابقت_لمبائی = 0;
+	    توڑو;
 	  }
 
-	  DEBUG_MSG (APPLY, nullptr, "Moving to stack position %u", cursor - 1);
-	  if (unlikely (!buffer->move_to (match_positions[--cursor % ARRAY_LENGTH (match_positions)]))) return;
+	  DEBUG_پیغام (APPLY, خالی_اشاریہ, "Moving to stack position %u", cursor - 1);
+	  اگر (unlikely (!بفر->move_مقصد (مطابقت_positions[--cursor % ARRAY_لمبائی (مطابقت_positions)]))) واپس;
 
-	  if (unlikely (!actionData->sanitize (&c->sanitizer))) break;
+	  اگر (unlikely (!action_ڈیٹا->sanitize (&c->sanitizer))) توڑو;
 	  hb_barrier ();
-	  action = *actionData;
+	  action = *action_ڈیٹا;
 
-	  uint32_t uoffset = action & LigActionOffset;
-	  if (uoffset & 0x20000000)
+	  uint32_t uoffset = action & Lig_Action_انحراف;
+	  اگر (uoffset & 0x20000000)
 	    uoffset |= 0xC0000000; /* Sign-extend. */
-	  int32_t offset = (int32_t) uoffset;
-	  unsigned int component_idx = buffer->cur().codepoint + offset;
-	  component_idx = Types::wordOffsetToIndex (component_idx, table, component.arrayZ);
-	  const HBUINT16 &componentData = component[component_idx];
-	  if (unlikely (!componentData.sanitize (&c->sanitizer))) break;
+	  int32_t انحراف = (int32_t) uoffset;
+	  غیرعلامتی صحیح component_idx = بفر->cur().codepoint + انحراف;
+	  component_idx = Types::لفظ_انحراف_مقصد_اشاریہ (component_idx, جدول, component.arrayZ);
+	  ثابت HBUINT16 &component_ڈیٹا = component[component_idx];
+	  اگر (unlikely (!component_ڈیٹا.sanitize (&c->sanitizer))) توڑو;
 	  hb_barrier ();
-	  ligature_idx += componentData;
+	  ligature_idx += component_ڈیٹا;
 
-	  DEBUG_MSG (APPLY, nullptr, "Action store %d last %d",
-		     bool (action & LigActionStore),
-		     bool (action & LigActionLast));
-	  if (action & (LigActionStore | LigActionLast))
+	  DEBUG_پیغام (APPLY, خالی_اشاریہ, "Action store %d last %d",
+		     منطقی (action & LigActionStore),
+		     منطقی (action & Lig_Action_آخری));
+	  اگر (action & (LigActionStore | Lig_Action_آخری))
 	  {
-	    ligature_idx = Types::offsetToIndex (ligature_idx, table, ligature.arrayZ);
-	    const HBGlyphID16 &ligatureData = ligature[ligature_idx];
-	    if (unlikely (!ligatureData.sanitize (&c->sanitizer))) break;
+	    ligature_idx = Types::انحراف_مقصد_اشاریہ (ligature_idx, جدول, ligature.arrayZ);
+	    ثابت HBGlyphID16 &ligature_ڈیٹا = ligature[ligature_idx];
+	    اگر (unlikely (!ligature_ڈیٹا.sanitize (&c->sanitizer))) توڑو;
 	    hb_barrier ();
-	    hb_codepoint_t lig = ligatureData;
+	    hb_codepoint_t lig = ligature_ڈیٹا;
 
-	    DEBUG_MSG (APPLY, nullptr, "Produced ligature %u", lig);
-	    if (unlikely (!c->replace_glyph (lig))) return;
+	    DEBUG_پیغام (APPLY, خالی_اشاریہ, "Produced ligature %u", lig);
+	    اگر (unlikely (!c->replace_glyph (lig))) واپس;
 
-	    unsigned int lig_end = match_positions[(match_length - 1u) % ARRAY_LENGTH (match_positions)] + 1u;
+	    غیرعلامتی صحیح lig_انتہا = مطابقت_positions[(مطابقت_لمبائی - 1u) % ARRAY_لمبائی (مطابقت_positions)] + 1u;
 	    /* Now go and delete all subsequent components. */
-	    while (match_length - 1u > cursor)
+	    جب (مطابقت_لمبائی - 1u > cursor)
 	    {
-	      DEBUG_MSG (APPLY, nullptr, "Skipping ligature component");
-	      if (unlikely (!buffer->move_to (match_positions[--match_length % ARRAY_LENGTH (match_positions)]))) return;
-	      if (!c->delete_glyph ()) return;
+	      DEBUG_پیغام (APPLY, خالی_اشاریہ, "Skipping ligature component");
+	      اگر (unlikely (!بفر->move_مقصد (مطابقت_positions[--مطابقت_لمبائی % ARRAY_لمبائی (مطابقت_positions)]))) واپس;
+	      اگر (!c->delete_glyph ()) واپس;
 	    }
 
-	    if (unlikely (!buffer->move_to (lig_end))) return;
-	    buffer->merge_out_clusters (match_positions[cursor % ARRAY_LENGTH (match_positions)], buffer->out_len);
+	    اگر (unlikely (!بفر->move_مقصد (lig_انتہا))) واپس;
+	    بفر->ملاؤ_برآمد_clusters (مطابقت_positions[cursor % ARRAY_لمبائی (مطابقت_positions)], بفر->برآمد_len);
 	  }
 
-	  actionData++;
+	  action_ڈیٹا++;
 	}
-	while (!(action & LigActionLast));
-	if (unlikely (!buffer->move_to (end))) return;
+	جب (!(action & Lig_Action_آخری));
+	اگر (unlikely (!بفر->move_مقصد (انتہا))) واپس;
       }
     }
 
-    public:
-    bool ret;
+    عوامی:
+    منطقی ret;
     hb_aat_apply_context_t *c;
-    const LigatureSubtable *table;
-    private:
-    const UnsizedArrayOf<HBUINT32> &ligAction;
-    const UnsizedArrayOf<HBUINT16> &component;
-    const UnsizedArrayOf<HBGlyphID16> &ligature;
-    unsigned int match_length;
-    unsigned int match_positions[HB_MAX_CONTEXT_LENGTH];
+    ثابت LigatureSubtable *جدول;
+    نجی:
+    ثابت Unsized_Array_کا<HBUINT32> &ligAction;
+    ثابت Unsized_Array_کا<HBUINT16> &component;
+    ثابت Unsized_Array_کا<HBGlyphID16> &ligature;
+    غیرعلامتی صحیح مطابقت_لمبائی;
+    غیرعلامتی صحیح مطابقت_positions[HB_MAX_CONTEXT_لمبائی];
   };
 
-  bool apply (hb_aat_apply_context_t *c) const
+  منطقی apply (hb_aat_apply_context_t *c) ثابت
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (یہ);
 
-    driver_context_t dc (this, c);
+    driver_context_t dc (یہ, c);
 
-    StateTableDriver<Types, EntryData, Flags> driver (machine, c->face);
+    State_جدول_Driver<Types, اندراج_ڈیٹا, Flags> driver (machine, c->face);
 
     driver.drive (&dc, c);
 
     return_trace (dc.ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (یہ);
     /* The rest of array sanitizations are done at run-time. */
-    return_trace (c->check_struct (this) && machine.sanitize (c) &&
+    return_trace (c->check_struct (یہ) && machine.sanitize (c) &&
 		  hb_barrier () &&
 		  ligAction && component && ligature);
   }
 
-  public:
-  StateTable<Types, EntryData>
+  عوامی:
+  State_جدول<Types, اندراج_ڈیٹا>
 		machine;
-  protected:
-  NNOffsetTo<UnsizedArrayOf<HBUINT32>, HBUINT>
+  محفوظ:
+  NNOffset_مقصد<Unsized_Array_کا<HBUINT32>, HBUINT>
 		ligAction;	/* Offset to the ligature action table. */
-  NNOffsetTo<UnsizedArrayOf<HBUINT16>, HBUINT>
+  NNOffset_مقصد<Unsized_Array_کا<HBUINT16>, HBUINT>
 		component;	/* Offset to the component table. */
-  NNOffsetTo<UnsizedArrayOf<HBGlyphID16>, HBUINT>
+  NNOffset_مقصد<Unsized_Array_کا<HBGlyphID16>, HBUINT>
 		ligature;	/* Offset to the actual ligature lists. */
-  public:
-  DEFINE_SIZE_STATIC ((StateTable<Types, EntryData>::static_size + 3 * HBUINT::static_size));
+  عوامی:
+  DEFINE_سائز_STATIC ((State_جدول<Types, اندراج_ڈیٹا>::static_سائز + 3 * HBUINT::static_سائز));
 };
 
-template <typename Types>
-struct NoncontextualSubtable
+سانچہ <قسم_نام Types>
+ساخت NoncontextualSubtable
 {
-  bool apply (hb_aat_apply_context_t *c) const
+  منطقی apply (hb_aat_apply_context_t *c) ثابت
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (یہ);
 
-    bool ret = false;
-    unsigned int num_glyphs = c->face->get_num_glyphs ();
+    منطقی ret = جھوٹ;
+    غیرعلامتی صحیح عدد_glyphs = c->face->get_عدد_glyphs ();
 
-    hb_glyph_info_t *info = c->buffer->info;
-    unsigned int count = c->buffer->len;
+    hb_glyph_info_t *info = c->بفر->info;
+    غیرعلامتی صحیح گنتی = c->بفر->len;
     // If there's only one range, we already checked the flag.
-    auto *last_range = c->range_flags && (c->range_flags->length > 1) ? &(*c->range_flags)[0] : nullptr;
-    for (unsigned int i = 0; i < count; i++)
+    خودکار *آخری_range = c->range_flags && (c->range_flags->لمبائی > 1) ? &(*c->range_flags)[0] : خالی_اشاریہ;
+    برائے (غیرعلامتی صحیح i = 0; i < گنتی; i++)
     {
       /* This block copied from StateTableDriver::drive. Keep in sync. */
-      if (unlikely (last_range))
+      اگر (unlikely (آخری_range))
       {
-	auto *range = last_range;
+	خودکار *range = آخری_range;
 	{
-	  unsigned cluster = info[i].cluster;
-	  while (cluster < range->cluster_first)
+	  غیرعلامتی cluster = info[i].cluster;
+	  جب (cluster < range->cluster_پہلا)
 	    range--;
-	  while (cluster > range->cluster_last)
+	  جب (cluster > range->cluster_آخری)
 	    range++;
 
-	  last_range = range;
+	  آخری_range = range;
 	}
-	if (!(range->flags & c->subtable_flags))
-	  continue;
+	اگر (!(range->flags & c->subtable_flags))
+	  جاری;
       }
 
-      const HBGlyphID16 *replacement = substitute.get_value (info[i].codepoint, num_glyphs);
-      if (replacement)
+      ثابت HBGlyphID16 *replacement = substitute.get_قدر (info[i].codepoint, عدد_glyphs);
+      اگر (replacement)
       {
 	c->replace_glyph_inplace (i, *replacement);
-	ret = true;
+	ret = سچ;
       }
     }
 
     return_trace (ret);
   }
 
-  template <typename set_t>
-  void collect_initial_glyphs (set_t &glyphs, unsigned num_glyphs) const
+  سانچہ <قسم_نام سیٹ_t>
+  خالی collect_initial_glyphs (سیٹ_t &glyphs, غیرعلامتی عدد_glyphs) ثابت
   {
-    substitute.collect_glyphs (glyphs, num_glyphs);
+    substitute.collect_glyphs (glyphs, عدد_glyphs);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (یہ);
     return_trace (substitute.sanitize (c));
   }
 
-  protected:
+  محفوظ:
   Lookup<HBGlyphID16>	substitute;
-  public:
-  DEFINE_SIZE_MIN (2);
+  عوامی:
+  DEFINE_سائز_MIN (2);
 };
 
-template <typename Types>
-struct InsertionSubtable
+سانچہ <قسم_نام Types>
+ساخت InsertionSubtable
 {
-  typedef typename Types::HBUINT HBUINT;
+  قسمتعریف قسم_نام Types::HBUINT HBUINT;
 
-  struct EntryData
+  ساخت اندراج_ڈیٹا
   {
-    HBUINT16	currentInsertIndex;	/* Zero-based index into the insertion glyph table.
+    HBUINT16	current_داخل_کرو_اشاریہ;	/* Zero-based index into the insertion glyph table.
 					 * The number of glyphs to be inserted is contained
 					 * in the currentInsertCount field in the flags.
 					 * A value of 0xFFFF indicates no insertion is to
 					 * be done. */
-    HBUINT16	markedInsertIndex;	/* Zero-based index into the insertion glyph table.
+    HBUINT16	marked_داخل_کرو_اشاریہ;	/* Zero-based index into the insertion glyph table.
 					 * The number of glyphs to be inserted is contained
 					 * in the markedInsertCount field in the flags.
 					 * A value of 0xFFFF indicates no insertion is to
 					 * be done. */
-    public:
-    DEFINE_SIZE_STATIC (4);
+    عوامی:
+    DEFINE_سائز_STATIC (4);
   };
 
-  enum Flags
+  شمار Flags
   {
-    SetMark		= 0x8000,     /* If set, mark the current glyph. */
+    سیٹ_Mark		= 0x8000,     /* If set, mark the current glyph. */
     DontAdvance		= 0x4000,     /* If set, don't advance to the next glyph before
 				       * going to the new state.  This does not mean
 				       * that the glyph pointed to is the same one as
@@ -750,105 +750,105 @@ struct InsertionSubtable
 				       * split-vowel-like insertion, either before or
 				       * after the marked glyph (depending on the state
 				       * of the markedInsertBefore flag). */
-    CurrentInsertBefore= 0x0800,      /* If set, specifies that insertions are to be made
+    Current_داخل_کرو_Before= 0x0800,      /* If set, specifies that insertions are to be made
 				       * to the left of the current glyph. If clear,
 				       * they're made to the right of the current glyph. */
-    MarkedInsertBefore= 0x0400,	      /* If set, specifies that insertions are to be
+    Marked_داخل_کرو_Before= 0x0400,	      /* If set, specifies that insertions are to be
 				       * made to the left of the marked glyph. If clear,
 				       * they're made to the right of the marked glyph. */
-    CurrentInsertCount= 0x3E0,	      /* This 5-bit field is treated as a count of the
+    Current_داخل_کرو_گنتی= 0x3E0,	      /* This 5-bit field is treated as a count of the
 				       * number of glyphs to insert at the current
 				       * position. Since zero means no insertions, the
 				       * largest number of insertions at any given
 				       * current location is 31 glyphs. */
-    MarkedInsertCount= 0x001F,	      /* This 5-bit field is treated as a count of the
+    Marked_داخل_کرو_گنتی= 0x001F,	      /* This 5-bit field is treated as a count of the
 				       * number of glyphs to insert at the marked
 				       * position. Since zero means no insertions, the
 				       * largest number of insertions at any given
 				       * marked location is 31 glyphs. */
   };
 
-  bool is_action_initiable (const Entry<EntryData> &entry) const
+  منطقی is_action_initiable (ثابت اندراج_3<اندراج_ڈیٹا> &اندراج_2) ثابت
   {
-    return (entry.flags & SetMark);
+    واپس (اندراج_2.flags & سیٹ_Mark);
   }
-  bool is_actionable (const Entry<EntryData> &entry) const
+  منطقی is_actionable (ثابت اندراج_3<اندراج_ڈیٹا> &اندراج_2) ثابت
   {
-    return (entry.flags & (CurrentInsertCount | MarkedInsertCount)) &&
-	   (entry.data.currentInsertIndex != 0xFFFF ||entry.data.markedInsertIndex != 0xFFFF);
+    واپس (اندراج_2.flags & (Current_داخل_کرو_گنتی | Marked_داخل_کرو_گنتی)) &&
+	   (اندراج_2.ڈیٹا.current_داخل_کرو_اشاریہ != 0xFFFF ||اندراج_2.ڈیٹا.marked_داخل_کرو_اشاریہ != 0xFFFF);
   }
 
-  struct driver_context_t
+  ساخت driver_context_t
   {
-    static constexpr bool in_place = false;
+    ساکن constexpr منطقی in_place = جھوٹ;
 
-    driver_context_t (const InsertionSubtable *table_,
+    driver_context_t (ثابت InsertionSubtable *جدول_2,
 		      hb_aat_apply_context_t *c_) :
-	ret (false),
+	ret (جھوٹ),
 	c (c_),
-	table (table_),
+	جدول (جدول_2),
 	mark (0),
-	insertionAction (table+table->insertionAction) {}
+	insertionAction (جدول+جدول->insertionAction) {}
 
     HB_AAT_TRANSITION_INLINE
-    void transition (hb_buffer_t *buffer,
-		     StateTableDriver<Types, EntryData, Flags> *driver,
-		     const Entry<EntryData> &entry)
+    خالی transition (hb_بفر_t *بفر,
+		     State_جدول_Driver<Types, اندراج_ڈیٹا, Flags> *driver,
+		     ثابت اندراج_3<اندراج_ڈیٹا> &اندراج_2)
     {
-      unsigned int flags = entry.flags;
+      غیرعلامتی صحیح flags = اندراج_2.flags;
 
-      unsigned mark_loc = buffer->out_len;
+      غیرعلامتی mark_loc = بفر->برآمد_len;
 
-      if (entry.data.markedInsertIndex != 0xFFFF)
+      اگر (اندراج_2.ڈیٹا.marked_داخل_کرو_اشاریہ != 0xFFFF)
       {
-	unsigned int count = (flags & MarkedInsertCount);
-	if (unlikely ((buffer->max_ops -= count) <= 0)) return;
-	unsigned int start = entry.data.markedInsertIndex;
-	const HBGlyphID16 *glyphs = &insertionAction[start];
-	if (unlikely (!c->sanitizer.check_array (glyphs, count))) count = 0;
+	غیرعلامتی صحیح گنتی = (flags & Marked_داخل_کرو_گنتی);
+	اگر (unlikely ((بفر->max_ops -= گنتی) <= 0)) واپس;
+	غیرعلامتی صحیح آغاز = اندراج_2.ڈیٹا.marked_داخل_کرو_اشاریہ;
+	ثابت HBGlyphID16 *glyphs = &insertionAction[آغاز];
+	اگر (unlikely (!c->sanitizer.check_array (glyphs, گنتی))) گنتی = 0;
 	hb_barrier ();
 
-	bool before = flags & MarkedInsertBefore;
+	منطقی before = flags & Marked_داخل_کرو_Before;
 
-	unsigned int end = buffer->out_len;
-	if (unlikely (!buffer->move_to (mark))) return;
+	غیرعلامتی صحیح انتہا = بفر->برآمد_len;
+	اگر (unlikely (!بفر->move_مقصد (mark))) واپس;
 
-	if (buffer->idx < buffer->len && !before)
-	  if (unlikely (!buffer->copy_glyph ())) return;
+	اگر (بفر->idx < بفر->len && !before)
+	  اگر (unlikely (!بفر->copy_glyph ())) واپس;
 	/* TODO We ignore KashidaLike setting. */
-	if (unlikely (!c->output_glyphs (count, glyphs))) return;
-	ret = true;
-	if (buffer->idx < buffer->len && !before)
-	  buffer->skip_glyph ();
+	اگر (unlikely (!c->output_glyphs (گنتی, glyphs))) واپس;
+	ret = سچ;
+	اگر (بفر->idx < بفر->len && !before)
+	  بفر->skip_glyph ();
 
-	if (unlikely (!buffer->move_to (end + count))) return;
+	اگر (unlikely (!بفر->move_مقصد (انتہا + گنتی))) واپس;
 
-	buffer->unsafe_to_break_from_outbuffer (mark, hb_min (buffer->idx + 1, buffer->len));
+	بفر->unsafe_مقصد_break_from_outbuffer (mark, hb_min (بفر->idx + 1, بفر->len));
       }
 
-      if (flags & SetMark)
+      اگر (flags & سیٹ_Mark)
 	mark = mark_loc;
 
-      if (entry.data.currentInsertIndex != 0xFFFF)
+      اگر (اندراج_2.ڈیٹا.current_داخل_کرو_اشاریہ != 0xFFFF)
       {
-	unsigned int count = (flags & CurrentInsertCount) >> 5;
-	if (unlikely ((buffer->max_ops -= count) <= 0)) return;
-	unsigned int start = entry.data.currentInsertIndex;
-	const HBGlyphID16 *glyphs = &insertionAction[start];
-	if (unlikely (!c->sanitizer.check_array (glyphs, count))) count = 0;
+	غیرعلامتی صحیح گنتی = (flags & Current_داخل_کرو_گنتی) >> 5;
+	اگر (unlikely ((بفر->max_ops -= گنتی) <= 0)) واپس;
+	غیرعلامتی صحیح آغاز = اندراج_2.ڈیٹا.current_داخل_کرو_اشاریہ;
+	ثابت HBGlyphID16 *glyphs = &insertionAction[آغاز];
+	اگر (unlikely (!c->sanitizer.check_array (glyphs, گنتی))) گنتی = 0;
 	hb_barrier ();
 
-	bool before = flags & CurrentInsertBefore;
+	منطقی before = flags & Current_داخل_کرو_Before;
 
-	unsigned int end = buffer->out_len;
+	غیرعلامتی صحیح انتہا = بفر->برآمد_len;
 
-	if (buffer->idx < buffer->len && !before)
-	  if (unlikely (!buffer->copy_glyph ())) return;
+	اگر (بفر->idx < بفر->len && !before)
+	  اگر (unlikely (!بفر->copy_glyph ())) واپس;
 	/* TODO We ignore KashidaLike setting. */
-	if (unlikely (!c->output_glyphs (count, glyphs))) return;
-	ret = true;
-	if (buffer->idx < buffer->len && !before)
-	  buffer->skip_glyph ();
+	اگر (unlikely (!c->output_glyphs (گنتی, glyphs))) واپس;
+	ret = سچ;
+	اگر (بفر->idx < بفر->len && !before)
+	  بفر->skip_glyph ();
 
 	/* Humm. Not sure where to move to.  There's this wording under
 	 * DontAdvance flag:
@@ -865,62 +865,62 @@ struct InsertionSubtable
 	 *
 	 * https://github.com/harfbuzz/harfbuzz/issues/1224#issuecomment-427691417
 	 */
-	if (unlikely (!buffer->move_to ((flags & DontAdvance) ? end : end + count))) return;
+	اگر (unlikely (!بفر->move_مقصد ((flags & DontAdvance) ? انتہا : انتہا + گنتی))) واپس;
       }
     }
 
-    public:
-    bool ret;
+    عوامی:
+    منطقی ret;
     hb_aat_apply_context_t *c;
-    const InsertionSubtable *table;
-    private:
-    unsigned int mark;
-    const UnsizedArrayOf<HBGlyphID16> &insertionAction;
+    ثابت InsertionSubtable *جدول;
+    نجی:
+    غیرعلامتی صحیح mark;
+    ثابت Unsized_Array_کا<HBGlyphID16> &insertionAction;
   };
 
-  bool apply (hb_aat_apply_context_t *c) const
+  منطقی apply (hb_aat_apply_context_t *c) ثابت
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (یہ);
 
-    driver_context_t dc (this, c);
+    driver_context_t dc (یہ, c);
 
-    StateTableDriver<Types, EntryData, Flags> driver (machine, c->face);
+    State_جدول_Driver<Types, اندراج_ڈیٹا, Flags> driver (machine, c->face);
 
     driver.drive (&dc, c);
 
     return_trace (dc.ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (یہ);
     /* The rest of array sanitizations are done at run-time. */
-    return_trace (c->check_struct (this) && machine.sanitize (c) &&
+    return_trace (c->check_struct (یہ) && machine.sanitize (c) &&
 		  hb_barrier () &&
 		  insertionAction);
   }
 
-  public:
-  StateTable<Types, EntryData>
+  عوامی:
+  State_جدول<Types, اندراج_ڈیٹا>
 		machine;
-  protected:
-  NNOffsetTo<UnsizedArrayOf<HBGlyphID16>, HBUINT>
+  محفوظ:
+  NNOffset_مقصد<Unsized_Array_کا<HBGlyphID16>, HBUINT>
 		insertionAction;	/* Byte offset from stateHeader to the start of
 					 * the insertion glyph table. */
-  public:
-  DEFINE_SIZE_STATIC ((StateTable<Types, EntryData>::static_size + HBUINT::static_size));
+  عوامی:
+  DEFINE_سائز_STATIC ((State_جدول<Types, اندراج_ڈیٹا>::static_سائز + HBUINT::static_سائز));
 };
 
 
-struct Feature
+ساخت Feature
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ));
   }
 
-  public:
+  عوامی:
   HBUINT16	featureType;	/* The type of feature. */
   HBUINT16	featureSetting;	/* The feature's setting (aka selector). */
   HBUINT32	enableFlags;	/* Flags for the settings that this feature
@@ -928,89 +928,89 @@ struct Feature
   HBUINT32	disableFlags;	/* Complement of flags for the settings that this
 				 * feature and setting disable. */
 
-  public:
-  DEFINE_SIZE_STATIC (12);
+  عوامی:
+  DEFINE_سائز_STATIC (12);
 };
 
 
-struct hb_accelerate_subtables_context_t :
+ساخت hb_accelerate_subtables_context_t :
        hb_dispatch_context_t<hb_accelerate_subtables_context_t>
 {
-  struct hb_applicable_t
+  ساخت hb_applicable_t
   {
-    friend struct hb_accelerate_subtables_context_t;
-    friend struct hb_aat_layout_lookup_accelerator_t;
+    دوست ساخت hb_accelerate_subtables_context_t;
+    دوست ساخت hb_aat_layout_lookup_accelerator_t;
 
-    public:
-    hb_bit_set_t glyph_set;
-    mutable hb_aat_class_cache_t class_cache;
+    عوامی:
+    hb_ثنائی_ہندسہ_سیٹ_t glyph_سیٹ;
+    تغیرپذیر hb_aat_class_cache_t class_cache;
 
-    template <typename T>
-    auto init_ (const T &obj_, unsigned num_glyphs, hb_priority<1>) HB_AUTO_RETURN
+    سانچہ <قسم_نام T>
+    خودکار init_ (ثابت T &obj_, غیرعلامتی عدد_glyphs, hb_ترجیح<1>) HB_AUTO_RETURN
     (
-      obj_.machine.collect_initial_glyphs (glyph_set, num_glyphs, obj_)
+      obj_.machine.collect_initial_glyphs (glyph_سیٹ, عدد_glyphs, obj_)
     )
 
-    template <typename T>
-    void init_ (const T &obj_, unsigned num_glyphs, hb_priority<0>)
+    سانچہ <قسم_نام T>
+    خالی init_ (ثابت T &obj_, غیرعلامتی عدد_glyphs, hb_ترجیح<0>)
     {
-      obj_.collect_initial_glyphs (glyph_set, num_glyphs);
+      obj_.collect_initial_glyphs (glyph_سیٹ, عدد_glyphs);
     }
 
-    template <typename T>
-    void init (const T &obj_, unsigned num_glyphs)
+    سانچہ <قسم_نام T>
+    خالی init (ثابت T &obj_, غیرعلامتی عدد_glyphs)
     {
-      glyph_set.init ();
-      init_ (obj_, num_glyphs, hb_prioritize);
+      glyph_سیٹ.init ();
+      init_ (obj_, عدد_glyphs, hb_prioritize);
       class_cache.clear ();
     }
 
-    void
+    خالی
     fini ()
     {
-      glyph_set.fini ();
+      glyph_سیٹ.fini ();
     }
   };
 
   /* Dispatch interface. */
-  template <typename T>
-  return_t dispatch (const T &obj)
+  سانچہ <قسم_نام T>
+  return_t dispatch (ثابت T &obj)
   {
-    hb_applicable_t *entry = &array[i++];
+    hb_applicable_t *اندراج_2 = &array[i++];
 
-    entry->init (obj, num_glyphs);
+    اندراج_2->init (obj, عدد_glyphs);
 
-    return hb_empty_t ();
+    واپس hb_خالی_خانے_t ();
   }
-  static return_t default_return_value () { return hb_empty_t (); }
+  ساکن return_t default_return_قدر () { واپس hb_خالی_خانے_t (); }
 
-  bool stop_sublookup_iteration (return_t r) const { return false; }
+  منطقی stop_sublookup_iteration (return_t r) ثابت { واپس جھوٹ; }
 
-  hb_accelerate_subtables_context_t (hb_applicable_t *array_, unsigned num_glyphs_) :
+  hb_accelerate_subtables_context_t (hb_applicable_t *array_, غیرعلامتی عدد_glyphs_2) :
 				     hb_dispatch_context_t<hb_accelerate_subtables_context_t> (),
-				     array (array_), num_glyphs (num_glyphs_) {}
+				     array (array_), عدد_glyphs (عدد_glyphs_2) {}
 
   hb_applicable_t *array;
-  unsigned num_glyphs;
-  unsigned i = 0;
+  غیرعلامتی عدد_glyphs;
+  غیرعلامتی i = 0;
 };
 
-struct hb_aat_layout_chain_accelerator_t
+ساخت hb_aat_layout_chain_accelerator_t
 {
-  template <typename TChain>
-  static hb_aat_layout_chain_accelerator_t *create (const TChain &chain, unsigned num_glyphs)
+  سانچہ <قسم_نام TChain>
+  ساکن hb_aat_layout_chain_accelerator_t *create (ثابت TChain &chain, غیرعلامتی عدد_glyphs)
   {
-    unsigned count = chain.get_subtable_count ();
+    غیرعلامتی گنتی = chain.get_subtable_گنتی ();
 
-    unsigned product;
-    if (unlikely (hb_unsigned_mul_overflows (count,
-        sizeof (hb_accelerate_subtables_context_t::hb_applicable_t), &product)))
-      return nullptr;
+    غیرعلامتی حاصل_ضرب;
+    اگر (unlikely (hb_unsigned_mul_overflows (گنتی,
+        حجم (hb_accelerate_subtables_context_t::hb_applicable_t), &حاصل_ضرب)))
+      واپس خالی_اشاریہ;
 
-    unsigned size;
-    if (unlikely (hb_unsigned_add_overflows (sizeof (hb_aat_layout_chain_accelerator_t) -
-        HB_VAR_ARRAY * sizeof (hb_accelerate_subtables_context_t::hb_applicable_t), product, &size))) {
-      return nullptr;
+    غیرعلامتی سائز;
+    اگر (unlikely (hb_unsigned_جوڑو_overflows (حجم (hb_aat_layout_chain_accelerator_t) -
+        HB_VAR_ARRAY * حجم (hb_accelerate_subtables_context_t::hb_applicable_t), حاصل_ضرب, &سائز))) {
+      واپس خالی_اشاریہ;
     }
 
     /* The following is a calloc because when we are collecting subtables,
@@ -1018,41 +1018,41 @@ struct hb_aat_layout_chain_accelerator_t
      * we might not fill in all the count entries of the subtables array.
      * Zeroing it allows the set digest to gatekeep it without having to
      * initialize it further. */
-    auto *thiz = (hb_aat_layout_chain_accelerator_t *) hb_calloc (1, size);
-    if (unlikely (!thiz))
-      return nullptr;
+    خودکار *thiz = (hb_aat_layout_chain_accelerator_t *) hb_calloc (1, سائز);
+    اگر (unlikely (!thiz))
+      واپس خالی_اشاریہ;
 
-    thiz->count = count;
+    thiz->گنتی = گنتی;
 
-    hb_accelerate_subtables_context_t c_accelerate_subtables (thiz->subtables, num_glyphs);
+    hb_accelerate_subtables_context_t c_accelerate_subtables (thiz->subtables, عدد_glyphs);
     chain.dispatch (&c_accelerate_subtables);
 
-    return thiz;
+    واپس thiz;
   }
 
-  void destroy ()
+  خالی destroy ()
   {
-    for (unsigned i = 0; i < count; i++)
+    برائے (غیرعلامتی i = 0; i < گنتی; i++)
       subtables[i].fini ();
   }
 
-  unsigned count;
+  غیرعلامتی گنتی;
   hb_accelerate_subtables_context_t::hb_applicable_t subtables[HB_VAR_ARRAY];
 };
 
-template <typename Types>
-struct ChainSubtable
+سانچہ <قسم_نام Types>
+ساخت ChainSubtable
 {
-  typedef typename Types::HBUINT HBUINT;
+  قسمتعریف قسم_نام Types::HBUINT HBUINT;
 
-  template <typename T>
-  friend struct Chain;
+  سانچہ <قسم_نام T>
+  دوست ساخت Chain;
 
-  size_t get_size () const     { return length; }
-  unsigned int get_type () const     { return coverage & 0xFF; }
-  unsigned int get_coverage () const { return coverage >> (sizeof (HBUINT) * 8 - 8); }
+  size_t get_سائز () ثابت     { واپس لمبائی; }
+  غیرعلامتی صحیح get_type () ثابت     { واپس coverage & 0xFF; }
+  غیرعلامتی صحیح get_coverage () ثابت { واپس coverage >> (حجم (HBUINT) * 8 - 8); }
 
-  enum Coverage
+  شمار Coverage
   {
     Vertical		= 0x80,	/* If set, this subtable will only be applied
 				 * to vertical text. If clear, this subtable
@@ -1067,7 +1067,7 @@ struct ChainSubtable
 				 * in logical order (or reverse logical order,
 				 * depending on the value of bit 0x80000000). */
   };
-  enum Type
+  شمار Type
   {
     Rearrangement	= 0,
     Contextual		= 1,
@@ -1076,134 +1076,134 @@ struct ChainSubtable
     Insertion		= 5
   };
 
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  سانچہ <قسم_نام context_t, قسم_نام ...Ts>
+  قسم_نام context_t::return_t dispatch (context_t *c, Ts&&... ds) ثابت
   {
-    unsigned int subtable_type = get_type ();
-    TRACE_DISPATCH (this, subtable_type);
-    switch (subtable_type) {
-    case Rearrangement:		hb_barrier (); return_trace (c->dispatch (u.rearrangement, std::forward<Ts> (ds)...));
-    case Contextual:		hb_barrier (); return_trace (c->dispatch (u.contextual, std::forward<Ts> (ds)...));
-    case Ligature:		hb_barrier (); return_trace (c->dispatch (u.ligature, std::forward<Ts> (ds)...));
-    case Noncontextual:		hb_barrier (); return_trace (c->dispatch (u.noncontextual, std::forward<Ts> (ds)...));
-    case Insertion:		hb_barrier (); return_trace (c->dispatch (u.insertion, std::forward<Ts> (ds)...));
-    default:			return_trace (c->default_return_value ());
+    غیرعلامتی صحیح subtable_type = get_type ();
+    TRACE_DISPATCH (یہ, subtable_type);
+    انتخاب (subtable_type) {
+    حالت Rearrangement:		hb_barrier (); return_trace (c->dispatch (u.rearrangement, std::forward<Ts> (ds)...));
+    حالت Contextual:		hb_barrier (); return_trace (c->dispatch (u.contextual, std::forward<Ts> (ds)...));
+    حالت Ligature:		hb_barrier (); return_trace (c->dispatch (u.ligature, std::forward<Ts> (ds)...));
+    حالت Noncontextual:		hb_barrier (); return_trace (c->dispatch (u.noncontextual, std::forward<Ts> (ds)...));
+    حالت Insertion:		hb_barrier (); return_trace (c->dispatch (u.insertion, std::forward<Ts> (ds)...));
+    طےشدہ:			return_trace (c->default_return_قدر ());
     }
   }
 
-  bool apply (hb_aat_apply_context_t *c) const
+  منطقی apply (hb_aat_apply_context_t *c) ثابت
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (یہ);
     // Disabled for https://github.com/harfbuzz/harfbuzz/issues/4873
     //hb_sanitize_with_object_t with (&c->sanitizer, this);
     return_trace (dispatch (c));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (!(length.sanitize (c) &&
+    TRACE_SANITIZE (یہ);
+    اگر (!(لمبائی.sanitize (c) &&
 	  hb_barrier () &&
-	  length >= min_size &&
-	  c->check_range (this, length)))
-      return_trace (false);
+	  لمبائی >= min_سائز &&
+	  c->check_range (یہ, لمبائی)))
+      return_trace (جھوٹ);
 
     // Disabled for https://github.com/harfbuzz/harfbuzz/issues/4873
     //hb_sanitize_with_object_t with (c, this);
     return_trace (dispatch (c));
   }
 
-  protected:
-  HBUINT	length;		/* Total subtable length, including this header. */
+  محفوظ:
+  HBUINT	لمبائی;		/* Total subtable length, including this header. */
   HBUINT	coverage;	/* Coverage flags and subtable type. */
   HBUINT32	subFeatureFlags;/* The 32-bit mask identifying which subtable this is. */
-  union {
+  اتحاد {
   RearrangementSubtable<Types>	rearrangement;
   ContextualSubtable<Types>	contextual;
   LigatureSubtable<Types>	ligature;
   NoncontextualSubtable<Types>	noncontextual;
   InsertionSubtable<Types>	insertion;
   } u;
-  public:
-  DEFINE_SIZE_MIN (2 * sizeof (HBUINT) + 4);
+  عوامی:
+  DEFINE_سائز_MIN (2 * حجم (HBUINT) + 4);
 };
 
-template <typename Types>
-struct Chain
+سانچہ <قسم_نام Types>
+ساخت Chain
 {
-  typedef typename Types::HBUINT HBUINT;
+  قسمتعریف قسم_نام Types::HBUINT HBUINT;
 
-  unsigned get_subtable_count () const { return subtableCount; }
+  غیرعلامتی get_subtable_گنتی () ثابت { واپس subtable_گنتی_2; }
 
-  hb_mask_t compile_flags (const hb_aat_map_builder_t *map) const
+  hb_نقاب_t compile_flags (ثابت hb_aat_map_builder_t *map) ثابت
   {
-    hb_mask_t flags = defaultFlags;
+    hb_نقاب_t flags = defaultFlags;
     {
-      unsigned int count = featureCount;
-      for (unsigned i = 0; i < count; i++)
+      غیرعلامتی صحیح گنتی = feature_گنتی;
+      برائے (غیرعلامتی i = 0; i < گنتی; i++)
       {
-	const Feature &feature = featureZ[i];
-	hb_aat_layout_feature_type_t type = (hb_aat_layout_feature_type_t) (unsigned int) feature.featureType;
-	hb_aat_layout_feature_selector_t setting = (hb_aat_layout_feature_selector_t) (unsigned int) feature.featureSetting;
+	ثابت Feature &feature = featureZ[i];
+	hb_aat_layout_feature_type_t type = (hb_aat_layout_feature_type_t) (غیرعلامتی صحیح) feature.featureType;
+	hb_aat_layout_feature_selector_t setting = (hb_aat_layout_feature_selector_t) (غیرعلامتی صحیح) feature.featureSetting;
       retry:
 	// Check whether this type/setting pair was requested in the map, and if so, apply its flags.
 	// (The search here only looks at the type and setting fields of feature_info_t.)
-	hb_aat_map_builder_t::feature_info_t info = { type, setting, false, 0 };
-	if (map->current_features.bsearch (info))
+	hb_aat_map_builder_t::feature_info_t info = { type, setting, جھوٹ, 0 };
+	اگر (map->current_features.bsearch (info))
 	{
 	  flags &= feature.disableFlags;
 	  flags |= feature.enableFlags;
 	}
-	else if (type == HB_AAT_LAYOUT_FEATURE_TYPE_LETTER_CASE && setting == HB_AAT_LAYOUT_FEATURE_SELECTOR_SMALL_CAPS)
+	ورنہ اگر (type == HB_AAT_LAYOUT_FEATURE_TYPE_LETTER_CASE && setting == HB_AAT_LAYOUT_FEATURE_SELECTOR_SMALL_CAPS)
 	{
 	  /* Deprecated. https://github.com/harfbuzz/harfbuzz/issues/1342 */
-	  type = HB_AAT_LAYOUT_FEATURE_TYPE_LOWER_CASE;
-	  setting = HB_AAT_LAYOUT_FEATURE_SELECTOR_LOWER_CASE_SMALL_CAPS;
-	  goto retry;
+	  type = HB_AAT_LAYOUT_FEATURE_TYPE_زیریں_CASE;
+	  setting = HB_AAT_LAYOUT_FEATURE_SELECTOR_زیریں_CASE_SMALL_CAPS;
+	  جاؤ retry;
 	}
-#ifndef HB_NO_AAT
-	else if (type == HB_AAT_LAYOUT_FEATURE_TYPE_LANGUAGE_TAG_TYPE && setting &&
+#اگر_غیر_تعریف_شدہ HB_NO_AAT
+	ورنہ اگر (type == HB_AAT_LAYOUT_FEATURE_TYPE_LANGUAGE_لیبل_TYPE && setting &&
 		 /* TODO: Rudimentary language matching. */
-		 hb_language_matches (map->face->table.ltag->get_language (setting - 1), map->props.language))
+		 hb_language_matches (map->face->جدول.ltag->get_language (setting - 1), map->props.language))
 	{
 	  flags &= feature.disableFlags;
 	  flags |= feature.enableFlags;
 	}
-#endif
+#اگر_ختم
       }
     }
-    return flags;
+    واپس flags;
   }
 
-  void apply (hb_aat_apply_context_t *c,
-	      const hb_aat_layout_chain_accelerator_t *accel) const
+  خالی apply (hb_aat_apply_context_t *c,
+	      ثابت hb_aat_layout_chain_accelerator_t *accel) ثابت
   {
-    const ChainSubtable<Types> *subtable = &StructAfter<ChainSubtable<Types>> (featureZ.as_array (featureCount));
-    unsigned int count = subtableCount;
-    for (unsigned int i = 0; i < count; i++)
+    ثابت ChainSubtable<Types> *subtable = &StructAfter<ChainSubtable<Types>> (featureZ.as_array (feature_گنتی));
+    غیرعلامتی صحیح گنتی = subtable_گنتی_2;
+    برائے (غیرعلامتی صحیح i = 0; i < گنتی; i++)
     {
-      bool reverse;
+      منطقی reverse;
 
-      auto coverage = subtable->get_coverage ();
+      خودکار coverage = subtable->get_coverage ();
 
-      hb_mask_t subtable_flags = subtable->subFeatureFlags;
-      if (hb_none (hb_iter (c->range_flags) |
-		   hb_map ([subtable_flags] (const hb_aat_map_t::range_flags_t _) -> bool { return subtable_flags & (_.flags); })))
-	goto skip;
+      hb_نقاب_t subtable_flags = subtable->subFeatureFlags;
+      اگر (hb_none (hb_iter (c->range_flags) |
+		   hb_map ([subtable_flags] (ثابت hb_aat_map_t::range_flags_t _) -> منطقی { واپس subtable_flags & (_.flags); })))
+	جاؤ skip;
 
-      if (!(coverage & ChainSubtable<Types>::AllDirections) &&
-	  HB_DIRECTION_IS_VERTICAL (c->buffer->props.direction) !=
-	  bool (coverage & ChainSubtable<Types>::Vertical))
-	goto skip;
+      اگر (!(coverage & ChainSubtable<Types>::AllDirections) &&
+	  HB_DIRECTION_IS_VERTICAL (c->بفر->props.direction) !=
+	  منطقی (coverage & ChainSubtable<Types>::Vertical))
+	جاؤ skip;
 
       c->subtable_flags = subtable_flags;
-      c->first_set = accel ? &accel->subtables[i].glyph_set : &Null(hb_bit_set_t);
-      c->machine_class_cache = accel ? &accel->subtables[i].class_cache : nullptr;
+      c->پہلا_سیٹ = accel ? &accel->subtables[i].glyph_سیٹ : &Null(hb_ثنائی_ہندسہ_سیٹ_t);
+      c->machine_class_cache = accel ? &accel->subtables[i].class_cache : خالی_اشاریہ;
 
-      if (!c->buffer_intersects_machine ())
+      اگر (!c->بفر_intersects_machine ())
       {
-	(void) c->buffer->message (c->font, "skipped chainsubtable %u because no glyph matches", c->lookup_index);
-	goto skip;
+	(خالی) c->بفر->پیغام (c->font, "skipped chainsubtable %u because no glyph matches", c->lookup_اشاریہ);
+	جاؤ skip;
       }
 
       /* Buffer contents is always in logical direction.  Determine if
@@ -1234,91 +1234,91 @@ struct Chain
 				may be right-to-left or left-to-right).
        */
       reverse = coverage & ChainSubtable<Types>::Logical ?
-		bool (coverage & ChainSubtable<Types>::Backwards) :
-		bool (coverage & ChainSubtable<Types>::Backwards) !=
-		HB_DIRECTION_IS_BACKWARD (c->buffer->props.direction);
+		منطقی (coverage & ChainSubtable<Types>::Backwards) :
+		منطقی (coverage & ChainSubtable<Types>::Backwards) !=
+		HB_DIRECTION_IS_BACKWARD (c->بفر->props.direction);
 
-      if (!c->buffer->message (c->font, "start chainsubtable %u", c->lookup_index))
-	goto skip;
+      اگر (!c->بفر->پیغام (c->font, "start chainsubtable %u", c->lookup_اشاریہ))
+	جاؤ skip;
 
-      if (reverse != c->buffer_is_reversed)
-        c->reverse_buffer ();
+      اگر (reverse != c->بفر_is_reversed)
+        c->الٹ_بفر ();
 
       subtable->apply (c);
 
-      (void) c->buffer->message (c->font, "end chainsubtable %u", c->lookup_index);
+      (خالی) c->بفر->پیغام (c->font, "end chainsubtable %u", c->lookup_اشاریہ);
 
-      if (unlikely (!c->buffer->successful)) break;
+      اگر (unlikely (!c->بفر->successful)) توڑو;
 
     skip:
       subtable = &StructAfter<ChainSubtable<Types>> (*subtable);
-      c->set_lookup_index (c->lookup_index + 1);
+      c->سیٹ_lookup_اشاریہ (c->lookup_اشاریہ + 1);
     }
-    if (c->buffer_is_reversed)
-      c->reverse_buffer ();
+    اگر (c->بفر_is_reversed)
+      c->الٹ_بفر ();
   }
 
-  size_t get_size () const { return length; }
+  size_t get_سائز () ثابت { واپس لمبائی; }
 
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  سانچہ <قسم_نام context_t, قسم_نام ...Ts>
+  قسم_نام context_t::return_t dispatch (context_t *c, Ts&&... ds) ثابت
   {
-    const ChainSubtable<Types> *subtable = &StructAfter<ChainSubtable<Types>> (featureZ.as_array (featureCount));
-    unsigned int count = subtableCount;
-    for (unsigned int i = 0; i < count; i++)
+    ثابت ChainSubtable<Types> *subtable = &StructAfter<ChainSubtable<Types>> (featureZ.as_array (feature_گنتی));
+    غیرعلامتی صحیح گنتی = subtable_گنتی_2;
+    برائے (غیرعلامتی صحیح i = 0; i < گنتی; i++)
     {
-      typename context_t::return_t ret = subtable->dispatch (c, std::forward<Ts> (ds)...);
-      if (c->stop_sublookup_iteration (ret))
-	return ret;
+      قسم_نام context_t::return_t ret = subtable->dispatch (c, std::forward<Ts> (ds)...);
+      اگر (c->stop_sublookup_iteration (ret))
+	واپس ret;
       subtable = &StructAfter<ChainSubtable<Types>> (*subtable);
     }
-    return c->default_return_value ();
+    واپس c->default_return_قدر ();
   }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int version) const
+  منطقی sanitize (hb_sanitize_context_t *c, غیرعلامتی صحیح نسخہ) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (!(length.sanitize (c) &&
+    TRACE_SANITIZE (یہ);
+    اگر (!(لمبائی.sanitize (c) &&
 	  hb_barrier () &&
-	  length >= min_size &&
-	  c->check_range (this, length)))
-      return_trace (false);
+	  لمبائی >= min_سائز &&
+	  c->check_range (یہ, لمبائی)))
+      return_trace (جھوٹ);
 
-    if (!c->check_array (featureZ.arrayZ, featureCount))
-      return_trace (false);
+    اگر (!c->check_array (featureZ.arrayZ, feature_گنتی))
+      return_trace (جھوٹ);
 
-    const ChainSubtable<Types> *subtable = &StructAfter<ChainSubtable<Types>> (featureZ.as_array (featureCount));
-    unsigned int count = subtableCount;
-    for (unsigned int i = 0; i < count; i++)
+    ثابت ChainSubtable<Types> *subtable = &StructAfter<ChainSubtable<Types>> (featureZ.as_array (feature_گنتی));
+    غیرعلامتی صحیح گنتی = subtable_گنتی_2;
+    برائے (غیرعلامتی صحیح i = 0; i < گنتی; i++)
     {
-      if (!subtable->sanitize (c))
-	return_trace (false);
+      اگر (!subtable->sanitize (c))
+	return_trace (جھوٹ);
       hb_barrier ();
       subtable = &StructAfter<ChainSubtable<Types>> (*subtable);
     }
 
-    if (version >= 3)
+    اگر (نسخہ >= 3)
     {
-      const SubtableGlyphCoverage *coverage = (const SubtableGlyphCoverage *) subtable;
-      if (!coverage->sanitize (c, count))
-        return_trace (false);
+      ثابت SubtableGlyphCoverage *coverage = (ثابت SubtableGlyphCoverage *) subtable;
+      اگر (!coverage->sanitize (c, گنتی))
+        return_trace (جھوٹ);
     }
 
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  protected:
+  محفوظ:
   HBUINT32	defaultFlags;	/* The default specification for subtables. */
-  HBUINT32	length;		/* Total byte count, including this header. */
-  HBUINT	featureCount;	/* Number of feature subtable entries. */
-  HBUINT	subtableCount;	/* The number of subtables in the chain. */
+  HBUINT32	لمبائی;		/* Total byte count, including this header. */
+  HBUINT	feature_گنتی;	/* Number of feature subtable entries. */
+  HBUINT	subtable_گنتی_2;	/* The number of subtables in the chain. */
 
-  UnsizedArrayOf<Feature>	featureZ;	/* Features. */
+  Unsized_Array_کا<Feature>	featureZ;	/* Features. */
 /*ChainSubtable	firstSubtable;*//* Subtables. */
 /*SubtableGlyphCoverage coverages*//* Only if version >= 3. */
 
-  public:
-  DEFINE_SIZE_MIN (8 + 2 * sizeof (HBUINT));
+  عوامی:
+  DEFINE_سائز_MIN (8 + 2 * حجم (HBUINT));
 };
 
 
@@ -1326,173 +1326,173 @@ struct Chain
  * The 'mort'/'morx' Table
  */
 
-template <typename T, typename Types, hb_tag_t TAG>
-struct mortmorx
+سانچہ <قسم_نام T, قسم_نام Types, hb_لیبل_t لیبل_3>
+ساخت mortmorx
 {
-  static constexpr hb_tag_t tableTag = TAG;
+  ساکن constexpr hb_لیبل_t جدول_لیبل = لیبل_3;
 
-  bool has_data () const { return version != 0; }
+  منطقی has_ڈیٹا () ثابت { واپس نسخہ != 0; }
 
-  struct accelerator_t
+  ساخت accelerator_t
   {
     accelerator_t (hb_face_t *face)
     {
       hb_sanitize_context_t sc;
-      this->table = sc.reference_table<T> (face);
+      یہ->جدول = sc.reference_جدول<T> (face);
 
-      if (unlikely (this->table->is_blocklisted (this->table.get_blob (), face)))
+      اگر (unlikely (یہ->جدول->is_blocklisted (یہ->جدول.get_blob (), face)))
       {
-        hb_blob_destroy (this->table.get_blob ());
-        this->table = hb_blob_get_empty ();
+        hb_blob_destroy (یہ->جدول.get_blob ());
+        یہ->جدول = hb_blob_get_خالی_خانے ();
       }
 
-      this->chain_count = table->get_chain_count ();
+      یہ->chain_گنتی = جدول->get_chain_گنتی ();
 
-      this->accels = (hb_atomic_t<hb_aat_layout_chain_accelerator_t *> *) hb_calloc (this->chain_count, sizeof (*accels));
-      if (unlikely (!this->accels))
+      یہ->accels = (hb_atomic_t<hb_aat_layout_chain_accelerator_t *> *) hb_calloc (یہ->chain_گنتی, حجم (*accels));
+      اگر (unlikely (!یہ->accels))
       {
-	this->chain_count = 0;
-	this->table.destroy ();
-	this->table = hb_blob_get_empty ();
+	یہ->chain_گنتی = 0;
+	یہ->جدول.destroy ();
+	یہ->جدول = hb_blob_get_خالی_خانے ();
       }
     }
     ~accelerator_t ()
     {
-      for (unsigned int i = 0; i < this->chain_count; i++)
+      برائے (غیرعلامتی صحیح i = 0; i < یہ->chain_گنتی; i++)
       {
-	if (this->accels[i])
-	  this->accels[i]->destroy ();
-	hb_free (this->accels[i]);
+	اگر (یہ->accels[i])
+	  یہ->accels[i]->destroy ();
+	hb_free (یہ->accels[i]);
       }
-      hb_free (this->accels);
-      this->table.destroy ();
+      hb_free (یہ->accels);
+      یہ->جدول.destroy ();
     }
 
-    hb_blob_t *get_blob () const { return table.get_blob (); }
+    hb_blob_t *get_blob () ثابت { واپس جدول.get_blob (); }
 
-    template <typename Chain>
-    hb_aat_layout_chain_accelerator_t *get_accel (unsigned chain_index, const Chain &chain, unsigned num_glyphs) const
+    سانچہ <قسم_نام Chain>
+    hb_aat_layout_chain_accelerator_t *get_accel (غیرعلامتی chain_اشاریہ, ثابت Chain &chain, غیرعلامتی عدد_glyphs) ثابت
     {
-      if (unlikely (chain_index >= chain_count)) return nullptr;
+      اگر (unlikely (chain_اشاریہ >= chain_گنتی)) واپس خالی_اشاریہ;
 
     retry:
-      auto *accel = accels[chain_index].get_acquire ();
-      if (unlikely (!accel))
+      خودکار *accel = accels[chain_اشاریہ].get_acquire ();
+      اگر (unlikely (!accel))
       {
-	accel = hb_aat_layout_chain_accelerator_t::create (chain, num_glyphs);
-	if (unlikely (!accel))
-	  return nullptr;
+	accel = hb_aat_layout_chain_accelerator_t::create (chain, عدد_glyphs);
+	اگر (unlikely (!accel))
+	  واپس خالی_اشاریہ;
 
-	if (unlikely (!accels[chain_index].cmpexch (nullptr, accel)))
+	اگر (unlikely (!accels[chain_اشاریہ].cmpexch (خالی_اشاریہ, accel)))
 	{
 	  hb_free (accel);
-	  goto retry;
+	  جاؤ retry;
 	}
       }
 
-      return accel;
+      واپس accel;
     }
 
-    hb_blob_ptr_t<T> table;
-    unsigned int chain_count;
+    hb_blob_ptr_t<T> جدول;
+    غیرعلامتی صحیح chain_گنتی;
     hb_atomic_t<hb_aat_layout_chain_accelerator_t *> *accels;
     hb_aat_scratch_t scratch;
   };
 
 
-  void compile_flags (const hb_aat_map_builder_t *mapper,
-		      hb_aat_map_t *map) const
+  خالی compile_flags (ثابت hb_aat_map_builder_t *mapper,
+		      hb_aat_map_t *map) ثابت
   {
-    const Chain<Types> *chain = &firstChain;
-    unsigned int count = chainCount;
-    if (unlikely (!map->chain_flags.resize (count)))
-      return;
-    for (unsigned int i = 0; i < count; i++)
+    ثابت Chain<Types> *chain = &پہلا_Chain;
+    غیرعلامتی صحیح گنتی = chain_گنتی_2;
+    اگر (unlikely (!map->chain_flags.resize (گنتی)))
+      واپس;
+    برائے (غیرعلامتی صحیح i = 0; i < گنتی; i++)
     {
       map->chain_flags[i].push (hb_aat_map_t::range_flags_t {chain->compile_flags (mapper),
-							     mapper->range_first,
-							     mapper->range_last});
+							     mapper->range_پہلا,
+							     mapper->range_آخری});
       chain = &StructAfter<Chain<Types>> (*chain);
     }
   }
 
-  unsigned get_chain_count () const
+  غیرعلامتی get_chain_گنتی () ثابت
   {
-    return chainCount;
+    واپس chain_گنتی_2;
   }
-  void apply (hb_aat_apply_context_t *c,
-	      const hb_aat_map_t &map,
-	      const accelerator_t &accel) const
+  خالی apply (hb_aat_apply_context_t *c,
+	      ثابت hb_aat_map_t &map,
+	      ثابت accelerator_t &accel) ثابت
   {
-    if (unlikely (!c->buffer->successful)) return;
+    اگر (unlikely (!c->بفر->successful)) واپس;
 
-    c->buffer->unsafe_to_concat ();
+    c->بفر->unsafe_مقصد_concat ();
 
-    c->setup_buffer_glyph_set ();
+    c->تیاری_بفر_glyph_سیٹ ();
 
-    c->set_lookup_index (0);
-    const Chain<Types> *chain = &firstChain;
-    unsigned int count = chainCount;
-    for (unsigned int i = 0; i < count; i++)
+    c->سیٹ_lookup_اشاریہ (0);
+    ثابت Chain<Types> *chain = &پہلا_Chain;
+    غیرعلامتی صحیح گنتی = chain_گنتی_2;
+    برائے (غیرعلامتی صحیح i = 0; i < گنتی; i++)
     {
-      auto *chain_accel = accel.get_accel (i, *chain, c->face->get_num_glyphs ());
+      خودکار *chain_accel = accel.get_accel (i, *chain, c->face->get_عدد_glyphs ());
       c->range_flags = &map.chain_flags[i];
       chain->apply (c, chain_accel);
-      if (unlikely (!c->buffer->successful)) return;
+      اگر (unlikely (!c->بفر->successful)) واپس;
       chain = &StructAfter<Chain<Types>> (*chain);
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (!(version.sanitize (c) &&
+    TRACE_SANITIZE (یہ);
+    اگر (!(نسخہ.sanitize (c) &&
 	  hb_barrier () &&
-	  version &&
-	  chainCount.sanitize (c)))
-      return_trace (false);
+	  نسخہ &&
+	  chain_گنتی_2.sanitize (c)))
+      return_trace (جھوٹ);
 
-    const Chain<Types> *chain = &firstChain;
-    unsigned int count = chainCount;
-    for (unsigned int i = 0; i < count; i++)
+    ثابت Chain<Types> *chain = &پہلا_Chain;
+    غیرعلامتی صحیح گنتی = chain_گنتی_2;
+    برائے (غیرعلامتی صحیح i = 0; i < گنتی; i++)
     {
-      if (!chain->sanitize (c, version))
-	return_trace (false);
+      اگر (!chain->sanitize (c, نسخہ))
+	return_trace (جھوٹ);
       hb_barrier ();
       chain = &StructAfter<Chain<Types>> (*chain);
     }
 
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  protected:
-  HBUINT16	version;	/* Version number of the glyph metamorphosis table.
+  محفوظ:
+  HBUINT16	نسخہ;	/* Version number of the glyph metamorphosis table.
 				 * 1, 2, or 3. */
-  HBUINT16	unused;		/* Set to 0. */
-  HBUINT32	chainCount;	/* Number of metamorphosis chains contained in this
+  HBUINT16	غیر_مستعمل_2;		/* Set to 0. */
+  HBUINT32	chain_گنتی_2;	/* Number of metamorphosis chains contained in this
 				 * table. */
-  Chain<Types>	firstChain;	/* Chains. */
+  Chain<Types>	پہلا_Chain;	/* Chains. */
 
-  public:
-  DEFINE_SIZE_MIN (8);
+  عوامی:
+  DEFINE_سائز_MIN (8);
 };
 
-struct morx : mortmorx<morx, ExtendedTypes, HB_AAT_TAG_morx>
+ساخت morx : mortmorx<morx, ExtendedTypes, HB_AAT_لیبل_morx>
 {
-  HB_INTERNAL bool is_blocklisted (hb_blob_t *blob,
-                                   hb_face_t *face) const;
+  HB_اندرونی منطقی is_blocklisted (hb_blob_t *blob,
+                                   hb_face_t *face) ثابت;
 };
 
-struct mort : mortmorx<mort, ObsoleteTypes, HB_AAT_TAG_mort>
+ساخت mort : mortmorx<mort, ObsoleteTypes, HB_AAT_لیبل_mort>
 {
-  HB_INTERNAL bool is_blocklisted (hb_blob_t *blob,
-                                   hb_face_t *face) const;
+  HB_اندرونی منطقی is_blocklisted (hb_blob_t *blob,
+                                   hb_face_t *face) ثابت;
 };
 
-struct morx_accelerator_t : morx::accelerator_t {
+ساخت morx_accelerator_t : morx::accelerator_t {
   morx_accelerator_t (hb_face_t *face) : morx::accelerator_t (face) {}
 };
-struct mort_accelerator_t : mort::accelerator_t {
+ساخت mort_accelerator_t : mort::accelerator_t {
   mort_accelerator_t (hb_face_t *face) : mort::accelerator_t (face) {}
 };
 
@@ -1500,4 +1500,4 @@ struct mort_accelerator_t : mort::accelerator_t {
 } /* namespace AAT */
 
 
-#endif /* HB_AAT_LAYOUT_MORX_TABLE_HH */
+#اگر_ختم /* HB_AAT_LAYOUT_MORX_TABLE_HH */

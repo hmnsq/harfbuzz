@@ -26,65 +26,65 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_HEAD_TABLE_HH
-#define HB_OT_HEAD_TABLE_HH
+#اگر_غیر_تعریف_شدہ HB_OT_سر_جدول_HH
+#تعریف_کرو HB_OT_سر_جدول_HH
 
-#include "hb-open-type.hh"
+#شامل "hb-open-type.hh"
 
 /*
  * head -- Font Header
  * https://docs.microsoft.com/en-us/typography/opentype/spec/head
  */
-#define HB_OT_TAG_head HB_TAG('h','e','a','d')
+#تعریف_کرو HB_OT_لیبل_سر HB_لیبل('h','e','a','d')
 
 
-namespace OT {
+نامخلا OT {
 
 
-struct head
+ساخت سر_2
 {
-  friend struct OpenTypeOffsetTable;
+  دوست ساخت Open_Type_انحراف_جدول;
 
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_head;
+  ساکن constexpr hb_لیبل_t جدول_لیبل = HB_OT_لیبل_سر;
 
-  unsigned int get_upem () const
+  غیرعلامتی صحیح get_upem () ثابت
   {
-    unsigned int upem = unitsPerEm;
+    غیرعلامتی صحیح upem = units_فی_Em;
     /* If no valid head table found, assume 1000, which matches typical Type1 usage. */
-    return 16 <= upem && upem <= 16384 ? upem : 1000;
+    واپس 16 <= upem && upem <= 16384 ? upem : 1000;
   }
 
-  bool serialize (hb_serialize_context_t *c) const
+  منطقی serialize (hb_serialize_context_t *c) ثابت
   {
-    TRACE_SERIALIZE (this);
-    return_trace ((bool) c->embed (this));
+    TRACE_SERIALIZE (یہ);
+    return_trace ((منطقی) c->embed (یہ));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    head *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (یہ);
+    سر_2 *برآمد = c->serializer->embed (یہ);
+    اگر (unlikely (!برآمد)) return_trace (جھوٹ);
 
-    if (c->plan->normalized_coords)
+    اگر (c->plan->normalized_coords)
     {
-      if (unlikely (!c->serializer->check_assign (out->xMin, c->plan->head_maxp_info.xMin,
-                                                  HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-        return_trace (false);
-      if (unlikely (!c->serializer->check_assign (out->xMax, c->plan->head_maxp_info.xMax,
-                                                  HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-        return_trace (false);
-      if (unlikely (!c->serializer->check_assign (out->yMin, c->plan->head_maxp_info.yMin,
-                                                  HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-        return_trace (false);
-      if (unlikely (!c->serializer->check_assign (out->yMax, c->plan->head_maxp_info.yMax,
-                                                  HB_SERIALIZE_ERROR_INT_OVERFLOW)))
-        return_trace (false);
+      اگر (unlikely (!c->serializer->check_تفویض (برآمد->xMin, c->plan->سر_maxp_info.xMin,
+                                                  HB_SERIALIZE_ERROR_INT_حد_سے_تجاوز)))
+        return_trace (جھوٹ);
+      اگر (unlikely (!c->serializer->check_تفویض (برآمد->xMax, c->plan->سر_maxp_info.xMax,
+                                                  HB_SERIALIZE_ERROR_INT_حد_سے_تجاوز)))
+        return_trace (جھوٹ);
+      اگر (unlikely (!c->serializer->check_تفویض (برآمد->yMin, c->plan->سر_maxp_info.yMin,
+                                                  HB_SERIALIZE_ERROR_INT_حد_سے_تجاوز)))
+        return_trace (جھوٹ);
+      اگر (unlikely (!c->serializer->check_تفویض (برآمد->yMax, c->plan->سر_maxp_info.yMax,
+                                                  HB_SERIALIZE_ERROR_INT_حد_سے_تجاوز)))
+        return_trace (جھوٹ);
     }
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  enum mac_style_flag_t {
+  شمار mac_style_flag_t {
     BOLD	= 1u<<0,
     ITALIC	= 1u<<1,
     UNDERLINE	= 1u<<2,
@@ -94,31 +94,31 @@ struct head
     EXPANDED	= 1u<<6,
   };
 
-  bool is_bold () const      { return macStyle & BOLD; }
-  bool is_italic () const    { return macStyle & ITALIC; }
-  bool is_condensed () const { return macStyle & CONDENSED; }
-  bool is_expanded () const  { return macStyle & EXPANDED; }
+  منطقی is_bold () ثابت      { واپس macStyle & BOLD; }
+  منطقی is_italic () ثابت    { واپس macStyle & ITALIC; }
+  منطقی is_condensed () ثابت { واپس macStyle & CONDENSED; }
+  منطقی is_expanded () ثابت  { واپس macStyle & EXPANDED; }
 
-  unsigned get_mac_style () const { return macStyle; }
+  غیرعلامتی get_mac_style () ثابت { واپس macStyle; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ) &&
 		  hb_barrier () &&
-		  version.major == 1 &&
-		  magicNumber == 0x5F0F3CF5u);
+		  نسخہ.major == 1 &&
+		  magic_نمبر == 0x5F0F3CF5u);
   }
 
-  protected:
-  FixedVersion<>version;		/* Version of the head table--currently
+  محفوظ:
+  Fixed_نسخہ<>نسخہ;		/* Version of the head table--currently
 					 * 0x00010000u for version 1.0. */
-  FixedVersion<>fontRevision;		/* Set by font manufacturer. */
-  HBUINT32	checkSumAdjustment;	/* To compute: set it to 0, sum the
+  Fixed_نسخہ<>fontRevision;		/* Set by font manufacturer. */
+  HBUINT32	check_مجموع_Adjustment;	/* To compute: set it to 0, sum the
 					 * entire font as HBUINT32, then store
 					 * 0xB1B0AFBAu - sum. */
-  HBUINT32	magicNumber;		/* Set to 0x5F0F3CF5u. */
-  public:
+  HBUINT32	magic_نمبر;		/* Set to 0x5F0F3CF5u. */
+  عوامی:
   HBUINT16	flags;			/* Bit 0: Baseline for font at y=0;
 					 * Bit 1: Left sidebearing point at x=0;
 					 * Bit 2: Instructions may depend on point size;
@@ -163,20 +163,20 @@ struct head
 					 * encoded in the cmap subtables represent proper
 					 * support for those code points.
 					 * Bit 15: Reserved, set to 0. */
-  protected:
-  HBUINT16	unitsPerEm;		/* Valid range is from 16 to 16384. This value
+  محفوظ:
+  HBUINT16	units_فی_Em;		/* Valid range is from 16 to 16384. This value
 					 * should be a power of 2 for fonts that have
 					 * TrueType outlines. */
   LONGDATETIME	created;		/* Number of seconds since 12:00 midnight,
 					   January 1, 1904. 64-bit integer */
   LONGDATETIME	modified;		/* Number of seconds since 12:00 midnight,
 					   January 1, 1904. 64-bit integer */
-  public:
+  عوامی:
   HBINT16	xMin;			/* For all glyph bounding boxes. */
   HBINT16	yMin;			/* For all glyph bounding boxes. */
   HBINT16	xMax;			/* For all glyph bounding boxes. */
   HBINT16	yMax;			/* For all glyph bounding boxes. */
-  protected:
+  محفوظ:
   HBUINT16	macStyle;		/* Bit 0: Bold (if set to 1);
 					 * Bit 1: Italic (if set to 1)
 					 * Bit 2: Underline (if set to 1)
@@ -185,22 +185,22 @@ struct head
 					 * Bit 5: Condensed (if set to 1)
 					 * Bit 6: Extended (if set to 1)
 					 * Bits 7-15: Reserved (set to 0). */
-  HBUINT16	lowestRecPPEM;		/* Smallest readable size in pixels. */
+  HBUINT16	سب_سے_نیچا_Rec_PPEM;		/* Smallest readable size in pixels. */
   HBINT16	fontDirectionHint;	/* Deprecated (Set to 2).
 					 * 0: Fully mixed directional glyphs;
 					 * 1: Only strongly left to right;
 					 * 2: Like 1 but also contains neutrals;
 					 * -1: Only strongly right to left;
 					 * -2: Like -1 but also contains neutrals. */
-  public:
-  HBUINT16	indexToLocFormat;	/* 0 for short offsets, 1 for long. */
-  HBUINT16	glyphDataFormat;	/* 0 for current format. */
+  عوامی:
+  HBUINT16	اشاریہ_مقصد_Loc_Format;	/* 0 for short offsets, 1 for long. */
+  HBUINT16	glyph_ڈیٹا_Format;	/* 0 for current format. */
 
-  DEFINE_SIZE_STATIC (54);
+  DEFINE_سائز_STATIC (54);
 };
 
 
 } /* namespace OT */
 
 
-#endif /* HB_OT_HEAD_TABLE_HH */
+#اگر_ختم /* HB_OT_HEAD_TABLE_HH */

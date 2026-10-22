@@ -24,114 +24,114 @@
  * Google Author(s): Garret Rieger, Roderick Sheeter
  */
 
-#include "hb-subset-plan.hh"
-#include "hb-subset-accelerator.hh"
-#include "hb-map.hh"
-#include "hb-multimap.hh"
-#include "hb-set.hh"
-#include "hb-subset.h"
-#include "hb-unicode.h"
+#شامل "hb-subset-plan.hh"
+#شامل "hb-subset-accelerator.hh"
+#شامل "hb-map.hh"
+#شامل "hb-multimap.hh"
+#شامل "hb-set.hh"
+#شامل "hb-subset.h"
+#شامل "hb-unicode.h"
 
-#include "hb-ot-cmap-table.hh"
-#include "hb-ot-glyf-table.hh"
-#include "hb-ot-layout-base-table.hh"
-#include "hb-ot-cff1-table.hh"
-#include "hb-ot-cff2-table.hh"
-#include "OT/Color/COLR/COLR.hh"
-#include "OT/Color/COLR/colrv1-closure.hh"
-#include "OT/Color/CPAL/CPAL.hh"
-#include "hb-ot-var-fvar-table.hh"
-#include "hb-ot-var-varc-table.hh"
-#include "hb-ot-stat-table.hh"
-#include "hb-ot-math-table.hh"
+#شامل "hb-ot-cmap-table.hh"
+#شامل "hb-ot-glyf-table.hh"
+#شامل "hb-ot-layout-base-table.hh"
+#شامل "hb-ot-cff1-table.hh"
+#شامل "hb-ot-cff2-table.hh"
+#شامل "OT/Color/COLR/COLR.hh"
+#شامل "OT/Color/COLR/colrv1-closure.hh"
+#شامل "OT/Color/CPAL/CPAL.hh"
+#شامل "hb-ot-var-fvar-table.hh"
+#شامل "hb-ot-var-varc-table.hh"
+#شامل "hb-ot-stat-table.hh"
+#شامل "hb-ot-math-table.hh"
 
 hb_subset_accelerator_t::~hb_subset_accelerator_t ()
 {
-  if (cmap_cache && destroy_cmap_cache)
-    destroy_cmap_cache ((void*) cmap_cache);
+  اگر (cmap_cache && destroy_cmap_cache)
+    destroy_cmap_cache ((خالی*) cmap_cache);
 
-#ifndef HB_NO_SUBSET_CFF
+#اگر_غیر_تعریف_شدہ HB_NO_SUBSET_CFF
   cff1_accel.fini ();
   cff2_accel.fini ();
-#endif
-  hb_face_destroy (source);
+#اگر_ختم
+  hb_face_destroy (ماخذ);
 }
 
 
-#ifndef HB_NO_SUBSET_CFF
-static inline bool
-_add_cff_seac_components (const OT::cff1::accelerator_subset_t &cff,
+#اگر_غیر_تعریف_شدہ HB_NO_SUBSET_CFF
+ساکن اندرونی منطقی
+جوڑو_cff_seac_components (ثابت OT::cff1::accelerator_subset_t &cff,
 			  hb_codepoint_t gid,
-			  hb_set_t *gids_to_retain)
+			  hb_سیٹ_t *gids_مقصد_retain)
 {
-  hb_codepoint_t base_gid, accent_gid;
-  if (cff.get_seac_components (gid, &base_gid, &accent_gid))
+  hb_codepoint_t بنیاد_gid, accent_gid;
+  اگر (cff.get_seac_components (gid, &بنیاد_gid, &accent_gid))
   {
-    gids_to_retain->add (base_gid);
-    gids_to_retain->add (accent_gid);
-    return true;
+    gids_مقصد_retain->جوڑو (بنیاد_gid);
+    gids_مقصد_retain->جوڑو (accent_gid);
+    واپس سچ;
   }
-  return false;
+  واپس جھوٹ;
 }
-#endif
+#اگر_ختم
 
-static void
-_remap_palette_indexes (const hb_set_t *palette_indexes,
-			hb_map_t       *mapping /* OUT */)
+ساکن خالی
+_remap_palette_indexes (ثابت hb_سیٹ_t *palette_indexes,
+			hb_map_t       *mapping /*برآمد*/)
 {
-  unsigned new_idx = 0;
-  for (unsigned palette_index : palette_indexes->iter ())
+  غیرعلامتی new_idx = 0;
+  برائے (غیرعلامتی palette_اشاریہ : palette_indexes->iter ())
   {
-    if (palette_index == 0xFFFF)
+    اگر (palette_اشاریہ == 0xFFFF)
     {
-      mapping->set (palette_index, palette_index);
-      continue;
+      mapping->سیٹ (palette_اشاریہ, palette_اشاریہ);
+      جاری;
     }
-    mapping->set (palette_index, new_idx);
+    mapping->سیٹ (palette_اشاریہ, new_idx);
     new_idx++;
   }
 }
 
-void
-remap_indexes (const hb_set_t *indexes,
-               hb_map_t       *mapping /* OUT */)
+خالی
+remap_indexes (ثابت hb_سیٹ_t *indexes,
+               hb_map_t       *mapping /*برآمد*/)
 {
-  for (auto _ : + hb_enumerate (indexes->iter ()))
-    mapping->set (_.second, _.first);
+  برائے (خودکار _ : + hb_enumerate (indexes->iter ()))
+    mapping->سیٹ (_.second, _.پہلا);
 }
 
-static inline void
-_cmap_closure (hb_face_t	   *face,
-	       const hb_set_t	   *unicodes,
-	       hb_set_t		   *glyphset)
+ساکن اندرونی خالی
+cmap_احاطہ (hb_face_t	   *face,
+	       ثابت hb_سیٹ_t	   *unicodes,
+	       hb_سیٹ_t		   *glyphset)
 {
   OT::cmap_accelerator_t cmap (face);
-  cmap.closure_glyphs (unicodes, glyphset);
+  cmap.احاطہ_glyphs (unicodes, glyphset);
 }
 
-static void _colr_closure (hb_subset_plan_t* plan,
-                           hb_set_t *glyphs_colred)
+ساکن خالی colr_احاطہ (hb_subset_plan_t* plan,
+                           hb_سیٹ_t *glyphs_colred)
 {
-  OT::COLR::accelerator_t colr (plan->source);
-  if (!colr.is_valid ()) return;
+  OT::COLR::accelerator_t colr (plan->ماخذ);
+  اگر (!colr.is_valid ()) واپس;
 
-  hb_set_t palette_indices, layer_indices;
+  hb_سیٹ_t palette_indices, layer_indices;
   // Collect all glyphs referenced by COLRv0
-  hb_set_t glyphset_colrv0;
-  for (hb_codepoint_t gid : *glyphs_colred)
-    colr.closure_glyphs (gid, &glyphset_colrv0);
+  hb_سیٹ_t glyphset_colrv0;
+  برائے (hb_codepoint_t gid : *glyphs_colred)
+    colr.احاطہ_glyphs (gid, &glyphset_colrv0);
 
   glyphs_colred->union_ (glyphset_colrv0);
 
   //closure for COLRv1
-  hb_set_t variation_indices, delta_set_indices;
-  colr.closure_forV1 (glyphs_colred, &layer_indices, &palette_indices, &variation_indices, &delta_set_indices);
+  hb_سیٹ_t variation_indices, delta_سیٹ_indices;
+  colr.احاطہ_for_V1 (glyphs_colred, &layer_indices, &palette_indices, &variation_indices, &delta_سیٹ_indices);
 
-  colr.closure_V0palette_indices (glyphs_colred, &palette_indices);
+  colr.احاطہ_V0palette_indices (glyphs_colred, &palette_indices);
   remap_indexes (&layer_indices, &plan->colrv1_layers);
   _remap_palette_indexes (&palette_indices, &plan->colr_palettes);
 
-#ifndef HB_NO_VAR
+#اگر_غیر_تعریف_شدہ HB_NO_VAR
   /* colr variation indices mapping during planning phase:
    * generate colrv1_variation_idx_delta_map. When delta set index map is not
    * included, it's a mapping from varIdx-> (new varIdx,delta). Otherwise, it's
@@ -140,235 +140,235 @@ static void _colr_closure (hb_subset_plan_t* plan,
    * Besides, we need to generate a delta set idx-> new var_idx map for updating
    * delta set index map if exists. This map will be updated again after
    * instancing. */
-  if (colr.has_var_store () && variation_indices)
+  اگر (colr.has_var_store () && variation_indices)
   {
-    const OT::ItemVariationStore &var_store = colr.get_var_store ();
+    ثابت OT::شے_Variation_Store &var_store = colr.get_var_store ();
     // generated inner_maps is used by ItemVariationStore serialize(), which is subset only
-    unsigned subtable_count = var_store.get_sub_table_count ();
-    generate_varstore_inner_maps (variation_indices, subtable_count, plan->colrv1_varstore_inner_maps);
+    غیرعلامتی subtable_گنتی = var_store.get_sub_جدول_گنتی ();
+    generate_varstore_inner_maps (variation_indices, subtable_گنتی, plan->colrv1_varstore_inner_maps);
 
-    if (!plan->all_axes_pinned)
+    اگر (!plan->all_axes_pinned)
       remap_variation_indices (var_store,
                               variation_indices,
                               plan->normalized_coords,
-                              false, /* no need to calculate delta for COLR during planning */
+                              جھوٹ, /* no need to calculate delta for COLR during planning */
                               plan->all_axes_pinned,
                               plan->colrv1_variation_idx_delta_map);
   }
 
   /* Sentinel-only maps still need their delta-set indices remapped, even
    * when there are no live variation rows or no variation store. */
-  if (!plan->all_axes_pinned && colr.has_delta_set_index_map ())
-    remap_colrv1_delta_set_index_indices (colr.get_delta_set_index_map (),
-                                         delta_set_indices,
+  اگر (!plan->all_axes_pinned && colr.has_delta_سیٹ_اشاریہ_map ())
+    remap_colrv1_delta_سیٹ_اشاریہ_indices (colr.get_delta_سیٹ_اشاریہ_map (),
+                                         delta_سیٹ_indices,
                                          plan->colrv1_variation_idx_delta_map,
                                          plan->colrv1_new_deltaset_idx_varidx_map);
-#endif
+#اگر_ختم
 }
 
-static inline void
-_math_closure (hb_subset_plan_t *plan,
-               hb_set_t         *glyphset)
+ساکن اندرونی خالی
+math_احاطہ (hb_subset_plan_t *plan,
+               hb_سیٹ_t         *glyphset)
 {
-  hb_blob_ptr_t<OT::MATH> math = plan->source_table<OT::MATH> ();
-  if (math->has_data ())
-    math->closure_glyphs (glyphset);
+  hb_blob_ptr_t<OT::MATH> math = plan->ماخذ_جدول<OT::MATH> ();
+  اگر (math->has_ڈیٹا ())
+    math->احاطہ_glyphs (glyphset);
   math.destroy ();
 }
 
-static inline void
-_remove_invalid_gids (hb_set_t *glyphs,
-		      unsigned int num_glyphs)
+ساکن اندرونی خالی
+_remove_invalid_gids (hb_سیٹ_t *glyphs,
+		      غیرعلامتی صحیح عدد_glyphs)
 {
-  glyphs->del_range (num_glyphs, HB_SET_VALUE_INVALID);
+  glyphs->del_range (عدد_glyphs, HB_سیٹ_قدر_INVALID);
 }
 
-template<bool GID_ALWAYS_EXISTS = false, typename I, typename F, typename G, hb_requires (hb_is_iterator (I))>
-static void
+سانچہ<منطقی GID_ALWAYS_EXISTS = جھوٹ, قسم_نام I, قسم_نام F, قسم_نام G, hb_requires (hb_is_iterator (I))>
+ساکن خالی
 _fill_unicode_and_glyph_map(hb_subset_plan_t *plan,
                             I unicode_iterator,
-                            F unicode_to_gid_for_iterator,
-                            G unicode_to_gid_general)
+                            F unicode_مقصد_gid_for_iterator,
+                            G unicode_مقصد_gid_general)
 {
-  for (hb_codepoint_t cp : unicode_iterator)
+  برائے (hb_codepoint_t cp : unicode_iterator)
   {
-    hb_codepoint_t gid = unicode_to_gid_for_iterator(cp);
-    if (!GID_ALWAYS_EXISTS && gid == HB_MAP_VALUE_INVALID)
+    hb_codepoint_t gid = unicode_مقصد_gid_for_iterator(cp);
+    اگر (!GID_ALWAYS_EXISTS && gid == HB_MAP_قدر_INVALID)
     {
-      DEBUG_MSG(SUBSET, nullptr, "Drop U+%04X; no gid", cp);
-      continue;
+      DEBUG_پیغام(SUBSET, خالی_اشاریہ, "Drop U+%04X; no gid", cp);
+      جاری;
     }
 
-    plan->codepoint_to_glyph->set (cp, gid);
-    plan->unicode_to_new_gid_list.push (hb_pair (cp, gid));
+    plan->codepoint_مقصد_glyph->سیٹ (cp, gid);
+    plan->unicode_مقصد_new_gid_list.push (hb_pair (cp, gid));
   }
 }
 
-template<bool GID_ALWAYS_EXISTS = false, typename I, typename F, hb_requires (hb_is_iterator (I))>
-static void
+سانچہ<منطقی GID_ALWAYS_EXISTS = جھوٹ, قسم_نام I, قسم_نام F, hb_requires (hb_is_iterator (I))>
+ساکن خالی
 _fill_unicode_and_glyph_map(hb_subset_plan_t *plan,
                             I unicode_iterator,
-                            F unicode_to_gid_for_iterator)
+                            F unicode_مقصد_gid_for_iterator)
 {
-  _fill_unicode_and_glyph_map(plan, unicode_iterator, unicode_to_gid_for_iterator, unicode_to_gid_for_iterator);
+  _fill_unicode_and_glyph_map(plan, unicode_iterator, unicode_مقصد_gid_for_iterator, unicode_مقصد_gid_for_iterator);
 }
 
 /*
  * Finds additional unicode codepoints which are reachable from the input unicode set.
  * Currently this adds in mirrored variants (needed for bidi) of any input unicodes.
  */
-static hb_set_t
-_unicode_closure (const hb_set_t* unicodes, bool bidi_closure) {
+ساکن hb_سیٹ_t
+unicode_احاطہ (ثابت hb_سیٹ_t* unicodes, منطقی bidi_احاطہ) {
   // TODO: we may want to also consider pulling in reachable unicode composition and decompositions.
   //       see: https://github.com/harfbuzz/harfbuzz/issues/2283
-  hb_set_t out = *unicodes;
-  if (!bidi_closure) return out;
+  hb_سیٹ_t برآمد = *unicodes;
+  اگر (!bidi_احاطہ) واپس برآمد;
 
-  if (out.is_inverted()) {
+  اگر (برآمد.is_inverted()) {
     // don't closure inverted sets, they are asking to specifically exclude certain codepoints.
     // otherwise everything is already included.
-    return out;
+    واپس برآمد;
   }
 
-  auto unicode_funcs = hb_unicode_funcs_get_default ();
-  for (hb_codepoint_t cp : *unicodes) {
+  خودکار unicode_funcs = hb_unicode_funcs_get_default ();
+  برائے (hb_codepoint_t cp : *unicodes) {
    hb_codepoint_t mirror = hb_unicode_mirroring(unicode_funcs, cp);
-   if (unlikely (mirror != cp)) {
-     out.add(mirror);
+   اگر (unlikely (mirror != cp)) {
+     برآمد.جوڑو(mirror);
    }
   }
 
-  return out;
+  واپس برآمد;
 }
 
-static void
-_populate_unicodes_to_retain (const hb_set_t *unicodes_in,
-                              const hb_set_t *glyphs,
+ساکن خالی
+populate_unicodes_مقصد_retain (ثابت hb_سیٹ_t *unicodes_اندر,
+                              ثابت hb_سیٹ_t *glyphs,
                               hb_subset_plan_t *plan)
 {
-  hb_set_t unicodes = _unicode_closure(unicodes_in,
-    !(plan->flags & HB_SUBSET_FLAGS_NO_BIDI_CLOSURE));
+  hb_سیٹ_t unicodes = unicode_احاطہ(unicodes_اندر,
+    !(plan->flags & HB_SUBSET_FLAGS_NO_BIDI_احاطہ));
 
-  OT::cmap_accelerator_t cmap (plan->source);
-  unsigned size_threshold = plan->source->get_num_glyphs ();
+  OT::cmap_accelerator_t cmap (plan->ماخذ);
+  غیرعلامتی سائز_حد = plan->ماخذ->get_عدد_glyphs ();
 
-  if (glyphs->is_empty () && unicodes.get_population () < size_threshold)
+  اگر (glyphs->is_empty () && unicodes.get_population () < سائز_حد)
   {
 
-    const hb_map_t* unicode_to_gid = nullptr;
-    if (plan->accelerator)
-      unicode_to_gid = &plan->accelerator->unicode_to_gid;
+    ثابت hb_map_t* unicode_مقصد_gid_2 = خالی_اشاریہ;
+    اگر (plan->accelerator)
+      unicode_مقصد_gid_2 = &plan->accelerator->unicode_مقصد_gid_2;
 
     // This is approach to collection is faster, but can only be used  if glyphs
     // are not being explicitly added to the subset and the input unicodes set is
     // not excessively large (eg. an inverted set).
-    plan->unicode_to_new_gid_list.alloc (unicodes.get_population ());
-    if (!unicode_to_gid) {
+    plan->unicode_مقصد_new_gid_list.alloc (unicodes.get_population ());
+    اگر (!unicode_مقصد_gid_2) {
       _fill_unicode_and_glyph_map(plan, unicodes.iter(), [&] (hb_codepoint_t cp) {
         hb_codepoint_t gid;
-        if (!cmap.get_nominal_glyph (cp, &gid)) {
-          return HB_MAP_VALUE_INVALID;
+        اگر (!cmap.get_nominal_glyph (cp, &gid)) {
+          واپس HB_MAP_قدر_INVALID;
         }
-        return gid;
+        واپس gid;
       });
-    } else {
+    } ورنہ {
       // Use in memory unicode to gid map it's faster then looking up from
       // the map. This code is mostly duplicated from above to avoid doing
       // conditionals on the presence of the unicode_to_gid map each
       // iteration.
       _fill_unicode_and_glyph_map(plan, unicodes.iter(), [&] (hb_codepoint_t cp) {
-        return unicode_to_gid->get (cp);
+        واپس unicode_مقصد_gid_2->get (cp);
       });
     }
   }
-  else
+  ورنہ
   {
     // This approach is slower, but can handle adding in glyphs to the subset and will match
     // them with cmap entries.
 
     hb_map_t unicode_glyphid_map_storage;
-    hb_set_t cmap_unicodes_storage;
-    const hb_map_t* unicode_glyphid_map = &unicode_glyphid_map_storage;
-    const hb_set_t* cmap_unicodes = &cmap_unicodes_storage;
+    hb_سیٹ_t cmap_unicodes_storage;
+    ثابت hb_map_t* unicode_glyphid_map = &unicode_glyphid_map_storage;
+    ثابت hb_سیٹ_t* cmap_unicodes = &cmap_unicodes_storage;
 
-    if (!plan->accelerator) {
+    اگر (!plan->accelerator) {
       cmap.collect_mapping (&cmap_unicodes_storage, &unicode_glyphid_map_storage);
-      plan->unicode_to_new_gid_list.alloc (hb_min(unicodes.get_population ()
+      plan->unicode_مقصد_new_gid_list.alloc (hb_min(unicodes.get_population ()
                                                   + glyphs->get_population (),
                                                   cmap_unicodes->get_population ()));
-    } else {
-      unicode_glyphid_map = &plan->accelerator->unicode_to_gid;
+    } ورنہ {
+      unicode_glyphid_map = &plan->accelerator->unicode_مقصد_gid_2;
       cmap_unicodes = &plan->accelerator->unicodes;
     }
 
-    if (plan->accelerator &&
+    اگر (plan->accelerator &&
 	unicodes.get_population () < cmap_unicodes->get_population () &&
 	glyphs->get_population () < cmap_unicodes->get_population ())
     {
-      plan->codepoint_to_glyph->alloc (unicodes.get_population () + glyphs->get_population ());
+      plan->codepoint_مقصد_glyph->alloc (unicodes.get_population () + glyphs->get_population ());
 
-      auto &gid_to_unicodes = plan->accelerator->gid_to_unicodes;
+      خودکار &gid_مقصد_unicodes = plan->accelerator->gid_مقصد_unicodes;
 
-      for (hb_codepoint_t gid : *glyphs)
+      برائے (hb_codepoint_t gid : *glyphs)
       {
-        auto unicodes = gid_to_unicodes.get (gid);
-        _fill_unicode_and_glyph_map<true>(plan, unicodes, [&] (hb_codepoint_t cp) {
-          return gid;
+        خودکار unicodes = gid_مقصد_unicodes.get (gid);
+        _fill_unicode_and_glyph_map<سچ>(plan, unicodes, [&] (hb_codepoint_t cp) {
+          واپس gid;
         },
         [&] (hb_codepoint_t cp) {
-          return unicode_glyphid_map->get(cp);
+          واپس unicode_glyphid_map->get(cp);
         });
       }
 
       _fill_unicode_and_glyph_map(plan, unicodes.iter(), [&] (hb_codepoint_t cp) {
           /* Don't double-add entry. */
-	if (plan->codepoint_to_glyph->has (cp))
-          return HB_MAP_VALUE_INVALID;
+	اگر (plan->codepoint_مقصد_glyph->has (cp))
+          واپس HB_MAP_قدر_INVALID;
 
-        return unicode_glyphid_map->get(cp);
+        واپس unicode_glyphid_map->get(cp);
       },
       [&] (hb_codepoint_t cp) {
-          return unicode_glyphid_map->get(cp);
+          واپس unicode_glyphid_map->get(cp);
       });
 
-      plan->unicode_to_new_gid_list.qsort ();
+      plan->unicode_مقصد_new_gid_list.qsort ();
     }
-    else
+    ورنہ
     {
-      plan->codepoint_to_glyph->alloc (cmap_unicodes->get_population ());
-      hb_codepoint_t first = HB_SET_VALUE_INVALID, last = HB_SET_VALUE_INVALID;
-      for (; cmap_unicodes->next_range (&first, &last); )
+      plan->codepoint_مقصد_glyph->alloc (cmap_unicodes->get_population ());
+      hb_codepoint_t پہلا = HB_سیٹ_قدر_INVALID, آخری = HB_سیٹ_قدر_INVALID;
+      برائے (; cmap_unicodes->اگلا_range (&پہلا, &آخری); )
       {
-        _fill_unicode_and_glyph_map(plan, hb_range(first, last + 1), [&] (hb_codepoint_t cp) {
+        _fill_unicode_and_glyph_map(plan, hb_range(پہلا, آخری + 1), [&] (hb_codepoint_t cp) {
           hb_codepoint_t gid = (*unicode_glyphid_map)[cp];
-	  if (!unicodes.has (cp) && !glyphs->has (gid))
-	    return HB_MAP_VALUE_INVALID;
-          return gid;
+	  اگر (!unicodes.has (cp) && !glyphs->has (gid))
+	    واپس HB_MAP_قدر_INVALID;
+          واپس gid;
         },
         [&] (hb_codepoint_t cp) {
-          return unicode_glyphid_map->get(cp);
+          واپس unicode_glyphid_map->get(cp);
         });
       }
     }
 
     /* Add gids which where requested, but not mapped in cmap */
-    unsigned num_glyphs = plan->source->get_num_glyphs ();
-    hb_codepoint_t first = HB_SET_VALUE_INVALID, last = HB_SET_VALUE_INVALID;
-    for (; glyphs->next_range (&first, &last); )
+    غیرعلامتی عدد_glyphs = plan->ماخذ->get_عدد_glyphs ();
+    hb_codepoint_t پہلا = HB_سیٹ_قدر_INVALID, آخری = HB_سیٹ_قدر_INVALID;
+    برائے (; glyphs->اگلا_range (&پہلا, &آخری); )
     {
-      if (first >= num_glyphs)
-	break;
-      if (last >= num_glyphs)
-        last = num_glyphs - 1;
-      plan->_glyphset_gsub.add_range (first, last);
+      اگر (پہلا >= عدد_glyphs)
+	توڑو;
+      اگر (آخری >= عدد_glyphs)
+        آخری = عدد_glyphs - 1;
+      plan->_glyphset_gsub.جوڑو_range (پہلا, آخری);
     }
   }
 
-  auto &arr = plan->unicode_to_new_gid_list;
-  if (arr.length)
+  خودکار &arr = plan->unicode_مقصد_new_gid_list;
+  اگر (arr.لمبائی)
   {
-    plan->unicodes.add_sorted_array (&arr.arrayZ->first, arr.length, sizeof (*arr.arrayZ));
-    plan->_glyphset_gsub.add_array (&arr.arrayZ->second, arr.length, sizeof (*arr.arrayZ));
+    plan->unicodes.جوڑو_sorted_array (&arr.arrayZ->پہلا, arr.لمبائی, حجم (*arr.arrayZ));
+    plan->_glyphset_gsub.جوڑو_array (&arr.arrayZ->second, arr.لمبائی, حجم (*arr.arrayZ));
   }
 
   // Variation selectors don't have glyphs associated with them in the cmap so they will have been filtered out above
@@ -379,465 +379,465 @@ _populate_unicodes_to_retain (const hb_set_t *unicodes_in,
   plan->os2_info.min_cmap_codepoint = plan->unicodes.get_min();
   plan->os2_info.max_cmap_codepoint = plan->unicodes.get_max();
 
-  hb_set_t variation_selectors_to_retain;
-  cmap.collect_variation_selectors(&variation_selectors_to_retain);
-  + variation_selectors_to_retain.iter()
+  hb_سیٹ_t variation_selectors_مقصد_retain;
+  cmap.collect_variation_selectors(&variation_selectors_مقصد_retain);
+  + variation_selectors_مقصد_retain.iter()
   | hb_filter(unicodes)
   | hb_sink(&plan->unicodes)
   ;
 }
 
-static unsigned
-_glyf_add_gid_and_children (const OT::glyf_accelerator_t &glyf,
+ساکن غیرعلامتی
+glyf_جوڑو_gid_and_children (ثابت OT::glyf_accelerator_t &glyf,
 			    hb_codepoint_t gid,
-			    hb_set_t *gids_to_retain,
-			    int operation_count,
-			    unsigned depth = 0)
+			    hb_سیٹ_t *gids_مقصد_retain,
+			    صحیح operation_گنتی,
+			    غیرعلامتی گہرائی = 0)
 {
   /* Check if is already visited */
-  if (gids_to_retain->has (gid)) return operation_count;
+  اگر (gids_مقصد_retain->has (gid)) واپس operation_گنتی;
 
-  gids_to_retain->add (gid);
+  gids_مقصد_retain->جوڑو (gid);
 
-  if (unlikely (depth++ > HB_MAX_NESTING_LEVEL)) return operation_count;
-  if (unlikely (--operation_count < 0)) return operation_count;
+  اگر (unlikely (گہرائی++ > HB_MAX_NESTING_LEVEL)) واپس operation_گنتی;
+  اگر (unlikely (--operation_گنتی < 0)) واپس operation_گنتی;
 
-  auto glyph = glyf.glyph_for_gid (gid);
+  خودکار glyph = glyf.glyph_for_gid (gid);
 
-  for (auto &item : glyph.get_composite_iterator ())
-    operation_count =
-      _glyf_add_gid_and_children (glyf,
-				  item.get_gid (glyph.is_extended ()),
-				  gids_to_retain,
-				  operation_count,
-				  depth);
+  برائے (خودکار &شے : glyph.get_مرکب_iterator ())
+    operation_گنتی =
+      glyf_جوڑو_gid_and_children (glyf,
+				  شے.get_gid (glyph.is_extended ()),
+				  gids_مقصد_retain,
+				  operation_گنتی,
+				  گہرائی);
 
-  return operation_count;
+  واپس operation_گنتی;
 }
 
-static void
-_nameid_closure (hb_subset_plan_t* plan,
-		 hb_set_t* drop_tables)
+ساکن خالی
+nameid_احاطہ (hb_subset_plan_t* plan,
+		 hb_سیٹ_t* drop_tables)
 {
-#ifndef HB_NO_STYLE
-  if (!drop_tables->has (HB_OT_TAG_STAT))
-    plan->source->table.STAT->collect_name_ids (&plan->user_axes_location, &plan->name_ids);
-#endif
-#ifndef HB_NO_VAR
-  if (!plan->all_axes_pinned)
-    plan->source->table.fvar->collect_name_ids (&plan->user_axes_location, &plan->axes_old_index_tag_map, &plan->name_ids);
-#endif
-#ifndef HB_NO_COLOR
-  if (!drop_tables->has (HB_OT_TAG_CPAL))
-    plan->source->table.CPAL->collect_name_ids (&plan->colr_palettes, &plan->name_ids);
-#endif
+#اگر_غیر_تعریف_شدہ HB_NO_STYLE
+  اگر (!drop_tables->has (HB_OT_لیبل_STAT))
+    plan->ماخذ->جدول.STAT->collect_name_ids (&plan->user_axes_location, &plan->name_ids);
+#اگر_ختم
+#اگر_غیر_تعریف_شدہ HB_NO_VAR
+  اگر (!plan->all_axes_pinned)
+    plan->ماخذ->جدول.fvar->collect_name_ids (&plan->user_axes_location, &plan->axes_old_اشاریہ_لیبل_map, &plan->name_ids);
+#اگر_ختم
+#اگر_غیر_تعریف_شدہ HB_NO_COLOR
+  اگر (!drop_tables->has (HB_OT_لیبل_CPAL))
+    plan->ماخذ->جدول.CPAL->collect_name_ids (&plan->colr_palettes, &plan->name_ids);
+#اگر_ختم
 
-#ifndef HB_NO_SUBSET_LAYOUT
-  layout_nameid_closure(plan, drop_tables);
-#endif
+#اگر_غیر_تعریف_شدہ HB_NO_SUBSET_LAYOUT
+  layout_nameid_احاطہ(plan, drop_tables);
+#اگر_ختم
 }
 
-static void
-_populate_gids_to_retain (hb_subset_plan_t* plan,
-		          hb_set_t* drop_tables)
+ساکن خالی
+populate_gids_مقصد_retain (hb_subset_plan_t* plan,
+		          hb_سیٹ_t* drop_tables)
 {
-  OT::glyf_accelerator_t glyf (plan->source);
-#ifndef HB_NO_SUBSET_CFF
+  OT::glyf_accelerator_t glyf (plan->ماخذ);
+#اگر_غیر_تعریف_شدہ HB_NO_SUBSET_CFF
   // Note: we cannot use inprogress_accelerator here, since it has not been
   // created yet. So in case of preprocessed-face (and otherwise), we do an
   // extra sanitize pass here, which is not ideal.
-  OT::cff1::accelerator_subset_t stack_cff (plan->accelerator ? nullptr : plan->source);
-  const OT::cff1::accelerator_subset_t *cff (plan->accelerator ? plan->accelerator->cff1_accel.get () : &stack_cff);
-#endif
+  OT::cff1::accelerator_subset_t ڈھیر_cff (plan->accelerator ? خالی_اشاریہ : plan->ماخذ);
+  ثابت OT::cff1::accelerator_subset_t *cff (plan->accelerator ? plan->accelerator->cff1_accel.get () : &ڈھیر_cff);
+#اگر_ختم
 
-  plan->_glyphset_gsub.add (0); // Not-def
+  plan->_glyphset_gsub.جوڑو (0); // Not-def
 
-  _cmap_closure (plan->source, &plan->unicodes, &plan->_glyphset_gsub);
+  cmap_احاطہ (plan->ماخذ, &plan->unicodes, &plan->_glyphset_gsub);
   plan->_glyphset_cmaped = plan->_glyphset_gsub;
 
-  if (!drop_tables->has (HB_OT_TAG_MATH))
+  اگر (!drop_tables->has (HB_OT_لیبل_MATH))
   {
-    _math_closure (plan, &plan->_glyphset_gsub);
-    _remove_invalid_gids (&plan->_glyphset_gsub, plan->source->get_num_glyphs ());
+    math_احاطہ (plan, &plan->_glyphset_gsub);
+    _remove_invalid_gids (&plan->_glyphset_gsub, plan->ماخذ->get_عدد_glyphs ());
   }
   plan->_glyphset_mathed = plan->_glyphset_gsub;
 
-#ifndef HB_NO_SUBSET_LAYOUT
-  layout_populate_gids_to_retain(plan, drop_tables);
-#endif
+#اگر_غیر_تعریف_شدہ HB_NO_SUBSET_LAYOUT
+  layout_populate_gids_مقصد_retain(plan, drop_tables);
+#اگر_ختم
 
-  _remove_invalid_gids (&plan->_glyphset_gsub, plan->source->get_num_glyphs ());
+  _remove_invalid_gids (&plan->_glyphset_gsub, plan->ماخذ->get_عدد_glyphs ());
 
-  hb_set_t cur_glyphset = plan->_glyphset_gsub;
-  if (!drop_tables->has (HB_OT_TAG_COLR))
+  hb_سیٹ_t cur_glyphset = plan->_glyphset_gsub;
+  اگر (!drop_tables->has (HB_OT_لیبل_COLR))
   {
-    _colr_closure (plan, &cur_glyphset);
-    _remove_invalid_gids (&cur_glyphset, plan->source->get_num_glyphs ());
+    colr_احاطہ (plan, &cur_glyphset);
+    _remove_invalid_gids (&cur_glyphset, plan->ماخذ->get_عدد_glyphs ());
   }
 
   plan->_glyphset_colred = cur_glyphset;
 
-#ifndef HB_NO_VAR_COMPOSITES
-  if (!drop_tables->has (OT::VARC::tableTag))
+#اگر_غیر_تعریف_شدہ HB_NO_VAR_COMPOSITES
+  اگر (!drop_tables->has (OT::VARC::جدول_لیبل))
   {
-    if (unlikely (!plan->source->table.VARC->closure_glyphs (&cur_glyphset)))
+    اگر (unlikely (!plan->ماخذ->جدول.VARC->احاطہ_glyphs (&cur_glyphset)))
     {
-      plan->check_success (false);
-      return;
+      plan->check_success (جھوٹ);
+      واپس;
     }
-    _remove_invalid_gids (&cur_glyphset, plan->source->get_num_glyphs ());
+    _remove_invalid_gids (&cur_glyphset, plan->ماخذ->get_عدد_glyphs ());
   }
-#endif
+#اگر_ختم
 
   plan->_glyphset_varced = cur_glyphset;
 
-  _nameid_closure (plan, drop_tables);
+  nameid_احاطہ (plan, drop_tables);
   /* Populate a full set of glyphs to retain by adding all referenced
    * composite glyphs. */
-  if (glyf.has_data ())
-    for (hb_codepoint_t gid : cur_glyphset)
-      _glyf_add_gid_and_children (glyf, gid, &plan->_glyphset,
-				  cur_glyphset.get_population () * HB_MAX_COMPOSITE_OPERATIONS_PER_GLYPH);
-  else
+  اگر (glyf.has_ڈیٹا ())
+    برائے (hb_codepoint_t gid : cur_glyphset)
+      glyf_جوڑو_gid_and_children (glyf, gid, &plan->_glyphset,
+				  cur_glyphset.get_population () * HB_MAX_مرکب_OPERATIONS_فی_GLYPH);
+  ورنہ
     plan->_glyphset.union_ (cur_glyphset);
-#ifndef HB_NO_SUBSET_CFF
-  if (!plan->accelerator || plan->accelerator->has_seac)
+#اگر_غیر_تعریف_شدہ HB_NO_SUBSET_CFF
+  اگر (!plan->accelerator || plan->accelerator->has_seac)
   {
-    bool has_seac = false;
-    if (cff->is_valid ())
-      for (hb_codepoint_t gid : cur_glyphset)
-	if (_add_cff_seac_components (*cff, gid, &plan->_glyphset))
-	  has_seac = true;
+    منطقی has_seac = جھوٹ;
+    اگر (cff->is_valid ())
+      برائے (hb_codepoint_t gid : cur_glyphset)
+	اگر (جوڑو_cff_seac_components (*cff, gid, &plan->_glyphset))
+	  has_seac = سچ;
     plan->has_seac = has_seac;
   }
-#endif
+#اگر_ختم
 
-  _remove_invalid_gids (&plan->_glyphset, plan->source->get_num_glyphs ());
+  _remove_invalid_gids (&plan->_glyphset, plan->ماخذ->get_عدد_glyphs ());
 
-#ifndef HB_NO_VAR
-#ifndef HB_NO_SUBSET_LAYOUT
-  if (!drop_tables->has (HB_OT_TAG_GDEF))
+#اگر_غیر_تعریف_شدہ HB_NO_VAR
+#اگر_غیر_تعریف_شدہ HB_NO_SUBSET_LAYOUT
+  اگر (!drop_tables->has (HB_OT_لیبل_GDEF))
     collect_layout_variation_indices (plan);
-#endif
-#endif
+#اگر_ختم
+#اگر_ختم
 }
 
-static bool
-_create_glyph_map_gsub (const hb_set_t* glyph_set_gsub,
-                        const hb_map_t* glyph_map,
-                        hb_map_t* out,
-                        hb_vector_t<hb_codepoint_t>* out_flat)
+ساکن منطقی
+_create_glyph_map_gsub (ثابت hb_سیٹ_t* glyph_سیٹ_gsub,
+                        ثابت hb_map_t* glyph_map,
+                        hb_map_t* برآمد,
+                        hb_سمتیہ_t<hb_codepoint_t>* برآمد_flat)
 {
-  if (unlikely (glyph_set_gsub->in_error ()))
-    return false;
+  اگر (unlikely (glyph_سیٹ_gsub->اندر_error ()))
+    واپس جھوٹ;
 
-  hb_codepoint_t max_gid = HB_SET_VALUE_INVALID;
-  hb_set_previous (glyph_set_gsub, &max_gid);
-  unsigned flat_size = max_gid == HB_SET_VALUE_INVALID ? 0 : max_gid + 1;
-  if (unlikely (!out_flat->resize_dirty (flat_size)))
-    return false;
-  hb_memset (out_flat->arrayZ, 0xFF, flat_size * sizeof (hb_codepoint_t));
+  hb_codepoint_t max_gid = HB_سیٹ_قدر_INVALID;
+  hb_سیٹ_پچھلا (glyph_سیٹ_gsub, &max_gid);
+  غیرعلامتی flat_سائز = max_gid == HB_سیٹ_قدر_INVALID ? 0 : max_gid + 1;
+  اگر (unlikely (!برآمد_flat->resize_dirty (flat_سائز)))
+    واپس جھوٹ;
+  hb_memset (برآمد_flat->arrayZ, 0xFF, flat_سائز * حجم (hb_codepoint_t));
 
-  out->alloc (glyph_set_gsub->get_population ());
-  for (auto gid : *glyph_set_gsub)
+  برآمد->alloc (glyph_سیٹ_gsub->get_population ());
+  برائے (خودکار gid : *glyph_سیٹ_gsub)
   {
     hb_codepoint_t new_gid = glyph_map->get (gid);
-    out->set (gid, new_gid);
-    out_flat->arrayZ[gid] = new_gid;
+    برآمد->سیٹ (gid, new_gid);
+    برآمد_flat->arrayZ[gid] = new_gid;
   }
-  return !out->in_error ();
+  واپس !برآمد->اندر_error ();
 }
 
-static bool
-_create_old_gid_to_new_gid_map (const hb_face_t *face,
-				bool		 retain_gids,
-				const hb_set_t	*all_gids_to_retain,
-                                const hb_map_t  *requested_glyph_map,
-				hb_map_t	*glyph_map, /* OUT */
-				hb_map_t	*reverse_glyph_map, /* OUT */
-				hb_sorted_vector_t<hb_codepoint_pair_t> *new_to_old_gid_list /* OUT */,
-				unsigned int	*num_glyphs /* OUT */)
+ساکن منطقی
+create_old_gid_مقصد_new_gid_map (ثابت hb_face_t *face,
+				منطقی		 retain_gids,
+				ثابت hb_سیٹ_t	*all_gids_مقصد_retain,
+                                ثابت hb_map_t  *requested_glyph_map,
+				hb_map_t	*glyph_map, /*برآمد*/
+				hb_map_t	*الٹ_glyph_map, /*برآمد*/
+				hb_sorted_سمتیہ_t<hb_codepoint_pair_t> *new_مقصد_old_gid_list /*برآمد*/,
+				غیرعلامتی صحیح	*عدد_glyphs /*برآمد*/)
 {
-  unsigned pop = all_gids_to_retain->get_population ();
-  reverse_glyph_map->alloc (pop);
-  glyph_map->alloc (pop);
-  new_to_old_gid_list->alloc (pop);
+  غیرعلامتی نکالو = all_gids_مقصد_retain->get_population ();
+  الٹ_glyph_map->alloc (نکالو);
+  glyph_map->alloc (نکالو);
+  new_مقصد_old_gid_list->alloc (نکالو);
 
-  if (*requested_glyph_map)
+  اگر (*requested_glyph_map)
   {
-    hb_set_t new_gids(requested_glyph_map->values());
-    if (new_gids.get_population() != requested_glyph_map->get_population())
+    hb_سیٹ_t new_gids(requested_glyph_map->values());
+    اگر (new_gids.get_population() != requested_glyph_map->get_population())
     {
-      DEBUG_MSG (SUBSET, nullptr, "The provided custom glyph mapping is not unique.");
-      return false;
+      DEBUG_پیغام (SUBSET, خالی_اشاریہ, "The provided custom glyph mapping is not unique.");
+      واپس جھوٹ;
     }
 
-    if (retain_gids)
+    اگر (retain_gids)
     {
-      DEBUG_MSG (SUBSET, nullptr,
+      DEBUG_پیغام (SUBSET, خالی_اشاریہ,
         "HB_SUBSET_FLAGS_RETAIN_GIDS cannot be set if "
         "a custom glyph mapping has been provided.");
-      return false;
+      واپس جھوٹ;
     }
 
     hb_codepoint_t max_glyph = 0;
-    hb_set_t remaining;
-    for (auto old_gid : all_gids_to_retain->iter ())
+    hb_سیٹ_t بقایا;
+    برائے (خودکار old_gid : all_gids_مقصد_retain->iter ())
     {
-      if (old_gid == 0) {
-	new_to_old_gid_list->push (hb_pair<hb_codepoint_t, hb_codepoint_t> (0u, 0u));
-        continue;
+      اگر (old_gid == 0) {
+	new_مقصد_old_gid_list->push (hb_pair<hb_codepoint_t, hb_codepoint_t> (0u, 0u));
+        جاری;
       }
 
       hb_codepoint_t* new_gid;
-      if (!requested_glyph_map->has (old_gid, &new_gid))
+      اگر (!requested_glyph_map->has (old_gid, &new_gid))
       {
-        remaining.add(old_gid);
-        continue;
+        بقایا.جوڑو(old_gid);
+        جاری;
       }
 
-      if (*new_gid > max_glyph)
+      اگر (*new_gid > max_glyph)
         max_glyph = *new_gid;
-      new_to_old_gid_list->push (hb_pair (*new_gid, old_gid));
+      new_مقصد_old_gid_list->push (hb_pair (*new_gid, old_gid));
     }
-    new_to_old_gid_list->qsort ();
+    new_مقصد_old_gid_list->qsort ();
 
     // Anything that wasn't mapped by the requested mapping should
     // be placed after the requested mapping.
-    for (auto old_gid : remaining)
-      new_to_old_gid_list->push (hb_pair (++max_glyph, old_gid));
+    برائے (خودکار old_gid : بقایا)
+      new_مقصد_old_gid_list->push (hb_pair (++max_glyph, old_gid));
 
-    *num_glyphs = max_glyph + 1;
+    *عدد_glyphs = max_glyph + 1;
   }
-  else if (!retain_gids)
+  ورنہ اگر (!retain_gids)
   {
-    + hb_enumerate (hb_iter (all_gids_to_retain), (hb_codepoint_t) 0)
-    | hb_sink (new_to_old_gid_list)
+    + hb_enumerate (hb_iter (all_gids_مقصد_retain), (hb_codepoint_t) 0)
+    | hb_sink (new_مقصد_old_gid_list)
     ;
-    *num_glyphs = new_to_old_gid_list->length;
+    *عدد_glyphs = new_مقصد_old_gid_list->لمبائی;
   }
-  else
+  ورنہ
   {
-    + hb_iter (all_gids_to_retain)
+    + hb_iter (all_gids_مقصد_retain)
     | hb_map ([] (hb_codepoint_t _) {
-		return hb_codepoint_pair_t (_, _);
+		واپس hb_codepoint_pair_t (_, _);
 	      })
-    | hb_sink (new_to_old_gid_list)
+    | hb_sink (new_مقصد_old_gid_list)
     ;
 
-    hb_codepoint_t max_glyph = HB_SET_VALUE_INVALID;
-    hb_set_previous (all_gids_to_retain, &max_glyph);
+    hb_codepoint_t max_glyph = HB_سیٹ_قدر_INVALID;
+    hb_سیٹ_پچھلا (all_gids_مقصد_retain, &max_glyph);
 
-    *num_glyphs = max_glyph + 1;
+    *عدد_glyphs = max_glyph + 1;
   }
 
-  reverse_glyph_map->alloc (reverse_glyph_map->get_population () + new_to_old_gid_list->length);
-  + hb_iter (new_to_old_gid_list)
-  | hb_sink (reverse_glyph_map)
+  الٹ_glyph_map->alloc (الٹ_glyph_map->get_population () + new_مقصد_old_gid_list->لمبائی);
+  + hb_iter (new_مقصد_old_gid_list)
+  | hb_sink (الٹ_glyph_map)
   ;
-  glyph_map->alloc (glyph_map->get_population () + new_to_old_gid_list->length);
-  + hb_iter (new_to_old_gid_list)
+  glyph_map->alloc (glyph_map->get_population () + new_مقصد_old_gid_list->لمبائی);
+  + hb_iter (new_مقصد_old_gid_list)
   | hb_map (&hb_codepoint_pair_t::reverse)
   | hb_sink (glyph_map)
   ;
 
-  return true;
+  واپس سچ;
 }
 
 hb_subset_plan_t::hb_subset_plan_t (hb_face_t *face,
-				    const hb_subset_input_t *input)
+				    ثابت hb_subset_داخلہ_t *داخلہ)
 {
-  successful = true;
-  flags = input->flags;
+  successful = سچ;
+  flags = داخلہ->flags;
 
-  unicode_to_new_gid_list.init ();
+  unicode_مقصد_new_gid_list.init ();
 
-  name_ids = *input->sets.name_ids;
-  name_languages = *input->sets.name_languages;
-  layout_features = *input->sets.layout_features;
-  layout_scripts = *input->sets.layout_scripts;
-  glyphs_requested = *input->sets.glyphs;
-  drop_tables = *input->sets.drop_tables;
-  no_subset_tables = *input->sets.no_subset_tables;
-  source = hb_face_reference (face);
+  name_ids = *داخلہ->sets.name_ids;
+  name_languages = *داخلہ->sets.name_languages;
+  layout_features = *داخلہ->sets.layout_features;
+  layout_scripts = *داخلہ->sets.layout_scripts;
+  glyphs_requested = *داخلہ->sets.glyphs;
+  drop_tables = *داخلہ->sets.drop_tables;
+  no_subset_tables = *داخلہ->sets.no_subset_tables;
+  ماخذ = hb_face_reference (face);
   dest = hb_face_builder_create ();
 
-  codepoint_to_glyph = hb_map_create ();
+  codepoint_مقصد_glyph = hb_map_create ();
   glyph_map = hb_map_create ();
-  reverse_glyph_map = hb_map_create ();
+  الٹ_glyph_map = hb_map_create ();
 
-  gsub_insert_catch_all_feature_variation_rec = false;
-  gpos_insert_catch_all_feature_variation_rec = false;
+  gsub_داخل_کرو_catch_all_feature_variation_rec = جھوٹ;
+  gpos_داخل_کرو_catch_all_feature_variation_rec = جھوٹ;
   gdef_varstore_inner_maps.init ();
 
-  user_axes_location = input->axes_location;
-  all_axes_pinned = false;
-  pinned_at_default = true;
-  has_gdef_varstore = false;
-  has_avar2 = false;
+  user_axes_location = داخلہ->axes_location;
+  all_axes_pinned = جھوٹ;
+  pinned_at_default = سچ;
+  has_gdef_varstore = جھوٹ;
+  has_avar2 = جھوٹ;
 
-#ifdef HB_EXPERIMENTAL_API
-  for (auto _ : input->name_table_overrides)
+#اگر_تعریف_شدہ HB_EXPERIMENTAL_API
+  برائے (خودکار _ : داخلہ->name_جدول_overrides)
   {
-    hb_bytes_t name_bytes = _.second;
-    unsigned len = name_bytes.length;
-    char *name_str = (char *) hb_malloc (len);
-    if (unlikely (!check_success (name_str)))
-      break;
+    hb_بائٹیں_t name_بائٹیں = _.second;
+    غیرعلامتی len = name_بائٹیں.لمبائی;
+    حرف *name_str = (حرف *) hb_malloc (len);
+    اگر (unlikely (!check_success (name_str)))
+      توڑو;
 
-    hb_memcpy (name_str, name_bytes.arrayZ, len);
-    name_table_overrides.set (_.first, hb_bytes_t (name_str, len));
+    hb_memcpy (name_str, name_بائٹیں.arrayZ, len);
+    name_جدول_overrides.سیٹ (_.پہلا, hb_بائٹیں_t (name_str, len));
   }
-#endif
+#اگر_ختم
 
-  void* accel = hb_face_get_user_data(face, hb_subset_accelerator_t::user_data_key());
+  خالی* accel = hb_face_get_user_ڈیٹا(face, hb_subset_accelerator_t::user_ڈیٹا_کلید());
 
-  attach_accelerator_data = input->attach_accelerator_data;
-  force_long_loca = input->force_long_loca;
-#ifdef HB_EXPERIMENTAL_API
+  attach_accelerator_ڈیٹا = داخلہ->attach_accelerator_ڈیٹا;
+  force_long_loca = داخلہ->force_long_loca;
+#اگر_تعریف_شدہ HB_EXPERIMENTAL_API
   force_long_loca = force_long_loca || (flags & HB_SUBSET_FLAGS_IFTB_REQUIREMENTS);
-#endif
+#اگر_ختم
 
-  if (accel)
+  اگر (accel)
     accelerator = (hb_subset_accelerator_t*) accel;
 
-  if (unlikely (in_error ()))
-    return;
+  اگر (unlikely (اندر_error ()))
+    واپس;
 
-#ifndef HB_NO_VAR_COMPOSITES
-  if (!input->sets.drop_tables->has (OT::VARC::tableTag) &&
-      input->sets.no_subset_tables->has (OT::VARC::tableTag) &&
-      !(input->flags & HB_SUBSET_FLAGS_RETAIN_GIDS) &&
-      face->table.VARC->has_data ())
+#اگر_غیر_تعریف_شدہ HB_NO_VAR_COMPOSITES
+  اگر (!داخلہ->sets.drop_tables->has (OT::VARC::جدول_لیبل) &&
+      داخلہ->sets.no_subset_tables->has (OT::VARC::جدول_لیبل) &&
+      !(داخلہ->flags & HB_SUBSET_FLAGS_RETAIN_GIDS) &&
+      face->جدول.VARC->has_ڈیٹا ())
   {
-    check_success (false);
-    return;
+    check_success (جھوٹ);
+    واپس;
   }
-#endif
+#اگر_ختم
 
-#ifndef HB_NO_VAR
-  if (!check_success (normalize_axes_location (face, this)))
-      return;
-#endif
-#ifndef HB_NO_VAR_COMPOSITES
-  if (!user_axes_location.is_empty () &&
-      !input->sets.drop_tables->has (OT::VARC::tableTag) &&
-      input->sets.no_subset_tables->has (OT::VARC::tableTag) &&
-      face->table.VARC->has_data ())
+#اگر_غیر_تعریف_شدہ HB_NO_VAR
+  اگر (!check_success (normalize_axes_location (face, یہ)))
+      واپس;
+#اگر_ختم
+#اگر_غیر_تعریف_شدہ HB_NO_VAR_COMPOSITES
+  اگر (!user_axes_location.is_empty () &&
+      !داخلہ->sets.drop_tables->has (OT::VARC::جدول_لیبل) &&
+      داخلہ->sets.no_subset_tables->has (OT::VARC::جدول_لیبل) &&
+      face->جدول.VARC->has_ڈیٹا ())
   {
-    check_success (false);
-    return;
+    check_success (جھوٹ);
+    واپس;
   }
-#endif
+#اگر_ختم
 
-  _populate_unicodes_to_retain (input->sets.unicodes, input->sets.glyphs, this);
+  populate_unicodes_مقصد_retain (داخلہ->sets.unicodes, داخلہ->sets.glyphs, یہ);
 
-  _populate_gids_to_retain (this, input->sets.drop_tables);
-  if (unlikely (in_error ()))
-    return;
+  populate_gids_مقصد_retain (یہ, داخلہ->sets.drop_tables);
+  اگر (unlikely (اندر_error ()))
+    واپس;
 
-  if (!check_success(_create_old_gid_to_new_gid_map(
+  اگر (!check_success(create_old_gid_مقصد_new_gid_map(
           face,
-          input->flags & HB_SUBSET_FLAGS_RETAIN_GIDS,
+          داخلہ->flags & HB_SUBSET_FLAGS_RETAIN_GIDS,
           &_glyphset,
-          &input->glyph_map,
+          &داخلہ->glyph_map,
           glyph_map,
-          reverse_glyph_map,
-	  &new_to_old_gid_list,
-          &_num_output_glyphs))) {
-    return;
+          الٹ_glyph_map,
+	  &new_مقصد_old_gid_list,
+          &عدد_output_glyphs_2))) {
+    واپس;
   }
 
-#ifdef HB_EXPERIMENTAL_API  
-  if ((input->flags & HB_SUBSET_FLAGS_RETAIN_GIDS) &&
-      (input->flags & HB_SUBSET_FLAGS_RETAIN_NUM_GLYPHS)) {
+#اگر_تعریف_شدہ HB_EXPERIMENTAL_API  
+  اگر ((داخلہ->flags & HB_SUBSET_FLAGS_RETAIN_GIDS) &&
+      (داخلہ->flags & HB_SUBSET_FLAGS_RETAIN_عدد_GLYPHS)) {
     // We've been requested to maintain the num glyphs count from the
     // input face.
-    _num_output_glyphs = source->get_num_glyphs ();
+    عدد_output_glyphs_2 = ماخذ->get_عدد_glyphs ();
   }
-#endif
+#اگر_ختم
 
-  if (!check_success (_create_glyph_map_gsub (
+  اگر (!check_success (_create_glyph_map_gsub (
       &_glyphset_gsub,
       glyph_map,
       &glyph_map_gsub,
       &glyph_map_gsub_flat)))
-    return;
+    واپس;
 
   // Now that we have old to new gid map update the unicode to new gid list.
-  for (unsigned i = 0; i < unicode_to_new_gid_list.length; i++)
+  برائے (غیرعلامتی i = 0; i < unicode_مقصد_new_gid_list.لمبائی; i++)
   {
     // Use raw array access for performance.
-    unicode_to_new_gid_list.arrayZ[i].second =
-        glyph_map->get(unicode_to_new_gid_list.arrayZ[i].second);
+    unicode_مقصد_new_gid_list.arrayZ[i].second =
+        glyph_map->get(unicode_مقصد_new_gid_list.arrayZ[i].second);
   }
 
-  bounds_width_vec.resize_dirty  (_num_output_glyphs);
-  for (auto &v : bounds_width_vec)
+  bounds_چوڑائی_vec.resize_dirty  (عدد_output_glyphs_2);
+  برائے (خودکار &v : bounds_چوڑائی_vec)
     v = 0xFFFFFFFF;
-  bounds_height_vec.resize_dirty  (_num_output_glyphs);
-  for (auto &v : bounds_height_vec)
+  bounds_اونچائی_vec.resize_dirty  (عدد_output_glyphs_2);
+  برائے (خودکار &v : bounds_اونچائی_vec)
     v = 0xFFFFFFFF;
 
-#ifndef HB_NO_SUBSET_LAYOUT    
-  if (!drop_tables.has (HB_OT_TAG_GDEF))
-    remap_used_mark_sets (this, used_mark_sets_map);
-#endif
+#اگر_غیر_تعریف_شدہ HB_NO_SUBSET_LAYOUT    
+  اگر (!drop_tables.has (HB_OT_لیبل_GDEF))
+    remap_مستعمل_mark_sets (یہ, مستعمل_mark_sets_map);
+#اگر_ختم
 
-#ifndef HB_NO_VAR
-#ifndef HB_NO_BASE
-  if (!drop_tables.has (HB_OT_TAG_BASE))
-    collect_base_variation_indices (this);
-#endif
-#endif
+#اگر_غیر_تعریف_شدہ HB_NO_VAR
+#اگر_غیر_تعریف_شدہ HB_NO_بنیاد
+  اگر (!drop_tables.has (HB_OT_لیبل_بنیاد))
+    collect_بنیاد_variation_indices (یہ);
+#اگر_ختم
+#اگر_ختم
 
-  if (unlikely (in_error ()))
-    return;
+  اگر (unlikely (اندر_error ()))
+    واپس;
 
-#if !defined(HB_NO_VAR) && !defined(HB_NO_OT_FONT_CFF)
-  update_instance_metrics_map_from_cff2 (this);
-#endif
-#ifndef HB_NO_VAR
-  if (!check_success (get_instance_glyphs_contour_points (this)))
-      return;
-#endif
+#اگر !defined(HB_NO_VAR) && !defined(HB_NO_OT_FONT_CFF)
+  update_instance_metrics_map_from_cff2 (یہ);
+#اگر_ختم
+#اگر_غیر_تعریف_شدہ HB_NO_VAR
+  اگر (!check_success (get_instance_glyphs_contour_points (یہ)))
+      واپس;
+#اگر_ختم
 
-  if (attach_accelerator_data)
+  اگر (attach_accelerator_ڈیٹا)
   {
     inprogress_accelerator =
-      hb_subset_accelerator_t::create (source,
-				       *codepoint_to_glyph,
+      hb_subset_accelerator_t::create (ماخذ,
+				       *codepoint_مقصد_glyph,
                                        unicodes,
 				       has_seac);
 
     check_success (inprogress_accelerator);
   }
 
-#define HB_SUBSET_PLAN_MEMBER(Type, Name) check_success (!Name.in_error ());
-#include "hb-subset-plan-member-list.hh"
-#undef HB_SUBSET_PLAN_MEMBER
+#تعریف_کرو HB_SUBSET_PLAN_MEMBER(Type, Name) check_success (!Name.اندر_error ());
+#شامل "hb-subset-plan-member-list.hh"
+#تعریف_منسوخ HB_SUBSET_PLAN_MEMBER
 }
 
 hb_subset_plan_t::~hb_subset_plan_t()
 {
   hb_face_destroy (dest);
 
-  hb_map_destroy (codepoint_to_glyph);
+  hb_map_destroy (codepoint_مقصد_glyph);
   hb_map_destroy (glyph_map);
-  hb_map_destroy (reverse_glyph_map);
-#ifndef HB_NO_SUBSET_CFF
+  hb_map_destroy (الٹ_glyph_map);
+#اگر_غیر_تعریف_شدہ HB_NO_SUBSET_CFF
   cff1_accel.fini ();
   cff2_accel.fini ();
-#endif
-  hb_face_destroy (source);
+#اگر_ختم
+  hb_face_destroy (ماخذ);
 
-#ifdef HB_EXPERIMENTAL_API
-  for (auto _ : name_table_overrides.iter_ref ())
+#اگر_تعریف_شدہ HB_EXPERIMENTAL_API
+  برائے (خودکار _ : name_جدول_overrides.iter_ref ())
     _.second.fini ();
-#endif
+#اگر_ختم
 
-  if (inprogress_accelerator)
-    hb_subset_accelerator_t::destroy ((void*) inprogress_accelerator);
+  اگر (inprogress_accelerator)
+    hb_subset_accelerator_t::destroy ((خالی*) inprogress_accelerator);
 }
 
 
@@ -858,19 +858,19 @@ hb_subset_plan_t::~hb_subset_plan_t()
  **/
 hb_subset_plan_t *
 hb_subset_plan_create_or_fail (hb_face_t	 *face,
-                               const hb_subset_input_t *input)
+                               ثابت hb_subset_داخلہ_t *داخلہ)
 {
   hb_subset_plan_t *plan;
-  if (unlikely (!(plan = hb_object_create<hb_subset_plan_t> (face, input))))
-    return nullptr;
+  اگر (unlikely (!(plan = hb_object_create<hb_subset_plan_t> (face, داخلہ))))
+    واپس خالی_اشاریہ;
 
-  if (unlikely (plan->in_error ()))
+  اگر (unlikely (plan->اندر_error ()))
   {
     hb_subset_plan_destroy (plan);
-    return nullptr;
+    واپس خالی_اشاریہ;
   }
 
-  return plan;
+  واپس plan;
 }
 
 /**
@@ -882,10 +882,10 @@ hb_subset_plan_create_or_fail (hb_face_t	 *face,
  *
  * Since: 4.0.0
  **/
-void
+خالی
 hb_subset_plan_destroy (hb_subset_plan_t *plan)
 {
-  if (!hb_object_destroy (plan)) return;
+  اگر (!hb_object_destroy (plan)) واپس;
 
   hb_free (plan);
 }
@@ -903,9 +903,9 @@ hb_subset_plan_destroy (hb_subset_plan_t *plan)
  * Since: 4.0.0
  **/
 hb_map_t *
-hb_subset_plan_old_to_new_glyph_mapping (const hb_subset_plan_t *plan)
+hb_subset_plan_old_مقصد_new_glyph_mapping (ثابت hb_subset_plan_t *plan)
 {
-  return plan->glyph_map;
+  واپس plan->glyph_map;
 }
 
 /**
@@ -921,9 +921,9 @@ hb_subset_plan_old_to_new_glyph_mapping (const hb_subset_plan_t *plan)
  * Since: 4.0.0
  **/
 hb_map_t *
-hb_subset_plan_new_to_old_glyph_mapping (const hb_subset_plan_t *plan)
+hb_subset_plan_new_مقصد_old_glyph_mapping (ثابت hb_subset_plan_t *plan)
 {
-  return plan->reverse_glyph_map;
+  واپس plan->الٹ_glyph_map;
 }
 
 /**
@@ -939,9 +939,9 @@ hb_subset_plan_new_to_old_glyph_mapping (const hb_subset_plan_t *plan)
  * Since: 4.0.0
  **/
 hb_map_t *
-hb_subset_plan_unicode_to_old_glyph_mapping (const hb_subset_plan_t *plan)
+hb_subset_plan_unicode_مقصد_old_glyph_mapping (ثابت hb_subset_plan_t *plan)
 {
-  return plan->codepoint_to_glyph;
+  واپس plan->codepoint_مقصد_glyph;
 }
 
 /**
@@ -957,7 +957,7 @@ hb_subset_plan_unicode_to_old_glyph_mapping (const hb_subset_plan_t *plan)
 hb_subset_plan_t *
 hb_subset_plan_reference (hb_subset_plan_t *plan)
 {
-  return hb_object_reference (plan);
+  واپس hb_object_reference (plan);
 }
 
 /**
@@ -975,13 +975,13 @@ hb_subset_plan_reference (hb_subset_plan_t *plan)
  * Since: 4.0.0
  **/
 hb_bool_t
-hb_subset_plan_set_user_data (hb_subset_plan_t   *plan,
-                              hb_user_data_key_t *key,
-                              void               *data,
+hb_subset_plan_سیٹ_user_ڈیٹا (hb_subset_plan_t   *plan,
+                              hb_user_ڈیٹا_کلید_t *key,
+                              خالی               *ڈیٹا,
                               hb_destroy_func_t   destroy,
                               hb_bool_t	          replace)
 {
-  return hb_object_set_user_data (plan, key, data, destroy, replace);
+  واپس hb_object_سیٹ_user_ڈیٹا (plan, key, ڈیٹا, destroy, replace);
 }
 
 /**
@@ -996,9 +996,9 @@ hb_subset_plan_set_user_data (hb_subset_plan_t   *plan,
  *
  * Since: 4.0.0
  **/
-void *
-hb_subset_plan_get_user_data (const hb_subset_plan_t *plan,
-                              hb_user_data_key_t     *key)
+خالی *
+hb_subset_plan_get_user_ڈیٹا (ثابت hb_subset_plan_t *plan,
+                              hb_user_ڈیٹا_کلید_t     *key)
 {
-  return hb_object_get_user_data (plan, key);
+  واپس hb_object_get_user_ڈیٹا (plan, key);
 }

@@ -1,5 +1,5 @@
 
-#line 1 "hb-buffer-deserialize-text-glyphs.rl"
+#سطر 1 "hb-buffer-deserialize-text-glyphs.rl"
 /*
  * Copyright © 2013  Google, Inc.
  *
@@ -26,14 +26,14 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_BUFFER_DESERIALIZE_TEXT_GLYPHS_HH
-#define HB_BUFFER_DESERIALIZE_TEXT_GLYPHS_HH
+#اگر_غیر_تعریف_شدہ HB_بفر_DESERIALIZE_متن_GLYPHS_HH
+#تعریف_کرو HB_بفر_DESERIALIZE_متن_GLYPHS_HH
 
-#include "hb.hh"
+#شامل "hb.hh"
 
 
-#line 33 "hb-buffer-deserialize-text-glyphs.hh"
-static const unsigned char _deserialize_text_glyphs_trans_keys[] = {
+#سطر 33 "hb-buffer-deserialize-text-glyphs.hh"
+ساکن ثابت غیرعلامتی حرف deserialize_متن_glyphs_trans_کلیدیں[] = {
 	0u, 0u, 35u, 124u, 48u, 57u, 60u, 124u, 45u, 57u, 48u, 57u, 44u, 44u, 45u, 57u, 
 	48u, 57u, 44u, 44u, 45u, 57u, 48u, 57u, 44u, 44u, 45u, 57u, 48u, 57u, 62u, 62u, 
 	93u, 124u, 45u, 57u, 48u, 57u, 35u, 124u, 45u, 57u, 48u, 57u, 35u, 124u, 35u, 124u, 
@@ -43,7 +43,7 @@ static const unsigned char _deserialize_text_glyphs_trans_keys[] = {
 	35u, 124u, 0
 };
 
-static const char _deserialize_text_glyphs_key_spans[] = {
+ساکن ثابت حرف deserialize_متن_glyphs_کلید_spans[] = {
 	0, 90, 10, 65, 13, 10, 1, 13, 
 	10, 1, 13, 10, 1, 13, 10, 1, 
 	32, 13, 10, 90, 13, 10, 90, 90, 
@@ -53,7 +53,7 @@ static const char _deserialize_text_glyphs_key_spans[] = {
 	90
 };
 
-static const short _deserialize_text_glyphs_index_offsets[] = {
+ساکن ثابت مختصر deserialize_متن_glyphs_اشاریہ_offsets[] = {
 	0, 0, 91, 102, 168, 182, 193, 195, 
 	209, 220, 222, 236, 247, 249, 263, 274, 
 	276, 309, 323, 334, 425, 439, 450, 541, 
@@ -63,7 +63,7 @@ static const short _deserialize_text_glyphs_index_offsets[] = {
 	1933
 };
 
-static const char _deserialize_text_glyphs_indicies[] = {
+ساکن ثابت حرف deserialize_متن_glyphs_indicies[] = {
 	1, 0, 0, 0, 0, 0, 0, 
 	0, 2, 3, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
@@ -320,7 +320,7 @@ static const char _deserialize_text_glyphs_indicies[] = {
 	74, 0
 };
 
-static const char _deserialize_text_glyphs_trans_targs[] = {
+ساکن ثابت حرف deserialize_متن_glyphs_trans_targs[] = {
 	1, 2, 17, 0, 25, 28, 30, 39, 
 	47, 3, 45, 4, 47, 5, 6, 44, 
 	7, 8, 9, 43, 10, 11, 12, 42, 
@@ -336,7 +336,7 @@ static const char _deserialize_text_glyphs_trans_targs[] = {
 	47
 };
 
-static const char _deserialize_text_glyphs_trans_actions[] = {
+ساکن ثابت حرف deserialize_متن_glyphs_trans_actions[] = {
 	0, 1, 1, 0, 1, 1, 1, 0, 
 	1, 2, 2, 3, 3, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
@@ -352,7 +352,7 @@ static const char _deserialize_text_glyphs_trans_actions[] = {
 	14
 };
 
-static const char _deserialize_text_glyphs_eof_actions[] = {
+ساکن ثابت حرف deserialize_متن_glyphs_eof_actions[] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 
@@ -362,230 +362,230 @@ static const char _deserialize_text_glyphs_eof_actions[] = {
 	0
 };
 
-static const int deserialize_text_glyphs_start = 46;
-static const int deserialize_text_glyphs_first_final = 46;
-static const int deserialize_text_glyphs_error = 0;
+ساکن ثابت صحیح deserialize_متن_glyphs_آغاز = 46;
+ساکن ثابت صحیح deserialize_متن_glyphs_پہلا_final = 46;
+ساکن ثابت صحیح deserialize_متن_glyphs_error = 0;
 
-static const int deserialize_text_glyphs_en_main = 46;
-
-
-#line 101 "hb-buffer-deserialize-text-glyphs.rl"
+ساکن ثابت صحیح deserialize_متن_glyphs_en_main = 46;
 
 
-static hb_bool_t
-_hb_buffer_deserialize_text_glyphs (hb_buffer_t *buffer,
-				    const char *buf,
-				    unsigned int buf_len,
-				    const char **end_ptr,
+#سطر 101 "hb-buffer-deserialize-text-glyphs.rl"
+
+
+ساکن hb_bool_t
+hb_بفر_deserialize_متن_glyphs (hb_بفر_t *بفر,
+				    ثابت حرف *buf,
+				    غیرعلامتی صحیح buf_len,
+				    ثابت حرف **end_ptr,
 				    hb_font_t *font)
 {
-  const char *p = buf, *pe = buf + buf_len, *eof = pe;
+  ثابت حرف *p = buf, *pe = buf + buf_len, *eof = pe;
 
   /* Ensure we have positions. */
-  (void) hb_buffer_get_glyph_positions (buffer, nullptr);
+  (خالی) hb_بفر_get_glyph_positions (بفر, خالی_اشاریہ);
 
-  const char *tok = nullptr;
-  int cs;
+  ثابت حرف *tok = خالی_اشاریہ;
+  صحیح cs;
   hb_glyph_info_t info = {0};
   hb_glyph_position_t pos = {0};
   
-#line 386 "hb-buffer-deserialize-text-glyphs.hh"
+#سطر 386 "hb-buffer-deserialize-text-glyphs.hh"
 	{
-	cs = deserialize_text_glyphs_start;
+	cs = deserialize_متن_glyphs_آغاز;
 	}
 
-#line 389 "hb-buffer-deserialize-text-glyphs.hh"
+#سطر 389 "hb-buffer-deserialize-text-glyphs.hh"
 	{
-	int _slen;
-	int _trans;
-	const unsigned char *_keys;
-	const char *_inds;
-	if ( p == pe )
-		goto _test_eof;
-	if ( cs == 0 )
-		goto _out;
+	صحیح _slen;
+	صحیح _trans;
+	ثابت غیرعلامتی حرف *کلیدیں_2;
+	ثابت حرف *_inds;
+	اگر ( p == pe )
+		جاؤ _test_eof;
+	اگر ( cs == 0 )
+		جاؤ برآمد_2;
 _resume:
-	_keys = _deserialize_text_glyphs_trans_keys + (cs<<1);
-	_inds = _deserialize_text_glyphs_indicies + _deserialize_text_glyphs_index_offsets[cs];
+	کلیدیں_2 = deserialize_متن_glyphs_trans_کلیدیں + (cs<<1);
+	_inds = deserialize_متن_glyphs_indicies + deserialize_متن_glyphs_اشاریہ_offsets[cs];
 
-	_slen = _deserialize_text_glyphs_key_spans[cs];
-	_trans = _inds[ _slen > 0 && _keys[0] <=(*p) &&
-		(*p) <= _keys[1] ?
-		(*p) - _keys[0] : _slen ];
+	_slen = deserialize_متن_glyphs_کلید_spans[cs];
+	_trans = _inds[ _slen > 0 && کلیدیں_2[0] <=(*p) &&
+		(*p) <= کلیدیں_2[1] ?
+		(*p) - کلیدیں_2[0] : _slen ];
 
-	cs = _deserialize_text_glyphs_trans_targs[_trans];
+	cs = deserialize_متن_glyphs_trans_targs[_trans];
 
-	if ( _deserialize_text_glyphs_trans_actions[_trans] == 0 )
-		goto _again;
+	اگر ( deserialize_متن_glyphs_trans_actions[_trans] == 0 )
+		جاؤ _again;
 
-	switch ( _deserialize_text_glyphs_trans_actions[_trans] ) {
-	case 2:
-#line 50 "hb-buffer-deserialize-text-glyphs.rl"
+	انتخاب ( deserialize_متن_glyphs_trans_actions[_trans] ) {
+	حالت 2:
+#سطر 50 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	tok = p;
 }
-	break;
-	case 1:
-#line 54 "hb-buffer-deserialize-text-glyphs.rl"
+	توڑو;
+	حالت 1:
+#سطر 54 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	/* TODO Unescape delimiters. */
-	if (!hb_font_glyph_from_string (font,
+	اگر (!hb_font_glyph_from_string (font,
 					tok, p - tok,
 					&info.codepoint))
-	  return false;
+	  واپس جھوٹ;
 }
-	break;
-	case 6:
-#line 62 "hb-buffer-deserialize-text-glyphs.rl"
-	{ if (!parse_uint (tok, p, &info.cluster )) return false; }
-	break;
-	case 7:
-#line 63 "hb-buffer-deserialize-text-glyphs.rl"
-	{ if (!parse_int  (tok, p, &pos.x_offset )) return false; }
-	break;
-	case 8:
-#line 64 "hb-buffer-deserialize-text-glyphs.rl"
-	{ if (!parse_int  (tok, p, &pos.y_offset )) return false; }
-	break;
-	case 4:
-#line 65 "hb-buffer-deserialize-text-glyphs.rl"
-	{ if (!parse_int  (tok, p, &pos.x_advance)) return false; }
-	break;
-	case 5:
-#line 66 "hb-buffer-deserialize-text-glyphs.rl"
-	{ if (!parse_int  (tok, p, &pos.y_advance)) return false; }
-	break;
-	case 3:
-#line 67 "hb-buffer-deserialize-text-glyphs.rl"
-	{ if (!parse_uint (tok, p, &info.mask    )) return false; }
-	break;
-	case 9:
-#line 38 "hb-buffer-deserialize-text-glyphs.rl"
+	توڑو;
+	حالت 6:
+#سطر 62 "hb-buffer-deserialize-text-glyphs.rl"
+	{ اگر (!parse_uint (tok, p, &info.cluster )) واپس جھوٹ; }
+	توڑو;
+	حالت 7:
+#سطر 63 "hb-buffer-deserialize-text-glyphs.rl"
+	{ اگر (!parse_int  (tok, p, &pos.x_انحراف_2 )) واپس جھوٹ; }
+	توڑو;
+	حالت 8:
+#سطر 64 "hb-buffer-deserialize-text-glyphs.rl"
+	{ اگر (!parse_int  (tok, p, &pos.y_انحراف_2 )) واپس جھوٹ; }
+	توڑو;
+	حالت 4:
+#سطر 65 "hb-buffer-deserialize-text-glyphs.rl"
+	{ اگر (!parse_int  (tok, p, &pos.x_advance)) واپس جھوٹ; }
+	توڑو;
+	حالت 5:
+#سطر 66 "hb-buffer-deserialize-text-glyphs.rl"
+	{ اگر (!parse_int  (tok, p, &pos.y_advance)) واپس جھوٹ; }
+	توڑو;
+	حالت 3:
+#سطر 67 "hb-buffer-deserialize-text-glyphs.rl"
+	{ اگر (!parse_uint (tok, p, &info.نقاب    )) واپس جھوٹ; }
+	توڑو;
+	حالت 9:
+#سطر 38 "hb-buffer-deserialize-text-glyphs.rl"
 	{
-	hb_memset (&info, 0, sizeof (info));
-	hb_memset (&pos , 0, sizeof (pos ));
+	hb_memset (&info, 0, حجم (info));
+	hb_memset (&pos , 0, حجم (pos ));
 }
-#line 50 "hb-buffer-deserialize-text-glyphs.rl"
-	{
-	tok = p;
-}
-	break;
-	case 10:
-#line 38 "hb-buffer-deserialize-text-glyphs.rl"
-	{
-	hb_memset (&info, 0, sizeof (info));
-	hb_memset (&pos , 0, sizeof (pos ));
-}
-#line 50 "hb-buffer-deserialize-text-glyphs.rl"
+#سطر 50 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	tok = p;
 }
-#line 54 "hb-buffer-deserialize-text-glyphs.rl"
+	توڑو;
+	حالت 10:
+#سطر 38 "hb-buffer-deserialize-text-glyphs.rl"
+	{
+	hb_memset (&info, 0, حجم (info));
+	hb_memset (&pos , 0, حجم (pos ));
+}
+#سطر 50 "hb-buffer-deserialize-text-glyphs.rl"
+	{
+	tok = p;
+}
+#سطر 54 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	/* TODO Unescape delimiters. */
-	if (!hb_font_glyph_from_string (font,
+	اگر (!hb_font_glyph_from_string (font,
 					tok, p - tok,
 					&info.codepoint))
-	  return false;
+	  واپس جھوٹ;
 }
-	break;
-	case 12:
-#line 43 "hb-buffer-deserialize-text-glyphs.rl"
+	توڑو;
+	حالت 12:
+#سطر 43 "hb-buffer-deserialize-text-glyphs.rl"
 	{
-	buffer->add_info_and_pos (info, pos);
-	if (unlikely (!buffer->successful))
-	  return false;
+	بفر->جوڑو_info_and_pos (info, pos);
+	اگر (unlikely (!بفر->successful))
+	  واپس جھوٹ;
 	*end_ptr = p;
 }
-#line 38 "hb-buffer-deserialize-text-glyphs.rl"
+#سطر 38 "hb-buffer-deserialize-text-glyphs.rl"
 	{
-	hb_memset (&info, 0, sizeof (info));
-	hb_memset (&pos , 0, sizeof (pos ));
+	hb_memset (&info, 0, حجم (info));
+	hb_memset (&pos , 0, حجم (pos ));
 }
-#line 50 "hb-buffer-deserialize-text-glyphs.rl"
+#سطر 50 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	tok = p;
 }
-	break;
-	case 14:
-#line 54 "hb-buffer-deserialize-text-glyphs.rl"
+	توڑو;
+	حالت 14:
+#سطر 54 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	/* TODO Unescape delimiters. */
-	if (!hb_font_glyph_from_string (font,
+	اگر (!hb_font_glyph_from_string (font,
 					tok, p - tok,
 					&info.codepoint))
-	  return false;
+	  واپس جھوٹ;
 }
-#line 38 "hb-buffer-deserialize-text-glyphs.rl"
+#سطر 38 "hb-buffer-deserialize-text-glyphs.rl"
 	{
-	hb_memset (&info, 0, sizeof (info));
-	hb_memset (&pos , 0, sizeof (pos ));
+	hb_memset (&info, 0, حجم (info));
+	hb_memset (&pos , 0, حجم (pos ));
 }
-#line 50 "hb-buffer-deserialize-text-glyphs.rl"
+#سطر 50 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	tok = p;
 }
-	break;
-	case 13:
-#line 43 "hb-buffer-deserialize-text-glyphs.rl"
+	توڑو;
+	حالت 13:
+#سطر 43 "hb-buffer-deserialize-text-glyphs.rl"
 	{
-	buffer->add_info_and_pos (info, pos);
-	if (unlikely (!buffer->successful))
-	  return false;
+	بفر->جوڑو_info_and_pos (info, pos);
+	اگر (unlikely (!بفر->successful))
+	  واپس جھوٹ;
 	*end_ptr = p;
 }
-#line 38 "hb-buffer-deserialize-text-glyphs.rl"
+#سطر 38 "hb-buffer-deserialize-text-glyphs.rl"
 	{
-	hb_memset (&info, 0, sizeof (info));
-	hb_memset (&pos , 0, sizeof (pos ));
+	hb_memset (&info, 0, حجم (info));
+	hb_memset (&pos , 0, حجم (pos ));
 }
-#line 50 "hb-buffer-deserialize-text-glyphs.rl"
+#سطر 50 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	tok = p;
 }
-#line 54 "hb-buffer-deserialize-text-glyphs.rl"
+#سطر 54 "hb-buffer-deserialize-text-glyphs.rl"
 	{
 	/* TODO Unescape delimiters. */
-	if (!hb_font_glyph_from_string (font,
+	اگر (!hb_font_glyph_from_string (font,
 					tok, p - tok,
 					&info.codepoint))
-	  return false;
+	  واپس جھوٹ;
 }
-	break;
-#line 523 "hb-buffer-deserialize-text-glyphs.hh"
+	توڑو;
+#سطر 523 "hb-buffer-deserialize-text-glyphs.hh"
 	}
 
 _again:
-	if ( cs == 0 )
-		goto _out;
-	if ( ++p != pe )
-		goto _resume;
+	اگر ( cs == 0 )
+		جاؤ برآمد_2;
+	اگر ( ++p != pe )
+		جاؤ _resume;
 	_test_eof: {}
-	if ( p == eof )
+	اگر ( p == eof )
 	{
-	switch ( _deserialize_text_glyphs_eof_actions[cs] ) {
-	case 11:
-#line 43 "hb-buffer-deserialize-text-glyphs.rl"
+	انتخاب ( deserialize_متن_glyphs_eof_actions[cs] ) {
+	حالت 11:
+#سطر 43 "hb-buffer-deserialize-text-glyphs.rl"
 	{
-	buffer->add_info_and_pos (info, pos);
-	if (unlikely (!buffer->successful))
-	  return false;
+	بفر->جوڑو_info_and_pos (info, pos);
+	اگر (unlikely (!بفر->successful))
+	  واپس جھوٹ;
 	*end_ptr = p;
 }
-	break;
-#line 542 "hb-buffer-deserialize-text-glyphs.hh"
+	توڑو;
+#سطر 542 "hb-buffer-deserialize-text-glyphs.hh"
 	}
 	}
 
-	_out: {}
+	برآمد_2: {}
 	}
 
-#line 122 "hb-buffer-deserialize-text-glyphs.rl"
+#سطر 122 "hb-buffer-deserialize-text-glyphs.rl"
 
 
   *end_ptr = p;
 
-  return p == pe;
+  واپس p == pe;
 }
 
-#endif /* HB_BUFFER_DESERIALIZE_TEXT_GLYPHS_HH */
+#اگر_ختم /* HB_BUFFER_DESERIALIZE_TEXT_GLYPHS_HH */

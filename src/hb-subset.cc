@@ -24,20 +24,20 @@
  * Google Author(s): Garret Rieger, Rod Sheeter, Behdad Esfahbod
  */
 
-#include "hb.hh"
+#شامل "hb.hh"
 
-#include "hb-open-type.hh"
-#include "hb-open-file.hh"
+#شامل "hb-open-type.hh"
+#شامل "hb-open-file.hh"
 
-#include "hb-subset.hh"
-#include "hb-subset-table.hh"
-#include "hb-subset-accelerator.hh"
+#شامل "hb-subset.hh"
+#شامل "hb-subset-table.hh"
+#شامل "hb-subset-accelerator.hh"
 
-#include "hb-ot-cmap-table.hh"
-#include "hb-ot-var-cvar-table.hh"
-#include "hb-ot-head-table.hh"
-#include "hb-ot-stat-table.hh"
-#include "hb-ot-post-table-v2subset.hh"
+#شامل "hb-ot-cmap-table.hh"
+#شامل "hb-ot-var-cvar-table.hh"
+#شامل "hb-ot-head-table.hh"
+#شامل "hb-ot-stat-table.hh"
+#شامل "hb-ot-post-table-v2subset.hh"
 
 
 /**
@@ -62,332 +62,332 @@
  */
 
 
-hb_user_data_key_t _hb_subset_accelerator_user_data_key = {};
+hb_user_ڈیٹا_کلید_t hb_subset_accelerator_user_ڈیٹا_کلید = {};
 
 
 /*
  * The list of tables in the open type spec. Used to check for tables that may need handling
  * if we are unable to list the tables in a face.
  */
-static hb_tag_t known_tables[] {
-  HB_TAG('a','v','a','r'),
-  HB_TAG('B','A','S','E'),
-  HB_TAG('C','B','D','T'),
-  HB_TAG('C','B','L','C'),
-  HB_TAG('C','F','F',' '),
-  HB_TAG('C','F','F','2'),
-  HB_TAG('c','m','a','p'),
-  HB_TAG('C','O','L','R'),
-  HB_TAG('C','P','A','L'),
-  HB_TAG('c','v','a','r'),
-  HB_TAG('c','v','t',' '),
-  HB_TAG('D','S','I','G'),
-  HB_TAG('E','B','D','T'),
-  HB_TAG('E','B','L','C'),
-  HB_TAG('E','B','S','C'),
-  HB_TAG('f','p','g','m'),
-  HB_TAG('f','v','a','r'),
-  HB_TAG('g','a','s','p'),
-  HB_TAG('G','D','E','F'),
-  HB_TAG('g','l','y','f'),
-#ifndef HB_NO_BEYOND_64K
-  HB_TAG('G','L','Y','F'),
-#endif
-  HB_TAG('G','P','O','S'),
-  HB_TAG('G','S','U','B'),
-  HB_TAG('g','v','a','r'),
-#ifndef HB_NO_BEYOND_64K
-  HB_TAG('G','V','A','R'),
-#endif
-  HB_TAG('h','d','m','x'),
-  HB_TAG('h','e','a','d'),
-  HB_TAG('h','h','e','a'),
-#ifndef HB_NO_BEYOND_64K
-  HB_TAG('H','H','E','A'),
-#endif
-  HB_TAG('h','m','t','x'),
-#ifndef HB_NO_BEYOND_64K
-  HB_TAG('H','M','T','X'),
-#endif
-  HB_TAG('H','V','A','R'),
-  HB_TAG('J','S','T','F'),
-  HB_TAG('k','e','r','n'),
-  HB_TAG('l','o','c','a'),
-#ifndef HB_NO_BEYOND_64K
-  HB_TAG('L','O','C','A'),
-#endif
-  HB_TAG('L','T','S','H'),
-  HB_TAG('M','A','T','H'),
-  HB_TAG('m','a','x','p'),
-#ifndef HB_NO_BEYOND_64K
-  HB_TAG('M','A','X','P'),
-#endif
-  HB_TAG('M','E','R','G'),
-  HB_TAG('m','e','t','a'),
-  HB_TAG('M','V','A','R'),
-  HB_TAG('P','C','L','T'),
-  HB_TAG('p','o','s','t'),
-  HB_TAG('p','r','e','p'),
-  HB_TAG('s','b','i','x'),
-  HB_TAG('S','T','A','T'),
-  HB_TAG('S','V','G',' '),
-  HB_TAG('V','D','M','X'),
-  HB_TAG('v','h','e','a'),
-#ifndef HB_NO_BEYOND_64K
-  HB_TAG('V','H','E','A'),
-#endif
-  HB_TAG('v','m','t','x'),
-#ifndef HB_NO_BEYOND_64K
-  HB_TAG('V','M','T','X'),
-#endif
-  HB_TAG('V','O','R','G'),
-  HB_TAG('V','A','R','C'),
-  HB_TAG('V','V','A','R'),
-  HB_TAG('n','a','m','e'),
-  HB_TAG('O','S','/','2')
+ساکن hb_لیبل_t معلوم_tables[] {
+  HB_لیبل('a','v','a','r'),
+  HB_لیبل('B','A','S','E'),
+  HB_لیبل('C','B','D','T'),
+  HB_لیبل('C','B','L','C'),
+  HB_لیبل('C','F','F',' '),
+  HB_لیبل('C','F','F','2'),
+  HB_لیبل('c','m','a','p'),
+  HB_لیبل('C','O','L','R'),
+  HB_لیبل('C','P','A','L'),
+  HB_لیبل('c','v','a','r'),
+  HB_لیبل('c','v','t',' '),
+  HB_لیبل('D','S','I','G'),
+  HB_لیبل('E','B','D','T'),
+  HB_لیبل('E','B','L','C'),
+  HB_لیبل('E','B','S','C'),
+  HB_لیبل('f','p','g','m'),
+  HB_لیبل('f','v','a','r'),
+  HB_لیبل('g','a','s','p'),
+  HB_لیبل('G','D','E','F'),
+  HB_لیبل('g','l','y','f'),
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+  HB_لیبل('G','L','Y','F'),
+#اگر_ختم
+  HB_لیبل('G','P','O','S'),
+  HB_لیبل('G','S','U','B'),
+  HB_لیبل('g','v','a','r'),
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+  HB_لیبل('G','V','A','R'),
+#اگر_ختم
+  HB_لیبل('h','d','m','x'),
+  HB_لیبل('h','e','a','d'),
+  HB_لیبل('h','h','e','a'),
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+  HB_لیبل('H','H','E','A'),
+#اگر_ختم
+  HB_لیبل('h','m','t','x'),
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+  HB_لیبل('H','M','T','X'),
+#اگر_ختم
+  HB_لیبل('H','V','A','R'),
+  HB_لیبل('J','S','T','F'),
+  HB_لیبل('k','e','r','n'),
+  HB_لیبل('l','o','c','a'),
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+  HB_لیبل('L','O','C','A'),
+#اگر_ختم
+  HB_لیبل('L','T','S','H'),
+  HB_لیبل('M','A','T','H'),
+  HB_لیبل('m','a','x','p'),
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+  HB_لیبل('M','A','X','P'),
+#اگر_ختم
+  HB_لیبل('M','E','R','G'),
+  HB_لیبل('m','e','t','a'),
+  HB_لیبل('M','V','A','R'),
+  HB_لیبل('P','C','L','T'),
+  HB_لیبل('p','o','s','t'),
+  HB_لیبل('p','r','e','p'),
+  HB_لیبل('s','b','i','x'),
+  HB_لیبل('S','T','A','T'),
+  HB_لیبل('S','V','G',' '),
+  HB_لیبل('V','D','M','X'),
+  HB_لیبل('v','h','e','a'),
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+  HB_لیبل('V','H','E','A'),
+#اگر_ختم
+  HB_لیبل('v','m','t','x'),
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+  HB_لیبل('V','M','T','X'),
+#اگر_ختم
+  HB_لیبل('V','O','R','G'),
+  HB_لیبل('V','A','R','C'),
+  HB_لیبل('V','V','A','R'),
+  HB_لیبل('n','a','m','e'),
+  HB_لیبل('O','S','/','2')
 };
 
-static bool _table_is_empty (const hb_face_t *face, hb_tag_t tag)
+ساکن منطقی جدول_is_خالی_خانے (ثابت hb_face_t *face, hb_لیبل_t لیبل_2)
 {
-  hb_blob_t* blob = hb_face_reference_table (face, tag);
-  bool result = (blob == hb_blob_get_empty ());
+  hb_blob_t* blob = hb_face_reference_جدول (face, لیبل_2);
+  منطقی نتیجہ = (blob == hb_blob_get_خالی_خانے ());
   hb_blob_destroy (blob);
-  return result;
+  واپس نتیجہ;
 }
 
-static unsigned int
-_get_table_tags (const hb_subset_plan_t* plan,
-                 unsigned int  start_offset,
-                 unsigned int *table_count, /* IN/OUT */
-                 hb_tag_t     *table_tags /* OUT */)
+ساکن غیرعلامتی صحیح
+get_جدول_لیبل_فہرست_2 (ثابت hb_subset_plan_t* plan,
+                 غیرعلامتی صحیح  آغاز_انحراف,
+                 غیرعلامتی صحیح *جدول_گنتی_2, /* IN/OUT */
+                 hb_لیبل_t     *جدول_لیبل_فہرست /*برآمد*/)
 {
-  unsigned num_tables = hb_face_get_table_tags (plan->source, 0, nullptr, nullptr);
-  if (num_tables)
-    return hb_face_get_table_tags (plan->source, start_offset, table_count, table_tags);
+  غیرعلامتی عدد_tables = hb_face_get_جدول_لیبل_فہرست (plan->ماخذ, 0, خالی_اشاریہ, خالی_اشاریہ);
+  اگر (عدد_tables)
+    واپس hb_face_get_جدول_لیبل_فہرست (plan->ماخذ, آغاز_انحراف, جدول_گنتی_2, جدول_لیبل_فہرست);
 
   // If face has 0 tables associated with it, assume that it was built from
   // hb_face_create_tables and thus is unable to list its tables. Fallback to
   // checking each table type we can handle for existence instead.
-  auto it =
+  خودکار it =
       hb_concat (
-          + hb_array (known_tables)
-          | hb_filter ([&] (hb_tag_t tag) {
-            return !_table_is_empty (plan->source, tag) && !plan->no_subset_tables.has (tag);
+          + hb_array (معلوم_tables)
+          | hb_filter ([&] (hb_لیبل_t لیبل_2) {
+            واپس !جدول_is_خالی_خانے (plan->ماخذ, لیبل_2) && !plan->no_subset_tables.has (لیبل_2);
           })
-          | hb_map ([] (hb_tag_t tag) -> hb_tag_t { return tag; }),
+          | hb_map ([] (hb_لیبل_t لیبل_2) -> hb_لیبل_t { واپس لیبل_2; }),
 
           plan->no_subset_tables.iter ()
-          | hb_filter([&] (hb_tag_t tag) {
-            return !_table_is_empty (plan->source, tag);
+          | hb_filter([&] (hb_لیبل_t لیبل_2) {
+            واپس !جدول_is_خالی_خانے (plan->ماخذ, لیبل_2);
           }));
 
-  it += start_offset;
+  it += آغاز_انحراف;
 
-  unsigned num_written = 0;
-  while (bool (it) && num_written < *table_count)
-    table_tags[num_written++] = *it++;
+  غیرعلامتی عدد_written = 0;
+  جب (منطقی (it) && عدد_written < *جدول_گنتی_2)
+    جدول_لیبل_فہرست[عدد_written++] = *it++;
 
-  *table_count = num_written;
-  return num_written;
+  *جدول_گنتی_2 = عدد_written;
+  واپس عدد_written;
 }
 
 
-static bool
-_is_table_present (hb_face_t *source, hb_tag_t tag)
+ساکن منطقی
+is_جدول_present (hb_face_t *ماخذ, hb_لیبل_t لیبل_2)
 {
 
-  if (!hb_face_get_table_tags (source, 0, nullptr, nullptr)) {
+  اگر (!hb_face_get_جدول_لیبل_فہرست (ماخذ, 0, خالی_اشاریہ, خالی_اشاریہ)) {
     // If face has 0 tables associated with it, assume that it was built from
     // hb_face_create_tables and thus is unable to list its tables. Fallback to
     // checking if the blob associated with tag is empty.
-    return !_table_is_empty (source, tag);
+    واپس !جدول_is_خالی_خانے (ماخذ, لیبل_2);
   }
 
-  hb_tag_t table_tags[32];
-  unsigned offset = 0, num_tables = ARRAY_LENGTH (table_tags);
-  while (((void) hb_face_get_table_tags (source, offset, &num_tables, table_tags), num_tables))
+  hb_لیبل_t جدول_لیبل_فہرست[32];
+  غیرعلامتی انحراف = 0, عدد_tables = ARRAY_لمبائی (جدول_لیبل_فہرست);
+  جب (((خالی) hb_face_get_جدول_لیبل_فہرست (ماخذ, انحراف, &عدد_tables, جدول_لیبل_فہرست), عدد_tables))
   {
-    for (unsigned i = 0; i < num_tables; ++i)
-      if (table_tags[i] == tag)
-	return true;
-    offset += num_tables;
+    برائے (غیرعلامتی i = 0; i < عدد_tables; ++i)
+      اگر (جدول_لیبل_فہرست[i] == لیبل_2)
+	واپس سچ;
+    انحراف += عدد_tables;
   }
-  return false;
+  واپس جھوٹ;
 }
 
-static bool
-_should_drop_table (hb_subset_plan_t *plan, hb_tag_t tag)
+ساکن منطقی
+should_drop_جدول (hb_subset_plan_t *plan, hb_لیبل_t لیبل_2)
 {
-  if (plan->drop_tables.has (tag))
-    return true;
+  اگر (plan->drop_tables.has (لیبل_2))
+    واپس سچ;
 
-  switch (tag)
+  انتخاب (لیبل_2)
   {
-  case HB_TAG('c','v','a','r'): /* hint table, fallthrough */
-    return plan->all_axes_pinned || (plan->flags & HB_SUBSET_FLAGS_NO_HINTING);
+  حالت HB_لیبل('c','v','a','r'): /* hint table, fallthrough */
+    واپس plan->all_axes_pinned || (plan->flags & HB_SUBSET_FLAGS_NO_HINTING);
 
-  case HB_TAG('c','v','t',' '): /* hint table, fallthrough */
-  case HB_TAG('f','p','g','m'): /* hint table, fallthrough */
-  case HB_TAG('p','r','e','p'): /* hint table, fallthrough */
-  case HB_TAG('h','d','m','x'): /* hint table, fallthrough */
-  case HB_TAG('V','D','M','X'): /* hint table, fallthrough */
-    return plan->flags & HB_SUBSET_FLAGS_NO_HINTING;
+  حالت HB_لیبل('c','v','t',' '): /* hint table, fallthrough */
+  حالت HB_لیبل('f','p','g','m'): /* hint table, fallthrough */
+  حالت HB_لیبل('p','r','e','p'): /* hint table, fallthrough */
+  حالت HB_لیبل('h','d','m','x'): /* hint table, fallthrough */
+  حالت HB_لیبل('V','D','M','X'): /* hint table, fallthrough */
+    واپس plan->flags & HB_SUBSET_FLAGS_NO_HINTING;
 
-#ifdef HB_NO_SUBSET_LAYOUT
+#اگر_تعریف_شدہ HB_NO_SUBSET_LAYOUT
     // Drop Layout Tables if requested.
-  case HB_TAG('G','D','E','F'):
-  case HB_TAG('G','P','O','S'):
-  case HB_TAG('G','S','U','B'):
-  case HB_TAG('m','o','r','x'):
-  case HB_TAG('m','o','r','t'):
-  case HB_TAG('k','e','r','x'):
-  case HB_TAG('k','e','r','n'):
-    return true;
-#endif
+  حالت HB_لیبل('G','D','E','F'):
+  حالت HB_لیبل('G','P','O','S'):
+  حالت HB_لیبل('G','S','U','B'):
+  حالت HB_لیبل('m','o','r','x'):
+  حالت HB_لیبل('m','o','r','t'):
+  حالت HB_لیبل('k','e','r','x'):
+  حالت HB_لیبل('k','e','r','n'):
+    واپس سچ;
+#اگر_ختم
 
-  case HB_TAG('a','v','a','r'):
-  case HB_TAG('f','v','a','r'):
-  case HB_TAG('g','v','a','r'):
-#ifndef HB_NO_BEYOND_64K
-  case HB_TAG('G','V','A','R'):
-#endif
-  case HB_TAG('H','V','A','R'):
-  case HB_TAG('V','V','A','R'):
-  case HB_TAG('M','V','A','R'):
-    return plan->all_axes_pinned;
+  حالت HB_لیبل('a','v','a','r'):
+  حالت HB_لیبل('f','v','a','r'):
+  حالت HB_لیبل('g','v','a','r'):
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+  حالت HB_لیبل('G','V','A','R'):
+#اگر_ختم
+  حالت HB_لیبل('H','V','A','R'):
+  حالت HB_لیبل('V','V','A','R'):
+  حالت HB_لیبل('M','V','A','R'):
+    واپس plan->all_axes_pinned;
 
-  default:
-    return false;
+  طےشدہ:
+    واپس جھوٹ;
   }
 }
 
-static bool
-_dependencies_satisfied (hb_subset_plan_t *plan, hb_tag_t tag,
-                         const hb_set_t &subsetted_tags,
-                         const hb_set_t &pending_subset_tags)
+ساکن منطقی
+_dependencies_satisfied (hb_subset_plan_t *plan, hb_لیبل_t لیبل_2,
+                         ثابت hb_سیٹ_t &subsetted_لیبل_فہرست,
+                         ثابت hb_سیٹ_t &pending_subset_لیبل_فہرست)
 {
-  bool outline_pending = pending_subset_tags.has (HB_TAG('g','l','y','f'));
-#ifndef HB_NO_BEYOND_64K
-  outline_pending |= pending_subset_tags.has (HB_TAG('G','L','Y','F'));
-#endif
+  منطقی outline_pending = pending_subset_لیبل_فہرست.has (HB_لیبل('g','l','y','f'));
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+  outline_pending |= pending_subset_لیبل_فہرست.has (HB_لیبل('G','L','Y','F'));
+#اگر_ختم
 
-  switch (tag)
+  انتخاب (لیبل_2)
   {
-  case HB_TAG('h','m','t','x'):
-  case HB_TAG('v','m','t','x'):
-  case HB_TAG('m','a','x','p'):
-#ifndef HB_NO_BEYOND_64K
-  case HB_TAG('H','M','T','X'):
-  case HB_TAG('V','M','T','X'):
-  case HB_TAG('M','A','X','P'):
-#endif
-  case HB_TAG('O','S','/','2'):
-    return !plan->normalized_coords || !outline_pending;
-  case HB_TAG('G','P','O','S'):
-  case HB_TAG('G','S','U','B'):
-    return plan->all_axes_pinned || !pending_subset_tags.has (HB_TAG('G','D','E','F'));
+  حالت HB_لیبل('h','m','t','x'):
+  حالت HB_لیبل('v','m','t','x'):
+  حالت HB_لیبل('m','a','x','p'):
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+  حالت HB_لیبل('H','M','T','X'):
+  حالت HB_لیبل('V','M','T','X'):
+  حالت HB_لیبل('M','A','X','P'):
+#اگر_ختم
+  حالت HB_لیبل('O','S','/','2'):
+    واپس !plan->normalized_coords || !outline_pending;
+  حالت HB_لیبل('G','P','O','S'):
+  حالت HB_لیبل('G','S','U','B'):
+    واپس plan->all_axes_pinned || !pending_subset_لیبل_فہرست.has (HB_لیبل('G','D','E','F'));
   /* For avar2, variation tables must wait for avar to be subsetted first. */
-  case HB_TAG('g','v','a','r'):
-#ifndef HB_NO_BEYOND_64K
-  case HB_TAG('G','V','A','R'):
-#endif
-  case HB_TAG('c','v','a','r'):
-  case HB_TAG('H','V','A','R'):
-  case HB_TAG('V','V','A','R'):
-  case HB_TAG('M','V','A','R'):
-  case HB_TAG('G','D','E','F'):
-  case HB_TAG('C','F','F','2'):
-    return !plan->has_avar2 || !pending_subset_tags.has (HB_TAG('a','v','a','r'));
-  default:
-    return true;
+  حالت HB_لیبل('g','v','a','r'):
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+  حالت HB_لیبل('G','V','A','R'):
+#اگر_ختم
+  حالت HB_لیبل('c','v','a','r'):
+  حالت HB_لیبل('H','V','A','R'):
+  حالت HB_لیبل('V','V','A','R'):
+  حالت HB_لیبل('M','V','A','R'):
+  حالت HB_لیبل('G','D','E','F'):
+  حالت HB_لیبل('C','F','F','2'):
+    واپس !plan->has_avar2 || !pending_subset_لیبل_فہرست.has (HB_لیبل('a','v','a','r'));
+  طےشدہ:
+    واپس سچ;
   }
 }
 
-static bool
-_subset_table (hb_subset_plan_t *plan,
-	       hb_vector_t<char> &buf,
-	       hb_tag_t tag)
+ساکن منطقی
+subset_جدول (hb_subset_plan_t *plan,
+	       hb_سمتیہ_t<حرف> &buf,
+	       hb_لیبل_t لیبل_2)
 {
-  if (plan->no_subset_tables.has (tag)) {
-    return _hb_subset_table_passthrough (plan, tag);
+  اگر (plan->no_subset_tables.has (لیبل_2)) {
+    واپس hb_subset_جدول_passthrough (plan, لیبل_2);
   }
 
-  DEBUG_MSG (SUBSET, nullptr, "subset %c%c%c%c", HB_UNTAG (tag));
+  DEBUG_پیغام (SUBSET, خالی_اشاریہ, "subset %c%c%c%c", HB_UNTAG (لیبل_2));
 
-  bool success;
-  if (_hb_subset_table_layout (plan, buf, tag, &success) ||
-      _hb_subset_table_var (plan, buf, tag, &success) ||
-      _hb_subset_table_cff (plan, buf, tag, &success) ||
-      _hb_subset_table_color (plan, buf, tag, &success) ||
-      _hb_subset_table_other (plan, buf, tag, &success))
-    return success;
+  منطقی success;
+  اگر (hb_subset_جدول_layout (plan, buf, لیبل_2, &success) ||
+      hb_subset_جدول_var (plan, buf, لیبل_2, &success) ||
+      hb_subset_جدول_cff (plan, buf, لیبل_2, &success) ||
+      hb_subset_جدول_color (plan, buf, لیبل_2, &success) ||
+      hb_subset_جدول_other (plan, buf, لیبل_2, &success))
+    واپس success;
 
 
-  switch (tag)
+  انتخاب (لیبل_2)
   {
-  case HB_TAG('h','e','a','d'):
+  حالت HB_لیبل('h','e','a','d'):
   {
-    bool outline_table_handles_head =
-	_is_table_present (plan->source, HB_TAG('g','l','y','f')) &&
-	!_should_drop_table (plan, HB_TAG('g','l','y','f'));
-#ifndef HB_NO_BEYOND_64K
-    outline_table_handles_head |=
-	_is_table_present (plan->source, HB_TAG('G','L','Y','F')) &&
-	!_should_drop_table (plan, HB_TAG('G','L','Y','F'));
-#endif
-    if (outline_table_handles_head)
-      return true; /* skip head, handled by the outline table */
-    return _hb_subset_table<const OT::head> (plan, buf);
+    منطقی outline_جدول_handles_سر =
+	is_جدول_present (plan->ماخذ, HB_لیبل('g','l','y','f')) &&
+	!should_drop_جدول (plan, HB_لیبل('g','l','y','f'));
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    outline_جدول_handles_سر |=
+	is_جدول_present (plan->ماخذ, HB_لیبل('G','L','Y','F')) &&
+	!should_drop_جدول (plan, HB_لیبل('G','L','Y','F'));
+#اگر_ختم
+    اگر (outline_جدول_handles_سر)
+      واپس سچ; /* skip head, handled by the outline table */
+    واپس hb_subset_جدول<ثابت OT::سر_2> (plan, buf);
   }
 
-  case HB_TAG('S','T','A','T'):
-    if (!plan->user_axes_location.is_empty ()) return _hb_subset_table<const OT::STAT> (plan, buf);
-    else return _hb_subset_table_passthrough (plan, tag);
+  حالت HB_لیبل('S','T','A','T'):
+    اگر (!plan->user_axes_location.is_empty ()) واپس hb_subset_جدول<ثابت OT::STAT> (plan, buf);
+    ورنہ واپس hb_subset_جدول_passthrough (plan, لیبل_2);
 
-  case HB_TAG('c','v','t',' '):
-#ifndef HB_NO_VAR
-    if (_is_table_present (plan->source, HB_TAG('c','v','a','r')) &&
+  حالت HB_لیبل('c','v','t',' '):
+#اگر_غیر_تعریف_شدہ HB_NO_VAR
+    اگر (is_جدول_present (plan->ماخذ, HB_لیبل('c','v','a','r')) &&
         plan->normalized_coords && !plan->pinned_at_default)
     {
-      auto &cvar = *plan->source->table.cvar;
-      return OT::cvar::add_cvt_and_apply_deltas (plan, cvar.get_tuple_var_data (), &cvar);
+      خودکار &cvar = *plan->ماخذ->جدول.cvar;
+      واپس OT::cvar::جوڑو_cvt_and_apply_deltas (plan, cvar.get_tuple_var_ڈیٹا (), &cvar);
     }
-#endif
-    return _hb_subset_table_passthrough (plan, tag);
+#اگر_ختم
+    واپس hb_subset_جدول_passthrough (plan, لیبل_2);
   }
 
-  if (plan->flags & HB_SUBSET_FLAGS_PASSTHROUGH_UNRECOGNIZED)
-    return _hb_subset_table_passthrough (plan, tag);
+  اگر (plan->flags & HB_SUBSET_FLAGS_PASSTHROUGH_UNRECOGNIZED)
+    واپس hb_subset_جدول_passthrough (plan, لیبل_2);
 
   // Drop table
-  return true;
+  واپس سچ;
 }
 
-static void _attach_accelerator_data (hb_subset_plan_t* plan,
+ساکن خالی attach_accelerator_ڈیٹا_2 (hb_subset_plan_t* plan,
                                       hb_face_t* face /* IN/OUT */)
 {
-  if (!plan->inprogress_accelerator) return;
+  اگر (!plan->inprogress_accelerator) واپس;
 
   // Transfer the accelerator from the plan to us.
   hb_subset_accelerator_t* accel = plan->inprogress_accelerator;
-  plan->inprogress_accelerator = nullptr;
+  plan->inprogress_accelerator = خالی_اشاریہ;
 
-  if (accel->in_error ())
+  اگر (accel->اندر_error ())
   {
     hb_subset_accelerator_t::destroy (accel);
-    return;
+    واپس;
   }
 
   // Populate caches that need access to the final tables.
-  hb_blob_ptr_t<OT::cmap> cmap_ptr (hb_sanitize_context_t ().reference_table<OT::cmap> (face));
+  hb_blob_ptr_t<OT::cmap> cmap_ptr (hb_sanitize_context_t ().reference_جدول<OT::cmap> (face));
   accel->cmap_cache = OT::cmap::create_filled_cache (cmap_ptr);
   accel->destroy_cmap_cache = OT::SubtableUnicodesCache::destroy;
 
-  if (!hb_face_set_user_data(face,
-                             hb_subset_accelerator_t::user_data_key(),
+  اگر (!hb_face_سیٹ_user_ڈیٹا(face,
+                             hb_subset_accelerator_t::user_ڈیٹا_کلید(),
                              accel,
                              hb_subset_accelerator_t::destroy,
-                             true))
+                             سچ))
     hb_subset_accelerator_t::destroy (accel);
 }
 
@@ -402,24 +402,24 @@ static void _attach_accelerator_data (hb_subset_plan_t* plan,
  * Since: 2.9.0
  **/
 hb_face_t *
-hb_subset_or_fail (hb_face_t *source, const hb_subset_input_t *input)
+hb_subset_or_fail (hb_face_t *ماخذ, ثابت hb_subset_داخلہ_t *داخلہ)
 {
-  if (unlikely (!input || !source)) return nullptr;
+  اگر (unlikely (!داخلہ || !ماخذ)) واپس خالی_اشاریہ;
 
-  if (unlikely (!source->get_num_glyphs ()))
+  اگر (unlikely (!ماخذ->get_عدد_glyphs ()))
   {
-    DEBUG_MSG (SUBSET, nullptr, "No glyphs in source font.");
-    return nullptr;
+    DEBUG_پیغام (SUBSET, خالی_اشاریہ, "No glyphs in source font.");
+    واپس خالی_اشاریہ;
   }
 
-  hb_subset_plan_t *plan = hb_subset_plan_create_or_fail (source, input);
-  if (unlikely (!plan)) {
-    return nullptr;
+  hb_subset_plan_t *plan = hb_subset_plan_create_or_fail (ماخذ, داخلہ);
+  اگر (unlikely (!plan)) {
+    واپس خالی_اشاریہ;
   }
 
-  hb_face_t * result = hb_subset_plan_execute_or_fail (plan);
+  hb_face_t * نتیجہ = hb_subset_plan_execute_or_fail (plan);
   hb_subset_plan_destroy (plan);
-  return result;
+  واپس نتیجہ;
 }
 
 
@@ -438,76 +438,76 @@ hb_subset_or_fail (hb_face_t *source, const hb_subset_input_t *input)
 hb_face_t *
 hb_subset_plan_execute_or_fail (hb_subset_plan_t *plan)
 {
-  if (unlikely (!plan || plan->in_error ())) {
-    return nullptr;
+  اگر (unlikely (!plan || plan->اندر_error ())) {
+    واپس خالی_اشاریہ;
   }
 
-  hb_tag_t table_tags[32];
-  unsigned offset = 0, num_tables = ARRAY_LENGTH (table_tags);
+  hb_لیبل_t جدول_لیبل_فہرست[32];
+  غیرعلامتی انحراف = 0, عدد_tables = ARRAY_لمبائی (جدول_لیبل_فہرست);
 
-  hb_set_t subsetted_tags, pending_subset_tags;
-  while (((void) _get_table_tags (plan, offset, &num_tables, table_tags), num_tables))
+  hb_سیٹ_t subsetted_لیبل_فہرست, pending_subset_لیبل_فہرست;
+  جب (((خالی) get_جدول_لیبل_فہرست_2 (plan, انحراف, &عدد_tables, جدول_لیبل_فہرست), عدد_tables))
   {
-    for (unsigned i = 0; i < num_tables; ++i)
+    برائے (غیرعلامتی i = 0; i < عدد_tables; ++i)
     {
-      hb_tag_t tag = table_tags[i];
-      if (_should_drop_table (plan, tag)) continue;
-      pending_subset_tags.add (tag);
+      hb_لیبل_t لیبل_2 = جدول_لیبل_فہرست[i];
+      اگر (should_drop_جدول (plan, لیبل_2)) جاری;
+      pending_subset_لیبل_فہرست.جوڑو (لیبل_2);
     }
 
-    offset += num_tables;
+    انحراف += عدد_tables;
   }
 
-  bool success = true;
+  منطقی success = سچ;
 
   {
     // Grouping to deallocate buf before calling hb_face_reference (plan->dest).
 
-    hb_vector_t<char> buf;
+    hb_سمتیہ_t<حرف> buf;
     buf.alloc (8192 - 16);
 
-    while (!pending_subset_tags.is_empty ())
+    جب (!pending_subset_لیبل_فہرست.is_empty ())
     {
-      if (subsetted_tags.in_error ()
-	  || pending_subset_tags.in_error ()) {
-	success = false;
-	goto end;
+      اگر (subsetted_لیبل_فہرست.اندر_error ()
+	  || pending_subset_لیبل_فہرست.اندر_error ()) {
+	success = جھوٹ;
+	جاؤ انتہا;
       }
 
-      bool made_changes = false;
-      for (hb_tag_t tag : pending_subset_tags)
+      منطقی made_changes = جھوٹ;
+      برائے (hb_لیبل_t لیبل_2 : pending_subset_لیبل_فہرست)
       {
-	if (!_dependencies_satisfied (plan, tag,
-				      subsetted_tags,
-				      pending_subset_tags))
+	اگر (!_dependencies_satisfied (plan, لیبل_2,
+				      subsetted_لیبل_فہرست,
+				      pending_subset_لیبل_فہرست))
 	{
 	  // delayed subsetting for some tables since they might have dependency on other tables
 	  // in some cases: e.g: during instantiating glyf tables, hmetrics/vmetrics are updated
 	  // and saved in subset plan, hmtx/vmtx subsetting need to use these updated metrics values
-	  continue;
+	  جاری;
 	}
 
-	pending_subset_tags.del (tag);
-	subsetted_tags.add (tag);
-	made_changes = true;
+	pending_subset_لیبل_فہرست.del (لیبل_2);
+	subsetted_لیبل_فہرست.جوڑو (لیبل_2);
+	made_changes = سچ;
 
-	success = _subset_table (plan, buf, tag);
-	if (unlikely (!success)) goto end;
+	success = subset_جدول (plan, buf, لیبل_2);
+	اگر (unlikely (!success)) جاؤ انتہا;
       }
 
-      if (!made_changes)
+      اگر (!made_changes)
       {
-	DEBUG_MSG (SUBSET, nullptr, "Table dependencies unable to be satisfied. Subset failed.");
-	success = false;
-	goto end;
+	DEBUG_پیغام (SUBSET, خالی_اشاریہ, "Table dependencies unable to be satisfied. Subset failed.");
+	success = جھوٹ;
+	جاؤ انتہا;
       }
     }
   }
 
-  if (success && plan->attach_accelerator_data) {
-    _attach_accelerator_data (plan, plan->dest);
+  اگر (success && plan->attach_accelerator_ڈیٹا) {
+    attach_accelerator_ڈیٹا_2 (plan, plan->dest);
   }
 
-end:
-  return success ? hb_face_reference (plan->dest) : nullptr;
+انتہا:
+  واپس success ? hb_face_reference (plan->dest) : خالی_اشاریہ;
 }

@@ -26,12 +26,12 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb.h> instead."
-#endif
+#اگر !defined(HB_H_اندر) && !defined(HB_NO_SINGLE_سرخی_ERROR)
+#غلطی "Include <hb.h> instead."
+#اگر_ختم
 
-#ifndef HB_SCRIPT_LIST_H
-#define HB_SCRIPT_LIST_H
+#اگر_غیر_تعریف_شدہ HB_SCRIPT_LIST_H
+#تعریف_کرو HB_SCRIPT_LIST_H
 
 /* This file belongs to the middle of hb-common.h.
  * The reason it has been surgically extracted is because
@@ -42,11 +42,11 @@
  */
 
 /* Dummy lines to make our checks happy.  */
-#if 0
-#include "hb-common.h"
+#اگر 0
+#شامل "hb-common.h"
 HB_BEGIN_DECLS
-HB_END_DECLS
-#endif
+HB_انتہا_DECLS
+#اگر_ختم
 
 
 /**
@@ -240,251 +240,251 @@ HB_END_DECLS
  **/
 
 /* https://docs.google.com/spreadsheets/d/1Y90M0Ie3MUJ6UVCRDOypOtijlMDLNNyyLk36T6iMu0o */
-typedef enum
+قسمتعریف شمار
 {
-  HB_SCRIPT_COMMON			= HB_TAG ('Z','y','y','y'), /*1.1*/
-  HB_SCRIPT_INHERITED			= HB_TAG ('Z','i','n','h'), /*1.1*/
-  HB_SCRIPT_UNKNOWN			= HB_TAG ('Z','z','z','z'), /*5.0*/
+  HB_SCRIPT_COMMON			= HB_لیبل ('Z','y','y','y'), /*1.1*/
+  HB_SCRIPT_INHERITED			= HB_لیبل ('Z','i','n','h'), /*1.1*/
+  HB_SCRIPT_UNKNOWN			= HB_لیبل ('Z','z','z','z'), /*5.0*/
 
-  HB_SCRIPT_ARABIC			= HB_TAG ('A','r','a','b'), /*1.1*/
-  HB_SCRIPT_ARMENIAN			= HB_TAG ('A','r','m','n'), /*1.1*/
-  HB_SCRIPT_BENGALI			= HB_TAG ('B','e','n','g'), /*1.1*/
-  HB_SCRIPT_CYRILLIC			= HB_TAG ('C','y','r','l'), /*1.1*/
-  HB_SCRIPT_DEVANAGARI			= HB_TAG ('D','e','v','a'), /*1.1*/
-  HB_SCRIPT_GEORGIAN			= HB_TAG ('G','e','o','r'), /*1.1*/
-  HB_SCRIPT_GREEK			= HB_TAG ('G','r','e','k'), /*1.1*/
-  HB_SCRIPT_GUJARATI			= HB_TAG ('G','u','j','r'), /*1.1*/
-  HB_SCRIPT_GURMUKHI			= HB_TAG ('G','u','r','u'), /*1.1*/
-  HB_SCRIPT_HANGUL			= HB_TAG ('H','a','n','g'), /*1.1*/
-  HB_SCRIPT_HAN				= HB_TAG ('H','a','n','i'), /*1.1*/
-  HB_SCRIPT_HEBREW			= HB_TAG ('H','e','b','r'), /*1.1*/
-  HB_SCRIPT_HIRAGANA			= HB_TAG ('H','i','r','a'), /*1.1*/
-  HB_SCRIPT_KANNADA			= HB_TAG ('K','n','d','a'), /*1.1*/
-  HB_SCRIPT_KATAKANA			= HB_TAG ('K','a','n','a'), /*1.1*/
-  HB_SCRIPT_LAO				= HB_TAG ('L','a','o','o'), /*1.1*/
-  HB_SCRIPT_LATIN			= HB_TAG ('L','a','t','n'), /*1.1*/
-  HB_SCRIPT_MALAYALAM			= HB_TAG ('M','l','y','m'), /*1.1*/
-  HB_SCRIPT_ORIYA			= HB_TAG ('O','r','y','a'), /*1.1*/
-  HB_SCRIPT_TAMIL			= HB_TAG ('T','a','m','l'), /*1.1*/
-  HB_SCRIPT_TELUGU			= HB_TAG ('T','e','l','u'), /*1.1*/
-  HB_SCRIPT_THAI			= HB_TAG ('T','h','a','i'), /*1.1*/
+  HB_SCRIPT_ARABIC			= HB_لیبل ('A','r','a','b'), /*1.1*/
+  HB_SCRIPT_ARMENIAN			= HB_لیبل ('A','r','m','n'), /*1.1*/
+  HB_SCRIPT_BENGALI			= HB_لیبل ('B','e','n','g'), /*1.1*/
+  HB_SCRIPT_CYRILLIC			= HB_لیبل ('C','y','r','l'), /*1.1*/
+  HB_SCRIPT_DEVANAGARI			= HB_لیبل ('D','e','v','a'), /*1.1*/
+  HB_SCRIPT_GEORGIAN			= HB_لیبل ('G','e','o','r'), /*1.1*/
+  HB_SCRIPT_GREEK			= HB_لیبل ('G','r','e','k'), /*1.1*/
+  HB_SCRIPT_GUJARATI			= HB_لیبل ('G','u','j','r'), /*1.1*/
+  HB_SCRIPT_GURMUKHI			= HB_لیبل ('G','u','r','u'), /*1.1*/
+  HB_SCRIPT_HANGUL			= HB_لیبل ('H','a','n','g'), /*1.1*/
+  HB_SCRIPT_HAN				= HB_لیبل ('H','a','n','i'), /*1.1*/
+  HB_SCRIPT_HEBREW			= HB_لیبل ('H','e','b','r'), /*1.1*/
+  HB_SCRIPT_HIRAGANA			= HB_لیبل ('H','i','r','a'), /*1.1*/
+  HB_SCRIPT_KANNADA			= HB_لیبل ('K','n','d','a'), /*1.1*/
+  HB_SCRIPT_KATAKANA			= HB_لیبل ('K','a','n','a'), /*1.1*/
+  HB_SCRIPT_LAO				= HB_لیبل ('L','a','o','o'), /*1.1*/
+  HB_SCRIPT_LATIN			= HB_لیبل ('L','a','t','n'), /*1.1*/
+  HB_SCRIPT_MALAYALAM			= HB_لیبل ('M','l','y','m'), /*1.1*/
+  HB_SCRIPT_ORIYA			= HB_لیبل ('O','r','y','a'), /*1.1*/
+  HB_SCRIPT_TAMIL			= HB_لیبل ('T','a','m','l'), /*1.1*/
+  HB_SCRIPT_TELUGU			= HB_لیبل ('T','e','l','u'), /*1.1*/
+  HB_SCRIPT_THAI			= HB_لیبل ('T','h','a','i'), /*1.1*/
 
-  HB_SCRIPT_TIBETAN			= HB_TAG ('T','i','b','t'), /*2.0*/
+  HB_SCRIPT_TIBETAN			= HB_لیبل ('T','i','b','t'), /*2.0*/
 
-  HB_SCRIPT_BOPOMOFO			= HB_TAG ('B','o','p','o'), /*3.0*/
-  HB_SCRIPT_BRAILLE			= HB_TAG ('B','r','a','i'), /*3.0*/
-  HB_SCRIPT_CANADIAN_SYLLABICS		= HB_TAG ('C','a','n','s'), /*3.0*/
-  HB_SCRIPT_CHEROKEE			= HB_TAG ('C','h','e','r'), /*3.0*/
-  HB_SCRIPT_ETHIOPIC			= HB_TAG ('E','t','h','i'), /*3.0*/
-  HB_SCRIPT_KHMER			= HB_TAG ('K','h','m','r'), /*3.0*/
-  HB_SCRIPT_MONGOLIAN			= HB_TAG ('M','o','n','g'), /*3.0*/
-  HB_SCRIPT_MYANMAR			= HB_TAG ('M','y','m','r'), /*3.0*/
-  HB_SCRIPT_OGHAM			= HB_TAG ('O','g','a','m'), /*3.0*/
-  HB_SCRIPT_RUNIC			= HB_TAG ('R','u','n','r'), /*3.0*/
-  HB_SCRIPT_SINHALA			= HB_TAG ('S','i','n','h'), /*3.0*/
-  HB_SCRIPT_SYRIAC			= HB_TAG ('S','y','r','c'), /*3.0*/
-  HB_SCRIPT_THAANA			= HB_TAG ('T','h','a','a'), /*3.0*/
-  HB_SCRIPT_YI				= HB_TAG ('Y','i','i','i'), /*3.0*/
+  HB_SCRIPT_BOPOMOFO			= HB_لیبل ('B','o','p','o'), /*3.0*/
+  HB_SCRIPT_BRAILLE			= HB_لیبل ('B','r','a','i'), /*3.0*/
+  HB_SCRIPT_CANADIAN_SYLLABICS		= HB_لیبل ('C','a','n','s'), /*3.0*/
+  HB_SCRIPT_CHEROKEE			= HB_لیبل ('C','h','e','r'), /*3.0*/
+  HB_SCRIPT_ETHIOPIC			= HB_لیبل ('E','t','h','i'), /*3.0*/
+  HB_SCRIPT_KHMER			= HB_لیبل ('K','h','m','r'), /*3.0*/
+  HB_SCRIPT_MONGOLIAN			= HB_لیبل ('M','o','n','g'), /*3.0*/
+  HB_SCRIPT_MYANMAR			= HB_لیبل ('M','y','m','r'), /*3.0*/
+  HB_SCRIPT_OGHAM			= HB_لیبل ('O','g','a','m'), /*3.0*/
+  HB_SCRIPT_RUNIC			= HB_لیبل ('R','u','n','r'), /*3.0*/
+  HB_SCRIPT_SINHALA			= HB_لیبل ('S','i','n','h'), /*3.0*/
+  HB_SCRIPT_SYRIAC			= HB_لیبل ('S','y','r','c'), /*3.0*/
+  HB_SCRIPT_THAANA			= HB_لیبل ('T','h','a','a'), /*3.0*/
+  HB_SCRIPT_YI				= HB_لیبل ('Y','i','i','i'), /*3.0*/
 
-  HB_SCRIPT_DESERET			= HB_TAG ('D','s','r','t'), /*3.1*/
-  HB_SCRIPT_GOTHIC			= HB_TAG ('G','o','t','h'), /*3.1*/
-  HB_SCRIPT_OLD_ITALIC			= HB_TAG ('I','t','a','l'), /*3.1*/
+  HB_SCRIPT_DESERET			= HB_لیبل ('D','s','r','t'), /*3.1*/
+  HB_SCRIPT_GOTHIC			= HB_لیبل ('G','o','t','h'), /*3.1*/
+  HB_SCRIPT_OLD_ITALIC			= HB_لیبل ('I','t','a','l'), /*3.1*/
 
-  HB_SCRIPT_BUHID			= HB_TAG ('B','u','h','d'), /*3.2*/
-  HB_SCRIPT_HANUNOO			= HB_TAG ('H','a','n','o'), /*3.2*/
-  HB_SCRIPT_TAGALOG			= HB_TAG ('T','g','l','g'), /*3.2*/
-  HB_SCRIPT_TAGBANWA			= HB_TAG ('T','a','g','b'), /*3.2*/
+  HB_SCRIPT_BUHID			= HB_لیبل ('B','u','h','d'), /*3.2*/
+  HB_SCRIPT_HANUNOO			= HB_لیبل ('H','a','n','o'), /*3.2*/
+  HB_SCRIPT_TAGALOG			= HB_لیبل ('T','g','l','g'), /*3.2*/
+  HB_SCRIPT_TAGBANWA			= HB_لیبل ('T','a','g','b'), /*3.2*/
 
-  HB_SCRIPT_CYPRIOT			= HB_TAG ('C','p','r','t'), /*4.0*/
-  HB_SCRIPT_LIMBU			= HB_TAG ('L','i','m','b'), /*4.0*/
-  HB_SCRIPT_LINEAR_B			= HB_TAG ('L','i','n','b'), /*4.0*/
-  HB_SCRIPT_OSMANYA			= HB_TAG ('O','s','m','a'), /*4.0*/
-  HB_SCRIPT_SHAVIAN			= HB_TAG ('S','h','a','w'), /*4.0*/
-  HB_SCRIPT_TAI_LE			= HB_TAG ('T','a','l','e'), /*4.0*/
-  HB_SCRIPT_UGARITIC			= HB_TAG ('U','g','a','r'), /*4.0*/
+  HB_SCRIPT_CYPRIOT			= HB_لیبل ('C','p','r','t'), /*4.0*/
+  HB_SCRIPT_LIMBU			= HB_لیبل ('L','i','m','b'), /*4.0*/
+  HB_SCRIPT_خطی_B			= HB_لیبل ('L','i','n','b'), /*4.0*/
+  HB_SCRIPT_OSMANYA			= HB_لیبل ('O','s','m','a'), /*4.0*/
+  HB_SCRIPT_SHAVIAN			= HB_لیبل ('S','h','a','w'), /*4.0*/
+  HB_SCRIPT_TAI_LE			= HB_لیبل ('T','a','l','e'), /*4.0*/
+  HB_SCRIPT_UGARITIC			= HB_لیبل ('U','g','a','r'), /*4.0*/
 
-  HB_SCRIPT_BUGINESE			= HB_TAG ('B','u','g','i'), /*4.1*/
-  HB_SCRIPT_COPTIC			= HB_TAG ('C','o','p','t'), /*4.1*/
-  HB_SCRIPT_GLAGOLITIC			= HB_TAG ('G','l','a','g'), /*4.1*/
-  HB_SCRIPT_KHAROSHTHI			= HB_TAG ('K','h','a','r'), /*4.1*/
-  HB_SCRIPT_NEW_TAI_LUE			= HB_TAG ('T','a','l','u'), /*4.1*/
-  HB_SCRIPT_OLD_PERSIAN			= HB_TAG ('X','p','e','o'), /*4.1*/
-  HB_SCRIPT_SYLOTI_NAGRI		= HB_TAG ('S','y','l','o'), /*4.1*/
-  HB_SCRIPT_TIFINAGH			= HB_TAG ('T','f','n','g'), /*4.1*/
+  HB_SCRIPT_BUGINESE			= HB_لیبل ('B','u','g','i'), /*4.1*/
+  HB_SCRIPT_COPTIC			= HB_لیبل ('C','o','p','t'), /*4.1*/
+  HB_SCRIPT_GLAGOLITIC			= HB_لیبل ('G','l','a','g'), /*4.1*/
+  HB_SCRIPT_KHAROSHTHI			= HB_لیبل ('K','h','a','r'), /*4.1*/
+  HB_SCRIPT_NEW_TAI_LUE			= HB_لیبل ('T','a','l','u'), /*4.1*/
+  HB_SCRIPT_OLD_PERSIAN			= HB_لیبل ('X','p','e','o'), /*4.1*/
+  HB_SCRIPT_SYLOTI_NAGRI		= HB_لیبل ('S','y','l','o'), /*4.1*/
+  HB_SCRIPT_TIFINAGH			= HB_لیبل ('T','f','n','g'), /*4.1*/
 
-  HB_SCRIPT_BALINESE			= HB_TAG ('B','a','l','i'), /*5.0*/
-  HB_SCRIPT_CUNEIFORM			= HB_TAG ('X','s','u','x'), /*5.0*/
-  HB_SCRIPT_NKO				= HB_TAG ('N','k','o','o'), /*5.0*/
-  HB_SCRIPT_PHAGS_PA			= HB_TAG ('P','h','a','g'), /*5.0*/
-  HB_SCRIPT_PHOENICIAN			= HB_TAG ('P','h','n','x'), /*5.0*/
+  HB_SCRIPT_BALINESE			= HB_لیبل ('B','a','l','i'), /*5.0*/
+  HB_SCRIPT_CUNEIFORM			= HB_لیبل ('X','s','u','x'), /*5.0*/
+  HB_SCRIPT_NKO				= HB_لیبل ('N','k','o','o'), /*5.0*/
+  HB_SCRIPT_PHAGS_PA			= HB_لیبل ('P','h','a','g'), /*5.0*/
+  HB_SCRIPT_PHOENICIAN			= HB_لیبل ('P','h','n','x'), /*5.0*/
 
-  HB_SCRIPT_CARIAN			= HB_TAG ('C','a','r','i'), /*5.1*/
-  HB_SCRIPT_CHAM			= HB_TAG ('C','h','a','m'), /*5.1*/
-  HB_SCRIPT_KAYAH_LI			= HB_TAG ('K','a','l','i'), /*5.1*/
-  HB_SCRIPT_LEPCHA			= HB_TAG ('L','e','p','c'), /*5.1*/
-  HB_SCRIPT_LYCIAN			= HB_TAG ('L','y','c','i'), /*5.1*/
-  HB_SCRIPT_LYDIAN			= HB_TAG ('L','y','d','i'), /*5.1*/
-  HB_SCRIPT_OL_CHIKI			= HB_TAG ('O','l','c','k'), /*5.1*/
-  HB_SCRIPT_REJANG			= HB_TAG ('R','j','n','g'), /*5.1*/
-  HB_SCRIPT_SAURASHTRA			= HB_TAG ('S','a','u','r'), /*5.1*/
-  HB_SCRIPT_SUNDANESE			= HB_TAG ('S','u','n','d'), /*5.1*/
-  HB_SCRIPT_VAI				= HB_TAG ('V','a','i','i'), /*5.1*/
+  HB_SCRIPT_CARIAN			= HB_لیبل ('C','a','r','i'), /*5.1*/
+  HB_SCRIPT_CHAM			= HB_لیبل ('C','h','a','m'), /*5.1*/
+  HB_SCRIPT_KAYAH_LI			= HB_لیبل ('K','a','l','i'), /*5.1*/
+  HB_SCRIPT_LEPCHA			= HB_لیبل ('L','e','p','c'), /*5.1*/
+  HB_SCRIPT_LYCIAN			= HB_لیبل ('L','y','c','i'), /*5.1*/
+  HB_SCRIPT_LYDIAN			= HB_لیبل ('L','y','d','i'), /*5.1*/
+  HB_SCRIPT_OL_CHIKI			= HB_لیبل ('O','l','c','k'), /*5.1*/
+  HB_SCRIPT_REJANG			= HB_لیبل ('R','j','n','g'), /*5.1*/
+  HB_SCRIPT_SAURASHTRA			= HB_لیبل ('S','a','u','r'), /*5.1*/
+  HB_SCRIPT_SUNDANESE			= HB_لیبل ('S','u','n','d'), /*5.1*/
+  HB_SCRIPT_VAI				= HB_لیبل ('V','a','i','i'), /*5.1*/
 
-  HB_SCRIPT_AVESTAN			= HB_TAG ('A','v','s','t'), /*5.2*/
-  HB_SCRIPT_BAMUM			= HB_TAG ('B','a','m','u'), /*5.2*/
-  HB_SCRIPT_EGYPTIAN_HIEROGLYPHS	= HB_TAG ('E','g','y','p'), /*5.2*/
-  HB_SCRIPT_IMPERIAL_ARAMAIC		= HB_TAG ('A','r','m','i'), /*5.2*/
-  HB_SCRIPT_INSCRIPTIONAL_PAHLAVI	= HB_TAG ('P','h','l','i'), /*5.2*/
-  HB_SCRIPT_INSCRIPTIONAL_PARTHIAN	= HB_TAG ('P','r','t','i'), /*5.2*/
-  HB_SCRIPT_JAVANESE			= HB_TAG ('J','a','v','a'), /*5.2*/
-  HB_SCRIPT_KAITHI			= HB_TAG ('K','t','h','i'), /*5.2*/
-  HB_SCRIPT_LISU			= HB_TAG ('L','i','s','u'), /*5.2*/
-  HB_SCRIPT_MEETEI_MAYEK		= HB_TAG ('M','t','e','i'), /*5.2*/
-  HB_SCRIPT_OLD_SOUTH_ARABIAN		= HB_TAG ('S','a','r','b'), /*5.2*/
-  HB_SCRIPT_OLD_TURKIC			= HB_TAG ('O','r','k','h'), /*5.2*/
-  HB_SCRIPT_SAMARITAN			= HB_TAG ('S','a','m','r'), /*5.2*/
-  HB_SCRIPT_TAI_THAM			= HB_TAG ('L','a','n','a'), /*5.2*/
-  HB_SCRIPT_TAI_VIET			= HB_TAG ('T','a','v','t'), /*5.2*/
+  HB_SCRIPT_AVESTAN			= HB_لیبل ('A','v','s','t'), /*5.2*/
+  HB_SCRIPT_BAMUM			= HB_لیبل ('B','a','m','u'), /*5.2*/
+  HB_SCRIPT_EGYPTIAN_HIEROGLYPHS	= HB_لیبل ('E','g','y','p'), /*5.2*/
+  HB_SCRIPT_IMPERIAL_ARAMAIC		= HB_لیبل ('A','r','m','i'), /*5.2*/
+  HB_SCRIPT_INSCRIPTIONAL_PAHLAVI	= HB_لیبل ('P','h','l','i'), /*5.2*/
+  HB_SCRIPT_INSCRIPTIONAL_PARTHIAN	= HB_لیبل ('P','r','t','i'), /*5.2*/
+  HB_SCRIPT_JAVANESE			= HB_لیبل ('J','a','v','a'), /*5.2*/
+  HB_SCRIPT_KAITHI			= HB_لیبل ('K','t','h','i'), /*5.2*/
+  HB_SCRIPT_LISU			= HB_لیبل ('L','i','s','u'), /*5.2*/
+  HB_SCRIPT_MEETEI_MAYEK		= HB_لیبل ('M','t','e','i'), /*5.2*/
+  HB_SCRIPT_OLD_SOUTH_ARABIAN		= HB_لیبل ('S','a','r','b'), /*5.2*/
+  HB_SCRIPT_OLD_TURKIC			= HB_لیبل ('O','r','k','h'), /*5.2*/
+  HB_SCRIPT_SAMARITAN			= HB_لیبل ('S','a','m','r'), /*5.2*/
+  HB_SCRIPT_TAI_THAM			= HB_لیبل ('L','a','n','a'), /*5.2*/
+  HB_SCRIPT_TAI_VIET			= HB_لیبل ('T','a','v','t'), /*5.2*/
 
-  HB_SCRIPT_BATAK			= HB_TAG ('B','a','t','k'), /*6.0*/
-  HB_SCRIPT_BRAHMI			= HB_TAG ('B','r','a','h'), /*6.0*/
-  HB_SCRIPT_MANDAIC			= HB_TAG ('M','a','n','d'), /*6.0*/
+  HB_SCRIPT_BATAK			= HB_لیبل ('B','a','t','k'), /*6.0*/
+  HB_SCRIPT_BRAHMI			= HB_لیبل ('B','r','a','h'), /*6.0*/
+  HB_SCRIPT_MANDAIC			= HB_لیبل ('M','a','n','d'), /*6.0*/
 
-  HB_SCRIPT_CHAKMA			= HB_TAG ('C','a','k','m'), /*6.1*/
-  HB_SCRIPT_MEROITIC_CURSIVE		= HB_TAG ('M','e','r','c'), /*6.1*/
-  HB_SCRIPT_MEROITIC_HIEROGLYPHS	= HB_TAG ('M','e','r','o'), /*6.1*/
-  HB_SCRIPT_MIAO			= HB_TAG ('P','l','r','d'), /*6.1*/
-  HB_SCRIPT_SHARADA			= HB_TAG ('S','h','r','d'), /*6.1*/
-  HB_SCRIPT_SORA_SOMPENG		= HB_TAG ('S','o','r','a'), /*6.1*/
-  HB_SCRIPT_TAKRI			= HB_TAG ('T','a','k','r'), /*6.1*/
+  HB_SCRIPT_CHAKMA			= HB_لیبل ('C','a','k','m'), /*6.1*/
+  HB_SCRIPT_MEROITIC_CURSIVE		= HB_لیبل ('M','e','r','c'), /*6.1*/
+  HB_SCRIPT_MEROITIC_HIEROGLYPHS	= HB_لیبل ('M','e','r','o'), /*6.1*/
+  HB_SCRIPT_MIAO			= HB_لیبل ('P','l','r','d'), /*6.1*/
+  HB_SCRIPT_SHARADA			= HB_لیبل ('S','h','r','d'), /*6.1*/
+  HB_SCRIPT_SORA_SOMPENG		= HB_لیبل ('S','o','r','a'), /*6.1*/
+  HB_SCRIPT_TAKRI			= HB_لیبل ('T','a','k','r'), /*6.1*/
 
   /*
    * Since: 0.9.30
    */
-  HB_SCRIPT_BASSA_VAH			= HB_TAG ('B','a','s','s'), /*7.0*/
-  HB_SCRIPT_CAUCASIAN_ALBANIAN		= HB_TAG ('A','g','h','b'), /*7.0*/
-  HB_SCRIPT_DUPLOYAN			= HB_TAG ('D','u','p','l'), /*7.0*/
-  HB_SCRIPT_ELBASAN			= HB_TAG ('E','l','b','a'), /*7.0*/
-  HB_SCRIPT_GRANTHA			= HB_TAG ('G','r','a','n'), /*7.0*/
-  HB_SCRIPT_KHOJKI			= HB_TAG ('K','h','o','j'), /*7.0*/
-  HB_SCRIPT_KHUDAWADI			= HB_TAG ('S','i','n','d'), /*7.0*/
-  HB_SCRIPT_LINEAR_A			= HB_TAG ('L','i','n','a'), /*7.0*/
-  HB_SCRIPT_MAHAJANI			= HB_TAG ('M','a','h','j'), /*7.0*/
-  HB_SCRIPT_MANICHAEAN			= HB_TAG ('M','a','n','i'), /*7.0*/
-  HB_SCRIPT_MENDE_KIKAKUI		= HB_TAG ('M','e','n','d'), /*7.0*/
-  HB_SCRIPT_MODI			= HB_TAG ('M','o','d','i'), /*7.0*/
-  HB_SCRIPT_MRO				= HB_TAG ('M','r','o','o'), /*7.0*/
-  HB_SCRIPT_NABATAEAN			= HB_TAG ('N','b','a','t'), /*7.0*/
-  HB_SCRIPT_OLD_NORTH_ARABIAN		= HB_TAG ('N','a','r','b'), /*7.0*/
-  HB_SCRIPT_OLD_PERMIC			= HB_TAG ('P','e','r','m'), /*7.0*/
-  HB_SCRIPT_PAHAWH_HMONG		= HB_TAG ('H','m','n','g'), /*7.0*/
-  HB_SCRIPT_PALMYRENE			= HB_TAG ('P','a','l','m'), /*7.0*/
-  HB_SCRIPT_PAU_CIN_HAU			= HB_TAG ('P','a','u','c'), /*7.0*/
-  HB_SCRIPT_PSALTER_PAHLAVI		= HB_TAG ('P','h','l','p'), /*7.0*/
-  HB_SCRIPT_SIDDHAM			= HB_TAG ('S','i','d','d'), /*7.0*/
-  HB_SCRIPT_TIRHUTA			= HB_TAG ('T','i','r','h'), /*7.0*/
-  HB_SCRIPT_WARANG_CITI			= HB_TAG ('W','a','r','a'), /*7.0*/
+  HB_SCRIPT_BASSA_VAH			= HB_لیبل ('B','a','s','s'), /*7.0*/
+  HB_SCRIPT_CAUCASIAN_ALBANIAN		= HB_لیبل ('A','g','h','b'), /*7.0*/
+  HB_SCRIPT_DUPLOYAN			= HB_لیبل ('D','u','p','l'), /*7.0*/
+  HB_SCRIPT_ELBASAN			= HB_لیبل ('E','l','b','a'), /*7.0*/
+  HB_SCRIPT_GRANTHA			= HB_لیبل ('G','r','a','n'), /*7.0*/
+  HB_SCRIPT_KHOJKI			= HB_لیبل ('K','h','o','j'), /*7.0*/
+  HB_SCRIPT_KHUDAWADI			= HB_لیبل ('S','i','n','d'), /*7.0*/
+  HB_SCRIPT_خطی_A			= HB_لیبل ('L','i','n','a'), /*7.0*/
+  HB_SCRIPT_MAHAJANI			= HB_لیبل ('M','a','h','j'), /*7.0*/
+  HB_SCRIPT_MANICHAEAN			= HB_لیبل ('M','a','n','i'), /*7.0*/
+  HB_SCRIPT_MENDE_KIKAKUI		= HB_لیبل ('M','e','n','d'), /*7.0*/
+  HB_SCRIPT_MODI			= HB_لیبل ('M','o','d','i'), /*7.0*/
+  HB_SCRIPT_MRO				= HB_لیبل ('M','r','o','o'), /*7.0*/
+  HB_SCRIPT_NABATAEAN			= HB_لیبل ('N','b','a','t'), /*7.0*/
+  HB_SCRIPT_OLD_NORTH_ARABIAN		= HB_لیبل ('N','a','r','b'), /*7.0*/
+  HB_SCRIPT_OLD_PERMIC			= HB_لیبل ('P','e','r','m'), /*7.0*/
+  HB_SCRIPT_PAHAWH_HMONG		= HB_لیبل ('H','m','n','g'), /*7.0*/
+  HB_SCRIPT_PALMYRENE			= HB_لیبل ('P','a','l','m'), /*7.0*/
+  HB_SCRIPT_PAU_CIN_HAU			= HB_لیبل ('P','a','u','c'), /*7.0*/
+  HB_SCRIPT_PSALTER_PAHLAVI		= HB_لیبل ('P','h','l','p'), /*7.0*/
+  HB_SCRIPT_SIDDHAM			= HB_لیبل ('S','i','d','d'), /*7.0*/
+  HB_SCRIPT_TIRHUTA			= HB_لیبل ('T','i','r','h'), /*7.0*/
+  HB_SCRIPT_WARANG_CITI			= HB_لیبل ('W','a','r','a'), /*7.0*/
 
-  HB_SCRIPT_AHOM			= HB_TAG ('A','h','o','m'), /*8.0*/
-  HB_SCRIPT_ANATOLIAN_HIEROGLYPHS	= HB_TAG ('H','l','u','w'), /*8.0*/
-  HB_SCRIPT_HATRAN			= HB_TAG ('H','a','t','r'), /*8.0*/
-  HB_SCRIPT_MULTANI			= HB_TAG ('M','u','l','t'), /*8.0*/
-  HB_SCRIPT_OLD_HUNGARIAN		= HB_TAG ('H','u','n','g'), /*8.0*/
-  HB_SCRIPT_SIGNWRITING			= HB_TAG ('S','g','n','w'), /*8.0*/
+  HB_SCRIPT_AHOM			= HB_لیبل ('A','h','o','m'), /*8.0*/
+  HB_SCRIPT_ANATOLIAN_HIEROGLYPHS	= HB_لیبل ('H','l','u','w'), /*8.0*/
+  HB_SCRIPT_HATRAN			= HB_لیبل ('H','a','t','r'), /*8.0*/
+  HB_SCRIPT_MULTANI			= HB_لیبل ('M','u','l','t'), /*8.0*/
+  HB_SCRIPT_OLD_HUNGARIAN		= HB_لیبل ('H','u','n','g'), /*8.0*/
+  HB_SCRIPT_SIGNWRITING			= HB_لیبل ('S','g','n','w'), /*8.0*/
 
   /*
    * Since 1.3.0
    */
-  HB_SCRIPT_ADLAM			= HB_TAG ('A','d','l','m'), /*9.0*/
-  HB_SCRIPT_BHAIKSUKI			= HB_TAG ('B','h','k','s'), /*9.0*/
-  HB_SCRIPT_MARCHEN			= HB_TAG ('M','a','r','c'), /*9.0*/
-  HB_SCRIPT_OSAGE			= HB_TAG ('O','s','g','e'), /*9.0*/
-  HB_SCRIPT_TANGUT			= HB_TAG ('T','a','n','g'), /*9.0*/
-  HB_SCRIPT_NEWA			= HB_TAG ('N','e','w','a'), /*9.0*/
+  HB_SCRIPT_ADLAM			= HB_لیبل ('A','d','l','m'), /*9.0*/
+  HB_SCRIPT_BHAIKSUKI			= HB_لیبل ('B','h','k','s'), /*9.0*/
+  HB_SCRIPT_MARCHEN			= HB_لیبل ('M','a','r','c'), /*9.0*/
+  HB_SCRIPT_OSAGE			= HB_لیبل ('O','s','g','e'), /*9.0*/
+  HB_SCRIPT_TANGUT			= HB_لیبل ('T','a','n','g'), /*9.0*/
+  HB_SCRIPT_NEWA			= HB_لیبل ('N','e','w','a'), /*9.0*/
 
   /*
    * Since 1.6.0
    */
-  HB_SCRIPT_MASARAM_GONDI		= HB_TAG ('G','o','n','m'), /*10.0*/
-  HB_SCRIPT_NUSHU			= HB_TAG ('N','s','h','u'), /*10.0*/
-  HB_SCRIPT_SOYOMBO			= HB_TAG ('S','o','y','o'), /*10.0*/
-  HB_SCRIPT_ZANABAZAR_SQUARE		= HB_TAG ('Z','a','n','b'), /*10.0*/
+  HB_SCRIPT_MASARAM_GONDI		= HB_لیبل ('G','o','n','m'), /*10.0*/
+  HB_SCRIPT_NUSHU			= HB_لیبل ('N','s','h','u'), /*10.0*/
+  HB_SCRIPT_SOYOMBO			= HB_لیبل ('S','o','y','o'), /*10.0*/
+  HB_SCRIPT_ZANABAZAR_مربع		= HB_لیبل ('Z','a','n','b'), /*10.0*/
 
   /*
    * Since 1.8.0
    */
-  HB_SCRIPT_DOGRA			= HB_TAG ('D','o','g','r'), /*11.0*/
-  HB_SCRIPT_GUNJALA_GONDI		= HB_TAG ('G','o','n','g'), /*11.0*/
-  HB_SCRIPT_HANIFI_ROHINGYA		= HB_TAG ('R','o','h','g'), /*11.0*/
-  HB_SCRIPT_MAKASAR			= HB_TAG ('M','a','k','a'), /*11.0*/
-  HB_SCRIPT_MEDEFAIDRIN			= HB_TAG ('M','e','d','f'), /*11.0*/
-  HB_SCRIPT_OLD_SOGDIAN			= HB_TAG ('S','o','g','o'), /*11.0*/
-  HB_SCRIPT_SOGDIAN			= HB_TAG ('S','o','g','d'), /*11.0*/
+  HB_SCRIPT_DOGRA			= HB_لیبل ('D','o','g','r'), /*11.0*/
+  HB_SCRIPT_GUNJALA_GONDI		= HB_لیبل ('G','o','n','g'), /*11.0*/
+  HB_SCRIPT_HANIFI_ROHINGYA		= HB_لیبل ('R','o','h','g'), /*11.0*/
+  HB_SCRIPT_MAKASAR			= HB_لیبل ('M','a','k','a'), /*11.0*/
+  HB_SCRIPT_MEDEFAIDRIN			= HB_لیبل ('M','e','d','f'), /*11.0*/
+  HB_SCRIPT_OLD_SOGDIAN			= HB_لیبل ('S','o','g','o'), /*11.0*/
+  HB_SCRIPT_SOGDIAN			= HB_لیبل ('S','o','g','d'), /*11.0*/
 
   /*
    * Since 2.4.0
    */
-  HB_SCRIPT_ELYMAIC			= HB_TAG ('E','l','y','m'), /*12.0*/
-  HB_SCRIPT_NANDINAGARI			= HB_TAG ('N','a','n','d'), /*12.0*/
-  HB_SCRIPT_NYIAKENG_PUACHUE_HMONG	= HB_TAG ('H','m','n','p'), /*12.0*/
-  HB_SCRIPT_WANCHO			= HB_TAG ('W','c','h','o'), /*12.0*/
+  HB_SCRIPT_ELYMAIC			= HB_لیبل ('E','l','y','m'), /*12.0*/
+  HB_SCRIPT_NANDINAGARI			= HB_لیبل ('N','a','n','d'), /*12.0*/
+  HB_SCRIPT_NYIAKENG_PUACHUE_HMONG	= HB_لیبل ('H','m','n','p'), /*12.0*/
+  HB_SCRIPT_WANCHO			= HB_لیبل ('W','c','h','o'), /*12.0*/
 
   /*
    * Since 2.6.7
    */
-  HB_SCRIPT_CHORASMIAN			= HB_TAG ('C','h','r','s'), /*13.0*/
-  HB_SCRIPT_DIVES_AKURU			= HB_TAG ('D','i','a','k'), /*13.0*/
-  HB_SCRIPT_KHITAN_SMALL_SCRIPT		= HB_TAG ('K','i','t','s'), /*13.0*/
-  HB_SCRIPT_YEZIDI			= HB_TAG ('Y','e','z','i'), /*13.0*/
+  HB_SCRIPT_CHORASMIAN			= HB_لیبل ('C','h','r','s'), /*13.0*/
+  HB_SCRIPT_DIVES_AKURU			= HB_لیبل ('D','i','a','k'), /*13.0*/
+  HB_SCRIPT_KHITAN_SMALL_SCRIPT		= HB_لیبل ('K','i','t','s'), /*13.0*/
+  HB_SCRIPT_YEZIDI			= HB_لیبل ('Y','e','z','i'), /*13.0*/
 
   /*
    * Since 3.0.0
    */
-  HB_SCRIPT_CYPRO_MINOAN		= HB_TAG ('C','p','m','n'), /*14.0*/
-  HB_SCRIPT_OLD_UYGHUR			= HB_TAG ('O','u','g','r'), /*14.0*/
-  HB_SCRIPT_TANGSA			= HB_TAG ('T','n','s','a'), /*14.0*/
-  HB_SCRIPT_TOTO			= HB_TAG ('T','o','t','o'), /*14.0*/
-  HB_SCRIPT_VITHKUQI			= HB_TAG ('V','i','t','h'), /*14.0*/
+  HB_SCRIPT_CYPRO_MINOAN		= HB_لیبل ('C','p','m','n'), /*14.0*/
+  HB_SCRIPT_OLD_UYGHUR			= HB_لیبل ('O','u','g','r'), /*14.0*/
+  HB_SCRIPT_TANGSA			= HB_لیبل ('T','n','s','a'), /*14.0*/
+  HB_SCRIPT_TOTO			= HB_لیبل ('T','o','t','o'), /*14.0*/
+  HB_SCRIPT_VITHKUQI			= HB_لیبل ('V','i','t','h'), /*14.0*/
 
   /*
    * Since 3.4.0
    */
-  HB_SCRIPT_MATH			= HB_TAG ('Z','m','t','h'),
+  HB_SCRIPT_MATH			= HB_لیبل ('Z','m','t','h'),
 
   /*
    * Since 5.2.0
    */
-  HB_SCRIPT_KAWI			= HB_TAG ('K','a','w','i'), /*15.0*/
-  HB_SCRIPT_NAG_MUNDARI			= HB_TAG ('N','a','g','m'), /*15.0*/
+  HB_SCRIPT_KAWI			= HB_لیبل ('K','a','w','i'), /*15.0*/
+  HB_SCRIPT_NAG_MUNDARI			= HB_لیبل ('N','a','g','m'), /*15.0*/
 
   /*
    * Since 10.0.0
    */
-  HB_SCRIPT_GARAY			= HB_TAG ('G','a','r','a'), /*16.0*/
-  HB_SCRIPT_GURUNG_KHEMA		= HB_TAG ('G','u','k','h'), /*16.0*/
-  HB_SCRIPT_KIRAT_RAI			= HB_TAG ('K','r','a','i'), /*16.0*/
-  HB_SCRIPT_OL_ONAL			= HB_TAG ('O','n','a','o'), /*16.0*/
-  HB_SCRIPT_SUNUWAR			= HB_TAG ('S','u','n','u'), /*16.0*/
-  HB_SCRIPT_TODHRI			= HB_TAG ('T','o','d','r'), /*16.0*/
-  HB_SCRIPT_TULU_TIGALARI		= HB_TAG ('T','u','t','g'), /*16.0*/
+  HB_SCRIPT_GARAY			= HB_لیبل ('G','a','r','a'), /*16.0*/
+  HB_SCRIPT_GURUNG_KHEMA		= HB_لیبل ('G','u','k','h'), /*16.0*/
+  HB_SCRIPT_KIRAT_RAI			= HB_لیبل ('K','r','a','i'), /*16.0*/
+  HB_SCRIPT_OL_ONAL			= HB_لیبل ('O','n','a','o'), /*16.0*/
+  HB_SCRIPT_SUNUWAR			= HB_لیبل ('S','u','n','u'), /*16.0*/
+  HB_SCRIPT_TODHRI			= HB_لیبل ('T','o','d','r'), /*16.0*/
+  HB_SCRIPT_TULU_TIGALARI		= HB_لیبل ('T','u','t','g'), /*16.0*/
 
   /*
    * Since 11.5.0
    */
-  HB_SCRIPT_BERIA_ERFE			= HB_TAG ('B','e','r','f'), /*17.0*/
-  HB_SCRIPT_SIDETIC			= HB_TAG ('S','i','d','t'), /*17.0*/
-  HB_SCRIPT_TAI_YO			= HB_TAG ('T','a','y','o'), /*17.0*/
-  HB_SCRIPT_TOLONG_SIKI			= HB_TAG ('T','o','l','s'), /*17.0*/
+  HB_SCRIPT_BERIA_ERFE			= HB_لیبل ('B','e','r','f'), /*17.0*/
+  HB_SCRIPT_SIDETIC			= HB_لیبل ('S','i','d','t'), /*17.0*/
+  HB_SCRIPT_TAI_YO			= HB_لیبل ('T','a','y','o'), /*17.0*/
+  HB_SCRIPT_TOLONG_SIKI			= HB_لیبل ('T','o','l','s'), /*17.0*/
 
   /*
    * Since: 14.5.0
    */
-  HB_SCRIPT_JURCHEN			= HB_TAG ('J','u','r','c'), /*18.0*/
-  HB_SCRIPT_PROTO_CUNEIFORM		= HB_TAG ('P','c','u','n'), /*18.0*/
-  HB_SCRIPT_SEAL				= HB_TAG ('S','e','a','l'), /*18.0*/
+  HB_SCRIPT_JURCHEN			= HB_لیبل ('J','u','r','c'), /*18.0*/
+  HB_SCRIPT_PROTO_CUNEIFORM		= HB_لیبل ('P','c','u','n'), /*18.0*/
+  HB_SCRIPT_SEAL				= HB_لیبل ('S','e','a','l'), /*18.0*/
 
   /* No script set. */
-  HB_SCRIPT_INVALID			= HB_TAG_NONE,
+  HB_SCRIPT_INVALID			= HB_لیبل_NONE,
 
   /*< private >*/
 
@@ -497,9 +497,9 @@ typedef enum
    *
    *   https://lists.freedesktop.org/archives/harfbuzz/2014-March/004150.html
    */
-  _HB_SCRIPT_MAX_VALUE				= HB_TAG_MAX_SIGNED, /*< skip >*/
-  _HB_SCRIPT_MAX_VALUE_SIGNED			= HB_TAG_MAX_SIGNED /*< skip >*/
+  HB_SCRIPT_MAX_قدر				= HB_لیبل_MAX_SIGNED, /*< skip >*/
+  HB_SCRIPT_MAX_قدر_SIGNED			= HB_لیبل_MAX_SIGNED /*< skip >*/
 
 } hb_script_t;
 
-#endif /* HB_SCRIPT_LIST_H */
+#اگر_ختم /* HB_SCRIPT_LIST_H */

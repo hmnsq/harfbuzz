@@ -28,14 +28,14 @@
  * Facebook Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_FACE_TABLE_LIST_HH
-#define HB_OT_FACE_TABLE_LIST_HH
-#endif /* HB_OT_FACE_TABLE_LIST_HH */ /* Dummy header guards */
+#اگر_غیر_تعریف_شدہ HB_OT_FACE_جدول_LIST_HH
+#تعریف_کرو HB_OT_FACE_جدول_LIST_HH
+#اگر_ختم /* HB_OT_FACE_TABLE_LIST_HH */ /* Dummy header guards */
 
-#ifndef HB_OT_ACCELERATOR
-#define HB_OT_ACCELERATOR(Namespace, Type) HB_OT_TABLE (Namespace, Type)
-#define _HB_OT_ACCELERATOR_UNDEF
-#endif
+#اگر_غیر_تعریف_شدہ HB_OT_ACCELERATOR
+#تعریف_کرو HB_OT_ACCELERATOR(Namespace, Type) HB_OT_جدول (Namespace, Type)
+#تعریف_کرو _HB_OT_ACCELERATOR_UNDEF
+#اگر_ختم
 
 
 /* This lists font tables that the hb_face_t will contain and lazily
@@ -46,103 +46,103 @@
 
 
 /* OpenType fundamentals. */
-HB_OT_TABLE (OT, head)
+HB_OT_جدول (OT, سر_2)
 HB_OT_ACCELERATOR (OT, maxp)
-#if !defined(HB_NO_FACE_COLLECT_UNICODES) || !defined(HB_NO_OT_FONT)
+#اگر !defined(HB_NO_FACE_COLLECT_UNICODES) || !defined(HB_NO_OT_FONT)
 HB_OT_ACCELERATOR (OT, cmap)
-#endif
+#اگر_ختم
 HB_OT_ACCELERATOR (OT, hhea)
 HB_OT_ACCELERATOR (OT, hmtx)
-HB_OT_TABLE (OT, OS2)
-#if !defined(HB_NO_OT_FONT_GLYPH_NAMES) || !defined(HB_NO_METRICS) || !defined(HB_NO_STYLE)
+HB_OT_جدول (OT, OS2)
+#اگر !defined(HB_NO_OT_FONT_GLYPH_نام) || !defined(HB_NO_METRICS) || !defined(HB_NO_STYLE)
 HB_OT_ACCELERATOR (OT, post)
-#endif
-#ifndef HB_NO_NAME
+#اگر_ختم
+#اگر_غیر_تعریف_شدہ HB_NO_NAME
 HB_OT_ACCELERATOR (OT, name)
-#endif
-#ifndef HB_NO_STYLE
-HB_OT_TABLE (OT, STAT)
-#endif
-#ifndef HB_NO_META
+#اگر_ختم
+#اگر_غیر_تعریف_شدہ HB_NO_STYLE
+HB_OT_جدول (OT, STAT)
+#اگر_ختم
+#اگر_غیر_تعریف_شدہ HB_NO_META
 HB_OT_ACCELERATOR (OT, meta)
-#endif
+#اگر_ختم
 
 /* Vertical layout. */
-#ifndef HB_NO_VERTICAL
+#اگر_غیر_تعریف_شدہ HB_NO_VERTICAL
 HB_OT_ACCELERATOR (OT, vhea)
 HB_OT_ACCELERATOR (OT, vmtx)
-HB_OT_TABLE (OT, VORG)
-#endif
+HB_OT_جدول (OT, VORG)
+#اگر_ختم
 
 /* TrueType outlines. */
-HB_OT_TABLE (OT, loca)
+HB_OT_جدول (OT, loca)
 HB_OT_ACCELERATOR (OT, glyf)
 
 /* CFF outlines. */
-#ifndef HB_NO_CFF
+#اگر_غیر_تعریف_شدہ HB_NO_CFF
 HB_OT_ACCELERATOR (OT, cff1)
 HB_OT_ACCELERATOR (OT, cff2)
-#endif
+#اگر_ختم
 
 /* OpenType variations. */
-#ifndef HB_NO_VAR
-HB_OT_TABLE (OT, fvar)
-HB_OT_TABLE (OT, avar)
-HB_OT_TABLE (OT, cvar)
+#اگر_غیر_تعریف_شدہ HB_NO_VAR
+HB_OT_جدول (OT, fvar)
+HB_OT_جدول (OT, avar)
+HB_OT_جدول (OT, cvar)
 HB_OT_ACCELERATOR (OT, gvar)
-HB_OT_TABLE (OT, MVAR)
-#ifndef HB_NO_VAR_COMPOSITES
+HB_OT_جدول (OT, MVAR)
+#اگر_غیر_تعریف_شدہ HB_NO_VAR_COMPOSITES
 HB_OT_ACCELERATOR (OT, VARC)
-#endif
-#endif
+#اگر_ختم
+#اگر_ختم
 
 /* Legacy kern. */
-#ifndef HB_NO_OT_KERN
+#اگر_غیر_تعریف_شدہ HB_NO_OT_KERN
 HB_OT_ACCELERATOR (OT, kern)
-#endif
+#اگر_ختم
 
 /* OpenType shaping. */
-#ifndef HB_NO_OT_LAYOUT
+#اگر_غیر_تعریف_شدہ HB_NO_OT_LAYOUT
 HB_OT_ACCELERATOR (OT, GDEF)
 HB_OT_ACCELERATOR (OT, GSUB)
 HB_OT_ACCELERATOR (OT, GPOS)
 //HB_OT_TABLE (OT, JSTF)
-#endif
+#اگر_ختم
 
 /* OpenType baseline. */
-#ifndef HB_NO_BASE
-HB_OT_TABLE (OT, BASE)
-#endif
+#اگر_غیر_تعریف_شدہ HB_NO_بنیاد
+HB_OT_جدول (OT, بنیاد_4)
+#اگر_ختم
 
 /* AAT shaping. */
-#ifndef HB_NO_AAT
+#اگر_غیر_تعریف_شدہ HB_NO_AAT
 HB_OT_ACCELERATOR (AAT, morx)
 HB_OT_ACCELERATOR (AAT, mort)
 HB_OT_ACCELERATOR (AAT, kerx)
-HB_OT_TABLE (AAT, ankr)
-HB_OT_TABLE (AAT, trak)
-HB_OT_TABLE (AAT, ltag)
-HB_OT_TABLE (AAT, feat)
+HB_OT_جدول (AAT, ankr)
+HB_OT_جدول (AAT, trak)
+HB_OT_جدول (AAT, ltag)
+HB_OT_جدول (AAT, feat)
 // HB_OT_TABLE (AAT, opbd)
-#endif
+#اگر_ختم
 
 /* OpenType color fonts. */
-#ifndef HB_NO_COLOR
+#اگر_غیر_تعریف_شدہ HB_NO_COLOR
 HB_OT_ACCELERATOR (OT, COLR)
-HB_OT_TABLE (OT, CPAL)
+HB_OT_جدول (OT, CPAL)
 HB_OT_ACCELERATOR (OT, CBDT)
 HB_OT_ACCELERATOR (OT, sbix)
-#ifndef HB_NO_SVG
+#اگر_غیر_تعریف_شدہ HB_NO_SVG
 HB_OT_ACCELERATOR (OT, SVG)
-#endif
-#endif
+#اگر_ختم
+#اگر_ختم
 
 /* OpenType math. */
-#ifndef HB_NO_MATH
-HB_OT_TABLE (OT, MATH)
-#endif
+#اگر_غیر_تعریف_شدہ HB_NO_MATH
+HB_OT_جدول (OT, MATH)
+#اگر_ختم
 
 
-#ifdef _HB_OT_ACCELERATOR_UNDEF
-#undef HB_OT_ACCELERATOR
-#endif
+#اگر_تعریف_شدہ _HB_OT_ACCELERATOR_UNDEF
+#تعریف_منسوخ HB_OT_ACCELERATOR
+#اگر_ختم

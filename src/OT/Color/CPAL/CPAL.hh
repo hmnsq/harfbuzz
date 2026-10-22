@@ -25,368 +25,368 @@
  * Google Author(s): Sascha Brawer
  */
 
-#ifndef OT_COLOR_CPAL_CPAL_HH
-#define OT_COLOR_CPAL_CPAL_HH
+#اگر_غیر_تعریف_شدہ OT_COLOR_CPAL_CPAL_HH
+#تعریف_کرو OT_COLOR_CPAL_CPAL_HH
 
-#include "../../../hb-open-type.hh"
-#include "../../../hb-ot-color.h"
-#include "../../../hb-ot-name.h"
+#شامل "../../../hb-open-type.hh"
+#شامل "../../../hb-ot-color.h"
+#شامل "../../../hb-ot-name.h"
 
 
 /*
  * CPAL -- Color Palette
  * https://docs.microsoft.com/en-us/typography/opentype/spec/cpal
  */
-#define HB_OT_TAG_CPAL HB_TAG('C','P','A','L')
+#تعریف_کرو HB_OT_لیبل_CPAL HB_لیبل('C','P','A','L')
 
-namespace OT {
+نامخلا OT {
 
 
-struct CPALV1Tail
+ساخت CPALV1_دم
 {
-  friend struct CPAL;
+  دوست ساخت CPAL;
 
-  private:
-  hb_ot_color_palette_flags_t get_palette_flags (const void *base,
-						 unsigned int palette_index,
-						 unsigned int palette_count) const
+  نجی:
+  hb_ot_color_palette_flags_t get_palette_flags (ثابت خالی *بنیاد,
+						 غیرعلامتی صحیح palette_اشاریہ,
+						 غیرعلامتی صحیح palette_گنتی) ثابت
   {
-    if (!paletteFlagsZ) return HB_OT_COLOR_PALETTE_FLAG_DEFAULT;
-    return (hb_ot_color_palette_flags_t) (uint32_t)
-	   (base+paletteFlagsZ).as_array (palette_count)[palette_index];
+    اگر (!paletteFlagsZ) واپس HB_OT_COLOR_PALETTE_FLAG_DEFAULT;
+    واپس (hb_ot_color_palette_flags_t) (uint32_t)
+	   (بنیاد+paletteFlagsZ).as_array (palette_گنتی)[palette_اشاریہ];
   }
 
-  hb_ot_name_id_t get_palette_name_id (const void *base,
-				       unsigned int palette_index,
-				       unsigned int palette_count) const
+  hb_ot_name_id_t get_palette_name_id (ثابت خالی *بنیاد,
+				       غیرعلامتی صحیح palette_اشاریہ,
+				       غیرعلامتی صحیح palette_گنتی) ثابت
   {
-    if (!paletteLabelsZ) return HB_OT_NAME_ID_INVALID;
-    return (base+paletteLabelsZ).as_array (palette_count)[palette_index];
+    اگر (!paletteLabelsZ) واپس HB_OT_NAME_ID_INVALID;
+    واپس (بنیاد+paletteLabelsZ).as_array (palette_گنتی)[palette_اشاریہ];
   }
 
-  hb_ot_name_id_t get_color_name_id (const void *base,
-				     unsigned int color_index,
-				     unsigned int color_count) const
+  hb_ot_name_id_t get_color_name_id (ثابت خالی *بنیاد,
+				     غیرعلامتی صحیح color_اشاریہ,
+				     غیرعلامتی صحیح color_گنتی) ثابت
   {
-    if (!colorLabelsZ) return HB_OT_NAME_ID_INVALID;
-    return (base+colorLabelsZ).as_array (color_count)[color_index];
+    اگر (!colorLabelsZ) واپس HB_OT_NAME_ID_INVALID;
+    واپس (بنیاد+colorLabelsZ).as_array (color_گنتی)[color_اشاریہ];
   }
 
-  public:
-  void collect_name_ids (const void *base,
-                         unsigned palette_count,
-                         unsigned color_count,
-                         const hb_map_t *color_index_map,
-                         hb_set_t *nameids_to_retain /* OUT */) const
+  عوامی:
+  خالی collect_name_ids (ثابت خالی *بنیاد,
+                         غیرعلامتی palette_گنتی,
+                         غیرعلامتی color_گنتی,
+                         ثابت hb_map_t *color_اشاریہ_map,
+                         hb_سیٹ_t *nameids_مقصد_retain /*برآمد*/) ثابت
   {
-    if (paletteLabelsZ)
+    اگر (paletteLabelsZ)
     {
-      + (base+paletteLabelsZ).as_array (palette_count)
-      | hb_sink (nameids_to_retain)
+      + (بنیاد+paletteLabelsZ).as_array (palette_گنتی)
+      | hb_sink (nameids_مقصد_retain)
       ;
     }
 
-    if (colorLabelsZ)
+    اگر (colorLabelsZ)
     {
-      const hb_array_t<const NameID> colorLabels = (base+colorLabelsZ).as_array (color_count);
-      for (unsigned i = 0; i < color_count; i++)
+      ثابت hb_array_t<ثابت NameID> colorLabels = (بنیاد+colorLabelsZ).as_array (color_گنتی);
+      برائے (غیرعلامتی i = 0; i < color_گنتی; i++)
       {
-        if (!color_index_map->has (i)) continue;
-        nameids_to_retain->add (colorLabels[i]);
+        اگر (!color_اشاریہ_map->has (i)) جاری;
+        nameids_مقصد_retain->جوڑو (colorLabels[i]);
       }
     }
   }
 
-  bool serialize (hb_serialize_context_t *c,
-                  unsigned palette_count,
-                  unsigned color_count,
-                  const void *base,
-                  const hb_map_t *color_index_map) const
+  منطقی serialize (hb_serialize_context_t *c,
+                  غیرعلامتی palette_گنتی,
+                  غیرعلامتی color_گنتی,
+                  ثابت خالی *بنیاد,
+                  ثابت hb_map_t *color_اشاریہ_map) ثابت
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->allocate_size<CPALV1Tail> (static_size);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SERIALIZE (یہ);
+    خودکار *برآمد = c->allocate_سائز<CPALV1_دم> (static_سائز);
+    اگر (unlikely (!برآمد)) return_trace (جھوٹ);
 
-    out->paletteFlagsZ = 0;
-    if (paletteFlagsZ)
-      out->paletteFlagsZ.serialize_copy (c, paletteFlagsZ, base, 0, hb_serialize_context_t::Head, palette_count);
+    برآمد->paletteFlagsZ = 0;
+    اگر (paletteFlagsZ)
+      برآمد->paletteFlagsZ.serialize_copy (c, paletteFlagsZ, بنیاد, 0, hb_serialize_context_t::سر, palette_گنتی);
 
-    out->paletteLabelsZ = 0;
-    if (paletteLabelsZ)
-      out->paletteLabelsZ.serialize_copy (c, paletteLabelsZ, base, 0, hb_serialize_context_t::Head, palette_count);
+    برآمد->paletteLabelsZ = 0;
+    اگر (paletteLabelsZ)
+      برآمد->paletteLabelsZ.serialize_copy (c, paletteLabelsZ, بنیاد, 0, hb_serialize_context_t::سر, palette_گنتی);
 
-    const hb_array_t<const NameID> colorLabels = (base+colorLabelsZ).as_array (color_count);
-    if (colorLabelsZ)
+    ثابت hb_array_t<ثابت NameID> colorLabels = (بنیاد+colorLabelsZ).as_array (color_گنتی);
+    اگر (colorLabelsZ)
     {
       c->push ();
-      for (unsigned i = 0; i < color_count; i++)
+      برائے (غیرعلامتی i = 0; i < color_گنتی; i++)
       {
-        if (!color_index_map->has (i)) continue;
-        if (!c->copy<NameID> (colorLabels[i]))
+        اگر (!color_اشاریہ_map->has (i)) جاری;
+        اگر (!c->copy<NameID> (colorLabels[i]))
         {
-          c->pop_discard ();
-          return_trace (false);
+          c->نکالو_discard ();
+          return_trace (جھوٹ);
         }
       }
-      c->add_link (out->colorLabelsZ, c->pop_pack ());
+      c->جوڑو_link (برآمد->colorLabelsZ, c->نکالو_pack ());
     }
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  bool sanitize (hb_sanitize_context_t *c,
-		 const void *base,
-		 unsigned int palette_count,
-		 unsigned int color_count) const
+  منطقی sanitize (hb_sanitize_context_t *c,
+		 ثابت خالی *بنیاد,
+		 غیرعلامتی صحیح palette_گنتی,
+		 غیرعلامتی صحیح color_گنتی) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  (!paletteFlagsZ  || (base+paletteFlagsZ).sanitize (c, palette_count)) &&
-		  (!paletteLabelsZ || (base+paletteLabelsZ).sanitize (c, palette_count)) &&
-		  (!colorLabelsZ   || (base+colorLabelsZ).sanitize (c, color_count)));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ) &&
+		  (!paletteFlagsZ  || (بنیاد+paletteFlagsZ).sanitize (c, palette_گنتی)) &&
+		  (!paletteLabelsZ || (بنیاد+paletteLabelsZ).sanitize (c, palette_گنتی)) &&
+		  (!colorLabelsZ   || (بنیاد+colorLabelsZ).sanitize (c, color_گنتی)));
   }
 
-  protected:
+  محفوظ:
   // TODO(garretrieger): these offsets can hold nulls so we should not be using non-null offsets
   //                     here. Currently they are needed since UnsizedArrayOf doesn't define null_size
-  NNOffset32To<UnsizedArrayOf<HBUINT32>>
+  NNOffset32_مقصد<Unsized_Array_کا<HBUINT32>>
 		paletteFlagsZ;		/* Offset from the beginning of CPAL table to
 					 * the Palette Type Array. Set to 0 if no array
 					 * is provided. */
-  NNOffset32To<UnsizedArrayOf<NameID>>
+  NNOffset32_مقصد<Unsized_Array_کا<NameID>>
 		paletteLabelsZ;		/* Offset from the beginning of CPAL table to
 					 * the palette labels array. Set to 0 if no
 					 * array is provided. */
-  NNOffset32To<UnsizedArrayOf<NameID>>
+  NNOffset32_مقصد<Unsized_Array_کا<NameID>>
 		colorLabelsZ;		/* Offset from the beginning of CPAL table to
 					 * the color labels array. Set to 0
 					 * if no array is provided. */
-  public:
-  DEFINE_SIZE_STATIC (12);
+  عوامی:
+  DEFINE_سائز_STATIC (12);
 };
 
-typedef HBUINT32 BGRAColor;
+قسمتعریف HBUINT32 BGRAColor;
 
-struct CPAL
+ساخت CPAL
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_CPAL;
+  ساکن constexpr hb_لیبل_t جدول_لیبل = HB_OT_لیبل_CPAL;
 
-  bool has_data () const { return numPalettes; }
+  منطقی has_ڈیٹا () ثابت { واپس عدد_Palettes; }
 
-  size_t get_size () const
-  { return min_size + numPalettes * sizeof (colorRecordIndicesZ[0]); }
+  size_t get_سائز () ثابت
+  { واپس min_سائز + عدد_Palettes * حجم (color_ریکارڈ_Indices_Z[0]); }
 
-  unsigned int get_palette_count () const { return numPalettes; }
-  unsigned int   get_color_count () const { return numColors; }
+  غیرعلامتی صحیح get_palette_گنتی () ثابت { واپس عدد_Palettes; }
+  غیرعلامتی صحیح   get_color_گنتی () ثابت { واپس عدد_Colors; }
 
-  hb_ot_color_palette_flags_t get_palette_flags (unsigned int palette_index) const
-  { return v1 ().get_palette_flags (this, palette_index, numPalettes); }
+  hb_ot_color_palette_flags_t get_palette_flags (غیرعلامتی صحیح palette_اشاریہ) ثابت
+  { واپس v1 ().get_palette_flags (یہ, palette_اشاریہ, عدد_Palettes); }
 
-  hb_ot_name_id_t get_palette_name_id (unsigned int palette_index) const
-  { return v1 ().get_palette_name_id (this, palette_index, numPalettes); }
+  hb_ot_name_id_t get_palette_name_id (غیرعلامتی صحیح palette_اشاریہ) ثابت
+  { واپس v1 ().get_palette_name_id (یہ, palette_اشاریہ, عدد_Palettes); }
 
-  hb_ot_name_id_t get_color_name_id (unsigned int color_index) const
-  { return v1 ().get_color_name_id (this, color_index, numColors); }
+  hb_ot_name_id_t get_color_name_id (غیرعلامتی صحیح color_اشاریہ) ثابت
+  { واپس v1 ().get_color_name_id (یہ, color_اشاریہ, عدد_Colors); }
 
-  hb_array_t<const BGRAColor> get_palette_colors (unsigned int palette_index) const
+  hb_array_t<ثابت BGRAColor> get_palette_colors (غیرعلامتی صحیح palette_اشاریہ) ثابت
   {
-    if (unlikely (palette_index >= numPalettes))
-      return hb_array_t<const BGRAColor> ();
-    unsigned int start_index = colorRecordIndicesZ[palette_index];
-    hb_array_t<const BGRAColor> all_colors ((this+colorRecordsZ).arrayZ, numColorRecords);
-    return all_colors.sub_array (start_index, numColors);
+    اگر (unlikely (palette_اشاریہ >= عدد_Palettes))
+      واپس hb_array_t<ثابت BGRAColor> ();
+    غیرعلامتی صحیح آغاز_اشاریہ = color_ریکارڈ_Indices_Z[palette_اشاریہ];
+    hb_array_t<ثابت BGRAColor> all_colors ((یہ+color_اندراجات_Z).arrayZ, عدد_Color_اندراجات);
+    واپس all_colors.sub_array (آغاز_اشاریہ, عدد_Colors);
   }
-  unsigned int get_palette_colors (unsigned int  palette_index,
-				   unsigned int  start_offset,
-				   unsigned int *color_count, /* IN/OUT.  May be NULL. */
-				   hb_color_t   *colors       /* OUT.     May be NULL. */) const
+  غیرعلامتی صحیح get_palette_colors (غیرعلامتی صحیح  palette_اشاریہ,
+				   غیرعلامتی صحیح  آغاز_انحراف,
+				   غیرعلامتی صحیح *color_گنتی, /* IN/OUT.  May be NULL. */
+				   hb_color_t   *colors       /* OUT.     May be NULL. */) ثابت
   {
-    if (unlikely (palette_index >= numPalettes))
+    اگر (unlikely (palette_اشاریہ >= عدد_Palettes))
     {
-      if (color_count) *color_count = 0;
-      return 0;
+      اگر (color_گنتی) *color_گنتی = 0;
+      واپس 0;
     }
-    unsigned int start_index = colorRecordIndicesZ[palette_index];
-    hb_array_t<const BGRAColor> all_colors ((this+colorRecordsZ).arrayZ, numColorRecords);
-    hb_array_t<const BGRAColor> palette_colors = all_colors.sub_array (start_index,
-								       numColors);
-    if (color_count && colors)
+    غیرعلامتی صحیح آغاز_اشاریہ = color_ریکارڈ_Indices_Z[palette_اشاریہ];
+    hb_array_t<ثابت BGRAColor> all_colors ((یہ+color_اندراجات_Z).arrayZ, عدد_Color_اندراجات);
+    hb_array_t<ثابت BGRAColor> palette_colors = all_colors.sub_array (آغاز_اشاریہ,
+								       عدد_Colors);
+    اگر (color_گنتی && colors)
     {
-      + palette_colors.sub_array (start_offset, color_count)
-      | hb_sink (hb_array (colors, *color_count))
+      + palette_colors.sub_array (آغاز_انحراف, color_گنتی)
+      | hb_sink (hb_array (colors, *color_گنتی))
       ;
     }
-    return numColors;
+    واپس عدد_Colors;
   }
 
-  void collect_name_ids (const hb_map_t *color_index_map,
-                         hb_set_t *nameids_to_retain /* OUT */) const
+  خالی collect_name_ids (ثابت hb_map_t *color_اشاریہ_map,
+                         hb_سیٹ_t *nameids_مقصد_retain /*برآمد*/) ثابت
   {
-    if (version == 1)
+    اگر (نسخہ == 1)
     {
       hb_barrier ();
-      v1 ().collect_name_ids (this, numPalettes, numColors, color_index_map, nameids_to_retain);
+      v1 ().collect_name_ids (یہ, عدد_Palettes, عدد_Colors, color_اشاریہ_map, nameids_مقصد_retain);
     }
   }
 
-  private:
-  const CPALV1Tail& v1 () const
+  نجی:
+  ثابت CPALV1_دم& v1 () ثابت
   {
-    if (version == 0) return Null (CPALV1Tail);
+    اگر (نسخہ == 0) واپس Null (CPALV1_دم);
     hb_barrier ();
-    return StructAfter<CPALV1Tail> (*this);
+    واپس StructAfter<CPALV1_دم> (*یہ);
   }
 
-  public:
-  bool serialize (hb_serialize_context_t *c,
-                  const hb_array_t<const HBUINT16> &color_record_indices,
-                  const hb_array_t<const BGRAColor> &color_records,
-                  const hb_vector_t<unsigned>& first_color_index_for_layer,
-                  const hb_map_t& first_color_to_layer_index,
-                  const hb_set_t &retained_color_indices) const
+  عوامی:
+  منطقی serialize (hb_serialize_context_t *c,
+                  ثابت hb_array_t<ثابت HBUINT16> &color_ریکارڈ_indices,
+                  ثابت hb_array_t<ثابت BGRAColor> &color_اندراجات,
+                  ثابت hb_سمتیہ_t<غیرعلامتی>& پہلا_color_اشاریہ_for_layer,
+                  ثابت hb_map_t& پہلا_color_مقصد_layer_اشاریہ,
+                  ثابت hb_سیٹ_t &retained_color_indices) ثابت
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (یہ);
 
     // TODO(grieger): limit total final size.
 
-    for (const auto idx : color_record_indices)
+    برائے (ثابت خودکار idx : color_ریکارڈ_indices)
     {
-      hb_codepoint_t layer_index = first_color_to_layer_index[idx];
+      hb_codepoint_t layer_اشاریہ = پہلا_color_مقصد_layer_اشاریہ[idx];
 
       HBUINT16 new_idx;
-      new_idx = layer_index * retained_color_indices.get_population ();
-      if (!c->copy<HBUINT16> (new_idx)) return_trace (false);
+      new_idx = layer_اشاریہ * retained_color_indices.get_population ();
+      اگر (!c->copy<HBUINT16> (new_idx)) return_trace (جھوٹ);
     }
 
     c->push ();
-    for (unsigned first_color_index : first_color_index_for_layer)
+    برائے (غیرعلامتی پہلا_color_اشاریہ : پہلا_color_اشاریہ_for_layer)
     {
-      for (hb_codepoint_t color_index : retained_color_indices)
+      برائے (hb_codepoint_t color_اشاریہ : retained_color_indices)
       {
-        if (!c->copy<BGRAColor> (color_records[first_color_index + color_index]))
+        اگر (!c->copy<BGRAColor> (color_اندراجات[پہلا_color_اشاریہ + color_اشاریہ]))
         {
-          c->pop_discard ();
-          return_trace (false);
+          c->نکالو_discard ();
+          return_trace (جھوٹ);
         }
       }
     }
 
-    c->add_link (colorRecordsZ, c->pop_pack ());
-    return_trace (true);
+    c->جوڑو_link (color_اندراجات_Z, c->نکالو_pack ());
+    return_trace (سچ);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    if (!numPalettes) return_trace (false);
+    TRACE_SUBSET (یہ);
+    اگر (!عدد_Palettes) return_trace (جھوٹ);
 
-    const hb_map_t *color_index_map = &c->plan->colr_palettes;
-    if (color_index_map->is_empty ()) return_trace (false);
+    ثابت hb_map_t *color_اشاریہ_map = &c->plan->colr_palettes;
+    اگر (color_اشاریہ_map->is_empty ()) return_trace (جھوٹ);
 
-    hb_set_t retained_color_indices;
-    for (const auto _ : color_index_map->keys ())
+    hb_سیٹ_t retained_color_indices;
+    برائے (ثابت خودکار _ : color_اشاریہ_map->کلیدیں ())
     {
-      if (_ == 0xFFFF) continue;
-      retained_color_indices.add (_);
+      اگر (_ == 0xFFFF) جاری;
+      retained_color_indices.جوڑو (_);
     }
-    if (retained_color_indices.is_empty ()) return_trace (false);
+    اگر (retained_color_indices.is_empty ()) return_trace (جھوٹ);
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    خودکار *برآمد = c->serializer->آغاز_embed (*یہ);
+    اگر (unlikely (!c->serializer->extend_min (برآمد))) return_trace (جھوٹ);
 
 
-    out->version = version;
-    out->numColors = retained_color_indices.get_population ();
-    out->numPalettes = numPalettes;
+    برآمد->نسخہ = نسخہ;
+    برآمد->عدد_Colors = retained_color_indices.get_population ();
+    برآمد->عدد_Palettes = عدد_Palettes;
 
-    hb_vector_t<unsigned> first_color_index_for_layer;
-    hb_map_t first_color_to_layer_index;
+    hb_سمتیہ_t<غیرعلامتی> پہلا_color_اشاریہ_for_layer;
+    hb_map_t پہلا_color_مقصد_layer_اشاریہ;
     /* Two palettes that retain exactly the same color records can share the
      * same block of color records. This commonly happens after subsetting
      * when the colors that distinguished the palettes are dropped. Map from
      * a layer's retained colors to its index to find equal layers without
      * scanning all of them. The keys point into layer_retained_colors,
      * which keeps them alive. */
-    hb_hashmap_t<hb_array_t<const BGRAColor>, unsigned> retained_colors_to_layer_index;
-    hb_vector_t<hb_vector_t<BGRAColor>> layer_retained_colors;
+    hb_hashmap_t<hb_array_t<ثابت BGRAColor>, غیرعلامتی> retained_colors_مقصد_layer_اشاریہ;
+    hb_سمتیہ_t<hb_سمتیہ_t<BGRAColor>> layer_retained_colors;
 
-    const hb_array_t<const BGRAColor> all_color_records = (this+colorRecordsZ).as_array (numColorRecords);
+    ثابت hb_array_t<ثابت BGRAColor> all_color_اندراجات = (یہ+color_اندراجات_Z).as_array (عدد_Color_اندراجات);
 
-    const hb_array_t<const HBUINT16> colorRecordIndices = colorRecordIndicesZ.as_array (numPalettes);
-    for (const auto first_color_record_idx : colorRecordIndices)
+    ثابت hb_array_t<ثابت HBUINT16> color_ریکارڈ_Indices = color_ریکارڈ_Indices_Z.as_array (عدد_Palettes);
+    برائے (ثابت خودکار پہلا_color_ریکارڈ_idx : color_ریکارڈ_Indices)
     {
-      if (first_color_to_layer_index.has (first_color_record_idx)) continue;
+      اگر (پہلا_color_مقصد_layer_اشاریہ.has (پہلا_color_ریکارڈ_idx)) جاری;
 
-      hb_vector_t<BGRAColor> retained_colors;
-      if (unlikely (!retained_colors.alloc (retained_color_indices.get_population ()))) return_trace (false);
-      for (hb_codepoint_t color_index : retained_color_indices)
-	retained_colors.push (all_color_records[first_color_record_idx + color_index]);
+      hb_سمتیہ_t<BGRAColor> retained_colors;
+      اگر (unlikely (!retained_colors.alloc (retained_color_indices.get_population ()))) return_trace (جھوٹ);
+      برائے (hb_codepoint_t color_اشاریہ : retained_color_indices)
+	retained_colors.push (all_color_اندراجات[پہلا_color_ریکارڈ_idx + color_اشاریہ]);
 
-      unsigned layer_index = first_color_index_for_layer.length;
-      unsigned *candidate_layer_index = nullptr;
-      if (retained_colors_to_layer_index.has (retained_colors.as_array (), &candidate_layer_index))
-	layer_index = *candidate_layer_index;
-      else
+      غیرعلامتی layer_اشاریہ = پہلا_color_اشاریہ_for_layer.لمبائی;
+      غیرعلامتی *candidate_layer_اشاریہ = خالی_اشاریہ;
+      اگر (retained_colors_مقصد_layer_اشاریہ.has (retained_colors.as_array (), &candidate_layer_اشاریہ))
+	layer_اشاریہ = *candidate_layer_اشاریہ;
+      ورنہ
       {
-	first_color_index_for_layer.push (first_color_record_idx);
-	if (unlikely (!c->serializer->propagate_error (first_color_index_for_layer))) return_trace (false);
+	پہلا_color_اشاریہ_for_layer.push (پہلا_color_ریکارڈ_idx);
+	اگر (unlikely (!c->serializer->propagate_error (پہلا_color_اشاریہ_for_layer))) return_trace (جھوٹ);
 
-	if (unlikely (!layer_retained_colors.push_or_fail (std::move (retained_colors)))) return_trace (false);
-	if (unlikely (!retained_colors_to_layer_index.set (layer_retained_colors.tail ().as_array (), layer_index)))
-	  return_trace (false);
+	اگر (unlikely (!layer_retained_colors.ڈالو_or_fail (std::move (retained_colors)))) return_trace (جھوٹ);
+	اگر (unlikely (!retained_colors_مقصد_layer_اشاریہ.سیٹ (layer_retained_colors.دم ().as_array (), layer_اشاریہ)))
+	  return_trace (جھوٹ);
       }
-      first_color_to_layer_index.set (first_color_record_idx, layer_index);
-      if (unlikely (!c->serializer->propagate_error (first_color_to_layer_index))) return_trace (false);
+      پہلا_color_مقصد_layer_اشاریہ.سیٹ (پہلا_color_ریکارڈ_idx, layer_اشاریہ);
+      اگر (unlikely (!c->serializer->propagate_error (پہلا_color_مقصد_layer_اشاریہ))) return_trace (جھوٹ);
     }
 
-    out->numColorRecords = first_color_index_for_layer.length
+    برآمد->عدد_Color_اندراجات = پہلا_color_اشاریہ_for_layer.لمبائی
                            * retained_color_indices.get_population ();
 
-    if (!out->serialize (c->serializer,
-                         colorRecordIndices,
-                         all_color_records,
-                         first_color_index_for_layer,
-                         first_color_to_layer_index,
+    اگر (!برآمد->serialize (c->serializer,
+                         color_ریکارڈ_Indices,
+                         all_color_اندراجات,
+                         پہلا_color_اشاریہ_for_layer,
+                         پہلا_color_مقصد_layer_اشاریہ,
                          retained_color_indices))
-      return_trace (false);
+      return_trace (جھوٹ);
 
-    if (version == 1)
+    اگر (نسخہ == 1)
     {
       hb_barrier ();
-      return_trace (v1 ().serialize (c->serializer, numPalettes, numColors, this, color_index_map));
+      return_trace (v1 ().serialize (c->serializer, عدد_Palettes, عدد_Colors, یہ, color_اشاریہ_map));
     }
 
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ) &&
 		  hb_barrier () &&
-		  (this+colorRecordsZ).sanitize (c, numColorRecords) &&
-		  colorRecordIndicesZ.sanitize (c, numPalettes) &&
-		  (version == 0 || v1 ().sanitize (c, this, numPalettes, numColors)));
+		  (یہ+color_اندراجات_Z).sanitize (c, عدد_Color_اندراجات) &&
+		  color_ریکارڈ_Indices_Z.sanitize (c, عدد_Palettes) &&
+		  (نسخہ == 0 || v1 ().sanitize (c, یہ, عدد_Palettes, عدد_Colors)));
   }
 
-  protected:
-  HBUINT16	version;		/* Table version number */
+  محفوظ:
+  HBUINT16	نسخہ;		/* Table version number */
   /* Version 0 */
-  HBUINT16	numColors;		/* Number of colors in each palette. */
-  HBUINT16	numPalettes;		/* Number of palettes in the table. */
-  HBUINT16	numColorRecords;	/* Total number of color records, combined for
+  HBUINT16	عدد_Colors;		/* Number of colors in each palette. */
+  HBUINT16	عدد_Palettes;		/* Number of palettes in the table. */
+  HBUINT16	عدد_Color_اندراجات;	/* Total number of color records, combined for
 					 * all palettes. */
-  NNOffset32To<UnsizedArrayOf<BGRAColor>>
-		colorRecordsZ;		/* Offset from the beginning of CPAL table to
+  NNOffset32_مقصد<Unsized_Array_کا<BGRAColor>>
+		color_اندراجات_Z;		/* Offset from the beginning of CPAL table to
 					 * the first ColorRecord. */
-  UnsizedArrayOf<HBUINT16>
-		colorRecordIndicesZ;	/* Index of each palette’s first color record in
+  Unsized_Array_کا<HBUINT16>
+		color_ریکارڈ_Indices_Z;	/* Index of each palette’s first color record in
 					 * the combined color record array. */
 /*CPALV1Tail	v1;*/
-  public:
-  DEFINE_SIZE_ARRAY (12, colorRecordIndicesZ);
+  عوامی:
+  DEFINE_سائز_ARRAY (12, color_ریکارڈ_Indices_Z);
 };
 
 } /* namespace OT */
 
 
-#endif /* OT_COLOR_CPAL_CPAL_HH */
+#اگر_ختم /* OT_COLOR_CPAL_CPAL_HH */

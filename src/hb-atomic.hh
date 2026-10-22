@@ -29,16 +29,16 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_ATOMIC_HH
-#define HB_ATOMIC_HH
+#اگر_غیر_تعریف_شدہ HB_ATOMIC_HH
+#تعریف_کرو HB_ATOMIC_HH
 
-#include "hb.hh"
-#include "hb-meta.hh"
+#شامل "hb.hh"
+#شامل "hb-meta.hh"
 
 
-#ifndef HB_NO_MT
-#include <atomic>
-#endif
+#اگر_غیر_تعریف_شدہ HB_NO_MT
+#شامل <atomic>
+#اگر_ختم
 
 
 /* This should never be disabled, even under HB_NO_MT.
@@ -46,148 +46,148 @@
  *
  * https://github.com/harfbuzz/harfbuzz/pull/4119
  */
-#ifndef _hb_compiler_memory_r_barrier
-#if defined(__ATOMIC_ACQUIRE) // gcc-like
-static inline void _hb_compiler_memory_r_barrier () { asm volatile("": : :"memory"); }
-#elif !defined(_MSC_VER)
-#include <atomic>
-#define _hb_compiler_memory_r_barrier() std::atomic_signal_fence (std::memory_order_acquire)
-#else
-static inline void _hb_compiler_memory_r_barrier () {}
-#endif
-#endif
+#اگر_غیر_تعریف_شدہ hb_compiler_حافظہ_r_barrier
+#اگر defined(__ATOMIC_ACQUIRE) // gcc-like
+ساکن اندرونی خالی hb_compiler_حافظہ_r_barrier () { asm متلون("": : :"memory"); }
+#وگرنہ_اگر !defined(_MSC_VER)
+#شامل <atomic>
+#تعریف_کرو hb_compiler_حافظہ_r_barrier() std::atomic_signal_fence (std::memory_order_acquire)
+#ورنہ
+ساکن اندرونی خالی hb_compiler_حافظہ_r_barrier () {}
+#اگر_ختم
+#اگر_ختم
 
 
-#ifndef HB_NO_MT
+#اگر_غیر_تعریف_شدہ HB_NO_MT
 
-template <typename T>
-struct hb_atomic_t
+سانچہ <قسم_نام T>
+ساخت hb_atomic_t
 {
-  hb_atomic_t () = default;
+  hb_atomic_t () = طےشدہ;
   constexpr hb_atomic_t (T v) : v (v) {}
-  constexpr hb_atomic_t (const hb_atomic_t& o) : v (o.get_relaxed ()) {}
-  hb_atomic_t (hb_atomic_t&& o) : v (o.get_relaxed ()) { o.set_relaxed ({}); }
+  constexpr hb_atomic_t (ثابت hb_atomic_t& o) : v (o.get_relaxed ()) {}
+  hb_atomic_t (hb_atomic_t&& o) : v (o.get_relaxed ()) { o.سیٹ_relaxed ({}); }
 
-  hb_atomic_t &operator= (const hb_atomic_t& o) { set_relaxed (o.get_relaxed ()); return *this; }
-  hb_atomic_t &operator= (hb_atomic_t&& o){ set_relaxed (o.get_relaxed ()); o.set_relaxed ({}); return *this; }
-  hb_atomic_t &operator= (T v_)
+  hb_atomic_t &عامل= (ثابت hb_atomic_t& o) { سیٹ_relaxed (o.get_relaxed ()); واپس *یہ; }
+  hb_atomic_t &عامل= (hb_atomic_t&& o){ سیٹ_relaxed (o.get_relaxed ()); o.سیٹ_relaxed ({}); واپس *یہ; }
+  hb_atomic_t &عامل= (T v_)
   {
-    set_relaxed (v_);
-    return *this;
+    سیٹ_relaxed (v_);
+    واپس *یہ;
   }
-  operator T () const { return get_relaxed (); }
+  عامل T () ثابت { واپس get_relaxed (); }
 
-  void set_relaxed (T v_) { v.store (v_, std::memory_order_relaxed); }
-  void set_release (T v_) { v.store (v_, std::memory_order_release); }
-  T get_relaxed () const { return v.load (std::memory_order_relaxed); }
-  T get_acquire () const { return v.load (std::memory_order_acquire); }
-  T inc () { return v.fetch_add (1, std::memory_order_acq_rel); }
-  T dec () { return v.fetch_add (-1, std::memory_order_acq_rel); }
+  خالی سیٹ_relaxed (T v_) { v.store (v_, std::memory_order_relaxed); }
+  خالی سیٹ_release (T v_) { v.store (v_, std::memory_order_release); }
+  T get_relaxed () ثابت { واپس v.load (std::memory_order_relaxed); }
+  T get_acquire () ثابت { واپس v.load (std::memory_order_acquire); }
+  T inc () { واپس v.fetch_add (1, std::memory_order_acq_rel); }
+  T dec () { واپس v.fetch_add (-1, std::memory_order_acq_rel); }
 
-  int operator++ (int) { return inc (); }
-  int operator-- (int) { return dec (); }
+  صحیح عامل++ (صحیح) { واپس inc (); }
+  صحیح عامل-- (صحیح) { واپس dec (); }
 
-  friend void swap (hb_atomic_t &a, hb_atomic_t &b) noexcept
+  دوست خالی swap (hb_atomic_t &a, hb_atomic_t &b) noexcept
   {
     T v = a.get_acquire ();
-    a.set_relaxed (b.get_acquire ());
-    b.set_relaxed (v);
+    a.سیٹ_relaxed (b.get_acquire ());
+    b.سیٹ_relaxed (v);
   }
 
   std::atomic<T> v {0};
 };
 
-template <typename T>
-struct hb_atomic_t<T *>
+سانچہ <قسم_نام T>
+ساخت hb_atomic_t<T *>
 {
-  hb_atomic_t () = default;
+  hb_atomic_t () = طےشدہ;
   constexpr hb_atomic_t (T *v) : v (v) {}
-  hb_atomic_t (const hb_atomic_t &other) = delete;
+  hb_atomic_t (ثابت hb_atomic_t &other) = حذف;
 
-  void init (T *v_ = nullptr) { set_relaxed (v_); }
-  void set_relaxed (T *v_) { v.store (v_, std::memory_order_relaxed); }
-  T *get_relaxed () const { return v.load (std::memory_order_relaxed); }
-  T *get_acquire () const { return v.load (std::memory_order_acquire); }
-  bool cmpexch (T *old, T *new_) { return v.compare_exchange_weak (old, new_, std::memory_order_acq_rel, std::memory_order_relaxed); }
+  خالی init (T *v_ = خالی_اشاریہ) { سیٹ_relaxed (v_); }
+  خالی سیٹ_relaxed (T *v_) { v.store (v_, std::memory_order_relaxed); }
+  T *get_relaxed () ثابت { واپس v.load (std::memory_order_relaxed); }
+  T *get_acquire () ثابت { واپس v.load (std::memory_order_acquire); }
+  منطقی cmpexch (T *old, T *new_) { واپس v.compare_exchange_weak (old, new_, std::memory_order_acq_rel, std::memory_order_relaxed); }
 
-  hb_atomic_t &operator= (const hb_atomic_t& o) { set_relaxed (o.get_relaxed ()); return *this; }
-  hb_atomic_t &operator= (hb_atomic_t&& o){ set_relaxed (o.get_relaxed ()); o.set_relaxed ({}); return *this; }
+  hb_atomic_t &عامل= (ثابت hb_atomic_t& o) { سیٹ_relaxed (o.get_relaxed ()); واپس *یہ; }
+  hb_atomic_t &عامل= (hb_atomic_t&& o){ سیٹ_relaxed (o.get_relaxed ()); o.سیٹ_relaxed ({}); واپس *یہ; }
 
-  operator bool () const { return get_acquire () != nullptr; }
-  T *operator->() const { return get_acquire (); }
-  template <typename C>
-  operator C * () const
+  عامل منطقی () ثابت { واپس get_acquire () != خالی_اشاریہ; }
+  T *عامل->() ثابت { واپس get_acquire (); }
+  سانچہ <قسم_نام C>
+  عامل C * () ثابت
   {
-    return get_acquire ();
+    واپس get_acquire ();
   }
 
-  friend void swap (hb_atomic_t &a, hb_atomic_t &b) noexcept
+  دوست خالی swap (hb_atomic_t &a, hb_atomic_t &b) noexcept
   {
     T *p = a.get_acquire ();
-    a.set_relaxed (b.get_acquire ());
-    b.set_relaxed (p);
+    a.سیٹ_relaxed (b.get_acquire ());
+    b.سیٹ_relaxed (p);
   }
 
-  std::atomic<T *> v {nullptr};
+  std::atomic<T *> v {خالی_اشاریہ};
 };
 
-#else /* defined(HB_NO_MT) */
+#ورنہ /* defined(HB_NO_MT) */
 
-template <typename T>
-struct hb_atomic_t
+سانچہ <قسم_نام T>
+ساخت hb_atomic_t
 {
-  hb_atomic_t () = default;
+  hb_atomic_t () = طےشدہ;
   constexpr hb_atomic_t (T v) : v (v) {}
 
-  hb_atomic_t& operator = (T v_) { set_relaxed (v_); return *this; }
-  operator T () const { return get_relaxed (); }
+  hb_atomic_t& عامل = (T v_) { سیٹ_relaxed (v_); واپس *یہ; }
+  عامل T () ثابت { واپس get_relaxed (); }
 
-  void set_relaxed (T v_) { v = v_; }
-  void set_release (T v_) { v = v_; }
-  T get_relaxed () const { return v; }
-  T get_acquire () const { return v; }
-  T inc () { return v++; }
-  T dec () { return v--; }
+  خالی سیٹ_relaxed (T v_) { v = v_; }
+  خالی سیٹ_release (T v_) { v = v_; }
+  T get_relaxed () ثابت { واپس v; }
+  T get_acquire () ثابت { واپس v; }
+  T inc () { واپس v++; }
+  T dec () { واپس v--; }
 
-  int operator ++ (int) { return inc (); }
-  int operator -- (int) { return dec (); }
+  صحیح عامل ++ (صحیح) { واپس inc (); }
+  صحیح عامل -- (صحیح) { واپس dec (); }
 
   T v = 0;
 };
 
-template <typename T>
-struct hb_atomic_t<T*>
+سانچہ <قسم_نام T>
+ساخت hb_atomic_t<T*>
 {
-  hb_atomic_t () = default;
+  hb_atomic_t () = طےشدہ;
   constexpr hb_atomic_t (T* v) : v (v) {}
-  hb_atomic_t (const hb_atomic_t &other) = delete;
+  hb_atomic_t (ثابت hb_atomic_t &other) = حذف;
 
-  void init (T* v_ = nullptr) { set_relaxed (v_); }
-  void set_relaxed (T* v_) { v = v_; }
-  T *get_relaxed () const { return v; }
-  T *get_acquire () const { return v; }
-  bool cmpexch (T *old, T *new_)
+  خالی init (T* v_ = خالی_اشاریہ) { سیٹ_relaxed (v_); }
+  خالی سیٹ_relaxed (T* v_) { v = v_; }
+  T *get_relaxed () ثابت { واپس v; }
+  T *get_acquire () ثابت { واپس v; }
+  منطقی cmpexch (T *old, T *new_)
   {
-    if (v != old) return false;
+    اگر (v != old) واپس جھوٹ;
     v = new_;
-    return true;
+    واپس سچ;
   }
 
-  operator bool () const { return get_acquire () != nullptr; }
-  T * operator -> () const                    { return get_acquire (); }
-  template <typename C> operator C * () const { return get_acquire (); }
+  عامل منطقی () ثابت { واپس get_acquire () != خالی_اشاریہ; }
+  T * عامل -> () ثابت                    { واپس get_acquire (); }
+  سانچہ <قسم_نام C> عامل C * () ثابت { واپس get_acquire (); }
 
-  T *v = nullptr;
+  T *v = خالی_اشاریہ;
 };
 
-#endif
+#اگر_ختم
 
 
-static inline bool hb_barrier ()
+ساکن اندرونی منطقی hb_barrier ()
 {
-  _hb_compiler_memory_r_barrier ();
-  return true;
+  hb_compiler_حافظہ_r_barrier ();
+  واپس سچ;
 }
 
 
-#endif /* HB_ATOMIC_HH */
+#اگر_ختم /* HB_ATOMIC_HH */

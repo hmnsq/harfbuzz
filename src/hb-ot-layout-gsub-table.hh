@@ -26,186 +26,186 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_LAYOUT_GSUB_TABLE_HH
-#define HB_OT_LAYOUT_GSUB_TABLE_HH
+#اگر_غیر_تعریف_شدہ HB_OT_LAYOUT_GSUB_جدول_HH
+#تعریف_کرو HB_OT_LAYOUT_GSUB_جدول_HH
 
-#include "OT/Layout/GSUB/GSUB.hh"
+#شامل "OT/Layout/GSUB/GSUB.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+نامخلا OT {
+نامخلا Layout {
+نامخلا GSUB_impl {
 
 // TODO(garretrieger): Move into the new layout directory.
 /* Out-of-class implementation for methods recursing */
 
-#ifndef HB_NO_OT_LAYOUT
-/*static*/ inline bool ExtensionSubst::is_reverse () const
+#اگر_غیر_تعریف_شدہ HB_NO_OT_LAYOUT
+/*static*/ اندرونی منطقی ExtensionSubst::is_الٹ () ثابت
 {
-  return SubstLookup::lookup_type_is_reverse (get_type ());
+  واپس SubstLookup::lookup_type_is_الٹ (get_type ());
 }
-template <typename context_t>
-/*static*/ typename context_t::return_t SubstLookup::dispatch_recurse_func (context_t *c, unsigned int lookup_index)
+سانچہ <قسم_نام context_t>
+/*static*/ قسم_نام context_t::return_t SubstLookup::dispatch_recurse_func (context_t *c, غیرعلامتی صحیح lookup_اشاریہ)
 {
-  const SubstLookup &l = c->face->table.GSUB.get_relaxed ()->table->get_lookup (lookup_index);
-  return l.dispatch (c);
-}
-
-/*static*/ typename hb_closure_context_t::return_t SubstLookup::closure_glyphs_recurse_func (hb_closure_context_t *c, unsigned lookup_index, hb_set_t *covered_seq_indices, unsigned seq_index, unsigned end_index)
-{
-  const SubstLookup &l = c->face->table.GSUB.get_relaxed ()->table->get_lookup (lookup_index);
-  if (l.may_have_non_1to1 ())
-      hb_set_add_range (covered_seq_indices, seq_index, end_index);
-  return l.dispatch (c);
+  ثابت SubstLookup &l = c->face->جدول.GSUB.get_relaxed ()->جدول->get_lookup (lookup_اشاریہ);
+  واپس l.dispatch (c);
 }
 
-/*static*/ hb_depend_context_t::return_t SubstLookup::depend_glyphs_recurse_func (hb_depend_context_t *c, unsigned lookup_index, hb_bit_page_t *covered_seq_indices, unsigned seq_index, unsigned end_index)
+/*static*/ قسم_نام hb_احاطہ_context_t::return_t SubstLookup::احاطہ_glyphs_recurse_func (hb_احاطہ_context_t *c, غیرعلامتی lookup_اشاریہ, hb_سیٹ_t *covered_seq_indices, غیرعلامتی seq_اشاریہ, غیرعلامتی انتہا_اشاریہ)
 {
-  const SubstLookup &l = c->face->table.GSUB.get_relaxed ()->table->get_lookup (lookup_index);
+  ثابت SubstLookup &l = c->face->جدول.GSUB.get_relaxed ()->جدول->get_lookup (lookup_اشاریہ);
+  اگر (l.may_have_non_1to1 ())
+      hb_سیٹ_جوڑو_range (covered_seq_indices, seq_اشاریہ, انتہا_اشاریہ);
+  واپس l.dispatch (c);
+}
+
+/*static*/ hb_depend_context_t::return_t SubstLookup::depend_glyphs_recurse_func (hb_depend_context_t *c, غیرعلامتی lookup_اشاریہ, hb_ثنائی_ہندسہ_صفحہ_t *covered_seq_indices, غیرعلامتی seq_اشاریہ, غیرعلامتی انتہا_اشاریہ)
+{
+  ثابت SubstLookup &l = c->face->جدول.GSUB.get_relaxed ()->جدول->get_lookup (lookup_اشاریہ);
   /* After a non-1-to-1 lookup (expansion/contraction), subsequent lookups in the same
    * contextual rule see all glyphs, not position-specific ones. This matches closure behavior.
    * Mark sequence positions as covered so later lookups use the full glyph set. */
-  if (l.may_have_non_1to1 ())
-      covered_seq_indices->add_range (seq_index, end_index);
+  اگر (l.may_have_non_1to1 ())
+      covered_seq_indices->جوڑو_range (seq_اشاریہ, انتہا_اشاریہ);
 
-  hb_depend_context_t::recurse_key_t key;
-  if (!c->get_recurse_key (lookup_index, &key))
-    return hb_empty_t ();
+  hb_depend_context_t::recurse_کلید_t key;
+  اگر (!c->get_recurse_کلید (lookup_اشاریہ, &key))
+    واپس hb_خالی_خانے_t ();
 
   hb_depend_context_t::return_t ret = l.dispatch (c);
-  c->finish_recurse (key);
-  return ret;
+  c->اختتام_recurse (key);
+  واپس ret;
 }
 
-template <>
-inline hb_closure_lookups_context_t::return_t
-SubstLookup::dispatch_recurse_func<hb_closure_lookups_context_t> (hb_closure_lookups_context_t *c, unsigned this_index)
+سانچہ <>
+اندرونی hb_احاطہ_lookups_context_t::return_t
+SubstLookup::dispatch_recurse_func<hb_احاطہ_lookups_context_t> (hb_احاطہ_lookups_context_t *c, غیرعلامتی this_اشاریہ)
 {
-  const SubstLookup &l = c->face->table.GSUB.get_relaxed ()->table->get_lookup (this_index);
-  return l.closure_lookups (c, this_index);
+  ثابت SubstLookup &l = c->face->جدول.GSUB.get_relaxed ()->جدول->get_lookup (this_اشاریہ);
+  واپس l.احاطہ_lookups (c, this_اشاریہ);
 }
 
-template <>
-inline bool SubstLookup::dispatch_recurse_func<hb_ot_apply_context_t> (hb_ot_apply_context_t *c, unsigned int lookup_index)
+سانچہ <>
+اندرونی منطقی SubstLookup::dispatch_recurse_func<hb_ot_apply_context_t> (hb_ot_apply_context_t *c, غیرعلامتی صحیح lookup_اشاریہ)
 {
-  auto *gsub = c->face->table.GSUB.get_relaxed ();
-  const SubstLookup &l = gsub->table->get_lookup (lookup_index);
-  unsigned int saved_lookup_props = c->lookup_props;
-  unsigned int saved_lookup_index = c->lookup_index;
-  c->set_lookup_index (lookup_index);
-  c->set_lookup_props (l.get_props ());
+  خودکار *gsub = c->face->جدول.GSUB.get_relaxed ();
+  ثابت SubstLookup &l = gsub->جدول->get_lookup (lookup_اشاریہ);
+  غیرعلامتی صحیح saved_lookup_props = c->lookup_props;
+  غیرعلامتی صحیح saved_lookup_اشاریہ = c->lookup_اشاریہ;
+  c->سیٹ_lookup_اشاریہ (lookup_اشاریہ);
+  c->سیٹ_lookup_props (l.get_props ());
 
-  uint32_t stack_match_positions[8];
-  hb_vector_t<uint32_t> saved_match_positions;
-  saved_match_positions.set_storage (stack_match_positions);
-  hb_swap (c->match_positions, saved_match_positions);
+  uint32_t ڈھیر_مطابقت_positions[8];
+  hb_سمتیہ_t<uint32_t> saved_مطابقت_positions;
+  saved_مطابقت_positions.سیٹ_storage (ڈھیر_مطابقت_positions);
+  hb_تبادلہ (c->مطابقت_positions, saved_مطابقت_positions);
 
-  bool ret = false;
-  auto *accel = gsub->get_accel (lookup_index);
-  ret = accel && accel->apply (c, false);
+  منطقی ret = جھوٹ;
+  خودکار *accel = gsub->get_accel (lookup_اشاریہ);
+  ret = accel && accel->apply (c, جھوٹ);
 
-  c->set_lookup_index (saved_lookup_index);
-  c->set_lookup_props (saved_lookup_props);
+  c->سیٹ_lookup_اشاریہ (saved_lookup_اشاریہ);
+  c->سیٹ_lookup_props (saved_lookup_props);
 
-  hb_swap (c->match_positions, saved_match_positions);
+  hb_تبادلہ (c->مطابقت_positions, saved_مطابقت_positions);
 
-  return ret;
+  واپس ret;
 }
-#endif
+#اگر_ختم
 
 } /* namespace GSUB_impl */
 } /* namespace Layout */
 
-inline void
-GSUB_accelerator_t::depend (hb_depend_data_builder_t *builder, hb_face_t *face) const
+اندرونی خالی
+GSUB_accelerator_t::depend (hb_depend_ڈیٹا_builder_t *builder, hb_face_t *face) ثابت
 {
-  if (!this->table->has_data ()) return;
+  اگر (!یہ->جدول->has_ڈیٹا ()) واپس;
 
-  unsigned num_features = this->table->get_feature_count ();
-  unsigned num_lookups  = this->table->get_lookup_count ();
+  غیرعلامتی عدد_features = یہ->جدول->get_feature_گنتی ();
+  غیرعلامتی عدد_lookups  = یہ->جدول->get_lookup_گنتی ();
 
-  hb_vector_t<hb_tag_t> feature_tags;
-  if (!builder->check_success (feature_tags.resize (num_features)))
-    return;
-  this->table->get_feature_tags (0, &num_features, feature_tags.arrayZ);
+  hb_سمتیہ_t<hb_لیبل_t> feature_لیبل_فہرست;
+  اگر (!builder->check_success (feature_لیبل_فہرست.resize (عدد_features)))
+    واپس;
+  یہ->جدول->get_feature_لیبل_فہرست (0, &عدد_features, feature_لیبل_فہرست.arrayZ);
 
-  if (!builder->init_lookup_features (num_lookups))
-    return;
+  اگر (!builder->init_lookup_features (عدد_lookups))
+    واپس;
 
-  hb_vector_t<hb_tag_t> feature_query_v;
+  hb_سمتیہ_t<hb_لیبل_t> feature_query_v;
   feature_query_v.resize (2);
   feature_query_v[1] = 0;
 
-  hb_set_t seen_features;
-  hb_set_t feature_indexes, lookup_indexes;
+  hb_سیٹ_t نظر_آیا_features;
+  hb_سیٹ_t feature_indexes, lookup_indexes;
 
-  for (auto ft : feature_tags)
+  برائے (خودکار ft : feature_لیبل_فہرست)
   {
-    if (seen_features.has (ft)) continue;
-    seen_features.add (ft);
+    اگر (نظر_آیا_features.has (ft)) جاری;
+    نظر_آیا_features.جوڑو (ft);
     feature_query_v[0] = ft;
     feature_indexes.reset ();
-    hb_ot_layout_collect_features (face, HB_OT_TAG_GSUB, nullptr, nullptr,
+    hb_ot_layout_collect_features (face, HB_OT_لیبل_GSUB, خالی_اشاریہ, خالی_اشاریہ,
                                    feature_query_v.arrayZ, &feature_indexes);
     lookup_indexes.reset ();
-    for (auto feature_index : feature_indexes)
-      this->table->get_feature (feature_index).add_lookup_indexes_to (&lookup_indexes);
+    برائے (خودکار feature_اشاریہ : feature_indexes)
+      یہ->جدول->get_feature (feature_اشاریہ).جوڑو_lookup_indexes_مقصد (&lookup_indexes);
 
-    for (auto lookup_index : lookup_indexes)
-      if (unlikely (!builder->add_lookup_feature (lookup_index, ft)))
-	return;
+    برائے (خودکار lookup_اشاریہ : lookup_indexes)
+      اگر (unlikely (!builder->جوڑو_lookup_feature (lookup_اشاریہ, ft)))
+	واپس;
 
-    auto &fv = this->table->get_feature_variations ();
-    auto fi_count = fv.record_count ();
-    for (unsigned i = 0; i < fi_count; i++)
+    خودکار &fv = یہ->جدول->get_feature_variations ();
+    خودکار fi_گنتی = fv.ریکارڈ_گنتی ();
+    برائے (غیرعلامتی i = 0; i < fi_گنتی; i++)
     {
       lookup_indexes.reset ();
-      for (auto feature_index : feature_indexes)
+      برائے (خودکار feature_اشاریہ : feature_indexes)
       {
-	auto feature_ptr = fv.find_substitute (i, feature_index);
-	if (feature_ptr != nullptr)
-	  feature_ptr->add_lookup_indexes_to (&lookup_indexes);
+	خودکار feature_ptr = fv.ڈھونڈو_substitute (i, feature_اشاریہ);
+	اگر (feature_ptr != خالی_اشاریہ)
+	  feature_ptr->جوڑو_lookup_indexes_مقصد (&lookup_indexes);
       }
-      for (auto lookup_index : lookup_indexes)
-	if (unlikely (!builder->add_lookup_feature (lookup_index, ft)))
-	  return;
+      برائے (خودکار lookup_اشاریہ : lookup_indexes)
+	اگر (unlikely (!builder->جوڑو_lookup_feature (lookup_اشاریہ, ft)))
+	  واپس;
     }
 
-#ifndef HB_NO_VAR
+#اگر_غیر_تعریف_شدہ HB_NO_VAR
     lookup_indexes.reset ();
     fv.collect_lookup_variation_lookups (&feature_indexes, &lookup_indexes);
-    for (auto lookup_index : lookup_indexes)
-      if (unlikely (!builder->add_lookup_feature (lookup_index, ft)))
-	return;
-#endif
+    برائے (خودکار lookup_اشاریہ : lookup_indexes)
+      اگر (unlikely (!builder->جوڑو_lookup_feature (lookup_اشاریہ, ft)))
+	واپس;
+#اگر_ختم
   }
 
-  if (unlikely (!builder->finish_lookup_features ()))
-    return;
+  اگر (unlikely (!builder->اختتام_lookup_features ()))
+    واپس;
 
-  hb_set_t all_glyphs;
-  all_glyphs.add_range (0, face->get_num_glyphs () - 1);
+  hb_سیٹ_t all_glyphs;
+  all_glyphs.جوڑو_range (0, face->get_عدد_glyphs () - 1);
 
   hb_depend_context_t c (builder, face, &all_glyphs);
 
-  for (unsigned i = 0; i < num_lookups; i++)
+  برائے (غیرعلامتی i = 0; i < عدد_lookups; i++)
   {
-    auto features = builder->get_lookup_features (i);
-    if (!features)
+    خودکار features = builder->get_lookup_features (i);
+    اگر (!features)
     {
-      DEBUG_MSG_LEVEL (DEPEND, nullptr, 1, 0,
+      DEBUG_پیغام_LEVEL (DEPEND, خالی_اشاریہ, 1, 0,
                        "Skipping lookup %u (no features)", i);
-      continue;
+      جاری;
     }
-    DEBUG_MSG_LEVEL (DEPEND, nullptr, 1, 0,
+    DEBUG_پیغام_LEVEL (DEPEND, خالی_اشاریہ, 1, 0,
                      "Processing lookup %u with features:", i);
-    c.lookup_index = i;
+    c.lookup_اشاریہ = i;
     c.reset_recurse_cache ();
-    c.lookups_seen.clear ();
-    c.lookups_seen.add (i);  /* Seed for A→B→A cycle detection in recurse(). */
-    this->table->get_lookup (i).depend (&c);
+    c.lookups_نظر_آیا.clear ();
+    c.lookups_نظر_آیا.جوڑو (i);  /* Seed for A→B→A cycle detection in recurse(). */
+    یہ->جدول->get_lookup (i).depend (&c);
   }
 }
 
 } /* namespace OT */
 
-#endif /* HB_OT_LAYOUT_GSUB_TABLE_HH */
+#اگر_ختم /* HB_OT_LAYOUT_GSUB_TABLE_HH */

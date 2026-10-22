@@ -1,273 +1,273 @@
-#ifndef OT_LAYOUT_GPOS_PAIRPOSFORMAT2_HH
-#define OT_LAYOUT_GPOS_PAIRPOSFORMAT2_HH
+#اگر_غیر_تعریف_شدہ OT_LAYOUT_GPOS_PAIRPOSFORMAT2_HH
+#تعریف_کرو OT_LAYOUT_GPOS_PAIRPOSFORMAT2_HH
 
-#include "ValueFormat.hh"
+#شامل "ValueFormat.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+نامخلا OT {
+نامخلا Layout {
+نامخلا GPOS_impl {
 
-HB_INTERNAL inline
-void collect_pair_variation_indices (hb_collect_variation_indices_context_t *c,
-                                     const ValueBase *base,
-                                     const Coverage &coverage,
-                                     const ClassDef &class_def1,
-                                     const ClassDef &class_def2,
-                                     const ValueFormat &valueFormat1,
-                                     const ValueFormat &valueFormat2,
-                                     unsigned class1_count,
-                                     unsigned class2_count,
-                                     const ValueRecord &values)
+HB_اندرونی اندرونی
+خالی collect_pair_variation_indices (hb_collect_variation_indices_context_t *c,
+                                     ثابت قدر_بنیاد *بنیاد,
+                                     ثابت Coverage &coverage,
+                                     ثابت ClassDef &class_def1,
+                                     ثابت ClassDef &class_def2,
+                                     ثابت قدر_Format &قدر_Format1,
+                                     ثابت قدر_Format &قدر_Format2,
+                                     غیرعلامتی class1_گنتی,
+                                     غیرعلامتی class2_گنتی,
+                                     ثابت قدر_ریکارڈ &values)
 {
-  if (!coverage.intersects (c->glyph_set) ||
-      !class_def2.intersects (c->glyph_set)) return;
-  if ((!valueFormat1.has_device ()) && (!valueFormat2.has_device ())) return;
+  اگر (!coverage.intersects (c->glyph_سیٹ) ||
+      !class_def2.intersects (c->glyph_سیٹ)) واپس;
+  اگر ((!قدر_Format1.has_device ()) && (!قدر_Format2.has_device ())) واپس;
 
-  hb_set_t klass1_glyphs, klass2_glyphs;
-  if (!class_def1.collect_coverage (&klass1_glyphs)) return;
-  if (!class_def2.collect_coverage (&klass2_glyphs)) return;
+  hb_سیٹ_t klass1_glyphs, klass2_glyphs;
+  اگر (!class_def1.collect_coverage (&klass1_glyphs)) واپس;
+  اگر (!class_def2.collect_coverage (&klass2_glyphs)) واپس;
 
-  hb_set_t class1_set, class2_set;
-  for (const unsigned cp : + c->glyph_set->iter () | hb_filter (coverage))
+  hb_سیٹ_t class1_سیٹ, class2_سیٹ;
+  برائے (ثابت غیرعلامتی cp : + c->glyph_سیٹ->iter () | hb_filter (coverage))
   {
-    if (!klass1_glyphs.has (cp)) class1_set.add (0);
-    else
+    اگر (!klass1_glyphs.has (cp)) class1_سیٹ.جوڑو (0);
+    ورنہ
     {
-      unsigned klass1 = class_def1.get (cp);
-      class1_set.add (klass1);
+      غیرعلامتی klass1 = class_def1.get (cp);
+      class1_سیٹ.جوڑو (klass1);
     }
   }
 
-  class2_set.add (0);
-  for (const unsigned cp : + c->glyph_set->iter () | hb_filter (klass2_glyphs))
+  class2_سیٹ.جوڑو (0);
+  برائے (ثابت غیرعلامتی cp : + c->glyph_سیٹ->iter () | hb_filter (klass2_glyphs))
   {
-    unsigned klass2 = class_def2.get (cp);
-    class2_set.add (klass2);
+    غیرعلامتی klass2 = class_def2.get (cp);
+    class2_سیٹ.جوڑو (klass2);
   }
 
-  if (class1_set.is_empty ()
-      || class2_set.is_empty ()
-      || (class2_set.get_population() == 1 && class2_set.has(0)))
-    return;
+  اگر (class1_سیٹ.is_empty ()
+      || class2_سیٹ.is_empty ()
+      || (class2_سیٹ.get_population() == 1 && class2_سیٹ.has(0)))
+    واپس;
 
-  unsigned len1 = valueFormat1.get_len ();
-  unsigned len2 = valueFormat2.get_len ();
-  const hb_array_t<const Value> values_array = values.as_array ((unsigned)class1_count * (unsigned) class2_count * (len1 + len2));
-  for (const unsigned class1_idx : class1_set.iter ())
+  غیرعلامتی len1 = قدر_Format1.get_len ();
+  غیرعلامتی len2 = قدر_Format2.get_len ();
+  ثابت hb_array_t<ثابت قدر> اقدار_array = values.as_array ((غیرعلامتی)class1_گنتی * (غیرعلامتی) class2_گنتی * (len1 + len2));
+  برائے (ثابت غیرعلامتی class1_idx : class1_سیٹ.iter ())
   {
-    for (const unsigned class2_idx : class2_set.iter ())
+    برائے (ثابت غیرعلامتی class2_idx : class2_سیٹ.iter ())
     {
-      unsigned start_offset = (class1_idx * (unsigned) class2_count + class2_idx) * (len1 + len2);
-      if (valueFormat1.has_device ())
-        valueFormat1.collect_variation_indices (c, base, values_array.sub_array (start_offset, len1));
+      غیرعلامتی آغاز_انحراف = (class1_idx * (غیرعلامتی) class2_گنتی + class2_idx) * (len1 + len2);
+      اگر (قدر_Format1.has_device ())
+        قدر_Format1.collect_variation_indices (c, بنیاد, اقدار_array.sub_array (آغاز_انحراف, len1));
 
-      if (valueFormat2.has_device ())
-        valueFormat2.collect_variation_indices (c, base, values_array.sub_array (start_offset+len1, len2));
+      اگر (قدر_Format2.has_device ())
+        قدر_Format2.collect_variation_indices (c, بنیاد, اقدار_array.sub_array (آغاز_انحراف+len1, len2));
     }
   }
 }
 
 /* Keep class-matrix traversal independent of the source table width. */
-struct pair_pos_class_values_t
+ساخت pair_pos_class_اقدار_t
 {
-  const ValueBase *base;
-  const ValueRecord &values;
-  const ValueFormat &valueFormat1;
-  const ValueFormat &valueFormat2;
-  unsigned class1_count;
-  unsigned class2_count;
+  ثابت قدر_بنیاد *بنیاد;
+  ثابت قدر_ریکارڈ &values;
+  ثابت قدر_Format &قدر_Format1;
+  ثابت قدر_Format &قدر_Format2;
+  غیرعلامتی class1_گنتی;
+  غیرعلامتی class2_گنتی;
 
-  hb_pair_t<unsigned, unsigned> compute_effective_value_formats (const hb_map_t &klass1_map,
-                                                               const hb_map_t &klass2_map,
-                                                               bool strip_hints, bool strip_empty,
-                                                               const hb_hashmap_t<unsigned, hb_pair_t<unsigned, int>> *varidx_delta_map = nullptr) const
+  hb_pair_t<غیرعلامتی, غیرعلامتی> compute_effective_قدر_formats (ثابت hb_map_t &klass1_map,
+                                                               ثابت hb_map_t &klass2_map,
+                                                               منطقی strip_hints, منطقی strip_خالی_خانے,
+                                                               ثابت hb_hashmap_t<غیرعلامتی, hb_pair_t<غیرعلامتی, صحیح>> *varidx_delta_map = خالی_اشاریہ) ثابت
   {
-    unsigned len1 = valueFormat1.get_len ();
-    unsigned len2 = valueFormat2.get_len ();
-    unsigned record_size = len1 + len2;
+    غیرعلامتی len1 = قدر_Format1.get_len ();
+    غیرعلامتی len2 = قدر_Format2.get_len ();
+    غیرعلامتی ریکارڈ_سائز = len1 + len2;
 
-    unsigned format1 = 0;
-    unsigned format2 = 0;
+    غیرعلامتی format1 = 0;
+    غیرعلامتی format2 = 0;
 
-    for (unsigned class1_idx : + hb_range (class1_count) | hb_filter (klass1_map))
+    برائے (غیرعلامتی class1_idx : + hb_range (class1_گنتی) | hb_filter (klass1_map))
     {
-      for (unsigned class2_idx : + hb_range (class2_count) | hb_filter (klass2_map))
+      برائے (غیرعلامتی class2_idx : + hb_range (class2_گنتی) | hb_filter (klass2_map))
       {
-        unsigned idx = (class1_idx * class2_count + class2_idx) * record_size;
-        format1 = format1 | valueFormat1.get_effective_format (&values[idx], strip_hints, strip_empty, base, varidx_delta_map);
-        format2 = format2 | valueFormat2.get_effective_format (&values[idx + len1], strip_hints, strip_empty, base, varidx_delta_map);
+        غیرعلامتی idx = (class1_idx * class2_گنتی + class2_idx) * ریکارڈ_سائز;
+        format1 = format1 | قدر_Format1.get_effective_format (&values[idx], strip_hints, strip_خالی_خانے, بنیاد, varidx_delta_map);
+        format2 = format2 | قدر_Format2.get_effective_format (&values[idx + len1], strip_hints, strip_خالی_خانے, بنیاد, varidx_delta_map);
       }
 
-      if (!varidx_delta_map &&
-          format1 == valueFormat1 && format2 == valueFormat2)
-        break;
+      اگر (!varidx_delta_map &&
+          format1 == قدر_Format1 && format2 == قدر_Format2)
+        توڑو;
     }
 
-    return hb_pair (format1, format2);
+    واپس hb_pair (format1, format2);
   }
 
-  bool serialize (hb_subset_context_t *c,
-                  const hb_map_t &klass1_map,
-                  const hb_map_t &klass2_map,
-                  ValueFormat newFormat1,
-                  ValueFormat newFormat2) const
+  منطقی serialize (hb_subset_context_t *c,
+                  ثابت hb_map_t &klass1_map,
+                  ثابت hb_map_t &klass2_map,
+                  قدر_Format newFormat1,
+                  قدر_Format newFormat2) ثابت
   {
-    unsigned len1 = valueFormat1.get_len ();
-    unsigned len2 = valueFormat2.get_len ();
-    unsigned total_len = len1 + len2;
-    hb_vector_t<unsigned> class2_idxs (+ hb_range (class2_count) | hb_filter (klass2_map));
-    if (unlikely (!c->serializer->propagate_error (class2_idxs)))
-      return false;
-    for (unsigned class1_idx : + hb_range (class1_count) | hb_filter (klass1_map))
+    غیرعلامتی len1 = قدر_Format1.get_len ();
+    غیرعلامتی len2 = قدر_Format2.get_len ();
+    غیرعلامتی کل_len = len1 + len2;
+    hb_سمتیہ_t<غیرعلامتی> class2_idxs (+ hb_range (class2_گنتی) | hb_filter (klass2_map));
+    اگر (unlikely (!c->serializer->propagate_error (class2_idxs)))
+      واپس جھوٹ;
+    برائے (غیرعلامتی class1_idx : + hb_range (class1_گنتی) | hb_filter (klass1_map))
     {
-      for (unsigned class2_idx : class2_idxs)
+      برائے (غیرعلامتی class2_idx : class2_idxs)
       {
-        unsigned idx = (class1_idx * class2_count + class2_idx) * total_len;
-        valueFormat1.copy_values (c->serializer, newFormat1, base, &values[idx], &c->plan->layout_variation_idx_delta_map);
-        valueFormat2.copy_values (c->serializer, newFormat2, base, &values[idx + len1], &c->plan->layout_variation_idx_delta_map);
+        غیرعلامتی idx = (class1_idx * class2_گنتی + class2_idx) * کل_len;
+        قدر_Format1.copy_اقدار (c->serializer, newFormat1, بنیاد, &values[idx], &c->plan->layout_variation_idx_delta_map);
+        قدر_Format2.copy_اقدار (c->serializer, newFormat2, بنیاد, &values[idx + len1], &c->plan->layout_variation_idx_delta_map);
       }
     }
 
-    return true;
+    واپس سچ;
   }
 };
 
-template <typename Types>
-struct PairPosFormat2_4 : ValueBase
+سانچہ <قسم_نام Types>
+ساخت PairPosFormat2_4 : قدر_بنیاد
 {
-  protected:
+  محفوظ:
   HBUINT16      format;                 /* Format identifier--format = 2 */
-  typename Types::template LOffsetTo<Coverage>
+  قسم_نام Types::سانچہ LOffset_مقصد<Coverage>
                 coverage;               /* Offset to Coverage table--from
                                          * beginning of subtable */
-  ValueFormat   valueFormat1;           /* ValueRecord definition--for the
+  قدر_Format   قدر_Format1;           /* ValueRecord definition--for the
                                          * first glyph of the pair--may be zero
                                          * (0) */
-  ValueFormat   valueFormat2;           /* ValueRecord definition--for the
+  قدر_Format   قدر_Format2;           /* ValueRecord definition--for the
                                          * second glyph of the pair--may be
                                          * zero (0) */
-  typename Types::template LOffsetTo<ClassDef>
+  قسم_نام Types::سانچہ LOffset_مقصد<ClassDef>
                 classDef1;              /* Offset to ClassDef table--from
                                          * beginning of PairPos subtable--for
                                          * the first glyph of the pair */
-  typename Types::template LOffsetTo<ClassDef>
+  قسم_نام Types::سانچہ LOffset_مقصد<ClassDef>
                 classDef2;              /* Offset to ClassDef table--from
                                          * beginning of PairPos subtable--for
                                          * the second glyph of the pair */
-  HBUINT16      class1Count;            /* Number of classes in ClassDef1
+  HBUINT16      class1_گنتی_2;            /* Number of classes in ClassDef1
                                          * table--includes Class0 */
-  HBUINT16      class2Count;            /* Number of classes in ClassDef2
+  HBUINT16      class2_گنتی_2;            /* Number of classes in ClassDef2
                                          * table--includes Class0 */
-  ValueRecord   values;                 /* Matrix of value pairs:
+  قدر_ریکارڈ   values;                 /* Matrix of value pairs:
                                          * class1-major, class2-minor,
                                          * Each entry has value1 and value2 */
-  public:
-  DEFINE_SIZE_ARRAY (10 + 3 * Types::LOffset::static_size, values);
+  عوامی:
+  DEFINE_سائز_ARRAY (10 + 3 * Types::LOffset::static_سائز, values);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (!(c->check_struct (this)
-       && coverage.sanitize (c, this)
-       && classDef1.sanitize (c, this)
-       && classDef2.sanitize (c, this))) return_trace (false);
+    TRACE_SANITIZE (یہ);
+    اگر (!(c->check_struct (یہ)
+       && coverage.sanitize (c, یہ)
+       && classDef1.sanitize (c, یہ)
+       && classDef2.sanitize (c, یہ))) return_trace (جھوٹ);
 
-    unsigned int len1 = valueFormat1.get_len ();
-    unsigned int len2 = valueFormat2.get_len ();
-    unsigned int stride = HBUINT16::static_size * (len1 + len2);
-    unsigned int count = (unsigned int) class1Count * (unsigned int) class2Count;
-    return_trace (c->check_range ((const void *) values,
-                                  count,
+    غیرعلامتی صحیح len1 = قدر_Format1.get_len ();
+    غیرعلامتی صحیح len2 = قدر_Format2.get_len ();
+    غیرعلامتی صحیح stride = HBUINT16::static_سائز * (len1 + len2);
+    غیرعلامتی صحیح گنتی = (غیرعلامتی صحیح) class1_گنتی_2 * (غیرعلامتی صحیح) class2_گنتی_2;
+    return_trace (c->check_range ((ثابت خالی *) values,
+                                  گنتی,
                                   stride) &&
 		  (c->lazy_some_gpos ||
-		   (valueFormat1.sanitize_values_stride_unsafe (c, this, &values[0], count, stride) &&
-		    valueFormat2.sanitize_values_stride_unsafe (c, this, &values[len1], count, stride))));
+		   (قدر_Format1.sanitize_اقدار_stride_unsafe (c, یہ, &values[0], گنتی, stride) &&
+		    قدر_Format2.sanitize_اقدار_stride_unsafe (c, یہ, &values[len1], گنتی, stride))));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  منطقی intersects (ثابت hb_سیٹ_t *glyphs) ثابت
   {
-    return (this+coverage).intersects (glyphs) &&
-           (this+classDef2).intersects (glyphs);
+    واپس (یہ+coverage).intersects (glyphs) &&
+           (یہ+classDef2).intersects (glyphs);
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const {}
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  خالی احاطہ_lookups (hb_احاطہ_lookups_context_t *c) ثابت {}
+  خالی collect_variation_indices (hb_collect_variation_indices_context_t *c) ثابت
   {
-    collect_pair_variation_indices (c, this, this+coverage,
-                                    this+classDef1, this+classDef2,
-                                    valueFormat1, valueFormat2,
-                                    class1Count, class2Count, values);
+    collect_pair_variation_indices (c, یہ, یہ+coverage,
+                                    یہ+classDef1, یہ+classDef2,
+                                    قدر_Format1, قدر_Format2,
+                                    class1_گنتی_2, class2_گنتی_2, values);
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  خالی collect_glyphs (hb_collect_glyphs_context_t *c) ثابت
   {
-    if (unlikely (!(this+coverage).collect_coverage (c->input))) return;
-    if (unlikely (!(this+classDef2).collect_coverage (c->input))) return;
+    اگر (unlikely (!(یہ+coverage).collect_coverage (c->داخلہ))) واپس;
+    اگر (unlikely (!(یہ+classDef2).collect_coverage (c->داخلہ))) واپس;
   }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  ثابت Coverage &get_coverage () ثابت { واپس یہ+coverage; }
 
-  struct external_cache_t
+  ساخت external_cache_t
   {
     hb_ot_layout_mapping_cache_t coverage;
-    hb_ot_layout_mapping_cache_t first;
+    hb_ot_layout_mapping_cache_t پہلا;
     hb_ot_layout_mapping_cache_t second;
   };
-  void *external_cache_create () const
+  خالی *external_cache_create () ثابت
   {
-    external_cache_t *cache = (external_cache_t *) hb_malloc (sizeof (external_cache_t));
-    if (likely (cache))
+    external_cache_t *cache = (external_cache_t *) hb_malloc (حجم (external_cache_t));
+    اگر (likely (cache))
     {
       cache->coverage.clear ();
-      cache->first.clear ();
+      cache->پہلا.clear ();
       cache->second.clear ();
     }
-    return cache;
+    واپس cache;
   }
 
-  bool apply (hb_ot_apply_context_t *c, void *external_cache) const
+  منطقی apply (hb_ot_apply_context_t *c, خالی *external_cache) ثابت
   {
-    TRACE_APPLY (this);
+    TRACE_APPLY (یہ);
 
-    hb_buffer_t *buffer = c->buffer;
+    hb_بفر_t *بفر = c->بفر;
 
-#ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
+#اگر_غیر_تعریف_شدہ HB_NO_OT_LAYOUT_LOOKUP_CACHE
     external_cache_t *cache = (external_cache_t *) external_cache;
-    unsigned int index = (this+coverage).get_coverage  (buffer->cur().codepoint, cache ? &cache->coverage : nullptr);
-#else
-    unsigned int index = (this+coverage).get_coverage  (buffer->cur().codepoint);
-#endif
-    if (index == NOT_COVERED) return_trace (false);
+    غیرعلامتی صحیح اشاریہ_2 = (یہ+coverage).get_coverage  (بفر->cur().codepoint, cache ? &cache->coverage : خالی_اشاریہ);
+#ورنہ
+    غیرعلامتی صحیح اشاریہ_2 = (یہ+coverage).get_coverage  (بفر->cur().codepoint);
+#اگر_ختم
+    اگر (اشاریہ_2 == NOT_COVERED) return_trace (جھوٹ);
 
-    auto &skippy_iter = c->iter_input;
-    skippy_iter.reset_fast (buffer->idx);
-    unsigned unsafe_to;
-    if (unlikely (!skippy_iter.next (&unsafe_to)))
+    خودکار &skippy_iter = c->iter_داخلہ;
+    skippy_iter.reset_fast (بفر->idx);
+    غیرعلامتی unsafe_مقصد;
+    اگر (unlikely (!skippy_iter.next (&unsafe_مقصد)))
     {
-      buffer->unsafe_to_concat (buffer->idx, unsafe_to);
-      return_trace (false);
+      بفر->unsafe_مقصد_concat (بفر->idx, unsafe_مقصد);
+      return_trace (جھوٹ);
     }
 
-#ifndef HB_NO_OT_LAYOUT_LOOKUP_CACHE
-    unsigned int klass1 = (this+classDef1).get_class (buffer->cur().codepoint, cache ? &cache->first : nullptr);
-    unsigned int klass2 = (this+classDef2).get_class (buffer->info[skippy_iter.idx].codepoint, cache ? &cache->second : nullptr);
-#else
-    unsigned int klass1 = (this+classDef1).get_class (buffer->cur().codepoint);
-    unsigned int klass2 = (this+classDef2).get_class (buffer->info[skippy_iter.idx].codepoint);
-#endif
-    if (unlikely (klass1 >= class1Count || klass2 >= class2Count))
+#اگر_غیر_تعریف_شدہ HB_NO_OT_LAYOUT_LOOKUP_CACHE
+    غیرعلامتی صحیح klass1 = (یہ+classDef1).get_class (بفر->cur().codepoint, cache ? &cache->پہلا : خالی_اشاریہ);
+    غیرعلامتی صحیح klass2 = (یہ+classDef2).get_class (بفر->info[skippy_iter.idx].codepoint, cache ? &cache->second : خالی_اشاریہ);
+#ورنہ
+    غیرعلامتی صحیح klass1 = (یہ+classDef1).get_class (بفر->cur().codepoint);
+    غیرعلامتی صحیح klass2 = (یہ+classDef2).get_class (بفر->info[skippy_iter.idx].codepoint);
+#اگر_ختم
+    اگر (unlikely (klass1 >= class1_گنتی_2 || klass2 >= class2_گنتی_2))
     {
-      buffer->unsafe_to_concat (buffer->idx, skippy_iter.idx + 1);
-      return_trace (false);
+      بفر->unsafe_مقصد_concat (بفر->idx, skippy_iter.idx + 1);
+      return_trace (جھوٹ);
     }
 
-    unsigned int len1 = valueFormat1.get_len ();
-    unsigned int len2 = valueFormat2.get_len ();
-    unsigned int record_len = len1 + len2;
+    غیرعلامتی صحیح len1 = قدر_Format1.get_len ();
+    غیرعلامتی صحیح len2 = قدر_Format2.get_len ();
+    غیرعلامتی صحیح ریکارڈ_len = len1 + len2;
 
-    const Value *v = &values[record_len * (klass1 * class2Count + klass2)];
+    ثابت قدر *v = &values[ریکارڈ_len * (klass1 * class2_گنتی_2 + klass2)];
 
-    bool applied_first = false, applied_second = false;
+    منطقی applied_پہلا = جھوٹ, applied_دوسرا = جھوٹ;
 
 
     /* Isolate simple kerning and apply it half to each side.
@@ -277,155 +277,155 @@ struct PairPosFormat2_4 : ValueBase
      * https://github.com/harfbuzz/harfbuzz/issues/3408
      * https://github.com/harfbuzz/harfbuzz/pull/3235#issuecomment-1029814978
      */
-#ifndef HB_SPLIT_KERN
-    if (false)
-#endif
+#اگر_غیر_تعریف_شدہ HB_بانٹو_KERN
+    اگر (جھوٹ)
+#اگر_ختم
     {
-      if (!len2)
+      اگر (!len2)
       {
-        const hb_direction_t dir = buffer->props.direction;
-        const bool horizontal = HB_DIRECTION_IS_HORIZONTAL (dir);
-        const bool backward = HB_DIRECTION_IS_BACKWARD (dir);
-        unsigned mask = horizontal ? ValueFormat::xAdvance : ValueFormat::yAdvance;
-        if (backward)
-          mask |= mask >> 2; /* Add eg. xPlacement in RTL. */
+        ثابت hb_direction_t dir = بفر->props.direction;
+        ثابت منطقی horizontal = HB_DIRECTION_IS_HORIZONTAL (dir);
+        ثابت منطقی backward = HB_DIRECTION_IS_BACKWARD (dir);
+        غیرعلامتی نقاب = horizontal ? قدر_Format::xAdvance : قدر_Format::yAdvance;
+        اگر (backward)
+          نقاب |= نقاب >> 2; /* Add eg. xPlacement in RTL. */
         /* Add Devices. */
-        mask |= mask << 4;
+        نقاب |= نقاب << 4;
 
-        if (valueFormat1 & ~mask)
-          goto bail;
+        اگر (قدر_Format1 & ~نقاب)
+          جاؤ bail;
 
         /* Is simple kern. Apply value on an empty position slot,
          * then split it between sides. */
 
         hb_glyph_position_t pos{};
-        if (valueFormat1.apply_value (c, this, v, pos))
+        اگر (قدر_Format1.apply_قدر (c, یہ, v, pos))
         {
           hb_position_t *src  = &pos.x_advance;
-          hb_position_t *dst1 = &buffer->cur_pos().x_advance;
-          hb_position_t *dst2 = &buffer->pos[skippy_iter.idx].x_advance;
-          unsigned i = horizontal ? 0 : 1;
+          hb_position_t *dst1 = &بفر->cur_pos().x_advance;
+          hb_position_t *dst2 = &بفر->pos[skippy_iter.idx].x_advance;
+          غیرعلامتی i = horizontal ? 0 : 1;
 
           hb_position_t kern  = src[i];
           hb_position_t kern1 = kern >> 1;
           hb_position_t kern2 = kern - kern1;
 
-          if (!backward)
+          اگر (!backward)
           {
-            dst1[i] = hb_saturate_add (dst1[i], kern1);
-            dst2[i] = hb_saturate_add (dst2[i], kern2);
-            dst2[i + 2] = hb_saturate_add (dst2[i + 2], kern2);
+            dst1[i] = hb_saturate_جوڑو (dst1[i], kern1);
+            dst2[i] = hb_saturate_جوڑو (dst2[i], kern2);
+            dst2[i + 2] = hb_saturate_جوڑو (dst2[i + 2], kern2);
           }
-          else
+          ورنہ
           {
-            dst1[i] = hb_saturate_add (dst1[i], kern1);
-            dst1[i + 2] = hb_clamp_to<hb_position_t> ((int64_t) dst1[i + 2] + src[i + 2] - kern2);
-            dst2[i] = hb_saturate_add (dst2[i], kern2);
+            dst1[i] = hb_saturate_جوڑو (dst1[i], kern1);
+            dst1[i + 2] = hb_clamp_مقصد<hb_position_t> ((int64_t) dst1[i + 2] + src[i + 2] - kern2);
+            dst2[i] = hb_saturate_جوڑو (dst2[i], kern2);
           }
 
-          applied_first = applied_second = kern != 0;
-          goto success;
+          applied_پہلا = applied_دوسرا = kern != 0;
+          جاؤ success;
         }
-        goto boring;
+        جاؤ boring;
       }
     }
     bail:
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    اگر (HB_بفر_پیغام_مزید && c->بفر->messaging ())
     {
-      c->buffer->message (c->font,
+      c->بفر->پیغام (c->font,
 			  "try kerning glyphs at %u,%u",
-			  c->buffer->idx, skippy_iter.idx);
+			  c->بفر->idx, skippy_iter.idx);
     }
 
-    applied_first = len1 && valueFormat1.apply_value (c, this, v, buffer->cur_pos());
-    applied_second = len2 && valueFormat2.apply_value (c, this, v + len1, buffer->pos[skippy_iter.idx]);
+    applied_پہلا = len1 && قدر_Format1.apply_قدر (c, یہ, v, بفر->cur_pos());
+    applied_دوسرا = len2 && قدر_Format2.apply_قدر (c, یہ, v + len1, بفر->pos[skippy_iter.idx]);
 
-    if (applied_first || applied_second)
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    اگر (applied_پہلا || applied_دوسرا)
+      اگر (HB_بفر_پیغام_مزید && c->بفر->messaging ())
       {
-	c->buffer->message (c->font,
+	c->بفر->پیغام (c->font,
 			    "kerned glyphs at %u,%u",
-			    c->buffer->idx, skippy_iter.idx);
+			    c->بفر->idx, skippy_iter.idx);
       }
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    اگر (HB_بفر_پیغام_مزید && c->بفر->messaging ())
     {
-      c->buffer->message (c->font,
+      c->بفر->پیغام (c->font,
 			  "tried kerning glyphs at %u,%u",
-			  c->buffer->idx, skippy_iter.idx);
+			  c->بفر->idx, skippy_iter.idx);
     }
 
     success:
-    if (applied_first || applied_second)
-      buffer->unsafe_to_break (buffer->idx, skippy_iter.idx + 1);
-    else
+    اگر (applied_پہلا || applied_دوسرا)
+      بفر->unsafe_مقصد_break (بفر->idx, skippy_iter.idx + 1);
+    ورنہ
     boring:
-      buffer->unsafe_to_concat (buffer->idx, skippy_iter.idx + 1);
+      بفر->unsafe_مقصد_concat (بفر->idx, skippy_iter.idx + 1);
 
-    if (len2)
+    اگر (len2)
     {
       skippy_iter.idx++;
       // https://github.com/harfbuzz/harfbuzz/issues/3824
       // https://github.com/harfbuzz/harfbuzz/issues/3888#issuecomment-1326781116
-      buffer->unsafe_to_break (buffer->idx, skippy_iter.idx + 1);
+      بفر->unsafe_مقصد_break (بفر->idx, skippy_iter.idx + 1);
     }
 
-    buffer->idx = skippy_iter.idx;
+    بفر->idx = skippy_iter.idx;
 
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
-    out->format = format;
+    TRACE_SUBSET (یہ);
+    خودکار *برآمد = c->serializer->آغاز_embed (*یہ);
+    اگر (unlikely (!c->serializer->extend_min (برآمد))) return_trace (جھوٹ);
+    برآمد->format = format;
 
     hb_map_t klass1_map;
-    out->classDef1.serialize_subset (c, classDef1, this, &klass1_map, true, true, &(this + coverage));
-    out->class1Count = klass1_map.get_population ();
+    برآمد->classDef1.serialize_subset (c, classDef1, یہ, &klass1_map, سچ, سچ, &(یہ + coverage));
+    برآمد->class1_گنتی_2 = klass1_map.get_population ();
 
     hb_map_t klass2_map;
-    out->classDef2.serialize_subset (c, classDef2, this, &klass2_map, true, false);
-    out->class2Count = klass2_map.get_population ();
+    برآمد->classDef2.serialize_subset (c, classDef2, یہ, &klass2_map, سچ, جھوٹ);
+    برآمد->class2_گنتی_2 = klass2_map.get_population ();
 
-    pair_pos_class_values_t class_values {this, values, valueFormat1, valueFormat2,
-                                         class1Count, class2Count};
+    pair_pos_class_اقدار_t class_اقدار {یہ, values, قدر_Format1, قدر_Format2,
+                                         class1_گنتی_2, class2_گنتی_2};
 
-    hb_pair_t<unsigned, unsigned> newFormats = hb_pair (valueFormat1, valueFormat2);
+    hb_pair_t<غیرعلامتی, غیرعلامتی> newFormats = hb_pair (قدر_Format1, قدر_Format2);
 
-    if (c->plan->normalized_coords)
+    اگر (c->plan->normalized_coords)
     {
       /* in case of full instancing, all var device flags will be dropped so no
        * need to strip hints here */
-      newFormats = class_values.compute_effective_value_formats (klass1_map, klass2_map, false, false, &c->plan->layout_variation_idx_delta_map);
+      newFormats = class_اقدار.compute_effective_قدر_formats (klass1_map, klass2_map, جھوٹ, جھوٹ, &c->plan->layout_variation_idx_delta_map);
     }
     /* do not strip hints for VF */
-    else if (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
+    ورنہ اگر (c->plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
     {
-      hb_blob_t* blob = hb_face_reference_table (c->plan->source, HB_TAG ('f','v','a','r'));
-      bool has_fvar = (blob != hb_blob_get_empty ());
+      hb_blob_t* blob = hb_face_reference_جدول (c->plan->ماخذ, HB_لیبل ('f','v','a','r'));
+      منطقی has_fvar = (blob != hb_blob_get_خالی_خانے ());
       hb_blob_destroy (blob);
 
-      bool strip = !has_fvar;
+      منطقی strip = !has_fvar;
       /* special case: strip hints when a VF has no GDEF varstore after
        * subsetting*/
-      if (has_fvar && !c->plan->has_gdef_varstore)
-        strip = true;
-      newFormats = class_values.compute_effective_value_formats (klass1_map, klass2_map, strip, true);
+      اگر (has_fvar && !c->plan->has_gdef_varstore)
+        strip = سچ;
+      newFormats = class_اقدار.compute_effective_قدر_formats (klass1_map, klass2_map, strip, سچ);
     }
 
-    out->valueFormat1 = newFormats.first;
-    out->valueFormat2 = newFormats.second;
+    برآمد->قدر_Format1 = newFormats.پہلا;
+    برآمد->قدر_Format2 = newFormats.second;
 
-    if (!class_values.serialize (c, klass1_map, klass2_map,
-                                 out->valueFormat1, out->valueFormat2))
-      return_trace (false);
+    اگر (!class_اقدار.serialize (c, klass1_map, klass2_map,
+                                 برآمد->قدر_Format1, برآمد->قدر_Format2))
+      return_trace (جھوٹ);
 
-    bool ret = out->coverage.serialize_subset(c, coverage, this);
-    return_trace (out->class1Count && out->class2Count && ret);
+    منطقی ret = برآمد->coverage.serialize_subset(c, coverage, یہ);
+    return_trace (برآمد->class1_گنتی_2 && برآمد->class2_گنتی_2 && ret);
   }
 };
 
@@ -433,4 +433,4 @@ struct PairPosFormat2_4 : ValueBase
 }
 }
 
-#endif  // OT_LAYOUT_GPOS_PAIRPOSFORMAT2_HH
+#اگر_ختم  // OT_LAYOUT_GPOS_PAIRPOSFORMAT2_HH

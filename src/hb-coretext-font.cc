@@ -24,482 +24,482 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#شامل "hb.hh"
 
-#ifdef HAVE_CORETEXT
+#اگر_تعریف_شدہ HAVE_CORETEXT
 
-#include "hb-coretext.hh"
-#include "hb-aat-layout-trak-table.hh"
+#شامل "hb-coretext.hh"
+#شامل "hb-aat-layout-trak-table.hh"
 
-#include "hb-draw.hh"
-#include "hb-font.hh"
-#include "hb-machinery.hh"
+#شامل "hb-draw.hh"
+#شامل "hb-font.hh"
+#شامل "hb-machinery.hh"
 
-#if (defined(__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__) && __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ < 1080) \
+#اگر (defined(__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__) && __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ < 1080) \
     || (defined(__ENVIRONMENT_IPHONE_OS_VERSION_MIN_REQUIRED__) && __ENVIRONMENT_IPHONE_OS_VERSION_MIN_REQUIRED__ < 60000) \
     || (defined(__ENVIRONMENT_TV_OS_VERSION_MIN_REQUIRED__) && __ENVIRONMENT_TV_OS_VERSION_MIN_REQUIRED__ < 90000)
 #  define kCTFontOrientationDefault kCTFontDefaultOrientation
 #  define kCTFontOrientationHorizontal kCTFontHorizontalOrientation
 #  define kCTFontOrientationVertical kCTFontVerticalOrientation
-#endif
+#اگر_ختم
 
-#define MAX_GLYPHS 256u
+#تعریف_کرو MAX_GLYPHS 256u
 
-static hb_bool_t
+ساکن hb_bool_t
 hb_coretext_get_nominal_glyph (hb_font_t *font,
-			       void *font_data HB_UNUSED,
+			       خالی *font_ڈیٹا HB_غیر_مستعمل,
 			       hb_codepoint_t unicode,
 			       hb_codepoint_t *glyph,
-			       void *user_data HB_UNUSED)
+			       خالی *user_ڈیٹا HB_غیر_مستعمل)
 {
-  CTFontRef ct_font = (CTFontRef) (const void *) font->data.coretext;
+  CTFontRef ct_font = (CTFontRef) (ثابت خالی *) font->ڈیٹا.coretext;
 
   UniChar ch[2];
   CGGlyph cg_glyph[2];
-  unsigned count = 0;
+  غیرعلامتی گنتی = 0;
 
-  if (unicode <= 0xFFFF)
+  اگر (unicode <= 0xFFFF)
   {
-    ch[count++] = unicode;
+    ch[گنتی++] = unicode;
   }
-  else if (unicode <= 0x10FFFF)
+  ورنہ اگر (unicode <= 0x10FFFF)
   {
-    ch[count++] = (unicode >> 10) + 0xD7C0;
-    ch[count++] = (unicode & 0x3FF) + 0xDC00;
+    ch[گنتی++] = (unicode >> 10) + 0xD7C0;
+    ch[گنتی++] = (unicode & 0x3FF) + 0xDC00;
   }
-  else
-    ch[count++] = 0xFFFD;
+  ورنہ
+    ch[گنتی++] = 0xFFFD;
 
-  if (CTFontGetGlyphsForCharacters (ct_font, ch, cg_glyph, count))
+  اگر (CTFontGetGlyphsForCharacters (ct_font, ch, cg_glyph, گنتی))
   {
     *glyph = cg_glyph[0];
-    return true;
+    واپس سچ;
   }
-  return false;
+  واپس جھوٹ;
 }
 
-static unsigned int
+ساکن غیرعلامتی صحیح
 hb_coretext_get_nominal_glyphs (hb_font_t *font,
-				void *font_data,
-				unsigned int count,
-				const hb_codepoint_t *first_unicode,
-				unsigned int unicode_stride,
-				hb_codepoint_t *first_glyph,
-				unsigned int glyph_stride,
-				void *user_data HB_UNUSED)
+				خالی *font_ڈیٹا,
+				غیرعلامتی صحیح گنتی,
+				ثابت hb_codepoint_t *پہلا_unicode,
+				غیرعلامتی صحیح unicode_stride,
+				hb_codepoint_t *پہلا_glyph,
+				غیرعلامتی صحیح glyph_stride,
+				خالی *user_ڈیٹا HB_غیر_مستعمل)
 {
-  CTFontRef ct_font = (CTFontRef) (const void *) font->data.coretext;
+  CTFontRef ct_font = (CTFontRef) (ثابت خالی *) font->ڈیٹا.coretext;
 
   // If any non-BMP codepoint is requested, use the slow path.
-  bool slow_path = false;
-  auto *unicode = first_unicode;
-  for (unsigned i = 0; i < count; i++)
+  منطقی slow_راستہ = جھوٹ;
+  خودکار *unicode = پہلا_unicode;
+  برائے (غیرعلامتی i = 0; i < گنتی; i++)
   {
-    if (*unicode > 0xFFFF)
+    اگر (*unicode > 0xFFFF)
     {
-      slow_path = true;
-      break;
+      slow_راستہ = سچ;
+      توڑو;
     }
-    unicode = &StructAtOffset<const hb_codepoint_t> (unicode, unicode_stride);
+    unicode = &Struct_At_انحراف<ثابت hb_codepoint_t> (unicode, unicode_stride);
   }
 
-  if (unlikely (slow_path))
+  اگر (unlikely (slow_راستہ))
   {
-    for (unsigned i = 0; i < count; i++)
+    برائے (غیرعلامتی i = 0; i < گنتی; i++)
     {
-      if (!hb_coretext_get_nominal_glyph (font, font_data, *first_unicode, first_glyph, nullptr))
-	return i;
-      first_unicode = &StructAtOffset<const hb_codepoint_t> (first_unicode, unicode_stride);
-      first_glyph = &StructAtOffset<hb_codepoint_t> (first_glyph, glyph_stride);
+      اگر (!hb_coretext_get_nominal_glyph (font, font_ڈیٹا, *پہلا_unicode, پہلا_glyph, خالی_اشاریہ))
+	واپس i;
+      پہلا_unicode = &Struct_At_انحراف<ثابت hb_codepoint_t> (پہلا_unicode, unicode_stride);
+      پہلا_glyph = &Struct_At_انحراف<hb_codepoint_t> (پہلا_glyph, glyph_stride);
     }
-    return count;
+    واپس گنتی;
   }
 
   UniChar ch[MAX_GLYPHS];
   CGGlyph cg_glyph[MAX_GLYPHS];
-  for (unsigned i = 0; i < count; i += MAX_GLYPHS)
+  برائے (غیرعلامتی i = 0; i < گنتی; i += MAX_GLYPHS)
   {
-    unsigned c = (unsigned) hb_min ((int) MAX_GLYPHS, (int) count - (int) i);
-    for (unsigned j = 0; j < c; j++)
+    غیرعلامتی c = (غیرعلامتی) hb_min ((صحیح) MAX_GLYPHS, (صحیح) گنتی - (صحیح) i);
+    برائے (غیرعلامتی j = 0; j < c; j++)
     {
-      ch[j] = *first_unicode;
-      first_unicode = &StructAtOffset<const hb_codepoint_t> (first_unicode, unicode_stride);
+      ch[j] = *پہلا_unicode;
+      پہلا_unicode = &Struct_At_انحراف<ثابت hb_codepoint_t> (پہلا_unicode, unicode_stride);
     }
-    if (unlikely (!CTFontGetGlyphsForCharacters (ct_font, ch, cg_glyph, c)))
+    اگر (unlikely (!CTFontGetGlyphsForCharacters (ct_font, ch, cg_glyph, c)))
     {
       // Use slow path partially and return at first failure.
-      for (unsigned j = 0; j < c; j++)
+      برائے (غیرعلامتی j = 0; j < c; j++)
       {
-	if (!hb_coretext_get_nominal_glyph (font, font_data, ch[j], first_glyph, nullptr))
-	  return i + j;
-	first_glyph = &StructAtOffset<hb_codepoint_t> (first_glyph, glyph_stride);
+	اگر (!hb_coretext_get_nominal_glyph (font, font_ڈیٹا, ch[j], پہلا_glyph, خالی_اشاریہ))
+	  واپس i + j;
+	پہلا_glyph = &Struct_At_انحراف<hb_codepoint_t> (پہلا_glyph, glyph_stride);
       }
     }
-    for (unsigned j = 0; j < c; j++)
+    برائے (غیرعلامتی j = 0; j < c; j++)
     {
-      *first_glyph = cg_glyph[j];
-      first_glyph = &StructAtOffset<hb_codepoint_t> (first_glyph, glyph_stride);
+      *پہلا_glyph = cg_glyph[j];
+      پہلا_glyph = &Struct_At_انحراف<hb_codepoint_t> (پہلا_glyph, glyph_stride);
     }
   }
 
-  return count;
+  واپس گنتی;
 }
 
-static hb_bool_t
+ساکن hb_bool_t
 hb_coretext_get_variation_glyph (hb_font_t *font,
-				 void *font_data HB_UNUSED,
+				 خالی *font_ڈیٹا HB_غیر_مستعمل,
 				 hb_codepoint_t unicode,
 				 hb_codepoint_t variation_selector,
 				 hb_codepoint_t *glyph,
-				 void *user_data HB_UNUSED)
+				 خالی *user_ڈیٹا HB_غیر_مستعمل)
 {
-  CTFontRef ct_font = (CTFontRef) (const void *) font->data.coretext;
+  CTFontRef ct_font = (CTFontRef) (ثابت خالی *) font->ڈیٹا.coretext;
 
   UniChar ch[4];
   CGGlyph cg_glyph[4];
-  unsigned count = 0;
+  غیرعلامتی گنتی = 0;
 
   // Add Unicode, then variation selector. Ugly, but works.
   //
-  if (unicode <= 0xFFFF)
-    ch[count++] = unicode;
-  else if (unicode <= 0x10FFFF)
+  اگر (unicode <= 0xFFFF)
+    ch[گنتی++] = unicode;
+  ورنہ اگر (unicode <= 0x10FFFF)
   {
-    ch[count++] = (unicode >> 10) + 0xD7C0;
-    ch[count++] = (unicode & 0x3FF) + 0xDC00;
+    ch[گنتی++] = (unicode >> 10) + 0xD7C0;
+    ch[گنتی++] = (unicode & 0x3FF) + 0xDC00;
   }
-  else
-    ch[count++] = 0xFFFD;
+  ورنہ
+    ch[گنتی++] = 0xFFFD;
 
-  if (variation_selector <= 0xFFFF)
-    ch[count++] = variation_selector;
-  else if (variation_selector <= 0x10FFFF)
+  اگر (variation_selector <= 0xFFFF)
+    ch[گنتی++] = variation_selector;
+  ورنہ اگر (variation_selector <= 0x10FFFF)
   {
-    ch[count++] = (variation_selector >> 10) + 0xD7C0;
-    ch[count++] = (variation_selector & 0x3FF) + 0xDC00;
+    ch[گنتی++] = (variation_selector >> 10) + 0xD7C0;
+    ch[گنتی++] = (variation_selector & 0x3FF) + 0xDC00;
   }
-  else
-    ch[count++] = 0xFFFD;
+  ورنہ
+    ch[گنتی++] = 0xFFFD;
 
-  CTFontGetGlyphsForCharacters (ct_font, ch, cg_glyph, count);
+  CTFontGetGlyphsForCharacters (ct_font, ch, cg_glyph, گنتی);
 
   // All except for first should be zero if we succeeded
-  for (unsigned i = 1; i < count; i++)
-    if (cg_glyph[i])
-      return false;
+  برائے (غیرعلامتی i = 1; i < گنتی; i++)
+    اگر (cg_glyph[i])
+      واپس جھوٹ;
 
   // Humm. CoreText falls back to the default glyph if the variation selector
   // is not supported.  We cannot truly detect that case. So, in essence,
   // we are always returning true here...
 
   *glyph = cg_glyph[0];
-  return true;
+  واپس سچ;
 }
 
-static void
+ساکن خالی
 hb_coretext_get_glyph_h_advances (hb_font_t* font,
-				  void* font_data HB_UNUSED,
-				  unsigned count,
-				  const hb_codepoint_t *first_glyph,
-				  unsigned glyph_stride,
-				  hb_position_t *first_advance,
-				  unsigned advance_stride,
-				  void *user_data HB_UNUSED)
+				  خالی* font_ڈیٹا HB_غیر_مستعمل,
+				  غیرعلامتی گنتی,
+				  ثابت hb_codepoint_t *پہلا_glyph,
+				  غیرعلامتی glyph_stride,
+				  hb_position_t *پہلا_advance,
+				  غیرعلامتی advance_stride,
+				  خالی *user_ڈیٹا HB_غیر_مستعمل)
 {
-  CTFontRef ct_font = (CTFontRef) (const void *) font->data.coretext;
+  CTFontRef ct_font = (CTFontRef) (ثابت خالی *) font->ڈیٹا.coretext;
 
-  CGFloat ct_font_size = CTFontGetSize (ct_font);
-  CGFloat x_mult = (CGFloat) font->x_scale / ct_font_size;
-  hb_position_t tracking = font->face->table.trak->get_tracking (font, HB_DIRECTION_LTR, 0.f);
+  CGFloat ct_font_سائز = CTFont_Get_سائز (ct_font);
+  CGFloat x_mult = (CGFloat) font->x_scale / ct_font_سائز;
+  hb_position_t tracking = font->face->جدول.trak->get_tracking (font, HB_DIRECTION_LTR, 0.f);
 
   CGGlyph cg_glyph[MAX_GLYPHS];
   CGSize advances[MAX_GLYPHS];
-  for (unsigned i = 0; i < count; i += MAX_GLYPHS)
+  برائے (غیرعلامتی i = 0; i < گنتی; i += MAX_GLYPHS)
   {
-    unsigned c = (unsigned) hb_min ((int) MAX_GLYPHS, (int) count - (int) i);
-    for (unsigned j = 0; j < c; j++)
+    غیرعلامتی c = (غیرعلامتی) hb_min ((صحیح) MAX_GLYPHS, (صحیح) گنتی - (صحیح) i);
+    برائے (غیرعلامتی j = 0; j < c; j++)
     {
-      cg_glyph[j] = *first_glyph;
-      first_glyph = &StructAtOffset<const hb_codepoint_t> (first_glyph, glyph_stride);
+      cg_glyph[j] = *پہلا_glyph;
+      پہلا_glyph = &Struct_At_انحراف<ثابت hb_codepoint_t> (پہلا_glyph, glyph_stride);
     }
     CTFontGetAdvancesForGlyphs (ct_font, kCTFontOrientationHorizontal, cg_glyph, advances, c);
-    for (unsigned j = 0; j < c; j++)
+    برائے (غیرعلامتی j = 0; j < c; j++)
     {
-      *first_advance = hb_clamp_to<hb_position_t> (
-	  round (advances[j].width * x_mult) - (double) tracking);
-      first_advance = &StructAtOffset<hb_position_t> (first_advance, advance_stride);
+      *پہلا_advance = hb_clamp_مقصد<hb_position_t> (
+	  round (advances[j].چوڑائی * x_mult) - (دوہرا) tracking);
+      پہلا_advance = &Struct_At_انحراف<hb_position_t> (پہلا_advance, advance_stride);
     }
   }
 }
 
-#ifndef HB_NO_VERTICAL
-static void
+#اگر_غیر_تعریف_شدہ HB_NO_VERTICAL
+ساکن خالی
 hb_coretext_get_glyph_v_advances (hb_font_t* font,
-				  void* font_data HB_UNUSED,
-				  unsigned count,
-				  const hb_codepoint_t *first_glyph,
-				  unsigned glyph_stride,
-				  hb_position_t *first_advance,
-				  unsigned advance_stride,
-				  void *user_data HB_UNUSED)
+				  خالی* font_ڈیٹا HB_غیر_مستعمل,
+				  غیرعلامتی گنتی,
+				  ثابت hb_codepoint_t *پہلا_glyph,
+				  غیرعلامتی glyph_stride,
+				  hb_position_t *پہلا_advance,
+				  غیرعلامتی advance_stride,
+				  خالی *user_ڈیٹا HB_غیر_مستعمل)
 {
-  CTFontRef ct_font = (CTFontRef) (const void *) font->data.coretext;
+  CTFontRef ct_font = (CTFontRef) (ثابت خالی *) font->ڈیٹا.coretext;
 
-  CGFloat ct_font_size = CTFontGetSize (ct_font);
-  CGFloat y_mult = -(CGFloat) font->y_scale / ct_font_size;
-  hb_position_t tracking = font->face->table.trak->get_tracking (font, HB_DIRECTION_TTB, 0.f);
+  CGFloat ct_font_سائز = CTFont_Get_سائز (ct_font);
+  CGFloat y_mult = -(CGFloat) font->y_scale / ct_font_سائز;
+  hb_position_t tracking = font->face->جدول.trak->get_tracking (font, HB_DIRECTION_TTB, 0.f);
 
   CGGlyph cg_glyph[MAX_GLYPHS];
   CGSize advances[MAX_GLYPHS];
-  for (unsigned i = 0; i < count; i += MAX_GLYPHS)
+  برائے (غیرعلامتی i = 0; i < گنتی; i += MAX_GLYPHS)
   {
-    unsigned c = (unsigned) hb_min ((int) MAX_GLYPHS, (int) count - (int) i);
-    for (unsigned j = 0; j < c; j++)
+    غیرعلامتی c = (غیرعلامتی) hb_min ((صحیح) MAX_GLYPHS, (صحیح) گنتی - (صحیح) i);
+    برائے (غیرعلامتی j = 0; j < c; j++)
     {
-      cg_glyph[j] = *first_glyph;
-      first_glyph = &StructAtOffset<const hb_codepoint_t> (first_glyph, glyph_stride);
+      cg_glyph[j] = *پہلا_glyph;
+      پہلا_glyph = &Struct_At_انحراف<ثابت hb_codepoint_t> (پہلا_glyph, glyph_stride);
     }
     CTFontGetAdvancesForGlyphs (ct_font, kCTFontOrientationVertical, cg_glyph, advances, c);
-    for (unsigned j = 0; j < c; j++)
+    برائے (غیرعلامتی j = 0; j < c; j++)
     {
-      *first_advance = hb_clamp_to<hb_position_t> (
-	  round (advances[j].width * y_mult) - (double) tracking);
-      first_advance = &StructAtOffset<hb_position_t> (first_advance, advance_stride);
+      *پہلا_advance = hb_clamp_مقصد<hb_position_t> (
+	  round (advances[j].چوڑائی * y_mult) - (دوہرا) tracking);
+      پہلا_advance = &Struct_At_انحراف<hb_position_t> (پہلا_advance, advance_stride);
     }
   }
 }
 
-static hb_bool_t
+ساکن hb_bool_t
 hb_coretext_get_glyph_v_origin (hb_font_t *font,
-				void *font_data HB_UNUSED,
+				خالی *font_ڈیٹا HB_غیر_مستعمل,
 				hb_codepoint_t glyph,
 				hb_position_t *x,
 				hb_position_t *y,
-				void *user_data HB_UNUSED)
+				خالی *user_ڈیٹا HB_غیر_مستعمل)
 {
-  CTFontRef ct_font = (CTFontRef) (const void *) font->data.coretext;
+  CTFontRef ct_font = (CTFontRef) (ثابت خالی *) font->ڈیٹا.coretext;
 
-  CGFloat ct_font_size = CTFontGetSize (ct_font);
-  CGFloat x_mult = -(CGFloat) font->x_scale / ct_font_size;
-  CGFloat y_mult = -(CGFloat) font->y_scale / ct_font_size;
+  CGFloat ct_font_سائز = CTFont_Get_سائز (ct_font);
+  CGFloat x_mult = -(CGFloat) font->x_scale / ct_font_سائز;
+  CGFloat y_mult = -(CGFloat) font->y_scale / ct_font_سائز;
 
-  const CGGlyph glyphs = glyph;
+  ثابت CGGlyph glyphs = glyph;
   CGSize origin;
   CTFontGetVerticalTranslationsForGlyphs (ct_font, &glyphs, &origin, 1);
 
-  *x = hb_clamp_to<hb_position_t> (round (x_mult * origin.width));
-  *y = hb_clamp_to<hb_position_t> (round (y_mult * origin.height));
+  *x = hb_clamp_مقصد<hb_position_t> (round (x_mult * origin.چوڑائی));
+  *y = hb_clamp_مقصد<hb_position_t> (round (y_mult * origin.اونچائی));
 
-  return true;
+  واپس سچ;
 }
-#endif
+#اگر_ختم
 
-static hb_bool_t
+ساکن hb_bool_t
 hb_coretext_get_glyph_extents (hb_font_t *font,
-			       void *font_data HB_UNUSED,
+			       خالی *font_ڈیٹا HB_غیر_مستعمل,
 			       hb_codepoint_t glyph,
 			       hb_glyph_extents_t *extents,
-			       void *user_data HB_UNUSED)
+			       خالی *user_ڈیٹا HB_غیر_مستعمل)
 {
-  CTFontRef ct_font = (CTFontRef) (const void *) font->data.coretext;
+  CTFontRef ct_font = (CTFontRef) (ثابت خالی *) font->ڈیٹا.coretext;
 
-  CGFloat ct_font_size = CTFontGetSize (ct_font);
-  CGFloat x_mult = (CGFloat) font->x_scale / ct_font_size;
-  CGFloat y_mult = (CGFloat) font->y_scale / ct_font_size;
+  CGFloat ct_font_سائز = CTFont_Get_سائز (ct_font);
+  CGFloat x_mult = (CGFloat) font->x_scale / ct_font_سائز;
+  CGFloat y_mult = (CGFloat) font->y_scale / ct_font_سائز;
 
   CGGlyph glyphs[1] = { glyph };
   CGRect bounds = ::CTFontGetBoundingRectsForGlyphs(ct_font,
-						    kCTFontOrientationDefault, glyphs, NULL, 1);
+						    kCTFontOrientationDefault, glyphs, تہی, 1);
 
-  double y_bearing = round ((bounds.origin.y + bounds.size.height) * y_mult);
+  دوہرا y_bearing = round ((bounds.origin.y + bounds.سائز.اونچائی) * y_mult);
 
-  extents->x_bearing = hb_clamp_to<hb_position_t> (round (bounds.origin.x * x_mult));
-  extents->y_bearing = hb_clamp_to<hb_position_t> (y_bearing);
-  extents->width = hb_clamp_to<hb_position_t> (round (bounds.size.width * x_mult));
-  extents->height = hb_clamp_to<hb_position_t> (round (bounds.origin.y * y_mult) - y_bearing);
+  extents->x_bearing = hb_clamp_مقصد<hb_position_t> (round (bounds.origin.x * x_mult));
+  extents->y_bearing = hb_clamp_مقصد<hb_position_t> (y_bearing);
+  extents->چوڑائی = hb_clamp_مقصد<hb_position_t> (round (bounds.سائز.چوڑائی * x_mult));
+  extents->اونچائی = hb_clamp_مقصد<hb_position_t> (round (bounds.origin.y * y_mult) - y_bearing);
 
-  return true;
+  واپس سچ;
 }
 
-static hb_bool_t
+ساکن hb_bool_t
 hb_coretext_get_font_h_extents (hb_font_t *font,
-				void *font_data HB_UNUSED,
+				خالی *font_ڈیٹا HB_غیر_مستعمل,
 				hb_font_extents_t *metrics,
-				void *user_data HB_UNUSED)
+				خالی *user_ڈیٹا HB_غیر_مستعمل)
 {
-  CTFontRef ct_font = (CTFontRef) (const void *) font->data.coretext;
+  CTFontRef ct_font = (CTFontRef) (ثابت خالی *) font->ڈیٹا.coretext;
 
-  CGFloat ct_font_size = CTFontGetSize (ct_font);
-  CGFloat y_mult = (CGFloat) font->y_scale / ct_font_size;
+  CGFloat ct_font_سائز = CTFont_Get_سائز (ct_font);
+  CGFloat y_mult = (CGFloat) font->y_scale / ct_font_سائز;
 
-  metrics->ascender = hb_clamp_to<hb_position_t> (round (CTFontGetAscent (ct_font) * y_mult));
-  metrics->descender = hb_clamp_to<hb_position_t> (-round (CTFontGetDescent (ct_font) * y_mult));
-  metrics->line_gap = hb_clamp_to<hb_position_t> (round (CTFontGetLeading (ct_font) * y_mult));
+  metrics->ascender = hb_clamp_مقصد<hb_position_t> (round (CTFontGetAscent (ct_font) * y_mult));
+  metrics->descender = hb_clamp_مقصد<hb_position_t> (-round (CTFontGetDescent (ct_font) * y_mult));
+  metrics->سطر_gap = hb_clamp_مقصد<hb_position_t> (round (CTFontGetLeading (ct_font) * y_mult));
 
-  return true;
+  واپس سچ;
 }
 
-#ifndef HB_NO_DRAW
+#اگر_غیر_تعریف_شدہ HB_NO_DRAW
 
-static void
-ct_apply_func (void *info, const CGPathElement *element)
+ساکن خالی
+ct_apply_func (خالی *info, ثابت CGPathElement *element)
 {
   hb_draw_session_t *draws = (hb_draw_session_t *) info;
 
-  switch (element->type)
+  انتخاب (element->type)
   {
-  case kCGPathElementMoveToPoint:
-    draws->move_to (element->points[0].x, element->points[0].y);
-    break;
-  case kCGPathElementAddLineToPoint:
-    draws->line_to (element->points[0].x, element->points[0].y);
-    break;
-  case kCGPathElementAddQuadCurveToPoint:
-    draws->quadratic_to (element->points[0].x, element->points[0].y,
+  حالت k_CGPath_Element_Move_مقصد_نقطہ:
+    draws->move_مقصد (element->points[0].x, element->points[0].y);
+    توڑو;
+  حالت k_CGPath_Element_جوڑو_سطر_مقصد_نقطہ:
+    draws->سطر_مقصد (element->points[0].x, element->points[0].y);
+    توڑو;
+  حالت k_CGPath_Element_جوڑو_Quad_خم_مقصد_نقطہ:
+    draws->quadratic_مقصد (element->points[0].x, element->points[0].y,
 			 element->points[1].x, element->points[1].y);
-    break;
-  case kCGPathElementAddCurveToPoint:
-    draws->cubic_to (element->points[0].x, element->points[0].y,
+    توڑو;
+  حالت k_CGPath_Element_جوڑو_خم_مقصد_نقطہ:
+    draws->cubic_مقصد (element->points[0].x, element->points[0].y,
 		     element->points[1].x, element->points[1].y,
 		     element->points[2].x, element->points[2].y);
-    break;
-  case kCGPathElementCloseSubpath:
-    draws->close_path ();
-    break;
+    توڑو;
+  حالت kCGPathElementCloseSubpath:
+    draws->close_راستہ ();
+    توڑو;
   }
 }
 
-static hb_bool_t
+ساکن hb_bool_t
 hb_coretext_draw_glyph_or_fail (hb_font_t *font,
-				void *font_data HB_UNUSED,
+				خالی *font_ڈیٹا HB_غیر_مستعمل,
 				hb_codepoint_t glyph,
-				hb_draw_funcs_t *draw_funcs, void *draw_data,
-				void *user_data)
+				hb_draw_funcs_t *draw_funcs, خالی *draw_ڈیٹا,
+				خالی *user_ڈیٹا)
 {
-  CTFontRef ct_font = (CTFontRef) (const void *) font->data.coretext;
+  CTFontRef ct_font = (CTFontRef) (ثابت خالی *) font->ڈیٹا.coretext;
 
-  CGFloat ct_font_size = CTFontGetSize (ct_font);
-  CGFloat x_mult = (CGFloat) font->x_scale / ct_font_size;
-  CGFloat y_mult = (CGFloat) font->y_scale / ct_font_size;
+  CGFloat ct_font_سائز = CTFont_Get_سائز (ct_font);
+  CGFloat x_mult = (CGFloat) font->x_scale / ct_font_سائز;
+  CGFloat y_mult = (CGFloat) font->y_scale / ct_font_سائز;
 
-  CGAffineTransform transform = CGAffineTransformIdentity;
+  CGAffineTransform transform = CGAffine_Transform_شناختی_عنصر;
   transform = CGAffineTransformScale (transform, x_mult, y_mult);
 
-  hb_cf_ptr_t<CGPathRef> path (CTFontCreatePathForGlyph (ct_font, glyph, &transform));
-  if (!path)
-    return false;
+  hb_cf_ptr_t<CGPathRef> راستہ (CTFont_Create_راستہ_For_Glyph (ct_font, glyph, &transform));
+  اگر (!راستہ)
+    واپس جھوٹ;
 
-  hb_draw_session_t drawing {draw_funcs, draw_data};
+  hb_draw_session_t drawing {draw_funcs, draw_ڈیٹا};
 
-  CGPathApply (path, &drawing, ct_apply_func);
+  CGPathApply (راستہ, &drawing, ct_apply_func);
 
-  return true;
+  واپس سچ;
 }
-#endif
+#اگر_ختم
 
-static hb_bool_t
+ساکن hb_bool_t
 hb_coretext_get_glyph_name (hb_font_t *font,
-			    void *font_data HB_UNUSED,
+			    خالی *font_ڈیٹا HB_غیر_مستعمل,
 			    hb_codepoint_t glyph,
-			    char *name, unsigned int size,
-			    void *user_data HB_UNUSED)
+			    حرف *name, غیرعلامتی صحیح سائز,
+			    خالی *user_ڈیٹا HB_غیر_مستعمل)
 {
-  CGFontRef cg_font = (CGFontRef) (const void *) font->face->data.coretext;
+  CGFontRef cg_font = (CGFontRef) (ثابت خالی *) font->face->ڈیٹا.coretext;
 
   CGGlyph cg_glyph = glyph;
   hb_cf_ptr_t<CFStringRef> cf_name (CGFontCopyGlyphNameForGlyph (cg_font, cg_glyph));
-  if (!cf_name)
-    return false;
+  اگر (!cf_name)
+    واپس جھوٹ;
 
-  if (!size)
-    return true;
+  اگر (!سائز)
+    واپس سچ;
 
-  CFIndex len = CFStringGetLength (cf_name);
-  if (len > (CFIndex)size - 1)
-    len = (CFIndex)size - 1;
+  CFIndex len = CFString_Get_لمبائی (cf_name);
+  اگر (len > (CFIndex)سائز - 1)
+    len = (CFIndex)سائز - 1;
 
-  CFStringGetBytes (cf_name, CFRangeMake (0, len),
-		    kCFStringEncodingUTF8, 0, false,
-		    (UInt8 *) name, size, &len);
+  CFString_Get_بائٹیں (cf_name, CFRangeMake (0, len),
+		    kCFStringEncodingUTF8, 0, جھوٹ,
+		    (UInt8 *) name, سائز, &len);
 
   name[len] = '\0';
 
-  return true;
+  واپس سچ;
 }
 
-static hb_bool_t
+ساکن hb_bool_t
 hb_coretext_get_glyph_from_name (hb_font_t *font,
-				 void *font_data HB_UNUSED,
-				 const char *name, int len,
+				 خالی *font_ڈیٹا HB_غیر_مستعمل,
+				 ثابت حرف *name, صحیح len,
 				 hb_codepoint_t *glyph,
-				 void *user_data HB_UNUSED)
+				 خالی *user_ڈیٹا HB_غیر_مستعمل)
 {
-  CTFontRef ct_font = (CTFontRef) (const void *) font->data.coretext;
+  CTFontRef ct_font = (CTFontRef) (ثابت خالی *) font->ڈیٹا.coretext;
 
-  if (len == -1)
-    len = strlen (name);
+  اگر (len == -1)
+    len = لڑی_لمبائی (name);
 
-  hb_cf_ptr_t<CFStringRef> cf_name (CFStringCreateWithBytes (kCFAllocatorDefault,
-							     (const UInt8 *) name, len,
-							     kCFStringEncodingUTF8, false));
+  hb_cf_ptr_t<CFStringRef> cf_name (CFString_Create_With_بائٹیں (kCFAllocatorDefault,
+							     (ثابت UInt8 *) name, len,
+							     kCFStringEncodingUTF8, جھوٹ));
   CGGlyph cg_glyph = CTFontGetGlyphWithName (ct_font, cf_name);
   *glyph = cg_glyph;
 
   // TODO Return true for .notdef; hb-ft does that.
 
-  return cg_glyph != 0;
+  واپس cg_glyph != 0;
 }
 
 
-static inline void free_static_coretext_funcs ();
+ساکن اندرونی خالی free_static_coretext_funcs ();
 
-static struct hb_coretext_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t<hb_coretext_font_funcs_lazy_loader_t>
+ساکن ساخت hb_coretext_font_funcs_lazy_loader_t : hb_font_funcs_lazy_loader_t<hb_coretext_font_funcs_lazy_loader_t>
 {
-  static hb_font_funcs_t *create ()
+  ساکن hb_font_funcs_t *create ()
   {
     hb_font_funcs_t *funcs = hb_font_funcs_create ();
 
-    hb_font_funcs_set_nominal_glyph_func (funcs, hb_coretext_get_nominal_glyph, nullptr, nullptr);
-    hb_font_funcs_set_nominal_glyphs_func (funcs, hb_coretext_get_nominal_glyphs, nullptr, nullptr);
-    hb_font_funcs_set_variation_glyph_func (funcs, hb_coretext_get_variation_glyph, nullptr, nullptr);
+    hb_font_funcs_سیٹ_nominal_glyph_func (funcs, hb_coretext_get_nominal_glyph, خالی_اشاریہ, خالی_اشاریہ);
+    hb_font_funcs_سیٹ_nominal_glyphs_func (funcs, hb_coretext_get_nominal_glyphs, خالی_اشاریہ, خالی_اشاریہ);
+    hb_font_funcs_سیٹ_variation_glyph_func (funcs, hb_coretext_get_variation_glyph, خالی_اشاریہ, خالی_اشاریہ);
 
-    hb_font_funcs_set_font_h_extents_func (funcs, hb_coretext_get_font_h_extents, nullptr, nullptr);
-    hb_font_funcs_set_glyph_h_advances_func (funcs, hb_coretext_get_glyph_h_advances, nullptr, nullptr);
+    hb_font_funcs_سیٹ_font_h_extents_func (funcs, hb_coretext_get_font_h_extents, خالی_اشاریہ, خالی_اشاریہ);
+    hb_font_funcs_سیٹ_glyph_h_advances_func (funcs, hb_coretext_get_glyph_h_advances, خالی_اشاریہ, خالی_اشاریہ);
 
-#ifndef HB_NO_VERTICAL
-    hb_font_funcs_set_glyph_v_advances_func (funcs, hb_coretext_get_glyph_v_advances, nullptr, nullptr);
-    hb_font_funcs_set_glyph_v_origin_func (funcs, hb_coretext_get_glyph_v_origin, nullptr, nullptr);
-#endif
+#اگر_غیر_تعریف_شدہ HB_NO_VERTICAL
+    hb_font_funcs_سیٹ_glyph_v_advances_func (funcs, hb_coretext_get_glyph_v_advances, خالی_اشاریہ, خالی_اشاریہ);
+    hb_font_funcs_سیٹ_glyph_v_origin_func (funcs, hb_coretext_get_glyph_v_origin, خالی_اشاریہ, خالی_اشاریہ);
+#اگر_ختم
 
-#ifndef HB_NO_DRAW
-    hb_font_funcs_set_draw_glyph_or_fail_func (funcs, hb_coretext_draw_glyph_or_fail, nullptr, nullptr);
-#endif
+#اگر_غیر_تعریف_شدہ HB_NO_DRAW
+    hb_font_funcs_سیٹ_draw_glyph_or_fail_func (funcs, hb_coretext_draw_glyph_or_fail, خالی_اشاریہ, خالی_اشاریہ);
+#اگر_ختم
 
-    hb_font_funcs_set_glyph_extents_func (funcs, hb_coretext_get_glyph_extents, nullptr, nullptr);
+    hb_font_funcs_سیٹ_glyph_extents_func (funcs, hb_coretext_get_glyph_extents, خالی_اشاریہ, خالی_اشاریہ);
 
-#ifndef HB_NO_OT_FONT_GLYPH_NAMES
-    hb_font_funcs_set_glyph_name_func (funcs, hb_coretext_get_glyph_name, nullptr, nullptr);
-    hb_font_funcs_set_glyph_from_name_func (funcs, hb_coretext_get_glyph_from_name, nullptr, nullptr);
-#endif
+#اگر_غیر_تعریف_شدہ HB_NO_OT_FONT_GLYPH_نام
+    hb_font_funcs_سیٹ_glyph_name_func (funcs, hb_coretext_get_glyph_name, خالی_اشاریہ, خالی_اشاریہ);
+    hb_font_funcs_سیٹ_glyph_from_name_func (funcs, hb_coretext_get_glyph_from_name, خالی_اشاریہ, خالی_اشاریہ);
+#اگر_ختم
 
     hb_font_funcs_make_immutable (funcs);
 
     hb_atexit (free_static_coretext_funcs);
 
-    return funcs;
+    واپس funcs;
   }
 } static_coretext_funcs;
 
-static inline
-void free_static_coretext_funcs ()
+ساکن اندرونی
+خالی free_static_coretext_funcs ()
 {
   static_coretext_funcs.free_instance ();
 }
 
-static hb_font_funcs_t *
+ساکن hb_font_funcs_t *
 _hb_coretext_get_font_funcs ()
 {
-  return static_coretext_funcs.get_unconst ();
+  واپس static_coretext_funcs.get_unconst ();
 }
 
 
@@ -521,23 +521,23 @@ _hb_coretext_get_font_funcs ()
  *
  * Since: 10.1.0
  **/
-void
-hb_coretext_font_set_funcs (hb_font_t *font)
+خالی
+hb_coretext_font_سیٹ_funcs (hb_font_t *font)
 {
   CTFontRef ct_font = hb_coretext_font_get_ct_font (font);
-  if (unlikely (!ct_font))
+  اگر (unlikely (!ct_font))
   {
-    hb_font_set_funcs (font,
-		       hb_font_funcs_get_empty (),
-		       nullptr, nullptr);
-    return;
+    hb_font_سیٹ_funcs (font,
+		       hb_font_funcs_get_خالی_خانے (),
+		       خالی_اشاریہ, خالی_اشاریہ);
+    واپس;
   }
 
-  hb_font_set_funcs (font,
+  hb_font_سیٹ_funcs (font,
 		     _hb_coretext_get_font_funcs (),
-		     nullptr, nullptr);
+		     خالی_اشاریہ, خالی_اشاریہ);
 }
 
-#undef MAX_GLYPHS
+#تعریف_منسوخ MAX_GLYPHS
 
-#endif
+#اگر_ختم

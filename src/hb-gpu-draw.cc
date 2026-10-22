@@ -24,19 +24,19 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#شامل "hb.hh"
 
-#include "hb-gpu.h"
-#include "hb-gpu-draw.hh"
-#include "hb-gpu-cu2qu.hh"
-#include "hb-machinery.hh"
+#شامل "hb-gpu.h"
+#شامل "hb-gpu-draw.hh"
+#شامل "hb-gpu-cu2qu.hh"
+#شامل "hb-machinery.hh"
 
-#include <cmath>
+#شامل <cmath>
 
 /* ---- Accumulator ---- */
 
-static void
-acc_update_extents (hb_gpu_draw_t *g, double x, double y)
+ساکن خالی
+acc_update_extents (hb_gpu_draw_t *g, دوہرا x, دوہرا y)
 {
   g->ext_min_x = hb_min (g->ext_min_x, x);
   g->ext_min_y = hb_min (g->ext_min_y, y);
@@ -44,31 +44,31 @@ acc_update_extents (hb_gpu_draw_t *g, double x, double y)
   g->ext_max_y = hb_max (g->ext_max_y, y);
 }
 
-static void
+ساکن خالی
 acc_emit (hb_gpu_draw_t *g,
-	  bool contour_start,
-	  double p1x, double p1y,
-	  double p2x, double p2y,
-	  double p3x, double p3y)
+	  منطقی contour_آغاز,
+	  دوہرا p1x, دوہرا p1y,
+	  دوہرا p2x, دوہرا p2y,
+	  دوہرا p3x, دوہرا p3y)
 {
-  int64_t *budget = g->get_budget_remaining ();
-  if (unlikely (!hb_budget_spend (*budget, HB_BUDGET_1)))
-    return;
+  int64_t *budget = g->get_budget_بقایا ();
+  اگر (unlikely (!hb_budget_spend (*budget, HB_BUDGET_1)))
+    واپس;
 
-  if (unlikely (g->num_curves >= HB_GPU_DRAW_MAX_CURVES))
+  اگر (unlikely (g->عدد_curves >= HB_GPU_DRAW_MAX_CURVES))
   {
-    g->success = false;
-    return;
+    g->success = جھوٹ;
+    واپس;
   }
 
-  hb_gpu_curve_t c = {p1x, p1y, p2x, p2y, p3x, p3y, contour_start};
-  if (unlikely (!g->curves.push_or_fail (c)))
+  hb_gpu_خم_t c = {p1x, p1y, p2x, p2y, p3x, p3y, contour_آغاز};
+  اگر (unlikely (!g->curves.ڈالو_or_fail (c)))
   {
-    g->success = false;
-    return;
+    g->success = جھوٹ;
+    واپس;
   }
 
-  g->num_curves++;
+  g->عدد_curves++;
   g->current_x = p3x;
   g->current_y = p3y;
 
@@ -77,99 +77,99 @@ acc_emit (hb_gpu_draw_t *g,
   acc_update_extents (g, p3x, p3y);
 }
 
-static void
+ساکن خالی
 acc_emit_conic (hb_gpu_draw_t *g,
-		double cx, double cy,
-		double x, double y)
+		دوہرا cx, دوہرا cy,
+		دوہرا x, دوہرا y)
 {
-  if (g->current_x == x && g->current_y == y)
-    return;
+  اگر (g->current_x == x && g->current_y == y)
+    واپس;
 
-  bool contour_start = g->need_moveto;
-  if (g->need_moveto) {
-    g->start_x = g->current_x;
-    g->start_y = g->current_y;
-    g->need_moveto = false;
+  منطقی contour_آغاز = g->need_moveto;
+  اگر (g->need_moveto) {
+    g->آغاز_x = g->current_x;
+    g->آغاز_y = g->current_y;
+    g->need_moveto = جھوٹ;
   }
 
-  acc_emit (g, contour_start,
+  acc_emit (g, contour_آغاز,
 	    g->current_x, g->current_y, cx, cy, x, y);
 }
 
-void
-hb_gpu_draw_t::acc_move_to (double x, double y)
+خالی
+hb_gpu_draw_t::acc_move_مقصد (دوہرا x, دوہرا y)
 {
-  if (unlikely (!success))
-    return;
+  اگر (unlikely (!success))
+    واپس;
 
-  need_moveto = true;
+  need_moveto = سچ;
   current_x = x;
   current_y = y;
 }
 
-void
-hb_gpu_draw_t::acc_line_to (double x, double y)
+خالی
+hb_gpu_draw_t::acc_سطر_مقصد (دوہرا x, دوہرا y)
 {
-  if (unlikely (!success))
-    return;
+  اگر (unlikely (!success))
+    واپس;
 
-  acc_emit_conic (this, current_x, current_y, x, y);
+  acc_emit_conic (یہ, current_x, current_y, x, y);
 }
 
-void
-hb_gpu_draw_t::acc_conic_to (double cx, double cy, double x, double y)
+خالی
+hb_gpu_draw_t::acc_conic_مقصد (دوہرا cx, دوہرا cy, دوہرا x, دوہرا y)
 {
-  if (unlikely (!success))
-    return;
+  اگر (unlikely (!success))
+    واپس;
 
-  acc_emit_conic (this, cx, cy, x, y);
+  acc_emit_conic (یہ, cx, cy, x, y);
 }
 
-void
-hb_gpu_draw_t::acc_close_path ()
+خالی
+hb_gpu_draw_t::acc_close_راستہ ()
 {
-  if (unlikely (!success))
-    return;
+  اگر (unlikely (!success))
+    واپس;
 
-  if (!need_moveto &&
-      (current_x != start_x || current_y != start_y))
-    acc_line_to (start_x, start_y);
+  اگر (!need_moveto &&
+      (current_x != آغاز_x || current_y != آغاز_y))
+    acc_سطر_مقصد (آغاز_x, آغاز_y);
 }
 
 
-void
-hb_gpu_draw_t::acc_cubic_to (double c1x, double c1y,
-			       double c2x, double c2y,
-			       double x, double y)
+خالی
+hb_gpu_draw_t::acc_cubic_مقصد (دوہرا c1x, دوہرا c1y,
+			       دوہرا c2x, دوہرا c2y,
+			       دوہرا x, دوہرا y)
 {
-  if (unlikely (!success))
-    return;
+  اگر (unlikely (!success))
+    واپس;
 
-  double c0x = current_x, c0y = current_y;
+  دوہرا c0x = current_x, c0y = current_y;
 
-  if (c0x == x && c0y == y &&
+  اگر (c0x == x && c0y == y &&
       c1x == x && c1y == y &&
       c2x == x && c2y == y)
-    return;
+    واپس;
 
   /* Degenerate cubic: all control points are collinear.
    * Emit as a line instead of running cu2qu subdivision. */
-  double dx = x - c0x, dy = y - c0y;
-  double len_sq = dx * dx + dy * dy;
-  if (len_sq > 0.)
+  دوہرا dx = x - c0x, dy = y - c0y;
+  دوہرا len_sq = dx * dx + dy * dy;
+  اگر (len_sq > 0.)
   {
-    double inv = 1.0 / len_sq;
-    double cross1 = (c1x - c0x) * dy - (c1y - c0y) * dx;
-    double cross2 = (c2x - c0x) * dy - (c2y - c0y) * dx;
-    if (cross1 * cross1 * inv <= HB_GPU_CU2QU_TOLERANCE * HB_GPU_CU2QU_TOLERANCE &&
+    دوہرا inv = 1.0 / len_sq;
+    دوہرا cross1 = (c1x - c0x) * dy - (c1y - c0y) * dx;
+    دوہرا cross2 = (c2x - c0x) * dy - (c2y - c0y) * dx;
+    اگر (cross1 * cross1 * inv <= HB_GPU_CU2QU_TOLERANCE * HB_GPU_CU2QU_TOLERANCE &&
 	cross2 * cross2 * inv <= HB_GPU_CU2QU_TOLERANCE * HB_GPU_CU2QU_TOLERANCE)
     {
-      acc_line_to (x, y);
-      return;
+      acc_سطر_مقصد (x, y);
+      واپس;
     }
   }
 
-  hb_gpu_cubic_to_quadratics (this,
+  hb_gpu_cubic_مقصد_quadratics (یہ,
 			      {c0x, c0y}, {c1x, c1y},
 			      {c2x, c2y}, {x, y},
 			      HB_GPU_CU2QU_TOLERANCE, 0);
@@ -178,115 +178,115 @@ hb_gpu_draw_t::acc_cubic_to (double c1x, double c1y,
 
 /* ---- Draw funcs ---- */
 
-static void
-hb_gpu_draw_move_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-		     void *data,
-		     hb_draw_state_t *st HB_UNUSED,
-		     float to_x, float to_y,
-		     void *user_data HB_UNUSED)
+ساکن خالی
+hb_gpu_draw_move_مقصد (hb_draw_funcs_t *dfuncs HB_غیر_مستعمل,
+		     خالی *ڈیٹا,
+		     hb_draw_state_t *st HB_غیر_مستعمل,
+		     اعشاری مقصد_x, اعشاری مقصد_y,
+		     خالی *user_ڈیٹا HB_غیر_مستعمل)
 {
-  hb_gpu_draw_t *g = (hb_gpu_draw_t *) data;
-  g->acc_close_path ();
-  g->acc_move_to ((double) to_x, (double) to_y);
+  hb_gpu_draw_t *g = (hb_gpu_draw_t *) ڈیٹا;
+  g->acc_close_راستہ ();
+  g->acc_move_مقصد ((دوہرا) مقصد_x, (دوہرا) مقصد_y);
 }
 
-static void
-hb_gpu_draw_line_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-		     void *data,
-		     hb_draw_state_t *st HB_UNUSED,
-		     float to_x, float to_y,
-		     void *user_data HB_UNUSED)
+ساکن خالی
+hb_gpu_draw_سطر_مقصد (hb_draw_funcs_t *dfuncs HB_غیر_مستعمل,
+		     خالی *ڈیٹا,
+		     hb_draw_state_t *st HB_غیر_مستعمل,
+		     اعشاری مقصد_x, اعشاری مقصد_y,
+		     خالی *user_ڈیٹا HB_غیر_مستعمل)
 {
-  hb_gpu_draw_t *g = (hb_gpu_draw_t *) data;
-  g->acc_line_to ((double) to_x, (double) to_y);
+  hb_gpu_draw_t *g = (hb_gpu_draw_t *) ڈیٹا;
+  g->acc_سطر_مقصد ((دوہرا) مقصد_x, (دوہرا) مقصد_y);
 }
 
-static void
-hb_gpu_draw_quadratic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			  void *data,
-			  hb_draw_state_t *st HB_UNUSED,
-			  float control_x, float control_y,
-			  float to_x, float to_y,
-			  void *user_data HB_UNUSED)
+ساکن خالی
+hb_gpu_draw_quadratic_مقصد (hb_draw_funcs_t *dfuncs HB_غیر_مستعمل,
+			  خالی *ڈیٹا,
+			  hb_draw_state_t *st HB_غیر_مستعمل,
+			  اعشاری control_x, اعشاری control_y,
+			  اعشاری مقصد_x, اعشاری مقصد_y,
+			  خالی *user_ڈیٹا HB_غیر_مستعمل)
 {
-  hb_gpu_draw_t *g = (hb_gpu_draw_t *) data;
-  g->acc_conic_to ((double) control_x, (double) control_y,
-		   (double) to_x, (double) to_y);
+  hb_gpu_draw_t *g = (hb_gpu_draw_t *) ڈیٹا;
+  g->acc_conic_مقصد ((دوہرا) control_x, (دوہرا) control_y,
+		   (دوہرا) مقصد_x, (دوہرا) مقصد_y);
 }
 
-static void
-hb_gpu_draw_cubic_to (hb_draw_funcs_t *dfuncs HB_UNUSED,
-		      void *data,
-		      hb_draw_state_t *st HB_UNUSED,
-		      float control1_x, float control1_y,
-		      float control2_x, float control2_y,
-		      float to_x, float to_y,
-		      void *user_data HB_UNUSED)
+ساکن خالی
+hb_gpu_draw_cubic_مقصد (hb_draw_funcs_t *dfuncs HB_غیر_مستعمل,
+		      خالی *ڈیٹا,
+		      hb_draw_state_t *st HB_غیر_مستعمل,
+		      اعشاری control1_x, اعشاری control1_y,
+		      اعشاری control2_x, اعشاری control2_y,
+		      اعشاری مقصد_x, اعشاری مقصد_y,
+		      خالی *user_ڈیٹا HB_غیر_مستعمل)
 {
-  hb_gpu_draw_t *g = (hb_gpu_draw_t *) data;
-  g->acc_cubic_to ((double) control1_x, (double) control1_y,
-		   (double) control2_x, (double) control2_y,
-		   (double) to_x, (double) to_y);
+  hb_gpu_draw_t *g = (hb_gpu_draw_t *) ڈیٹا;
+  g->acc_cubic_مقصد ((دوہرا) control1_x, (دوہرا) control1_y,
+		   (دوہرا) control2_x, (دوہرا) control2_y,
+		   (دوہرا) مقصد_x, (دوہرا) مقصد_y);
 }
 
-static void
-hb_gpu_draw_close_path (hb_draw_funcs_t *dfuncs HB_UNUSED,
-			void *data,
-			hb_draw_state_t *st HB_UNUSED,
-			void *user_data HB_UNUSED)
+ساکن خالی
+hb_gpu_draw_close_راستہ (hb_draw_funcs_t *dfuncs HB_غیر_مستعمل,
+			خالی *ڈیٹا,
+			hb_draw_state_t *st HB_غیر_مستعمل,
+			خالی *user_ڈیٹا HB_غیر_مستعمل)
 {
-  hb_gpu_draw_t *g = (hb_gpu_draw_t *) data;
-  g->acc_close_path ();
+  hb_gpu_draw_t *g = (hb_gpu_draw_t *) ڈیٹا;
+  g->acc_close_راستہ ();
 }
 
-static hb_bool_t
-hb_gpu_draw_set_budget (hb_draw_funcs_t *, void *draw_data,
-			int64_t budget, void *)
+ساکن hb_bool_t
+hb_gpu_draw_سیٹ_budget (hb_draw_funcs_t *, خالی *draw_ڈیٹا,
+			int64_t budget, خالی *)
 {
-  auto *draw = (hb_gpu_draw_t *) draw_data;
+  خودکار *draw = (hb_gpu_draw_t *) draw_ڈیٹا;
   draw->budget = budget;
   draw->recharge_budget ();
-  return true;
+  واپس سچ;
 }
 
-static int64_t
-hb_gpu_draw_get_budget (hb_draw_funcs_t *, void *draw_data, void *)
+ساکن int64_t
+hb_gpu_draw_get_budget (hb_draw_funcs_t *, خالی *draw_ڈیٹا, خالی *)
 {
-  return ((hb_gpu_draw_t *) draw_data)->budget;
+  واپس ((hb_gpu_draw_t *) draw_ڈیٹا)->budget;
 }
 
-static int64_t *
-hb_gpu_draw_get_budget_remaining (hb_draw_funcs_t *, void *draw_data, void *)
+ساکن int64_t *
+hb_gpu_draw_get_budget_بقایا (hb_draw_funcs_t *, خالی *draw_ڈیٹا, خالی *)
 {
-  return ((hb_gpu_draw_t *) draw_data)->get_budget_remaining ();
+  واپس ((hb_gpu_draw_t *) draw_ڈیٹا)->get_budget_بقایا ();
 }
 
-static inline void free_static_gpu_draw_funcs ();
+ساکن اندرونی خالی free_static_gpu_draw_funcs ();
 
-static struct hb_gpu_draw_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_gpu_draw_funcs_lazy_loader_t>
+ساکن ساخت hb_gpu_draw_funcs_lazy_loader_t : hb_draw_funcs_lazy_loader_t<hb_gpu_draw_funcs_lazy_loader_t>
 {
-  static hb_draw_funcs_t *create ()
+  ساکن hb_draw_funcs_t *create ()
   {
     hb_draw_funcs_t *funcs = hb_draw_funcs_create ();
 
-    hb_draw_funcs_set_move_to_func      (funcs, hb_gpu_draw_move_to,      nullptr, nullptr);
-    hb_draw_funcs_set_line_to_func      (funcs, hb_gpu_draw_line_to,      nullptr, nullptr);
-    hb_draw_funcs_set_quadratic_to_func (funcs, hb_gpu_draw_quadratic_to, nullptr, nullptr);
-    hb_draw_funcs_set_cubic_to_func     (funcs, hb_gpu_draw_cubic_to,     nullptr, nullptr);
-    hb_draw_funcs_set_close_path_func   (funcs, hb_gpu_draw_close_path,   nullptr, nullptr);
-    hb_draw_funcs_set_set_budget_func (funcs, hb_gpu_draw_set_budget, nullptr, nullptr);
-    hb_draw_funcs_set_get_budget_func (funcs, hb_gpu_draw_get_budget, nullptr, nullptr);
-    hb_draw_funcs_set_get_budget_remaining_func (funcs, hb_gpu_draw_get_budget_remaining, nullptr, nullptr);
+    hb_draw_funcs_سیٹ_move_مقصد_func      (funcs, hb_gpu_draw_move_مقصد,      خالی_اشاریہ, خالی_اشاریہ);
+    hb_draw_funcs_سیٹ_سطر_مقصد_func      (funcs, hb_gpu_draw_سطر_مقصد,      خالی_اشاریہ, خالی_اشاریہ);
+    hb_draw_funcs_سیٹ_quadratic_مقصد_func (funcs, hb_gpu_draw_quadratic_مقصد, خالی_اشاریہ, خالی_اشاریہ);
+    hb_draw_funcs_سیٹ_cubic_مقصد_func     (funcs, hb_gpu_draw_cubic_مقصد,     خالی_اشاریہ, خالی_اشاریہ);
+    hb_draw_funcs_سیٹ_close_راستہ_func   (funcs, hb_gpu_draw_close_راستہ,   خالی_اشاریہ, خالی_اشاریہ);
+    hb_draw_funcs_سیٹ_سیٹ_budget_func (funcs, hb_gpu_draw_سیٹ_budget, خالی_اشاریہ, خالی_اشاریہ);
+    hb_draw_funcs_سیٹ_get_budget_func (funcs, hb_gpu_draw_get_budget, خالی_اشاریہ, خالی_اشاریہ);
+    hb_draw_funcs_سیٹ_get_budget_بقایا_func (funcs, hb_gpu_draw_get_budget_بقایا, خالی_اشاریہ, خالی_اشاریہ);
 
     hb_draw_funcs_make_immutable (funcs);
 
     hb_atexit (free_static_gpu_draw_funcs);
 
-    return funcs;
+    واپس funcs;
   }
 } static_gpu_draw_funcs;
 
-static inline void
+ساکن اندرونی خالی
 free_static_gpu_draw_funcs ()
 {
   static_gpu_draw_funcs.free_instance ();
@@ -295,63 +295,63 @@ free_static_gpu_draw_funcs ()
 
 /* ---- Encode ---- */
 
-struct hb_gpu_texel_t
+ساخت hb_gpu_texel_t
 {
   int16_t r, g, b, a;
 };
 
-static hb_position_t
-clamp_to_hb_position (double v)
+ساکن hb_position_t
+clamp_مقصد_hb_position (دوہرا v)
 {
-  return (hb_position_t) hb_clamp (v,
-				   (double) hb_int_min (hb_position_t),
-				   (double) hb_int_max (hb_position_t));
+  واپس (hb_position_t) hb_clamp (v,
+				   (دوہرا) hb_int_min (hb_position_t),
+				   (دوہرا) hb_int_max (hb_position_t));
 }
 
-static inline int16_t
-quantize (double v)
+ساکن اندرونی int16_t
+quantize (دوہرا v)
 {
-  return (int16_t) round (v * HB_GPU_UNITS_PER_EM);
+  واپس (int16_t) round (v * HB_GPU_UNITS_فی_EM);
 }
 
-static inline int16_t
-quantize_down (double v)
+ساکن اندرونی int16_t
+quantize_نیچے_کو (دوہرا v)
 {
-  return (int16_t) floor (v * HB_GPU_UNITS_PER_EM);
+  واپس (int16_t) floor (v * HB_GPU_UNITS_فی_EM);
 }
 
-static inline int16_t
-quantize_up (double v)
+ساکن اندرونی int16_t
+quantize_اوپر (دوہرا v)
 {
-  return (int16_t) ceil (v * HB_GPU_UNITS_PER_EM);
+  واپس (int16_t) ceil (v * HB_GPU_UNITS_فی_EM);
 }
 
-static inline double
-dequantize (int v)
+ساکن اندرونی دوہرا
+dequantize (صحیح v)
 {
-  return (double) v / HB_GPU_UNITS_PER_EM;
+  واپس (دوہرا) v / HB_GPU_UNITS_فی_EM;
 }
 
-static inline bool
-quantize_down_fits_i16 (double v)
+ساکن اندرونی منطقی
+quantize_نیچے_کو_سماتا_i16 (دوہرا v)
 {
-  double q = floor (v * HB_GPU_UNITS_PER_EM);
-  return q >= INT16_MIN &&
+  دوہرا q = floor (v * HB_GPU_UNITS_فی_EM);
+  واپس q >= INT16_MIN &&
 	 q <= INT16_MAX;
 }
 
-static inline bool
-quantize_up_fits_i16 (double v)
+ساکن اندرونی منطقی
+quantize_اوپر_سماتا_i16 (دوہرا v)
 {
-  double q = ceil (v * HB_GPU_UNITS_PER_EM);
-  return q >= INT16_MIN &&
+  دوہرا q = ceil (v * HB_GPU_UNITS_فی_EM);
+  واپس q >= INT16_MIN &&
 	 q <= INT16_MAX;
 }
 
-static inline int16_t
-encode_offset (unsigned offset)
+ساکن اندرونی int16_t
+encode_انحراف (غیرعلامتی انحراف)
 {
-  return (int16_t) (offset - 32768u);
+  واپس (int16_t) (انحراف - 32768u);
 }
 
 /* Note: the bounds are computed from the *quantized* control points,
@@ -360,13 +360,13 @@ encode_offset (unsigned offset)
  * quantized extent reaches into; fragments in that sliver then never
  * see the curve, get the wrong winding number, and render as a thin
  * black line through the glyph. */
-static hb_gpu_encode_curve_info_t
-encode_curve_info (const hb_gpu_curve_t *c)
+ساکن hb_gpu_encode_خم_info_t
+encode_خم_info (ثابت hb_gpu_خم_t *c)
 {
-  hb_gpu_encode_curve_info_t info;
+  hb_gpu_encode_خم_info_t info;
 
-  int p1x = quantize (c->p1x), p2x = quantize (c->p2x), p3x = quantize (c->p3x);
-  int p1y = quantize (c->p1y), p2y = quantize (c->p2y), p3y = quantize (c->p3y);
+  صحیح p1x = quantize (c->p1x), p2x = quantize (c->p2x), p3x = quantize (c->p3x);
+  صحیح p1y = quantize (c->p1y), p2y = quantize (c->p2y), p3y = quantize (c->p3y);
 
   info.min_x = dequantize (hb_min (hb_min (p1x, p2x), p3x));
   info.max_x = dequantize (hb_max (hb_max (p1x, p2x), p3x));
@@ -379,45 +379,45 @@ encode_curve_info (const hb_gpu_curve_t *c)
   info.vband_lo = 0;
   info.vband_hi = -1;
 
-  return info;
+  واپس info;
 }
 
-static void
+ساکن خالی
 _hb_gpu_draw_get_extents (hb_gpu_draw_t      *draw,
 			  hb_glyph_extents_t *extents)
 {
-  if (unlikely (!draw->success) ||
-      draw->num_curves == 0 ||
+  اگر (unlikely (!draw->success) ||
+      draw->عدد_curves == 0 ||
       draw->ext_min_x == HUGE_VAL)
   {
     extents->x_bearing = 0;
     extents->y_bearing = 0;
-    extents->width = 0;
-    extents->height = 0;
-    return;
+    extents->چوڑائی = 0;
+    extents->اونچائی = 0;
+    واپس;
   }
 
-  double min_x = floor (draw->ext_min_x);
-  double min_y = floor (draw->ext_min_y);
-  double max_x = ceil  (draw->ext_max_x);
-  double max_y = ceil  (draw->ext_max_y);
+  دوہرا min_x = floor (draw->ext_min_x);
+  دوہرا min_y = floor (draw->ext_min_y);
+  دوہرا max_x = ceil  (draw->ext_max_x);
+  دوہرا max_y = ceil  (draw->ext_max_y);
 
-  if (unlikely (!std::isfinite (min_x) ||
+  اگر (unlikely (!std::isfinite (min_x) ||
 		!std::isfinite (min_y) ||
 		!std::isfinite (max_x) ||
 		!std::isfinite (max_y)))
   {
     extents->x_bearing = 0;
     extents->y_bearing = 0;
-    extents->width = 0;
-    extents->height = 0;
-    return;
+    extents->چوڑائی = 0;
+    extents->اونچائی = 0;
+    واپس;
   }
 
-  extents->x_bearing = clamp_to_hb_position (min_x);
-  extents->y_bearing = clamp_to_hb_position (max_y);
-  extents->width     = clamp_to_hb_position (max_x - min_x);
-  extents->height    = clamp_to_hb_position (min_y - max_y);
+  extents->x_bearing = clamp_مقصد_hb_position (min_x);
+  extents->y_bearing = clamp_مقصد_hb_position (max_y);
+  extents->چوڑائی     = clamp_مقصد_hb_position (max_x - min_x);
+  extents->اونچائی    = clamp_مقصد_hb_position (min_y - max_y);
 }
 
 
@@ -452,24 +452,24 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
                     hb_glyph_extents_t *extents)
 {
   /* Capture computed extents before auto-clear wipes them. */
-  if (extents)
+  اگر (extents)
     _hb_gpu_draw_get_extents (draw, extents);
   HB_SCOPE_GUARD (hb_gpu_draw_clear (draw));
 
-  if (unlikely (!draw->success))
-    return nullptr;
+  اگر (unlikely (!draw->success))
+    واپس خالی_اشاریہ;
 
-  const hb_gpu_curve_t *curves = draw->curves.arrayZ;
-  unsigned num_curves = draw->curves.length;
+  ثابت hb_gpu_خم_t *curves = draw->curves.arrayZ;
+  غیرعلامتی عدد_curves = draw->curves.لمبائی;
 
-  if (num_curves == 0)
-    return hb_blob_get_empty ();
+  اگر (عدد_curves == 0)
+    واپس hb_blob_get_خالی_خانے ();
 
   hb_gpu_encode_scratch_t &s = draw->scratch;
 
-  s.curve_infos.reset_if_error ();
-  s.hband_curve_counts.reset_if_error ();
-  s.vband_curve_counts.reset_if_error ();
+  s.خم_infos.reset_if_error ();
+  s.hband_خم_counts.reset_if_error ();
+  s.vband_خم_counts.reset_if_error ();
   s.hband_offsets.reset_if_error ();
   s.vband_offsets.reset_if_error ();
   s.hband_curves.reset_if_error ();
@@ -478,258 +478,258 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
   s.vband_curves_asc.reset_if_error ();
   s.hband_cursors.reset_if_error ();
   s.vband_cursors.reset_if_error ();
-  s.curve_texel_offset.reset_if_error ();
+  s.خم_texel_انحراف.reset_if_error ();
 
   /* Compute per-curve info and extents */
-  if (unlikely (!s.curve_infos.resize (num_curves)))
-    return nullptr;
+  اگر (unlikely (!s.خم_infos.resize (عدد_curves)))
+    واپس خالی_اشاریہ;
 
   /* Validate the extents fit in i16 before quantizing: the casts in
    * quantize_down()/quantize_up() are undefined for out-of-range
    * values, and every later i16 conversion of a curve point is bounded
    * by these extents. */
-  if (!quantize_down_fits_i16 (draw->ext_min_x) ||
-      !quantize_down_fits_i16 (draw->ext_min_y) ||
-      !quantize_up_fits_i16 (draw->ext_max_x) ||
-      !quantize_up_fits_i16 (draw->ext_max_y))
-    return nullptr;
+  اگر (!quantize_نیچے_کو_سماتا_i16 (draw->ext_min_x) ||
+      !quantize_نیچے_کو_سماتا_i16 (draw->ext_min_y) ||
+      !quantize_اوپر_سماتا_i16 (draw->ext_max_x) ||
+      !quantize_اوپر_سماتا_i16 (draw->ext_max_y))
+    واپس خالی_اشاریہ;
 
-  int16_t min_x_q = quantize_down (draw->ext_min_x);
-  int16_t min_y_q = quantize_down (draw->ext_min_y);
-  int16_t max_x_q = quantize_up (draw->ext_max_x);
-  int16_t max_y_q = quantize_up (draw->ext_max_y);
+  int16_t min_x_q = quantize_نیچے_کو (draw->ext_min_x);
+  int16_t min_y_q = quantize_نیچے_کو (draw->ext_min_y);
+  int16_t max_x_q = quantize_اوپر (draw->ext_max_x);
+  int16_t max_y_q = quantize_اوپر (draw->ext_max_y);
 
-  double min_x = dequantize (min_x_q);
-  double min_y = dequantize (min_y_q);
-  double max_x = dequantize (max_x_q);
-  double max_y = dequantize (max_y_q);
+  دوہرا min_x = dequantize (min_x_q);
+  دوہرا min_y = dequantize (min_y_q);
+  دوہرا max_x = dequantize (max_x_q);
+  دوہرا max_y = dequantize (max_y_q);
 
-  for (unsigned i = 0; i < num_curves; i++)
-    s.curve_infos.arrayZ[i] = encode_curve_info (&curves[i]);
+  برائے (غیرعلامتی i = 0; i < عدد_curves; i++)
+    s.خم_infos.arrayZ[i] = encode_خم_info (&curves[i]);
 
   /* Choose number of bands (capped at 16 per Slug paper) */
-  unsigned num_hbands = hb_min (num_curves, 16u);
-  unsigned num_vbands = hb_min (num_curves, 16u);
-  num_hbands = hb_max (num_hbands, 1u);
-  num_vbands = hb_max (num_vbands, 1u);
+  غیرعلامتی عدد_hbands = hb_min (عدد_curves, 16u);
+  غیرعلامتی عدد_vbands = hb_min (عدد_curves, 16u);
+  عدد_hbands = hb_max (عدد_hbands, 1u);
+  عدد_vbands = hb_max (عدد_vbands, 1u);
 
-  double height = max_y - min_y;
-  double width  = max_x - min_x;
+  دوہرا اونچائی = max_y - min_y;
+  دوہرا چوڑائی  = max_x - min_x;
 
-  if (height <= 0) num_hbands = 1;
-  if (width  <= 0) num_vbands = 1;
+  اگر (اونچائی <= 0) عدد_hbands = 1;
+  اگر (چوڑائی  <= 0) عدد_vbands = 1;
 
-  double hband_size = height / num_hbands;
-  double vband_size = width  / num_vbands;
+  دوہرا hband_سائز = اونچائی / عدد_hbands;
+  دوہرا vband_سائز = چوڑائی  / عدد_vbands;
 
   /* The shader recomputes the band index from the fragment position in
    * float32, this code does it in double.  Widen the band range of each
    * curve by a hair so the two cannot disagree at a band boundary. */
-  static const double BAND_EPSILON = 1.0 / 1024;
+  ساکن ثابت دوہرا BAND_EPSILON = 1.0 / 1024;
 
-  if (unlikely (!s.hband_curve_counts.resize (num_hbands) ||
-		!s.vband_curve_counts.resize (num_vbands)))
-    return nullptr;
+  اگر (unlikely (!s.hband_خم_counts.resize (عدد_hbands) ||
+		!s.vband_خم_counts.resize (عدد_vbands)))
+    واپس خالی_اشاریہ;
 
-  for (unsigned b = 0; b < num_hbands; b++) s.hband_curve_counts.arrayZ[b] = 0;
-  for (unsigned b = 0; b < num_vbands; b++) s.vband_curve_counts.arrayZ[b] = 0;
+  برائے (غیرعلامتی b = 0; b < عدد_hbands; b++) s.hband_خم_counts.arrayZ[b] = 0;
+  برائے (غیرعلامتی b = 0; b < عدد_vbands; b++) s.vband_خم_counts.arrayZ[b] = 0;
 
-  for (unsigned i = 0; i < num_curves; i++)
+  برائے (غیرعلامتی i = 0; i < عدد_curves; i++)
   {
-    hb_gpu_encode_curve_info_t &info = s.curve_infos.arrayZ[i];
+    hb_gpu_encode_خم_info_t &info = s.خم_infos.arrayZ[i];
 
-    if (!info.is_horizontal)
+    اگر (!info.is_horizontal)
     {
-      if (height > 0) {
-	info.hband_lo = (int) floor ((info.min_y - min_y) / hband_size - BAND_EPSILON);
-	info.hband_hi = (int) floor ((info.max_y - min_y) / hband_size + BAND_EPSILON);
+      اگر (اونچائی > 0) {
+	info.hband_lo = (صحیح) floor ((info.min_y - min_y) / hband_سائز - BAND_EPSILON);
+	info.hband_hi = (صحیح) floor ((info.max_y - min_y) / hband_سائز + BAND_EPSILON);
 	info.hband_lo = hb_max (info.hband_lo, 0);
-	info.hband_hi = hb_min (info.hband_hi, (int) num_hbands - 1);
-	for (int b = info.hband_lo; b <= info.hband_hi; b++)
-	  s.hband_curve_counts.arrayZ[b]++;
-      } else {
+	info.hband_hi = hb_min (info.hband_hi, (صحیح) عدد_hbands - 1);
+	برائے (صحیح b = info.hband_lo; b <= info.hband_hi; b++)
+	  s.hband_خم_counts.arrayZ[b]++;
+      } ورنہ {
 	info.hband_lo = 0;
 	info.hband_hi = 0;
-	s.hband_curve_counts.arrayZ[0]++;
+	s.hband_خم_counts.arrayZ[0]++;
       }
     }
 
-    if (!info.is_vertical)
+    اگر (!info.is_vertical)
     {
-      if (width > 0) {
-	info.vband_lo = (int) floor ((info.min_x - min_x) / vband_size - BAND_EPSILON);
-	info.vband_hi = (int) floor ((info.max_x - min_x) / vband_size + BAND_EPSILON);
+      اگر (چوڑائی > 0) {
+	info.vband_lo = (صحیح) floor ((info.min_x - min_x) / vband_سائز - BAND_EPSILON);
+	info.vband_hi = (صحیح) floor ((info.max_x - min_x) / vband_سائز + BAND_EPSILON);
 	info.vband_lo = hb_max (info.vband_lo, 0);
-	info.vband_hi = hb_min (info.vband_hi, (int) num_vbands - 1);
-	for (int b = info.vband_lo; b <= info.vband_hi; b++)
-	  s.vband_curve_counts.arrayZ[b]++;
-      } else {
+	info.vband_hi = hb_min (info.vband_hi, (صحیح) عدد_vbands - 1);
+	برائے (صحیح b = info.vband_lo; b <= info.vband_hi; b++)
+	  s.vband_خم_counts.arrayZ[b]++;
+      } ورنہ {
 	info.vband_lo = 0;
 	info.vband_hi = 0;
-	s.vband_curve_counts.arrayZ[0]++;
+	s.vband_خم_counts.arrayZ[0]++;
       }
     }
   }
 
-  if (unlikely (!s.hband_offsets.resize (num_hbands) ||
-		!s.vband_offsets.resize (num_vbands)))
-    return nullptr;
+  اگر (unlikely (!s.hband_offsets.resize (عدد_hbands) ||
+		!s.vband_offsets.resize (عدد_vbands)))
+    واپس خالی_اشاریہ;
 
-  unsigned total_hband_indices = 0;
-  unsigned total_vband_indices = 0;
+  غیرعلامتی کل_hband_indices = 0;
+  غیرعلامتی کل_vband_indices = 0;
 
-  for (unsigned b = 0; b < num_hbands; b++) {
-    s.hband_offsets.arrayZ[b] = total_hband_indices;
-    if (unlikely (hb_unsigned_add_overflows (total_hband_indices,
-					     s.hband_curve_counts.arrayZ[b],
-					     &total_hband_indices)))
-      return nullptr;
+  برائے (غیرعلامتی b = 0; b < عدد_hbands; b++) {
+    s.hband_offsets.arrayZ[b] = کل_hband_indices;
+    اگر (unlikely (hb_unsigned_جوڑو_overflows (کل_hband_indices,
+					     s.hband_خم_counts.arrayZ[b],
+					     &کل_hband_indices)))
+      واپس خالی_اشاریہ;
   }
 
-  for (unsigned b = 0; b < num_vbands; b++) {
-    s.vband_offsets.arrayZ[b] = total_vband_indices;
-    if (unlikely (hb_unsigned_add_overflows (total_vband_indices,
-					     s.vband_curve_counts.arrayZ[b],
-					     &total_vband_indices)))
-      return nullptr;
+  برائے (غیرعلامتی b = 0; b < عدد_vbands; b++) {
+    s.vband_offsets.arrayZ[b] = کل_vband_indices;
+    اگر (unlikely (hb_unsigned_جوڑو_overflows (کل_vband_indices,
+					     s.vband_خم_counts.arrayZ[b],
+					     &کل_vband_indices)))
+      واپس خالی_اشاریہ;
   }
 
   /* Assign curves to bands */
-  if (unlikely (!s.hband_curves.resize (total_hband_indices) ||
-		!s.hband_curves_asc.resize (total_hband_indices) ||
-		!s.vband_curves.resize (total_vband_indices) ||
-		!s.vband_curves_asc.resize (total_vband_indices) ||
-		!s.hband_cursors.resize (num_hbands) ||
-		!s.vband_cursors.resize (num_vbands)))
-    return nullptr;
+  اگر (unlikely (!s.hband_curves.resize (کل_hband_indices) ||
+		!s.hband_curves_asc.resize (کل_hband_indices) ||
+		!s.vband_curves.resize (کل_vband_indices) ||
+		!s.vband_curves_asc.resize (کل_vband_indices) ||
+		!s.hband_cursors.resize (عدد_hbands) ||
+		!s.vband_cursors.resize (عدد_vbands)))
+    واپس خالی_اشاریہ;
 
-  for (unsigned b = 0; b < num_hbands; b++) s.hband_cursors.arrayZ[b] = s.hband_offsets.arrayZ[b];
-  for (unsigned b = 0; b < num_vbands; b++) s.vband_cursors.arrayZ[b] = s.vband_offsets.arrayZ[b];
+  برائے (غیرعلامتی b = 0; b < عدد_hbands; b++) s.hband_cursors.arrayZ[b] = s.hband_offsets.arrayZ[b];
+  برائے (غیرعلامتی b = 0; b < عدد_vbands; b++) s.vband_cursors.arrayZ[b] = s.vband_offsets.arrayZ[b];
 
-  for (unsigned i = 0; i < num_curves; i++)
+  برائے (غیرعلامتی i = 0; i < عدد_curves; i++)
   {
-    const hb_gpu_encode_curve_info_t &info = s.curve_infos.arrayZ[i];
+    ثابت hb_gpu_encode_خم_info_t &info = s.خم_infos.arrayZ[i];
 
-    for (int b = info.hband_lo; b <= info.hband_hi; b++) {
-      unsigned idx = s.hband_cursors.arrayZ[b]++;
+    برائے (صحیح b = info.hband_lo; b <= info.hband_hi; b++) {
+      غیرعلامتی idx = s.hband_cursors.arrayZ[b]++;
       s.hband_curves.arrayZ[idx] = i;
       s.hband_curves_asc.arrayZ[idx] = i;
     }
 
-    for (int b = info.vband_lo; b <= info.vband_hi; b++) {
-      unsigned idx = s.vband_cursors.arrayZ[b]++;
+    برائے (صحیح b = info.vband_lo; b <= info.vband_hi; b++) {
+      غیرعلامتی idx = s.vband_cursors.arrayZ[b]++;
       s.vband_curves.arrayZ[idx] = i;
       s.vband_curves_asc.arrayZ[idx] = i;
     }
   }
 
   /* Sort: descending by max, ascending by min */
-  const hb_gpu_encode_curve_info_t *infos = s.curve_infos.arrayZ;
+  ثابت hb_gpu_encode_خم_info_t *infos = s.خم_infos.arrayZ;
 
-  for (unsigned b = 0; b < num_hbands; b++)
+  برائے (غیرعلامتی b = 0; b < عدد_hbands; b++)
   {
-    unsigned off = s.hband_offsets.arrayZ[b];
-    unsigned count = s.hband_curve_counts.arrayZ[b];
-    s.hband_curves.as_array ().sub_array (off, count)
-      .qsort ([infos] (const unsigned &a, const unsigned &b) {
-	auto av = infos[a].max_x, bv = infos[b].max_x;
-	return (av < bv) - (av > bv);
+    غیرعلامتی off = s.hband_offsets.arrayZ[b];
+    غیرعلامتی گنتی = s.hband_خم_counts.arrayZ[b];
+    s.hband_curves.as_array ().sub_array (off, گنتی)
+      .qsort ([infos] (ثابت غیرعلامتی &a, ثابت غیرعلامتی &b) {
+	خودکار av = infos[a].max_x, bv = infos[b].max_x;
+	واپس (av < bv) - (av > bv);
       });
-    s.hband_curves_asc.as_array ().sub_array (off, count)
-      .qsort ([infos] (const unsigned &a, const unsigned &b) {
-	auto av = infos[a].min_x, bv = infos[b].min_x;
-	return (av > bv) - (av < bv);
+    s.hband_curves_asc.as_array ().sub_array (off, گنتی)
+      .qsort ([infos] (ثابت غیرعلامتی &a, ثابت غیرعلامتی &b) {
+	خودکار av = infos[a].min_x, bv = infos[b].min_x;
+	واپس (av > bv) - (av < bv);
       });
   }
 
-  for (unsigned b = 0; b < num_vbands; b++)
+  برائے (غیرعلامتی b = 0; b < عدد_vbands; b++)
   {
-    unsigned off = s.vband_offsets.arrayZ[b];
-    unsigned count = s.vband_curve_counts.arrayZ[b];
-    s.vband_curves.as_array ().sub_array (off, count)
-      .qsort ([infos] (const unsigned &a, const unsigned &b) {
-	auto av = infos[a].max_y, bv = infos[b].max_y;
-	return (av < bv) - (av > bv);
+    غیرعلامتی off = s.vband_offsets.arrayZ[b];
+    غیرعلامتی گنتی = s.vband_خم_counts.arrayZ[b];
+    s.vband_curves.as_array ().sub_array (off, گنتی)
+      .qsort ([infos] (ثابت غیرعلامتی &a, ثابت غیرعلامتی &b) {
+	خودکار av = infos[a].max_y, bv = infos[b].max_y;
+	واپس (av < bv) - (av > bv);
       });
-    s.vband_curves_asc.as_array ().sub_array (off, count)
-      .qsort ([infos] (const unsigned &a, const unsigned &b) {
-	auto av = infos[a].min_y, bv = infos[b].min_y;
-	return (av > bv) - (av < bv);
+    s.vband_curves_asc.as_array ().sub_array (off, گنتی)
+      .qsort ([infos] (ثابت غیرعلامتی &a, ثابت غیرعلامتی &b) {
+	خودکار av = infos[a].min_y, bv = infos[b].min_y;
+	واپس (av > bv) - (av < bv);
       });
   }
 
   /* Compute sizes */
-  unsigned total_curve_indices;
-  if (unlikely (hb_unsigned_add_overflows (total_hband_indices,
-					   total_vband_indices,
-					   &total_curve_indices) ||
-		hb_unsigned_mul_overflows (total_curve_indices,
+  غیرعلامتی کل_خم_indices;
+  اگر (unlikely (hb_unsigned_جوڑو_overflows (کل_hband_indices,
+					   کل_vband_indices,
+					   &کل_خم_indices) ||
+		hb_unsigned_mul_overflows (کل_خم_indices,
 					   2,
-					   &total_curve_indices)))
-    return nullptr;
+					   &کل_خم_indices)))
+    واپس خالی_اشاریہ;
 
-  unsigned header_len = 2;
+  غیرعلامتی سرخی_len = 2;
 
-  unsigned num_contour_breaks = 0;
-  for (unsigned i = 0; i + 1 < num_curves; i++)
-    if (curves[i + 1].contour_start)
-      num_contour_breaks++;
+  غیرعلامتی عدد_contour_breaks = 0;
+  برائے (غیرعلامتی i = 0; i + 1 < عدد_curves; i++)
+    اگر (curves[i + 1].contour_آغاز)
+      عدد_contour_breaks++;
 
-  unsigned curve_data_len;
-  if (unlikely (hb_unsigned_add_overflows (num_curves,
-					   num_contour_breaks,
-					   &curve_data_len) ||
-		hb_unsigned_add_overflows (curve_data_len,
+  غیرعلامتی خم_ڈیٹا_len;
+  اگر (unlikely (hb_unsigned_جوڑو_overflows (عدد_curves,
+					   عدد_contour_breaks,
+					   &خم_ڈیٹا_len) ||
+		hb_unsigned_جوڑو_overflows (خم_ڈیٹا_len,
 					   1,
-					   &curve_data_len)))
-    return nullptr;
+					   &خم_ڈیٹا_len)))
+    واپس خالی_اشاریہ;
 
-  unsigned band_headers_len;
-  if (unlikely (hb_unsigned_add_overflows (num_hbands,
-					   num_vbands,
-					   &band_headers_len)))
-    return nullptr;
+  غیرعلامتی band_سرخیاں_len;
+  اگر (unlikely (hb_unsigned_جوڑو_overflows (عدد_hbands,
+					   عدد_vbands,
+					   &band_سرخیاں_len)))
+    واپس خالی_اشاریہ;
 
-  unsigned total_len = header_len;
-  if (unlikely (hb_unsigned_add_overflows (total_len,
-					   band_headers_len,
-					   &total_len) ||
-		hb_unsigned_add_overflows (total_len,
-					   total_curve_indices,
-					   &total_len) ||
-		hb_unsigned_add_overflows (total_len,
-					   curve_data_len,
-					   &total_len)))
-    return nullptr;
+  غیرعلامتی کل_len = سرخی_len;
+  اگر (unlikely (hb_unsigned_جوڑو_overflows (کل_len,
+					   band_سرخیاں_len,
+					   &کل_len) ||
+		hb_unsigned_جوڑو_overflows (کل_len,
+					   کل_خم_indices,
+					   &کل_len) ||
+		hb_unsigned_جوڑو_overflows (کل_len,
+					   خم_ڈیٹا_len,
+					   &کل_len)))
+    واپس خالی_اشاریہ;
 
   /* Validate fits in uint16 offsets (stored as int16 with bias) */
-  if (total_len > (unsigned) UINT16_MAX + 1u)
-    return nullptr;
+  اگر (کل_len > (غیرعلامتی) UINT16_MAX + 1u)
+    واپس خالی_اشاریہ;
 
   /* Allocate or reuse encode buffer */
-  unsigned needed_bytes;
-  if (unlikely (hb_unsigned_mul_overflows (total_len,
-					   sizeof (hb_gpu_texel_t),
-					   &needed_bytes)))
-    return nullptr;
-  unsigned buf_capacity = 0;
-  char *replaced_recycled_buf = nullptr;
-  char *buf_raw = hb_blob_t::recycle_acquire (draw->recycled_blob, needed_bytes,
-					&buf_capacity, &replaced_recycled_buf);
-  if (unlikely (!buf_raw))
-    return nullptr;
-  hb_gpu_texel_t *buf = (hb_gpu_texel_t *) (void *) buf_raw;
+  غیرعلامتی needed_بائٹیں;
+  اگر (unlikely (hb_unsigned_mul_overflows (کل_len,
+					   حجم (hb_gpu_texel_t),
+					   &needed_بائٹیں)))
+    واپس خالی_اشاریہ;
+  غیرعلامتی buf_استعداد = 0;
+  حرف *replaced_recycled_buf = خالی_اشاریہ;
+  حرف *buf_raw = hb_blob_t::recycle_acquire (draw->recycled_blob, needed_بائٹیں,
+					&buf_استعداد, &replaced_recycled_buf);
+  اگر (unlikely (!buf_raw))
+    واپس خالی_اشاریہ;
+  hb_gpu_texel_t *buf = (hb_gpu_texel_t *) (خالی *) buf_raw;
 
-  unsigned curve_data_offset = header_len;
-  if (unlikely (hb_unsigned_add_overflows (curve_data_offset,
-					   band_headers_len,
-					   &curve_data_offset) ||
-		hb_unsigned_add_overflows (curve_data_offset,
-					   total_curve_indices,
-					   &curve_data_offset)))
+  غیرعلامتی خم_ڈیٹا_انحراف = سرخی_len;
+  اگر (unlikely (hb_unsigned_جوڑو_overflows (خم_ڈیٹا_انحراف,
+					   band_سرخیاں_len,
+					   &خم_ڈیٹا_انحراف) ||
+		hb_unsigned_جوڑو_overflows (خم_ڈیٹا_انحراف,
+					   کل_خم_indices,
+					   &خم_ڈیٹا_انحراف)))
   {
-    hb_blob_t::recycle_abort ((char *) buf, draw->recycled_blob);
-    return nullptr;
+    hb_blob_t::recycle_abort ((حرف *) buf, draw->recycled_blob);
+    واپس خالی_اشاریہ;
   }
 
   /* Pack header */
@@ -737,44 +737,44 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
   buf[0].g = min_y_q;
   buf[0].b = max_x_q;
   buf[0].a = max_y_q;
-  buf[1].r = (int16_t) num_hbands;
-  buf[1].g = (int16_t) num_vbands;
+  buf[1].r = (int16_t) عدد_hbands;
+  buf[1].g = (int16_t) عدد_vbands;
   buf[1].b = (int16_t) hb_clamp (draw->x_scale, -32768, 32767);
   buf[1].a = (int16_t) hb_clamp (draw->y_scale, -32768, 32767);
 
   /* Pack curve data with shared endpoints */
-  if (unlikely (!s.curve_texel_offset.resize (num_curves)))
+  اگر (unlikely (!s.خم_texel_انحراف.resize (عدد_curves)))
   {
-    hb_blob_t::recycle_abort ((char *) buf, draw->recycled_blob);
-    return nullptr;
+    hb_blob_t::recycle_abort ((حرف *) buf, draw->recycled_blob);
+    واپس خالی_اشاریہ;
   }
 
-  unsigned texel = curve_data_offset;
+  غیرعلامتی texel = خم_ڈیٹا_انحراف;
 
-  for (unsigned i = 0; i < num_curves; i++)
+  برائے (غیرعلامتی i = 0; i < عدد_curves; i++)
   {
-    bool contour_start = curves[i].contour_start;
+    منطقی contour_آغاز = curves[i].contour_آغاز;
 
-    if (contour_start) {
-      s.curve_texel_offset.arrayZ[i] = texel;
+    اگر (contour_آغاز) {
+      s.خم_texel_انحراف.arrayZ[i] = texel;
       buf[texel].r = quantize (curves[i].p1x);
       buf[texel].g = quantize (curves[i].p1y);
       buf[texel].b = quantize (curves[i].p2x);
       buf[texel].a = quantize (curves[i].p2y);
       texel++;
-    } else {
-      s.curve_texel_offset.arrayZ[i] = texel - 1;
+    } ورنہ {
+      s.خم_texel_انحراف.arrayZ[i] = texel - 1;
     }
 
-    bool has_next = i + 1 < num_curves &&
-		    !curves[i + 1].contour_start;
+    منطقی has_اگلا = i + 1 < عدد_curves &&
+		    !curves[i + 1].contour_آغاز;
 
     buf[texel].r = quantize (curves[i].p3x);
     buf[texel].g = quantize (curves[i].p3y);
-    if (has_next) {
+    اگر (has_اگلا) {
       buf[texel].b = quantize (curves[i + 1].p2x);
       buf[texel].a = quantize (curves[i + 1].p2y);
-    } else {
+    } ورنہ {
       buf[texel].b = 0;
       buf[texel].a = 0;
     }
@@ -782,112 +782,112 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
   }
 
   /* Pack band headers and curve indices */
-  unsigned index_offset = header_len + band_headers_len;
+  غیرعلامتی اشاریہ_انحراف = سرخی_len + band_سرخیاں_len;
 
-  for (unsigned b = 0; b < num_hbands; b++)
+  برائے (غیرعلامتی b = 0; b < عدد_hbands; b++)
   {
-    int16_t hband_split;
+    int16_t hband_بانٹو;
     {
-      unsigned off = s.hband_offsets.arrayZ[b];
-      unsigned n = s.hband_curve_counts.arrayZ[b];
-      unsigned best_worst = n;
-      double best_split = (min_x + max_x) * 0.5;
-      unsigned left_count = n;
-      for (unsigned ci = 0; ci < n; ci++) {
-	double split = s.curve_infos.arrayZ[s.hband_curves.arrayZ[off + ci]].max_x;
-	unsigned right_count = ci + 1;
-	while (left_count &&
-	       s.curve_infos.arrayZ[s.hband_curves_asc.arrayZ[off + left_count - 1]].min_x > split)
-	  left_count--;
-	unsigned worst = hb_max (right_count, left_count);
-	if (worst < best_worst) {
-	  best_worst = worst;
-	  best_split = split;
+      غیرعلامتی off = s.hband_offsets.arrayZ[b];
+      غیرعلامتی n = s.hband_خم_counts.arrayZ[b];
+      غیرعلامتی بہترین_worst = n;
+      دوہرا بہترین_بانٹو = (min_x + max_x) * 0.5;
+      غیرعلامتی بایاں_گنتی = n;
+      برائے (غیرعلامتی ci = 0; ci < n; ci++) {
+	دوہرا بانٹو = s.خم_infos.arrayZ[s.hband_curves.arrayZ[off + ci]].max_x;
+	غیرعلامتی دایاں_گنتی = ci + 1;
+	جب (بایاں_گنتی &&
+	       s.خم_infos.arrayZ[s.hband_curves_asc.arrayZ[off + بایاں_گنتی - 1]].min_x > بانٹو)
+	  بایاں_گنتی--;
+	غیرعلامتی worst = hb_max (دایاں_گنتی, بایاں_گنتی);
+	اگر (worst < بہترین_worst) {
+	  بہترین_worst = worst;
+	  بہترین_بانٹو = بانٹو;
 	}
       }
-      hband_split = quantize (best_split);
+      hband_بانٹو = quantize (بہترین_بانٹو);
     }
-    unsigned hdr = header_len + b;
-    unsigned desc_off = index_offset;
+    غیرعلامتی hdr = سرخی_len + b;
+    غیرعلامتی desc_off = اشاریہ_انحراف;
 
-    for (unsigned ci = 0; ci < s.hband_curve_counts.arrayZ[b]; ci++) {
-      buf[index_offset].r = encode_offset (s.curve_texel_offset.arrayZ[s.hband_curves.arrayZ[s.hband_offsets.arrayZ[b] + ci]]);
-      buf[index_offset].g = 0;
-      buf[index_offset].b = 0;
-      buf[index_offset].a = 0;
-      index_offset++;
-    }
-
-    unsigned asc_off = index_offset;
-
-    for (unsigned ci = 0; ci < s.hband_curve_counts.arrayZ[b]; ci++) {
-      buf[index_offset].r = encode_offset (s.curve_texel_offset.arrayZ[s.hband_curves_asc.arrayZ[s.hband_offsets.arrayZ[b] + ci]]);
-      buf[index_offset].g = 0;
-      buf[index_offset].b = 0;
-      buf[index_offset].a = 0;
-      index_offset++;
+    برائے (غیرعلامتی ci = 0; ci < s.hband_خم_counts.arrayZ[b]; ci++) {
+      buf[اشاریہ_انحراف].r = encode_انحراف (s.خم_texel_انحراف.arrayZ[s.hband_curves.arrayZ[s.hband_offsets.arrayZ[b] + ci]]);
+      buf[اشاریہ_انحراف].g = 0;
+      buf[اشاریہ_انحراف].b = 0;
+      buf[اشاریہ_انحراف].a = 0;
+      اشاریہ_انحراف++;
     }
 
-    buf[hdr].r = (int16_t) s.hband_curve_counts.arrayZ[b];
-    buf[hdr].g = encode_offset (desc_off);
-    buf[hdr].b = encode_offset (asc_off);
-    buf[hdr].a = hband_split;
+    غیرعلامتی asc_off = اشاریہ_انحراف;
+
+    برائے (غیرعلامتی ci = 0; ci < s.hband_خم_counts.arrayZ[b]; ci++) {
+      buf[اشاریہ_انحراف].r = encode_انحراف (s.خم_texel_انحراف.arrayZ[s.hband_curves_asc.arrayZ[s.hband_offsets.arrayZ[b] + ci]]);
+      buf[اشاریہ_انحراف].g = 0;
+      buf[اشاریہ_انحراف].b = 0;
+      buf[اشاریہ_انحراف].a = 0;
+      اشاریہ_انحراف++;
+    }
+
+    buf[hdr].r = (int16_t) s.hband_خم_counts.arrayZ[b];
+    buf[hdr].g = encode_انحراف (desc_off);
+    buf[hdr].b = encode_انحراف (asc_off);
+    buf[hdr].a = hband_بانٹو;
   }
 
-  for (unsigned b = 0; b < num_vbands; b++)
+  برائے (غیرعلامتی b = 0; b < عدد_vbands; b++)
   {
-    int16_t vband_split;
+    int16_t vband_بانٹو;
     {
-      unsigned off = s.vband_offsets.arrayZ[b];
-      unsigned n = s.vband_curve_counts.arrayZ[b];
-      unsigned best_worst = n;
-      double best_split = (min_y + max_y) * 0.5;
-      unsigned left_count = n;
-      for (unsigned ci = 0; ci < n; ci++) {
-	double split = s.curve_infos.arrayZ[s.vband_curves.arrayZ[off + ci]].max_y;
-	unsigned right_count = ci + 1;
-	while (left_count &&
-	       s.curve_infos.arrayZ[s.vband_curves_asc.arrayZ[off + left_count - 1]].min_y > split)
-	  left_count--;
-	unsigned worst = hb_max (right_count, left_count);
-	if (worst < best_worst) {
-	  best_worst = worst;
-	  best_split = split;
+      غیرعلامتی off = s.vband_offsets.arrayZ[b];
+      غیرعلامتی n = s.vband_خم_counts.arrayZ[b];
+      غیرعلامتی بہترین_worst = n;
+      دوہرا بہترین_بانٹو = (min_y + max_y) * 0.5;
+      غیرعلامتی بایاں_گنتی = n;
+      برائے (غیرعلامتی ci = 0; ci < n; ci++) {
+	دوہرا بانٹو = s.خم_infos.arrayZ[s.vband_curves.arrayZ[off + ci]].max_y;
+	غیرعلامتی دایاں_گنتی = ci + 1;
+	جب (بایاں_گنتی &&
+	       s.خم_infos.arrayZ[s.vband_curves_asc.arrayZ[off + بایاں_گنتی - 1]].min_y > بانٹو)
+	  بایاں_گنتی--;
+	غیرعلامتی worst = hb_max (دایاں_گنتی, بایاں_گنتی);
+	اگر (worst < بہترین_worst) {
+	  بہترین_worst = worst;
+	  بہترین_بانٹو = بانٹو;
 	}
       }
-      vband_split = quantize (best_split);
+      vband_بانٹو = quantize (بہترین_بانٹو);
     }
 
-    unsigned hdr = header_len + num_hbands + b;
-    unsigned desc_off = index_offset;
+    غیرعلامتی hdr = سرخی_len + عدد_hbands + b;
+    غیرعلامتی desc_off = اشاریہ_انحراف;
 
-    for (unsigned ci = 0; ci < s.vband_curve_counts.arrayZ[b]; ci++) {
-      buf[index_offset].r = encode_offset (s.curve_texel_offset.arrayZ[s.vband_curves.arrayZ[s.vband_offsets.arrayZ[b] + ci]]);
-      buf[index_offset].g = 0;
-      buf[index_offset].b = 0;
-      buf[index_offset].a = 0;
-      index_offset++;
+    برائے (غیرعلامتی ci = 0; ci < s.vband_خم_counts.arrayZ[b]; ci++) {
+      buf[اشاریہ_انحراف].r = encode_انحراف (s.خم_texel_انحراف.arrayZ[s.vband_curves.arrayZ[s.vband_offsets.arrayZ[b] + ci]]);
+      buf[اشاریہ_انحراف].g = 0;
+      buf[اشاریہ_انحراف].b = 0;
+      buf[اشاریہ_انحراف].a = 0;
+      اشاریہ_انحراف++;
     }
 
-    unsigned asc_off = index_offset;
+    غیرعلامتی asc_off = اشاریہ_انحراف;
 
-    for (unsigned ci = 0; ci < s.vband_curve_counts.arrayZ[b]; ci++) {
-      buf[index_offset].r = encode_offset (s.curve_texel_offset.arrayZ[s.vband_curves_asc.arrayZ[s.vband_offsets.arrayZ[b] + ci]]);
-      buf[index_offset].g = 0;
-      buf[index_offset].b = 0;
-      buf[index_offset].a = 0;
-      index_offset++;
+    برائے (غیرعلامتی ci = 0; ci < s.vband_خم_counts.arrayZ[b]; ci++) {
+      buf[اشاریہ_انحراف].r = encode_انحراف (s.خم_texel_انحراف.arrayZ[s.vband_curves_asc.arrayZ[s.vband_offsets.arrayZ[b] + ci]]);
+      buf[اشاریہ_انحراف].g = 0;
+      buf[اشاریہ_انحراف].b = 0;
+      buf[اشاریہ_انحراف].a = 0;
+      اشاریہ_انحراف++;
     }
 
-    buf[hdr].r = (int16_t) s.vband_curve_counts.arrayZ[b];
-    buf[hdr].g = encode_offset (desc_off);
-    buf[hdr].b = encode_offset (asc_off);
-    buf[hdr].a = vband_split;
+    buf[hdr].r = (int16_t) s.vband_خم_counts.arrayZ[b];
+    buf[hdr].g = encode_انحراف (desc_off);
+    buf[hdr].b = encode_انحراف (asc_off);
+    buf[hdr].a = vband_بانٹو;
   }
 
   hb_blob_t *recycled = draw->recycled_blob;
-  draw->recycled_blob = nullptr;
-  return hb_blob_t::recycle_finalize ((char *) buf, buf_capacity, needed_bytes,
+  draw->recycled_blob = خالی_اشاریہ;
+  واپس hb_blob_t::recycle_finalize ((حرف *) buf, buf_استعداد, needed_بائٹیں,
 				recycled, replaced_recycled_buf);
 }
 
@@ -905,9 +905,9 @@ hb_gpu_draw_encode (hb_gpu_draw_t      *draw,
  * Since: 14.0.0
  **/
 hb_gpu_draw_t *
-hb_gpu_draw_create_or_fail (void)
+hb_gpu_draw_create_or_fail (خالی)
 {
-  return hb_object_create<hb_gpu_draw_t> ();
+  واپس hb_object_create<hb_gpu_draw_t> ();
 }
 
 /**
@@ -924,7 +924,7 @@ hb_gpu_draw_create_or_fail (void)
 hb_gpu_draw_t *
 hb_gpu_draw_reference (hb_gpu_draw_t *draw)
 {
-  return hb_object_reference (draw);
+  واپس hb_object_reference (draw);
 }
 
 /**
@@ -936,11 +936,11 @@ hb_gpu_draw_reference (hb_gpu_draw_t *draw)
  *
  * Since: 14.0.0
  **/
-void
+خالی
 hb_gpu_draw_destroy (hb_gpu_draw_t *draw)
 {
-  if (!hb_object_should_destroy (draw))
-    return;
+  اگر (!hb_object_should_destroy (draw))
+    واپس;
 
   hb_blob_destroy (draw->recycled_blob);
 
@@ -963,13 +963,13 @@ hb_gpu_draw_destroy (hb_gpu_draw_t *draw)
  * Since: 14.0.0
  **/
 hb_bool_t
-hb_gpu_draw_set_user_data (hb_gpu_draw_t     *draw,
-			     hb_user_data_key_t *key,
-			     void               *data,
+hb_gpu_draw_سیٹ_user_ڈیٹا (hb_gpu_draw_t     *draw,
+			     hb_user_ڈیٹا_کلید_t *key,
+			     خالی               *ڈیٹا,
 			     hb_destroy_func_t   destroy,
 			     hb_bool_t           replace)
 {
-  return hb_object_set_user_data (draw, key, data, destroy, replace);
+  واپس hb_object_سیٹ_user_ڈیٹا (draw, key, ڈیٹا, destroy, replace);
 }
 
 /**
@@ -984,11 +984,11 @@ hb_gpu_draw_set_user_data (hb_gpu_draw_t     *draw,
  *
  * Since: 14.0.0
  **/
-void *
-hb_gpu_draw_get_user_data (const hb_gpu_draw_t     *draw,
-			     hb_user_data_key_t *key)
+خالی *
+hb_gpu_draw_get_user_ڈیٹا (ثابت hb_gpu_draw_t     *draw,
+			     hb_user_ڈیٹا_کلید_t *key)
 {
-  return hb_object_get_user_data (draw, key);
+  واپس hb_object_get_user_ڈیٹا (draw, key);
 }
 
 /**
@@ -1005,9 +1005,9 @@ hb_gpu_draw_get_user_data (const hb_gpu_draw_t     *draw,
  * Since: 14.2.0
  **/
 hb_draw_funcs_t *
-hb_gpu_draw_get_funcs (const hb_gpu_draw_t *draw HB_UNUSED)
+hb_gpu_draw_get_funcs (ثابت hb_gpu_draw_t *draw HB_غیر_مستعمل)
 {
-  return static_gpu_draw_funcs.get_unconst ();
+  واپس static_gpu_draw_funcs.get_unconst ();
 }
 
 /**
@@ -1022,10 +1022,10 @@ hb_gpu_draw_get_funcs (const hb_gpu_draw_t *draw HB_UNUSED)
  *
  * Since: 14.1.0
  **/
-void
-hb_gpu_draw_set_scale (hb_gpu_draw_t *draw,
-		       int            x_scale,
-		       int            y_scale)
+خالی
+hb_gpu_draw_سیٹ_scale (hb_gpu_draw_t *draw,
+		       صحیح            x_scale,
+		       صحیح            y_scale)
 {
   draw->x_scale = x_scale;
   draw->y_scale = y_scale;
@@ -1042,13 +1042,13 @@ hb_gpu_draw_set_scale (hb_gpu_draw_t *draw,
  *
  * Since: 14.2.0
  **/
-void
-hb_gpu_draw_get_scale (const hb_gpu_draw_t *draw,
-		       int                 *x_scale,
-		       int                 *y_scale)
+خالی
+hb_gpu_draw_get_scale (ثابت hb_gpu_draw_t *draw,
+		       صحیح                 *x_scale,
+		       صحیح                 *y_scale)
 {
-  if (x_scale) *x_scale = draw->x_scale;
-  if (y_scale) *y_scale = draw->y_scale;
+  اگر (x_scale) *x_scale = draw->x_scale;
+  اگر (y_scale) *y_scale = draw->y_scale;
 }
 
 /**
@@ -1075,11 +1075,11 @@ hb_gpu_draw_glyph_or_fail (hb_gpu_draw_t  *draw,
 			   hb_font_t      *font,
 			   hb_codepoint_t  glyph)
 {
-  int x_scale, y_scale;
+  صحیح x_scale, y_scale;
   hb_font_get_scale (font, &x_scale, &y_scale);
-  hb_gpu_draw_set_scale (draw, x_scale, y_scale);
+  hb_gpu_draw_سیٹ_scale (draw, x_scale, y_scale);
 
-  return hb_font_draw_glyph_or_fail (font, glyph,
+  واپس hb_font_draw_glyph_or_fail (font, glyph,
 				     hb_gpu_draw_get_funcs (draw),
 				     draw);
 }
@@ -1095,7 +1095,7 @@ hb_gpu_draw_glyph_or_fail (hb_gpu_draw_t  *draw,
  *
  * Since: 14.0.0
  **/
-void
+خالی
 hb_gpu_draw_glyph (hb_gpu_draw_t  *draw,
 		   hb_font_t      *font,
 		   hb_codepoint_t  glyph)
@@ -1113,14 +1113,14 @@ hb_gpu_draw_glyph (hb_gpu_draw_t  *draw,
  *
  * Since: 14.2.0
  **/
-void
+خالی
 hb_gpu_draw_clear (hb_gpu_draw_t *draw)
 {
-  draw->start_x = draw->start_y = 0;
+  draw->آغاز_x = draw->آغاز_y = 0;
   draw->current_x = draw->current_y = 0;
-  draw->need_moveto = true;
-  draw->num_curves = 0;
-  draw->success = true;
+  draw->need_moveto = سچ;
+  draw->عدد_curves = 0;
+  draw->success = سچ;
   draw->curves.reset ();
 
   draw->ext_min_x =  HUGE_VAL;
@@ -1140,7 +1140,7 @@ hb_gpu_draw_clear (hb_gpu_draw_t *draw)
  *
  * Since: 14.0.0
  **/
-void
+خالی
 hb_gpu_draw_reset (hb_gpu_draw_t *draw)
 {
   draw->x_scale = 0;
@@ -1163,7 +1163,7 @@ hb_gpu_draw_reset (hb_gpu_draw_t *draw)
  *
  * Since: 14.0.0
  **/
-void
+خالی
 hb_gpu_draw_recycle_blob (hb_gpu_draw_t *draw,
 			    hb_blob_t      *blob)
 {
@@ -1171,10 +1171,10 @@ hb_gpu_draw_recycle_blob (hb_gpu_draw_t *draw,
 }
 
 
-#include "hb-gpu-draw-fragment-glsl.hh"
-#include "hb-gpu-draw-fragment-msl.hh"
-#include "hb-gpu-draw-fragment-wgsl.hh"
-#include "hb-gpu-draw-fragment-hlsl.hh"
+#شامل "hb-gpu-draw-fragment-glsl.hh"
+#شامل "hb-gpu-draw-fragment-msl.hh"
+#شامل "hb-gpu-draw-fragment-wgsl.hh"
+#شامل "hb-gpu-draw-fragment-hlsl.hh"
 
 /**
  * hb_gpu_draw_shader_source:
@@ -1201,30 +1201,30 @@ hb_gpu_draw_recycle_blob (hb_gpu_draw_t *draw,
  *
  * Since: 14.2.0
  **/
-const char *
-hb_gpu_draw_shader_source (hb_gpu_shader_stage_t stage,
+ثابت حرف *
+hb_gpu_draw_shader_ماخذ (hb_gpu_shader_stage_t stage,
 			   hb_gpu_shader_lang_t  lang)
 {
-  switch (stage) {
-  case HB_GPU_SHADER_STAGE_FRAGMENT:
-    switch (lang) {
-    case HB_GPU_SHADER_LANG_GLSL: return hb_gpu_draw_fragment_glsl;
-    case HB_GPU_SHADER_LANG_MSL:  return hb_gpu_draw_fragment_msl;
-    case HB_GPU_SHADER_LANG_WGSL: return hb_gpu_draw_fragment_wgsl;
-    case HB_GPU_SHADER_LANG_HLSL: return hb_gpu_draw_fragment_hlsl;
-    case HB_GPU_SHADER_LANG_INVALID:
-    default: return nullptr;
+  انتخاب (stage) {
+  حالت HB_GPU_SHADER_STAGE_FRAGMENT:
+    انتخاب (lang) {
+    حالت HB_GPU_SHADER_LANG_GLSL: واپس hb_gpu_draw_fragment_glsl;
+    حالت HB_GPU_SHADER_LANG_MSL:  واپس hb_gpu_draw_fragment_msl;
+    حالت HB_GPU_SHADER_LANG_WGSL: واپس hb_gpu_draw_fragment_wgsl;
+    حالت HB_GPU_SHADER_LANG_HLSL: واپس hb_gpu_draw_fragment_hlsl;
+    حالت HB_GPU_SHADER_LANG_INVALID:
+    طےشدہ: واپس خالی_اشاریہ;
     }
-  case HB_GPU_SHADER_STAGE_VERTEX:
-    switch (lang) {
-    case HB_GPU_SHADER_LANG_GLSL:
-    case HB_GPU_SHADER_LANG_MSL:
-    case HB_GPU_SHADER_LANG_WGSL:
-    case HB_GPU_SHADER_LANG_HLSL: return "";
-    case HB_GPU_SHADER_LANG_INVALID:
-    default: return nullptr;
+  حالت HB_GPU_SHADER_STAGE_راس:
+    انتخاب (lang) {
+    حالت HB_GPU_SHADER_LANG_GLSL:
+    حالت HB_GPU_SHADER_LANG_MSL:
+    حالت HB_GPU_SHADER_LANG_WGSL:
+    حالت HB_GPU_SHADER_LANG_HLSL: واپس "";
+    حالت HB_GPU_SHADER_LANG_INVALID:
+    طےشدہ: واپس خالی_اشاریہ;
     }
-  default:
-    return nullptr;
+  طےشدہ:
+    واپس خالی_اشاریہ;
   }
 }

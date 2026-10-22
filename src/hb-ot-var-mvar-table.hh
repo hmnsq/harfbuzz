@@ -24,42 +24,42 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_VAR_MVAR_TABLE_HH
-#define HB_OT_VAR_MVAR_TABLE_HH
+#اگر_غیر_تعریف_شدہ HB_OT_VAR_MVAR_جدول_HH
+#تعریف_کرو HB_OT_VAR_MVAR_جدول_HH
 
-#include "hb-ot-var-common.hh"
-
-
-namespace OT {
+#شامل "hb-ot-var-common.hh"
 
 
-struct VariationValueRecord
+نامخلا OT {
+
+
+ساخت Variation_قدر_ریکارڈ
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ));
   }
 
-  bool subset (hb_subset_context_t *c,
-               const hb_map_t& varidx_map) const
+  منطقی subset (hb_subset_context_t *c,
+               ثابت hb_map_t& varidx_map) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (یہ);
+    خودکار *برآمد = c->serializer->embed (*یہ);
+    اگر (unlikely (!برآمد)) return_trace (جھوٹ);
 
     hb_codepoint_t *new_idx;
-    return_trace (c->serializer->check_assign (out->varIdx,
-                                               (varidx_map.has (varIdx, &new_idx)) ? *new_idx : HB_OT_LAYOUT_NO_VARIATIONS_INDEX,
-                                               HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    return_trace (c->serializer->check_تفویض (برآمد->varIdx,
+                                               (varidx_map.has (varIdx, &new_idx)) ? *new_idx : HB_OT_LAYOUT_NO_VARIATIONS_اشاریہ,
+                                               HB_SERIALIZE_ERROR_INT_حد_سے_تجاوز));
   }
 
-  public:
-  Tag		valueTag;	/* Four-byte tag identifying a font-wide measure. */
+  عوامی:
+  لیبل		قدر_لیبل;	/* Four-byte tag identifying a font-wide measure. */
   VarIdx	varIdx;		/* Outer/inner index into ItemVariationStore item. */
 
-  public:
-  DEFINE_SIZE_STATIC (8);
+  عوامی:
+  DEFINE_سائز_STATIC (8);
 };
 
 
@@ -67,118 +67,118 @@ struct VariationValueRecord
  * MVAR -- Metrics Variations
  * https://docs.microsoft.com/en-us/typography/opentype/spec/mvar
  */
-#define HB_OT_TAG_MVAR HB_TAG('M','V','A','R')
+#تعریف_کرو HB_OT_لیبل_MVAR HB_لیبل('M','V','A','R')
 
-struct MVAR
+ساخت MVAR
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_MVAR;
+  ساکن constexpr hb_لیبل_t جدول_لیبل = HB_OT_لیبل_MVAR;
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (version.sanitize (c) &&
+    TRACE_SANITIZE (یہ);
+    return_trace (نسخہ.sanitize (c) &&
 		  hb_barrier () &&
-		  likely (version.major == 1) &&
-		  c->check_struct (this) &&
+		  likely (نسخہ.major == 1) &&
+		  c->check_struct (یہ) &&
 		  hb_barrier () &&
-		  valueRecordSize >= VariationValueRecord::static_size &&
-		  varStore.sanitize (c, this) &&
-		  c->check_range (valuesZ.arrayZ,
-				  valueRecordCount,
-				  valueRecordSize));
+		  قدر_ریکارڈ_سائز >= Variation_قدر_ریکارڈ::static_سائز &&
+		  varStore.sanitize (c, یہ) &&
+		  c->check_range (اقدار_Z.arrayZ,
+				  قدر_ریکارڈ_گنتی,
+				  قدر_ریکارڈ_سائز));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-#ifdef HB_NO_VAR
-    return_trace (false);
-#endif
+    TRACE_SUBSET (یہ);
+#اگر_تعریف_شدہ HB_NO_VAR
+    return_trace (جھوٹ);
+#اگر_ختم
 
-    if (c->plan->all_axes_pinned)
-      return_trace (false);
+    اگر (c->plan->all_axes_pinned)
+      return_trace (جھوٹ);
 
-    MVAR *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
-    out->version = version;
-    out->reserved = reserved;
-    out->valueRecordSize = valueRecordSize;
-    out->valueRecordCount = valueRecordCount;
+    MVAR *برآمد = c->serializer->آغاز_embed (*یہ);
+    اگر (unlikely (!c->serializer->extend_min (برآمد))) return_trace (جھوٹ);
+    برآمد->نسخہ = نسخہ;
+    برآمد->reserved = reserved;
+    برآمد->قدر_ریکارڈ_سائز = قدر_ریکارڈ_سائز;
+    برآمد->قدر_ریکارڈ_گنتی = قدر_ریکارڈ_گنتی;
 
-    item_variations_t item_vars;
-    const ItemVariationStore& src_var_store = this+varStore;
+    شے_variations_t شے_vars;
+    ثابت شے_Variation_Store& src_var_store = یہ+varStore;
 
-    if (!item_vars.instantiate (src_var_store, c->plan))
-      return_trace (false);
+    اگر (!شے_vars.instantiate (src_var_store, c->plan))
+      return_trace (جھوٹ);
 
     /* serialize varstore */
-    if (!out->varStore.serialize_serialize (c->serializer, item_vars.has_long_word (),
-                                            c->plan->axis_tags,
-                                            item_vars.get_region_list (),
-                                            item_vars.get_vardata_encodings ()))
-      return_trace (false);
+    اگر (!برآمد->varStore.serialize_serialize (c->serializer, شے_vars.has_long_لفظ (),
+                                            c->plan->axis_لیبل_فہرست,
+                                            شے_vars.get_region_list (),
+                                            شے_vars.get_vardata_encodings ()))
+      return_trace (جھوٹ);
 
     /* serialize value records array */
-    unsigned value_rec_count = valueRecordCount;
-    const VariationValueRecord *record = reinterpret_cast<const VariationValueRecord*> (valuesZ.arrayZ);
-    for (unsigned i = 0; i < value_rec_count; i++)
+    غیرعلامتی قدر_rec_گنتی = قدر_ریکارڈ_گنتی;
+    ثابت Variation_قدر_ریکارڈ *ریکارڈ = reinterpret_cast<ثابت Variation_قدر_ریکارڈ*> (اقدار_Z.arrayZ);
+    برائے (غیرعلامتی i = 0; i < قدر_rec_گنتی; i++)
     {
-      if (!record->subset (c, item_vars.get_varidx_map ())) return_trace (false);
-      record++;
+      اگر (!ریکارڈ->subset (c, شے_vars.get_varidx_map ())) return_trace (جھوٹ);
+      ریکارڈ++;
     }
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  float get_var (hb_tag_t tag,
-		 const int *coords, unsigned int coord_count) const
+  اعشاری get_var (hb_لیبل_t لیبل_2,
+		 ثابت صحیح *coords, غیرعلامتی صحیح coord_گنتی) ثابت
   {
-    const VariationValueRecord *record;
-    record = (VariationValueRecord *) hb_bsearch (tag,
-						  (const VariationValueRecord *)
-						    (const HBUINT8 *) valuesZ,
-						  valueRecordCount, valueRecordSize,
-						  tag_compare);
-    if (!record)
-      return 0.;
+    ثابت Variation_قدر_ریکارڈ *ریکارڈ;
+    ریکارڈ = (Variation_قدر_ریکارڈ *) hb_bsearch (لیبل_2,
+						  (ثابت Variation_قدر_ریکارڈ *)
+						    (ثابت HBUINT8 *) اقدار_Z,
+						  قدر_ریکارڈ_گنتی, قدر_ریکارڈ_سائز,
+						  لیبل_compare);
+    اگر (!ریکارڈ)
+      واپس 0.;
 
-    return (this+varStore).get_delta (record->varIdx, coords, coord_count);
+    واپس (یہ+varStore).get_delta (ریکارڈ->varIdx, coords, coord_گنتی);
   }
 
-protected:
-  static int tag_compare (const void *pa, const void *pb)
+محفوظ:
+  ساکن صحیح لیبل_compare (ثابت خالی *pa, ثابت خالی *pb)
   {
-    const hb_tag_t *a = (const hb_tag_t *) pa;
-    const Tag *b = (const Tag *) pb;
-    return b->cmp (*a);
+    ثابت hb_لیبل_t *a = (ثابت hb_لیبل_t *) pa;
+    ثابت لیبل *b = (ثابت لیبل *) pb;
+    واپس b->cmp (*a);
   }
 
-  protected:
-  FixedVersion<>version;	/* Version of the metrics variation table
+  محفوظ:
+  Fixed_نسخہ<>نسخہ;	/* Version of the metrics variation table
 				 * initially set to 0x00010000u */
   HBUINT16	reserved;	/* Not used; set to 0. */
-  HBUINT16	valueRecordSize;/* The size in bytes of each value record —
+  HBUINT16	قدر_ریکارڈ_سائز;/* The size in bytes of each value record —
 				 * must be greater than zero. */
-  HBUINT16	valueRecordCount;/* The number of value records — may be zero. */
-  Offset16To<ItemVariationStore>
+  HBUINT16	قدر_ریکارڈ_گنتی;/* The number of value records — may be zero. */
+  Offset16_مقصد<شے_Variation_Store>
 		varStore;	/* Offset to item variation store table. */
-  UnsizedArrayOf<HBUINT8>
-		valuesZ;	/* Array of value records. The records must be
+  Unsized_Array_کا<HBUINT8>
+		اقدار_Z;	/* Array of value records. The records must be
 				 * in binary order of their valueTag field. */
 
-  public:
-  DEFINE_SIZE_ARRAY (12, valuesZ);
+  عوامی:
+  DEFINE_سائز_ARRAY (12, اقدار_Z);
 };
 
 } /* namespace OT */
 
 
-#define HB_ADD_MVAR_VAR(tag, field) \
-       c->serializer->check_assign (table->field, \
-				    roundf (table->field + \
-					    MVAR.get_var (tag, \
+#تعریف_کرو HB_جوڑو_MVAR_VAR(لیبل_2, میدان) \
+       c->serializer->check_تفویض (جدول->میدان, \
+				    roundf (جدول->میدان + \
+					    MVAR.get_var (لیبل_2, \
 							  c->plan->normalized_coords.arrayZ, \
-							  c->plan->normalized_coords.length)), \
-				    HB_SERIALIZE_ERROR_INT_OVERFLOW)
+							  c->plan->normalized_coords.لمبائی)), \
+				    HB_SERIALIZE_ERROR_INT_حد_سے_تجاوز)
 
 
-#endif /* HB_OT_VAR_MVAR_TABLE_HH */
+#اگر_ختم /* HB_OT_VAR_MVAR_TABLE_HH */

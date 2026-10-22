@@ -1,208 +1,208 @@
-#ifndef OT_LAYOUT_GPOS_MARKLIGPOSFORMAT1_HH
-#define OT_LAYOUT_GPOS_MARKLIGPOSFORMAT1_HH
+#اگر_غیر_تعریف_شدہ OT_LAYOUT_GPOS_MARKLIGPOSFORMAT1_HH
+#تعریف_کرو OT_LAYOUT_GPOS_MARKLIGPOSFORMAT1_HH
 
-#include "LigatureArray.hh"
+#شامل "LigatureArray.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+نامخلا OT {
+نامخلا Layout {
+نامخلا GPOS_impl {
 
 
-template <typename Types>
-struct MarkLigPosFormat1_2
+سانچہ <قسم_نام Types>
+ساخت MarkLigPosFormat1_2
 {
-  protected:
+  محفوظ:
   HBUINT16      format;                 /* Format identifier--format = 1 */
-  typename Types::template LOffsetTo<Coverage>
+  قسم_نام Types::سانچہ LOffset_مقصد<Coverage>
                 markCoverage;           /* Offset to Mark Coverage table--from
                                          * beginning of MarkLigPos subtable */
-  typename Types::template LOffsetTo<Coverage>
+  قسم_نام Types::سانچہ LOffset_مقصد<Coverage>
                 ligatureCoverage;       /* Offset to Ligature Coverage
                                          * table--from beginning of MarkLigPos
                                          * subtable */
-  HBUINT16      classCount;             /* Number of defined mark classes */
-  typename Types::template LOffsetTo<MarkArray<Types>>
+  HBUINT16      class_گنتی_2;             /* Number of defined mark classes */
+  قسم_نام Types::سانچہ LOffset_مقصد<MarkArray<Types>>
                 markArray;              /* Offset to MarkArray table--from
                                          * beginning of MarkLigPos subtable */
-  typename Types::template LOffsetTo<LigatureArray<Types>>
+  قسم_نام Types::سانچہ LOffset_مقصد<LigatureArray<Types>>
                 ligatureArray;          /* Offset to LigatureArray table--from
                                          * beginning of MarkLigPos subtable */
-  public:
-  DEFINE_SIZE_STATIC (4 + 4 * Types::LOffset::static_size);
+  عوامی:
+  DEFINE_سائز_STATIC (4 + 4 * Types::LOffset::static_سائز);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-                  markCoverage.sanitize (c, this) &&
-                  ligatureCoverage.sanitize (c, this) &&
-                  markArray.sanitize (c, this) &&
-                  ligatureArray.sanitize (c, this, (unsigned int) classCount));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ) &&
+                  markCoverage.sanitize (c, یہ) &&
+                  ligatureCoverage.sanitize (c, یہ) &&
+                  markArray.sanitize (c, یہ) &&
+                  ligatureArray.sanitize (c, یہ, (غیرعلامتی صحیح) class_گنتی_2));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  منطقی intersects (ثابت hb_سیٹ_t *glyphs) ثابت
   {
-    return (this+markCoverage).intersects (glyphs) &&
-           (this+ligatureCoverage).intersects (glyphs);
+    واپس (یہ+markCoverage).intersects (glyphs) &&
+           (یہ+ligatureCoverage).intersects (glyphs);
   }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const {}
+  خالی احاطہ_lookups (hb_احاطہ_lookups_context_t *c) ثابت {}
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  خالی collect_variation_indices (hb_collect_variation_indices_context_t *c) ثابت
   {
-    (this+markArray).collect_variation_indices (c, this+markCoverage);
+    (یہ+markArray).collect_variation_indices (c, یہ+markCoverage);
 
     hb_map_t klass_mapping;
-    Markclass_closure_and_remap_indexes (this+markCoverage, this+markArray, *c->glyph_set, &klass_mapping);
+    Markclass_احاطہ_and_remap_indexes (یہ+markCoverage, یہ+markArray, *c->glyph_سیٹ, &klass_mapping);
 
-    (this+ligatureArray).collect_variation_indices (c, this+ligatureCoverage,
-                                                   classCount, klass_mapping);
+    (یہ+ligatureArray).collect_variation_indices (c, یہ+ligatureCoverage,
+                                                   class_گنتی_2, klass_mapping);
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
+  خالی collect_glyphs (hb_collect_glyphs_context_t *c) ثابت
   {
-    if (unlikely (!(this+markCoverage).collect_coverage (c->input))) return;
-    if (unlikely (!(this+ligatureCoverage).collect_coverage (c->input))) return;
+    اگر (unlikely (!(یہ+markCoverage).collect_coverage (c->داخلہ))) واپس;
+    اگر (unlikely (!(یہ+ligatureCoverage).collect_coverage (c->داخلہ))) واپس;
   }
 
-  void collect_second_glyphs (hb_set_digest_t *digest) const
-  { (this+ligatureCoverage).collect_coverage (digest); }
+  خالی collect_دوسرا_glyphs (hb_سیٹ_digest_t *digest) ثابت
+  { (یہ+ligatureCoverage).collect_coverage (digest); }
 
-  const Coverage &get_coverage () const { return this+markCoverage; }
+  ثابت Coverage &get_coverage () ثابت { واپس یہ+markCoverage; }
 
-  static inline bool accept (hb_buffer_t *buffer, unsigned idx)
+  ساکن اندرونی منطقی accept (hb_بفر_t *بفر, غیرعلامتی idx)
   {
     /* We only want to attach to the first of a MultipleSubst sequence,
      * which might have been ligated into a preceding ligature, and in that
      * case the mark should attach to that ligature.
      * https://github.com/harfbuzz/harfbuzz/issues/4969
      * Reject others... */
-    return !_hb_glyph_info_multiplied (&buffer->info[idx]) ||
-	   0 == _hb_glyph_info_get_lig_comp (&buffer->info[idx]);
+    واپس !_hb_glyph_info_multiplied (&بفر->info[idx]) ||
+	   0 == _hb_glyph_info_get_lig_comp (&بفر->info[idx]);
   }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  منطقی apply (hb_ot_apply_context_t *c) ثابت
   {
-    TRACE_APPLY (this);
-    hb_buffer_t *buffer = c->buffer;
-    unsigned int mark_index = (this+markCoverage).get_coverage  (buffer->cur().codepoint);
-    if (likely (mark_index == NOT_COVERED)) return_trace (false);
+    TRACE_APPLY (یہ);
+    hb_بفر_t *بفر = c->بفر;
+    غیرعلامتی صحیح mark_اشاریہ = (یہ+markCoverage).get_coverage  (بفر->cur().codepoint);
+    اگر (likely (mark_اشاریہ == NOT_COVERED)) return_trace (جھوٹ);
 
     /* Now we search backwards for a non-mark glyph */
 
-    auto &skippy_iter = c->iter_input;
-    skippy_iter.set_lookup_props (LookupFlag::IgnoreMarks);
+    خودکار &skippy_iter = c->iter_داخلہ;
+    skippy_iter.سیٹ_lookup_props (LookupFlag::IgnoreMarks);
 
-    if (c->last_base_until > buffer->idx)
+    اگر (c->آخری_بنیاد_until > بفر->idx)
     {
-      c->last_base_until = 0;
-      c->last_base = -1;
+      c->آخری_بنیاد_until = 0;
+      c->آخری_بنیاد = -1;
     }
-    unsigned j;
-    for (j = buffer->idx; j > c->last_base_until; j--)
+    غیرعلامتی j;
+    برائے (j = بفر->idx; j > c->آخری_بنیاد_until; j--)
     {
-      auto match = skippy_iter.match (buffer->info[j - 1]);
-      if (match == skippy_iter.MATCH)
+      خودکار مطابقت = skippy_iter.مطابقت (بفر->info[j - 1]);
+      اگر (مطابقت == skippy_iter.مطابقت_2)
       {
         // https://github.com/harfbuzz/harfbuzz/issues/4124
-	if (!accept (buffer, j - 1) &&
-	    NOT_COVERED == (this+ligatureCoverage).get_coverage  (buffer->info[j - 1].codepoint))
-	  match = skippy_iter.SKIP;
+	اگر (!accept (بفر, j - 1) &&
+	    NOT_COVERED == (یہ+ligatureCoverage).get_coverage  (بفر->info[j - 1].codepoint))
+	  مطابقت = skippy_iter.SKIP;
       }
-      if (match == skippy_iter.MATCH)
+      اگر (مطابقت == skippy_iter.مطابقت_2)
       {
-	c->last_base = (signed) j - 1;
-	break;
+	c->آخری_بنیاد = (علامتی) j - 1;
+	توڑو;
       }
     }
-    c->last_base_until = buffer->idx;
-    if (c->last_base == -1)
+    c->آخری_بنیاد_until = بفر->idx;
+    اگر (c->آخری_بنیاد == -1)
     {
-      buffer->unsafe_to_concat_from_outbuffer (0, buffer->idx + 1);
-      return_trace (false);
+      بفر->unsafe_مقصد_concat_from_outbuffer (0, بفر->idx + 1);
+      return_trace (جھوٹ);
     }
 
-    unsigned idx = (unsigned) c->last_base;
+    غیرعلامتی idx = (غیرعلامتی) c->آخری_بنیاد;
 
     /* Checking that matched glyph is actually a ligature by GDEF is too strong; disabled */
     //if (!_hb_glyph_info_is_ligature (&buffer->info[idx])) { return_trace (false); }
 
-    unsigned int lig_index = (this+ligatureCoverage).get_coverage  (buffer->info[idx].codepoint);
-    if (lig_index == NOT_COVERED)
+    غیرعلامتی صحیح lig_اشاریہ = (یہ+ligatureCoverage).get_coverage  (بفر->info[idx].codepoint);
+    اگر (lig_اشاریہ == NOT_COVERED)
     {
-      buffer->unsafe_to_concat_from_outbuffer (idx, buffer->idx + 1);
-      return_trace (false);
+      بفر->unsafe_مقصد_concat_from_outbuffer (idx, بفر->idx + 1);
+      return_trace (جھوٹ);
     }
 
-    const LigatureArray<Types>& lig_array = this+ligatureArray;
-    const AnchorMatrix<Types, HBUINT16>& lig_attach = lig_array[lig_index];
+    ثابت LigatureArray<Types>& lig_array = یہ+ligatureArray;
+    ثابت Anchor_میٹرکس<Types, HBUINT16>& lig_attach = lig_array[lig_اشاریہ];
 
     /* Find component to attach to */
-    unsigned int comp_count = lig_attach.rows;
-    if (unlikely (!comp_count))
+    غیرعلامتی صحیح comp_گنتی = lig_attach.صفیں;
+    اگر (unlikely (!comp_گنتی))
     {
-      buffer->unsafe_to_concat_from_outbuffer (idx, buffer->idx + 1);
-      return_trace (false);
+      بفر->unsafe_مقصد_concat_from_outbuffer (idx, بفر->idx + 1);
+      return_trace (جھوٹ);
     }
 
     /* We must now check whether the ligature ID of the current mark glyph
      * is identical to the ligature ID of the found ligature.  If yes, we
      * can directly use the component index.  If not, we attach the mark
      * glyph to the last component of the ligature. */
-    unsigned int comp_index;
-    unsigned int lig_id = _hb_glyph_info_get_lig_id (&buffer->info[idx]);
-    unsigned int mark_id = _hb_glyph_info_get_lig_id (&buffer->cur());
-    unsigned int mark_comp = _hb_glyph_info_get_lig_comp (&buffer->cur());
-    if (lig_id && lig_id == mark_id && mark_comp > 0)
-      comp_index = hb_min (comp_count, _hb_glyph_info_get_lig_comp (&buffer->cur())) - 1;
-    else
-      comp_index = comp_count - 1;
+    غیرعلامتی صحیح comp_اشاریہ;
+    غیرعلامتی صحیح lig_id = _hb_glyph_info_get_lig_id (&بفر->info[idx]);
+    غیرعلامتی صحیح mark_id = _hb_glyph_info_get_lig_id (&بفر->cur());
+    غیرعلامتی صحیح mark_comp = _hb_glyph_info_get_lig_comp (&بفر->cur());
+    اگر (lig_id && lig_id == mark_id && mark_comp > 0)
+      comp_اشاریہ = hb_min (comp_گنتی, _hb_glyph_info_get_lig_comp (&بفر->cur())) - 1;
+    ورنہ
+      comp_اشاریہ = comp_گنتی - 1;
 
-    return_trace ((this+markArray).apply (c, mark_index, comp_index, lig_attach, classCount, idx));
+    return_trace ((یہ+markArray).apply (c, mark_اشاریہ, comp_اشاریہ, lig_attach, class_گنتی_2, idx));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = c->plan->glyph_map_gsub;
+    TRACE_SUBSET (یہ);
+    ثابت hb_سیٹ_t &glyphset = *c->plan->glyphset_gsub ();
+    ثابت hb_map_t &glyph_map = c->plan->glyph_map_gsub;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
-    out->format = format;
+    خودکار *برآمد = c->serializer->آغاز_embed (*یہ);
+    اگر (unlikely (!c->serializer->extend_min (برآمد))) return_trace (جھوٹ);
+    برآمد->format = format;
 
     hb_map_t klass_mapping;
-    Markclass_closure_and_remap_indexes (this+markCoverage, this+markArray, glyphset, &klass_mapping);
+    Markclass_احاطہ_and_remap_indexes (یہ+markCoverage, یہ+markArray, glyphset, &klass_mapping);
 
-    if (!klass_mapping.get_population ()) return_trace (false);
-    out->classCount = klass_mapping.get_population ();
+    اگر (!klass_mapping.get_population ()) return_trace (جھوٹ);
+    برآمد->class_گنتی_2 = klass_mapping.get_population ();
 
-    auto mark_iter =
-    + hb_zip (this+markCoverage, hb_range ((unsigned) (this+markArray).len))
-    | hb_filter (glyphset, hb_first)
+    خودکار mark_iter =
+    + hb_zip (یہ+markCoverage, hb_range ((غیرعلامتی) (یہ+markArray).len))
+    | hb_filter (glyphset, hb_پہلا)
     ;
 
-    auto new_mark_coverage =
+    خودکار new_mark_coverage =
     + mark_iter
-    | hb_map_retains_sorting (hb_first)
-    | hb_map_retains_sorting (glyph_map)
+    | hb_map_retains_ترتیب_کاری (hb_پہلا)
+    | hb_map_retains_ترتیب_کاری (glyph_map)
     ;
 
-    if (!out->markCoverage.serialize_serialize (c->serializer, new_mark_coverage))
-      return_trace (false);
+    اگر (!برآمد->markCoverage.serialize_serialize (c->serializer, new_mark_coverage))
+      return_trace (جھوٹ);
 
-    if (unlikely (!out->markArray.serialize_subset (c, markArray, this,
-						    (this+markCoverage).iter (),
+    اگر (unlikely (!برآمد->markArray.serialize_subset (c, markArray, یہ,
+						    (یہ+markCoverage).iter (),
 						    &klass_mapping)))
-      return_trace (false);
+      return_trace (جھوٹ);
 
-    hb_sorted_vector_t<hb_codepoint_t> new_lig_coverage;
-    if (!out->ligatureArray.serialize_subset (c, ligatureArray, this,
-					      hb_iter (this+ligatureCoverage),
-					      classCount, &klass_mapping, new_lig_coverage))
-      return_trace (false);
+    hb_sorted_سمتیہ_t<hb_codepoint_t> new_lig_coverage;
+    اگر (!برآمد->ligatureArray.serialize_subset (c, ligatureArray, یہ,
+					      hb_iter (یہ+ligatureCoverage),
+					      class_گنتی_2, &klass_mapping, new_lig_coverage))
+      return_trace (جھوٹ);
 
-    return_trace (out->ligatureCoverage.serialize_serialize (c->serializer, new_lig_coverage.iter ()));
+    return_trace (برآمد->ligatureCoverage.serialize_serialize (c->serializer, new_lig_coverage.iter ()));
   }
 
 };
@@ -211,4 +211,4 @@ struct MarkLigPosFormat1_2
 }
 }
 
-#endif /* OT_LAYOUT_GPOS_MARKLIGPOSFORMAT1_HH */
+#اگر_ختم /* OT_LAYOUT_GPOS_MARKLIGPOSFORMAT1_HH */

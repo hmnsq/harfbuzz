@@ -24,477 +24,477 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_VAR_FVAR_TABLE_HH
-#define HB_OT_VAR_FVAR_TABLE_HH
+#اگر_غیر_تعریف_شدہ HB_OT_VAR_FVAR_جدول_HH
+#تعریف_کرو HB_OT_VAR_FVAR_جدول_HH
 
-#include "hb-open-type.hh"
+#شامل "hb-open-type.hh"
 
 /*
  * fvar -- Font Variations
  * https://docs.microsoft.com/en-us/typography/opentype/spec/fvar
  */
 
-#define HB_OT_TAG_fvar HB_TAG('f','v','a','r')
+#تعریف_کرو HB_OT_لیبل_fvar HB_لیبل('f','v','a','r')
 
 
-namespace OT {
+نامخلا OT {
 
-static bool axis_coord_pinned_or_within_axis_range (const hb_array_t<const F16DOT16> coords,
-                                                    unsigned axis_index,
-                                                    Triple axis_limit)
+ساکن منطقی axis_coord_pinned_or_within_axis_range (ثابت hb_array_t<ثابت F16DOT16> coords,
+                                                    غیرعلامتی axis_اشاریہ,
+                                                    Triple axis_حد_بندی)
 {
-  float axis_coord = coords[axis_index].to_float ();
-  if (axis_limit.is_point ())
+  اعشاری axis_coord = coords[axis_اشاریہ].مقصد_float ();
+  اگر (axis_حد_بندی.is_نقطہ ())
   {
-    if (axis_limit.minimum != axis_coord)
-      return false;
+    اگر (axis_حد_بندی.minimum != axis_coord)
+      واپس جھوٹ;
   }
-  else
+  ورنہ
   {
-    if (axis_coord < axis_limit.minimum ||
-        axis_coord > axis_limit.maximum)
-      return false;
+    اگر (axis_coord < axis_حد_بندی.minimum ||
+        axis_coord > axis_حد_بندی.زیادہ_سے_زیادہ)
+      واپس جھوٹ;
   }
-  return true;
+  واپس سچ;
 }
 
-struct InstanceRecord
+ساخت Instance_ریکارڈ
 {
-  friend struct fvar;
+  دوست ساخت fvar;
 
-  hb_array_t<const F16DOT16> get_coordinates (unsigned int axis_count) const
-  { return coordinatesZ.as_array (axis_count); }
+  hb_array_t<ثابت F16DOT16> get_coordinates (غیرعلامتی صحیح axis_گنتی) ثابت
+  { واپس coordinatesZ.as_array (axis_گنتی); }
 
-  bool keep_instance (unsigned axis_count,
-                      const hb_map_t *axes_index_tag_map,
-                      const hb_hashmap_t<hb_tag_t, Triple> *axes_location) const
+  منطقی keep_instance (غیرعلامتی axis_گنتی,
+                      ثابت hb_map_t *axes_اشاریہ_لیبل_map,
+                      ثابت hb_hashmap_t<hb_لیبل_t, Triple> *axes_location) ثابت
   {
-    if (axes_location->is_empty ()) return true;
-    const hb_array_t<const F16DOT16> coords = get_coordinates (axis_count);
-    for (unsigned i = 0 ; i < axis_count; i++)
+    اگر (axes_location->is_empty ()) واپس سچ;
+    ثابت hb_array_t<ثابت F16DOT16> coords = get_coordinates (axis_گنتی);
+    برائے (غیرعلامتی i = 0 ; i < axis_گنتی; i++)
     {
-      uint32_t *axis_tag;
-      if (!axes_index_tag_map->has (i, &axis_tag))
-        return false;
-      if (!axes_location->has (*axis_tag))
-        continue;
+      uint32_t *axis_لیبل_2;
+      اگر (!axes_اشاریہ_لیبل_map->has (i, &axis_لیبل_2))
+        واپس جھوٹ;
+      اگر (!axes_location->has (*axis_لیبل_2))
+        جاری;
 
-      Triple axis_limit = axes_location->get (*axis_tag);
-      if (!axis_coord_pinned_or_within_axis_range (coords, i, axis_limit))
-        return false;
+      Triple axis_حد_بندی = axes_location->get (*axis_لیبل_2);
+      اگر (!axis_coord_pinned_or_within_axis_range (coords, i, axis_حد_بندی))
+        واپس جھوٹ;
     }
-    return true;
+    واپس سچ;
   }
 
-  bool subset (hb_subset_context_t *c,
-               unsigned axis_count,
-               bool has_postscript_nameid) const
+  منطقی subset (hb_subset_context_t *c,
+               غیرعلامتی axis_گنتی,
+               منطقی has_postscript_nameid) ثابت
   {
-    TRACE_SUBSET (this);
-    if (unlikely (!c->serializer->embed (subfamilyNameID))) return_trace (false);
-    if (unlikely (!c->serializer->embed (flags))) return_trace (false);
+    TRACE_SUBSET (یہ);
+    اگر (unlikely (!c->serializer->embed (subfamilyNameID))) return_trace (جھوٹ);
+    اگر (unlikely (!c->serializer->embed (flags))) return_trace (جھوٹ);
 
-    const hb_array_t<const F16DOT16> coords = get_coordinates (axis_count);
-    const hb_hashmap_t<hb_tag_t, Triple> *axes_location = &c->plan->user_axes_location;
-    for (unsigned i = 0 ; i < axis_count; i++)
+    ثابت hb_array_t<ثابت F16DOT16> coords = get_coordinates (axis_گنتی);
+    ثابت hb_hashmap_t<hb_لیبل_t, Triple> *axes_location = &c->plan->user_axes_location;
+    برائے (غیرعلامتی i = 0 ; i < axis_گنتی; i++)
     {
-      uint32_t *axis_tag;
-      Triple *axis_limit;
+      uint32_t *axis_لیبل_2;
+      Triple *axis_حد_بندی;
       // only keep instances whose coordinates == pinned axis location
-      if (!c->plan->axes_old_index_tag_map.has (i, &axis_tag)) return_trace (false);
-      if (axes_location->has (*axis_tag, &axis_limit))
+      اگر (!c->plan->axes_old_اشاریہ_لیبل_map.has (i, &axis_لیبل_2)) return_trace (جھوٹ);
+      اگر (axes_location->has (*axis_لیبل_2, &axis_حد_بندی))
       {
-        if (!axis_coord_pinned_or_within_axis_range (coords, i, *axis_limit))
-          return_trace (false);
+        اگر (!axis_coord_pinned_or_within_axis_range (coords, i, *axis_حد_بندی))
+          return_trace (جھوٹ);
 
         //skip axes dropped from fvar (pinned; or self-contained under avar2,
         //where other pinned axes stay in fvar as hidden)
-        if (axis_limit->is_point () && !c->plan->axes_index_map.has (i))
-          continue;
+        اگر (axis_حد_بندی->is_نقطہ () && !c->plan->axes_اشاریہ_map.has (i))
+          جاری;
       }
 
-      if (!c->serializer->embed (coords[i]))
-        return_trace (false);
+      اگر (!c->serializer->embed (coords[i]))
+        return_trace (جھوٹ);
     }
 
-    if (has_postscript_nameid)
+    اگر (has_postscript_nameid)
     {
       NameID name_id;
       name_id = StructAfter<NameID> (coords);
-      if (!c->serializer->embed (name_id))
-        return_trace (false);
+      اگر (!c->serializer->embed (name_id))
+        return_trace (جھوٹ);
     }
 
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int axis_count) const
+  منطقی sanitize (hb_sanitize_context_t *c, غیرعلامتی صحیح axis_گنتی) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ) &&
 		  hb_barrier () &&
-		  c->check_array (coordinatesZ.arrayZ, axis_count));
+		  c->check_array (coordinatesZ.arrayZ, axis_گنتی));
   }
 
-  protected:
+  محفوظ:
   NameID	subfamilyNameID;/* The name ID for entries in the 'name' table
 				 * that provide subfamily names for this instance. */
   HBUINT16	flags;		/* Reserved for future use — set to 0. */
-  UnsizedArrayOf<F16DOT16>
+  Unsized_Array_کا<F16DOT16>
 		coordinatesZ;	/* The coordinates array for this instance. */
   //NameID	postScriptNameIDX;/*Optional. The name ID for entries in the 'name'
   //				  * table that provide PostScript names for this
   //				  * instance. */
 
-  public:
-  DEFINE_SIZE_UNBOUNDED (4);
+  عوامی:
+  DEFINE_سائز_UNBOUNDED (4);
 };
 
-struct AxisRecord
+ساخت Axis_ریکارڈ
 {
-  int cmp (hb_tag_t key) const { return axisTag.cmp (key); }
+  صحیح cmp (hb_لیبل_t key) ثابت { واپس axis_لیبل.cmp (key); }
 
-  enum
+  شمار
   {
     AXIS_FLAG_HIDDEN	= 0x0001,
   };
 
-#ifndef HB_DISABLE_DEPRECATED
-  void get_axis_deprecated (hb_ot_var_axis_t *info) const
+#اگر_غیر_تعریف_شدہ HB_DISABLE_DEPRECATED
+  خالی get_axis_deprecated (hb_ot_var_axis_t *info) ثابت
   {
-    info->tag = axisTag;
+    info->لیبل_2 = axis_لیبل;
     info->name_id = axisNameID;
-    get_coordinates (info->min_value, info->default_value, info->max_value);
+    get_coordinates (info->min_قدر, info->default_قدر, info->max_قدر);
   }
-#endif
+#اگر_ختم
 
-  void get_axis_info (unsigned axis_index, hb_ot_var_axis_info_t *info) const
+  خالی get_axis_info (غیرعلامتی axis_اشاریہ, hb_ot_var_axis_info_t *info) ثابت
   {
-    info->axis_index = axis_index;
-    info->tag = axisTag;
+    info->axis_اشاریہ = axis_اشاریہ;
+    info->لیبل_2 = axis_لیبل;
     info->name_id = axisNameID;
-    info->flags = (hb_ot_var_axis_flags_t) (unsigned int) flags;
-    get_coordinates (info->min_value, info->default_value, info->max_value);
+    info->flags = (hb_ot_var_axis_flags_t) (غیرعلامتی صحیح) flags;
+    get_coordinates (info->min_قدر, info->default_قدر, info->max_قدر);
     info->reserved = 0;
   }
 
-  hb_tag_t get_axis_tag () const { return axisTag; }
+  hb_لیبل_t get_axis_لیبل () ثابت { واپس axis_لیبل; }
 
-  bool is_hidden () const { return flags & AXIS_FLAG_HIDDEN; }
+  منطقی is_hidden () ثابت { واپس flags & AXIS_FLAG_HIDDEN; }
 
-  float normalize_axis_value (float v) const
+  اعشاری normalize_axis_قدر (اعشاری v) ثابت
   {
-    float min_value, default_value, max_value;
-    get_coordinates (min_value, default_value, max_value);
+    اعشاری min_قدر, default_قدر, max_قدر;
+    get_coordinates (min_قدر, default_قدر, max_قدر);
 
-    v = hb_clamp (v, min_value, max_value);
+    v = hb_clamp (v, min_قدر, max_قدر);
 
-    if (v == default_value)
-      return 0;
-    else if (v < default_value)
-      return (v - default_value) / (default_value - min_value);
-    else
-      return (v - default_value) / (max_value - default_value);
+    اگر (v == default_قدر)
+      واپس 0;
+    ورنہ اگر (v < default_قدر)
+      واپس (v - default_قدر) / (default_قدر - min_قدر);
+    ورنہ
+      واپس (v - default_قدر) / (max_قدر - default_قدر);
   }
 
-  hb_ot_name_id_t get_name_id () const { return axisNameID; }
+  hb_ot_name_id_t get_name_id () ثابت { واپس axisNameID; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ));
   }
 
-  void get_coordinates (float &min, float &default_, float &max) const
+  خالی get_coordinates (اعشاری &min, اعشاری &default_, اعشاری &max) ثابت
   {
-    default_ = defaultValue.to_float ();
+    default_ = default_قدر_2.مقصد_float ();
     /* Ensure order, to simplify client math. */
-    min = hb_min (default_, minValue.to_float ());
-    max = hb_max (default_, maxValue.to_float ());
+    min = hb_min (default_, min_قدر_2.مقصد_float ());
+    max = hb_max (default_, max_قدر_2.مقصد_float ());
   }
 
-  float get_default () const
+  اعشاری get_default () ثابت
   {
-    return defaultValue.to_float ();
+    واپس default_قدر_2.مقصد_float ();
   }
 
-  TripleDistances get_triple_distances () const
+  TripleDistances get_triple_distances () ثابت
   {
-    float min, default_, max;
+    اعشاری min, default_, max;
     get_coordinates (min, default_, max);
-    return TripleDistances (min, default_, max);
+    واپس TripleDistances (min, default_, max);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (یہ);
+    خودکار *برآمد = c->serializer->embed (یہ);
+    اگر (unlikely (!برآمد)) return_trace (جھوٹ);
 
-    const hb_hashmap_t<hb_tag_t, Triple>& user_axes_location = c->plan->user_axes_location;
-    Triple *axis_limit;
-    if (user_axes_location.has (axisTag, &axis_limit))
+    ثابت hb_hashmap_t<hb_لیبل_t, Triple>& user_axes_location = c->plan->user_axes_location;
+    Triple *axis_حد_بندی;
+    اگر (user_axes_location.has (axis_لیبل, &axis_حد_بندی))
     {
-      if (c->plan->has_avar2 && axis_limit->is_point ())
+      اگر (c->plan->has_avar2 && axis_حد_بندی->is_نقطہ ())
       {
         /* Pinned axis in avar2 mode: keep in fvar as hidden with
          * min=default=max=pinned_value. */
-        out->minValue.set_float (axis_limit->middle);
-        out->defaultValue.set_float (axis_limit->middle);
-        out->maxValue.set_float (axis_limit->middle);
-        out->flags = out->flags | (HBUINT16) AXIS_FLAG_HIDDEN;
+        برآمد->min_قدر_2.سیٹ_float (axis_حد_بندی->درمیان);
+        برآمد->default_قدر_2.سیٹ_float (axis_حد_بندی->درمیان);
+        برآمد->max_قدر_2.سیٹ_float (axis_حد_بندی->درمیان);
+        برآمد->flags = برآمد->flags | (HBUINT16) AXIS_FLAG_HIDDEN;
       }
-      else
+      ورنہ
       {
-        out->minValue.set_float (axis_limit->minimum);
-        out->defaultValue.set_float (axis_limit->middle);
-        out->maxValue.set_float (axis_limit->maximum);
+        برآمد->min_قدر_2.سیٹ_float (axis_حد_بندی->minimum);
+        برآمد->default_قدر_2.سیٹ_float (axis_حد_بندی->درمیان);
+        برآمد->max_قدر_2.سیٹ_float (axis_حد_بندی->زیادہ_سے_زیادہ);
       }
     }
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  public:
-  Tag		axisTag;	/* Tag identifying the design variation for the axis. */
-  protected:
-  F16DOT16	minValue;	/* The minimum coordinate value for the axis. */
-  F16DOT16	defaultValue;	/* The default coordinate value for the axis. */
-  F16DOT16	maxValue;	/* The maximum coordinate value for the axis. */
-  public:
+  عوامی:
+  لیبل		axis_لیبل;	/* Tag identifying the design variation for the axis. */
+  محفوظ:
+  F16DOT16	min_قدر_2;	/* The minimum coordinate value for the axis. */
+  F16DOT16	default_قدر_2;	/* The default coordinate value for the axis. */
+  F16DOT16	max_قدر_2;	/* The maximum coordinate value for the axis. */
+  عوامی:
   HBUINT16	flags;		/* Axis flags. */
   NameID	axisNameID;	/* The name ID for entries in the 'name' table that
 				 * provide a display name for this axis. */
 
-  public:
-  DEFINE_SIZE_STATIC (20);
+  عوامی:
+  DEFINE_سائز_STATIC (20);
 };
 
-struct fvar
+ساخت fvar
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_fvar;
+  ساکن constexpr hb_لیبل_t جدول_لیبل = HB_OT_لیبل_fvar;
 
-  bool has_data () const { return version.to_int (); }
+  منطقی has_ڈیٹا () ثابت { واپس نسخہ.مقصد_int (); }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (version.sanitize (c) &&
+    TRACE_SANITIZE (یہ);
+    return_trace (نسخہ.sanitize (c) &&
 		  hb_barrier () &&
-		  likely (version.major == 1) &&
-		  c->check_struct (this) &&
+		  likely (نسخہ.major == 1) &&
+		  c->check_struct (یہ) &&
 		  hb_barrier () &&
-		  axisSize == 20 && /* Assumed in our code. */
-		  instanceSize >= axisCount * 4 + 4 &&
+		  axis_سائز == 20 && /* Assumed in our code. */
+		  instance_سائز >= axis_گنتی_2 * 4 + 4 &&
 		  get_axes ().sanitize (c) &&
-		  c->check_range (&StructAfter<InstanceRecord> (get_axes ()),
-				  instanceCount, instanceSize));
+		  c->check_range (&StructAfter<Instance_ریکارڈ> (get_axes ()),
+				  instance_گنتی, instance_سائز));
   }
 
-  unsigned int get_axis_count () const { return axisCount; }
+  غیرعلامتی صحیح get_axis_گنتی () ثابت { واپس axis_گنتی_2; }
 
-#ifndef HB_DISABLE_DEPRECATED
-  unsigned int get_axes_deprecated (unsigned int      start_offset,
-				    unsigned int     *axes_count /* IN/OUT */,
-				    hb_ot_var_axis_t *axes_array /* OUT */) const
+#اگر_غیر_تعریف_شدہ HB_DISABLE_DEPRECATED
+  غیرعلامتی صحیح get_axes_deprecated (غیرعلامتی صحیح      آغاز_انحراف,
+				    غیرعلامتی صحیح     *axes_گنتی /* IN/OUT */,
+				    hb_ot_var_axis_t *axes_array /*برآمد*/) ثابت
   {
-    if (axes_count && axes_array)
+    اگر (axes_گنتی && axes_array)
     {
-      hb_array_t<const AxisRecord> arr = get_axes ().sub_array (start_offset, axes_count);
-      for (unsigned i = 0; i < arr.length; ++i)
+      hb_array_t<ثابت Axis_ریکارڈ> arr = get_axes ().sub_array (آغاز_انحراف, axes_گنتی);
+      برائے (غیرعلامتی i = 0; i < arr.لمبائی; ++i)
 	arr[i].get_axis_deprecated (&axes_array[i]);
     }
-    return axisCount;
+    واپس axis_گنتی_2;
   }
-#endif
+#اگر_ختم
 
-  unsigned int get_axis_infos (unsigned int           start_offset,
-			       unsigned int          *axes_count /* IN/OUT */,
-			       hb_ot_var_axis_info_t *axes_array /* OUT */) const
+  غیرعلامتی صحیح get_axis_infos (غیرعلامتی صحیح           آغاز_انحراف,
+			       غیرعلامتی صحیح          *axes_گنتی /* IN/OUT */,
+			       hb_ot_var_axis_info_t *axes_array /*برآمد*/) ثابت
   {
-    if (axes_count && axes_array)
+    اگر (axes_گنتی && axes_array)
     {
-      hb_array_t<const AxisRecord> arr = get_axes ().sub_array (start_offset, axes_count);
-      for (unsigned i = 0; i < arr.length; ++i)
-	arr[i].get_axis_info (start_offset + i, &axes_array[i]);
+      hb_array_t<ثابت Axis_ریکارڈ> arr = get_axes ().sub_array (آغاز_انحراف, axes_گنتی);
+      برائے (غیرعلامتی i = 0; i < arr.لمبائی; ++i)
+	arr[i].get_axis_info (آغاز_انحراف + i, &axes_array[i]);
     }
-    return axisCount;
+    واپس axis_گنتی_2;
   }
 
-#ifndef HB_DISABLE_DEPRECATED
-  bool
-  find_axis_deprecated (hb_tag_t tag, unsigned *axis_index, hb_ot_var_axis_t *info) const
+#اگر_غیر_تعریف_شدہ HB_DISABLE_DEPRECATED
+  منطقی
+  ڈھونڈو_axis_deprecated (hb_لیبل_t لیبل_2, غیرعلامتی *axis_اشاریہ, hb_ot_var_axis_t *info) ثابت
   {
-    unsigned i;
-    if (!axis_index) axis_index = &i;
-    *axis_index = HB_OT_VAR_NO_AXIS_INDEX;
-    auto axes = get_axes ();
-    return axes.lfind (tag, axis_index) && ((void) axes[*axis_index].get_axis_deprecated (info), true);
+    غیرعلامتی i;
+    اگر (!axis_اشاریہ) axis_اشاریہ = &i;
+    *axis_اشاریہ = HB_OT_VAR_NO_AXIS_اشاریہ;
+    خودکار axes = get_axes ();
+    واپس axes.lfind (لیبل_2, axis_اشاریہ) && ((خالی) axes[*axis_اشاریہ].get_axis_deprecated (info), سچ);
   }
-#endif
-  bool
-  find_axis_info (hb_tag_t tag, hb_ot_var_axis_info_t *info) const
+#اگر_ختم
+  منطقی
+  ڈھونڈو_axis_info (hb_لیبل_t لیبل_2, hb_ot_var_axis_info_t *info) ثابت
   {
-    unsigned i;
-    auto axes = get_axes ();
-    return axes.lfind (tag, &i) && ((void) axes[i].get_axis_info (i, info), true);
-  }
-
-  float normalize_axis_value (unsigned int axis_index, float v) const
-  { return get_axes ()[axis_index].normalize_axis_value (v); }
-
-  unsigned int get_instance_count () const { return instanceCount; }
-
-  hb_ot_name_id_t get_instance_subfamily_name_id (unsigned int instance_index) const
-  {
-    const InstanceRecord *instance = get_instance (instance_index);
-    if (unlikely (!instance)) return HB_OT_NAME_ID_INVALID;
-    return instance->subfamilyNameID;
+    غیرعلامتی i;
+    خودکار axes = get_axes ();
+    واپس axes.lfind (لیبل_2, &i) && ((خالی) axes[i].get_axis_info (i, info), سچ);
   }
 
-  hb_ot_name_id_t get_instance_postscript_name_id (unsigned int instance_index) const
+  اعشاری normalize_axis_قدر (غیرعلامتی صحیح axis_اشاریہ, اعشاری v) ثابت
+  { واپس get_axes ()[axis_اشاریہ].normalize_axis_قدر (v); }
+
+  غیرعلامتی صحیح get_instance_گنتی () ثابت { واپس instance_گنتی; }
+
+  hb_ot_name_id_t get_instance_subfamily_name_id (غیرعلامتی صحیح instance_اشاریہ) ثابت
   {
-    const InstanceRecord *instance = get_instance (instance_index);
-    if (unlikely (!instance)) return HB_OT_NAME_ID_INVALID;
-    if (instanceSize >= axisCount * 4 + 6)
-      return StructAfter<NameID> (instance->get_coordinates (axisCount));
-    return HB_OT_NAME_ID_INVALID;
+    ثابت Instance_ریکارڈ *instance = get_instance (instance_اشاریہ);
+    اگر (unlikely (!instance)) واپس HB_OT_NAME_ID_INVALID;
+    واپس instance->subfamilyNameID;
   }
 
-  unsigned int get_instance_coords (unsigned int  instance_index,
-				    unsigned int *coords_length, /* IN/OUT */
-				    float        *coords         /* OUT */) const
+  hb_ot_name_id_t get_instance_postscript_name_id (غیرعلامتی صحیح instance_اشاریہ) ثابت
   {
-    const InstanceRecord *instance = get_instance (instance_index);
-    if (unlikely (!instance))
+    ثابت Instance_ریکارڈ *instance = get_instance (instance_اشاریہ);
+    اگر (unlikely (!instance)) واپس HB_OT_NAME_ID_INVALID;
+    اگر (instance_سائز >= axis_گنتی_2 * 4 + 6)
+      واپس StructAfter<NameID> (instance->get_coordinates (axis_گنتی_2));
+    واپس HB_OT_NAME_ID_INVALID;
+  }
+
+  غیرعلامتی صحیح get_instance_coords (غیرعلامتی صحیح  instance_اشاریہ,
+				    غیرعلامتی صحیح *coords_لمبائی, /* IN/OUT */
+				    اعشاری        *coords         /*برآمد*/) ثابت
+  {
+    ثابت Instance_ریکارڈ *instance = get_instance (instance_اشاریہ);
+    اگر (unlikely (!instance))
     {
-      if (coords_length)
-	*coords_length = 0;
-      return 0;
-    }
-
-    if (coords_length && *coords_length && coords)
-    {
-      hb_array_t<const F16DOT16> instanceCoords = instance->get_coordinates (axisCount)
-							 .sub_array (0, coords_length);
-      for (unsigned int i = 0; i < instanceCoords.length; i++)
-	coords[i] = instanceCoords.arrayZ[i].to_float ();
-    }
-    return axisCount;
-  }
-
-  void collect_name_ids (hb_hashmap_t<hb_tag_t, Triple> *user_axes_location,
-			 hb_map_t *axes_old_index_tag_map,
-			 hb_set_t *nameids  /* IN/OUT */) const
-  {
-    if (!has_data ()) return;
-
-    auto axis_records = get_axes ();
-    for (unsigned i = 0 ; i < (unsigned)axisCount; i++)
-    {
-      hb_tag_t axis_tag = axis_records[i].get_axis_tag ();
-      if (user_axes_location->has (axis_tag) &&
-          user_axes_location->get (axis_tag).is_point ())
-        continue;
-
-      nameids->add (axis_records[i].get_name_id ());
+      اگر (coords_لمبائی)
+	*coords_لمبائی = 0;
+      واپس 0;
     }
 
-    for (unsigned i = 0 ; i < (unsigned)instanceCount; i++)
+    اگر (coords_لمبائی && *coords_لمبائی && coords)
     {
-      const InstanceRecord *instance = get_instance (i);
+      hb_array_t<ثابت F16DOT16> instanceCoords = instance->get_coordinates (axis_گنتی_2)
+							 .sub_array (0, coords_لمبائی);
+      برائے (غیرعلامتی صحیح i = 0; i < instanceCoords.لمبائی; i++)
+	coords[i] = instanceCoords.arrayZ[i].مقصد_float ();
+    }
+    واپس axis_گنتی_2;
+  }
 
-      if (!instance->keep_instance (axisCount, axes_old_index_tag_map, user_axes_location))
-        continue;
+  خالی collect_name_ids (hb_hashmap_t<hb_لیبل_t, Triple> *user_axes_location,
+			 hb_map_t *axes_old_اشاریہ_لیبل_map,
+			 hb_سیٹ_t *nameids  /* IN/OUT */) ثابت
+  {
+    اگر (!has_ڈیٹا ()) واپس;
 
-      nameids->add (instance->subfamilyNameID);
+    خودکار axis_اندراجات = get_axes ();
+    برائے (غیرعلامتی i = 0 ; i < (غیرعلامتی)axis_گنتی_2; i++)
+    {
+      hb_لیبل_t axis_لیبل_2 = axis_اندراجات[i].get_axis_لیبل ();
+      اگر (user_axes_location->has (axis_لیبل_2) &&
+          user_axes_location->get (axis_لیبل_2).is_نقطہ ())
+        جاری;
 
-      if (instanceSize >= axisCount * 4 + 6)
+      nameids->جوڑو (axis_اندراجات[i].get_name_id ());
+    }
+
+    برائے (غیرعلامتی i = 0 ; i < (غیرعلامتی)instance_گنتی; i++)
+    {
+      ثابت Instance_ریکارڈ *instance = get_instance (i);
+
+      اگر (!instance->keep_instance (axis_گنتی_2, axes_old_اشاریہ_لیبل_map, user_axes_location))
+        جاری;
+
+      nameids->جوڑو (instance->subfamilyNameID);
+
+      اگر (instance_سائز >= axis_گنتی_2 * 4 + 6)
       {
-        unsigned post_script_name_id = StructAfter<NameID> (instance->get_coordinates (axisCount));
-        if (post_script_name_id != HB_OT_NAME_ID_INVALID) nameids->add (post_script_name_id);
+        غیرعلامتی post_script_name_id = StructAfter<NameID> (instance->get_coordinates (axis_گنتی_2));
+        اگر (post_script_name_id != HB_OT_NAME_ID_INVALID) nameids->جوڑو (post_script_name_id);
       }
     }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    unsigned retained_axis_count = c->plan->axes_index_map.get_population ();
-    if (!retained_axis_count) //all axes are pinned
-      return_trace (false);
+    TRACE_SUBSET (یہ);
+    غیرعلامتی retained_axis_گنتی = c->plan->axes_اشاریہ_map.get_population ();
+    اگر (!retained_axis_گنتی) //all axes are pinned
+      return_trace (جھوٹ);
 
-    fvar *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    fvar *برآمد = c->serializer->embed (یہ);
+    اگر (unlikely (!برآمد)) return_trace (جھوٹ);
 
-    if (!c->serializer->check_assign (out->axisCount, retained_axis_count, HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
+    اگر (!c->serializer->check_تفویض (برآمد->axis_گنتی_2, retained_axis_گنتی, HB_SERIALIZE_ERROR_INT_حد_سے_تجاوز))
+      return_trace (جھوٹ);
 
-    bool has_postscript_nameid = false;
-    if (instanceSize >= axisCount * 4 + 6)
-      has_postscript_nameid = true;
+    منطقی has_postscript_nameid = جھوٹ;
+    اگر (instance_سائز >= axis_گنتی_2 * 4 + 6)
+      has_postscript_nameid = سچ;
 
-    if (!c->serializer->check_assign (out->instanceSize, retained_axis_count * 4 + (has_postscript_nameid ? 6 : 4),
-                                      HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
+    اگر (!c->serializer->check_تفویض (برآمد->instance_سائز, retained_axis_گنتی * 4 + (has_postscript_nameid ? 6 : 4),
+                                      HB_SERIALIZE_ERROR_INT_حد_سے_تجاوز))
+      return_trace (جھوٹ);
 
-    auto axes_records = get_axes ();
-    for (unsigned i = 0 ; i < (unsigned)axisCount; i++)
+    خودکار axes_اندراجات = get_axes ();
+    برائے (غیرعلامتی i = 0 ; i < (غیرعلامتی)axis_گنتی_2; i++)
     {
-      if (!c->plan->axes_index_map.has (i)) continue;
-      if (unlikely (!axes_records[i].subset (c)))
-        return_trace (false);
+      اگر (!c->plan->axes_اشاریہ_map.has (i)) جاری;
+      اگر (unlikely (!axes_اندراجات[i].subset (c)))
+        return_trace (جھوٹ);
     }
 
-    if (!c->serializer->check_assign (out->firstAxis, get_size (), HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
+    اگر (!c->serializer->check_تفویض (برآمد->پہلا_Axis, get_سائز (), HB_SERIALIZE_ERROR_INT_حد_سے_تجاوز))
+      return_trace (جھوٹ);
 
-    unsigned num_retained_instances = 0;
-    for (unsigned i = 0 ; i < (unsigned)instanceCount; i++)
+    غیرعلامتی عدد_retained_instances = 0;
+    برائے (غیرعلامتی i = 0 ; i < (غیرعلامتی)instance_گنتی; i++)
     {
-      const InstanceRecord *instance = get_instance (i);
-      auto snap = c->serializer->snapshot ();
-      if (!instance->subset (c, axisCount, has_postscript_nameid))
+      ثابت Instance_ریکارڈ *instance = get_instance (i);
+      خودکار snap = c->serializer->snapshot ();
+      اگر (!instance->subset (c, axis_گنتی_2, has_postscript_nameid))
         c->serializer->revert (snap);
-      else
-        num_retained_instances++;
+      ورنہ
+        عدد_retained_instances++;
     }
 
-    return_trace (c->serializer->check_assign (out->instanceCount, num_retained_instances, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    return_trace (c->serializer->check_تفویض (برآمد->instance_گنتی, عدد_retained_instances, HB_SERIALIZE_ERROR_INT_حد_سے_تجاوز));
   }
 
-  public:
-  hb_array_t<const AxisRecord> get_axes () const
-  { return hb_array (&(this+firstAxis), axisCount); }
+  عوامی:
+  hb_array_t<ثابت Axis_ریکارڈ> get_axes () ثابت
+  { واپس hb_array (&(یہ+پہلا_Axis), axis_گنتی_2); }
 
-  const InstanceRecord *get_instance (unsigned int i) const
+  ثابت Instance_ریکارڈ *get_instance (غیرعلامتی صحیح i) ثابت
   {
-    if (unlikely (i >= instanceCount)) return nullptr;
-   return &StructAtOffset<InstanceRecord> (&StructAfter<InstanceRecord> (get_axes ()),
-					   i * instanceSize);
+    اگر (unlikely (i >= instance_گنتی)) واپس خالی_اشاریہ;
+   واپس &Struct_At_انحراف<Instance_ریکارڈ> (&StructAfter<Instance_ریکارڈ> (get_axes ()),
+					   i * instance_سائز);
   }
 
-  protected:
-  FixedVersion<>version;	/* Version of the fvar table
+  محفوظ:
+  Fixed_نسخہ<>نسخہ;	/* Version of the fvar table
 				 * initially set to 0x00010000u */
-  Offset16To<AxisRecord>
-		firstAxis;	/* Offset in bytes from the beginning of the table
+  Offset16_مقصد<Axis_ریکارڈ>
+		پہلا_Axis;	/* Offset in bytes from the beginning of the table
 				 * to the start of the AxisRecord array. */
   HBUINT16	reserved;	/* This field is permanently reserved. Set to 2. */
-  HBUINT16	axisCount;	/* The number of variation axes in the font (the
+  HBUINT16	axis_گنتی_2;	/* The number of variation axes in the font (the
 				 * number of records in the axes array). */
-  HBUINT16	axisSize;	/* The size in bytes of each VariationAxisRecord —
+  HBUINT16	axis_سائز;	/* The size in bytes of each VariationAxisRecord —
 				 * set to 20 (0x0014) for this version. */
-  HBUINT16	instanceCount;	/* The number of named instances defined in the font
+  HBUINT16	instance_گنتی;	/* The number of named instances defined in the font
 				 * (the number of records in the instances array). */
-  HBUINT16	instanceSize;	/* The size in bytes of each InstanceRecord — set
+  HBUINT16	instance_سائز;	/* The size in bytes of each InstanceRecord — set
 				 * to either axisCount * sizeof(F16DOT16) + 4, or to
 				 * axisCount * sizeof(F16DOT16) + 6. */
 
-  public:
-  DEFINE_SIZE_STATIC (16);
+  عوامی:
+  DEFINE_سائز_STATIC (16);
 };
 
 } /* namespace OT */
 
 
-#endif /* HB_OT_VAR_FVAR_TABLE_HH */
+#اگر_ختم /* HB_OT_VAR_FVAR_TABLE_HH */

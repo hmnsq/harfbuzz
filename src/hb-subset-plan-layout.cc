@@ -24,567 +24,567 @@
  * Google Author(s): Garret Rieger, Qunxin Liu, Roderick Sheeter
  */
 
-#include "hb-subset-plan.hh"
+#شامل "hb-subset-plan.hh"
 
-#include "hb-ot-layout-gdef-table.hh"
-#include "hb-ot-layout-gpos-table.hh"
-#include "hb-ot-layout-gsub-table.hh"
-#include "hb-ot-math-table.hh"
+#شامل "hb-ot-layout-gdef-table.hh"
+#شامل "hb-ot-layout-gpos-table.hh"
+#شامل "hb-ot-layout-gsub-table.hh"
+#شامل "hb-ot-math-table.hh"
 
-using OT::Layout::GSUB;
-using OT::Layout::GPOS;
+استعمال OT::Layout::GSUB;
+استعمال OT::Layout::GPOS;
 
-#ifndef HB_NO_SUBSET_LAYOUT
+#اگر_غیر_تعریف_شدہ HB_NO_SUBSET_LAYOUT
 
-double
-hb_subset_plan_t::layout_variation_delta (unsigned var_idx HB_UNUSED)
+دوہرا
+hb_subset_plan_t::layout_variation_delta (غیرعلامتی var_idx HB_غیر_مستعمل)
 {
-#ifndef HB_NO_VAR
-  hb_blob_ptr_t<OT::GDEF> gdef = source_table<OT::GDEF> ();
-  double delta = gdef->get_var_store ().get_delta<double> (var_idx,
+#اگر_غیر_تعریف_شدہ HB_NO_VAR
+  hb_blob_ptr_t<OT::GDEF> gdef = ماخذ_جدول<OT::GDEF> ();
+  دوہرا delta = gdef->get_var_store ().get_delta<دوہرا> (var_idx,
                                                 normalized_coords.as_array ());
   gdef.destroy ();
-  return delta;
-#else
-  return 0.f;
-#endif
+  واپس delta;
+#ورنہ
+  واپس 0.f;
+#اگر_ختم
 }
 
-void
-remap_used_mark_sets (hb_subset_plan_t *plan,
-                      hb_map_t& used_mark_sets_map)
+خالی
+remap_مستعمل_mark_sets (hb_subset_plan_t *plan,
+                      hb_map_t& مستعمل_mark_sets_map)
 {
-  hb_blob_ptr_t<OT::GDEF> gdef = plan->source_table<OT::GDEF> ();
+  hb_blob_ptr_t<OT::GDEF> gdef = plan->ماخذ_جدول<OT::GDEF> ();
 
-  if (!gdef->has_data () || !gdef->has_mark_glyph_sets ())
+  اگر (!gdef->has_ڈیٹا () || !gdef->has_mark_glyph_sets ())
   {
     gdef.destroy ();
-    return;
+    واپس;
   }
 
-  hb_set_t used_mark_sets;
-  gdef->get_mark_glyph_sets ().collect_used_mark_sets (plan->_glyphset_gsub, used_mark_sets);
+  hb_سیٹ_t مستعمل_mark_sets;
+  gdef->get_mark_glyph_sets ().collect_مستعمل_mark_sets (plan->_glyphset_gsub, مستعمل_mark_sets);
   gdef.destroy ();
 
-  remap_indexes (&used_mark_sets, &used_mark_sets_map);
+  remap_indexes (&مستعمل_mark_sets, &مستعمل_mark_sets_map);
 }
 
 /*
  * Removes all tags from 'tags' that are not in filter. Additionally eliminates any duplicates.
  * Returns true if anything was removed (not including duplicates).
  */
-static bool _filter_tag_list(hb_vector_t<hb_tag_t>* tags, /* IN/OUT */
-                             const hb_set_t* filter)
+ساکن منطقی filter_لیبل_list(hb_سمتیہ_t<hb_لیبل_t>* لیبل_فہرست, /* IN/OUT */
+                             ثابت hb_سیٹ_t* filter)
 {
-  hb_vector_t<hb_tag_t> out;
-  out.alloc (tags->get_size() + 1); // +1 is to allocate room for the null terminator.
+  hb_سمتیہ_t<hb_لیبل_t> برآمد;
+  برآمد.alloc (لیبل_فہرست->get_سائز() + 1); // +1 is to allocate room for the null terminator.
 
-  bool removed = false;
-  hb_set_t visited;
+  منطقی removed = جھوٹ;
+  hb_سیٹ_t دیکھا;
 
-  for (hb_tag_t tag : *tags)
+  برائے (hb_لیبل_t لیبل_2 : *لیبل_فہرست)
   {
-    if (!tag) continue;
-    if (visited.has (tag)) continue;
+    اگر (!لیبل_2) جاری;
+    اگر (دیکھا.has (لیبل_2)) جاری;
 
-    if (!filter->has (tag))
+    اگر (!filter->has (لیبل_2))
     {
-      removed = true;
-      continue;
+      removed = سچ;
+      جاری;
     }
 
-    visited.add (tag);
-    out.push (tag);
+    دیکھا.جوڑو (لیبل_2);
+    برآمد.push (لیبل_2);
   }
 
   // The collect function needs a null element to signal end of the array.
-  out.push (HB_TAG_NONE);
+  برآمد.push (HB_لیبل_NONE);
 
-  hb_swap (out, *tags);
-  return removed;
+  hb_تبادلہ (برآمد, *لیبل_فہرست);
+  واپس removed;
 }
 
-template <typename T>
-static bool
+سانچہ <قسم_نام T>
+ساکن منطقی
 _collect_instanced_lookup_variations (
     hb_subset_plan_t *plan,
-    const T& table,
-    const hb_set_t *feature_indices,
-    hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *lookup_variations)
+    ثابت T& جدول,
+    ثابت hb_سیٹ_t *feature_indices,
+    hb_hashmap_t<غیرعلامتی, hb::shared_ptr<hb_سیٹ_t>> *lookup_variations)
 {
-  hb_blob_ptr_t<OT::GDEF> gdef = plan->source_table<OT::GDEF> ();
-  OT::ItemVarStoreInstancer instancer (&gdef->get_var_store (), nullptr,
+  hb_blob_ptr_t<OT::GDEF> gdef = plan->ماخذ_جدول<OT::GDEF> ();
+  OT::شے_Var_Store_Instancer instancer (&gdef->get_var_store (), خالی_اشاریہ,
 				       plan->normalized_coords.as_array ());
-  hb_vector_t<unsigned> state;
-  unsigned variations_index;
-  bool success = table.get_feature_variations_state (
+  hb_سمتیہ_t<غیرعلامتی> state;
+  غیرعلامتی variations_اشاریہ;
+  منطقی success = جدول.get_feature_variations_state (
 	plan->normalized_coords.arrayZ,
-	plan->normalized_coords.length,
-	&variations_index,
+	plan->normalized_coords.لمبائی,
+	&variations_اشاریہ,
 	&instancer,
 	&state);
   gdef.destroy ();
 
-  if (unlikely (!success || state.in_error ()))
-    return plan->check_success (false);
+  اگر (unlikely (!success || state.اندر_error ()))
+    واپس plan->check_success (جھوٹ);
 
-  const auto &variations = table.get_feature_variations ();
-  for (const auto &record : variations.get_lookup_variation_records ())
+  ثابت خودکار &variations = جدول.get_feature_variations ();
+  برائے (ثابت خودکار &ریکارڈ : variations.get_lookup_variation_اندراجات ())
   {
-    unsigned feature_index = record.get_feature_index ();
-    if (!feature_indices->has (feature_index)) continue;
+    غیرعلامتی feature_اشاریہ = ریکارڈ.get_feature_اشاریہ ();
+    اگر (!feature_indices->has (feature_اشاریہ)) جاری;
 
-    hb::shared_ptr<hb_set_t> lookups {hb_set_create ()};
-    record.collect_lookups (&variations,
-                           table.get_feature_variation (feature_index, variations_index),
+    hb::shared_ptr<hb_سیٹ_t> lookups {hb_سیٹ_create ()};
+    ریکارڈ.collect_lookups (&variations,
+                           جدول.get_feature_variation (feature_اشاریہ, variations_اشاریہ),
                            state.as_sorted_array (), lookups);
 
-    if (unlikely (lookups->in_error () ||
-		  !lookup_variations->set (feature_index, lookups)))
-      return plan->check_success (false);
+    اگر (unlikely (lookups->اندر_error () ||
+		  !lookup_variations->سیٹ (feature_اشاریہ, lookups)))
+      واپس plan->check_success (جھوٹ);
   }
 
-  return true;
+  واپس سچ;
 }
 
-template <typename T>
-static void _collect_layout_indices (hb_subset_plan_t     *plan,
-                                     const T&              table,
-                                     hb_set_t		  *lookup_indices, /* OUT */
-                                     hb_set_t		  *feature_indices, /* OUT */
-                                     hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map, /* OUT */
-                                     hb_hashmap_t<unsigned, const OT::Feature*> *feature_substitutes_map, /* OUT */
-                                     hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *lookup_variations, /* OUT */
-                                     hb_set_t& catch_all_record_feature_idxes, /* OUT */
-                                     hb_hashmap_t<unsigned, hb_pair_t<const void*, const void*>>& catch_all_record_idx_feature_map /* OUT */)
+سانچہ <قسم_نام T>
+ساکن خالی _collect_layout_indices (hb_subset_plan_t     *plan,
+                                     ثابت T&              جدول,
+                                     hb_سیٹ_t		  *lookup_indices, /*برآمد*/
+                                     hb_سیٹ_t		  *feature_indices, /*برآمد*/
+                                     hb_hashmap_t<غیرعلامتی, hb::shared_ptr<hb_سیٹ_t>> *feature_ریکارڈ_cond_idx_map, /*برآمد*/
+                                     hb_hashmap_t<غیرعلامتی, ثابت OT::Feature*> *feature_substitutes_map, /*برآمد*/
+                                     hb_hashmap_t<غیرعلامتی, hb::shared_ptr<hb_سیٹ_t>> *lookup_variations, /*برآمد*/
+                                     hb_سیٹ_t& catch_all_ریکارڈ_feature_idxes, /*برآمد*/
+                                     hb_hashmap_t<غیرعلامتی, hb_pair_t<ثابت خالی*, ثابت خالی*>>& catch_all_ریکارڈ_idx_feature_map /*برآمد*/)
 {
-  unsigned num_features = table.get_feature_count ();
-  hb_vector_t<hb_tag_t> features;
-  if (!plan->check_success (features.resize (num_features))) return;
-  table.get_feature_tags (0, &num_features, features.arrayZ);
-  bool retain_all_features = !_filter_tag_list (&features, &plan->layout_features);
+  غیرعلامتی عدد_features = جدول.get_feature_گنتی ();
+  hb_سمتیہ_t<hb_لیبل_t> features;
+  اگر (!plan->check_success (features.resize (عدد_features))) واپس;
+  جدول.get_feature_لیبل_فہرست (0, &عدد_features, features.arrayZ);
+  منطقی retain_all_features = !filter_لیبل_list (&features, &plan->layout_features);
 
-  unsigned num_scripts = table.get_script_count ();
-  hb_vector_t<hb_tag_t> scripts;
-  if (!plan->check_success (scripts.resize (num_scripts))) return;
-  table.get_script_tags (0, &num_scripts, scripts.arrayZ);
-  bool retain_all_scripts = !_filter_tag_list (&scripts, &plan->layout_scripts);
+  غیرعلامتی عدد_scripts = جدول.get_script_گنتی ();
+  hb_سمتیہ_t<hb_لیبل_t> scripts;
+  اگر (!plan->check_success (scripts.resize (عدد_scripts))) واپس;
+  جدول.get_script_لیبل_فہرست (0, &عدد_scripts, scripts.arrayZ);
+  منطقی retain_all_scripts = !filter_لیبل_list (&scripts, &plan->layout_scripts);
 
-  if (!plan->check_success (!features.in_error ()) || !features
-      || !plan->check_success (!scripts.in_error ()) || !scripts)
-    return;
+  اگر (!plan->check_success (!features.اندر_error ()) || !features
+      || !plan->check_success (!scripts.اندر_error ()) || !scripts)
+    واپس;
 
-  hb_ot_layout_collect_features (plan->source,
-                                 T::tableTag,
-                                 retain_all_scripts ? nullptr : scripts.arrayZ,
-                                 nullptr,
-                                 retain_all_features ? nullptr : features.arrayZ,
+  hb_ot_layout_collect_features (plan->ماخذ,
+                                 T::جدول_لیبل,
+                                 retain_all_scripts ? خالی_اشاریہ : scripts.arrayZ,
+                                 خالی_اشاریہ,
+                                 retain_all_features ? خالی_اشاریہ : features.arrayZ,
                                  feature_indices);
 
-#ifndef HB_NO_VAR
+#اگر_غیر_تعریف_شدہ HB_NO_VAR
   // collect feature substitutes with variations
-  if (!plan->user_axes_location.is_empty ())
+  اگر (!plan->user_axes_location.is_empty ())
   {
-    hb_blob_ptr_t<OT::GDEF> gdef = plan->source_table<OT::GDEF> ();
-    OT::ItemVarStoreInstancer instancer (&gdef->get_var_store (), nullptr,
+    hb_blob_ptr_t<OT::GDEF> gdef = plan->ماخذ_جدول<OT::GDEF> ();
+    OT::شے_Var_Store_Instancer instancer (&gdef->get_var_store (), خالی_اشاریہ,
 					 plan->normalized_coords.as_array ());
-    hb_hashmap_t<hb::shared_ptr<hb_map_t>, unsigned> conditionset_map;
+    hb_hashmap_t<hb::shared_ptr<hb_map_t>, غیرعلامتی> conditionset_map;
     OT::hb_collect_feature_substitutes_with_var_context_t c =
     {
-      &plan->axes_old_index_tag_map,
+      &plan->axes_old_اشاریہ_لیبل_map,
       &plan->axes_location,
-      feature_record_cond_idx_map,
+      feature_ریکارڈ_cond_idx_map,
       feature_substitutes_map,
-      catch_all_record_feature_idxes,
+      catch_all_ریکارڈ_feature_idxes,
       feature_indices,
-      false,
-      false,
-      false,
+      جھوٹ,
+      جھوٹ,
+      جھوٹ,
       0,
       &conditionset_map,
       &instancer,
       plan->all_axes_pinned
     };
-    table.collect_feature_substitutes_with_variations (&c);
+    جدول.collect_feature_substitutes_with_variations (&c);
     gdef.destroy ();
   }
-#endif
+#اگر_ختم
 
-#ifndef HB_NO_VAR
-  if (plan->all_axes_pinned &&
-      !_collect_instanced_lookup_variations (plan, table, feature_indices, lookup_variations))
-    return;
-#endif
+#اگر_غیر_تعریف_شدہ HB_NO_VAR
+  اگر (plan->all_axes_pinned &&
+      !_collect_instanced_lookup_variations (plan, جدول, feature_indices, lookup_variations))
+    واپس;
+#اگر_ختم
 
-  for (unsigned feature_index : *feature_indices)
+  برائے (غیرعلامتی feature_اشاریہ : *feature_indices)
   {
-    hb::shared_ptr<hb_set_t> *lookups;
-    if (lookup_variations->has (feature_index, &lookups))
+    hb::shared_ptr<hb_سیٹ_t> *lookups;
+    اگر (lookup_variations->has (feature_اشاریہ, &lookups))
     {
       lookup_indices->union_ (**lookups);
-      continue;
+      جاری;
     }
 
-    const OT::Feature* f = &(table.get_feature (feature_index));
-    const OT::Feature **p = nullptr;
-    if (feature_substitutes_map->has (feature_index, &p))
+    ثابت OT::Feature* f = &(جدول.get_feature (feature_اشاریہ));
+    ثابت OT::Feature **p = خالی_اشاریہ;
+    اگر (feature_substitutes_map->has (feature_اشاریہ, &p))
       f = *p;
 
-    f->add_lookup_indexes_to (lookup_indices);
+    f->جوڑو_lookup_indexes_مقصد (lookup_indices);
   }
 
-#ifndef HB_NO_VAR
-  if (catch_all_record_feature_idxes)
+#اگر_غیر_تعریف_شدہ HB_NO_VAR
+  اگر (catch_all_ریکارڈ_feature_idxes)
   {
-    for (unsigned feature_index : catch_all_record_feature_idxes)
+    برائے (غیرعلامتی feature_اشاریہ : catch_all_ریکارڈ_feature_idxes)
     {
-      const OT::Feature& f = table.get_feature (feature_index);
-      f.add_lookup_indexes_to (lookup_indices);
-      const void *tag = reinterpret_cast<const void*> (&(table.get_feature_list ().get_tag (feature_index)));
-      catch_all_record_idx_feature_map.set (feature_index, hb_pair (&f, tag));
+      ثابت OT::Feature& f = جدول.get_feature (feature_اشاریہ);
+      f.جوڑو_lookup_indexes_مقصد (lookup_indices);
+      ثابت خالی *لیبل_2 = reinterpret_cast<ثابت خالی*> (&(جدول.get_feature_list ().get_لیبل (feature_اشاریہ)));
+      catch_all_ریکارڈ_idx_feature_map.سیٹ (feature_اشاریہ, hb_pair (&f, لیبل_2));
     }
   }
 
   // If all axes are pinned then all feature variations will be dropped so there's no need
   // to collect lookups from them.
-  if (!plan->all_axes_pinned)
-    table.feature_variation_collect_lookups (feature_indices,
-                                             plan->user_axes_location.is_empty () ? nullptr: feature_record_cond_idx_map,
+  اگر (!plan->all_axes_pinned)
+    جدول.feature_variation_collect_lookups (feature_indices,
+                                             plan->user_axes_location.is_empty () ? خالی_اشاریہ: feature_ریکارڈ_cond_idx_map,
                                              lookup_indices);
-#endif
+#اگر_ختم
 }
 
 
-static bool
-_features_have_equal_params (const OT::Feature &a HB_UNUSED,
-                            const OT::Feature &b HB_UNUSED,
-                            hb_tag_t tag HB_UNUSED)
+ساکن منطقی
+_features_have_equal_params (ثابت OT::Feature &a HB_غیر_مستعمل,
+                            ثابت OT::Feature &b HB_غیر_مستعمل,
+                            hb_لیبل_t لیبل_2 HB_غیر_مستعمل)
 {
-#ifndef HB_NO_LAYOUT_FEATURE_PARAMS
-  if (bool (a.featureParams) != bool (b.featureParams)) return false;
-  if (!a.featureParams) return true;
-  const OT::FeatureParams &ap = a.get_feature_params ();
-  const OT::FeatureParams &bp = b.get_feature_params ();
-  if (tag == HB_TAG ('s','i','z','e'))
-    return !hb_memcmp (&ap.get_size_params (tag), &bp.get_size_params (tag),
-                       OT::FeatureParamsSize::static_size);
-  if ((tag & 0xFFFF0000u) == HB_TAG ('s','s','\0','\0'))
-    return !hb_memcmp (&ap.get_stylistic_set_params (tag), &bp.get_stylistic_set_params (tag),
-                       OT::FeatureParamsStylisticSet::static_size);
-  if ((tag & 0xFFFF0000u) == HB_TAG ('c','v','\0','\0'))
+#اگر_غیر_تعریف_شدہ HB_NO_LAYOUT_FEATURE_PARAMS
+  اگر (منطقی (a.featureParams) != منطقی (b.featureParams)) واپس جھوٹ;
+  اگر (!a.featureParams) واپس سچ;
+  ثابت OT::FeatureParams &ap = a.get_feature_params ();
+  ثابت OT::FeatureParams &bp = b.get_feature_params ();
+  اگر (لیبل_2 == HB_لیبل ('s','i','z','e'))
+    واپس !hb_memcmp (&ap.get_سائز_params (لیبل_2), &bp.get_سائز_params (لیبل_2),
+                       OT::Feature_Params_سائز::static_سائز);
+  اگر ((لیبل_2 & 0xFFFF0000u) == HB_لیبل ('s','s','\0','\0'))
+    واپس !hb_memcmp (&ap.get_stylistic_سیٹ_params (لیبل_2), &bp.get_stylistic_سیٹ_params (لیبل_2),
+                       OT::Feature_Params_Stylistic_سیٹ::static_سائز);
+  اگر ((لیبل_2 & 0xFFFF0000u) == HB_لیبل ('c','v','\0','\0'))
   {
-    const auto &ac = ap.get_character_variants_params (tag);
-    const auto &bc = bp.get_character_variants_params (tag);
-    return ac.get_size () == bc.get_size () &&
-           !hb_memcmp (&ac, &bc, ac.get_size ());
+    ثابت خودکار &ac = ap.get_character_variants_params (لیبل_2);
+    ثابت خودکار &bc = bp.get_character_variants_params (لیبل_2);
+    واپس ac.get_سائز () == bc.get_سائز () &&
+           !hb_memcmp (&ac, &bc, ac.get_سائز ());
   }
-#endif
-  return true;
+#اگر_ختم
+  واپس سچ;
 }
 
-static inline void
-_GSUBGPOS_find_duplicate_features (const OT::GSUBGPOS &g,
-				   const hb_map_t *lookup_indices,
-				   const hb_set_t *feature_indices,
-				   const hb_hashmap_t<unsigned, const OT::Feature*> *feature_substitutes_map,
-                                   bool all_axes_pinned HB_UNUSED,
-				   hb_map_t *duplicate_feature_map /* OUT */)
+ساکن اندرونی خالی
+GSUBGPOS_ڈھونڈو_duplicate_features (ثابت OT::GSUBGPOS &g,
+				   ثابت hb_map_t *lookup_indices,
+				   ثابت hb_سیٹ_t *feature_indices,
+				   ثابت hb_hashmap_t<غیرعلامتی, ثابت OT::Feature*> *feature_substitutes_map,
+                                   منطقی all_axes_pinned HB_غیر_مستعمل,
+				   hb_map_t *duplicate_feature_map /*برآمد*/)
 {
-  if (feature_indices->is_empty ()) return;
-#ifndef HB_NO_VAR
-  hb_set_t variable_features;
-  if (!all_axes_pinned)
+  اگر (feature_indices->is_empty ()) واپس;
+#اگر_غیر_تعریف_شدہ HB_NO_VAR
+  hb_سیٹ_t variable_features;
+  اگر (!all_axes_pinned)
     g.get_feature_variations ().collect_feature_indices (&variable_features);
-  if (unlikely (variable_features.in_error ())) return;
-#endif
-  hb_hashmap_t<hb_tag_t, hb::unique_ptr<hb_set_t>> unique_features;
+  اگر (unlikely (variable_features.اندر_error ())) واپس;
+#اگر_ختم
+  hb_hashmap_t<hb_لیبل_t, hb::unique_ptr<hb_سیٹ_t>> unique_features;
   //find out duplicate features after subset
-  for (unsigned i : feature_indices->iter ())
+  برائے (غیرعلامتی i : feature_indices->iter ())
   {
-    hb_tag_t t = g.get_feature_tag (i);
-    if (t == HB_MAP_VALUE_INVALID) continue;
-    if (!unique_features.has (t))
+    hb_لیبل_t t = g.get_feature_لیبل (i);
+    اگر (t == HB_MAP_قدر_INVALID) جاری;
+    اگر (!unique_features.has (t))
     {
-      if (unlikely (!unique_features.set (t, hb::unique_ptr<hb_set_t> {hb_set_create ()})))
-	return;
-      if (unique_features.has (t))
-	unique_features.get (t)->add (i);
-      duplicate_feature_map->set (i, i);
-      continue;
+      اگر (unlikely (!unique_features.سیٹ (t, hb::unique_ptr<hb_سیٹ_t> {hb_سیٹ_create ()})))
+	واپس;
+      اگر (unique_features.has (t))
+	unique_features.get (t)->جوڑو (i);
+      duplicate_feature_map->سیٹ (i, i);
+      جاری;
     }
 
-    bool found = false;
+    منطقی ملا = جھوٹ;
 
-    hb_set_t* same_tag_features = unique_features.get (t);
-    for (unsigned other_f_index : same_tag_features->iter ())
+    hb_سیٹ_t* same_لیبل_features = unique_features.get (t);
+    برائے (غیرعلامتی other_f_اشاریہ : same_لیبل_features->iter ())
     {
-#ifndef HB_NO_VAR
+#اگر_غیر_تعریف_شدہ HB_NO_VAR
       /* Matching base lookups do not imply matching alternate behavior. */
-      if (variable_features.has (i) || variable_features.has (other_f_index) ||
+      اگر (variable_features.has (i) || variable_features.has (other_f_اشاریہ) ||
           g.get_feature_variations ().has_lookup_variations (i) ||
-	  g.get_feature_variations ().has_lookup_variations (other_f_index))
-	continue;
-#endif
+	  g.get_feature_variations ().has_lookup_variations (other_f_اشاریہ))
+	جاری;
+#اگر_ختم
 
-      const OT::Feature* f = &(g.get_feature (i));
-      const OT::Feature **p = nullptr;
-      if (feature_substitutes_map->has (i, &p))
+      ثابت OT::Feature* f = &(g.get_feature (i));
+      ثابت OT::Feature **p = خالی_اشاریہ;
+      اگر (feature_substitutes_map->has (i, &p))
         f = *p;
 
-      const OT::Feature* other_f = &(g.get_feature (other_f_index));
-      if (feature_substitutes_map->has (other_f_index, &p))
+      ثابت OT::Feature* other_f = &(g.get_feature (other_f_اشاریہ));
+      اگر (feature_substitutes_map->has (other_f_اشاریہ, &p))
         other_f = *p;
 
-      if (!_features_have_equal_params (*f, *other_f, t)) continue;
+      اگر (!_features_have_equal_params (*f, *other_f, t)) جاری;
 
-      auto f_iter =
-      + hb_iter (f->lookupIndex)
+      خودکار f_iter =
+      + hb_iter (f->lookup_اشاریہ_2)
       | hb_filter (lookup_indices)
       ;
 
-      auto other_f_iter =
-      + hb_iter (other_f->lookupIndex)
+      خودکار other_f_iter =
+      + hb_iter (other_f->lookup_اشاریہ_2)
       | hb_filter (lookup_indices)
       ;
 
-      bool is_equal = true;
-      for (; f_iter && other_f_iter; f_iter++, other_f_iter++)
+      منطقی is_equal = سچ;
+      برائے (; f_iter && other_f_iter; f_iter++, other_f_iter++)
       {
-	unsigned a = *f_iter;
-	unsigned b = *other_f_iter;
-	if (a != b) { is_equal = false; break; }
+	غیرعلامتی a = *f_iter;
+	غیرعلامتی b = *other_f_iter;
+	اگر (a != b) { is_equal = جھوٹ; توڑو; }
       }
 
-      if (is_equal == false || f_iter || other_f_iter) continue;
+      اگر (is_equal == جھوٹ || f_iter || other_f_iter) جاری;
 
-      found = true;
-      duplicate_feature_map->set (i, other_f_index);
-      break;
+      ملا = سچ;
+      duplicate_feature_map->سیٹ (i, other_f_اشاریہ);
+      توڑو;
     }
 
-    if (found == false)
+    اگر (ملا == جھوٹ)
     {
-      same_tag_features->add (i);
-      duplicate_feature_map->set (i, i);
+      same_لیبل_features->جوڑو (i);
+      duplicate_feature_map->سیٹ (i, i);
     }
   }
 }
 
-static void
-remap_feature_indices (const hb_set_t &feature_indices,
-                       const hb_map_t &duplicate_feature_map,
-                       const hb_hashmap_t<unsigned, hb_pair_t<const void*, const void*>>& catch_all_record_idx_feature_map,
-                       hb_map_t       *mapping, /* OUT */
-                       hb_map_t       *mapping_w_duplicates /* OUT */)
+ساکن خالی
+remap_feature_indices (ثابت hb_سیٹ_t &feature_indices,
+                       ثابت hb_map_t &duplicate_feature_map,
+                       ثابت hb_hashmap_t<غیرعلامتی, hb_pair_t<ثابت خالی*, ثابت خالی*>>& catch_all_ریکارڈ_idx_feature_map,
+                       hb_map_t       *mapping, /*برآمد*/
+                       hb_map_t       *mapping_w_duplicates /*برآمد*/)
 {
-  unsigned i = 0;
-  for (const auto _ : feature_indices)
+  غیرعلامتی i = 0;
+  برائے (ثابت خودکار _ : feature_indices)
   {
     // retain those features in case we need to insert a catch-all record to reinstate the old features
-    if (catch_all_record_idx_feature_map.has (_))
+    اگر (catch_all_ریکارڈ_idx_feature_map.has (_))
     {
-      mapping->set (_, i);
-      mapping_w_duplicates->set (_, i);
+      mapping->سیٹ (_, i);
+      mapping_w_duplicates->سیٹ (_, i);
       i++;
     }
-    else
+    ورنہ
     {
       uint32_t f_idx = duplicate_feature_map.get (_);
       uint32_t *new_idx;
-      if (mapping-> has (f_idx, &new_idx))
+      اگر (mapping-> has (f_idx, &new_idx))
       {
-        mapping_w_duplicates->set (_, *new_idx);
+        mapping_w_duplicates->سیٹ (_, *new_idx);
       }
-      else
+      ورنہ
       {
-        mapping->set (_, i);
-        mapping_w_duplicates->set (_, i);
+        mapping->سیٹ (_, i);
+        mapping_w_duplicates->سیٹ (_, i);
         i++;
       }
     }
   }
 }
 
-template <typename T>
-static void
-_closure_glyphs_lookups_features (hb_subset_plan_t   *plan,
-				 hb_set_t	     *gids_to_retain,
+سانچہ <قسم_نام T>
+ساکن خالی
+احاطہ_glyphs_lookups_features (hb_subset_plan_t   *plan,
+				 hb_سیٹ_t	     *gids_مقصد_retain,
 				 hb_map_t	     *lookups,
 				 hb_map_t	     *features,
 				 hb_map_t	     *features_w_duplicates,
 				 script_langsys_map *langsys_map,
-				 hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *feature_record_cond_idx_map,
-				 hb_hashmap_t<unsigned, const OT::Feature*> *feature_substitutes_map,
-                                 hb_hashmap_t<unsigned, hb::shared_ptr<hb_set_t>> *lookup_variations,
-                                 hb_set_t &catch_all_record_feature_idxes,
-                                 hb_hashmap_t<unsigned, hb_pair_t<const void*, const void*>>& catch_all_record_idx_feature_map)
+				 hb_hashmap_t<غیرعلامتی, hb::shared_ptr<hb_سیٹ_t>> *feature_ریکارڈ_cond_idx_map,
+				 hb_hashmap_t<غیرعلامتی, ثابت OT::Feature*> *feature_substitutes_map,
+                                 hb_hashmap_t<غیرعلامتی, hb::shared_ptr<hb_سیٹ_t>> *lookup_variations,
+                                 hb_سیٹ_t &catch_all_ریکارڈ_feature_idxes,
+                                 hb_hashmap_t<غیرعلامتی, hb_pair_t<ثابت خالی*, ثابت خالی*>>& catch_all_ریکارڈ_idx_feature_map)
 {
-  hb_blob_ptr_t<T> table = plan->source_table<T> ();
-  hb_tag_t table_tag = table->tableTag;
-  hb_set_t lookup_indices, feature_indices;
+  hb_blob_ptr_t<T> جدول = plan->ماخذ_جدول<T> ();
+  hb_لیبل_t جدول_لیبل_2 = جدول->جدول_لیبل;
+  hb_سیٹ_t lookup_indices, feature_indices;
   _collect_layout_indices<T> (plan,
-                              *table,
+                              *جدول,
                               &lookup_indices,
                               &feature_indices,
-                              feature_record_cond_idx_map,
+                              feature_ریکارڈ_cond_idx_map,
                               feature_substitutes_map,
                               lookup_variations,
-                              catch_all_record_feature_idxes,
-                              catch_all_record_idx_feature_map);
+                              catch_all_ریکارڈ_feature_idxes,
+                              catch_all_ریکارڈ_idx_feature_map);
 
-  if (table_tag == HB_OT_TAG_GSUB && !(plan->flags & HB_SUBSET_FLAGS_NO_LAYOUT_CLOSURE))
-    hb_ot_layout_lookups_substitute_closure (plan->source,
+  اگر (جدول_لیبل_2 == HB_OT_لیبل_GSUB && !(plan->flags & HB_SUBSET_FLAGS_NO_LAYOUT_احاطہ))
+    hb_ot_layout_lookups_substitute_احاطہ (plan->ماخذ,
                                              &lookup_indices,
-					     gids_to_retain);
-  table->closure_lookups (plan->source,
-			  gids_to_retain,
+					     gids_مقصد_retain);
+  جدول->احاطہ_lookups (plan->ماخذ,
+			  gids_مقصد_retain,
                           &lookup_indices);
   remap_indexes (&lookup_indices, lookups);
 
   // prune features
-  table->prune_features (lookups,
-                         plan->user_axes_location.is_empty () ? nullptr : feature_record_cond_idx_map,
+  جدول->prune_features (lookups,
+                         plan->user_axes_location.is_empty () ? خالی_اشاریہ : feature_ریکارڈ_cond_idx_map,
                          feature_substitutes_map,
                          &feature_indices);
   hb_map_t duplicate_feature_map;
-  _GSUBGPOS_find_duplicate_features (*table, lookups, &feature_indices, feature_substitutes_map,
+  GSUBGPOS_ڈھونڈو_duplicate_features (*جدول, lookups, &feature_indices, feature_substitutes_map,
                                     plan->all_axes_pinned, &duplicate_feature_map);
 
   feature_indices.clear ();
-  table->prune_langsys (&duplicate_feature_map, &plan->layout_scripts, langsys_map, &feature_indices);
-  remap_feature_indices (feature_indices, duplicate_feature_map, catch_all_record_idx_feature_map, features, features_w_duplicates);
+  جدول->prune_langsys (&duplicate_feature_map, &plan->layout_scripts, langsys_map, &feature_indices);
+  remap_feature_indices (feature_indices, duplicate_feature_map, catch_all_ریکارڈ_idx_feature_map, features, features_w_duplicates);
 
-#ifndef HB_NO_VAR
+#اگر_غیر_تعریف_شدہ HB_NO_VAR
   // Populate alternate parameter tags after deduplication. Before this point
   // the map contains only catch-all features and also controls their retention.
-  if (table->get_feature_variations ().record_count ())
-    for (auto p : *features_w_duplicates)
+  اگر (جدول->get_feature_variations ().ریکارڈ_گنتی ())
+    برائے (خودکار p : *features_w_duplicates)
     {
-      const OT::Feature& f = table->get_feature (p.first);
-      const void *tag = &(table->get_feature_list ().get_tag (p.first));
-      catch_all_record_idx_feature_map.set (p.first, hb_pair (&f, tag));
+      ثابت OT::Feature& f = جدول->get_feature (p.پہلا);
+      ثابت خالی *لیبل_2 = &(جدول->get_feature_list ().get_لیبل (p.پہلا));
+      catch_all_ریکارڈ_idx_feature_map.سیٹ (p.پہلا, hb_pair (&f, لیبل_2));
     }
-#endif
+#اگر_ختم
 
-  table.destroy ();
+  جدول.destroy ();
 }
 
-void layout_nameid_closure (hb_subset_plan_t* plan,
-                             hb_set_t* drop_tables)
+خالی layout_nameid_احاطہ (hb_subset_plan_t* plan,
+                             hb_سیٹ_t* drop_tables)
 {
-  if (!drop_tables->has (HB_OT_TAG_GPOS))
+  اگر (!drop_tables->has (HB_OT_لیبل_GPOS))
   {
-    hb_blob_ptr_t<GPOS> gpos = plan->source_table<GPOS> ();
+    hb_blob_ptr_t<GPOS> gpos = plan->ماخذ_جدول<GPOS> ();
     gpos->collect_name_ids (&plan->gpos_features, &plan->name_ids,
                             &plan->gpos_feature_substitutes_map,
-                            plan->user_axes_location.is_empty () ? nullptr : &plan->gpos_feature_record_cond_idx_map,
+                            plan->user_axes_location.is_empty () ? خالی_اشاریہ : &plan->gpos_feature_ریکارڈ_cond_idx_map,
                             &plan->gpos_old_features,
                             plan->all_axes_pinned);
     gpos.destroy ();
   }
-  if (!drop_tables->has (HB_OT_TAG_GSUB))
+  اگر (!drop_tables->has (HB_OT_لیبل_GSUB))
   {
-    hb_blob_ptr_t<GSUB> gsub = plan->source_table<GSUB> ();
+    hb_blob_ptr_t<GSUB> gsub = plan->ماخذ_جدول<GSUB> ();
     gsub->collect_name_ids (&plan->gsub_features, &plan->name_ids,
                             &plan->gsub_feature_substitutes_map,
-                            plan->user_axes_location.is_empty () ? nullptr : &plan->gsub_feature_record_cond_idx_map,
+                            plan->user_axes_location.is_empty () ? خالی_اشاریہ : &plan->gsub_feature_ریکارڈ_cond_idx_map,
                             &plan->gsub_old_features,
                             plan->all_axes_pinned);
     gsub.destroy ();
   }
 }
 
-void
-layout_populate_gids_to_retain (hb_subset_plan_t* plan,
-		                hb_set_t* drop_tables) {
-  if (!drop_tables->has (HB_OT_TAG_GSUB))
+خالی
+layout_populate_gids_مقصد_retain (hb_subset_plan_t* plan,
+		                hb_سیٹ_t* drop_tables) {
+  اگر (!drop_tables->has (HB_OT_لیبل_GSUB))
     // closure all glyphs/lookups/features needed for GSUB substitutions.
-    _closure_glyphs_lookups_features<GSUB> (
+    احاطہ_glyphs_lookups_features<GSUB> (
         plan,
         &plan->_glyphset_gsub,
         &plan->gsub_lookups,
         &plan->gsub_features,
         &plan->gsub_features_w_duplicates,
         &plan->gsub_langsys,
-        &plan->gsub_feature_record_cond_idx_map,
+        &plan->gsub_feature_ریکارڈ_cond_idx_map,
         &plan->gsub_feature_substitutes_map,
         &plan->gsub_lookup_variations,
         plan->gsub_old_features,
-        plan->gsub_old_feature_idx_tag_map);
+        plan->gsub_old_feature_idx_لیبل_map);
 
-  if (!drop_tables->has (HB_OT_TAG_GPOS))
-    _closure_glyphs_lookups_features<GPOS> (
+  اگر (!drop_tables->has (HB_OT_لیبل_GPOS))
+    احاطہ_glyphs_lookups_features<GPOS> (
         plan,
         &plan->_glyphset_gsub,
         &plan->gpos_lookups,
         &plan->gpos_features,
         &plan->gpos_features_w_duplicates,
         &plan->gpos_langsys,
-        &plan->gpos_feature_record_cond_idx_map,
+        &plan->gpos_feature_ریکارڈ_cond_idx_map,
         &plan->gpos_feature_substitutes_map,
         &plan->gpos_lookup_variations,
         plan->gpos_old_features,
-        plan->gpos_old_feature_idx_tag_map);
+        plan->gpos_old_feature_idx_لیبل_map);
 }
 
-#ifndef HB_NO_VAR
-void
+#اگر_غیر_تعریف_شدہ HB_NO_VAR
+خالی
 collect_layout_variation_indices (hb_subset_plan_t* plan)
 {
-  hb_blob_ptr_t<OT::GDEF> gdef = plan->source_table<OT::GDEF> ();
-  hb_blob_ptr_t<GSUB> gsub = plan->source_table<GSUB> ();
-  hb_blob_ptr_t<GPOS> gpos = plan->source_table<GPOS> ();
+  hb_blob_ptr_t<OT::GDEF> gdef = plan->ماخذ_جدول<OT::GDEF> ();
+  hb_blob_ptr_t<GSUB> gsub = plan->ماخذ_جدول<GSUB> ();
+  hb_blob_ptr_t<GPOS> gpos = plan->ماخذ_جدول<GPOS> ();
 
-  if (!gdef->has_data () || !gdef->has_var_store ())
+  اگر (!gdef->has_ڈیٹا () || !gdef->has_var_store ())
   {
     gdef.destroy ();
     gsub.destroy ();
     gpos.destroy ();
-    return;
+    واپس;
   }
 
-  hb_set_t varidx_set;
-  OT::hb_collect_variation_indices_context_t c (&varidx_set,
+  hb_سیٹ_t varidx_سیٹ;
+  OT::hb_collect_variation_indices_context_t c (&varidx_سیٹ,
                                                 &plan->_glyphset_gsub,
                                                 &plan->gpos_lookups);
-  if (plan->normalized_coords && !plan->all_axes_pinned)
-    c.condition_values = &plan->layout_condition_values;
+  اگر (plan->normalized_coords && !plan->all_axes_pinned)
+    c.condition_اقدار = &plan->layout_condition_اقدار;
   gdef->collect_variation_indices (&c);
 
-  if (hb_ot_layout_has_substitution (plan->source))
+  اگر (hb_ot_layout_has_substitution (plan->ماخذ))
     gsub->collect_feature_variation_indices (&c);
-  if (hb_ot_layout_has_positioning (plan->source))
+  اگر (hb_ot_layout_has_positioning (plan->ماخذ))
   {
     gpos->collect_feature_variation_indices (&c);
     gpos->collect_variation_indices (&c);
   }
 
-#ifndef HB_NO_MATH
-  if (!plan->drop_tables.has (HB_OT_TAG_MATH))
+#اگر_غیر_تعریف_شدہ HB_NO_MATH
+  اگر (!plan->drop_tables.has (HB_OT_لیبل_MATH))
   {
-    hb_blob_ptr_t<OT::MATH> math = plan->source_table<OT::MATH> ();
-    auto *glyph_set = c.glyph_set;
-    c.glyph_set = &plan->_glyphset_mathed;
+    hb_blob_ptr_t<OT::MATH> math = plan->ماخذ_جدول<OT::MATH> ();
+    خودکار *glyph_سیٹ = c.glyph_سیٹ;
+    c.glyph_سیٹ = &plan->_glyphset_mathed;
     math->collect_variation_indices (&c, &plan->_glyphset_cmaped);
-    c.glyph_set = glyph_set;
+    c.glyph_سیٹ = glyph_سیٹ;
     math.destroy ();
   }
-#endif
+#اگر_ختم
 
   remap_variation_indices (gdef->get_var_store (),
-                           varidx_set, plan->normalized_coords,
+                           varidx_سیٹ, plan->normalized_coords,
                            !plan->pinned_at_default,
                            plan->all_axes_pinned,
                            plan->layout_variation_idx_delta_map);
 
-  unsigned subtable_count = gdef->get_var_store ().get_sub_table_count ();
-  generate_varstore_inner_maps (varidx_set, subtable_count, plan->gdef_varstore_inner_maps);
-  plan->check_success (!plan->layout_condition_values.in_error ());
+  غیرعلامتی subtable_گنتی = gdef->get_var_store ().get_sub_جدول_گنتی ();
+  generate_varstore_inner_maps (varidx_سیٹ, subtable_گنتی, plan->gdef_varstore_inner_maps);
+  plan->check_success (!plan->layout_condition_اقدار.اندر_error ());
 
   gdef.destroy ();
   gsub.destroy ();
   gpos.destroy ();
 }
-#endif
+#اگر_ختم
 
-#endif
+#اگر_ختم

@@ -26,30 +26,30 @@
  * Facebook Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_ALGS_HH
-#define HB_ALGS_HH
+#اگر_غیر_تعریف_شدہ HB_ALGS_HH
+#تعریف_کرو HB_ALGS_HH
 
-#include "hb.hh"
-#include "hb-meta.hh"
-#include "hb-null.hh"
-#include "hb-number.hh"
+#شامل "hb.hh"
+#شامل "hb-meta.hh"
+#شامل "hb-null.hh"
+#شامل "hb-number.hh"
 
-#include <algorithm>
-#include <initializer_list>
-#include <functional>
-#include <new>
+#شامل <algorithm>
+#شامل <initializer_list>
+#شامل <functional>
+#شامل <new>
 
-static HB_ALWAYS_INLINE void *
-hb_malloc2 (size_t nmemb, size_t size)
+ساکن HB_ALWAYS_INLINE خالی *
+hb_malloc2 (size_t nmemb, size_t سائز)
 {
-  if (size && nmemb > SIZE_MAX / size) return nullptr;
-  return hb_malloc (nmemb * size);
+  اگر (سائز && nmemb > SIZE_MAX / سائز) واپس خالی_اشاریہ;
+  واپس hb_malloc (nmemb * سائز);
 }
-static HB_ALWAYS_INLINE void *
-hb_realloc2 (void *ptr, size_t nmemb, size_t size)
+ساکن HB_ALWAYS_INLINE خالی *
+hb_realloc2 (خالی *ptr, size_t nmemb, size_t سائز)
 {
-  if (size && nmemb > SIZE_MAX / size) return nullptr;
-  return hb_realloc (ptr, nmemb * size);
+  اگر (سائز && nmemb > SIZE_MAX / سائز) واپس خالی_اشاریہ;
+  واپس hb_realloc (ptr, nmemb * سائز);
 }
 
 /*
@@ -63,31 +63,31 @@ hb_realloc2 (void *ptr, size_t nmemb, size_t size)
  *
  * For MSVC warnings, see: https://github.com/harfbuzz/harfbuzz/pull/163
  */
-#ifdef _MSC_VER
+#اگر_تعریف_شدہ _MSC_VER
 # pragma warning(disable:4200)
 # pragma warning(disable:4800)
-#endif
-#define HB_MARK_AS_FLAG_T(T) \
-	extern "C++" { \
-	  static inline constexpr T operator | (T l, T r) { return T ((unsigned) l | (unsigned) r); } \
-	  static inline constexpr T operator & (T l, T r) { return T ((unsigned) l & (unsigned) r); } \
-	  static inline constexpr T operator ^ (T l, T r) { return T ((unsigned) l ^ (unsigned) r); } \
-	  static inline constexpr unsigned operator ~ (T r) { return (~(unsigned) r); } \
-	  static inline T& operator |= (T &l, T r) { l = l | r; return l; } \
-	  static inline T& operator &= (T& l, T r) { l = l & r; return l; } \
-	  static inline T& operator ^= (T& l, T r) { l = l ^ r; return l; } \
+#اگر_ختم
+#تعریف_کرو HB_MARK_AS_FLAG_T(T) \
+	خارجی "C++" { \
+	  ساکن اندرونی constexpr T عامل | (T l, T r) { واپس T ((غیرعلامتی) l | (غیرعلامتی) r); } \
+	  ساکن اندرونی constexpr T عامل & (T l, T r) { واپس T ((غیرعلامتی) l & (غیرعلامتی) r); } \
+	  ساکن اندرونی constexpr T عامل ^ (T l, T r) { واپس T ((غیرعلامتی) l ^ (غیرعلامتی) r); } \
+	  ساکن اندرونی constexpr غیرعلامتی عامل ~ (T r) { واپس (~(غیرعلامتی) r); } \
+	  ساکن اندرونی T& عامل |= (T &l, T r) { l = l | r; واپس l; } \
+	  ساکن اندرونی T& عامل &= (T& l, T r) { l = l & r; واپس l; } \
+	  ساکن اندرونی T& عامل ^= (T& l, T r) { l = l ^ r; واپس l; } \
 	} \
-	static_assert (true, "")
+	static_assert (سچ, "")
 
 /* Useful for set-operations on small enums.
  * For example, for testing "x ∈ {x1, x2, x3}" use:
  * (FLAG_UNSAFE(x) & (FLAG(x1) | FLAG(x2) | FLAG(x3)))
  */
-#define FLAG(x) (static_assert_expr ((unsigned)(x) < 32) + (((uint32_t) 1U) << (unsigned)(x)))
-#define FLAG_UNSAFE(x) ((unsigned)(x) < 32 ? (((uint32_t) 1U) << (unsigned)(x)) : 0)
-#define FLAG_RANGE(x,y) (static_assert_expr ((x) < (y)) + FLAG(y+1) - FLAG(x))
-#define FLAG64(x) (static_assert_expr ((unsigned)(x) < 64) + (((uint64_t) 1ULL) << (unsigned)(x)))
-#define FLAG64_UNSAFE(x) ((unsigned)(x) < 64 ? (((uint64_t) 1ULL) << (unsigned)(x)) : 0)
+#تعریف_کرو FLAG(x) (static_assert_اظہاریہ ((غیرعلامتی)(x) < 32) + (((uint32_t) 1U) << (غیرعلامتی)(x)))
+#تعریف_کرو FLAG_UNSAFE(x) ((غیرعلامتی)(x) < 32 ? (((uint32_t) 1U) << (غیرعلامتی)(x)) : 0)
+#تعریف_کرو FLAG_RANGE(x,y) (static_assert_اظہاریہ ((x) < (y)) + FLAG(y+1) - FLAG(x))
+#تعریف_کرو FLAG64(x) (static_assert_اظہاریہ ((غیرعلامتی)(x) < 64) + (((uint64_t) 1ULL) << (غیرعلامتی)(x)))
+#تعریف_کرو FLAG64_UNSAFE(x) ((غیرعلامتی)(x) < 64 ? (((uint64_t) 1ULL) << (غیرعلامتی)(x)) : 0)
 
 
 /*
@@ -96,163 +96,163 @@ hb_realloc2 (void *ptr, size_t nmemb, size_t size)
 
 
 /* Endian swap, used in Windows related backends */
-static inline constexpr uint16_t hb_uint16_swap (uint16_t v)
-{ return (v >> 8) | (v << 8); }
-static inline constexpr uint32_t hb_uint32_swap (uint32_t v)
-{ return (hb_uint16_swap (v) << 16) | hb_uint16_swap (v >> 16); }
+ساکن اندرونی constexpr uint16_t hb_uint16_تبادلہ (uint16_t v)
+{ واپس (v >> 8) | (v << 8); }
+ساکن اندرونی constexpr uint32_t hb_uint32_تبادلہ (uint32_t v)
+{ واپس (hb_uint16_تبادلہ (v) << 16) | hb_uint16_تبادلہ (v >> 16); }
 
-template <typename Type>
-struct __attribute__((packed)) hb_packed_t
+سانچہ <قسم_نام Type>
+ساخت __attribute__((packed)) hb_packed_t
 {
-  hb_packed_t () = default;
+  hb_packed_t () = طےشدہ;
   constexpr hb_packed_t (Type V) : v (V) {}
-  operator Type () const { return v; }
-  hb_packed_t & operator = (Type V) { v = V; return *this; }
+  عامل Type () ثابت { واپس v; }
+  hb_packed_t & عامل = (Type V) { v = V; واپس *یہ; }
 
-  private:
+  نجی:
   Type v;
 };
 
-#ifndef HB_FAST_NUM_ACCESS
+#اگر_غیر_تعریف_شدہ HB_FAST_عدد_ACCESS
 
-#if defined(__OPTIMIZE__) && \
+#اگر defined(__OPTIMIZE__) && \
     defined(__BYTE_ORDER) && \
     (__BYTE_ORDER == __BIG_ENDIAN || \
      (__BYTE_ORDER == __LITTLE_ENDIAN && \
       hb_has_builtin(__builtin_bswap16) && \
       hb_has_builtin(__builtin_bswap32) && \
       hb_has_builtin(__builtin_bswap64)))
-#define HB_FAST_NUM_ACCESS 1
-#else
-#define HB_FAST_NUM_ACCESS 0
-#endif
+#تعریف_کرو HB_FAST_عدد_ACCESS 1
+#ورنہ
+#تعریف_کرو HB_FAST_عدد_ACCESS 0
+#اگر_ختم
 
 // https://github.com/harfbuzz/harfbuzz/issues/5456
-#if defined(__GNUC__) && !defined(__clang__) && (__GNUC__ <= 12)
-#undef HB_FAST_NUM_ACCESS
-#define HB_FAST_NUM_ACCESS 0
-#endif
+#اگر defined(__GNUC__) && !defined(__clang__) && (__GNUC__ <= 12)
+#تعریف_منسوخ HB_FAST_عدد_ACCESS
+#تعریف_کرو HB_FAST_عدد_ACCESS 0
+#اگر_ختم
 
-#endif
+#اگر_ختم
 
-template <bool BE, typename Type, int Bytes = sizeof (Type)>
-struct HBInt;
-template <bool BE, typename Type>
-struct HBInt<BE, Type, 1>
+سانچہ <منطقی BE, قسم_نام Type, صحیح بائٹیں_3 = حجم (Type)>
+ساخت HBInt;
+سانچہ <منطقی BE, قسم_نام Type>
+ساخت HBInt<BE, Type, 1>
 {
-  public:
-  HBInt () = default;
+  عوامی:
+  HBInt () = طےشدہ;
   constexpr HBInt (Type V) : v {uint8_t (V)} {}
-  constexpr operator Type () const { return v; }
-  private: uint8_t v;
+  constexpr عامل Type () ثابت { واپس v; }
+  نجی: uint8_t v;
 };
-template <bool BE, typename Type>
-struct HBInt<BE, Type, 2>
+سانچہ <منطقی BE, قسم_نام Type>
+ساخت HBInt<BE, Type, 2>
 {
-  public:
-  HBInt () = default;
+  عوامی:
+  HBInt () = طےشدہ;
 
   HBInt (Type V)
-#if HB_FAST_NUM_ACCESS
+#اگر HB_FAST_عدد_ACCESS
   {
-    if (BE == (__BYTE_ORDER == __BIG_ENDIAN))
+    اگر (BE == (__BYTE_ORDER == __BIG_ENDIAN))
       *((hb_packed_t<uint16_t> *) v) = V;
-    else
+    ورنہ
       *((hb_packed_t<uint16_t> *) v) = __builtin_bswap16 (V);
   }
-#else
+#ورنہ
     : v {BE ? uint8_t ((V >>  8) & 0xFF) : uint8_t ((V      ) & 0xFF),
 	 BE ? uint8_t ((V      ) & 0xFF) : uint8_t ((V >>  8) & 0xFF)} {}
-#endif
+#اگر_ختم
 
-  constexpr operator Type () const
+  constexpr عامل Type () ثابت
   {
-#if HB_FAST_NUM_ACCESS
-    return (BE == (__BYTE_ORDER == __BIG_ENDIAN)) ?
-      (uint16_t) *((const hb_packed_t<uint16_t> *) v)
+#اگر HB_FAST_عدد_ACCESS
+    واپس (BE == (__BYTE_ORDER == __BIG_ENDIAN)) ?
+      (uint16_t) *((ثابت hb_packed_t<uint16_t> *) v)
     :
-      __builtin_bswap16 ((uint16_t) *((const hb_packed_t<uint16_t> *) v))
+      __builtin_bswap16 ((uint16_t) *((ثابت hb_packed_t<uint16_t> *) v))
     ;
-#else
-    return (BE ? (v[0] <<  8) : (v[0]      ))
+#ورنہ
+    واپس (BE ? (v[0] <<  8) : (v[0]      ))
 	 + (BE ? (v[1]      ) : (v[1] <<  8));
-#endif
+#اگر_ختم
   }
-  private: uint8_t v[2];
+  نجی: uint8_t v[2];
 };
-template <bool BE, typename Type>
-struct HBInt<BE, Type, 3>
+سانچہ <منطقی BE, قسم_نام Type>
+ساخت HBInt<BE, Type, 3>
 {
   static_assert (!std::is_signed<Type>::value, "");
-  public:
-  HBInt () = default;
+  عوامی:
+  HBInt () = طےشدہ;
   constexpr HBInt (Type V) : v {BE ? uint8_t ((V >> 16) & 0xFF) : uint8_t ((V >> 16) & 0xFF),
 				BE ? uint8_t ((V >>  8) & 0xFF) : uint8_t ((V >>  8) & 0xFF),
 				BE ? uint8_t ((V      ) & 0xFF) : uint8_t ((V      ) & 0xFF)} {}
 
-  constexpr operator Type () const { return (BE ? (v[0] << 16) : (v[0]      ))
+  constexpr عامل Type () ثابت { واپس (BE ? (v[0] << 16) : (v[0]      ))
 					  + (BE ? (v[1] <<  8) : (v[1] <<  8))
 					  + (BE ? (v[2]      ) : (v[2] << 16)); }
-  private: uint8_t v[3];
+  نجی: uint8_t v[3];
 };
-template <bool BE, typename Type>
-struct HBInt<BE, Type, 4>
+سانچہ <منطقی BE, قسم_نام Type>
+ساخت HBInt<BE, Type, 4>
 {
-  template <bool, typename, int>
-  friend struct HBFloat;
+  سانچہ <منطقی, قسم_نام, صحیح>
+  دوست ساخت HBFloat;
 
-  public:
-  HBInt () = default;
+  عوامی:
+  HBInt () = طےشدہ;
 
   HBInt (Type V)
-#if HB_FAST_NUM_ACCESS
+#اگر HB_FAST_عدد_ACCESS
   {
-    if (BE == (__BYTE_ORDER == __BIG_ENDIAN))
+    اگر (BE == (__BYTE_ORDER == __BIG_ENDIAN))
       *((hb_packed_t<uint32_t> *) v) = V;
-    else
+    ورنہ
       *((hb_packed_t<uint32_t> *) v) = __builtin_bswap32 (V);
   }
-#else
+#ورنہ
     : v {BE ? uint8_t ((V >> 24) & 0xFF) : uint8_t ((V      ) & 0xFF),
 	 BE ? uint8_t ((V >> 16) & 0xFF) : uint8_t ((V >>  8) & 0xFF),
 	 BE ? uint8_t ((V >>  8) & 0xFF) : uint8_t ((V >> 16) & 0xFF),
 	 BE ? uint8_t ((V      ) & 0xFF) : uint8_t ((V >> 24) & 0xFF)} {}
-#endif
+#اگر_ختم
 
-  constexpr operator Type () const {
-#if HB_FAST_NUM_ACCESS
-    return (BE == (__BYTE_ORDER == __BIG_ENDIAN)) ?
-      (uint32_t) *((const hb_packed_t<uint32_t> *) v)
+  constexpr عامل Type () ثابت {
+#اگر HB_FAST_عدد_ACCESS
+    واپس (BE == (__BYTE_ORDER == __BIG_ENDIAN)) ?
+      (uint32_t) *((ثابت hb_packed_t<uint32_t> *) v)
     :
-      __builtin_bswap32 ((uint32_t) *((const hb_packed_t<uint32_t> *) v))
+      __builtin_bswap32 ((uint32_t) *((ثابت hb_packed_t<uint32_t> *) v))
     ;
-#else
-    return (BE ? (uint32_t (v[0]) << 24) : (uint32_t (v[0])      ))
+#ورنہ
+    واپس (BE ? (uint32_t (v[0]) << 24) : (uint32_t (v[0])      ))
 	 + (BE ? (uint32_t (v[1]) << 16) : (uint32_t (v[1]) <<  8))
 	 + (BE ? (uint32_t (v[2]) <<  8) : (uint32_t (v[2]) << 16))
 	 + (BE ? (uint32_t (v[3])      ) : (uint32_t (v[3]) << 24));
-#endif
+#اگر_ختم
   }
-  private: uint8_t v[4];
+  نجی: uint8_t v[4];
 };
-template <bool BE, typename Type>
-struct HBInt<BE, Type, 8>
+سانچہ <منطقی BE, قسم_نام Type>
+ساخت HBInt<BE, Type, 8>
 {
-  template <bool, typename, int>
-  friend struct HBFloat;
+  سانچہ <منطقی, قسم_نام, صحیح>
+  دوست ساخت HBFloat;
 
-  public:
-  HBInt () = default;
+  عوامی:
+  HBInt () = طےشدہ;
 
   HBInt (Type V)
-#if HB_FAST_NUM_ACCESS
+#اگر HB_FAST_عدد_ACCESS
   {
-    if (BE == (__BYTE_ORDER == __BIG_ENDIAN))
+    اگر (BE == (__BYTE_ORDER == __BIG_ENDIAN))
       *((hb_packed_t<uint64_t> *) v) = V;
-    else
+    ورنہ
       *((hb_packed_t<uint64_t> *) v) = __builtin_bswap64 (V);
   }
-#else
+#ورنہ
     : v {BE ? uint8_t ((V >> 56) & 0xFF) : uint8_t ((V      ) & 0xFF),
 	 BE ? uint8_t ((V >> 48) & 0xFF) : uint8_t ((V >>  8) & 0xFF),
 	 BE ? uint8_t ((V >> 40) & 0xFF) : uint8_t ((V >> 16) & 0xFF),
@@ -261,17 +261,17 @@ struct HBInt<BE, Type, 8>
 	 BE ? uint8_t ((V >> 16) & 0xFF) : uint8_t ((V >> 40) & 0xFF),
 	 BE ? uint8_t ((V >>  8) & 0xFF) : uint8_t ((V >> 48) & 0xFF),
 	 BE ? uint8_t ((V      ) & 0xFF) : uint8_t ((V >> 56) & 0xFF)} {}
-#endif
+#اگر_ختم
 
-  constexpr operator Type () const {
-#if HB_FAST_NUM_ACCESS
-    return (BE == (__BYTE_ORDER == __BIG_ENDIAN)) ?
-      (uint64_t) *((const hb_packed_t<uint64_t> *) v)
+  constexpr عامل Type () ثابت {
+#اگر HB_FAST_عدد_ACCESS
+    واپس (BE == (__BYTE_ORDER == __BIG_ENDIAN)) ?
+      (uint64_t) *((ثابت hb_packed_t<uint64_t> *) v)
     :
-      __builtin_bswap64 ((uint64_t) *((const hb_packed_t<uint64_t> *) v))
+      __builtin_bswap64 ((uint64_t) *((ثابت hb_packed_t<uint64_t> *) v))
     ;
-#else
-    return (BE ? (uint64_t (v[0]) << 56) : (uint64_t (v[0])      ))
+#ورنہ
+    واپس (BE ? (uint64_t (v[0]) << 56) : (uint64_t (v[0])      ))
 	 + (BE ? (uint64_t (v[1]) << 48) : (uint64_t (v[1]) <<  8))
 	 + (BE ? (uint64_t (v[2]) << 40) : (uint64_t (v[2]) << 16))
 	 + (BE ? (uint64_t (v[3]) << 32) : (uint64_t (v[3]) << 24))
@@ -279,141 +279,141 @@ struct HBInt<BE, Type, 8>
 	 + (BE ? (uint64_t (v[5]) << 16) : (uint64_t (v[5]) << 40))
 	 + (BE ? (uint64_t (v[6]) <<  8) : (uint64_t (v[6]) << 48))
 	 + (BE ? (uint64_t (v[7])      ) : (uint64_t (v[7]) << 56));
-#endif
+#اگر_ختم
   }
-  private: uint8_t v[8];
+  نجی: uint8_t v[8];
 };
 
 /* Floats. */
 
-template <bool BE, typename Type, int Bytes>
-struct HBFloat
+سانچہ <منطقی BE, قسم_نام Type, صحیح بائٹیں_3>
+ساخت HBFloat
 {
-  using IntType = typename std::conditional<Bytes == 4, uint32_t, uint64_t>::type;
+  استعمال IntType = قسم_نام std::conditional<بائٹیں_3 == 4, uint32_t, uint64_t>::type;
 
-  public:
-  HBFloat () = default;
+  عوامی:
+  HBFloat () = طےشدہ;
 
   HBFloat (Type V)
   {
-#if HB_FAST_NUM_ACCESS
+#اگر HB_FAST_عدد_ACCESS
     {
-	      if (BE == (__BYTE_ORDER == __BIG_ENDIAN))
+	      اگر (BE == (__BYTE_ORDER == __BIG_ENDIAN))
 	      {
 	        *((hb_packed_t<Type> *) v) = V;
-	        return;
+	        واپس;
 	      }
 	    }
-#endif
+#اگر_ختم
 
-    union {
+    اتحاد {
       hb_packed_t<Type> f;
       hb_packed_t<IntType> i;
     } u = {{V}};
 
-    const HBInt<BE, IntType> I = (IntType) u.i;
-    for (unsigned i = 0; i < Bytes; i++)
+    ثابت HBInt<BE, IntType> I = (IntType) u.i;
+    برائے (غیرعلامتی i = 0; i < بائٹیں_3; i++)
       v[i] = I.v[i];
   }
 
-  /* c++14 constexpr */ operator Type () const
+  /* c++14 constexpr */ عامل Type () ثابت
   {
-#if HB_FAST_NUM_ACCESS
+#اگر HB_FAST_عدد_ACCESS
 	    {
-	      if (BE == (__BYTE_ORDER == __BIG_ENDIAN))
-		return (Type) *((const hb_packed_t<Type> *) v);
+	      اگر (BE == (__BYTE_ORDER == __BIG_ENDIAN))
+		واپس (Type) *((ثابت hb_packed_t<Type> *) v);
 	    }
-#endif
+#اگر_ختم
 
     HBInt<BE, IntType> I;
-    for (unsigned i = 0; i < Bytes; i++)
+    برائے (غیرعلامتی i = 0; i < بائٹیں_3; i++)
       I.v[i] = v[i];
 
-    union {
+    اتحاد {
       hb_packed_t<IntType> i;
       hb_packed_t<Type> f;
     } u = {{I}};
 
-    return (Type) u.f;
+    واپس (Type) u.f;
   }
-  private: uint8_t v[Bytes];
+  نجی: uint8_t v[بائٹیں_3];
 };
 
 
 /* We want our rounding towards +infinity. */
-static inline double
-_hb_roundf (double x) { return floor (x + .5); }
+ساکن اندرونی دوہرا
+_hb_roundf (دوہرا x) { واپس floor (x + .5); }
 
-static inline float
-_hb_roundf (float x) { return floor ((double) x + .5); }
+ساکن اندرونی اعشاری
+_hb_roundf (اعشاری x) { واپس floor ((دوہرا) x + .5); }
 
-#define roundf(x) _hb_roundf(x)
+#تعریف_کرو roundf(x) _hb_roundf(x)
 
-static inline void
-hb_sincos (float rotation, float &s, float &c)
+ساکن اندرونی خالی
+hb_sincos (اعشاری rotation, اعشاری &s, اعشاری &c)
 {
-#ifdef HAVE_SINCOSF
+#اگر_تعریف_شدہ HAVE_SINCOSF
   sincosf (rotation, &s, &c);
-#else
+#ورنہ
   c = cosf (rotation);
   s = sinf (rotation);
-#endif
+#اگر_ختم
 }
-static inline void
-hb_sincos (double rotation, double &s, double &c)
+ساکن اندرونی خالی
+hb_sincos (دوہرا rotation, دوہرا &s, دوہرا &c)
 {
-#ifdef HAVE_SINCOS
+#اگر_تعریف_شدہ HAVE_SINCOS
   sincos (rotation, &s, &c);
-#else
-  c = cos (rotation);
-  s = sin (rotation);
-#endif
+#ورنہ
+  c = جیب_تمام (rotation);
+  s = جیب (rotation);
+#اگر_ختم
 }
 
 
 /* Encodes three unsigned integers in one 64-bit number.  If the inputs have more than 21 bits,
  * values will be truncated / overlap, and might not decode exactly. */
-#define HB_CODEPOINT_ENCODE3(x,y,z) (((uint64_t) (x) << 42) | ((uint64_t) (y) << 21) | (uint64_t) (z))
-#define HB_CODEPOINT_DECODE3_1(v) ((hb_codepoint_t) ((v) >> 42))
-#define HB_CODEPOINT_DECODE3_2(v) ((hb_codepoint_t) ((v) >> 21) & 0x1FFFFFu)
-#define HB_CODEPOINT_DECODE3_3(v) ((hb_codepoint_t) (v) & 0x1FFFFFu)
+#تعریف_کرو HB_CODEPOINT_ENCODE3(x,y,z) (((uint64_t) (x) << 42) | ((uint64_t) (y) << 21) | (uint64_t) (z))
+#تعریف_کرو HB_CODEPOINT_DECODE3_1(v) ((hb_codepoint_t) ((v) >> 42))
+#تعریف_کرو HB_CODEPOINT_DECODE3_2(v) ((hb_codepoint_t) ((v) >> 21) & 0x1FFFFFu)
+#تعریف_کرو HB_CODEPOINT_DECODE3_3(v) ((hb_codepoint_t) (v) & 0x1FFFFFu)
 
 /* Custom encoding used by hb-ucd. */
-#define HB_CODEPOINT_ENCODE3_11_7_14(x,y,z) (((uint32_t) ((x) & 0x07FFu) << 21) | (((uint32_t) (y) & 0x007Fu) << 14) | (uint32_t) ((z) & 0x3FFFu))
-#define HB_CODEPOINT_DECODE3_11_7_14_1(v) ((hb_codepoint_t) ((v) >> 21))
-#define HB_CODEPOINT_DECODE3_11_7_14_2(v) ((hb_codepoint_t) (((v) >> 14) & 0x007Fu) | 0x0300)
-#define HB_CODEPOINT_DECODE3_11_7_14_3(v) ((hb_codepoint_t) (v) & 0x3FFFu)
+#تعریف_کرو HB_CODEPOINT_ENCODE3_11_7_14(x,y,z) (((uint32_t) ((x) & 0x07FFu) << 21) | (((uint32_t) (y) & 0x007Fu) << 14) | (uint32_t) ((z) & 0x3FFFu))
+#تعریف_کرو HB_CODEPOINT_DECODE3_11_7_14_1(v) ((hb_codepoint_t) ((v) >> 21))
+#تعریف_کرو HB_CODEPOINT_DECODE3_11_7_14_2(v) ((hb_codepoint_t) (((v) >> 14) & 0x007Fu) | 0x0300)
+#تعریف_کرو HB_CODEPOINT_DECODE3_11_7_14_3(v) ((hb_codepoint_t) (v) & 0x3FFFu)
 
 
-struct
+ساخت
 {
   /* Note.  This is dangerous in that if it's passed an rvalue, it returns rvalue-reference. */
-  template <typename T> constexpr auto
-  operator () (T&& v) const HB_AUTO_RETURN ( std::forward<T> (v) )
+  سانچہ <قسم_نام T> constexpr خودکار
+  عامل () (T&& v) ثابت HB_AUTO_RETURN ( std::forward<T> (v) )
 }
-HB_FUNCOBJ (hb_identity);
-struct
+HB_FUNCOBJ (hb_شناختی_عنصر);
+ساخت
 {
   /* Like identity(), but only retains lvalue-references.  Rvalues are returned as rvalues. */
-  template <typename T> constexpr T&
-  operator () (T& v) const { return v; }
+  سانچہ <قسم_نام T> constexpr T&
+  عامل () (T& v) ثابت { واپس v; }
 
-  template <typename T> constexpr hb_remove_reference<T>
-  operator () (T&& v) const { return v; }
+  سانچہ <قسم_نام T> constexpr hb_remove_reference<T>
+  عامل () (T&& v) ثابت { واپس v; }
 }
 HB_FUNCOBJ (hb_lidentity);
-struct
+ساخت
 {
   /* Like identity(), but always returns rvalue. */
-  template <typename T> constexpr hb_remove_reference<T>
-  operator () (T&& v) const { return v; }
+  سانچہ <قسم_نام T> constexpr hb_remove_reference<T>
+  عامل () (T&& v) ثابت { واپس v; }
 }
 HB_FUNCOBJ (hb_ridentity);
 
-struct
+ساخت
 {
-  template <typename T> constexpr bool
-  operator () (T&& v) const { return bool (std::forward<T> (v)); }
+  سانچہ <قسم_نام T> constexpr منطقی
+  عامل () (T&& v) ثابت { واپس منطقی (std::forward<T> (v)); }
 }
 HB_FUNCOBJ (hb_bool);
 
@@ -446,38 +446,38 @@ HB_FUNCOBJ (hb_bool);
 
 // Compression function for Merkle-Damgard construction.
 // This function is generated using the framework provided.
-#define fasthash_mix(h) (					\
-			(void) ((h) ^= (h) >> 23),		\
-			(void) ((h) *= 0x2127599bf4325c37ULL),	\
+#تعریف_کرو fasthash_mix(h) (					\
+			(خالی) ((h) ^= (h) >> 23),		\
+			(خالی) ((h) *= 0x2127599bf4325c37ULL),	\
 			(h) ^= (h) >> 47)
 
-static inline uint64_t fasthash64(const void *buf, size_t len, uint64_t seed)
+ساکن اندرونی uint64_t fasthash64(ثابت خالی *buf, size_t len, uint64_t بیج)
 {
-	struct __attribute__((packed)) packed_uint64_t { uint64_t v; };
-	const uint64_t    m = 0x880355f21e6d1965ULL;
-	const packed_uint64_t *pos = (const packed_uint64_t *)buf;
-	const packed_uint64_t *end = pos + (len / 8);
-	const unsigned char *pos2;
-	uint64_t h = seed ^ (len * m);
+	ساخت __attribute__((packed)) packed_uint64_t { uint64_t v; };
+	ثابت uint64_t    m = 0x880355f21e6d1965ULL;
+	ثابت packed_uint64_t *pos = (ثابت packed_uint64_t *)buf;
+	ثابت packed_uint64_t *انتہا = pos + (len / 8);
+	ثابت غیرعلامتی حرف *pos2;
+	uint64_t h = بیج ^ (len * m);
 	uint64_t v;
 
-#ifndef HB_OPTIMIZE_SIZE
-	if (((uintptr_t) pos & 7) == 0)
+#اگر_غیر_تعریف_شدہ HB_OPTIMIZE_سائز
+	اگر (((uintptr_t) pos & 7) == 0)
 	{
-	  while (pos != end)
+	  جب (pos != انتہا)
 	  {
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wcast-align"
-	    v  = * (const uint64_t *) (pos++);
-#pragma GCC diagnostic pop
+#ہدایت GCC diagnostic push
+#ہدایت GCC diagnostic ignored "-Wcast-align"
+	    v  = * (ثابت uint64_t *) (pos++);
+#ہدایت GCC diagnostic نکالو
 	    h ^= fasthash_mix(v);
 	    h *= m;
 	  }
 	}
-	else
-#endif
+	ورنہ
+#اگر_ختم
 	{
-	  while (pos != end)
+	  جب (pos != انتہا)
 	  {
 	    v  = pos++->v;
 	    h ^= fasthash_mix(v);
@@ -485,90 +485,90 @@ static inline uint64_t fasthash64(const void *buf, size_t len, uint64_t seed)
 	  }
 	}
 
-	pos2 = (const unsigned char*)pos;
+	pos2 = (ثابت غیرعلامتی حرف*)pos;
 	v = 0;
 
-	switch (len & 7) {
-	case 7: v ^= (uint64_t)pos2[6] << 48; HB_FALLTHROUGH;
-	case 6: v ^= (uint64_t)pos2[5] << 40; HB_FALLTHROUGH;
-	case 5: v ^= (uint64_t)pos2[4] << 32; HB_FALLTHROUGH;
-	case 4: v ^= (uint64_t)pos2[3] << 24; HB_FALLTHROUGH;
-	case 3: v ^= (uint64_t)pos2[2] << 16; HB_FALLTHROUGH;
-	case 2: v ^= (uint64_t)pos2[1] <<  8; HB_FALLTHROUGH;
-	case 1: v ^= (uint64_t)pos2[0];
+	انتخاب (len & 7) {
+	حالت 7: v ^= (uint64_t)pos2[6] << 48; HB_FALLTHROUGH;
+	حالت 6: v ^= (uint64_t)pos2[5] << 40; HB_FALLTHROUGH;
+	حالت 5: v ^= (uint64_t)pos2[4] << 32; HB_FALLTHROUGH;
+	حالت 4: v ^= (uint64_t)pos2[3] << 24; HB_FALLTHROUGH;
+	حالت 3: v ^= (uint64_t)pos2[2] << 16; HB_FALLTHROUGH;
+	حالت 2: v ^= (uint64_t)pos2[1] <<  8; HB_FALLTHROUGH;
+	حالت 1: v ^= (uint64_t)pos2[0];
 		h ^= fasthash_mix(v);
 		h *= m;
 	}
 
-	return fasthash_mix(h);
+	واپس fasthash_mix(h);
 }
 
-static inline uint32_t fasthash32(const void *buf, size_t len, uint32_t seed)
+ساکن اندرونی uint32_t fasthash32(ثابت خالی *buf, size_t len, uint32_t بیج)
 {
 	// the following trick converts the 64-bit hashcode to Fermat
 	// residue, which shall retain information from both the higher
 	// and lower parts of hashcode.
-        uint64_t h = fasthash64(buf, len, seed);
-	return h - (h >> 32);
+        uint64_t h = fasthash64(buf, len, بیج);
+	واپس h - (h >> 32);
 }
 
-struct
+ساخت
 {
-  private:
+  نجی:
 
-  template <typename T> constexpr auto
-  impl (const T& v, hb_priority<2>) const HB_RETURN (uint32_t, hb_deref (v).hash ())
+  سانچہ <قسم_نام T> constexpr خودکار
+  impl (ثابت T& v, hb_ترجیح<2>) ثابت HB_RETURN (uint32_t, hb_deref (v).hash ())
 
   // Horrible: std:hash() of integers seems to be identity in gcc / clang?!
   // https://github.com/harfbuzz/harfbuzz/pull/4228
   //
   // For performance characteristics see:
   // https://github.com/harfbuzz/harfbuzz/pull/4228#issuecomment-1565079537
-  template <typename T,
-	    hb_enable_if (std::is_integral<T>::value && sizeof (T) <= sizeof (uint32_t))> constexpr auto
-  impl (const T& v, hb_priority<1>) const HB_RETURN (uint32_t, (uint32_t) v * 2654435761u /* Knuh's multiplicative hash */)
-  template <typename T,
-	    hb_enable_if (std::is_integral<T>::value && sizeof (T) > sizeof (uint32_t))> constexpr auto
-  impl (const T& v, hb_priority<1>) const HB_RETURN (uint32_t, (uint32_t) (v ^ (v >> 32)) * 2654435761u /* Knuth's multiplicative hash */)
+  سانچہ <قسم_نام T,
+	    hb_enable_if (std::is_integral<T>::value && حجم (T) <= حجم (uint32_t))> constexpr خودکار
+  impl (ثابت T& v, hb_ترجیح<1>) ثابت HB_RETURN (uint32_t, (uint32_t) v * 2654435761u /* Knuh's multiplicative hash */)
+  سانچہ <قسم_نام T,
+	    hb_enable_if (std::is_integral<T>::value && حجم (T) > حجم (uint32_t))> constexpr خودکار
+  impl (ثابت T& v, hb_ترجیح<1>) ثابت HB_RETURN (uint32_t, (uint32_t) (v ^ (v >> 32)) * 2654435761u /* Knuth's multiplicative hash */)
 
-  template <typename T,
-	    hb_enable_if (std::is_floating_point<T>::value)> constexpr auto
-  impl (const T& v, hb_priority<1>) const HB_RETURN (uint32_t, fasthash32 (std::addressof (v), sizeof (T), 0xf437ffe6))
+  سانچہ <قسم_نام T,
+	    hb_enable_if (std::is_floating_point<T>::value)> constexpr خودکار
+  impl (ثابت T& v, hb_ترجیح<1>) ثابت HB_RETURN (uint32_t, fasthash32 (std::addressof (v), حجم (T), 0xf437ffe6))
 
-  template <typename T> constexpr auto
-  impl (const T& v, hb_priority<0>) const HB_RETURN (uint32_t, std::hash<hb_decay<decltype (hb_deref (v))>>{} (hb_deref (v)))
+  سانچہ <قسم_نام T> constexpr خودکار
+  impl (ثابت T& v, hb_ترجیح<0>) ثابت HB_RETURN (uint32_t, std::hash<hb_decay<decltype (hb_deref (v))>>{} (hb_deref (v)))
 
-  public:
+  عوامی:
 
-  template <typename T> constexpr auto
-  operator () (const T& v) const HB_RETURN (uint32_t, impl (v, hb_prioritize))
+  سانچہ <قسم_نام T> constexpr خودکار
+  عامل () (ثابت T& v) ثابت HB_RETURN (uint32_t, impl (v, hb_prioritize))
 }
 HB_FUNCOBJ (hb_hash);
 
 
-struct
+ساخت
 {
-  private:
+  نجی:
 
   /* Pointer-to-member-function. */
-  template <typename Appl, typename T, typename ...Ts> auto
-  impl (Appl&& a, hb_priority<2>, T &&v, Ts&&... ds) const HB_AUTO_RETURN
+  سانچہ <قسم_نام Appl, قسم_نام T, قسم_نام ...Ts> خودکار
+  impl (Appl&& a, hb_ترجیح<2>, T &&v, Ts&&... ds) ثابت HB_AUTO_RETURN
   ((hb_deref (std::forward<T> (v)).*std::forward<Appl> (a)) (std::forward<Ts> (ds)...))
 
   /* Pointer-to-member. */
-  template <typename Appl, typename T> auto
-  impl (Appl&& a, hb_priority<1>, T &&v) const HB_AUTO_RETURN
+  سانچہ <قسم_نام Appl, قسم_نام T> خودکار
+  impl (Appl&& a, hb_ترجیح<1>, T &&v) ثابت HB_AUTO_RETURN
   ((hb_deref (std::forward<T> (v))).*std::forward<Appl> (a))
 
   /* Operator(). */
-  template <typename Appl, typename ...Ts> auto
-  impl (Appl&& a, hb_priority<0>, Ts&&... ds) const HB_AUTO_RETURN
+  سانچہ <قسم_نام Appl, قسم_نام ...Ts> خودکار
+  impl (Appl&& a, hb_ترجیح<0>, Ts&&... ds) ثابت HB_AUTO_RETURN
   (hb_deref (std::forward<Appl> (a)) (std::forward<Ts> (ds)...))
 
-  public:
+  عوامی:
 
-  template <typename Appl, typename ...Ts> auto
-  operator () (Appl&& a, Ts&&... ds) const HB_AUTO_RETURN
+  سانچہ <قسم_نام Appl, قسم_نام ...Ts> خودکار
+  عامل () (Appl&& a, Ts&&... ds) ثابت HB_AUTO_RETURN
   (
     impl (std::forward<Appl> (a),
 	  hb_prioritize,
@@ -577,44 +577,44 @@ struct
 }
 HB_FUNCOBJ (hb_invoke);
 
-template <unsigned Pos, typename Appl, typename V>
-struct hb_partial_t
+سانچہ <غیرعلامتی Pos, قسم_نام Appl, قسم_نام V>
+ساخت hb_partial_t
 {
   hb_partial_t (Appl a, V v) : a (a), v (v) {}
 
   static_assert (Pos > 0, "");
 
-  template <typename ...Ts,
-	    unsigned P = Pos,
-	    hb_enable_if (P == 1)> auto
-  operator () (Ts&& ...ds) -> decltype (hb_invoke (hb_declval (Appl),
+  سانچہ <قسم_نام ...Ts,
+	    غیرعلامتی P = Pos,
+	    hb_enable_if (P == 1)> خودکار
+  عامل () (Ts&& ...ds) -> decltype (hb_invoke (hb_declval (Appl),
 						   hb_declval (V),
 						   hb_declval (Ts)...))
   {
-    return hb_invoke (std::forward<Appl> (a),
+    واپس hb_invoke (std::forward<Appl> (a),
 		      std::forward<V> (v),
 		      std::forward<Ts> (ds)...);
   }
-  template <typename T0, typename ...Ts,
-	    unsigned P = Pos,
-	    hb_enable_if (P == 2)> auto
-  operator () (T0&& d0, Ts&& ...ds) -> decltype (hb_invoke (hb_declval (Appl),
+  سانچہ <قسم_نام T0, قسم_نام ...Ts,
+	    غیرعلامتی P = Pos,
+	    hb_enable_if (P == 2)> خودکار
+  عامل () (T0&& d0, Ts&& ...ds) -> decltype (hb_invoke (hb_declval (Appl),
 							    hb_declval (T0),
 							    hb_declval (V),
 							    hb_declval (Ts)...))
   {
-    return hb_invoke (std::forward<Appl> (a),
+    واپس hb_invoke (std::forward<Appl> (a),
 		      std::forward<T0> (d0),
 		      std::forward<V> (v),
 		      std::forward<Ts> (ds)...);
   }
 
-  private:
+  نجی:
   hb_reference_wrapper<Appl> a;
   V v;
 };
-template <unsigned Pos=1, typename Appl, typename V>
-auto hb_partial (Appl&& a, V&& v) HB_AUTO_RETURN
+سانچہ <غیرعلامتی Pos=1, قسم_نام Appl, قسم_نام V>
+خودکار hb_partial (Appl&& a, V&& v) HB_AUTO_RETURN
 (( hb_partial_t<Pos, Appl, V> (a, v) ))
 
 /* The following, HB_PARTIALIZE, macro uses a particular corner-case
@@ -635,44 +635,44 @@ auto hb_partial (Appl&& a, V&& v) HB_AUTO_RETURN
  * to be deduced as the same type with this particular compiler, and seem
  * to be fine as default code path as well.
  */
-#ifdef _MSC_VER
+#اگر_تعریف_شدہ _MSC_VER
 /* https://github.com/harfbuzz/harfbuzz/issues/1730 */ \
-#define HB_PARTIALIZE(Pos) \
-  template <typename _T> \
-  decltype(auto) operator () (_T&& _v) const \
-  { return hb_partial<Pos> (this, std::forward<_T> (_v)); } \
-  static_assert (true, "")
-#else
+#تعریف_کرو HB_PARTIALIZE(Pos) \
+  سانچہ <قسم_نام _T> \
+  decltype(خودکار) عامل () (_T&& _v) ثابت \
+  { واپس hb_partial<Pos> (یہ, std::forward<_T> (_v)); } \
+  static_assert (سچ, "")
+#ورنہ
 /* https://github.com/harfbuzz/harfbuzz/issues/1724 */
-#define HB_PARTIALIZE(Pos) \
-  template <typename _T> \
-  auto operator () (_T&& _v) const HB_AUTO_RETURN \
-  (hb_partial<Pos> (+this, std::forward<_T> (_v))) \
-  static_assert (true, "")
-#endif
+#تعریف_کرو HB_PARTIALIZE(Pos) \
+  سانچہ <قسم_نام _T> \
+  خودکار عامل () (_T&& _v) ثابت HB_AUTO_RETURN \
+  (hb_partial<Pos> (+یہ, std::forward<_T> (_v))) \
+  static_assert (سچ, "")
+#اگر_ختم
 
 
-struct
+ساخت
 {
-  private:
+  نجی:
 
-  template <typename Pred, typename Val> auto
-  impl (Pred&& p, Val &&v, hb_priority<1>) const HB_AUTO_RETURN
+  سانچہ <قسم_نام Pred, قسم_نام Val> خودکار
+  impl (Pred&& p, Val &&v, hb_ترجیح<1>) ثابت HB_AUTO_RETURN
   (
     hb_deref (std::forward<Pred> (p)).has (std::forward<Val> (v))
   )
 
-  template <typename Pred, typename Val> auto
-  impl (Pred&& p, Val &&v, hb_priority<0>) const HB_AUTO_RETURN
+  سانچہ <قسم_نام Pred, قسم_نام Val> خودکار
+  impl (Pred&& p, Val &&v, hb_ترجیح<0>) ثابت HB_AUTO_RETURN
   (
     hb_invoke (std::forward<Pred> (p),
 	       std::forward<Val> (v))
   )
 
-  public:
+  عوامی:
 
-  template <typename Pred, typename Val> auto
-  operator () (Pred&& p, Val &&v) const HB_RETURN (bool,
+  سانچہ <قسم_نام Pred, قسم_نام Val> خودکار
+  عامل () (Pred&& p, Val &&v) ثابت HB_RETURN (منطقی,
     impl (std::forward<Pred> (p),
 	  std::forward<Val> (v),
 	  hb_prioritize)
@@ -680,61 +680,61 @@ struct
 }
 HB_FUNCOBJ (hb_has);
 
-struct
+ساخت
 {
-  private:
+  نجی:
 
-  template <typename Pred, typename Val> auto
-  impl (Pred&& p, Val &&v, hb_priority<1>) const HB_AUTO_RETURN
+  سانچہ <قسم_نام Pred, قسم_نام Val> خودکار
+  impl (Pred&& p, Val &&v, hb_ترجیح<1>) ثابت HB_AUTO_RETURN
   (
     hb_has (std::forward<Pred> (p),
 	    std::forward<Val> (v))
   )
 
-  template <typename Pred, typename Val> auto
-  impl (Pred&& p, Val &&v, hb_priority<0>) const HB_AUTO_RETURN
+  سانچہ <قسم_نام Pred, قسم_نام Val> خودکار
+  impl (Pred&& p, Val &&v, hb_ترجیح<0>) ثابت HB_AUTO_RETURN
   (
     std::forward<Pred> (p) == std::forward<Val> (v)
   )
 
-  public:
+  عوامی:
 
-  template <typename Pred, typename Val> auto
-  operator () (Pred&& p, Val &&v) const HB_RETURN (bool,
+  سانچہ <قسم_نام Pred, قسم_نام Val> خودکار
+  عامل () (Pred&& p, Val &&v) ثابت HB_RETURN (منطقی,
     impl (std::forward<Pred> (p),
 	  std::forward<Val> (v),
 	  hb_prioritize)
   )
 }
-HB_FUNCOBJ (hb_match);
+HB_FUNCOBJ (hb_مطابقت);
 
-struct
+ساخت
 {
-  private:
+  نجی:
 
-  template <typename Proj, typename Val> auto
-  impl (Proj&& f, Val &&v, hb_priority<2>) const HB_AUTO_RETURN
+  سانچہ <قسم_نام Proj, قسم_نام Val> خودکار
+  impl (Proj&& f, Val &&v, hb_ترجیح<2>) ثابت HB_AUTO_RETURN
   (
     hb_deref (std::forward<Proj> (f)).get (std::forward<Val> (v))
   )
 
-  template <typename Proj, typename Val> auto
-  impl (Proj&& f, Val &&v, hb_priority<1>) const HB_AUTO_RETURN
+  سانچہ <قسم_نام Proj, قسم_نام Val> خودکار
+  impl (Proj&& f, Val &&v, hb_ترجیح<1>) ثابت HB_AUTO_RETURN
   (
     hb_invoke (std::forward<Proj> (f),
 	       std::forward<Val> (v))
   )
 
-  template <typename Proj, typename Val> auto
-  impl (Proj&& f, Val &&v, hb_priority<0>) const HB_AUTO_RETURN
+  سانچہ <قسم_نام Proj, قسم_نام Val> خودکار
+  impl (Proj&& f, Val &&v, hb_ترجیح<0>) ثابت HB_AUTO_RETURN
   (
     std::forward<Proj> (f)[std::forward<Val> (v)]
   )
 
-  public:
+  عوامی:
 
-  template <typename Proj, typename Val> auto
-  operator () (Proj&& f, Val &&v) const HB_AUTO_RETURN
+  سانچہ <قسم_نام Proj, قسم_نام Val> خودکار
+  عامل () (Proj&& f, Val &&v) ثابت HB_AUTO_RETURN
   (
     impl (std::forward<Proj> (f),
 	  std::forward<Val> (v),
@@ -743,38 +743,38 @@ struct
 }
 HB_FUNCOBJ (hb_get);
 
-struct
+ساخت
 {
-  private:
+  نجی:
 
-  template <typename T1, typename T2> auto
-  impl (T1&& v1, T2 &&v2, hb_priority<3>) const HB_AUTO_RETURN
+  سانچہ <قسم_نام T1, قسم_نام T2> خودکار
+  impl (T1&& v1, T2 &&v2, hb_ترجیح<3>) ثابت HB_AUTO_RETURN
   (
     std::forward<T2> (v2).cmp (std::forward<T1> (v1)) == 0
   )
 
-  template <typename T1, typename T2> auto
-  impl (T1&& v1, T2 &&v2, hb_priority<2>) const HB_AUTO_RETURN
+  سانچہ <قسم_نام T1, قسم_نام T2> خودکار
+  impl (T1&& v1, T2 &&v2, hb_ترجیح<2>) ثابت HB_AUTO_RETURN
   (
     std::forward<T1> (v1).cmp (std::forward<T2> (v2)) == 0
   )
 
-  template <typename T1, typename T2> auto
-  impl (T1&& v1, T2 &&v2, hb_priority<1>) const HB_AUTO_RETURN
+  سانچہ <قسم_نام T1, قسم_نام T2> خودکار
+  impl (T1&& v1, T2 &&v2, hb_ترجیح<1>) ثابت HB_AUTO_RETURN
   (
     std::forward<T1> (v1) == std::forward<T2> (v2)
   )
 
-  template <typename T1, typename T2> auto
-  impl (T1&& v1, T2 &&v2, hb_priority<0>) const HB_AUTO_RETURN
+  سانچہ <قسم_نام T1, قسم_نام T2> خودکار
+  impl (T1&& v1, T2 &&v2, hb_ترجیح<0>) ثابت HB_AUTO_RETURN
   (
     std::forward<T2> (v2) == std::forward<T1> (v1)
   )
 
-  public:
+  عوامی:
 
-  template <typename T1, typename T2> auto
-  operator () (T1&& v1, T2 &&v2) const HB_AUTO_RETURN
+  سانچہ <قسم_نام T1, قسم_نام T2> خودکار
+  عامل () (T1&& v1, T2 &&v2) ثابت HB_AUTO_RETURN
   (
     impl (std::forward<T1> (v1),
 	  std::forward<T2> (v2),
@@ -783,197 +783,197 @@ struct
 }
 HB_FUNCOBJ (hb_equal);
 
-struct
+ساخت
 {
-  template <typename T> void
-  operator () (T& a, T& b) const
+  سانچہ <قسم_نام T> خالی
+  عامل () (T& a, T& b) ثابت
   {
-    using std::swap; // allow ADL
+    استعمال std::swap; // allow ADL
     swap (a, b);
   }
 }
-HB_FUNCOBJ (hb_swap);
+HB_FUNCOBJ (hb_تبادلہ);
 
 
-template <typename T1, typename T2>
-struct hb_pair_t
+سانچہ <قسم_نام T1, قسم_نام T2>
+ساخت hb_pair_t
 {
-  typedef T1 first_t;
-  typedef T2 second_t;
-  typedef hb_pair_t<T1, T2> pair_t;
+  قسمتعریف T1 پہلا_t;
+  قسمتعریف T2 دوسرا_t;
+  قسمتعریف hb_pair_t<T1, T2> pair_t;
 
-  template <typename U1 = T1, typename U2 = T2,
+  سانچہ <قسم_نام U1 = T1, قسم_نام U2 = T2,
 	    hb_enable_if (std::is_default_constructible<U1>::value &&
 			  std::is_default_constructible<U2>::value)>
-  hb_pair_t () : first (), second () {}
-  hb_pair_t (T1 a, T2 b) : first (std::forward<T1> (a)), second (std::forward<T2> (b)) {}
+  hb_pair_t () : پہلا (), second () {}
+  hb_pair_t (T1 a, T2 b) : پہلا (std::forward<T1> (a)), second (std::forward<T2> (b)) {}
 
-  template <typename Q1, typename Q2,
+  سانچہ <قسم_نام Q1, قسم_نام Q2,
 	    hb_enable_if (hb_is_convertible (T1, Q1) &&
 			  hb_is_convertible (T2, Q2))>
-  operator hb_pair_t<Q1, Q2> () { return hb_pair_t<Q1, Q2> (first, second); }
+  عامل hb_pair_t<Q1, Q2> () { واپس hb_pair_t<Q1, Q2> (پہلا, second); }
 
-  hb_pair_t<T1, T2> reverse () const
-  { return hb_pair_t<T1, T2> (second, first); }
+  hb_pair_t<T1, T2> reverse () ثابت
+  { واپس hb_pair_t<T1, T2> (second, پہلا); }
 
-  bool operator == (const pair_t& o) const { return first == o.first && second == o.second; }
-  bool operator != (const pair_t& o) const { return !(*this == o); }
-  bool operator < (const pair_t& o) const { return first < o.first || (first == o.first && second < o.second); }
-  bool operator >= (const pair_t& o) const { return !(*this < o); }
-  bool operator > (const pair_t& o) const { return first > o.first || (first == o.first && second > o.second); }
-  bool operator <= (const pair_t& o) const { return !(*this > o); }
+  منطقی عامل == (ثابت pair_t& o) ثابت { واپس پہلا == o.پہلا && second == o.second; }
+  منطقی عامل != (ثابت pair_t& o) ثابت { واپس !(*یہ == o); }
+  منطقی عامل < (ثابت pair_t& o) ثابت { واپس پہلا < o.پہلا || (پہلا == o.پہلا && second < o.second); }
+  منطقی عامل >= (ثابت pair_t& o) ثابت { واپس !(*یہ < o); }
+  منطقی عامل > (ثابت pair_t& o) ثابت { واپس پہلا > o.پہلا || (پہلا == o.پہلا && second > o.second); }
+  منطقی عامل <= (ثابت pair_t& o) ثابت { واپس !(*یہ > o); }
 
-  static int cmp (const void *pa, const void *pb)
+  ساکن صحیح cmp (ثابت خالی *pa, ثابت خالی *pb)
   {
     pair_t *a = (pair_t *) pa;
     pair_t *b = (pair_t *) pb;
 
-    if (a->first < b->first) return -1;
-    if (a->first > b->first) return +1;
-    if (a->second < b->second) return -1;
-    if (a->second > b->second) return +1;
-    return 0;
+    اگر (a->پہلا < b->پہلا) واپس -1;
+    اگر (a->پہلا > b->پہلا) واپس +1;
+    اگر (a->second < b->second) واپس -1;
+    اگر (a->second > b->second) واپس +1;
+    واپس 0;
   }
 
-  friend void swap (hb_pair_t& a, hb_pair_t& b) noexcept
+  دوست خالی swap (hb_pair_t& a, hb_pair_t& b) noexcept
   {
-    hb_swap (a.first, b.first);
-    hb_swap (a.second, b.second);
+    hb_تبادلہ (a.پہلا, b.پہلا);
+    hb_تبادلہ (a.second, b.second);
   }
 
 
-  T1 first;
+  T1 پہلا;
   T2 second;
 };
-template <typename T1, typename T2> static inline hb_pair_t<T1, T2>
-hb_pair (T1&& a, T2&& b) { return hb_pair_t<T1, T2> (a, b); }
+سانچہ <قسم_نام T1, قسم_نام T2> ساکن اندرونی hb_pair_t<T1, T2>
+hb_pair (T1&& a, T2&& b) { واپس hb_pair_t<T1, T2> (a, b); }
 
-typedef hb_pair_t<hb_codepoint_t, hb_codepoint_t> hb_codepoint_pair_t;
+قسمتعریف hb_pair_t<hb_codepoint_t, hb_codepoint_t> hb_codepoint_pair_t;
 
-struct
+ساخت
 {
-  template <typename Pair> constexpr typename Pair::first_t
-  operator () (const Pair& pair) const { return pair.first; }
+  سانچہ <قسم_نام Pair> constexpr قسم_نام Pair::پہلا_t
+  عامل () (ثابت Pair& pair) ثابت { واپس pair.پہلا; }
 }
-HB_FUNCOBJ (hb_first);
+HB_FUNCOBJ (hb_پہلا);
 
-struct
+ساخت
 {
-  template <typename Pair> constexpr typename Pair::second_t
-  operator () (const Pair& pair) const { return pair.second; }
+  سانچہ <قسم_نام Pair> constexpr قسم_نام Pair::دوسرا_t
+  عامل () (ثابت Pair& pair) ثابت { واپس pair.second; }
 }
-HB_FUNCOBJ (hb_second);
+HB_FUNCOBJ (hb_دوسرا);
 
 /* Note.  In min/max impl, we can use hb_type_identity<T> for second argument.
  * However, that would silently convert between different-signedness integers.
  * Instead we accept two different types, such that compiler can err if
  * comparing integers of different signedness. */
-struct
+ساخت
 {
-  template <typename T, typename T2> constexpr auto
-  operator () (T&& a, T2&& b) const HB_AUTO_RETURN
+  سانچہ <قسم_نام T, قسم_نام T2> constexpr خودکار
+  عامل () (T&& a, T2&& b) ثابت HB_AUTO_RETURN
   (a <= b ? a : b)
 }
 HB_FUNCOBJ (hb_min);
-struct
+ساخت
 {
-  template <typename T, typename T2> constexpr auto
-  operator () (T&& a, T2&& b) const HB_AUTO_RETURN
+  سانچہ <قسم_نام T, قسم_نام T2> constexpr خودکار
+  عامل () (T&& a, T2&& b) ثابت HB_AUTO_RETURN
   (a >= b ? a : b)
 }
 HB_FUNCOBJ (hb_max);
-struct
+ساخت
 {
-  template <typename T, typename T2, typename T3> constexpr auto
-  operator () (T&& x, T2&& min, T3&& max) const HB_AUTO_RETURN
+  سانچہ <قسم_نام T, قسم_نام T2, قسم_نام T3> constexpr خودکار
+  عامل () (T&& x, T2&& min, T3&& max) ثابت HB_AUTO_RETURN
   (hb_min (hb_max (std::forward<T> (x), std::forward<T2> (min)), std::forward<T3> (max)))
 }
 HB_FUNCOBJ (hb_clamp);
 
 /* Signed saturating arithmetic. */
-template <typename T>
-static HB_ALWAYS_INLINE T
-hb_saturate_add (T a, T b)
+سانچہ <قسم_نام T>
+ساکن HB_ALWAYS_INLINE T
+hb_saturate_جوڑو (T a, T b)
 {
   static_assert (std::is_integral<T>::value && std::is_signed<T>::value, "");
 
-#if hb_has_builtin(__builtin_add_overflow)
-  T result;
-  if (likely (!__builtin_add_overflow (a, b, &result)))
-    return result;
-#else
-  if (b > 0)
+#اگر hb_has_builtin(__builtin_add_overflow)
+  T نتیجہ;
+  اگر (likely (!__builtin_add_overflow (a, b, &نتیجہ)))
+    واپس نتیجہ;
+#ورنہ
+  اگر (b > 0)
   {
-    if (likely (a <= hb_int_max (T) - b))
-      return a + b;
+    اگر (likely (a <= hb_int_max (T) - b))
+      واپس a + b;
   }
-  else if (likely (a >= hb_int_min (T) - b))
-    return a + b;
-#endif
+  ورنہ اگر (likely (a >= hb_int_min (T) - b))
+    واپس a + b;
+#اگر_ختم
 
-  return a < 0 ? hb_int_min (T) : hb_int_max (T);
+  واپس a < 0 ? hb_int_min (T) : hb_int_max (T);
 }
 
-template <typename T>
-static HB_ALWAYS_INLINE T
+سانچہ <قسم_نام T>
+ساکن HB_ALWAYS_INLINE T
 hb_saturate_sub (T a, T b)
 {
   static_assert (std::is_integral<T>::value && std::is_signed<T>::value, "");
 
-#if hb_has_builtin(__builtin_sub_overflow)
-  T result;
-  if (likely (!__builtin_sub_overflow (a, b, &result)))
-    return result;
-#else
-  if (b > 0)
+#اگر hb_has_builtin(__builtin_sub_overflow)
+  T نتیجہ;
+  اگر (likely (!__builtin_sub_overflow (a, b, &نتیجہ)))
+    واپس نتیجہ;
+#ورنہ
+  اگر (b > 0)
   {
-    if (likely (a >= hb_int_min (T) + b))
-      return a - b;
+    اگر (likely (a >= hb_int_min (T) + b))
+      واپس a - b;
   }
-  else if (likely (a <= hb_int_max (T) + b))
-    return a - b;
-#endif
+  ورنہ اگر (likely (a <= hb_int_max (T) + b))
+    واپس a - b;
+#اگر_ختم
 
-  return b < 0 ? hb_int_max (T) : hb_int_min (T);
+  واپس b < 0 ? hb_int_max (T) : hb_int_min (T);
 }
 
-template <typename T>
-static HB_ALWAYS_INLINE T
+سانچہ <قسم_نام T>
+ساکن HB_ALWAYS_INLINE T
 hb_saturate_neg (T a)
 {
   static_assert (std::is_integral<T>::value && std::is_signed<T>::value, "");
 
-  return hb_saturate_sub ((T) 0, a);
+  واپس hb_saturate_sub ((T) 0, a);
 }
 
 /* Convert a floating-point value to integer type T, saturating to T's
  * range instead of relying on the undefined behavior of an out-of-range
  * float-to-int conversion.  NaN saturates to the minimum of T. */
-template <typename T>
-static HB_ALWAYS_INLINE T
-hb_clamp_to (double v)
+سانچہ <قسم_نام T>
+ساکن HB_ALWAYS_INLINE T
+hb_clamp_مقصد (دوہرا v)
 {
-  return (T) hb_clamp (v,
-		       (double) hb_int_min (T),
-		       (double) hb_int_max (T));
+  واپس (T) hb_clamp (v,
+		       (دوہرا) hb_int_min (T),
+		       (دوہرا) hb_int_max (T));
 }
 
-template <typename T>
-static HB_ALWAYS_INLINE T
-hb_clamp_to (float v)
+سانچہ <قسم_نام T>
+ساکن HB_ALWAYS_INLINE T
+hb_clamp_مقصد (اعشاری v)
 {
   /* Widen explicitly: float cannot represent all integer bounds exactly,
    * so the clamp itself is done in double. */
-  return hb_clamp_to<T> ((double) v);
+  واپس hb_clamp_مقصد<T> ((دوہرا) v);
 }
 
-template <typename T>
-static HB_ALWAYS_INLINE T
-hb_clamp_to (int64_t v)
+سانچہ <قسم_نام T>
+ساکن HB_ALWAYS_INLINE T
+hb_clamp_مقصد (int64_t v)
 {
   static_assert (std::is_integral<T>::value && std::is_signed<T>::value, "");
 
-  return (T) hb_clamp (v,
+  واپس (T) hb_clamp (v,
 		       (int64_t) hb_int_min (T),
 		       (int64_t) hb_int_max (T));
 }
@@ -983,216 +983,216 @@ hb_clamp_to (int64_t v)
  */
 
 /* Return the number of 1 bits in a uint8_t; faster than hb_popcount() */
-static inline unsigned
+ساکن اندرونی غیرعلامتی
 hb_popcount8 (uint8_t v)
 {
-  static const uint8_t popcount4[16] = {
+  ساکن ثابت uint8_t popcount4[16] = {
     0, 1, 1, 2, 1, 2, 2, 3,
     1, 2, 2, 3, 2, 3, 3, 4
   };
-  return popcount4[v & 0xF] + popcount4[v >> 4];
+  واپس popcount4[v & 0xF] + popcount4[v >> 4];
 }
 
 /* Return the number of 1 bits in v. */
-template <typename T>
-static inline unsigned int
+سانچہ <قسم_نام T>
+ساکن اندرونی غیرعلامتی صحیح
 hb_popcount (T v)
 {
-#if hb_has_builtin(__builtin_popcount)
-  if (sizeof (T) <= sizeof (unsigned int))
-    return __builtin_popcount (v);
-#endif
+#اگر hb_has_builtin(__builtin_popcount)
+  اگر (حجم (T) <= حجم (غیرعلامتی صحیح))
+    واپس __builtin_popcount (v);
+#اگر_ختم
 
-#if hb_has_builtin(__builtin_popcountl)
-  if (sizeof (T) <= sizeof (unsigned long))
-    return __builtin_popcountl (v);
-#endif
+#اگر hb_has_builtin(__builtin_popcountl)
+  اگر (حجم (T) <= حجم (غیرعلامتی طویل))
+    واپس __builtin_popcountl (v);
+#اگر_ختم
 
-#if hb_has_builtin(__builtin_popcountll)
-  if (sizeof (T) <= sizeof (unsigned long long))
-    return __builtin_popcountll (v);
-#endif
+#اگر hb_has_builtin(__builtin_popcountll)
+  اگر (حجم (T) <= حجم (غیرعلامتی طویل طویل))
+    واپس __builtin_popcountll (v);
+#اگر_ختم
 
-  if (sizeof (T) <= 4)
+  اگر (حجم (T) <= 4)
   {
     /* "HACKMEM 169" */
     uint32_t y;
     y = (v >> 1) &033333333333;
     y = v - y - ((y >>1) & 033333333333);
-    return (((y + (y >> 3)) & 030707070707) % 077);
+    واپس (((y + (y >> 3)) & 030707070707) % 077);
   }
 
-  if (sizeof (T) == 8)
+  اگر (حجم (T) == 8)
   {
     uint64_t y = (uint64_t) v;
     y -= ((y >> 1) & 0x5555555555555555ull);
     y = (y & 0x3333333333333333ull) + (y >> 2 & 0x3333333333333333ull);
-    return ((y + (y >> 4)) & 0xf0f0f0f0f0f0f0full) * 0x101010101010101ull >> 56;
+    واپس ((y + (y >> 4)) & 0xf0f0f0f0f0f0f0full) * 0x101010101010101ull >> 56;
   }
 
-  if (sizeof (T) == 16)
+  اگر (حجم (T) == 16)
   {
-    unsigned int shift = 64;
-    return hb_popcount<uint64_t> ((uint64_t) v) + hb_popcount ((uint64_t) (v >> shift));
+    غیرعلامتی صحیح سرکاؤ = 64;
+    واپس hb_popcount<uint64_t> ((uint64_t) v) + hb_popcount ((uint64_t) (v >> سرکاؤ));
   }
 
-  assert (0);
-  return 0; /* Shut up stupid compiler. */
+  أكد (0);
+  واپس 0; /* Shut up stupid compiler. */
 }
 
 /* Returns the number of bits needed to store number */
-template <typename T>
-static inline unsigned int
-hb_bit_storage (T v)
+سانچہ <قسم_نام T>
+ساکن اندرونی غیرعلامتی صحیح
+hb_ثنائی_ہندسہ_storage (T v)
 {
-  if (unlikely (!v)) return 0;
+  اگر (unlikely (!v)) واپس 0;
 
-#if hb_has_builtin(__builtin_clz)
-  if (sizeof (T) <= sizeof (unsigned int))
-    return sizeof (unsigned int) * 8 - __builtin_clz (v);
-#endif
+#اگر hb_has_builtin(__builtin_clz)
+  اگر (حجم (T) <= حجم (غیرعلامتی صحیح))
+    واپس حجم (غیرعلامتی صحیح) * 8 - __builtin_clz (v);
+#اگر_ختم
 
-#if hb_has_builtin(__builtin_clzl)
-  if (sizeof (T) <= sizeof (unsigned long))
-    return sizeof (unsigned long) * 8 - __builtin_clzl (v);
-#endif
+#اگر hb_has_builtin(__builtin_clzl)
+  اگر (حجم (T) <= حجم (غیرعلامتی طویل))
+    واپس حجم (غیرعلامتی طویل) * 8 - __builtin_clzl (v);
+#اگر_ختم
 
-#if hb_has_builtin(__builtin_clzll)
-  if (sizeof (T) <= sizeof (unsigned long long))
-    return sizeof (unsigned long long) * 8 - __builtin_clzll (v);
-#endif
+#اگر hb_has_builtin(__builtin_clzll)
+  اگر (حجم (T) <= حجم (غیرعلامتی طویل طویل))
+    واپس حجم (غیرعلامتی طویل طویل) * 8 - __builtin_clzll (v);
+#اگر_ختم
 
-#if (defined(_MSC_VER) && _MSC_VER >= 1500) || (defined(__MINGW32__) && (__GNUC__ < 4))
-  if (sizeof (T) <= sizeof (unsigned int))
+#اگر (defined(_MSC_VER) && _MSC_VER >= 1500) || (defined(__MINGW32__) && (__GNUC__ < 4))
+  اگر (حجم (T) <= حجم (غیرعلامتی صحیح))
   {
-    unsigned long where;
-    _BitScanReverse (&where, v);
-    return 1 + where;
+    غیرعلامتی طویل where;
+    ثنائی_ہندسہ_جائزہ_الٹ (&where, v);
+    واپس 1 + where;
   }
-# if defined(_WIN64)
-  if (sizeof (T) <= 8)
+# اگر defined(_WIN64)
+  اگر (حجم (T) <= 8)
   {
-    unsigned long where;
-    _BitScanReverse64 (&where, v);
-    return 1 + where;
+    غیرعلامتی طویل where;
+    ثنائی_ہندسہ_جائزہ_Reverse64 (&where, v);
+    واپس 1 + where;
   }
 # endif
-#endif
+#اگر_ختم
 
-  if (sizeof (T) <= 4)
+  اگر (حجم (T) <= 4)
   {
     /* "bithacks" */
-    const unsigned int b[] = {0x2, 0xC, 0xF0, 0xFF00, 0xFFFF0000};
-    const unsigned int S[] = {1, 2, 4, 8, 16};
-    unsigned int r = 0;
-    for (int i = 4; i >= 0; i--)
-      if (v & b[i])
+    ثابت غیرعلامتی صحیح b[] = {0x2, 0xC, 0xF0, 0xFF00, 0xFFFF0000};
+    ثابت غیرعلامتی صحیح S[] = {1, 2, 4, 8, 16};
+    غیرعلامتی صحیح r = 0;
+    برائے (صحیح i = 4; i >= 0; i--)
+      اگر (v & b[i])
       {
 	v >>= S[i];
 	r |= S[i];
       }
-    return r + 1;
+    واپس r + 1;
   }
-  if (sizeof (T) <= 8)
+  اگر (حجم (T) <= 8)
   {
     /* "bithacks" */
-    const uint64_t b[] = {0x2ULL, 0xCULL, 0xF0ULL, 0xFF00ULL, 0xFFFF0000ULL, 0xFFFFFFFF00000000ULL};
-    const unsigned int S[] = {1, 2, 4, 8, 16, 32};
-    unsigned int r = 0;
-    for (int i = 5; i >= 0; i--)
-      if (v & b[i])
+    ثابت uint64_t b[] = {0x2ULL, 0xCULL, 0xF0ULL, 0xFF00ULL, 0xFFFF0000ULL, 0xFFFFFFFF00000000ULL};
+    ثابت غیرعلامتی صحیح S[] = {1, 2, 4, 8, 16, 32};
+    غیرعلامتی صحیح r = 0;
+    برائے (صحیح i = 5; i >= 0; i--)
+      اگر (v & b[i])
       {
 	v >>= S[i];
 	r |= S[i];
       }
-    return r + 1;
+    واپس r + 1;
   }
-  if (sizeof (T) == 16)
+  اگر (حجم (T) == 16)
   {
-    unsigned int shift = 64;
-    return (v >> shift) ? hb_bit_storage<uint64_t> ((uint64_t) (v >> shift)) + shift :
-			  hb_bit_storage<uint64_t> ((uint64_t) v);
+    غیرعلامتی صحیح سرکاؤ = 64;
+    واپس (v >> سرکاؤ) ? hb_ثنائی_ہندسہ_storage<uint64_t> ((uint64_t) (v >> سرکاؤ)) + سرکاؤ :
+			  hb_ثنائی_ہندسہ_storage<uint64_t> ((uint64_t) v);
   }
 
-  assert (0);
-  return 0; /* Shut up stupid compiler. */
+  أكد (0);
+  واپس 0; /* Shut up stupid compiler. */
 }
 
 /* Returns the number of zero bits in the least significant side of v */
-template <typename T>
-static inline unsigned int
+سانچہ <قسم_نام T>
+ساکن اندرونی غیرعلامتی صحیح
 hb_ctz (T v)
 {
-  if (unlikely (!v)) return 8 * sizeof (T);
+  اگر (unlikely (!v)) واپس 8 * حجم (T);
 
-#if hb_has_builtin(__builtin_ctz)
-  if (sizeof (T) <= sizeof (unsigned int))
-    return __builtin_ctz (v);
-#endif
+#اگر hb_has_builtin(__builtin_ctz)
+  اگر (حجم (T) <= حجم (غیرعلامتی صحیح))
+    واپس __builtin_ctz (v);
+#اگر_ختم
 
-#if hb_has_builtin(__builtin_ctzl)
-  if (sizeof (T) <= sizeof (unsigned long))
-    return __builtin_ctzl (v);
-#endif
+#اگر hb_has_builtin(__builtin_ctzl)
+  اگر (حجم (T) <= حجم (غیرعلامتی طویل))
+    واپس __builtin_ctzl (v);
+#اگر_ختم
 
-#if hb_has_builtin(__builtin_ctzll)
-  if (sizeof (T) <= sizeof (unsigned long long))
-    return __builtin_ctzll (v);
-#endif
+#اگر hb_has_builtin(__builtin_ctzll)
+  اگر (حجم (T) <= حجم (غیرعلامتی طویل طویل))
+    واپس __builtin_ctzll (v);
+#اگر_ختم
 
-#if (defined(_MSC_VER) && _MSC_VER >= 1500) || (defined(__MINGW32__) && (__GNUC__ < 4))
-  if (sizeof (T) <= sizeof (unsigned int))
+#اگر (defined(_MSC_VER) && _MSC_VER >= 1500) || (defined(__MINGW32__) && (__GNUC__ < 4))
+  اگر (حجم (T) <= حجم (غیرعلامتی صحیح))
   {
-    unsigned long where;
-    _BitScanForward (&where, v);
-    return where;
+    غیرعلامتی طویل where;
+    ثنائی_ہندسہ_جائزہ_Forward (&where, v);
+    واپس where;
   }
-# if defined(_WIN64)
-  if (sizeof (T) <= 8)
+# اگر defined(_WIN64)
+  اگر (حجم (T) <= 8)
   {
-    unsigned long where;
-    _BitScanForward64 (&where, v);
-    return where;
+    غیرعلامتی طویل where;
+    ثنائی_ہندسہ_جائزہ_Forward64 (&where, v);
+    واپس where;
   }
 # endif
-#endif
+#اگر_ختم
 
-  if (sizeof (T) <= 4)
+  اگر (حجم (T) <= 4)
   {
     /* "bithacks" */
-    unsigned int c = 32;
+    غیرعلامتی صحیح c = 32;
     v &= - (int32_t) v;
-    if (v) c--;
-    if (v & 0x0000FFFF) c -= 16;
-    if (v & 0x00FF00FF) c -= 8;
-    if (v & 0x0F0F0F0F) c -= 4;
-    if (v & 0x33333333) c -= 2;
-    if (v & 0x55555555) c -= 1;
-    return c;
+    اگر (v) c--;
+    اگر (v & 0x0000FFFF) c -= 16;
+    اگر (v & 0x00FF00FF) c -= 8;
+    اگر (v & 0x0F0F0F0F) c -= 4;
+    اگر (v & 0x33333333) c -= 2;
+    اگر (v & 0x55555555) c -= 1;
+    واپس c;
   }
-  if (sizeof (T) <= 8)
+  اگر (حجم (T) <= 8)
   {
     /* "bithacks" */
-    unsigned int c = 64;
+    غیرعلامتی صحیح c = 64;
     v &= - (int64_t) (v);
-    if (v) c--;
-    if (v & 0x00000000FFFFFFFFULL) c -= 32;
-    if (v & 0x0000FFFF0000FFFFULL) c -= 16;
-    if (v & 0x00FF00FF00FF00FFULL) c -= 8;
-    if (v & 0x0F0F0F0F0F0F0F0FULL) c -= 4;
-    if (v & 0x3333333333333333ULL) c -= 2;
-    if (v & 0x5555555555555555ULL) c -= 1;
-    return c;
+    اگر (v) c--;
+    اگر (v & 0x00000000FFFFFFFFULL) c -= 32;
+    اگر (v & 0x0000FFFF0000FFFFULL) c -= 16;
+    اگر (v & 0x00FF00FF00FF00FFULL) c -= 8;
+    اگر (v & 0x0F0F0F0F0F0F0F0FULL) c -= 4;
+    اگر (v & 0x3333333333333333ULL) c -= 2;
+    اگر (v & 0x5555555555555555ULL) c -= 1;
+    واپس c;
   }
-  if (sizeof (T) == 16)
+  اگر (حجم (T) == 16)
   {
-    unsigned int shift = 64;
-    return (uint64_t) v ? hb_bit_storage<uint64_t> ((uint64_t) v) :
-			  hb_bit_storage<uint64_t> ((uint64_t) (v >> shift)) + shift;
+    غیرعلامتی صحیح سرکاؤ = 64;
+    واپس (uint64_t) v ? hb_ثنائی_ہندسہ_storage<uint64_t> ((uint64_t) v) :
+			  hb_ثنائی_ہندسہ_storage<uint64_t> ((uint64_t) (v >> سرکاؤ)) + سرکاؤ;
   }
 
-  assert (0);
-  return 0; /* Shut up stupid compiler. */
+  أكد (0);
+  واپس 0; /* Shut up stupid compiler. */
 }
 
 
@@ -1201,84 +1201,84 @@ hb_ctz (T v)
  */
 
 /* ASCII tag/character handling */
-static inline bool ISALPHA (unsigned char c)
-{ return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'); }
-static inline bool ISALNUM (unsigned char c)
-{ return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9'); }
-static inline bool ISSPACE (unsigned char c)
-{ return c == ' ' || c =='\f'|| c =='\n'|| c =='\r'|| c =='\t'|| c =='\v'; }
-static inline unsigned char TOUPPER (unsigned char c)
-{ return (c >= 'a' && c <= 'z') ? c - 'a' + 'A' : c; }
-static inline unsigned char TOLOWER (unsigned char c)
-{ return (c >= 'A' && c <= 'Z') ? c - 'A' + 'a' : c; }
-static inline bool ISHEX (unsigned char c)
-{ return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F'); }
-static inline unsigned char TOHEX (uint8_t c)
-{ return (c & 0xF) <= 9 ? (c & 0xF) + '0' : (c & 0xF) + 'a' - 10; }
-static inline uint8_t FROMHEX (unsigned char c)
-{ return (c >= '0' && c <= '9') ? c - '0' : TOLOWER (c) - 'a' + 10; }
+ساکن اندرونی منطقی ISALPHA (غیرعلامتی حرف c)
+{ واپس (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'); }
+ساکن اندرونی منطقی ISALNUM (غیرعلامتی حرف c)
+{ واپس (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9'); }
+ساکن اندرونی منطقی ISSPACE (غیرعلامتی حرف c)
+{ واپس c == ' ' || c =='\f'|| c =='\n'|| c =='\r'|| c =='\t'|| c =='\v'; }
+ساکن اندرونی غیرعلامتی حرف TOUPPER (غیرعلامتی حرف c)
+{ واپس (c >= 'a' && c <= 'z') ? c - 'a' + 'A' : c; }
+ساکن اندرونی غیرعلامتی حرف TOLOWER (غیرعلامتی حرف c)
+{ واپس (c >= 'A' && c <= 'Z') ? c - 'A' + 'a' : c; }
+ساکن اندرونی منطقی ISHEX (غیرعلامتی حرف c)
+{ واپس (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F'); }
+ساکن اندرونی غیرعلامتی حرف TOHEX (uint8_t c)
+{ واپس (c & 0xF) <= 9 ? (c & 0xF) + '0' : (c & 0xF) + 'a' - 10; }
+ساکن اندرونی uint8_t FROMHEX (غیرعلامتی حرف c)
+{ واپس (c >= '0' && c <= '9') ? c - '0' : TOLOWER (c) - 'a' + 10; }
 
-static inline unsigned int DIV_CEIL (const unsigned int a, unsigned int b)
-{ return (a + (b - 1)) / b; }
+ساکن اندرونی غیرعلامتی صحیح DIV_CEIL (ثابت غیرعلامتی صحیح a, غیرعلامتی صحیح b)
+{ واپس (a + (b - 1)) / b; }
 
 
-#undef  ARRAY_LENGTH
-template <typename Type, unsigned int n>
-static inline unsigned int ARRAY_LENGTH (const Type (&)[n]) { return n; }
+#تعریف_منسوخ  ARRAY_لمبائی
+سانچہ <قسم_نام Type, غیرعلامتی صحیح n>
+ساکن اندرونی غیرعلامتی صحیح ARRAY_لمبائی (ثابت Type (&)[n]) { واپس n; }
 /* A const version, but does not detect erratically being called on pointers. */
-#define ARRAY_LENGTH_CONST(__array) ((signed int) (sizeof (__array) / sizeof (__array[0])))
+#تعریف_کرو ARRAY_لمبائی_CONST(__array) ((علامتی صحیح) (حجم (__array) / حجم (__array[0])))
 
 
-static inline void *
-hb_memcpy (void *__restrict dst, const void *__restrict src, size_t len)
+ساکن اندرونی خالی *
+hb_memcpy (خالی *__restrict dst, ثابت خالی *__restrict src, size_t len)
 {
   /* It's illegal to pass 0 as size to memcpy. */
-  if (unlikely (!len)) return dst;
-  return memcpy (dst, src, len);
+  اگر (unlikely (!len)) واپس dst;
+  واپس حافظہ_نقل (dst, src, len);
 }
 
-static inline int
-hb_memcmp (const void *a, const void *b, unsigned int len)
+ساکن اندرونی صحیح
+hb_memcmp (ثابت خالی *a, ثابت خالی *b, غیرعلامتی صحیح len)
 {
   /* It's illegal to pass NULL to memcmp(), even if len is zero.
    * So, wrap it.
    * https://sourceware.org/bugzilla/show_bug.cgi?id=23878 */
-  if (unlikely (!len)) return 0;
-  return memcmp (a, b, len);
+  اگر (unlikely (!len)) واپس 0;
+  واپس memcmp (a, b, len);
 }
 
-static inline void *
-hb_memset (void *s, int c, unsigned int n)
+ساکن اندرونی خالی *
+hb_memset (خالی *s, صحیح c, غیرعلامتی صحیح n)
 {
   /* It's illegal to pass NULL to memset(), even if n is zero. */
-  if (unlikely (!n)) return s;
-  return memset (s, c, n);
+  اگر (unlikely (!n)) واپس s;
+  واپس memset (s, c, n);
 }
 
-static inline unsigned int
-hb_ceil_to_4 (unsigned int v)
+ساکن اندرونی غیرعلامتی صحیح
+hb_ceil_مقصد_4 (غیرعلامتی صحیح v)
 {
-  return ((v - 1) | 3) + 1;
+  واپس ((v - 1) | 3) + 1;
 }
 
-template <typename T> static inline bool
-hb_in_range (T u, T lo, T hi)
+سانچہ <قسم_نام T> ساکن اندرونی منطقی
+hb_اندر_range (T u, T lo, T hi)
 {
   static_assert (!std::is_signed<T>::value, "");
 
   /* The casts below are important as if T is smaller than int,
    * the subtract results will become a signed int! */
-  return (T)(u - lo) <= (T)(hi - lo);
+  واپس (T)(u - lo) <= (T)(hi - lo);
 }
-template <typename T> static inline bool
-hb_in_ranges (T u, T lo1, T hi1)
+سانچہ <قسم_نام T> ساکن اندرونی منطقی
+hb_اندر_ranges (T u, T lo1, T hi1)
 {
-  return hb_in_range (u, lo1, hi1);
+  واپس hb_اندر_range (u, lo1, hi1);
 }
-template <typename T, typename ...Ts> static inline bool
-hb_in_ranges (T u, T lo1, T hi1, Ts... ds)
+سانچہ <قسم_نام T, قسم_نام ...Ts> ساکن اندرونی منطقی
+hb_اندر_ranges (T u, T lo1, T hi1, Ts... ds)
 {
-  return hb_in_range<T> (u, lo1, hi1) || hb_in_ranges<T> (u, ds...);
+  واپس hb_اندر_range<T> (u, lo1, hi1) || hb_اندر_ranges<T> (u, ds...);
 }
 
 
@@ -1286,34 +1286,34 @@ hb_in_ranges (T u, T lo1, T hi1, Ts... ds)
  * Overflow checking.
  */
 
-static inline bool
-hb_unsigned_mul_overflows (unsigned int count, unsigned int size, unsigned *result = nullptr)
+ساکن اندرونی منطقی
+hb_unsigned_mul_overflows (غیرعلامتی صحیح گنتی, غیرعلامتی صحیح سائز, غیرعلامتی *نتیجہ = خالی_اشاریہ)
 {
-#if hb_has_builtin(__builtin_mul_overflow)
-  unsigned stack_result;
-  if (!result)
-    result = &stack_result;
-  return __builtin_mul_overflow (count, size, result);
-#endif
+#اگر hb_has_builtin(__builtin_mul_overflow)
+  غیرعلامتی ڈھیر_نتیجہ;
+  اگر (!نتیجہ)
+    نتیجہ = &ڈھیر_نتیجہ;
+  واپس __builtin_mul_overflow (گنتی, سائز, نتیجہ);
+#اگر_ختم
 
-  if (result)
-    *result = count * size;
-  return (size > 0) && (count >= ((unsigned int) -1) / size);
+  اگر (نتیجہ)
+    *نتیجہ = گنتی * سائز;
+  واپس (سائز > 0) && (گنتی >= ((غیرعلامتی صحیح) -1) / سائز);
 }
 
-static inline bool
-hb_unsigned_add_overflows (unsigned int a, unsigned int b, unsigned *result = nullptr)
+ساکن اندرونی منطقی
+hb_unsigned_جوڑو_overflows (غیرعلامتی صحیح a, غیرعلامتی صحیح b, غیرعلامتی *نتیجہ = خالی_اشاریہ)
 {
-#if hb_has_builtin(__builtin_add_overflow)
-  unsigned stack_result;
-  if (!result)
-    result = &stack_result;
-  return __builtin_add_overflow (a, b, result);
-#endif
+#اگر hb_has_builtin(__builtin_add_overflow)
+  غیرعلامتی ڈھیر_نتیجہ;
+  اگر (!نتیجہ)
+    نتیجہ = &ڈھیر_نتیجہ;
+  واپس __builtin_add_overflow (a, b, نتیجہ);
+#اگر_ختم
 
-  if (result)
-    *result = a + b;
-  return b > (unsigned int) -1 - a;
+  اگر (نتیجہ)
+    *نتیجہ = a + b;
+  واپس b > (غیرعلامتی صحیح) -1 - a;
 }
 
 /* Saturating arithmetic on size_t.  On platforms where size_t is wider than
@@ -1323,142 +1323,142 @@ hb_unsigned_add_overflows (unsigned int a, unsigned int b, unsigned *result = nu
  * unsigned int), they saturate to SIZE_MAX so sanitize/serialize callers
  * naturally reject the resulting size as out-of-range. */
 
-static inline size_t
+ساکن اندرونی size_t
 hb_unsigned_mul_saturate (size_t a, size_t b)
 {
-  if (sizeof (size_t) > sizeof (unsigned int))
-    return a * b;
-#if hb_has_builtin(__builtin_mul_overflow)
-  size_t result;
-  if (__builtin_mul_overflow (a, b, &result))
-    return (size_t) -1;
-  return result;
-#else
-  if (b > 0 && a > ((size_t) -1) / b) return (size_t) -1;
-  return a * b;
-#endif
+  اگر (حجم (size_t) > حجم (غیرعلامتی صحیح))
+    واپس a * b;
+#اگر hb_has_builtin(__builtin_mul_overflow)
+  size_t نتیجہ;
+  اگر (__builtin_mul_overflow (a, b, &نتیجہ))
+    واپس (size_t) -1;
+  واپس نتیجہ;
+#ورنہ
+  اگر (b > 0 && a > ((size_t) -1) / b) واپس (size_t) -1;
+  واپس a * b;
+#اگر_ختم
 }
 
-static inline size_t
-hb_unsigned_add_saturate (size_t a, size_t b)
+ساکن اندرونی size_t
+hb_unsigned_جوڑو_saturate (size_t a, size_t b)
 {
-  if (sizeof (size_t) > sizeof (unsigned int))
-    return a + b;
-#if hb_has_builtin(__builtin_add_overflow)
-  size_t result;
-  if (__builtin_add_overflow (a, b, &result))
-    return (size_t) -1;
-  return result;
-#else
-  if (b > ((size_t) -1) - a) return (size_t) -1;
-  return a + b;
-#endif
+  اگر (حجم (size_t) > حجم (غیرعلامتی صحیح))
+    واپس a + b;
+#اگر hb_has_builtin(__builtin_add_overflow)
+  size_t نتیجہ;
+  اگر (__builtin_add_overflow (a, b, &نتیجہ))
+    واپس (size_t) -1;
+  واپس نتیجہ;
+#ورنہ
+  اگر (b > ((size_t) -1) - a) واپس (size_t) -1;
+  واپس a + b;
+#اگر_ختم
 }
 
 /* Variadic forms: fold left across all arguments. */
-template <typename ...Ts>
-static inline size_t
+سانچہ <قسم_نام ...Ts>
+ساکن اندرونی size_t
 hb_unsigned_mul_saturate (size_t a, size_t b, size_t c, Ts... rest)
-{ return hb_unsigned_mul_saturate (hb_unsigned_mul_saturate (a, b), c, rest...); }
+{ واپس hb_unsigned_mul_saturate (hb_unsigned_mul_saturate (a, b), c, rest...); }
 
-template <typename ...Ts>
-static inline size_t
-hb_unsigned_add_saturate (size_t a, size_t b, size_t c, Ts... rest)
-{ return hb_unsigned_add_saturate (hb_unsigned_add_saturate (a, b), c, rest...); }
+سانچہ <قسم_نام ...Ts>
+ساکن اندرونی size_t
+hb_unsigned_جوڑو_saturate (size_t a, size_t b, size_t c, Ts... rest)
+{ واپس hb_unsigned_جوڑو_saturate (hb_unsigned_جوڑو_saturate (a, b), c, rest...); }
 
 /* Saturating mul-add: a * b + c.  Covers the dominant get_size() pattern
  * `count * static_size + min_size`. */
-static inline size_t
-hb_unsigned_mul_add_saturate (size_t a, size_t b, size_t c)
-{ return hb_unsigned_add_saturate (hb_unsigned_mul_saturate (a, b), c); }
+ساکن اندرونی size_t
+hb_unsigned_mul_جوڑو_saturate (size_t a, size_t b, size_t c)
+{ واپس hb_unsigned_جوڑو_saturate (hb_unsigned_mul_saturate (a, b), c); }
 
 
 /*
  * Sort and search.
  */
 
-template <typename K, typename V, typename ...Ts>
-static int
-_hb_cmp_method (const void *pkey, const void *pval, Ts... ds)
+سانچہ <قسم_نام K, قسم_نام V, قسم_نام ...Ts>
+ساکن صحیح
+hb_cmp_طریقہ (ثابت خالی *pkey, ثابت خالی *pval, Ts... ds)
 {
-  const K& key = * (const K*) pkey;
-  const V& val = * (const V*) pval;
+  ثابت K& key = * (ثابت K*) pkey;
+  ثابت V& val = * (ثابت V*) pval;
 
-  return val.cmp (key, ds...);
+  واپس val.cmp (key, ds...);
 }
 
-template <typename K, typename V>
-static int
-_hb_cmp_operator (const void *pkey, const void *pval)
+سانچہ <قسم_نام K, قسم_نام V>
+ساکن صحیح
+_hb_cmp_operator (ثابت خالی *pkey, ثابت خالی *pval)
 {
-  const K& key = * (const K*) pkey;
-  const V& val = * (const V*) pval;
+  ثابت K& key = * (ثابت K*) pkey;
+  ثابت V& val = * (ثابت V*) pval;
 
-  if (key < val) return -1;
-  if (key > val) return  1;
-  return 0;
+  اگر (key < val) واپس -1;
+  اگر (key > val) واپس  1;
+  واپس 0;
 }
 
-template <typename V, typename K, typename ...Ts>
+سانچہ <قسم_نام V, قسم_نام K, قسم_نام ...Ts>
 HB_HOT
-static inline bool
-hb_bsearch_impl (unsigned *pos, /* Out */
-		 const K& key,
-		 V* base, size_t nmemb, size_t stride,
-		 int (*compar)(const void *_key, const void *_item, Ts... _ds),
+ساکن اندرونی منطقی
+hb_bsearch_impl (غیرعلامتی *pos, /* Out */
+		 ثابت K& key,
+		 V* بنیاد, size_t nmemb, size_t stride,
+		 صحیح (*compar)(ثابت خالی *کلید_3, ثابت خالی *شے_2, Ts... _ds),
 		 Ts... ds)
 {
   /* This is our *only* bsearch implementation. */
 
-  int min = 0, max = (int) nmemb - 1;
-  while (min <= max)
+  صحیح min = 0, max = (صحیح) nmemb - 1;
+  جب (min <= max)
   {
-    int mid = ((unsigned int) min + (unsigned int) max) / 2;
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wcast-align"
-    V* p = (V*) (((const char *) base) + (mid * stride));
-#pragma GCC diagnostic pop
-    int c = compar ((const void *) std::addressof (key), (const void *) p, ds...);
-    if (c < 0)
+    صحیح mid = ((غیرعلامتی صحیح) min + (غیرعلامتی صحیح) max) / 2;
+#ہدایت GCC diagnostic push
+#ہدایت GCC diagnostic ignored "-Wcast-align"
+    V* p = (V*) (((ثابت حرف *) بنیاد) + (mid * stride));
+#ہدایت GCC diagnostic نکالو
+    صحیح c = compar ((ثابت خالی *) std::addressof (key), (ثابت خالی *) p, ds...);
+    اگر (c < 0)
       max = mid - 1;
-    else if (c > 0)
+    ورنہ اگر (c > 0)
       min = mid + 1;
-    else
+    ورنہ
     {
       *pos = mid;
-      return true;
+      واپس سچ;
     }
   }
   *pos = min;
-  return false;
+  واپس جھوٹ;
 }
 
-template <typename V, typename K>
-static inline V*
-hb_bsearch (const K& key, V* base,
-	    size_t nmemb, size_t stride = sizeof (V),
-	    int (*compar)(const void *_key, const void *_item) = _hb_cmp_method<K, V>)
+سانچہ <قسم_نام V, قسم_نام K>
+ساکن اندرونی V*
+hb_bsearch (ثابت K& key, V* بنیاد,
+	    size_t nmemb, size_t stride = حجم (V),
+	    صحیح (*compar)(ثابت خالی *کلید_3, ثابت خالی *شے_2) = hb_cmp_طریقہ<K, V>)
 {
-  unsigned pos;
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wcast-align"
-  return hb_bsearch_impl (&pos, key, base, nmemb, stride, compar) ?
-	 (V*) (((const char *) base) + (pos * stride)) : nullptr;
-#pragma GCC diagnostic pop
+  غیرعلامتی pos;
+#ہدایت GCC diagnostic push
+#ہدایت GCC diagnostic ignored "-Wcast-align"
+  واپس hb_bsearch_impl (&pos, key, بنیاد, nmemb, stride, compar) ?
+	 (V*) (((ثابت حرف *) بنیاد) + (pos * stride)) : خالی_اشاریہ;
+#ہدایت GCC diagnostic نکالو
 }
-template <typename V, typename K, typename ...Ts>
-static inline V*
-hb_bsearch (const K& key, V* base,
+سانچہ <قسم_نام V, قسم_نام K, قسم_نام ...Ts>
+ساکن اندرونی V*
+hb_bsearch (ثابت K& key, V* بنیاد,
 	    size_t nmemb, size_t stride,
-	    int (*compar)(const void *_key, const void *_item, Ts... _ds),
+	    صحیح (*compar)(ثابت خالی *کلید_3, ثابت خالی *شے_2, Ts... _ds),
 	    Ts... ds)
 {
-  unsigned pos;
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wcast-align"
-  return hb_bsearch_impl (&pos, key, base, nmemb, stride, compar, ds...) ?
-	 (V*) (((const char *) base) + (pos * stride)) : nullptr;
-#pragma GCC diagnostic pop
+  غیرعلامتی pos;
+#ہدایت GCC diagnostic push
+#ہدایت GCC diagnostic ignored "-Wcast-align"
+  واپس hb_bsearch_impl (&pos, key, بنیاد, nmemb, stride, compar, ds...) ?
+	 (V*) (((ثابت حرف *) بنیاد) + (pos * stride)) : خالی_اشاریہ;
+#ہدایت GCC diagnostic نکالو
 }
 
 
@@ -1478,232 +1478,232 @@ hb_bsearch (const K& key, V* base,
  * uses for std::sort.
  *
  * Not stable; equivalent values may be swapped. */
-template <typename T, typename Compar>
-static inline void
-hb_qsort_loop (T *base, size_t nel, Compar compar)
+سانچہ <قسم_نام T, قسم_نام Compar>
+ساکن اندرونی خالی
+hb_qsort_loop (T *بنیاد, size_t nel, Compar compar)
 {
-  while (nel > 24)
+  جب (nel > 24)
   {
-    T *last = base + nel - 1;
-    T *mid = base + nel / 2;
+    T *آخری = بنیاد + nel - 1;
+    T *mid = بنیاد + nel / 2;
 
     /* Median-of-three pivot, parked at last-1. */
-    if (compar (*base, *mid) > 0) hb_swap (*base, *mid);
-    if (compar (*mid, *last) > 0)
+    اگر (compar (*بنیاد, *mid) > 0) hb_تبادلہ (*بنیاد, *mid);
+    اگر (compar (*mid, *آخری) > 0)
     {
-      hb_swap (*mid, *last);
-      if (compar (*base, *mid) > 0) hb_swap (*base, *mid);
+      hb_تبادلہ (*mid, *آخری);
+      اگر (compar (*بنیاد, *mid) > 0) hb_تبادلہ (*بنیاد, *mid);
     }
-    hb_swap (*mid, *(last - 1));
-    T &pivot = *(last - 1);
+    hb_تبادلہ (*mid, *(آخری - 1));
+    T &محور = *(آخری - 1);
 
     /* Two-way Hoare partition.  Inner loops are unguarded:
      * median-of-three left *base <= pivot and *last >= pivot,
      * which act as sentinels. */
-    T *i = base, *j = last - 1;
-    while (true)
+    T *i = بنیاد, *j = آخری - 1;
+    جب (سچ)
     {
-      while (compar (*++i, pivot) < 0) {}
-      while (compar (*--j, pivot) > 0) {}
-      if (i >= j) break;
-      hb_swap (*i, *j);
+      جب (compar (*++i, محور) < 0) {}
+      جب (compar (*--j, محور) > 0) {}
+      اگر (i >= j) توڑو;
+      hb_تبادلہ (*i, *j);
     }
-    hb_swap (*i, *(last - 1));
+    hb_تبادلہ (*i, *(آخری - 1));
 
     /* Recurse on smaller side, loop on larger — bounds stack
      * depth at O(log n). */
-    size_t left  = (size_t) (i - base);
-    size_t right = nel - left - 1;
-    if (left < right)
+    size_t بائیں  = (size_t) (i - بنیاد);
+    size_t دائیں = nel - بائیں - 1;
+    اگر (بائیں < دائیں)
     {
-      hb_qsort_loop (base, left, compar);
-      base = i + 1;
-      nel  = right;
+      hb_qsort_loop (بنیاد, بائیں, compar);
+      بنیاد = i + 1;
+      nel  = دائیں;
     }
-    else
+    ورنہ
     {
-      hb_qsort_loop (i + 1, right, compar);
-      nel  = left;
+      hb_qsort_loop (i + 1, دائیں, compar);
+      nel  = بائیں;
     }
   }
 }
 
-template <typename T, typename Compar>
-static inline void
-hb_qsort_inline (T *base, size_t nel, Compar compar)
+سانچہ <قسم_نام T, قسم_نام Compar>
+ساکن اندرونی خالی
+hb_qsort_inline (T *بنیاد, size_t nel, Compar compar)
 {
-  hb_qsort_loop (base, nel, compar);
+  hb_qsort_loop (بنیاد, nel, compar);
 
   /* Single final insertion sort over the whole array.  After
    * the partitioning loop, every element is within the threshold
    * of its sorted position, so this pass is O(n * threshold). */
-  T *end = base + nel;
-  for (T *pi = base + 1; pi < end; pi++)
-    for (T *pj = pi; pj > base && compar (pj[-1], pj[0]) > 0; pj--)
-      hb_swap (pj[-1], pj[0]);
+  T *انتہا = بنیاد + nel;
+  برائے (T *pi = بنیاد + 1; pi < انتہا; pi++)
+    برائے (T *pj = pi; pj > بنیاد && compar (pj[-1], pj[0]) > 0; pj--)
+      hb_تبادلہ (pj[-1], pj[0]);
 }
 
-static inline void
-hb_qsort (void *base, size_t nel, size_t width,
-	  int (*compar)(const void *_a, const void *_b))
+ساکن اندرونی خالی
+hb_qsort (خالی *بنیاد, size_t nel, size_t چوڑائی,
+	  صحیح (*compar)(ثابت خالی *_a, ثابت خالی *_b))
 {
-  qsort (base, nel, width, compar);
+  qsort (بنیاد, nel, چوڑائی, compar);
 }
 
 
 
 
-template <typename T, typename T2, typename T3 = int> static inline void
-hb_stable_sort (T *array, unsigned int len, int(*compar)(const T2 *, const T2 *), T3 *array2 = nullptr)
+سانچہ <قسم_نام T, قسم_نام T2, قسم_نام T3 = صحیح> ساکن اندرونی خالی
+hb_stable_ترتیب_دو (T *array, غیرعلامتی صحیح len, صحیح(*compar)(ثابت T2 *, ثابت T2 *), T3 *array2 = خالی_اشاریہ)
 {
   static_assert (hb_is_trivially_copy_assignable (T), "");
   static_assert (hb_is_trivially_copy_assignable (T3), "");
 
-  for (unsigned int i = 1; i < len; i++)
+  برائے (غیرعلامتی صحیح i = 1; i < len; i++)
   {
-    unsigned int j = i;
-    while (j && compar (&array[j - 1], &array[i]) > 0)
+    غیرعلامتی صحیح j = i;
+    جب (j && compar (&array[j - 1], &array[i]) > 0)
       j--;
-    if (i == j)
-      continue;
+    اگر (i == j)
+      جاری;
     /* Move item i to occupy place for item j, shift what's in between. */
     {
       T t = array[i];
-      memmove (&array[j + 1], &array[j], (i - j) * sizeof (T));
+      memmove (&array[j + 1], &array[j], (i - j) * حجم (T));
       array[j] = t;
     }
-    if (array2)
+    اگر (array2)
     {
       T3 t = array2[i];
-      memmove (&array2[j + 1], &array2[j], (i - j) * sizeof (T3));
+      memmove (&array2[j + 1], &array2[j], (i - j) * حجم (T3));
       array2[j] = t;
     }
   }
 }
 
-static inline hb_bool_t
-hb_codepoint_parse (const char *s, unsigned int len, int base, hb_codepoint_t *out)
+ساکن اندرونی hb_bool_t
+hb_codepoint_parse (ثابت حرف *s, غیرعلامتی صحیح len, صحیح بنیاد, hb_codepoint_t *برآمد)
 {
-  unsigned int v;
-  const char *p = s;
-  const char *end = p + len;
-  if (unlikely (!hb_parse_uint (&p, end, &v, true/* whole buffer */, base)))
-    return false;
+  غیرعلامتی صحیح v;
+  ثابت حرف *p = s;
+  ثابت حرف *انتہا = p + len;
+  اگر (unlikely (!hb_parse_uint (&p, انتہا, &v, سچ/* whole buffer */, بنیاد)))
+    واپس جھوٹ;
 
-  *out = v;
-  return true;
+  *برآمد = v;
+  واپس سچ;
 }
 
 
 /* Operators. */
 
-struct
+ساخت
 { HB_PARTIALIZE(2);
-  template <typename T> constexpr auto
-  operator () (const T &a, const T &b) const HB_AUTO_RETURN (a & b)
+  سانچہ <قسم_نام T> constexpr خودکار
+  عامل () (ثابت T &a, ثابت T &b) ثابت HB_AUTO_RETURN (a & b)
 }
 HB_FUNCOBJ (hb_bitwise_and);
-struct
+ساخت
 { HB_PARTIALIZE(2);
-  template <typename T> constexpr auto
-  operator () (const T &a, const T &b) const HB_AUTO_RETURN (a | b)
+  سانچہ <قسم_نام T> constexpr خودکار
+  عامل () (ثابت T &a, ثابت T &b) ثابت HB_AUTO_RETURN (a | b)
 }
 HB_FUNCOBJ (hb_bitwise_or);
-struct
+ساخت
 { HB_PARTIALIZE(2);
-  template <typename T> constexpr auto
-  operator () (const T &a, const T &b) const HB_AUTO_RETURN (a ^ b)
+  سانچہ <قسم_نام T> constexpr خودکار
+  عامل () (ثابت T &a, ثابت T &b) ثابت HB_AUTO_RETURN (a ^ b)
 }
 HB_FUNCOBJ (hb_bitwise_xor);
-struct
+ساخت
 { HB_PARTIALIZE(2);
-  template <typename T> constexpr auto
-  operator () (const T &a, const T &b) const HB_AUTO_RETURN (~a & b)
+  سانچہ <قسم_نام T> constexpr خودکار
+  عامل () (ثابت T &a, ثابت T &b) ثابت HB_AUTO_RETURN (~a & b)
 }
 HB_FUNCOBJ (hb_bitwise_lt);
-struct
+ساخت
 { HB_PARTIALIZE(2);
-  template <typename T> constexpr auto
-  operator () (const T &a, const T &b) const HB_AUTO_RETURN (a & ~b)
+  سانچہ <قسم_نام T> constexpr خودکار
+  عامل () (ثابت T &a, ثابت T &b) ثابت HB_AUTO_RETURN (a & ~b)
 }
 HB_FUNCOBJ (hb_bitwise_gt); // aka sub
-struct
+ساخت
 { HB_PARTIALIZE(2);
-  template <typename T> constexpr auto
-  operator () (const T &a, const T &b) const HB_AUTO_RETURN (~a | b)
+  سانچہ <قسم_نام T> constexpr خودکار
+  عامل () (ثابت T &a, ثابت T &b) ثابت HB_AUTO_RETURN (~a | b)
 }
 HB_FUNCOBJ (hb_bitwise_le);
-struct
+ساخت
 { HB_PARTIALIZE(2);
-  template <typename T> constexpr auto
-  operator () (const T &a, const T &b) const HB_AUTO_RETURN (a | ~b)
+  سانچہ <قسم_نام T> constexpr خودکار
+  عامل () (ثابت T &a, ثابت T &b) ثابت HB_AUTO_RETURN (a | ~b)
 }
 HB_FUNCOBJ (hb_bitwise_ge);
-struct
+ساخت
 {
-  template <typename T> constexpr auto
-  operator () (const T &a) const HB_AUTO_RETURN (~a)
+  سانچہ <قسم_نام T> constexpr خودکار
+  عامل () (ثابت T &a) ثابت HB_AUTO_RETURN (~a)
 }
 HB_FUNCOBJ (hb_bitwise_neg);
 
-struct
+ساخت
 { HB_PARTIALIZE(2);
-  template <typename T, typename T2> constexpr auto
-  operator () (const T &a, const T2 &b) const HB_AUTO_RETURN (a + b)
+  سانچہ <قسم_نام T, قسم_نام T2> constexpr خودکار
+  عامل () (ثابت T &a, ثابت T2 &b) ثابت HB_AUTO_RETURN (a + b)
 }
-HB_FUNCOBJ (hb_add);
-struct
+HB_FUNCOBJ (hb_جوڑو);
+ساخت
 { HB_PARTIALIZE(2);
-  template <typename T, typename T2> constexpr auto
-  operator () (const T &a, const T2 &b) const HB_AUTO_RETURN (a - b)
+  سانچہ <قسم_نام T, قسم_نام T2> constexpr خودکار
+  عامل () (ثابت T &a, ثابت T2 &b) ثابت HB_AUTO_RETURN (a - b)
 }
 HB_FUNCOBJ (hb_sub);
-struct
+ساخت
 { HB_PARTIALIZE(2);
-  template <typename T, typename T2> constexpr auto
-  operator () (const T &a, const T2 &b) const HB_AUTO_RETURN (b - a)
+  سانچہ <قسم_نام T, قسم_نام T2> constexpr خودکار
+  عامل () (ثابت T &a, ثابت T2 &b) ثابت HB_AUTO_RETURN (b - a)
 }
 HB_FUNCOBJ (hb_rsub);
-struct
+ساخت
 { HB_PARTIALIZE(2);
-  template <typename T, typename T2> constexpr auto
-  operator () (const T &a, const T2 &b) const HB_AUTO_RETURN (a * b)
+  سانچہ <قسم_نام T, قسم_نام T2> constexpr خودکار
+  عامل () (ثابت T &a, ثابت T2 &b) ثابت HB_AUTO_RETURN (a * b)
 }
 HB_FUNCOBJ (hb_mul);
-struct
+ساخت
 { HB_PARTIALIZE(2);
-  template <typename T, typename T2> constexpr auto
-  operator () (const T &a, const T2 &b) const HB_AUTO_RETURN (a / b)
+  سانچہ <قسم_نام T, قسم_نام T2> constexpr خودکار
+  عامل () (ثابت T &a, ثابت T2 &b) ثابت HB_AUTO_RETURN (a / b)
 }
 HB_FUNCOBJ (hb_div);
-struct
+ساخت
 { HB_PARTIALIZE(2);
-  template <typename T, typename T2> constexpr auto
-  operator () (const T &a, const T2 &b) const HB_AUTO_RETURN (a % b)
+  سانچہ <قسم_نام T, قسم_نام T2> constexpr خودکار
+  عامل () (ثابت T &a, ثابت T2 &b) ثابت HB_AUTO_RETURN (a % b)
 }
 HB_FUNCOBJ (hb_mod);
-struct
+ساخت
 {
-  template <typename T> constexpr auto
-  operator () (const T &a) const HB_AUTO_RETURN (+a)
+  سانچہ <قسم_نام T> constexpr خودکار
+  عامل () (ثابت T &a) ثابت HB_AUTO_RETURN (+a)
 }
 HB_FUNCOBJ (hb_pos);
-struct
+ساخت
 {
-  template <typename T> constexpr auto
-  operator () (const T &a) const HB_AUTO_RETURN (-a)
+  سانچہ <قسم_نام T> constexpr خودکار
+  عامل () (ثابت T &a) ثابت HB_AUTO_RETURN (-a)
 }
 HB_FUNCOBJ (hb_neg);
-struct
+ساخت
 {
-  template <typename T> constexpr auto
-  operator () (T &a) const HB_AUTO_RETURN (++a)
+  سانچہ <قسم_نام T> constexpr خودکار
+  عامل () (T &a) ثابت HB_AUTO_RETURN (++a)
 }
 HB_FUNCOBJ (hb_inc);
-struct
+ساخت
 {
-  template <typename T> constexpr auto
-  operator () (T &a) const HB_AUTO_RETURN (--a)
+  سانچہ <قسم_نام T> constexpr خودکار
+  عامل () (T &a) ثابت HB_AUTO_RETURN (--a)
 }
 HB_FUNCOBJ (hb_dec);
 
@@ -1718,59 +1718,59 @@ HB_FUNCOBJ (hb_dec);
  * https://docs.rs/kurbo/0.8.1/kurbo/common/fn.solve_itp.html
  * https://github.com/linebender/kurbo/blob/fd839c25ea0c98576c7ce5789305822675a89938/src/common.rs#L162-L248
  */
-template <typename func_t>
-double solve_itp (func_t f,
-		  double a, double b,
-		  double epsilon,
-		  double min_y, double max_y,
-		  double &ya, double &yb, double &y)
+سانچہ <قسم_نام func_t>
+دوہرا solve_itp (func_t f,
+		  دوہرا a, دوہرا b,
+		  دوہرا epsilon,
+		  دوہرا min_y, دوہرا max_y,
+		  دوہرا &ya, دوہرا &yb, دوہرا &y)
 {
   // Guard against degenerate interval
-  if (b - a <= 0.0)
+  اگر (b - a <= 0.0)
   {
     y = ya;
-    return a;
+    واپس a;
   }
 
-  unsigned n1_2 = (unsigned) (hb_max (ceil (log2 ((b - a) / epsilon)) - 1.0, 0.0));
-  const unsigned n0 = 1; // Hardwired
-  const double k1 = 0.2 / (b - a); // Hardwired.
-  unsigned nmax = n0 + n1_2;
-  double scaled_epsilon = epsilon * double (1llu << nmax);
-  double _2_epsilon = 2.0 * epsilon;
-  while (b - a > _2_epsilon)
+  غیرعلامتی n1_2 = (غیرعلامتی) (hb_max (ceil (log2 ((b - a) / epsilon)) - 1.0, 0.0));
+  ثابت غیرعلامتی n0 = 1; // Hardwired
+  ثابت دوہرا k1 = 0.2 / (b - a); // Hardwired.
+  غیرعلامتی nmax = n0 + n1_2;
+  دوہرا scaled_epsilon = epsilon * دوہرا (1llu << nmax);
+  دوہرا _2_epsilon = 2.0 * epsilon;
+  جب (b - a > _2_epsilon)
   {
-    double x1_2 = 0.5 * (a + b);
-    double r = scaled_epsilon - 0.5 * (b - a);
+    دوہرا x1_2 = 0.5 * (a + b);
+    دوہرا r = scaled_epsilon - 0.5 * (b - a);
     // Guard against yb == ya to prevent division by zero
-    double xf = (yb != ya) ? (yb * a - ya * b) / (yb - ya) : x1_2;
-    double sigma = x1_2 - xf;
-    double b_a = b - a;
+    دوہرا xf = (yb != ya) ? (yb * a - ya * b) / (yb - ya) : x1_2;
+    دوہرا sigma = x1_2 - xf;
+    دوہرا b_a = b - a;
     // This has k2 = 2 hardwired for efficiency.
-    double b_a_k2 = b_a * b_a;
-    double delta = k1 * b_a_k2;
-    int sigma_sign = sigma >= 0 ? +1 : -1;
-    double xt = delta <= fabs (x1_2 - xf) ? xf + delta * sigma_sign : x1_2;
-    double xitp = fabs (xt - x1_2) <= r ? xt : x1_2 - r * sigma_sign;
-    double yitp = f (xitp);
-    if (yitp > max_y)
+    دوہرا b_a_k2 = b_a * b_a;
+    دوہرا delta = k1 * b_a_k2;
+    صحیح sigma_sign = sigma >= 0 ? +1 : -1;
+    دوہرا xt = delta <= fabs (x1_2 - xf) ? xf + delta * sigma_sign : x1_2;
+    دوہرا xitp = fabs (xt - x1_2) <= r ? xt : x1_2 - r * sigma_sign;
+    دوہرا yitp = f (xitp);
+    اگر (yitp > max_y)
     {
       b = xitp;
       yb = yitp;
     }
-    else if (yitp < min_y)
+    ورنہ اگر (yitp < min_y)
     {
       a = xitp;
       ya = yitp;
     }
-    else
+    ورنہ
     {
       y = yitp;
-      return xitp;
+      واپس xitp;
     }
     scaled_epsilon *= 0.5;
   }
-  return 0.5 * (a + b);
+  واپس 0.5 * (a + b);
 }
 
 
@@ -1789,36 +1789,36 @@ double solve_itp (func_t f,
  *   ... multiple fallible operations ...
  *   return true;  // buf freed automatically on any return path
  */
-template <typename F>
-struct hb_scope_guard_t
+سانچہ <قسم_نام F>
+ساخت hb_scope_guard_t
 {
-  explicit hb_scope_guard_t (F &&f) : f (std::move (f)), active (true) {}
+  صریح hb_scope_guard_t (F &&f) : f (std::move (f)), فعال (سچ) {}
   hb_scope_guard_t (hb_scope_guard_t &&o) noexcept
-    : f (std::move (o.f)), active (o.active) { o.active = false; }
-  hb_scope_guard_t (const hb_scope_guard_t &) = delete;
-  hb_scope_guard_t &operator= (const hb_scope_guard_t &) = delete;
-  hb_scope_guard_t &operator= (hb_scope_guard_t &&) = delete;
-  ~hb_scope_guard_t () { if (active) f (); }
+    : f (std::move (o.f)), فعال (o.فعال) { o.فعال = جھوٹ; }
+  hb_scope_guard_t (ثابت hb_scope_guard_t &) = حذف;
+  hb_scope_guard_t &عامل= (ثابت hb_scope_guard_t &) = حذف;
+  hb_scope_guard_t &عامل= (hb_scope_guard_t &&) = حذف;
+  ~hb_scope_guard_t () { اگر (فعال) f (); }
 
   /* Release: dismiss the guard so the cleanup does NOT run.  Use
    * when transferring ownership out of the scope. */
-  void release () { active = false; }
+  خالی release () { فعال = جھوٹ; }
 
-  private:
+  نجی:
   F f;
-  bool active;
+  منطقی فعال;
 };
 
-template <typename F>
-static inline hb_scope_guard_t<F> hb_make_scope_guard (F &&f)
-{ return hb_scope_guard_t<F> (std::forward<F> (f)); }
+سانچہ <قسم_نام F>
+ساکن اندرونی hb_scope_guard_t<F> hb_make_scope_guard (F &&f)
+{ واپس hb_scope_guard_t<F> (std::forward<F> (f)); }
 
-#define HB_SCOPE_GUARD_NAME_(line) hb_scope_guard_##line
-#define HB_SCOPE_GUARD_NAME(line) HB_SCOPE_GUARD_NAME_(line)
-#define HB_SCOPE_GUARD(stmt) \
-  auto HB_SCOPE_GUARD_NAME(__LINE__) = \
+#تعریف_کرو HB_SCOPE_GUARD_NAME_(سطر) hb_scope_guard_##سطر
+#تعریف_کرو HB_SCOPE_GUARD_NAME(سطر) HB_SCOPE_GUARD_NAME_(سطر)
+#تعریف_کرو HB_SCOPE_GUARD(stmt) \
+  خودکار HB_SCOPE_GUARD_NAME(__LINE__) = \
     hb_make_scope_guard ([&]() { stmt; }); \
-  (void) HB_SCOPE_GUARD_NAME(__LINE__)
+  (خالی) HB_SCOPE_GUARD_NAME(__LINE__)
 
 
-#endif /* HB_ALGS_HH */
+#اگر_ختم /* HB_ALGS_HH */

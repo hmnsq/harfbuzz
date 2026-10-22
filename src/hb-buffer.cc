@@ -27,8 +27,8 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb-buffer.hh"
-#include "hb-utf.hh"
+#شامل "hb-buffer.hh"
+#شامل "hb-utf.hh"
 
 
 /**
@@ -61,10 +61,10 @@
  * Since: 0.9.7
  **/
 hb_bool_t
-hb_segment_properties_equal (const hb_segment_properties_t *a,
-			     const hb_segment_properties_t *b)
+hb_segment_properties_equal (ثابت hb_segment_properties_t *a,
+			     ثابت hb_segment_properties_t *b)
 {
-  return a->direction == b->direction &&
+  واپس a->direction == b->direction &&
 	 a->script    == b->script    &&
 	 a->language  == b->language  &&
 	 a->reserved1 == b->reserved1 &&
@@ -83,11 +83,11 @@ hb_segment_properties_equal (const hb_segment_properties_t *a,
  *
  * Since: 0.9.7
  **/
-unsigned int
-hb_segment_properties_hash (const hb_segment_properties_t *p)
+غیرعلامتی صحیح
+hb_segment_properties_hash (ثابت hb_segment_properties_t *p)
 {
-  return ((unsigned int) p->direction * 31 +
-	  (unsigned int) p->script) * 31 +
+  واپس ((غیرعلامتی صحیح) p->direction * 31 +
+	  (غیرعلامتی صحیح) p->script) * 31 +
 	 (intptr_t) (p->language);
 }
 
@@ -109,26 +109,26 @@ hb_segment_properties_hash (const hb_segment_properties_t *p)
  *
  * Since: 3.3.0
  **/
-void
+خالی
 hb_segment_properties_overlay (hb_segment_properties_t *p,
-			       const hb_segment_properties_t *src)
+			       ثابت hb_segment_properties_t *src)
 {
-  if (unlikely (!p || !src))
-    return;
+  اگر (unlikely (!p || !src))
+    واپس;
 
-  if (!p->direction)
+  اگر (!p->direction)
     p->direction = src->direction;
 
-  if (p->direction != src->direction)
-    return;
+  اگر (p->direction != src->direction)
+    واپس;
 
-  if (!p->script)
+  اگر (!p->script)
     p->script = src->script;
 
-  if (p->script != src->script)
-    return;
+  اگر (p->script != src->script)
+    واپس;
 
-  if (!p->language)
+  اگر (!p->language)
     p->language = src->language;
 }
 
@@ -155,87 +155,87 @@ hb_segment_properties_overlay (hb_segment_properties_t *p,
 
 /* Internal API */
 
-bool
-hb_buffer_t::enlarge (unsigned int size)
+منطقی
+hb_بفر_t::enlarge (غیرعلامتی صحیح سائز)
 {
-  if (unlikely (size > max_len))
+  اگر (unlikely (سائز > max_len))
   {
-    successful = false;
-    return false;
+    successful = جھوٹ;
+    واپس جھوٹ;
   }
 
-  if (unlikely (!successful))
-    return false;
+  اگر (unlikely (!successful))
+    واپس جھوٹ;
 
-  unsigned int new_allocated = allocated;
-  hb_glyph_position_t *new_pos = nullptr;
-  hb_glyph_info_t *new_info = nullptr;
-  bool separate_out = out_info != info;
+  غیرعلامتی صحیح new_allocated = allocated;
+  hb_glyph_position_t *new_pos = خالی_اشاریہ;
+  hb_glyph_info_t *new_info = خالی_اشاریہ;
+  منطقی separate_برآمد = برآمد_info != info;
 
-  if (unlikely (hb_unsigned_mul_overflows (size, sizeof (info[0]))))
-    goto done;
+  اگر (unlikely (hb_unsigned_mul_overflows (سائز, حجم (info[0]))))
+    جاؤ مکمل;
 
-  while (size >= new_allocated)
+  جب (سائز >= new_allocated)
     new_allocated += (new_allocated >> 1) + 32;
 
-  unsigned new_bytes;
-  if (unlikely (hb_unsigned_mul_overflows (new_allocated, sizeof (info[0]), &new_bytes)))
-    goto done;
+  غیرعلامتی new_بائٹیں;
+  اگر (unlikely (hb_unsigned_mul_overflows (new_allocated, حجم (info[0]), &new_بائٹیں)))
+    جاؤ مکمل;
 
-  static_assert (sizeof (info[0]) == sizeof (pos[0]), "");
-  new_pos = (hb_glyph_position_t *) hb_realloc (pos, new_bytes);
-  new_info = (hb_glyph_info_t *) hb_realloc (info, new_bytes);
+  static_assert (حجم (info[0]) == حجم (pos[0]), "");
+  new_pos = (hb_glyph_position_t *) hb_realloc (pos, new_بائٹیں);
+  new_info = (hb_glyph_info_t *) hb_realloc (info, new_بائٹیں);
 
-done:
-  if (unlikely (!new_pos || !new_info))
-    successful = false;
+مکمل:
+  اگر (unlikely (!new_pos || !new_info))
+    successful = جھوٹ;
 
-  if (likely (new_pos))
+  اگر (likely (new_pos))
     pos = new_pos;
 
-  if (likely (new_info))
+  اگر (likely (new_info))
     info = new_info;
 
-  out_info = separate_out ? (hb_glyph_info_t *) pos : info;
-  if (likely (successful))
+  برآمد_info = separate_برآمد ? (hb_glyph_info_t *) pos : info;
+  اگر (likely (successful))
     allocated = new_allocated;
 
-  return likely (successful);
+  واپس likely (successful);
 }
 
-bool
-hb_buffer_t::make_room_for (unsigned int num_in,
-			    unsigned int num_out)
+منطقی
+hb_بفر_t::make_گنجائش_for (غیرعلامتی صحیح عدد_اندر,
+			    غیرعلامتی صحیح عدد_برآمد)
 {
-  if (unlikely (!ensure (out_len + num_out))) return false;
+  اگر (unlikely (!ensure (برآمد_len + عدد_برآمد))) واپس جھوٹ;
 
-  if (out_info == info &&
-      out_len + num_out > idx + num_in)
+  اگر (برآمد_info == info &&
+      برآمد_len + عدد_برآمد > idx + عدد_اندر)
   {
-    assert (have_output);
+    أكد (have_output);
 
-    out_info = (hb_glyph_info_t *) pos;
-    hb_memcpy (out_info, info, out_len * sizeof (out_info[0]));
+    برآمد_info = (hb_glyph_info_t *) pos;
+    hb_memcpy (برآمد_info, info, برآمد_len * حجم (برآمد_info[0]));
   }
 
-  return true;
+  واپس سچ;
 }
 
-bool
-hb_buffer_t::shift_forward (unsigned int count)
+منطقی
+hb_بفر_t::سرکاؤ_forward (غیرعلامتی صحیح گنتی)
 {
-  assert (have_output);
-  if (unlikely (!ensure (len + count))) return false;
+  أكد (have_output);
+  اگر (unlikely (!ensure (len + گنتی))) واپس جھوٹ;
 
   max_ops -= len - idx;
-  if (unlikely (max_ops < 0))
+  اگر (unlikely (max_ops < 0))
   {
-    successful = false;
-    return false;
+    successful = جھوٹ;
+    واپس جھوٹ;
   }
 
-  memmove (info + idx + count, info + idx, (len - idx) * sizeof (info[0]));
-  if (idx + count > len)
+  memmove (info + idx + گنتی, info + idx, (len - idx) * حجم (info[0]));
+  اگر (idx + گنتی > len)
   {
     /* Under memory failure we might expose this area.  At least
      * clean it up.  Oh well...
@@ -243,34 +243,34 @@ hb_buffer_t::shift_forward (unsigned int count)
      * Ideally, we should at least set Default_Ignorable bits on
      * these, as well as consistent cluster values.  But the former
      * is layering violation... */
-    hb_memset (info + len, 0, (idx + count - len) * sizeof (info[0]));
+    hb_memset (info + len, 0, (idx + گنتی - len) * حجم (info[0]));
   }
-  len += count;
-  idx += count;
+  len += گنتی;
+  idx += گنتی;
 
-  return true;
+  واپس سچ;
 }
 
-hb_buffer_t::scratch_buffer_t *
-hb_buffer_t::get_scratch_buffer (unsigned int *size)
+hb_بفر_t::scratch_بفر_t *
+hb_بفر_t::get_scratch_بفر (غیرعلامتی صحیح *سائز)
 {
-  have_output = false;
-  have_positions = false;
+  have_output = جھوٹ;
+  have_positions = جھوٹ;
 
-  out_len = 0;
-  out_info = info;
+  برآمد_len = 0;
+  برآمد_info = info;
 
-  assert ((uintptr_t) pos % sizeof (scratch_buffer_t) == 0);
-  *size = allocated * sizeof (pos[0]) / sizeof (scratch_buffer_t);
-  return (scratch_buffer_t *) (void *) pos;
+  أكد ((uintptr_t) pos % حجم (scratch_بفر_t) == 0);
+  *سائز = allocated * حجم (pos[0]) / حجم (scratch_بفر_t);
+  واپس (scratch_بفر_t *) (خالی *) pos;
 }
 
 
 
 /* HarfBuzz-Internal API */
 
-void
-hb_buffer_t::similar (const hb_buffer_t &src)
+خالی
+hb_بفر_t::similar (ثابت hb_بفر_t &src)
 {
   hb_unicode_funcs_destroy (unicode);
   unicode = hb_unicode_funcs_reference (src.unicode);
@@ -278,227 +278,227 @@ hb_buffer_t::similar (const hb_buffer_t &src)
   cluster_level = src.cluster_level;
   replacement = src.replacement;
   invisible = src.invisible;
-  not_found = src.not_found;
-  not_found_variation_selector = src.not_found_variation_selector;
+  not_ملا = src.not_ملا;
+  not_ملا_variation_selector = src.not_ملا_variation_selector;
 }
 
-void
-hb_buffer_t::reset ()
+خالی
+hb_بفر_t::reset ()
 {
   hb_unicode_funcs_destroy (unicode);
   unicode = hb_unicode_funcs_reference (hb_unicode_funcs_get_default ());
-  flags = HB_BUFFER_FLAG_DEFAULT;
-  cluster_level = HB_BUFFER_CLUSTER_LEVEL_DEFAULT;
-  replacement = HB_BUFFER_REPLACEMENT_CODEPOINT_DEFAULT;
+  flags = HB_بفر_FLAG_DEFAULT;
+  cluster_level = HB_بفر_CLUSTER_LEVEL_DEFAULT;
+  replacement = HB_بفر_REPLACEMENT_CODEPOINT_DEFAULT;
   invisible = 0;
-  not_found = 0;
-  not_found_variation_selector = HB_CODEPOINT_INVALID;
+  not_ملا = 0;
+  not_ملا_variation_selector = HB_CODEPOINT_INVALID;
 
   clear ();
 }
 
-void
-hb_buffer_t::clear ()
+خالی
+hb_بفر_t::clear ()
 {
-  content_type = HB_BUFFER_CONTENT_TYPE_INVALID;
+  content_type = HB_بفر_CONTENT_TYPE_INVALID;
   hb_segment_properties_t default_props = HB_SEGMENT_PROPERTIES_DEFAULT;
   props = default_props;
 
-  successful = true;
-  have_output = false;
-  have_positions = false;
+  successful = سچ;
+  have_output = جھوٹ;
+  have_positions = جھوٹ;
 
   idx = 0;
   len = 0;
-  out_len = 0;
-  out_info = info;
+  برآمد_len = 0;
+  برآمد_info = info;
 
-  hb_memset (context, 0, sizeof context);
-  hb_memset (context_len, 0, sizeof context_len);
+  hb_memset (context, 0, حجم context);
+  hb_memset (context_len, 0, حجم context_len);
 
   deallocate_var_all ();
   serial = 0;
   random_state = 1;
-  scratch_flags = HB_BUFFER_SCRATCH_FLAG_DEFAULT;
+  scratch_flags = HB_بفر_SCRATCH_FLAG_DEFAULT;
 }
 
-void
-hb_buffer_t::enter ()
+خالی
+hb_بفر_t::enter ()
 {
   deallocate_var_all ();
   serial = 0;
-  scratch_flags = HB_BUFFER_SCRATCH_FLAG_DEFAULT;
-  unsigned mul;
-  if (likely (!hb_unsigned_mul_overflows (len, HB_BUFFER_MAX_LEN_FACTOR, &mul)))
+  scratch_flags = HB_بفر_SCRATCH_FLAG_DEFAULT;
+  غیرعلامتی mul;
+  اگر (likely (!hb_unsigned_mul_overflows (len, HB_بفر_MAX_LEN_ضربی_عدد, &mul)))
   {
-    max_len = hb_max (mul, (unsigned) HB_BUFFER_MAX_LEN_MIN);
+    max_len = hb_max (mul, (غیرعلامتی) HB_بفر_MAX_LEN_MIN);
   }
-  if (likely (!hb_unsigned_mul_overflows (len, HB_BUFFER_MAX_OPS_FACTOR, &mul)))
+  اگر (likely (!hb_unsigned_mul_overflows (len, HB_بفر_MAX_OPS_ضربی_عدد, &mul)))
   {
-    max_ops = hb_max (mul, (unsigned) HB_BUFFER_MAX_OPS_MIN);
+    max_ops = hb_max (mul, (غیرعلامتی) HB_بفر_MAX_OPS_MIN);
   }
 }
-void
-hb_buffer_t::leave ()
+خالی
+hb_بفر_t::leave ()
 {
-  max_len = HB_BUFFER_MAX_LEN_DEFAULT;
-  max_ops = HB_BUFFER_MAX_OPS_DEFAULT;
+  max_len = HB_بفر_MAX_LEN_DEFAULT;
+  max_ops = HB_بفر_MAX_OPS_DEFAULT;
   deallocate_var_all ();
   serial = 0;
 }
 
 
-void
-hb_buffer_t::add (hb_codepoint_t  codepoint,
-		  unsigned int    cluster)
+خالی
+hb_بفر_t::جوڑو (hb_codepoint_t  codepoint,
+		  غیرعلامتی صحیح    cluster)
 {
   hb_glyph_info_t *glyph;
 
-  if (unlikely (!ensure (len + 1))) return;
+  اگر (unlikely (!ensure (len + 1))) واپس;
 
   glyph = &info[len];
 
-  hb_memset (glyph, 0, sizeof (*glyph));
+  hb_memset (glyph, 0, حجم (*glyph));
   glyph->codepoint = codepoint;
-  glyph->mask = 0;
+  glyph->نقاب = 0;
   glyph->cluster = cluster;
 
   len++;
 }
 
-void
-hb_buffer_t::add_info (const hb_glyph_info_t &glyph_info)
+خالی
+hb_بفر_t::جوڑو_info (ثابت hb_glyph_info_t &glyph_info)
 {
-  if (unlikely (!ensure (len + 1))) return;
+  اگر (unlikely (!ensure (len + 1))) واپس;
 
   info[len] = glyph_info;
 
   len++;
 }
-void
-hb_buffer_t::add_info_and_pos (const hb_glyph_info_t &glyph_info,
-			       const hb_glyph_position_t &glyph_pos)
+خالی
+hb_بفر_t::جوڑو_info_and_pos (ثابت hb_glyph_info_t &glyph_info,
+			       ثابت hb_glyph_position_t &glyph_pos)
 {
-  if (unlikely (!ensure (len + 1))) return;
+  اگر (unlikely (!ensure (len + 1))) واپس;
 
   info[len] = glyph_info;
-  assert (have_positions);
+  أكد (have_positions);
   pos[len] = glyph_pos;
 
   len++;
 }
 
 
-void
-hb_buffer_t::clear_output ()
+خالی
+hb_بفر_t::clear_output ()
 {
-  have_output = true;
-  have_positions = false;
+  have_output = سچ;
+  have_positions = جھوٹ;
 
   idx = 0;
-  out_len = 0;
-  out_info = info;
+  برآمد_len = 0;
+  برآمد_info = info;
 }
 
-void
-hb_buffer_t::clear_positions ()
+خالی
+hb_بفر_t::clear_positions ()
 {
-  have_output = false;
-  have_positions = true;
+  have_output = جھوٹ;
+  have_positions = سچ;
 
-  out_len = 0;
-  out_info = info;
+  برآمد_len = 0;
+  برآمد_info = info;
 
-  hb_memset (pos, 0, sizeof (pos[0]) * len);
+  hb_memset (pos, 0, حجم (pos[0]) * len);
 }
 
-bool
-hb_buffer_t::sync ()
+منطقی
+hb_بفر_t::ہمآہنگ ()
 {
-  bool ret = false;
+  منطقی ret = جھوٹ;
 
-  assert (have_output);
+  أكد (have_output);
 
-  assert (idx <= len);
+  أكد (idx <= len);
 
-  if (unlikely (!successful || !next_glyphs (len - idx)))
-    goto reset;
+  اگر (unlikely (!successful || !اگلا_glyphs (len - idx)))
+    جاؤ reset;
 
-  if (out_info != info)
+  اگر (برآمد_info != info)
   {
     pos = (hb_glyph_position_t *) info;
-    info = out_info;
+    info = برآمد_info;
   }
-  len = out_len;
-  ret = true;
+  len = برآمد_len;
+  ret = سچ;
 
 reset:
-  have_output = false;
-  out_len = 0;
-  out_info = info;
+  have_output = جھوٹ;
+  برآمد_len = 0;
+  برآمد_info = info;
   idx = 0;
 
-  return ret;
+  واپس ret;
 }
 
-int
-hb_buffer_t::sync_so_far ()
+صحیح
+hb_بفر_t::sync_so_far ()
 {
-  bool had_output = have_output;
-  unsigned out_i = out_len;
-  unsigned i = idx;
-  unsigned old_idx = idx;
+  منطقی had_output = have_output;
+  غیرعلامتی برآمد_i = برآمد_len;
+  غیرعلامتی i = idx;
+  غیرعلامتی old_idx = idx;
 
-  if (sync ())
-    idx = out_i;
-  else
+  اگر (ہمآہنگ ())
+    idx = برآمد_i;
+  ورنہ
     idx = i;
 
-  if (had_output)
+  اگر (had_output)
   {
-    have_output = true;
-    out_len = idx;
+    have_output = سچ;
+    برآمد_len = idx;
   }
 
-  assert (idx <= len);
+  أكد (idx <= len);
 
-  return idx - old_idx;
+  واپس idx - old_idx;
 }
 
-bool
-hb_buffer_t::move_to (unsigned int i)
+منطقی
+hb_بفر_t::move_مقصد (غیرعلامتی صحیح i)
 {
-  if (!have_output)
+  اگر (!have_output)
   {
-    assert (i <= len);
+    أكد (i <= len);
     idx = i;
-    return true;
+    واپس سچ;
   }
-  if (unlikely (!successful))
-    return false;
+  اگر (unlikely (!successful))
+    واپس جھوٹ;
 
-  assert (i <= out_len + (len - idx));
+  أكد (i <= برآمد_len + (len - idx));
 
-  if (out_len < i)
+  اگر (برآمد_len < i)
   {
-    unsigned int count = i - out_len;
-    if (unlikely (!make_room_for (count, count))) return false;
+    غیرعلامتی صحیح گنتی = i - برآمد_len;
+    اگر (unlikely (!make_گنجائش_for (گنتی, گنتی))) واپس جھوٹ;
 
-    max_ops -= count;
-    if (unlikely (max_ops < 0))
+    max_ops -= گنتی;
+    اگر (unlikely (max_ops < 0))
     {
-      successful = false;
-      return false;
+      successful = جھوٹ;
+      واپس جھوٹ;
     }
 
-    memmove (out_info + out_len, info + idx, count * sizeof (out_info[0]));
-    idx += count;
-    out_len += count;
+    memmove (برآمد_info + برآمد_len, info + idx, گنتی * حجم (برآمد_info[0]));
+    idx += گنتی;
+    برآمد_len += گنتی;
   }
-  else if (out_len > i)
+  ورنہ اگر (برآمد_len > i)
   {
     /* Tricky part: rewinding... */
-    unsigned int count = out_len - i;
+    غیرعلامتی صحیح گنتی = برآمد_len - i;
 
     /* This will blow in our face if memory allocation fails later
      * in this same lookup...
@@ -507,191 +507,191 @@ hb_buffer_t::move_to (unsigned int i)
      * But that would leave empty slots in the buffer in case of allocation
      * failures.  See comments in shift_forward().  This can cause O(N^2)
      * behavior more severely than adding 32 empty slots can... */
-    if (unlikely (idx < count && !shift_forward (count - idx))) return false;
+    اگر (unlikely (idx < گنتی && !سرکاؤ_forward (گنتی - idx))) واپس جھوٹ;
 
-    assert (idx >= count);
+    أكد (idx >= گنتی);
 
-    max_ops -= count;
-    if (unlikely (max_ops < 0))
+    max_ops -= گنتی;
+    اگر (unlikely (max_ops < 0))
     {
-      successful = false;
-      return false;
+      successful = جھوٹ;
+      واپس جھوٹ;
     }
 
-    idx -= count;
-    out_len -= count;
-    memmove (info + idx, out_info + out_len, count * sizeof (out_info[0]));
+    idx -= گنتی;
+    برآمد_len -= گنتی;
+    memmove (info + idx, برآمد_info + برآمد_len, گنتی * حجم (برآمد_info[0]));
   }
 
-  return true;
+  واپس سچ;
 }
 
 
-void
-hb_buffer_t::set_masks (hb_mask_t    value,
-			hb_mask_t    mask,
-			unsigned int cluster_start,
-			unsigned int cluster_end)
+خالی
+hb_بفر_t::سیٹ_masks (hb_نقاب_t    value,
+			hb_نقاب_t    نقاب,
+			غیرعلامتی صحیح cluster_آغاز,
+			غیرعلامتی صحیح cluster_انتہا)
 {
-  if (!mask)
-    return;
+  اگر (!نقاب)
+    واپس;
 
-  hb_mask_t not_mask = ~mask;
-  value &= mask;
+  hb_نقاب_t not_نقاب = ~نقاب;
+  value &= نقاب;
 
   max_ops -= len;
-  if (unlikely (max_ops < 0))
-    successful = false;
+  اگر (unlikely (max_ops < 0))
+    successful = جھوٹ;
 
-  unsigned int count = len;
+  غیرعلامتی صحیح گنتی = len;
 
-  if (cluster_start == 0 && cluster_end == (unsigned int) -1)
+  اگر (cluster_آغاز == 0 && cluster_انتہا == (غیرعلامتی صحیح) -1)
   {
-    for (unsigned int i = 0; i < count; i++)
-      info[i].mask = (info[i].mask & not_mask) | value;
-    return;
+    برائے (غیرعلامتی صحیح i = 0; i < گنتی; i++)
+      info[i].نقاب = (info[i].نقاب & not_نقاب) | value;
+    واپس;
   }
 
-  for (unsigned int i = 0; i < count; i++)
-    if (cluster_start <= info[i].cluster && info[i].cluster < cluster_end)
-      info[i].mask = (info[i].mask & not_mask) | value;
+  برائے (غیرعلامتی صحیح i = 0; i < گنتی; i++)
+    اگر (cluster_آغاز <= info[i].cluster && info[i].cluster < cluster_انتہا)
+      info[i].نقاب = (info[i].نقاب & not_نقاب) | value;
 }
 
-void
-hb_buffer_t::merge_clusters_impl (unsigned int start,
-				  unsigned int end)
+خالی
+hb_بفر_t::ملاؤ_clusters_impl (غیرعلامتی صحیح آغاز,
+				  غیرعلامتی صحیح انتہا)
 {
-  max_ops -= end - start;
-  if (unlikely (max_ops < 0))
-    successful = false;
+  max_ops -= انتہا - آغاز;
+  اگر (unlikely (max_ops < 0))
+    successful = جھوٹ;
 
-  unsigned int cluster = info[start].cluster;
+  غیرعلامتی صحیح cluster = info[آغاز].cluster;
 
-  for (unsigned int i = start + 1; i < end; i++)
+  برائے (غیرعلامتی صحیح i = آغاز + 1; i < انتہا; i++)
     cluster = hb_min (cluster, info[i].cluster);
 
   /* Extend end */
-  if (cluster != info[end - 1].cluster)
-    while (end < len && info[end - 1].cluster == info[end].cluster)
-      end++;
+  اگر (cluster != info[انتہا - 1].cluster)
+    جب (انتہا < len && info[انتہا - 1].cluster == info[انتہا].cluster)
+      انتہا++;
 
   /* Extend start */
-  if (cluster != info[start].cluster)
-    while (idx < start && info[start - 1].cluster == info[start].cluster)
-      start--;
+  اگر (cluster != info[آغاز].cluster)
+    جب (idx < آغاز && info[آغاز - 1].cluster == info[آغاز].cluster)
+      آغاز--;
 
   /* If we hit the start of buffer, continue in out-buffer. */
-  if (idx == start && info[start].cluster != cluster)
-    for (unsigned int i = out_len; i && out_info[i - 1].cluster == info[start].cluster; i--)
-      set_cluster (out_info[i - 1], cluster);
+  اگر (idx == آغاز && info[آغاز].cluster != cluster)
+    برائے (غیرعلامتی صحیح i = برآمد_len; i && برآمد_info[i - 1].cluster == info[آغاز].cluster; i--)
+      سیٹ_cluster (برآمد_info[i - 1], cluster);
 
-  for (unsigned int i = start; i < end; i++)
-    set_cluster (info[i], cluster);
+  برائے (غیرعلامتی صحیح i = آغاز; i < انتہا; i++)
+    سیٹ_cluster (info[i], cluster);
 }
-void
-hb_buffer_t::merge_out_clusters_impl (unsigned int start,
-				      unsigned int end)
+خالی
+hb_بفر_t::ملاؤ_برآمد_clusters_impl (غیرعلامتی صحیح آغاز,
+				      غیرعلامتی صحیح انتہا)
 {
-  max_ops -= end - start;
-  if (unlikely (max_ops < 0))
-    successful = false;
+  max_ops -= انتہا - آغاز;
+  اگر (unlikely (max_ops < 0))
+    successful = جھوٹ;
 
-  unsigned int cluster = out_info[start].cluster;
+  غیرعلامتی صحیح cluster = برآمد_info[آغاز].cluster;
 
-  for (unsigned int i = start + 1; i < end; i++)
-    cluster = hb_min (cluster, out_info[i].cluster);
+  برائے (غیرعلامتی صحیح i = آغاز + 1; i < انتہا; i++)
+    cluster = hb_min (cluster, برآمد_info[i].cluster);
 
   /* Extend start */
-  while (start && out_info[start - 1].cluster == out_info[start].cluster)
-    start--;
+  جب (آغاز && برآمد_info[آغاز - 1].cluster == برآمد_info[آغاز].cluster)
+    آغاز--;
 
   /* Extend end */
-  while (end < out_len && out_info[end - 1].cluster == out_info[end].cluster)
-    end++;
+  جب (انتہا < برآمد_len && برآمد_info[انتہا - 1].cluster == برآمد_info[انتہا].cluster)
+    انتہا++;
 
   /* If we hit the end of out-buffer, continue in buffer. */
-  if (end == out_len)
-    for (unsigned int i = idx; i < len && info[i].cluster == out_info[end - 1].cluster; i++)
-      set_cluster (info[i], cluster);
+  اگر (انتہا == برآمد_len)
+    برائے (غیرعلامتی صحیح i = idx; i < len && info[i].cluster == برآمد_info[انتہا - 1].cluster; i++)
+      سیٹ_cluster (info[i], cluster);
 
-  for (unsigned int i = start; i < end; i++)
-    set_cluster (out_info[i], cluster);
+  برائے (غیرعلامتی صحیح i = آغاز; i < انتہا; i++)
+    سیٹ_cluster (برآمد_info[i], cluster);
 }
-void
-hb_buffer_t::delete_glyph ()
+خالی
+hb_بفر_t::delete_glyph ()
 {
   /* The logic here is duplicated in hb_ot_hide_default_ignorables(). */
 
-  unsigned int cluster = info[idx].cluster;
-  if ((idx + 1 < len && cluster == info[idx + 1].cluster) ||
-      (out_len && cluster == out_info[out_len - 1].cluster))
+  غیرعلامتی صحیح cluster = info[idx].cluster;
+  اگر ((idx + 1 < len && cluster == info[idx + 1].cluster) ||
+      (برآمد_len && cluster == برآمد_info[برآمد_len - 1].cluster))
   {
     /* Cluster survives; do nothing. */
-    goto done;
+    جاؤ مکمل;
   }
 
-  if (out_len)
+  اگر (برآمد_len)
   {
     /* Merge cluster backward. */
-    if (cluster < out_info[out_len - 1].cluster)
+    اگر (cluster < برآمد_info[برآمد_len - 1].cluster)
     {
-      unsigned int mask = info[idx].mask;
-      unsigned int old_cluster = out_info[out_len - 1].cluster;
-      for (unsigned i = out_len; i && out_info[i - 1].cluster == old_cluster; i--)
-	set_cluster (out_info[i - 1], cluster, mask);
+      غیرعلامتی صحیح نقاب = info[idx].نقاب;
+      غیرعلامتی صحیح old_cluster = برآمد_info[برآمد_len - 1].cluster;
+      برائے (غیرعلامتی i = برآمد_len; i && برآمد_info[i - 1].cluster == old_cluster; i--)
+	سیٹ_cluster (برآمد_info[i - 1], cluster, نقاب);
     }
-    goto done;
+    جاؤ مکمل;
   }
 
-  if (idx + 1 < len)
+  اگر (idx + 1 < len)
   {
     /* Merge cluster forward. */
-    merge_clusters (idx, idx + 2);
-    goto done;
+    ملاؤ_clusters (idx, idx + 2);
+    جاؤ مکمل;
   }
 
-done:
+مکمل:
   skip_glyph ();
 }
 
-void
-hb_buffer_t::delete_glyphs_inplace (bool (*filter) (const hb_glyph_info_t *info))
+خالی
+hb_بفر_t::delete_glyphs_inplace (منطقی (*filter) (ثابت hb_glyph_info_t *info))
 {
   /* Merge clusters and delete filtered glyphs.
    * NOTE! We can't use out-buffer as we have positioning data. */
-  unsigned int j = 0;
-  unsigned int count = len;
-  for (unsigned int i = 0; i < count; i++)
+  غیرعلامتی صحیح j = 0;
+  غیرعلامتی صحیح گنتی = len;
+  برائے (غیرعلامتی صحیح i = 0; i < گنتی; i++)
   {
-    if (filter (&info[i]))
+    اگر (filter (&info[i]))
     {
       /* Merge clusters.
        * Same logic as delete_glyph(), but for in-place removal. */
 
-      unsigned int cluster = info[i].cluster;
-      if (i + 1 < count && cluster == info[i + 1].cluster)
-	continue; /* Cluster survives; do nothing. */
+      غیرعلامتی صحیح cluster = info[i].cluster;
+      اگر (i + 1 < گنتی && cluster == info[i + 1].cluster)
+	جاری; /* Cluster survives; do nothing. */
 
-      if (j)
+      اگر (j)
       {
 	/* Merge cluster backward. */
-	if (cluster < info[j - 1].cluster)
+	اگر (cluster < info[j - 1].cluster)
 	{
-	  unsigned int mask = info[i].mask;
-	  unsigned int old_cluster = info[j - 1].cluster;
-	  for (unsigned k = j; k && info[k - 1].cluster == old_cluster; k--)
-	    set_cluster (info[k - 1], cluster, mask);
+	  غیرعلامتی صحیح نقاب = info[i].نقاب;
+	  غیرعلامتی صحیح old_cluster = info[j - 1].cluster;
+	  برائے (غیرعلامتی k = j; k && info[k - 1].cluster == old_cluster; k--)
+	    سیٹ_cluster (info[k - 1], cluster, نقاب);
 	}
-	continue;
+	جاری;
       }
 
-      if (i + 1 < count)
-	merge_clusters (i, i + 2); /* Merge cluster forward. */
+      اگر (i + 1 < گنتی)
+	ملاؤ_clusters (i, i + 2); /* Merge cluster forward. */
 
-      continue;
+      جاری;
     }
 
-    if (j != i)
+    اگر (j != i)
     {
       info[j] = info[i];
       pos[j] = pos[i];
@@ -701,33 +701,33 @@ hb_buffer_t::delete_glyphs_inplace (bool (*filter) (const hb_glyph_info_t *info)
   len = j;
 }
 
-void
-hb_buffer_t::guess_segment_properties ()
+خالی
+hb_بفر_t::guess_segment_properties ()
 {
   assert_unicode ();
 
   /* If script is set to INVALID, guess from buffer contents */
-  if (props.script == HB_SCRIPT_INVALID) {
-    for (unsigned int i = 0; i < len; i++) {
+  اگر (props.script == HB_SCRIPT_INVALID) {
+    برائے (غیرعلامتی صحیح i = 0; i < len; i++) {
       hb_script_t script = unicode->script (info[i].codepoint);
-      if (likely (script != HB_SCRIPT_COMMON &&
+      اگر (likely (script != HB_SCRIPT_COMMON &&
 		  script != HB_SCRIPT_INHERITED &&
 		  script != HB_SCRIPT_UNKNOWN)) {
 	props.script = script;
-	break;
+	توڑو;
       }
     }
   }
 
   /* If direction is set to INVALID, guess from script */
-  if (props.direction == HB_DIRECTION_INVALID) {
+  اگر (props.direction == HB_DIRECTION_INVALID) {
     props.direction = hb_script_get_horizontal_direction (props.script);
-    if (props.direction == HB_DIRECTION_INVALID)
+    اگر (props.direction == HB_DIRECTION_INVALID)
       props.direction = HB_DIRECTION_LTR;
   }
 
   /* If language is not set, use default language from locale */
-  if (props.language == HB_LANGUAGE_INVALID) {
+  اگر (props.language == HB_LANGUAGE_INVALID) {
     /* TODO get_default_for_script? using $LANGUAGE */
     props.language = hb_language_get_default ();
   }
@@ -736,25 +736,25 @@ hb_buffer_t::guess_segment_properties ()
 
 /* Public API */
 
-DEFINE_NULL_INSTANCE (hb_buffer_t) =
+DEFINE_NULL_INSTANCE (hb_بفر_t) =
 {
-  HB_OBJECT_HEADER_STATIC,
+  HB_OBJECT_سرخی_STATIC,
 
   const_cast<hb_unicode_funcs_t *> (&_hb_Null_hb_unicode_funcs_t),
-  HB_BUFFER_FLAG_DEFAULT,
-  HB_BUFFER_CLUSTER_LEVEL_DEFAULT,
-  HB_BUFFER_REPLACEMENT_CODEPOINT_DEFAULT,
+  HB_بفر_FLAG_DEFAULT,
+  HB_بفر_CLUSTER_LEVEL_DEFAULT,
+  HB_بفر_REPLACEMENT_CODEPOINT_DEFAULT,
   0, /* invisible */
   0, /* not_found */
   HB_CODEPOINT_INVALID, /* not_found_variation_selector */
 
 
-  HB_BUFFER_CONTENT_TYPE_INVALID,
+  HB_بفر_CONTENT_TYPE_INVALID,
   HB_SEGMENT_PROPERTIES_DEFAULT,
 
-  false, /* successful */
-  false, /* have_output */
-  true  /* have_positions */
+  جھوٹ, /* successful */
+  جھوٹ, /* have_output */
+  سچ  /* have_positions */
 
   /* Zero is good enough for everything else. */
 };
@@ -774,20 +774,20 @@ DEFINE_NULL_INSTANCE (hb_buffer_t) =
  *
  * Since: 0.9.2
  **/
-hb_buffer_t *
-hb_buffer_create ()
+hb_بفر_t *
+hb_بفر_create ()
 {
-  hb_buffer_t *buffer;
+  hb_بفر_t *بفر;
 
-  if (!(buffer = hb_object_create<hb_buffer_t> ()))
-    return hb_buffer_get_empty ();
+  اگر (!(بفر = hb_object_create<hb_بفر_t> ()))
+    واپس hb_بفر_get_خالی_خانے ();
 
-  buffer->max_len = HB_BUFFER_MAX_LEN_DEFAULT;
-  buffer->max_ops = HB_BUFFER_MAX_OPS_DEFAULT;
+  بفر->max_len = HB_بفر_MAX_LEN_DEFAULT;
+  بفر->max_ops = HB_بفر_MAX_OPS_DEFAULT;
 
-  buffer->reset ();
+  بفر->reset ();
 
-  return buffer;
+  واپس بفر;
 }
 
 /**
@@ -802,14 +802,14 @@ hb_buffer_create ()
  *
  * Since: 3.3.0
  **/
-hb_buffer_t *
-hb_buffer_create_similar (const hb_buffer_t *src)
+hb_بفر_t *
+hb_بفر_create_similar (ثابت hb_بفر_t *src)
 {
-  hb_buffer_t *buffer = hb_buffer_create ();
+  hb_بفر_t *بفر = hb_بفر_create ();
 
-  buffer->similar (*src);
+  بفر->similar (*src);
 
-  return buffer;
+  واپس بفر;
 }
 
 /**
@@ -825,13 +825,13 @@ hb_buffer_create_similar (const hb_buffer_t *src)
  *
  * Since: 0.9.2
  **/
-void
-hb_buffer_reset (hb_buffer_t *buffer)
+خالی
+hb_بفر_reset (hb_بفر_t *بفر)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  اگر (unlikely (hb_object_is_immutable (بفر)))
+    واپس;
 
-  buffer->reset ();
+  بفر->reset ();
 }
 
 /**
@@ -843,10 +843,10 @@ hb_buffer_reset (hb_buffer_t *buffer)
  *
  * Since: 0.9.2
  **/
-hb_buffer_t *
-hb_buffer_get_empty ()
+hb_بفر_t *
+hb_بفر_get_خالی_خانے ()
 {
-  return const_cast<hb_buffer_t *> (&Null (hb_buffer_t));
+  واپس const_cast<hb_بفر_t *> (&Null (hb_بفر_t));
 }
 
 /**
@@ -861,10 +861,10 @@ hb_buffer_get_empty ()
  *
  * Since: 0.9.2
  **/
-hb_buffer_t *
-hb_buffer_reference (hb_buffer_t *buffer)
+hb_بفر_t *
+hb_بفر_reference (hb_بفر_t *بفر)
 {
-  return hb_object_reference (buffer);
+  واپس hb_object_reference (بفر);
 }
 
 /**
@@ -877,21 +877,21 @@ hb_buffer_reference (hb_buffer_t *buffer)
  *
  * Since: 0.9.2
  **/
-void
-hb_buffer_destroy (hb_buffer_t *buffer)
+خالی
+hb_بفر_destroy (hb_بفر_t *بفر)
 {
-  if (!hb_object_destroy (buffer)) return;
+  اگر (!hb_object_destroy (بفر)) واپس;
 
-  hb_unicode_funcs_destroy (buffer->unicode);
+  hb_unicode_funcs_destroy (بفر->unicode);
 
-  hb_free (buffer->info);
-  hb_free (buffer->pos);
-#ifndef HB_NO_BUFFER_MESSAGE
-  if (buffer->message_destroy)
-    buffer->message_destroy (buffer->message_data);
-#endif
+  hb_free (بفر->info);
+  hb_free (بفر->pos);
+#اگر_غیر_تعریف_شدہ HB_NO_بفر_پیغام
+  اگر (بفر->پیغام_destroy)
+    بفر->پیغام_destroy (بفر->پیغام_ڈیٹا);
+#اگر_ختم
 
-  hb_free (buffer);
+  hb_free (بفر);
 }
 
 /**
@@ -909,13 +909,13 @@ hb_buffer_destroy (hb_buffer_t *buffer)
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_buffer_set_user_data (hb_buffer_t        *buffer,
-			 hb_user_data_key_t *key,
-			 void *              data,
+hb_بفر_سیٹ_user_ڈیٹا (hb_بفر_t        *بفر,
+			 hb_user_ڈیٹا_کلید_t *key,
+			 خالی *              ڈیٹا,
 			 hb_destroy_func_t   destroy,
 			 hb_bool_t           replace)
 {
-  return hb_object_set_user_data (buffer, key, data, destroy, replace);
+  واپس hb_object_سیٹ_user_ڈیٹا (بفر, key, ڈیٹا, destroy, replace);
 }
 
 /**
@@ -930,11 +930,11 @@ hb_buffer_set_user_data (hb_buffer_t        *buffer,
  *
  * Since: 0.9.2
  **/
-void *
-hb_buffer_get_user_data (const hb_buffer_t  *buffer,
-			 hb_user_data_key_t *key)
+خالی *
+hb_بفر_get_user_ڈیٹا (ثابت hb_بفر_t  *بفر,
+			 hb_user_ڈیٹا_کلید_t *key)
 {
-  return hb_object_get_user_data (buffer, key);
+  واپس hb_object_get_user_ڈیٹا (بفر, key);
 }
 
 
@@ -974,14 +974,14 @@ hb_buffer_get_user_data (const hb_buffer_t  *buffer,
  *
  * Since: 0.9.5
  **/
-void
-hb_buffer_set_content_type (hb_buffer_t              *buffer,
-			    hb_buffer_content_type_t  content_type)
+خالی
+hb_بفر_سیٹ_content_type (hb_بفر_t              *بفر,
+			    hb_بفر_content_type_t  content_type)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  اگر (unlikely (hb_object_is_immutable (بفر)))
+    واپس;
 
-  buffer->content_type = content_type;
+  بفر->content_type = content_type;
 }
 
 /**
@@ -996,10 +996,10 @@ hb_buffer_set_content_type (hb_buffer_t              *buffer,
  *
  * Since: 0.9.5
  **/
-hb_buffer_content_type_t
-hb_buffer_get_content_type (const hb_buffer_t *buffer)
+hb_بفر_content_type_t
+hb_بفر_get_content_type (ثابت hb_بفر_t *بفر)
 {
-  return buffer->content_type;
+  واپس بفر->content_type;
 }
 
 
@@ -1013,19 +1013,19 @@ hb_buffer_get_content_type (const hb_buffer_t *buffer)
  *
  * Since: 0.9.2
  **/
-void
-hb_buffer_set_unicode_funcs (hb_buffer_t        *buffer,
+خالی
+hb_بفر_سیٹ_unicode_funcs (hb_بفر_t        *بفر,
 			     hb_unicode_funcs_t *unicode_funcs)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  اگر (unlikely (hb_object_is_immutable (بفر)))
+    واپس;
 
-  if (!unicode_funcs)
+  اگر (!unicode_funcs)
     unicode_funcs = hb_unicode_funcs_get_default ();
 
   hb_unicode_funcs_reference (unicode_funcs);
-  hb_unicode_funcs_destroy (buffer->unicode);
-  buffer->unicode = unicode_funcs;
+  hb_unicode_funcs_destroy (بفر->unicode);
+  بفر->unicode = unicode_funcs;
 }
 
 /**
@@ -1039,9 +1039,9 @@ hb_buffer_set_unicode_funcs (hb_buffer_t        *buffer,
  * Since: 0.9.2
  **/
 hb_unicode_funcs_t *
-hb_buffer_get_unicode_funcs (const hb_buffer_t *buffer)
+hb_بفر_get_unicode_funcs (ثابت hb_بفر_t *بفر)
 {
-  return buffer->unicode;
+  واپس بفر->unicode;
 }
 
 /**
@@ -1059,14 +1059,14 @@ hb_buffer_get_unicode_funcs (const hb_buffer_t *buffer)
  *
  * Since: 0.9.2
  **/
-void
-hb_buffer_set_direction (hb_buffer_t    *buffer,
+خالی
+hb_بفر_سیٹ_direction (hb_بفر_t    *بفر,
 			 hb_direction_t  direction)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  اگر (unlikely (hb_object_is_immutable (بفر)))
+    واپس;
 
-  buffer->props.direction = direction;
+  بفر->props.direction = direction;
 }
 
 /**
@@ -1081,9 +1081,9 @@ hb_buffer_set_direction (hb_buffer_t    *buffer,
  * Since: 0.9.2
  **/
 hb_direction_t
-hb_buffer_get_direction (const hb_buffer_t *buffer)
+hb_بفر_get_direction (ثابت hb_بفر_t *بفر)
 {
-  return buffer->props.direction;
+  واپس بفر->props.direction;
 }
 
 /**
@@ -1103,14 +1103,14 @@ hb_buffer_get_direction (const hb_buffer_t *buffer)
  *
  * Since: 0.9.2
  **/
-void
-hb_buffer_set_script (hb_buffer_t *buffer,
+خالی
+hb_بفر_سیٹ_script (hb_بفر_t *بفر,
 		      hb_script_t  script)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  اگر (unlikely (hb_object_is_immutable (بفر)))
+    واپس;
 
-  buffer->props.script = script;
+  بفر->props.script = script;
 }
 
 /**
@@ -1125,9 +1125,9 @@ hb_buffer_set_script (hb_buffer_t *buffer,
  * Since: 0.9.2
  **/
 hb_script_t
-hb_buffer_get_script (const hb_buffer_t *buffer)
+hb_بفر_get_script (ثابت hb_بفر_t *بفر)
 {
-  return buffer->props.script;
+  واپس بفر->props.script;
 }
 
 /**
@@ -1147,14 +1147,14 @@ hb_buffer_get_script (const hb_buffer_t *buffer)
  *
  * Since: 0.9.2
  **/
-void
-hb_buffer_set_language (hb_buffer_t   *buffer,
+خالی
+hb_بفر_سیٹ_language (hb_بفر_t   *بفر,
 			hb_language_t  language)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  اگر (unlikely (hb_object_is_immutable (بفر)))
+    واپس;
 
-  buffer->props.language = language;
+  بفر->props.language = language;
 }
 
 /**
@@ -1169,9 +1169,9 @@ hb_buffer_set_language (hb_buffer_t   *buffer,
  * Since: 0.9.2
  **/
 hb_language_t
-hb_buffer_get_language (const hb_buffer_t *buffer)
+hb_بفر_get_language (ثابت hb_بفر_t *بفر)
 {
-  return buffer->props.language;
+  واپس بفر->props.language;
 }
 
 /**
@@ -1185,14 +1185,14 @@ hb_buffer_get_language (const hb_buffer_t *buffer)
  *
  * Since: 0.9.7
  **/
-void
-hb_buffer_set_segment_properties (hb_buffer_t *buffer,
-				  const hb_segment_properties_t *props)
+خالی
+hb_بفر_سیٹ_segment_properties (hb_بفر_t *بفر,
+				  ثابت hb_segment_properties_t *props)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  اگر (unlikely (hb_object_is_immutable (بفر)))
+    واپس;
 
-  buffer->props = *props;
+  بفر->props = *props;
 }
 
 /**
@@ -1204,11 +1204,11 @@ hb_buffer_set_segment_properties (hb_buffer_t *buffer,
  *
  * Since: 0.9.7
  **/
-void
-hb_buffer_get_segment_properties (const hb_buffer_t *buffer,
+خالی
+hb_بفر_get_segment_properties (ثابت hb_بفر_t *بفر,
 				  hb_segment_properties_t *props)
 {
-  *props = buffer->props;
+  *props = بفر->props;
 }
 
 
@@ -1221,14 +1221,14 @@ hb_buffer_get_segment_properties (const hb_buffer_t *buffer,
  *
  * Since: 0.9.7
  **/
-void
-hb_buffer_set_flags (hb_buffer_t       *buffer,
-		     hb_buffer_flags_t  flags)
+خالی
+hb_بفر_سیٹ_flags (hb_بفر_t       *بفر,
+		     hb_بفر_flags_t  flags)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  اگر (unlikely (hb_object_is_immutable (بفر)))
+    واپس;
 
-  buffer->flags = flags;
+  بفر->flags = flags;
 }
 
 /**
@@ -1242,10 +1242,10 @@ hb_buffer_set_flags (hb_buffer_t       *buffer,
  *
  * Since: 0.9.7
  **/
-hb_buffer_flags_t
-hb_buffer_get_flags (const hb_buffer_t *buffer)
+hb_بفر_flags_t
+hb_بفر_get_flags (ثابت hb_بفر_t *بفر)
 {
-  return buffer->flags;
+  واپس بفر->flags;
 }
 
 /**
@@ -1259,14 +1259,14 @@ hb_buffer_get_flags (const hb_buffer_t *buffer)
  *
  * Since: 0.9.42
  **/
-void
-hb_buffer_set_cluster_level (hb_buffer_t               *buffer,
-			     hb_buffer_cluster_level_t  cluster_level)
+خالی
+hb_بفر_سیٹ_cluster_level (hb_بفر_t               *بفر,
+			     hb_بفر_cluster_level_t  cluster_level)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  اگر (unlikely (hb_object_is_immutable (بفر)))
+    واپس;
 
-  buffer->cluster_level = cluster_level;
+  بفر->cluster_level = cluster_level;
 }
 
 /**
@@ -1281,10 +1281,10 @@ hb_buffer_set_cluster_level (hb_buffer_t               *buffer,
  *
  * Since: 0.9.42
  **/
-hb_buffer_cluster_level_t
-hb_buffer_get_cluster_level (const hb_buffer_t *buffer)
+hb_بفر_cluster_level_t
+hb_بفر_get_cluster_level (ثابت hb_بفر_t *بفر)
 {
-  return buffer->cluster_level;
+  واپس بفر->cluster_level;
 }
 
 
@@ -1300,14 +1300,14 @@ hb_buffer_get_cluster_level (const hb_buffer_t *buffer)
  *
  * Since: 0.9.31
  **/
-void
-hb_buffer_set_replacement_codepoint (hb_buffer_t    *buffer,
+خالی
+hb_بفر_سیٹ_replacement_codepoint (hb_بفر_t    *بفر,
 				     hb_codepoint_t  replacement)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  اگر (unlikely (hb_object_is_immutable (بفر)))
+    واپس;
 
-  buffer->replacement = replacement;
+  بفر->replacement = replacement;
 }
 
 /**
@@ -1323,9 +1323,9 @@ hb_buffer_set_replacement_codepoint (hb_buffer_t    *buffer,
  * Since: 0.9.31
  **/
 hb_codepoint_t
-hb_buffer_get_replacement_codepoint (const hb_buffer_t *buffer)
+hb_بفر_get_replacement_codepoint (ثابت hb_بفر_t *بفر)
 {
-  return buffer->replacement;
+  واپس بفر->replacement;
 }
 
 
@@ -1341,14 +1341,14 @@ hb_buffer_get_replacement_codepoint (const hb_buffer_t *buffer)
  *
  * Since: 2.0.0
  **/
-void
-hb_buffer_set_invisible_glyph (hb_buffer_t    *buffer,
+خالی
+hb_بفر_سیٹ_invisible_glyph (hb_بفر_t    *بفر,
 			       hb_codepoint_t  invisible)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  اگر (unlikely (hb_object_is_immutable (بفر)))
+    واپس;
 
-  buffer->invisible = invisible;
+  بفر->invisible = invisible;
 }
 
 /**
@@ -1363,9 +1363,9 @@ hb_buffer_set_invisible_glyph (hb_buffer_t    *buffer,
  * Since: 2.0.0
  **/
 hb_codepoint_t
-hb_buffer_get_invisible_glyph (const hb_buffer_t *buffer)
+hb_بفر_get_invisible_glyph (ثابت hb_بفر_t *بفر)
 {
-  return buffer->invisible;
+  واپس بفر->invisible;
 }
 
 /**
@@ -1381,14 +1381,14 @@ hb_buffer_get_invisible_glyph (const hb_buffer_t *buffer)
  *
  * Since: 3.1.0
  **/
-void
-hb_buffer_set_not_found_glyph (hb_buffer_t    *buffer,
-			       hb_codepoint_t  not_found)
+خالی
+hb_بفر_سیٹ_not_ملا_glyph (hb_بفر_t    *بفر,
+			       hb_codepoint_t  not_ملا)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  اگر (unlikely (hb_object_is_immutable (بفر)))
+    واپس;
 
-  buffer->not_found = not_found;
+  بفر->not_ملا = not_ملا;
 }
 
 /**
@@ -1403,9 +1403,9 @@ hb_buffer_set_not_found_glyph (hb_buffer_t    *buffer,
  * Since: 3.1.0
  **/
 hb_codepoint_t
-hb_buffer_get_not_found_glyph (const hb_buffer_t *buffer)
+hb_بفر_get_not_ملا_glyph (ثابت hb_بفر_t *بفر)
 {
-  return buffer->not_found;
+  واپس بفر->not_ملا;
 }
 
 /**
@@ -1424,11 +1424,11 @@ hb_buffer_get_not_found_glyph (const hb_buffer_t *buffer)
  *
  * Since: 10.0.0
  **/
-void
-hb_buffer_set_not_found_variation_selector_glyph (hb_buffer_t    *buffer,
-						  hb_codepoint_t  not_found_variation_selector)
+خالی
+hb_بفر_سیٹ_not_ملا_variation_selector_glyph (hb_بفر_t    *بفر,
+						  hb_codepoint_t  not_ملا_variation_selector)
 {
-  buffer->not_found_variation_selector = not_found_variation_selector;
+  بفر->not_ملا_variation_selector = not_ملا_variation_selector;
 }
 
 /**
@@ -1443,9 +1443,9 @@ hb_buffer_set_not_found_variation_selector_glyph (hb_buffer_t    *buffer,
  * Since: 10.0.0
  **/
 hb_codepoint_t
-hb_buffer_get_not_found_variation_selector_glyph (const hb_buffer_t *buffer)
+hb_بفر_get_not_ملا_variation_selector_glyph (ثابت hb_بفر_t *بفر)
 {
-  return buffer->not_found_variation_selector;
+  واپس بفر->not_ملا_variation_selector;
 }
 
 /**
@@ -1465,14 +1465,14 @@ hb_buffer_get_not_found_variation_selector_glyph (const hb_buffer_t *buffer)
  *
  * Since: 8.4.0
  **/
-void
-hb_buffer_set_random_state (hb_buffer_t    *buffer,
-			    unsigned        state)
+خالی
+hb_بفر_سیٹ_random_state (hb_بفر_t    *بفر,
+			    غیرعلامتی        state)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  اگر (unlikely (hb_object_is_immutable (بفر)))
+    واپس;
 
-  buffer->random_state = state;
+  بفر->random_state = state;
 }
 
 /**
@@ -1486,10 +1486,10 @@ hb_buffer_set_random_state (hb_buffer_t    *buffer,
  *
  * Since: 8.4.0
  **/
-unsigned
-hb_buffer_get_random_state (const hb_buffer_t *buffer)
+غیرعلامتی
+hb_بفر_get_random_state (ثابت hb_بفر_t *بفر)
 {
-  return buffer->random_state;
+  واپس بفر->random_state;
 }
 
 /**
@@ -1505,13 +1505,13 @@ hb_buffer_get_random_state (const hb_buffer_t *buffer)
  *
  * Since: 0.9.11
  **/
-void
-hb_buffer_clear_contents (hb_buffer_t *buffer)
+خالی
+hb_بفر_clear_contents (hb_بفر_t *بفر)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  اگر (unlikely (hb_object_is_immutable (بفر)))
+    واپس;
 
-  buffer->clear ();
+  بفر->clear ();
 }
 
 /**
@@ -1527,9 +1527,9 @@ hb_buffer_clear_contents (hb_buffer_t *buffer)
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_buffer_pre_allocate (hb_buffer_t *buffer, unsigned int size)
+hb_بفر_pre_allocate (hb_بفر_t *بفر, غیرعلامتی صحیح سائز)
 {
-  return buffer->ensure (size);
+  واپس بفر->ensure (سائز);
 }
 
 /**
@@ -1544,9 +1544,9 @@ hb_buffer_pre_allocate (hb_buffer_t *buffer, unsigned int size)
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_buffer_allocation_successful (hb_buffer_t  *buffer)
+hb_بفر_تخصیص_successful (hb_بفر_t  *بفر)
 {
-  return buffer->successful;
+  واپس بفر->successful;
 }
 
 /**
@@ -1566,13 +1566,13 @@ hb_buffer_allocation_successful (hb_buffer_t  *buffer)
  *
  * Since: 0.9.7
  **/
-void
-hb_buffer_add (hb_buffer_t    *buffer,
+خالی
+hb_بفر_جوڑو (hb_بفر_t    *بفر,
 	       hb_codepoint_t  codepoint,
-	       unsigned int    cluster)
+	       غیرعلامتی صحیح    cluster)
 {
-  buffer->add (codepoint, cluster);
-  buffer->clear_context (1);
+  بفر->جوڑو (codepoint, cluster);
+  بفر->clear_context (1);
 }
 
 /**
@@ -1589,32 +1589,32 @@ hb_buffer_add (hb_buffer_t    *buffer,
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_buffer_set_length (hb_buffer_t  *buffer,
-		      unsigned int  length)
+hb_بفر_سیٹ_لمبائی (hb_بفر_t  *بفر,
+		      غیرعلامتی صحیح  لمبائی)
 {
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return length == 0;
+  اگر (unlikely (hb_object_is_immutable (بفر)))
+    واپس لمبائی == 0;
 
-  if (unlikely (!buffer->ensure (length)))
-    return false;
+  اگر (unlikely (!بفر->ensure (لمبائی)))
+    واپس جھوٹ;
 
   /* Wipe the new space */
-  if (length > buffer->len) {
-    hb_memset (buffer->info + buffer->len, 0, sizeof (buffer->info[0]) * (length - buffer->len));
-    if (buffer->have_positions)
-      hb_memset (buffer->pos + buffer->len, 0, sizeof (buffer->pos[0]) * (length - buffer->len));
+  اگر (لمبائی > بفر->len) {
+    hb_memset (بفر->info + بفر->len, 0, حجم (بفر->info[0]) * (لمبائی - بفر->len));
+    اگر (بفر->have_positions)
+      hb_memset (بفر->pos + بفر->len, 0, حجم (بفر->pos[0]) * (لمبائی - بفر->len));
   }
 
-  buffer->len = length;
+  بفر->len = لمبائی;
 
-  if (!length)
+  اگر (!لمبائی)
   {
-    buffer->content_type = HB_BUFFER_CONTENT_TYPE_INVALID;
-    buffer->clear_context (0);
+    بفر->content_type = HB_بفر_CONTENT_TYPE_INVALID;
+    بفر->clear_context (0);
   }
-  buffer->clear_context (1);
+  بفر->clear_context (1);
 
-  return true;
+  واپس سچ;
 }
 
 /**
@@ -1629,10 +1629,10 @@ hb_buffer_set_length (hb_buffer_t  *buffer,
  *
  * Since: 0.9.2
  **/
-unsigned int
-hb_buffer_get_length (const hb_buffer_t *buffer)
+غیرعلامتی صحیح
+hb_بفر_get_لمبائی (ثابت hb_بفر_t *بفر)
 {
-  return buffer->len;
+  واپس بفر->len;
 }
 
 /**
@@ -1650,13 +1650,13 @@ hb_buffer_get_length (const hb_buffer_t *buffer)
  * Since: 0.9.2
  **/
 hb_glyph_info_t *
-hb_buffer_get_glyph_infos (hb_buffer_t  *buffer,
-			   unsigned int *length)
+hb_بفر_get_glyph_infos (hb_بفر_t  *بفر,
+			   غیرعلامتی صحیح *لمبائی)
 {
-  if (length)
-    *length = buffer->len;
+  اگر (لمبائی)
+    *لمبائی = بفر->len;
 
-  return (hb_glyph_info_t *) buffer->info;
+  واپس (hb_glyph_info_t *) بفر->info;
 }
 
 /**
@@ -1679,21 +1679,21 @@ hb_buffer_get_glyph_infos (hb_buffer_t  *buffer,
  * Since: 0.9.2
  **/
 hb_glyph_position_t *
-hb_buffer_get_glyph_positions (hb_buffer_t  *buffer,
-			       unsigned int *length)
+hb_بفر_get_glyph_positions (hb_بفر_t  *بفر,
+			       غیرعلامتی صحیح *لمبائی)
 {
-  if (length)
-    *length = buffer->len;
+  اگر (لمبائی)
+    *لمبائی = بفر->len;
 
-  if (!buffer->have_positions)
+  اگر (!بفر->have_positions)
   {
-    if (unlikely (buffer->message_depth))
-      return nullptr;
+    اگر (unlikely (بفر->پیغام_گہرائی))
+      واپس خالی_اشاریہ;
 
-    buffer->clear_positions ();
+    بفر->clear_positions ();
   }
 
-  return (hb_glyph_position_t *) buffer->pos;
+  واپس (hb_glyph_position_t *) بفر->pos;
 }
 
 /**
@@ -1710,9 +1710,9 @@ hb_buffer_get_glyph_positions (hb_buffer_t  *buffer,
  * Since: 2.7.3
  **/
 HB_EXTERN hb_bool_t
-hb_buffer_has_positions (hb_buffer_t  *buffer)
+hb_بفر_has_positions (hb_بفر_t  *بفر)
 {
-  return buffer->have_positions;
+  واپس بفر->have_positions;
 }
 
 /**
@@ -1727,9 +1727,9 @@ hb_buffer_has_positions (hb_buffer_t  *buffer)
  * Since: 1.5.0
  **/
 hb_glyph_flags_t
-(hb_glyph_info_get_glyph_flags) (const hb_glyph_info_t *info)
+(hb_glyph_info_get_glyph_flags) (ثابت hb_glyph_info_t *info)
 {
-  return hb_glyph_info_get_glyph_flags (info);
+  واپس hb_glyph_info_get_glyph_flags (info);
 }
 
 /**
@@ -1740,10 +1740,10 @@ hb_glyph_flags_t
  *
  * Since: 0.9.2
  **/
-void
-hb_buffer_reverse (hb_buffer_t *buffer)
+خالی
+hb_بفر_الٹ (hb_بفر_t *بفر)
 {
-  buffer->reverse ();
+  بفر->reverse ();
 }
 
 /**
@@ -1756,11 +1756,11 @@ hb_buffer_reverse (hb_buffer_t *buffer)
  *
  * Since: 0.9.41
  **/
-void
-hb_buffer_reverse_range (hb_buffer_t *buffer,
-			 unsigned int start, unsigned int end)
+خالی
+hb_بفر_الٹ_range (hb_بفر_t *بفر,
+			 غیرعلامتی صحیح آغاز, غیرعلامتی صحیح انتہا)
 {
-  buffer->reverse_range (start, end);
+  بفر->الٹ_range (آغاز, انتہا);
 }
 
 /**
@@ -1773,10 +1773,10 @@ hb_buffer_reverse_range (hb_buffer_t *buffer,
  *
  * Since: 0.9.2
  **/
-void
-hb_buffer_reverse_clusters (hb_buffer_t *buffer)
+خالی
+hb_بفر_الٹ_clusters (hb_بفر_t *بفر)
 {
-  buffer->reverse_clusters ();
+  بفر->الٹ_clusters ();
 }
 
 /**
@@ -1807,41 +1807,41 @@ hb_buffer_reverse_clusters (hb_buffer_t *buffer)
  *
  * Since: 0.9.7
  **/
-void
-hb_buffer_guess_segment_properties (hb_buffer_t *buffer)
+خالی
+hb_بفر_guess_segment_properties (hb_بفر_t *بفر)
 {
-  buffer->guess_segment_properties ();
+  بفر->guess_segment_properties ();
 }
 
-template <typename utf_t>
-static inline void
-hb_buffer_add_utf (hb_buffer_t  *buffer,
-		   const typename utf_t::codepoint_t *text,
-		   int           text_length,
-		   unsigned int  item_offset,
-		   int           item_length)
+سانچہ <قسم_نام utf_t>
+ساکن اندرونی خالی
+hb_بفر_جوڑو_utf (hb_بفر_t  *بفر,
+		   ثابت قسم_نام utf_t::codepoint_t *متن,
+		   صحیح           متن_لمبائی,
+		   غیرعلامتی صحیح  شے_انحراف,
+		   صحیح           شے_لمبائی)
 {
-  typedef typename utf_t::codepoint_t T;
-  const hb_codepoint_t replacement = buffer->replacement;
+  قسمتعریف قسم_نام utf_t::codepoint_t T;
+  ثابت hb_codepoint_t replacement = بفر->replacement;
 
-  buffer->assert_unicode ();
+  بفر->assert_unicode ();
 
-  if (unlikely (hb_object_is_immutable (buffer)))
-    return;
+  اگر (unlikely (hb_object_is_immutable (بفر)))
+    واپس;
 
-  if (text_length == -1)
-    text_length = utf_t::strlen (text);
+  اگر (متن_لمبائی == -1)
+    متن_لمبائی = utf_t::لڑی_لمبائی (متن);
 
-  if (item_length == -1)
-    item_length = text_length - item_offset;
+  اگر (شے_لمبائی == -1)
+    شے_لمبائی = متن_لمبائی - شے_انحراف;
 
-  item_offset = hb_min (item_offset, (unsigned) text_length);
-  item_length = hb_clamp (item_length, 0, text_length - (int) item_offset);
+  شے_انحراف = hb_min (شے_انحراف, (غیرعلامتی) متن_لمبائی);
+  شے_لمبائی = hb_clamp (شے_لمبائی, 0, متن_لمبائی - (صحیح) شے_انحراف);
 
-  if (unlikely (item_length < 0 ||
-		item_length > INT_MAX / 8 ||
-		!buffer->ensure (buffer->len + item_length * sizeof (T) / 4)))
-    return;
+  اگر (unlikely (شے_لمبائی < 0 ||
+		شے_لمبائی > زیادہ_سے_زیادہ_عدد / 8 ||
+		!بفر->ensure (بفر->len + شے_لمبائی * حجم (T) / 4)))
+    واپس;
 
   /* If buffer is empty and pre-context provided, install it.
    * This check is written this way, to make sure people can
@@ -1850,41 +1850,41 @@ hb_buffer_add_utf (hb_buffer_t  *buffer,
    *
    * https://bugzilla.mozilla.org/show_bug.cgi?id=801410#c13
    */
-  if (!buffer->len && item_offset > 0)
+  اگر (!بفر->len && شے_انحراف > 0)
   {
     /* Add pre-context */
-    buffer->clear_context (0);
-    const T *prev = text + item_offset;
-    const T *start = text;
-    while (start < prev && buffer->context_len[0] < buffer->CONTEXT_LENGTH)
+    بفر->clear_context (0);
+    ثابت T *prev = متن + شے_انحراف;
+    ثابت T *آغاز = متن;
+    جب (آغاز < prev && بفر->context_len[0] < بفر->CONTEXT_لمبائی)
     {
       hb_codepoint_t u;
-      prev = utf_t::prev (prev, start, &u, replacement);
-      buffer->context[0][buffer->context_len[0]++] = u;
+      prev = utf_t::prev (prev, آغاز, &u, replacement);
+      بفر->context[0][بفر->context_len[0]++] = u;
     }
   }
 
-  const T *next = text + item_offset;
-  const T *end = next + item_length;
-  while (next < end)
+  ثابت T *next = متن + شے_انحراف;
+  ثابت T *انتہا = next + شے_لمبائی;
+  جب (next < انتہا)
   {
     hb_codepoint_t u;
-    const T *old_next = next;
-    next = utf_t::next (next, end, &u, replacement);
-    buffer->add (u, old_next - (const T *) text);
+    ثابت T *old_اگلا = next;
+    next = utf_t::next (next, انتہا, &u, replacement);
+    بفر->جوڑو (u, old_اگلا - (ثابت T *) متن);
   }
 
   /* Add post-context */
-  buffer->clear_context (1);
-  end = text + text_length;
-  while (next < end && buffer->context_len[1] < buffer->CONTEXT_LENGTH)
+  بفر->clear_context (1);
+  انتہا = متن + متن_لمبائی;
+  جب (next < انتہا && بفر->context_len[1] < بفر->CONTEXT_لمبائی)
   {
     hb_codepoint_t u;
-    next = utf_t::next (next, end, &u, replacement);
-    buffer->context[1][buffer->context_len[1]++] = u;
+    next = utf_t::next (next, انتہا, &u, replacement);
+    بفر->context[1][بفر->context_len[1]++] = u;
   }
 
-  buffer->content_type = HB_BUFFER_CONTENT_TYPE_UNICODE;
+  بفر->content_type = HB_بفر_CONTENT_TYPE_UNICODE;
 }
 
 /**
@@ -1904,14 +1904,14 @@ hb_buffer_add_utf (hb_buffer_t  *buffer,
  *
  * Since: 0.9.2
  **/
-void
-hb_buffer_add_utf8 (hb_buffer_t  *buffer,
-		    const char   *text,
-		    int           text_length,
-		    unsigned int  item_offset,
-		    int           item_length)
+خالی
+hb_بفر_جوڑو_utf8 (hb_بفر_t  *بفر,
+		    ثابت حرف   *متن,
+		    صحیح           متن_لمبائی,
+		    غیرعلامتی صحیح  شے_انحراف,
+		    صحیح           شے_لمبائی)
 {
-  hb_buffer_add_utf<hb_utf8_t> (buffer, (const uint8_t *) text, text_length, item_offset, item_length);
+  hb_بفر_جوڑو_utf<hb_utf8_t> (بفر, (ثابت uint8_t *) متن, متن_لمبائی, شے_انحراف, شے_لمبائی);
 }
 
 /**
@@ -1930,14 +1930,14 @@ hb_buffer_add_utf8 (hb_buffer_t  *buffer,
  *
  * Since: 0.9.2
  **/
-void
-hb_buffer_add_utf16 (hb_buffer_t    *buffer,
-		     const uint16_t *text,
-		     int             text_length,
-		     unsigned int    item_offset,
-		     int             item_length)
+خالی
+hb_بفر_جوڑو_utf16 (hb_بفر_t    *بفر,
+		     ثابت uint16_t *متن,
+		     صحیح             متن_لمبائی,
+		     غیرعلامتی صحیح    شے_انحراف,
+		     صحیح             شے_لمبائی)
 {
-  hb_buffer_add_utf<hb_utf16_t> (buffer, text, text_length, item_offset, item_length);
+  hb_بفر_جوڑو_utf<hb_utf16_t> (بفر, متن, متن_لمبائی, شے_انحراف, شے_لمبائی);
 }
 
 /**
@@ -1956,14 +1956,14 @@ hb_buffer_add_utf16 (hb_buffer_t    *buffer,
  *
  * Since: 0.9.2
  **/
-void
-hb_buffer_add_utf32 (hb_buffer_t    *buffer,
-		     const uint32_t *text,
-		     int             text_length,
-		     unsigned int    item_offset,
-		     int             item_length)
+خالی
+hb_بفر_جوڑو_utf32 (hb_بفر_t    *بفر,
+		     ثابت uint32_t *متن,
+		     صحیح             متن_لمبائی,
+		     غیرعلامتی صحیح    شے_انحراف,
+		     صحیح             شے_لمبائی)
 {
-  hb_buffer_add_utf<hb_utf32_t> (buffer, text, text_length, item_offset, item_length);
+  hb_بفر_جوڑو_utf<hb_utf32_t> (بفر, متن, متن_لمبائی, شے_انحراف, شے_لمبائی);
 }
 
 /**
@@ -1983,14 +1983,14 @@ hb_buffer_add_utf32 (hb_buffer_t    *buffer,
  *
  * Since: 0.9.39
  **/
-void
-hb_buffer_add_latin1 (hb_buffer_t   *buffer,
-		      const uint8_t *text,
-		      int            text_length,
-		      unsigned int   item_offset,
-		      int            item_length)
+خالی
+hb_بفر_جوڑو_latin1 (hb_بفر_t   *بفر,
+		      ثابت uint8_t *متن,
+		      صحیح            متن_لمبائی,
+		      غیرعلامتی صحیح   شے_انحراف,
+		      صحیح            شے_لمبائی)
 {
-  hb_buffer_add_utf<hb_latin1_t> (buffer, text, text_length, item_offset, item_length);
+  hb_بفر_جوڑو_utf<hb_latin1_t> (بفر, متن, متن_لمبائی, شے_انحراف, شے_لمبائی);
 }
 
 /**
@@ -2019,14 +2019,14 @@ hb_buffer_add_latin1 (hb_buffer_t   *buffer,
  *
  * Since: 0.9.31
  **/
-void
-hb_buffer_add_codepoints (hb_buffer_t          *buffer,
-			  const hb_codepoint_t *text,
-			  int                   text_length,
-			  unsigned int          item_offset,
-			  int                   item_length)
+خالی
+hb_بفر_جوڑو_codepoints (hb_بفر_t          *بفر,
+			  ثابت hb_codepoint_t *متن,
+			  صحیح                   متن_لمبائی,
+			  غیرعلامتی صحیح          شے_انحراف,
+			  صحیح                   شے_لمبائی)
 {
-  hb_buffer_add_utf<hb_utf32_novalidate_t> (buffer, text, text_length, item_offset, item_length);
+  hb_بفر_جوڑو_utf<hb_utf32_novalidate_t> (بفر, متن, متن_لمبائی, شے_انحراف, شے_لمبائی);
 }
 
 
@@ -2041,123 +2041,123 @@ hb_buffer_add_codepoints (hb_buffer_t          *buffer,
  *
  * Since: 1.5.0
  **/
-HB_EXTERN void
-hb_buffer_append (hb_buffer_t *buffer,
-		  const hb_buffer_t *source,
-		  unsigned int start,
-		  unsigned int end)
+HB_EXTERN خالی
+hb_بفر_append (hb_بفر_t *بفر,
+		  ثابت hb_بفر_t *ماخذ,
+		  غیرعلامتی صحیح آغاز,
+		  غیرعلامتی صحیح انتہا)
 {
-  assert (!buffer->have_output && !source->have_output);
-  assert (buffer->have_positions == source->have_positions ||
-	  !buffer->len || !source->len);
-  assert (buffer->content_type == source->content_type ||
-	  !buffer->len || !source->len);
+  أكد (!بفر->have_output && !ماخذ->have_output);
+  أكد (بفر->have_positions == ماخذ->have_positions ||
+	  !بفر->len || !ماخذ->len);
+  أكد (بفر->content_type == ماخذ->content_type ||
+	  !بفر->len || !ماخذ->len);
 
-  if (end > source->len)
-    end = source->len;
-  if (start > end)
-    start = end;
-  if (start == end)
-    return;
+  اگر (انتہا > ماخذ->len)
+    انتہا = ماخذ->len;
+  اگر (آغاز > انتہا)
+    آغاز = انتہا;
+  اگر (آغاز == انتہا)
+    واپس;
 
-  if (buffer->len + (end - start) < buffer->len) /* Overflows. */
+  اگر (بفر->len + (انتہا - آغاز) < بفر->len) /* Overflows. */
   {
-    buffer->successful = false;
-    return;
+    بفر->successful = جھوٹ;
+    واپس;
   }
 
-  unsigned int orig_len = buffer->len;
-  hb_buffer_set_length (buffer, buffer->len + (end - start));
-  if (unlikely (!buffer->successful))
-    return;
+  غیرعلامتی صحیح orig_len = بفر->len;
+  hb_بفر_سیٹ_لمبائی (بفر, بفر->len + (انتہا - آغاز));
+  اگر (unlikely (!بفر->successful))
+    واپس;
 
-  if (!orig_len)
-    buffer->content_type = source->content_type;
-  if (!buffer->have_positions && source->have_positions)
-    buffer->clear_positions ();
+  اگر (!orig_len)
+    بفر->content_type = ماخذ->content_type;
+  اگر (!بفر->have_positions && ماخذ->have_positions)
+    بفر->clear_positions ();
 
-  hb_segment_properties_overlay (&buffer->props, &source->props);
+  hb_segment_properties_overlay (&بفر->props, &ماخذ->props);
 
-  hb_memcpy (buffer->info + orig_len, source->info + start, (end - start) * sizeof (buffer->info[0]));
-  if (buffer->have_positions)
-    hb_memcpy (buffer->pos + orig_len, source->pos + start, (end - start) * sizeof (buffer->pos[0]));
+  hb_memcpy (بفر->info + orig_len, ماخذ->info + آغاز, (انتہا - آغاز) * حجم (بفر->info[0]));
+  اگر (بفر->have_positions)
+    hb_memcpy (بفر->pos + orig_len, ماخذ->pos + آغاز, (انتہا - آغاز) * حجم (بفر->pos[0]));
 
-  if (source->content_type == HB_BUFFER_CONTENT_TYPE_UNICODE)
+  اگر (ماخذ->content_type == HB_بفر_CONTENT_TYPE_UNICODE)
   {
     /* See similar logic in add_utf. */
 
     /* pre-context */
-    if (!orig_len && start + source->context_len[0] > 0)
+    اگر (!orig_len && آغاز + ماخذ->context_len[0] > 0)
     {
-      buffer->clear_context (0);
-      while (start > 0 && buffer->context_len[0] < buffer->CONTEXT_LENGTH)
-	buffer->context[0][buffer->context_len[0]++] = source->info[--start].codepoint;
-      for (auto i = 0u; i < source->context_len[0] && buffer->context_len[0] < buffer->CONTEXT_LENGTH; i++)
-	buffer->context[0][buffer->context_len[0]++] = source->context[0][i];
+      بفر->clear_context (0);
+      جب (آغاز > 0 && بفر->context_len[0] < بفر->CONTEXT_لمبائی)
+	بفر->context[0][بفر->context_len[0]++] = ماخذ->info[--آغاز].codepoint;
+      برائے (خودکار i = 0u; i < ماخذ->context_len[0] && بفر->context_len[0] < بفر->CONTEXT_لمبائی; i++)
+	بفر->context[0][بفر->context_len[0]++] = ماخذ->context[0][i];
     }
 
     /* post-context */
-    buffer->clear_context (1);
-    while (end < source->len && buffer->context_len[1] < buffer->CONTEXT_LENGTH)
-      buffer->context[1][buffer->context_len[1]++] = source->info[end++].codepoint;
-    for (auto i = 0u; i < source->context_len[1] && buffer->context_len[1] < buffer->CONTEXT_LENGTH; i++)
-      buffer->context[1][buffer->context_len[1]++] = source->context[1][i];
+    بفر->clear_context (1);
+    جب (انتہا < ماخذ->len && بفر->context_len[1] < بفر->CONTEXT_لمبائی)
+      بفر->context[1][بفر->context_len[1]++] = ماخذ->info[انتہا++].codepoint;
+    برائے (خودکار i = 0u; i < ماخذ->context_len[1] && بفر->context_len[1] < بفر->CONTEXT_لمبائی; i++)
+      بفر->context[1][بفر->context_len[1]++] = ماخذ->context[1][i];
   }
 }
 
 
-static int
-compare_info_codepoint (const hb_glyph_info_t *pa,
-			const hb_glyph_info_t *pb)
+ساکن صحیح
+compare_info_codepoint (ثابت hb_glyph_info_t *pa,
+			ثابت hb_glyph_info_t *pb)
 {
-  return (int) pb->codepoint - (int) pa->codepoint;
+  واپس (صحیح) pb->codepoint - (صحیح) pa->codepoint;
 }
 
-static inline void
-normalize_glyphs_cluster (hb_buffer_t *buffer,
-			  unsigned int start,
-			  unsigned int end,
-			  bool backward)
+ساکن اندرونی خالی
+normalize_glyphs_cluster (hb_بفر_t *بفر,
+			  غیرعلامتی صحیح آغاز,
+			  غیرعلامتی صحیح انتہا,
+			  منطقی backward)
 {
-  hb_glyph_position_t *pos = buffer->pos;
+  hb_glyph_position_t *pos = بفر->pos;
 
   /* Total cluster advance */
-  hb_position_t total_x_advance = 0, total_y_advance = 0;
-  for (unsigned int i = start; i < end; i++)
+  hb_position_t کل_x_advance = 0, کل_y_advance = 0;
+  برائے (غیرعلامتی صحیح i = آغاز; i < انتہا; i++)
   {
-    total_x_advance = hb_saturate_add (total_x_advance, pos[i].x_advance);
-    total_y_advance = hb_saturate_add (total_y_advance, pos[i].y_advance);
+    کل_x_advance = hb_saturate_جوڑو (کل_x_advance, pos[i].x_advance);
+    کل_y_advance = hb_saturate_جوڑو (کل_y_advance, pos[i].y_advance);
   }
 
   hb_position_t x_advance = 0, y_advance = 0;
-  for (unsigned int i = start; i < end; i++)
+  برائے (غیرعلامتی صحیح i = آغاز; i < انتہا; i++)
   {
-    pos[i].x_offset = hb_saturate_add (pos[i].x_offset, x_advance);
-    pos[i].y_offset = hb_saturate_add (pos[i].y_offset, y_advance);
+    pos[i].x_انحراف_2 = hb_saturate_جوڑو (pos[i].x_انحراف_2, x_advance);
+    pos[i].y_انحراف_2 = hb_saturate_جوڑو (pos[i].y_انحراف_2, y_advance);
 
-    x_advance = hb_saturate_add (x_advance, pos[i].x_advance);
-    y_advance = hb_saturate_add (y_advance, pos[i].y_advance);
+    x_advance = hb_saturate_جوڑو (x_advance, pos[i].x_advance);
+    y_advance = hb_saturate_جوڑو (y_advance, pos[i].y_advance);
 
     pos[i].x_advance = 0;
     pos[i].y_advance = 0;
   }
 
-  if (backward)
+  اگر (backward)
   {
     /* Transfer all cluster advance to the last glyph. */
-    pos[end - 1].x_advance = total_x_advance;
-    pos[end - 1].y_advance = total_y_advance;
+    pos[انتہا - 1].x_advance = کل_x_advance;
+    pos[انتہا - 1].y_advance = کل_y_advance;
 
-    hb_stable_sort (buffer->info + start, end - start - 1, compare_info_codepoint, buffer->pos + start);
-  } else {
+    hb_stable_ترتیب_دو (بفر->info + آغاز, انتہا - آغاز - 1, compare_info_codepoint, بفر->pos + آغاز);
+  } ورنہ {
     /* Transfer all cluster advance to the first glyph. */
-    pos[start].x_advance = hb_saturate_add (pos[start].x_advance, total_x_advance);
-    pos[start].y_advance = hb_saturate_add (pos[start].y_advance, total_y_advance);
-    for (unsigned int i = start + 1; i < end; i++) {
-      pos[i].x_offset = hb_saturate_sub (pos[i].x_offset, total_x_advance);
-      pos[i].y_offset = hb_saturate_sub (pos[i].y_offset, total_y_advance);
+    pos[آغاز].x_advance = hb_saturate_جوڑو (pos[آغاز].x_advance, کل_x_advance);
+    pos[آغاز].y_advance = hb_saturate_جوڑو (pos[آغاز].y_advance, کل_y_advance);
+    برائے (غیرعلامتی صحیح i = آغاز + 1; i < انتہا; i++) {
+      pos[i].x_انحراف_2 = hb_saturate_sub (pos[i].x_انحراف_2, کل_x_advance);
+      pos[i].y_انحراف_2 = hb_saturate_sub (pos[i].y_انحراف_2, کل_y_advance);
     }
-    hb_stable_sort (buffer->info + start + 1, end - start - 1, compare_info_codepoint, buffer->pos + start + 1);
+    hb_stable_ترتیب_دو (بفر->info + آغاز + 1, انتہا - آغاز - 1, compare_info_codepoint, بفر->pos + آغاز + 1);
   }
 }
 
@@ -2172,35 +2172,35 @@ normalize_glyphs_cluster (hb_buffer_t *buffer,
  *
  * Since: 0.9.2
  **/
-void
-hb_buffer_normalize_glyphs (hb_buffer_t *buffer)
+خالی
+hb_بفر_normalize_glyphs (hb_بفر_t *بفر)
 {
-  assert (buffer->have_positions);
+  أكد (بفر->have_positions);
 
-  buffer->assert_glyphs ();
+  بفر->assert_glyphs ();
 
-  bool backward = HB_DIRECTION_IS_BACKWARD (buffer->props.direction);
+  منطقی backward = HB_DIRECTION_IS_BACKWARD (بفر->props.direction);
 
-  foreach_cluster (buffer, start, end)
-    normalize_glyphs_cluster (buffer, start, end, backward);
+  foreach_cluster (بفر, آغاز, انتہا)
+    normalize_glyphs_cluster (بفر, آغاز, انتہا, backward);
 }
 
-void
-hb_buffer_t::sort (unsigned int start, unsigned int end, int(*compar)(const hb_glyph_info_t *, const hb_glyph_info_t *))
+خالی
+hb_بفر_t::sort (غیرعلامتی صحیح آغاز, غیرعلامتی صحیح انتہا, صحیح(*compar)(ثابت hb_glyph_info_t *, ثابت hb_glyph_info_t *))
 {
-  assert (!have_positions);
-  for (unsigned int i = start + 1; i < end; i++)
+  أكد (!have_positions);
+  برائے (غیرعلامتی صحیح i = آغاز + 1; i < انتہا; i++)
   {
-    unsigned int j = i;
-    while (j > start && compar (&info[j - 1], &info[i]) > 0)
+    غیرعلامتی صحیح j = i;
+    جب (j > آغاز && compar (&info[j - 1], &info[i]) > 0)
       j--;
-    if (i == j)
-      continue;
+    اگر (i == j)
+      جاری;
     /* Move item i to occupy place for item j, shift what's in between. */
-    merge_clusters (j, i + 1);
+    ملاؤ_clusters (j, i + 1);
     {
       hb_glyph_info_t t = info[i];
-      memmove (&info[j + 1], &info[j], (i - j) * sizeof (hb_glyph_info_t));
+      memmove (&info[j + 1], &info[j], (i - j) * حجم (hb_glyph_info_t));
       info[j] = t;
     }
   }
@@ -2224,86 +2224,86 @@ hb_buffer_t::sort (unsigned int start, unsigned int end, int(*compar)(const hb_g
  *
  * Since: 1.5.0
  **/
-hb_buffer_diff_flags_t
-hb_buffer_diff (hb_buffer_t *buffer,
-		hb_buffer_t *reference,
+hb_بفر_diff_flags_t
+hb_بفر_diff (hb_بفر_t *بفر,
+		hb_بفر_t *reference,
 		hb_codepoint_t dottedcircle_glyph,
-		unsigned int position_fuzz)
+		غیرعلامتی صحیح position_fuzz)
 {
-  if (buffer->content_type != reference->content_type && buffer->len && reference->len)
-    return HB_BUFFER_DIFF_FLAG_CONTENT_TYPE_MISMATCH;
+  اگر (بفر->content_type != reference->content_type && بفر->len && reference->len)
+    واپس HB_بفر_DIFF_FLAG_CONTENT_TYPE_MISMATCH;
 
-  hb_buffer_diff_flags_t result = HB_BUFFER_DIFF_FLAG_EQUAL;
-  bool contains = dottedcircle_glyph != (hb_codepoint_t) -1;
+  hb_بفر_diff_flags_t نتیجہ = HB_بفر_DIFF_FLAG_EQUAL;
+  منطقی شامل_ہے = dottedcircle_glyph != (hb_codepoint_t) -1;
 
-  unsigned int count = reference->len;
+  غیرعلامتی صحیح گنتی = reference->len;
 
-  if (buffer->len != count)
+  اگر (بفر->len != گنتی)
   {
     /*
      * we can't compare glyph-by-glyph, but we do want to know if there
      * are .notdef or dottedcircle glyphs present in the reference buffer
      */
-    const hb_glyph_info_t *info = reference->info;
-    unsigned int i;
-    for (i = 0; i < count; i++)
+    ثابت hb_glyph_info_t *info = reference->info;
+    غیرعلامتی صحیح i;
+    برائے (i = 0; i < گنتی; i++)
     {
-      if (contains && info[i].codepoint == dottedcircle_glyph)
-	result |= HB_BUFFER_DIFF_FLAG_DOTTED_CIRCLE_PRESENT;
-      if (contains && info[i].codepoint == 0)
-	result |= HB_BUFFER_DIFF_FLAG_NOTDEF_PRESENT;
+      اگر (شامل_ہے && info[i].codepoint == dottedcircle_glyph)
+	نتیجہ |= HB_بفر_DIFF_FLAG_DOTTED_CIRCLE_PRESENT;
+      اگر (شامل_ہے && info[i].codepoint == 0)
+	نتیجہ |= HB_بفر_DIFF_FLAG_NOTDEF_PRESENT;
     }
-    result |= HB_BUFFER_DIFF_FLAG_LENGTH_MISMATCH;
-    return hb_buffer_diff_flags_t (result);
+    نتیجہ |= HB_بفر_DIFF_FLAG_لمبائی_MISMATCH;
+    واپس hb_بفر_diff_flags_t (نتیجہ);
   }
 
-  if (!count)
-    return hb_buffer_diff_flags_t (result);
+  اگر (!گنتی)
+    واپس hb_بفر_diff_flags_t (نتیجہ);
 
-  const hb_glyph_info_t *buf_info = buffer->info;
-  const hb_glyph_info_t *ref_info = reference->info;
-  for (unsigned int i = 0; i < count; i++)
+  ثابت hb_glyph_info_t *buf_info = بفر->info;
+  ثابت hb_glyph_info_t *ref_info = reference->info;
+  برائے (غیرعلامتی صحیح i = 0; i < گنتی; i++)
   {
-    if (buf_info->codepoint != ref_info->codepoint)
-      result |= HB_BUFFER_DIFF_FLAG_CODEPOINT_MISMATCH;
-    if (buf_info->cluster != ref_info->cluster)
-      result |= HB_BUFFER_DIFF_FLAG_CLUSTER_MISMATCH;
-    if ((buf_info->mask ^ ref_info->mask) & HB_GLYPH_FLAG_DEFINED)
-      result |= HB_BUFFER_DIFF_FLAG_GLYPH_FLAGS_MISMATCH;
-    if (contains && ref_info->codepoint == dottedcircle_glyph)
-      result |= HB_BUFFER_DIFF_FLAG_DOTTED_CIRCLE_PRESENT;
-    if (contains && ref_info->codepoint == 0)
-      result |= HB_BUFFER_DIFF_FLAG_NOTDEF_PRESENT;
+    اگر (buf_info->codepoint != ref_info->codepoint)
+      نتیجہ |= HB_بفر_DIFF_FLAG_CODEPOINT_MISMATCH;
+    اگر (buf_info->cluster != ref_info->cluster)
+      نتیجہ |= HB_بفر_DIFF_FLAG_CLUSTER_MISMATCH;
+    اگر ((buf_info->نقاب ^ ref_info->نقاب) & HB_GLYPH_FLAG_DEFINED)
+      نتیجہ |= HB_بفر_DIFF_FLAG_GLYPH_FLAGS_MISMATCH;
+    اگر (شامل_ہے && ref_info->codepoint == dottedcircle_glyph)
+      نتیجہ |= HB_بفر_DIFF_FLAG_DOTTED_CIRCLE_PRESENT;
+    اگر (شامل_ہے && ref_info->codepoint == 0)
+      نتیجہ |= HB_بفر_DIFF_FLAG_NOTDEF_PRESENT;
     buf_info++;
     ref_info++;
   }
 
-  if (buffer->content_type == HB_BUFFER_CONTENT_TYPE_GLYPHS)
+  اگر (بفر->content_type == HB_بفر_CONTENT_TYPE_GLYPHS)
   {
-    auto position_diff = [] (hb_position_t a, hb_position_t b) -> uint64_t
+    خودکار position_diff = [] (hb_position_t a, hb_position_t b) -> uint64_t
     {
       int64_t diff = (int64_t) a - b;
-      return diff < 0 ? -diff : diff;
+      واپس diff < 0 ? -diff : diff;
     };
-    assert (buffer->have_positions);
-    const hb_glyph_position_t *buf_pos = buffer->pos;
-    const hb_glyph_position_t *ref_pos = reference->pos;
-    for (unsigned int i = 0; i < count; i++)
+    أكد (بفر->have_positions);
+    ثابت hb_glyph_position_t *buf_pos = بفر->pos;
+    ثابت hb_glyph_position_t *ref_pos = reference->pos;
+    برائے (غیرعلامتی صحیح i = 0; i < گنتی; i++)
     {
-      if (position_diff (buf_pos->x_advance, ref_pos->x_advance) > position_fuzz ||
+      اگر (position_diff (buf_pos->x_advance, ref_pos->x_advance) > position_fuzz ||
 	  position_diff (buf_pos->y_advance, ref_pos->y_advance) > position_fuzz ||
-	  position_diff (buf_pos->x_offset, ref_pos->x_offset) > position_fuzz ||
-	  position_diff (buf_pos->y_offset, ref_pos->y_offset) > position_fuzz)
+	  position_diff (buf_pos->x_انحراف_2, ref_pos->x_انحراف_2) > position_fuzz ||
+	  position_diff (buf_pos->y_انحراف_2, ref_pos->y_انحراف_2) > position_fuzz)
       {
-	result |= HB_BUFFER_DIFF_FLAG_POSITION_MISMATCH;
-	break;
+	نتیجہ |= HB_بفر_DIFF_FLAG_POSITION_MISMATCH;
+	توڑو;
       }
       buf_pos++;
       ref_pos++;
     }
   }
 
-  return result;
+  واپس نتیجہ;
 }
 
 
@@ -2311,23 +2311,23 @@ hb_buffer_diff (hb_buffer_t *buffer,
  * Debugging.
  */
 
-void
-hb_buffer_t::changed ()
+خالی
+hb_بفر_t::بدلا ()
 {
-#ifdef HB_NO_BUFFER_MESSAGE
-  return;
-#else
-  if (!message_depth)
-    return;
+#اگر_تعریف_شدہ HB_NO_بفر_پیغام
+  واپس;
+#ورنہ
+  اگر (!پیغام_گہرائی)
+    واپس;
 
-  if (changed_func)
-    changed_func (this, changed_data);
-  else
+  اگر (بدلا_func)
+    بدلا_func (یہ, بدلا_ڈیٹا);
+  ورنہ
     update_digest ();
-#endif
+#اگر_ختم
 }
 
-#ifndef HB_NO_BUFFER_MESSAGE
+#اگر_غیر_تعریف_شدہ HB_NO_بفر_پیغام
 /**
  * hb_buffer_set_message_func:
  * @buffer: An #hb_buffer_t
@@ -2342,30 +2342,30 @@ hb_buffer_t::changed ()
  *
  * Since: 1.1.3
  **/
-void
-hb_buffer_set_message_func (hb_buffer_t *buffer,
-			    hb_buffer_message_func_t func,
-			    void *user_data, hb_destroy_func_t destroy)
+خالی
+hb_بفر_سیٹ_پیغام_func (hb_بفر_t *بفر,
+			    hb_بفر_پیغام_func_t func,
+			    خالی *user_ڈیٹا, hb_destroy_func_t destroy)
 {
-  if (unlikely (hb_object_is_immutable (buffer)) ||
-      unlikely (buffer->message_depth))
+  اگر (unlikely (hb_object_is_immutable (بفر)) ||
+      unlikely (بفر->پیغام_گہرائی))
   {
-    if (destroy)
-      destroy (user_data);
-    return;
+    اگر (destroy)
+      destroy (user_ڈیٹا);
+    واپس;
   }
 
-  if (buffer->message_destroy)
-    buffer->message_destroy (buffer->message_data);
+  اگر (بفر->پیغام_destroy)
+    بفر->پیغام_destroy (بفر->پیغام_ڈیٹا);
 
-  if (func) {
-    buffer->message_func = func;
-    buffer->message_data = user_data;
-    buffer->message_destroy = destroy;
-  } else {
-    buffer->message_func = nullptr;
-    buffer->message_data = nullptr;
-    buffer->message_destroy = nullptr;
+  اگر (func) {
+    بفر->پیغام_func = func;
+    بفر->پیغام_ڈیٹا = user_ڈیٹا;
+    بفر->پیغام_destroy = destroy;
+  } ورنہ {
+    بفر->پیغام_func = خالی_اشاریہ;
+    بفر->پیغام_ڈیٹا = خالی_اشاریہ;
+    بفر->پیغام_destroy = خالی_اشاریہ;
   }
 }
 /**
@@ -2379,25 +2379,25 @@ hb_buffer_set_message_func (hb_buffer_t *buffer,
  *
  * Since: 13.0.0
  **/
-void
-hb_buffer_changed (hb_buffer_t *buffer)
+خالی
+hb_بفر_بدلا (hb_بفر_t *بفر)
 {
-  buffer->changed ();
+  بفر->بدلا ();
 }
 
-bool
-hb_buffer_t::message_impl (hb_font_t *font, const char *fmt, va_list ap)
+منطقی
+hb_بفر_t::پیغام_impl (hb_font_t *font, ثابت حرف *fmt, va_list ap)
 {
-  assert (!have_output || (out_info == info && out_len == idx));
+  أكد (!have_output || (برآمد_info == info && برآمد_len == idx));
 
-  message_depth++;
+  پیغام_گہرائی++;
 
-  char buf[100];
-  vsnprintf (buf, sizeof (buf), fmt, ap);
-  bool ret = (bool) this->message_func (this, font, buf, this->message_data);
+  حرف buf[100];
+  vsnprintf (buf, حجم (buf), fmt, ap);
+  منطقی ret = (منطقی) یہ->پیغام_func (یہ, font, buf, یہ->پیغام_ڈیٹا);
 
-  message_depth--;
+  پیغام_گہرائی--;
 
-  return ret;
+  واپس ret;
 }
-#endif
+#اگر_ختم

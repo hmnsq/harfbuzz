@@ -1,410 +1,410 @@
-#ifndef OT_GLYF_GLYF_HH
-#define OT_GLYF_GLYF_HH
+#اگر_غیر_تعریف_شدہ OT_GLYF_GLYF_HH
+#تعریف_کرو OT_GLYF_GLYF_HH
 
 
-#include "../../hb-open-type.hh"
-#include "../../hb-depend-data.hh"
-#include "../../hb-ot-head-table.hh"
-#include "../../hb-ot-hmtx-table.hh"
-#include "../../hb-ot-var-gvar-table.hh"
-#include "../../hb-draw.hh"
-#include "../../hb-paint.hh"
+#شامل "../../hb-open-type.hh"
+#شامل "../../hb-depend-data.hh"
+#شامل "../../hb-ot-head-table.hh"
+#شامل "../../hb-ot-hmtx-table.hh"
+#شامل "../../hb-ot-var-gvar-table.hh"
+#شامل "../../hb-draw.hh"
+#شامل "../../hb-paint.hh"
 
-#include "glyf-helpers.hh"
-#include "Glyph.hh"
-#include "SubsetGlyph.hh"
-#include "loca.hh"
-#include "path-builder.hh"
+#شامل "glyf-helpers.hh"
+#شامل "Glyph.hh"
+#شامل "SubsetGlyph.hh"
+#شامل "loca.hh"
+#شامل "path-builder.hh"
 
 
-namespace OT {
+نامخلا OT {
 
 
 /*
  * glyf -- TrueType Glyph Data
  * https://docs.microsoft.com/en-us/typography/opentype/spec/glyf
  */
-#define HB_OT_TAG_glyf HB_TAG('g','l','y','f')
-#define HB_OT_TAG_GLYF HB_TAG('G','L','Y','F')
+#تعریف_کرو HB_OT_لیبل_glyf HB_لیبل('g','l','y','f')
+#تعریف_کرو HB_OT_لیبل_GLYF HB_لیبل('G','L','Y','F')
 
-struct glyf
+ساخت glyf
 {
-  friend struct glyf_accelerator_t;
+  دوست ساخت glyf_accelerator_t;
 
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_glyf;
+  ساکن constexpr hb_لیبل_t جدول_لیبل = HB_OT_لیبل_glyf;
 
-  static bool has_valid_glyf_format(const hb_face_t* face)
+  ساکن منطقی has_valid_glyf_format(ثابت hb_face_t* face)
   {
-    const OT::head &head = *face->table.head;
-    return head.indexToLocFormat <= 1 && head.glyphDataFormat <= 1;
+    ثابت OT::سر_2 &سر_2 = *face->جدول.سر_2;
+    واپس سر_2.اشاریہ_مقصد_Loc_Format <= 1 && سر_2.glyph_ڈیٹا_Format <= 1;
   }
 
-  static bool has_extended_glyf (hb_face_t *face)
+  ساکن منطقی has_extended_glyf (hb_face_t *face)
   {
-#ifndef HB_NO_BEYOND_64K
-    hb_blob_ptr_t<glyf> GLYF_table = hb_sanitize_context_t ().reference_table<glyf> (face, HB_OT_TAG_GLYF);
-    hb_blob_ptr_t<loca> LOCA_table = hb_sanitize_context_t ().reference_table<loca> (face, HB_OT_TAG_LOCA);
-    bool ret = GLYF_table.get_length () && LOCA_table.get_length ();
-    GLYF_table.destroy ();
-    LOCA_table.destroy ();
-    return ret;
-#else
-    return false;
-#endif
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    hb_blob_ptr_t<glyf> GLYF_جدول = hb_sanitize_context_t ().reference_جدول<glyf> (face, HB_OT_لیبل_GLYF);
+    hb_blob_ptr_t<loca> LOCA_جدول = hb_sanitize_context_t ().reference_جدول<loca> (face, HB_OT_لیبل_LOCA);
+    منطقی ret = GLYF_جدول.get_لمبائی () && LOCA_جدول.get_لمبائی ();
+    GLYF_جدول.destroy ();
+    LOCA_جدول.destroy ();
+    واپس ret;
+#ورنہ
+    واپس جھوٹ;
+#اگر_ختم
   }
 
-  bool sanitize (hb_sanitize_context_t *c HB_UNUSED) const
+  منطقی sanitize (hb_sanitize_context_t *c HB_غیر_مستعمل) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (یہ);
     /* Runtime checks as eager sanitizing each glyph is costy */
-    return_trace (true);
+    return_trace (سچ);
   }
 
   /* requires source of SubsetGlyph complains the identifier isn't declared */
-  template <typename Iterator>
-  bool serialize (hb_serialize_context_t *c,
+  سانچہ <قسم_نام Iterator>
+  منطقی serialize (hb_serialize_context_t *c,
 		  Iterator it,
-                  bool use_short_loca,
-		  const hb_subset_plan_t *plan)
+                  منطقی use_short_loca,
+		  ثابت hb_subset_plan_t *plan)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (یہ);
 
-    unsigned init_len = c->length ();
-    for (auto &_ : it)
-      if (unlikely (!_.serialize (c, use_short_loca, plan)))
-        return false;
+    غیرعلامتی init_len = c->لمبائی ();
+    برائے (خودکار &_ : it)
+      اگر (unlikely (!_.serialize (c, use_short_loca, plan)))
+        واپس جھوٹ;
 
     /* As a special case when all glyph in the font are empty, add a zero byte
      * to the table, so that OTS doesn’t reject it, and to make the table work
      * on Windows as well.
      * See https://github.com/khaledhosny/ots/issues/52 */
-    if (init_len == c->length ())
+    اگر (init_len == c->لمبائی ())
     {
-      HBUINT8 empty_byte;
-      empty_byte = 0;
-      c->copy (empty_byte);
+      HBUINT8 خالی_خانے_byte;
+      خالی_خانے_byte = 0;
+      c->copy (خالی_خانے_byte);
     }
-    return_trace (true);
+    return_trace (سچ);
   }
 
   /* Byte region(s) per glyph to output
      unpadded, hints removed if so requested
      If we fail to process a glyph we produce an empty (0-length) glyph */
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (یہ);
 
-    bool extended = has_extended_glyf (c->plan->source);
-#ifndef HB_NO_BEYOND_64K
-    if (extended != (c->table_tag == HB_OT_TAG_GLYF))
-      return_trace (false);
-#endif
+    منطقی extended = has_extended_glyf (c->plan->ماخذ);
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    اگر (extended != (c->جدول_لیبل_2 == HB_OT_لیبل_GLYF))
+      return_trace (جھوٹ);
+#اگر_ختم
 
-    if (!has_valid_glyf_format (c->plan->source)) {
+    اگر (!has_valid_glyf_format (c->plan->ماخذ)) {
       // glyf format is unknown don't attempt to subset it.
-      DEBUG_MSG (SUBSET, nullptr,
+      DEBUG_پیغام (SUBSET, خالی_اشاریہ,
                  "unkown glyf format, dropping from subset.");
-      return_trace (false);
+      return_trace (جھوٹ);
     }
 
-    hb_font_t *font = nullptr;
-    if (c->plan->normalized_coords)
+    hb_font_t *font = خالی_اشاریہ;
+    اگر (c->plan->normalized_coords)
     {
       font = _create_font_for_instancing (c->plan);
-      if (unlikely (!font))
-	return_trace (false);
+      اگر (unlikely (!font))
+	return_trace (جھوٹ);
     }
 
-    hb_vector_t<unsigned> padded_offsets;
-    if (unlikely (!padded_offsets.alloc_exact (c->plan->new_to_old_gid_list.length)))
+    hb_سمتیہ_t<غیرعلامتی> padded_offsets;
+    اگر (unlikely (!padded_offsets.alloc_exact (c->plan->new_مقصد_old_gid_list.لمبائی)))
     {
       hb_font_destroy (font);
-      return_trace (false);
+      return_trace (جھوٹ);
     }
 
-    hb_vector_t<glyf_impl::SubsetGlyph> glyphs;
+    hb_سمتیہ_t<glyf_impl::SubsetGlyph> glyphs;
     /* SubsetGlyphs borrow bytes from this blob until they are serialized. */
-    hb_blob_t *source_glyf = nullptr;
-    if (!_populate_subset_glyphs (c->plan, font, glyphs, &source_glyf))
+    hb_blob_t *ماخذ_glyf = خالی_اشاریہ;
+    اگر (!_populate_subset_glyphs (c->plan, font, glyphs, &ماخذ_glyf))
     {
-      hb_blob_destroy (source_glyf);
+      hb_blob_destroy (ماخذ_glyf);
       hb_font_destroy (font);
-      return_trace (false);
+      return_trace (جھوٹ);
     }
 
-    if (font)
+    اگر (font)
       hb_font_destroy (font);
 
-    unsigned max_offset = 0;
-    for (auto &g : glyphs)
+    غیرعلامتی max_انحراف = 0;
+    برائے (خودکار &g : glyphs)
     {
-      unsigned size = g.padded_size ();
-      padded_offsets.push (size);
-      max_offset += size;
+      غیرعلامتی سائز = g.padded_سائز ();
+      padded_offsets.push (سائز);
+      max_انحراف += سائز;
     }
 
-    bool use_short_loca = false;
-    if (likely (!c->plan->force_long_loca))
-      use_short_loca = max_offset < 0x1FFFF;
+    منطقی use_short_loca = جھوٹ;
+    اگر (likely (!c->plan->force_long_loca))
+      use_short_loca = max_انحراف < 0x1FFFF;
 
-    if (!use_short_loca)
+    اگر (!use_short_loca)
     {
       padded_offsets.clear ();
-      for (auto &g : glyphs)
-	padded_offsets.push (g.length ());
+      برائے (خودکار &g : glyphs)
+	padded_offsets.push (g.لمبائی ());
     }
 
-    auto *glyf_prime = c->serializer->start_embed <glyf> ();
-    bool result = glyf_prime->serialize (c->serializer, hb_iter (glyphs), use_short_loca, c->plan);
-    if (c->plan->normalized_coords && !c->plan->pinned_at_default)
+    خودکار *glyf_مفرد = c->serializer->آغاز_embed <glyf> ();
+    منطقی نتیجہ = glyf_مفرد->serialize (c->serializer, hb_iter (glyphs), use_short_loca, c->plan);
+    اگر (c->plan->normalized_coords && !c->plan->pinned_at_default)
       _free_compiled_subset_glyphs (glyphs);
-    hb_blob_destroy (source_glyf);
+    hb_blob_destroy (ماخذ_glyf);
 
-    if (unlikely (!c->serializer->check_success (glyf_impl::_add_loca_and_head (c,
+    اگر (unlikely (!c->serializer->check_success (glyf_impl::جوڑو_loca_and_سر (c,
 						 padded_offsets.iter (),
 						 use_short_loca,
 						 extended))))
-      return_trace (false);
+      return_trace (جھوٹ);
 
-    return result;
+    واپس نتیجہ;
   }
 
-  bool
-  _populate_subset_glyphs (const hb_subset_plan_t   *plan,
+  منطقی
+  _populate_subset_glyphs (ثابت hb_subset_plan_t   *plan,
 			   hb_font_t                *font,
-			   hb_vector_t<glyf_impl::SubsetGlyph>& glyphs /* OUT */,
-			   hb_blob_t               **source_glyf /* OUT */) const;
+			   hb_سمتیہ_t<glyf_impl::SubsetGlyph>& glyphs /*برآمد*/,
+			   hb_blob_t               **ماخذ_glyf /*برآمد*/) ثابت;
 
   hb_font_t *
-  _create_font_for_instancing (const hb_subset_plan_t *plan) const;
+  _create_font_for_instancing (ثابت hb_subset_plan_t *plan) ثابت;
 
-  void _free_compiled_subset_glyphs (hb_vector_t<glyf_impl::SubsetGlyph> &glyphs) const
+  خالی _free_compiled_subset_glyphs (hb_سمتیہ_t<glyf_impl::SubsetGlyph> &glyphs) ثابت
   {
-    for (auto &g : glyphs)
-      g.free_compiled_bytes ();
+    برائے (خودکار &g : glyphs)
+      g.free_compiled_بائٹیں ();
   }
 
-  protected:
-  UnsizedArrayOf<HBUINT8>
-		dataZ;	/* Glyphs data. */
-  public:
-  DEFINE_SIZE_MIN (0);	/* In reality, this is UNBOUNDED() type; but since we always
+  محفوظ:
+  Unsized_Array_کا<HBUINT8>
+		ڈیٹا_Z;	/* Glyphs data. */
+  عوامی:
+  DEFINE_سائز_MIN (0);	/* In reality, this is UNBOUNDED() type; but since we always
 			 * check the size externally, allow Null() object of it by
 			 * defining it _MIN instead. */
 };
 
-#ifndef HB_NO_BEYOND_64K
-struct GLYF : glyf
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+ساخت GLYF : glyf
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_GLYF;
+  ساکن constexpr hb_لیبل_t جدول_لیبل = HB_OT_لیبل_GLYF;
 };
-#endif
+#اگر_ختم
 
-struct glyf_accelerator_t
+ساخت glyf_accelerator_t
 {
   glyf_accelerator_t (hb_face_t *face)
   {
-    extended = false;
-    short_offset = false;
-    num_glyphs = 0;
-    loca_table = nullptr;
-    glyf_table = nullptr;
-#ifndef HB_NO_VAR
-    gvar = nullptr;
-#endif
-    hmtx = nullptr;
-#ifndef HB_NO_VERTICAL
-    vmtx = nullptr;
-#endif
-    const OT::head &head = *face->table.head;
-    if (!glyf::has_valid_glyf_format (face))
+    extended = جھوٹ;
+    short_انحراف = جھوٹ;
+    عدد_glyphs = 0;
+    loca_جدول = خالی_اشاریہ;
+    glyf_جدول = خالی_اشاریہ;
+#اگر_غیر_تعریف_شدہ HB_NO_VAR
+    gvar = خالی_اشاریہ;
+#اگر_ختم
+    hmtx = خالی_اشاریہ;
+#اگر_غیر_تعریف_شدہ HB_NO_VERTICAL
+    vmtx = خالی_اشاریہ;
+#اگر_ختم
+    ثابت OT::سر_2 &سر_2 = *face->جدول.سر_2;
+    اگر (!glyf::has_valid_glyf_format (face))
       /* Unknown format.  Leave num_glyphs=0, that takes care of disabling us. */
-      return;
-    short_offset = 0 == head.indexToLocFormat;
+      واپس;
+    short_انحراف = 0 == سر_2.اشاریہ_مقصد_Loc_Format;
 
-#ifndef HB_NO_BEYOND_64K
-    hb_blob_ptr_t<glyf> GLYF_table = hb_sanitize_context_t ().reference_table<glyf> (face, HB_OT_TAG_GLYF);
-    hb_blob_ptr_t<loca> LOCA_table = hb_sanitize_context_t ().reference_table<loca> (face, HB_OT_TAG_LOCA);
-    extended = GLYF_table.get_length () && LOCA_table.get_length ();
-    if (extended)
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    hb_blob_ptr_t<glyf> GLYF_جدول = hb_sanitize_context_t ().reference_جدول<glyf> (face, HB_OT_لیبل_GLYF);
+    hb_blob_ptr_t<loca> LOCA_جدول = hb_sanitize_context_t ().reference_جدول<loca> (face, HB_OT_لیبل_LOCA);
+    extended = GLYF_جدول.get_لمبائی () && LOCA_جدول.get_لمبائی ();
+    اگر (extended)
     {
-      glyf_table = std::move (GLYF_table);
-      loca_table = std::move (LOCA_table);
+      glyf_جدول = std::move (GLYF_جدول);
+      loca_جدول = std::move (LOCA_جدول);
     }
-    else
+    ورنہ
     {
-      GLYF_table.destroy ();
-      LOCA_table.destroy ();
+      GLYF_جدول.destroy ();
+      LOCA_جدول.destroy ();
     }
-#endif
-    if (!extended)
+#اگر_ختم
+    اگر (!extended)
     {
-      glyf_table = hb_sanitize_context_t ().reference_table<glyf> (face);
-      loca_table = hb_sanitize_context_t ().reference_table<loca> (face);
+      glyf_جدول = hb_sanitize_context_t ().reference_جدول<glyf> (face);
+      loca_جدول = hb_sanitize_context_t ().reference_جدول<loca> (face);
     }
-#ifndef HB_NO_VAR
-    gvar = face->table.gvar;
-#endif
-    hmtx = face->table.hmtx;
-#ifndef HB_NO_VERTICAL
-    vmtx = face->table.vmtx;
-#endif
+#اگر_غیر_تعریف_شدہ HB_NO_VAR
+    gvar = face->جدول.gvar;
+#اگر_ختم
+    hmtx = face->جدول.hmtx;
+#اگر_غیر_تعریف_شدہ HB_NO_VERTICAL
+    vmtx = face->جدول.vmtx;
+#اگر_ختم
 
-    num_glyphs = hb_max (1u, loca_table.get_length () / (short_offset ? 2 : 4)) - 1;
-    num_glyphs = hb_min (num_glyphs, face->get_num_glyphs ());
+    عدد_glyphs = hb_max (1u, loca_جدول.get_لمبائی () / (short_انحراف ? 2 : 4)) - 1;
+    عدد_glyphs = hb_min (عدد_glyphs, face->get_عدد_glyphs ());
   }
   ~glyf_accelerator_t ()
   {
-    auto *scratch = cached_scratch.get_relaxed ();
-    if (scratch)
+    خودکار *scratch = cached_scratch.get_relaxed ();
+    اگر (scratch)
     {
       scratch->~hb_glyf_scratch_t ();
       hb_free (scratch);
     }
 
-    glyf_table.destroy ();
-    loca_table.destroy ();
+    glyf_جدول.destroy ();
+    loca_جدول.destroy ();
   }
 
-  bool has_data () const { return num_glyphs; }
-  bool is_extended () const { return extended; }
+  منطقی has_ڈیٹا () ثابت { واپس عدد_glyphs; }
+  منطقی is_extended () ثابت { واپس extended; }
 
-  void depend (hb_depend_data_builder_t *builder) const
+  خالی depend (hb_depend_ڈیٹا_builder_t *builder) ثابت
   {
-    if (!has_data ()) return;
-    for (hb_codepoint_t gid = 0; gid < get_num_glyphs (); gid++)
+    اگر (!has_ڈیٹا ()) واپس;
+    برائے (hb_codepoint_t gid = 0; gid < get_عدد_glyphs (); gid++)
     {
-      auto glyph = glyph_for_gid (gid);
-      for (auto &item : glyph.get_composite_iterator ())
-        builder->add_depend (gid,
-                             extended ? HB_OT_TAG_GLYF : HB_OT_TAG_glyf,
-                             item.get_gid (extended));
+      خودکار glyph = glyph_for_gid (gid);
+      برائے (خودکار &شے : glyph.get_مرکب_iterator ())
+        builder->جوڑو_depend (gid,
+                             extended ? HB_OT_لیبل_GLYF : HB_OT_لیبل_glyf,
+                             شے.get_gid (extended));
     }
   }
 
-  protected:
-  template<typename T>
-  bool get_points (hb_font_t *font, hb_codepoint_t gid, T consumer,
-		   hb_array_t<const int> coords,
+  محفوظ:
+  سانچہ<قسم_نام T>
+  منطقی get_points (hb_font_t *font, hb_codepoint_t gid, T صارف,
+		   hb_array_t<ثابت صحیح> coords,
 		   hb_glyf_scratch_t &scratch,
-		   hb_scalar_cache_t *gvar_cache = nullptr,
-		   int64_t *budget = nullptr) const
+		   hb_scalar_cache_t *gvar_cache = خالی_اشاریہ,
+		   int64_t *budget = خالی_اشاریہ) ثابت
   {
-    if (gid >= num_glyphs) return false;
+    اگر (gid >= عدد_glyphs) واپس جھوٹ;
 
-    int64_t stack_budget = HB_BUDGET_GLYPH;
-    if (!budget) budget = &stack_budget;
+    int64_t ڈھیر_budget = HB_BUDGET_GLYPH;
+    اگر (!budget) budget = &ڈھیر_budget;
 
-    auto &all_points = scratch.all_points;
+    خودکار &all_points = scratch.all_points;
     all_points.clear ();
 
-    bool phantom_only = !consumer.is_consuming_contour_points ();
-    if (unlikely (!glyph_for_gid (gid).get_points (font, *this, all_points, scratch, nullptr, nullptr, nullptr, true, true, phantom_only, coords, gvar_cache, 0, nullptr, budget)))
-      return false;
+    منطقی phantom_only = !صارف.is_consuming_contour_points ();
+    اگر (unlikely (!glyph_for_gid (gid).get_points (font, *یہ, all_points, scratch, خالی_اشاریہ, خالی_اشاریہ, خالی_اشاریہ, سچ, سچ, phantom_only, coords, gvar_cache, 0, خالی_اشاریہ, budget)))
+      واپس جھوٹ;
 
-    if (unlikely (!hb_budget_spend (*budget, HB_BUDGET_1, all_points.length)))
-      return false;
+    اگر (unlikely (!hb_budget_spend (*budget, HB_BUDGET_1, all_points.لمبائی)))
+      واپس جھوٹ;
 
-    unsigned count = all_points.length;
-    assert (count >= glyf_impl::PHANTOM_COUNT);
-    count -= glyf_impl::PHANTOM_COUNT;
+    غیرعلامتی گنتی = all_points.لمبائی;
+    أكد (گنتی >= glyf_impl::PHANTOM_گنتی);
+    گنتی -= glyf_impl::PHANTOM_گنتی;
 
-    if (consumer.is_consuming_contour_points ())
+    اگر (صارف.is_consuming_contour_points ())
     {
-      auto *points = all_points.arrayZ;
+      خودکار *points = all_points.arrayZ;
 
-      if (false)
+      اگر (جھوٹ)
       {
 	/* Our path-builder was designed to work with this simple loop.
 	 * But FreeType and CoreText do it differently, so we match those
 	 * with the other, more complicated, code branch below. */
-	for (unsigned i = 0; i < count; i++)
+	برائے (غیرعلامتی i = 0; i < گنتی; i++)
 	{
-	  consumer.consume_point (points[i]);
-	  if (points[i].is_end_point)
-	    consumer.contour_end ();
+	  صارف.consume_نقطہ (points[i]);
+	  اگر (points[i].is_انتہا_نقطہ)
+	    صارف.contour_انتہا ();
 	}
       }
-      else
+      ورنہ
       {
-	for (unsigned i = 0; i < count; i++)
+	برائے (غیرعلامتی i = 0; i < گنتی; i++)
 	{
 	  // Start of a contour.
-	  if (points[i].flag & glyf_impl::SimpleGlyph::FLAG_ON_CURVE)
+	  اگر (points[i].flag & glyf_impl::SimpleGlyph::FLAG_ON_خم)
 	  {
 	    // First point is on-curve. Draw the contour.
-	    for (; i < count; i++)
+	    برائے (; i < گنتی; i++)
 	    {
-	      consumer.consume_point (points[i]);
-	      if (points[i].is_end_point)
+	      صارف.consume_نقطہ (points[i]);
+	      اگر (points[i].is_انتہا_نقطہ)
 	      {
-		consumer.contour_end ();
-		break;
+		صارف.contour_انتہا ();
+		توڑو;
 	      }
 	    }
 	  }
-	  else
+	  ورنہ
 	  {
-	    unsigned start = i;
+	    غیرعلامتی آغاز = i;
 
 	    // Find end of the contour.
-	    for (; i < count; i++)
-	      if (points[i].is_end_point)
-		break;
+	    برائے (; i < گنتی; i++)
+	      اگر (points[i].is_انتہا_نقطہ)
+		توڑو;
 
-	    unsigned end = i;
+	    غیرعلامتی انتہا = i;
 
-	    unsigned limit = end;
-#ifndef HB_NO_CUBIC_GLYF
+	    غیرعلامتی حد_بندی = انتہا;
+#اگر_غیر_تعریف_شدہ HB_NO_CUBIC_GLYF
 	    /* Rotating by one control point changes cubic pairing.  Preserve
 	     * the original order when the contour starts and ends off-curve
 	     * with cubic controls, including all-off-curve contours. */
-	    if (likely (end < count) &&
-		(points[start].flag & glyf_impl::SimpleGlyph::FLAG_CUBIC) &&
-		(points[end].flag & (glyf_impl::SimpleGlyph::FLAG_ON_CURVE |
+	    اگر (likely (انتہا < گنتی) &&
+		(points[آغاز].flag & glyf_impl::SimpleGlyph::FLAG_CUBIC) &&
+		(points[انتہا].flag & (glyf_impl::SimpleGlyph::FLAG_ON_خم |
 				    glyf_impl::SimpleGlyph::FLAG_CUBIC)) ==
 		 glyf_impl::SimpleGlyph::FLAG_CUBIC)
-	      limit++;
-	    else
-#endif
-	    if (likely (end < count))
-	      consumer.consume_point (points[end]);
+	      حد_بندی++;
+	    ورنہ
+#اگر_ختم
+	    اگر (likely (انتہا < گنتی))
+	      صارف.consume_نقطہ (points[انتہا]);
 
-	    for (i = start; i < limit; i++)
-	      consumer.consume_point (points[i]);
-	    i = end;
+	    برائے (i = آغاز; i < حد_بندی; i++)
+	      صارف.consume_نقطہ (points[i]);
+	    i = انتہا;
 
-	    consumer.contour_end ();
+	    صارف.contour_انتہا ();
 	  }
 	}
       }
 
-      consumer.points_end ();
+      صارف.points_انتہا ();
     }
 
     /* Where to write phantoms, nullptr if not requested */
-    contour_point_t *phantoms = consumer.get_phantoms_sink ();
-    if (phantoms)
-      for (unsigned i = 0; i < glyf_impl::PHANTOM_COUNT; ++i)
-	phantoms[i] = all_points.arrayZ[count + i];
+    contour_نقطہ_t *phantoms = صارف.get_phantoms_sink ();
+    اگر (phantoms)
+      برائے (غیرعلامتی i = 0; i < glyf_impl::PHANTOM_گنتی; ++i)
+	phantoms[i] = all_points.arrayZ[گنتی + i];
 
-    return true;
+    واپس سچ;
   }
 
-  public:
+  عوامی:
 
-  struct points_aggregator_t
+  ساخت points_aggregator_t
   {
     hb_font_t *font;
     hb_glyph_extents_t *extents;
-    contour_point_t *phantoms;
-    bool scaled;
+    contour_نقطہ_t *phantoms;
+    منطقی scaled;
 
-    struct contour_bounds_t
+    ساخت contour_bounds_t
     {
       contour_bounds_t () { min_x = min_y = FLT_MAX; max_x = max_y = -FLT_MAX; }
 
-      void add (const contour_point_t &p)
+      خالی جوڑو (ثابت contour_نقطہ_t &p)
       {
 	min_x = hb_min (min_x, p.x);
 	min_y = hb_min (min_y, p.y);
@@ -412,343 +412,343 @@ struct glyf_accelerator_t
 	max_y = hb_max (max_y, p.y);
       }
 
-      bool empty () const { return (min_x >= max_x) || (min_y >= max_y); }
+      منطقی خالی_خانے_2 () ثابت { واپس (min_x >= max_x) || (min_y >= max_y); }
 
-      void get_extents (hb_font_t *font, hb_glyph_extents_t *extents, bool scaled)
+      خالی get_extents (hb_font_t *font, hb_glyph_extents_t *extents, منطقی scaled)
       {
-	if (unlikely (empty ()))
+	اگر (unlikely (خالی_خانے_2 ()))
 	{
-	  extents->width = 0;
+	  extents->چوڑائی = 0;
 	  extents->x_bearing = 0;
-	  extents->height = 0;
+	  extents->اونچائی = 0;
 	  extents->y_bearing = 0;
-	  return;
+	  واپس;
 	}
 	{
-	  double x_bearing = (double) roundf (min_x);
-	  double y_bearing = (double) roundf (max_y);
-	  extents->x_bearing = hb_clamp_to<hb_position_t> (x_bearing);
-	  extents->width = hb_clamp_to<hb_position_t> ((double) roundf (max_x) - x_bearing);
-	  extents->y_bearing = hb_clamp_to<hb_position_t> (y_bearing);
-	  extents->height = hb_clamp_to<hb_position_t> ((double) roundf (min_y) - y_bearing);
+	  دوہرا x_bearing = (دوہرا) roundf (min_x);
+	  دوہرا y_bearing = (دوہرا) roundf (max_y);
+	  extents->x_bearing = hb_clamp_مقصد<hb_position_t> (x_bearing);
+	  extents->چوڑائی = hb_clamp_مقصد<hb_position_t> ((دوہرا) roundf (max_x) - x_bearing);
+	  extents->y_bearing = hb_clamp_مقصد<hb_position_t> (y_bearing);
+	  extents->اونچائی = hb_clamp_مقصد<hb_position_t> ((دوہرا) roundf (min_y) - y_bearing);
 
-	  if (scaled)
+	  اگر (scaled)
 	    font->scale_glyph_extents (extents);
 	}
       }
 
-      protected:
-      float min_x, min_y, max_x, max_y;
+      محفوظ:
+      اعشاری min_x, min_y, max_x, max_y;
     } bounds;
 
-    points_aggregator_t (hb_font_t *font_, hb_glyph_extents_t *extents_, contour_point_t *phantoms_, bool scaled_)
+    points_aggregator_t (hb_font_t *font_, hb_glyph_extents_t *extents_, contour_نقطہ_t *phantoms_, منطقی scaled_)
     {
       font = font_;
       extents = extents_;
       phantoms = phantoms_;
       scaled = scaled_;
-      if (extents) bounds = contour_bounds_t ();
+      اگر (extents) bounds = contour_bounds_t ();
     }
 
     HB_ALWAYS_INLINE
-    void consume_point (const contour_point_t &point) { bounds.add (point); }
-    void contour_end () {}
-    void points_end () { bounds.get_extents (font, extents, scaled); }
+    خالی consume_نقطہ (ثابت contour_نقطہ_t &نقطہ) { bounds.جوڑو (نقطہ); }
+    خالی contour_انتہا () {}
+    خالی points_انتہا () { bounds.get_extents (font, extents, scaled); }
 
-    bool is_consuming_contour_points () { return extents; }
-    contour_point_t *get_phantoms_sink () { return phantoms; }
+    منطقی is_consuming_contour_points () { واپس extents; }
+    contour_نقطہ_t *get_phantoms_sink () { واپس phantoms; }
   };
 
-#ifndef HB_NO_VAR
-  unsigned
+#اگر_غیر_تعریف_شدہ HB_NO_VAR
+  غیرعلامتی
   get_advance_with_var_unscaled (hb_codepoint_t gid,
 				 hb_font_t *font,
-				 bool is_vertical,
+				 منطقی is_vertical,
 				  hb_glyf_scratch_t &scratch,
-				 hb_scalar_cache_t *gvar_cache = nullptr) const
+				 hb_scalar_cache_t *gvar_cache = خالی_اشاریہ) ثابت
   {
-    if (unlikely (gid >= num_glyphs)) return 0;
+    اگر (unlikely (gid >= عدد_glyphs)) واپس 0;
 
-    bool success = false;
+    منطقی success = جھوٹ;
 
-    contour_point_t phantoms[glyf_impl::PHANTOM_COUNT];
-    success = get_points (font, gid, points_aggregator_t (font, nullptr, phantoms, false),
+    contour_نقطہ_t phantoms[glyf_impl::PHANTOM_گنتی];
+    success = get_points (font, gid, points_aggregator_t (font, خالی_اشاریہ, phantoms, جھوٹ),
 			  hb_array (font->coords,
-				    font->has_nonzero_coords ? font->num_coords : 0),
+				    font->has_nonzero_coords ? font->عدد_coords : 0),
 			  scratch, gvar_cache);
-    if (unlikely (!success))
+    اگر (unlikely (!success))
     {
-      unsigned upem = font->face->get_upem ();
-      return is_vertical ? upem : upem / 2;
+      غیرعلامتی upem = font->face->get_upem ();
+      واپس is_vertical ? upem : upem / 2;
     }
 
-    float result = is_vertical
-		 ? phantoms[glyf_impl::PHANTOM_TOP].y - phantoms[glyf_impl::PHANTOM_BOTTOM].y
-		 : phantoms[glyf_impl::PHANTOM_RIGHT].x - phantoms[glyf_impl::PHANTOM_LEFT].x;
-    return hb_clamp (roundf (result), 0.f, (float) UINT_MAX / 2);
+    اعشاری نتیجہ = is_vertical
+		 ? phantoms[glyf_impl::PHANTOM_چوٹی].y - phantoms[glyf_impl::PHANTOM_BOTTOM].y
+		 : phantoms[glyf_impl::PHANTOM_دایاں].x - phantoms[glyf_impl::PHANTOM_بایاں].x;
+    واپس hb_clamp (roundf (نتیجہ), 0.f, (اعشاری) UINT_MAX / 2);
   }
-#endif
+#اگر_ختم
 
-  float
+  اعشاری
   get_v_origin_with_var_unscaled (hb_codepoint_t gid,
 				  hb_font_t *font,
 				  hb_glyf_scratch_t &scratch,
-				  hb_scalar_cache_t *gvar_cache = nullptr) const
+				  hb_scalar_cache_t *gvar_cache = خالی_اشاریہ) ثابت
   {
-    if (unlikely (gid >= num_glyphs)) return 0;
+    اگر (unlikely (gid >= عدد_glyphs)) واپس 0;
 
-    bool success = false;
+    منطقی success = جھوٹ;
 
-    contour_point_t phantoms[glyf_impl::PHANTOM_COUNT];
-    success = get_points (font, gid, points_aggregator_t (font, nullptr, phantoms, false),
+    contour_نقطہ_t phantoms[glyf_impl::PHANTOM_گنتی];
+    success = get_points (font, gid, points_aggregator_t (font, خالی_اشاریہ, phantoms, جھوٹ),
 			  hb_array (font->coords,
-				    font->has_nonzero_coords ? font->num_coords : 0),
+				    font->has_nonzero_coords ? font->عدد_coords : 0),
 			  scratch, gvar_cache);
-    if (unlikely (!success))
+    اگر (unlikely (!success))
     {
-      return font->face->get_upem ();
+      واپس font->face->get_upem ();
     }
 
-    return phantoms[glyf_impl::PHANTOM_TOP].y;
+    واپس phantoms[glyf_impl::PHANTOM_چوٹی].y;
   }
 
-  public:
+  عوامی:
 
-  bool get_extents (hb_font_t *font,
+  منطقی get_extents (hb_font_t *font,
 		    hb_codepoint_t gid,
-		    hb_glyph_extents_t *extents) const
-  { return get_extents_at (font, gid, extents, hb_array (font->coords,
-							 font->has_nonzero_coords ? font->num_coords : 0)); }
+		    hb_glyph_extents_t *extents) ثابت
+  { واپس get_extents_at (font, gid, extents, hb_array (font->coords,
+							 font->has_nonzero_coords ? font->عدد_coords : 0)); }
 
-  bool get_extents_at (hb_font_t *font,
+  منطقی get_extents_at (hb_font_t *font,
 		       hb_codepoint_t gid,
 		       hb_glyph_extents_t *extents,
-		       hb_array_t<const int> coords,
-		       int64_t *budget = nullptr) const
+		       hb_array_t<ثابت صحیح> coords,
+		       int64_t *budget = خالی_اشاریہ) ثابت
   {
-    if (unlikely (gid >= num_glyphs)) return false;
+    اگر (unlikely (gid >= عدد_glyphs)) واپس جھوٹ;
 
-#ifndef HB_NO_VAR
-    if (coords)
+#اگر_غیر_تعریف_شدہ HB_NO_VAR
+    اگر (coords)
     {
       hb_glyf_scratch_t *scratch = acquire_scratch ();
-      if (unlikely (!scratch)) return false;
-      bool ret = get_points (font,
+      اگر (unlikely (!scratch)) واپس جھوٹ;
+      منطقی ret = get_points (font,
 			     gid,
-			     points_aggregator_t (font, extents, nullptr, true),
+			     points_aggregator_t (font, extents, خالی_اشاریہ, سچ),
 			     coords,
 			     *scratch,
-			     nullptr,
+			     خالی_اشاریہ,
 			     budget);
       release_scratch (scratch);
-      return ret;
+      واپس ret;
     }
-#endif
-    return glyph_for_gid (gid).get_extents_without_var_scaled (font, *this, extents);
+#اگر_ختم
+    واپس glyph_for_gid (gid).get_extents_without_var_scaled (font, *یہ, extents);
   }
 
-  const glyf_impl::Glyph
-  glyph_for_gid (hb_codepoint_t gid, bool needs_padding_removal = false) const
+  ثابت glyf_impl::Glyph
+  glyph_for_gid (hb_codepoint_t gid, منطقی needs_padding_removal = جھوٹ) ثابت
   {
-    if (unlikely (gid >= num_glyphs)) return glyf_impl::Glyph ();
+    اگر (unlikely (gid >= عدد_glyphs)) واپس glyf_impl::Glyph ();
 
-    unsigned int start_offset, end_offset;
+    غیرعلامتی صحیح آغاز_انحراف, انتہا_انحراف;
 
-    if (short_offset)
+    اگر (short_انحراف)
     {
-      const HBUINT16 *offsets = (const HBUINT16 *) loca_table->dataZ.arrayZ;
-      start_offset = 2 * offsets[gid];
-      end_offset   = 2 * offsets[gid + 1];
+      ثابت HBUINT16 *offsets = (ثابت HBUINT16 *) loca_جدول->ڈیٹا_Z.arrayZ;
+      آغاز_انحراف = 2 * offsets[gid];
+      انتہا_انحراف   = 2 * offsets[gid + 1];
     }
-    else
+    ورنہ
     {
-      const HBUINT32 *offsets = (const HBUINT32 *) loca_table->dataZ.arrayZ;
-      start_offset = offsets[gid];
-      end_offset   = offsets[gid + 1];
+      ثابت HBUINT32 *offsets = (ثابت HBUINT32 *) loca_جدول->ڈیٹا_Z.arrayZ;
+      آغاز_انحراف = offsets[gid];
+      انتہا_انحراف   = offsets[gid + 1];
     }
 
-    if (unlikely (start_offset > end_offset || end_offset > glyf_table.get_length ()))
-      return glyf_impl::Glyph ();
+    اگر (unlikely (آغاز_انحراف > انتہا_انحراف || انتہا_انحراف > glyf_جدول.get_لمبائی ()))
+      واپس glyf_impl::Glyph ();
 
-    glyf_impl::Glyph glyph (hb_bytes_t ((const char *) this->glyf_table + start_offset,
-			     end_offset - start_offset), gid, extended);
-    return needs_padding_removal ? glyf_impl::Glyph (glyph.trim_padding (), gid, extended) : glyph;
+    glyf_impl::Glyph glyph (hb_بائٹیں_t ((ثابت حرف *) یہ->glyf_جدول + آغاز_انحراف,
+			     انتہا_انحراف - آغاز_انحراف), gid, extended);
+    واپس needs_padding_removal ? glyf_impl::Glyph (glyph.trim_padding (), gid, extended) : glyph;
   }
 
-  bool
-  get_path (hb_font_t *font, hb_codepoint_t gid, hb_draw_session_t &draw_session,
-	    hb_scalar_cache_t *gvar_cache = nullptr,
-	    int64_t *budget = nullptr) const
+  منطقی
+  get_راستہ (hb_font_t *font, hb_codepoint_t gid, hb_draw_session_t &draw_session,
+	    hb_scalar_cache_t *gvar_cache = خالی_اشاریہ,
+	    int64_t *budget = خالی_اشاریہ) ثابت
   {
-    if (!has_data ()) return false;
+    اگر (!has_ڈیٹا ()) واپس جھوٹ;
 
     hb_glyf_scratch_t *scratch = acquire_scratch ();
-    if (unlikely (!scratch)) return true;
+    اگر (unlikely (!scratch)) واپس سچ;
 
-    bool ret = get_points (font, gid, glyf_impl::path_builder_t (font, draw_session),
+    منطقی ret = get_points (font, gid, glyf_impl::راستہ_builder_t (font, draw_session),
 			   hb_array (font->coords,
-				     font->has_nonzero_coords ? font->num_coords : 0),
+				     font->has_nonzero_coords ? font->عدد_coords : 0),
 			   *scratch,
 			   gvar_cache,
 			   budget);
 
     release_scratch (scratch);
 
-    return ret;
+    واپس ret;
   }
 
-  bool
-  get_path_at (hb_font_t *font, hb_codepoint_t gid, hb_draw_session_t &draw_session,
-	       hb_array_t<const int> coords,
+  منطقی
+  get_راستہ_at (hb_font_t *font, hb_codepoint_t gid, hb_draw_session_t &draw_session,
+	       hb_array_t<ثابت صحیح> coords,
 	       hb_glyf_scratch_t &scratch,
-	       hb_scalar_cache_t *gvar_cache = nullptr,
-	       int64_t *budget = nullptr) const
+	       hb_scalar_cache_t *gvar_cache = خالی_اشاریہ,
+	       int64_t *budget = خالی_اشاریہ) ثابت
   {
-    if (!has_data ()) return false;
-    bool ret = get_points (font, gid, glyf_impl::path_builder_t (font, draw_session),
+    اگر (!has_ڈیٹا ()) واپس جھوٹ;
+    منطقی ret = get_points (font, gid, glyf_impl::راستہ_builder_t (font, draw_session),
 			   coords,
 			   scratch,
 			   gvar_cache,
 			   budget);
-    return ret;
+    واپس ret;
   }
 
 
-  hb_glyf_scratch_t *acquire_scratch () const
+  hb_glyf_scratch_t *acquire_scratch () ثابت
   {
-    if (!has_data ()) return nullptr;
+    اگر (!has_ڈیٹا ()) واپس خالی_اشاریہ;
     hb_glyf_scratch_t *scratch = cached_scratch.get_acquire ();
-    if (!scratch || unlikely (!cached_scratch.cmpexch (scratch, nullptr)))
+    اگر (!scratch || unlikely (!cached_scratch.cmpexch (scratch, خالی_اشاریہ)))
     {
-      scratch = (hb_glyf_scratch_t *) hb_calloc (1, sizeof (hb_glyf_scratch_t));
-      if (unlikely (!scratch))
-	return nullptr;
+      scratch = (hb_glyf_scratch_t *) hb_calloc (1, حجم (hb_glyf_scratch_t));
+      اگر (unlikely (!scratch))
+	واپس خالی_اشاریہ;
     }
-    return scratch;
+    واپس scratch;
   }
-  void release_scratch (hb_glyf_scratch_t *scratch) const
+  خالی release_scratch (hb_glyf_scratch_t *scratch) ثابت
   {
-    if (!scratch)
-      return;
-    if (!cached_scratch.cmpexch (nullptr, scratch))
+    اگر (!scratch)
+      واپس;
+    اگر (!cached_scratch.cmpexch (خالی_اشاریہ, scratch))
     {
       scratch->~hb_glyf_scratch_t ();
       hb_free (scratch);
     }
   }
 
-  unsigned int get_num_glyphs () const { return num_glyphs; }
-  hb_blob_t *reference_glyf_table () const
-  { return hb_blob_reference (glyf_table.get_blob ()); }
+  غیرعلامتی صحیح get_عدد_glyphs () ثابت { واپس عدد_glyphs; }
+  hb_blob_t *reference_glyf_جدول () ثابت
+  { واپس hb_blob_reference (glyf_جدول.get_blob ()); }
 
-#ifndef HB_NO_VAR
-  const gvar_accelerator_t *gvar;
-#endif
-  const hmtx_accelerator_t *hmtx;
-#ifndef HB_NO_VERTICAL
-  const vmtx_accelerator_t *vmtx;
-#endif
+#اگر_غیر_تعریف_شدہ HB_NO_VAR
+  ثابت gvar_accelerator_t *gvar;
+#اگر_ختم
+  ثابت hmtx_accelerator_t *hmtx;
+#اگر_غیر_تعریف_شدہ HB_NO_VERTICAL
+  ثابت vmtx_accelerator_t *vmtx;
+#اگر_ختم
 
-  private:
-  bool extended;
-  bool short_offset;
-  unsigned int num_glyphs;
-  hb_blob_ptr_t<loca> loca_table;
-  hb_blob_ptr_t<glyf> glyf_table;
-  mutable hb_atomic_t<hb_glyf_scratch_t *> cached_scratch;
+  نجی:
+  منطقی extended;
+  منطقی short_انحراف;
+  غیرعلامتی صحیح عدد_glyphs;
+  hb_blob_ptr_t<loca> loca_جدول;
+  hb_blob_ptr_t<glyf> glyf_جدول;
+  تغیرپذیر hb_atomic_t<hb_glyf_scratch_t *> cached_scratch;
 };
 
 
-inline bool
-glyf::_populate_subset_glyphs (const hb_subset_plan_t   *plan,
+اندرونی منطقی
+glyf::_populate_subset_glyphs (ثابت hb_subset_plan_t   *plan,
 			       hb_font_t *font,
-			       hb_vector_t<glyf_impl::SubsetGlyph>& glyphs /* OUT */,
-			       hb_blob_t **source_glyf /* OUT */) const
+			       hb_سمتیہ_t<glyf_impl::SubsetGlyph>& glyphs /*برآمد*/,
+			       hb_blob_t **ماخذ_glyf /*برآمد*/) ثابت
 {
-  OT::glyf_accelerator_t glyf (plan->source);
-  if (!glyphs.alloc_exact (plan->new_to_old_gid_list.length)) return false;
-  *source_glyf = glyf.reference_glyf_table ();
+  OT::glyf_accelerator_t glyf (plan->ماخذ);
+  اگر (!glyphs.alloc_exact (plan->new_مقصد_old_gid_list.لمبائی)) واپس جھوٹ;
+  *ماخذ_glyf = glyf.reference_glyf_جدول ();
 
-  for (const auto &pair : plan->new_to_old_gid_list)
+  برائے (ثابت خودکار &pair : plan->new_مقصد_old_gid_list)
   {
-    hb_codepoint_t new_gid = pair.first;
+    hb_codepoint_t new_gid = pair.پہلا;
     hb_codepoint_t old_gid = pair.second;
     glyf_impl::SubsetGlyph *p = glyphs.push ();
     glyf_impl::SubsetGlyph& subset_glyph = *p;
     subset_glyph.old_gid = old_gid;
 
-    if (unlikely (old_gid == 0 && new_gid == 0 &&
+    اگر (unlikely (old_gid == 0 && new_gid == 0 &&
                   !(plan->flags & HB_SUBSET_FLAGS_NOTDEF_OUTLINE)) &&
                   !plan->normalized_coords)
-      subset_glyph.source_glyph = glyf_impl::Glyph ();
-    else
+      subset_glyph.ماخذ_glyph = glyf_impl::Glyph ();
+    ورنہ
     {
       /* If plan has an accelerator, the preprocessing step already trimmed glyphs.
        * Don't trim them again! */
-      subset_glyph.source_glyph = glyf.glyph_for_gid (subset_glyph.old_gid, !plan->accelerator);
+      subset_glyph.ماخذ_glyph = glyf.glyph_for_gid (subset_glyph.old_gid, !plan->accelerator);
     }
 
-    if (plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
-      subset_glyph.drop_hints_bytes ();
-    else
-      subset_glyph.dest_start = subset_glyph.source_glyph.get_bytes ();
+    اگر (plan->flags & HB_SUBSET_FLAGS_NO_HINTING)
+      subset_glyph.drop_hints_بائٹیں ();
+    ورنہ
+      subset_glyph.dest_آغاز = subset_glyph.ماخذ_glyph.get_بائٹیں ();
 
-    if (font)
+    اگر (font)
     {
-      if (unlikely (!subset_glyph.compile_bytes_with_deltas (plan, font, glyf)))
+      اگر (unlikely (!subset_glyph.compile_بائٹیں_with_deltas (plan, font, glyf)))
       {
         // when pinned at default, only bounds are updated, thus no need to free
-        if (!plan->pinned_at_default)
+        اگر (!plan->pinned_at_default)
           _free_compiled_subset_glyphs (glyphs);
-        return false;
+        واپس جھوٹ;
       }
     }
   }
-  return true;
+  واپس سچ;
 }
 
-inline hb_font_t *
-glyf::_create_font_for_instancing (const hb_subset_plan_t *plan) const
+اندرونی hb_font_t *
+glyf::_create_font_for_instancing (ثابت hb_subset_plan_t *plan) ثابت
 {
-  hb_font_t *font = hb_font_create (plan->source);
-  if (unlikely (font == hb_font_get_empty ())) return nullptr;
+  hb_font_t *font = hb_font_create (plan->ماخذ);
+  اگر (unlikely (font == hb_font_get_خالی_خانے ())) واپس خالی_اشاریہ;
 
-#ifndef HB_NO_VAR
-  if (plan->has_avar2)
+#اگر_غیر_تعریف_شدہ HB_NO_VAR
+  اگر (plan->has_avar2)
   {
     /* Under avar2, instancing applies only to the self-contained pins,
      * whose constant final coordinates the plan holds in normalized_coords.
      * Setting user-space variations would run the full avar2 mapping and
      * bake contributions that remain live in the instance's variations. */
-    hb_font_set_var_coords_normalized (font, plan->normalized_coords.arrayZ,
-				       plan->normalized_coords.length);
-    return font;
+    hb_font_سیٹ_var_coords_normalized (font, plan->normalized_coords.arrayZ,
+				       plan->normalized_coords.لمبائی);
+    واپس font;
   }
-#endif
+#اگر_ختم
 
-  hb_vector_t<hb_variation_t> vars;
-  if (unlikely (!vars.alloc (plan->user_axes_location.get_population (), true)))
+  hb_سمتیہ_t<hb_variation_t> vars;
+  اگر (unlikely (!vars.alloc (plan->user_axes_location.get_population (), سچ)))
   {
     hb_font_destroy (font);
-    return nullptr;
+    واپس خالی_اشاریہ;
   }
 
-  for (auto _ : plan->user_axes_location)
+  برائے (خودکار _ : plan->user_axes_location)
   {
     hb_variation_t var;
-    var.tag = _.first;
-    var.value = _.second.middle;
+    var.لیبل_2 = _.پہلا;
+    var.value = _.second.درمیان;
     vars.push (var);
   }
 
-#ifndef HB_NO_VAR
-  hb_font_set_variations (font, vars.arrayZ, plan->user_axes_location.get_population ());
-#endif
-  return font;
+#اگر_غیر_تعریف_شدہ HB_NO_VAR
+  hb_font_سیٹ_variations (font, vars.arrayZ, plan->user_axes_location.get_population ());
+#اگر_ختم
+  واپس font;
 }
 
 
 } /* namespace OT */
 
 
-#endif /* OT_GLYF_GLYF_HH */
+#اگر_ختم /* OT_GLYF_GLYF_HH */

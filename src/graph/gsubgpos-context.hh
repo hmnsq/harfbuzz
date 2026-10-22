@@ -24,43 +24,43 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "graph.hh"
-#include "../hb-ot-layout-gsubgpos.hh"
+#شامل "graph.hh"
+#شامل "../hb-ot-layout-gsubgpos.hh"
 
-#ifndef GRAPH_GSUBGPOS_CONTEXT_HH
-#define GRAPH_GSUBGPOS_CONTEXT_HH
+#اگر_غیر_تعریف_شدہ گراف_GSUBGPOS_CONTEXT_HH
+#تعریف_کرو گراف_GSUBGPOS_CONTEXT_HH
 
-namespace graph {
+نامخلا گراف {
 
-struct Lookup;
+ساخت Lookup;
 
-struct gsubgpos_graph_context_t
+ساخت gsubgpos_گراف_context_t
 {
-  HB_INTERNAL static graph_result_t<gsubgpos_graph_context_t> create (hb_tag_t table_tag_,
-                                                                      graph_t& graph_);
+  HB_اندرونی ساکن گراف_نتیجہ_t<gsubgpos_گراف_context_t> create (hb_لیبل_t جدول_لیبل_3,
+                                                                      گراف_t& گراف_2);
 
-  hb_tag_t table_tag;
-  graph_t& graph;
-  unsigned lookup_list_index;
-  hb_hashmap_t<unsigned, graph::Lookup*> lookups;
-  hb_hashmap_t<unsigned, unsigned> subtable_to_extension;
-  hb_hashmap_t<unsigned, hb_vector_t<unsigned>> split_subtables;
+  hb_لیبل_t جدول_لیبل_2;
+  گراف_t& گراف;
+  غیرعلامتی lookup_list_اشاریہ;
+  hb_hashmap_t<غیرعلامتی, گراف::Lookup*> lookups;
+  hb_hashmap_t<غیرعلامتی, غیرعلامتی> subtable_مقصد_extension;
+  hb_hashmap_t<غیرعلامتی, hb_سمتیہ_t<غیرعلامتی>> بانٹو_subtables;
 
 
-  HB_INTERNAL graph_result_t<unsigned> create_node (unsigned size);
+  HB_اندرونی گراف_نتیجہ_t<غیرعلامتی> create_گرہ (غیرعلامتی سائز);
 
-  graph_result_t<void> add_buffer (char* buffer)
+  گراف_نتیجہ_t<خالی> جوڑو_بفر (حرف* بفر)
   {
-    return graph.add_buffer (buffer);
+    واپس گراف.جوڑو_بفر (بفر);
   }
 
- private:
-  HB_INTERNAL gsubgpos_graph_context_t (hb_tag_t table_tag_,
-                                        graph_t& graph_);
+ نجی:
+  HB_اندرونی gsubgpos_گراف_context_t (hb_لیبل_t جدول_لیبل_3,
+                                        گراف_t& گراف_2);
 
-  HB_INTERNAL unsigned num_non_ext_subtables ();
+  HB_اندرونی غیرعلامتی عدد_non_ext_subtables ();
 };
 
 }
 
-#endif  // GRAPH_GSUBGPOS_CONTEXT
+#اگر_ختم  // GRAPH_GSUBGPOS_CONTEXT

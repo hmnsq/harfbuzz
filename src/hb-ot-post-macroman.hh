@@ -24,11 +24,11 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_POST_MACROMAN_HH
-#if 0 /* Make checks happy. */
-#define HB_OT_POST_MACROMAN_HH
-#include "hb.hh"
-#endif
+#اگر_غیر_تعریف_شدہ HB_OT_POST_MACROMAN_HH
+#اگر 0 /* Make checks happy. */
+#تعریف_کرو HB_OT_POST_MACROMAN_HH
+#شامل "hb.hh"
+#اگر_ختم
 
 
 HB_STR(".notdef")
@@ -291,4 +291,4 @@ HB_STR("ccaron")
 HB_STR("dcroat")
 
 
-#endif /* HB_OT_POST_MACROMAN_HH */
+#اگر_ختم /* HB_OT_POST_MACROMAN_HH */

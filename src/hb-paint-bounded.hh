@@ -22,23 +22,23 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_PAINT_BOUNDED_HH
-#define HB_PAINT_BOUNDED_HH
+#اگر_غیر_تعریف_شدہ HB_PAINT_BOUNDED_HH
+#تعریف_کرو HB_PAINT_BOUNDED_HH
 
-#include "hb.hh"
-#include "hb-paint.h"
+#شامل "hb.hh"
+#شامل "hb-paint.h"
 
-#include "hb-geometry.hh"
+#شامل "hb-geometry.hh"
 
 
-typedef struct  hb_paint_bounded_context_t hb_paint_bounded_context_t;
+قسمتعریف ساخت  hb_paint_bounded_context_t hb_paint_bounded_context_t;
 
-struct hb_paint_bounded_context_t
+ساخت hb_paint_bounded_context_t
 {
-  void clear ()
+  خالی clear ()
   {
     clips = 0;
-    bounded = true;
+    bounded = سچ;
     groups.clear ();
   }
 
@@ -47,71 +47,71 @@ struct hb_paint_bounded_context_t
     clear ();
   }
 
-  bool is_bounded ()
+  منطقی is_bounded ()
   {
-    return bounded;
+    واپس bounded;
   }
 
-  void push_clip ()
+  خالی ڈالو_clip ()
   {
     clips++;
   }
 
-  void pop_clip ()
+  خالی نکالو_clip ()
   {
-    if (clips == 0) return;
+    اگر (clips == 0) واپس;
     clips--;
   }
 
-  void push_group ()
+  خالی ڈالو_گروہ ()
   {
     groups.push (bounded);
-    bounded = true;
+    bounded = سچ;
   }
 
-  void pop_group (hb_paint_composite_mode_t mode)
+  خالی نکالو_گروہ (hb_paint_مرکب_منوال_t منوال)
   {
-    const bool src_bounded = bounded;
-    bounded = groups.pop ();
-    bool &backdrop_bounded = bounded;
+    ثابت منطقی src_bounded = bounded;
+    bounded = groups.نکالو ();
+    منطقی &backdrop_bounded = bounded;
 
     // https://learn.microsoft.com/en-us/typography/opentype/spec/colr#format-32-paintcomposite
-    switch ((int) mode)
+    انتخاب ((صحیح) منوال)
     {
-      case HB_PAINT_COMPOSITE_MODE_CLEAR:
-	backdrop_bounded = true;
-	break;
-      case HB_PAINT_COMPOSITE_MODE_SRC:
-      case HB_PAINT_COMPOSITE_MODE_SRC_OUT:
+      حالت HB_PAINT_مرکب_منوال_CLEAR:
+	backdrop_bounded = سچ;
+	توڑو;
+      حالت HB_PAINT_مرکب_منوال_SRC:
+      حالت HB_PAINT_مرکب_منوال_SRC_برآمد:
 	backdrop_bounded = src_bounded;
-	break;
-      case HB_PAINT_COMPOSITE_MODE_DEST:
-      case HB_PAINT_COMPOSITE_MODE_DEST_OUT:
-	break;
-      case HB_PAINT_COMPOSITE_MODE_SRC_IN:
-      case HB_PAINT_COMPOSITE_MODE_DEST_IN:
+	توڑو;
+      حالت HB_PAINT_مرکب_منوال_DEST:
+      حالت HB_PAINT_مرکب_منوال_DEST_برآمد:
+	توڑو;
+      حالت HB_PAINT_مرکب_منوال_SRC_اندر:
+      حالت HB_PAINT_مرکب_منوال_DEST_اندر:
 	backdrop_bounded = backdrop_bounded && src_bounded;
-	break;
-      default:
+	توڑو;
+      طےشدہ:
 	backdrop_bounded = backdrop_bounded || src_bounded;
-	break;
+	توڑو;
      }
   }
 
-  void paint ()
+  خالی paint ()
   {
-    if (!clips)
-      bounded = false;
+    اگر (!clips)
+      bounded = جھوٹ;
   }
 
-  protected:
-  bool bounded; // true if current drawing bounded
-  unsigned clips; // number of active clips
-  hb_vector_t<bool> groups; // true if group bounded
+  محفوظ:
+  منطقی bounded; // true if current drawing bounded
+  غیرعلامتی clips; // number of active clips
+  hb_سمتیہ_t<منطقی> groups; // true if group bounded
 };
 
-HB_INTERNAL hb_paint_funcs_t *
+HB_اندرونی hb_paint_funcs_t *
 hb_paint_bounded_get_funcs ();
 
 
-#endif /* HB_PAINT_BOUNDED_HH */
+#اگر_ختم /* HB_PAINT_BOUNDED_HH */

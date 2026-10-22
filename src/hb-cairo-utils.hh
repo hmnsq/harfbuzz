@@ -24,41 +24,41 @@
  * Google Author(s): Matthias Clasen
  */
 
-#ifndef HB_CAIRO_UTILS_H
-#define HB_CAIRO_UTILS_H
+#اگر_غیر_تعریف_شدہ HB_CAIRO_UTILS_H
+#تعریف_کرو HB_CAIRO_UTILS_H
 
-#include "hb.hh"
-#include "hb-cairo.h"
+#شامل "hb.hh"
+#شامل "hb-cairo.h"
 
 
-struct hb_cairo_budget_t
+ساخت hb_cairo_budget_t
 {
   /* Cairo serializes glyph-cache population for a scaled font.  Keeping the
    * owner there lets recursive color-glyph callbacks share one session. */
   int64_t budget = HB_BUDGET_DEFAULT;
-  int64_t budget_remaining = HB_BUDGET_GLYPH;
-  unsigned int active = 0;
+  int64_t budget_بقایا = HB_BUDGET_GLYPH;
+  غیرعلامتی صحیح فعال = 0;
 
-  void enter ()
+  خالی enter ()
   {
-    if (!active++)
+    اگر (!فعال++)
       recharge ();
   }
 
-  void leave ()
+  خالی leave ()
   {
-    assert (active);
-    active--;
+    أكد (فعال);
+    فعال--;
   }
 
-  void recharge ()
+  خالی recharge ()
   {
-    budget_remaining = budget == HB_BUDGET_DEFAULT ?
+    budget_بقایا = budget == HB_BUDGET_DEFAULT ?
 		       HB_BUDGET_GLYPH : budget;
   }
 };
 
-struct hb_cairo_context_t
+ساخت hb_cairo_context_t
 {
   hb_cairo_context_t (cairo_scaled_font_t *scaled_font_,
 		      cairo_t *cr_,
@@ -75,18 +75,18 @@ struct hb_cairo_context_t
     budget->leave ();
   }
 
-  bool set_budget (int64_t value)
+  منطقی سیٹ_budget (int64_t value)
   {
     budget->budget = value;
     budget->recharge ();
-    return true;
+    واپس سچ;
   }
 
-  int64_t get_budget () const { return budget->budget; }
-  int64_t *get_budget_remaining () { return &budget->budget_remaining; }
+  int64_t get_budget () ثابت { واپس budget->budget; }
+  int64_t *get_budget_بقایا () { واپس &budget->budget_بقایا; }
 
-  bool spend (unsigned int cost, unsigned int mult = 1)
-  { return hb_budget_spend (budget->budget_remaining, cost, mult); }
+  منطقی spend (غیرعلامتی صحیح لاگت, غیرعلامتی صحیح mult = 1)
+  { واپس hb_budget_spend (budget->budget_بقایا, لاگت, mult); }
 
   cairo_scaled_font_t *scaled_font;
   cairo_t *cr;
@@ -94,75 +94,75 @@ struct hb_cairo_context_t
   hb_cairo_budget_t *budget;
 };
 
-static inline cairo_operator_t
-_hb_paint_composite_mode_to_cairo (hb_paint_composite_mode_t mode)
+ساکن اندرونی cairo_operator_t
+hb_paint_مرکب_منوال_مقصد_cairo (hb_paint_مرکب_منوال_t منوال)
 {
-  switch (mode)
+  انتخاب (منوال)
     {
-    case HB_PAINT_COMPOSITE_MODE_CLEAR: return CAIRO_OPERATOR_CLEAR;
-    case HB_PAINT_COMPOSITE_MODE_SRC: return CAIRO_OPERATOR_SOURCE;
-    case HB_PAINT_COMPOSITE_MODE_DEST: return CAIRO_OPERATOR_DEST;
-    case HB_PAINT_COMPOSITE_MODE_SRC_OVER: return CAIRO_OPERATOR_OVER;
-    case HB_PAINT_COMPOSITE_MODE_DEST_OVER: return CAIRO_OPERATOR_DEST_OVER;
-    case HB_PAINT_COMPOSITE_MODE_SRC_IN: return CAIRO_OPERATOR_IN;
-    case HB_PAINT_COMPOSITE_MODE_DEST_IN: return CAIRO_OPERATOR_DEST_IN;
-    case HB_PAINT_COMPOSITE_MODE_SRC_OUT: return CAIRO_OPERATOR_OUT;
-    case HB_PAINT_COMPOSITE_MODE_DEST_OUT: return CAIRO_OPERATOR_DEST_OUT;
-    case HB_PAINT_COMPOSITE_MODE_SRC_ATOP: return CAIRO_OPERATOR_ATOP;
-    case HB_PAINT_COMPOSITE_MODE_DEST_ATOP: return CAIRO_OPERATOR_DEST_ATOP;
-    case HB_PAINT_COMPOSITE_MODE_XOR: return CAIRO_OPERATOR_XOR;
-    case HB_PAINT_COMPOSITE_MODE_PLUS: return CAIRO_OPERATOR_ADD;
-    case HB_PAINT_COMPOSITE_MODE_SCREEN: return CAIRO_OPERATOR_SCREEN;
-    case HB_PAINT_COMPOSITE_MODE_OVERLAY: return CAIRO_OPERATOR_OVERLAY;
-    case HB_PAINT_COMPOSITE_MODE_DARKEN: return CAIRO_OPERATOR_DARKEN;
-    case HB_PAINT_COMPOSITE_MODE_LIGHTEN: return CAIRO_OPERATOR_LIGHTEN;
-    case HB_PAINT_COMPOSITE_MODE_COLOR_DODGE: return CAIRO_OPERATOR_COLOR_DODGE;
-    case HB_PAINT_COMPOSITE_MODE_COLOR_BURN: return CAIRO_OPERATOR_COLOR_BURN;
-    case HB_PAINT_COMPOSITE_MODE_HARD_LIGHT: return CAIRO_OPERATOR_HARD_LIGHT;
-    case HB_PAINT_COMPOSITE_MODE_SOFT_LIGHT: return CAIRO_OPERATOR_SOFT_LIGHT;
-    case HB_PAINT_COMPOSITE_MODE_DIFFERENCE: return CAIRO_OPERATOR_DIFFERENCE;
-    case HB_PAINT_COMPOSITE_MODE_EXCLUSION: return CAIRO_OPERATOR_EXCLUSION;
-    case HB_PAINT_COMPOSITE_MODE_MULTIPLY: return CAIRO_OPERATOR_MULTIPLY;
-    case HB_PAINT_COMPOSITE_MODE_HSL_HUE: return CAIRO_OPERATOR_HSL_HUE;
-    case HB_PAINT_COMPOSITE_MODE_HSL_SATURATION: return CAIRO_OPERATOR_HSL_SATURATION;
-    case HB_PAINT_COMPOSITE_MODE_HSL_COLOR: return CAIRO_OPERATOR_HSL_COLOR;
-    case HB_PAINT_COMPOSITE_MODE_HSL_LUMINOSITY: return CAIRO_OPERATOR_HSL_LUMINOSITY;
-    default: return CAIRO_OPERATOR_CLEAR;
+    حالت HB_PAINT_مرکب_منوال_CLEAR: واپس CAIRO_OPERATOR_CLEAR;
+    حالت HB_PAINT_مرکب_منوال_SRC: واپس CAIRO_OPERATOR_ماخذ;
+    حالت HB_PAINT_مرکب_منوال_DEST: واپس CAIRO_OPERATOR_DEST;
+    حالت HB_PAINT_مرکب_منوال_SRC_OVER: واپس CAIRO_OPERATOR_OVER;
+    حالت HB_PAINT_مرکب_منوال_DEST_OVER: واپس CAIRO_OPERATOR_DEST_OVER;
+    حالت HB_PAINT_مرکب_منوال_SRC_اندر: واپس CAIRO_OPERATOR_اندر;
+    حالت HB_PAINT_مرکب_منوال_DEST_اندر: واپس CAIRO_OPERATOR_DEST_اندر;
+    حالت HB_PAINT_مرکب_منوال_SRC_برآمد: واپس CAIRO_OPERATOR_برآمد;
+    حالت HB_PAINT_مرکب_منوال_DEST_برآمد: واپس CAIRO_OPERATOR_DEST_برآمد;
+    حالت HB_PAINT_مرکب_منوال_SRC_ATOP: واپس CAIRO_OPERATOR_ATOP;
+    حالت HB_PAINT_مرکب_منوال_DEST_ATOP: واپس CAIRO_OPERATOR_DEST_ATOP;
+    حالت HB_PAINT_مرکب_منوال_XOR: واپس CAIRO_OPERATOR_XOR;
+    حالت HB_PAINT_مرکب_منوال_PLUS: واپس CAIRO_OPERATOR_جوڑو;
+    حالت HB_PAINT_مرکب_منوال_SCREEN: واپس CAIRO_OPERATOR_SCREEN;
+    حالت HB_PAINT_مرکب_منوال_OVERLAY: واپس CAIRO_OPERATOR_OVERLAY;
+    حالت HB_PAINT_مرکب_منوال_DARKEN: واپس CAIRO_OPERATOR_DARKEN;
+    حالت HB_PAINT_مرکب_منوال_LIGHTEN: واپس CAIRO_OPERATOR_LIGHTEN;
+    حالت HB_PAINT_مرکب_منوال_COLOR_DODGE: واپس CAIRO_OPERATOR_COLOR_DODGE;
+    حالت HB_PAINT_مرکب_منوال_COLOR_BURN: واپس CAIRO_OPERATOR_COLOR_BURN;
+    حالت HB_PAINT_مرکب_منوال_HARD_LIGHT: واپس CAIRO_OPERATOR_HARD_LIGHT;
+    حالت HB_PAINT_مرکب_منوال_SOFT_LIGHT: واپس CAIRO_OPERATOR_SOFT_LIGHT;
+    حالت HB_PAINT_مرکب_منوال_DIFFERENCE: واپس CAIRO_OPERATOR_DIFFERENCE;
+    حالت HB_PAINT_مرکب_منوال_EXCLUSION: واپس CAIRO_OPERATOR_EXCLUSION;
+    حالت HB_PAINT_مرکب_منوال_MULTIPLY: واپس CAIRO_OPERATOR_MULTIPLY;
+    حالت HB_PAINT_مرکب_منوال_HSL_HUE: واپس CAIRO_OPERATOR_HSL_HUE;
+    حالت HB_PAINT_مرکب_منوال_HSL_SATURATION: واپس CAIRO_OPERATOR_HSL_SATURATION;
+    حالت HB_PAINT_مرکب_منوال_HSL_COLOR: واپس CAIRO_OPERATOR_HSL_COLOR;
+    حالت HB_PAINT_مرکب_منوال_HSL_LUMINOSITY: واپس CAIRO_OPERATOR_HSL_LUMINOSITY;
+    طےشدہ: واپس CAIRO_OPERATOR_CLEAR;
     }
 }
 
-HB_INTERNAL void
-_hb_cairo_set_source_color (hb_cairo_context_t *c,
+HB_اندرونی خالی
+hb_cairo_سیٹ_ماخذ_color (hb_cairo_context_t *c,
 			    hb_bool_t use_foreground,
 			    hb_color_t color);
 
-HB_INTERNAL hb_bool_t
+HB_اندرونی hb_bool_t
 _hb_cairo_paint_glyph_image (hb_cairo_context_t *c,
 			     hb_blob_t *blob,
-			     unsigned width,
-			     unsigned height,
-			     hb_tag_t format,
-			     float slant,
+			     غیرعلامتی چوڑائی,
+			     غیرعلامتی اونچائی,
+			     hb_لیبل_t format,
+			     اعشاری slant,
 			     hb_glyph_extents_t *extents);
 
-HB_INTERNAL void
-_hb_cairo_paint_linear_gradient (hb_cairo_context_t *c,
-				 hb_color_line_t *color_line,
-				 float x0, float y0,
-				 float x1, float y1,
-				 float x2, float y2);
+HB_اندرونی خالی
+hb_cairo_paint_خطی_gradient (hb_cairo_context_t *c,
+				 hb_color_سطر_t *color_سطر,
+				 اعشاری x0, اعشاری y0,
+				 اعشاری x1, اعشاری y1,
+				 اعشاری x2, اعشاری y2);
 
-HB_INTERNAL void
+HB_اندرونی خالی
 _hb_cairo_paint_radial_gradient (hb_cairo_context_t *c,
-				 hb_color_line_t *color_line,
-				 float x0, float y0, float r0,
-				 float x1, float y1, float r1);
+				 hb_color_سطر_t *color_سطر,
+				 اعشاری x0, اعشاری y0, اعشاری r0,
+				 اعشاری x1, اعشاری y1, اعشاری r1);
 
-HB_INTERNAL void
+HB_اندرونی خالی
 _hb_cairo_paint_sweep_gradient (hb_cairo_context_t *c,
-				hb_color_line_t *color_line,
-				float x0, float y0,
-				float start_angle, float end_angle);
+				hb_color_سطر_t *color_سطر,
+				اعشاری x0, اعشاری y0,
+				اعشاری آغاز_angle, اعشاری انتہا_angle);
 
 
-#endif /* HB_CAIRO_UTILS_H */
+#اگر_ختم /* HB_CAIRO_UTILS_H */

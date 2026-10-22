@@ -1,60 +1,60 @@
-#include "hb-subset-table.hh"
+#شامل "hb-subset-table.hh"
 
-#include "hb-ot-var-hvar-table.hh"
-#include "hb-ot-var-gvar-table.hh"
-#include "hb-ot-var-fvar-table.hh"
-#include "hb-ot-var-avar-table.hh"
-#include "hb-ot-var-cvar-table.hh"
-#include "hb-ot-var-mvar-table.hh"
-#ifndef HB_NO_VAR_COMPOSITES
-#include "OT/Var/VARC/VARC-subset.hh"
-#endif
+#شامل "hb-ot-var-hvar-table.hh"
+#شامل "hb-ot-var-gvar-table.hh"
+#شامل "hb-ot-var-fvar-table.hh"
+#شامل "hb-ot-var-avar-table.hh"
+#شامل "hb-ot-var-cvar-table.hh"
+#شامل "hb-ot-var-mvar-table.hh"
+#اگر_غیر_تعریف_شدہ HB_NO_VAR_COMPOSITES
+#شامل "OT/Var/VARC/VARC-subset.hh"
+#اگر_ختم
 
-bool _hb_subset_table_var		(hb_subset_plan_t *plan, hb_vector_t<char> &buf, hb_tag_t tag, bool *success)
+منطقی hb_subset_جدول_var		(hb_subset_plan_t *plan, hb_سمتیہ_t<حرف> &buf, hb_لیبل_t لیبل_2, منطقی *success)
 {
-#ifndef HB_NO_VAR
-  switch (tag)
+#اگر_غیر_تعریف_شدہ HB_NO_VAR
+  انتخاب (لیبل_2)
   {
-  case HB_TAG('H','V','A','R'): *success = _hb_subset_table<const OT::HVAR> (plan, buf); return true;
-  case HB_TAG('V','V','A','R'): *success = _hb_subset_table<const OT::VVAR> (plan, buf); return true;
-  case HB_TAG('g','v','a','r'): *success = _hb_subset_table<const OT::gvar> (plan, buf); return true;
-#ifndef HB_NO_BEYOND_64K
-  case HB_TAG('G','V','A','R'): *success = _hb_subset_table<const OT::GVAR> (plan, buf); return true;
-#endif
-#ifndef HB_NO_VAR_COMPOSITES
-  case HB_TAG('V','A','R','C'): *success = _hb_subset_table<const OT::VARC> (plan, buf); return true;
-#endif
-  case HB_TAG('f','v','a','r'):
-    if (plan->user_axes_location.is_empty ())
-      *success = _hb_subset_table_passthrough (plan, tag);
-    else
-      *success = _hb_subset_table<const OT::fvar> (plan, buf);
-    return true;
-  case HB_TAG('a','v','a','r'):
-    if (plan->user_axes_location.is_empty ())
-      *success = _hb_subset_table_passthrough (plan, tag);
-    else
-      *success = _hb_subset_table<const OT::avar> (plan, buf);
-    return true;
-  case HB_TAG('c','v','a','r'):
+  حالت HB_لیبل('H','V','A','R'): *success = hb_subset_جدول<ثابت OT::HVAR> (plan, buf); واپس سچ;
+  حالت HB_لیبل('V','V','A','R'): *success = hb_subset_جدول<ثابت OT::VVAR> (plan, buf); واپس سچ;
+  حالت HB_لیبل('g','v','a','r'): *success = hb_subset_جدول<ثابت OT::gvar> (plan, buf); واپس سچ;
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+  حالت HB_لیبل('G','V','A','R'): *success = hb_subset_جدول<ثابت OT::GVAR> (plan, buf); واپس سچ;
+#اگر_ختم
+#اگر_غیر_تعریف_شدہ HB_NO_VAR_COMPOSITES
+  حالت HB_لیبل('V','A','R','C'): *success = hb_subset_جدول<ثابت OT::VARC> (plan, buf); واپس سچ;
+#اگر_ختم
+  حالت HB_لیبل('f','v','a','r'):
+    اگر (plan->user_axes_location.is_empty ())
+      *success = hb_subset_جدول_passthrough (plan, لیبل_2);
+    ورنہ
+      *success = hb_subset_جدول<ثابت OT::fvar> (plan, buf);
+    واپس سچ;
+  حالت HB_لیبل('a','v','a','r'):
+    اگر (plan->user_axes_location.is_empty ())
+      *success = hb_subset_جدول_passthrough (plan, لیبل_2);
+    ورنہ
+      *success = hb_subset_جدول<ثابت OT::avar> (plan, buf);
+    واپس سچ;
+  حالت HB_لیبل('c','v','a','r'):
     /* TODO: For avar2 partial instancing, cull unreachable tuple
      * variations (avar2_reachable_ranges) instead of passing through. */
-    if (plan->user_axes_location.is_empty () ||
+    اگر (plan->user_axes_location.is_empty () ||
         (plan->has_avar2 && !plan->normalized_coords))
-      *success = _hb_subset_table_passthrough (plan, tag);
-    else
-      *success = _hb_subset_table<const OT::cvar> (plan, buf);
-    return true;
-  case HB_TAG('M','V','A','R'):
+      *success = hb_subset_جدول_passthrough (plan, لیبل_2);
+    ورنہ
+      *success = hb_subset_جدول<ثابت OT::cvar> (plan, buf);
+    واپس سچ;
+  حالت HB_لیبل('M','V','A','R'):
     /* TODO: For avar2 partial instancing, cull unreachable VarStore
      * regions (avar2_reachable_ranges) instead of passing through. */
-    if (plan->user_axes_location.is_empty () ||
+    اگر (plan->user_axes_location.is_empty () ||
         (plan->has_avar2 && !plan->normalized_coords))
-      *success = _hb_subset_table_passthrough (plan, tag);
-    else
-      *success = _hb_subset_table<const OT::MVAR> (plan, buf);
-    return true;
+      *success = hb_subset_جدول_passthrough (plan, لیبل_2);
+    ورنہ
+      *success = hb_subset_جدول<ثابت OT::MVAR> (plan, buf);
+    واپس سچ;
   }
-#endif
-  return false;
+#اگر_ختم
+  واپس جھوٹ;
 }

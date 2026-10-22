@@ -1,18 +1,18 @@
-#include "hb-ot-shaper-use-table.hh"
+#شامل "hb-ot-shaper-use-table.hh"
 
-int main (int argc, char **argv)
+صحیح مین (صحیح argc, حرف **argv)
 {
-  if (argc != 2)
+  اگر (argc != 2)
   {
-    for (unsigned u = 0; u < 0x10FFFFu; u++)
-      printf ("U+%04X %d\n", u, hb_use_get_category (u));
-    return 0;
+    برائے (غیرعلامتی u = 0; u < 0x10FFFFu; u++)
+      لکھو ("U+%04X %d\n", u, hb_use_get_category (u));
+    واپس 0;
   }
 
   hb_codepoint_t u;
-  sscanf (argv[1], "%x", &u);
+  لڑی_سے_پڑھو (argv[1], "%x", &u);
 
-  printf ("%d\n", hb_use_get_category (u));
+  لکھو ("%d\n", hb_use_get_category (u));
 
-  return 0;
+  واپس 0;
 }

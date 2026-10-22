@@ -24,154 +24,154 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef HB_OT_HDMX_TABLE_HH
-#define HB_OT_HDMX_TABLE_HH
+#اگر_غیر_تعریف_شدہ HB_OT_HDMX_جدول_HH
+#تعریف_کرو HB_OT_HDMX_جدول_HH
 
-#include "hb-open-type.hh"
+#شامل "hb-open-type.hh"
 
 /*
  * hdmx -- Horizontal Device Metrics
  * https://docs.microsoft.com/en-us/typography/opentype/spec/hdmx
  */
-#define HB_OT_TAG_hdmx HB_TAG('h','d','m','x')
+#تعریف_کرو HB_OT_لیبل_hdmx HB_لیبل('h','d','m','x')
 
 
-namespace OT {
+نامخلا OT {
 
 
-struct DeviceRecord
+ساخت Device_ریکارڈ
 {
-  static size_t get_size (unsigned count)
-  { return hb_ceil_to_4 (hb_unsigned_mul_add_saturate (count, HBUINT8::static_size, min_size)); }
+  ساکن size_t get_سائز (غیرعلامتی گنتی)
+  { واپس hb_ceil_مقصد_4 (hb_unsigned_mul_جوڑو_saturate (گنتی, HBUINT8::static_سائز, min_سائز)); }
 
-  template<typename Iterator,
+  سانچہ<قسم_نام Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  bool serialize (hb_serialize_context_t *c,
-		  unsigned pixelSize,
+  منطقی serialize (hb_serialize_context_t *c,
+		  غیرعلامتی pixel_سائز,
 		  Iterator it,
-		  const hb_vector_t<hb_codepoint_pair_t> new_to_old_gid_list,
-		  unsigned num_glyphs)
+		  ثابت hb_سمتیہ_t<hb_codepoint_pair_t> new_مقصد_old_gid_list,
+		  غیرعلامتی عدد_glyphs)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (یہ);
 
-    if (unlikely (!c->extend (this, num_glyphs)))  return_trace (false);
+    اگر (unlikely (!c->extend (یہ, عدد_glyphs)))  return_trace (جھوٹ);
 
-    this->pixelSize = pixelSize;
-    this->maxWidth =
+    یہ->pixel_سائز = pixel_سائز;
+    یہ->max_چوڑائی =
     + it
     | hb_reduce (hb_max, 0u);
 
-    for (auto &_ : new_to_old_gid_list)
-      widthsZ[_.first] = *it++;
+    برائے (خودکار &_ : new_مقصد_old_gid_list)
+      widthsZ[_.پہلا] = *it++;
 
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned sizeDeviceRecord) const
+  منطقی sanitize (hb_sanitize_context_t *c, غیرعلامتی سائز_Device_ریکارڈ) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
+    TRACE_SANITIZE (یہ);
+    return_trace (likely (c->check_struct (یہ) &&
 			  hb_barrier () &&
-			  c->check_range (this, sizeDeviceRecord)));
+			  c->check_range (یہ, سائز_Device_ریکارڈ)));
   }
 
-  HBUINT8			pixelSize;	/* Pixel size for following widths (as ppem). */
-  HBUINT8			maxWidth;	/* Maximum width. */
-  UnsizedArrayOf<HBUINT8>	widthsZ;	/* Array of widths (numGlyphs is from the 'maxp' table). */
-  public:
-  DEFINE_SIZE_UNBOUNDED (2);
+  HBUINT8			pixel_سائز;	/* Pixel size for following widths (as ppem). */
+  HBUINT8			max_چوڑائی;	/* Maximum width. */
+  Unsized_Array_کا<HBUINT8>	widthsZ;	/* Array of widths (numGlyphs is from the 'maxp' table). */
+  عوامی:
+  DEFINE_سائز_UNBOUNDED (2);
 };
 
 
-struct hdmx
+ساخت hdmx
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_hdmx;
+  ساکن constexpr hb_لیبل_t جدول_لیبل = HB_OT_لیبل_hdmx;
 
-  size_t get_size () const
-  { return hb_unsigned_mul_add_saturate (numRecords, sizeDeviceRecord, min_size); }
+  size_t get_سائز () ثابت
+  { واپس hb_unsigned_mul_جوڑو_saturate (عدد_اندراجات_2, سائز_Device_ریکارڈ, min_سائز); }
 
-  template<typename Iterator,
+  سانچہ<قسم_نام Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  bool serialize (hb_serialize_context_t *c,
-		  unsigned version,
+  منطقی serialize (hb_serialize_context_t *c,
+		  غیرعلامتی نسخہ,
 		  Iterator it,
-		  hb_array_t<const hb_codepoint_pair_t> new_to_old_gid_list,
-		  unsigned num_glyphs)
+		  hb_array_t<ثابت hb_codepoint_pair_t> new_مقصد_old_gid_list,
+		  غیرعلامتی عدد_glyphs)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (یہ);
 
-    if (unlikely (!c->extend_min ((*this))))  return_trace (false);
+    اگر (unlikely (!c->extend_min ((*یہ))))  return_trace (جھوٹ);
 
-    this->version = version;
-    this->numRecords = it.len ();
-    this->sizeDeviceRecord = DeviceRecord::get_size (num_glyphs);
+    یہ->نسخہ = نسخہ;
+    یہ->عدد_اندراجات_2 = it.len ();
+    یہ->سائز_Device_ریکارڈ = Device_ریکارڈ::get_سائز (عدد_glyphs);
 
-    for (const hb_item_type<Iterator>& _ : +it)
-      c->start_embed<DeviceRecord> ()->serialize (c, _.first, _.second, new_to_old_gid_list, num_glyphs);
+    برائے (ثابت hb_شے_type<Iterator>& _ : +it)
+      c->آغاز_embed<Device_ریکارڈ> ()->serialize (c, _.پہلا, _.second, new_مقصد_old_gid_list, عدد_glyphs);
 
     return_trace (c->successful ());
   }
 
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (یہ);
 
-    auto *hdmx_prime = c->serializer->start_embed <hdmx> ();
+    خودکار *hdmx_مفرد = c->serializer->آغاز_embed <hdmx> ();
 
-    unsigned num_input_glyphs = get_num_glyphs ();
-    auto it =
-    + hb_range ((unsigned) numRecords)
-    | hb_map ([c, num_input_glyphs, this] (unsigned _)
+    غیرعلامتی عدد_داخلہ_glyphs = get_عدد_glyphs ();
+    خودکار it =
+    + hb_range ((غیرعلامتی) عدد_اندراجات_2)
+    | hb_map ([c, عدد_داخلہ_glyphs, یہ] (غیرعلامتی _)
 	{
-	  const DeviceRecord *device_record =
-	    &StructAtOffset<DeviceRecord> (&firstDeviceRecord,
-					   _ * sizeDeviceRecord);
-	  auto row =
-	    + hb_iter (c->plan->new_to_old_gid_list)
-	    | hb_map ([num_input_glyphs, device_record] (hb_codepoint_pair_t _)
+	  ثابت Device_ریکارڈ *device_ریکارڈ =
+	    &Struct_At_انحراف<Device_ریکارڈ> (&پہلا_Device_ریکارڈ,
+					   _ * سائز_Device_ریکارڈ);
+	  خودکار صف =
+	    + hb_iter (c->plan->new_مقصد_old_gid_list)
+	    | hb_map ([عدد_داخلہ_glyphs, device_ریکارڈ] (hb_codepoint_pair_t _)
 		      {
-			return device_record->widthsZ.as_array (num_input_glyphs) [_.second];
+			واپس device_ریکارڈ->widthsZ.as_array (عدد_داخلہ_glyphs) [_.second];
 		      })
 	    ;
-	  return hb_pair ((unsigned) device_record->pixelSize, +row);
+	  واپس hb_pair ((غیرعلامتی) device_ریکارڈ->pixel_سائز, +صف);
 	})
     ;
 
-    hdmx_prime->serialize (c->serializer, version, it,
-			   c->plan->new_to_old_gid_list,
-			   c->plan->num_output_glyphs ());
-    return_trace (true);
+    hdmx_مفرد->serialize (c->serializer, نسخہ, it,
+			   c->plan->new_مقصد_old_gid_list,
+			   c->plan->عدد_output_glyphs ());
+    return_trace (سچ);
   }
 
-  unsigned get_num_glyphs () const
+  غیرعلامتی get_عدد_glyphs () ثابت
   {
-    return sizeDeviceRecord - DeviceRecord::min_size;
+    واپس سائز_Device_ریکارڈ - Device_ریکارڈ::min_سائز;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ) &&
 		  hb_barrier () &&
-		  !hb_unsigned_mul_overflows (numRecords, sizeDeviceRecord) &&
-                  min_size + numRecords * sizeDeviceRecord > numRecords * sizeDeviceRecord &&
-		  sizeDeviceRecord >= DeviceRecord::min_size &&
-		  c->check_range (this, get_size ()));
+		  !hb_unsigned_mul_overflows (عدد_اندراجات_2, سائز_Device_ریکارڈ) &&
+                  min_سائز + عدد_اندراجات_2 * سائز_Device_ریکارڈ > عدد_اندراجات_2 * سائز_Device_ریکارڈ &&
+		  سائز_Device_ریکارڈ >= Device_ریکارڈ::min_سائز &&
+		  c->check_range (یہ, get_سائز ()));
   }
 
-  protected:
-  HBUINT16	version;	/* Table version number (0) */
-  HBUINT16	numRecords;	/* Number of device records. */
-  HBUINT32	sizeDeviceRecord;
+  محفوظ:
+  HBUINT16	نسخہ;	/* Table version number (0) */
+  HBUINT16	عدد_اندراجات_2;	/* Number of device records. */
+  HBUINT32	سائز_Device_ریکارڈ;
 				/* Size of a device record, 32-bit aligned. */
-  DeviceRecord	firstDeviceRecord;
+  Device_ریکارڈ	پہلا_Device_ریکارڈ;
 				/* Array of device records. */
-  public:
-  DEFINE_SIZE_MIN (8);
+  عوامی:
+  DEFINE_سائز_MIN (8);
 };
 
 } /* namespace OT */
 
 
-#endif /* HB_OT_HDMX_TABLE_HH */
+#اگر_ختم /* HB_OT_HDMX_TABLE_HH */

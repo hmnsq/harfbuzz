@@ -22,11 +22,11 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#شامل "hb.hh"
 
-#ifdef HAVE_GDI
+#اگر_تعریف_شدہ HAVE_GDI
 
-#include "hb-gdi.h"
+#شامل "hb-gdi.h"
 
 
 /**
@@ -38,32 +38,32 @@
  * Functions for using HarfBuzz with GDI fonts.
  **/
 
-static hb_blob_t *
-_hb_gdi_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void *user_data)
+ساکن hb_blob_t *
+hb_gdi_reference_جدول (hb_face_t *face HB_غیر_مستعمل, hb_لیبل_t لیبل_2, خالی *user_ڈیٹا)
 {
-  char *buffer = nullptr;
-  DWORD length = 0;
+  حرف *بفر = خالی_اشاریہ;
+  DWORD لمبائی = 0;
 
-  HDC hdc = GetDC (nullptr);
-  if (unlikely (!SelectObject (hdc, (HFONT) user_data)))
-    return hb_blob_get_empty ();
-  HB_SCOPE_GUARD (ReleaseDC (nullptr, hdc));
+  HDC hdc = GetDC (خالی_اشاریہ);
+  اگر (unlikely (!SelectObject (hdc, (HFONT) user_ڈیٹا)))
+    واپس hb_blob_get_خالی_خانے ();
+  HB_SCOPE_GUARD (ReleaseDC (خالی_اشاریہ, hdc));
 
-  length = GetFontData (hdc, hb_uint32_swap (tag), 0, buffer, length);
-  if (unlikely (length == GDI_ERROR))
-    return hb_blob_get_empty ();
+  لمبائی = Get_Font_ڈیٹا (hdc, hb_uint32_تبادلہ (لیبل_2), 0, بفر, لمبائی);
+  اگر (unlikely (لمبائی == GDI_ERROR))
+    واپس hb_blob_get_خالی_خانے ();
 
-  buffer = (char *) hb_malloc (length);
-  if (unlikely (!buffer))
-    return hb_blob_get_empty ();
-  auto buffer_guard = hb_make_scope_guard ([&]() { hb_free (buffer); });
+  بفر = (حرف *) hb_malloc (لمبائی);
+  اگر (unlikely (!بفر))
+    واپس hb_blob_get_خالی_خانے ();
+  خودکار بفر_guard = hb_make_scope_guard ([&]() { hb_free (بفر); });
 
-  length = GetFontData (hdc, hb_uint32_swap (tag), 0, buffer, length);
-  if (unlikely (length == GDI_ERROR))
-    return hb_blob_get_empty ();
+  لمبائی = Get_Font_ڈیٹا (hdc, hb_uint32_تبادلہ (لیبل_2), 0, بفر, لمبائی);
+  اگر (unlikely (لمبائی == GDI_ERROR))
+    واپس hb_blob_get_خالی_خانے ();
 
-  buffer_guard.release ();
-  return hb_blob_create ((const char *) buffer, length, HB_MEMORY_MODE_WRITABLE, buffer, hb_free);
+  بفر_guard.release ();
+  واپس hb_blob_create ((ثابت حرف *) بفر, لمبائی, HB_حافظہ_منوال_WRITABLE, بفر, hb_free);
 }
 
 /**
@@ -79,7 +79,7 @@ _hb_gdi_reference_table (hb_face_t *face HB_UNUSED, hb_tag_t tag, void *user_dat
 hb_face_t *
 hb_gdi_face_create (HFONT hfont)
 {
-  return hb_face_create_for_tables (_hb_gdi_reference_table, (void *) hfont, nullptr);
+  واپس hb_face_create_for_tables (hb_gdi_reference_جدول, (خالی *) hfont, خالی_اشاریہ);
 }
 
-#endif
+#اگر_ختم

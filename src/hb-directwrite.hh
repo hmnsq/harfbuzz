@@ -23,15 +23,15 @@
  */
 
 
-#ifndef HB_DIRECTWRITE_HH
-#define HB_DIRECTWRITE_HH
+#اگر_غیر_تعریف_شدہ HB_DIRECTWRITE_HH
+#تعریف_کرو HB_DIRECTWRITE_HH
 
-#include "hb.hh"
+#شامل "hb.hh"
 
-#include "hb-directwrite.h"
+#شامل "hb-directwrite.h"
 
-#include "hb-mutex.hh"
-#include "hb-map.hh"
+#شامل "hb-mutex.hh"
+#شامل "hb-map.hh"
 
 /*
  * DirectWrite font stream helpers
@@ -41,208 +41,208 @@
 
 
 /* Declare object creator for dynamic support of DWRITE */
-typedef HRESULT (WINAPI *t_DWriteCreateFactory)(
+قسمتعریف HRESULT (WINAPI *t_DWriteCreateFactory)(
   DWRITE_FACTORY_TYPE factoryType,
   REFIID              iid,
   IUnknown            **factory
 );
 
-template <typename Type, typename ...Ts>
-static Type *
-hb_directwrite_object_create (Ts&&... args)
+سانچہ <قسم_نام Type, قسم_نام ...Ts>
+ساکن Type *
+hb_directwrite_object_create (Ts&&... دلائل)
 {
-  Type *obj = (Type *) hb_calloc (1, sizeof (Type));
-  if (unlikely (!obj))
-    return nullptr;
+  Type *obj = (Type *) hb_calloc (1, حجم (Type));
+  اگر (unlikely (!obj))
+    واپس خالی_اشاریہ;
 
-  return new (obj) Type (std::forward<Ts> (args)...);
+  واپس نیا (obj) Type (std::forward<Ts> (دلائل)...);
 }
 
-template <typename Type>
-static void
+سانچہ <قسم_نام Type>
+ساکن خالی
 hb_directwrite_object_destroy (Type *obj)
 {
-  if (!obj)
-    return;
+  اگر (!obj)
+    واپس;
 
   obj->~Type ();
   hb_free (obj);
 }
 
-class DWriteFontFileLoader final : public IDWriteFontFileLoader
+جماعت DWriteFontFileLoader final : عوامی IDWriteFontFileLoader
 {
-private:
-  hb_reference_count_t mRefCount;
+نجی:
+  hb_reference_گنتی_t m_Ref_گنتی;
   hb_mutex_t mutex;
-  hb_hashmap_t<uint64_t, IDWriteFontFileStream *> mFontStreams;
-  uint64_t mNextFontFileKey = 0;
-public:
+  hb_hashmap_t<uint64_t, IDWrite_Font_File_دھارا *> mFontStreams;
+  uint64_t m_اگلا_Font_File_کلید = 0;
+عوامی:
   DWriteFontFileLoader ()
   {
-    mRefCount.init ();
+    m_Ref_گنتی.init ();
   }
 
-  uint64_t RegisterFontFileStream (IDWriteFontFileStream *fontFileStream)
+  uint64_t رجسٹر_Font_File_دھارا (IDWrite_Font_File_دھارا *font_File_دھارا)
   {
-    fontFileStream->AddRef ();
-    hb_lock_t lock {mutex};
-    mFontStreams.set (mNextFontFileKey, fontFileStream);
-    return mNextFontFileKey++;
+    font_File_دھارا->جوڑو_Ref ();
+    hb_تالا_t lock {mutex};
+    mFontStreams.سیٹ (m_اگلا_Font_File_کلید, font_File_دھارا);
+    واپس m_اگلا_Font_File_کلید++;
   }
-  void UnregisterFontFileStream (uint64_t fontFileKey)
+  خالی Unregister_Font_File_دھارا (uint64_t font_File_کلید)
   {
-    hb_lock_t lock {mutex};
-    IDWriteFontFileStream *stream = mFontStreams.get (fontFileKey);
-    if (stream)
+    hb_تالا_t lock {mutex};
+    IDWrite_Font_File_دھارا *دھارا = mFontStreams.get (font_File_کلید);
+    اگر (دھارا)
     {
-      mFontStreams.del (fontFileKey);
-      stream->Release ();
+      mFontStreams.del (font_File_کلید);
+      دھارا->Release ();
     }
   }
 
   // IUnknown interface
-  IFACEMETHOD (QueryInterface) (IID const& iid, OUT void** ppObject)
-  { return S_OK; }
-  IFACEMETHOD_ (ULONG, AddRef) ()
+  IFACEMETHOD (QueryInterface) (IID ثابت& iid, برآمد_3 خالی** ppObject)
+  { واپس S_OK; }
+  IFACEMETHOD_ (ULONG, جوڑو_Ref) ()
   {
-    return mRefCount.inc () + 1;
+    واپس m_Ref_گنتی.inc () + 1;
   }
   IFACEMETHOD_ (ULONG, Release) ()
   {
-    signed refCount = mRefCount.dec () - 1;
-    assert (refCount >= 0);
-    if (refCount)
-      return refCount;
-    hb_directwrite_object_destroy (this);
-    return 0;
+    علامتی ref_گنتی = m_Ref_گنتی.dec () - 1;
+    أكد (ref_گنتی >= 0);
+    اگر (ref_گنتی)
+      واپس ref_گنتی;
+    hb_directwrite_object_destroy (یہ);
+    واپس 0;
   }
 
   // IDWriteFontFileLoader methods
-  virtual HRESULT STDMETHODCALLTYPE
-  CreateStreamFromKey (void const* fontFileReferenceKey,
-		       uint32_t fontFileReferenceKeySize,
-		       OUT IDWriteFontFileStream** fontFileStream)
+  مجازی HRESULT STDMETHODCALLTYPE
+  Create_دھارا_From_کلید (خالی ثابت* font_File_Reference_کلید,
+		       uint32_t font_File_Reference_کلید_سائز,
+		       برآمد_3 IDWrite_Font_File_دھارا** font_File_دھارا)
   {
-    if (fontFileReferenceKeySize != sizeof (uint64_t))
-      return E_INVALIDARG;
-    uint64_t fontFileKey = * (uint64_t *) fontFileReferenceKey;
-    IDWriteFontFileStream *stream = mFontStreams.get (fontFileKey);
-    if (!stream)
-      return E_FAIL;
-    stream->AddRef ();
-    *fontFileStream = stream;
-    return S_OK;
+    اگر (font_File_Reference_کلید_سائز != حجم (uint64_t))
+      واپس E_INVALIDARG;
+    uint64_t font_File_کلید = * (uint64_t *) font_File_Reference_کلید;
+    IDWrite_Font_File_دھارا *دھارا = mFontStreams.get (font_File_کلید);
+    اگر (!دھارا)
+      واپس E_FAIL;
+    دھارا->جوڑو_Ref ();
+    *font_File_دھارا = دھارا;
+    واپس S_OK;
   }
 
   ~DWriteFontFileLoader()
   {
-    for (auto v : mFontStreams.values ())
+    برائے (خودکار v : mFontStreams.values ())
       v->Release ();
   }
 };
 
-class DWriteFontFileStream final : public IDWriteFontFileStream
+جماعت DWrite_Font_File_دھارا final : عوامی IDWrite_Font_File_دھارا
 {
-private:
-  hb_reference_count_t mRefCount;
+نجی:
+  hb_reference_گنتی_t m_Ref_گنتی;
   hb_blob_t *mBlob;
-  uint8_t *mData;
-  unsigned mSize;
+  uint8_t *m_ڈیٹا;
+  غیرعلامتی m_سائز;
   DWriteFontFileLoader *mLoader;
-public:
-  uint64_t fontFileKey;
-public:
-  DWriteFontFileStream (hb_blob_t *blob);
+عوامی:
+  uint64_t font_File_کلید;
+عوامی:
+  DWrite_Font_File_دھارا (hb_blob_t *blob);
 
   // IUnknown interface
-  IFACEMETHOD (QueryInterface) (IID const& iid, OUT void** ppObject)
-  { return S_OK; }
-  IFACEMETHOD_ (ULONG, AddRef) ()
+  IFACEMETHOD (QueryInterface) (IID ثابت& iid, برآمد_3 خالی** ppObject)
+  { واپس S_OK; }
+  IFACEMETHOD_ (ULONG, جوڑو_Ref) ()
   {
-    return mRefCount.inc () + 1;
+    واپس m_Ref_گنتی.inc () + 1;
   }
   IFACEMETHOD_ (ULONG, Release) ()
   {
-    signed refCount = mRefCount.dec () - 1;
-    assert (refCount >= 0);
-    if (refCount)
-      return refCount;
-    hb_directwrite_object_destroy (this);
-    return 0;
+    علامتی ref_گنتی = m_Ref_گنتی.dec () - 1;
+    أكد (ref_گنتی >= 0);
+    اگر (ref_گنتی)
+      واپس ref_گنتی;
+    hb_directwrite_object_destroy (یہ);
+    واپس 0;
   }
 
   // IDWriteFontFileStream methods
-  virtual HRESULT STDMETHODCALLTYPE
-  ReadFileFragment (void const** fragmentStart,
-		    UINT64 fileOffset,
-		    UINT64 fragmentSize,
-		    OUT void** fragmentContext)
+  مجازی HRESULT STDMETHODCALLTYPE
+  ReadFileFragment (خالی ثابت** fragment_آغاز_2,
+		    UINT64 file_انحراف,
+		    UINT64 fragment_سائز,
+		    برآمد_3 خالی** fragmentContext)
   {
     // We are required to do bounds checking.
-    if (fileOffset + fragmentSize > mSize) return E_FAIL;
+    اگر (file_انحراف + fragment_سائز > m_سائز) واپس E_FAIL;
 
     // truncate the 64 bit fileOffset to size_t sized index into mData
-    size_t index = static_cast<size_t> (fileOffset);
+    size_t اشاریہ_2 = static_cast<size_t> (file_انحراف);
 
     // We should be alive for the duration of this.
-    *fragmentStart = &mData[index];
-    *fragmentContext = nullptr;
-    return S_OK;
+    *fragment_آغاز_2 = &m_ڈیٹا[اشاریہ_2];
+    *fragmentContext = خالی_اشاریہ;
+    واپس S_OK;
   }
 
-  virtual void STDMETHODCALLTYPE
-  ReleaseFileFragment (void* fragmentContext) {}
+  مجازی خالی STDMETHODCALLTYPE
+  ReleaseFileFragment (خالی* fragmentContext) {}
 
-  virtual HRESULT STDMETHODCALLTYPE
-  GetFileSize (OUT UINT64* fileSize)
+  مجازی HRESULT STDMETHODCALLTYPE
+  Get_File_سائز (برآمد_3 UINT64* file_سائز_2)
   {
-    *fileSize = mSize;
-    return S_OK;
+    *file_سائز_2 = m_سائز;
+    واپس S_OK;
   }
 
-  virtual HRESULT STDMETHODCALLTYPE
-  GetLastWriteTime (OUT UINT64* lastWriteTime) { return E_NOTIMPL; }
+  مجازی HRESULT STDMETHODCALLTYPE
+  Get_آخری_Write_وقت (برآمد_3 UINT64* آخری_Write_وقت) { واپس E_NOTIMPL; }
 
-  ~DWriteFontFileStream();
+  ~DWrite_Font_File_دھارا();
 };
 
-struct hb_directwrite_global_t
+ساخت hb_directwrite_global_t
 {
   hb_directwrite_global_t ()
   {
     HRESULT hr = DWriteCreateFactory (DWRITE_FACTORY_TYPE_SHARED, __uuidof (IDWriteFactory),
 				      (IUnknown**) &dwriteFactory);
 
-    if (unlikely (hr != S_OK))
-      return;
+    اگر (unlikely (hr != S_OK))
+      واپس;
 
     fontFileLoader = hb_directwrite_object_create<DWriteFontFileLoader> ();
-    if (unlikely (!fontFileLoader))
-      return;
-    if (unlikely (FAILED (dwriteFactory->RegisterFontFileLoader (fontFileLoader))))
-      return;
+    اگر (unlikely (!fontFileLoader))
+      واپس;
+    اگر (unlikely (FAILED (dwriteFactory->رجسٹر_Font_File_Loader (fontFileLoader))))
+      واپس;
 
-    success = true;
+    success = سچ;
   }
   ~hb_directwrite_global_t ()
   {
-    if (fontFileLoader)
+    اگر (fontFileLoader)
       fontFileLoader->Release ();
-    if (dwriteFactory)
+    اگر (dwriteFactory)
       dwriteFactory->Release ();
   }
 
-  bool success = false;
-  IDWriteFactory *dwriteFactory = nullptr;
-  DWriteFontFileLoader *fontFileLoader = nullptr;
+  منطقی success = جھوٹ;
+  IDWriteFactory *dwriteFactory = خالی_اشاریہ;
+  DWriteFontFileLoader *fontFileLoader = خالی_اشاریہ;
 };
 
 
-HB_INTERNAL hb_directwrite_global_t *
+HB_اندرونی hb_directwrite_global_t *
 get_directwrite_global ();
 
-HB_INTERNAL IDWriteFontFace *
-dw_face_create (hb_blob_t *blob, unsigned index);
+HB_اندرونی IDWriteFontFace *
+dw_face_create (hb_blob_t *blob, غیرعلامتی اشاریہ_2);
 
 
-#endif /* HB_DIRECTWRITE_HH */
+#اگر_ختم /* HB_DIRECTWRITE_HH */

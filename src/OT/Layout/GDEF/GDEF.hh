@@ -26,16 +26,16 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef OT_LAYOUT_GDEF_GDEF_HH
-#define OT_LAYOUT_GDEF_GDEF_HH
+#اگر_غیر_تعریف_شدہ OT_LAYOUT_GDEF_GDEF_HH
+#تعریف_کرو OT_LAYOUT_GDEF_GDEF_HH
 
-#include "../../../hb-ot-var-common.hh"
+#شامل "../../../hb-ot-var-common.hh"
 
-#include "../../../hb-font.hh"
-#include "../../../hb-cache.hh"
+#شامل "../../../hb-font.hh"
+#شامل "../../../hb-cache.hh"
 
 
-namespace OT {
+نامخلا OT {
 
 
 /*
@@ -43,545 +43,545 @@ namespace OT {
  */
 
 /* Array of contour point indices--in increasing numerical order */
-struct AttachPoint : Array16Of<HBUINT16>
+ساخت Attach_نقطہ : Array16_کا<HBUINT16>
 {
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    return_trace (out->serialize (c->serializer, + iter ()));
+    TRACE_SUBSET (یہ);
+    خودکار *برآمد = c->serializer->آغاز_embed (*یہ);
+    return_trace (برآمد->serialize (c->serializer, + iter ()));
   }
 };
 
 /* AttachList is referenced by both GDEF attachListOffset and
  * attachListOffset2. The v1.4 top-level offset widens, but the
  * AttachList table itself keeps Offset16 internals. */
-struct AttachList
+ساخت AttachList
 {
-  unsigned int get_attach_points (hb_codepoint_t glyph_id,
-				  unsigned int start_offset,
-				  unsigned int *point_count /* IN/OUT */,
-				  unsigned int *point_array /* OUT */) const
+  غیرعلامتی صحیح get_attach_points (hb_codepoint_t glyph_id,
+				  غیرعلامتی صحیح آغاز_انحراف,
+				  غیرعلامتی صحیح *نقطہ_گنتی /* IN/OUT */,
+				  غیرعلامتی صحیح *نقطہ_array /*برآمد*/) ثابت
   {
-    unsigned int index = (this+coverage).get_coverage (glyph_id);
-    if (index == NOT_COVERED)
+    غیرعلامتی صحیح اشاریہ_2 = (یہ+coverage).get_coverage (glyph_id);
+    اگر (اشاریہ_2 == NOT_COVERED)
     {
-      if (point_count)
-	*point_count = 0;
-      return 0;
+      اگر (نقطہ_گنتی)
+	*نقطہ_گنتی = 0;
+      واپس 0;
     }
 
-    const AttachPoint &points = this+attachPoint[index];
+    ثابت Attach_نقطہ &points = یہ+attach_نقطہ[اشاریہ_2];
 
-    if (point_count && point_array)
+    اگر (نقطہ_گنتی && نقطہ_array)
     {
-      + points.as_array ().sub_array (start_offset, point_count)
-      | hb_sink (hb_array (point_array, *point_count))
+      + points.as_array ().sub_array (آغاز_انحراف, نقطہ_گنتی)
+      | hb_sink (hb_array (نقطہ_array, *نقطہ_گنتی))
       ;
     }
 
-    return points.len;
+    واپس points.len;
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (یہ);
+    ثابت hb_سیٹ_t &glyphset = *c->plan->glyphset_gsub ();
+    ثابت hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    خودکار *برآمد = c->serializer->آغاز_embed (*یہ);
+    اگر (unlikely (!c->serializer->extend_min (برآمد))) return_trace (جھوٹ);
 
-    hb_sorted_vector_t<hb_codepoint_t> new_coverage;
-    + hb_zip (this+coverage, attachPoint)
-    | hb_filter (glyphset, hb_first)
-    | hb_filter (subset_offset_array (c, out->attachPoint, this), hb_second)
-    | hb_map (hb_first)
+    hb_sorted_سمتیہ_t<hb_codepoint_t> new_coverage;
+    + hb_zip (یہ+coverage, attach_نقطہ)
+    | hb_filter (glyphset, hb_پہلا)
+    | hb_filter (subset_انحراف_array (c, برآمد->attach_نقطہ, یہ), hb_دوسرا)
+    | hb_map (hb_پہلا)
     | hb_map (glyph_map)
     | hb_sink (new_coverage)
     ;
-    out->coverage.serialize_serialize (c->serializer, new_coverage.iter ());
-    return_trace (bool (new_coverage));
+    برآمد->coverage.serialize_serialize (c->serializer, new_coverage.iter ());
+    return_trace (منطقی (new_coverage));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (coverage.sanitize (c, this) && attachPoint.sanitize (c, this));
+    TRACE_SANITIZE (یہ);
+    return_trace (coverage.sanitize (c, یہ) && attach_نقطہ.sanitize (c, یہ));
   }
 
-  protected:
-  Offset16To<Coverage>
+  محفوظ:
+  Offset16_مقصد<Coverage>
 		coverage;		/* Offset to Coverage table -- from
 					 * beginning of AttachList table */
-  Array16OfOffset16To<AttachPoint>
-		attachPoint;		/* Array of AttachPoint tables
+  Array16_کا_Offset16_مقصد<Attach_نقطہ>
+		attach_نقطہ;		/* Array of AttachPoint tables
 					 * in Coverage Index order */
-  public:
-  DEFINE_SIZE_ARRAY (4, attachPoint);
+  عوامی:
+  DEFINE_سائز_ARRAY (4, attach_نقطہ);
 };
 
 /*
  * Ligature Caret Table
  */
 
-struct CaretValueFormat1
+ساخت Caret_قدر_Format1
 {
-  friend struct CaretValue;
-  bool subset (hb_subset_context_t *c) const
+  دوست ساخت Caret_قدر;
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
-    return_trace (true);
+    TRACE_SUBSET (یہ);
+    خودکار *برآمد = c->serializer->embed (یہ);
+    اگر (unlikely (!برآمد)) return_trace (جھوٹ);
+    return_trace (سچ);
   }
 
-  private:
-  hb_position_t get_caret_value (hb_font_t *font, hb_direction_t direction) const
+  نجی:
+  hb_position_t get_caret_قدر (hb_font_t *font, hb_direction_t direction) ثابت
   {
-    return HB_DIRECTION_IS_HORIZONTAL (direction) ? font->em_scale_x (coordinate) : font->em_scale_y (coordinate);
+    واپس HB_DIRECTION_IS_HORIZONTAL (direction) ? font->em_scale_x (coordinate) : font->em_scale_y (coordinate);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ));
   }
 
-  protected:
-  HBUINT16	caretValueFormat;	/* Format identifier--format = 1 */
+  محفوظ:
+  HBUINT16	caret_قدر_Format;	/* Format identifier--format = 1 */
   FWORD		coordinate;		/* X or Y value, in design units */
-  public:
-  DEFINE_SIZE_STATIC (4);
+  عوامی:
+  DEFINE_سائز_STATIC (4);
 };
 
-struct CaretValueFormat2
+ساخت Caret_قدر_Format2
 {
-  friend struct CaretValue;
-  bool subset (hb_subset_context_t *c) const
+  دوست ساخت Caret_قدر;
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
-    return_trace (true);
+    TRACE_SUBSET (یہ);
+    خودکار *برآمد = c->serializer->embed (یہ);
+    اگر (unlikely (!برآمد)) return_trace (جھوٹ);
+    return_trace (سچ);
   }
 
-  private:
-  hb_position_t get_caret_value (hb_font_t *font, hb_direction_t direction, hb_codepoint_t glyph_id) const
+  نجی:
+  hb_position_t get_caret_قدر (hb_font_t *font, hb_direction_t direction, hb_codepoint_t glyph_id) ثابت
   {
     hb_position_t x, y;
-    font->get_glyph_contour_point_for_origin (glyph_id, caretValuePoint, direction, &x, &y);
-    return HB_DIRECTION_IS_HORIZONTAL (direction) ? x : y;
+    font->get_glyph_contour_نقطہ_for_origin (glyph_id, caret_قدر_نقطہ, direction, &x, &y);
+    واپس HB_DIRECTION_IS_HORIZONTAL (direction) ? x : y;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ));
   }
 
-  protected:
-  HBUINT16	caretValueFormat;	/* Format identifier--format = 2 */
-  HBUINT16	caretValuePoint;	/* Contour point index on glyph */
-  public:
-  DEFINE_SIZE_STATIC (4);
+  محفوظ:
+  HBUINT16	caret_قدر_Format;	/* Format identifier--format = 2 */
+  HBUINT16	caret_قدر_نقطہ;	/* Contour point index on glyph */
+  عوامی:
+  DEFINE_سائز_STATIC (4);
 };
 
-struct CaretValueFormat3
+ساخت Caret_قدر_Format3
 {
-  friend struct CaretValue;
+  دوست ساخت Caret_قدر;
 
-  hb_position_t get_caret_value (hb_font_t *font, hb_direction_t direction,
-				 const ItemVariationStore &var_store) const
+  hb_position_t get_caret_قدر (hb_font_t *font, hb_direction_t direction,
+				 ثابت شے_Variation_Store &var_store) ثابت
   {
-    return HB_DIRECTION_IS_HORIZONTAL (direction) ?
-	   hb_saturate_add (font->em_scale_x (coordinate), (this+deviceTable).get_x_delta (font, var_store)) :
-	   hb_saturate_add (font->em_scale_y (coordinate), (this+deviceTable).get_y_delta (font, var_store));
+    واپس HB_DIRECTION_IS_HORIZONTAL (direction) ?
+	   hb_saturate_جوڑو (font->em_scale_x (coordinate), (یہ+device_جدول).get_x_delta (font, var_store)) :
+	   hb_saturate_جوڑو (font->em_scale_y (coordinate), (یہ+device_جدول).get_y_delta (font, var_store));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (!c->serializer->embed (caretValueFormat)) return_trace (false);
-    if (!c->serializer->embed (coordinate)) return_trace (false);
+    TRACE_SUBSET (یہ);
+    خودکار *برآمد = c->serializer->آغاز_embed (*یہ);
+    اگر (!c->serializer->embed (caret_قدر_Format)) return_trace (جھوٹ);
+    اگر (!c->serializer->embed (coordinate)) return_trace (جھوٹ);
 
-    unsigned varidx = (this+deviceTable).get_variation_index ();
-    hb_pair_t<unsigned, int> *new_varidx_delta;
-    if (c->plan->layout_variation_idx_delta_map.has (varidx, &new_varidx_delta)) {
-      uint32_t new_varidx = hb_first (*new_varidx_delta);
-      int delta = hb_second (*new_varidx_delta);
-      if (delta != 0)
+    غیرعلامتی varidx = (یہ+device_جدول).get_variation_اشاریہ ();
+    hb_pair_t<غیرعلامتی, صحیح> *new_varidx_delta;
+    اگر (c->plan->layout_variation_idx_delta_map.has (varidx, &new_varidx_delta)) {
+      uint32_t new_varidx = hb_پہلا (*new_varidx_delta);
+      صحیح delta = hb_دوسرا (*new_varidx_delta);
+      اگر (delta != 0)
       {
-        if (!c->serializer->check_assign (out->coordinate, coordinate + delta, HB_SERIALIZE_ERROR_INT_OVERFLOW))
-          return_trace (false);
+        اگر (!c->serializer->check_تفویض (برآمد->coordinate, coordinate + delta, HB_SERIALIZE_ERROR_INT_حد_سے_تجاوز))
+          return_trace (جھوٹ);
       }
 
-      if (new_varidx == HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
-        return_trace (c->serializer->check_assign (out->caretValueFormat, 1, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+      اگر (new_varidx == HB_OT_LAYOUT_NO_VARIATIONS_اشاریہ)
+        return_trace (c->serializer->check_تفویض (برآمد->caret_قدر_Format, 1, HB_SERIALIZE_ERROR_INT_حد_سے_تجاوز));
     }
 
-    if (!c->serializer->embed (deviceTable))
-      return_trace (false);
+    اگر (!c->serializer->embed (device_جدول))
+      return_trace (جھوٹ);
 
-    return_trace (out->deviceTable.serialize_copy (c->serializer, deviceTable, this, c->serializer->to_bias (out),
-						   hb_serialize_context_t::Head, &c->plan->layout_variation_idx_delta_map));
+    return_trace (برآمد->device_جدول.serialize_copy (c->serializer, device_جدول, یہ, c->serializer->مقصد_bias (برآمد),
+						   hb_serialize_context_t::سر, &c->plan->layout_variation_idx_delta_map));
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
-  { (this+deviceTable).collect_variation_indices (c); }
+  خالی collect_variation_indices (hb_collect_variation_indices_context_t *c) ثابت
+  { (یہ+device_جدول).collect_variation_indices (c); }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && deviceTable.sanitize (c, this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ) && device_جدول.sanitize (c, یہ));
   }
 
-  protected:
-  HBUINT16	caretValueFormat;	/* Format identifier--format = 3 */
+  محفوظ:
+  HBUINT16	caret_قدر_Format;	/* Format identifier--format = 3 */
   FWORD		coordinate;		/* X or Y value, in design units */
-  Offset16To<Device>
-		deviceTable;		/* Offset to Device table for X or Y
+  Offset16_مقصد<Device>
+		device_جدول;		/* Offset to Device table for X or Y
 					 * value--from beginning of CaretValue
 					 * table */
-  public:
-  DEFINE_SIZE_STATIC (6);
+  عوامی:
+  DEFINE_سائز_STATIC (6);
 };
 
-struct CaretValue
+ساخت Caret_قدر
 {
-  hb_position_t get_caret_value (hb_font_t *font,
+  hb_position_t get_caret_قدر (hb_font_t *font,
 				 hb_direction_t direction,
 				 hb_codepoint_t glyph_id,
-				 const ItemVariationStore &var_store) const
+				 ثابت شے_Variation_Store &var_store) ثابت
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.get_caret_value (font, direction);
-    case 2: hb_barrier (); return u.format2.get_caret_value (font, direction, glyph_id);
-    case 3: hb_barrier (); return u.format3.get_caret_value (font, direction, var_store);
-    default:return 0;
+    انتخاب (u.format.v) {
+    حالت 1: hb_barrier (); واپس u.format1.get_caret_قدر (font, direction);
+    حالت 2: hb_barrier (); واپس u.format2.get_caret_قدر (font, direction, glyph_id);
+    حالت 3: hb_barrier (); واپس u.format3.get_caret_قدر (font, direction, var_store);
+    طےشدہ:واپس 0;
     }
   }
 
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  سانچہ <قسم_نام context_t, قسم_نام ...Ts>
+  قسم_نام context_t::return_t dispatch (context_t *c, Ts&&... ds) ثابت
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-    case 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
-    default:return_trace (c->default_return_value ());
+    اگر (unlikely (!c->may_dispatch (یہ, &u.format.v))) واپس c->no_dispatch_return_قدر ();
+    TRACE_DISPATCH (یہ, u.format.v);
+    انتخاب (u.format.v) {
+    حالت 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    حالت 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    حالت 3: hb_barrier (); return_trace (c->dispatch (u.format3, std::forward<Ts> (ds)...));
+    طےشدہ:return_trace (c->default_return_قدر ());
     }
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  خالی collect_variation_indices (hb_collect_variation_indices_context_t *c) ثابت
   {
-    switch (u.format.v) {
-    case 1:
-    case 2:
-      return;
-    case 3:
+    انتخاب (u.format.v) {
+    حالت 1:
+    حالت 2:
+      واپس;
+    حالت 3:
       hb_barrier ();
       u.format3.collect_variation_indices (c);
-      return;
-    default: return;
+      واپس;
+    طےشدہ: واپس;
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (یہ);
+    اگر (!u.format.v.sanitize (c)) return_trace (جھوٹ);
     hb_barrier ();
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c));
-    case 2: hb_barrier (); return_trace (u.format2.sanitize (c));
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c));
-    default:return_trace (true);
+    انتخاب (u.format.v) {
+    حالت 1: hb_barrier (); return_trace (u.format1.sanitize (c));
+    حالت 2: hb_barrier (); return_trace (u.format2.sanitize (c));
+    حالت 3: hb_barrier (); return_trace (u.format3.sanitize (c));
+    طےشدہ:return_trace (سچ);
     }
   }
 
-  protected:
-  union {
-  struct { HBUINT16 v; }	format;		/* Format identifier */
-  CaretValueFormat1	format1;
-  CaretValueFormat2	format2;
-  CaretValueFormat3	format3;
+  محفوظ:
+  اتحاد {
+  ساخت { HBUINT16 v; }	format;		/* Format identifier */
+  Caret_قدر_Format1	format1;
+  Caret_قدر_Format2	format2;
+  Caret_قدر_Format3	format3;
   } u;
-  public:
-  DEFINE_SIZE_UNION (2, format.v);
+  عوامی:
+  DEFINE_سائز_UNION (2, format.v);
 };
 
-struct LigGlyph
+ساخت LigGlyph
 {
-  unsigned get_lig_carets (hb_font_t            *font,
+  غیرعلامتی get_lig_carets (hb_font_t            *font,
 			   hb_direction_t        direction,
 			   hb_codepoint_t        glyph_id,
-			   const ItemVariationStore &var_store,
-			   unsigned              start_offset,
-			   unsigned             *caret_count /* IN/OUT */,
-			   hb_position_t        *caret_array /* OUT */) const
+			   ثابت شے_Variation_Store &var_store,
+			   غیرعلامتی              آغاز_انحراف,
+			   غیرعلامتی             *caret_گنتی /* IN/OUT */,
+			   hb_position_t        *caret_array /*برآمد*/) ثابت
   {
-    if (caret_count && caret_array)
+    اگر (caret_گنتی && caret_array)
     {
-      + carets.as_array ().sub_array (start_offset, caret_count)
-      | hb_map (hb_add (this))
-      | hb_map ([&] (const CaretValue &value) { return value.get_caret_value (font, direction, glyph_id, var_store); })
-      | hb_sink (hb_array (caret_array, *caret_count))
+      + carets.as_array ().sub_array (آغاز_انحراف, caret_گنتی)
+      | hb_map (hb_جوڑو (یہ))
+      | hb_map ([&] (ثابت Caret_قدر &value) { واپس value.get_caret_قدر (font, direction, glyph_id, var_store); })
+      | hb_sink (hb_array (caret_array, *caret_گنتی))
       ;
     }
 
-    return carets.len;
+    واپس carets.len;
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (یہ);
+    خودکار *برآمد = c->serializer->آغاز_embed (*یہ);
+    اگر (unlikely (!c->serializer->extend_min (برآمد))) return_trace (جھوٹ);
 
     + hb_iter (carets)
-    | hb_apply (subset_offset_array (c, out->carets, this))
+    | hb_apply (subset_انحراف_array (c, برآمد->carets, یہ))
     ;
 
-    return_trace (bool (out->carets));
+    return_trace (منطقی (برآمد->carets));
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  خالی collect_variation_indices (hb_collect_variation_indices_context_t *c) ثابت
   {
-    for (const Offset16To<CaretValue>& offset : carets.iter ())
-      (this+offset).collect_variation_indices (c);
+    برائے (ثابت Offset16_مقصد<Caret_قدر>& انحراف : carets.iter ())
+      (یہ+انحراف).collect_variation_indices (c);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (carets.sanitize (c, this));
+    TRACE_SANITIZE (یہ);
+    return_trace (carets.sanitize (c, یہ));
   }
 
-  protected:
-  Array16OfOffset16To<CaretValue>
+  محفوظ:
+  Array16_کا_Offset16_مقصد<Caret_قدر>
 		carets;			/* Offset array of CaretValue tables
 					 * --from beginning of LigGlyph table
 					 * --in increasing coordinate order */
-  public:
-  DEFINE_SIZE_ARRAY (2, carets);
+  عوامی:
+  DEFINE_سائز_ARRAY (2, carets);
 };
 
 /* LigCaretList2 widens the LigCaretList coverage, count, and LigGlyph
  * offsets. The LigGlyph table itself keeps Offset16 caretValueOffsets. */
-template <typename Types>
-struct LigCaretList
+سانچہ <قسم_نام Types>
+ساخت LigCaretList
 {
-  unsigned int get_lig_carets (hb_font_t *font,
+  غیرعلامتی صحیح get_lig_carets (hb_font_t *font,
 			       hb_direction_t direction,
 			       hb_codepoint_t glyph_id,
-			       const ItemVariationStore &var_store,
-			       unsigned int start_offset,
-			       unsigned int *caret_count /* IN/OUT */,
-			       hb_position_t *caret_array /* OUT */) const
+			       ثابت شے_Variation_Store &var_store,
+			       غیرعلامتی صحیح آغاز_انحراف,
+			       غیرعلامتی صحیح *caret_گنتی /* IN/OUT */,
+			       hb_position_t *caret_array /*برآمد*/) ثابت
   {
-    unsigned int index = (this+coverage).get_coverage (glyph_id);
-    if (index == NOT_COVERED)
+    غیرعلامتی صحیح اشاریہ_2 = (یہ+coverage).get_coverage (glyph_id);
+    اگر (اشاریہ_2 == NOT_COVERED)
     {
-      if (caret_count)
-	*caret_count = 0;
-      return 0;
+      اگر (caret_گنتی)
+	*caret_گنتی = 0;
+      واپس 0;
     }
-    const LigGlyph &lig_glyph = this+ligGlyph[index];
-    return lig_glyph.get_lig_carets (font, direction, glyph_id, var_store, start_offset, caret_count, caret_array);
+    ثابت LigGlyph &lig_glyph = یہ+ligGlyph[اشاریہ_2];
+    واپس lig_glyph.get_lig_carets (font, direction, glyph_id, var_store, آغاز_انحراف, caret_گنتی, caret_array);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (یہ);
+    ثابت hb_سیٹ_t &glyphset = *c->plan->glyphset_gsub ();
+    ثابت hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    خودکار *برآمد = c->serializer->آغاز_embed (*یہ);
+    اگر (unlikely (!c->serializer->extend_min (برآمد))) return_trace (جھوٹ);
 
-    hb_sorted_vector_t<hb_codepoint_t> new_coverage;
-    + hb_zip (this+coverage, ligGlyph)
-    | hb_filter (glyphset, hb_first)
-    | hb_filter (subset_offset_array (c, out->ligGlyph, this), hb_second)
-    | hb_map (hb_first)
+    hb_sorted_سمتیہ_t<hb_codepoint_t> new_coverage;
+    + hb_zip (یہ+coverage, ligGlyph)
+    | hb_filter (glyphset, hb_پہلا)
+    | hb_filter (subset_انحراف_array (c, برآمد->ligGlyph, یہ), hb_دوسرا)
+    | hb_map (hb_پہلا)
     | hb_map (glyph_map)
     | hb_sink (new_coverage)
     ;
-    out->coverage.serialize_serialize (c->serializer, new_coverage.iter ());
-    return_trace (bool (new_coverage));
+    برآمد->coverage.serialize_serialize (c->serializer, new_coverage.iter ());
+    return_trace (منطقی (new_coverage));
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  خالی collect_variation_indices (hb_collect_variation_indices_context_t *c) ثابت
   {
-    + hb_zip (this+coverage, ligGlyph)
-    | hb_filter (c->glyph_set, hb_first)
-    | hb_map (hb_second)
-    | hb_map (hb_add (this))
-    | hb_apply ([c] (const LigGlyph& _) { _.collect_variation_indices (c); })
+    + hb_zip (یہ+coverage, ligGlyph)
+    | hb_filter (c->glyph_سیٹ, hb_پہلا)
+    | hb_map (hb_دوسرا)
+    | hb_map (hb_جوڑو (یہ))
+    | hb_apply ([c] (ثابت LigGlyph& _) { _.collect_variation_indices (c); })
     ;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (coverage.sanitize (c, this) && ligGlyph.sanitize (c, this));
+    TRACE_SANITIZE (یہ);
+    return_trace (coverage.sanitize (c, یہ) && ligGlyph.sanitize (c, یہ));
   }
 
-  protected:
-  typename Types::template LOffsetTo<Coverage>
+  محفوظ:
+  قسم_نام Types::سانچہ LOffset_مقصد<Coverage>
 		coverage;		/* Offset to Coverage table--from
 					 * beginning of LigCaretList table */
-  typename Types::template ArrayOf<typename Types::template OffsetTo<LigGlyph>>
+  قسم_نام Types::سانچہ Array_کا<قسم_نام Types::سانچہ انحراف_مقصد<LigGlyph>>
 		ligGlyph;		/* Array of LigGlyph tables
 					 * in Coverage Index order */
-  public:
-  DEFINE_SIZE_ARRAY (Types::LOffset::static_size + Types::HBUINT::static_size, ligGlyph);
+  عوامی:
+  DEFINE_سائز_ARRAY (Types::LOffset::static_سائز + Types::HBUINT::static_سائز, ligGlyph);
 };
 
-#ifndef HB_NO_BEYOND_64K
-static_assert (LigCaretList<MediumTypes>::min_size ==
-	       Offset32::static_size + HBUINT24::static_size, "");
-#endif
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+static_assert (LigCaretList<MediumTypes>::min_سائز ==
+	       Offset32::static_سائز + HBUINT24::static_سائز, "");
+#اگر_ختم
 
 
-struct MarkGlyphSetsFormat1
+ساخت MarkGlyphSetsFormat1
 {
-  bool covers (unsigned int set_index, hb_codepoint_t glyph_id) const
-  { return (this+coverage[set_index]).get_coverage (glyph_id) != NOT_COVERED; }
+  منطقی covers (غیرعلامتی صحیح سیٹ_اشاریہ, hb_codepoint_t glyph_id) ثابت
+  { واپس (یہ+coverage[سیٹ_اشاریہ]).get_coverage (glyph_id) != NOT_COVERED; }
 
-  void collect_used_mark_sets (const hb_set_t& glyph_set,
-                               hb_set_t& used_mark_sets /* OUT */) const
+  خالی collect_مستعمل_mark_sets (ثابت hb_سیٹ_t& glyph_سیٹ,
+                               hb_سیٹ_t& مستعمل_mark_sets /*برآمد*/) ثابت
   {
-    unsigned i = 0;
-    for (const auto &offset : coverage)
+    غیرعلامتی i = 0;
+    برائے (ثابت خودکار &انحراف : coverage)
      {
-       const auto &cov = this+offset;
-       if (cov.intersects (&glyph_set))
-         used_mark_sets.add (i);
+       ثابت خودکار &cov = یہ+انحراف;
+       اگر (cov.intersects (&glyph_سیٹ))
+         مستعمل_mark_sets.جوڑو (i);
 
        i++;
      }
   }
 
-  template <typename set_t>
-  void collect_coverage (hb_vector_t<set_t> &sets) const
+  سانچہ <قسم_نام سیٹ_t>
+  خالی collect_coverage (hb_سمتیہ_t<سیٹ_t> &sets) ثابت
   {
-     for (const auto &offset : coverage)
+     برائے (ثابت خودکار &انحراف : coverage)
      {
-       const auto &cov = this+offset;
+       ثابت خودکار &cov = یہ+انحراف;
        cov.collect_coverage (sets.push ());
      }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
-    out->format = format;
+    TRACE_SUBSET (یہ);
+    خودکار *برآمد = c->serializer->آغاز_embed (*یہ);
+    اگر (unlikely (!c->serializer->extend_min (برآمد))) return_trace (جھوٹ);
+    برآمد->format = format;
 
-    bool ret = true;
-    for (const Offset32To<Coverage>& offset : coverage.iter ())
+    منطقی ret = سچ;
+    برائے (ثابت Offset32_مقصد<Coverage>& انحراف : coverage.iter ())
     {
-      auto snap = c->serializer->snapshot ();
-      auto *o = out->coverage.serialize_append (c->serializer);
-      if (unlikely (!o))
+      خودکار snap = c->serializer->snapshot ();
+      خودکار *o = برآمد->coverage.serialize_append (c->serializer);
+      اگر (unlikely (!o))
       {
-	ret = false;
-	break;
+	ret = جھوٹ;
+	توڑو;
       }
 
       //skip empty coverage
       c->serializer->push ();
-      bool res = false;
-      if (offset) res = c->dispatch (this+offset);
-      if (!res)
+      منطقی res = جھوٹ;
+      اگر (انحراف) res = c->dispatch (یہ+انحراف);
+      اگر (!res)
       {
-        c->serializer->pop_discard ();
+        c->serializer->نکالو_discard ();
         c->serializer->revert (snap);
-        (out->coverage.len)--;
-        continue;
+        (برآمد->coverage.len)--;
+        جاری;
       }
-      c->serializer->add_link (*o, c->serializer->pop_pack ());
+      c->serializer->جوڑو_link (*o, c->serializer->نکالو_pack ());
     }
 
-    return_trace (ret && out->coverage.len);
+    return_trace (ret && برآمد->coverage.len);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (coverage.sanitize (c, this));
+    TRACE_SANITIZE (یہ);
+    return_trace (coverage.sanitize (c, یہ));
   }
 
-  protected:
+  محفوظ:
   HBUINT16	format;			/* Format identifier--format = 1 */
-  Array16Of<Offset32To<Coverage>>
+  Array16_کا<Offset32_مقصد<Coverage>>
 		coverage;		/* Array of long offsets to mark set
 					 * coverage tables */
-  public:
-  DEFINE_SIZE_ARRAY (4, coverage);
+  عوامی:
+  DEFINE_سائز_ARRAY (4, coverage);
 };
 
-struct MarkGlyphSets
+ساخت MarkGlyphSets
 {
-  bool covers (unsigned int set_index, hb_codepoint_t glyph_id) const
+  منطقی covers (غیرعلامتی صحیح سیٹ_اشاریہ, hb_codepoint_t glyph_id) ثابت
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.covers (set_index, glyph_id);
-    default:return false;
+    انتخاب (u.format.v) {
+    حالت 1: hb_barrier (); واپس u.format1.covers (سیٹ_اشاریہ, glyph_id);
+    طےشدہ:واپس جھوٹ;
     }
   }
 
-  template <typename set_t>
-  void collect_coverage (hb_vector_t<set_t> &sets) const
+  سانچہ <قسم_نام سیٹ_t>
+  خالی collect_coverage (hb_سمتیہ_t<سیٹ_t> &sets) ثابت
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); u.format1.collect_coverage (sets); return;
-    default:return;
+    انتخاب (u.format.v) {
+    حالت 1: hb_barrier (); u.format1.collect_coverage (sets); واپس;
+    طےشدہ:واپس;
     }
   }
 
-  void collect_used_mark_sets (const hb_set_t& glyph_set,
-                               hb_set_t& used_mark_sets /* OUT */) const
+  خالی collect_مستعمل_mark_sets (ثابت hb_سیٹ_t& glyph_سیٹ,
+                               hb_سیٹ_t& مستعمل_mark_sets /*برآمد*/) ثابت
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); u.format1.collect_used_mark_sets (glyph_set, used_mark_sets); return;
-    default:return;
+    انتخاب (u.format.v) {
+    حالت 1: hb_barrier (); u.format1.collect_مستعمل_mark_sets (glyph_سیٹ, مستعمل_mark_sets); واپس;
+    طےشدہ:واپس;
     }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.subset (c));
-    default:return_trace (false);
+    TRACE_SUBSET (یہ);
+    انتخاب (u.format.v) {
+    حالت 1: hb_barrier (); return_trace (u.format1.subset (c));
+    طےشدہ:return_trace (جھوٹ);
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (یہ);
+    اگر (!u.format.v.sanitize (c)) return_trace (جھوٹ);
     hb_barrier ();
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c));
-    default:return_trace (true);
+    انتخاب (u.format.v) {
+    حالت 1: hb_barrier (); return_trace (u.format1.sanitize (c));
+    طےشدہ:return_trace (سچ);
     }
   }
 
-  protected:
-  union {
-  struct { HBUINT16 v; }	format;		/* Format identifier */
+  محفوظ:
+  اتحاد {
+  ساخت { HBUINT16 v; }	format;		/* Format identifier */
   MarkGlyphSetsFormat1	format1;
   } u;
-  public:
-  DEFINE_SIZE_UNION (2, format.v);
+  عوامی:
+  DEFINE_سائز_UNION (2, format.v);
 };
 
 
@@ -591,631 +591,631 @@ struct MarkGlyphSets
  */
 
 
-struct GDEF
+ساخت GDEF
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_GDEF;
+  ساکن constexpr hb_لیبل_t جدول_لیبل = HB_OT_لیبل_GDEF;
 
-  enum GlyphClasses {
+  شمار GlyphClasses {
     UnclassifiedGlyph	= 0,
-    BaseGlyph		= 1,
+    بنیاد_Glyph		= 1,
     LigatureGlyph	= 2,
     MarkGlyph		= 3,
     ComponentGlyph	= 4
   };
 
-  size_t get_size () const
+  size_t get_سائز () ثابت
   {
-    if (version.major != 1) return version.static_size;
+    اگر (نسخہ.major != 1) واپس نسخہ.static_سائز;
 
-    return min_size +
-	   (version.to_int () >= 0x00010002u ? markGlyphSetsDef.static_size : 0) +
-	   (version.to_int () >= 0x00010003u ? varStore.static_size : 0) +
-#ifndef HB_NO_BEYOND_64K
-	   (version.to_int () >= 0x00010004u ? 5 * Offset32::static_size : 0)
-#else
+    واپس min_سائز +
+	   (نسخہ.مقصد_int () >= 0x00010002u ? markGlyphSetsDef.static_سائز : 0) +
+	   (نسخہ.مقصد_int () >= 0x00010003u ? varStore.static_سائز : 0) +
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+	   (نسخہ.مقصد_int () >= 0x00010004u ? 5 * Offset32::static_سائز : 0)
+#ورنہ
 	   0
-#endif
+#اگر_ختم
 	   ;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!version.sanitize (c) ||
-		  version.major != 1 ||
-		  !c->check_range (this, get_size ())))
-      return_trace (false);
+    TRACE_SANITIZE (یہ);
+    اگر (unlikely (!نسخہ.sanitize (c) ||
+		  نسخہ.major != 1 ||
+		  !c->check_range (یہ, get_سائز ())))
+      return_trace (جھوٹ);
     hb_barrier ();
 
-    bool glyph_class_def_ok = glyphClassDef.sanitize (c, this);
-    bool attach_list_ok = attachList.sanitize (c, this);
-    bool lig_caret_list_ok = ligCaretList.sanitize (c, this);
-    bool mark_attach_class_def_ok = markAttachClassDef.sanitize (c, this);
-    bool mark_glyph_sets_def_ok = version.to_int () < 0x00010002u ||
-				  markGlyphSetsDef.sanitize (c, this);
+    منطقی glyph_class_def_ok = glyphClassDef.sanitize (c, یہ);
+    منطقی attach_list_ok = attachList.sanitize (c, یہ);
+    منطقی lig_caret_list_ok = ligCaretList.sanitize (c, یہ);
+    منطقی mark_attach_class_def_ok = markAttachClassDef.sanitize (c, یہ);
+    منطقی mark_glyph_sets_def_ok = نسخہ.مقصد_int () < 0x00010002u ||
+				  markGlyphSetsDef.sanitize (c, یہ);
 
-#ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u)
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    اگر (نسخہ.مقصد_int () >= 0x00010004u)
     {
-      if (glyphClassDef2) glyph_class_def_ok = glyphClassDef2.sanitize (c, this);
-      if (attachList2) attach_list_ok = attachList2.sanitize (c, this);
-      if (ligCaretList2) lig_caret_list_ok = ligCaretList2.sanitize (c, this);
-      if (markAttachClassDef2) mark_attach_class_def_ok = markAttachClassDef2.sanitize (c, this);
-      if (markGlyphSetsDef2) mark_glyph_sets_def_ok = markGlyphSetsDef2.sanitize (c, this);
+      اگر (glyphClassDef2) glyph_class_def_ok = glyphClassDef2.sanitize (c, یہ);
+      اگر (attachList2) attach_list_ok = attachList2.sanitize (c, یہ);
+      اگر (ligCaretList2) lig_caret_list_ok = ligCaretList2.sanitize (c, یہ);
+      اگر (markAttachClassDef2) mark_attach_class_def_ok = markAttachClassDef2.sanitize (c, یہ);
+      اگر (markGlyphSetsDef2) mark_glyph_sets_def_ok = markGlyphSetsDef2.sanitize (c, یہ);
     }
-#endif
+#اگر_ختم
 
     return_trace (glyph_class_def_ok &&
 		  attach_list_ok &&
 		  lig_caret_list_ok &&
 		  mark_attach_class_def_ok &&
 		  mark_glyph_sets_def_ok &&
-		  (version.to_int () < 0x00010003u || varStore.sanitize (c, this)));
+		  (نسخہ.مقصد_int () < 0x00010003u || varStore.sanitize (c, یہ)));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    if (version.major != 1) return_trace (false);
+    TRACE_SUBSET (یہ);
+    اگر (نسخہ.major != 1) return_trace (جھوٹ);
 
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    خودکار *برآمد = c->serializer->آغاز_embed (*یہ);
+    اگر (unlikely (!c->serializer->extend_min (برآمد))) return_trace (جھوٹ);
 
     // Push var store first (if it's needed) so that it's last in the
     // serialization order. Some font consumers assume that varstore runs to
     // the end of the GDEF table.
     // See: https://github.com/harfbuzz/harfbuzz/issues/4636
-    auto snapshot_version0 = c->serializer->snapshot ();
-    if (unlikely (version.to_int () >= 0x00010002u && hb_barrier () &&
+    خودکار snapshot_version0 = c->serializer->snapshot ();
+    اگر (unlikely (نسخہ.مقصد_int () >= 0x00010002u && hb_barrier () &&
 		  !c->serializer->embed (markGlyphSetsDef)))
-      return_trace (false);
+      return_trace (جھوٹ);
 
-    auto snapshot_version2 = c->serializer->snapshot ();
-    if (unlikely (version.to_int () >= 0x00010003u && hb_barrier () &&
+    خودکار snapshot_version2 = c->serializer->snapshot ();
+    اگر (unlikely (نسخہ.مقصد_int () >= 0x00010003u && hb_barrier () &&
 		  !c->serializer->embed (varStore)))
-      return_trace (false);
+      return_trace (جھوٹ);
 
-    bool use_v14 = false;
-#ifndef HB_NO_BEYOND_64K
-    use_v14 = version.to_int () >= 0x00010004u &&
+    منطقی use_v14 = جھوٹ;
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    use_v14 = نسخہ.مقصد_int () >= 0x00010004u &&
 	      (glyphClassDef2 || attachList2 || ligCaretList2 ||
 	       markAttachClassDef2 || markGlyphSetsDef2);
-    if (unlikely (version.to_int () >= 0x00010004u && hb_barrier () &&
-		  !c->serializer->extend_size (out, get_size ())))
-      return_trace (false);
-#endif
+    اگر (unlikely (نسخہ.مقصد_int () >= 0x00010004u && hb_barrier () &&
+		  !c->serializer->extend_سائز (برآمد, get_سائز ())))
+      return_trace (جھوٹ);
+#اگر_ختم
 
-    bool subset_varstore = false;
-    unsigned varstore_index = (unsigned) -1;
-    if (version.to_int () >= 0x00010003u && hb_barrier ())
+    منطقی subset_varstore = جھوٹ;
+    غیرعلامتی varstore_اشاریہ = (غیرعلامتی) -1;
+    اگر (نسخہ.مقصد_int () >= 0x00010003u && hb_barrier ())
     {
-      if (c->plan->all_axes_pinned)
-	out->varStore = 0;
-      else if (c->plan->normalized_coords)
+      اگر (c->plan->all_axes_pinned)
+	برآمد->varStore = 0;
+      ورنہ اگر (c->plan->normalized_coords)
       {
-	if (varStore)
+	اگر (varStore)
 	{
-	  item_variations_t item_vars;
-	  if (unlikely (!c->serializer->check_success (
-                  item_vars.instantiate (this+varStore, c->plan, true, true,
-                                          c->plan->gdef_varstore_inner_maps.as_array (), true))))
-            return_trace (false);
-	  subset_varstore = out->varStore.serialize_serialize (c->serializer,
-							     item_vars.has_long_word (),
-							     c->plan->axis_tags,
-							     item_vars.get_region_list (),
-							     item_vars.get_vardata_encodings ());
-	  varstore_index = c->serializer->last_added_child_index();
-	  remap_varidx_after_instantiation (item_vars.get_varidx_map (),
+	  شے_variations_t شے_vars;
+	  اگر (unlikely (!c->serializer->check_success (
+                  شے_vars.instantiate (یہ+varStore, c->plan, سچ, سچ,
+                                          c->plan->gdef_varstore_inner_maps.as_array (), سچ))))
+            return_trace (جھوٹ);
+	  subset_varstore = برآمد->varStore.serialize_serialize (c->serializer,
+							     شے_vars.has_long_لفظ (),
+							     c->plan->axis_لیبل_فہرست,
+							     شے_vars.get_region_list (),
+							     شے_vars.get_vardata_encodings ());
+	  varstore_اشاریہ = c->serializer->آخری_added_بچہ_اشاریہ();
+	  remap_varidx_after_instantiation (شے_vars.get_varidx_map (),
 					    c->plan->layout_variation_idx_delta_map);
-          remap_varidx_after_instantiation (item_vars.get_varidx_map (),
-                                            c->plan->layout_condition_idx_value_map);
+          remap_varidx_after_instantiation (شے_vars.get_varidx_map (),
+                                            c->plan->layout_condition_idx_قدر_map);
 	}
       }
-      else
+      ورنہ
       {
-	subset_varstore = out->varStore.serialize_subset (c, varStore, this,
+	subset_varstore = برآمد->varStore.serialize_subset (c, varStore, یہ,
 							  c->plan->gdef_varstore_inner_maps.as_array ());
-	varstore_index = c->serializer->last_added_child_index();
+	varstore_اشاریہ = c->serializer->آخری_added_بچہ_اشاریہ();
       }
     }
 
-    out->version.major = version.major;
-    out->version.minor = version.minor;
+    برآمد->نسخہ.major = نسخہ.major;
+    برآمد->نسخہ.minor = نسخہ.minor;
 
-    if (!subset_varstore && version.to_int () >= 0x00010002u && !use_v14) {
+    اگر (!subset_varstore && نسخہ.مقصد_int () >= 0x00010002u && !use_v14) {
       c->serializer->revert (snapshot_version2);
     }
-    if (!subset_varstore)
-      out->varStore = 0;
-    else
-      c->plan->has_gdef_varstore = true;
+    اگر (!subset_varstore)
+      برآمد->varStore = 0;
+    ورنہ
+      c->plan->has_gdef_varstore = سچ;
 
-    bool subset_markglyphsetsdef = false;
-    if (version.to_int () >= 0x00010002u && hb_barrier ())
+    منطقی subset_markglyphsetsdef = جھوٹ;
+    اگر (نسخہ.مقصد_int () >= 0x00010002u && hb_barrier ())
     {
-#ifndef HB_NO_BEYOND_64K
-      if (use_v14 && markGlyphSetsDef2)
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+      اگر (use_v14 && markGlyphSetsDef2)
       {
-	out->markGlyphSetsDef = 0;
-	subset_markglyphsetsdef = serialize_subset_offset (c, out->markGlyphSetsDef2,
-							   markGlyphSetsDef2, this);
+	برآمد->markGlyphSetsDef = 0;
+	subset_markglyphsetsdef = serialize_subset_انحراف (c, برآمد->markGlyphSetsDef2,
+							   markGlyphSetsDef2, یہ);
       }
-      else
-#endif
+      ورنہ
+#اگر_ختم
       {
-#ifndef HB_NO_BEYOND_64K
-	if (use_v14) out->markGlyphSetsDef2 = 0;
-#endif
-	subset_markglyphsetsdef = out->markGlyphSetsDef.serialize_subset (c, markGlyphSetsDef, this);
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+	اگر (use_v14) برآمد->markGlyphSetsDef2 = 0;
+#اگر_ختم
+	subset_markglyphsetsdef = برآمد->markGlyphSetsDef.serialize_subset (c, markGlyphSetsDef, یہ);
       }
     }
 
-    if (use_v14)
+    اگر (use_v14)
     {
-      out->version.minor = 4;
-    } else if (subset_varstore) {
-      out->version.minor = 3;
-    } else if (subset_markglyphsetsdef) {
-      out->version.minor = 2;
-    } else  {
-      out->version.minor = 0;
+      برآمد->نسخہ.minor = 4;
+    } ورنہ اگر (subset_varstore) {
+      برآمد->نسخہ.minor = 3;
+    } ورنہ اگر (subset_markglyphsetsdef) {
+      برآمد->نسخہ.minor = 2;
+    } ورنہ  {
+      برآمد->نسخہ.minor = 0;
       c->serializer->revert (snapshot_version0);
     }
 
-    bool subset_glyphclassdef = false;
-    bool subset_attachlist = false;
-    bool subset_markattachclassdef = false;
-    bool subset_ligcaretlist = false;
+    منطقی subset_glyphclassdef = جھوٹ;
+    منطقی subset_attachlist = جھوٹ;
+    منطقی subset_markattachclassdef = جھوٹ;
+    منطقی subset_ligcaretlist = جھوٹ;
 
-#ifndef HB_NO_BEYOND_64K
-    if (use_v14 && glyphClassDef2)
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    اگر (use_v14 && glyphClassDef2)
     {
-      out->glyphClassDef = 0;
-      subset_glyphclassdef = serialize_subset_offset (c, out->glyphClassDef2,
-						      glyphClassDef2, this, nullptr, false, true);
+      برآمد->glyphClassDef = 0;
+      subset_glyphclassdef = serialize_subset_انحراف (c, برآمد->glyphClassDef2,
+						      glyphClassDef2, یہ, خالی_اشاریہ, جھوٹ, سچ);
     }
-    else
-#endif
+    ورنہ
+#اگر_ختم
     {
-#ifndef HB_NO_BEYOND_64K
-      if (use_v14) out->glyphClassDef2 = 0;
-#endif
-      subset_glyphclassdef = out->glyphClassDef.serialize_subset (c, glyphClassDef, this, nullptr, false, true);
-    }
-
-#ifndef HB_NO_BEYOND_64K
-    if (use_v14 && attachList2)
-    {
-      out->attachList = 0;
-      subset_attachlist = serialize_subset_offset (c, out->attachList2, attachList2, this);
-    }
-    else
-#endif
-    {
-#ifndef HB_NO_BEYOND_64K
-      if (use_v14) out->attachList2 = 0;
-#endif
-      subset_attachlist = out->attachList.serialize_subset (c, attachList, this);
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+      اگر (use_v14) برآمد->glyphClassDef2 = 0;
+#اگر_ختم
+      subset_glyphclassdef = برآمد->glyphClassDef.serialize_subset (c, glyphClassDef, یہ, خالی_اشاریہ, جھوٹ, سچ);
     }
 
-#ifndef HB_NO_BEYOND_64K
-    if (use_v14 && markAttachClassDef2)
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    اگر (use_v14 && attachList2)
     {
-      out->markAttachClassDef = 0;
-      subset_markattachclassdef = serialize_subset_offset (c, out->markAttachClassDef2,
-							   markAttachClassDef2, this, nullptr, false, true);
+      برآمد->attachList = 0;
+      subset_attachlist = serialize_subset_انحراف (c, برآمد->attachList2, attachList2, یہ);
     }
-    else
-#endif
+    ورنہ
+#اگر_ختم
     {
-#ifndef HB_NO_BEYOND_64K
-      if (use_v14) out->markAttachClassDef2 = 0;
-#endif
-      subset_markattachclassdef = out->markAttachClassDef.serialize_subset (c, markAttachClassDef,
-									   this, nullptr, false, true);
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+      اگر (use_v14) برآمد->attachList2 = 0;
+#اگر_ختم
+      subset_attachlist = برآمد->attachList.serialize_subset (c, attachList, یہ);
     }
 
-#ifndef HB_NO_BEYOND_64K
-    if (use_v14 && ligCaretList2)
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    اگر (use_v14 && markAttachClassDef2)
     {
-      out->ligCaretList = 0;
-      subset_ligcaretlist = serialize_subset_offset (c, out->ligCaretList2, ligCaretList2, this);
+      برآمد->markAttachClassDef = 0;
+      subset_markattachclassdef = serialize_subset_انحراف (c, برآمد->markAttachClassDef2,
+							   markAttachClassDef2, یہ, خالی_اشاریہ, جھوٹ, سچ);
     }
-    else
-#endif
+    ورنہ
+#اگر_ختم
     {
-#ifndef HB_NO_BEYOND_64K
-      if (use_v14) out->ligCaretList2 = 0;
-#endif
-      subset_ligcaretlist = out->ligCaretList.serialize_subset (c, ligCaretList, this);
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+      اگر (use_v14) برآمد->markAttachClassDef2 = 0;
+#اگر_ختم
+      subset_markattachclassdef = برآمد->markAttachClassDef.serialize_subset (c, markAttachClassDef,
+									   یہ, خالی_اشاریہ, جھوٹ, سچ);
     }
 
-    if (subset_varstore && varstore_index != (unsigned) -1) {
-      c->serializer->repack_last(varstore_index);
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    اگر (use_v14 && ligCaretList2)
+    {
+      برآمد->ligCaretList = 0;
+      subset_ligcaretlist = serialize_subset_انحراف (c, برآمد->ligCaretList2, ligCaretList2, یہ);
+    }
+    ورنہ
+#اگر_ختم
+    {
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+      اگر (use_v14) برآمد->ligCaretList2 = 0;
+#اگر_ختم
+      subset_ligcaretlist = برآمد->ligCaretList.serialize_subset (c, ligCaretList, یہ);
+    }
+
+    اگر (subset_varstore && varstore_اشاریہ != (غیرعلامتی) -1) {
+      c->serializer->repack_آخری(varstore_اشاریہ);
     }
 
     return_trace (subset_glyphclassdef || subset_attachlist ||
 		  subset_ligcaretlist || subset_markattachclassdef ||
-		  (out->version.to_int () >= 0x00010002u && subset_markglyphsetsdef) ||
-		  (out->version.to_int () >= 0x00010003u && subset_varstore));
+		  (برآمد->نسخہ.مقصد_int () >= 0x00010002u && subset_markglyphsetsdef) ||
+		  (برآمد->نسخہ.مقصد_int () >= 0x00010003u && subset_varstore));
   }
 
-  bool has_glyph_classes () const
+  منطقی has_glyph_classes () ثابت
   {
-#ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && glyphClassDef2) return true;
-#endif
-    return glyphClassDef != 0;
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    اگر (نسخہ.مقصد_int () >= 0x00010004u && glyphClassDef2) واپس سچ;
+#اگر_ختم
+    واپس glyphClassDef != 0;
   }
-  const ClassDef &get_glyph_class_def () const
+  ثابت ClassDef &get_glyph_class_def () ثابت
   {
-#ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && glyphClassDef2) return this+glyphClassDef2;
-#endif
-    return this+glyphClassDef;
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    اگر (نسخہ.مقصد_int () >= 0x00010004u && glyphClassDef2) واپس یہ+glyphClassDef2;
+#اگر_ختم
+    واپس یہ+glyphClassDef;
   }
-  bool has_attach_list () const
+  منطقی has_attach_list () ثابت
   {
-#ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && attachList2) return true;
-#endif
-    return attachList != 0;
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    اگر (نسخہ.مقصد_int () >= 0x00010004u && attachList2) واپس سچ;
+#اگر_ختم
+    واپس attachList != 0;
   }
-  const AttachList &get_attach_list () const
+  ثابت AttachList &get_attach_list () ثابت
   {
-#ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && attachList2) return this+attachList2;
-#endif
-    return this+attachList;
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    اگر (نسخہ.مقصد_int () >= 0x00010004u && attachList2) واپس یہ+attachList2;
+#اگر_ختم
+    واپس یہ+attachList;
   }
-  bool has_lig_carets () const
+  منطقی has_lig_carets () ثابت
   {
-#ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && ligCaretList2) return true;
-#endif
-    return ligCaretList != 0;
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    اگر (نسخہ.مقصد_int () >= 0x00010004u && ligCaretList2) واپس سچ;
+#اگر_ختم
+    واپس ligCaretList != 0;
   }
-  bool has_mark_attachment_types () const
+  منطقی has_mark_attachment_types () ثابت
   {
-#ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && markAttachClassDef2) return true;
-#endif
-    return markAttachClassDef != 0;
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    اگر (نسخہ.مقصد_int () >= 0x00010004u && markAttachClassDef2) واپس سچ;
+#اگر_ختم
+    واپس markAttachClassDef != 0;
   }
-  const ClassDef &get_mark_attach_class_def () const
+  ثابت ClassDef &get_mark_attach_class_def () ثابت
   {
-#ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && markAttachClassDef2) return this+markAttachClassDef2;
-#endif
-    return this+markAttachClassDef;
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    اگر (نسخہ.مقصد_int () >= 0x00010004u && markAttachClassDef2) واپس یہ+markAttachClassDef2;
+#اگر_ختم
+    واپس یہ+markAttachClassDef;
   }
-  bool has_mark_glyph_sets () const
+  منطقی has_mark_glyph_sets () ثابت
   {
-    if (version.to_int () < 0x00010002u) return false;
-#ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && markGlyphSetsDef2) return true;
-#endif
-    return markGlyphSetsDef != 0;
+    اگر (نسخہ.مقصد_int () < 0x00010002u) واپس جھوٹ;
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    اگر (نسخہ.مقصد_int () >= 0x00010004u && markGlyphSetsDef2) واپس سچ;
+#اگر_ختم
+    واپس markGlyphSetsDef != 0;
   }
-  const MarkGlyphSets &get_mark_glyph_sets () const
+  ثابت MarkGlyphSets &get_mark_glyph_sets () ثابت
   {
-    if (version.to_int () < 0x00010002u) return Null(MarkGlyphSets);
-#ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && markGlyphSetsDef2) return this+markGlyphSetsDef2;
-#endif
-    return this+markGlyphSetsDef;
+    اگر (نسخہ.مقصد_int () < 0x00010002u) واپس Null(MarkGlyphSets);
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    اگر (نسخہ.مقصد_int () >= 0x00010004u && markGlyphSetsDef2) واپس یہ+markGlyphSetsDef2;
+#اگر_ختم
+    واپس یہ+markGlyphSetsDef;
   }
-  bool has_var_store () const
+  منطقی has_var_store () ثابت
   {
-    return version.to_int () >= 0x00010003u && hb_barrier () && varStore != 0;
+    واپس نسخہ.مقصد_int () >= 0x00010003u && hb_barrier () && varStore != 0;
   }
-  const ItemVariationStore &get_var_store () const
+  ثابت شے_Variation_Store &get_var_store () ثابت
   {
-    return version.to_int () >= 0x00010003u && hb_barrier () ? this+varStore : Null(ItemVariationStore);
+    واپس نسخہ.مقصد_int () >= 0x00010003u && hb_barrier () ? یہ+varStore : Null(شے_Variation_Store);
   }
 
 
-  bool has_data () const { return version.to_int (); }
-  unsigned int get_glyph_class (hb_codepoint_t glyph) const
-  { return get_glyph_class_def ().get_class (glyph); }
-  void get_glyphs_in_class (unsigned int klass, hb_set_t *glyphs) const
+  منطقی has_ڈیٹا () ثابت { واپس نسخہ.مقصد_int (); }
+  غیرعلامتی صحیح get_glyph_class (hb_codepoint_t glyph) ثابت
+  { واپس get_glyph_class_def ().get_class (glyph); }
+  خالی get_glyphs_اندر_class (غیرعلامتی صحیح klass, hb_سیٹ_t *glyphs) ثابت
   { get_glyph_class_def ().collect_class (glyphs, klass); }
 
-  unsigned int get_mark_attachment_type (hb_codepoint_t glyph) const
-  { return get_mark_attach_class_def ().get_class (glyph); }
+  غیرعلامتی صحیح get_mark_attachment_type (hb_codepoint_t glyph) ثابت
+  { واپس get_mark_attach_class_def ().get_class (glyph); }
 
-  unsigned int get_attach_points (hb_codepoint_t glyph_id,
-				  unsigned int start_offset,
-				  unsigned int *point_count /* IN/OUT */,
-				  unsigned int *point_array /* OUT */) const
-  { return get_attach_list ().get_attach_points (glyph_id, start_offset, point_count, point_array); }
+  غیرعلامتی صحیح get_attach_points (hb_codepoint_t glyph_id,
+				  غیرعلامتی صحیح آغاز_انحراف,
+				  غیرعلامتی صحیح *نقطہ_گنتی /* IN/OUT */,
+				  غیرعلامتی صحیح *نقطہ_array /*برآمد*/) ثابت
+  { واپس get_attach_list ().get_attach_points (glyph_id, آغاز_انحراف, نقطہ_گنتی, نقطہ_array); }
 
-  unsigned int get_lig_carets (hb_font_t *font,
+  غیرعلامتی صحیح get_lig_carets (hb_font_t *font,
 			       hb_direction_t direction,
 			       hb_codepoint_t glyph_id,
-			       unsigned int start_offset,
-			       unsigned int *caret_count /* IN/OUT */,
-			       hb_position_t *caret_array /* OUT */) const
+			       غیرعلامتی صحیح آغاز_انحراف,
+			       غیرعلامتی صحیح *caret_گنتی /* IN/OUT */,
+			       hb_position_t *caret_array /*برآمد*/) ثابت
   {
-#ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && ligCaretList2)
-      return (this+ligCaretList2).get_lig_carets (font, direction, glyph_id, get_var_store (),
-						  start_offset, caret_count, caret_array);
-#endif
-    return (this+ligCaretList).get_lig_carets (font, direction, glyph_id, get_var_store (),
-					       start_offset, caret_count, caret_array);
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    اگر (نسخہ.مقصد_int () >= 0x00010004u && ligCaretList2)
+      واپس (یہ+ligCaretList2).get_lig_carets (font, direction, glyph_id, get_var_store (),
+						  آغاز_انحراف, caret_گنتی, caret_array);
+#اگر_ختم
+    واپس (یہ+ligCaretList).get_lig_carets (font, direction, glyph_id, get_var_store (),
+					       آغاز_انحراف, caret_گنتی, caret_array);
   }
 
-  bool mark_set_covers (unsigned int set_index, hb_codepoint_t glyph_id) const
-  { return get_mark_glyph_sets ().covers (set_index, glyph_id); }
+  منطقی mark_سیٹ_covers (غیرعلامتی صحیح سیٹ_اشاریہ, hb_codepoint_t glyph_id) ثابت
+  { واپس get_mark_glyph_sets ().covers (سیٹ_اشاریہ, glyph_id); }
 
   /* glyph_props is a 16-bit integer where the lower 8-bit have bits representing
    * glyph class and other bits, and high 8-bit the mark attachment type (if any).
    * Not to be confused with lookup_props which is very similar. */
-  unsigned int get_glyph_props (hb_codepoint_t glyph) const
+  غیرعلامتی صحیح get_glyph_props (hb_codepoint_t glyph) ثابت
   {
-    unsigned int klass = get_glyph_class (glyph);
+    غیرعلامتی صحیح klass = get_glyph_class (glyph);
 
-    static_assert (((unsigned int) HB_OT_LAYOUT_GLYPH_PROPS_BASE_GLYPH == (unsigned int) LookupFlag::IgnoreBaseGlyphs), "");
-    static_assert (((unsigned int) HB_OT_LAYOUT_GLYPH_PROPS_LIGATURE == (unsigned int) LookupFlag::IgnoreLigatures), "");
-    static_assert (((unsigned int) HB_OT_LAYOUT_GLYPH_PROPS_MARK == (unsigned int) LookupFlag::IgnoreMarks), "");
+    static_assert (((غیرعلامتی صحیح) HB_OT_LAYOUT_GLYPH_PROPS_بنیاد_GLYPH == (غیرعلامتی صحیح) LookupFlag::Ignore_بنیاد_Glyphs), "");
+    static_assert (((غیرعلامتی صحیح) HB_OT_LAYOUT_GLYPH_PROPS_LIGATURE == (غیرعلامتی صحیح) LookupFlag::IgnoreLigatures), "");
+    static_assert (((غیرعلامتی صحیح) HB_OT_LAYOUT_GLYPH_PROPS_MARK == (غیرعلامتی صحیح) LookupFlag::IgnoreMarks), "");
 
-    switch (klass) {
-    default:			return HB_OT_LAYOUT_GLYPH_CLASS_UNCLASSIFIED;
-    case BaseGlyph:		return HB_OT_LAYOUT_GLYPH_PROPS_BASE_GLYPH;
-    case LigatureGlyph:		return HB_OT_LAYOUT_GLYPH_PROPS_LIGATURE;
-    case MarkGlyph:
+    انتخاب (klass) {
+    طےشدہ:			واپس HB_OT_LAYOUT_GLYPH_CLASS_UNCLASSIFIED;
+    حالت بنیاد_Glyph:		واپس HB_OT_LAYOUT_GLYPH_PROPS_بنیاد_GLYPH;
+    حالت LigatureGlyph:		واپس HB_OT_LAYOUT_GLYPH_PROPS_LIGATURE;
+    حالت MarkGlyph:
 	  klass = get_mark_attachment_type (glyph);
-	  return HB_OT_LAYOUT_GLYPH_PROPS_MARK | (klass << 8);
+	  واپس HB_OT_LAYOUT_GLYPH_PROPS_MARK | (klass << 8);
     }
   }
 
-  HB_INTERNAL bool is_blocklisted (hb_blob_t *blob,
-				   hb_face_t *face) const;
+  HB_اندرونی منطقی is_blocklisted (hb_blob_t *blob,
+				   hb_face_t *face) ثابت;
 
-  struct accelerator_t
+  ساخت accelerator_t
   {
     accelerator_t (hb_face_t *face)
     {
-      table = hb_sanitize_context_t ().reference_table<GDEF> (face);
-      if (unlikely (table->is_blocklisted (table.get_blob (), face)))
+      جدول = hb_sanitize_context_t ().reference_جدول<GDEF> (face);
+      اگر (unlikely (جدول->is_blocklisted (جدول.get_blob (), face)))
       {
-	hb_blob_destroy (table.get_blob ());
-	table = hb_blob_get_empty ();
+	hb_blob_destroy (جدول.get_blob ());
+	جدول = hb_blob_get_خالی_خانے ();
       }
 
-#ifndef HB_NO_GDEF_CACHE
+#اگر_غیر_تعریف_شدہ HB_NO_GDEF_CACHE
       /* Flatten each mark set whose glyphs span fewer than PAGE_BITS
        * gids into a single bit-page biased at its first glyph, for
        * O(1) exact answers.  Wider sets, or on allocation failure,
        * fall back to the table. */
       {
-	hb_vector_t<hb_set_t> sets;
-	table->get_mark_glyph_sets ().collect_coverage (sets);
-	if (!sets.in_error () &&
-	    mark_glyph_set_bitmaps.resize (sets.length))
-	  for (unsigned i = 0; i < sets.length; i++)
+	hb_سمتیہ_t<hb_سیٹ_t> sets;
+	جدول->get_mark_glyph_sets ().collect_coverage (sets);
+	اگر (!sets.اندر_error () &&
+	    mark_glyph_سیٹ_bitmaps.resize (sets.لمبائی))
+	  برائے (غیرعلامتی i = 0; i < sets.لمبائی; i++)
 	  {
-	    auto &bitmap = mark_glyph_set_bitmaps.arrayZ[i];
-	    bitmap.bias = HB_SET_VALUE_INVALID;
-	    const auto &set = sets.arrayZ[i];
-	    if (unlikely (set.in_error ())) continue;
-	    hb_codepoint_t min_gid = HB_SET_VALUE_INVALID;
-	    hb_codepoint_t max_gid = HB_SET_VALUE_INVALID;
-	    hb_set_next (&set, &min_gid);
-	    hb_set_previous (&set, &max_gid);
-	    if (max_gid == HB_SET_VALUE_INVALID)
-	      continue;
-	    if (max_gid - min_gid >= hb_bit_page_t::PAGE_BITS)
+	    خودکار &bitmap = mark_glyph_سیٹ_bitmaps.arrayZ[i];
+	    bitmap.bias = HB_سیٹ_قدر_INVALID;
+	    ثابت خودکار &سیٹ = sets.arrayZ[i];
+	    اگر (unlikely (سیٹ.اندر_error ())) جاری;
+	    hb_codepoint_t min_gid = HB_سیٹ_قدر_INVALID;
+	    hb_codepoint_t max_gid = HB_سیٹ_قدر_INVALID;
+	    hb_سیٹ_اگلا (&سیٹ, &min_gid);
+	    hb_سیٹ_پچھلا (&سیٹ, &max_gid);
+	    اگر (max_gid == HB_سیٹ_قدر_INVALID)
+	      جاری;
+	    اگر (max_gid - min_gid >= hb_ثنائی_ہندسہ_صفحہ_t::صفحہ_بٹ)
 	    {
 	      /* Too wide for one page; a digest pre-filter instead. */
-	      for (hb_codepoint_t gid : set)
-		bitmap.u.digest.add (gid);
-	      continue;
+	      برائے (hb_codepoint_t gid : سیٹ)
+		bitmap.u.digest.جوڑو (gid);
+	      جاری;
 	    }
 	    bitmap.bias = min_gid;
-	    for (hb_codepoint_t gid : set)
-	      bitmap.u.page.add (gid - min_gid);
+	    برائے (hb_codepoint_t gid : سیٹ)
+	      bitmap.u.صفحہ.جوڑو (gid - min_gid);
 	  }
       }
-#endif
+#اگر_ختم
     }
-    ~accelerator_t () { table.destroy (); }
+    ~accelerator_t () { جدول.destroy (); }
 
-    unsigned int get_glyph_props (hb_codepoint_t glyph) const
+    غیرعلامتی صحیح get_glyph_props (hb_codepoint_t glyph) ثابت
     {
-      unsigned v;
+      غیرعلامتی v;
 
-#ifndef HB_NO_GDEF_CACHE
-      if (glyph_props_cache.get (glyph, &v))
-        return v;
-#endif
+#اگر_غیر_تعریف_شدہ HB_NO_GDEF_CACHE
+      اگر (glyph_props_cache.get (glyph, &v))
+        واپس v;
+#اگر_ختم
 
-      v = table->get_glyph_props (glyph);
+      v = جدول->get_glyph_props (glyph);
 
-#ifndef HB_NO_GDEF_CACHE
-      if (likely (table.get_blob ())) // Don't try setting if we are the null instance!
-	glyph_props_cache.set (glyph, v);
-#endif
+#اگر_غیر_تعریف_شدہ HB_NO_GDEF_CACHE
+      اگر (likely (جدول.get_blob ())) // Don't try setting if we are the null instance!
+	glyph_props_cache.سیٹ (glyph, v);
+#اگر_ختم
 
-      return v;
+      واپس v;
 
     }
 
     HB_ALWAYS_INLINE
-    bool mark_set_covers (unsigned int set_index, hb_codepoint_t glyph_id) const
+    منطقی mark_سیٹ_covers (غیرعلامتی صحیح سیٹ_اشاریہ, hb_codepoint_t glyph_id) ثابت
     {
-#ifndef HB_NO_GDEF_CACHE
+#اگر_غیر_تعریف_شدہ HB_NO_GDEF_CACHE
       // We can access arrayZ directly because of sanitize_lookup_props() guarantee.
-      const auto &bitmap = mark_glyph_set_bitmaps.arrayZ[set_index];
-      if (likely (bitmap.bias != HB_SET_VALUE_INVALID))
+      ثابت خودکار &bitmap = mark_glyph_سیٹ_bitmaps.arrayZ[سیٹ_اشاریہ];
+      اگر (likely (bitmap.bias != HB_سیٹ_قدر_INVALID))
       {
 	hb_codepoint_t biased = glyph_id - bitmap.bias;
-	return biased < hb_bit_page_t::PAGE_BITS &&
-	       bitmap.u.page.get (biased);
+	واپس biased < hb_ثنائی_ہندسہ_صفحہ_t::صفحہ_بٹ &&
+	       bitmap.u.صفحہ.get (biased);
       }
-      return mark_set_covers_slow (set_index, glyph_id);
-#else
-      return table->mark_set_covers (set_index, glyph_id);
-#endif
+      واپس mark_سیٹ_covers_slow (سیٹ_اشاریہ, glyph_id);
+#ورنہ
+      واپس جدول->mark_سیٹ_covers (سیٹ_اشاریہ, glyph_id);
+#اگر_ختم
     }
 
-#ifndef HB_NO_GDEF_CACHE
+#اگر_غیر_تعریف_شدہ HB_NO_GDEF_CACHE
     HB_NEVER_INLINE
-    bool mark_set_covers_slow (unsigned int set_index, hb_codepoint_t glyph_id) const
+    منطقی mark_سیٹ_covers_slow (غیرعلامتی صحیح سیٹ_اشاریہ, hb_codepoint_t glyph_id) ثابت
     {
-      const auto &bitmap = mark_glyph_set_bitmaps.arrayZ[set_index];
-      if (!bitmap.u.digest.may_have (glyph_id))
-	return false;
-      return table->mark_set_covers (set_index, glyph_id);
+      ثابت خودکار &bitmap = mark_glyph_سیٹ_bitmaps.arrayZ[سیٹ_اشاریہ];
+      اگر (!bitmap.u.digest.may_have (glyph_id))
+	واپس جھوٹ;
+      واپس جدول->mark_سیٹ_covers (سیٹ_اشاریہ, glyph_id);
     }
-#endif
+#اگر_ختم
 
-    unsigned sanitize_lookup_props (unsigned lookup_props) const
+    غیرعلامتی sanitize_lookup_props (غیرعلامتی lookup_props) ثابت
     {
-#ifndef HB_NO_GDEF_CACHE
-      if (lookup_props & LookupFlag::UseMarkFilteringSet &&
-	  (lookup_props >> 16) >= mark_glyph_set_bitmaps.length)
+#اگر_غیر_تعریف_شدہ HB_NO_GDEF_CACHE
+      اگر (lookup_props & LookupFlag::Use_Mark_Filtering_سیٹ &&
+	  (lookup_props >> 16) >= mark_glyph_سیٹ_bitmaps.لمبائی)
       {
         // Invalid mark filtering set index; unset the flag.
-	lookup_props &= ~LookupFlag::UseMarkFilteringSet;
+	lookup_props &= ~LookupFlag::Use_Mark_Filtering_سیٹ;
       }
-#endif
-      return lookup_props;
+#اگر_ختم
+      واپس lookup_props;
     }
 
-    hb_blob_ptr_t<GDEF> table;
-#ifndef HB_NO_GDEF_CACHE
-    struct mark_glyph_set_bitmap_t
+    hb_blob_ptr_t<GDEF> جدول;
+#اگر_غیر_تعریف_شدہ HB_NO_GDEF_CACHE
+    ساخت mark_glyph_سیٹ_bitmap_t
     {
       /* Gid of the first bit (not page-aligned) for an exact one-page
        * set, or HB_SET_VALUE_INVALID; then digest is a pre-filter for
        * the table.  The all-zeros state is valid for both members. */
-      hb_codepoint_t bias = HB_SET_VALUE_INVALID;
-      union u_t {
-	u_t () : page () {}
-	hb_bit_page_t page;
-	hb_set_digest_t digest;
+      hb_codepoint_t bias = HB_سیٹ_قدر_INVALID;
+      اتحاد u_t {
+	u_t () : صفحہ () {}
+	hb_ثنائی_ہندسہ_صفحہ_t صفحہ;
+	hb_سیٹ_digest_t digest;
       } u;
     };
 
-    hb_vector_t<mark_glyph_set_bitmap_t> mark_glyph_set_bitmaps;
-    mutable hb_cache_t<21, 3> glyph_props_cache;
-    static_assert (sizeof (glyph_props_cache) == 512, "");
-#endif
+    hb_سمتیہ_t<mark_glyph_سیٹ_bitmap_t> mark_glyph_سیٹ_bitmaps;
+    تغیرپذیر hb_cache_t<21, 3> glyph_props_cache;
+    static_assert (حجم (glyph_props_cache) == 512, "");
+#اگر_ختم
   };
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  خالی collect_variation_indices (hb_collect_variation_indices_context_t *c) ثابت
   {
-#ifndef HB_NO_BEYOND_64K
-    if (version.to_int () >= 0x00010004u && ligCaretList2)
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    اگر (نسخہ.مقصد_int () >= 0x00010004u && ligCaretList2)
     {
-      (this+ligCaretList2).collect_variation_indices (c);
-      return;
+      (یہ+ligCaretList2).collect_variation_indices (c);
+      واپس;
     }
-#endif
-    (this+ligCaretList).collect_variation_indices (c);
+#اگر_ختم
+    (یہ+ligCaretList).collect_variation_indices (c);
   }
 
-  protected:
-  template <typename Key>
-  static void remap_varidx_after_instantiation (const hb_map_t& varidx_map,
-                                                hb_hashmap_t<Key, hb_pair_t<unsigned, int>>& layout_variation_idx_delta_map /* IN/OUT */)
+  محفوظ:
+  سانچہ <قسم_نام کلید>
+  ساکن خالی remap_varidx_after_instantiation (ثابت hb_map_t& varidx_map,
+                                                hb_hashmap_t<کلید, hb_pair_t<غیرعلامتی, صحیح>>& layout_variation_idx_delta_map /* IN/OUT */)
   {
     /* varidx_map is empty which means varstore is empty after instantiation,
      * no variations, map all varidx to HB_OT_LAYOUT_NO_VARIATIONS_INDEX.
      * varidx_map doesn't have original varidx, indicating delta row is all
      * zeros, map varidx to HB_OT_LAYOUT_NO_VARIATIONS_INDEX */
-    for (auto _ : layout_variation_idx_delta_map.iter_ref ())
+    برائے (خودکار _ : layout_variation_idx_delta_map.iter_ref ())
     {
       /* old_varidx->(varidx, delta) mapping generated for subsetting, then this
        * varidx is used as key of varidx_map during instantiation */
-      uint32_t varidx = _.second.first;
+      uint32_t varidx = _.second.پہلا;
       uint32_t *new_varidx;
-      if (varidx_map.has (varidx, &new_varidx))
-	_.second.first = *new_varidx;
-      else
-	_.second.first = HB_OT_LAYOUT_NO_VARIATIONS_INDEX;
+      اگر (varidx_map.has (varidx, &new_varidx))
+	_.second.پہلا = *new_varidx;
+      ورنہ
+	_.second.پہلا = HB_OT_LAYOUT_NO_VARIATIONS_اشاریہ;
     }
   }
 
-  template <typename OffsetOut, typename OffsetIn, typename Base, typename ...Ts>
-  static bool serialize_subset_offset (hb_subset_context_t *c,
-				       OffsetOut& out,
-				       const OffsetIn& in,
-				       const Base *base,
+  سانچہ <قسم_نام انحراف_برآمد, قسم_نام انحراف_اندر, قسم_نام بنیاد_3, قسم_نام ...Ts>
+  ساکن منطقی serialize_subset_انحراف (hb_subset_context_t *c,
+				       انحراف_برآمد& برآمد,
+				       ثابت انحراف_اندر& اندر,
+				       ثابت بنیاد_3 *بنیاد,
 				       Ts&&... ds)
   {
-    out = 0;
-    if (in.is_null ()) return false;
+    برآمد = 0;
+    اگر (اندر.is_null ()) واپس جھوٹ;
 
-    auto *s = c->serializer;
+    خودکار *s = c->serializer;
     s->push ();
-    bool ret = c->dispatch (base+in, std::forward<Ts> (ds)...);
-    if (ret) s->add_link (out, s->pop_pack ());
-    else s->pop_discard ();
-    return ret;
+    منطقی ret = c->dispatch (بنیاد+اندر, std::forward<Ts> (ds)...);
+    اگر (ret) s->جوڑو_link (برآمد, s->نکالو_pack ());
+    ورنہ s->نکالو_discard ();
+    واپس ret;
   }
 
-  FixedVersion<>version;		/* Version of the GDEF table--currently
+  Fixed_نسخہ<>نسخہ;		/* Version of the GDEF table--currently
 					 * 0x00010004u */
-  Offset16To<ClassDef>
+  Offset16_مقصد<ClassDef>
 		glyphClassDef;		/* Offset to class definition table
 					 * for glyph type--from beginning of
 					 * GDEF header (may be Null) */
-  Offset16To<AttachList>
+  Offset16_مقصد<AttachList>
 		attachList;		/* Offset to list of glyphs with
 					 * attachment points--from beginning
 					 * of GDEF header (may be Null) */
-  Offset16To<LigCaretList<SmallTypes>>
+  Offset16_مقصد<LigCaretList<SmallTypes>>
 		ligCaretList;		/* Offset to list of positioning points
 					 * for ligature carets--from beginning
 					 * of GDEF header (may be Null) */
-  Offset16To<ClassDef>
+  Offset16_مقصد<ClassDef>
 		markAttachClassDef;	/* Offset to class definition table for
 					 * mark attachment type--from beginning
 					 * of GDEF header (may be Null) */
-  Offset16To<MarkGlyphSets>
+  Offset16_مقصد<MarkGlyphSets>
 		markGlyphSetsDef;	/* Offset to the table of mark set
 					 * definitions--from beginning of GDEF
 					 * header (may be NULL).  Introduced
 					 * in version 0x00010002. */
-  Offset32To<ItemVariationStore>
+  Offset32_مقصد<شے_Variation_Store>
 		varStore;		/* Offset to the table of Item Variation
 					 * Store--from beginning of GDEF
 					 * header (may be NULL).  Introduced
 					 * in version 0x00010003. */
-#ifndef HB_NO_BEYOND_64K
-  Offset32To<ClassDef>
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+  Offset32_مقصد<ClassDef>
 		glyphClassDef2;		/* 32-bit offset to class definition
 					 * table for glyph type.  Introduced
 					 * in version 0x00010004. */
-  Offset32To<AttachList>
+  Offset32_مقصد<AttachList>
 		attachList2;		/* 32-bit offset to list of glyphs
 					 * with attachment points.  Introduced
 					 * in version 0x00010004. */
-  Offset32To<LigCaretList<MediumTypes>>
+  Offset32_مقصد<LigCaretList<MediumTypes>>
 		ligCaretList2;		/* 32-bit offset to LigCaretList2.
 					 * Introduced in version 0x00010004. */
-  Offset32To<ClassDef>
+  Offset32_مقصد<ClassDef>
 		markAttachClassDef2;	/* 32-bit offset to class definition
 					 * table for mark attachment type.
 					 * Introduced in version 0x00010004. */
-  Offset32To<MarkGlyphSets>
+  Offset32_مقصد<MarkGlyphSets>
 		markGlyphSetsDef2;	/* 32-bit offset to the table of mark
 					 * set definitions.  Introduced in
 					 * version 0x00010004. */
-#endif
-  public:
-  DEFINE_SIZE_MIN (12);
+#اگر_ختم
+  عوامی:
+  DEFINE_سائز_MIN (12);
 };
 
-struct GDEF_accelerator_t : GDEF::accelerator_t {
+ساخت GDEF_accelerator_t : GDEF::accelerator_t {
   GDEF_accelerator_t (hb_face_t *face) : GDEF::accelerator_t (face) {}
 };
 
 } /* namespace OT */
 
 
-#endif /* OT_LAYOUT_GDEF_GDEF_HH */
+#اگر_ختم /* OT_LAYOUT_GDEF_GDEF_HH */

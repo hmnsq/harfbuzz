@@ -1,165 +1,165 @@
-#ifndef OT_LAYOUT_GSUB_SEQUENCE_HH
-#define OT_LAYOUT_GSUB_SEQUENCE_HH
+#اگر_غیر_تعریف_شدہ OT_LAYOUT_GSUB_SEQUENCE_HH
+#تعریف_کرو OT_LAYOUT_GSUB_SEQUENCE_HH
 
-#include "Common.hh"
+#شامل "Common.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+نامخلا OT {
+نامخلا Layout {
+نامخلا GSUB_impl {
 
-template <typename Types>
-struct Sequence
+سانچہ <قسم_نام Types>
+ساخت Sequence
 {
-  protected:
-  Array16Of<typename Types::HBGlyphID>
+  محفوظ:
+  Array16_کا<قسم_نام Types::HBGlyphID>
                 substitute;             /* String of GlyphIDs to substitute */
-  public:
-  DEFINE_SIZE_ARRAY (2, substitute);
+  عوامی:
+  DEFINE_سائز_ARRAY (2, substitute);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (یہ);
     return_trace (substitute.sanitize (c));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
-  { return hb_all (substitute, glyphs); }
+  منطقی intersects (ثابت hb_سیٹ_t *glyphs) ثابت
+  { واپس hb_all (substitute, glyphs); }
 
-  void closure (hb_closure_context_t *c) const
-  { c->output->add_array (substitute.arrayZ, substitute.len); }
+  خالی احاطہ (hb_احاطہ_context_t *c) ثابت
+  { c->output->جوڑو_array (substitute.arrayZ, substitute.len); }
 
-  void depend (hb_depend_context_t *c, hb_codepoint_t source) const
+  خالی depend (hb_depend_context_t *c, hb_codepoint_t ماخذ) ثابت
   {
     + hb_iter (substitute)
-    | hb_apply ([&] (const hb_codepoint_t &target) { c->depend_data->add_gsub_lookup (source, c->lookup_index, target); })
+    | hb_apply ([&] (ثابت hb_codepoint_t &target) { c->depend_ڈیٹا->جوڑو_gsub_lookup (ماخذ, c->lookup_اشاریہ, target); })
     ;
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
-  { c->output->add_array (substitute.arrayZ, substitute.len); }
+  خالی collect_glyphs (hb_collect_glyphs_context_t *c) ثابت
+  { c->output->جوڑو_array (substitute.arrayZ, substitute.len); }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  منطقی apply (hb_ot_apply_context_t *c) ثابت
   {
-    TRACE_APPLY (this);
-    unsigned int count = substitute.len;
+    TRACE_APPLY (یہ);
+    غیرعلامتی صحیح گنتی = substitute.len;
 
     /* Special-case to make it in-place and not consider this
      * as a "multiplied" substitution. */
-    if (unlikely (count == 1))
+    اگر (unlikely (گنتی == 1))
     {
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      اگر (HB_بفر_پیغام_مزید && c->بفر->messaging ())
       {
-	c->buffer->sync_so_far ();
-	c->buffer->message (c->font,
+	c->بفر->sync_so_far ();
+	c->بفر->پیغام (c->font,
 			    "replacing glyph at %u (multiple substitution)",
-			    c->buffer->idx);
+			    c->بفر->idx);
       }
 
       c->replace_glyph (substitute.arrayZ[0]);
 
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      اگر (HB_بفر_پیغام_مزید && c->بفر->messaging ())
       {
-	c->buffer->message (c->font,
+	c->بفر->پیغام (c->font,
 			    "replaced glyph at %u (multiple substitution)",
-			    c->buffer->idx - 1u);
+			    c->بفر->idx - 1u);
       }
 
-      return_trace (true);
+      return_trace (سچ);
     }
     /* Spec disallows this, but Uniscribe allows it.
      * https://github.com/harfbuzz/harfbuzz/issues/253 */
-    else if (unlikely (count == 0))
+    ورنہ اگر (unlikely (گنتی == 0))
     {
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      اگر (HB_بفر_پیغام_مزید && c->بفر->messaging ())
       {
-	c->buffer->sync_so_far ();
-	c->buffer->message (c->font,
+	c->بفر->sync_so_far ();
+	c->بفر->پیغام (c->font,
 			    "deleting glyph at %u (multiple substitution)",
-			    c->buffer->idx);
+			    c->بفر->idx);
       }
 
-      c->buffer->delete_glyph ();
+      c->بفر->delete_glyph ();
 
-      if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+      اگر (HB_بفر_پیغام_مزید && c->بفر->messaging ())
       {
-	c->buffer->sync_so_far ();
-	c->buffer->message (c->font,
+	c->بفر->sync_so_far ();
+	c->بفر->پیغام (c->font,
 			    "deleted glyph at %u (multiple substitution)",
-			    c->buffer->idx);
+			    c->بفر->idx);
       }
 
-      return_trace (true);
+      return_trace (سچ);
     }
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    اگر (HB_بفر_پیغام_مزید && c->بفر->messaging ())
     {
-      c->buffer->sync_so_far ();
-      c->buffer->message (c->font,
+      c->بفر->sync_so_far ();
+      c->بفر->پیغام (c->font,
 			  "multiplying glyph at %u",
-			  c->buffer->idx);
+			  c->بفر->idx);
     }
 
-    unsigned int klass = _hb_glyph_info_is_ligature (&c->buffer->cur()) ?
-                         HB_OT_LAYOUT_GLYPH_PROPS_BASE_GLYPH : 0;
-    unsigned lig_id = _hb_glyph_info_get_lig_id (&c->buffer->cur());
+    غیرعلامتی صحیح klass = _hb_glyph_info_is_ligature (&c->بفر->cur()) ?
+                         HB_OT_LAYOUT_GLYPH_PROPS_بنیاد_GLYPH : 0;
+    غیرعلامتی lig_id = _hb_glyph_info_get_lig_id (&c->بفر->cur());
 
-    for (unsigned int i = 0; i < count; i++)
+    برائے (غیرعلامتی صحیح i = 0; i < گنتی; i++)
     {
       /* If is attached to a ligature, don't disturb that.
        * https://github.com/harfbuzz/harfbuzz/issues/3069 */
-      if (!lig_id)
-        _hb_glyph_info_set_lig_props_for_component (&c->buffer->cur(), i);
+      اگر (!lig_id)
+        hb_glyph_info_سیٹ_lig_props_for_component (&c->بفر->cur(), i);
       c->output_glyph_for_component (substitute.arrayZ[i], klass);
     }
-    c->buffer->skip_glyph ();
+    c->بفر->skip_glyph ();
 
-    if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+    اگر (HB_بفر_پیغام_مزید && c->بفر->messaging ())
     {
-      c->buffer->sync_so_far ();
+      c->بفر->sync_so_far ();
 
-      char buf[HB_MAX_CONTEXT_LENGTH * 16] = {0};
-      char *p = buf;
+      حرف buf[HB_MAX_CONTEXT_لمبائی * 16] = {0};
+      حرف *p = buf;
 
-      for (unsigned i = c->buffer->idx - count; i < c->buffer->idx; i++)
+      برائے (غیرعلامتی i = c->بفر->idx - گنتی; i < c->بفر->idx; i++)
       {
-	if (buf < p && sizeof(buf) - 1u > unsigned (p - buf))
+	اگر (buf < p && حجم(buf) - 1u > غیرعلامتی (p - buf))
 	  *p++ = ',';
-	snprintf (p, sizeof(buf) - (p - buf), "%u", i);
-	p += strlen(p);
+	snprintf (p, حجم(buf) - (p - buf), "%u", i);
+	p += لڑی_لمبائی(p);
       }
 
-      c->buffer->message (c->font,
+      c->بفر->پیغام (c->font,
 			  "multiplied glyphs at %s",
 			  buf);
     }
 
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  template <typename Iterator,
-            hb_requires (hb_is_source_of (Iterator, hb_codepoint_t))>
-  bool serialize (hb_serialize_context_t *c,
+  سانچہ <قسم_نام Iterator,
+            hb_requires (hb_is_ماخذ_کا (Iterator, hb_codepoint_t))>
+  منطقی serialize (hb_serialize_context_t *c,
                   Iterator subst)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (یہ);
     return_trace (substitute.serialize (c, subst));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (یہ);
+    ثابت hb_سیٹ_t &glyphset = *c->plan->glyphset_gsub ();
+    ثابت hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    if (!intersects (&glyphset)) return_trace (false);
+    اگر (!intersects (&glyphset)) return_trace (جھوٹ);
 
-    auto it =
+    خودکار it =
     + hb_iter (substitute)
     | hb_map (glyph_map)
     ;
 
-    auto *out = c->serializer->start_embed (*this);
-    return_trace (out->serialize (c->serializer, it));
+    خودکار *برآمد = c->serializer->آغاز_embed (*یہ);
+    return_trace (برآمد->serialize (c->serializer, it));
   }
 };
 
@@ -169,4 +169,4 @@ struct Sequence
 }
 
 
-#endif /* OT_LAYOUT_GSUB_SEQUENCE_HH */
+#اگر_ختم /* OT_LAYOUT_GSUB_SEQUENCE_HH */

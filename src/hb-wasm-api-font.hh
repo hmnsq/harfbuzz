@@ -22,15 +22,15 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_WASM_API_FONT_HH
-#define HB_WASM_API_FONT_HH
+#اگر_غیر_تعریف_شدہ HB_WASM_API_FONT_HH
+#تعریف_کرو HB_WASM_API_FONT_HH
 
-#include "hb-wasm-api.hh"
+#شامل "hb-wasm-api.hh"
 
-#include "hb-outline.hh"
+#شامل "hb-outline.hh"
 
-namespace hb {
-namespace wasm {
+نامخلا hb {
+نامخلا wasm {
 
 
 HB_WASM_API (ptr_t(font_t), font_create) (HB_WASM_EXEC_ENV
@@ -41,7 +41,7 @@ HB_WASM_API (ptr_t(font_t), font_create) (HB_WASM_EXEC_ENV
   hb_font_t *font = hb_font_create (face);
 
   HB_OBJ2REF (font);
-  return fontref;
+  واپس fontref;
 }
 
 HB_WASM_API (ptr_t(face_t), font_get_face) (HB_WASM_EXEC_ENV
@@ -52,10 +52,10 @@ HB_WASM_API (ptr_t(face_t), font_get_face) (HB_WASM_EXEC_ENV
   hb_face_t *face = hb_font_get_face (font);
 
   HB_OBJ2REF (face);
-  return faceref;
+  واپس faceref;
 }
 
-HB_WASM_API (void, font_get_scale) (HB_WASM_EXEC_ENV
+HB_WASM_API (خالی, font_get_scale) (HB_WASM_EXEC_ENV
 				    ptr_d(font_t, font),
 				    ptr_d(int32_t, x_scale),
 				    ptr_d(int32_t, y_scale))
@@ -77,7 +77,7 @@ HB_WASM_API (codepoint_t, font_get_glyph) (HB_WASM_EXEC_ENV
   codepoint_t glyph;
 
   hb_font_get_glyph (font, unicode, variation_selector, &glyph);
-  return glyph;
+  واپس glyph;
 }
 
 HB_WASM_API (position_t, font_get_glyph_h_advance) (HB_WASM_EXEC_ENV
@@ -85,7 +85,7 @@ HB_WASM_API (position_t, font_get_glyph_h_advance) (HB_WASM_EXEC_ENV
 						    codepoint_t glyph)
 {
   HB_REF2OBJ (font);
-  return hb_font_get_glyph_h_advance (font, glyph);
+  واپس hb_font_get_glyph_h_advance (font, glyph);
 }
 
 HB_WASM_API (position_t, font_get_glyph_v_advance) (HB_WASM_EXEC_ENV
@@ -93,10 +93,10 @@ HB_WASM_API (position_t, font_get_glyph_v_advance) (HB_WASM_EXEC_ENV
 						    codepoint_t glyph)
 {
   HB_REF2OBJ (font);
-  return hb_font_get_glyph_v_advance (font, glyph);
+  واپس hb_font_get_glyph_v_advance (font, glyph);
 }
 
-static_assert (sizeof (glyph_extents_t) == sizeof (hb_glyph_extents_t), "");
+static_assert (حجم (glyph_extents_t) == حجم (hb_glyph_extents_t), "");
 
 HB_WASM_API (bool_t, font_get_glyph_extents) (HB_WASM_EXEC_ENV
 					      ptr_d(font_t, font),
@@ -105,28 +105,28 @@ HB_WASM_API (bool_t, font_get_glyph_extents) (HB_WASM_EXEC_ENV
 {
   HB_REF2OBJ (font);
   HB_PTR_PARAM (glyph_extents_t, extents);
-  if (unlikely (!extents))
-    return false;
+  اگر (unlikely (!extents))
+    واپس جھوٹ;
 
-  return hb_font_get_glyph_extents (font, glyph,
+  واپس hb_font_get_glyph_extents (font, glyph,
 				    (hb_glyph_extents_t *) extents);
 }
 
-HB_WASM_API (void, font_glyph_to_string) (HB_WASM_EXEC_ENV
+HB_WASM_API (خالی, font_glyph_مقصد_string) (HB_WASM_EXEC_ENV
 					  ptr_d(font_t, font),
 					  codepoint_t glyph,
-					  ptr_d(char, s), uint32_t size)
+					  ptr_d(حرف, s), uint32_t سائز)
 {
   HB_REF2OBJ (font);
-  HB_ARRAY_PARAM (char, s, size);
-  if (unlikely (!s))
-    return;
+  HB_ARRAY_PARAM (حرف, s, سائز);
+  اگر (unlikely (!s))
+    واپس;
 
-  hb_font_glyph_to_string (font, glyph, s, size);
+  hb_font_glyph_مقصد_string (font, glyph, s, سائز);
 }
 
-static_assert (sizeof (glyph_outline_point_t) == sizeof (hb_outline_point_t), "");
-static_assert (sizeof (uint32_t) == sizeof (hb_outline_t::contours[0]), "");
+static_assert (حجم (glyph_outline_نقطہ_t) == حجم (hb_outline_نقطہ_t), "");
+static_assert (حجم (uint32_t) == حجم (hb_outline_t::contours[0]), "");
 
 HB_WASM_API (bool_t, font_copy_glyph_outline) (HB_WASM_EXEC_ENV
 					       ptr_d(font_t, font),
@@ -135,65 +135,65 @@ HB_WASM_API (bool_t, font_copy_glyph_outline) (HB_WASM_EXEC_ENV
 {
   HB_REF2OBJ (font);
   HB_PTR_PARAM (glyph_outline_t, outline);
-  if (unlikely (!outline))
-    return false;
+  اگر (unlikely (!outline))
+    واپس جھوٹ;
 
   hb_outline_t hb_outline;
-  auto *funcs = hb_outline_recording_pen_get_funcs ();
+  خودکار *funcs = hb_outline_recording_pen_get_funcs ();
 
   hb_font_draw_glyph (font, glyph, funcs, &hb_outline);
 
-  if (unlikely (hb_outline.points.in_error () ||
-		hb_outline.contours.in_error ()))
+  اگر (unlikely (hb_outline.points.اندر_error () ||
+		hb_outline.contours.اندر_error ()))
   {
     outline->n_points = outline->n_contours = 0;
-    return false;
+    واپس جھوٹ;
   }
 
   // TODO Check two buffers separately
-  if (hb_outline.points.length <= outline->n_points &&
-      hb_outline.contours.length <= outline->n_contours)
+  اگر (hb_outline.points.لمبائی <= outline->n_points &&
+      hb_outline.contours.لمبائی <= outline->n_contours)
   {
-    glyph_outline_point_t *points = HB_ARRAY_APP2NATIVE (glyph_outline_point_t, outline->points, hb_outline.points.length);
-    uint32_t *contours = HB_ARRAY_APP2NATIVE (uint32_t, outline->contours, hb_outline.contours.length);
+    glyph_outline_نقطہ_t *points = HB_ARRAY_APP2NATIVE (glyph_outline_نقطہ_t, outline->points, hb_outline.points.لمبائی);
+    uint32_t *contours = HB_ARRAY_APP2NATIVE (uint32_t, outline->contours, hb_outline.contours.لمبائی);
 
-    if (unlikely (!points || !contours))
+    اگر (unlikely (!points || !contours))
     {
       outline->n_points = outline->n_contours = 0;
-      return false;
+      واپس جھوٹ;
     }
 
-    hb_memcpy (points, hb_outline.points.arrayZ, hb_outline.points.get_size ());
-    hb_memcpy (contours, hb_outline.contours.arrayZ, hb_outline.contours.get_size ());
+    hb_memcpy (points, hb_outline.points.arrayZ, hb_outline.points.get_سائز ());
+    hb_memcpy (contours, hb_outline.contours.arrayZ, hb_outline.contours.get_سائز ());
 
-    return true;
+    واپس سچ;
   }
 
-  outline->n_points = hb_outline.points.length;
-  outline->points = wasm_runtime_module_dup_data (module_inst,
-						  (const char *) hb_outline.points.arrayZ,
-						  hb_outline.points.get_size ());
-  outline->n_contours = hb_outline.contours.length;
-  outline->contours = wasm_runtime_module_dup_data (module_inst,
-						    (const char *) hb_outline.contours.arrayZ,
-						    hb_outline.contours.get_size ());
+  outline->n_points = hb_outline.points.لمبائی;
+  outline->points = wasm_runtime_module_dup_ڈیٹا (module_inst,
+						  (ثابت حرف *) hb_outline.points.arrayZ,
+						  hb_outline.points.get_سائز ());
+  outline->n_contours = hb_outline.contours.لمبائی;
+  outline->contours = wasm_runtime_module_dup_ڈیٹا (module_inst,
+						    (ثابت حرف *) hb_outline.contours.arrayZ,
+						    hb_outline.contours.get_سائز ());
 
-  if ((outline->n_points && !outline->points) ||
+  اگر ((outline->n_points && !outline->points) ||
       (outline->n_contours && !outline->contours))
   {
     outline->n_points = outline->n_contours = 0;
-    return false;
+    واپس جھوٹ;
   }
 
-  return true;
+  واپس سچ;
 }
 
-HB_WASM_API (void, glyph_outline_free) (HB_WASM_EXEC_ENV
+HB_WASM_API (خالی, glyph_outline_free) (HB_WASM_EXEC_ENV
 					ptr_d(glyph_outline_t, outline))
 {
   HB_PTR_PARAM (glyph_outline_t, outline);
-  if (unlikely (!outline))
-    return;
+  اگر (unlikely (!outline))
+    واپس;
 
   module_free (outline->points);
   module_free (outline->contours);
@@ -210,60 +210,60 @@ HB_WASM_API (bool_t, font_copy_coords) (HB_WASM_EXEC_ENV
 {
   HB_REF2OBJ (font);
   HB_PTR_PARAM (coords_t, coords);
-  if (unlikely (!coords))
-    return false;
+  اگر (unlikely (!coords))
+    واپس جھوٹ;
 
-  unsigned our_length;
-  const int* our_coords = hb_font_get_var_coords_normalized(font, &our_length);
+  غیرعلامتی our_لمبائی;
+  ثابت صحیح* our_coords = hb_font_get_var_coords_normalized(font, &our_لمبائی);
 
-  if (our_length <= coords->length) {
-    int *their_coords = HB_ARRAY_APP2NATIVE (int, coords->coords, our_length);
-    if (unlikely(!their_coords)) {
-    	coords->length = 0;
-    	return false;
+  اگر (our_لمبائی <= coords->لمبائی) {
+    صحیح *their_coords = HB_ARRAY_APP2NATIVE (صحیح, coords->coords, our_لمبائی);
+    اگر (unlikely(!their_coords)) {
+    	coords->لمبائی = 0;
+    	واپس جھوٹ;
     }
-		unsigned bytes = our_length * sizeof (int);
-    hb_memcpy (their_coords, our_coords, bytes);
+		غیرعلامتی بائٹیں = our_لمبائی * حجم (صحیح);
+    hb_memcpy (their_coords, our_coords, بائٹیں);
 
-    return true;
+    واپس سچ;
   }
 
   module_free (coords->coords);
-  coords->length = our_length;
-	unsigned bytes = our_length * sizeof (int);
-  coords->coords = wasm_runtime_module_dup_data (module_inst, (const char *) our_coords, bytes);
-	if (our_length && !coords->coords)
+  coords->لمبائی = our_لمبائی;
+	غیرعلامتی بائٹیں = our_لمبائی * حجم (صحیح);
+  coords->coords = wasm_runtime_module_dup_ڈیٹا (module_inst, (ثابت حرف *) our_coords, بائٹیں);
+	اگر (our_لمبائی && !coords->coords)
 	  {
-    coords->length = 0;
-    return false;
+    coords->لمبائی = 0;
+    واپس جھوٹ;
   }
 
-  return true;
+  واپس سچ;
 }
 
-HB_WASM_API (bool_t, font_set_coords) (HB_WASM_EXEC_ENV
+HB_WASM_API (bool_t, font_سیٹ_coords) (HB_WASM_EXEC_ENV
 					  ptr_d(font_t, font),
 					  ptr_d(coords_t, coords))
 {
   HB_REF2OBJ (font);
   HB_PTR_PARAM (coords_t, coords);
-  if (unlikely (!coords))
-    return false;
+  اگر (unlikely (!coords))
+    واپس جھوٹ;
 
-  unsigned length = coords->length;
-  unsigned bytes;
-  if (unlikely (hb_unsigned_mul_overflows (length, sizeof (int), &bytes)))
-    return false;
+  غیرعلامتی لمبائی = coords->لمبائی;
+  غیرعلامتی بائٹیں;
+  اگر (unlikely (hb_unsigned_mul_overflows (لمبائی, حجم (صحیح), &بائٹیں)))
+    واپس جھوٹ;
 
-  const int *our_coords = (const int *) (validate_app_addr (coords->coords, bytes) ? addr_app_to_native (coords->coords) : nullptr);
-  if (unlikely (!our_coords))
-    return false;
+  ثابت صحیح *our_coords = (ثابت صحیح *) (validate_app_addr (coords->coords, بائٹیں) ? addr_app_مقصد_native (coords->coords) : خالی_اشاریہ);
+  اگر (unlikely (!our_coords))
+    واپس جھوٹ;
 
-  hb_font_set_var_coords_normalized(font, our_coords, length);
-  return true;
+  hb_font_سیٹ_var_coords_normalized(font, our_coords, لمبائی);
+  واپس سچ;
 }
 
 
 }}
 
-#endif /* HB_WASM_API_FONT_HH */
+#اگر_ختم /* HB_WASM_API_FONT_HH */

@@ -26,55 +26,55 @@
  * Google Author(s): Behdad Esfahbod, Garret Rieger
  */
 
-#ifndef OT_LAYOUT_COMMON_RANGERECORD_HH
-#define OT_LAYOUT_COMMON_RANGERECORD_HH
+#اگر_غیر_تعریف_شدہ OT_LAYOUT_COMMON_RANGERECORD_HH
+#تعریف_کرو OT_LAYOUT_COMMON_RANGERECORD_HH
 
-namespace OT {
-namespace Layout {
-namespace Common {
+نامخلا OT {
+نامخلا Layout {
+نامخلا Common {
 
-template <typename Types, typename Value = HBUINT16>
-struct RangeRecord
+سانچہ <قسم_نام Types, قسم_نام قدر = HBUINT16>
+ساخت Range_ریکارڈ
 {
-  typename Types::HBGlyphID     first;          /* First GlyphID in the range */
-  typename Types::HBGlyphID     last;           /* Last GlyphID in the range */
-  Value                         value;          /* Value */
+  قسم_نام Types::HBGlyphID     پہلا;          /* First GlyphID in the range */
+  قسم_نام Types::HBGlyphID     آخری;           /* Last GlyphID in the range */
+  قدر                         value;          /*قدر*/
 
-  DEFINE_SIZE_STATIC (2 * Types::size + Value::static_size);
+  DEFINE_سائز_STATIC (2 * Types::سائز + قدر::static_سائز);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ));
   }
 
-  int cmp (hb_codepoint_t g) const
-  { return g < first ? -1 : g <= last ? 0 : +1; }
+  صحیح cmp (hb_codepoint_t g) ثابت
+  { واپس g < پہلا ? -1 : g <= آخری ? 0 : +1; }
 
-  HB_INTERNAL static int cmp_range (const void *pa, const void *pb) {
-    const RangeRecord *a = (const RangeRecord *) pa;
-    const RangeRecord *b = (const RangeRecord *) pb;
-    if (a->first < b->first) return -1;
-    if (a->first > b->first) return +1;
-    if (a->last < b->last) return -1;
-    if (a->last > b->last) return +1;
-    if (a->value < b->value) return -1;
-    if (a->value > b->value) return +1;
-    return 0;
+  HB_اندرونی ساکن صحیح cmp_range (ثابت خالی *pa, ثابت خالی *pb) {
+    ثابت Range_ریکارڈ *a = (ثابت Range_ریکارڈ *) pa;
+    ثابت Range_ریکارڈ *b = (ثابت Range_ریکارڈ *) pb;
+    اگر (a->پہلا < b->پہلا) واپس -1;
+    اگر (a->پہلا > b->پہلا) واپس +1;
+    اگر (a->آخری < b->آخری) واپس -1;
+    اگر (a->آخری > b->آخری) واپس +1;
+    اگر (a->value < b->value) واپس -1;
+    اگر (a->value > b->value) واپس +1;
+    واپس 0;
   }
 
-  unsigned get_population () const
+  غیرعلامتی get_population () ثابت
   {
-    if (unlikely (last < first)) return 0;
-    return (last - first + 1);
+    اگر (unlikely (آخری < پہلا)) واپس 0;
+    واپس (آخری - پہلا + 1);
   }
 
-  bool intersects (const hb_set_t &glyphs) const
-  { return glyphs.intersects (first, last); }
+  منطقی intersects (ثابت hb_سیٹ_t &glyphs) ثابت
+  { واپس glyphs.intersects (پہلا, آخری); }
 
-  template <typename set_t>
-  bool collect_coverage (set_t *glyphs) const
-  { return glyphs->add_range (first, last); }
+  سانچہ <قسم_نام سیٹ_t>
+  منطقی collect_coverage (سیٹ_t *glyphs) ثابت
+  { واپس glyphs->جوڑو_range (پہلا, آخری); }
 };
 
 }
@@ -85,13 +85,13 @@ struct RangeRecord
 //    DECLARE_NULL_NAMESPACE_BYTES_TEMPLATE1 (OT, RangeRecord, 9);
 //    but that only works when there is only a single namespace level.
 //    The macro should probably be fixed so it can work in this situation.
-extern HB_INTERNAL const unsigned char _hb_Null_OT_RangeRecord[9];
-template <typename Spec, typename Value>
-struct Null<OT::Layout::Common::RangeRecord<Spec, Value>> {
-  static OT::Layout::Common::RangeRecord<Spec, Value> const & get_null () {
-    return *reinterpret_cast<const OT::Layout::Common::RangeRecord<Spec, Value> *> (_hb_Null_OT_RangeRecord);
+خارجی HB_اندرونی ثابت غیرعلامتی حرف hb_Null_OT_Range_ریکارڈ[9];
+سانچہ <قسم_نام Spec, قسم_نام قدر>
+ساخت Null<OT::Layout::Common::Range_ریکارڈ<Spec, قدر>> {
+  ساکن OT::Layout::Common::Range_ریکارڈ<Spec, قدر> ثابت & get_null () {
+    واپس *reinterpret_cast<ثابت OT::Layout::Common::Range_ریکارڈ<Spec, قدر> *> (hb_Null_OT_Range_ریکارڈ);
   }
 };
 
 
-#endif  // #ifndef OT_LAYOUT_COMMON_RANGERECORD_HH
+#اگر_ختم  // #ifndef OT_LAYOUT_COMMON_RANGERECORD_HH

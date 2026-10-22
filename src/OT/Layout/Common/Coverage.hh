@@ -26,372 +26,372 @@
  * Google Author(s): Behdad Esfahbod, Garret Rieger
  */
 
-#ifndef OT_LAYOUT_COMMON_COVERAGE_HH
-#define OT_LAYOUT_COMMON_COVERAGE_HH
+#اگر_غیر_تعریف_شدہ OT_LAYOUT_COMMON_COVERAGE_HH
+#تعریف_کرو OT_LAYOUT_COMMON_COVERAGE_HH
 
-#include "../../../hb-ot-dual.hh"
-#include "CoverageFormat1.hh"
-#include "CoverageFormat2.hh"
+#شامل "../../../hb-ot-dual.hh"
+#شامل "CoverageFormat1.hh"
+#شامل "CoverageFormat2.hh"
 
-namespace OT {
-namespace Layout {
-namespace Common {
+نامخلا OT {
+نامخلا Layout {
+نامخلا Common {
 
-template<typename Iterator>
-static inline void Coverage_serialize (hb_serialize_context_t *c,
+سانچہ<قسم_نام Iterator>
+ساکن اندرونی خالی Coverage_serialize (hb_serialize_context_t *c,
                                        Iterator it);
 
-struct Coverage
+ساخت Coverage
 {
 
-  protected:
-  union {
-  struct { HBUINT16 v; }        format;         /* Format identifier */
+  محفوظ:
+  اتحاد {
+  ساخت { HBUINT16 v; }        format;         /* Format identifier */
   CoverageFormat1_3<SmallTypes> format1;
   CoverageFormat2_4<SmallTypes> format2;
-#ifndef HB_NO_BEYOND_64K
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
   CoverageFormat1_3<MediumTypes>format3;
   CoverageFormat2_4<MediumTypes>format4;
-#endif
+#اگر_ختم
   } u;
-  public:
-  DEFINE_SIZE_UNION (2, format.v);
+  عوامی:
+  DEFINE_سائز_UNION (2, format.v);
 
-#ifndef HB_OPTIMIZE_SIZE
+#اگر_غیر_تعریف_شدہ HB_OPTIMIZE_سائز
   HB_ALWAYS_INLINE
-#endif
-  bool sanitize (hb_sanitize_context_t *c) const
+#اگر_ختم
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (یہ);
+    اگر (!u.format.v.sanitize (c)) return_trace (جھوٹ);
     hb_barrier ();
-    switch (u.format.v)
+    انتخاب (u.format.v)
     {
-    case 1: hb_barrier (); return_trace (u.format1.sanitize (c));
-    case 2: hb_barrier (); return_trace (u.format2.sanitize (c));
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c));
-    case 4: hb_barrier (); return_trace (u.format4.sanitize (c));
-#endif
-    default:return_trace (true);
+    حالت 1: hb_barrier (); return_trace (u.format1.sanitize (c));
+    حالت 2: hb_barrier (); return_trace (u.format2.sanitize (c));
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    حالت 3: hb_barrier (); return_trace (u.format3.sanitize (c));
+    حالت 4: hb_barrier (); return_trace (u.format4.sanitize (c));
+#اگر_ختم
+    طےشدہ:return_trace (سچ);
     }
   }
 
   /* Has interface. */
-  unsigned operator [] (hb_codepoint_t k) const { return get (k); }
-  bool has (hb_codepoint_t k) const { return (*this)[k] != NOT_COVERED; }
+  غیرعلامتی عامل [] (hb_codepoint_t k) ثابت { واپس get (k); }
+  منطقی has (hb_codepoint_t k) ثابت { واپس (*یہ)[k] != NOT_COVERED; }
   /* Predicate. */
-  bool operator () (hb_codepoint_t k) const { return has (k); }
+  منطقی عامل () (hb_codepoint_t k) ثابت { واپس has (k); }
 
-  unsigned int get (hb_codepoint_t k) const { return get_coverage (k); }
-  unsigned int get_coverage (hb_codepoint_t glyph_id) const
+  غیرعلامتی صحیح get (hb_codepoint_t k) ثابت { واپس get_coverage (k); }
+  غیرعلامتی صحیح get_coverage (hb_codepoint_t glyph_id) ثابت
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.get_coverage (glyph_id);
-    case 2: hb_barrier (); return u.format2.get_coverage (glyph_id);
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.get_coverage (glyph_id);
-    case 4: hb_barrier (); return u.format4.get_coverage (glyph_id);
-#endif
-    default:return NOT_COVERED;
+    انتخاب (u.format.v) {
+    حالت 1: hb_barrier (); واپس u.format1.get_coverage (glyph_id);
+    حالت 2: hb_barrier (); واپس u.format2.get_coverage (glyph_id);
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    حالت 3: hb_barrier (); واپس u.format3.get_coverage (glyph_id);
+    حالت 4: hb_barrier (); واپس u.format4.get_coverage (glyph_id);
+#اگر_ختم
+    طےشدہ:واپس NOT_COVERED;
     }
   }
-  unsigned int get_coverage (hb_codepoint_t glyph_id,
-			     hb_ot_layout_mapping_cache_t *cache) const
+  غیرعلامتی صحیح get_coverage (hb_codepoint_t glyph_id,
+			     hb_ot_layout_mapping_cache_t *cache) ثابت
   {
-    unsigned coverage;
-    if (cache && cache->get (glyph_id, &coverage)) return coverage < cache->MAX_VALUE ? coverage : NOT_COVERED;
+    غیرعلامتی coverage;
+    اگر (cache && cache->get (glyph_id, &coverage)) واپس coverage < cache->MAX_قدر ? coverage : NOT_COVERED;
     coverage = get_coverage (glyph_id);
-    if (cache) {
-      if (coverage == NOT_COVERED)
-	cache->set (glyph_id, cache->MAX_VALUE);
-      else if (likely (coverage < cache->MAX_VALUE))
-	cache->set (glyph_id, coverage);
+    اگر (cache) {
+      اگر (coverage == NOT_COVERED)
+	cache->سیٹ (glyph_id, cache->MAX_قدر);
+      ورنہ اگر (likely (coverage < cache->MAX_قدر))
+	cache->سیٹ (glyph_id, coverage);
     }
-    return coverage;
+    واپس coverage;
   }
 
-  unsigned int get_coverage_binary (hb_codepoint_t glyph_id,
-				    hb_ot_layout_binary_cache_t *cache) const
+  غیرعلامتی صحیح get_coverage_ثنائی (hb_codepoint_t glyph_id,
+				    hb_ot_layout_ثنائی_cache_t *cache) ثابت
   {
-    unsigned coverage;
-    if (cache && cache->get (glyph_id, &coverage)) return coverage < cache->MAX_VALUE ? coverage : NOT_COVERED;
+    غیرعلامتی coverage;
+    اگر (cache && cache->get (glyph_id, &coverage)) واپس coverage < cache->MAX_قدر ? coverage : NOT_COVERED;
     coverage = get_coverage (glyph_id);
-    if (cache) {
-      if (coverage == NOT_COVERED)
-	cache->set (glyph_id, cache->MAX_VALUE);
-      else
-	cache->set (glyph_id, 0);
+    اگر (cache) {
+      اگر (coverage == NOT_COVERED)
+	cache->سیٹ (glyph_id, cache->MAX_قدر);
+      ورنہ
+	cache->سیٹ (glyph_id, 0);
     }
-    return coverage;
+    واپس coverage;
   }
 
-  unsigned get_population () const
+  غیرعلامتی get_population () ثابت
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.get_population ();
-    case 2: hb_barrier (); return u.format2.get_population ();
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.get_population ();
-    case 4: hb_barrier (); return u.format4.get_population ();
-#endif
-    default:return NOT_COVERED;
+    انتخاب (u.format.v) {
+    حالت 1: hb_barrier (); واپس u.format1.get_population ();
+    حالت 2: hb_barrier (); واپس u.format2.get_population ();
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    حالت 3: hb_barrier (); واپس u.format3.get_population ();
+    حالت 4: hb_barrier (); واپس u.format4.get_population ();
+#اگر_ختم
+    طےشدہ:واپس NOT_COVERED;
     }
   }
 
-  template <typename Iterator,
-      hb_requires (hb_is_sorted_source_of (Iterator, hb_codepoint_t))>
-  bool serialize (hb_serialize_context_t *c, Iterator glyphs)
+  سانچہ <قسم_نام Iterator,
+      hb_requires (hb_is_sorted_ماخذ_کا (Iterator, hb_codepoint_t))>
+  منطقی serialize (hb_serialize_context_t *c, Iterator glyphs)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (this))) return_trace (false);
+    TRACE_SERIALIZE (یہ);
+    اگر (unlikely (!c->extend_min (یہ))) return_trace (جھوٹ);
 
-    unsigned count = hb_len (+ glyphs);
-    unsigned num_ranges = 0;
-    hb_codepoint_t last = (hb_codepoint_t) -2;
+    غیرعلامتی گنتی = hb_len (+ glyphs);
+    غیرعلامتی عدد_ranges = 0;
+    hb_codepoint_t آخری = (hb_codepoint_t) -2;
     hb_codepoint_t max = 0;
-    bool unsorted = false;
-    for (auto g: + glyphs)
+    منطقی unsorted = جھوٹ;
+    برائے (خودکار g: + glyphs)
     {
-      if (last != (hb_codepoint_t) -2 && g < last)
-	unsorted = true;
-      if (last + 1 != g)
-	num_ranges++;
-      last = g;
-      if (g > max) max = g;
+      اگر (آخری != (hb_codepoint_t) -2 && g < آخری)
+	unsorted = سچ;
+      اگر (آخری + 1 != g)
+	عدد_ranges++;
+      آخری = g;
+      اگر (g > max) max = g;
     }
-    u.format.v = !unsorted && count <= num_ranges * 3 ? 1 : 2;
+    u.format.v = !unsorted && گنتی <= عدد_ranges * 3 ? 1 : 2;
 
-#ifndef HB_NO_BEYOND_64K
-    if (max > 0xFFFFu)
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    اگر (max > 0xFFFFu)
       u.format.v += 2;
-    if (unlikely (max > 0xFFFFFFu))
-#else
-    if (unlikely (max > 0xFFFFu))
-#endif
+    اگر (unlikely (max > 0xFFFFFFu))
+#ورنہ
+    اگر (unlikely (max > 0xFFFFu))
+#اگر_ختم
     {
-      c->check_success (false, HB_SERIALIZE_ERROR_INT_OVERFLOW);
-      return_trace (false);
+      c->check_success (جھوٹ, HB_SERIALIZE_ERROR_INT_حد_سے_تجاوز);
+      return_trace (جھوٹ);
     }
 
-    switch (u.format.v)
+    انتخاب (u.format.v)
     {
-    case 1: hb_barrier (); return_trace (u.format1.serialize (c, glyphs));
-    case 2: hb_barrier (); return_trace (u.format2.serialize (c, glyphs));
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return_trace (u.format3.serialize (c, glyphs));
-    case 4: hb_barrier (); return_trace (u.format4.serialize (c, glyphs));
-#endif
-    default:return_trace (false);
+    حالت 1: hb_barrier (); return_trace (u.format1.serialize (c, glyphs));
+    حالت 2: hb_barrier (); return_trace (u.format2.serialize (c, glyphs));
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    حالت 3: hb_barrier (); return_trace (u.format3.serialize (c, glyphs));
+    حالت 4: hb_barrier (); return_trace (u.format4.serialize (c, glyphs));
+#اگر_ختم
+    طےشدہ:return_trace (جھوٹ);
     }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    const hb_subset_plan_t *plan = c->plan;
-    auto it =
+    TRACE_SUBSET (یہ);
+    ثابت hb_subset_plan_t *plan = c->plan;
+    خودکار it =
     + iter ()
-    | hb_take (plan->source->get_num_glyphs ())
-    | hb_map_retains_sorting ([plan] (hb_codepoint_t g) {
-	return plan->map_gsub_glyph (g);
+    | hb_take (plan->ماخذ->get_عدد_glyphs ())
+    | hb_map_retains_ترتیب_کاری ([plan] (hb_codepoint_t g) {
+	واپس plan->map_gsub_glyph (g);
       })
-    | hb_filter ([] (hb_codepoint_t glyph) { return glyph != HB_MAP_VALUE_INVALID; })
+    | hb_filter ([] (hb_codepoint_t glyph) { واپس glyph != HB_MAP_قدر_INVALID; })
     ;
 
     // Cache the iterator result as it will be iterated multiple times
     // by the serialize code below.
-    hb_sorted_vector_t<hb_codepoint_t> glyphs (it);
+    hb_sorted_سمتیہ_t<hb_codepoint_t> glyphs (it);
     Coverage_serialize (c->serializer, glyphs.iter ());
-    return_trace (bool (glyphs));
+    return_trace (منطقی (glyphs));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
+  منطقی intersects (ثابت hb_سیٹ_t *glyphs) ثابت
   {
-    switch (u.format.v)
+    انتخاب (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.intersects (glyphs);
-    case 2: hb_barrier (); return u.format2.intersects (glyphs);
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.intersects (glyphs);
-    case 4: hb_barrier (); return u.format4.intersects (glyphs);
-#endif
-    default:return false;
+    حالت 1: hb_barrier (); واپس u.format1.intersects (glyphs);
+    حالت 2: hb_barrier (); واپس u.format2.intersects (glyphs);
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    حالت 3: hb_barrier (); واپس u.format3.intersects (glyphs);
+    حالت 4: hb_barrier (); واپس u.format4.intersects (glyphs);
+#اگر_ختم
+    طےشدہ:واپس جھوٹ;
     }
   }
-  bool intersects_coverage (const hb_set_t *glyphs, unsigned int index) const
+  منطقی intersects_coverage (ثابت hb_سیٹ_t *glyphs, غیرعلامتی صحیح اشاریہ_2) ثابت
   {
-    switch (u.format.v)
+    انتخاب (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.intersects_coverage (glyphs, index);
-    case 2: hb_barrier (); return u.format2.intersects_coverage (glyphs, index);
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.intersects_coverage (glyphs, index);
-    case 4: hb_barrier (); return u.format4.intersects_coverage (glyphs, index);
-#endif
-    default:return false;
+    حالت 1: hb_barrier (); واپس u.format1.intersects_coverage (glyphs, اشاریہ_2);
+    حالت 2: hb_barrier (); واپس u.format2.intersects_coverage (glyphs, اشاریہ_2);
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    حالت 3: hb_barrier (); واپس u.format3.intersects_coverage (glyphs, اشاریہ_2);
+    حالت 4: hb_barrier (); واپس u.format4.intersects_coverage (glyphs, اشاریہ_2);
+#اگر_ختم
+    طےشدہ:واپس جھوٹ;
     }
   }
 
-  unsigned cost () const
+  غیرعلامتی لاگت () ثابت
   {
-    switch (u.format.v) {
-    case 1: hb_barrier (); return u.format1.cost ();
-    case 2: hb_barrier (); return u.format2.cost ();
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.cost ();
-    case 4: hb_barrier (); return u.format4.cost ();
-#endif
-    default:return 0u;
+    انتخاب (u.format.v) {
+    حالت 1: hb_barrier (); واپس u.format1.لاگت ();
+    حالت 2: hb_barrier (); واپس u.format2.لاگت ();
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    حالت 3: hb_barrier (); واپس u.format3.لاگت ();
+    حالت 4: hb_barrier (); واپس u.format4.لاگت ();
+#اگر_ختم
+    طےشدہ:واپس 0u;
     }
   }
 
   /* Might return false if array looks unsorted.
    * Used for faster rejection of corrupt data. */
-  template <typename set_t>
-  bool collect_coverage (set_t *glyphs) const
+  سانچہ <قسم_نام سیٹ_t>
+  منطقی collect_coverage (سیٹ_t *glyphs) ثابت
   {
-    switch (u.format.v)
+    انتخاب (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.collect_coverage (glyphs);
-    case 2: hb_barrier (); return u.format2.collect_coverage (glyphs);
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.collect_coverage (glyphs);
-    case 4: hb_barrier (); return u.format4.collect_coverage (glyphs);
-#endif
-    default:return false;
+    حالت 1: hb_barrier (); واپس u.format1.collect_coverage (glyphs);
+    حالت 2: hb_barrier (); واپس u.format2.collect_coverage (glyphs);
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    حالت 3: hb_barrier (); واپس u.format3.collect_coverage (glyphs);
+    حالت 4: hb_barrier (); واپس u.format4.collect_coverage (glyphs);
+#اگر_ختم
+    طےشدہ:واپس جھوٹ;
     }
   }
 
-  template <typename IterableOut,
-	    hb_requires (hb_is_sink_of (IterableOut, hb_codepoint_t))>
-  void intersect_set (const hb_set_t &glyphs, IterableOut&& intersect_glyphs) const
+  سانچہ <قسم_نام Iterable_برآمد,
+	    hb_requires (hb_is_sink_کا (Iterable_برآمد, hb_codepoint_t))>
+  خالی intersect_سیٹ (ثابت hb_سیٹ_t &glyphs, Iterable_برآمد&& intersect_glyphs) ثابت
   {
-    switch (u.format.v)
+    انتخاب (u.format.v)
     {
-    case 1: hb_barrier (); return u.format1.intersect_set (glyphs, intersect_glyphs);
-    case 2: hb_barrier (); return u.format2.intersect_set (glyphs, intersect_glyphs);
-#ifndef HB_NO_BEYOND_64K
-    case 3: hb_barrier (); return u.format3.intersect_set (glyphs, intersect_glyphs);
-    case 4: hb_barrier (); return u.format4.intersect_set (glyphs, intersect_glyphs);
-#endif
-    default:return ;
+    حالت 1: hb_barrier (); واپس u.format1.intersect_سیٹ (glyphs, intersect_glyphs);
+    حالت 2: hb_barrier (); واپس u.format2.intersect_سیٹ (glyphs, intersect_glyphs);
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    حالت 3: hb_barrier (); واپس u.format3.intersect_سیٹ (glyphs, intersect_glyphs);
+    حالت 4: hb_barrier (); واپس u.format4.intersect_سیٹ (glyphs, intersect_glyphs);
+#اگر_ختم
+    طےشدہ:واپس ;
     }
   }
 
-  struct iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
+  ساخت iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
   {
-    static constexpr bool is_sorted_iterator = true;
-    iter_t (const Coverage &c_ = Null (Coverage))
+    ساکن constexpr منطقی is_sorted_iterator = سچ;
+    iter_t (ثابت Coverage &c_ = Null (Coverage))
     {
-      hb_memset (this, 0, sizeof (*this));
+      hb_memset (یہ, 0, حجم (*یہ));
       format = c_.u.format.v;
-      switch (format)
+      انتخاب (format)
       {
-      case 1: hb_barrier (); u.format1.init (c_.u.format1); return;
-      case 2: hb_barrier (); u.format2.init (c_.u.format2); return;
-#ifndef HB_NO_BEYOND_64K
-      case 3: hb_barrier (); u.format3.init (c_.u.format3); return;
-      case 4: hb_barrier (); u.format4.init (c_.u.format4); return;
-#endif
-      default:                               return;
+      حالت 1: hb_barrier (); u.format1.init (c_.u.format1); واپس;
+      حالت 2: hb_barrier (); u.format2.init (c_.u.format2); واپس;
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+      حالت 3: hb_barrier (); u.format3.init (c_.u.format3); واپس;
+      حالت 4: hb_barrier (); u.format4.init (c_.u.format4); واپس;
+#اگر_ختم
+      طےشدہ:                               واپس;
       }
     }
-    bool __more__ () const
+    منطقی __more__ () ثابت
     {
-      switch (format)
+      انتخاب (format)
       {
-      case 1: hb_barrier (); return u.format1.__more__ ();
-      case 2: hb_barrier (); return u.format2.__more__ ();
-#ifndef HB_NO_BEYOND_64K
-      case 3: hb_barrier (); return u.format3.__more__ ();
-      case 4: hb_barrier (); return u.format4.__more__ ();
-#endif
-      default:return false;
+      حالت 1: hb_barrier (); واپس u.format1.__more__ ();
+      حالت 2: hb_barrier (); واپس u.format2.__more__ ();
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+      حالت 3: hb_barrier (); واپس u.format3.__more__ ();
+      حالت 4: hb_barrier (); واپس u.format4.__more__ ();
+#اگر_ختم
+      طےشدہ:واپس جھوٹ;
       }
     }
-    void __next__ ()
+    خالی __next__ ()
     {
-      switch (format)
+      انتخاب (format)
       {
-      case 1: hb_barrier (); u.format1.__next__ (); break;
-      case 2: hb_barrier (); u.format2.__next__ (); break;
-#ifndef HB_NO_BEYOND_64K
-      case 3: hb_barrier (); u.format3.__next__ (); break;
-      case 4: hb_barrier (); u.format4.__next__ (); break;
-#endif
-      default:                   break;
+      حالت 1: hb_barrier (); u.format1.__next__ (); توڑو;
+      حالت 2: hb_barrier (); u.format2.__next__ (); توڑو;
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+      حالت 3: hb_barrier (); u.format3.__next__ (); توڑو;
+      حالت 4: hb_barrier (); u.format4.__next__ (); توڑو;
+#اگر_ختم
+      طےشدہ:                   توڑو;
       }
     }
-    typedef hb_codepoint_t __item_t__;
-    __item_t__ __item__ () const { return get_glyph (); }
+    قسمتعریف hb_codepoint_t __item_t__;
+    __item_t__ __item__ () ثابت { واپس get_glyph (); }
 
-    hb_codepoint_t get_glyph () const
+    hb_codepoint_t get_glyph () ثابت
     {
-      switch (format)
+      انتخاب (format)
       {
-      case 1: hb_barrier (); return u.format1.get_glyph ();
-      case 2: hb_barrier (); return u.format2.get_glyph ();
-#ifndef HB_NO_BEYOND_64K
-      case 3: hb_barrier (); return u.format3.get_glyph ();
-      case 4: hb_barrier (); return u.format4.get_glyph ();
-#endif
-      default:return 0;
+      حالت 1: hb_barrier (); واپس u.format1.get_glyph ();
+      حالت 2: hb_barrier (); واپس u.format2.get_glyph ();
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+      حالت 3: hb_barrier (); واپس u.format3.get_glyph ();
+      حالت 4: hb_barrier (); واپس u.format4.get_glyph ();
+#اگر_ختم
+      طےشدہ:واپس 0;
       }
     }
-    bool operator != (const iter_t& o) const
+    منطقی عامل != (ثابت iter_t& o) ثابت
     {
-      if (unlikely (format != o.format)) return true;
-      switch (format)
+      اگر (unlikely (format != o.format)) واپس سچ;
+      انتخاب (format)
       {
-      case 1: hb_barrier (); return u.format1 != o.u.format1;
-      case 2: hb_barrier (); return u.format2 != o.u.format2;
-#ifndef HB_NO_BEYOND_64K
-      case 3: hb_barrier (); return u.format3 != o.u.format3;
-      case 4: hb_barrier (); return u.format4 != o.u.format4;
-#endif
-      default:return false;
+      حالت 1: hb_barrier (); واپس u.format1 != o.u.format1;
+      حالت 2: hb_barrier (); واپس u.format2 != o.u.format2;
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+      حالت 3: hb_barrier (); واپس u.format3 != o.u.format3;
+      حالت 4: hb_barrier (); واپس u.format4 != o.u.format4;
+#اگر_ختم
+      طےشدہ:واپس جھوٹ;
       }
     }
-    iter_t __end__ () const
+    iter_t __end__ () ثابت
     {
       iter_t it;
       it.format = format;
-      switch (format)
+      انتخاب (format)
       {
-      case 1: hb_barrier (); it.u.format1 = u.format1.__end__ (); break;
-      case 2: hb_barrier (); it.u.format2 = u.format2.__end__ (); break;
-#ifndef HB_NO_BEYOND_64K
-      case 3: hb_barrier (); it.u.format3 = u.format3.__end__ (); break;
-      case 4: hb_barrier (); it.u.format4 = u.format4.__end__ (); break;
-#endif
-      default: break;
+      حالت 1: hb_barrier (); it.u.format1 = u.format1.__end__ (); توڑو;
+      حالت 2: hb_barrier (); it.u.format2 = u.format2.__end__ (); توڑو;
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+      حالت 3: hb_barrier (); it.u.format3 = u.format3.__end__ (); توڑو;
+      حالت 4: hb_barrier (); it.u.format4 = u.format4.__end__ (); توڑو;
+#اگر_ختم
+      طےشدہ: توڑو;
       }
-      return it;
+      واپس it;
     }
 
-    private:
-    unsigned int format;
-    union {
-#ifndef HB_NO_BEYOND_64K
+    نجی:
+    غیرعلامتی صحیح format;
+    اتحاد {
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
     CoverageFormat2_4<MediumTypes>::iter_t      format4; /* Put this one first since it's larger; helps shut up compiler. */
     CoverageFormat1_3<MediumTypes>::iter_t      format3;
-#endif
+#اگر_ختم
     CoverageFormat2_4<SmallTypes>::iter_t       format2; /* Put this one first since it's larger; helps shut up compiler. */
     CoverageFormat1_3<SmallTypes>::iter_t       format1;
     } u;
   };
-  iter_t iter () const { return iter_t (*this); }
+  iter_t iter () ثابت { واپس iter_t (*یہ); }
 };
 
-template<typename Iterator>
-static inline void
+سانچہ<قسم_نام Iterator>
+ساکن اندرونی خالی
 Coverage_serialize (hb_serialize_context_t *c,
                     Iterator it)
-{ c->start_embed<Coverage> ()->serialize (c, it); }
+{ c->آغاز_embed<Coverage> ()->serialize (c, it); }
 
 }
 }
 }
 
-#endif  // #ifndef OT_LAYOUT_COMMON_COVERAGE_HH
+#اگر_ختم  // #ifndef OT_LAYOUT_COMMON_COVERAGE_HH

@@ -25,176 +25,176 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_SET_HH
-#define HB_SET_HH
+#اگر_غیر_تعریف_شدہ HB_سیٹ_HH
+#تعریف_کرو HB_سیٹ_HH
 
-#include "hb.hh"
-#include "hb-bit-set-invertible.hh"
-#include "hb-bit-vector.hh" // Just to include
+#شامل "hb.hh"
+#شامل "hb-bit-set-invertible.hh"
+#شامل "hb-bit-vector.hh" // Just to include
 
 
-template <typename impl_t>
-struct hb_sparseset_t
+سانچہ <قسم_نام impl_t>
+ساخت hb_sparseset_t
 {
-  static constexpr bool realloc_move = true;
+  ساکن constexpr منطقی realloc_move = سچ;
 
-  hb_object_header_t header;
+  hb_object_سرخی_t سرخی;
   impl_t s;
 
   hb_sparseset_t () { init (); }
   ~hb_sparseset_t () { fini (); }
 
-  hb_sparseset_t (const hb_sparseset_t& other) : hb_sparseset_t () { set (other); }
+  hb_sparseset_t (ثابت hb_sparseset_t& other) : hb_sparseset_t () { سیٹ (other); }
   hb_sparseset_t (hb_sparseset_t&& other)  noexcept : hb_sparseset_t () { s = std::move (other.s); }
-  hb_sparseset_t& operator = (const hb_sparseset_t& other) { set (other); return *this; }
-  hb_sparseset_t& operator = (hb_sparseset_t&& other)  noexcept { s = std::move (other.s); return *this; }
-  friend void swap (hb_sparseset_t& a, hb_sparseset_t& b)  noexcept { hb_swap (a.s, b.s); }
+  hb_sparseset_t& عامل = (ثابت hb_sparseset_t& other) { سیٹ (other); واپس *یہ; }
+  hb_sparseset_t& عامل = (hb_sparseset_t&& other)  noexcept { s = std::move (other.s); واپس *یہ; }
+  دوست خالی swap (hb_sparseset_t& a, hb_sparseset_t& b)  noexcept { hb_تبادلہ (a.s, b.s); }
 
   hb_sparseset_t (std::initializer_list<hb_codepoint_t> lst) : hb_sparseset_t ()
   {
-    for (auto&& item : lst)
-      add (item);
+    برائے (خودکار&& شے : lst)
+      جوڑو (شے);
   }
-  template <typename Iterable,
+  سانچہ <قسم_نام Iterable,
            hb_requires (hb_is_iterable (Iterable))>
-  hb_sparseset_t (const Iterable &o) : hb_sparseset_t ()
+  hb_sparseset_t (ثابت Iterable &o) : hb_sparseset_t ()
   {
-    hb_copy (o, *this);
+    hb_copy (o, *یہ);
   }
 
-  void init ()
+  خالی init ()
   {
-    hb_object_init (this);
+    hb_object_init (یہ);
     s.init ();
   }
-  void fini ()
+  خالی fini ()
   {
-    hb_object_fini (this);
+    hb_object_fini (یہ);
     s.fini ();
   }
 
-  explicit operator bool () const { return !is_empty (); }
+  صریح عامل منطقی () ثابت { واپس !is_empty (); }
 
-  void err () { s.err (); }
-  bool in_error () const { return s.in_error (); }
+  خالی err () { s.err (); }
+  منطقی اندر_error () ثابت { واپس s.اندر_error (); }
 
-  void alloc (unsigned sz) { s.alloc (sz); }
-  void reset () { s.reset (); }
-  void clear () { s.clear (); }
-  void invert () { s.invert (); }
-  bool is_inverted () const { return s.is_inverted (); }
-  bool is_empty () const { return s.is_empty (); }
-  uint32_t hash () const { return s.hash (); }
+  خالی alloc (غیرعلامتی sz) { s.alloc (sz); }
+  خالی reset () { s.reset (); }
+  خالی clear () { s.clear (); }
+  خالی invert () { s.invert (); }
+  منطقی is_inverted () ثابت { واپس s.is_inverted (); }
+  منطقی is_empty () ثابت { واپس s.is_empty (); }
+  uint32_t hash () ثابت { واپس s.hash (); }
 
-  void add (hb_codepoint_t g) { s.add (g); }
-  void add_bits (hb_codepoint_t g, uint64_t bits) { s.add_bits (g, bits); }
-  bool add_range (hb_codepoint_t first, hb_codepoint_t last) { return s.add_range (first, last); }
+  خالی جوڑو (hb_codepoint_t g) { s.جوڑو (g); }
+  خالی جوڑو_بٹ (hb_codepoint_t g, uint64_t بٹ) { s.جوڑو_بٹ (g, بٹ); }
+  منطقی جوڑو_range (hb_codepoint_t پہلا, hb_codepoint_t آخری) { واپس s.جوڑو_range (پہلا, آخری); }
 
-  template <typename T>
-  void add_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { s.add_array (array, count, stride); }
-  template <typename T>
-  void add_array (const hb_array_t<const T>& arr) { add_array (&arr, arr.len ()); }
+  سانچہ <قسم_نام T>
+  خالی جوڑو_array (ثابت T *array, غیرعلامتی صحیح گنتی, غیرعلامتی صحیح stride=حجم(T))
+  { s.جوڑو_array (array, گنتی, stride); }
+  سانچہ <قسم_نام T>
+  خالی جوڑو_array (ثابت hb_array_t<ثابت T>& arr) { جوڑو_array (&arr, arr.len ()); }
 
   /* Might return false if array looks unsorted.
    * Used for faster rejection of corrupt data. */
-  template <typename T>
-  bool add_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { return s.add_sorted_array (array, count, stride); }
-  template <typename T>
-  bool add_sorted_array (const hb_sorted_array_t<const T>& arr) { return add_sorted_array (&arr, arr.len ()); }
+  سانچہ <قسم_نام T>
+  منطقی جوڑو_sorted_array (ثابت T *array, غیرعلامتی صحیح گنتی, غیرعلامتی صحیح stride=حجم(T))
+  { واپس s.جوڑو_sorted_array (array, گنتی, stride); }
+  سانچہ <قسم_نام T>
+  منطقی جوڑو_sorted_array (ثابت hb_sorted_array_t<ثابت T>& arr) { واپس جوڑو_sorted_array (&arr, arr.len ()); }
 
-  void del (hb_codepoint_t g) { s.del (g); }
-  void del_range (hb_codepoint_t a, hb_codepoint_t b) { s.del_range (a, b); }
+  خالی del (hb_codepoint_t g) { s.del (g); }
+  خالی del_range (hb_codepoint_t a, hb_codepoint_t b) { s.del_range (a, b); }
 
-  bool get (hb_codepoint_t g) const { return s.get (g); }
-  bool may_have (hb_codepoint_t g) const { return get (g); }
+  منطقی get (hb_codepoint_t g) ثابت { واپس s.get (g); }
+  منطقی may_have (hb_codepoint_t g) ثابت { واپس get (g); }
 
   /* Has interface. */
-  bool operator [] (hb_codepoint_t k) const { return get (k); }
-  bool has (hb_codepoint_t k) const { return (*this)[k]; }
+  منطقی عامل [] (hb_codepoint_t k) ثابت { واپس get (k); }
+  منطقی has (hb_codepoint_t k) ثابت { واپس (*یہ)[k]; }
 
   /* Predicate. */
-  bool operator () (hb_codepoint_t k) const { return has (k); }
+  منطقی عامل () (hb_codepoint_t k) ثابت { واپس has (k); }
 
   /* Sink interface. */
-  hb_sparseset_t& operator << (hb_codepoint_t v)
-  { add (v); return *this; }
-  hb_sparseset_t& operator << (const hb_codepoint_pair_t& range)
-  { add_range (range.first, range.second); return *this; }
+  hb_sparseset_t& عامل << (hb_codepoint_t v)
+  { جوڑو (v); واپس *یہ; }
+  hb_sparseset_t& عامل << (ثابت hb_codepoint_pair_t& range)
+  { جوڑو_range (range.پہلا, range.second); واپس *یہ; }
 
-  bool may_intersect (const hb_sparseset_t &other) const
-  { return s.may_intersect (other.s); }
+  منطقی may_intersect (ثابت hb_sparseset_t &other) ثابت
+  { واپس s.may_intersect (other.s); }
 
-  bool intersects (const hb_sparseset_t &other) const
-  { return s.intersects (other.s); }
+  منطقی intersects (ثابت hb_sparseset_t &other) ثابت
+  { واپس s.intersects (other.s); }
 
-  bool intersects (hb_codepoint_t first, hb_codepoint_t last) const
-  { return s.intersects (first, last); }
+  منطقی intersects (hb_codepoint_t پہلا, hb_codepoint_t آخری) ثابت
+  { واپس s.intersects (پہلا, آخری); }
 
-  void set (const hb_sparseset_t &other) { s.set (other.s); }
+  خالی سیٹ (ثابت hb_sparseset_t &other) { s.سیٹ (other.s); }
 
-  bool is_equal (const hb_sparseset_t &other) const { return s.is_equal (other.s); }
-  bool operator == (const hb_set_t &other) const { return is_equal (other); }
-  bool operator != (const hb_set_t &other) const { return !is_equal (other); }
+  منطقی is_equal (ثابت hb_sparseset_t &other) ثابت { واپس s.is_equal (other.s); }
+  منطقی عامل == (ثابت hb_سیٹ_t &other) ثابت { واپس is_equal (other); }
+  منطقی عامل != (ثابت hb_سیٹ_t &other) ثابت { واپس !is_equal (other); }
 
-  bool is_subset (const hb_sparseset_t &larger_set) const { return s.is_subset (larger_set.s); }
+  منطقی is_subset (ثابت hb_sparseset_t &larger_سیٹ) ثابت { واپس s.is_subset (larger_سیٹ.s); }
 
-  void union_ (const hb_sparseset_t &other) { s.union_ (other.s); }
-  void intersect (const hb_sparseset_t &other,
-		  hb_vector_t<unsigned> *workspace = nullptr)
+  خالی union_ (ثابت hb_sparseset_t &other) { s.union_ (other.s); }
+  خالی intersect (ثابت hb_sparseset_t &other,
+		  hb_سمتیہ_t<غیرعلامتی> *workspace = خالی_اشاریہ)
   { s.intersect (other.s, workspace); }
-  void subtract (const hb_sparseset_t &other) { s.subtract (other.s); }
-  void symmetric_difference (const hb_sparseset_t &other) { s.symmetric_difference (other.s); }
+  خالی تفریق (ثابت hb_sparseset_t &other) { s.تفریق (other.s); }
+  خالی متشاکل_difference (ثابت hb_sparseset_t &other) { s.متشاکل_difference (other.s); }
 
-  bool next (hb_codepoint_t *codepoint) const { return s.next (codepoint); }
-  bool next_bits (hb_codepoint_t *codepoint, uint64_t *bits) const
-  { return s.next_bits (codepoint, bits); }
-  bool previous (hb_codepoint_t *codepoint) const { return s.previous (codepoint); }
-  bool next_range (hb_codepoint_t *first, hb_codepoint_t *last) const
-  { return s.next_range (first, last); }
-  bool previous_range (hb_codepoint_t *first, hb_codepoint_t *last) const
-  { return s.previous_range (first, last); }
-  unsigned int next_many (hb_codepoint_t codepoint, hb_codepoint_t *out, unsigned int size) const
-  { return s.next_many (codepoint, out, size); }
+  منطقی next (hb_codepoint_t *codepoint) ثابت { واپس s.next (codepoint); }
+  منطقی اگلا_بٹ (hb_codepoint_t *codepoint, uint64_t *بٹ) ثابت
+  { واپس s.اگلا_بٹ (codepoint, بٹ); }
+  منطقی پچھلا (hb_codepoint_t *codepoint) ثابت { واپس s.پچھلا (codepoint); }
+  منطقی اگلا_range (hb_codepoint_t *پہلا, hb_codepoint_t *آخری) ثابت
+  { واپس s.اگلا_range (پہلا, آخری); }
+  منطقی پچھلا_range (hb_codepoint_t *پہلا, hb_codepoint_t *آخری) ثابت
+  { واپس s.پچھلا_range (پہلا, آخری); }
+  غیرعلامتی صحیح اگلا_many (hb_codepoint_t codepoint, hb_codepoint_t *برآمد, غیرعلامتی صحیح سائز) ثابت
+  { واپس s.اگلا_many (codepoint, برآمد, سائز); }
 
-  unsigned int get_population () const { return s.get_population (); }
-  bool get_singleton (hb_codepoint_t *codepoint) const { return s.get_singleton (codepoint); }
-  hb_codepoint_t get_min () const { return s.get_min (); }
-  hb_codepoint_t get_max () const { return s.get_max (); }
+  غیرعلامتی صحیح get_population () ثابت { واپس s.get_population (); }
+  منطقی get_singleton (hb_codepoint_t *codepoint) ثابت { واپس s.get_singleton (codepoint); }
+  hb_codepoint_t get_min () ثابت { واپس s.get_min (); }
+  hb_codepoint_t get_max () ثابت { واپس s.get_max (); }
 
-  static constexpr hb_codepoint_t INVALID = impl_t::INVALID;
+  ساکن constexpr hb_codepoint_t INVALID = impl_t::INVALID;
 
   /*
    * Iterator implementation.
    */
-  using iter_t = typename impl_t::iter_t;
-  iter_t iter () const { return iter_t (this->s); }
-  operator iter_t () const { return iter (); }
+  استعمال iter_t = قسم_نام impl_t::iter_t;
+  iter_t iter () ثابت { واپس iter_t (یہ->s); }
+  عامل iter_t () ثابت { واپس iter (); }
 };
 
-struct hb_set_t : hb_sparseset_t<hb_bit_set_invertible_t>
+ساخت hb_سیٹ_t : hb_sparseset_t<hb_ثنائی_ہندسہ_سیٹ_invertible_t>
 {
-  using sparseset = hb_sparseset_t<hb_bit_set_invertible_t>;
+  استعمال sparseset = hb_sparseset_t<hb_ثنائی_ہندسہ_سیٹ_invertible_t>;
 
-  ~hb_set_t () = default;
-  hb_set_t () : sparseset () {};
-  hb_set_t (const hb_set_t &o) : sparseset ((sparseset &) o) {};
-  hb_set_t (hb_set_t&& o)  noexcept : sparseset (std::move ((sparseset &) o)) {}
-  hb_set_t& operator = (const hb_set_t&) = default;
-  hb_set_t& operator = (hb_set_t&&) = default;
-  hb_set_t (std::initializer_list<hb_codepoint_t> lst) : sparseset (lst) {}
-  template <typename Iterable,
+  ~hb_سیٹ_t () = طےشدہ;
+  hb_سیٹ_t () : sparseset () {};
+  hb_سیٹ_t (ثابت hb_سیٹ_t &o) : sparseset ((sparseset &) o) {};
+  hb_سیٹ_t (hb_سیٹ_t&& o)  noexcept : sparseset (std::move ((sparseset &) o)) {}
+  hb_سیٹ_t& عامل = (ثابت hb_سیٹ_t&) = طےشدہ;
+  hb_سیٹ_t& عامل = (hb_سیٹ_t&&) = طےشدہ;
+  hb_سیٹ_t (std::initializer_list<hb_codepoint_t> lst) : sparseset (lst) {}
+  سانچہ <قسم_نام Iterable,
 	    hb_requires (hb_is_iterable (Iterable))>
-  hb_set_t (const Iterable &o) : sparseset (o) {}
+  hb_سیٹ_t (ثابت Iterable &o) : sparseset (o) {}
 
-  hb_set_t& operator << (hb_codepoint_t v)
-  { sparseset::operator<< (v); return *this; }
-  hb_set_t& operator << (const hb_codepoint_pair_t& range)
-  { sparseset::operator<< (range); return *this; }
+  hb_سیٹ_t& عامل << (hb_codepoint_t v)
+  { sparseset::عامل<< (v); واپس *یہ; }
+  hb_سیٹ_t& عامل << (ثابت hb_codepoint_pair_t& range)
+  { sparseset::عامل<< (range); واپس *یہ; }
 };
 
-static_assert (hb_set_t::INVALID == HB_SET_VALUE_INVALID, "");
+static_assert (hb_سیٹ_t::INVALID == HB_سیٹ_قدر_INVALID, "");
 
 
-#endif /* HB_SET_HH */
+#اگر_ختم /* HB_SET_HH */

@@ -22,265 +22,265 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_PAINT_HH
-#define HB_PAINT_HH
+#اگر_غیر_تعریف_شدہ HB_PAINT_HH
+#تعریف_کرو HB_PAINT_HH
 
-#include "hb.hh"
-#include "hb-face.hh"
-#include "hb-font.hh"
-#include "hb-geometry.hh"
+#شامل "hb.hh"
+#شامل "hb-face.hh"
+#شامل "hb-font.hh"
+#شامل "hb-geometry.hh"
 
-#define HB_PAINT_FUNCS_IMPLEMENT_CALLBACKS \
-  HB_PAINT_FUNC_IMPLEMENT (push_transform) \
-  HB_PAINT_FUNC_IMPLEMENT (pop_transform) \
+#تعریف_کرو HB_PAINT_FUNCS_IMPLEMENT_CALLBACKS \
+  HB_PAINT_FUNC_IMPLEMENT (ڈالو_transform) \
+  HB_PAINT_FUNC_IMPLEMENT (نکالو_transform) \
   HB_PAINT_FUNC_IMPLEMENT (color_glyph) \
-  HB_PAINT_FUNC_IMPLEMENT (push_clip_glyph) \
-  HB_PAINT_FUNC_IMPLEMENT (push_clip_rectangle) \
-  HB_PAINT_FUNC_IMPLEMENT (push_clip_path_start) \
-  HB_PAINT_FUNC_IMPLEMENT (push_clip_path_end) \
-  HB_PAINT_FUNC_IMPLEMENT (pop_clip) \
+  HB_PAINT_FUNC_IMPLEMENT (ڈالو_clip_glyph) \
+  HB_PAINT_FUNC_IMPLEMENT (ڈالو_clip_rectangle) \
+  HB_PAINT_FUNC_IMPLEMENT (ڈالو_clip_راستہ_آغاز) \
+  HB_PAINT_FUNC_IMPLEMENT (ڈالو_clip_راستہ_انتہا) \
+  HB_PAINT_FUNC_IMPLEMENT (نکالو_clip) \
   HB_PAINT_FUNC_IMPLEMENT (color) \
   HB_PAINT_FUNC_IMPLEMENT (image) \
-  HB_PAINT_FUNC_IMPLEMENT (linear_gradient) \
+  HB_PAINT_FUNC_IMPLEMENT (خطی_gradient) \
   HB_PAINT_FUNC_IMPLEMENT (radial_gradient) \
   HB_PAINT_FUNC_IMPLEMENT (sweep_gradient) \
-  HB_PAINT_FUNC_IMPLEMENT (push_group) \
-  HB_PAINT_FUNC_IMPLEMENT (push_group_for) \
-  HB_PAINT_FUNC_IMPLEMENT (pop_group) \
+  HB_PAINT_FUNC_IMPLEMENT (ڈالو_گروہ) \
+  HB_PAINT_FUNC_IMPLEMENT (ڈالو_گروہ_for) \
+  HB_PAINT_FUNC_IMPLEMENT (نکالو_گروہ) \
   HB_PAINT_FUNC_IMPLEMENT (custom_palette_color) \
   HB_PAINT_FUNC_IMPLEMENT (fill_glyph) \
-  HB_PAINT_FUNC_IMPLEMENT (set_budget) \
+  HB_PAINT_FUNC_IMPLEMENT (سیٹ_budget) \
   HB_PAINT_FUNC_IMPLEMENT (get_budget) \
-  HB_PAINT_FUNC_IMPLEMENT (get_budget_remaining) \
+  HB_PAINT_FUNC_IMPLEMENT (get_budget_بقایا) \
   /* ^--- Add new callbacks here */
 
-struct hb_paint_funcs_t
+ساخت hb_paint_funcs_t
 {
-  hb_object_header_t header;
+  hb_object_سرخی_t سرخی;
 
-  struct {
-#define HB_PAINT_FUNC_IMPLEMENT(name) hb_paint_##name##_func_t name;
+  ساخت {
+#تعریف_کرو HB_PAINT_FUNC_IMPLEMENT(name) hb_paint_##name##_func_t name;
     HB_PAINT_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_PAINT_FUNC_IMPLEMENT
+#تعریف_منسوخ HB_PAINT_FUNC_IMPLEMENT
   } func;
 
-  struct {
-#define HB_PAINT_FUNC_IMPLEMENT(name) void *name;
+  ساخت {
+#تعریف_کرو HB_PAINT_FUNC_IMPLEMENT(name) خالی *name;
     HB_PAINT_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_PAINT_FUNC_IMPLEMENT
-  } *user_data;
+#تعریف_منسوخ HB_PAINT_FUNC_IMPLEMENT
+  } *user_ڈیٹا;
 
-  struct {
-#define HB_PAINT_FUNC_IMPLEMENT(name) hb_destroy_func_t name;
+  ساخت {
+#تعریف_کرو HB_PAINT_FUNC_IMPLEMENT(name) hb_destroy_func_t name;
     HB_PAINT_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_PAINT_FUNC_IMPLEMENT
+#تعریف_منسوخ HB_PAINT_FUNC_IMPLEMENT
   } *destroy;
 
-  void push_transform (void *paint_data,
-                       float xx, float yx,
-                       float xy, float yy,
-                       float dx, float dy)
+  خالی ڈالو_transform (خالی *paint_ڈیٹا,
+                       اعشاری xx, اعشاری yx,
+                       اعشاری xy, اعشاری yy,
+                       اعشاری dx, اعشاری dy)
   {
     // Handle -0.f to avoid -0.f == 0.f in the transform matrix.
-    if (dx == -0.f) dx = 0.f;
-    if (dy == -0.f) dy = 0.f;
-    func.push_transform (this, paint_data,
+    اگر (dx == -0.f) dx = 0.f;
+    اگر (dy == -0.f) dy = 0.f;
+    func.ڈالو_transform (یہ, paint_ڈیٹا,
                          xx, yx, xy, yy, dx, dy,
-                         !user_data ? nullptr : user_data->push_transform); }
-  void pop_transform (void *paint_data)
-  { func.pop_transform (this, paint_data,
-                        !user_data ? nullptr : user_data->pop_transform); }
-  bool color_glyph (void *paint_data,
+                         !user_ڈیٹا ? خالی_اشاریہ : user_ڈیٹا->ڈالو_transform); }
+  خالی نکالو_transform (خالی *paint_ڈیٹا)
+  { func.نکالو_transform (یہ, paint_ڈیٹا,
+                        !user_ڈیٹا ? خالی_اشاریہ : user_ڈیٹا->نکالو_transform); }
+  منطقی color_glyph (خالی *paint_ڈیٹا,
                     hb_codepoint_t glyph,
                     hb_font_t *font)
-  { return func.color_glyph (this, paint_data,
+  { واپس func.color_glyph (یہ, paint_ڈیٹا,
                              glyph,
                              font,
-                             !user_data ? nullptr : user_data->color_glyph); }
-  void push_clip_glyph (void *paint_data,
+                             !user_ڈیٹا ? خالی_اشاریہ : user_ڈیٹا->color_glyph); }
+  خالی ڈالو_clip_glyph (خالی *paint_ڈیٹا,
                         hb_codepoint_t glyph,
                         hb_font_t *font)
-  { func.push_clip_glyph (this, paint_data,
+  { func.ڈالو_clip_glyph (یہ, paint_ڈیٹا,
                           glyph,
                           font,
-                          !user_data ? nullptr : user_data->push_clip_glyph); }
-  void push_clip_rectangle (void *paint_data,
-                           float xmin, float ymin, float xmax, float ymax)
-  { func.push_clip_rectangle (this, paint_data,
+                          !user_ڈیٹا ? خالی_اشاریہ : user_ڈیٹا->ڈالو_clip_glyph); }
+  خالی ڈالو_clip_rectangle (خالی *paint_ڈیٹا,
+                           اعشاری xmin, اعشاری ymin, اعشاری xmax, اعشاری ymax)
+  { func.ڈالو_clip_rectangle (یہ, paint_ڈیٹا,
                               xmin, ymin, xmax, ymax,
-                              !user_data ? nullptr : user_data->push_clip_rectangle); }
-  hb_draw_funcs_t *push_clip_path_start (void *paint_data,
-                                         void **draw_data)
-  { return func.push_clip_path_start (this, paint_data, draw_data,
-                                      !user_data ? nullptr : user_data->push_clip_path_start); }
-  void push_clip_path_end (void *paint_data)
-  { func.push_clip_path_end (this, paint_data,
-                             !user_data ? nullptr : user_data->push_clip_path_end); }
-  void pop_clip (void *paint_data)
-  { func.pop_clip (this, paint_data,
-                   !user_data ? nullptr : user_data->pop_clip); }
-  void color (void *paint_data,
+                              !user_ڈیٹا ? خالی_اشاریہ : user_ڈیٹا->ڈالو_clip_rectangle); }
+  hb_draw_funcs_t *ڈالو_clip_راستہ_آغاز (خالی *paint_ڈیٹا,
+                                         خالی **draw_ڈیٹا)
+  { واپس func.ڈالو_clip_راستہ_آغاز (یہ, paint_ڈیٹا, draw_ڈیٹا,
+                                      !user_ڈیٹا ? خالی_اشاریہ : user_ڈیٹا->ڈالو_clip_راستہ_آغاز); }
+  خالی ڈالو_clip_راستہ_انتہا (خالی *paint_ڈیٹا)
+  { func.ڈالو_clip_راستہ_انتہا (یہ, paint_ڈیٹا,
+                             !user_ڈیٹا ? خالی_اشاریہ : user_ڈیٹا->ڈالو_clip_راستہ_انتہا); }
+  خالی نکالو_clip (خالی *paint_ڈیٹا)
+  { func.نکالو_clip (یہ, paint_ڈیٹا,
+                   !user_ڈیٹا ? خالی_اشاریہ : user_ڈیٹا->نکالو_clip); }
+  خالی color (خالی *paint_ڈیٹا,
               hb_bool_t is_foreground,
               hb_color_t color)
-  { func.color (this, paint_data,
+  { func.color (یہ, paint_ڈیٹا,
                 is_foreground, color,
-                !user_data ? nullptr : user_data->color); }
-  void fill_glyph (void *paint_data,
+                !user_ڈیٹا ? خالی_اشاریہ : user_ڈیٹا->color); }
+  خالی fill_glyph (خالی *paint_ڈیٹا,
                    hb_codepoint_t glyph,
                    hb_font_t *font,
                    hb_bool_t is_foreground,
                    hb_color_t color)
-  { func.fill_glyph (this, paint_data,
+  { func.fill_glyph (یہ, paint_ڈیٹا,
                      glyph, font,
                      is_foreground, color,
-                     !user_data ? nullptr : user_data->fill_glyph); }
-  bool image (void *paint_data,
+                     !user_ڈیٹا ? خالی_اشاریہ : user_ڈیٹا->fill_glyph); }
+  منطقی image (خالی *paint_ڈیٹا,
               hb_blob_t *image,
-              unsigned width, unsigned height,
-              hb_tag_t format,
-              float slant,
+              غیرعلامتی چوڑائی, غیرعلامتی اونچائی,
+              hb_لیبل_t format,
+              اعشاری slant,
               hb_glyph_extents_t *extents)
-  { return func.image (this, paint_data,
-                       image, width, height, format, slant, extents,
-                       !user_data ? nullptr : user_data->image); }
-  void linear_gradient (void *paint_data,
-                        hb_color_line_t *color_line,
-                        float x0, float y0,
-                        float x1, float y1,
-                        float x2, float y2)
-  { func.linear_gradient (this, paint_data,
-                          color_line, x0, y0, x1, y1, x2, y2,
-                          !user_data ? nullptr : user_data->linear_gradient); }
-  void radial_gradient (void *paint_data,
-                        hb_color_line_t *color_line,
-                        float x0, float y0, float r0,
-                        float x1, float y1, float r1)
-  { func.radial_gradient (this, paint_data,
-                          color_line, x0, y0, r0, x1, y1, r1,
-                          !user_data ? nullptr : user_data->radial_gradient); }
-  void sweep_gradient (void *paint_data,
-                       hb_color_line_t *color_line,
-                       float x0, float y0,
-                       float start_angle,
-                       float end_angle)
-  { func.sweep_gradient (this, paint_data,
-                         color_line, x0, y0, start_angle, end_angle,
-                         !user_data ? nullptr : user_data->sweep_gradient); }
-  void push_group (void *paint_data)
-  { func.push_group (this, paint_data,
-                     !user_data ? nullptr : user_data->push_group); }
-  void push_group_for (void *paint_data,
-                       hb_paint_composite_mode_t mode)
-  { func.push_group_for (this, paint_data,
-                         mode,
-                         !user_data ? nullptr : user_data->push_group_for); }
-  void pop_group (void *paint_data,
-                  hb_paint_composite_mode_t mode)
-  { func.pop_group (this, paint_data,
-                    mode,
-                    !user_data ? nullptr : user_data->pop_group); }
-  bool custom_palette_color (void *paint_data,
-                             unsigned int color_index,
+  { واپس func.image (یہ, paint_ڈیٹا,
+                       image, چوڑائی, اونچائی, format, slant, extents,
+                       !user_ڈیٹا ? خالی_اشاریہ : user_ڈیٹا->image); }
+  خالی خطی_gradient (خالی *paint_ڈیٹا,
+                        hb_color_سطر_t *color_سطر,
+                        اعشاری x0, اعشاری y0,
+                        اعشاری x1, اعشاری y1,
+                        اعشاری x2, اعشاری y2)
+  { func.خطی_gradient (یہ, paint_ڈیٹا,
+                          color_سطر, x0, y0, x1, y1, x2, y2,
+                          !user_ڈیٹا ? خالی_اشاریہ : user_ڈیٹا->خطی_gradient); }
+  خالی radial_gradient (خالی *paint_ڈیٹا,
+                        hb_color_سطر_t *color_سطر,
+                        اعشاری x0, اعشاری y0, اعشاری r0,
+                        اعشاری x1, اعشاری y1, اعشاری r1)
+  { func.radial_gradient (یہ, paint_ڈیٹا,
+                          color_سطر, x0, y0, r0, x1, y1, r1,
+                          !user_ڈیٹا ? خالی_اشاریہ : user_ڈیٹا->radial_gradient); }
+  خالی sweep_gradient (خالی *paint_ڈیٹا,
+                       hb_color_سطر_t *color_سطر,
+                       اعشاری x0, اعشاری y0,
+                       اعشاری آغاز_angle,
+                       اعشاری انتہا_angle)
+  { func.sweep_gradient (یہ, paint_ڈیٹا,
+                         color_سطر, x0, y0, آغاز_angle, انتہا_angle,
+                         !user_ڈیٹا ? خالی_اشاریہ : user_ڈیٹا->sweep_gradient); }
+  خالی ڈالو_گروہ (خالی *paint_ڈیٹا)
+  { func.ڈالو_گروہ (یہ, paint_ڈیٹا,
+                     !user_ڈیٹا ? خالی_اشاریہ : user_ڈیٹا->ڈالو_گروہ); }
+  خالی ڈالو_گروہ_for (خالی *paint_ڈیٹا,
+                       hb_paint_مرکب_منوال_t منوال)
+  { func.ڈالو_گروہ_for (یہ, paint_ڈیٹا,
+                         منوال,
+                         !user_ڈیٹا ? خالی_اشاریہ : user_ڈیٹا->ڈالو_گروہ_for); }
+  خالی نکالو_گروہ (خالی *paint_ڈیٹا,
+                  hb_paint_مرکب_منوال_t منوال)
+  { func.نکالو_گروہ (یہ, paint_ڈیٹا,
+                    منوال,
+                    !user_ڈیٹا ? خالی_اشاریہ : user_ڈیٹا->نکالو_گروہ); }
+  منطقی custom_palette_color (خالی *paint_ڈیٹا,
+                             غیرعلامتی صحیح color_اشاریہ,
                              hb_color_t *color)
-  { return func.custom_palette_color (this, paint_data,
-                                      color_index,
+  { واپس func.custom_palette_color (یہ, paint_ڈیٹا,
+                                      color_اشاریہ,
                                       color,
-                                      !user_data ? nullptr : user_data->custom_palette_color); }
-  bool set_budget (void *paint_data, int64_t budget)
+                                      !user_ڈیٹا ? خالی_اشاریہ : user_ڈیٹا->custom_palette_color); }
+  منطقی سیٹ_budget (خالی *paint_ڈیٹا, int64_t budget)
   {
-    if (budget < 0 && budget != HB_BUDGET_DEFAULT)
+    اگر (budget < 0 && budget != HB_BUDGET_DEFAULT)
       budget = 0;
-    return func.set_budget (this, paint_data, budget,
-			    !user_data ? nullptr : user_data->set_budget);
+    واپس func.سیٹ_budget (یہ, paint_ڈیٹا, budget,
+			    !user_ڈیٹا ? خالی_اشاریہ : user_ڈیٹا->سیٹ_budget);
   }
-  int64_t get_budget (void *paint_data)
-  { return func.get_budget (this, paint_data,
-			    !user_data ? nullptr : user_data->get_budget); }
-  int64_t *get_budget_remaining_ptr (void *paint_data)
-  { return func.get_budget_remaining (this, paint_data,
-				      !user_data ? nullptr : user_data->get_budget_remaining); }
+  int64_t get_budget (خالی *paint_ڈیٹا)
+  { واپس func.get_budget (یہ, paint_ڈیٹا,
+			    !user_ڈیٹا ? خالی_اشاریہ : user_ڈیٹا->get_budget); }
+  int64_t *get_budget_بقایا_ptr (خالی *paint_ڈیٹا)
+  { واپس func.get_budget_بقایا (یہ, paint_ڈیٹا,
+				      !user_ڈیٹا ? خالی_اشاریہ : user_ڈیٹا->get_budget_بقایا); }
 
 
   /* Internal specializations. */
 
-  void push_font_transform (void *paint_data,
-                            const hb_font_t *font)
+  خالی ڈالو_font_transform (خالی *paint_ڈیٹا,
+                            ثابت hb_font_t *font)
   {
-    float upem = font->face->get_upem ();
-    int xscale = font->x_scale, yscale = font->y_scale;
+    اعشاری upem = font->face->get_upem ();
+    صحیح xscale = font->x_scale, yscale = font->y_scale;
 
-    push_transform (paint_data,
+    ڈالو_transform (paint_ڈیٹا,
 		    xscale/upem, 0,
 		    0, yscale/upem,
 		    0, 0);
   }
 
-  void push_inverse_font_transform (void *paint_data,
-                                    const hb_font_t *font)
+  خالی ڈالو_inverse_font_transform (خالی *paint_ڈیٹا,
+                                    ثابت hb_font_t *font)
   {
-    float upem = font->face->get_upem ();
-    int xscale = font->x_scale ? font->x_scale : upem;
-    int yscale = font->y_scale ? font->y_scale : upem;
+    اعشاری upem = font->face->get_upem ();
+    صحیح xscale = font->x_scale ? font->x_scale : upem;
+    صحیح yscale = font->y_scale ? font->y_scale : upem;
 
-    push_transform (paint_data,
+    ڈالو_transform (paint_ڈیٹا,
 		    upem/xscale, 0,
 		    0, upem/yscale,
 		    0, 0);
   }
 
-  void push_transform (void *paint_data, hb_transform_t<float> t)
+  خالی ڈالو_transform (خالی *paint_ڈیٹا, hb_transform_t<اعشاری> t)
   {
-    push_transform (paint_data, t.xx, t.yx, t.xy, t.yy, t.x0, t.y0);
+    ڈالو_transform (paint_ڈیٹا, t.xx, t.yx, t.xy, t.yy, t.x0, t.y0);
   }
 
-  void push_translate (void *paint_data,
-                       float dx, float dy)
+  خالی ڈالو_translate (خالی *paint_ڈیٹا,
+                       اعشاری dx, اعشاری dy)
   {
-    push_transform (paint_data,
-		    hb_transform_t<float>::translation (dx, dy));
+    ڈالو_transform (paint_ڈیٹا,
+		    hb_transform_t<اعشاری>::translation (dx, dy));
   }
 
-  void push_scale (void *paint_data,
-                   float sx, float sy)
+  خالی ڈالو_scale (خالی *paint_ڈیٹا,
+                   اعشاری sx, اعشاری sy)
   {
-    push_transform (paint_data,
-		    hb_transform_t<float>::scaling (sx, sy));
+    ڈالو_transform (paint_ڈیٹا,
+		    hb_transform_t<اعشاری>::scaling (sx, sy));
   }
-  void push_scale_around_center (void *paint_data,
-				 float sx, float sy,
-				 float cx, float cy)
+  خالی ڈالو_scale_around_center (خالی *paint_ڈیٹا,
+				 اعشاری sx, اعشاری sy,
+				 اعشاری cx, اعشاری cy)
   {
-    push_transform (paint_data,
-		    hb_transform_t<float>::scaling_around_center (sx, sy, cx, cy));
-  }
-
-  void push_rotate (void *paint_data,
-                    float a)
-  {
-    push_transform (paint_data,
-		    hb_transform_t<float>::rotation (a * HB_PI));
+    ڈالو_transform (paint_ڈیٹا,
+		    hb_transform_t<اعشاری>::scaling_around_center (sx, sy, cx, cy));
   }
 
-  void push_rotate_around_center (void *paint_data,
-				  float a,
-				  float cx, float cy)
+  خالی ڈالو_rotate (خالی *paint_ڈیٹا,
+                    اعشاری a)
   {
-    push_transform (paint_data,
-		    hb_transform_t<float>::rotation_around_center (a * HB_PI, cx, cy));
+    ڈالو_transform (paint_ڈیٹا,
+		    hb_transform_t<اعشاری>::rotation (a * HB_PI));
   }
 
-  void push_skew (void *paint_data,
-                  float sx, float sy)
+  خالی ڈالو_rotate_around_center (خالی *paint_ڈیٹا,
+				  اعشاری a,
+				  اعشاری cx, اعشاری cy)
   {
-    push_transform (paint_data,
-		    hb_transform_t<float>::skewing (-sx * HB_PI, sy * HB_PI));
+    ڈالو_transform (paint_ڈیٹا,
+		    hb_transform_t<اعشاری>::rotation_around_center (a * HB_PI, cx, cy));
   }
-  void push_skew_around_center (void *paint_data,
-				float sx, float sy,
-				float cx, float cy)
+
+  خالی ڈالو_skew (خالی *paint_ڈیٹا,
+                  اعشاری sx, اعشاری sy)
   {
-    push_transform (paint_data,
-		    hb_transform_t<float>::skewing_around_center (-sx * HB_PI, sy * HB_PI, cx, cy));
+    ڈالو_transform (paint_ڈیٹا,
+		    hb_transform_t<اعشاری>::skewing (-sx * HB_PI, sy * HB_PI));
+  }
+  خالی ڈالو_skew_around_center (خالی *paint_ڈیٹا,
+				اعشاری sx, اعشاری sy,
+				اعشاری cx, اعشاری cy)
+  {
+    ڈالو_transform (paint_ڈیٹا,
+		    hb_transform_t<اعشاری>::skewing_around_center (-sx * HB_PI, sy * HB_PI, cx, cy));
   }
 };
 DECLARE_NULL_INSTANCE (hb_paint_funcs_t);
@@ -288,20 +288,20 @@ DECLARE_NULL_INSTANCE (hb_paint_funcs_t);
 
 /* Linearly interpolate between two hb_color_t values, component-wise,
  * in byte-channel space with rounding. */
-static inline hb_color_t
-hb_color_lerp (hb_color_t c0, hb_color_t c1, float t)
+ساکن اندرونی hb_color_t
+hb_color_lerp (hb_color_t c0, hb_color_t c1, اعشاری t)
 {
-  auto lerp = [&] (unsigned shift) -> unsigned {
-    unsigned v0 = (c0 >> shift) & 0xFF;
-    unsigned v1 = (c1 >> shift) & 0xFF;
-    float v = v0 + t * ((float) v1 - (float) v0) + 0.5f;
+  خودکار lerp = [&] (غیرعلامتی سرکاؤ) -> غیرعلامتی {
+    غیرعلامتی v0 = (c0 >> سرکاؤ) & 0xFF;
+    غیرعلامتی v1 = (c1 >> سرکاؤ) & 0xFF;
+    اعشاری v = v0 + t * ((اعشاری) v1 - (اعشاری) v0) + 0.5f;
     /* t may be outside [0,1] (or NaN) for malformed gradients;
      * keep the float-to-unsigned conversion defined. */
-    if (!(v > 0.f)) return 0;
-    if (v > 255.f) return 255;
-    return (unsigned) v;
+    اگر (!(v > 0.f)) واپس 0;
+    اگر (v > 255.f) واپس 255;
+    واپس (غیرعلامتی) v;
   };
-  return HB_COLOR (lerp (0), lerp (8), lerp (16), lerp (24));
+  واپس HB_COLOR (lerp (0), lerp (8), lerp (16), lerp (24));
 }
 
-#endif /* HB_PAINT_HH */
+#اگر_ختم /* HB_PAINT_HH */

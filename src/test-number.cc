@@ -23,231 +23,231 @@
  *
  */
 
-#include <cmath>
-#include <cstdlib>
+#شامل <cmath>
+#شامل <cstdlib>
 
-#include "hb.hh"
-#include "hb-number.hh"
+#شامل "hb.hh"
+#شامل "hb-number.hh"
 
-static void
+ساکن خالی
 test_parse_int ()
 {
   {
-    const char str[] = "123";
-    const char *pp = str;
-    const char *end = str + 3;
+    ثابت حرف str[] = "123";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + 3;
 
-    int pv;
-    hb_always_assert (hb_parse_int (&pp, end, &pv));
+    صحیح pv;
+    hb_always_assert (hb_parse_int (&pp, انتہا, &pv));
     hb_always_assert (pv == 123);
     hb_always_assert (pp - str == 3);
-    hb_always_assert (end - pp == 0);
-    hb_always_assert (!*end);
+    hb_always_assert (انتہا - pp == 0);
+    hb_always_assert (!*انتہا);
   }
 
   {
-    const char str[] = "-123";
-    const char *pp = str;
-    const char *end = str + 4;
+    ثابت حرف str[] = "-123";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + 4;
 
-    int pv;
-    hb_always_assert (hb_parse_int (&pp, end, &pv));
+    صحیح pv;
+    hb_always_assert (hb_parse_int (&pp, انتہا, &pv));
     hb_always_assert (pv == -123);
     hb_always_assert (pp - str == 4);
-    hb_always_assert (end - pp == 0);
-    hb_always_assert (!*end);
+    hb_always_assert (انتہا - pp == 0);
+    hb_always_assert (!*انتہا);
   }
 
   /* Leading whitespace */
   {
-    const char str[] = "   123";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv;
-    hb_always_assert (hb_parse_int (&pp, end, &pv));
+    ثابت حرف str[] = "   123";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    صحیح pv;
+    hb_always_assert (hb_parse_int (&pp, انتہا, &pv));
     hb_always_assert (pv == 123);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
   {
-    const char str[] = "\t123";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv;
-    hb_always_assert (hb_parse_int (&pp, end, &pv));
+    ثابت حرف str[] = "\t123";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    صحیح pv;
+    hb_always_assert (hb_parse_int (&pp, انتہا, &pv));
     hb_always_assert (pv == 123);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
   {
-    const char str[] = "\n123";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv;
-    hb_always_assert (hb_parse_int (&pp, end, &pv));
+    ثابت حرف str[] = "\n123";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    صحیح pv;
+    hb_always_assert (hb_parse_int (&pp, انتہا, &pv));
     hb_always_assert (pv == 123);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
   {
-    const char str[] = " -123";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv;
-    hb_always_assert (hb_parse_int (&pp, end, &pv));
+    ثابت حرف str[] = " -123";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    صحیح pv;
+    hb_always_assert (hb_parse_int (&pp, انتہا, &pv));
     hb_always_assert (pv == -123);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
 
   /* Leading '+' sign */
   {
-    const char str[] = "+123";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv;
-    hb_always_assert (hb_parse_int (&pp, end, &pv));
+    ثابت حرف str[] = "+123";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    صحیح pv;
+    hb_always_assert (hb_parse_int (&pp, انتہا, &pv));
     hb_always_assert (pv == 123);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
   {
-    const char str[] = "+0";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv;
-    hb_always_assert (hb_parse_int (&pp, end, &pv));
+    ثابت حرف str[] = "+0";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    صحیح pv;
+    hb_always_assert (hb_parse_int (&pp, انتہا, &pv));
     hb_always_assert (pv == 0);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
 
   /* Leading zeros are decimal, not octal (base is passed as 10) */
   {
-    const char str[] = "007";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv;
-    hb_always_assert (hb_parse_int (&pp, end, &pv));
+    ثابت حرف str[] = "007";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    صحیح pv;
+    hb_always_assert (hb_parse_int (&pp, انتہا, &pv));
     hb_always_assert (pv == 7);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
 
   /* Negative zero */
   {
-    const char str[] = "-0";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv;
-    hb_always_assert (hb_parse_int (&pp, end, &pv));
+    ثابت حرف str[] = "-0";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    صحیح pv;
+    hb_always_assert (hb_parse_int (&pp, انتہا, &pv));
     hb_always_assert (pv == 0);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
 
   /* Partial parse: stops at first non-digit */
   {
-    const char str[] = "123abc";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv;
-    hb_always_assert (hb_parse_int (&pp, end, &pv));
+    ثابت حرف str[] = "123abc";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    صحیح pv;
+    hb_always_assert (hb_parse_int (&pp, انتہا, &pv));
     hb_always_assert (pv == 123);
     hb_always_assert (pp == str + 3);
   }
 
   /* INT_MAX / INT_MIN (fits in long on every supported platform) */
   {
-    const char str[] = "2147483647";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv;
-    hb_always_assert (hb_parse_int (&pp, end, &pv));
+    ثابت حرف str[] = "2147483647";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    صحیح pv;
+    hb_always_assert (hb_parse_int (&pp, انتہا, &pv));
     hb_always_assert (pv == 2147483647);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
   {
-    const char str[] = "-2147483648";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv;
-    hb_always_assert (hb_parse_int (&pp, end, &pv));
+    ثابت حرف str[] = "-2147483648";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    صحیح pv;
+    hb_always_assert (hb_parse_int (&pp, انتہا, &pv));
     hb_always_assert (pv == -2147483647 - 1);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
 
   /* Failures: no digits */
   {
-    const char str[] = "   ";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv = 99;
-    hb_always_assert (!hb_parse_int (&pp, end, &pv));
+    ثابت حرف str[] = "   ";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    صحیح pv = 99;
+    hb_always_assert (!hb_parse_int (&pp, انتہا, &pv));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 99);
   }
   {
-    const char str[] = "+";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv = 99;
-    hb_always_assert (!hb_parse_int (&pp, end, &pv));
+    ثابت حرف str[] = "+";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    صحیح pv = 99;
+    hb_always_assert (!hb_parse_int (&pp, انتہا, &pv));
   }
   {
-    const char str[] = "-";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv = 99;
-    hb_always_assert (!hb_parse_int (&pp, end, &pv));
+    ثابت حرف str[] = "-";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    صحیح pv = 99;
+    hb_always_assert (!hb_parse_int (&pp, انتہا, &pv));
   }
   {
-    const char str[] = "abc";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv = 99;
-    hb_always_assert (!hb_parse_int (&pp, end, &pv));
+    ثابت حرف str[] = "abc";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    صحیح pv = 99;
+    hb_always_assert (!hb_parse_int (&pp, انتہا, &pv));
   }
 
   /* Multiple signs fail */
   {
-    const char str[] = "++1";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv = 99;
-    hb_always_assert (!hb_parse_int (&pp, end, &pv));
+    ثابت حرف str[] = "++1";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    صحیح pv = 99;
+    hb_always_assert (!hb_parse_int (&pp, انتہا, &pv));
   }
   {
-    const char str[] = "--1";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv = 99;
-    hb_always_assert (!hb_parse_int (&pp, end, &pv));
+    ثابت حرف str[] = "--1";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    صحیح pv = 99;
+    hb_always_assert (!hb_parse_int (&pp, انتہا, &pv));
   }
   {
-    const char str[] = "+-1";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv = 99;
-    hb_always_assert (!hb_parse_int (&pp, end, &pv));
+    ثابت حرف str[] = "+-1";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    صحیح pv = 99;
+    hb_always_assert (!hb_parse_int (&pp, انتہا, &pv));
   }
   {
-    const char str[] = "-+1";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv = 99;
-    hb_always_assert (!hb_parse_int (&pp, end, &pv));
+    ثابت حرف str[] = "-+1";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    صحیح pv = 99;
+    hb_always_assert (!hb_parse_int (&pp, انتہا, &pv));
   }
 
   /* whole_buffer: leading whitespace ok, trailing content rejected,
    * and *pp / *pv are left untouched on failure */
   {
-    const char str[] = " 123";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv;
-    hb_always_assert (hb_parse_int (&pp, end, &pv, true));
+    ثابت حرف str[] = " 123";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    صحیح pv;
+    hb_always_assert (hb_parse_int (&pp, انتہا, &pv, سچ));
     hb_always_assert (pv == 123);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
   {
-    const char str[] = "123abc";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv = 99;
-    hb_always_assert (!hb_parse_int (&pp, end, &pv, true));
+    ثابت حرف str[] = "123abc";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    صحیح pv = 99;
+    hb_always_assert (!hb_parse_int (&pp, انتہا, &pv, سچ));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 99);
   }
@@ -255,497 +255,497 @@ test_parse_int ()
     /* 10 digits > INT_MAX.  The old strtol-based implementation silently
      * truncated on 64-bit platforms (long is 64-bit) but rejected on
      * 32-bit; the new implementation rejects uniformly. */
-    const char str[] = "9999999999";   /* 10 digits, > INT_MAX */
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv = 99;
-    hb_always_assert (!hb_parse_int (&pp, end, &pv));
+    ثابت حرف str[] = "9999999999";   /* 10 digits, > INT_MAX */
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    صحیح pv = 99;
+    hb_always_assert (!hb_parse_int (&pp, انتہا, &pv));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 99);
   }
 
   /* INT_MAX / INT_MIN - exactly representable */
   {
-    const char str[] = "2147483647";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv;
-    hb_always_assert (hb_parse_int (&pp, end, &pv));
+    ثابت حرف str[] = "2147483647";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    صحیح pv;
+    hb_always_assert (hb_parse_int (&pp, انتہا, &pv));
     hb_always_assert (pv == 2147483647);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
   {
-    const char str[] = "-2147483648";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv;
-    hb_always_assert (hb_parse_int (&pp, end, &pv));
+    ثابت حرف str[] = "-2147483648";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    صحیح pv;
+    hb_always_assert (hb_parse_int (&pp, انتہا, &pv));
     hb_always_assert (pv == -2147483647 - 1);   /* not -2147483648, that's UB as an int literal */
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
 
   /* One past INT_MAX - must fail */
   {
-    const char str[] = "2147483648";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv = 99;
-    hb_always_assert (!hb_parse_int (&pp, end, &pv));
+    ثابت حرف str[] = "2147483648";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    صحیح pv = 99;
+    hb_always_assert (!hb_parse_int (&pp, انتہا, &pv));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 99);
   }
   /* One past INT_MIN - must fail */
   {
-    const char str[] = "-2147483649";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv = 99;
-    hb_always_assert (!hb_parse_int (&pp, end, &pv));
+    ثابت حرف str[] = "-2147483649";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    صحیح pv = 99;
+    hb_always_assert (!hb_parse_int (&pp, انتہا, &pv));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 99);
   }
 
   /* Same for signed */
   {
-    const char str[] = "9999999999999999999999999999999999999999";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv = 99;
-    hb_always_assert (!hb_parse_int (&pp, end, &pv));
+    ثابت حرف str[] = "9999999999999999999999999999999999999999";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    صحیح pv = 99;
+    hb_always_assert (!hb_parse_int (&pp, انتہا, &pv));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 99);
   }
 
   {
     /* Verify *pv and *pp are untouched when a range check rejects. */
-    const char str[] = "9999999999";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv = 42;
-    hb_always_assert (!hb_parse_int (&pp, end, &pv));
+    ثابت حرف str[] = "9999999999";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    صحیح pv = 42;
+    hb_always_assert (!hb_parse_int (&pp, انتہا, &pv));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 42);
   }
 
   /* Whitespace between sign and digits is not allowed */
   {
-    const char str[] = "- 123";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv = 99;
-    hb_always_assert (!hb_parse_int (&pp, end, &pv));
+    ثابت حرف str[] = "- 123";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    صحیح pv = 99;
+    hb_always_assert (!hb_parse_int (&pp, انتہا, &pv));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 99);
   }
 
   /* Plus zero, for symmetry with the -0 case */
   {
-    const char str[] = "+0";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv = 99;
-    hb_always_assert (hb_parse_int (&pp, end, &pv));
+    ثابت حرف str[] = "+0";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    صحیح pv = 99;
+    hb_always_assert (hb_parse_int (&pp, انتہا, &pv));
     hb_always_assert (pv == 0);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
 
   /* Sign alone plus trailing whitespace still fails */
   {
-    const char str[] = "-   ";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    int pv = 99;
-    hb_always_assert (!hb_parse_int (&pp, end, &pv));
+    ثابت حرف str[] = "-   ";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    صحیح pv = 99;
+    hb_always_assert (!hb_parse_int (&pp, انتہا, &pv));
     hb_always_assert (pv == 99);
   }
 }
 
-static void
+ساکن خالی
 test_parse_uint ()
 {
   {
-    const char str[] = "123";
-    const char *pp = str;
-    const char *end = str + strlen (str);
+    ثابت حرف str[] = "123";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + لڑی_لمبائی (str);
 
-    unsigned int pv;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv));
+    غیرعلامتی صحیح pv;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv));
     hb_always_assert (pv == 123);
     hb_always_assert (pp - str == 3);
-    hb_always_assert (end - pp == 0);
-    hb_always_assert (!*end);
+    hb_always_assert (انتہا - pp == 0);
+    hb_always_assert (!*انتہا);
   }
 
   {
-    const char str[] = "12F";
-    const char *pp = str;
-    const char *end = str + 3;
+    ثابت حرف str[] = "12F";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + 3;
 
-    unsigned int pv;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 16));
+    غیرعلامتی صحیح pv;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv, سچ, 16));
     hb_always_assert (pv == 0x12F);
     hb_always_assert (pp - str == 3);
-    hb_always_assert (end - pp == 0);
-    hb_always_assert (!*end);
+    hb_always_assert (انتہا - pp == 0);
+    hb_always_assert (!*انتہا);
   }
 
   {
-    const char str[] = "12Fq";
-    const char *pp = str;
-    const char *end = str + 4;
+    ثابت حرف str[] = "12Fq";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + 4;
 
-    unsigned int pv;
-    hb_always_assert (!hb_parse_uint (&pp, end, &pv, true, 16));
-    hb_always_assert (hb_parse_uint (&pp, end, &pv, false, 16));
+    غیرعلامتی صحیح pv;
+    hb_always_assert (!hb_parse_uint (&pp, انتہا, &pv, سچ, 16));
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv, جھوٹ, 16));
     hb_always_assert (pv == 0x12F);
     hb_always_assert (pp - str == 3);
-    hb_always_assert (end - pp == 1);
-    hb_always_assert (!*end);
+    hb_always_assert (انتہا - pp == 1);
+    hb_always_assert (!*انتہا);
   }
 
   {
-    const char str[] = "123";
-    const char *pp = str;
-    hb_always_assert (ARRAY_LENGTH (str) == 4);
-    const char *end = str + ARRAY_LENGTH (str);
+    ثابت حرف str[] = "123";
+    ثابت حرف *pp = str;
+    hb_always_assert (ARRAY_لمبائی (str) == 4);
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str);
 
-    unsigned int pv;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv));
+    غیرعلامتی صحیح pv;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv));
     hb_always_assert (pv == 123);
     hb_always_assert (pp - str == 3);
-    hb_always_assert (end - pp == 1);
+    hb_always_assert (انتہا - pp == 1);
   }
 
   {
-    const char str[] = "123\0";
-    const char *pp = str;
-    hb_always_assert (ARRAY_LENGTH (str) == 5);
-    const char *end = str + ARRAY_LENGTH (str);
+    ثابت حرف str[] = "123\0";
+    ثابت حرف *pp = str;
+    hb_always_assert (ARRAY_لمبائی (str) == 5);
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str);
 
-    unsigned int pv;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv));
+    غیرعلامتی صحیح pv;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv));
     hb_always_assert (pv == 123);
     hb_always_assert (pp - str == 3);
-    hb_always_assert (end - pp == 2);
+    hb_always_assert (انتہا - pp == 2);
   }
 
   {
-    const char str[] = "123V";
-    const char *pp = str;
-    hb_always_assert (ARRAY_LENGTH (str) == 5);
-    const char *end = str + ARRAY_LENGTH (str);
+    ثابت حرف str[] = "123V";
+    ثابت حرف *pp = str;
+    hb_always_assert (ARRAY_لمبائی (str) == 5);
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str);
 
-    unsigned int pv;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv));
+    غیرعلامتی صحیح pv;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv));
     hb_always_assert (pv == 123);
     hb_always_assert (pp - str == 3);
-    hb_always_assert (end - pp == 2);
+    hb_always_assert (انتہا - pp == 2);
   }
 
   {
-    const char str[] = "123abc";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv = 99;
-    hb_always_assert (!hb_parse_uint (&pp, end, &pv, true));
+    ثابت حرف str[] = "123abc";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv = 99;
+    hb_always_assert (!hb_parse_uint (&pp, انتہا, &pv, سچ));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 99);
   }
 
   /* Leading whitespace */
   {
-    const char str[] = " 123";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv));
+    ثابت حرف str[] = " 123";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv));
     hb_always_assert (pv == 123);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
   {
-    const char str[] = "\t123";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv));
+    ثابت حرف str[] = "\t123";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv));
     hb_always_assert (pv == 123);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
 
   /* Leading zeros (still decimal when base is 10) */
   {
-    const char str[] = "007";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv));
+    ثابت حرف str[] = "007";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv));
     hb_always_assert (pv == 7);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
   {
-    const char str[] = "000";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv));
+    ثابت حرف str[] = "000";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv));
     hb_always_assert (pv == 0);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
 
   /* UINT_MAX */
   {
-    const char str[] = "4294967295";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv));
+    ثابت حرف str[] = "4294967295";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv));
     hb_always_assert (pv == 4294967295u);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
 
   /* Negative wraps in two's complement (matches strtoul on unsigned) */
   {
-    const char str[] = "-1";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv));
+    ثابت حرف str[] = "-1";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv));
     hb_always_assert (pv == 4294967295u);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
   {
-    const char str[] = "-0";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv = 99;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv));
+    ثابت حرف str[] = "-0";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv = 99;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv));
     hb_always_assert (pv == 0);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
 
   /* Base 2 */
   {
-    const char str[] = "1010";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 2));
+    ثابت حرف str[] = "1010";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv, سچ, 2));
     hb_always_assert (pv == 10);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
   {
-    const char str[] = "11111111";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 2));
+    ثابت حرف str[] = "11111111";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv, سچ, 2));
     hb_always_assert (pv == 255);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
   {
-    const char str[] = "12";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
+    ثابت حرف str[] = "12";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv;
     /* '2' is not a base-2 digit; parse stops at index 1 */
-    hb_always_assert (hb_parse_uint (&pp, end, &pv, false, 2));
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv, جھوٹ, 2));
     hb_always_assert (pv == 1);
     hb_always_assert (pp == str + 1);
   }
 
   /* Base 8 */
   {
-    const char str[] = "777";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 8));
+    ثابت حرف str[] = "777";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv, سچ, 8));
     hb_always_assert (pv == 511);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
   {
-    const char str[] = "010";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 8));
+    ثابت حرف str[] = "010";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv, سچ, 8));
     hb_always_assert (pv == 8);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
 
   /* Base 16, with and without 0x prefix, mixed case */
   {
-    const char str[] = "FF";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 16));
+    ثابت حرف str[] = "FF";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv, سچ, 16));
     hb_always_assert (pv == 255);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
   {
-    const char str[] = "ff";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 16));
+    ثابت حرف str[] = "ff";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv, سچ, 16));
     hb_always_assert (pv == 255);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
   {
-    const char str[] = "Ff";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 16));
+    ثابت حرف str[] = "Ff";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv, سچ, 16));
     hb_always_assert (pv == 255);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
   {
-    const char str[] = "0xFF";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 16));
+    ثابت حرف str[] = "0xFF";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv, سچ, 16));
     hb_always_assert (pv == 255);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
   {
-    const char str[] = "0XFF";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 16));
+    ثابت حرف str[] = "0XFF";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv, سچ, 16));
     hb_always_assert (pv == 255);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
 
   /* Base 36 */
   {
-    const char str[] = "Z";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 36));
+    ثابت حرف str[] = "Z";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv, سچ, 36));
     hb_always_assert (pv == 35);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
   {
-    const char str[] = "z";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 36));
+    ثابت حرف str[] = "z";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv, سچ, 36));
     hb_always_assert (pv == 35);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
   {
-    const char str[] = "10";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 36));
+    ثابت حرف str[] = "10";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv, سچ, 36));
     hb_always_assert (pv == 36);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
 
   /* Failures */
   {
-    const char str[] = "abc";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv = 99;
+    ثابت حرف str[] = "abc";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv = 99;
     /* 'a' isn't a decimal digit; whole parse fails */
-    hb_always_assert (!hb_parse_uint (&pp, end, &pv, false, 10));
+    hb_always_assert (!hb_parse_uint (&pp, انتہا, &pv, جھوٹ, 10));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 99);
   }
   {
-    const char str[] = "+";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv = 99;
-    hb_always_assert (!hb_parse_uint (&pp, end, &pv));
+    ثابت حرف str[] = "+";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv = 99;
+    hb_always_assert (!hb_parse_uint (&pp, انتہا, &pv));
   }
   {
-    const char str[] = "-";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv = 99;
-    hb_always_assert (!hb_parse_uint (&pp, end, &pv));
+    ثابت حرف str[] = "-";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv = 99;
+    hb_always_assert (!hb_parse_uint (&pp, انتہا, &pv));
   }
   {
-    const char str[] = "";
-    const char *pp = str;
-    const char *end = str;
-    unsigned int pv = 99;
-    hb_always_assert (!hb_parse_uint (&pp, end, &pv));
+    ثابت حرف str[] = "";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str;
+    غیرعلامتی صحیح pv = 99;
+    hb_always_assert (!hb_parse_uint (&pp, انتہا, &pv));
   }
 
   {
-    const char str[] = "0XFF";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 16));
+    ثابت حرف str[] = "0XFF";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv, سچ, 16));
     hb_always_assert (pv == 255);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
   {
-    const char str[] = "0xff";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 16));
+    ثابت حرف str[] = "0xff";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv, سچ, 16));
     hb_always_assert (pv == 255);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
   {
-    const char str[] = "0x0";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 16));
+    ثابت حرف str[] = "0x0";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv, سچ, 16));
     hb_always_assert (pv == 0);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
   /* "0x" alone: consume only the 0, leave the x */
   {
-    const char str[] = "0x";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv, false, 16));
+    ثابت حرف str[] = "0x";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv, جھوٹ, 16));
     hb_always_assert (pv == 0);
     hb_always_assert (pp == str + 1);
   }
   /* "0xG": 0 is consumed, xG left */
   {
-    const char str[] = "0xG";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv, false, 16));
+    ثابت حرف str[] = "0xG";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv, جھوٹ, 16));
     hb_always_assert (pv == 0);
     hb_always_assert (pp == str + 1);
   }
   /* Negative with prefix */
   {
-    const char str[] = "-0xFF";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 16));
-    hb_always_assert (pv == (unsigned) -255);
-    hb_always_assert (pp == end);
+    ثابت حرف str[] = "-0xFF";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv, سچ, 16));
+    hb_always_assert (pv == (غیرعلامتی) -255);
+    hb_always_assert (pp == انتہا);
   }
   /* Prefix rule doesn't fire for base 10 */
   {
-    const char str[] = "0xFF";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv, false, 10));
+    ثابت حرف str[] = "0xFF";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv, جھوٹ, 10));
     hb_always_assert (pv == 0);
     hb_always_assert (pp == str + 1);
   }
@@ -753,171 +753,171 @@ test_parse_uint ()
     /* 10 digits > UINT_MAX.  The old strtol-based implementation silently
      * truncated on 64-bit platforms (unsigned long is 64-bit) but rejected on
      * 32-bit; the new implementation rejects uniformly. */
-    const char str[] = "9999999999";   /* 10 digits, > UINT_MAX */
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv = 99;
-    hb_always_assert (!hb_parse_uint (&pp, end, &pv));
+    ثابت حرف str[] = "9999999999";   /* 10 digits, > UINT_MAX */
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv = 99;
+    hb_always_assert (!hb_parse_uint (&pp, انتہا, &pv));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 99);
   }
 
   /* UINT_MAX - exactly representable */
   {
-    const char str[] = "4294967295";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv));
+    ثابت حرف str[] = "4294967295";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv));
     hb_always_assert (pv == 4294967295u);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
   /* One past UINT_MAX - must fail (currently truncates to 0) */
   {
-    const char str[] = "4294967296";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv = 99;
-    hb_always_assert (!hb_parse_uint (&pp, end, &pv));
+    ثابت حرف str[] = "4294967296";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv = 99;
+    hb_always_assert (!hb_parse_uint (&pp, انتہا, &pv));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 99);
   }
 
   /* 20 digits, way past UINT_MAX */
   {
-    const char str[] = "99999999999999999999";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv = 99;
-    hb_always_assert (!hb_parse_uint (&pp, end, &pv));
+    ثابت حرف str[] = "99999999999999999999";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv = 99;
+    hb_always_assert (!hb_parse_uint (&pp, انتہا, &pv));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 99);
   }
   /* 40 digits, past the old 32-byte stack buffer */
   {
-    const char str[] = "9999999999999999999999999999999999999999";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv = 99;
-    hb_always_assert (!hb_parse_uint (&pp, end, &pv));
+    ثابت حرف str[] = "9999999999999999999999999999999999999999";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv = 99;
+    hb_always_assert (!hb_parse_uint (&pp, انتہا, &pv));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 99);
   }
 
   /* 0xFFFFFFFF = UINT_MAX */
   {
-    const char str[] = "0xFFFFFFFF";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 16));
+    ثابت حرف str[] = "0xFFFFFFFF";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv, سچ, 16));
     hb_always_assert (pv == 4294967295u);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
   /* 0x100000000 = UINT_MAX + 1 */
   {
-    const char str[] = "0x100000000";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv = 99;
-    hb_always_assert (!hb_parse_uint (&pp, end, &pv, true, 16));
+    ثابت حرف str[] = "0x100000000";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv = 99;
+    hb_always_assert (!hb_parse_uint (&pp, انتہا, &pv, سچ, 16));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 99);
   }
 
   /* 13 'Z's = 36^13 - 1, comfortably > UINT64_MAX would need ~12 digits */
   {
-    const char str[] = "ZZZZZZZZZZZZZZ";   /* 14 Z's */
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv = 99;
-    hb_always_assert (!hb_parse_uint (&pp, end, &pv, true, 36));
+    ثابت حرف str[] = "ZZZZZZZZZZZZZZ";   /* 14 Z's */
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv = 99;
+    hb_always_assert (!hb_parse_uint (&pp, انتہا, &pv, سچ, 36));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 99);
   }
 
   {
-    const char str[] = "9999999999";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv = 42;
-    hb_always_assert (!hb_parse_uint (&pp, end, &pv));
+    ثابت حرف str[] = "9999999999";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv = 42;
+    hb_always_assert (!hb_parse_uint (&pp, انتہا, &pv));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 42);
   }
 
   /* Negative values whose magnitude exceeds UINT_MAX must fail, not wrap */
   {
-    const char str[] = "-4294967296";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv = 99;
-    hb_always_assert (!hb_parse_uint (&pp, end, &pv));
+    ثابت حرف str[] = "-4294967296";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv = 99;
+    hb_always_assert (!hb_parse_uint (&pp, انتہا, &pv));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 99);
   }
 
   /* INT_MIN magnitude as unsigned: wraps to 0x80000000 */
   {
-    const char str[] = "-2147483648";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv));
+    ثابت حرف str[] = "-2147483648";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv));
     hb_always_assert (pv == 2147483648u);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
 
   /* Mixed case in base 36 */
   {
-    const char str[] = "Az";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 36));
+    ثابت حرف str[] = "Az";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv, سچ, 36));
     hb_always_assert (pv == 10 * 36 + 35);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
 
   /* Whitespace between sign and digits is not allowed */
   {
-    const char str[] = "- 1";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv = 99;
-    hb_always_assert (!hb_parse_uint (&pp, end, &pv));
+    ثابت حرف str[] = "- 1";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv = 99;
+    hb_always_assert (!hb_parse_uint (&pp, انتہا, &pv));
     hb_always_assert (pv == 99);
   }
 
   /* "0x" prefix is case-insensitive but only for base 16 */
   {
-    const char str[] = "0X10";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv, true, 16));
+    ثابت حرف str[] = "0X10";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv, سچ, 16));
     hb_always_assert (pv == 16);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
 
   /* A second "0x" is not consumed as a prefix */
   {
-    const char str[] = "0x0x10";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv, false, 16));
+    ثابت حرف str[] = "0x0x10";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv, جھوٹ, 16));
     hb_always_assert (pv == 0);
     hb_always_assert (pp == str + 3);
   }
 
   /* Null byte stops the scan (end passed at NUL) */
   {
-    const char str[] = "12\0F";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    unsigned int pv;
-    hb_always_assert (hb_parse_uint (&pp, end, &pv));
+    ثابت حرف str[] = "12\0F";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    غیرعلامتی صحیح pv;
+    hb_always_assert (hb_parse_uint (&pp, انتہا, &pv));
     hb_always_assert (pv == 12);
     hb_always_assert (pp == str + 2);
   }
@@ -926,706 +926,706 @@ test_parse_uint ()
 /* Tolerate 1 ULP difference. Needed because 32-bit x86 (x87) computes
  * at 80-bit precision and rounds to 64-bit on store, which can differ
  * from a directly-rounded decimal literal by one ULP. */
-static inline bool
-almost_equal (double a, double b)
+ساکن اندرونی منطقی
+almost_equal (دوہرا a, دوہرا b)
 {
-  return fabs (a - b) <= fabs (a) * 2 * DBL_EPSILON;
+  واپس fabs (a - b) <= fabs (a) * 2 * DBL_EPSILON;
 }
 
-static void
-test_parse_double (void)
+ساکن خالی
+test_parse_double (خالی)
 {
   {
-    const char str[] = ".123";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str);
+    ثابت حرف str[] = ".123";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str);
 
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
-    hb_always_assert ((int) roundf (pv * 1000.) == 123);
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
+    hb_always_assert ((صحیح) roundf (pv * 1000.) == 123);
     hb_always_assert (pp - str == 4);
-    hb_always_assert (end - pp == 1);
+    hb_always_assert (انتہا - pp == 1);
   }
 
   {
-    const char str[] = "0.123";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
+    ثابت حرف str[] = "0.123";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
 
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
-    hb_always_assert ((int) roundf (pv * 1000.) == 123);
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
+    hb_always_assert ((صحیح) roundf (pv * 1000.) == 123);
     hb_always_assert (pp - str == 5);
-    hb_always_assert (end - pp == 0);
+    hb_always_assert (انتہا - pp == 0);
   }
 
   {
-    const char str[] = "0.123e0";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
+    ثابت حرف str[] = "0.123e0";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
 
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
-    hb_always_assert ((int) roundf (pv * 1000.) == 123);
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
+    hb_always_assert ((صحیح) roundf (pv * 1000.) == 123);
     hb_always_assert (pp - str == 7);
-    hb_always_assert (end - pp == 0);
+    hb_always_assert (انتہا - pp == 0);
   }
 
   {
-    const char str[] = "123e-3";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
+    ثابت حرف str[] = "123e-3";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
 
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
-    hb_always_assert ((int) roundf (pv * 1000.) == 123);
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
+    hb_always_assert ((صحیح) roundf (pv * 1000.) == 123);
     hb_always_assert (pp - str == 6);
-    hb_always_assert (end - pp == 0);
+    hb_always_assert (انتہا - pp == 0);
   }
 
   {
-    const char str[] = ".000123e+3";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
+    ثابت حرف str[] = ".000123e+3";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
 
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
-    hb_always_assert ((int) roundf (pv * 1000.) == 123);
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
+    hb_always_assert ((صحیح) roundf (pv * 1000.) == 123);
     hb_always_assert (pp - str == 10);
-    hb_always_assert (end - pp == 0);
+    hb_always_assert (انتہا - pp == 0);
   }
 
   {
-    const char str[] = "-.000000123e6";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
+    ثابت حرف str[] = "-.000000123e6";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
 
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
-    hb_always_assert ((int) roundf (pv * 1000.) == -123);
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
+    hb_always_assert ((صحیح) roundf (pv * 1000.) == -123);
     hb_always_assert (pp - str == 13);
-    hb_always_assert (end - pp == 0);
+    hb_always_assert (انتہا - pp == 0);
 
   }
 
   {
-    const char str[] = "-1.23E-1";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
+    ثابت حرف str[] = "-1.23E-1";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
 
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
-    hb_always_assert ((int) roundf (pv * 1000.) == -123);
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
+    hb_always_assert ((صحیح) roundf (pv * 1000.) == -123);
     hb_always_assert (pp - str == 8);
-    hb_always_assert (end - pp == 0);
+    hb_always_assert (انتہا - pp == 0);
   }
 
   {
-    const char str[] = "1e512";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "1e512";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (std::isinf (pv) && pv > 0);
   }
   {
-    const char str[] = "1e600";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "1e600";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (std::isinf (pv) && pv > 0);
   }
   {
-    const char str[] = "1e-512";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "1e-512";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == 0.0);
   }
   {
-    const char str[] = "1e-600";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "1e-600";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == 0.0);
   }
 
   {
-    const char str[] = "0.9999999999999999";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "0.9999999999999999";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == 1.0);
   }
   {
-    const char str[] = "0.499999999999999999";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "0.499999999999999999";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == 0.5);
   }
 
   {
-    const char str[] = "1e";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "1e";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == 1.0);
     hb_always_assert (pp == str + 1);
   }
   {
-    const char str[] = "1e+";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "1e+";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == 1.0);
     hb_always_assert (pp == str + 1);
   }
   {
-    const char str[] = "-";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv = 99.0;
-    hb_always_assert (!hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "-";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv = 99.0;
+    hb_always_assert (!hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == 99);
   }
   {
-    const char str[] = ".";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv = 99.0;
-    hb_always_assert (!hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = ".";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv = 99.0;
+    hb_always_assert (!hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == 99);
   }
   {
-    const char str[] = "1e-";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "1e-";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == 1.0);
     hb_always_assert (pp == str + 1);
   }
   {
-    const char str[] = "-1e";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "-1e";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == -1.0);
     hb_always_assert (pp == str + 2);
   }
   {
-    const char str[] = "+";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv = 99.0;
-    hb_always_assert (!hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "+";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv = 99.0;
+    hb_always_assert (!hb_parse_double (&pp, انتہا, &pv));
   }
   {
-    const char str[] = "-.";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv = 99.0;
-    hb_always_assert (!hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "-.";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv = 99.0;
+    hb_always_assert (!hb_parse_double (&pp, انتہا, &pv));
   }
 
   // But be careful with fractional parts
   {
-    const char str[] = "1.";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv, true));
+    ثابت حرف str[] = "1.";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv, سچ));
     hb_always_assert (pv == 1.0);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
   {
-    const char str[] = "1.abc";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "1.abc";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == 1.0);
     hb_always_assert (pp == str + 2); // at least "1." was consumed
   }
 
   {
-    const char str[] = "abc";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv = 99.0;
-    hb_always_assert (!hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "abc";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv = 99.0;
+    hb_always_assert (!hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == 99.0);
   }
   {
-    const char str[] = "";
-    const char *pp = str;
-    const char *end = str;
-    double pv = 99.0;
-    hb_always_assert (!hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str;
+    دوہرا pv = 99.0;
+    hb_always_assert (!hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == 99.0);
   }
   {
-    const char str[] = " \t 123";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = " \t 123";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == 123.0);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
   {
-    const char str[] = "-0.0";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "-0.0";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == 0.0 && std::signbit (pv));
   }
   {
-    const char str[] = "1.5E10";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv, true));
+    ثابت حرف str[] = "1.5E10";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv, سچ));
     hb_always_assert (pv == 1.5e10);
   }
   {
-    const char str[] = "1.5E+10";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv, true));
+    ثابت حرف str[] = "1.5E+10";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv, سچ));
     hb_always_assert (pv == 1.5e10);
   }
   {
-    const char str[] = "1e308";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "1e308";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv > 0 && pv <= DBL_MAX);
   }
   {
-    const char str[] = "1e309";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "1e309";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (std::isinf (pv) && pv > 0);
   }
   {
-    const char str[] = "1e-309";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "1e-309";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv > 0.0 && pv < DBL_MIN);
-    hb_always_assert (pv == strtod (str, nullptr));
+    hb_always_assert (pv == strtod (str, خالی_اشاریہ));
   }
   {
-    const char str[] = "5e-324";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv, true));
+    ثابت حرف str[] = "5e-324";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv, سچ));
     hb_always_assert (pv > 0.0 && pv < DBL_MIN);
-    hb_always_assert (pv == strtod (str, nullptr));
+    hb_always_assert (pv == strtod (str, خالی_اشاریہ));
   }
   {
-    const char str[] = "1e+5";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "1e+5";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == 100000.0);
   }
   {
-    const char str[] = "1E5";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "1E5";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == 100000.0);
   }
   {
-    const char str[] = "123abc";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "123abc";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == 123.0);
     hb_always_assert (pp == str + 3);
   }
   {
-    const char str[] = "123abc";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (!hb_parse_double (&pp, end, &pv, true));
+    ثابت حرف str[] = "123abc";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (!hb_parse_double (&pp, انتہا, &pv, سچ));
   }
   {
-    const char str[] = "-1.5";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv, true));
+    ثابت حرف str[] = "-1.5";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv, سچ));
     hb_always_assert (pv == -1.5);
   }
   {
-    const char str[] = "1.5E-10";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv, true));
+    ثابت حرف str[] = "1.5E-10";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv, سچ));
     hb_always_assert (almost_equal (pv, 1.5e-10));
   }
   {
-    const char str[] = "-.5";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv, true));
+    ثابت حرف str[] = "-.5";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv, سچ));
     hb_always_assert (pv == -0.5);
   }
   {
-    const char str[] = "500";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "500";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == 500.0);
   }
   {
-    const char str[] = "-7.5";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "-7.5";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == -7.5);
   }
   {
-    const char str[] = "123 ";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (!hb_parse_double (&pp, end, &pv, true));
+    ثابت حرف str[] = "123 ";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (!hb_parse_double (&pp, انتہا, &pv, سچ));
   }
   {
-    const char str[] = " 123";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv, true));
+    ثابت حرف str[] = " 123";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv, سچ));
     hb_always_assert (pv == 123.0);
   }
   {
-    const char str[] = "+1";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv, true));
+    ثابت حرف str[] = "+1";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv, سچ));
     hb_always_assert (pv == 1.0);
   }
   {
-    const char str[] = "+1.5";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv, true));
+    ثابت حرف str[] = "+1.5";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv, سچ));
     hb_always_assert (pv == 1.5);
   }
   {
-    const char str[] = "--1";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv = 99.0;
-    hb_always_assert (!hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "--1";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv = 99.0;
+    hb_always_assert (!hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == 99.0);
   }
   {
-    const char str[] = "+-1";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv = 99.0;
-    hb_always_assert (!hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "+-1";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv = 99.0;
+    hb_always_assert (!hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == 99.0);
   }
   {
-    const char str[] = "0e5";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv, true));
+    ثابت حرف str[] = "0e5";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv, سچ));
     hb_always_assert (pv == 0.0);
   }
   {
-    const char str[] = "1.5e";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "1.5e";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == 1.5);
     hb_always_assert (pp == str + 3);
   }
   {
-    const char str[] = "1.5e+";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "1.5e+";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == 1.5);
     hb_always_assert (pp == str + 3);
   }
   {
-    const char str[] = "1e9999999";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "1e9999999";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == DBL_MAX);
   }
   {
-    const char str[] = "-1e9999999";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "-1e9999999";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == -DBL_MAX);
   }
   {
-    const char str[] = "1e-9999999";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "1e-9999999";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == .0);
-    hb_always_assert (pv == strtod (str, nullptr));
+    hb_always_assert (pv == strtod (str, خالی_اشاریہ));
   }
   {
-    const char str[] = "-1e-9999999";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "-1e-9999999";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == -.0);
-    hb_always_assert (pv == -strtod (str, nullptr));
+    hb_always_assert (pv == -strtod (str, خالی_اشاریہ));
   }
   {
-    const char str[] = "1e-400";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "1e-400";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == 0.0);
   }
   {
-    const char str[] = "007";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv, true));
+    ثابت حرف str[] = "007";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv, سچ));
     hb_always_assert (pv == 7.0);
   }
   {
-    const char str[] = "0.0";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv, true));
+    ثابت حرف str[] = "0.0";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv, سچ));
     hb_always_assert (pv == 0.0 && !std::signbit (pv));
   }
   {
-    const char str[] = "NaN";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv = 99.0;
-    hb_always_assert (!hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "NaN";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv = 99.0;
+    hb_always_assert (!hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == 99.0);
   }
   {
-    const char str[] = "inf";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv = 99.0;
-    hb_always_assert (!hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "inf";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv = 99.0;
+    hb_always_assert (!hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == 99.0);
   }
   {
-    const char str[] = "1..5";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "1..5";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == 1.0);
     hb_always_assert (pp == str + 2); // Don't consume ending ".5"
   }
   {
-    const char str[] = "1.5.5";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "1.5.5";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == 1.5);
     hb_always_assert (pp == str + 3); // Don't consume ending ".5"
   }
 
   {
-    const char str[] = "   ";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv = 99.0;
-    hb_always_assert (!hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "   ";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv = 99.0;
+    hb_always_assert (!hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == 99.0);
   }
   {
-    const char str[] = " abc";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv = 99.0;
-    hb_always_assert (!hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = " abc";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv = 99.0;
+    hb_always_assert (!hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 99.0);
   }
 
   {
-    const char str[] = "1.7976931348623157e308";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv, true));
+    ثابت حرف str[] = "1.7976931348623157e308";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv, سچ));
     hb_always_assert (pv >= DBL_MAX || std::isinf (pv));
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
   {
-    const char str[] = "99999999999999999999"; // 20 nines
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv, true));
+    ثابت حرف str[] = "99999999999999999999"; // 20 nines
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv, سچ));
     hb_always_assert (pv >= 1e19 && pv <= 1.1e20);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
   {
-    const char str[] = "1.e5";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "1.e5";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == 100000.0);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
 
   /* Exponent with leading zeros */
   {
-    const char str[] = "1e005";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv, true));
+    ثابت حرف str[] = "1e005";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv, سچ));
     hb_always_assert (pv == 100000.0);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
   {
-    const char str[] = "1e-005";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv, true));
+    ثابت حرف str[] = "1e-005";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv, سچ));
     hb_always_assert (almost_equal (pv, 1e-5));
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
 
   /* Bare -0 (no decimal) preserves the sign, matching strtod */
   {
-    const char str[] = "-0";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv, true));
+    ثابت حرف str[] = "-0";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv, سچ));
     hb_always_assert (pv == 0.0 && std::signbit (pv));
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
 
   /* Long mantissa followed by an exponent */
   {
-    const char str[] = "12345678901234567890e-10";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv, true));
+    ثابت حرف str[] = "12345678901234567890e-10";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv, سچ));
     hb_always_assert (pv > 1.234e9 && pv < 1.235e9);
-    hb_always_assert (pp == end);
+    hb_always_assert (pp == انتہا);
   }
 
   /* whole_buffer failure must not touch *pv */
   {
-    const char str[] = "123abc";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv = 42.0;
-    hb_always_assert (!hb_parse_double (&pp, end, &pv, true));
+    ثابت حرف str[] = "123abc";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv = 42.0;
+    hb_always_assert (!hb_parse_double (&pp, انتہا, &pv, سچ));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 42.0);
   }
 
   /* Same for no-match failure */
   {
-    const char str[] = "abc";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv = 42.0;
-    hb_always_assert (!hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "abc";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv = 42.0;
+    hb_always_assert (!hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pp == str);
     hb_always_assert (pv == 42.0);
   }
 
   /* Exponent followed by trailing content */
   {
-    const char str[] = "1e5abc";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "1e5abc";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == 100000.0);
     hb_always_assert (pp == str + 3);
   }
   /* Same with a sign in the exponent */
   {
-    const char str[] = "1e+5x";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "1e+5x";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == 100000.0);
     hb_always_assert (pp == str + 4);
   }
   /* Malformed exponent followed by content: should stop at the 'e' */
   {
-    const char str[] = "1ex";
-    const char *pp = str;
-    const char *end = str + ARRAY_LENGTH (str) - 1;
-    double pv;
-    hb_always_assert (hb_parse_double (&pp, end, &pv));
+    ثابت حرف str[] = "1ex";
+    ثابت حرف *pp = str;
+    ثابت حرف *انتہا = str + ARRAY_لمبائی (str) - 1;
+    دوہرا pv;
+    hb_always_assert (hb_parse_double (&pp, انتہا, &pv));
     hb_always_assert (pv == 1.0);
     hb_always_assert (pp == str + 1);
   }
 }
 
-int
-main (int argc, char **argv)
+صحیح
+مین (صحیح argc, حرف **argv)
 {
   test_parse_double ();
   test_parse_int ();
   test_parse_uint ();
 
-  return 0;
+  واپس 0;
 }

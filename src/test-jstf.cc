@@ -22,24 +22,24 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
-#include "hb-ot-layout-jstf-table.hh"
+#شامل "hb.hh"
+#شامل "hb-ot-layout-jstf-table.hh"
 
-static hb_face_t *
-create_face (const char *data, unsigned length)
+ساکن hb_face_t *
+create_face (ثابت حرف *ڈیٹا, غیرعلامتی لمبائی)
 {
   hb_face_t *face = hb_face_builder_create ();
-  hb_blob_t *blob = hb_blob_create (data, length, HB_MEMORY_MODE_READONLY,
-				    nullptr, nullptr);
-  hb_always_assert (hb_face_builder_add_table (face, HB_OT_TAG_JSTF, blob));
+  hb_blob_t *blob = hb_blob_create (ڈیٹا, لمبائی, HB_حافظہ_منوال_READONLY,
+				    خالی_اشاریہ, خالی_اشاریہ);
+  hb_always_assert (hb_face_builder_جوڑو_جدول (face, HB_OT_لیبل_JSTF, blob));
   hb_blob_destroy (blob);
-  return face;
+  واپس face;
 }
 
-int
-main (int argc, char **argv)
+صحیح
+مین (صحیح argc, حرف **argv)
 {
-  static const char data[] = {
+  ساکن ثابت حرف ڈیٹا[] = {
     0, 1, 0, 1,				/* version 1.1 */
     0, 0,				/* JstfScriptRecord count */
     0, 1,				/* JstfScriptRecord2 count */
@@ -50,31 +50,31 @@ main (int argc, char **argv)
     0, 1, 1, 0, 1,			/* ExtenderGlyph2 */
   };
 
-  hb_face_t *face = create_face (data, sizeof (data));
+  hb_face_t *face = create_face (ڈیٹا, حجم (ڈیٹا));
   hb_blob_ptr_t<OT::JSTF> jstf =
-      hb_sanitize_context_t ().reference_table<OT::JSTF> (face);
-#ifndef HB_NO_BEYOND_64K
-  hb_always_assert (jstf.get_length ());
-  hb_always_assert (jstf->get_script_count () == 1);
-  hb_always_assert (jstf->get_script_tag (0) == HB_TAG ('a','r','a','b'));
-  unsigned index;
-  hb_always_assert (jstf->find_script_index (HB_TAG ('a','r','a','b'), &index));
-  hb_always_assert (index == 0);
-  hb_always_assert (!jstf->get_script<OT::Layout::MediumTypes> (0).get_lang_sys_count ());
-#else
-  hb_always_assert (jstf.get_length ());
-  hb_always_assert (!jstf->get_script_count ());
-#endif
+      hb_sanitize_context_t ().reference_جدول<OT::JSTF> (face);
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+  hb_always_assert (jstf.get_لمبائی ());
+  hb_always_assert (jstf->get_script_گنتی () == 1);
+  hb_always_assert (jstf->get_script_لیبل (0) == HB_لیبل ('a','r','a','b'));
+  غیرعلامتی اشاریہ_2;
+  hb_always_assert (jstf->ڈھونڈو_script_اشاریہ (HB_لیبل ('a','r','a','b'), &اشاریہ_2));
+  hb_always_assert (اشاریہ_2 == 0);
+  hb_always_assert (!jstf->get_script<OT::Layout::MediumTypes> (0).get_lang_sys_گنتی ());
+#ورنہ
+  hb_always_assert (jstf.get_لمبائی ());
+  hb_always_assert (!jstf->get_script_گنتی ());
+#اگر_ختم
   jstf.destroy ();
   hb_face_destroy (face);
 
-#ifndef HB_NO_BEYOND_64K
-  face = create_face (data, sizeof (data) - 1);
-  jstf = hb_sanitize_context_t ().reference_table<OT::JSTF> (face);
-  hb_always_assert (!jstf.get_length ());
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+  face = create_face (ڈیٹا, حجم (ڈیٹا) - 1);
+  jstf = hb_sanitize_context_t ().reference_جدول<OT::JSTF> (face);
+  hb_always_assert (!jstf.get_لمبائی ());
   jstf.destroy ();
   hb_face_destroy (face);
-#endif
+#اگر_ختم
 
-  return 0;
+  واپس 0;
 }

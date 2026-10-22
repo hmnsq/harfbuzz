@@ -7,32 +7,32 @@
  * Based on fontTools.cffLib.width
  */
 
-#ifndef HB_CFF_WIDTH_OPTIMIZER_HH
-#define HB_CFF_WIDTH_OPTIMIZER_HH
+#اگر_غیر_تعریف_شدہ HB_CFF_چوڑائی_OPTIMIZER_HH
+#تعریف_کرو HB_CFF_چوڑائی_OPTIMIZER_HH
 
-#include "hb.hh"
+#شامل "hb.hh"
 
-namespace CFF {
+نامخلا CFF {
 
 /* Calculate byte cost for encoding a width delta */
-static inline unsigned
-width_delta_cost (int delta)
+ساکن اندرونی غیرعلامتی
+چوڑائی_delta_لاگت (صحیح delta)
 {
-  delta = abs (delta);
-  if (delta <= 107) return 1;
-  if (delta <= 1131) return 2;
-  return 5;
+  delta = مطلق_قدر (delta);
+  اگر (delta <= 107) واپس 1;
+  اگر (delta <= 1131) واپس 2;
+  واپس 5;
 }
 
 /* Cumulative sum forward */
-static void
-cumsum_forward (const hb_hashmap_t<unsigned, unsigned> &freq,
-                unsigned min_w, unsigned max_w,
-                hb_vector_t<unsigned> &cumsum)
+ساکن خالی
+cumsum_forward (ثابت hb_hashmap_t<غیرعلامتی, غیرعلامتی> &freq,
+                غیرعلامتی min_w, غیرعلامتی max_w,
+                hb_سمتیہ_t<غیرعلامتی> &cumsum)
 {
   cumsum.resize (max_w - min_w + 1);
-  unsigned v = 0;
-  for (unsigned x = min_w; x <= max_w; x++)
+  غیرعلامتی v = 0;
+  برائے (غیرعلامتی x = min_w; x <= max_w; x++)
   {
     v += freq.get (x);
     cumsum[x - min_w] = v;
@@ -40,14 +40,14 @@ cumsum_forward (const hb_hashmap_t<unsigned, unsigned> &freq,
 }
 
 /* Cumulative max forward */
-static void
-cummax_forward (const hb_hashmap_t<unsigned, unsigned> &freq,
-                unsigned min_w, unsigned max_w,
-                hb_vector_t<unsigned> &cummax)
+ساکن خالی
+cummax_forward (ثابت hb_hashmap_t<غیرعلامتی, غیرعلامتی> &freq,
+                غیرعلامتی min_w, غیرعلامتی max_w,
+                hb_سمتیہ_t<غیرعلامتی> &cummax)
 {
   cummax.resize (max_w - min_w + 1);
-  unsigned v = 0;
-  for (unsigned x = min_w; x <= max_w; x++)
+  غیرعلامتی v = 0;
+  برائے (غیرعلامتی x = min_w; x <= max_w; x++)
   {
     v = hb_max (v, freq.get (x));
     cummax[x - min_w] = v;
@@ -55,153 +55,153 @@ cummax_forward (const hb_hashmap_t<unsigned, unsigned> &freq,
 }
 
 /* Cumulative sum backward */
-static void
-cumsum_backward (const hb_hashmap_t<unsigned, unsigned> &freq,
-                 unsigned min_w, unsigned max_w,
-                 hb_vector_t<unsigned> &cumsum)
+ساکن خالی
+cumsum_backward (ثابت hb_hashmap_t<غیرعلامتی, غیرعلامتی> &freq,
+                 غیرعلامتی min_w, غیرعلامتی max_w,
+                 hb_سمتیہ_t<غیرعلامتی> &cumsum)
 {
   cumsum.resize (max_w - min_w + 1);
-  unsigned v = 0;
-  for (int x = (int) max_w; x >= (int) min_w; x--)
+  غیرعلامتی v = 0;
+  برائے (صحیح x = (صحیح) max_w; x >= (صحیح) min_w; x--)
   {
-    v += freq.get ((unsigned) x);
+    v += freq.get ((غیرعلامتی) x);
     cumsum[x - min_w] = v;
   }
 }
 
 /* Cumulative max backward */
-static void
-cummax_backward (const hb_hashmap_t<unsigned, unsigned> &freq,
-                 unsigned min_w, unsigned max_w,
-                 hb_vector_t<unsigned> &cummax)
+ساکن خالی
+cummax_backward (ثابت hb_hashmap_t<غیرعلامتی, غیرعلامتی> &freq,
+                 غیرعلامتی min_w, غیرعلامتی max_w,
+                 hb_سمتیہ_t<غیرعلامتی> &cummax)
 {
   cummax.resize (max_w - min_w + 1);
-  unsigned v = 0;
-  for (int x = (int) max_w; x >= (int) min_w; x--)
+  غیرعلامتی v = 0;
+  برائے (صحیح x = (صحیح) max_w; x >= (صحیح) min_w; x--)
   {
-    v = hb_max (v, freq.get ((unsigned) x));
+    v = hb_max (v, freq.get ((غیرعلامتی) x));
     cummax[x - min_w] = v;
   }
 }
 
 /* Helper to safely get cumulative value with bounds checking */
-static inline unsigned
-safe_get (const hb_vector_t<unsigned> &vec, int x, unsigned min_w, unsigned max_w)
+ساکن اندرونی غیرعلامتی
+محفوظ_get (ثابت hb_سمتیہ_t<غیرعلامتی> &vec, صحیح x, غیرعلامتی min_w, غیرعلامتی max_w)
 {
-  if (x < (int) min_w || x > (int) max_w) return 0;
-  return vec[x - min_w];
+  اگر (x < (صحیح) min_w || x > (صحیح) max_w) واپس 0;
+  واپس vec[x - min_w];
 }
 
 /* Optimize defaultWidthX and nominalWidthX from a list of widths
  * O(UPEM+numGlyphs) algorithm from fontTools.cffLib.width */
-static void
-optimize_widths (const hb_vector_t<unsigned> &width_list,
-                 unsigned &default_width,
-                 unsigned &nominal_width)
+ساکن خالی
+optimize_widths (ثابت hb_سمتیہ_t<غیرعلامتی> &چوڑائی_list,
+                 غیرعلامتی &default_چوڑائی,
+                 غیرعلامتی &nominal_چوڑائی)
 {
-  if (width_list.length == 0)
+  اگر (چوڑائی_list.لمبائی == 0)
   {
-    default_width = nominal_width = 0;
-    return;
+    default_چوڑائی = nominal_چوڑائی = 0;
+    واپس;
   }
 
   /* Build frequency map */
-  hb_hashmap_t<unsigned, unsigned> widths;
-  unsigned min_w = width_list[0];
-  unsigned max_w = width_list[0];
+  hb_hashmap_t<غیرعلامتی, غیرعلامتی> widths;
+  غیرعلامتی min_w = چوڑائی_list[0];
+  غیرعلامتی max_w = چوڑائی_list[0];
 
-  for (unsigned w : width_list)
+  برائے (غیرعلامتی w : چوڑائی_list)
   {
-    widths.set (w, widths.get (w) + 1);
+    widths.سیٹ (w, widths.get (w) + 1);
     min_w = hb_min (min_w, w);
     max_w = hb_max (max_w, w);
   }
 
   /* Cumulative sum/max forward/backward */
-  hb_vector_t<unsigned> cumFrqU, cumMaxU, cumFrqD, cumMaxD;
+  hb_سمتیہ_t<غیرعلامتی> cumFrqU, cumMaxU, cumFrqD, cumMaxD;
   cumsum_forward (widths, min_w, max_w, cumFrqU);
   cummax_forward (widths, min_w, max_w, cumMaxU);
   cumsum_backward (widths, min_w, max_w, cumFrqD);
   cummax_backward (widths, min_w, max_w, cumMaxD);
 
   /* Cost per nominal choice, without default consideration */
-  auto nomnCost = [&] (unsigned x) -> unsigned {
-    return safe_get (cumFrqU, x, min_w, max_w) +
-           safe_get (cumFrqU, x - 108, min_w, max_w) +
-           safe_get (cumFrqU, x - 1132, min_w, max_w) * 3 +
-           safe_get (cumFrqD, x, min_w, max_w) +
-           safe_get (cumFrqD, x + 108, min_w, max_w) +
-           safe_get (cumFrqD, x + 1132, min_w, max_w) * 3 -
+  خودکار nomn_لاگت = [&] (غیرعلامتی x) -> غیرعلامتی {
+    واپس محفوظ_get (cumFrqU, x, min_w, max_w) +
+           محفوظ_get (cumFrqU, x - 108, min_w, max_w) +
+           محفوظ_get (cumFrqU, x - 1132, min_w, max_w) * 3 +
+           محفوظ_get (cumFrqD, x, min_w, max_w) +
+           محفوظ_get (cumFrqD, x + 108, min_w, max_w) +
+           محفوظ_get (cumFrqD, x + 1132, min_w, max_w) * 3 -
            widths.get (x);
   };
 
   /* Cost-saving per nominal choice, by best default choice */
-  auto dfltCost = [&] (unsigned x) -> unsigned {
-    unsigned u = hb_max (hb_max (safe_get (cumMaxU, x, min_w, max_w),
-                                  safe_get (cumMaxU, x - 108, min_w, max_w) * 2),
-                         safe_get (cumMaxU, x - 1132, min_w, max_w) * 5);
-    unsigned d = hb_max (hb_max (safe_get (cumMaxD, x, min_w, max_w),
-                                  safe_get (cumMaxD, x + 108, min_w, max_w) * 2),
-                         safe_get (cumMaxD, x + 1132, min_w, max_w) * 5);
-    return hb_max (u, d);
+  خودکار dflt_لاگت = [&] (غیرعلامتی x) -> غیرعلامتی {
+    غیرعلامتی u = hb_max (hb_max (محفوظ_get (cumMaxU, x, min_w, max_w),
+                                  محفوظ_get (cumMaxU, x - 108, min_w, max_w) * 2),
+                         محفوظ_get (cumMaxU, x - 1132, min_w, max_w) * 5);
+    غیرعلامتی d = hb_max (hb_max (محفوظ_get (cumMaxD, x, min_w, max_w),
+                                  محفوظ_get (cumMaxD, x + 108, min_w, max_w) * 2),
+                         محفوظ_get (cumMaxD, x + 1132, min_w, max_w) * 5);
+    واپس hb_max (u, d);
   };
 
   /* Find best nominal */
-  unsigned best_nominal = min_w;
-  unsigned best_cost = nomnCost (min_w) - dfltCost (min_w);
+  غیرعلامتی بہترین_nominal = min_w;
+  غیرعلامتی بہترین_لاگت = nomn_لاگت (min_w) - dflt_لاگت (min_w);
 
-  for (unsigned x = min_w + 1; x <= max_w; x++)
+  برائے (غیرعلامتی x = min_w + 1; x <= max_w; x++)
   {
-    unsigned cost = nomnCost (x) - dfltCost (x);
-    if (cost < best_cost)
+    غیرعلامتی لاگت = nomn_لاگت (x) - dflt_لاگت (x);
+    اگر (لاگت < بہترین_لاگت)
     {
-      best_cost = cost;
-      best_nominal = x;
+      بہترین_لاگت = لاگت;
+      بہترین_nominal = x;
     }
   }
 
   /* Work back the best default */
-  unsigned best_default = best_nominal;
-  unsigned best_default_cost = (unsigned) -1;
+  غیرعلامتی بہترین_default = بہترین_nominal;
+  غیرعلامتی بہترین_default_لاگت = (غیرعلامتی) -1;
 
   /* Check candidates around best_nominal */
-  int candidates[] = {
-    (int) best_nominal,
-    (int) best_nominal - 108,
-    (int) best_nominal - 1132,
-    (int) best_nominal + 108,
-    (int) best_nominal + 1132
+  صحیح candidates[] = {
+    (صحیح) بہترین_nominal,
+    (صحیح) بہترین_nominal - 108,
+    (صحیح) بہترین_nominal - 1132,
+    (صحیح) بہترین_nominal + 108,
+    (صحیح) بہترین_nominal + 1132
   };
 
-  for (int candidate : candidates)
+  برائے (صحیح candidate : candidates)
   {
-    if (candidate < (int) min_w || candidate > (int) max_w)
-      continue;
+    اگر (candidate < (صحیح) min_w || candidate > (صحیح) max_w)
+      جاری;
 
     /* Compute actual cost with this default */
-    unsigned cost = 0;
-    for (auto kv : widths.iter ())
+    غیرعلامتی لاگت = 0;
+    برائے (خودکار kv : widths.iter ())
     {
-      unsigned w = kv.first;
-      unsigned freq = kv.second;
+      غیرعلامتی w = kv.پہلا;
+      غیرعلامتی freq = kv.second;
 
-      if (w == (unsigned) candidate)
-        continue;
+      اگر (w == (غیرعلامتی) candidate)
+        جاری;
 
-      cost += freq * width_delta_cost ((int) w - (int) best_nominal);
+      لاگت += freq * چوڑائی_delta_لاگت ((صحیح) w - (صحیح) بہترین_nominal);
     }
 
-    if (cost < best_default_cost)
+    اگر (لاگت < بہترین_default_لاگت)
     {
-      best_default_cost = cost;
-      best_default = (unsigned) candidate;
+      بہترین_default_لاگت = لاگت;
+      بہترین_default = (غیرعلامتی) candidate;
     }
   }
 
-  default_width = best_default;
-  nominal_width = best_nominal;
+  default_چوڑائی = بہترین_default;
+  nominal_چوڑائی = بہترین_nominal;
 }
 
 } /* namespace CFF */
 
-#endif /* HB_CFF_WIDTH_OPTIMIZER_HH */
+#اگر_ختم /* HB_CFF_WIDTH_OPTIMIZER_HH */

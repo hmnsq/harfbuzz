@@ -25,493 +25,493 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_BIT_SET_INVERTIBLE_HH
-#define HB_BIT_SET_INVERTIBLE_HH
+#اگر_غیر_تعریف_شدہ HB_ثنائی_ہندسہ_سیٹ_INVERTIBLE_HH
+#تعریف_کرو HB_ثنائی_ہندسہ_سیٹ_INVERTIBLE_HH
 
-#include "hb.hh"
-#include "hb-bit-set.hh"
+#شامل "hb.hh"
+#شامل "hb-bit-set.hh"
 
 
-struct hb_bit_set_invertible_t
+ساخت hb_ثنائی_ہندسہ_سیٹ_invertible_t
 {
-  hb_bit_set_t s;
-  bool inverted = false;
+  hb_ثنائی_ہندسہ_سیٹ_t s;
+  منطقی inverted = جھوٹ;
 
-  hb_bit_set_invertible_t () = default;
-  hb_bit_set_invertible_t (const hb_bit_set_invertible_t& o) = default;
-  hb_bit_set_invertible_t (hb_bit_set_invertible_t&& other)  noexcept : hb_bit_set_invertible_t () { hb_swap (*this, other); }
-  hb_bit_set_invertible_t& operator= (const hb_bit_set_invertible_t& o) = default;
-  hb_bit_set_invertible_t& operator= (hb_bit_set_invertible_t&& other)  noexcept { hb_swap (*this, other); return *this; }
-  friend void swap (hb_bit_set_invertible_t &a, hb_bit_set_invertible_t &b) noexcept
+  hb_ثنائی_ہندسہ_سیٹ_invertible_t () = طےشدہ;
+  hb_ثنائی_ہندسہ_سیٹ_invertible_t (ثابت hb_ثنائی_ہندسہ_سیٹ_invertible_t& o) = طےشدہ;
+  hb_ثنائی_ہندسہ_سیٹ_invertible_t (hb_ثنائی_ہندسہ_سیٹ_invertible_t&& other)  noexcept : hb_ثنائی_ہندسہ_سیٹ_invertible_t () { hb_تبادلہ (*یہ, other); }
+  hb_ثنائی_ہندسہ_سیٹ_invertible_t& عامل= (ثابت hb_ثنائی_ہندسہ_سیٹ_invertible_t& o) = طےشدہ;
+  hb_ثنائی_ہندسہ_سیٹ_invertible_t& عامل= (hb_ثنائی_ہندسہ_سیٹ_invertible_t&& other)  noexcept { hb_تبادلہ (*یہ, other); واپس *یہ; }
+  دوست خالی swap (hb_ثنائی_ہندسہ_سیٹ_invertible_t &a, hb_ثنائی_ہندسہ_سیٹ_invertible_t &b) noexcept
   {
-    if (likely (!a.s.successful || !b.s.successful))
-      return;
-    hb_swap (a.inverted, b.inverted);
-    hb_swap (a.s, b.s);
+    اگر (likely (!a.s.successful || !b.s.successful))
+      واپس;
+    hb_تبادلہ (a.inverted, b.inverted);
+    hb_تبادلہ (a.s, b.s);
   }
 
-  void init () { s.init (); inverted = false; }
-  void fini () { s.fini (); }
-  void err () { s.err (); }
-  bool in_error () const { return s.in_error (); }
-  explicit operator bool () const { return !is_empty (); }
+  خالی init () { s.init (); inverted = جھوٹ; }
+  خالی fini () { s.fini (); }
+  خالی err () { s.err (); }
+  منطقی اندر_error () ثابت { واپس s.اندر_error (); }
+  صریح عامل منطقی () ثابت { واپس !is_empty (); }
 
-  void alloc (unsigned sz) { s.alloc (sz); }
-  void reset ()
+  خالی alloc (غیرعلامتی sz) { s.alloc (sz); }
+  خالی reset ()
   {
     s.reset ();
-    inverted = false;
+    inverted = جھوٹ;
   }
-  void clear ()
+  خالی clear ()
   {
     s.clear ();
-    if (likely (s.successful))
-      inverted = false;
+    اگر (likely (s.successful))
+      inverted = جھوٹ;
   }
-  void invert ()
+  خالی invert ()
   {
-    if (likely (s.successful))
+    اگر (likely (s.successful))
       inverted = !inverted;
   }
 
-  bool is_inverted () const
+  منطقی is_inverted () ثابت
   {
-    return inverted;
+    واپس inverted;
   }
 
-  bool is_empty () const
+  منطقی is_empty () ثابت
   {
     hb_codepoint_t v = INVALID;
     next (&v);
-    return v == INVALID;
+    واپس v == INVALID;
   }
-  uint32_t hash () const { return s.hash () ^ (uint32_t) inverted; }
+  uint32_t hash () ثابت { واپس s.hash () ^ (uint32_t) inverted; }
 
-  hb_codepoint_t get_min () const
+  hb_codepoint_t get_min () ثابت
   {
     hb_codepoint_t v = INVALID;
     next (&v);
-    return v;
+    واپس v;
   }
-  hb_codepoint_t get_max () const
+  hb_codepoint_t get_max () ثابت
   {
     hb_codepoint_t v = INVALID;
-    previous (&v);
-    return v;
+    پچھلا (&v);
+    واپس v;
   }
-  unsigned int get_population () const
-  { return inverted ? INVALID - s.get_population () : s.get_population (); }
-  bool get_singleton (hb_codepoint_t *codepoint) const
+  غیرعلامتی صحیح get_population () ثابت
+  { واپس inverted ? INVALID - s.get_population () : s.get_population (); }
+  منطقی get_singleton (hb_codepoint_t *codepoint) ثابت
   {
-    if (likely (!inverted))
-      return s.get_singleton (codepoint);
-    if (s.get_population () != INVALID - 1)
-      return false;
+    اگر (likely (!inverted))
+      واپس s.get_singleton (codepoint);
+    اگر (s.get_population () != INVALID - 1)
+      واپس جھوٹ;
     *codepoint = get_min ();
-    return *codepoint != INVALID;
+    واپس *codepoint != INVALID;
   }
 
 
-  void add (hb_codepoint_t g) { unlikely (inverted) ? s.del (g) : s.add (g); }
-  void add_bits (hb_codepoint_t g, uint64_t bits)
-  { unlikely (inverted) ? s.del_bits (g, bits) : s.add_bits (g, bits); }
-  bool add_range (hb_codepoint_t a, hb_codepoint_t b)
-  { return unlikely (inverted) ? ((void) s.del_range (a, b), true) : s.add_range (a, b); }
+  خالی جوڑو (hb_codepoint_t g) { unlikely (inverted) ? s.del (g) : s.جوڑو (g); }
+  خالی جوڑو_بٹ (hb_codepoint_t g, uint64_t بٹ)
+  { unlikely (inverted) ? s.del_بٹ (g, بٹ) : s.جوڑو_بٹ (g, بٹ); }
+  منطقی جوڑو_range (hb_codepoint_t a, hb_codepoint_t b)
+  { واپس unlikely (inverted) ? ((خالی) s.del_range (a, b), سچ) : s.جوڑو_range (a, b); }
 
-  template <typename T>
-  void add_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { inverted ? s.del_array (array, count, stride) : s.add_array (array, count, stride); }
-  template <typename T>
-  void add_array (const hb_array_t<const T>& arr) { add_array (&arr, arr.len ()); }
+  سانچہ <قسم_نام T>
+  خالی جوڑو_array (ثابت T *array, غیرعلامتی صحیح گنتی, غیرعلامتی صحیح stride=حجم(T))
+  { inverted ? s.del_array (array, گنتی, stride) : s.جوڑو_array (array, گنتی, stride); }
+  سانچہ <قسم_نام T>
+  خالی جوڑو_array (ثابت hb_array_t<ثابت T>& arr) { جوڑو_array (&arr, arr.len ()); }
 
   /* Might return false if array looks unsorted.
    * Used for faster rejection of corrupt data. */
-  template <typename T>
-  bool add_sorted_array (const T *array, unsigned int count, unsigned int stride=sizeof(T))
-  { return inverted ? s.del_sorted_array (array, count, stride) : s.add_sorted_array (array, count, stride); }
-  template <typename T>
-  bool add_sorted_array (const hb_sorted_array_t<const T>& arr) { return add_sorted_array (&arr, arr.len ()); }
+  سانچہ <قسم_نام T>
+  منطقی جوڑو_sorted_array (ثابت T *array, غیرعلامتی صحیح گنتی, غیرعلامتی صحیح stride=حجم(T))
+  { واپس inverted ? s.del_sorted_array (array, گنتی, stride) : s.جوڑو_sorted_array (array, گنتی, stride); }
+  سانچہ <قسم_نام T>
+  منطقی جوڑو_sorted_array (ثابت hb_sorted_array_t<ثابت T>& arr) { واپس جوڑو_sorted_array (&arr, arr.len ()); }
 
-  void del (hb_codepoint_t g) { unlikely (inverted) ? s.add (g) : s.del (g); }
-  void del_range (hb_codepoint_t a, hb_codepoint_t b)
-  { unlikely (inverted) ? (void) s.add_range (a, b) : s.del_range (a, b); }
+  خالی del (hb_codepoint_t g) { unlikely (inverted) ? s.جوڑو (g) : s.del (g); }
+  خالی del_range (hb_codepoint_t a, hb_codepoint_t b)
+  { unlikely (inverted) ? (خالی) s.جوڑو_range (a, b) : s.del_range (a, b); }
 
-  bool get (hb_codepoint_t g) const { return s.get (g) ^ inverted; }
-  bool may_have (hb_codepoint_t g) const { return get (g); }
+  منطقی get (hb_codepoint_t g) ثابت { واپس s.get (g) ^ inverted; }
+  منطقی may_have (hb_codepoint_t g) ثابت { واپس get (g); }
 
   /* Has interface. */
-  bool operator [] (hb_codepoint_t k) const { return get (k); }
-  bool has (hb_codepoint_t k) const { return (*this)[k]; }
+  منطقی عامل [] (hb_codepoint_t k) ثابت { واپس get (k); }
+  منطقی has (hb_codepoint_t k) ثابت { واپس (*یہ)[k]; }
   /* Predicate. */
-  bool operator () (hb_codepoint_t k) const { return has (k); }
+  منطقی عامل () (hb_codepoint_t k) ثابت { واپس has (k); }
 
   /* Sink interface. */
-  hb_bit_set_invertible_t& operator << (hb_codepoint_t v)
-  { add (v); return *this; }
-  hb_bit_set_invertible_t& operator << (const hb_codepoint_pair_t& range)
-  { add_range (range.first, range.second); return *this; }
+  hb_ثنائی_ہندسہ_سیٹ_invertible_t& عامل << (hb_codepoint_t v)
+  { جوڑو (v); واپس *یہ; }
+  hb_ثنائی_ہندسہ_سیٹ_invertible_t& عامل << (ثابت hb_codepoint_pair_t& range)
+  { جوڑو_range (range.پہلا, range.second); واپس *یہ; }
 
-  bool may_intersect (const hb_bit_set_invertible_t &other) const
-  { return inverted || other.inverted || s.intersects (other.s); }
+  منطقی may_intersect (ثابت hb_ثنائی_ہندسہ_سیٹ_invertible_t &other) ثابت
+  { واپس inverted || other.inverted || s.intersects (other.s); }
 
-  bool intersects (const hb_bit_set_invertible_t &other) const
+  منطقی intersects (ثابت hb_ثنائی_ہندسہ_سیٹ_invertible_t &other) ثابت
   {
-    if (likely (!inverted))
-      return unlikely (other.inverted) ? !s.is_subset (other.s)
+    اگر (likely (!inverted))
+      واپس unlikely (other.inverted) ? !s.is_subset (other.s)
 				       : s.intersects (other.s);
-    if (likely (!other.inverted))
-      return !other.s.is_subset (s);
+    اگر (likely (!other.inverted))
+      واپس !other.s.is_subset (s);
 
-    unsigned population = s.get_population ();
-    unsigned other_population = other.s.get_population ();
-    if ((uint64_t) population + other_population < INVALID)
-      return true;
+    غیرعلامتی population = s.get_population ();
+    غیرعلامتی other_population = other.s.get_population ();
+    اگر ((uint64_t) population + other_population < INVALID)
+      واپس سچ;
 
-    return population >= other_population
+    واپس population >= other_population
 	 ? !hb_all (iter (), other.s)
 	 : !hb_all (other.iter (), s);
   }
 
-  bool intersects (hb_codepoint_t first, hb_codepoint_t last) const
+  منطقی intersects (hb_codepoint_t پہلا, hb_codepoint_t آخری) ثابت
   {
-    hb_codepoint_t c = first - 1;
-    return next (&c) && c <= last;
+    hb_codepoint_t c = پہلا - 1;
+    واپس next (&c) && c <= آخری;
   }
 
-  void set (const hb_bit_set_invertible_t &other)
+  خالی سیٹ (ثابت hb_ثنائی_ہندسہ_سیٹ_invertible_t &other)
   {
-    s.set (other.s);
-    if (likely (s.successful))
+    s.سیٹ (other.s);
+    اگر (likely (s.successful))
       inverted = other.inverted;
   }
 
-  bool is_equal (const hb_bit_set_invertible_t &other) const
+  منطقی is_equal (ثابت hb_ثنائی_ہندسہ_سیٹ_invertible_t &other) ثابت
   {
-    if (likely (inverted == other.inverted))
-      return s.is_equal (other.s);
-    else
+    اگر (likely (inverted == other.inverted))
+      واپس s.is_equal (other.s);
+    ورنہ
     {
-      if (get_population () != other.get_population ())
-	return false;
+      اگر (get_population () != other.get_population ())
+	واپس جھوٹ;
 
       /* TODO Add iter_ranges() and use here. */
-      auto it1 = iter ();
-      auto it2 = other.iter ();
-      return hb_all (+ hb_zip (it1, it2)
-		     | hb_map ([](hb_codepoint_pair_t _) { return _.first == _.second; }));
+      خودکار it1 = iter ();
+      خودکار it2 = other.iter ();
+      واپس hb_all (+ hb_zip (it1, it2)
+		     | hb_map ([](hb_codepoint_pair_t _) { واپس _.پہلا == _.second; }));
     }
   }
 
-  bool is_subset (const hb_bit_set_invertible_t &larger_set) const
+  منطقی is_subset (ثابت hb_ثنائی_ہندسہ_سیٹ_invertible_t &larger_سیٹ) ثابت
   {
-    if (unlikely (inverted != larger_set.inverted))
+    اگر (unlikely (inverted != larger_سیٹ.inverted))
     {
-      if (inverted)
-	return hb_all (iter (), larger_set.s);
-      else
+      اگر (inverted)
+	واپس hb_all (iter (), larger_سیٹ.s);
+      ورنہ
         // larger set is inverted so larger_set.s is the set of things that are not present
         // in larger_set, therefore if s has any of those it can't be a subset.
-	return !s.intersects (larger_set.s);
+	واپس !s.intersects (larger_سیٹ.s);
     }
-    else
-      return unlikely (inverted) ? larger_set.s.is_subset (s) : s.is_subset (larger_set.s);
+    ورنہ
+      واپس unlikely (inverted) ? larger_سیٹ.s.is_subset (s) : s.is_subset (larger_سیٹ.s);
   }
 
-  protected:
-  template <typename Op>
-  void process (const Op& op,
-		const hb_bit_set_invertible_t &other,
-		hb_vector_t<unsigned> *workspace = nullptr)
+  محفوظ:
+  سانچہ <قسم_نام Op>
+  خالی process (ثابت Op& op,
+		ثابت hb_ثنائی_ہندسہ_سیٹ_invertible_t &other,
+		hb_سمتیہ_t<غیرعلامتی> *workspace = خالی_اشاریہ)
   { s.process (op, other.s, workspace); }
-  public:
-  void union_ (const hb_bit_set_invertible_t &other)
+  عوامی:
+  خالی union_ (ثابت hb_ثنائی_ہندسہ_سیٹ_invertible_t &other)
   {
-    if (likely (inverted == other.inverted))
+    اگر (likely (inverted == other.inverted))
     {
-      if (unlikely (inverted))
+      اگر (unlikely (inverted))
 	process (hb_bitwise_and, other);
-      else
+      ورنہ
 	process (hb_bitwise_or, other); /* Main branch. */
     }
-    else
+    ورنہ
     {
-      if (unlikely (inverted))
+      اگر (unlikely (inverted))
 	process (hb_bitwise_gt, other);
-      else
+      ورنہ
 	process (hb_bitwise_lt, other);
     }
-    if (likely (s.successful))
+    اگر (likely (s.successful))
       inverted = inverted || other.inverted;
   }
-  void intersect (const hb_bit_set_invertible_t &other,
-		  hb_vector_t<unsigned> *workspace = nullptr)
+  خالی intersect (ثابت hb_ثنائی_ہندسہ_سیٹ_invertible_t &other,
+		  hb_سمتیہ_t<غیرعلامتی> *workspace = خالی_اشاریہ)
   {
-    if (likely (inverted == other.inverted))
+    اگر (likely (inverted == other.inverted))
     {
-      if (unlikely (inverted))
+      اگر (unlikely (inverted))
 	process (hb_bitwise_or, other, workspace);
-      else
+      ورنہ
 	process (hb_bitwise_and, other, workspace); /* Main branch. */
     }
-    else
+    ورنہ
     {
-      if (unlikely (inverted))
+      اگر (unlikely (inverted))
 	process (hb_bitwise_lt, other, workspace);
-      else
+      ورنہ
 	process (hb_bitwise_gt, other, workspace);
     }
-    if (likely (s.successful))
+    اگر (likely (s.successful))
       inverted = inverted && other.inverted;
   }
-  void subtract (const hb_bit_set_invertible_t &other)
+  خالی تفریق (ثابت hb_ثنائی_ہندسہ_سیٹ_invertible_t &other)
   {
-    if (likely (inverted == other.inverted))
+    اگر (likely (inverted == other.inverted))
     {
-      if (unlikely (inverted))
+      اگر (unlikely (inverted))
 	process (hb_bitwise_lt, other);
-      else
+      ورنہ
 	process (hb_bitwise_gt, other); /* Main branch. */
     }
-    else
+    ورنہ
     {
-      if (unlikely (inverted))
+      اگر (unlikely (inverted))
 	process (hb_bitwise_or, other);
-      else
+      ورنہ
 	process (hb_bitwise_and, other);
     }
-    if (likely (s.successful))
+    اگر (likely (s.successful))
       inverted = inverted && !other.inverted;
   }
-  void symmetric_difference (const hb_bit_set_invertible_t &other)
+  خالی متشاکل_difference (ثابت hb_ثنائی_ہندسہ_سیٹ_invertible_t &other)
   {
     process (hb_bitwise_xor, other);
-    if (likely (s.successful))
+    اگر (likely (s.successful))
       inverted = inverted ^ other.inverted;
   }
 
-  bool next (hb_codepoint_t *codepoint) const
+  منطقی next (hb_codepoint_t *codepoint) ثابت
   {
-    if (likely (!inverted))
-      return s.next (codepoint);
+    اگر (likely (!inverted))
+      واپس s.next (codepoint);
 
-    auto old = *codepoint;
-    if (unlikely (old + 1 == INVALID))
+    خودکار old = *codepoint;
+    اگر (unlikely (old + 1 == INVALID))
     {
       *codepoint = INVALID;
-      return false;
+      واپس جھوٹ;
     }
 
-    auto v = old;
+    خودکار v = old;
     s.next (&v);
-    if (old + 1 < v)
+    اگر (old + 1 < v)
     {
       *codepoint = old + 1;
-      return true;
+      واپس سچ;
     }
 
     v = old;
-    s.next_range (&old, &v);
+    s.اگلا_range (&old, &v);
 
     *codepoint = v + 1;
-    return *codepoint != INVALID;
+    واپس *codepoint != INVALID;
   }
-  bool next_bits (hb_codepoint_t *codepoint, uint64_t *bits) const
+  منطقی اگلا_بٹ (hb_codepoint_t *codepoint, uint64_t *بٹ) ثابت
   {
-    if (likely (!inverted))
-      return s.next_bits (codepoint, bits);
+    اگر (likely (!inverted))
+      واپس s.اگلا_بٹ (codepoint, بٹ);
 
-    hb_codepoint_t base;
-    if (unlikely (*codepoint == INVALID))
-      base = 0;
-    else
+    hb_codepoint_t بنیاد;
+    اگر (unlikely (*codepoint == INVALID))
+      بنیاد = 0;
+    ورنہ
     {
-      base = *codepoint & ~hb_bit_page_t::ELT_MASK;
-      if (unlikely (base >= INVALID - hb_bit_page_t::ELT_BITS + 1))
-	goto done;
-      base += hb_bit_page_t::ELT_BITS;
+      بنیاد = *codepoint & ~hb_ثنائی_ہندسہ_صفحہ_t::ELT_نقاب;
+      اگر (unlikely (بنیاد >= INVALID - hb_ثنائی_ہندسہ_صفحہ_t::ELT_بٹ + 1))
+	جاؤ مکمل;
+      بنیاد += hb_ثنائی_ہندسہ_صفحہ_t::ELT_بٹ;
     }
 
-    while (true)
+    جب (سچ)
     {
-      hb_codepoint_t cursor = base ? base - hb_bit_page_t::ELT_BITS : INVALID;
+      hb_codepoint_t cursor = بنیاد ? بنیاد - hb_ثنائی_ہندسہ_صفحہ_t::ELT_بٹ : INVALID;
       uint64_t excluded = 0;
-      if (!s.next_bits (&cursor, &excluded) || cursor != base)
+      اگر (!s.اگلا_بٹ (&cursor, &excluded) || cursor != بنیاد)
 	excluded = 0;
-      *bits = ~excluded;
-      bool last = unlikely (base >= INVALID - hb_bit_page_t::ELT_BITS + 1);
-      if (last)
-	*bits &= UINT64_MAX >> 1;
-      if (*bits)
+      *بٹ = ~excluded;
+      منطقی آخری = unlikely (بنیاد >= INVALID - hb_ثنائی_ہندسہ_صفحہ_t::ELT_بٹ + 1);
+      اگر (آخری)
+	*بٹ &= UINT64_MAX >> 1;
+      اگر (*بٹ)
       {
-	*codepoint = base;
-	return true;
+	*codepoint = بنیاد;
+	واپس سچ;
       }
-      if (unlikely (last))
-	break;
-      base += hb_bit_page_t::ELT_BITS;
+      اگر (unlikely (آخری))
+	توڑو;
+      بنیاد += hb_ثنائی_ہندسہ_صفحہ_t::ELT_بٹ;
     }
 
-  done:
+  مکمل:
     *codepoint = INVALID;
-    *bits = 0;
-    return false;
+    *بٹ = 0;
+    واپس جھوٹ;
   }
-  bool previous (hb_codepoint_t *codepoint) const
+  منطقی پچھلا (hb_codepoint_t *codepoint) ثابت
   {
-    if (likely (!inverted))
-      return s.previous (codepoint);
+    اگر (likely (!inverted))
+      واپس s.پچھلا (codepoint);
 
-    auto old = *codepoint;
-    if (unlikely (old - 1 == INVALID))
+    خودکار old = *codepoint;
+    اگر (unlikely (old - 1 == INVALID))
     {
       *codepoint = INVALID;
-      return false;
+      واپس جھوٹ;
     }
 
-    auto v = old;
-    s.previous (&v);
+    خودکار v = old;
+    s.پچھلا (&v);
 
-    if (old - 1 > v || v == INVALID)
+    اگر (old - 1 > v || v == INVALID)
     {
       *codepoint = old - 1;
-      return true;
+      واپس سچ;
     }
 
     v = old;
-    s.previous_range (&v, &old);
+    s.پچھلا_range (&v, &old);
 
     *codepoint = v - 1;
-    return *codepoint != INVALID;
+    واپس *codepoint != INVALID;
   }
-  bool next_range (hb_codepoint_t *first, hb_codepoint_t *last) const
+  منطقی اگلا_range (hb_codepoint_t *پہلا, hb_codepoint_t *آخری) ثابت
   {
-    if (likely (!inverted))
-      return s.next_range (first, last);
+    اگر (likely (!inverted))
+      واپس s.اگلا_range (پہلا, آخری);
 
-    if (!next (last))
+    اگر (!next (آخری))
     {
-      *last = *first = INVALID;
-      return false;
+      *آخری = *پہلا = INVALID;
+      واپس جھوٹ;
     }
 
-    *first = *last;
-    s.next (last);
-    --*last;
-    return true;
+    *پہلا = *آخری;
+    s.next (آخری);
+    --*آخری;
+    واپس سچ;
   }
-  bool previous_range (hb_codepoint_t *first, hb_codepoint_t *last) const
+  منطقی پچھلا_range (hb_codepoint_t *پہلا, hb_codepoint_t *آخری) ثابت
   {
-    if (likely (!inverted))
-      return s.previous_range (first, last);
+    اگر (likely (!inverted))
+      واپس s.پچھلا_range (پہلا, آخری);
 
-    if (!previous (first))
+    اگر (!پچھلا (پہلا))
     {
-      *last = *first = INVALID;
-      return false;
+      *آخری = *پہلا = INVALID;
+      واپس جھوٹ;
     }
 
-    *last = *first;
-    s.previous (first);
-    ++*first;
-    return true;
+    *آخری = *پہلا;
+    s.پچھلا (پہلا);
+    ++*پہلا;
+    واپس سچ;
   }
 
-  unsigned int next_many (hb_codepoint_t  codepoint,
-			  hb_codepoint_t *out,
-			  unsigned int    size) const
+  غیرعلامتی صحیح اگلا_many (hb_codepoint_t  codepoint,
+			  hb_codepoint_t *برآمد,
+			  غیرعلامتی صحیح    سائز) ثابت
   {
-    return inverted ? s.next_many_inverted (codepoint, out, size)
-		    : s.next_many (codepoint, out, size);
+    واپس inverted ? s.اگلا_many_inverted (codepoint, برآمد, سائز)
+		    : s.اگلا_many (codepoint, برآمد, سائز);
   }
 
-  static constexpr hb_codepoint_t INVALID = hb_bit_set_t::INVALID;
+  ساکن constexpr hb_codepoint_t INVALID = hb_ثنائی_ہندسہ_سیٹ_t::INVALID;
 
   /*
    * Iterator implementation.
    * Mutating the set invalidates its iterators.
    */
-  struct iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
+  ساخت iter_t : hb_iter_with_fallback_t<iter_t, hb_codepoint_t>
   {
-    static constexpr bool is_sorted_iterator = true;
-    static constexpr bool has_fast_len = true;
-    iter_t (const hb_bit_set_invertible_t &s_ = Null (hb_bit_set_invertible_t),
-    bool init = true) : s (&s_), v (INVALID), remaining (0),
-				     have_len (!init), base (INVALID), bits (0)
+    ساکن constexpr منطقی is_sorted_iterator = سچ;
+    ساکن constexpr منطقی has_fast_len = سچ;
+    iter_t (ثابت hb_ثنائی_ہندسہ_سیٹ_invertible_t &s_ = Null (hb_ثنائی_ہندسہ_سیٹ_invertible_t),
+    منطقی init = سچ) : s (&s_), v (INVALID), بقایا (0),
+				     have_len (!init), بنیاد (INVALID), بٹ (0)
     {
-      if (init)
+      اگر (init)
 	advance ();
     }
 
-    typedef hb_codepoint_t __item_t__;
-    hb_codepoint_t __item__ () const { return v; }
-    bool __more__ () const { return v != INVALID; }
-    void __next__ ()
+    قسمتعریف hb_codepoint_t __item_t__;
+    hb_codepoint_t __item__ () ثابت { واپس v; }
+    منطقی __more__ () ثابت { واپس v != INVALID; }
+    خالی __next__ ()
     {
-      remaining--;
+      بقایا--;
       advance ();
     }
-    void __prev__ ()
+    خالی __prev__ ()
     {
-      if (s->previous (&v))
+      اگر (s->پچھلا (&v))
       {
-	sync ();
-	remaining++;
+	ہمآہنگ ();
+	بقایا++;
       }
-      else
+      ورنہ
       {
-	base = INVALID;
-	bits = 0;
+	بنیاد = INVALID;
+	بٹ = 0;
       }
     }
-    unsigned __len__ () const
+    غیرعلامتی __len__ () ثابت
     {
-      if (unlikely (!have_len))
+      اگر (unlikely (!have_len))
       {
-	remaining += s->get_population ();
-	have_len = true;
+	بقایا += s->get_population ();
+	have_len = سچ;
       }
-      return remaining;
+      واپس بقایا;
     }
-    iter_t end () const { return iter_t (*s, false); }
-    bool operator != (const iter_t& o) const
-    { return v != o.v; }
+    iter_t انتہا () ثابت { واپس iter_t (*s, جھوٹ); }
+    منطقی عامل != (ثابت iter_t& o) ثابت
+    { واپس v != o.v; }
 
-    protected:
-    const hb_bit_set_invertible_t *s;
+    محفوظ:
+    ثابت hb_ثنائی_ہندسہ_سیٹ_invertible_t *s;
     hb_codepoint_t v;
-    mutable unsigned remaining;
-    mutable bool have_len;
-    hb_codepoint_t base;
-    uint64_t bits;
+    تغیرپذیر غیرعلامتی بقایا;
+    تغیرپذیر منطقی have_len;
+    hb_codepoint_t بنیاد;
+    uint64_t بٹ;
 
-    void advance ()
+    خالی advance ()
     {
-      if (likely (bits))
+      اگر (likely (بٹ))
       {
-	v = base + hb_ctz (bits);
-	bits &= bits - 1;
+	v = بنیاد + hb_ctz (بٹ);
+	بٹ &= بٹ - 1;
       }
-      else if (s->next_bits (&base, &bits))
+      ورنہ اگر (s->اگلا_بٹ (&بنیاد, &بٹ))
       {
-	v = base + hb_ctz (bits);
-	bits &= bits - 1;
+	v = بنیاد + hb_ctz (بٹ);
+	بٹ &= بٹ - 1;
       }
-      else
+      ورنہ
 	v = INVALID;
     }
 
-    void sync ()
+    خالی ہمآہنگ ()
     {
-      base = v & ~hb_bit_page_t::ELT_MASK;
-      hb_codepoint_t cursor = base ? base - hb_bit_page_t::ELT_BITS : INVALID;
-      s->next_bits (&cursor, &bits);
-      unsigned int bit = v & (hb_bit_page_t::ELT_BITS - 1);
-      bits = bit == hb_bit_page_t::ELT_BITS - 1 ? 0 : bits >> (bit + 1) << (bit + 1);
+      بنیاد = v & ~hb_ثنائی_ہندسہ_صفحہ_t::ELT_نقاب;
+      hb_codepoint_t cursor = بنیاد ? بنیاد - hb_ثنائی_ہندسہ_صفحہ_t::ELT_بٹ : INVALID;
+      s->اگلا_بٹ (&cursor, &بٹ);
+      غیرعلامتی صحیح bit = v & (hb_ثنائی_ہندسہ_صفحہ_t::ELT_بٹ - 1);
+      بٹ = bit == hb_ثنائی_ہندسہ_صفحہ_t::ELT_بٹ - 1 ? 0 : بٹ >> (bit + 1) << (bit + 1);
     }
   };
-  iter_t iter () const { return iter_t (*this); }
-  operator iter_t () const { return iter (); }
+  iter_t iter () ثابت { واپس iter_t (*یہ); }
+  عامل iter_t () ثابت { واپس iter (); }
 };
 
 
-#endif /* HB_BIT_SET_INVERTIBLE_HH */
+#اگر_ختم /* HB_BIT_SET_INVERTIBLE_HH */

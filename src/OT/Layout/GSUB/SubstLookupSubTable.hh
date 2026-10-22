@@ -1,71 +1,71 @@
-#ifndef OT_LAYOUT_GSUB_SUBSTLOOKUPSUBTABLE_HH
-#define OT_LAYOUT_GSUB_SUBSTLOOKUPSUBTABLE_HH
+#اگر_غیر_تعریف_شدہ OT_LAYOUT_GSUB_SUBSTLOOKUPSUBTABLE_HH
+#تعریف_کرو OT_LAYOUT_GSUB_SUBSTLOOKUPSUBTABLE_HH
 
-#include "Common.hh"
-#include "SingleSubst.hh"
-#include "MultipleSubst.hh"
-#include "AlternateSubst.hh"
-#include "LigatureSubst.hh"
-#include "ContextSubst.hh"
-#include "ChainContextSubst.hh"
-#include "ExtensionSubst.hh"
-#include "ReverseChainSingleSubst.hh"
+#شامل "Common.hh"
+#شامل "SingleSubst.hh"
+#شامل "MultipleSubst.hh"
+#شامل "AlternateSubst.hh"
+#شامل "LigatureSubst.hh"
+#شامل "ContextSubst.hh"
+#شامل "ChainContextSubst.hh"
+#شامل "ExtensionSubst.hh"
+#شامل "ReverseChainSingleSubst.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+نامخلا OT {
+نامخلا Layout {
+نامخلا GSUB_impl {
 
-struct SubstLookupSubTable
+ساخت Subst_Lookup_Sub_جدول
 {
-  friend struct ::OT::Lookup;
-  friend struct SubstLookup;
+  دوست ساخت ::OT::Lookup;
+  دوست ساخت SubstLookup;
 
-  protected:
-  union {
+  محفوظ:
+  اتحاد {
   SingleSubst                   single;
-  MultipleSubst                 multiple;
+  مضرب_Subst                 مضرب_2;
   AlternateSubst                alternate;
   LigatureSubst                 ligature;
   ContextSubst                  context;
   ChainContextSubst             chainContext;
   ExtensionSubst                extension;
-  ReverseChainSingleSubst       reverseChainContextSingle;
+  الٹ_Chain_Single_Subst       الٹ_Chain_Context_Single;
   } u;
-  public:
-  DEFINE_SIZE_MIN (0);
+  عوامی:
+  DEFINE_سائز_MIN (0);
 
-  enum Type {
+  شمار Type {
     Single              = 1,
-    Multiple            = 2,
+    مضرب            = 2,
     Alternate           = 3,
     Ligature            = 4,
     Context             = 5,
     ChainContext        = 6,
     Extension           = 7,
-    ReverseChainSingle  = 8
+    الٹ_Chain_Single  = 8
   };
 
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, unsigned int lookup_type, Ts&&... ds) const
+  سانچہ <قسم_نام context_t, قسم_نام ...Ts>
+  قسم_نام context_t::return_t dispatch (context_t *c, غیرعلامتی صحیح lookup_type, Ts&&... ds) ثابت
   {
-    TRACE_DISPATCH (this, lookup_type);
-    switch (lookup_type) {
-    case Single:                hb_barrier (); return_trace (u.single.dispatch (c, std::forward<Ts> (ds)...));
-    case Multiple:              hb_barrier (); return_trace (u.multiple.dispatch (c, std::forward<Ts> (ds)...));
-    case Alternate:             hb_barrier (); return_trace (u.alternate.dispatch (c, std::forward<Ts> (ds)...));
-    case Ligature:              hb_barrier (); return_trace (u.ligature.dispatch (c, std::forward<Ts> (ds)...));
-    case Context:               hb_barrier (); return_trace (u.context.dispatch (c, std::forward<Ts> (ds)...));
-    case ChainContext:          hb_barrier (); return_trace (u.chainContext.dispatch (c, std::forward<Ts> (ds)...));
-    case Extension:             hb_barrier (); return_trace (u.extension.dispatch (c, std::forward<Ts> (ds)...));
-    case ReverseChainSingle:    hb_barrier (); return_trace (u.reverseChainContextSingle.dispatch (c, std::forward<Ts> (ds)...));
-    default:                    return_trace (c->default_return_value ());
+    TRACE_DISPATCH (یہ, lookup_type);
+    انتخاب (lookup_type) {
+    حالت Single:                hb_barrier (); return_trace (u.single.dispatch (c, std::forward<Ts> (ds)...));
+    حالت مضرب:              hb_barrier (); return_trace (u.مضرب_2.dispatch (c, std::forward<Ts> (ds)...));
+    حالت Alternate:             hb_barrier (); return_trace (u.alternate.dispatch (c, std::forward<Ts> (ds)...));
+    حالت Ligature:              hb_barrier (); return_trace (u.ligature.dispatch (c, std::forward<Ts> (ds)...));
+    حالت Context:               hb_barrier (); return_trace (u.context.dispatch (c, std::forward<Ts> (ds)...));
+    حالت ChainContext:          hb_barrier (); return_trace (u.chainContext.dispatch (c, std::forward<Ts> (ds)...));
+    حالت Extension:             hb_barrier (); return_trace (u.extension.dispatch (c, std::forward<Ts> (ds)...));
+    حالت الٹ_Chain_Single:    hb_barrier (); return_trace (u.الٹ_Chain_Context_Single.dispatch (c, std::forward<Ts> (ds)...));
+    طےشدہ:                    return_trace (c->default_return_قدر ());
     }
   }
 
-  bool intersects (const hb_set_t *glyphs, unsigned int lookup_type) const
+  منطقی intersects (ثابت hb_سیٹ_t *glyphs, غیرعلامتی صحیح lookup_type) ثابت
   {
     hb_intersects_context_t c (glyphs);
-    return dispatch (&c, lookup_type);
+    واپس dispatch (&c, lookup_type);
   }
 };
 
@@ -74,4 +74,4 @@ struct SubstLookupSubTable
 }
 }
 
-#endif  /* HB_OT_LAYOUT_GSUB_SUBSTLOOKUPSUBTABLE_HH */
+#اگر_ختم  /* HB_OT_LAYOUT_GSUB_SUBSTLOOKUPSUBTABLE_HH */

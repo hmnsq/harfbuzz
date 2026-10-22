@@ -24,80 +24,80 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_SHAPE_NORMALIZE_HH
-#define HB_OT_SHAPE_NORMALIZE_HH
+#اگر_غیر_تعریف_شدہ HB_OT_SHAPE_NORMALIZE_HH
+#تعریف_کرو HB_OT_SHAPE_NORMALIZE_HH
 
-#include "hb.hh"
-#include "hb-unicode.hh"
+#شامل "hb.hh"
+#شامل "hb-unicode.hh"
 
 
 /* buffer var allocations, used during the normalization process */
-#define normalizer_glyph_index()	var1.u32
+#تعریف_کرو normalizer_glyph_اشاریہ()	var1.u32
 
-struct hb_ot_shape_plan_t;
+ساخت hb_ot_shape_plan_t;
 
-enum hb_ot_shape_normalization_mode_t {
-  HB_OT_SHAPE_NORMALIZATION_MODE_NONE,
-  HB_OT_SHAPE_NORMALIZATION_MODE_DECOMPOSED,
-  HB_OT_SHAPE_NORMALIZATION_MODE_COMPOSED_DIACRITICS, /* Never composes base-to-base */
-  HB_OT_SHAPE_NORMALIZATION_MODE_COMPOSED_DIACRITICS_NO_SHORT_CIRCUIT, /* Always fully decomposes and then recompose back */
+شمار hb_ot_shape_normalization_منوال_t {
+  HB_OT_SHAPE_NORMALIZATION_منوال_NONE,
+  HB_OT_SHAPE_NORMALIZATION_منوال_DECOMPOSED,
+  HB_OT_SHAPE_NORMALIZATION_منوال_COMPOSED_DIACRITICS, /* Never composes base-to-base */
+  HB_OT_SHAPE_NORMALIZATION_منوال_COMPOSED_DIACRITICS_NO_SHORT_CIRCUIT, /* Always fully decomposes and then recompose back */
 
-  HB_OT_SHAPE_NORMALIZATION_MODE_AUTO, /* See hb-ot-shape-normalize.cc for logic. */
-  HB_OT_SHAPE_NORMALIZATION_MODE_DEFAULT = HB_OT_SHAPE_NORMALIZATION_MODE_AUTO
+  HB_OT_SHAPE_NORMALIZATION_منوال_AUTO, /* See hb-ot-shape-normalize.cc for logic. */
+  HB_OT_SHAPE_NORMALIZATION_منوال_DEFAULT = HB_OT_SHAPE_NORMALIZATION_منوال_AUTO
 };
 
-HB_INTERNAL void _hb_ot_shape_normalize (const hb_ot_shape_plan_t *shaper,
-					 hb_buffer_t *buffer,
+HB_اندرونی خالی _hb_ot_shape_normalize (ثابت hb_ot_shape_plan_t *shaper,
+					 hb_بفر_t *بفر,
 					 hb_font_t *font);
 
 
-struct hb_ot_shape_normalize_context_t
+ساخت hb_ot_shape_normalize_context_t
 {
-  static bool
-  decompose_unicode (const hb_ot_shape_normalize_context_t *c,
+  ساکن منطقی
+  decompose_unicode (ثابت hb_ot_shape_normalize_context_t *c,
 		     hb_codepoint_t  ab,
 		     hb_codepoint_t *a,
 		     hb_codepoint_t *b)
   {
-    return (bool) c->unicode->decompose (ab, a, b);
+    واپس (منطقی) c->unicode->decompose (ab, a, b);
   }
 
-  static bool
-  compose_unicode (const hb_ot_shape_normalize_context_t *c,
+  ساکن منطقی
+  compose_unicode (ثابت hb_ot_shape_normalize_context_t *c,
 		   hb_codepoint_t  a,
 		   hb_codepoint_t  b,
 		   hb_codepoint_t *ab)
   {
-    return (bool) c->unicode->compose (a, b, ab);
+    واپس (منطقی) c->unicode->compose (a, b, ab);
   }
 
-  void
-  override_decompose_and_compose (bool (*decompose) (const hb_ot_shape_normalize_context_t *c,
+  خالی
+  override_decompose_and_compose (منطقی (*decompose) (ثابت hb_ot_shape_normalize_context_t *c,
 						      hb_codepoint_t  ab,
 						      hb_codepoint_t *a,
 						      hb_codepoint_t *b),
-				  bool (*compose) (const hb_ot_shape_normalize_context_t *c,
+				  منطقی (*compose) (ثابت hb_ot_shape_normalize_context_t *c,
 						   hb_codepoint_t  a,
 						   hb_codepoint_t  b,
 						   hb_codepoint_t *ab))
   {
-    this->decompose = decompose ? decompose : decompose_unicode;
-    this->compose = compose ? compose : compose_unicode;
+    یہ->decompose = decompose ? decompose : decompose_unicode;
+    یہ->compose = compose ? compose : compose_unicode;
   }
 
-  const hb_ot_shape_plan_t *plan;
-  hb_buffer_t *buffer;
+  ثابت hb_ot_shape_plan_t *plan;
+  hb_بفر_t *بفر;
   hb_font_t *font;
   hb_unicode_funcs_t *unicode;
-  bool (*decompose) (const hb_ot_shape_normalize_context_t *c,
+  منطقی (*decompose) (ثابت hb_ot_shape_normalize_context_t *c,
 		     hb_codepoint_t  ab,
 		     hb_codepoint_t *a,
 		     hb_codepoint_t *b);
-  bool (*compose) (const hb_ot_shape_normalize_context_t *c,
+  منطقی (*compose) (ثابت hb_ot_shape_normalize_context_t *c,
 		   hb_codepoint_t  a,
 		   hb_codepoint_t  b,
 		   hb_codepoint_t *ab);
 };
 
 
-#endif /* HB_OT_SHAPE_NORMALIZE_HH */
+#اگر_ختم /* HB_OT_SHAPE_NORMALIZE_HH */

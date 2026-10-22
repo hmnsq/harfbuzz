@@ -24,10 +24,10 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_CACHE_HH
-#define HB_CACHE_HH
+#اگر_غیر_تعریف_شدہ HB_CACHE_HH
+#تعریف_کرو HB_CACHE_HH
 
-#include "hb.hh"
+#شامل "hb.hh"
 
 
 /* Implements a lockfree and thread-safe cache for int->int functions,
@@ -57,66 +57,66 @@
  * arithmetic operations and a single memory access.
  */
 
-template <unsigned int key_bits=16,
-	 unsigned int value_bits=8 + 32 - key_bits,
-	 unsigned int cache_bits=8,
-	 bool thread_safe=true>
-struct hb_cache_t
+سانچہ <غیرعلامتی صحیح کلید_بٹ=16,
+	 غیرعلامتی صحیح قدر_بٹ=8 + 32 - کلید_بٹ,
+	 غیرعلامتی صحیح cache_بٹ=8,
+	 منطقی thread_محفوظ=سچ>
+ساخت hb_cache_t
 {
-  using item_t = typename std::conditional<thread_safe,
-					   typename std::conditional<key_bits + value_bits - cache_bits <= 8,
-								     hb_atomic_t<unsigned char>,
-								     typename std::conditional<key_bits + value_bits - cache_bits <= 16,
-											       hb_atomic_t<unsigned short>,
-											       hb_atomic_t<unsigned int>>::type>::type,
-					   typename std::conditional<key_bits + value_bits - cache_bits <= 8,
-								     unsigned char,
-								     typename std::conditional<key_bits + value_bits - cache_bits <= 16,
-											       unsigned short,
-											       unsigned int>::type>::type
+  استعمال شے_t = قسم_نام std::conditional<thread_محفوظ,
+					   قسم_نام std::conditional<کلید_بٹ + قدر_بٹ - cache_بٹ <= 8,
+								     hb_atomic_t<غیرعلامتی حرف>,
+								     قسم_نام std::conditional<کلید_بٹ + قدر_بٹ - cache_بٹ <= 16,
+											       hb_atomic_t<غیرعلامتی مختصر>,
+											       hb_atomic_t<غیرعلامتی صحیح>>::type>::type,
+					   قسم_نام std::conditional<کلید_بٹ + قدر_بٹ - cache_بٹ <= 8,
+								     غیرعلامتی حرف,
+								     قسم_نام std::conditional<کلید_بٹ + قدر_بٹ - cache_بٹ <= 16,
+											       غیرعلامتی مختصر,
+											       غیرعلامتی صحیح>::type>::type
 					  >::type;
 
-  static_assert ((key_bits >= cache_bits), "");
-  static_assert ((key_bits + value_bits <= cache_bits + 8 * sizeof (item_t)), "");
+  static_assert ((کلید_بٹ >= cache_بٹ), "");
+  static_assert ((کلید_بٹ + قدر_بٹ <= cache_بٹ + 8 * حجم (شے_t)), "");
 
-  static constexpr unsigned MAX_VALUE = (1u << value_bits) - 1;
+  ساکن constexpr غیرعلامتی MAX_قدر = (1u << قدر_بٹ) - 1;
 
   hb_cache_t () { clear (); }
 
-  void clear ()
+  خالی clear ()
   {
-    for (auto &v : values)
+    برائے (خودکار &v : values)
       v = -1;
   }
 
   HB_HOT
-  bool get (unsigned int key, unsigned int *value) const
+  منطقی get (غیرعلامتی صحیح key, غیرعلامتی صحیح *value) ثابت
   {
-    unsigned int k = key & ((1u<<cache_bits)-1);
-    unsigned int v = values[k];
-    constexpr unsigned int empty = (1ULL << (8 * sizeof (item_t))) - 1;
+    غیرعلامتی صحیح k = key & ((1u<<cache_بٹ)-1);
+    غیرعلامتی صحیح v = values[k];
+    constexpr غیرعلامتی صحیح خالی_خانے_2 = (1ULL << (8 * حجم (شے_t))) - 1;
     /* Combine overflow, tag mismatch, and empty checks into one branch. */
-    if ((key >> key_bits) |
-	((v >> value_bits) ^ (key >> cache_bits)) |
-	((key_bits + value_bits - cache_bits == 8 * sizeof (item_t)) && (v == empty)))
-      return false;
-    *value = v & ((1u<<value_bits)-1);
-    return true;
+    اگر ((key >> کلید_بٹ) |
+	((v >> قدر_بٹ) ^ (key >> cache_بٹ)) |
+	((کلید_بٹ + قدر_بٹ - cache_بٹ == 8 * حجم (شے_t)) && (v == خالی_خانے_2)))
+      واپس جھوٹ;
+    *value = v & ((1u<<قدر_بٹ)-1);
+    واپس سچ;
   }
 
   HB_HOT
-  void set (unsigned int key, unsigned int value)
+  خالی سیٹ (غیرعلامتی صحیح key, غیرعلامتی صحیح value)
   {
-    if (unlikely ((key >> key_bits) || (value >> value_bits)))
-      return; /* Overflows */
-    unsigned int k = key & ((1u<<cache_bits)-1);
-    unsigned int v = ((key>>cache_bits)<<value_bits) | value;
+    اگر (unlikely ((key >> کلید_بٹ) || (value >> قدر_بٹ)))
+      واپس; /* Overflows */
+    غیرعلامتی صحیح k = key & ((1u<<cache_بٹ)-1);
+    غیرعلامتی صحیح v = ((key>>cache_بٹ)<<قدر_بٹ) | value;
     values[k] = v;
   }
 
-  private:
-  item_t values[1u<<cache_bits];
+  نجی:
+  شے_t values[1u<<cache_بٹ];
 };
 
 
-#endif /* HB_CACHE_HH */
+#اگر_ختم /* HB_CACHE_HH */

@@ -1,52 +1,52 @@
-#ifndef OT_LAYOUT_GSUB_MULTIPLESUBST_HH
-#define OT_LAYOUT_GSUB_MULTIPLESUBST_HH
+#اگر_غیر_تعریف_شدہ OT_LAYOUT_GSUB_MULTIPLESUBST_HH
+#تعریف_کرو OT_LAYOUT_GSUB_MULTIPLESUBST_HH
 
-#include "Common.hh"
-#include "MultipleSubstFormat1.hh"
+#شامل "Common.hh"
+#شامل "MultipleSubstFormat1.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+نامخلا OT {
+نامخلا Layout {
+نامخلا GSUB_impl {
 
-struct MultipleSubst
+ساخت مضرب_Subst
 {
-  protected:
-  union {
-  struct { HBUINT16 v; }		format;         /* Format identifier */
-  MultipleSubstFormat1_2<SmallTypes>	format1;
-#ifndef HB_NO_BEYOND_64K
-  MultipleSubstFormat1_2<MediumTypes>	format2;
-#endif
+  محفوظ:
+  اتحاد {
+  ساخت { HBUINT16 v; }		format;         /* Format identifier */
+  مضرب_Subst_Format1_2<SmallTypes>	format1;
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+  مضرب_Subst_Format1_2<MediumTypes>	format2;
+#اگر_ختم
   } u;
 
-  public:
+  عوامی:
 
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  سانچہ <قسم_نام context_t, قسم_نام ...Ts>
+  قسم_نام context_t::return_t dispatch (context_t *c, Ts&&... ds) ثابت
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-#ifndef HB_NO_BEYOND_64K
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-#endif
-    default:return_trace (c->default_return_value ());
+    اگر (unlikely (!c->may_dispatch (یہ, &u.format.v))) واپس c->no_dispatch_return_قدر ();
+    TRACE_DISPATCH (یہ, u.format.v);
+    انتخاب (u.format.v) {
+    حالت 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    حالت 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+#اگر_ختم
+    طےشدہ:return_trace (c->default_return_قدر ());
     }
   }
 
-  template<typename Iterator,
+  سانچہ<قسم_نام Iterator,
            hb_requires (hb_is_sorted_iterator (Iterator))>
-  bool serialize (hb_serialize_context_t *c,
+  منطقی serialize (hb_serialize_context_t *c,
 		  Iterator it)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (u.format.v))) return_trace (false);
-    unsigned int format = 1;
+    TRACE_SERIALIZE (یہ);
+    اگر (unlikely (!c->extend_min (u.format.v))) return_trace (جھوٹ);
+    غیرعلامتی صحیح format = 1;
     u.format.v = format;
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.serialize (c, it));
-    default:return_trace (false);
+    انتخاب (u.format.v) {
+    حالت 1: hb_barrier (); return_trace (u.format1.serialize (c, it));
+    طےشدہ:return_trace (جھوٹ);
     }
   }
 
@@ -59,4 +59,4 @@ struct MultipleSubst
 }
 }
 
-#endif /* OT_LAYOUT_GSUB_MULTIPLESUBST_HH */
+#اگر_ختم /* OT_LAYOUT_GSUB_MULTIPLESUBST_HH */

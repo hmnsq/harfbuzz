@@ -24,38 +24,38 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef GRAPH_SPLIT_HELPERS_HH
-#define GRAPH_SPLIT_HELPERS_HH
+#اگر_غیر_تعریف_شدہ گراف_بانٹو_HELPERS_HH
+#تعریف_کرو گراف_بانٹو_HELPERS_HH
 
-#include "graph-result.hh"
+#شامل "graph-result.hh"
 
-namespace graph {
+نامخلا گراف {
 
-template<typename Context>
-HB_INTERNAL
-graph_result_t<hb_vector_t<unsigned>> actuate_subtable_split (Context& split_context,
-                                                              const hb_vector_t<unsigned>& split_points)
+سانچہ<قسم_نام Context>
+HB_اندرونی
+گراف_نتیجہ_t<hb_سمتیہ_t<غیرعلامتی>> actuate_subtable_بانٹو (Context& بانٹو_context,
+                                                              ثابت hb_سمتیہ_t<غیرعلامتی>& بانٹو_points)
 {
-  hb_vector_t<unsigned> new_objects;
-  if (!split_points)
-    return Ok(new_objects);
+  hb_سمتیہ_t<غیرعلامتی> new_objects;
+  اگر (!بانٹو_points)
+    واپس Ok(new_objects);
 
-  for (unsigned i = 0; i < split_points.length; i++)
+  برائے (غیرعلامتی i = 0; i < بانٹو_points.لمبائی; i++)
   {
-    unsigned start = split_points[i];
-    unsigned end = (i < split_points.length - 1)
-                   ? split_points[i + 1]
-                   : split_context.original_count ();
-    TRY_ASSIGN (unsigned id, split_context.clone_range (start, end));
+    غیرعلامتی آغاز = بانٹو_points[i];
+    غیرعلامتی انتہا = (i < بانٹو_points.لمبائی - 1)
+                   ? بانٹو_points[i + 1]
+                   : بانٹو_context.original_گنتی_2 ();
+    TRY_تفویض (غیرعلامتی id, بانٹو_context.clone_range (آغاز, انتہا));
     new_objects.push (id);
-    TRY (graph_result_t<void>::from (new_objects, ALLOCATION_FAILURE));
+    TRY (گراف_نتیجہ_t<خالی>::from (new_objects, تخصیص_FAILURE));
   }
 
-  TRY (split_context.shrink (split_points[0]));
+  TRY (بانٹو_context.shrink (بانٹو_points[0]));
 
-  return Ok(new_objects);
+  واپس Ok(new_objects);
 }
 
 }
 
-#endif  // GRAPH_SPLIT_HELPERS_HH
+#اگر_ختم  // GRAPH_SPLIT_HELPERS_HH

@@ -24,10 +24,10 @@
  * Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_DECYCLER_HH
-#define HB_DECYCLER_HH
+#اگر_غیر_تعریف_شدہ HB_DECYCLER_HH
+#تعریف_کرو HB_DECYCLER_HH
 
-#include "hb.hh"
+#شامل "hb.hh"
 
 /*
  * hb_decycler_t is an efficient cycle detector for graph traversal.
@@ -82,83 +82,83 @@
  * For usage examples see test-decycler.cc.
  */
 
-struct hb_decycler_node_t;
+ساخت hb_decycler_گرہ_t;
 
-struct hb_decycler_t
+ساخت hb_decycler_t
 {
-  friend struct hb_decycler_node_t;
+  دوست ساخت hb_decycler_گرہ_t;
 
-  private:
-  bool tortoise_awake = false;
-  hb_decycler_node_t *tortoise = nullptr;
-  hb_decycler_node_t *hare = nullptr;
+  نجی:
+  منطقی tortoise_awake = جھوٹ;
+  hb_decycler_گرہ_t *tortoise = خالی_اشاریہ;
+  hb_decycler_گرہ_t *hare = خالی_اشاریہ;
 };
 
-struct hb_decycler_node_t
+ساخت hb_decycler_گرہ_t
 {
-  hb_decycler_node_t (hb_decycler_t &decycler)
+  hb_decycler_گرہ_t (hb_decycler_t &decycler)
   {
     u.decycler = &decycler;
 
     decycler.tortoise_awake = !decycler.tortoise_awake;
 
-    if (!decycler.tortoise)
+    اگر (!decycler.tortoise)
     {
       // First node.
-      assert (decycler.tortoise_awake);
-      assert (!decycler.hare);
-      decycler.tortoise = decycler.hare = this;
-      return;
+      أكد (decycler.tortoise_awake);
+      أكد (!decycler.hare);
+      decycler.tortoise = decycler.hare = یہ;
+      واپس;
     }
 
-    if (decycler.tortoise_awake)
+    اگر (decycler.tortoise_awake)
       decycler.tortoise = decycler.tortoise->u.next; // Time to move.
 
-    this->prev = decycler.hare;
-    decycler.hare->u.next = this;
-    decycler.hare = this;
+    یہ->prev = decycler.hare;
+    decycler.hare->u.next = یہ;
+    decycler.hare = یہ;
   }
 
-  ~hb_decycler_node_t ()
+  ~hb_decycler_گرہ_t ()
   {
     hb_decycler_t &decycler = *u.decycler;
 
     // Inverse of the constructor.
 
-    assert (decycler.hare == this);
+    أكد (decycler.hare == یہ);
     decycler.hare = prev;
-    if (prev)
+    اگر (prev)
       prev->u.decycler = &decycler;
 
-    assert (decycler.tortoise);
-    if (decycler.tortoise_awake)
+    أكد (decycler.tortoise);
+    اگر (decycler.tortoise_awake)
       decycler.tortoise = decycler.tortoise->prev;
 
     decycler.tortoise_awake = !decycler.tortoise_awake;
   }
 
-  bool visit (uintptr_t value_)
+  منطقی دورہ (uintptr_t قدر_3)
   {
-    value = value_;
+    value = قدر_3;
 
     hb_decycler_t &decycler = *u.decycler;
 
-    if (decycler.tortoise == this)
-      return true; // First node; not a cycle.
+    اگر (decycler.tortoise == یہ)
+      واپس سچ; // First node; not a cycle.
 
-    if (decycler.tortoise->value == value)
-      return false; // Cycle detected.
+    اگر (decycler.tortoise->value == value)
+      واپس جھوٹ; // Cycle detected.
 
-    return true;
+    واپس سچ;
   }
 
-  private:
-  union {
+  نجی:
+  اتحاد {
     hb_decycler_t *decycler;
-    hb_decycler_node_t *next;
-  } u = {nullptr};
-  hb_decycler_node_t *prev = nullptr;
+    hb_decycler_گرہ_t *next;
+  } u = {خالی_اشاریہ};
+  hb_decycler_گرہ_t *prev = خالی_اشاریہ;
   uintptr_t value = 0;
 };
 
-#endif /* HB_DECYCLER_HH */
+#اگر_ختم /* HB_DECYCLER_HH */

@@ -27,9 +27,9 @@
  * Adobe Author(s): Michiharu Ariza
  */
 
-#ifndef HB_OT_GLYF_TABLE_HH
-#define HB_OT_GLYF_TABLE_HH
+#اگر_غیر_تعریف_شدہ HB_OT_GLYF_جدول_HH
+#تعریف_کرو HB_OT_GLYF_جدول_HH
 
-#include "OT/glyf/glyf.hh"
+#شامل "OT/glyf/glyf.hh"
 
-#endif /* HB_OT_GLYF_TABLE_HH */
+#اگر_ختم /* HB_OT_GLYF_TABLE_HH */

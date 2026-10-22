@@ -1,17 +1,17 @@
-#ifndef OT_LAYOUT_GPOS_EXTENSIONPOS_HH
-#define OT_LAYOUT_GPOS_EXTENSIONPOS_HH
+#اگر_غیر_تعریف_شدہ OT_LAYOUT_GPOS_EXTENSIONPOS_HH
+#تعریف_کرو OT_LAYOUT_GPOS_EXTENSIONPOS_HH
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+نامخلا OT {
+نامخلا Layout {
+نامخلا GPOS_impl {
 
-struct ExtensionPos : Extension<ExtensionPos>
+ساخت ExtensionPos : Extension<ExtensionPos>
 {
-  typedef struct PosLookupSubTable SubTable;
+  قسمتعریف ساخت Pos_Lookup_Sub_جدول Sub_جدول;
 };
 
 }
 }
 }
 
-#endif /* OT_LAYOUT_GPOS_EXTENSIONPOS_HH */
+#اگر_ختم /* OT_LAYOUT_GPOS_EXTENSIONPOS_HH */

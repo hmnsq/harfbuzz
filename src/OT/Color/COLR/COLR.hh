@@ -25,94 +25,94 @@
  * Google Author(s): Calder Kitagawa
  */
 
-#ifndef OT_COLOR_COLR_COLR_HH
-#define OT_COLOR_COLR_COLR_HH
+#اگر_غیر_تعریف_شدہ OT_COLOR_COLR_COLR_HH
+#تعریف_کرو OT_COLOR_COLR_COLR_HH
 
-#include "../../../hb.hh"
-#include "../../../hb-decycler.hh"
-#include "../../../hb-open-type.hh"
-#include "../../../hb-ot-var-common.hh"
-#include "../../../hb-paint.hh"
-#include "../../../hb-paint-bounded.hh"
-#include "../../../hb-paint-extents.hh"
-#include "../../../hb-depend-data.hh"
+#شامل "../../../hb.hh"
+#شامل "../../../hb-decycler.hh"
+#شامل "../../../hb-open-type.hh"
+#شامل "../../../hb-ot-var-common.hh"
+#شامل "../../../hb-paint.hh"
+#شامل "../../../hb-paint-bounded.hh"
+#شامل "../../../hb-paint-extents.hh"
+#شامل "../../../hb-depend-data.hh"
 
-#include "../../../hb-ot-dual.hh"
-#include "../CPAL/CPAL.hh"
+#شامل "../../../hb-ot-dual.hh"
+#شامل "../CPAL/CPAL.hh"
 
 /*
  * COLR -- Color
  * https://docs.microsoft.com/en-us/typography/opentype/spec/colr
  */
-#define HB_OT_TAG_COLR HB_TAG('C','O','L','R')
+#تعریف_کرو HB_OT_لیبل_COLR HB_لیبل('C','O','L','R')
 
-namespace OT {
-struct hb_paint_context_t;
+نامخلا OT {
+ساخت hb_paint_context_t;
 }
 
-struct hb_colr_scratch_t
+ساخت hb_colr_scratch_t
 {
   hb_paint_bounded_context_t paint_bounded;
   hb_paint_extents_context_t paint_extents;
 };
 
-namespace OT {
+نامخلا OT {
 
-struct COLR;
+ساخت COLR;
 
-struct Paint;
+ساخت Paint;
 
-struct hb_paint_context_t :
+ساخت hb_paint_context_t :
        hb_dispatch_context_t<hb_paint_context_t>
 {
-  const char *get_name () { return "PAINT"; }
-  template <typename T>
-  return_t dispatch (const T &obj) { obj.paint_glyph (this); return hb_empty_t (); }
-  static return_t default_return_value () { return hb_empty_t (); }
+  ثابت حرف *get_name () { واپس "PAINT"; }
+  سانچہ <قسم_نام T>
+  return_t dispatch (ثابت T &obj) { obj.paint_glyph (یہ); واپس hb_خالی_خانے_t (); }
+  ساکن return_t default_return_قدر () { واپس hb_خالی_خانے_t (); }
 
-  const COLR* get_colr_table () const
-  { return reinterpret_cast<const COLR *> (base); }
+  ثابت COLR* get_colr_جدول () ثابت
+  { واپس reinterpret_cast<ثابت COLR *> (بنیاد); }
 
-public:
-  const void *base;
+عوامی:
+  ثابت خالی *بنیاد;
   hb_paint_funcs_t *funcs;
-  void *data;
+  خالی *ڈیٹا;
   hb_font_t *font;
-  hb_array_t<const BGRAColor> palette;
+  hb_array_t<ثابت BGRAColor> palette;
   hb_color_t foreground;
-  ItemVarStoreInstancer &instancer;
+  شے_Var_Store_Instancer &instancer;
   hb_decycler_t glyphs_decycler;
   hb_decycler_t layers_decycler;
-  int depth_left = HB_MAX_NESTING_LEVEL;
-  int edge_count = HB_MAX_GRAPH_EDGE_COUNT;
+  صحیح گہرائی_بایاں = HB_MAX_NESTING_LEVEL;
+  صحیح کنارہ_گنتی = HB_MAX_گراف_کنارہ_گنتی;
 
-  hb_paint_context_t (const void *base_,
+  hb_paint_context_t (ثابت خالی *بنیاد_2,
 		      hb_paint_funcs_t *funcs_,
-		      void *data_,
+		      خالی *ڈیٹا_2,
                       hb_font_t *font_,
-                      unsigned int palette_,
+                      غیرعلامتی صحیح palette_,
                       hb_color_t foreground_,
-		      ItemVarStoreInstancer &instancer_) :
-    base (base_),
+		      شے_Var_Store_Instancer &instancer_) :
+    بنیاد (بنیاد_2),
     funcs (funcs_),
-    data (data_),
+    ڈیٹا (ڈیٹا_2),
     font (font_),
     palette (
-#ifndef HB_NO_COLOR
+#اگر_غیر_تعریف_شدہ HB_NO_COLOR
 	     // https://github.com/harfbuzz/harfbuzz/issues/5116
-	     font->face->table.CPAL->get_palette_colors (palette_ < font->face->table.CPAL->get_palette_count () ? palette_ : 0)
-#endif
+	     font->face->جدول.CPAL->get_palette_colors (palette_ < font->face->جدول.CPAL->get_palette_گنتی () ? palette_ : 0)
+#اگر_ختم
     ),
     foreground (foreground_),
     instancer (instancer_)
   {
-    if (font->is_synthetic)
+    اگر (font->is_synthetic)
     {
       font = hb_font_create_sub_font (font);
-      hb_font_set_synthetic_bold (font, 0, 0, true);
-      hb_font_set_synthetic_slant (font, 0);
+      hb_font_سیٹ_synthetic_bold (font, 0, 0, سچ);
+      hb_font_سیٹ_synthetic_slant (font, 0);
     }
-    else
+    ورنہ
       hb_font_reference (font);
   }
 
@@ -121,179 +121,179 @@ public:
     hb_font_destroy (font);
   }
 
-  static unsigned
-  color_alpha (hb_color_t color, float alpha)
+  ساکن غیرعلامتی
+  color_alpha (hb_color_t color, اعشاری alpha)
   {
     /* Font-supplied alpha is F2DOT14 plus variation deltas, so it can be
      * negative or greater than one; converting that to unsigned is UB. */
-    return roundf (hb_color_get_alpha (color) * hb_clamp (alpha, 0.f, 1.f));
+    واپس roundf (hb_color_get_alpha (color) * hb_clamp (alpha, 0.f, 1.f));
   }
 
-  hb_color_t get_color (unsigned int color_index, float alpha, hb_bool_t *is_foreground)
+  hb_color_t get_color (غیرعلامتی صحیح color_اشاریہ, اعشاری alpha, hb_bool_t *is_foreground)
   {
     hb_color_t color = foreground;
 
-    *is_foreground = true;
+    *is_foreground = سچ;
 
-    if (color_index != 0xffff)
+    اگر (color_اشاریہ != 0xffff)
     {
-      if (!funcs->custom_palette_color (data, color_index, &color))
-        color = palette[color_index];
+      اگر (!funcs->custom_palette_color (ڈیٹا, color_اشاریہ, &color))
+        color = palette[color_اشاریہ];
 
-      *is_foreground = false;
+      *is_foreground = جھوٹ;
     }
 
-    return HB_COLOR (hb_color_get_blue (color),
+    واپس HB_COLOR (hb_color_get_blue (color),
                      hb_color_get_green (color),
                      hb_color_get_red (color),
                      color_alpha (color, alpha));
   }
 
-  inline void recurse (const Paint &paint);
+  اندرونی خالی recurse (ثابت Paint &paint);
 };
 
-struct hb_colrv1_closure_context_t :
-       hb_dispatch_context_t<hb_colrv1_closure_context_t>
+ساخت hb_colrv1_احاطہ_context_t :
+       hb_dispatch_context_t<hb_colrv1_احاطہ_context_t>
 {
-  template <typename T>
-  return_t dispatch (const T &obj)
+  سانچہ <قسم_نام T>
+  return_t dispatch (ثابت T &obj)
   {
-    if (unlikely (nesting_level_left == 0))
-      return hb_empty_t ();
+    اگر (unlikely (nesting_level_بایاں == 0))
+      واپس hb_خالی_خانے_t ();
 
-    if (paint_visited (&obj))
-      return hb_empty_t ();
+    اگر (paint_دیکھا (&obj))
+      واپس hb_خالی_خانے_t ();
 
-    nesting_level_left--;
-    obj.closurev1 (this);
-    nesting_level_left++;
-    return hb_empty_t ();
+    nesting_level_بایاں--;
+    obj.closurev1 (یہ);
+    nesting_level_بایاں++;
+    واپس hb_خالی_خانے_t ();
   }
-  static return_t default_return_value () { return hb_empty_t (); }
+  ساکن return_t default_return_قدر () { واپس hb_خالی_خانے_t (); }
 
-  bool paint_visited (const void *paint)
+  منطقی paint_دیکھا (ثابت خالی *paint)
   {
-    hb_codepoint_t delta = (hb_codepoint_t) ((uintptr_t) paint - (uintptr_t) base);
-    if (visited_paint.in_error() || visited_paint.has (delta))
-      return true;
+    hb_codepoint_t delta = (hb_codepoint_t) ((uintptr_t) paint - (uintptr_t) بنیاد);
+    اگر (دیکھا_paint.اندر_error() || دیکھا_paint.has (delta))
+      واپس سچ;
 
-    visited_paint.add (delta);
-    return false;
-  }
-
-  const COLR* get_colr_table () const
-  { return reinterpret_cast<const COLR *> (base); }
-
-  void add_glyph (unsigned glyph_id)
-  { glyphs->add (glyph_id); }
-
-  void add_layer_indices (unsigned first_layer_index, unsigned num_of_layers)
-  {
-    if (num_of_layers == 0) return;
-    layer_indices->add_range (first_layer_index, first_layer_index + num_of_layers - 1);
+    دیکھا_paint.جوڑو (delta);
+    واپس جھوٹ;
   }
 
-  void add_palette_index (unsigned palette_index)
-  { palette_indices->add (palette_index); }
+  ثابت COLR* get_colr_جدول () ثابت
+  { واپس reinterpret_cast<ثابت COLR *> (بنیاد); }
 
-  void add_var_idxes (unsigned first_var_idx, unsigned num_idxes)
+  خالی جوڑو_glyph (غیرعلامتی glyph_id)
+  { glyphs->جوڑو (glyph_id); }
+
+  خالی جوڑو_layer_indices (غیرعلامتی پہلا_layer_اشاریہ, غیرعلامتی عدد_کا_layers)
   {
-    if (!num_idxes || first_var_idx == VarIdx::NO_VARIATION) return;
-    variation_indices->add_range (first_var_idx, first_var_idx + num_idxes - 1);
+    اگر (عدد_کا_layers == 0) واپس;
+    layer_indices->جوڑو_range (پہلا_layer_اشاریہ, پہلا_layer_اشاریہ + عدد_کا_layers - 1);
   }
 
-  public:
-  const void *base;
-  hb_set_t visited_paint;
-  hb_set_t *glyphs;
-  hb_set_t *layer_indices;
-  hb_set_t *palette_indices;
-  hb_set_t *variation_indices;
-  unsigned num_var_idxes;
-  unsigned nesting_level_left;
+  خالی جوڑو_palette_اشاریہ (غیرعلامتی palette_اشاریہ)
+  { palette_indices->جوڑو (palette_اشاریہ); }
 
-  hb_colrv1_closure_context_t (const void *base_,
-                               hb_set_t *glyphs_,
-                               hb_set_t *layer_indices_,
-                               hb_set_t *palette_indices_,
-                               hb_set_t *variation_indices_,
-                               unsigned num_var_idxes_ = 1,
-                               unsigned nesting_level_left_ = HB_MAX_NESTING_LEVEL) :
-                          base (base_),
+  خالی جوڑو_var_idxes (غیرعلامتی پہلا_var_idx, غیرعلامتی عدد_idxes)
+  {
+    اگر (!عدد_idxes || پہلا_var_idx == VarIdx::NO_VARIATION) واپس;
+    variation_indices->جوڑو_range (پہلا_var_idx, پہلا_var_idx + عدد_idxes - 1);
+  }
+
+  عوامی:
+  ثابت خالی *بنیاد;
+  hb_سیٹ_t دیکھا_paint;
+  hb_سیٹ_t *glyphs;
+  hb_سیٹ_t *layer_indices;
+  hb_سیٹ_t *palette_indices;
+  hb_سیٹ_t *variation_indices;
+  غیرعلامتی عدد_var_idxes;
+  غیرعلامتی nesting_level_بایاں;
+
+  hb_colrv1_احاطہ_context_t (ثابت خالی *بنیاد_2,
+                               hb_سیٹ_t *glyphs_,
+                               hb_سیٹ_t *layer_indices_,
+                               hb_سیٹ_t *palette_indices_,
+                               hb_سیٹ_t *variation_indices_,
+                               غیرعلامتی عدد_var_idxes_2 = 1,
+                               غیرعلامتی nesting_level_بایاں_2 = HB_MAX_NESTING_LEVEL) :
+                          بنیاد (بنیاد_2),
                           glyphs (glyphs_),
                           layer_indices (layer_indices_),
                           palette_indices (palette_indices_),
                           variation_indices (variation_indices_),
-                          num_var_idxes (num_var_idxes_),
-                          nesting_level_left (nesting_level_left_)
+                          عدد_var_idxes (عدد_var_idxes_2),
+                          nesting_level_بایاں (nesting_level_بایاں_2)
   {}
 };
 
 
-struct hb_colrv1_depend_context_t :
+ساخت hb_colrv1_depend_context_t :
        hb_dispatch_context_t<hb_colrv1_depend_context_t>
 {
-  template <typename T>
-  return_t dispatch (const T &obj)
+  سانچہ <قسم_نام T>
+  return_t dispatch (ثابت T &obj)
   {
-    if (unlikely (nesting_level_left == 0))
-      return hb_empty_t ();
+    اگر (unlikely (nesting_level_بایاں == 0))
+      واپس hb_خالی_خانے_t ();
 
-    if (paint_visited (&obj))
-      return hb_empty_t ();
+    اگر (paint_دیکھا (&obj))
+      واپس hb_خالی_خانے_t ();
 
-    nesting_level_left--;
-    obj.dependv1 (this);
-    nesting_level_left++;
-    return hb_empty_t ();
+    nesting_level_بایاں--;
+    obj.dependv1 (یہ);
+    nesting_level_بایاں++;
+    واپس hb_خالی_خانے_t ();
   }
-  static return_t default_return_value () { return hb_empty_t (); }
+  ساکن return_t default_return_قدر () { واپس hb_خالی_خانے_t (); }
 
-  bool paint_visited (const void *paint)
+  منطقی paint_دیکھا (ثابت خالی *paint)
   {
     hb_codepoint_t delta = (hb_codepoint_t) ((uintptr_t) paint - (uintptr_t) colr);
-    if (visited_paint.in_error() || visited_paint.has (delta))
-      return true;
+    اگر (دیکھا_paint.اندر_error() || دیکھا_paint.has (delta))
+      واپس سچ;
 
-    visited_paint.add (delta);
-    if (unlikely (visited_paint.in_error ()))
-      depend_data->fail ();
-    return false;
+    دیکھا_paint.جوڑو (delta);
+    اگر (unlikely (دیکھا_paint.اندر_error ()))
+      depend_ڈیٹا->fail ();
+    واپس جھوٹ;
   }
 
-  const COLR* get_colr_table () const
-  { return colr; }
+  ثابت COLR* get_colr_جدول () ثابت
+  { واپس colr; }
 
-  public:
-  const COLR *colr;
-  hb_depend_data_builder_t *depend_data;
-  hb_set_t visited_paint;
-  unsigned nesting_level_left;
-  hb_codepoint_t source_gid;
+  عوامی:
+  ثابت COLR *colr;
+  hb_depend_ڈیٹا_builder_t *depend_ڈیٹا;
+  hb_سیٹ_t دیکھا_paint;
+  غیرعلامتی nesting_level_بایاں;
+  hb_codepoint_t ماخذ_gid;
 
-  hb_colrv1_depend_context_t (const COLR *colr_,
-                              hb_depend_data_builder_t *depend_data_,
-                              unsigned nesting_level_left_ = HB_MAX_NESTING_LEVEL) :
+  hb_colrv1_depend_context_t (ثابت COLR *colr_,
+                              hb_depend_ڈیٹا_builder_t *depend_ڈیٹا_2,
+                              غیرعلامتی nesting_level_بایاں_2 = HB_MAX_NESTING_LEVEL) :
                           colr (colr_),
-                          depend_data (depend_data_),
-                          nesting_level_left (nesting_level_left_),
-                          source_gid (0)
+                          depend_ڈیٹا (depend_ڈیٹا_2),
+                          nesting_level_بایاں (nesting_level_بایاں_2),
+                          ماخذ_gid (0)
   {}
 };
 
-struct LayerRecord
+ساخت Layer_ریکارڈ
 {
-  operator hb_ot_color_layer_t () const { return {glyphId, colorIdx}; }
+  عامل hb_ot_color_layer_t () ثابت { واپس {glyphId, colorIdx}; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ));
   }
 
-  public:
+  عوامی:
   HBGlyphID16	glyphId;	/* Glyph ID of layer glyph */
-  Index		colorIdx;	/* Index value to use with a
+  اشاریہ		colorIdx;	/* Index value to use with a
 				 * selected color palette.
 				 * An index value of 0xFFFF
 				 * is a special case indicating
@@ -303,349 +303,349 @@ struct LayerRecord
 				 * be used and shall not be
 				 * treated as actual index
 				 * into CPAL ColorRecord array. */
-  public:
-  DEFINE_SIZE_STATIC (4);
+  عوامی:
+  DEFINE_سائز_STATIC (4);
 };
 
-struct BaseGlyphRecord
+ساخت بنیاد_Glyph_ریکارڈ
 {
-  int cmp (hb_codepoint_t g) const
-  { return g < glyphId ? -1 : g > glyphId ? 1 : 0; }
+  صحیح cmp (hb_codepoint_t g) ثابت
+  { واپس g < glyphId ? -1 : g > glyphId ? 1 : 0; }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ));
   }
 
-  public:
+  عوامی:
   HBGlyphID16	glyphId;	/* Glyph ID of reference glyph */
-  HBUINT16	firstLayerIdx;	/* Index (from beginning of
+  HBUINT16	پہلا_Layer_Idx;	/* Index (from beginning of
 				 * the Layer Records) to the
 				 * layer record. There will be
 				 * numLayers consecutive entries
 				 * for this base glyph. */
-  HBUINT16	numLayers;	/* Number of color layers
+  HBUINT16	عدد_Layers;	/* Number of color layers
 				 * associated with this glyph */
-  public:
-  DEFINE_SIZE_STATIC (6);
+  عوامی:
+  DEFINE_سائز_STATIC (6);
 };
 
-template <typename T>
-struct Variable
+سانچہ <قسم_نام T>
+ساخت Variable
 {
-  static constexpr bool is_variable = true;
+  ساکن constexpr منطقی is_variable = سچ;
 
-  const T& get_value () const { return value; }
+  ثابت T& get_قدر () ثابت { واپس value; }
 
-  Variable<T>* copy (hb_serialize_context_t *c) const
+  Variable<T>* copy (hb_serialize_context_t *c) ثابت
   {
-    TRACE_SERIALIZE (this);
-    return_trace (c->embed (this));
+    TRACE_SERIALIZE (یہ);
+    return_trace (c->embed (یہ));
   }
 
-  void dependv1 (hb_colrv1_depend_context_t* c) const
+  خالی dependv1 (hb_colrv1_depend_context_t* c) ثابت
   { value.dependv1 (c); }
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  خالی closurev1 (hb_colrv1_احاطہ_context_t* c) ثابت
   {
-    c->num_var_idxes = 0;
+    c->عدد_var_idxes = 0;
     // update c->num_var_idxes during value closure
     value.closurev1 (c);
-    c->add_var_idxes (varIdxBase, c->num_var_idxes);
+    c->جوڑو_var_idxes (var_Idx_بنیاد, c->عدد_var_idxes);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  منطقی subset (hb_subset_context_t *c,
+               ثابت شے_Var_Store_Instancer &instancer) ثابت
   {
-    TRACE_SUBSET (this);
-    if (!value.subset (c, instancer, varIdxBase)) return_trace (false);
-    if (c->plan->all_axes_pinned)
-      return_trace (true);
+    TRACE_SUBSET (یہ);
+    اگر (!value.subset (c, instancer, var_Idx_بنیاد)) return_trace (جھوٹ);
+    اگر (c->plan->all_axes_pinned)
+      return_trace (سچ);
 
     VarIdx new_varidx;
-    new_varidx = varIdxBase;
-    if (varIdxBase != VarIdx::NO_VARIATION)
+    new_varidx = var_Idx_بنیاد;
+    اگر (var_Idx_بنیاد != VarIdx::NO_VARIATION)
     {
-      hb_pair_t<unsigned, int> *new_varidx_delta;
-      if (!c->plan->colrv1_variation_idx_delta_map.has (varIdxBase, &new_varidx_delta))
-        return_trace (false);
+      hb_pair_t<غیرعلامتی, صحیح> *new_varidx_delta;
+      اگر (!c->plan->colrv1_variation_idx_delta_map.has (var_Idx_بنیاد, &new_varidx_delta))
+        return_trace (جھوٹ);
 
-      new_varidx = hb_first (*new_varidx_delta);
+      new_varidx = hb_پہلا (*new_varidx_delta);
     }
 
     return_trace (c->serializer->embed (new_varidx));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && value.sanitize (c));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ) && value.sanitize (c));
   }
 
-  void paint_glyph (hb_paint_context_t *c) const
+  خالی paint_glyph (hb_paint_context_t *c) ثابت
   {
-    TRACE_PAINT (this);
-    value.paint_glyph (c, varIdxBase);
+    TRACE_PAINT (یہ);
+    value.paint_glyph (c, var_Idx_بنیاد);
   }
 
-  void get_color_stop (hb_paint_context_t *c,
+  خالی get_color_stop (hb_paint_context_t *c,
                        hb_color_stop_t *stop,
-		       const ItemVarStoreInstancer &instancer) const
+		       ثابت شے_Var_Store_Instancer &instancer) ثابت
   {
-    value.get_color_stop (c, stop, varIdxBase, instancer);
+    value.get_color_stop (c, stop, var_Idx_بنیاد, instancer);
   }
 
-  void get_solid_color (hb_paint_context_t *c,
-                        hb_bool_t *is_foreground, hb_color_t *color) const
+  خالی get_solid_color (hb_paint_context_t *c,
+                        hb_bool_t *is_foreground, hb_color_t *color) ثابت
   {
-    value.get_solid_color (c, varIdxBase, is_foreground, color);
+    value.get_solid_color (c, var_Idx_بنیاد, is_foreground, color);
   }
 
-  hb_paint_extend_t get_extend () const
+  hb_paint_extend_t get_extend () ثابت
   {
-    return value.get_extend ();
+    واپس value.get_extend ();
   }
 
-  protected:
+  محفوظ:
   T      value;
-  public:
-  VarIdx varIdxBase;
-  public:
-  DEFINE_SIZE_MIN (VarIdx::static_size + T::min_size);
+  عوامی:
+  VarIdx var_Idx_بنیاد;
+  عوامی:
+  DEFINE_سائز_MIN (VarIdx::static_سائز + T::min_سائز);
 };
 
-template <typename T>
-struct NoVariable
+سانچہ <قسم_نام T>
+ساخت NoVariable
 {
-  static constexpr bool is_variable = false;
+  ساکن constexpr منطقی is_variable = جھوٹ;
 
-  const T& get_value () const { return value; }
+  ثابت T& get_قدر () ثابت { واپس value; }
 
-  static constexpr uint32_t varIdxBase = VarIdx::NO_VARIATION;
+  ساکن constexpr uint32_t var_Idx_بنیاد = VarIdx::NO_VARIATION;
 
-  NoVariable<T>* copy (hb_serialize_context_t *c) const
+  NoVariable<T>* copy (hb_serialize_context_t *c) ثابت
   {
-    TRACE_SERIALIZE (this);
-    return_trace (c->embed (this));
+    TRACE_SERIALIZE (یہ);
+    return_trace (c->embed (یہ));
   }
 
-  void dependv1 (hb_colrv1_depend_context_t* c) const
+  خالی dependv1 (hb_colrv1_depend_context_t* c) ثابت
   { value.dependv1 (c); }
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  خالی closurev1 (hb_colrv1_احاطہ_context_t* c) ثابت
   { value.closurev1 (c); }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  منطقی subset (hb_subset_context_t *c,
+               ثابت شے_Var_Store_Instancer &instancer) ثابت
   {
-    TRACE_SUBSET (this);
-    return_trace (value.subset (c, instancer, varIdxBase));
+    TRACE_SUBSET (یہ);
+    return_trace (value.subset (c, instancer, var_Idx_بنیاد));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && value.sanitize (c));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ) && value.sanitize (c));
   }
 
-  void paint_glyph (hb_paint_context_t *c) const
+  خالی paint_glyph (hb_paint_context_t *c) ثابت
   {
-    TRACE_PAINT (this);
-    value.paint_glyph (c, varIdxBase);
+    TRACE_PAINT (یہ);
+    value.paint_glyph (c, var_Idx_بنیاد);
   }
 
-  void get_color_stop (hb_paint_context_t *c,
+  خالی get_color_stop (hb_paint_context_t *c,
                        hb_color_stop_t *stop,
-		       const ItemVarStoreInstancer &instancer) const
+		       ثابت شے_Var_Store_Instancer &instancer) ثابت
   {
     value.get_color_stop (c, stop, VarIdx::NO_VARIATION, instancer);
   }
 
-  void get_solid_color (hb_paint_context_t *c,
-                        hb_bool_t *is_foreground, hb_color_t *color) const
+  خالی get_solid_color (hb_paint_context_t *c,
+                        hb_bool_t *is_foreground, hb_color_t *color) ثابت
   {
     value.get_solid_color (c, VarIdx::NO_VARIATION, is_foreground, color);
   }
 
-  hb_paint_extend_t get_extend () const
+  hb_paint_extend_t get_extend () ثابت
   {
-    return value.get_extend ();
+    واپس value.get_extend ();
   }
 
   T      value;
-  public:
-  DEFINE_SIZE_MIN (T::min_size);
+  عوامی:
+  DEFINE_سائز_MIN (T::min_سائز);
 };
 
 // Color structures
 
-template <typename Type, unsigned fraction_bits>
-static void
-set_fixed_clamped (HBFixed<Type, fraction_bits> &out, float value)
+سانچہ <قسم_نام Type, غیرعلامتی fraction_بٹ>
+ساکن خالی
+سیٹ_fixed_clamped (HBFixed<Type, fraction_بٹ> &برآمد, اعشاری value)
 {
   // Variation deltas are unbounded; clamp before the implicit integer cast.
-  out.set_int (hb_clamp_to<typename Type::type> (roundf ((value / HBFixed<Type, fraction_bits>::mult))));
+  برآمد.سیٹ_int (hb_clamp_مقصد<قسم_نام Type::type> (roundf ((value / HBFixed<Type, fraction_بٹ>::mult))));
 }
 
-struct ColorStop
+ساخت ColorStop
 {
-  void dependv1 (hb_colrv1_depend_context_t * c) const {}
+  خالی dependv1 (hb_colrv1_depend_context_t * c) ثابت {}
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  خالی closurev1 (hb_colrv1_احاطہ_context_t* c) ثابت
   {
-    c->add_palette_index (paletteIndex);
-    c->num_var_idxes = 2;
+    c->جوڑو_palette_اشاریہ (palette_اشاریہ_2);
+    c->عدد_var_idxes = 2;
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  منطقی subset (hb_subset_context_t *c,
+               ثابت شے_Var_Store_Instancer &instancer,
+               uint32_t var_Idx_بنیاد) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (یہ);
+    خودکار *برآمد = c->serializer->embed (*یہ);
+    اگر (unlikely (!برآمد)) return_trace (جھوٹ);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    اگر (instancer && !c->plan->pinned_at_default && var_Idx_بنیاد != VarIdx::NO_VARIATION)
     {
-      set_fixed_clamped (out->stopOffset, stopOffset.to_float(instancer (varIdxBase, 0)));
-      float a = alpha.to_float (instancer (varIdxBase, 1));
+      سیٹ_fixed_clamped (برآمد->stop_انحراف, stop_انحراف.مقصد_float(instancer (var_Idx_بنیاد, 0)));
+      اعشاری a = alpha.مقصد_float (instancer (var_Idx_بنیاد, 1));
       /* Partial instances must keep the unclamped base: retained axes can
        * bring the alpha back into range. Clamp before narrowing a full
        * instance so overflow cannot wrap an opaque alpha to transparent. */
-      set_fixed_clamped (out->alpha, c->plan->all_axes_pinned ? hb_clamp (a, 0.f, 1.f) : a);
+      سیٹ_fixed_clamped (برآمد->alpha, c->plan->all_axes_pinned ? hb_clamp (a, 0.f, 1.f) : a);
     }
 
-    return_trace (c->serializer->check_assign (out->paletteIndex, c->plan->colr_palettes.get (paletteIndex),
-                                               HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    return_trace (c->serializer->check_تفویض (برآمد->palette_اشاریہ_2, c->plan->colr_palettes.get (palette_اشاریہ_2),
+                                               HB_SERIALIZE_ERROR_INT_حد_سے_تجاوز));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ));
   }
 
-  void get_color_stop (hb_paint_context_t *c,
-                       hb_color_stop_t *out,
+  خالی get_color_stop (hb_paint_context_t *c,
+                       hb_color_stop_t *برآمد,
 		       uint32_t varIdx,
-		       const ItemVarStoreInstancer &instancer) const
+		       ثابت شے_Var_Store_Instancer &instancer) ثابت
   {
-    out->offset = stopOffset.to_float(instancer (varIdx, 0));
-    out->color = c->get_color (paletteIndex,
-                               alpha.to_float (instancer (varIdx, 1)),
-                               &out->is_foreground);
+    برآمد->انحراف = stop_انحراف.مقصد_float(instancer (varIdx, 0));
+    برآمد->color = c->get_color (palette_اشاریہ_2,
+                               alpha.مقصد_float (instancer (varIdx, 1)),
+                               &برآمد->is_foreground);
   }
 
-  F2DOT14	stopOffset;
-  HBUINT16	paletteIndex;
+  F2DOT14	stop_انحراف;
+  HBUINT16	palette_اشاریہ_2;
   F2DOT14	alpha;
-  public:
-  DEFINE_SIZE_STATIC (2 + 2 * F2DOT14::static_size);
+  عوامی:
+  DEFINE_سائز_STATIC (2 + 2 * F2DOT14::static_سائز);
 };
 
-struct Extend : HBUINT8
+ساخت Extend : HBUINT8
 {
-  enum {
+  شمار {
     EXTEND_PAD     = 0,
     EXTEND_REPEAT  = 1,
     EXTEND_REFLECT = 2,
   };
-  public:
-  DEFINE_SIZE_STATIC (1);
+  عوامی:
+  DEFINE_سائز_STATIC (1);
 };
 
-template <template<typename> class Var>
-struct ColorLine
+سانچہ <سانچہ<قسم_نام> جماعت Var>
+ساخت Color_سطر
 {
-  void dependv1 (hb_colrv1_depend_context_t * c) const {}
+  خالی dependv1 (hb_colrv1_depend_context_t * c) ثابت {}
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  خالی closurev1 (hb_colrv1_احاطہ_context_t* c) ثابت
   {
-    for (const auto &stop : stops.iter ())
+    برائے (ثابت خودکار &stop : stops.iter ())
       stop.closurev1 (c);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  منطقی subset (hb_subset_context_t *c,
+               ثابت شے_Var_Store_Instancer &instancer) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
+    TRACE_SUBSET (یہ);
+    خودکار *برآمد = c->serializer->آغاز_embed (یہ);
+    اگر (unlikely (!c->serializer->extend_min (برآمد))) return_trace (جھوٹ);
 
-    if (!c->serializer->check_assign (out->extend, extend, HB_SERIALIZE_ERROR_INT_OVERFLOW)) return_trace (false);
-    if (!c->serializer->check_assign (out->stops.len, stops.len, HB_SERIALIZE_ERROR_ARRAY_OVERFLOW)) return_trace (false);
+    اگر (!c->serializer->check_تفویض (برآمد->extend, extend, HB_SERIALIZE_ERROR_INT_حد_سے_تجاوز)) return_trace (جھوٹ);
+    اگر (!c->serializer->check_تفویض (برآمد->stops.len, stops.len, HB_SERIALIZE_ERROR_ARRAY_حد_سے_تجاوز)) return_trace (جھوٹ);
 
-    for (const auto& stop : stops.iter ())
+    برائے (ثابت خودکار& stop : stops.iter ())
     {
-      if (!stop.subset (c, instancer)) return_trace (false);
+      اگر (!stop.subset (c, instancer)) return_trace (جھوٹ);
     }
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ) &&
                   stops.sanitize (c));
   }
 
   /* get up to count stops from start */
-  unsigned int
+  غیرعلامتی صحیح
   get_color_stops (hb_paint_context_t *c,
-                   unsigned int start,
-		   unsigned int *count,
+                   غیرعلامتی صحیح آغاز,
+		   غیرعلامتی صحیح *گنتی,
 		   hb_color_stop_t *color_stops,
-		   const ItemVarStoreInstancer &instancer) const
+		   ثابت شے_Var_Store_Instancer &instancer) ثابت
   {
-    unsigned int len = stops.len;
+    غیرعلامتی صحیح len = stops.len;
 
-    if (count && color_stops)
+    اگر (گنتی && color_stops)
     {
-      unsigned int i;
-      for (i = 0; i < *count && start + i < len; i++)
-        stops[start + i].get_color_stop (c, &color_stops[i], instancer);
-      *count = i;
+      غیرعلامتی صحیح i;
+      برائے (i = 0; i < *گنتی && آغاز + i < len; i++)
+        stops[آغاز + i].get_color_stop (c, &color_stops[i], instancer);
+      *گنتی = i;
     }
 
-    return len;
+    واپس len;
   }
 
-  HB_INTERNAL static unsigned int static_get_color_stops (hb_color_line_t *color_line,
-							  void *color_line_data,
-							  unsigned int start,
-							  unsigned int *count,
+  HB_اندرونی ساکن غیرعلامتی صحیح static_get_color_stops (hb_color_سطر_t *color_سطر,
+							  خالی *color_سطر_ڈیٹا,
+							  غیرعلامتی صحیح آغاز,
+							  غیرعلامتی صحیح *گنتی,
 							  hb_color_stop_t *color_stops,
-							  void *user_data)
+							  خالی *user_ڈیٹا)
   {
-    const ColorLine *thiz = (const ColorLine *) color_line_data;
-    hb_paint_context_t *c = (hb_paint_context_t *) user_data;
-    return thiz->get_color_stops (c, start, count, color_stops, c->instancer);
+    ثابت Color_سطر *thiz = (ثابت Color_سطر *) color_سطر_ڈیٹا;
+    hb_paint_context_t *c = (hb_paint_context_t *) user_ڈیٹا;
+    واپس thiz->get_color_stops (c, آغاز, گنتی, color_stops, c->instancer);
   }
 
-  hb_paint_extend_t get_extend () const
+  hb_paint_extend_t get_extend () ثابت
   {
-    switch ((unsigned int) extend)
+    انتخاب ((غیرعلامتی صحیح) extend)
     {
-      case Extend::EXTEND_REPEAT:  return HB_PAINT_EXTEND_REPEAT;
-      case Extend::EXTEND_REFLECT: return HB_PAINT_EXTEND_REFLECT;
-      case Extend::EXTEND_PAD:
-      default:                     return HB_PAINT_EXTEND_PAD;
+      حالت Extend::EXTEND_REPEAT:  واپس HB_PAINT_EXTEND_REPEAT;
+      حالت Extend::EXTEND_REFLECT: واپس HB_PAINT_EXTEND_REFLECT;
+      حالت Extend::EXTEND_PAD:
+      طےشدہ:                     واپس HB_PAINT_EXTEND_PAD;
     }
   }
 
-  HB_INTERNAL static hb_paint_extend_t static_get_extend (hb_color_line_t *color_line,
-							  void *color_line_data,
-							  void *user_data)
+  HB_اندرونی ساکن hb_paint_extend_t static_get_extend (hb_color_سطر_t *color_سطر,
+							  خالی *color_سطر_ڈیٹا,
+							  خالی *user_ڈیٹا)
   {
-    const ColorLine *thiz = (const ColorLine *) color_line_data;
-    return thiz->get_extend ();
+    ثابت Color_سطر *thiz = (ثابت Color_سطر *) color_سطر_ڈیٹا;
+    واپس thiz->get_extend ();
   }
 
   Extend	extend;
-  Array16Of<Var<ColorStop>>	stops;
-  public:
-  DEFINE_SIZE_ARRAY_SIZED (3, stops);
+  Array16_کا<Var<ColorStop>>	stops;
+  عوامی:
+  DEFINE_سائز_ARRAY_SIZED (3, stops);
 };
 
 // Composition modes
@@ -653,59 +653,59 @@ struct ColorLine
 // Compositing modes are taken from https://www.w3.org/TR/compositing-1/
 // NOTE: a brief audit of major implementations suggests most support most
 // or all of the specified modes.
-struct CompositeMode : HBUINT8
+ساخت مرکب_منوال : HBUINT8
 {
-  public:
-  DEFINE_SIZE_STATIC (1);
+  عوامی:
+  DEFINE_سائز_STATIC (1);
 };
 
-struct Affine2x3
+ساخت Affine2x3
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ));
   }
 
-  void dependv1 (hb_colrv1_depend_context_t* c) const {}
+  خالی dependv1 (hb_colrv1_depend_context_t* c) ثابت {}
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
-  { c->num_var_idxes = 6; }
+  خالی closurev1 (hb_colrv1_احاطہ_context_t* c) ثابت
+  { c->عدد_var_idxes = 6; }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  منطقی subset (hb_subset_context_t *c,
+               ثابت شے_Var_Store_Instancer &instancer,
+               uint32_t var_Idx_بنیاد) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    TRACE_SUBSET (یہ);
+    خودکار *برآمد = c->serializer->embed (*یہ);
+    اگر (unlikely (!برآمد)) return_trace (جھوٹ);
+    اگر (instancer && !c->plan->pinned_at_default && var_Idx_بنیاد != VarIdx::NO_VARIATION)
     {
-      auto fold = [&] (F16DOT16 &target, F16DOT16 source, unsigned offset) {
+      خودکار fold = [&] (F16DOT16 &target, F16DOT16 ماخذ, غیرعلامتی انحراف) {
         // Keep the stored integer precise while applying the float delta.
-        target.set_int (hb_clamp_to<int32_t> (roundf ((double) source.to_int () +
-                                                    (double) instancer (varIdxBase, offset))));
+        target.سیٹ_int (hb_clamp_مقصد<int32_t> (roundf ((دوہرا) ماخذ.مقصد_int () +
+                                                    (دوہرا) instancer (var_Idx_بنیاد, انحراف))));
       };
-      fold (out->xx, xx, 0);
-      fold (out->yx, yx, 1);
-      fold (out->xy, xy, 2);
-      fold (out->yy, yy, 3);
-      fold (out->dx, dx, 4);
-      fold (out->dy, dy, 5);
+      fold (برآمد->xx, xx, 0);
+      fold (برآمد->yx, yx, 1);
+      fold (برآمد->xy, xy, 2);
+      fold (برآمد->yy, yy, 3);
+      fold (برآمد->dx, dx, 4);
+      fold (برآمد->dy, dy, 5);
     }
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  خالی paint_glyph (hb_paint_context_t *c, uint32_t var_Idx_بنیاد) ثابت
   {
-    TRACE_PAINT (this);
-    c->funcs->push_transform (c->data,
-			      xx.to_float (c->instancer (varIdxBase, 0)),
-			      yx.to_float (c->instancer (varIdxBase, 1)),
-                              xy.to_float (c->instancer (varIdxBase, 2)),
-			      yy.to_float (c->instancer (varIdxBase, 3)),
-                              dx.to_float (c->instancer (varIdxBase, 4)),
-			      dy.to_float (c->instancer (varIdxBase, 5)));
+    TRACE_PAINT (یہ);
+    c->funcs->ڈالو_transform (c->ڈیٹا,
+			      xx.مقصد_float (c->instancer (var_Idx_بنیاد, 0)),
+			      yx.مقصد_float (c->instancer (var_Idx_بنیاد, 1)),
+                              xy.مقصد_float (c->instancer (var_Idx_بنیاد, 2)),
+			      yy.مقصد_float (c->instancer (var_Idx_بنیاد, 3)),
+                              dx.مقصد_float (c->instancer (var_Idx_بنیاد, 4)),
+			      dy.مقصد_float (c->instancer (var_Idx_بنیاد, 5)));
   }
 
   F16DOT16 xx;
@@ -714,164 +714,164 @@ struct Affine2x3
   F16DOT16 yy;
   F16DOT16 dx;
   F16DOT16 dy;
-  public:
-  DEFINE_SIZE_STATIC (6 * F16DOT16::static_size);
+  عوامی:
+  DEFINE_سائز_STATIC (6 * F16DOT16::static_سائز);
 };
 
-struct PaintColrLayers
+ساخت PaintColrLayers
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_اندرونی خالی dependv1 (hb_colrv1_depend_context_t* c) ثابت;
+  HB_اندرونی خالی closurev1 (hb_colrv1_احاطہ_context_t* c) ثابت;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer HB_UNUSED) const
+  منطقی subset (hb_subset_context_t *c,
+               ثابت شے_Var_Store_Instancer &instancer HB_غیر_مستعمل) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (یہ);
+    خودکار *برآمد = c->serializer->embed (یہ);
+    اگر (unlikely (!برآمد)) return_trace (جھوٹ);
 
-    uint32_t first_layer_index = numLayers ? c->plan->colrv1_layers.get (firstLayerIndex) : 0;
-    return_trace (c->serializer->check_assign (out->firstLayerIndex, first_layer_index,
-                                               HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    uint32_t پہلا_layer_اشاریہ = عدد_Layers ? c->plan->colrv1_layers.get (پہلا_Layer_اشاریہ) : 0;
+    return_trace (c->serializer->check_تفویض (برآمد->پہلا_Layer_اشاریہ, پہلا_layer_اشاریہ,
+                                               HB_SERIALIZE_ERROR_INT_حد_سے_تجاوز));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ));
   }
 
-  inline void paint_glyph (hb_paint_context_t *c) const;
+  اندرونی خالی paint_glyph (hb_paint_context_t *c) ثابت;
 
   HBUINT8	format; /* format = 1 */
-  HBUINT8	numLayers;
-  HBUINT32	firstLayerIndex;  /* index into COLRv1::layerList */
-  public:
-  DEFINE_SIZE_STATIC (6);
+  HBUINT8	عدد_Layers;
+  HBUINT32	پہلا_Layer_اشاریہ;  /* index into COLRv1::layerList */
+  عوامی:
+  DEFINE_سائز_STATIC (6);
 };
 
-struct PaintSolid
+ساخت PaintSolid
 {
-  void dependv1 (hb_colrv1_depend_context_t* c) const {}
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  خالی dependv1 (hb_colrv1_depend_context_t* c) ثابت {}
+  خالی closurev1 (hb_colrv1_احاطہ_context_t* c) ثابت
   {
-    c->add_palette_index (paletteIndex);
-    c->num_var_idxes = 1;
+    c->جوڑو_palette_اشاریہ (palette_اشاریہ_2);
+    c->عدد_var_idxes = 1;
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  منطقی subset (hb_subset_context_t *c,
+               ثابت شے_Var_Store_Instancer &instancer,
+               uint32_t var_Idx_بنیاد) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (یہ);
+    خودکار *برآمد = c->serializer->embed (*یہ);
+    اگر (unlikely (!برآمد)) return_trace (جھوٹ);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    اگر (instancer && !c->plan->pinned_at_default && var_Idx_بنیاد != VarIdx::NO_VARIATION)
     {
-      float a = alpha.to_float (instancer (varIdxBase, 0));
-      set_fixed_clamped (out->alpha, c->plan->all_axes_pinned ? hb_clamp (a, 0.f, 1.f) : a);
+      اعشاری a = alpha.مقصد_float (instancer (var_Idx_بنیاد, 0));
+      سیٹ_fixed_clamped (برآمد->alpha, c->plan->all_axes_pinned ? hb_clamp (a, 0.f, 1.f) : a);
     }
 
-    if (format == 3 && c->plan->all_axes_pinned)
-        out->format = 2;
+    اگر (format == 3 && c->plan->all_axes_pinned)
+        برآمد->format = 2;
 
-    return_trace (c->serializer->check_assign (out->paletteIndex, c->plan->colr_palettes.get (paletteIndex),
-                                               HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    return_trace (c->serializer->check_تفویض (برآمد->palette_اشاریہ_2, c->plan->colr_palettes.get (palette_اشاریہ_2),
+                                               HB_SERIALIZE_ERROR_INT_حد_سے_تجاوز));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ));
   }
 
-  void get_solid_color (hb_paint_context_t *c, uint32_t varIdxBase,
-                        hb_bool_t *is_foreground, hb_color_t *color) const
+  خالی get_solid_color (hb_paint_context_t *c, uint32_t var_Idx_بنیاد,
+                        hb_bool_t *is_foreground, hb_color_t *color) ثابت
   {
-    *color = c->get_color (paletteIndex,
-                           alpha.to_float (c->instancer (varIdxBase, 0)),
+    *color = c->get_color (palette_اشاریہ_2,
+                           alpha.مقصد_float (c->instancer (var_Idx_بنیاد, 0)),
                            is_foreground);
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  خالی paint_glyph (hb_paint_context_t *c, uint32_t var_Idx_بنیاد) ثابت
   {
-    TRACE_PAINT (this);
+    TRACE_PAINT (یہ);
     hb_bool_t is_foreground;
     hb_color_t color;
 
-    get_solid_color (c, varIdxBase, &is_foreground, &color);
-    c->funcs->color (c->data, is_foreground, color);
+    get_solid_color (c, var_Idx_بنیاد, &is_foreground, &color);
+    c->funcs->color (c->ڈیٹا, is_foreground, color);
   }
 
   HBUINT8	format; /* format = 2(noVar) or 3(Var)*/
-  HBUINT16	paletteIndex;
+  HBUINT16	palette_اشاریہ_2;
   F2DOT14	alpha;
-  public:
-  DEFINE_SIZE_STATIC (3 + F2DOT14::static_size);
+  عوامی:
+  DEFINE_سائز_STATIC (3 + F2DOT14::static_سائز);
 };
 
-template <template<typename> class Var>
-struct PaintLinearGradient
+سانچہ <سانچہ<قسم_نام> جماعت Var>
+ساخت Paint_خطی_Gradient
 {
-  void dependv1 (hb_colrv1_depend_context_t* c) const {}
+  خالی dependv1 (hb_colrv1_depend_context_t* c) ثابت {}
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  خالی closurev1 (hb_colrv1_احاطہ_context_t* c) ثابت
   {
-    (this+colorLine).closurev1 (c);
-    c->num_var_idxes = 6;
+    (یہ+color_سطر_2).closurev1 (c);
+    c->عدد_var_idxes = 6;
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  منطقی subset (hb_subset_context_t *c,
+               ثابت شے_Var_Store_Instancer &instancer,
+               uint32_t var_Idx_بنیاد) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (یہ);
+    خودکار *برآمد = c->serializer->embed (یہ);
+    اگر (unlikely (!برآمد)) return_trace (جھوٹ);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    اگر (instancer && !c->plan->pinned_at_default && var_Idx_بنیاد != VarIdx::NO_VARIATION)
     {
-      out->x0 = hb_clamp_to<int16_t> ((double) x0 + (double) roundf (instancer (varIdxBase, 0)));
-      out->y0 = hb_clamp_to<int16_t> ((double) y0 + (double) roundf (instancer (varIdxBase, 1)));
-      out->x1 = hb_clamp_to<int16_t> ((double) x1 + (double) roundf (instancer (varIdxBase, 2)));
-      out->y1 = hb_clamp_to<int16_t> ((double) y1 + (double) roundf (instancer (varIdxBase, 3)));
-      out->x2 = hb_clamp_to<int16_t> ((double) x2 + (double) roundf (instancer (varIdxBase, 4)));
-      out->y2 = hb_clamp_to<int16_t> ((double) y2 + (double) roundf (instancer (varIdxBase, 5)));
+      برآمد->x0 = hb_clamp_مقصد<int16_t> ((دوہرا) x0 + (دوہرا) roundf (instancer (var_Idx_بنیاد, 0)));
+      برآمد->y0 = hb_clamp_مقصد<int16_t> ((دوہرا) y0 + (دوہرا) roundf (instancer (var_Idx_بنیاد, 1)));
+      برآمد->x1 = hb_clamp_مقصد<int16_t> ((دوہرا) x1 + (دوہرا) roundf (instancer (var_Idx_بنیاد, 2)));
+      برآمد->y1 = hb_clamp_مقصد<int16_t> ((دوہرا) y1 + (دوہرا) roundf (instancer (var_Idx_بنیاد, 3)));
+      برآمد->x2 = hb_clamp_مقصد<int16_t> ((دوہرا) x2 + (دوہرا) roundf (instancer (var_Idx_بنیاد, 4)));
+      برآمد->y2 = hb_clamp_مقصد<int16_t> ((دوہرا) y2 + (دوہرا) roundf (instancer (var_Idx_بنیاد, 5)));
     }
 
-    if (format == 5 && c->plan->all_axes_pinned)
-        out->format = 4;
+    اگر (format == 5 && c->plan->all_axes_pinned)
+        برآمد->format = 4;
 
-    return_trace (out->colorLine.serialize_subset (c, colorLine, this, instancer));
+    return_trace (برآمد->color_سطر_2.serialize_subset (c, color_سطر_2, یہ, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && colorLine.sanitize (c, this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ) && color_سطر_2.sanitize (c, یہ));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  خالی paint_glyph (hb_paint_context_t *c, uint32_t var_Idx_بنیاد) ثابت
   {
-    TRACE_PAINT (this);
-    hb_color_line_t cl = {
-      (void *) &(this+colorLine),
-      (this+colorLine).static_get_color_stops, c,
-      (this+colorLine).static_get_extend, nullptr
+    TRACE_PAINT (یہ);
+    hb_color_سطر_t cl = {
+      (خالی *) &(یہ+color_سطر_2),
+      (یہ+color_سطر_2).static_get_color_stops, c,
+      (یہ+color_سطر_2).static_get_extend, خالی_اشاریہ
     };
 
-    c->funcs->linear_gradient (c->data, &cl,
-			       x0 + c->instancer (varIdxBase, 0),
-			       y0 + c->instancer (varIdxBase, 1),
-			       x1 + c->instancer (varIdxBase, 2),
-			       y1 + c->instancer (varIdxBase, 3),
-			       x2 + c->instancer (varIdxBase, 4),
-			       y2 + c->instancer (varIdxBase, 5));
+    c->funcs->خطی_gradient (c->ڈیٹا, &cl,
+			       x0 + c->instancer (var_Idx_بنیاد, 0),
+			       y0 + c->instancer (var_Idx_بنیاد, 1),
+			       x1 + c->instancer (var_Idx_بنیاد, 2),
+			       y1 + c->instancer (var_Idx_بنیاد, 3),
+			       x2 + c->instancer (var_Idx_بنیاد, 4),
+			       y2 + c->instancer (var_Idx_بنیاد, 5));
   }
 
   HBUINT8			format; /* format = 4(noVar) or 5 (Var) */
-  Offset24To<ColorLine<Var>>	colorLine; /* Offset (from beginning of PaintLinearGradient
+  Offset24_مقصد<Color_سطر<Var>>	color_سطر_2; /* Offset (from beginning of PaintLinearGradient
                                             * table) to ColorLine subtable. */
   FWORD			x0;
   FWORD			y0;
@@ -879,230 +879,230 @@ struct PaintLinearGradient
   FWORD			y1;
   FWORD			x2;
   FWORD			y2;
-  public:
-  DEFINE_SIZE_STATIC (4 + 6 * FWORD::static_size);
+  عوامی:
+  DEFINE_سائز_STATIC (4 + 6 * FWORD::static_سائز);
 };
 
-template <template<typename> class Var>
-struct PaintRadialGradient
+سانچہ <سانچہ<قسم_نام> جماعت Var>
+ساخت PaintRadialGradient
 {
-  bool constant_after_pinning (hb_subset_context_t *c,
-                               const ItemVarStoreInstancer &instancer) const
+  منطقی constant_after_pinning (hb_subset_context_t *c,
+                               ثابت شے_Var_Store_Instancer &instancer) ثابت
   {
-    if (c->plan->has_avar2) return false;
-    const auto &regions = instancer.varStore->get_region_list ();
-    for (unsigned i = 0; i < regions.regionCount; i++)
+    اگر (c->plan->has_avar2) واپس جھوٹ;
+    ثابت خودکار &regions = instancer.varStore->get_region_list ();
+    برائے (غیرعلامتی i = 0; i < regions.region_گنتی; i++)
     {
-      hb_hashmap_t<hb_tag_t, Triple> axes;
-      if (!regions.get_var_region (i, c->plan->axes_old_index_tag_map, axes))
+      hb_hashmap_t<hb_لیبل_t, Triple> axes;
+      اگر (!regions.get_var_region (i, c->plan->axes_old_اشاریہ_لیبل_map, axes))
       {
-        c->serializer->err (HB_SERIALIZE_ERROR_OUT_OF_ROOM);
-        return false;
+        c->serializer->err (HB_SERIALIZE_ERROR_برآمد_کا_گنجائش);
+        واپس جھوٹ;
       }
-      for (auto axis : axes)
+      برائے (خودکار axis : axes)
       {
-        Triple *limit;
-        if (!c->plan->user_axes_location.has (axis.first, &limit) ||
-            limit->minimum != limit->maximum)
-          return false;
+        Triple *حد_بندی;
+        اگر (!c->plan->user_axes_location.has (axis.پہلا, &حد_بندی) ||
+            حد_بندی->minimum != حد_بندی->زیادہ_سے_زیادہ)
+          واپس جھوٹ;
       }
     }
-    return true;
+    واپس سچ;
   }
 
-  void dependv1 (hb_colrv1_depend_context_t* c) const {}
+  خالی dependv1 (hb_colrv1_depend_context_t* c) ثابت {}
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  خالی closurev1 (hb_colrv1_احاطہ_context_t* c) ثابت
   {
-    (this+colorLine).closurev1 (c);
-    c->num_var_idxes = 6;
+    (یہ+color_سطر_2).closurev1 (c);
+    c->عدد_var_idxes = 6;
   }
 
-  bool subset_nonnegative (hb_subset_context_t *c,
-                           const ItemVarStoreInstancer &instancer,
-                           uint32_t varIdxBase) const
+  منطقی subset_nonnegative (hb_subset_context_t *c,
+                           ثابت شے_Var_Store_Instancer &instancer,
+                           uint32_t var_Idx_بنیاد) ثابت
   {
-    double source[6] = {
-      x0 + (double) roundf (instancer (varIdxBase, 0)),
-      y0 + (double) roundf (instancer (varIdxBase, 1)),
-      radius0 + (double) roundf (instancer (varIdxBase, 2)),
-      x1 + (double) roundf (instancer (varIdxBase, 3)),
-      y1 + (double) roundf (instancer (varIdxBase, 4)),
-      radius1 + (double) roundf (instancer (varIdxBase, 5))
+    دوہرا ماخذ[6] = {
+      x0 + (دوہرا) roundf (instancer (var_Idx_بنیاد, 0)),
+      y0 + (دوہرا) roundf (instancer (var_Idx_بنیاد, 1)),
+      radius0 + (دوہرا) roundf (instancer (var_Idx_بنیاد, 2)),
+      x1 + (دوہرا) roundf (instancer (var_Idx_بنیاد, 3)),
+      y1 + (دوہرا) roundf (instancer (var_Idx_بنیاد, 4)),
+      radius1 + (دوہرا) roundf (instancer (var_Idx_بنیاد, 5))
     };
-    auto transparent = [&] {
-      auto *out = c->serializer->allocate_size<PaintSolid> (5);
-      if (!out) return false;
-      out->format = 2; out->paletteIndex = 0xFFFF; out->alpha.set_float (0);
-      return true;
+    خودکار transparent = [&] {
+      خودکار *برآمد = c->serializer->allocate_سائز<PaintSolid> (5);
+      اگر (!برآمد) واپس جھوٹ;
+      برآمد->format = 2; برآمد->palette_اشاریہ_2 = 0xFFFF; برآمد->alpha.سیٹ_float (0);
+      واپس سچ;
     };
-    const auto &line = this+colorLine;
-    if (source[2] == source[5] || !line.stops.len) return transparent ();
-    struct stop_t { double offset, alpha; unsigned palette, order; };
-    hb_vector_t<stop_t> stops;
-    if (!stops.alloc (line.stops.len)) return false;
-    unsigned order = 0;
-    for (const auto &entry : line.stops.iter ())
+    ثابت خودکار &سطر = یہ+color_سطر_2;
+    اگر (ماخذ[2] == ماخذ[5] || !سطر.stops.len) واپس transparent ();
+    ساخت stop_t { دوہرا انحراف, alpha; غیرعلامتی palette, ترتیب; };
+    hb_سمتیہ_t<stop_t> stops;
+    اگر (!stops.alloc (سطر.stops.len)) واپس جھوٹ;
+    غیرعلامتی ترتیب = 0;
+    برائے (ثابت خودکار &اندراج_2 : سطر.stops.iter ())
     {
-      const auto &stop = entry.get_value ();
-      stops.push (stop_t {(double) roundf (stop.stopOffset.to_float (instancer (entry.varIdxBase, 0)) * 16384.f) / 16384.,
-                   (double) hb_clamp (stop.alpha.to_float (instancer (entry.varIdxBase, 1)), 0.f, 1.f),
-                   stop.paletteIndex, order++});
+      ثابت خودکار &stop = اندراج_2.get_قدر ();
+      stops.push (stop_t {(دوہرا) roundf (stop.stop_انحراف.مقصد_float (instancer (اندراج_2.var_Idx_بنیاد, 0)) * 16384.f) / 16384.,
+                   (دوہرا) hb_clamp (stop.alpha.مقصد_float (instancer (اندراج_2.var_Idx_بنیاد, 1)), 0.f, 1.f),
+                   stop.palette_اشاریہ_2, ترتیب++});
     }
-    if (stops.in_error ()) return false;
-    stops.qsort ([] (const stop_t &a, const stop_t &b) {
-      return a.offset < b.offset ? -1 : a.offset > b.offset ? 1 :
-             a.order < b.order ? -1 : a.order > b.order ? 1 : 0;
+    اگر (stops.اندر_error ()) واپس جھوٹ;
+    stops.qsort ([] (ثابت stop_t &a, ثابت stop_t &b) {
+      واپس a.انحراف < b.انحراف ? -1 : a.انحراف > b.انحراف ? 1 :
+             a.ترتیب < b.ترتیب ? -1 : a.ترتیب > b.ترتیب ? 1 : 0;
     });
-    double dr = source[5] - source[2];
+    دوہرا dr = ماخذ[5] - ماخذ[2];
     // Fractional shifts must preserve both integer circles and F2Dot14 stops.
-    unsigned lattice = 16384;
-    for (unsigned j = 0; j < 3; j++)
+    غیرعلامتی lattice = 16384;
+    برائے (غیرعلامتی j = 0; j < 3; j++)
     {
-      double remainder = fmod (fabs (source[j + 3] - source[j]), 16384.);
-      if (!(remainder >= 0 && remainder < 16384))
+      دوہرا remainder = fmod (fabs (ماخذ[j + 3] - ماخذ[j]), 16384.);
+      اگر (!(remainder >= 0 && remainder < 16384))
       {
-        c->serializer->err (HB_SERIALIZE_ERROR_INT_OVERFLOW);
-        return false;
+        c->serializer->err (HB_SERIALIZE_ERROR_INT_حد_سے_تجاوز);
+        واپس جھوٹ;
       }
-      unsigned right = (unsigned) remainder;
-      while (right) { unsigned r = lattice % right; lattice = right; right = r; }
+      غیرعلامتی دائیں = (غیرعلامتی) remainder;
+      جب (دائیں) { غیرعلامتی r = lattice % دائیں; lattice = دائیں; دائیں = r; }
     }
-    for (unsigned shift = 0; shift < 16; shift++)
+    برائے (غیرعلامتی سرکاؤ = 0; سرکاؤ < 16; سرکاؤ++)
     {
-      double b = 1u << shift;
-      double coarse = dr > 0 ? ceil (-source[2] / dr) : floor (source[2] / -dr) - b;
-      double fine = dr > 0 ? ceil (-source[2] / dr * lattice) / lattice :
-                            floor (source[2] / -dr * lattice) / lattice - b;
-      double candidates[] = {coarse, fine};
-      for (double a : candidates)
+      دوہرا b = 1u << سرکاؤ;
+      دوہرا coarse = dr > 0 ? ceil (-ماخذ[2] / dr) : floor (ماخذ[2] / -dr) - b;
+      دوہرا fine = dr > 0 ? ceil (-ماخذ[2] / dr * lattice) / lattice :
+                            floor (ماخذ[2] / -dr * lattice) / lattice - b;
+      دوہرا candidates[] = {coarse, fine};
+      برائے (دوہرا a : candidates)
       {
         // omega = a + b*q. Positive b preserves the largest valid root.
-        double geometry[6];
-        bool fits = true;
-        for (unsigned j = 0; j < 3; j++)
+        دوہرا geometry[6];
+        منطقی سماتا = سچ;
+        برائے (غیرعلامتی j = 0; j < 3; j++)
         {
-          double difference = source[j + 3] - source[j];
-          geometry[j] = source[j] + a * difference;
-          geometry[j + 3] = source[j] + (a + b) * difference;
-          double low = j == 2 ? 0 : -32768, high = j == 2 ? 65535 : 32767;
-          fits &= geometry[j] >= low && geometry[j] <= high &&
-                  geometry[j + 3] >= low && geometry[j + 3] <= high;
+          دوہرا difference = ماخذ[j + 3] - ماخذ[j];
+          geometry[j] = ماخذ[j] + a * difference;
+          geometry[j + 3] = ماخذ[j] + (a + b) * difference;
+          دوہرا کم = j == 2 ? 0 : -32768, بلند = j == 2 ? 65535 : 32767;
+          سماتا &= geometry[j] >= کم && geometry[j] <= بلند &&
+                  geometry[j + 3] >= کم && geometry[j + 3] <= بلند;
         }
-        if (!fits) continue;
-        unsigned first = 0, count = stops.length;
-        double min = (stops[0].offset - a) / b, max = (stops.tail ().offset - a) / b;
-        double bias = 0;
-        bool constant = false;
-        if (line.extend == Extend::EXTEND_PAD)
+        اگر (!سماتا) جاری;
+        غیرعلامتی پہلا = 0, گنتی = stops.لمبائی;
+        دوہرا min = (stops[0].انحراف - a) / b, max = (stops.دم ().انحراف - a) / b;
+        دوہرا bias = 0;
+        منطقی constant = جھوٹ;
+        اگر (سطر.extend == Extend::EXTEND_PAD)
         {
-          double tip = -geometry[2] / (b * dr);
-          if ((dr > 0 && max <= tip) || (dr < 0 && min > tip))
+          دوہرا tip = -geometry[2] / (b * dr);
+          اگر ((dr > 0 && max <= tip) || (dr < 0 && min > tip))
           {
-            first = dr > 0 ? stops.length - 1 : 0;
-            count = 1; constant = true;
+            پہلا = dr > 0 ? stops.لمبائی - 1 : 0;
+            گنتی = 1; constant = سچ;
           }
         }
-        else
+        ورنہ
         {
-          double period = max - min;
-          if (line.extend == Extend::EXTEND_REFLECT) period *= 2;
-          if (period <= 0) return transparent ();
-          double n = ceil ((-2 - min) / period);
-          if (n > floor ((32767. / 16384. - max) / period)) continue;
+          دوہرا period = max - min;
+          اگر (سطر.extend == Extend::EXTEND_REFLECT) period *= 2;
+          اگر (period <= 0) واپس transparent ();
+          دوہرا n = ceil ((-2 - min) / period);
+          اگر (n > floor ((32767. / 16384. - max) / period)) جاری;
           bias = n * period;
         }
-        for (unsigned j = 0; j < count; j++)
+        برائے (غیرعلامتی j = 0; j < گنتی; j++)
         {
-          double bits = constant ? 0 : ((stops[first + j].offset - a) / b + bias) * 16384;
-          fits &= bits >= -32768 && bits <= 32767 && bits == round (bits);
+          دوہرا بٹ = constant ? 0 : ((stops[پہلا + j].انحراف - a) / b + bias) * 16384;
+          سماتا &= بٹ >= -32768 && بٹ <= 32767 && بٹ == round (بٹ);
         }
-        if (!fits) continue;
-        auto *out = c->serializer->allocate_size<PaintRadialGradient<NoVariable>> (16);
-        if (!out) return false;
-        out->format = 6;
-        out->x0 = (int) geometry[0]; out->y0 = (int) geometry[1]; out->radius0 = (unsigned) geometry[2];
-        out->x1 = (int) geometry[3]; out->y1 = (int) geometry[4]; out->radius1 = (unsigned) geometry[5];
+        اگر (!سماتا) جاری;
+        خودکار *برآمد = c->serializer->allocate_سائز<PaintRadialGradient<NoVariable>> (16);
+        اگر (!برآمد) واپس جھوٹ;
+        برآمد->format = 6;
+        برآمد->x0 = (صحیح) geometry[0]; برآمد->y0 = (صحیح) geometry[1]; برآمد->radius0 = (غیرعلامتی) geometry[2];
+        برآمد->x1 = (صحیح) geometry[3]; برآمد->y1 = (صحیح) geometry[4]; برآمد->radius1 = (غیرعلامتی) geometry[5];
         c->serializer->push ();
-        auto *out_line = c->serializer->allocate_size<ColorLine<NoVariable>> (3 + count * ColorStop::static_size);
-        if (!out_line) { c->serializer->pop_discard (); return false; }
-        out_line->extend = line.extend;
-        out_line->stops.len = count;
-        for (unsigned j = 0; j < count; j++)
+        خودکار *برآمد_سطر = c->serializer->allocate_سائز<Color_سطر<NoVariable>> (3 + گنتی * ColorStop::static_سائز);
+        اگر (!برآمد_سطر) { c->serializer->نکالو_discard (); واپس جھوٹ; }
+        برآمد_سطر->extend = سطر.extend;
+        برآمد_سطر->stops.len = گنتی;
+        برائے (غیرعلامتی j = 0; j < گنتی; j++)
         {
-          const auto &stop = stops[first + j];
-          auto &out_stop = out_line->stops[j].value;
-          out_stop.stopOffset.set_float ((float) (constant ? 0 : (stop.offset - a) / b + bias));
-          out_stop.alpha.set_float ((float) stop.alpha);
-          if (!c->serializer->check_assign (out_stop.paletteIndex, c->plan->colr_palettes.get (stop.palette),
-                                            HB_SERIALIZE_ERROR_INT_OVERFLOW))
-          { c->serializer->pop_discard (); return false; }
+          ثابت خودکار &stop = stops[پہلا + j];
+          خودکار &برآمد_stop = برآمد_سطر->stops[j].value;
+          برآمد_stop.stop_انحراف.سیٹ_float ((اعشاری) (constant ? 0 : (stop.انحراف - a) / b + bias));
+          برآمد_stop.alpha.سیٹ_float ((اعشاری) stop.alpha);
+          اگر (!c->serializer->check_تفویض (برآمد_stop.palette_اشاریہ_2, c->plan->colr_palettes.get (stop.palette),
+                                            HB_SERIALIZE_ERROR_INT_حد_سے_تجاوز))
+          { c->serializer->نکالو_discard (); واپس جھوٹ; }
         }
-        c->serializer->add_link (out->colorLine, c->serializer->pop_pack ());
-        return !c->serializer->in_error ();
+        c->serializer->جوڑو_link (برآمد->color_سطر_2, c->serializer->نکالو_pack ());
+        واپس !c->serializer->اندر_error ();
       }
     }
     // Reject an unrepresentable static result instead of changing its colors.
-    c->serializer->err (HB_SERIALIZE_ERROR_INT_OVERFLOW);
-    return false;
+    c->serializer->err (HB_SERIALIZE_ERROR_INT_حد_سے_تجاوز);
+    واپس جھوٹ;
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  منطقی subset (hb_subset_context_t *c,
+               ثابت شے_Var_Store_Instancer &instancer,
+               uint32_t var_Idx_بنیاد) ثابت
   {
-    TRACE_SUBSET (this);
-    if (instancer && !c->plan->pinned_at_default &&
+    TRACE_SUBSET (یہ);
+    اگر (instancer && !c->plan->pinned_at_default &&
         (c->plan->all_axes_pinned || constant_after_pinning (c, instancer)) &&
-        varIdxBase != VarIdx::NO_VARIATION &&
-        (radius0 + (double) roundf (instancer (varIdxBase, 2)) < 0 ||
-         radius1 + (double) roundf (instancer (varIdxBase, 5)) < 0))
-      return_trace (subset_nonnegative (c, instancer, varIdxBase));
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+        var_Idx_بنیاد != VarIdx::NO_VARIATION &&
+        (radius0 + (دوہرا) roundf (instancer (var_Idx_بنیاد, 2)) < 0 ||
+         radius1 + (دوہرا) roundf (instancer (var_Idx_بنیاد, 5)) < 0))
+      return_trace (subset_nonnegative (c, instancer, var_Idx_بنیاد));
+    خودکار *برآمد = c->serializer->embed (یہ);
+    اگر (unlikely (!برآمد)) return_trace (جھوٹ);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    اگر (instancer && !c->plan->pinned_at_default && var_Idx_بنیاد != VarIdx::NO_VARIATION)
     {
-      out->x0 = hb_clamp_to<int16_t> ((double) x0 + (double) roundf (instancer (varIdxBase, 0)));
-      out->y0 = hb_clamp_to<int16_t> ((double) y0 + (double) roundf (instancer (varIdxBase, 1)));
-      out->radius0 = hb_clamp_to<uint16_t> ((double) radius0 + (double) roundf (instancer (varIdxBase, 2)));
-      out->x1 = hb_clamp_to<int16_t> ((double) x1 + (double) roundf (instancer (varIdxBase, 3)));
-      out->y1 = hb_clamp_to<int16_t> ((double) y1 + (double) roundf (instancer (varIdxBase, 4)));
-      out->radius1 = hb_clamp_to<uint16_t> ((double) radius1 + (double) roundf (instancer (varIdxBase, 5)));
+      برآمد->x0 = hb_clamp_مقصد<int16_t> ((دوہرا) x0 + (دوہرا) roundf (instancer (var_Idx_بنیاد, 0)));
+      برآمد->y0 = hb_clamp_مقصد<int16_t> ((دوہرا) y0 + (دوہرا) roundf (instancer (var_Idx_بنیاد, 1)));
+      برآمد->radius0 = hb_clamp_مقصد<uint16_t> ((دوہرا) radius0 + (دوہرا) roundf (instancer (var_Idx_بنیاد, 2)));
+      برآمد->x1 = hb_clamp_مقصد<int16_t> ((دوہرا) x1 + (دوہرا) roundf (instancer (var_Idx_بنیاد, 3)));
+      برآمد->y1 = hb_clamp_مقصد<int16_t> ((دوہرا) y1 + (دوہرا) roundf (instancer (var_Idx_بنیاد, 4)));
+      برآمد->radius1 = hb_clamp_مقصد<uint16_t> ((دوہرا) radius1 + (دوہرا) roundf (instancer (var_Idx_بنیاد, 5)));
     }
 
-    if (format == 7 && c->plan->all_axes_pinned)
-        out->format = 6;
+    اگر (format == 7 && c->plan->all_axes_pinned)
+        برآمد->format = 6;
 
-    return_trace (out->colorLine.serialize_subset (c, colorLine, this, instancer));
+    return_trace (برآمد->color_سطر_2.serialize_subset (c, color_سطر_2, یہ, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && colorLine.sanitize (c, this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ) && color_سطر_2.sanitize (c, یہ));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  خالی paint_glyph (hb_paint_context_t *c, uint32_t var_Idx_بنیاد) ثابت
   {
-    TRACE_PAINT (this);
-    hb_color_line_t cl = {
-      (void *) &(this+colorLine),
-      (this+colorLine).static_get_color_stops, c,
-      (this+colorLine).static_get_extend, nullptr
+    TRACE_PAINT (یہ);
+    hb_color_سطر_t cl = {
+      (خالی *) &(یہ+color_سطر_2),
+      (یہ+color_سطر_2).static_get_color_stops, c,
+      (یہ+color_سطر_2).static_get_extend, خالی_اشاریہ
     };
 
-    c->funcs->radial_gradient (c->data, &cl,
-			       x0 + c->instancer (varIdxBase, 0),
-			       y0 + c->instancer (varIdxBase, 1),
-			       radius0 + c->instancer (varIdxBase, 2),
-			       x1 + c->instancer (varIdxBase, 3),
-			       y1 + c->instancer (varIdxBase, 4),
-			       radius1 + c->instancer (varIdxBase, 5));
+    c->funcs->radial_gradient (c->ڈیٹا, &cl,
+			       x0 + c->instancer (var_Idx_بنیاد, 0),
+			       y0 + c->instancer (var_Idx_بنیاد, 1),
+			       radius0 + c->instancer (var_Idx_بنیاد, 2),
+			       x1 + c->instancer (var_Idx_بنیاد, 3),
+			       y1 + c->instancer (var_Idx_بنیاد, 4),
+			       radius1 + c->instancer (var_Idx_بنیاد, 5));
   }
 
   HBUINT8			format; /* format = 6(noVar) or 7 (Var) */
-  Offset24To<ColorLine<Var>>	colorLine; /* Offset (from beginning of PaintRadialGradient
+  Offset24_مقصد<Color_سطر<Var>>	color_سطر_2; /* Offset (from beginning of PaintRadialGradient
                                             * table) to ColorLine subtable. */
   FWORD			x0;
   FWORD			y0;
@@ -1110,841 +1110,841 @@ struct PaintRadialGradient
   FWORD			x1;
   FWORD			y1;
   UFWORD		radius1;
-  public:
-  DEFINE_SIZE_STATIC (4 + 6 * FWORD::static_size);
+  عوامی:
+  DEFINE_سائز_STATIC (4 + 6 * FWORD::static_سائز);
 };
 
-template <template<typename> class Var>
-struct PaintSweepGradient
+سانچہ <سانچہ<قسم_نام> جماعت Var>
+ساخت PaintSweepGradient
 {
-  void dependv1 (hb_colrv1_depend_context_t* c) const {}
+  خالی dependv1 (hb_colrv1_depend_context_t* c) ثابت {}
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  خالی closurev1 (hb_colrv1_احاطہ_context_t* c) ثابت
   {
-    (this+colorLine).closurev1 (c);
-    c->num_var_idxes = 4;
+    (یہ+color_سطر_2).closurev1 (c);
+    c->عدد_var_idxes = 4;
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  منطقی subset (hb_subset_context_t *c,
+               ثابت شے_Var_Store_Instancer &instancer,
+               uint32_t var_Idx_بنیاد) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (یہ);
+    خودکار *برآمد = c->serializer->embed (یہ);
+    اگر (unlikely (!برآمد)) return_trace (جھوٹ);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    اگر (instancer && !c->plan->pinned_at_default && var_Idx_بنیاد != VarIdx::NO_VARIATION)
     {
-      out->centerX = hb_clamp_to<int16_t> ((double) centerX + (double) roundf (instancer (varIdxBase, 0)));
-      out->centerY = hb_clamp_to<int16_t> ((double) centerY + (double) roundf (instancer (varIdxBase, 1)));
-      set_fixed_clamped (out->startAngle, startAngle.to_float (instancer (varIdxBase, 2)));
-      set_fixed_clamped (out->endAngle, endAngle.to_float (instancer (varIdxBase, 3)));
+      برآمد->centerX = hb_clamp_مقصد<int16_t> ((دوہرا) centerX + (دوہرا) roundf (instancer (var_Idx_بنیاد, 0)));
+      برآمد->centerY = hb_clamp_مقصد<int16_t> ((دوہرا) centerY + (دوہرا) roundf (instancer (var_Idx_بنیاد, 1)));
+      سیٹ_fixed_clamped (برآمد->آغاز_Angle, آغاز_Angle.مقصد_float (instancer (var_Idx_بنیاد, 2)));
+      سیٹ_fixed_clamped (برآمد->انتہا_Angle, انتہا_Angle.مقصد_float (instancer (var_Idx_بنیاد, 3)));
     }
 
-    if (format == 9 && c->plan->all_axes_pinned)
-        out->format = 8;
+    اگر (format == 9 && c->plan->all_axes_pinned)
+        برآمد->format = 8;
 
-    return_trace (out->colorLine.serialize_subset (c, colorLine, this, instancer));
+    return_trace (برآمد->color_سطر_2.serialize_subset (c, color_سطر_2, یہ, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && colorLine.sanitize (c, this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ) && color_سطر_2.sanitize (c, یہ));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  خالی paint_glyph (hb_paint_context_t *c, uint32_t var_Idx_بنیاد) ثابت
   {
-    TRACE_PAINT (this);
-    hb_color_line_t cl = {
-      (void *) &(this+colorLine),
-      (this+colorLine).static_get_color_stops, c,
-      (this+colorLine).static_get_extend, nullptr
+    TRACE_PAINT (یہ);
+    hb_color_سطر_t cl = {
+      (خالی *) &(یہ+color_سطر_2),
+      (یہ+color_سطر_2).static_get_color_stops, c,
+      (یہ+color_سطر_2).static_get_extend, خالی_اشاریہ
     };
 
-    c->funcs->sweep_gradient (c->data, &cl,
-			      centerX + c->instancer (varIdxBase, 0),
-			      centerY + c->instancer (varIdxBase, 1),
-                              (startAngle.to_float (c->instancer (varIdxBase, 2)) + 1) * HB_PI,
-                              (endAngle.to_float   (c->instancer (varIdxBase, 3)) + 1) * HB_PI);
+    c->funcs->sweep_gradient (c->ڈیٹا, &cl,
+			      centerX + c->instancer (var_Idx_بنیاد, 0),
+			      centerY + c->instancer (var_Idx_بنیاد, 1),
+                              (آغاز_Angle.مقصد_float (c->instancer (var_Idx_بنیاد, 2)) + 1) * HB_PI,
+                              (انتہا_Angle.مقصد_float   (c->instancer (var_Idx_بنیاد, 3)) + 1) * HB_PI);
   }
 
   HBUINT8			format; /* format = 8(noVar) or 9 (Var) */
-  Offset24To<ColorLine<Var>>	colorLine; /* Offset (from beginning of PaintSweepGradient
+  Offset24_مقصد<Color_سطر<Var>>	color_سطر_2; /* Offset (from beginning of PaintSweepGradient
                                             * table) to ColorLine subtable. */
   FWORD			centerX;
   FWORD			centerY;
-  F2DOT14		startAngle;
-  F2DOT14		endAngle;
-  public:
-  DEFINE_SIZE_STATIC (4 + 2 * FWORD::static_size + 2 * F2DOT14::static_size);
+  F2DOT14		آغاز_Angle;
+  F2DOT14		انتہا_Angle;
+  عوامی:
+  DEFINE_سائز_STATIC (4 + 2 * FWORD::static_سائز + 2 * F2DOT14::static_سائز);
 };
 
 // Paint a non-COLR glyph, filled as indicated by paint.
-template <typename Types>
-struct PaintGlyph
+سانچہ <قسم_نام Types>
+ساخت PaintGlyph
 {
-  using HBGlyphID = typename Types::HBGlyphID;
+  استعمال HBGlyphID = قسم_نام Types::HBGlyphID;
 
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_اندرونی خالی dependv1 (hb_colrv1_depend_context_t* c) ثابت;
+  HB_اندرونی خالی closurev1 (hb_colrv1_احاطہ_context_t* c) ثابت;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  منطقی subset (hb_subset_context_t *c,
+               ثابت شے_Var_Store_Instancer &instancer) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (یہ);
+    خودکار *برآمد = c->serializer->embed (یہ);
+    اگر (unlikely (!برآمد)) return_trace (جھوٹ);
 
-    if (! c->serializer->check_assign (out->gid, c->plan->glyph_map->get (gid),
-                                       HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
+    اگر (! c->serializer->check_تفویض (برآمد->gid, c->plan->glyph_map->get (gid),
+                                       HB_SERIALIZE_ERROR_INT_حد_سے_تجاوز))
+      return_trace (جھوٹ);
 
-    return_trace (out->paint.serialize_subset (c, paint, this, instancer));
+    return_trace (برآمد->paint.serialize_subset (c, paint, یہ, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && paint.sanitize (c, this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ) && paint.sanitize (c, یہ));
   }
 
-  inline void paint_glyph (hb_paint_context_t *c) const;
+  اندرونی خالی paint_glyph (hb_paint_context_t *c) ثابت;
 
   HBUINT8		format; /* format = 10 or 33 */
-  Offset24To<Paint>	paint;  /* Offset (from beginning of PaintGlyph table) to Paint subtable. */
+  Offset24_مقصد<Paint>	paint;  /* Offset (from beginning of PaintGlyph table) to Paint subtable. */
   HBGlyphID		gid;
-  public:
-  DEFINE_SIZE_STATIC (4 + HBGlyphID::static_size);
+  عوامی:
+  DEFINE_سائز_STATIC (4 + HBGlyphID::static_سائز);
 };
 
-struct PaintColrGlyph
+ساخت PaintColrGlyph
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_اندرونی خالی dependv1 (hb_colrv1_depend_context_t* c) ثابت;
+  HB_اندرونی خالی closurev1 (hb_colrv1_احاطہ_context_t* c) ثابت;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer HB_UNUSED) const
+  منطقی subset (hb_subset_context_t *c,
+               ثابت شے_Var_Store_Instancer &instancer HB_غیر_مستعمل) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (یہ);
+    خودکار *برآمد = c->serializer->embed (یہ);
+    اگر (unlikely (!برآمد)) return_trace (جھوٹ);
 
-    return_trace (c->serializer->check_assign (out->gid, c->plan->glyph_map->get (gid),
-                                               HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    return_trace (c->serializer->check_تفویض (برآمد->gid, c->plan->glyph_map->get (gid),
+                                               HB_SERIALIZE_ERROR_INT_حد_سے_تجاوز));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ));
   }
 
-  inline void paint_glyph (hb_paint_context_t *c) const;
+  اندرونی خالی paint_glyph (hb_paint_context_t *c) ثابت;
 
   HBUINT8	format; /* format = 11 */
   HBUINT16	gid;
-  public:
-  DEFINE_SIZE_STATIC (3);
+  عوامی:
+  DEFINE_سائز_STATIC (3);
 };
 
-template <template<typename> class Var>
-struct PaintTransform
+سانچہ <سانچہ<قسم_نام> جماعت Var>
+ساخت PaintTransform
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_اندرونی خالی dependv1 (hb_colrv1_depend_context_t* c) ثابت;
+  HB_اندرونی خالی closurev1 (hb_colrv1_احاطہ_context_t* c) ثابت;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  منطقی subset (hb_subset_context_t *c,
+               ثابت شے_Var_Store_Instancer &instancer) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
-    if (!out->transform.serialize_subset (c, transform, this, instancer)) return_trace (false);
-    if (format == 13 && c->plan->all_axes_pinned)
-      out->format = 12;
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    TRACE_SUBSET (یہ);
+    خودکار *برآمد = c->serializer->embed (یہ);
+    اگر (unlikely (!برآمد)) return_trace (جھوٹ);
+    اگر (!برآمد->transform.serialize_subset (c, transform, یہ, instancer)) return_trace (جھوٹ);
+    اگر (format == 13 && c->plan->all_axes_pinned)
+      برآمد->format = 12;
+    return_trace (برآمد->src.serialize_subset (c, src, یہ, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-                  src.sanitize (c, this) &&
-                  transform.sanitize (c, this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ) &&
+                  src.sanitize (c, یہ) &&
+                  transform.sanitize (c, یہ));
   }
 
-  void paint_glyph (hb_paint_context_t *c) const
+  خالی paint_glyph (hb_paint_context_t *c) ثابت
   {
-    TRACE_PAINT (this);
-    (this+transform).paint_glyph (c); // This does a push_transform()
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    TRACE_PAINT (یہ);
+    (یہ+transform).paint_glyph (c); // This does a push_transform()
+    c->recurse (یہ+src);
+    c->funcs->نکالو_transform (c->ڈیٹا);
   }
 
   HBUINT8			format; /* format = 12(noVar) or 13 (Var) */
-  Offset24To<Paint>		src; /* Offset (from beginning of PaintTransform table) to Paint subtable. */
-  Offset24To<Var<Affine2x3>>	transform;
-  public:
-  DEFINE_SIZE_STATIC (7);
+  Offset24_مقصد<Paint>		src; /* Offset (from beginning of PaintTransform table) to Paint subtable. */
+  Offset24_مقصد<Var<Affine2x3>>	transform;
+  عوامی:
+  DEFINE_سائز_STATIC (7);
 };
 
-struct PaintTranslate
+ساخت PaintTranslate
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_اندرونی خالی dependv1 (hb_colrv1_depend_context_t* c) ثابت;
+  HB_اندرونی خالی closurev1 (hb_colrv1_احاطہ_context_t* c) ثابت;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  منطقی subset (hb_subset_context_t *c,
+               ثابت شے_Var_Store_Instancer &instancer,
+               uint32_t var_Idx_بنیاد) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (یہ);
+    خودکار *برآمد = c->serializer->embed (یہ);
+    اگر (unlikely (!برآمد)) return_trace (جھوٹ);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    اگر (instancer && !c->plan->pinned_at_default && var_Idx_بنیاد != VarIdx::NO_VARIATION)
     {
-      out->dx = hb_clamp_to<int16_t> ((double) dx + (double) roundf (instancer (varIdxBase, 0)));
-      out->dy = hb_clamp_to<int16_t> ((double) dy + (double) roundf (instancer (varIdxBase, 1)));
+      برآمد->dx = hb_clamp_مقصد<int16_t> ((دوہرا) dx + (دوہرا) roundf (instancer (var_Idx_بنیاد, 0)));
+      برآمد->dy = hb_clamp_مقصد<int16_t> ((دوہرا) dy + (دوہرا) roundf (instancer (var_Idx_بنیاد, 1)));
     }
 
-    if (format == 15 && c->plan->all_axes_pinned)
-        out->format = 14;
+    اگر (format == 15 && c->plan->all_axes_pinned)
+        برآمد->format = 14;
 
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (برآمد->src.serialize_subset (c, src, یہ, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && src.sanitize (c, this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ) && src.sanitize (c, یہ));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  خالی paint_glyph (hb_paint_context_t *c, uint32_t var_Idx_بنیاد) ثابت
   {
-    TRACE_PAINT (this);
-    float ddx = dx + c->instancer (varIdxBase, 0);
-    float ddy = dy + c->instancer (varIdxBase, 1);
+    TRACE_PAINT (یہ);
+    اعشاری ddx = dx + c->instancer (var_Idx_بنیاد, 0);
+    اعشاری ddy = dy + c->instancer (var_Idx_بنیاد, 1);
 
-    c->funcs->push_translate (c->data, ddx, ddy);
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->ڈالو_translate (c->ڈیٹا, ddx, ddy);
+    c->recurse (یہ+src);
+    c->funcs->نکالو_transform (c->ڈیٹا);
   }
 
   HBUINT8		format; /* format = 14(noVar) or 15 (Var) */
-  Offset24To<Paint>	src; /* Offset (from beginning of PaintTranslate table) to Paint subtable. */
+  Offset24_مقصد<Paint>	src; /* Offset (from beginning of PaintTranslate table) to Paint subtable. */
   FWORD		dx;
   FWORD		dy;
-  public:
-  DEFINE_SIZE_STATIC (4 + 2 * FWORD::static_size);
+  عوامی:
+  DEFINE_سائز_STATIC (4 + 2 * FWORD::static_سائز);
 };
 
-template <typename Source>
-static bool serialize_scale_transform (hb_subset_context_t *c,
-                                       float sx, float sy, float dx, float dy,
-                                       const Source &source)
+سانچہ <قسم_نام ماخذ_2>
+ساکن منطقی serialize_scale_transform (hb_subset_context_t *c,
+                                       اعشاری sx, اعشاری sy, اعشاری dx, اعشاری dy,
+                                       ثابت ماخذ_2 &ماخذ)
 {
-  auto *out = c->serializer->allocate_size<PaintTransform<NoVariable>> (7);
-  if (unlikely (!out)) return false;
-  out->format = 12;
+  خودکار *برآمد = c->serializer->allocate_سائز<PaintTransform<NoVariable>> (7);
+  اگر (unlikely (!برآمد)) واپس جھوٹ;
+  برآمد->format = 12;
 
   c->serializer->push ();
-  auto *transform = c->serializer->allocate_size<Affine2x3> (Affine2x3::static_size);
-  if (unlikely (!transform))
+  خودکار *transform = c->serializer->allocate_سائز<Affine2x3> (Affine2x3::static_سائز);
+  اگر (unlikely (!transform))
   {
-    c->serializer->pop_discard ();
-    return false;
+    c->serializer->نکالو_discard ();
+    واپس جھوٹ;
   }
-  set_fixed_clamped (transform->xx, sx);
-  transform->yx.set_float (0);
-  transform->xy.set_float (0);
-  set_fixed_clamped (transform->yy, sy);
-  set_fixed_clamped (transform->dx, dx);
-  set_fixed_clamped (transform->dy, dy);
-  c->serializer->add_link (out->transform, c->serializer->pop_pack ());
+  سیٹ_fixed_clamped (transform->xx, sx);
+  transform->yx.سیٹ_float (0);
+  transform->xy.سیٹ_float (0);
+  سیٹ_fixed_clamped (transform->yy, sy);
+  سیٹ_fixed_clamped (transform->dx, dx);
+  سیٹ_fixed_clamped (transform->dy, dy);
+  c->serializer->جوڑو_link (برآمد->transform, c->serializer->نکالو_pack ());
 
   c->serializer->push ();
-  bool ret = source ();
-  if (ret)
-    c->serializer->add_link (out->src, c->serializer->pop_pack ());
-  else
-    c->serializer->pop_discard ();
-  return ret;
+  منطقی ret = ماخذ ();
+  اگر (ret)
+    c->serializer->جوڑو_link (برآمد->src, c->serializer->نکالو_pack ());
+  ورنہ
+    c->serializer->نکالو_discard ();
+  واپس ret;
 }
 
-template <typename Base>
-static bool subset_scale_as_transform (hb_subset_context_t *c,
-                                      const Base *base,
-                                      const Offset24To<Paint> &src,
-                                      const ItemVarStoreInstancer &instancer,
-                                      float sx, float sy,
-                                      float cx = 0, float cy = 0)
+سانچہ <قسم_نام بنیاد_3>
+ساکن منطقی subset_scale_as_transform (hb_subset_context_t *c,
+                                      ثابت بنیاد_3 *بنیاد,
+                                      ثابت Offset24_مقصد<Paint> &src,
+                                      ثابت شے_Var_Store_Instancer &instancer,
+                                      اعشاری sx, اعشاری sy,
+                                      اعشاری cx = 0, اعشاری cy = 0)
 {
-  if (src.is_null ()) return false;
-  auto source = [&] { return c->dispatch (base+src, instancer); };
-  float dx = cx * (1 - sx), dy = cy * (1 - sy);
-  if (dx >= -32768 && dx < 32768 && dy >= -32768 && dy < 32768)
-    return serialize_scale_transform (c, sx, sy, dx, dy, source);
+  اگر (src.is_null ()) واپس جھوٹ;
+  خودکار ماخذ = [&] { واپس c->dispatch (بنیاد+src, instancer); };
+  اعشاری dx = cx * (1 - sx), dy = cy * (1 - sy);
+  اگر (dx >= -32768 && dx < 32768 && dy >= -32768 && dy < 32768)
+    واپس serialize_scale_transform (c, sx, sy, dx, dy, ماخذ);
 
   // Preserve the center as separate translations when the combined matrix
   // exceeds Fixed. Splitting also makes the inverse of -32768 representable.
-  auto inner = [&] {
-    return serialize_scale_transform (c, 1, 1, -cx / 2, -cy / 2, source);
+  خودکار inner = [&] {
+    واپس serialize_scale_transform (c, 1, 1, -cx / 2, -cy / 2, ماخذ);
   };
-  auto inverse = [&] {
-    return serialize_scale_transform (c, 1, 1, -cx / 2, -cy / 2, inner);
+  خودکار inverse = [&] {
+    واپس serialize_scale_transform (c, 1, 1, -cx / 2, -cy / 2, inner);
   };
-  auto scale = [&] {
-    return serialize_scale_transform (c, sx, sy, 0, 0, inverse);
+  خودکار scale = [&] {
+    واپس serialize_scale_transform (c, sx, sy, 0, 0, inverse);
   };
-  auto outer = [&] {
-    return serialize_scale_transform (c, 1, 1, cx / 2, cy / 2, scale);
+  خودکار outer = [&] {
+    واپس serialize_scale_transform (c, 1, 1, cx / 2, cy / 2, scale);
   };
-  return serialize_scale_transform (c, 1, 1, cx / 2, cy / 2, outer);
+  واپس serialize_scale_transform (c, 1, 1, cx / 2, cy / 2, outer);
 }
 
-struct PaintScale
+ساخت PaintScale
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_اندرونی خالی dependv1 (hb_colrv1_depend_context_t* c) ثابت;
+  HB_اندرونی خالی closurev1 (hb_colrv1_احاطہ_context_t* c) ثابت;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  منطقی subset (hb_subset_context_t *c,
+               ثابت شے_Var_Store_Instancer &instancer,
+               uint32_t var_Idx_بنیاد) ثابت
   {
-    TRACE_SUBSET (this);
-    if (c->plan->all_axes_pinned && instancer &&
-        !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    TRACE_SUBSET (یہ);
+    اگر (c->plan->all_axes_pinned && instancer &&
+        !c->plan->pinned_at_default && var_Idx_بنیاد != VarIdx::NO_VARIATION)
     {
-      float sx = roundf (scaleX.to_float (instancer (varIdxBase, 0)) * 16384) / 16384;
-      float sy = roundf (scaleY.to_float (instancer (varIdxBase, 1)) * 16384) / 16384;
-      if (sx < -2 || sx >= 2 || sy < -2 || sy >= 2)
-        return_trace (subset_scale_as_transform (c, this, src, instancer, sx, sy));
+      اعشاری sx = roundf (scaleX.مقصد_float (instancer (var_Idx_بنیاد, 0)) * 16384) / 16384;
+      اعشاری sy = roundf (scaleY.مقصد_float (instancer (var_Idx_بنیاد, 1)) * 16384) / 16384;
+      اگر (sx < -2 || sx >= 2 || sy < -2 || sy >= 2)
+        return_trace (subset_scale_as_transform (c, یہ, src, instancer, sx, sy));
     }
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    خودکار *برآمد = c->serializer->embed (یہ);
+    اگر (unlikely (!برآمد)) return_trace (جھوٹ);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    اگر (instancer && !c->plan->pinned_at_default && var_Idx_بنیاد != VarIdx::NO_VARIATION)
     {
-      set_fixed_clamped (out->scaleX, scaleX.to_float (instancer (varIdxBase, 0)));
-      set_fixed_clamped (out->scaleY, scaleY.to_float (instancer (varIdxBase, 1)));
+      سیٹ_fixed_clamped (برآمد->scaleX, scaleX.مقصد_float (instancer (var_Idx_بنیاد, 0)));
+      سیٹ_fixed_clamped (برآمد->scaleY, scaleY.مقصد_float (instancer (var_Idx_بنیاد, 1)));
     }
 
-    if (format == 17 && c->plan->all_axes_pinned)
-        out->format = 16;
+    اگر (format == 17 && c->plan->all_axes_pinned)
+        برآمد->format = 16;
 
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (برآمد->src.serialize_subset (c, src, یہ, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && src.sanitize (c, this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ) && src.sanitize (c, یہ));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  خالی paint_glyph (hb_paint_context_t *c, uint32_t var_Idx_بنیاد) ثابت
   {
-    TRACE_PAINT (this);
-    float sx = scaleX.to_float (c->instancer (varIdxBase, 0));
-    float sy = scaleY.to_float (c->instancer (varIdxBase, 1));
+    TRACE_PAINT (یہ);
+    اعشاری sx = scaleX.مقصد_float (c->instancer (var_Idx_بنیاد, 0));
+    اعشاری sy = scaleY.مقصد_float (c->instancer (var_Idx_بنیاد, 1));
 
-    c->funcs->push_scale (c->data, sx, sy);
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->ڈالو_scale (c->ڈیٹا, sx, sy);
+    c->recurse (یہ+src);
+    c->funcs->نکالو_transform (c->ڈیٹا);
   }
 
   HBUINT8		format; /* format = 16 (noVar) or 17(Var) */
-  Offset24To<Paint>	src; /* Offset (from beginning of PaintScale table) to Paint subtable. */
+  Offset24_مقصد<Paint>	src; /* Offset (from beginning of PaintScale table) to Paint subtable. */
   F2DOT14		scaleX;
   F2DOT14		scaleY;
-  public:
-  DEFINE_SIZE_STATIC (4 + 2 * F2DOT14::static_size);
+  عوامی:
+  DEFINE_سائز_STATIC (4 + 2 * F2DOT14::static_سائز);
 };
 
-struct PaintScaleAroundCenter
+ساخت PaintScaleAroundCenter
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_اندرونی خالی dependv1 (hb_colrv1_depend_context_t* c) ثابت;
+  HB_اندرونی خالی closurev1 (hb_colrv1_احاطہ_context_t* c) ثابت;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  منطقی subset (hb_subset_context_t *c,
+               ثابت شے_Var_Store_Instancer &instancer,
+               uint32_t var_Idx_بنیاد) ثابت
   {
-    TRACE_SUBSET (this);
-    if (c->plan->all_axes_pinned && instancer &&
-        !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    TRACE_SUBSET (یہ);
+    اگر (c->plan->all_axes_pinned && instancer &&
+        !c->plan->pinned_at_default && var_Idx_بنیاد != VarIdx::NO_VARIATION)
     {
-      float sx = roundf (scaleX.to_float (instancer (varIdxBase, 0)) * 16384) / 16384;
-      float sy = roundf (scaleY.to_float (instancer (varIdxBase, 1)) * 16384) / 16384;
-      if (sx < -2 || sx >= 2 || sy < -2 || sy >= 2)
+      اعشاری sx = roundf (scaleX.مقصد_float (instancer (var_Idx_بنیاد, 0)) * 16384) / 16384;
+      اعشاری sy = roundf (scaleY.مقصد_float (instancer (var_Idx_بنیاد, 1)) * 16384) / 16384;
+      اگر (sx < -2 || sx >= 2 || sy < -2 || sy >= 2)
         return_trace (subset_scale_as_transform (
-            c, this, src, instancer, sx, sy,
-            centerX + roundf (instancer (varIdxBase, 2)),
-            centerY + roundf (instancer (varIdxBase, 3))));
+            c, یہ, src, instancer, sx, sy,
+            centerX + roundf (instancer (var_Idx_بنیاد, 2)),
+            centerY + roundf (instancer (var_Idx_بنیاد, 3))));
     }
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    خودکار *برآمد = c->serializer->embed (یہ);
+    اگر (unlikely (!برآمد)) return_trace (جھوٹ);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    اگر (instancer && !c->plan->pinned_at_default && var_Idx_بنیاد != VarIdx::NO_VARIATION)
     {
-      set_fixed_clamped (out->scaleX, scaleX.to_float (instancer (varIdxBase, 0)));
-      set_fixed_clamped (out->scaleY, scaleY.to_float (instancer (varIdxBase, 1)));
-      out->centerX = hb_clamp_to<int16_t> ((double) centerX + (double) roundf (instancer (varIdxBase, 2)));
-      out->centerY = hb_clamp_to<int16_t> ((double) centerY + (double) roundf (instancer (varIdxBase, 3)));
+      سیٹ_fixed_clamped (برآمد->scaleX, scaleX.مقصد_float (instancer (var_Idx_بنیاد, 0)));
+      سیٹ_fixed_clamped (برآمد->scaleY, scaleY.مقصد_float (instancer (var_Idx_بنیاد, 1)));
+      برآمد->centerX = hb_clamp_مقصد<int16_t> ((دوہرا) centerX + (دوہرا) roundf (instancer (var_Idx_بنیاد, 2)));
+      برآمد->centerY = hb_clamp_مقصد<int16_t> ((دوہرا) centerY + (دوہرا) roundf (instancer (var_Idx_بنیاد, 3)));
     }
 
-    if (format == 19 && c->plan->all_axes_pinned)
-        out->format = 18;
+    اگر (format == 19 && c->plan->all_axes_pinned)
+        برآمد->format = 18;
 
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (برآمد->src.serialize_subset (c, src, یہ, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && src.sanitize (c, this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ) && src.sanitize (c, یہ));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  خالی paint_glyph (hb_paint_context_t *c, uint32_t var_Idx_بنیاد) ثابت
   {
-    TRACE_PAINT (this);
-    float sx = scaleX.to_float (c->instancer (varIdxBase, 0));
-    float sy = scaleY.to_float (c->instancer (varIdxBase, 1));
-    float tCenterX = centerX + c->instancer (varIdxBase, 2);
-    float tCenterY = centerY + c->instancer (varIdxBase, 3);
+    TRACE_PAINT (یہ);
+    اعشاری sx = scaleX.مقصد_float (c->instancer (var_Idx_بنیاد, 0));
+    اعشاری sy = scaleY.مقصد_float (c->instancer (var_Idx_بنیاد, 1));
+    اعشاری tCenterX = centerX + c->instancer (var_Idx_بنیاد, 2);
+    اعشاری tCenterY = centerY + c->instancer (var_Idx_بنیاد, 3);
 
-    c->funcs->push_scale_around_center (c->data, sx, sy, tCenterX, tCenterY);
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->ڈالو_scale_around_center (c->ڈیٹا, sx, sy, tCenterX, tCenterY);
+    c->recurse (یہ+src);
+    c->funcs->نکالو_transform (c->ڈیٹا);
   }
 
   HBUINT8		format; /* format = 18 (noVar) or 19(Var) */
-  Offset24To<Paint>	src; /* Offset (from beginning of PaintScaleAroundCenter table) to Paint subtable. */
+  Offset24_مقصد<Paint>	src; /* Offset (from beginning of PaintScaleAroundCenter table) to Paint subtable. */
   F2DOT14	scaleX;
   F2DOT14	scaleY;
   FWORD		centerX;
   FWORD		centerY;
-  public:
-  DEFINE_SIZE_STATIC (4 + 2 * F2DOT14::static_size + 2 * FWORD::static_size);
+  عوامی:
+  DEFINE_سائز_STATIC (4 + 2 * F2DOT14::static_سائز + 2 * FWORD::static_سائز);
 };
 
-struct PaintScaleUniform
+ساخت Paint_Scale_یکساں
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_اندرونی خالی dependv1 (hb_colrv1_depend_context_t* c) ثابت;
+  HB_اندرونی خالی closurev1 (hb_colrv1_احاطہ_context_t* c) ثابت;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  منطقی subset (hb_subset_context_t *c,
+               ثابت شے_Var_Store_Instancer &instancer,
+               uint32_t var_Idx_بنیاد) ثابت
   {
-    TRACE_SUBSET (this);
-    if (c->plan->all_axes_pinned && instancer &&
-        !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    TRACE_SUBSET (یہ);
+    اگر (c->plan->all_axes_pinned && instancer &&
+        !c->plan->pinned_at_default && var_Idx_بنیاد != VarIdx::NO_VARIATION)
     {
-      float s = roundf (scale.to_float (instancer (varIdxBase, 0)) * 16384) / 16384;
-      if (s < -2 || s >= 2)
-        return_trace (subset_scale_as_transform (c, this, src, instancer, s, s));
+      اعشاری s = roundf (scale.مقصد_float (instancer (var_Idx_بنیاد, 0)) * 16384) / 16384;
+      اگر (s < -2 || s >= 2)
+        return_trace (subset_scale_as_transform (c, یہ, src, instancer, s, s));
     }
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    خودکار *برآمد = c->serializer->embed (یہ);
+    اگر (unlikely (!برآمد)) return_trace (جھوٹ);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
-      set_fixed_clamped (out->scale, scale.to_float (instancer (varIdxBase, 0)));
+    اگر (instancer && !c->plan->pinned_at_default && var_Idx_بنیاد != VarIdx::NO_VARIATION)
+      سیٹ_fixed_clamped (برآمد->scale, scale.مقصد_float (instancer (var_Idx_بنیاد, 0)));
 
-    if (format == 21 && c->plan->all_axes_pinned)
-        out->format = 20;
+    اگر (format == 21 && c->plan->all_axes_pinned)
+        برآمد->format = 20;
 
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (برآمد->src.serialize_subset (c, src, یہ, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && src.sanitize (c, this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ) && src.sanitize (c, یہ));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  خالی paint_glyph (hb_paint_context_t *c, uint32_t var_Idx_بنیاد) ثابت
   {
-    TRACE_PAINT (this);
-    float s = scale.to_float (c->instancer (varIdxBase, 0));
+    TRACE_PAINT (یہ);
+    اعشاری s = scale.مقصد_float (c->instancer (var_Idx_بنیاد, 0));
 
-    c->funcs->push_scale (c->data, s, s);
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->ڈالو_scale (c->ڈیٹا, s, s);
+    c->recurse (یہ+src);
+    c->funcs->نکالو_transform (c->ڈیٹا);
   }
 
   HBUINT8		format; /* format = 20 (noVar) or 21(Var) */
-  Offset24To<Paint>	src; /* Offset (from beginning of PaintScaleUniform table) to Paint subtable. */
+  Offset24_مقصد<Paint>	src; /* Offset (from beginning of PaintScaleUniform table) to Paint subtable. */
   F2DOT14		scale;
-  public:
-  DEFINE_SIZE_STATIC (4 + F2DOT14::static_size);
+  عوامی:
+  DEFINE_سائز_STATIC (4 + F2DOT14::static_سائز);
 };
 
-struct PaintScaleUniformAroundCenter
+ساخت Paint_Scale_یکساں_Around_Center
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_اندرونی خالی dependv1 (hb_colrv1_depend_context_t* c) ثابت;
+  HB_اندرونی خالی closurev1 (hb_colrv1_احاطہ_context_t* c) ثابت;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  منطقی subset (hb_subset_context_t *c,
+               ثابت شے_Var_Store_Instancer &instancer,
+               uint32_t var_Idx_بنیاد) ثابت
   {
-    TRACE_SUBSET (this);
-    if (c->plan->all_axes_pinned && instancer &&
-        !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    TRACE_SUBSET (یہ);
+    اگر (c->plan->all_axes_pinned && instancer &&
+        !c->plan->pinned_at_default && var_Idx_بنیاد != VarIdx::NO_VARIATION)
     {
-      float s = roundf (scale.to_float (instancer (varIdxBase, 0)) * 16384) / 16384;
-      if (s < -2 || s >= 2)
+      اعشاری s = roundf (scale.مقصد_float (instancer (var_Idx_بنیاد, 0)) * 16384) / 16384;
+      اگر (s < -2 || s >= 2)
         return_trace (subset_scale_as_transform (
-            c, this, src, instancer, s, s,
-            centerX + roundf (instancer (varIdxBase, 1)),
-            centerY + roundf (instancer (varIdxBase, 2))));
+            c, یہ, src, instancer, s, s,
+            centerX + roundf (instancer (var_Idx_بنیاد, 1)),
+            centerY + roundf (instancer (var_Idx_بنیاد, 2))));
     }
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    خودکار *برآمد = c->serializer->embed (یہ);
+    اگر (unlikely (!برآمد)) return_trace (جھوٹ);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    اگر (instancer && !c->plan->pinned_at_default && var_Idx_بنیاد != VarIdx::NO_VARIATION)
     {
-      set_fixed_clamped (out->scale, scale.to_float (instancer (varIdxBase, 0)));
-      out->centerX = hb_clamp_to<int16_t> ((double) centerX + (double) roundf (instancer (varIdxBase, 1)));
-      out->centerY = hb_clamp_to<int16_t> ((double) centerY + (double) roundf (instancer (varIdxBase, 2)));
+      سیٹ_fixed_clamped (برآمد->scale, scale.مقصد_float (instancer (var_Idx_بنیاد, 0)));
+      برآمد->centerX = hb_clamp_مقصد<int16_t> ((دوہرا) centerX + (دوہرا) roundf (instancer (var_Idx_بنیاد, 1)));
+      برآمد->centerY = hb_clamp_مقصد<int16_t> ((دوہرا) centerY + (دوہرا) roundf (instancer (var_Idx_بنیاد, 2)));
     }
 
-    if (format == 23 && c->plan->all_axes_pinned)
-        out->format = 22;
+    اگر (format == 23 && c->plan->all_axes_pinned)
+        برآمد->format = 22;
 
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (برآمد->src.serialize_subset (c, src, یہ, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && src.sanitize (c, this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ) && src.sanitize (c, یہ));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  خالی paint_glyph (hb_paint_context_t *c, uint32_t var_Idx_بنیاد) ثابت
   {
-    TRACE_PAINT (this);
-    float s = scale.to_float (c->instancer (varIdxBase, 0));
-    float tCenterX = centerX + c->instancer (varIdxBase, 1);
-    float tCenterY = centerY + c->instancer (varIdxBase, 2);
+    TRACE_PAINT (یہ);
+    اعشاری s = scale.مقصد_float (c->instancer (var_Idx_بنیاد, 0));
+    اعشاری tCenterX = centerX + c->instancer (var_Idx_بنیاد, 1);
+    اعشاری tCenterY = centerY + c->instancer (var_Idx_بنیاد, 2);
 
-    c->funcs->push_scale_around_center (c->data, s, s, tCenterX, tCenterY);
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->ڈالو_scale_around_center (c->ڈیٹا, s, s, tCenterX, tCenterY);
+    c->recurse (یہ+src);
+    c->funcs->نکالو_transform (c->ڈیٹا);
   }
 
   HBUINT8		format; /* format = 22 (noVar) or 23(Var) */
-  Offset24To<Paint>	src; /* Offset (from beginning of PaintScaleUniformAroundCenter table) to Paint subtable. */
+  Offset24_مقصد<Paint>	src; /* Offset (from beginning of PaintScaleUniformAroundCenter table) to Paint subtable. */
   F2DOT14	scale;
   FWORD		centerX;
   FWORD		centerY;
-  public:
-  DEFINE_SIZE_STATIC (4 + F2DOT14::static_size + 2 * FWORD::static_size);
+  عوامی:
+  DEFINE_سائز_STATIC (4 + F2DOT14::static_سائز + 2 * FWORD::static_سائز);
 };
 
-struct PaintRotate
+ساخت PaintRotate
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_اندرونی خالی dependv1 (hb_colrv1_depend_context_t* c) ثابت;
+  HB_اندرونی خالی closurev1 (hb_colrv1_احاطہ_context_t* c) ثابت;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  منطقی subset (hb_subset_context_t *c,
+               ثابت شے_Var_Store_Instancer &instancer,
+               uint32_t var_Idx_بنیاد) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (یہ);
+    خودکار *برآمد = c->serializer->embed (یہ);
+    اگر (unlikely (!برآمد)) return_trace (جھوٹ);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
-      set_fixed_clamped (out->angle, angle.to_float (instancer (varIdxBase, 0)));
+    اگر (instancer && !c->plan->pinned_at_default && var_Idx_بنیاد != VarIdx::NO_VARIATION)
+      سیٹ_fixed_clamped (برآمد->angle, angle.مقصد_float (instancer (var_Idx_بنیاد, 0)));
 
-    if (format == 25 && c->plan->all_axes_pinned)
-      out->format = 24;
+    اگر (format == 25 && c->plan->all_axes_pinned)
+      برآمد->format = 24;
 
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (برآمد->src.serialize_subset (c, src, یہ, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && src.sanitize (c, this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ) && src.sanitize (c, یہ));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  خالی paint_glyph (hb_paint_context_t *c, uint32_t var_Idx_بنیاد) ثابت
   {
-    TRACE_PAINT (this);
-    float a = angle.to_float (c->instancer (varIdxBase, 0));
+    TRACE_PAINT (یہ);
+    اعشاری a = angle.مقصد_float (c->instancer (var_Idx_بنیاد, 0));
 
-    c->funcs->push_rotate (c->data, a);
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->ڈالو_rotate (c->ڈیٹا, a);
+    c->recurse (یہ+src);
+    c->funcs->نکالو_transform (c->ڈیٹا);
   }
 
   HBUINT8		format; /* format = 24 (noVar) or 25(Var) */
-  Offset24To<Paint>	src; /* Offset (from beginning of PaintRotate table) to Paint subtable. */
+  Offset24_مقصد<Paint>	src; /* Offset (from beginning of PaintRotate table) to Paint subtable. */
   F2DOT14		angle;
-  public:
-  DEFINE_SIZE_STATIC (4 + F2DOT14::static_size);
+  عوامی:
+  DEFINE_سائز_STATIC (4 + F2DOT14::static_سائز);
 };
 
-struct PaintRotateAroundCenter
+ساخت PaintRotateAroundCenter
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_اندرونی خالی dependv1 (hb_colrv1_depend_context_t* c) ثابت;
+  HB_اندرونی خالی closurev1 (hb_colrv1_احاطہ_context_t* c) ثابت;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  منطقی subset (hb_subset_context_t *c,
+               ثابت شے_Var_Store_Instancer &instancer,
+               uint32_t var_Idx_بنیاد) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (یہ);
+    خودکار *برآمد = c->serializer->embed (یہ);
+    اگر (unlikely (!برآمد)) return_trace (جھوٹ);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    اگر (instancer && !c->plan->pinned_at_default && var_Idx_بنیاد != VarIdx::NO_VARIATION)
     {
-      set_fixed_clamped (out->angle, angle.to_float (instancer (varIdxBase, 0)));
-      out->centerX = hb_clamp_to<int16_t> ((double) centerX + (double) roundf (instancer (varIdxBase, 1)));
-      out->centerY = hb_clamp_to<int16_t> ((double) centerY + (double) roundf (instancer (varIdxBase, 2)));
+      سیٹ_fixed_clamped (برآمد->angle, angle.مقصد_float (instancer (var_Idx_بنیاد, 0)));
+      برآمد->centerX = hb_clamp_مقصد<int16_t> ((دوہرا) centerX + (دوہرا) roundf (instancer (var_Idx_بنیاد, 1)));
+      برآمد->centerY = hb_clamp_مقصد<int16_t> ((دوہرا) centerY + (دوہرا) roundf (instancer (var_Idx_بنیاد, 2)));
     }
 
-    if (format ==27 && c->plan->all_axes_pinned)
-        out->format = 26;
+    اگر (format ==27 && c->plan->all_axes_pinned)
+        برآمد->format = 26;
 
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (برآمد->src.serialize_subset (c, src, یہ, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && src.sanitize (c, this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ) && src.sanitize (c, یہ));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  خالی paint_glyph (hb_paint_context_t *c, uint32_t var_Idx_بنیاد) ثابت
   {
-    TRACE_PAINT (this);
-    float a = angle.to_float (c->instancer (varIdxBase, 0));
-    float tCenterX = centerX + c->instancer (varIdxBase, 1);
-    float tCenterY = centerY + c->instancer (varIdxBase, 2);
+    TRACE_PAINT (یہ);
+    اعشاری a = angle.مقصد_float (c->instancer (var_Idx_بنیاد, 0));
+    اعشاری tCenterX = centerX + c->instancer (var_Idx_بنیاد, 1);
+    اعشاری tCenterY = centerY + c->instancer (var_Idx_بنیاد, 2);
 
-    c->funcs->push_rotate_around_center (c->data, a, tCenterX, tCenterY);
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->ڈالو_rotate_around_center (c->ڈیٹا, a, tCenterX, tCenterY);
+    c->recurse (یہ+src);
+    c->funcs->نکالو_transform (c->ڈیٹا);
   }
 
   HBUINT8		format; /* format = 26 (noVar) or 27(Var) */
-  Offset24To<Paint>	src; /* Offset (from beginning of PaintRotateAroundCenter table) to Paint subtable. */
+  Offset24_مقصد<Paint>	src; /* Offset (from beginning of PaintRotateAroundCenter table) to Paint subtable. */
   F2DOT14	angle;
   FWORD		centerX;
   FWORD		centerY;
-  public:
-  DEFINE_SIZE_STATIC (4 + F2DOT14::static_size + 2 * FWORD::static_size);
+  عوامی:
+  DEFINE_سائز_STATIC (4 + F2DOT14::static_سائز + 2 * FWORD::static_سائز);
 };
 
-struct PaintSkew
+ساخت PaintSkew
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_اندرونی خالی dependv1 (hb_colrv1_depend_context_t* c) ثابت;
+  HB_اندرونی خالی closurev1 (hb_colrv1_احاطہ_context_t* c) ثابت;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  منطقی subset (hb_subset_context_t *c,
+               ثابت شے_Var_Store_Instancer &instancer,
+               uint32_t var_Idx_بنیاد) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (یہ);
+    خودکار *برآمد = c->serializer->embed (یہ);
+    اگر (unlikely (!برآمد)) return_trace (جھوٹ);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    اگر (instancer && !c->plan->pinned_at_default && var_Idx_بنیاد != VarIdx::NO_VARIATION)
     {
-      set_fixed_clamped (out->xSkewAngle, xSkewAngle.to_float (instancer (varIdxBase, 0)));
-      set_fixed_clamped (out->ySkewAngle, ySkewAngle.to_float (instancer (varIdxBase, 1)));
+      سیٹ_fixed_clamped (برآمد->xSkewAngle, xSkewAngle.مقصد_float (instancer (var_Idx_بنیاد, 0)));
+      سیٹ_fixed_clamped (برآمد->ySkewAngle, ySkewAngle.مقصد_float (instancer (var_Idx_بنیاد, 1)));
     }
 
-    if (format == 29 && c->plan->all_axes_pinned)
-        out->format = 28;
+    اگر (format == 29 && c->plan->all_axes_pinned)
+        برآمد->format = 28;
 
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (برآمد->src.serialize_subset (c, src, یہ, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && src.sanitize (c, this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ) && src.sanitize (c, یہ));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  خالی paint_glyph (hb_paint_context_t *c, uint32_t var_Idx_بنیاد) ثابت
   {
-    TRACE_PAINT (this);
-    float sx = xSkewAngle.to_float(c->instancer (varIdxBase, 0));
-    float sy = ySkewAngle.to_float(c->instancer (varIdxBase, 1));
+    TRACE_PAINT (یہ);
+    اعشاری sx = xSkewAngle.مقصد_float(c->instancer (var_Idx_بنیاد, 0));
+    اعشاری sy = ySkewAngle.مقصد_float(c->instancer (var_Idx_بنیاد, 1));
 
-    c->funcs->push_skew (c->data, sx, sy);
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->ڈالو_skew (c->ڈیٹا, sx, sy);
+    c->recurse (یہ+src);
+    c->funcs->نکالو_transform (c->ڈیٹا);
   }
 
   HBUINT8		format; /* format = 28(noVar) or 29 (Var) */
-  Offset24To<Paint>	src; /* Offset (from beginning of PaintSkew table) to Paint subtable. */
+  Offset24_مقصد<Paint>	src; /* Offset (from beginning of PaintSkew table) to Paint subtable. */
   F2DOT14		xSkewAngle;
   F2DOT14		ySkewAngle;
-  public:
-  DEFINE_SIZE_STATIC (4 + 2 * F2DOT14::static_size);
+  عوامی:
+  DEFINE_سائز_STATIC (4 + 2 * F2DOT14::static_سائز);
 };
 
-struct PaintSkewAroundCenter
+ساخت PaintSkewAroundCenter
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_اندرونی خالی dependv1 (hb_colrv1_depend_context_t* c) ثابت;
+  HB_اندرونی خالی closurev1 (hb_colrv1_احاطہ_context_t* c) ثابت;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  منطقی subset (hb_subset_context_t *c,
+               ثابت شے_Var_Store_Instancer &instancer,
+               uint32_t var_Idx_بنیاد) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (یہ);
+    خودکار *برآمد = c->serializer->embed (یہ);
+    اگر (unlikely (!برآمد)) return_trace (جھوٹ);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    اگر (instancer && !c->plan->pinned_at_default && var_Idx_بنیاد != VarIdx::NO_VARIATION)
     {
-      set_fixed_clamped (out->xSkewAngle, xSkewAngle.to_float (instancer (varIdxBase, 0)));
-      set_fixed_clamped (out->ySkewAngle, ySkewAngle.to_float (instancer (varIdxBase, 1)));
-      out->centerX = hb_clamp_to<int16_t> ((double) centerX + (double) roundf (instancer (varIdxBase, 2)));
-      out->centerY = hb_clamp_to<int16_t> ((double) centerY + (double) roundf (instancer (varIdxBase, 3)));
+      سیٹ_fixed_clamped (برآمد->xSkewAngle, xSkewAngle.مقصد_float (instancer (var_Idx_بنیاد, 0)));
+      سیٹ_fixed_clamped (برآمد->ySkewAngle, ySkewAngle.مقصد_float (instancer (var_Idx_بنیاد, 1)));
+      برآمد->centerX = hb_clamp_مقصد<int16_t> ((دوہرا) centerX + (دوہرا) roundf (instancer (var_Idx_بنیاد, 2)));
+      برآمد->centerY = hb_clamp_مقصد<int16_t> ((دوہرا) centerY + (دوہرا) roundf (instancer (var_Idx_بنیاد, 3)));
     }
 
-    if (format == 31 && c->plan->all_axes_pinned)
-        out->format = 30;
+    اگر (format == 31 && c->plan->all_axes_pinned)
+        برآمد->format = 30;
 
-    return_trace (out->src.serialize_subset (c, src, this, instancer));
+    return_trace (برآمد->src.serialize_subset (c, src, یہ, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && src.sanitize (c, this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ) && src.sanitize (c, یہ));
   }
 
-  void paint_glyph (hb_paint_context_t *c, uint32_t varIdxBase) const
+  خالی paint_glyph (hb_paint_context_t *c, uint32_t var_Idx_بنیاد) ثابت
   {
-    TRACE_PAINT (this);
-    float sx = xSkewAngle.to_float(c->instancer (varIdxBase, 0));
-    float sy = ySkewAngle.to_float(c->instancer (varIdxBase, 1));
-    float tCenterX = centerX + c->instancer (varIdxBase, 2);
-    float tCenterY = centerY + c->instancer (varIdxBase, 3);
+    TRACE_PAINT (یہ);
+    اعشاری sx = xSkewAngle.مقصد_float(c->instancer (var_Idx_بنیاد, 0));
+    اعشاری sy = ySkewAngle.مقصد_float(c->instancer (var_Idx_بنیاد, 1));
+    اعشاری tCenterX = centerX + c->instancer (var_Idx_بنیاد, 2);
+    اعشاری tCenterY = centerY + c->instancer (var_Idx_بنیاد, 3);
 
-    c->funcs->push_skew_around_center (c->data, sx, sy, tCenterX, tCenterY);
-    c->recurse (this+src);
-    c->funcs->pop_transform (c->data);
+    c->funcs->ڈالو_skew_around_center (c->ڈیٹا, sx, sy, tCenterX, tCenterY);
+    c->recurse (یہ+src);
+    c->funcs->نکالو_transform (c->ڈیٹا);
   }
 
   HBUINT8		format; /* format = 30(noVar) or 31 (Var) */
-  Offset24To<Paint>	src; /* Offset (from beginning of PaintSkewAroundCenter table) to Paint subtable. */
+  Offset24_مقصد<Paint>	src; /* Offset (from beginning of PaintSkewAroundCenter table) to Paint subtable. */
   F2DOT14	xSkewAngle;
   F2DOT14	ySkewAngle;
   FWORD		centerX;
   FWORD		centerY;
-  public:
-  DEFINE_SIZE_STATIC (4 + 2 * F2DOT14::static_size + 2 * FWORD::static_size);
+  عوامی:
+  DEFINE_سائز_STATIC (4 + 2 * F2DOT14::static_سائز + 2 * FWORD::static_سائز);
 };
 
-struct PaintComposite
+ساخت Paint_مرکب
 {
-  HB_INTERNAL void dependv1 (hb_colrv1_depend_context_t* c) const;
-  HB_INTERNAL void closurev1 (hb_colrv1_closure_context_t* c) const;
+  HB_اندرونی خالی dependv1 (hb_colrv1_depend_context_t* c) ثابت;
+  HB_اندرونی خالی closurev1 (hb_colrv1_احاطہ_context_t* c) ثابت;
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  منطقی subset (hb_subset_context_t *c,
+               ثابت شے_Var_Store_Instancer &instancer) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (یہ);
+    خودکار *برآمد = c->serializer->embed (یہ);
+    اگر (unlikely (!برآمد)) return_trace (جھوٹ);
 
-    bool ret = false;
-    ret |= out->src.serialize_subset (c, src, this, instancer);
-    ret |= out->backdrop.serialize_subset (c, backdrop, this, instancer);
+    منطقی ret = جھوٹ;
+    ret |= برآمد->src.serialize_subset (c, src, یہ, instancer);
+    ret |= برآمد->backdrop.serialize_subset (c, backdrop, یہ, instancer);
     return_trace (ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  c->check_ops (this->min_size) && // PainComposite can get exponential
-                  src.sanitize (c, this) &&
-                  backdrop.sanitize (c, this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ) &&
+		  c->check_ops (یہ->min_سائز) && // PainComposite can get exponential
+                  src.sanitize (c, یہ) &&
+                  backdrop.sanitize (c, یہ));
   }
 
-  void paint_glyph (hb_paint_context_t *c) const
+  خالی paint_glyph (hb_paint_context_t *c) ثابت
   {
-    TRACE_PAINT (this);
-    hb_paint_composite_mode_t composite_mode;
-    switch ((unsigned int) mode)
+    TRACE_PAINT (یہ);
+    hb_paint_مرکب_منوال_t مرکب_منوال_2;
+    انتخاب ((غیرعلامتی صحیح) منوال)
     {
-      case HB_PAINT_COMPOSITE_MODE_CLEAR:
-      case HB_PAINT_COMPOSITE_MODE_SRC:
-      case HB_PAINT_COMPOSITE_MODE_DEST:
-      case HB_PAINT_COMPOSITE_MODE_SRC_OVER:
-      case HB_PAINT_COMPOSITE_MODE_DEST_OVER:
-      case HB_PAINT_COMPOSITE_MODE_SRC_IN:
-      case HB_PAINT_COMPOSITE_MODE_DEST_IN:
-      case HB_PAINT_COMPOSITE_MODE_SRC_OUT:
-      case HB_PAINT_COMPOSITE_MODE_DEST_OUT:
-      case HB_PAINT_COMPOSITE_MODE_SRC_ATOP:
-      case HB_PAINT_COMPOSITE_MODE_DEST_ATOP:
-      case HB_PAINT_COMPOSITE_MODE_XOR:
-      case HB_PAINT_COMPOSITE_MODE_PLUS:
-      case HB_PAINT_COMPOSITE_MODE_SCREEN:
-      case HB_PAINT_COMPOSITE_MODE_OVERLAY:
-      case HB_PAINT_COMPOSITE_MODE_DARKEN:
-      case HB_PAINT_COMPOSITE_MODE_LIGHTEN:
-      case HB_PAINT_COMPOSITE_MODE_COLOR_DODGE:
-      case HB_PAINT_COMPOSITE_MODE_COLOR_BURN:
-      case HB_PAINT_COMPOSITE_MODE_HARD_LIGHT:
-      case HB_PAINT_COMPOSITE_MODE_SOFT_LIGHT:
-      case HB_PAINT_COMPOSITE_MODE_DIFFERENCE:
-      case HB_PAINT_COMPOSITE_MODE_EXCLUSION:
-      case HB_PAINT_COMPOSITE_MODE_MULTIPLY:
-      case HB_PAINT_COMPOSITE_MODE_HSL_HUE:
-      case HB_PAINT_COMPOSITE_MODE_HSL_SATURATION:
-      case HB_PAINT_COMPOSITE_MODE_HSL_COLOR:
-      case HB_PAINT_COMPOSITE_MODE_HSL_LUMINOSITY:
-	composite_mode = (hb_paint_composite_mode_t) (unsigned int) mode;
-	break;
-      default:
-	composite_mode = HB_PAINT_COMPOSITE_MODE_CLEAR;
-	break;
+      حالت HB_PAINT_مرکب_منوال_CLEAR:
+      حالت HB_PAINT_مرکب_منوال_SRC:
+      حالت HB_PAINT_مرکب_منوال_DEST:
+      حالت HB_PAINT_مرکب_منوال_SRC_OVER:
+      حالت HB_PAINT_مرکب_منوال_DEST_OVER:
+      حالت HB_PAINT_مرکب_منوال_SRC_اندر:
+      حالت HB_PAINT_مرکب_منوال_DEST_اندر:
+      حالت HB_PAINT_مرکب_منوال_SRC_برآمد:
+      حالت HB_PAINT_مرکب_منوال_DEST_برآمد:
+      حالت HB_PAINT_مرکب_منوال_SRC_ATOP:
+      حالت HB_PAINT_مرکب_منوال_DEST_ATOP:
+      حالت HB_PAINT_مرکب_منوال_XOR:
+      حالت HB_PAINT_مرکب_منوال_PLUS:
+      حالت HB_PAINT_مرکب_منوال_SCREEN:
+      حالت HB_PAINT_مرکب_منوال_OVERLAY:
+      حالت HB_PAINT_مرکب_منوال_DARKEN:
+      حالت HB_PAINT_مرکب_منوال_LIGHTEN:
+      حالت HB_PAINT_مرکب_منوال_COLOR_DODGE:
+      حالت HB_PAINT_مرکب_منوال_COLOR_BURN:
+      حالت HB_PAINT_مرکب_منوال_HARD_LIGHT:
+      حالت HB_PAINT_مرکب_منوال_SOFT_LIGHT:
+      حالت HB_PAINT_مرکب_منوال_DIFFERENCE:
+      حالت HB_PAINT_مرکب_منوال_EXCLUSION:
+      حالت HB_PAINT_مرکب_منوال_MULTIPLY:
+      حالت HB_PAINT_مرکب_منوال_HSL_HUE:
+      حالت HB_PAINT_مرکب_منوال_HSL_SATURATION:
+      حالت HB_PAINT_مرکب_منوال_HSL_COLOR:
+      حالت HB_PAINT_مرکب_منوال_HSL_LUMINOSITY:
+	مرکب_منوال_2 = (hb_paint_مرکب_منوال_t) (غیرعلامتی صحیح) منوال;
+	توڑو;
+      طےشدہ:
+	مرکب_منوال_2 = HB_PAINT_مرکب_منوال_CLEAR;
+	توڑو;
     }
 
-    c->funcs->push_group_for (c->data, HB_PAINT_COMPOSITE_MODE_SRC_OVER);
-    c->recurse (this+backdrop);
-    c->funcs->push_group_for (c->data, composite_mode);
-    c->recurse (this+src);
-    c->funcs->pop_group (c->data, composite_mode);
-    c->funcs->pop_group (c->data, HB_PAINT_COMPOSITE_MODE_SRC_OVER);
+    c->funcs->ڈالو_گروہ_for (c->ڈیٹا, HB_PAINT_مرکب_منوال_SRC_OVER);
+    c->recurse (یہ+backdrop);
+    c->funcs->ڈالو_گروہ_for (c->ڈیٹا, مرکب_منوال_2);
+    c->recurse (یہ+src);
+    c->funcs->نکالو_گروہ (c->ڈیٹا, مرکب_منوال_2);
+    c->funcs->نکالو_گروہ (c->ڈیٹا, HB_PAINT_مرکب_منوال_SRC_OVER);
   }
 
   HBUINT8		format; /* format = 32 */
-  Offset24To<Paint>	src; /* Offset (from beginning of PaintComposite table) to source Paint subtable. */
-  CompositeMode		mode;   /* If mode is unrecognized use COMPOSITE_CLEAR */
-  Offset24To<Paint>	backdrop; /* Offset (from beginning of PaintComposite table) to backdrop Paint subtable. */
-  public:
-  DEFINE_SIZE_STATIC (8);
+  Offset24_مقصد<Paint>	src; /* Offset (from beginning of PaintComposite table) to source Paint subtable. */
+  مرکب_منوال		منوال;   /* If mode is unrecognized use COMPOSITE_CLEAR */
+  Offset24_مقصد<Paint>	backdrop; /* Offset (from beginning of PaintComposite table) to backdrop Paint subtable. */
+  عوامی:
+  DEFINE_سائز_STATIC (8);
 };
 
-struct ClipBoxData
+ساخت Clip_Box_ڈیٹا
 {
-  int xMin, yMin, xMax, yMax;
+  صحیح xMin, yMin, xMax, yMax;
 };
 
-struct ClipBoxFormat1
+ساخت ClipBoxFormat1
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ));
   }
 
-  void get_clip_box (ClipBoxData &clip_box, const ItemVarStoreInstancer &instancer HB_UNUSED) const
+  خالی get_clip_box (Clip_Box_ڈیٹا &clip_box, ثابت شے_Var_Store_Instancer &instancer HB_غیر_مستعمل) ثابت
   {
     clip_box.xMin = xMin;
     clip_box.yMin = yMin;
@@ -1952,352 +1952,352 @@ struct ClipBoxFormat1
     clip_box.yMax = yMax;
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer,
-               uint32_t varIdxBase) const
+  منطقی subset (hb_subset_context_t *c,
+               ثابت شے_Var_Store_Instancer &instancer,
+               uint32_t var_Idx_بنیاد) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (یہ);
+    خودکار *برآمد = c->serializer->embed (*یہ);
+    اگر (unlikely (!برآمد)) return_trace (جھوٹ);
 
-    if (instancer && !c->plan->pinned_at_default && varIdxBase != VarIdx::NO_VARIATION)
+    اگر (instancer && !c->plan->pinned_at_default && var_Idx_بنیاد != VarIdx::NO_VARIATION)
     {
-      out->xMin = hb_clamp_to<int16_t> ((double) xMin + (double) floorf (instancer (varIdxBase, 0)));
-      out->yMin = hb_clamp_to<int16_t> ((double) yMin + (double) floorf (instancer (varIdxBase, 1)));
-      out->xMax = hb_clamp_to<int16_t> ((double) xMax + (double) ceilf (instancer (varIdxBase, 2)));
-      out->yMax = hb_clamp_to<int16_t> ((double) yMax + (double) ceilf (instancer (varIdxBase, 3)));
+      برآمد->xMin = hb_clamp_مقصد<int16_t> ((دوہرا) xMin + (دوہرا) floorf (instancer (var_Idx_بنیاد, 0)));
+      برآمد->yMin = hb_clamp_مقصد<int16_t> ((دوہرا) yMin + (دوہرا) floorf (instancer (var_Idx_بنیاد, 1)));
+      برآمد->xMax = hb_clamp_مقصد<int16_t> ((دوہرا) xMax + (دوہرا) ceilf (instancer (var_Idx_بنیاد, 2)));
+      برآمد->yMax = hb_clamp_مقصد<int16_t> ((دوہرا) yMax + (دوہرا) ceilf (instancer (var_Idx_بنیاد, 3)));
     }
 
-    if (format == 2 && c->plan->all_axes_pinned)
-        out->format = 1;
+    اگر (format == 2 && c->plan->all_axes_pinned)
+        برآمد->format = 1;
 
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  public:
+  عوامی:
   HBUINT8	format; /* format = 1(noVar) or 2(Var)*/
   FWORD		xMin;
   FWORD		yMin;
   FWORD		xMax;
   FWORD		yMax;
-  public:
-  DEFINE_SIZE_STATIC (1 + 4 * FWORD::static_size);
+  عوامی:
+  DEFINE_سائز_STATIC (1 + 4 * FWORD::static_سائز);
 };
 
-struct ClipBoxFormat2 : Variable<ClipBoxFormat1>
+ساخت ClipBoxFormat2 : Variable<ClipBoxFormat1>
 {
-  void get_clip_box (ClipBoxData &clip_box, const ItemVarStoreInstancer &instancer) const
+  خالی get_clip_box (Clip_Box_ڈیٹا &clip_box, ثابت شے_Var_Store_Instancer &instancer) ثابت
   {
     value.get_clip_box(clip_box, instancer);
-    if (instancer)
+    اگر (instancer)
     {
-      clip_box.xMin = hb_saturate_add (clip_box.xMin, hb_clamp_to<int> (floorf (instancer (varIdxBase, 0))));
-      clip_box.yMin = hb_saturate_add (clip_box.yMin, hb_clamp_to<int> (floorf (instancer (varIdxBase, 1))));
-      clip_box.xMax = hb_saturate_add (clip_box.xMax, hb_clamp_to<int> (ceilf (instancer (varIdxBase, 2))));
-      clip_box.yMax = hb_saturate_add (clip_box.yMax, hb_clamp_to<int> (ceilf (instancer (varIdxBase, 3))));
+      clip_box.xMin = hb_saturate_جوڑو (clip_box.xMin, hb_clamp_مقصد<صحیح> (floorf (instancer (var_Idx_بنیاد, 0))));
+      clip_box.yMin = hb_saturate_جوڑو (clip_box.yMin, hb_clamp_مقصد<صحیح> (floorf (instancer (var_Idx_بنیاد, 1))));
+      clip_box.xMax = hb_saturate_جوڑو (clip_box.xMax, hb_clamp_مقصد<صحیح> (ceilf (instancer (var_Idx_بنیاد, 2))));
+      clip_box.yMax = hb_saturate_جوڑو (clip_box.yMax, hb_clamp_مقصد<صحیح> (ceilf (instancer (var_Idx_بنیاد, 3))));
     }
   }
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
-  { c->variation_indices->add_range (varIdxBase, varIdxBase + 3); }
+  خالی closurev1 (hb_colrv1_احاطہ_context_t* c) ثابت
+  { c->variation_indices->جوڑو_range (var_Idx_بنیاد, var_Idx_بنیاد + 3); }
 };
 
-struct ClipBox
+ساخت ClipBox
 {
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  منطقی subset (hb_subset_context_t *c,
+               ثابت شے_Var_Store_Instancer &instancer) ثابت
   {
-    TRACE_SUBSET (this);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.subset (c, instancer, VarIdx::NO_VARIATION));
-    case 2: hb_barrier (); return_trace (u.format2.subset (c, instancer));
-    default:return_trace (c->default_return_value ());
+    TRACE_SUBSET (یہ);
+    انتخاب (u.format.v) {
+    حالت 1: hb_barrier (); return_trace (u.format1.subset (c, instancer, VarIdx::NO_VARIATION));
+    حالت 2: hb_barrier (); return_trace (u.format2.subset (c, instancer));
+    طےشدہ:return_trace (c->default_return_قدر ());
     }
   }
 
-  void closurev1 (hb_colrv1_closure_context_t* c) const
+  خالی closurev1 (hb_colrv1_احاطہ_context_t* c) ثابت
   {
-    switch (u.format.v) {
-    case 2: hb_barrier (); u.format2.closurev1 (c); return;
-    default:return;
+    انتخاب (u.format.v) {
+    حالت 2: hb_barrier (); u.format2.closurev1 (c); واپس;
+    طےشدہ:واپس;
     }
   }
 
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  سانچہ <قسم_نام context_t, قسم_نام ...Ts>
+  قسم_نام context_t::return_t dispatch (context_t *c, Ts&&... ds) ثابت
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-    default:return_trace (c->default_return_value ());
+    اگر (unlikely (!c->may_dispatch (یہ, &u.format.v))) واپس c->no_dispatch_return_قدر ();
+    TRACE_DISPATCH (یہ, u.format.v);
+    انتخاب (u.format.v) {
+    حالت 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+    حالت 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+    طےشدہ:return_trace (c->default_return_قدر ());
     }
   }
 
-  bool get_extents (hb_glyph_extents_t *extents,
-                    const ItemVarStoreInstancer &instancer) const
+  منطقی get_extents (hb_glyph_extents_t *extents,
+                    ثابت شے_Var_Store_Instancer &instancer) ثابت
   {
-    ClipBoxData clip_box;
-    switch (u.format.v) {
-    case 1:
+    Clip_Box_ڈیٹا clip_box;
+    انتخاب (u.format.v) {
+    حالت 1:
       hb_barrier ();
       u.format1.get_clip_box (clip_box, instancer);
-      break;
-    case 2:
+      توڑو;
+    حالت 2:
       hb_barrier ();
       u.format2.get_clip_box (clip_box, instancer);
-      break;
-    default:
-      return false;
+      توڑو;
+    طےشدہ:
+      واپس جھوٹ;
     }
 
     extents->x_bearing = clip_box.xMin;
     extents->y_bearing = clip_box.yMax;
-    extents->width = hb_saturate_sub (clip_box.xMax, clip_box.xMin);
-    extents->height = hb_saturate_sub (clip_box.yMin, clip_box.yMax);
-    return true;
+    extents->چوڑائی = hb_saturate_sub (clip_box.xMax, clip_box.xMin);
+    extents->اونچائی = hb_saturate_sub (clip_box.yMin, clip_box.yMax);
+    واپس سچ;
   }
 
-  protected:
-  union {
-  struct { HBUINT8 v; }	format;         /* Format identifier */
+  محفوظ:
+  اتحاد {
+  ساخت { HBUINT8 v; }	format;         /* Format identifier */
   ClipBoxFormat1	format1;
   ClipBoxFormat2	format2;
   } u;
 };
 
-struct ClipRecord
+ساخت Clip_ریکارڈ
 {
-  int cmp (hb_codepoint_t g) const
-  { return g < startGlyphID ? -1 : g <= endGlyphID ? 0 : +1; }
+  صحیح cmp (hb_codepoint_t g) ثابت
+  { واپس g < آغاز_Glyph_ID ? -1 : g <= انتہا_Glyph_ID ? 0 : +1; }
 
-  void closurev1 (hb_colrv1_closure_context_t* c, const void *base) const
+  خالی closurev1 (hb_colrv1_احاطہ_context_t* c, ثابت خالی *بنیاد) ثابت
   {
-    if (!c->glyphs->intersects (startGlyphID, endGlyphID)) return;
-    (base+clipBox).closurev1 (c);
+    اگر (!c->glyphs->intersects (آغاز_Glyph_ID, انتہا_Glyph_ID)) واپس;
+    (بنیاد+clipBox).closurev1 (c);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const void *base,
-               const ItemVarStoreInstancer &instancer) const
+  منطقی subset (hb_subset_context_t *c,
+               ثابت خالی *بنیاد,
+               ثابت شے_Var_Store_Instancer &instancer) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->embed (*this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SUBSET (یہ);
+    خودکار *برآمد = c->serializer->embed (*یہ);
+    اگر (unlikely (!برآمد)) return_trace (جھوٹ);
 
-    return_trace (out->clipBox.serialize_subset (c, clipBox, base, instancer));
+    return_trace (برآمد->clipBox.serialize_subset (c, clipBox, بنیاد, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  منطقی sanitize (hb_sanitize_context_t *c, ثابت خالی *بنیاد) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && clipBox.sanitize (c, base));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ) && clipBox.sanitize (c, بنیاد));
   }
 
-  bool get_extents (hb_glyph_extents_t *extents,
-		    const void *base,
-		    const ItemVarStoreInstancer &instancer) const
+  منطقی get_extents (hb_glyph_extents_t *extents,
+		    ثابت خالی *بنیاد,
+		    ثابت شے_Var_Store_Instancer &instancer) ثابت
   {
-    return (base+clipBox).get_extents (extents, instancer);
+    واپس (بنیاد+clipBox).get_extents (extents, instancer);
   }
 
-  public:
-  HBUINT16		startGlyphID;  // first gid clip applies to
-  HBUINT16		endGlyphID;    // last gid clip applies to, inclusive
-  Offset24To<ClipBox>	clipBox;   // Box or VarBox
-  public:
-  DEFINE_SIZE_STATIC (7);
+  عوامی:
+  HBUINT16		آغاز_Glyph_ID;  // first gid clip applies to
+  HBUINT16		انتہا_Glyph_ID;    // last gid clip applies to, inclusive
+  Offset24_مقصد<ClipBox>	clipBox;   // Box or VarBox
+  عوامی:
+  DEFINE_سائز_STATIC (7);
 };
-DECLARE_NULL_NAMESPACE_BYTES (OT, ClipRecord);
+DECLARE_NULL_NAMESPACE_بائٹیں (OT, Clip_ریکارڈ);
 
-struct ClipList
+ساخت ClipList
 {
-  unsigned serialize_clip_records (hb_subset_context_t *c,
-                                   const ItemVarStoreInstancer &instancer,
-                                   const hb_set_t& gids,
-                                   const hb_map_t& gid_offset_map) const
+  غیرعلامتی serialize_clip_اندراجات (hb_subset_context_t *c,
+                                   ثابت شے_Var_Store_Instancer &instancer,
+                                   ثابت hb_سیٹ_t& gids,
+                                   ثابت hb_map_t& gid_انحراف_map) ثابت
   {
-    TRACE_SERIALIZE (this);
-    if (gids.is_empty () ||
-        gid_offset_map.get_population () != gids.get_population ())
+    TRACE_SERIALIZE (یہ);
+    اگر (gids.is_empty () ||
+        gid_انحراف_map.get_population () != gids.get_population ())
       return_trace (0);
 
-    unsigned count  = 0;
+    غیرعلامتی گنتی  = 0;
 
-    hb_codepoint_t start_gid= gids.get_min ();
-    hb_codepoint_t prev_gid = start_gid;
+    hb_codepoint_t آغاز_gid= gids.get_min ();
+    hb_codepoint_t پچھلا_gid = آغاز_gid;
 
-    unsigned offset = gid_offset_map.get (start_gid);
-    unsigned prev_offset = offset;
-    for (const hb_codepoint_t _ : gids.iter ())
+    غیرعلامتی انحراف = gid_انحراف_map.get (آغاز_gid);
+    غیرعلامتی پچھلا_انحراف = انحراف;
+    برائے (ثابت hb_codepoint_t _ : gids.iter ())
     {
-      if (_ == start_gid) continue;
+      اگر (_ == آغاز_gid) جاری;
 
-      offset = gid_offset_map.get (_);
-      if (_ == prev_gid + 1 &&  offset == prev_offset)
+      انحراف = gid_انحراف_map.get (_);
+      اگر (_ == پچھلا_gid + 1 &&  انحراف == پچھلا_انحراف)
       {
-        prev_gid = _;
-        continue;
+        پچھلا_gid = _;
+        جاری;
       }
 
-      ClipRecord record;
-      record.startGlyphID = start_gid;
-      record.endGlyphID = prev_gid;
-      record.clipBox = prev_offset;
+      Clip_ریکارڈ ریکارڈ;
+      ریکارڈ.آغاز_Glyph_ID = آغاز_gid;
+      ریکارڈ.انتہا_Glyph_ID = پچھلا_gid;
+      ریکارڈ.clipBox = پچھلا_انحراف;
 
-      if (!record.subset (c, this, instancer)) return_trace (0);
-      count++;
+      اگر (!ریکارڈ.subset (c, یہ, instancer)) return_trace (0);
+      گنتی++;
 
-      start_gid = _;
-      prev_gid = _;
-      prev_offset = offset;
+      آغاز_gid = _;
+      پچھلا_gid = _;
+      پچھلا_انحراف = انحراف;
     }
 
     //last one
     {
-      ClipRecord record;
-      record.startGlyphID = start_gid;
-      record.endGlyphID = prev_gid;
-      record.clipBox = prev_offset;
-      if (!record.subset (c, this, instancer)) return_trace (0);
-      count++;
+      Clip_ریکارڈ ریکارڈ;
+      ریکارڈ.آغاز_Glyph_ID = آغاز_gid;
+      ریکارڈ.انتہا_Glyph_ID = پچھلا_gid;
+      ریکارڈ.clipBox = پچھلا_انحراف;
+      اگر (!ریکارڈ.subset (c, یہ, instancer)) return_trace (0);
+      گنتی++;
     }
-    return_trace (count);
+    return_trace (گنتی);
   }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  منطقی subset (hb_subset_context_t *c,
+               ثابت شے_Var_Store_Instancer &instancer) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->extend_min (out))) return_trace (false);
-    if (!c->serializer->check_assign (out->format, format, HB_SERIALIZE_ERROR_INT_OVERFLOW)) return_trace (false);
+    TRACE_SUBSET (یہ);
+    خودکار *برآمد = c->serializer->آغاز_embed (*یہ);
+    اگر (unlikely (!c->serializer->extend_min (برآمد))) return_trace (جھوٹ);
+    اگر (!c->serializer->check_تفویض (برآمد->format, format, HB_SERIALIZE_ERROR_INT_حد_سے_تجاوز)) return_trace (جھوٹ);
 
-    const hb_set_t& glyphset = c->plan->_glyphset_colred;
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    ثابت hb_سیٹ_t& glyphset = c->plan->_glyphset_colred;
+    ثابت hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    hb_map_t new_gid_offset_map;
-    hb_set_t new_gids;
-    for (const ClipRecord& record : clips.iter ())
+    hb_map_t new_gid_انحراف_map;
+    hb_سیٹ_t new_gids;
+    برائے (ثابت Clip_ریکارڈ& ریکارڈ : clips.iter ())
     {
-      unsigned start_gid = record.startGlyphID;
-      unsigned end_gid = record.endGlyphID;
-      for (unsigned gid = start_gid; gid <= end_gid; gid++)
+      غیرعلامتی آغاز_gid = ریکارڈ.آغاز_Glyph_ID;
+      غیرعلامتی انتہا_gid = ریکارڈ.انتہا_Glyph_ID;
+      برائے (غیرعلامتی gid = آغاز_gid; gid <= انتہا_gid; gid++)
       {
-        if (!glyphset.has (gid) || !glyph_map.has (gid)) continue;
-        unsigned new_gid = glyph_map.get (gid);
-        new_gid_offset_map.set (new_gid, record.clipBox);
-        new_gids.add (new_gid);
+        اگر (!glyphset.has (gid) || !glyph_map.has (gid)) جاری;
+        غیرعلامتی new_gid = glyph_map.get (gid);
+        new_gid_انحراف_map.سیٹ (new_gid, ریکارڈ.clipBox);
+        new_gids.جوڑو (new_gid);
       }
     }
 
-    unsigned count = serialize_clip_records (c, instancer, new_gids, new_gid_offset_map);
-    if (!count) return_trace (false);
-    return_trace (c->serializer->check_assign (out->clips.len, count, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    غیرعلامتی گنتی = serialize_clip_اندراجات (c, instancer, new_gids, new_gid_انحراف_map);
+    اگر (!گنتی) return_trace (جھوٹ);
+    return_trace (c->serializer->check_تفویض (برآمد->clips.len, گنتی, HB_SERIALIZE_ERROR_INT_حد_سے_تجاوز));
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (یہ);
     // TODO Make a formatted struct!
-    return_trace (c->check_struct (this) && clips.sanitize (c, this));
+    return_trace (c->check_struct (یہ) && clips.sanitize (c, یہ));
   }
 
-  bool
+  منطقی
   get_extents (hb_codepoint_t gid,
 	       hb_glyph_extents_t *extents,
-	       const ItemVarStoreInstancer &instancer) const
+	       ثابت شے_Var_Store_Instancer &instancer) ثابت
   {
-    auto *rec = clips.as_array ().bsearch (gid);
-    if (rec)
-      return rec->get_extents (extents, this, instancer);
-    return false;
+    خودکار *rec = clips.as_array ().bsearch (gid);
+    اگر (rec)
+      واپس rec->get_extents (extents, یہ, instancer);
+    واپس جھوٹ;
   }
 
   HBUINT8			format;  // Set to 1.
-  SortedArray32Of<ClipRecord>	clips;  // Clip records, sorted by startGlyphID
-  public:
-  DEFINE_SIZE_ARRAY_SIZED (5, clips);
+  Sorted_Array32_کا<Clip_ریکارڈ>	clips;  // Clip records, sorted by startGlyphID
+  عوامی:
+  DEFINE_سائز_ARRAY_SIZED (5, clips);
 };
 
-struct Paint
+ساخت Paint
 {
 
-  template <typename ...Ts>
-  bool sanitize (hb_sanitize_context_t *c, Ts&&... ds) const
+  سانچہ <قسم_نام ...Ts>
+  منطقی sanitize (hb_sanitize_context_t *c, Ts&&... ds) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (یہ);
 
-    if (unlikely (!c->check_start_recursion (HB_MAX_NESTING_LEVEL)))
-      return_trace (c->no_dispatch_return_value ());
+    اگر (unlikely (!c->check_آغاز_recursion (HB_MAX_NESTING_LEVEL)))
+      return_trace (c->no_dispatch_return_قدر ());
 
-    return_trace (c->end_recursion (this->dispatch (c, std::forward<Ts> (ds)...)));
+    return_trace (c->انتہا_recursion (یہ->dispatch (c, std::forward<Ts> (ds)...)));
   }
 
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  سانچہ <قسم_نام context_t, قسم_نام ...Ts>
+  قسم_نام context_t::return_t dispatch (context_t *c, Ts&&... ds) ثابت
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.paintformat1, std::forward<Ts> (ds)...));
-    case 2: hb_barrier (); return_trace (c->dispatch (u.paintformat2, std::forward<Ts> (ds)...));
-    case 3: hb_barrier (); return_trace (c->dispatch (u.paintformat3, std::forward<Ts> (ds)...));
-    case 4: hb_barrier (); return_trace (c->dispatch (u.paintformat4, std::forward<Ts> (ds)...));
-    case 5: hb_barrier (); return_trace (c->dispatch (u.paintformat5, std::forward<Ts> (ds)...));
-    case 6: hb_barrier (); return_trace (c->dispatch (u.paintformat6, std::forward<Ts> (ds)...));
-    case 7: hb_barrier (); return_trace (c->dispatch (u.paintformat7, std::forward<Ts> (ds)...));
-    case 8: hb_barrier (); return_trace (c->dispatch (u.paintformat8, std::forward<Ts> (ds)...));
-    case 9: hb_barrier (); return_trace (c->dispatch (u.paintformat9, std::forward<Ts> (ds)...));
-    case 10: hb_barrier (); return_trace (c->dispatch (u.paintformat10, std::forward<Ts> (ds)...));
-    case 11: hb_barrier (); return_trace (c->dispatch (u.paintformat11, std::forward<Ts> (ds)...));
-    case 12: hb_barrier (); return_trace (c->dispatch (u.paintformat12, std::forward<Ts> (ds)...));
-    case 13: hb_barrier (); return_trace (c->dispatch (u.paintformat13, std::forward<Ts> (ds)...));
-    case 14: hb_barrier (); return_trace (c->dispatch (u.paintformat14, std::forward<Ts> (ds)...));
-    case 15: hb_barrier (); return_trace (c->dispatch (u.paintformat15, std::forward<Ts> (ds)...));
-    case 16: hb_barrier (); return_trace (c->dispatch (u.paintformat16, std::forward<Ts> (ds)...));
-    case 17: hb_barrier (); return_trace (c->dispatch (u.paintformat17, std::forward<Ts> (ds)...));
-    case 18: hb_barrier (); return_trace (c->dispatch (u.paintformat18, std::forward<Ts> (ds)...));
-    case 19: hb_barrier (); return_trace (c->dispatch (u.paintformat19, std::forward<Ts> (ds)...));
-    case 20: hb_barrier (); return_trace (c->dispatch (u.paintformat20, std::forward<Ts> (ds)...));
-    case 21: hb_barrier (); return_trace (c->dispatch (u.paintformat21, std::forward<Ts> (ds)...));
-    case 22: hb_barrier (); return_trace (c->dispatch (u.paintformat22, std::forward<Ts> (ds)...));
-    case 23: hb_barrier (); return_trace (c->dispatch (u.paintformat23, std::forward<Ts> (ds)...));
-    case 24: hb_barrier (); return_trace (c->dispatch (u.paintformat24, std::forward<Ts> (ds)...));
-    case 25: hb_barrier (); return_trace (c->dispatch (u.paintformat25, std::forward<Ts> (ds)...));
-    case 26: hb_barrier (); return_trace (c->dispatch (u.paintformat26, std::forward<Ts> (ds)...));
-    case 27: hb_barrier (); return_trace (c->dispatch (u.paintformat27, std::forward<Ts> (ds)...));
-    case 28: hb_barrier (); return_trace (c->dispatch (u.paintformat28, std::forward<Ts> (ds)...));
-    case 29: hb_barrier (); return_trace (c->dispatch (u.paintformat29, std::forward<Ts> (ds)...));
-    case 30: hb_barrier (); return_trace (c->dispatch (u.paintformat30, std::forward<Ts> (ds)...));
-    case 31: hb_barrier (); return_trace (c->dispatch (u.paintformat31, std::forward<Ts> (ds)...));
-    case 32: hb_barrier (); return_trace (c->dispatch (u.paintformat32, std::forward<Ts> (ds)...));
-#ifndef HB_NO_BEYOND_64K
-    case 33: hb_barrier (); return_trace (c->dispatch (u.paintformat33, std::forward<Ts> (ds)...));
-#endif
-    default:return_trace (c->default_return_value ());
+    اگر (unlikely (!c->may_dispatch (یہ, &u.format.v))) واپس c->no_dispatch_return_قدر ();
+    TRACE_DISPATCH (یہ, u.format.v);
+    انتخاب (u.format.v) {
+    حالت 1: hb_barrier (); return_trace (c->dispatch (u.paintformat1, std::forward<Ts> (ds)...));
+    حالت 2: hb_barrier (); return_trace (c->dispatch (u.paintformat2, std::forward<Ts> (ds)...));
+    حالت 3: hb_barrier (); return_trace (c->dispatch (u.paintformat3, std::forward<Ts> (ds)...));
+    حالت 4: hb_barrier (); return_trace (c->dispatch (u.paintformat4, std::forward<Ts> (ds)...));
+    حالت 5: hb_barrier (); return_trace (c->dispatch (u.paintformat5, std::forward<Ts> (ds)...));
+    حالت 6: hb_barrier (); return_trace (c->dispatch (u.paintformat6, std::forward<Ts> (ds)...));
+    حالت 7: hb_barrier (); return_trace (c->dispatch (u.paintformat7, std::forward<Ts> (ds)...));
+    حالت 8: hb_barrier (); return_trace (c->dispatch (u.paintformat8, std::forward<Ts> (ds)...));
+    حالت 9: hb_barrier (); return_trace (c->dispatch (u.paintformat9, std::forward<Ts> (ds)...));
+    حالت 10: hb_barrier (); return_trace (c->dispatch (u.paintformat10, std::forward<Ts> (ds)...));
+    حالت 11: hb_barrier (); return_trace (c->dispatch (u.paintformat11, std::forward<Ts> (ds)...));
+    حالت 12: hb_barrier (); return_trace (c->dispatch (u.paintformat12, std::forward<Ts> (ds)...));
+    حالت 13: hb_barrier (); return_trace (c->dispatch (u.paintformat13, std::forward<Ts> (ds)...));
+    حالت 14: hb_barrier (); return_trace (c->dispatch (u.paintformat14, std::forward<Ts> (ds)...));
+    حالت 15: hb_barrier (); return_trace (c->dispatch (u.paintformat15, std::forward<Ts> (ds)...));
+    حالت 16: hb_barrier (); return_trace (c->dispatch (u.paintformat16, std::forward<Ts> (ds)...));
+    حالت 17: hb_barrier (); return_trace (c->dispatch (u.paintformat17, std::forward<Ts> (ds)...));
+    حالت 18: hb_barrier (); return_trace (c->dispatch (u.paintformat18, std::forward<Ts> (ds)...));
+    حالت 19: hb_barrier (); return_trace (c->dispatch (u.paintformat19, std::forward<Ts> (ds)...));
+    حالت 20: hb_barrier (); return_trace (c->dispatch (u.paintformat20, std::forward<Ts> (ds)...));
+    حالت 21: hb_barrier (); return_trace (c->dispatch (u.paintformat21, std::forward<Ts> (ds)...));
+    حالت 22: hb_barrier (); return_trace (c->dispatch (u.paintformat22, std::forward<Ts> (ds)...));
+    حالت 23: hb_barrier (); return_trace (c->dispatch (u.paintformat23, std::forward<Ts> (ds)...));
+    حالت 24: hb_barrier (); return_trace (c->dispatch (u.paintformat24, std::forward<Ts> (ds)...));
+    حالت 25: hb_barrier (); return_trace (c->dispatch (u.paintformat25, std::forward<Ts> (ds)...));
+    حالت 26: hb_barrier (); return_trace (c->dispatch (u.paintformat26, std::forward<Ts> (ds)...));
+    حالت 27: hb_barrier (); return_trace (c->dispatch (u.paintformat27, std::forward<Ts> (ds)...));
+    حالت 28: hb_barrier (); return_trace (c->dispatch (u.paintformat28, std::forward<Ts> (ds)...));
+    حالت 29: hb_barrier (); return_trace (c->dispatch (u.paintformat29, std::forward<Ts> (ds)...));
+    حالت 30: hb_barrier (); return_trace (c->dispatch (u.paintformat30, std::forward<Ts> (ds)...));
+    حالت 31: hb_barrier (); return_trace (c->dispatch (u.paintformat31, std::forward<Ts> (ds)...));
+    حالت 32: hb_barrier (); return_trace (c->dispatch (u.paintformat32, std::forward<Ts> (ds)...));
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    حالت 33: hb_barrier (); return_trace (c->dispatch (u.paintformat33, std::forward<Ts> (ds)...));
+#اگر_ختم
+    طےشدہ:return_trace (c->default_return_قدر ());
     }
   }
 
-  bool get_solid_color (hb_paint_context_t *c,
-			hb_bool_t *is_foreground, hb_color_t *color) const
+  منطقی get_solid_color (hb_paint_context_t *c,
+			hb_bool_t *is_foreground, hb_color_t *color) ثابت
   {
-    switch (u.format.v) {
-    case 2: hb_barrier (); u.paintformat2.get_solid_color (c, is_foreground, color); return true;
-    case 3: hb_barrier (); u.paintformat3.get_solid_color (c, is_foreground, color); return true;
-    default: return false;
+    انتخاب (u.format.v) {
+    حالت 2: hb_barrier (); u.paintformat2.get_solid_color (c, is_foreground, color); واپس سچ;
+    حالت 3: hb_barrier (); u.paintformat3.get_solid_color (c, is_foreground, color); واپس سچ;
+    طےشدہ: واپس جھوٹ;
     }
   }
 
-  protected:
-  union {
-  struct { HBUINT8 v; }				format;
+  محفوظ:
+  اتحاد {
+  ساخت { HBUINT8 v; }				format;
   PaintColrLayers				paintformat1;
   NoVariable<PaintSolid>			paintformat2;
   Variable<PaintSolid>				paintformat3;
-  NoVariable<PaintLinearGradient<NoVariable>>	paintformat4;
-  Variable<PaintLinearGradient<Variable>>	paintformat5;
+  NoVariable<Paint_خطی_Gradient<NoVariable>>	paintformat4;
+  Variable<Paint_خطی_Gradient<Variable>>	paintformat5;
   NoVariable<PaintRadialGradient<NoVariable>>	paintformat6;
   Variable<PaintRadialGradient<Variable>>	paintformat7;
   NoVariable<PaintSweepGradient<NoVariable>>	paintformat8;
@@ -2312,10 +2312,10 @@ struct Paint
   Variable<PaintScale>				paintformat17;
   NoVariable<PaintScaleAroundCenter>		paintformat18;
   Variable<PaintScaleAroundCenter>		paintformat19;
-  NoVariable<PaintScaleUniform>			paintformat20;
-  Variable<PaintScaleUniform>			paintformat21;
-  NoVariable<PaintScaleUniformAroundCenter>	paintformat22;
-  Variable<PaintScaleUniformAroundCenter>	paintformat23;
+  NoVariable<Paint_Scale_یکساں>			paintformat20;
+  Variable<Paint_Scale_یکساں>			paintformat21;
+  NoVariable<Paint_Scale_یکساں_Around_Center>	paintformat22;
+  Variable<Paint_Scale_یکساں_Around_Center>	paintformat23;
   NoVariable<PaintRotate>			paintformat24;
   Variable<PaintRotate>				paintformat25;
   NoVariable<PaintRotateAroundCenter>		paintformat26;
@@ -2324,222 +2324,222 @@ struct Paint
   Variable<PaintSkew>				paintformat29;
   NoVariable<PaintSkewAroundCenter>		paintformat30;
   Variable<PaintSkewAroundCenter>		paintformat31;
-  PaintComposite				paintformat32;
-#ifndef HB_NO_BEYOND_64K
+  Paint_مرکب				paintformat32;
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
   PaintGlyph<Layout::MediumTypes>		paintformat33;
-#endif
+#اگر_ختم
   } u;
-  public:
-  DEFINE_SIZE_MIN (2);
+  عوامی:
+  DEFINE_سائز_MIN (2);
 };
 
-struct BaseGlyphPaintRecord
+ساخت بنیاد_Glyph_Paint_ریکارڈ
 {
-  int cmp (hb_codepoint_t g) const
-  { return g < glyphId ? -1 : g > glyphId ? 1 : 0; }
+  صحیح cmp (hb_codepoint_t g) ثابت
+  { واپس g < glyphId ? -1 : g > glyphId ? 1 : 0; }
 
-  bool serialize (hb_serialize_context_t *s, const hb_map_t* glyph_map,
-                  const void* src_base, hb_subset_context_t *c,
-                  const ItemVarStoreInstancer &instancer) const
+  منطقی serialize (hb_serialize_context_t *s, ثابت hb_map_t* glyph_map,
+                  ثابت خالی* src_بنیاد, hb_subset_context_t *c,
+                  ثابت شے_Var_Store_Instancer &instancer) ثابت
   {
-    TRACE_SERIALIZE (this);
-    auto *out = s->embed (this);
-    if (unlikely (!out)) return_trace (false);
-    if (!s->check_assign (out->glyphId, glyph_map->get (glyphId),
-                          HB_SERIALIZE_ERROR_INT_OVERFLOW))
-      return_trace (false);
+    TRACE_SERIALIZE (یہ);
+    خودکار *برآمد = s->embed (یہ);
+    اگر (unlikely (!برآمد)) return_trace (جھوٹ);
+    اگر (!s->check_تفویض (برآمد->glyphId, glyph_map->get (glyphId),
+                          HB_SERIALIZE_ERROR_INT_حد_سے_تجاوز))
+      return_trace (جھوٹ);
 
-    return_trace (out->paint.serialize_subset (c, paint, src_base, instancer));
+    return_trace (برآمد->paint.serialize_subset (c, paint, src_بنیاد, instancer));
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  منطقی sanitize (hb_sanitize_context_t *c, ثابت خالی *بنیاد) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) && paint.sanitize (c, base)));
+    TRACE_SANITIZE (یہ);
+    return_trace (likely (c->check_struct (یہ) && paint.sanitize (c, بنیاد)));
   }
 
-  public:
+  عوامی:
   HBGlyphID16		glyphId;    /* Glyph ID of reference glyph */
-  Offset32To<Paint>	paint;      /* Offset (from beginning of BaseGlyphPaintRecord array) to Paint,
+  Offset32_مقصد<Paint>	paint;      /* Offset (from beginning of BaseGlyphPaintRecord array) to Paint,
                                      * Typically PaintColrLayers */
-  public:
-  DEFINE_SIZE_STATIC (6);
+  عوامی:
+  DEFINE_سائز_STATIC (6);
 };
 
-struct BaseGlyphList : SortedArray32Of<BaseGlyphPaintRecord>
+ساخت بنیاد_Glyph_List : Sorted_Array32_کا<بنیاد_Glyph_Paint_ریکارڈ>
 {
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  منطقی subset (hb_subset_context_t *c,
+               ثابت شے_Var_Store_Instancer &instancer) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->extend_min (out)))  return_trace (false);
-    const hb_set_t* glyphset = &c->plan->_glyphset_colred;
+    TRACE_SUBSET (یہ);
+    خودکار *برآمد = c->serializer->آغاز_embed (یہ);
+    اگر (unlikely (!c->serializer->extend_min (برآمد)))  return_trace (جھوٹ);
+    ثابت hb_سیٹ_t* glyphset = &c->plan->_glyphset_colred;
 
-    for (const auto& _ : as_array ())
+    برائے (ثابت خودکار& _ : as_array ())
     {
-      unsigned gid = _.glyphId;
-      if (!glyphset->has (gid)) continue;
+      غیرعلامتی gid = _.glyphId;
+      اگر (!glyphset->has (gid)) جاری;
 
-      if (_.serialize (c->serializer, c->plan->glyph_map, this, c, instancer)) out->len++;
-      else return_trace (false);
+      اگر (_.serialize (c->serializer, c->plan->glyph_map, یہ, c, instancer)) برآمد->len++;
+      ورنہ return_trace (جھوٹ);
     }
 
-    return_trace (out->len != 0);
+    return_trace (برآمد->len != 0);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (SortedArray32Of<BaseGlyphPaintRecord>::sanitize (c, this));
+    TRACE_SANITIZE (یہ);
+    return_trace (Sorted_Array32_کا<بنیاد_Glyph_Paint_ریکارڈ>::sanitize (c, یہ));
   }
 };
 
-struct LayerList : Array32OfOffset32To<Paint>
+ساخت LayerList : Array32_کا_Offset32_مقصد<Paint>
 {
-  const Paint& get_paint (unsigned i) const
-  { return this+(*this)[i]; }
+  ثابت Paint& get_paint (غیرعلامتی i) ثابت
+  { واپس یہ+(*یہ)[i]; }
 
-  bool subset (hb_subset_context_t *c,
-               const ItemVarStoreInstancer &instancer) const
+  منطقی subset (hb_subset_context_t *c,
+               ثابت شے_Var_Store_Instancer &instancer) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (this);
-    if (unlikely (!c->serializer->extend_min (out)))  return_trace (false);
+    TRACE_SUBSET (یہ);
+    خودکار *برآمد = c->serializer->آغاز_embed (یہ);
+    اگر (unlikely (!c->serializer->extend_min (برآمد)))  return_trace (جھوٹ);
 
-    bool ret = false;
-    for (const auto& _ : + hb_enumerate (*this)
-                         | hb_filter (c->plan->colrv1_layers, hb_first))
+    منطقی ret = جھوٹ;
+    برائے (ثابت خودکار& _ : + hb_enumerate (*یہ)
+                         | hb_filter (c->plan->colrv1_layers, hb_پہلا))
 
     {
-      auto *o = out->serialize_append (c->serializer);
-      if (unlikely (!o)) return_trace (false);
-      ret |= o->serialize_subset (c, _.second, this, instancer);
+      خودکار *o = برآمد->serialize_append (c->serializer);
+      اگر (unlikely (!o)) return_trace (جھوٹ);
+      ret |= o->serialize_subset (c, _.second, یہ, instancer);
     }
     return_trace (ret);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (Array32OfOffset32To<Paint>::sanitize (c, this));
+    TRACE_SANITIZE (یہ);
+    return_trace (Array32_کا_Offset32_مقصد<Paint>::sanitize (c, یہ));
   }
 };
 
-struct delta_set_index_map_subset_plan_t
+ساخت delta_سیٹ_اشاریہ_map_subset_plan_t
 {
-  unsigned get_inner_bit_count () const { return inner_bit_count; }
-  unsigned get_width ()           const { return ((outer_bit_count + inner_bit_count + 7) / 8); }
-  hb_array_t<const uint32_t> get_output_map () const { return output_map.as_array (); }
+  غیرعلامتی get_inner_ثنائی_ہندسہ_گنتی () ثابت { واپس inner_ثنائی_ہندسہ_گنتی; }
+  غیرعلامتی get_چوڑائی ()           ثابت { واپس ((outer_ثنائی_ہندسہ_گنتی + inner_ثنائی_ہندسہ_گنتی + 7) / 8); }
+  hb_array_t<ثابت uint32_t> get_output_map () ثابت { واپس output_map.as_array (); }
 
-  delta_set_index_map_subset_plan_t (const hb_map_t &new_deltaset_idx_varidx_map)
+  delta_سیٹ_اشاریہ_map_subset_plan_t (ثابت hb_map_t &new_deltaset_idx_varidx_map)
   {
-    map_count = 0;
-    outer_bit_count = 0;
-    inner_bit_count = 1;
+    map_گنتی = 0;
+    outer_ثنائی_ہندسہ_گنتی = 0;
+    inner_ثنائی_ہندسہ_گنتی = 1;
     output_map.init ();
 
     /* search backwards */
-    unsigned count = new_deltaset_idx_varidx_map.get_population ();
-    if (!count) return;
+    غیرعلامتی گنتی = new_deltaset_idx_varidx_map.get_population ();
+    اگر (!گنتی) واپس;
 
-    unsigned last_idx = (unsigned)-1;
-    unsigned last_varidx = (unsigned)-1;
+    غیرعلامتی آخری_idx = (غیرعلامتی)-1;
+    غیرعلامتی آخری_varidx = (غیرعلامتی)-1;
 
-    for (unsigned i = count; i; i--)
+    برائے (غیرعلامتی i = گنتی; i; i--)
     {
-      unsigned delta_set_idx = i - 1;
-      unsigned var_idx = new_deltaset_idx_varidx_map.get (delta_set_idx);
-      if (i == count)
+      غیرعلامتی delta_سیٹ_idx = i - 1;
+      غیرعلامتی var_idx = new_deltaset_idx_varidx_map.get (delta_سیٹ_idx);
+      اگر (i == گنتی)
       {
-        last_idx = delta_set_idx;
-        last_varidx = var_idx;
-        continue;
+        آخری_idx = delta_سیٹ_idx;
+        آخری_varidx = var_idx;
+        جاری;
       }
-      if (var_idx != last_varidx)
-        break;
-      last_idx = delta_set_idx;
+      اگر (var_idx != آخری_varidx)
+        توڑو;
+      آخری_idx = delta_سیٹ_idx;
     }
 
-    map_count = last_idx + 1;
+    map_گنتی = آخری_idx + 1;
   }
 
-  bool remap (const hb_map_t &new_deltaset_idx_varidx_map)
+  منطقی remap (ثابت hb_map_t &new_deltaset_idx_varidx_map)
   {
     /* recalculate bit_count */
-    outer_bit_count = 1;
-    inner_bit_count = 1;
+    outer_ثنائی_ہندسہ_گنتی = 1;
+    inner_ثنائی_ہندسہ_گنتی = 1;
 
-    if (unlikely (!output_map.resize_dirty (map_count))) return false;
+    اگر (unlikely (!output_map.resize_dirty (map_گنتی))) واپس جھوٹ;
 
-    for (unsigned idx = 0; idx < map_count; idx++)
+    برائے (غیرعلامتی idx = 0; idx < map_گنتی; idx++)
     {
       uint32_t *var_idx;
-      if (!new_deltaset_idx_varidx_map.has (idx, &var_idx)) return false;
+      اگر (!new_deltaset_idx_varidx_map.has (idx, &var_idx)) واپس جھوٹ;
       output_map.arrayZ[idx] = *var_idx;
 
-      unsigned outer = (*var_idx) >> 16;
-      unsigned bit_count = (outer == 0) ? 1 : hb_bit_storage (outer);
-      outer_bit_count = hb_max (bit_count, outer_bit_count);
+      غیرعلامتی outer = (*var_idx) >> 16;
+      غیرعلامتی ثنائی_ہندسہ_گنتی = (outer == 0) ? 1 : hb_ثنائی_ہندسہ_storage (outer);
+      outer_ثنائی_ہندسہ_گنتی = hb_max (ثنائی_ہندسہ_گنتی, outer_ثنائی_ہندسہ_گنتی);
 
-      unsigned inner = (*var_idx) & 0xFFFF;
-      bit_count = (inner == 0) ? 1 : hb_bit_storage (inner);
-      inner_bit_count = hb_max (bit_count, inner_bit_count);
+      غیرعلامتی inner = (*var_idx) & 0xFFFF;
+      ثنائی_ہندسہ_گنتی = (inner == 0) ? 1 : hb_ثنائی_ہندسہ_storage (inner);
+      inner_ثنائی_ہندسہ_گنتی = hb_max (ثنائی_ہندسہ_گنتی, inner_ثنائی_ہندسہ_گنتی);
     }
-    return true;
+    واپس سچ;
   }
 
-  private:
-  unsigned map_count;
-  unsigned outer_bit_count;
-  unsigned inner_bit_count;
-  hb_vector_t<uint32_t> output_map;
+  نجی:
+  غیرعلامتی map_گنتی;
+  غیرعلامتی outer_ثنائی_ہندسہ_گنتی;
+  غیرعلامتی inner_ثنائی_ہندسہ_گنتی;
+  hb_سمتیہ_t<uint32_t> output_map;
 };
 
-struct COLR
+ساخت COLR
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_COLR;
+  ساکن constexpr hb_لیبل_t جدول_لیبل = HB_OT_لیبل_COLR;
 
-  bool has_data () const { return has_v0_data () || version; }
+  منطقی has_ڈیٹا () ثابت { واپس has_v0_ڈیٹا () || نسخہ; }
 
-  bool has_v0_data () const { return numBaseGlyphs; }
-  bool has_v1_data () const
+  منطقی has_v0_ڈیٹا () ثابت { واپس عدد_بنیاد_Glyphs; }
+  منطقی has_v1_ڈیٹا () ثابت
   {
-    if (version < 1)
-      return false;
+    اگر (نسخہ < 1)
+      واپس جھوٹ;
     hb_barrier ();
 
-    return (this+baseGlyphList).len > 0;
+    واپس (یہ+بنیاد_Glyph_List_2).len > 0;
   }
 
-  unsigned int get_glyph_layers (hb_codepoint_t       glyph,
-				 unsigned int         start_offset,
-				 unsigned int        *count, /* IN/OUT.  May be NULL. */
-				 hb_ot_color_layer_t *layers /* OUT.     May be NULL. */) const
+  غیرعلامتی صحیح get_glyph_layers (hb_codepoint_t       glyph,
+				 غیرعلامتی صحیح         آغاز_انحراف,
+				 غیرعلامتی صحیح        *گنتی, /* IN/OUT.  May be NULL. */
+				 hb_ot_color_layer_t *layers /* OUT.     May be NULL. */) ثابت
   {
-    const BaseGlyphRecord &record = (this+baseGlyphsZ).bsearch (numBaseGlyphs, glyph);
+    ثابت بنیاد_Glyph_ریکارڈ &ریکارڈ = (یہ+بنیاد_Glyphs_Z).bsearch (عدد_بنیاد_Glyphs, glyph);
 
-    hb_array_t<const LayerRecord> all_layers = (this+layersZ).as_array (numLayers);
-    hb_array_t<const LayerRecord> glyph_layers = all_layers.sub_array (record.firstLayerIdx,
-								       record.numLayers);
-    if (count && layers)
+    hb_array_t<ثابت Layer_ریکارڈ> all_layers = (یہ+layersZ).as_array (عدد_Layers);
+    hb_array_t<ثابت Layer_ریکارڈ> glyph_layers = all_layers.sub_array (ریکارڈ.پہلا_Layer_Idx,
+								       ریکارڈ.عدد_Layers);
+    اگر (گنتی && layers)
     {
-      + glyph_layers.sub_array (start_offset, count)
-      | hb_sink (hb_array (layers, *count))
+      + glyph_layers.sub_array (آغاز_انحراف, گنتی)
+      | hb_sink (hb_array (layers, *گنتی))
       ;
     }
-    return glyph_layers.length;
+    واپس glyph_layers.لمبائی;
   }
 
-  struct accelerator_t
+  ساخت accelerator_t
   {
     accelerator_t (hb_face_t *face)
-    { colr = hb_sanitize_context_t ().reference_table<COLR> (face); }
+    { colr = hb_sanitize_context_t ().reference_جدول<COLR> (face); }
 
     ~accelerator_t ()
     {
-      auto *scratch = cached_scratch.get_relaxed ();
-      if (scratch)
+      خودکار *scratch = cached_scratch.get_relaxed ();
+      اگر (scratch)
       {
 	scratch->~hb_colr_scratch_t ();
 	hb_free (scratch);
@@ -2549,777 +2549,777 @@ struct COLR
     }
 
 
-    bool has_data () const { return colr->has_data (); }
+    منطقی has_ڈیٹا () ثابت { واپس colr->has_ڈیٹا (); }
 
-#ifndef HB_NO_PAINT
-    bool
+#اگر_غیر_تعریف_شدہ HB_NO_PAINT
+    منطقی
     get_extents (hb_font_t *font,
 		 hb_codepoint_t glyph,
-		 hb_glyph_extents_t *extents) const
+		 hb_glyph_extents_t *extents) ثابت
     {
-      if (unlikely (!has_data ())) return false;
+      اگر (unlikely (!has_ڈیٹا ())) واپس جھوٹ;
 
       hb_colr_scratch_t *scratch = acquire_scratch ();
-      if (unlikely (!scratch)) return true;
-      bool ret = colr->get_extents (font, glyph, extents, *scratch);
+      اگر (unlikely (!scratch)) واپس سچ;
+      منطقی ret = colr->get_extents (font, glyph, extents, *scratch);
       release_scratch (scratch);
-      return ret;
+      واپس ret;
     }
 
-    bool paint_glyph (hb_font_t *font,
+    منطقی paint_glyph (hb_font_t *font,
 		      hb_codepoint_t glyph,
-		      hb_paint_funcs_t *funcs, void *data,
-		      unsigned int palette_index,
+		      hb_paint_funcs_t *funcs, خالی *ڈیٹا,
+		      غیرعلامتی صحیح palette_اشاریہ,
 		      hb_color_t foreground,
-		      bool clip = true) const
+		      منطقی clip = سچ) ثابت
     {
-      if (unlikely (!has_data ())) return false;
+      اگر (unlikely (!has_ڈیٹا ())) واپس جھوٹ;
 
       hb_colr_scratch_t *scratch = acquire_scratch ();
-      if (unlikely (!scratch)) return true;
-      bool ret = colr->paint_glyph (font, glyph, funcs, data, palette_index, foreground, clip, *scratch);
+      اگر (unlikely (!scratch)) واپس سچ;
+      منطقی ret = colr->paint_glyph (font, glyph, funcs, ڈیٹا, palette_اشاریہ, foreground, clip, *scratch);
       release_scratch (scratch);
-      return ret;
+      واپس ret;
     }
-#endif
+#اگر_ختم
 
-    bool is_valid () { return colr.get_blob ()->length; }
+    منطقی is_valid () { واپس colr.get_blob ()->لمبائی; }
 
-    void depend (hb_depend_data_builder_t *depend_data) const
+    خالی depend (hb_depend_ڈیٹا_builder_t *depend_ڈیٹا) ثابت
     {
-      if (!has_data ()) return;
-      colr->depend (depend_data);
+      اگر (!has_ڈیٹا ()) واپس;
+      colr->depend (depend_ڈیٹا);
     }
 
-    void closure_glyphs (hb_codepoint_t glyph,
-			 hb_set_t *related_ids /* OUT */) const
-    { colr->closure_glyphs (glyph, related_ids); }
+    خالی احاطہ_glyphs (hb_codepoint_t glyph,
+			 hb_سیٹ_t *related_ids /*برآمد*/) ثابت
+    { colr->احاطہ_glyphs (glyph, related_ids); }
 
-    void closure_V0palette_indices (const hb_set_t *glyphs,
-				    hb_set_t *palettes /* OUT */) const
-    { colr->closure_V0palette_indices (glyphs, palettes); }
+    خالی احاطہ_V0palette_indices (ثابت hb_سیٹ_t *glyphs,
+				    hb_سیٹ_t *palettes /*برآمد*/) ثابت
+    { colr->احاطہ_V0palette_indices (glyphs, palettes); }
 
-    void closure_forV1 (hb_set_t *glyphset,
-                        hb_set_t *layer_indices,
-                        hb_set_t *palette_indices,
-                        hb_set_t *variation_indices,
-                        hb_set_t *delta_set_indices) const
-    { colr->closure_forV1 (glyphset, layer_indices, palette_indices, variation_indices, delta_set_indices); }
+    خالی احاطہ_for_V1 (hb_سیٹ_t *glyphset,
+                        hb_سیٹ_t *layer_indices,
+                        hb_سیٹ_t *palette_indices,
+                        hb_سیٹ_t *variation_indices,
+                        hb_سیٹ_t *delta_سیٹ_indices) ثابت
+    { colr->احاطہ_for_V1 (glyphset, layer_indices, palette_indices, variation_indices, delta_سیٹ_indices); }
 
-    bool has_var_store () const
-    { return colr->has_var_store (); }
+    منطقی has_var_store () ثابت
+    { واپس colr->has_var_store (); }
 
-    const ItemVariationStore &get_var_store () const
-    { return colr->get_var_store (); }
-    const ItemVariationStore *get_var_store_ptr () const
-    { return colr->get_var_store_ptr (); }
+    ثابت شے_Variation_Store &get_var_store () ثابت
+    { واپس colr->get_var_store (); }
+    ثابت شے_Variation_Store *get_var_store_ptr () ثابت
+    { واپس colr->get_var_store_ptr (); }
 
-    bool has_delta_set_index_map () const
-    { return colr->has_delta_set_index_map (); }
+    منطقی has_delta_سیٹ_اشاریہ_map () ثابت
+    { واپس colr->has_delta_سیٹ_اشاریہ_map (); }
 
-    const DeltaSetIndexMap &get_delta_set_index_map () const
-    { return colr->get_delta_set_index_map (); }
-    const DeltaSetIndexMap *get_delta_set_index_map_ptr () const
-    { return colr->get_delta_set_index_map_ptr (); }
+    ثابت Delta_سیٹ_اشاریہ_Map &get_delta_سیٹ_اشاریہ_map () ثابت
+    { واپس colr->get_delta_سیٹ_اشاریہ_map (); }
+    ثابت Delta_سیٹ_اشاریہ_Map *get_delta_سیٹ_اشاریہ_map_ptr () ثابت
+    { واپس colr->get_delta_سیٹ_اشاریہ_map_ptr (); }
 
-    private:
+    نجی:
 
-    hb_colr_scratch_t *acquire_scratch () const
+    hb_colr_scratch_t *acquire_scratch () ثابت
     {
       hb_colr_scratch_t *scratch = cached_scratch.get_acquire ();
 
-      if (!scratch || unlikely (!cached_scratch.cmpexch (scratch, nullptr)))
+      اگر (!scratch || unlikely (!cached_scratch.cmpexch (scratch, خالی_اشاریہ)))
       {
-	scratch = (hb_colr_scratch_t *) hb_calloc (1, sizeof (hb_colr_scratch_t));
-	if (unlikely (!scratch))
-	  return nullptr;
+	scratch = (hb_colr_scratch_t *) hb_calloc (1, حجم (hb_colr_scratch_t));
+	اگر (unlikely (!scratch))
+	  واپس خالی_اشاریہ;
       }
 
-      return scratch;
+      واپس scratch;
     }
-    void release_scratch (hb_colr_scratch_t *scratch) const
+    خالی release_scratch (hb_colr_scratch_t *scratch) ثابت
     {
-      if (!cached_scratch.cmpexch (nullptr, scratch))
+      اگر (!cached_scratch.cmpexch (خالی_اشاریہ, scratch))
       {
 	scratch->~hb_colr_scratch_t ();
 	hb_free (scratch);
       }
     }
 
-    public:
+    عوامی:
     hb_blob_ptr_t<COLR> colr;
-    private:
-    mutable hb_atomic_t<hb_colr_scratch_t *> cached_scratch;
+    نجی:
+    تغیرپذیر hb_atomic_t<hb_colr_scratch_t *> cached_scratch;
   };
 
-  void depend (hb_depend_data_builder_t *depend_data) const
+  خالی depend (hb_depend_ڈیٹا_builder_t *depend_ڈیٹا) ثابت
   {
     // v0
-    hb_array_t<const BaseGlyphRecord> baseGlyphs = (this+baseGlyphsZ).as_array (numBaseGlyphs);
-    for (const BaseGlyphRecord &record : baseGlyphs)
+    hb_array_t<ثابت بنیاد_Glyph_ریکارڈ> بنیاد_Glyphs = (یہ+بنیاد_Glyphs_Z).as_array (عدد_بنیاد_Glyphs);
+    برائے (ثابت بنیاد_Glyph_ریکارڈ &ریکارڈ : بنیاد_Glyphs)
     {
-      auto glyph_layers = (this+layersZ).as_array (numLayers).sub_array (record.firstLayerIdx,
-                                                                         record.numLayers);
-      for (const LayerRecord layer : glyph_layers)
-        depend_data->add_depend(record.glyphId, HB_OT_TAG_COLR, layer.glyphId);
+      خودکار glyph_layers = (یہ+layersZ).as_array (عدد_Layers).sub_array (ریکارڈ.پہلا_Layer_Idx,
+                                                                         ریکارڈ.عدد_Layers);
+      برائے (ثابت Layer_ریکارڈ layer : glyph_layers)
+        depend_ڈیٹا->جوڑو_depend(ریکارڈ.glyphId, HB_OT_لیبل_COLR, layer.glyphId);
     }
 
-    if (!has_v1_data())
-      return;
+    اگر (!has_v1_ڈیٹا())
+      واپس;
 
     // v1
-    hb_colrv1_depend_context_t c (this, depend_data);
-    const BaseGlyphList &baseglyph_paintrecords = this+baseGlyphList;
+    hb_colrv1_depend_context_t c (یہ, depend_ڈیٹا);
+    ثابت بنیاد_Glyph_List &baseglyph_paintrecords = یہ+بنیاد_Glyph_List_2;
 
-    for (const BaseGlyphPaintRecord &baseglyph_paintrecord: baseglyph_paintrecords.iter ())
+    برائے (ثابت بنیاد_Glyph_Paint_ریکارڈ &baseglyph_paintrecord: baseglyph_paintrecords.iter ())
     {
-      c.source_gid = baseglyph_paintrecord.glyphId;
-      c.visited_paint.clear ();
+      c.ماخذ_gid = baseglyph_paintrecord.glyphId;
+      c.دیکھا_paint.clear ();
 
-      const Paint &paint = &baseglyph_paintrecords+baseglyph_paintrecord.paint;
+      ثابت Paint &paint = &baseglyph_paintrecords+baseglyph_paintrecord.paint;
       paint.dispatch (&c);
     }
   }
 
-  void closure_glyphs (hb_codepoint_t glyph,
-		       hb_set_t *related_ids /* OUT */) const
+  خالی احاطہ_glyphs (hb_codepoint_t glyph,
+		       hb_سیٹ_t *related_ids /*برآمد*/) ثابت
   {
-    const BaseGlyphRecord *record = get_base_glyph_record (glyph);
-    if (!record) return;
+    ثابت بنیاد_Glyph_ریکارڈ *ریکارڈ = get_بنیاد_glyph_ریکارڈ (glyph);
+    اگر (!ریکارڈ) واپس;
 
-    auto glyph_layers = (this+layersZ).as_array (numLayers).sub_array (record->firstLayerIdx,
-								       record->numLayers);
-    if (!glyph_layers.length) return;
-    related_ids->add_array (&glyph_layers[0].glyphId, glyph_layers.length, LayerRecord::min_size);
+    خودکار glyph_layers = (یہ+layersZ).as_array (عدد_Layers).sub_array (ریکارڈ->پہلا_Layer_Idx,
+								       ریکارڈ->عدد_Layers);
+    اگر (!glyph_layers.لمبائی) واپس;
+    related_ids->جوڑو_array (&glyph_layers[0].glyphId, glyph_layers.لمبائی, Layer_ریکارڈ::min_سائز);
   }
 
-  void closure_V0palette_indices (const hb_set_t *glyphs,
-				  hb_set_t *palettes /* OUT */) const
+  خالی احاطہ_V0palette_indices (ثابت hb_سیٹ_t *glyphs,
+				  hb_سیٹ_t *palettes /*برآمد*/) ثابت
   {
-    if (!numBaseGlyphs || !numLayers) return;
-    hb_array_t<const BaseGlyphRecord> baseGlyphs = (this+baseGlyphsZ).as_array (numBaseGlyphs);
-    hb_array_t<const LayerRecord> all_layers = (this+layersZ).as_array (numLayers);
+    اگر (!عدد_بنیاد_Glyphs || !عدد_Layers) واپس;
+    hb_array_t<ثابت بنیاد_Glyph_ریکارڈ> بنیاد_Glyphs = (یہ+بنیاد_Glyphs_Z).as_array (عدد_بنیاد_Glyphs);
+    hb_array_t<ثابت Layer_ریکارڈ> all_layers = (یہ+layersZ).as_array (عدد_Layers);
 
-    for (const BaseGlyphRecord record : baseGlyphs)
+    برائے (ثابت بنیاد_Glyph_ریکارڈ ریکارڈ : بنیاد_Glyphs)
     {
-      if (!glyphs->has (record.glyphId)) continue;
-      hb_array_t<const LayerRecord> glyph_layers = all_layers.sub_array (record.firstLayerIdx,
-                                                                   record.numLayers);
-      for (const LayerRecord layer : glyph_layers)
-        palettes->add (layer.colorIdx);
+      اگر (!glyphs->has (ریکارڈ.glyphId)) جاری;
+      hb_array_t<ثابت Layer_ریکارڈ> glyph_layers = all_layers.sub_array (ریکارڈ.پہلا_Layer_Idx,
+                                                                   ریکارڈ.عدد_Layers);
+      برائے (ثابت Layer_ریکارڈ layer : glyph_layers)
+        palettes->جوڑو (layer.colorIdx);
     }
   }
 
-  void closure_forV1 (hb_set_t *glyphset,
-                      hb_set_t *layer_indices,
-                      hb_set_t *palette_indices,
-                      hb_set_t *variation_indices,
-                      hb_set_t *delta_set_indices) const
+  خالی احاطہ_for_V1 (hb_سیٹ_t *glyphset,
+                      hb_سیٹ_t *layer_indices,
+                      hb_سیٹ_t *palette_indices,
+                      hb_سیٹ_t *variation_indices,
+                      hb_سیٹ_t *delta_سیٹ_indices) ثابت
   {
-    if (version < 1) return;
+    اگر (نسخہ < 1) واپس;
     hb_barrier ();
 
-    hb_set_t visited_glyphs;
+    hb_سیٹ_t دیکھا_glyphs;
 
-    hb_colrv1_closure_context_t c (this, &visited_glyphs, layer_indices, palette_indices, variation_indices);
-    const BaseGlyphList &baseglyph_paintrecords = this+baseGlyphList;
+    hb_colrv1_احاطہ_context_t c (یہ, &دیکھا_glyphs, layer_indices, palette_indices, variation_indices);
+    ثابت بنیاد_Glyph_List &baseglyph_paintrecords = یہ+بنیاد_Glyph_List_2;
 
-    for (const BaseGlyphPaintRecord &baseglyph_paintrecord: baseglyph_paintrecords.iter ())
+    برائے (ثابت بنیاد_Glyph_Paint_ریکارڈ &baseglyph_paintrecord: baseglyph_paintrecords.iter ())
     {
-      unsigned gid = baseglyph_paintrecord.glyphId;
-      if (!glyphset->has (gid)) continue;
+      غیرعلامتی gid = baseglyph_paintrecord.glyphId;
+      اگر (!glyphset->has (gid)) جاری;
 
-      const Paint &paint = &baseglyph_paintrecords+baseglyph_paintrecord.paint;
+      ثابت Paint &paint = &baseglyph_paintrecords+baseglyph_paintrecord.paint;
       paint.dispatch (&c);
     }
-    hb_set_union (glyphset, &visited_glyphs);
+    hb_سیٹ_union (glyphset, &دیکھا_glyphs);
 
-    const ClipList &cliplist = this+clipList;
+    ثابت ClipList &cliplist = یہ+clipList;
     c.glyphs = glyphset;
-    for (const ClipRecord &clip_record : cliplist.clips.iter())
-      clip_record.closurev1 (&c, &cliplist);
+    برائے (ثابت Clip_ریکارڈ &clip_ریکارڈ : cliplist.clips.iter())
+      clip_ریکارڈ.closurev1 (&c, &cliplist);
 
     // if a DeltaSetIndexMap is included, collected variation indices are
     // actually delta set indices, we need to map them into variation indices
-    if (has_delta_set_index_map ())
+    اگر (has_delta_سیٹ_اشاریہ_map ())
     {
-      const DeltaSetIndexMap &var_idx_map = this+varIdxMap;
-      delta_set_indices->set (*variation_indices);
+      ثابت Delta_سیٹ_اشاریہ_Map &var_idx_map = یہ+varIdxMap;
+      delta_سیٹ_indices->سیٹ (*variation_indices);
       variation_indices->clear ();
-      for (unsigned delta_set_idx : *delta_set_indices)
-        variation_indices->add (var_idx_map.map (delta_set_idx));
+      برائے (غیرعلامتی delta_سیٹ_idx : *delta_سیٹ_indices)
+        variation_indices->جوڑو (var_idx_map.map (delta_سیٹ_idx));
     }
   }
 
-  const LayerList& get_layerList () const
-  { return (this+layerList); }
+  ثابت LayerList& get_layerList () ثابت
+  { واپس (یہ+layerList); }
 
-  const BaseGlyphList& get_baseglyphList () const
-  { return (this+baseGlyphList); }
+  ثابت بنیاد_Glyph_List& get_baseglyphList () ثابت
+  { واپس (یہ+بنیاد_Glyph_List_2); }
 
-  bool has_var_store () const
-  { return version >= 1 && hb_barrier () && varStore != 0; }
+  منطقی has_var_store () ثابت
+  { واپس نسخہ >= 1 && hb_barrier () && varStore != 0; }
 
-  bool has_delta_set_index_map () const
-  { return version >= 1 && hb_barrier () && varIdxMap != 0; }
+  منطقی has_delta_سیٹ_اشاریہ_map () ثابت
+  { واپس نسخہ >= 1 && hb_barrier () && varIdxMap != 0; }
 
-  bool has_clip_list () const
-  { return version >= 1 && hb_barrier () && clipList != 0; }
+  منطقی has_clip_list () ثابت
+  { واپس نسخہ >= 1 && hb_barrier () && clipList != 0; }
 
-  const DeltaSetIndexMap &get_delta_set_index_map () const
-  { return has_delta_set_index_map () && hb_barrier () ? this+varIdxMap : Null (DeltaSetIndexMap); }
-  const DeltaSetIndexMap *get_delta_set_index_map_ptr () const
-  { return has_delta_set_index_map () && hb_barrier () ? &(this+varIdxMap) : nullptr; }
+  ثابت Delta_سیٹ_اشاریہ_Map &get_delta_سیٹ_اشاریہ_map () ثابت
+  { واپس has_delta_سیٹ_اشاریہ_map () && hb_barrier () ? یہ+varIdxMap : Null (Delta_سیٹ_اشاریہ_Map); }
+  ثابت Delta_سیٹ_اشاریہ_Map *get_delta_سیٹ_اشاریہ_map_ptr () ثابت
+  { واپس has_delta_سیٹ_اشاریہ_map () && hb_barrier () ? &(یہ+varIdxMap) : خالی_اشاریہ; }
 
-  const ItemVariationStore &get_var_store () const
-  { return has_var_store () && hb_barrier () ? this+varStore : Null (ItemVariationStore); }
-  const ItemVariationStore *get_var_store_ptr () const
-  { return has_var_store () && hb_barrier () ? &(this+varStore) : nullptr; }
+  ثابت شے_Variation_Store &get_var_store () ثابت
+  { واپس has_var_store () && hb_barrier () ? یہ+varStore : Null (شے_Variation_Store); }
+  ثابت شے_Variation_Store *get_var_store_ptr () ثابت
+  { واپس has_var_store () && hb_barrier () ? &(یہ+varStore) : خالی_اشاریہ; }
 
-  const ClipList &get_clip_list () const
-  { return has_clip_list () && hb_barrier () ? this+clipList : Null (ClipList); }
+  ثابت ClipList &get_clip_list () ثابت
+  { واپس has_clip_list () && hb_barrier () ? یہ+clipList : Null (ClipList); }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ) &&
 		  hb_barrier () &&
-                  (this+baseGlyphsZ).sanitize (c, numBaseGlyphs) &&
-                  (this+layersZ).sanitize (c, numLayers) &&
-                  (version == 0 ||
+                  (یہ+بنیاد_Glyphs_Z).sanitize (c, عدد_بنیاد_Glyphs) &&
+                  (یہ+layersZ).sanitize (c, عدد_Layers) &&
+                  (نسخہ == 0 ||
 		   (hb_barrier () &&
-		    baseGlyphList.sanitize (c, this) &&
-		    layerList.sanitize (c, this) &&
-		    clipList.sanitize (c, this) &&
-		    varIdxMap.sanitize (c, this) &&
-		    varStore.sanitize (c, this))));
+		    بنیاد_Glyph_List_2.sanitize (c, یہ) &&
+		    layerList.sanitize (c, یہ) &&
+		    clipList.sanitize (c, یہ) &&
+		    varIdxMap.sanitize (c, یہ) &&
+		    varStore.sanitize (c, یہ))));
   }
 
-  template<typename BaseIterator, typename LayerIterator,
-	   hb_requires (hb_is_iterator (BaseIterator)),
+  سانچہ<قسم_نام بنیاد_Iterator, قسم_نام LayerIterator,
+	   hb_requires (hb_is_iterator (بنیاد_Iterator)),
 	   hb_requires (hb_is_iterator (LayerIterator))>
-  bool serialize_V0 (hb_serialize_context_t *c,
-		     unsigned version,
-		     BaseIterator base_it,
+  منطقی serialize_V0 (hb_serialize_context_t *c,
+		     غیرعلامتی نسخہ,
+		     بنیاد_Iterator بنیاد_it,
 		     LayerIterator layer_it)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (base_it.len () != layer_it.len ()))
-      return_trace (false);
+    TRACE_SERIALIZE (یہ);
+    اگر (unlikely (بنیاد_it.len () != layer_it.len ()))
+      return_trace (جھوٹ);
 
-    this->version = version;
-    numLayers = 0;
-    numBaseGlyphs = base_it.len ();
-    if (numBaseGlyphs == 0)
+    یہ->نسخہ = نسخہ;
+    عدد_Layers = 0;
+    عدد_بنیاد_Glyphs = بنیاد_it.len ();
+    اگر (عدد_بنیاد_Glyphs == 0)
     {
-      baseGlyphsZ = 0;
+      بنیاد_Glyphs_Z = 0;
       layersZ = 0;
-      return_trace (true);
+      return_trace (سچ);
     }
 
     c->push ();
-    for (const hb_item_type<BaseIterator> _ : + base_it.iter ())
+    برائے (ثابت hb_شے_type<بنیاد_Iterator> _ : + بنیاد_it.iter ())
     {
-      auto* record = c->embed (_);
-      if (unlikely (!record)) return_trace (false);
-      record->firstLayerIdx = numLayers;
-      numLayers += record->numLayers;
+      خودکار* ریکارڈ = c->embed (_);
+      اگر (unlikely (!ریکارڈ)) return_trace (جھوٹ);
+      ریکارڈ->پہلا_Layer_Idx = عدد_Layers;
+      عدد_Layers += ریکارڈ->عدد_Layers;
     }
-    c->add_link (baseGlyphsZ, c->pop_pack ());
+    c->جوڑو_link (بنیاد_Glyphs_Z, c->نکالو_pack ());
 
     c->push ();
-    for (const hb_item_type<LayerIterator>& _ : + layer_it.iter ())
+    برائے (ثابت hb_شے_type<LayerIterator>& _ : + layer_it.iter ())
       _.as_array ().copy (c);
 
-    c->add_link (layersZ, c->pop_pack ());
+    c->جوڑو_link (layersZ, c->نکالو_pack ());
 
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  const BaseGlyphRecord* get_base_glyph_record (hb_codepoint_t gid) const
+  ثابت بنیاد_Glyph_ریکارڈ* get_بنیاد_glyph_ریکارڈ (hb_codepoint_t gid) ثابت
   {
-    const BaseGlyphRecord* record = &(this+baseGlyphsZ).bsearch (numBaseGlyphs, (unsigned int) gid);
-    if (record == &Null (BaseGlyphRecord) ||
-        (record && (hb_codepoint_t) record->glyphId != gid))
-      record = nullptr;
-    return record;
+    ثابت بنیاد_Glyph_ریکارڈ* ریکارڈ = &(یہ+بنیاد_Glyphs_Z).bsearch (عدد_بنیاد_Glyphs, (غیرعلامتی صحیح) gid);
+    اگر (ریکارڈ == &Null (بنیاد_Glyph_ریکارڈ) ||
+        (ریکارڈ && (hb_codepoint_t) ریکارڈ->glyphId != gid))
+      ریکارڈ = خالی_اشاریہ;
+    واپس ریکارڈ;
   }
 
-  const BaseGlyphPaintRecord* get_base_glyph_paintrecord (hb_codepoint_t gid) const
+  ثابت بنیاد_Glyph_Paint_ریکارڈ* get_بنیاد_glyph_paintrecord (hb_codepoint_t gid) ثابت
   {
-    const BaseGlyphList &list = this+baseGlyphList;
-    unsigned int i;
-    if (!list.bfind ((unsigned) gid, &i))
-      return nullptr;
-    return &list[i];
+    ثابت بنیاد_Glyph_List &list = یہ+بنیاد_Glyph_List_2;
+    غیرعلامتی صحیح i;
+    اگر (!list.bfind ((غیرعلامتی) gid, &i))
+      واپس خالی_اشاریہ;
+    واپس &list[i];
   }
 
-  bool downgrade_to_V0 (const hb_set_t &glyphset) const
+  منطقی downgrade_مقصد_V0 (ثابت hb_سیٹ_t &glyphset) ثابت
   {
     //no more COLRv1 glyphs, downgrade to version 0
-    for (const BaseGlyphPaintRecord& _ : get_baseglyphList ())
-      if (glyphset.has (_.glyphId))
-        return false;
+    برائے (ثابت بنیاد_Glyph_Paint_ریکارڈ& _ : get_baseglyphList ())
+      اگر (glyphset.has (_.glyphId))
+        واپس جھوٹ;
 
-    return true;
+    واپس سچ;
   }
 
-  bool subset_varstore (hb_subset_context_t *c,
-                        COLR* out /* OUT */) const
+  منطقی subset_varstore (hb_subset_context_t *c,
+                        COLR* برآمد /*برآمد*/) ثابت
   {
-    TRACE_SUBSET (this);
-    if (!varStore || c->plan->all_axes_pinned ||
+    TRACE_SUBSET (یہ);
+    اگر (!varStore || c->plan->all_axes_pinned ||
         !c->plan->colrv1_variation_idx_delta_map)
-      return_trace (true);
+      return_trace (سچ);
 
-    const ItemVariationStore& var_store = this+varStore;
-    if (c->plan->normalized_coords)
+    ثابت شے_Variation_Store& var_store = یہ+varStore;
+    اگر (c->plan->normalized_coords)
     {
-      item_variations_t item_vars;
+      شے_variations_t شے_vars;
       /* turn off varstore optimization when varIdxMap is null, so we maintain
        * original var_idx sequence */
-      bool optimize = (varIdxMap != 0) ? true : false;
-      if (!item_vars.instantiate (var_store, c->plan,
+      منطقی optimize = (varIdxMap != 0) ? سچ : جھوٹ;
+      اگر (!شے_vars.instantiate (var_store, c->plan,
                                   optimize, /* optimization */
                                   optimize, /* use_no_variation_idx = false */
                                   c->plan->colrv1_varstore_inner_maps.as_array ()))
-        return_trace (false);
+        return_trace (جھوٹ);
 
       /* do not serialize varStore if there's no variation data after
        * instancing: region_list or var_data is empty */
-      if (item_vars.get_region_list () &&
-          item_vars.get_vardata_encodings () &&
-          !out->varStore.serialize_serialize (c->serializer,
-                                              item_vars.has_long_word (),
-                                              c->plan->axis_tags,
-                                              item_vars.get_region_list (),
-                                              item_vars.get_vardata_encodings ()))
-        return_trace (false);
+      اگر (شے_vars.get_region_list () &&
+          شے_vars.get_vardata_encodings () &&
+          !برآمد->varStore.serialize_serialize (c->serializer,
+                                              شے_vars.has_long_لفظ (),
+                                              c->plan->axis_لیبل_فہرست,
+                                              شے_vars.get_region_list (),
+                                              شے_vars.get_vardata_encodings ()))
+        return_trace (جھوٹ);
 
       /* if varstore is optimized, update colrv1_new_deltaset_idx_varidx_map in
        * subset plan.
        * If varstore is empty after instancing, varidx_map would be empty and
        * all var_idxes will be updated to VarIdx::NO_VARIATION */
-      if (optimize)
+      اگر (optimize)
       {
-        const hb_map_t &varidx_map = item_vars.get_varidx_map ();
-        for (auto _ : c->plan->colrv1_new_deltaset_idx_varidx_map.iter_ref ())
+        ثابت hb_map_t &varidx_map = شے_vars.get_varidx_map ();
+        برائے (خودکار _ : c->plan->colrv1_new_deltaset_idx_varidx_map.iter_ref ())
         {
           uint32_t varidx = _.second;
           uint32_t *new_varidx;
-          if (varidx_map.has (varidx, &new_varidx))
+          اگر (varidx_map.has (varidx, &new_varidx))
             _.second = *new_varidx;
-          else
+          ورنہ
             _.second = VarIdx::NO_VARIATION;
         }
       }
     }
-    else
+    ورنہ
     {
       /* avar2 partial instancing: cull unreachable regions. */
-      hb_set_t dead_regions;
-      if (c->plan->has_avar2)
-        var_store.collect_dead_regions (c->plan->axes_old_index_tag_map,
+      hb_سیٹ_t dead_regions;
+      اگر (c->plan->has_avar2)
+        var_store.collect_dead_regions (c->plan->axes_old_اشاریہ_لیبل_map,
                                         c->plan->avar2_reachable_ranges,
                                         dead_regions);
 
-      if (unlikely (!out->varStore.serialize_serialize (c->serializer,
+      اگر (unlikely (!برآمد->varStore.serialize_serialize (c->serializer,
                                                         &var_store,
                                                         c->plan->colrv1_varstore_inner_maps.as_array (),
-                                                        dead_regions.get_population () ? &dead_regions : nullptr)))
-        return_trace (false);
+                                                        dead_regions.get_population () ? &dead_regions : خالی_اشاریہ)))
+        return_trace (جھوٹ);
     }
 
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  bool subset_delta_set_index_map (hb_subset_context_t *c,
-                                   COLR* out /* OUT */) const
+  منطقی subset_delta_سیٹ_اشاریہ_map (hb_subset_context_t *c,
+                                   COLR* برآمد /*برآمد*/) ثابت
   {
-    TRACE_SUBSET (this);
-    if (!varIdxMap || c->plan->all_axes_pinned ||
+    TRACE_SUBSET (یہ);
+    اگر (!varIdxMap || c->plan->all_axes_pinned ||
         !c->plan->colrv1_new_deltaset_idx_varidx_map)
-      return_trace (true);
+      return_trace (سچ);
 
-    const hb_map_t &deltaset_idx_varidx_map = c->plan->colrv1_new_deltaset_idx_varidx_map;
-    delta_set_index_map_subset_plan_t index_map_plan (deltaset_idx_varidx_map);
+    ثابت hb_map_t &deltaset_idx_varidx_map = c->plan->colrv1_new_deltaset_idx_varidx_map;
+    delta_سیٹ_اشاریہ_map_subset_plan_t اشاریہ_map_plan (deltaset_idx_varidx_map);
 
-    if (unlikely (!index_map_plan.remap (deltaset_idx_varidx_map)))
-      return_trace (false);
+    اگر (unlikely (!اشاریہ_map_plan.remap (deltaset_idx_varidx_map)))
+      return_trace (جھوٹ);
 
-    return_trace (out->varIdxMap.serialize_serialize (c->serializer, index_map_plan));
+    return_trace (برآمد->varIdxMap.serialize_serialize (c->serializer, اشاریہ_map_plan));
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    const hb_map_t &reverse_glyph_map = *c->plan->reverse_glyph_map;
-    const hb_set_t& glyphset = c->plan->_glyphset_colred;
+    TRACE_SUBSET (یہ);
+    ثابت hb_map_t &الٹ_glyph_map = *c->plan->الٹ_glyph_map;
+    ثابت hb_سیٹ_t& glyphset = c->plan->_glyphset_colred;
 
-    auto base_it =
-    + hb_range (c->plan->num_output_glyphs ())
+    خودکار بنیاد_it =
+    + hb_range (c->plan->عدد_output_glyphs ())
     | hb_filter ([&](hb_codepoint_t new_gid)
 		 {
-		    hb_codepoint_t old_gid = reverse_glyph_map.get (new_gid);
-		    if (glyphset.has (old_gid)) return true;
-		    return false;
+		    hb_codepoint_t old_gid = الٹ_glyph_map.get (new_gid);
+		    اگر (glyphset.has (old_gid)) واپس سچ;
+		    واپس جھوٹ;
 		 })
-    | hb_map_retains_sorting ([&](hb_codepoint_t new_gid)
+    | hb_map_retains_ترتیب_کاری ([&](hb_codepoint_t new_gid)
 			      {
-				hb_codepoint_t old_gid = reverse_glyph_map.get (new_gid);
+				hb_codepoint_t old_gid = الٹ_glyph_map.get (new_gid);
 
-				const BaseGlyphRecord* old_record = get_base_glyph_record (old_gid);
-				if (unlikely (!old_record))
-				  return hb_pair_t<bool, BaseGlyphRecord> (false, Null (BaseGlyphRecord));
-				BaseGlyphRecord new_record = {};
-				new_record.glyphId = new_gid;
-				new_record.numLayers = old_record->numLayers;
-				return hb_pair_t<bool, BaseGlyphRecord> (true, new_record);
+				ثابت بنیاد_Glyph_ریکارڈ* old_ریکارڈ = get_بنیاد_glyph_ریکارڈ (old_gid);
+				اگر (unlikely (!old_ریکارڈ))
+				  واپس hb_pair_t<منطقی, بنیاد_Glyph_ریکارڈ> (جھوٹ, Null (بنیاد_Glyph_ریکارڈ));
+				بنیاد_Glyph_ریکارڈ new_ریکارڈ = {};
+				new_ریکارڈ.glyphId = new_gid;
+				new_ریکارڈ.عدد_Layers = old_ریکارڈ->عدد_Layers;
+				واپس hb_pair_t<منطقی, بنیاد_Glyph_ریکارڈ> (سچ, new_ریکارڈ);
 			      })
-    | hb_filter (hb_first)
-    | hb_map_retains_sorting (hb_second)
+    | hb_filter (hb_پہلا)
+    | hb_map_retains_ترتیب_کاری (hb_دوسرا)
     ;
 
-    auto layer_it =
-    + hb_range (c->plan->num_output_glyphs ())
-    | hb_map (reverse_glyph_map)
+    خودکار layer_it =
+    + hb_range (c->plan->عدد_output_glyphs ())
+    | hb_map (الٹ_glyph_map)
     | hb_filter (glyphset)
-    | hb_map_retains_sorting ([&](hb_codepoint_t old_gid)
+    | hb_map_retains_ترتیب_کاری ([&](hb_codepoint_t old_gid)
 			      {
-				const BaseGlyphRecord* old_record = get_base_glyph_record (old_gid);
-				hb_vector_t<LayerRecord> out_layers;
+				ثابت بنیاد_Glyph_ریکارڈ* old_ریکارڈ = get_بنیاد_glyph_ریکارڈ (old_gid);
+				hb_سمتیہ_t<Layer_ریکارڈ> برآمد_layers;
 
-				if (unlikely (!old_record ||
-					      old_record->firstLayerIdx >= numLayers ||
-					      old_record->firstLayerIdx + old_record->numLayers > numLayers))
-				  return hb_pair_t<bool, hb_vector_t<LayerRecord>> (false, out_layers);
+				اگر (unlikely (!old_ریکارڈ ||
+					      old_ریکارڈ->پہلا_Layer_Idx >= عدد_Layers ||
+					      old_ریکارڈ->پہلا_Layer_Idx + old_ریکارڈ->عدد_Layers > عدد_Layers))
+				  واپس hb_pair_t<منطقی, hb_سمتیہ_t<Layer_ریکارڈ>> (جھوٹ, برآمد_layers);
 
-				auto layers = (this+layersZ).as_array (numLayers).sub_array (old_record->firstLayerIdx,
-											     old_record->numLayers);
-				out_layers.resize (layers.length);
-				for (unsigned int i = 0; i < layers.length; i++) {
-				  out_layers[i] = layers[i];
+				خودکار layers = (یہ+layersZ).as_array (عدد_Layers).sub_array (old_ریکارڈ->پہلا_Layer_Idx,
+											     old_ریکارڈ->عدد_Layers);
+				برآمد_layers.resize (layers.لمبائی);
+				برائے (غیرعلامتی صحیح i = 0; i < layers.لمبائی; i++) {
+				  برآمد_layers[i] = layers[i];
 				  hb_codepoint_t new_gid = 0;
-				  if (unlikely (!c->plan->new_gid_for_old_gid (out_layers[i].glyphId, &new_gid)))
-				    return hb_pair_t<bool, hb_vector_t<LayerRecord>> (false, out_layers);
-				  out_layers[i].glyphId = new_gid;
-				  out_layers[i].colorIdx = c->plan->colr_palettes.get (layers[i].colorIdx);
+				  اگر (unlikely (!c->plan->new_gid_for_old_gid (برآمد_layers[i].glyphId, &new_gid)))
+				    واپس hb_pair_t<منطقی, hb_سمتیہ_t<Layer_ریکارڈ>> (جھوٹ, برآمد_layers);
+				  برآمد_layers[i].glyphId = new_gid;
+				  برآمد_layers[i].colorIdx = c->plan->colr_palettes.get (layers[i].colorIdx);
 				}
 
-				return hb_pair_t<bool, hb_vector_t<LayerRecord>> (true, out_layers);
+				واپس hb_pair_t<منطقی, hb_سمتیہ_t<Layer_ریکارڈ>> (سچ, برآمد_layers);
 			      })
-    | hb_filter (hb_first)
-    | hb_map_retains_sorting (hb_second)
+    | hb_filter (hb_پہلا)
+    | hb_map_retains_ترتیب_کاری (hb_دوسرا)
     ;
 
-    if (version == 0 && (!base_it || !layer_it))
-      return_trace (false);
+    اگر (نسخہ == 0 && (!بنیاد_it || !layer_it))
+      return_trace (جھوٹ);
 
-    auto *colr_prime = c->serializer->start_embed<COLR> ();
-    if (unlikely (!c->serializer->extend_min (colr_prime)))  return_trace (false);
+    خودکار *colr_مفرد = c->serializer->آغاز_embed<COLR> ();
+    اگر (unlikely (!c->serializer->extend_min (colr_مفرد)))  return_trace (جھوٹ);
 
-    if (version == 0 || downgrade_to_V0 (glyphset))
-      return_trace (colr_prime->serialize_V0 (c->serializer, 0, base_it, layer_it));
+    اگر (نسخہ == 0 || downgrade_مقصد_V0 (glyphset))
+      return_trace (colr_مفرد->serialize_V0 (c->serializer, 0, بنیاد_it, layer_it));
 
     hb_barrier ();
 
     //start version 1
-    if (!c->serializer->allocate_size<void> (5 * HBUINT32::static_size)) return_trace (false);
-    if (!colr_prime->serialize_V0 (c->serializer, version, base_it, layer_it)) return_trace (false);
+    اگر (!c->serializer->allocate_سائز<خالی> (5 * HBUINT32::static_سائز)) return_trace (جھوٹ);
+    اگر (!colr_مفرد->serialize_V0 (c->serializer, نسخہ, بنیاد_it, layer_it)) return_trace (جھوٹ);
 
     /* subset ItemVariationStore first, cause varidx_map needs to be updated
      * after instancing */
-    if (!subset_varstore (c, colr_prime)) return_trace (false);
+    اگر (!subset_varstore (c, colr_مفرد)) return_trace (جھوٹ);
 
-    ItemVarStoreInstancer instancer (c->plan->normalized_coords ? get_var_store_ptr () : nullptr,
-				     c->plan->normalized_coords ? get_delta_set_index_map_ptr () : nullptr,
+    شے_Var_Store_Instancer instancer (c->plan->normalized_coords ? get_var_store_ptr () : خالی_اشاریہ,
+				     c->plan->normalized_coords ? get_delta_سیٹ_اشاریہ_map_ptr () : خالی_اشاریہ,
 				     c->plan->normalized_coords.as_array ());
 
-    if (!colr_prime->baseGlyphList.serialize_subset (c, baseGlyphList, this, instancer))
-      return_trace (false);
+    اگر (!colr_مفرد->بنیاد_Glyph_List_2.serialize_subset (c, بنیاد_Glyph_List_2, یہ, instancer))
+      return_trace (جھوٹ);
 
-    colr_prime->layerList.serialize_subset (c, layerList, this, instancer);
-    colr_prime->clipList.serialize_subset (c, clipList, this, instancer);
+    colr_مفرد->layerList.serialize_subset (c, layerList, یہ, instancer);
+    colr_مفرد->clipList.serialize_subset (c, clipList, یہ, instancer);
 
-    return_trace (subset_delta_set_index_map (c, colr_prime));
+    return_trace (subset_delta_سیٹ_اشاریہ_map (c, colr_مفرد));
   }
 
-  const Paint *get_base_glyph_paint (hb_codepoint_t glyph) const
+  ثابت Paint *get_بنیاد_glyph_paint (hb_codepoint_t glyph) ثابت
   {
-    const BaseGlyphList &baseglyph_paintrecords = this+baseGlyphList;
-    const BaseGlyphPaintRecord* record = get_base_glyph_paintrecord (glyph);
-    if (record)
+    ثابت بنیاد_Glyph_List &baseglyph_paintrecords = یہ+بنیاد_Glyph_List_2;
+    ثابت بنیاد_Glyph_Paint_ریکارڈ* ریکارڈ = get_بنیاد_glyph_paintrecord (glyph);
+    اگر (ریکارڈ)
     {
-      const Paint &paint = &baseglyph_paintrecords+record->paint;
-      return &paint;
+      ثابت Paint &paint = &baseglyph_paintrecords+ریکارڈ->paint;
+      واپس &paint;
     }
-    else
-      return nullptr;
+    ورنہ
+      واپس خالی_اشاریہ;
   }
 
-#ifndef HB_NO_PAINT
-  bool
+#اگر_غیر_تعریف_شدہ HB_NO_PAINT
+  منطقی
   get_extents (hb_font_t *font,
 	       hb_codepoint_t glyph,
 	       hb_glyph_extents_t *extents,
-	       hb_colr_scratch_t &scratch) const
+	       hb_colr_scratch_t &scratch) ثابت
   {
 
-    ItemVarStoreInstancer instancer (get_var_store_ptr (),
-                                     get_delta_set_index_map_ptr (),
-                                     hb_array (font->coords, font->num_coords));
+    شے_Var_Store_Instancer instancer (get_var_store_ptr (),
+                                     get_delta_سیٹ_اشاریہ_map_ptr (),
+                                     hb_array (font->coords, font->عدد_coords));
 
-    if (get_clip (glyph, extents, instancer))
+    اگر (get_clip (glyph, extents, instancer))
     {
       font->scale_glyph_extents (extents);
-      return true;
+      واپس سچ;
     }
 
-    auto *extents_funcs = hb_paint_extents_get_funcs ();
+    خودکار *extents_funcs = hb_paint_extents_get_funcs ();
     scratch.paint_extents.clear ();
-    bool ret = paint_glyph (font, glyph, extents_funcs, &scratch.paint_extents, 0, HB_COLOR(0,0,0,0), true, scratch);
+    منطقی ret = paint_glyph (font, glyph, extents_funcs, &scratch.paint_extents, 0, HB_COLOR(0,0,0,0), سچ, scratch);
 
-    auto e = scratch.paint_extents.get_extents ();
-    if (e.is_void ())
+    خودکار e = scratch.paint_extents.get_extents ();
+    اگر (e.is_void ())
     {
       extents->x_bearing = 0;
       extents->y_bearing = 0;
-      extents->width = 0;
-      extents->height = 0;
+      extents->چوڑائی = 0;
+      extents->اونچائی = 0;
     }
-    else
-      *extents = e.to_glyph_extents ();
+    ورنہ
+      *extents = e.مقصد_glyph_extents ();
 
-    return ret;
+    واپس ret;
   }
-#endif
+#اگر_ختم
 
-  bool
-  has_paint_for_glyph (hb_codepoint_t glyph) const
+  منطقی
+  has_paint_for_glyph (hb_codepoint_t glyph) ثابت
   {
-    if (version >= 1)
+    اگر (نسخہ >= 1)
     {
       hb_barrier ();
 
-      const Paint *paint = get_base_glyph_paint (glyph);
+      ثابت Paint *paint = get_بنیاد_glyph_paint (glyph);
 
-      return paint != nullptr;
+      واپس paint != خالی_اشاریہ;
     }
 
-    return false;
+    واپس جھوٹ;
   }
 
-  bool get_clip (hb_codepoint_t glyph,
+  منطقی get_clip (hb_codepoint_t glyph,
 		 hb_glyph_extents_t *extents,
-		 const ItemVarStoreInstancer instancer) const
+		 ثابت شے_Var_Store_Instancer instancer) ثابت
   {
-    return get_clip_list ().get_extents (glyph,
+    واپس get_clip_list ().get_extents (glyph,
 					extents,
 					instancer);
   }
 
-#ifndef HB_NO_PAINT
-  bool
+#اگر_غیر_تعریف_شدہ HB_NO_PAINT
+  منطقی
   paint_glyph (hb_font_t *font,
 	       hb_codepoint_t glyph,
-	       hb_paint_funcs_t *funcs, void *data,
-	       unsigned int palette_index, hb_color_t foreground,
-	       bool clip,
-	       hb_colr_scratch_t &scratch) const
+	       hb_paint_funcs_t *funcs, خالی *ڈیٹا,
+	       غیرعلامتی صحیح palette_اشاریہ, hb_color_t foreground,
+	       منطقی clip,
+	       hb_colr_scratch_t &scratch) ثابت
   {
-    ItemVarStoreInstancer instancer (get_var_store_ptr (),
-				     get_delta_set_index_map_ptr (),
+    شے_Var_Store_Instancer instancer (get_var_store_ptr (),
+				     get_delta_سیٹ_اشاریہ_map_ptr (),
 				     hb_array (font->coords,
-					       font->has_nonzero_coords ? font->num_coords : 0));
-    hb_paint_context_t c (this, funcs, data, font, palette_index, foreground, instancer);
+					       font->has_nonzero_coords ? font->عدد_coords : 0));
+    hb_paint_context_t c (یہ, funcs, ڈیٹا, font, palette_اشاریہ, foreground, instancer);
 
-    hb_decycler_node_t node (c.glyphs_decycler);
-    node.visit (glyph);
+    hb_decycler_گرہ_t node (c.glyphs_decycler);
+    node.دورہ (glyph);
 
-    if (version >= 1)
+    اگر (نسخہ >= 1)
     {
       hb_barrier ();
 
-      const Paint *paint = get_base_glyph_paint (glyph);
-      if (paint)
+      ثابت Paint *paint = get_بنیاد_glyph_paint (glyph);
+      اگر (paint)
       {
         // COLRv1 glyph
 
-	bool is_bounded = true;
+	منطقی is_bounded = سچ;
 	hb_glyph_extents_t extents = {};
-	if (clip)
+	اگر (clip)
 	{
-	  if (!get_clip (glyph, &extents, instancer))
+	  اگر (!get_clip (glyph, &extents, instancer))
 	  {
-	    clip = false;
-	    is_bounded = false;
+	    clip = جھوٹ;
+	    is_bounded = جھوٹ;
 	  }
 
-	  if (!is_bounded)
+	  اگر (!is_bounded)
 	  {
-	    auto *bounded_funcs = hb_paint_bounded_get_funcs ();
+	    خودکار *bounded_funcs = hb_paint_bounded_get_funcs ();
 	    scratch.paint_bounded.clear ();
 
 	    paint_glyph (font, glyph,
 			 bounded_funcs, &scratch.paint_bounded,
-			 palette_index, foreground,
-			 false,
+			 palette_اشاریہ, foreground,
+			 جھوٹ,
 			 scratch);
 
 	    is_bounded = scratch.paint_bounded.is_bounded ();
 	  }
 	}
 
-	c.funcs->push_font_transform (c.data, font);
+	c.funcs->ڈالو_font_transform (c.ڈیٹا, font);
 
-	if (clip)
-	  c.funcs->push_clip_rectangle (c.data,
-					(float) extents.x_bearing,
-					(float) extents.y_bearing + extents.height,
-					(float) extents.x_bearing + extents.width,
-					(float) extents.y_bearing);
+	اگر (clip)
+	  c.funcs->ڈالو_clip_rectangle (c.ڈیٹا,
+					(اعشاری) extents.x_bearing,
+					(اعشاری) extents.y_bearing + extents.اونچائی,
+					(اعشاری) extents.x_bearing + extents.چوڑائی,
+					(اعشاری) extents.y_bearing);
 
-	if (is_bounded)
+	اگر (is_bounded)
 	  c.recurse (*paint);
 
-	if (clip)
-	  c.funcs->pop_clip (c.data);
+	اگر (clip)
+	  c.funcs->نکالو_clip (c.ڈیٹا);
 
-	c.funcs->pop_transform (c.data);
+	c.funcs->نکالو_transform (c.ڈیٹا);
 
-        return true;
+        واپس سچ;
       }
     }
 
-    const BaseGlyphRecord *record = get_base_glyph_record (glyph);
-    if (record && ((hb_codepoint_t) record->glyphId == glyph))
+    ثابت بنیاد_Glyph_ریکارڈ *ریکارڈ = get_بنیاد_glyph_ریکارڈ (glyph);
+    اگر (ریکارڈ && ((hb_codepoint_t) ریکارڈ->glyphId == glyph))
     {
       // COLRv0 glyph
-      for (const auto &r : (this+layersZ).as_array (numLayers)
-			   .sub_array (record->firstLayerIdx, record->numLayers))
+      برائے (ثابت خودکار &r : (یہ+layersZ).as_array (عدد_Layers)
+			   .sub_array (ریکارڈ->پہلا_Layer_Idx, ریکارڈ->عدد_Layers))
       {
         hb_bool_t is_foreground;
         hb_color_t color = c.get_color (r.colorIdx, 1., &is_foreground);
-        c.funcs->fill_glyph (c.data, r.glyphId, c.font, is_foreground, color);
+        c.funcs->fill_glyph (c.ڈیٹا, r.glyphId, c.font, is_foreground, color);
       }
 
-      return true;
+      واپس سچ;
     }
 
-    return false;
+    واپس جھوٹ;
   }
-#endif
+#اگر_ختم
 
-  protected:
-  HBUINT16	version;	/* Table version number (starts at 0). */
-  HBUINT16	numBaseGlyphs;	/* Number of Base Glyph Records. */
-  NNOffset32To<SortedUnsizedArrayOf<BaseGlyphRecord>>
-		baseGlyphsZ;	/* Offset to Base Glyph records. */
-  NNOffset32To<UnsizedArrayOf<LayerRecord>>
+  محفوظ:
+  HBUINT16	نسخہ;	/* Table version number (starts at 0). */
+  HBUINT16	عدد_بنیاد_Glyphs;	/* Number of Base Glyph Records. */
+  NNOffset32_مقصد<Sorted_Unsized_Array_کا<بنیاد_Glyph_ریکارڈ>>
+		بنیاد_Glyphs_Z;	/* Offset to Base Glyph records. */
+  NNOffset32_مقصد<Unsized_Array_کا<Layer_ریکارڈ>>
 		layersZ;	/* Offset to Layer Records. */
-  HBUINT16	numLayers;	/* Number of Layer Records. */
+  HBUINT16	عدد_Layers;	/* Number of Layer Records. */
   // Version-1 additions
-  Offset32To<BaseGlyphList>		baseGlyphList;
-  Offset32To<LayerList>			layerList;
-  Offset32To<ClipList>			clipList;   // Offset to ClipList table (may be NULL)
-  Offset32To<DeltaSetIndexMap>		varIdxMap;  // Offset to DeltaSetIndexMap table (may be NULL)
-  Offset32To<ItemVariationStore>	varStore;
-  public:
-  DEFINE_SIZE_MIN (14);
+  Offset32_مقصد<بنیاد_Glyph_List>		بنیاد_Glyph_List_2;
+  Offset32_مقصد<LayerList>			layerList;
+  Offset32_مقصد<ClipList>			clipList;   // Offset to ClipList table (may be NULL)
+  Offset32_مقصد<Delta_سیٹ_اشاریہ_Map>		varIdxMap;  // Offset to DeltaSetIndexMap table (may be NULL)
+  Offset32_مقصد<شے_Variation_Store>	varStore;
+  عوامی:
+  DEFINE_سائز_MIN (14);
 };
 
-struct COLR_accelerator_t : COLR::accelerator_t {
+ساخت COLR_accelerator_t : COLR::accelerator_t {
   COLR_accelerator_t (hb_face_t *face) : COLR::accelerator_t (face) {}
 };
 
-void
-hb_paint_context_t::recurse (const Paint &paint)
+خالی
+hb_paint_context_t::recurse (ثابت Paint &paint)
 {
-  if (unlikely (depth_left <= 0 || edge_count <= 0)) return;
-  depth_left--;
-  edge_count--;
-  paint.dispatch (this);
-  depth_left++;
+  اگر (unlikely (گہرائی_بایاں <= 0 || کنارہ_گنتی <= 0)) واپس;
+  گہرائی_بایاں--;
+  کنارہ_گنتی--;
+  paint.dispatch (یہ);
+  گہرائی_بایاں++;
 }
 
-template <typename Types>
-void PaintGlyph<Types>::paint_glyph (hb_paint_context_t *c) const
+سانچہ <قسم_نام Types>
+خالی PaintGlyph<Types>::paint_glyph (hb_paint_context_t *c) ثابت
 {
-  TRACE_PAINT (this);
+  TRACE_PAINT (یہ);
 
   hb_bool_t is_foreground;
   hb_color_t color;
   /* Optimize cases that can use a simple fill-glyph operation. */
-  if (likely (c->depth_left > 0 && c->edge_count > 0) &&
-      (this+paint).get_solid_color (c, &is_foreground, &color))
+  اگر (likely (c->گہرائی_بایاں > 0 && c->کنارہ_گنتی > 0) &&
+      (یہ+paint).get_solid_color (c, &is_foreground, &color))
   {
-    c->edge_count--;
-    c->funcs->push_inverse_font_transform (c->data, c->font);
-    c->funcs->fill_glyph (c->data, gid, c->font, is_foreground, color);
-    c->funcs->pop_transform (c->data);
-    return;
+    c->کنارہ_گنتی--;
+    c->funcs->ڈالو_inverse_font_transform (c->ڈیٹا, c->font);
+    c->funcs->fill_glyph (c->ڈیٹا, gid, c->font, is_foreground, color);
+    c->funcs->نکالو_transform (c->ڈیٹا);
+    واپس;
   }
 
-  c->funcs->push_inverse_font_transform (c->data, c->font);
-  c->funcs->push_clip_glyph (c->data, gid, c->font);
-  c->funcs->push_font_transform (c->data, c->font);
-  c->recurse (this+paint);
-  c->funcs->pop_transform (c->data);
-  c->funcs->pop_clip (c->data);
-  c->funcs->pop_transform (c->data);
+  c->funcs->ڈالو_inverse_font_transform (c->ڈیٹا, c->font);
+  c->funcs->ڈالو_clip_glyph (c->ڈیٹا, gid, c->font);
+  c->funcs->ڈالو_font_transform (c->ڈیٹا, c->font);
+  c->recurse (یہ+paint);
+  c->funcs->نکالو_transform (c->ڈیٹا);
+  c->funcs->نکالو_clip (c->ڈیٹا);
+  c->funcs->نکالو_transform (c->ڈیٹا);
 }
 
-void PaintColrLayers::paint_glyph (hb_paint_context_t *c) const
+خالی PaintColrLayers::paint_glyph (hb_paint_context_t *c) ثابت
 {
-  TRACE_PAINT (this);
-  const LayerList &paint_offset_lists = c->get_colr_table ()->get_layerList ();
-  hb_decycler_node_t node (c->layers_decycler);
-  for (unsigned i = firstLayerIndex; i < firstLayerIndex + numLayers; i++)
+  TRACE_PAINT (یہ);
+  ثابت LayerList &paint_انحراف_lists = c->get_colr_جدول ()->get_layerList ();
+  hb_decycler_گرہ_t node (c->layers_decycler);
+  برائے (غیرعلامتی i = پہلا_Layer_اشاریہ; i < پہلا_Layer_اشاریہ + عدد_Layers; i++)
   {
-    if (unlikely (!node.visit (i)))
-      return;
+    اگر (unlikely (!node.دورہ (i)))
+      واپس;
 
-    const Paint &paint = paint_offset_lists.get_paint (i);
+    ثابت Paint &paint = paint_انحراف_lists.get_paint (i);
     c->recurse (paint);
   }
 }
 
-void PaintColrGlyph::paint_glyph (hb_paint_context_t *c) const
+خالی PaintColrGlyph::paint_glyph (hb_paint_context_t *c) ثابت
 {
-  TRACE_PAINT (this);
+  TRACE_PAINT (یہ);
 
-  hb_decycler_node_t node (c->glyphs_decycler);
-  if (unlikely (!node.visit (gid)))
-    return;
+  hb_decycler_گرہ_t node (c->glyphs_decycler);
+  اگر (unlikely (!node.دورہ (gid)))
+    واپس;
 
-  c->funcs->push_inverse_font_transform (c->data, c->font);
-  if (c->funcs->color_glyph (c->data, gid, c->font))
+  c->funcs->ڈالو_inverse_font_transform (c->ڈیٹا, c->font);
+  اگر (c->funcs->color_glyph (c->ڈیٹا, gid, c->font))
   {
-    c->funcs->pop_transform (c->data);
-    return;
+    c->funcs->نکالو_transform (c->ڈیٹا);
+    واپس;
   }
-  c->funcs->pop_transform (c->data);
+  c->funcs->نکالو_transform (c->ڈیٹا);
 
-  const COLR *colr_table = c->get_colr_table ();
-  const Paint *paint = colr_table->get_base_glyph_paint (gid);
+  ثابت COLR *colr_جدول = c->get_colr_جدول ();
+  ثابت Paint *paint = colr_جدول->get_بنیاد_glyph_paint (gid);
 
   hb_glyph_extents_t extents = {0};
-  bool has_clip_box = colr_table->get_clip (gid, &extents, c->instancer);
+  منطقی has_clip_box = colr_جدول->get_clip (gid, &extents, c->instancer);
 
-  if (has_clip_box)
-    c->funcs->push_clip_rectangle (c->data,
-				   (float) extents.x_bearing,
-				   (float) extents.y_bearing + extents.height,
-				   (float) extents.x_bearing + extents.width,
-				   (float) extents.y_bearing);
+  اگر (has_clip_box)
+    c->funcs->ڈالو_clip_rectangle (c->ڈیٹا,
+				   (اعشاری) extents.x_bearing,
+				   (اعشاری) extents.y_bearing + extents.اونچائی,
+				   (اعشاری) extents.x_bearing + extents.چوڑائی,
+				   (اعشاری) extents.y_bearing);
 
-  if (paint)
+  اگر (paint)
     c->recurse (*paint);
 
-  if (has_clip_box)
-    c->funcs->pop_clip (c->data);
+  اگر (has_clip_box)
+    c->funcs->نکالو_clip (c->ڈیٹا);
 }
 
 } /* namespace OT */
 
-#endif /* OT_COLOR_COLR_COLR_HH */
+#اگر_ختم /* OT_COLOR_COLR_COLR_HH */

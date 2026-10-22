@@ -28,9 +28,9 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#شامل "hb.hh"
 
-#include "hb-unicode.hh"
+#شامل "hb-unicode.hh"
 
 
 /**
@@ -57,86 +57,86 @@
  * hb_unicode_funcs_t
  */
 
-static hb_unicode_combining_class_t
-hb_unicode_combining_class_nil (hb_unicode_funcs_t *ufuncs    HB_UNUSED,
-				hb_codepoint_t      unicode   HB_UNUSED,
-				void               *user_data HB_UNUSED)
+ساکن hb_unicode_combining_class_t
+hb_unicode_combining_class_nil (hb_unicode_funcs_t *ufuncs    HB_غیر_مستعمل,
+				hb_codepoint_t      unicode   HB_غیر_مستعمل,
+				خالی               *user_ڈیٹا HB_غیر_مستعمل)
 {
-  return HB_UNICODE_COMBINING_CLASS_NOT_REORDERED;
+  واپس HB_UNICODE_COMBINING_CLASS_NOT_REORDERED;
 }
 
-#ifndef HB_DISABLE_DEPRECATED
-static unsigned int
-hb_unicode_eastasian_width_nil (hb_unicode_funcs_t *ufuncs    HB_UNUSED,
-				hb_codepoint_t      unicode   HB_UNUSED,
-				void               *user_data HB_UNUSED)
+#اگر_غیر_تعریف_شدہ HB_DISABLE_DEPRECATED
+ساکن غیرعلامتی صحیح
+hb_unicode_eastasian_چوڑائی_nil (hb_unicode_funcs_t *ufuncs    HB_غیر_مستعمل,
+				hb_codepoint_t      unicode   HB_غیر_مستعمل,
+				خالی               *user_ڈیٹا HB_غیر_مستعمل)
 {
-  return 1;
+  واپس 1;
 }
-#endif
+#اگر_ختم
 
-static hb_unicode_general_category_t
-hb_unicode_general_category_nil (hb_unicode_funcs_t *ufuncs    HB_UNUSED,
-				 hb_codepoint_t      unicode   HB_UNUSED,
-				 void               *user_data HB_UNUSED)
+ساکن hb_unicode_general_category_t
+hb_unicode_general_category_nil (hb_unicode_funcs_t *ufuncs    HB_غیر_مستعمل,
+				 hb_codepoint_t      unicode   HB_غیر_مستعمل,
+				 خالی               *user_ڈیٹا HB_غیر_مستعمل)
 {
-  return HB_UNICODE_GENERAL_CATEGORY_OTHER_LETTER;
+  واپس HB_UNICODE_GENERAL_CATEGORY_OTHER_LETTER;
 }
 
-static hb_codepoint_t
-hb_unicode_mirroring_nil (hb_unicode_funcs_t *ufuncs    HB_UNUSED,
+ساکن hb_codepoint_t
+hb_unicode_mirroring_nil (hb_unicode_funcs_t *ufuncs    HB_غیر_مستعمل,
 			  hb_codepoint_t      unicode,
-			  void               *user_data HB_UNUSED)
+			  خالی               *user_ڈیٹا HB_غیر_مستعمل)
 {
-  return unicode;
+  واپس unicode;
 }
 
-static hb_script_t
-hb_unicode_script_nil (hb_unicode_funcs_t *ufuncs    HB_UNUSED,
-		       hb_codepoint_t      unicode   HB_UNUSED,
-		       void               *user_data HB_UNUSED)
+ساکن hb_script_t
+hb_unicode_script_nil (hb_unicode_funcs_t *ufuncs    HB_غیر_مستعمل,
+		       hb_codepoint_t      unicode   HB_غیر_مستعمل,
+		       خالی               *user_ڈیٹا HB_غیر_مستعمل)
 {
-  return HB_SCRIPT_UNKNOWN;
+  واپس HB_SCRIPT_UNKNOWN;
 }
 
-static hb_bool_t
-hb_unicode_compose_nil (hb_unicode_funcs_t *ufuncs    HB_UNUSED,
-			hb_codepoint_t      a         HB_UNUSED,
-			hb_codepoint_t      b         HB_UNUSED,
-			hb_codepoint_t     *ab        HB_UNUSED,
-			void               *user_data HB_UNUSED)
+ساکن hb_bool_t
+hb_unicode_compose_nil (hb_unicode_funcs_t *ufuncs    HB_غیر_مستعمل,
+			hb_codepoint_t      a         HB_غیر_مستعمل,
+			hb_codepoint_t      b         HB_غیر_مستعمل,
+			hb_codepoint_t     *ab        HB_غیر_مستعمل,
+			خالی               *user_ڈیٹا HB_غیر_مستعمل)
 {
-  return false;
+  واپس جھوٹ;
 }
 
-static hb_bool_t
-hb_unicode_decompose_nil (hb_unicode_funcs_t *ufuncs    HB_UNUSED,
-			  hb_codepoint_t      ab        HB_UNUSED,
-			  hb_codepoint_t     *a         HB_UNUSED,
-			  hb_codepoint_t     *b         HB_UNUSED,
-			  void               *user_data HB_UNUSED)
+ساکن hb_bool_t
+hb_unicode_decompose_nil (hb_unicode_funcs_t *ufuncs    HB_غیر_مستعمل,
+			  hb_codepoint_t      ab        HB_غیر_مستعمل,
+			  hb_codepoint_t     *a         HB_غیر_مستعمل,
+			  hb_codepoint_t     *b         HB_غیر_مستعمل,
+			  خالی               *user_ڈیٹا HB_غیر_مستعمل)
 {
-  return false;
+  واپس جھوٹ;
 }
 
 
-#ifndef HB_DISABLE_DEPRECATED
-static unsigned int
-hb_unicode_decompose_compatibility_nil (hb_unicode_funcs_t *ufuncs     HB_UNUSED,
-					hb_codepoint_t      u          HB_UNUSED,
-					hb_codepoint_t     *decomposed HB_UNUSED,
-					void               *user_data  HB_UNUSED)
+#اگر_غیر_تعریف_شدہ HB_DISABLE_DEPRECATED
+ساکن غیرعلامتی صحیح
+hb_unicode_decompose_compatibility_nil (hb_unicode_funcs_t *ufuncs     HB_غیر_مستعمل,
+					hb_codepoint_t      u          HB_غیر_مستعمل,
+					hb_codepoint_t     *decomposed HB_غیر_مستعمل,
+					خالی               *user_ڈیٹا  HB_غیر_مستعمل)
 {
-  return 0;
+  واپس 0;
 }
-#endif
+#اگر_ختم
 
-#if !defined(HB_NO_UNICODE_FUNCS) && defined(HAVE_GLIB)
-#include "hb-glib.h"
-#endif
-#if !defined(HB_NO_UNICODE_FUNCS) && defined(HAVE_ICU) && defined(HAVE_ICU_BUILTIN)
-#include "hb-icu.h"
-#endif
+#اگر !defined(HB_NO_UNICODE_FUNCS) && defined(HAVE_GLIB)
+#شامل "hb-glib.h"
+#اگر_ختم
+#اگر !defined(HB_NO_UNICODE_FUNCS) && defined(HAVE_ICU) && defined(HAVE_ICU_BUILTIN)
+#شامل "hb-icu.h"
+#اگر_ختم
 
 /**
  * hb_unicode_funcs_get_default:
@@ -151,22 +151,22 @@ hb_unicode_decompose_compatibility_nil (hb_unicode_funcs_t *ufuncs     HB_UNUSED
 hb_unicode_funcs_t *
 hb_unicode_funcs_get_default ()
 {
-#if !defined(HB_NO_UNICODE_FUNCS) && !defined(HB_NO_UCD)
-  return hb_ucd_get_unicode_funcs ();
-#elif !defined(HB_NO_UNICODE_FUNCS) && defined(HAVE_GLIB)
-  return hb_glib_get_unicode_funcs ();
-#elif !defined(HB_NO_UNICODE_FUNCS) && defined(HAVE_ICU) && defined(HAVE_ICU_BUILTIN)
-  return hb_icu_get_unicode_funcs ();
-#else
-#define HB_UNICODE_FUNCS_NIL 1
-  return hb_unicode_funcs_get_empty ();
-#endif
+#اگر !defined(HB_NO_UNICODE_FUNCS) && !defined(HB_NO_UCD)
+  واپس hb_ucd_get_unicode_funcs ();
+#وگرنہ_اگر !defined(HB_NO_UNICODE_FUNCS) && defined(HAVE_GLIB)
+  واپس hb_glib_get_unicode_funcs ();
+#وگرنہ_اگر !defined(HB_NO_UNICODE_FUNCS) && defined(HAVE_ICU) && defined(HAVE_ICU_BUILTIN)
+  واپس hb_icu_get_unicode_funcs ();
+#ورنہ
+#تعریف_کرو HB_UNICODE_FUNCS_NIL 1
+  واپس hb_unicode_funcs_get_خالی_خانے ();
+#اگر_ختم
 }
 
-#if !defined(HB_NO_UNICODE_FUNCS) && defined(HB_UNICODE_FUNCS_NIL)
-#error "Could not find any Unicode functions implementation, you have to provide your own"
-#error "Consider building hb-ucd.cc.  If you absolutely want to build without any, define HB_NO_UNICODE_FUNCS."
-#endif
+#اگر !defined(HB_NO_UNICODE_FUNCS) && defined(HB_UNICODE_FUNCS_NIL)
+#غلطی "Could not find any Unicode functions implementation, you have to provide your own"
+#غلطی "Consider building hb-ucd.cc.  If you absolutely want to build without any, define HB_NO_UNICODE_FUNCS."
+#اگر_ختم
 
 /**
  * hb_unicode_funcs_create:
@@ -179,39 +179,39 @@ hb_unicode_funcs_get_default ()
  * Since: 0.9.2
  **/
 hb_unicode_funcs_t *
-hb_unicode_funcs_create (hb_unicode_funcs_t *parent)
+hb_unicode_funcs_create (hb_unicode_funcs_t *والد)
 {
   hb_unicode_funcs_t *ufuncs;
 
-  if (!(ufuncs = hb_object_create<hb_unicode_funcs_t> ()))
-    return hb_unicode_funcs_get_empty ();
+  اگر (!(ufuncs = hb_object_create<hb_unicode_funcs_t> ()))
+    واپس hb_unicode_funcs_get_خالی_خانے ();
 
-  if (!parent)
-    parent = hb_unicode_funcs_get_empty ();
+  اگر (!والد)
+    والد = hb_unicode_funcs_get_خالی_خانے ();
 
-  hb_unicode_funcs_make_immutable (parent);
-  ufuncs->parent = hb_unicode_funcs_reference (parent);
+  hb_unicode_funcs_make_immutable (والد);
+  ufuncs->والد = hb_unicode_funcs_reference (والد);
 
-  ufuncs->func = parent->func;
+  ufuncs->func = والد->func;
 
   /* We can safely copy user_data from parent since we hold a reference
    * onto it and it's immutable.  We should not copy the destroy notifiers
    * though. */
-  ufuncs->user_data = parent->user_data;
+  ufuncs->user_ڈیٹا = والد->user_ڈیٹا;
 
-  return ufuncs;
+  واپس ufuncs;
 }
 
 
 DEFINE_NULL_INSTANCE (hb_unicode_funcs_t) =
 {
-  HB_OBJECT_HEADER_STATIC,
+  HB_OBJECT_سرخی_STATIC,
 
-  nullptr, /* parent */
+  خالی_اشاریہ, /*والد*/
   {
-#define HB_UNICODE_FUNC_IMPLEMENT(name) hb_unicode_##name##_nil,
+#تعریف_کرو HB_UNICODE_FUNC_IMPLEMENT(name) hb_unicode_##name##_nil,
     HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_UNICODE_FUNC_IMPLEMENT
+#تعریف_منسوخ HB_UNICODE_FUNC_IMPLEMENT
   }
 };
 
@@ -225,9 +225,9 @@ DEFINE_NULL_INSTANCE (hb_unicode_funcs_t) =
  * Since: 0.9.2
  **/
 hb_unicode_funcs_t *
-hb_unicode_funcs_get_empty ()
+hb_unicode_funcs_get_خالی_خانے ()
 {
-  return const_cast<hb_unicode_funcs_t *> (&Null (hb_unicode_funcs_t));
+  واپس const_cast<hb_unicode_funcs_t *> (&Null (hb_unicode_funcs_t));
 }
 
 /**
@@ -243,7 +243,7 @@ hb_unicode_funcs_get_empty ()
 hb_unicode_funcs_t *
 hb_unicode_funcs_reference (hb_unicode_funcs_t *ufuncs)
 {
-  return hb_object_reference (ufuncs);
+  واپس hb_object_reference (ufuncs);
 }
 
 /**
@@ -256,17 +256,17 @@ hb_unicode_funcs_reference (hb_unicode_funcs_t *ufuncs)
  *
  * Since: 0.9.2
  **/
-void
+خالی
 hb_unicode_funcs_destroy (hb_unicode_funcs_t *ufuncs)
 {
-  if (!hb_object_destroy (ufuncs)) return;
+  اگر (!hb_object_destroy (ufuncs)) واپس;
 
-#define HB_UNICODE_FUNC_IMPLEMENT(name) \
-  if (ufuncs->destroy.name) ufuncs->destroy.name (ufuncs->user_data.name);
+#تعریف_کرو HB_UNICODE_FUNC_IMPLEMENT(name) \
+  اگر (ufuncs->destroy.name) ufuncs->destroy.name (ufuncs->user_ڈیٹا.name);
     HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_UNICODE_FUNC_IMPLEMENT
+#تعریف_منسوخ HB_UNICODE_FUNC_IMPLEMENT
 
-  hb_unicode_funcs_destroy (ufuncs->parent);
+  hb_unicode_funcs_destroy (ufuncs->والد);
 
   hb_free (ufuncs);
 }
@@ -286,13 +286,13 @@ hb_unicode_funcs_destroy (hb_unicode_funcs_t *ufuncs)
  * Since: 0.9.2
  **/
 hb_bool_t
-hb_unicode_funcs_set_user_data (hb_unicode_funcs_t *ufuncs,
-				hb_user_data_key_t *key,
-				void *              data,
+hb_unicode_funcs_سیٹ_user_ڈیٹا (hb_unicode_funcs_t *ufuncs,
+				hb_user_ڈیٹا_کلید_t *key,
+				خالی *              ڈیٹا,
 				hb_destroy_func_t   destroy,
 				hb_bool_t           replace)
 {
-  return hb_object_set_user_data (ufuncs, key, data, destroy, replace);
+  واپس hb_object_سیٹ_user_ڈیٹا (ufuncs, key, ڈیٹا, destroy, replace);
 }
 
 /**
@@ -307,11 +307,11 @@ hb_unicode_funcs_set_user_data (hb_unicode_funcs_t *ufuncs,
  *
  * Since: 0.9.2
  **/
-void *
-hb_unicode_funcs_get_user_data (const hb_unicode_funcs_t *ufuncs,
-				hb_user_data_key_t       *key)
+خالی *
+hb_unicode_funcs_get_user_ڈیٹا (ثابت hb_unicode_funcs_t *ufuncs,
+				hb_user_ڈیٹا_کلید_t       *key)
 {
-  return hb_object_get_user_data (ufuncs, key);
+  واپس hb_object_get_user_ڈیٹا (ufuncs, key);
 }
 
 
@@ -324,11 +324,11 @@ hb_unicode_funcs_get_user_data (const hb_unicode_funcs_t *ufuncs,
  *
  * Since: 0.9.2
  **/
-void
+خالی
 hb_unicode_funcs_make_immutable (hb_unicode_funcs_t *ufuncs)
 {
-  if (hb_object_is_immutable (ufuncs))
-    return;
+  اگر (hb_object_is_immutable (ufuncs))
+    واپس;
 
   hb_object_make_immutable (ufuncs);
 }
@@ -347,7 +347,7 @@ hb_unicode_funcs_make_immutable (hb_unicode_funcs_t *ufuncs)
 hb_bool_t
 hb_unicode_funcs_is_immutable (hb_unicode_funcs_t *ufuncs)
 {
-  return hb_object_is_immutable (ufuncs);
+  واپس hb_object_is_immutable (ufuncs);
 }
 
 /**
@@ -362,61 +362,61 @@ hb_unicode_funcs_is_immutable (hb_unicode_funcs_t *ufuncs)
  * Since: 0.9.2
  **/
 hb_unicode_funcs_t *
-hb_unicode_funcs_get_parent (hb_unicode_funcs_t *ufuncs)
+hb_unicode_funcs_get_والد (hb_unicode_funcs_t *ufuncs)
 {
-  return ufuncs->parent ? ufuncs->parent : hb_unicode_funcs_get_empty ();
+  واپس ufuncs->والد ? ufuncs->والد : hb_unicode_funcs_get_خالی_خانے ();
 }
 
 
-#define HB_UNICODE_FUNC_IMPLEMENT(name)						\
+#تعریف_کرو HB_UNICODE_FUNC_IMPLEMENT(name)						\
 										\
-void										\
-hb_unicode_funcs_set_##name##_func (hb_unicode_funcs_t		   *ufuncs,	\
+خالی										\
+hb_unicode_funcs_سیٹ##name##_func (hb_unicode_funcs_t		   *ufuncs,	\
 				    hb_unicode_##name##_func_t	    func,	\
-				    void			   *user_data,	\
+				    خالی			   *user_ڈیٹا,	\
 				    hb_destroy_func_t		    destroy)	\
 {										\
-  auto destroy_guard = hb_make_scope_guard ([&]() {				\
-    if (destroy) destroy (user_data);						\
+  خودکار destroy_guard = hb_make_scope_guard ([&]() {				\
+    اگر (destroy) destroy (user_ڈیٹا);						\
   });										\
 										\
-  if (hb_object_is_immutable (ufuncs))						\
-    return;									\
+  اگر (hb_object_is_immutable (ufuncs))						\
+    واپس;									\
 										\
-  if (!func)									\
+  اگر (!func)									\
   {										\
-    if (destroy)								\
-      destroy (user_data);							\
-    destroy = nullptr;								\
-    user_data = ufuncs->parent->user_data.name;					\
+    اگر (destroy)								\
+      destroy (user_ڈیٹا);							\
+    destroy = خالی_اشاریہ;								\
+    user_ڈیٹا = ufuncs->والد->user_ڈیٹا.name;					\
   }										\
 										\
-  if (ufuncs->destroy.name)							\
-    ufuncs->destroy.name (ufuncs->user_data.name);				\
+  اگر (ufuncs->destroy.name)							\
+    ufuncs->destroy.name (ufuncs->user_ڈیٹا.name);				\
 										\
-  if (func)									\
+  اگر (func)									\
     ufuncs->func.name = func;							\
-  else										\
-    ufuncs->func.name = ufuncs->parent->func.name;				\
-  ufuncs->user_data.name = user_data;						\
+  ورنہ										\
+    ufuncs->func.name = ufuncs->والد->func.name;				\
+  ufuncs->user_ڈیٹا.name = user_ڈیٹا;						\
   ufuncs->destroy.name = destroy;						\
   destroy_guard.release ();							\
 }
 
 HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS
-#undef HB_UNICODE_FUNC_IMPLEMENT
+#تعریف_منسوخ HB_UNICODE_FUNC_IMPLEMENT
 
 
-#define HB_UNICODE_FUNC_IMPLEMENT(return_type, name)				\
+#تعریف_کرو HB_UNICODE_FUNC_IMPLEMENT(return_type, name)				\
 										\
 return_type									\
 hb_unicode_##name (hb_unicode_funcs_t *ufuncs,					\
 		   hb_codepoint_t      unicode)					\
 {										\
-  return ufuncs->name (unicode);						\
+  واپس ufuncs->name (unicode);						\
 }
 HB_UNICODE_FUNCS_IMPLEMENT_CALLBACKS_SIMPLE
-#undef HB_UNICODE_FUNC_IMPLEMENT
+#تعریف_منسوخ HB_UNICODE_FUNC_IMPLEMENT
 
 /**
  * hb_unicode_compose:
@@ -441,7 +441,7 @@ hb_unicode_compose (hb_unicode_funcs_t *ufuncs,
 		    hb_codepoint_t      b,
 		    hb_codepoint_t     *ab)
 {
-  return ufuncs->compose (a, b, ab);
+  واپس ufuncs->compose (a, b, ab);
 }
 
 /**
@@ -466,10 +466,10 @@ hb_unicode_decompose (hb_unicode_funcs_t *ufuncs,
 		      hb_codepoint_t     *a,
 		      hb_codepoint_t     *b)
 {
-  return ufuncs->decompose (ab, a, b);
+  واپس ufuncs->decompose (ab, a, b);
 }
 
-#ifndef HB_DISABLE_DEPRECATED
+#اگر_غیر_تعریف_شدہ HB_DISABLE_DEPRECATED
 /**
  * hb_unicode_decompose_compatibility:
  * @ufuncs: The Unicode-functions structure
@@ -484,19 +484,19 @@ hb_unicode_decompose (hb_unicode_funcs_t *ufuncs,
  * Since: 0.9.2
  * Deprecated: 2.0.0
  **/
-unsigned int
+غیرعلامتی صحیح
 hb_unicode_decompose_compatibility (hb_unicode_funcs_t *ufuncs,
 				    hb_codepoint_t      u,
 				    hb_codepoint_t     *decomposed)
 {
-  return ufuncs->decompose_compatibility (u, decomposed);
+  واپس ufuncs->decompose_compatibility (u, decomposed);
 }
-#endif
+#اگر_ختم
 
 
-#ifndef HB_NO_OT_SHAPE
+#اگر_غیر_تعریف_شدہ HB_NO_OT_SHAPE
 /* See hb-unicode.hh for details. */
-const uint8_t
+ثابت uint8_t
 _hb_modified_combining_class[256] =
 {
   0, /* HB_UNICODE_COMBINING_CLASS_NOT_REORDERED */
@@ -607,19 +607,19 @@ _hb_modified_combining_class[256] =
   241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254,
   255, /* HB_UNICODE_COMBINING_CLASS_INVALID */
 };
-#endif
+#اگر_ختم
 
 
 /*
  * Emoji
  */
-#ifndef HB_NO_EMOJI_SEQUENCES
+#اگر_غیر_تعریف_شدہ HB_NO_EMOJI_SEQUENCES
 
-#include "hb-unicode-emoji-table.hh"
+#شامل "hb-unicode-emoji-table.hh"
 
-bool
+منطقی
 _hb_unicode_is_emoji_Extended_Pictographic (hb_codepoint_t cp)
 {
-  return _hb_emoji_is_Extended_Pictographic (cp);
+  واپس _hb_emoji_is_Extended_Pictographic (cp);
 }
-#endif
+#اگر_ختم

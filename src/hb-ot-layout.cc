@@ -28,34 +28,34 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#شامل "hb.hh"
 
-#ifndef HB_NO_OT_LAYOUT
+#اگر_غیر_تعریف_شدہ HB_NO_OT_LAYOUT
 
-#ifdef HB_NO_OT_TAG
-#error "Cannot compile hb-ot-layout.cc with HB_NO_OT_TAG."
-#endif
+#اگر_تعریف_شدہ HB_NO_OT_لیبل
+#غلطی "Cannot compile hb-ot-layout.cc with HB_NO_OT_TAG."
+#اگر_ختم
 
-#include "hb-open-type.hh"
-#include "hb-ot-layout.hh"
-#include "hb-ot-face.hh"
-#include "hb-ot-map.hh"
-#include "hb-map.hh"
+#شامل "hb-open-type.hh"
+#شامل "hb-ot-layout.hh"
+#شامل "hb-ot-face.hh"
+#شامل "hb-ot-map.hh"
+#شامل "hb-map.hh"
 
-#include "hb-ot-kern-table.hh"
-#include "hb-ot-layout-gdef-table.hh"
-#include "hb-ot-layout-gsub-table.hh"
-#include "hb-ot-layout-gpos-table.hh"
-#include "hb-ot-layout-base-table.hh"
-#include "hb-ot-layout-jstf-table.hh" // Just so we compile it; unused otherwise.
-#include "hb-ot-name-table.hh"
-#include "hb-ot-os2-table.hh"
+#شامل "hb-ot-kern-table.hh"
+#شامل "hb-ot-layout-gdef-table.hh"
+#شامل "hb-ot-layout-gsub-table.hh"
+#شامل "hb-ot-layout-gpos-table.hh"
+#شامل "hb-ot-layout-base-table.hh"
+#شامل "hb-ot-layout-jstf-table.hh" // Just so we compile it; unused otherwise.
+#شامل "hb-ot-name-table.hh"
+#شامل "hb-ot-os2-table.hh"
 
-#include "hb-aat-layout-morx-table.hh"
-#include "hb-aat-layout-opbd-table.hh" // Just so we compile it; unused otherwise.
+#شامل "hb-aat-layout-morx-table.hh"
+#شامل "hb-aat-layout-opbd-table.hh" // Just so we compile it; unused otherwise.
 
-using OT::Layout::GSUB;
-using OT::Layout::GPOS;
+استعمال OT::Layout::GSUB;
+استعمال OT::Layout::GPOS;
 
 /**
  * SECTION:hb-ot-layout
@@ -73,7 +73,7 @@ using OT::Layout::GPOS;
  * kern
  */
 
-#ifndef HB_NO_OT_KERN
+#اگر_غیر_تعریف_شدہ HB_NO_OT_KERN
 /**
  * hb_ot_layout_has_kerning:
  * @face: The #hb_face_t to work on
@@ -84,10 +84,10 @@ using OT::Layout::GPOS;
  * Return value: `true` if data found, `false` otherwise
  *
  **/
-bool
+منطقی
 hb_ot_layout_has_kerning (hb_face_t *face)
 {
-  return face->table.kern->table->has_data ();
+  واپس face->جدول.kern->جدول->has_ڈیٹا ();
 }
 
 /**
@@ -100,10 +100,10 @@ hb_ot_layout_has_kerning (hb_face_t *face)
  * Return value: `true` if data found, `false` otherwise
  *
  **/
-bool
+منطقی
 hb_ot_layout_has_machine_kerning (hb_face_t *face)
 {
-  return face->table.kern->table->has_state_machine ();
+  واپس face->جدول.kern->جدول->has_state_machine ();
 }
 
 /**
@@ -120,42 +120,42 @@ hb_ot_layout_has_machine_kerning (hb_face_t *face)
  * Return value: `true` is data found, `false` otherwise
  *
  **/
-bool
+منطقی
 hb_ot_layout_has_cross_kerning (hb_face_t *face)
 {
-  return face->table.kern->table->has_cross_stream ();
+  واپس face->جدول.kern->جدول->has_cross_دھارا ();
 }
 
-void
-hb_ot_layout_kern (const hb_ot_shape_plan_t *plan,
+خالی
+hb_ot_layout_kern (ثابت hb_ot_shape_plan_t *plan,
 		   hb_font_t *font,
-		   hb_buffer_t  *buffer)
+		   hb_بفر_t  *بفر)
 {
-  auto &accel = *font->face->table.kern;
+  خودکار &accel = *font->face->جدول.kern;
   hb_blob_t *blob = accel.get_blob ();
 
-  AAT::hb_aat_apply_context_t c (plan, font, buffer, blob);
+  AAT::hb_aat_apply_context_t c (plan, font, بفر, blob);
 
-  if (!buffer->message (font, "start table kern")) return;
-  c.buffer_glyph_set = accel.scratch.create_buffer_glyph_set ();
+  اگر (!بفر->پیغام (font, "start table kern")) واپس;
+  c.بفر_glyph_سیٹ = accel.scratch.create_بفر_glyph_سیٹ ();
   accel.apply (&c);
-  accel.scratch.destroy_buffer_glyph_set (c.buffer_glyph_set);
-  (void) buffer->message (font, "end table kern");
+  accel.scratch.destroy_بفر_glyph_سیٹ (c.بفر_glyph_سیٹ);
+  (خالی) بفر->پیغام (font, "end table kern");
 }
-#endif
+#اگر_ختم
 
 
 /*
  * GDEF
  */
 
-bool
+منطقی
 OT::GDEF::is_blocklisted (hb_blob_t *blob,
-			  hb_face_t *face) const
+			  hb_face_t *face) ثابت
 {
-#ifdef HB_NO_OT_LAYOUT_BLOCKLIST
-  return false;
-#endif
+#اگر_تعریف_شدہ HB_NO_OT_LAYOUT_BLOCKLIST
+  واپس جھوٹ;
+#اگر_ختم
   /* The ugly business of blocklisting individual fonts' tables happen here!
    * See this thread for why we finally had to bend in and do this:
    * https://lists.freedesktop.org/archives/harfbuzz/2016-February/005489.html
@@ -173,113 +173,113 @@ OT::GDEF::is_blocklisted (hb_blob_t *blob,
    *     https://bugzilla.mozilla.org/show_bug.cgi?id=1279693
    *     https://bugzilla.mozilla.org/show_bug.cgi?id=1279875
    */
-  switch HB_CODEPOINT_ENCODE3(blob->length,
-			      face->table.GSUB->table.get_length (),
-			      face->table.GPOS->table.get_length ())
+  انتخاب HB_CODEPOINT_ENCODE3(blob->لمبائی,
+			      face->جدول.GSUB->جدول.get_لمبائی (),
+			      face->جدول.GPOS->جدول.get_لمبائی ())
   {
     /* sha1sum:c5ee92f0bca4bfb7d06c4d03e8cf9f9cf75d2e8a Windows 7? timesi.ttf */
-    case HB_CODEPOINT_ENCODE3 (442, 2874, 42038):
+    حالت HB_CODEPOINT_ENCODE3 (442, 2874, 42038):
     /* sha1sum:37fc8c16a0894ab7b749e35579856c73c840867b Windows 7? timesbi.ttf */
-    case HB_CODEPOINT_ENCODE3 (430, 2874, 40662):
+    حالت HB_CODEPOINT_ENCODE3 (430, 2874, 40662):
     /* sha1sum:19fc45110ea6cd3cdd0a5faca256a3797a069a80 Windows 7 timesi.ttf */
-    case HB_CODEPOINT_ENCODE3 (442, 2874, 39116):
+    حالت HB_CODEPOINT_ENCODE3 (442, 2874, 39116):
     /* sha1sum:6d2d3c9ed5b7de87bc84eae0df95ee5232ecde26 Windows 7 timesbi.ttf */
-    case HB_CODEPOINT_ENCODE3 (430, 2874, 39374):
+    حالت HB_CODEPOINT_ENCODE3 (430, 2874, 39374):
     /* sha1sum:8583225a8b49667c077b3525333f84af08c6bcd8 OS X 10.11.3 Times New Roman Italic.ttf */
-    case HB_CODEPOINT_ENCODE3 (490, 3046, 41638):
+    حالت HB_CODEPOINT_ENCODE3 (490, 3046, 41638):
     /* sha1sum:ec0f5a8751845355b7c3271d11f9918a966cb8c9 OS X 10.11.3 Times New Roman Bold Italic.ttf */
-    case HB_CODEPOINT_ENCODE3 (478, 3046, 41902):
+    حالت HB_CODEPOINT_ENCODE3 (478, 3046, 41902):
     /* sha1sum:96eda93f7d33e79962451c6c39a6b51ee893ce8c  tahoma.ttf from Windows 8 */
-    case HB_CODEPOINT_ENCODE3 (898, 12554, 46470):
+    حالت HB_CODEPOINT_ENCODE3 (898, 12554, 46470):
     /* sha1sum:20928dc06014e0cd120b6fc942d0c3b1a46ac2bc  tahomabd.ttf from Windows 8 */
-    case HB_CODEPOINT_ENCODE3 (910, 12566, 47732):
+    حالت HB_CODEPOINT_ENCODE3 (910, 12566, 47732):
     /* sha1sum:4f95b7e4878f60fa3a39ca269618dfde9721a79e  tahoma.ttf from Windows 8.1 */
-    case HB_CODEPOINT_ENCODE3 (928, 23298, 59332):
+    حالت HB_CODEPOINT_ENCODE3 (928, 23298, 59332):
     /* sha1sum:6d400781948517c3c0441ba42acb309584b73033  tahomabd.ttf from Windows 8.1 */
-    case HB_CODEPOINT_ENCODE3 (940, 23310, 60732):
+    حالت HB_CODEPOINT_ENCODE3 (940, 23310, 60732):
     /* tahoma.ttf v6.04 from Windows 8.1 x64, see https://bugzilla.mozilla.org/show_bug.cgi?id=1279925 */
-    case HB_CODEPOINT_ENCODE3 (964, 23836, 60072):
+    حالت HB_CODEPOINT_ENCODE3 (964, 23836, 60072):
     /* tahomabd.ttf v6.04 from Windows 8.1 x64, see https://bugzilla.mozilla.org/show_bug.cgi?id=1279925 */
-    case HB_CODEPOINT_ENCODE3 (976, 23832, 61456):
+    حالت HB_CODEPOINT_ENCODE3 (976, 23832, 61456):
     /* sha1sum:e55fa2dfe957a9f7ec26be516a0e30b0c925f846  tahoma.ttf from Windows 10 */
-    case HB_CODEPOINT_ENCODE3 (994, 24474, 60336):
+    حالت HB_CODEPOINT_ENCODE3 (994, 24474, 60336):
     /* sha1sum:7199385abb4c2cc81c83a151a7599b6368e92343  tahomabd.ttf from Windows 10 */
-    case HB_CODEPOINT_ENCODE3 (1006, 24470, 61740):
+    حالت HB_CODEPOINT_ENCODE3 (1006, 24470, 61740):
     /* tahoma.ttf v6.91 from Windows 10 x64, see https://bugzilla.mozilla.org/show_bug.cgi?id=1279925 */
-    case HB_CODEPOINT_ENCODE3 (1006, 24576, 61346):
+    حالت HB_CODEPOINT_ENCODE3 (1006, 24576, 61346):
     /* tahomabd.ttf v6.91 from Windows 10 x64, see https://bugzilla.mozilla.org/show_bug.cgi?id=1279925 */
-    case HB_CODEPOINT_ENCODE3 (1018, 24572, 62828):
+    حالت HB_CODEPOINT_ENCODE3 (1018, 24572, 62828):
     /* sha1sum:b9c84d820c49850d3d27ec498be93955b82772b5  tahoma.ttf from Windows 10 AU */
-    case HB_CODEPOINT_ENCODE3 (1006, 24576, 61352):
+    حالت HB_CODEPOINT_ENCODE3 (1006, 24576, 61352):
     /* sha1sum:2bdfaab28174bdadd2f3d4200a30a7ae31db79d2  tahomabd.ttf from Windows 10 AU */
-    case HB_CODEPOINT_ENCODE3 (1018, 24572, 62834):
+    حالت HB_CODEPOINT_ENCODE3 (1018, 24572, 62834):
     /* sha1sum:b0d36cf5a2fbe746a3dd277bffc6756a820807a7  Tahoma.ttf from Mac OS X 10.9 */
-    case HB_CODEPOINT_ENCODE3 (832, 7324, 47162):
+    حالت HB_CODEPOINT_ENCODE3 (832, 7324, 47162):
     /* sha1sum:12fc4538e84d461771b30c18b5eb6bd434e30fba  Tahoma Bold.ttf from Mac OS X 10.9 */
-    case HB_CODEPOINT_ENCODE3 (844, 7302, 45474):
+    حالت HB_CODEPOINT_ENCODE3 (844, 7302, 45474):
     /* sha1sum:eb8afadd28e9cf963e886b23a30b44ab4fd83acc  himalaya.ttf from Windows 7 */
-    case HB_CODEPOINT_ENCODE3 (180, 13054, 7254):
+    حالت HB_CODEPOINT_ENCODE3 (180, 13054, 7254):
     /* sha1sum:73da7f025b238a3f737aa1fde22577a6370f77b0  himalaya.ttf from Windows 8 */
-    case HB_CODEPOINT_ENCODE3 (192, 12638, 7254):
+    حالت HB_CODEPOINT_ENCODE3 (192, 12638, 7254):
     /* sha1sum:6e80fd1c0b059bbee49272401583160dc1e6a427  himalaya.ttf from Windows 8.1 */
-    case HB_CODEPOINT_ENCODE3 (192, 12690, 7254):
+    حالت HB_CODEPOINT_ENCODE3 (192, 12690, 7254):
     /* 8d9267aea9cd2c852ecfb9f12a6e834bfaeafe44  cantarell-fonts-0.0.21/otf/Cantarell-Regular.otf */
     /* 983988ff7b47439ab79aeaf9a45bd4a2c5b9d371  cantarell-fonts-0.0.21/otf/Cantarell-Oblique.otf */
-    case HB_CODEPOINT_ENCODE3 (188, 248, 3852):
+    حالت HB_CODEPOINT_ENCODE3 (188, 248, 3852):
     /* 2c0c90c6f6087ffbfea76589c93113a9cbb0e75f  cantarell-fonts-0.0.21/otf/Cantarell-Bold.otf */
     /* 55461f5b853c6da88069ffcdf7f4dd3f8d7e3e6b  cantarell-fonts-0.0.21/otf/Cantarell-Bold-Oblique.otf */
-    case HB_CODEPOINT_ENCODE3 (188, 264, 3426):
+    حالت HB_CODEPOINT_ENCODE3 (188, 264, 3426):
     /* d125afa82a77a6475ac0e74e7c207914af84b37a padauk-2.80/Padauk.ttf RHEL 7.2 */
-    case HB_CODEPOINT_ENCODE3 (1058, 47032, 11818):
+    حالت HB_CODEPOINT_ENCODE3 (1058, 47032, 11818):
     /* 0f7b80437227b90a577cc078c0216160ae61b031 padauk-2.80/Padauk-Bold.ttf RHEL 7.2*/
-    case HB_CODEPOINT_ENCODE3 (1046, 47030, 12600):
+    حالت HB_CODEPOINT_ENCODE3 (1046, 47030, 12600):
     /* d3dde9aa0a6b7f8f6a89ef1002e9aaa11b882290 padauk-2.80/Padauk.ttf Ubuntu 16.04 */
-    case HB_CODEPOINT_ENCODE3 (1058, 71796, 16770):
+    حالت HB_CODEPOINT_ENCODE3 (1058, 71796, 16770):
     /* 5f3c98ccccae8a953be2d122c1b3a77fd805093f padauk-2.80/Padauk-Bold.ttf Ubuntu 16.04 */
-    case HB_CODEPOINT_ENCODE3 (1046, 71790, 17862):
+    حالت HB_CODEPOINT_ENCODE3 (1046, 71790, 17862):
     /* 6c93b63b64e8b2c93f5e824e78caca555dc887c7 padauk-2.80/Padauk-book.ttf */
-    case HB_CODEPOINT_ENCODE3 (1046, 71788, 17112):
+    حالت HB_CODEPOINT_ENCODE3 (1046, 71788, 17112):
     /* d89b1664058359b8ec82e35d3531931125991fb9 padauk-2.80/Padauk-bookbold.ttf */
-    case HB_CODEPOINT_ENCODE3 (1058, 71794, 17514):
+    حالت HB_CODEPOINT_ENCODE3 (1058, 71794, 17514):
     /* 824cfd193aaf6234b2b4dc0cf3c6ef576c0d00ef padauk-3.0/Padauk-book.ttf */
-    case HB_CODEPOINT_ENCODE3 (1330, 109904, 57938):
+    حالت HB_CODEPOINT_ENCODE3 (1330, 109904, 57938):
     /* 91fcc10cf15e012d27571e075b3b4dfe31754a8a padauk-3.0/Padauk-bookbold.ttf */
-    case HB_CODEPOINT_ENCODE3 (1330, 109904, 58972):
+    حالت HB_CODEPOINT_ENCODE3 (1330, 109904, 58972):
     /* sha1sum: c26e41d567ed821bed997e937bc0c41435689e85  Padauk.ttf
      *  "Padauk Regular" "Version 2.5", see https://crbug.com/681813 */
-    case HB_CODEPOINT_ENCODE3 (1004, 59092, 14836):
+    حالت HB_CODEPOINT_ENCODE3 (1004, 59092, 14836):
     /* 88d2006ca084f04af2df1954ed714a8c71e8400f  Courier New.ttf from macOS 15 */
-    case HB_CODEPOINT_ENCODE3 (588, 5078, 14418):
+    حالت HB_CODEPOINT_ENCODE3 (588, 5078, 14418):
     /* 608e3ebb6dd1aee521cff08eb07d500a2c59df68  Courier New Bold.ttf from macOS 15 */
-    case HB_CODEPOINT_ENCODE3 (588, 5078, 14238):
+    حالت HB_CODEPOINT_ENCODE3 (588, 5078, 14238):
     /* d13221044ff054efd78f1cd8631b853c3ce85676  cour.ttf from Windows 10 */
-    case HB_CODEPOINT_ENCODE3 (894, 17162, 33960):
+    حالت HB_CODEPOINT_ENCODE3 (894, 17162, 33960):
     /* 68ed4a22d8067fcf1622ac6f6e2f4d3a2e3ec394  courbd.ttf from Windows 10 */
-    case HB_CODEPOINT_ENCODE3 (894, 17154, 34472):
+    حالت HB_CODEPOINT_ENCODE3 (894, 17154, 34472):
     /* 4cdb0259c96b7fd7c103821bb8f08f7cc6b211d7  cour.ttf from Windows 8.1 */
-    case HB_CODEPOINT_ENCODE3 (816, 7868, 17052):
+    حالت HB_CODEPOINT_ENCODE3 (816, 7868, 17052):
     /* 920483d8a8ed37f7f0afdabbe7f679aece7c75d8  courbd.ttf from Windows 8.1 */
-    case HB_CODEPOINT_ENCODE3 (816, 7868, 17138):
-      return true;
+    حالت HB_CODEPOINT_ENCODE3 (816, 7868, 17138):
+      واپس سچ;
   }
-  return false;
+  واپس جھوٹ;
 }
 
-template <bool SetDigest>
-static void
-_hb_ot_layout_set_glyph_props (hb_font_t *font,
-			       hb_buffer_t *buffer)
+سانچہ <منطقی سیٹ_Digest>
+ساکن خالی
+hb_ot_layout_سیٹ_glyph_props (hb_font_t *font,
+			       hb_بفر_t *بفر)
 {
-  _hb_buffer_assert_gsubgpos_vars (buffer);
+  hb_بفر_assert_gsubgpos_vars (بفر);
 
-  const auto &gdef = *font->face->table.GDEF;
-  unsigned int count = buffer->len;
-  hb_glyph_info_t *info = buffer->info;
-  for (unsigned int i = 0; i < count; i++)
+  ثابت خودکار &gdef = *font->face->جدول.GDEF;
+  غیرعلامتی صحیح گنتی = بفر->len;
+  hb_glyph_info_t *info = بفر->info;
+  برائے (غیرعلامتی صحیح i = 0; i < گنتی; i++)
   {
-    if (SetDigest)
-      buffer->digest.add (info[i].codepoint);
-    _hb_glyph_info_set_glyph_props (&info[i], gdef.get_glyph_props (info[i].codepoint));
+    اگر (سیٹ_Digest)
+      بفر->digest.جوڑو (info[i].codepoint);
+    hb_glyph_info_سیٹ_glyph_props (&info[i], gdef.get_glyph_props (info[i].codepoint));
     _hb_glyph_info_clear_lig_props (&info[i]);
   }
 }
@@ -298,7 +298,7 @@ _hb_ot_layout_set_glyph_props (hb_font_t *font,
 hb_bool_t
 hb_ot_layout_has_glyph_classes (hb_face_t *face)
 {
-  return face->table.GDEF->table->has_glyph_classes ();
+  واپس face->جدول.GDEF->جدول->has_glyph_classes ();
 }
 
 /**
@@ -317,7 +317,7 @@ hb_ot_layout_glyph_class_t
 hb_ot_layout_get_glyph_class (hb_face_t      *face,
 			      hb_codepoint_t  glyph)
 {
-  return (hb_ot_layout_glyph_class_t) face->table.GDEF->table->get_glyph_class (glyph);
+  واپس (hb_ot_layout_glyph_class_t) face->جدول.GDEF->جدول->get_glyph_class (glyph);
 }
 
 /**
@@ -332,15 +332,15 @@ hb_ot_layout_get_glyph_class (hb_face_t      *face,
  *
  * Since: 0.9.7
  **/
-void
-hb_ot_layout_get_glyphs_in_class (hb_face_t                  *face,
+خالی
+hb_ot_layout_get_glyphs_اندر_class (hb_face_t                  *face,
 				  hb_ot_layout_glyph_class_t  klass,
-				  hb_set_t                   *glyphs /* OUT */)
+				  hb_سیٹ_t                   *glyphs /*برآمد*/)
 {
-  return face->table.GDEF->table->get_glyphs_in_class (klass, glyphs);
+  واپس face->جدول.GDEF->جدول->get_glyphs_اندر_class (klass, glyphs);
 }
 
-#ifndef HB_NO_LAYOUT_UNUSED
+#اگر_غیر_تعریف_شدہ HB_NO_LAYOUT_غیر_مستعمل
 /**
  * hb_ot_layout_get_attach_points:
  * @face: The #hb_face_t to work on
@@ -358,17 +358,17 @@ hb_ot_layout_get_glyphs_in_class (hb_face_t                  *face,
  * Return value: Total number of attachment points for @glyph.
  *
  **/
-unsigned int
+غیرعلامتی صحیح
 hb_ot_layout_get_attach_points (hb_face_t      *face,
 				hb_codepoint_t  glyph,
-				unsigned int    start_offset,
-				unsigned int   *point_count /* IN/OUT */,
-				unsigned int   *point_array /* OUT */)
+				غیرعلامتی صحیح    آغاز_انحراف,
+				غیرعلامتی صحیح   *نقطہ_گنتی /* IN/OUT */,
+				غیرعلامتی صحیح   *نقطہ_array /*برآمد*/)
 {
-  return face->table.GDEF->table->get_attach_points (glyph,
-						     start_offset,
-						     point_count,
-						     point_array);
+  واپس face->جدول.GDEF->جدول->get_attach_points (glyph,
+						     آغاز_انحراف,
+						     نقطہ_گنتی,
+						     نقطہ_array);
 }
 /**
  * hb_ot_layout_get_ligature_carets:
@@ -393,51 +393,51 @@ hb_ot_layout_get_attach_points (hb_face_t      *face,
  * Return value: Total number of ligature caret positions for @glyph.
  *
  **/
-unsigned int
+غیرعلامتی صحیح
 hb_ot_layout_get_ligature_carets (hb_font_t      *font,
 				  hb_direction_t  direction,
 				  hb_codepoint_t  glyph,
-				  unsigned int    start_offset,
-				  unsigned int   *caret_count /* IN/OUT */,
-				  hb_position_t  *caret_array /* OUT */)
+				  غیرعلامتی صحیح    آغاز_انحراف,
+				  غیرعلامتی صحیح   *caret_گنتی /* IN/OUT */,
+				  hb_position_t  *caret_array /*برآمد*/)
 {
-  return font->face->table.GDEF->table->get_lig_carets (font, direction, glyph, start_offset, caret_count, caret_array);
+  واپس font->face->جدول.GDEF->جدول->get_lig_carets (font, direction, glyph, آغاز_انحراف, caret_گنتی, caret_array);
 }
-#endif
+#اگر_ختم
 
 
 /*
  * GSUB/GPOS
  */
 
-bool
-GSUB::is_blocklisted (hb_blob_t *blob HB_UNUSED,
-			  hb_face_t *face) const
+منطقی
+GSUB::is_blocklisted (hb_blob_t *blob HB_غیر_مستعمل,
+			  hb_face_t *face) ثابت
 {
-#ifdef HB_NO_OT_LAYOUT_BLOCKLIST
-  return false;
-#endif
-  return false;
+#اگر_تعریف_شدہ HB_NO_OT_LAYOUT_BLOCKLIST
+  واپس جھوٹ;
+#اگر_ختم
+  واپس جھوٹ;
 }
 
-bool
-GPOS::is_blocklisted (hb_blob_t *blob HB_UNUSED,
-			  hb_face_t *face HB_UNUSED) const
+منطقی
+GPOS::is_blocklisted (hb_blob_t *blob HB_غیر_مستعمل,
+			  hb_face_t *face HB_غیر_مستعمل) ثابت
 {
-#ifdef HB_NO_OT_LAYOUT_BLOCKLIST
-  return false;
-#endif
-  return false;
+#اگر_تعریف_شدہ HB_NO_OT_LAYOUT_BLOCKLIST
+  واپس جھوٹ;
+#اگر_ختم
+  واپس جھوٹ;
 }
 
-static const OT::GSUBGPOS&
-get_gsubgpos_table (hb_face_t *face,
-		    hb_tag_t   table_tag)
+ساکن ثابت OT::GSUBGPOS&
+get_gsubgpos_جدول (hb_face_t *face,
+		    hb_لیبل_t   جدول_لیبل_2)
 {
-  switch (table_tag) {
-    case HB_OT_TAG_GSUB: return *face->table.GSUB->table;
-    case HB_OT_TAG_GPOS: return *face->table.GPOS->table;
-    default:             return Null (OT::GSUBGPOS);
+  انتخاب (جدول_لیبل_2) {
+    حالت HB_OT_لیبل_GSUB: واپس *face->جدول.GSUB->جدول;
+    حالت HB_OT_لیبل_GPOS: واپس *face->جدول.GPOS->جدول;
+    طےشدہ:             واپس Null (OT::GSUBGPOS);
   }
 }
 
@@ -457,19 +457,19 @@ get_gsubgpos_table (hb_face_t *face,
  * Return value: Total number of script tags.
  *
  **/
-unsigned int
-hb_ot_layout_table_get_script_tags (hb_face_t    *face,
-				    hb_tag_t      table_tag,
-				    unsigned int  start_offset,
-				    unsigned int *script_count /* IN/OUT */,
-				    hb_tag_t     *script_tags  /* OUT */)
+غیرعلامتی صحیح
+hb_ot_layout_جدول_get_script_لیبل_فہرست (hb_face_t    *face,
+				    hb_لیبل_t      جدول_لیبل_2,
+				    غیرعلامتی صحیح  آغاز_انحراف,
+				    غیرعلامتی صحیح *script_گنتی /* IN/OUT */,
+				    hb_لیبل_t     *script_لیبل_فہرست  /*برآمد*/)
 {
-  const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
+  ثابت OT::GSUBGPOS &g = get_gsubgpos_جدول (face, جدول_لیبل_2);
 
-  return g.get_script_tags (start_offset, script_count, script_tags);
+  واپس g.get_script_لیبل_فہرست (آغاز_انحراف, script_گنتی, script_لیبل_فہرست);
 }
 
-#define HB_OT_TAG_LATIN_SCRIPT		HB_TAG ('l', 'a', 't', 'n')
+#تعریف_کرو HB_OT_لیبل_LATIN_SCRIPT		HB_لیبل ('l', 'a', 't', 'n')
 
 /**
  * hb_ot_layout_table_find_script:
@@ -485,36 +485,36 @@ hb_ot_layout_table_get_script_tags (hb_face_t    *face,
  *
  **/
 hb_bool_t
-hb_ot_layout_table_find_script (hb_face_t    *face,
-				hb_tag_t      table_tag,
-				hb_tag_t      script_tag,
-				unsigned int *script_index /* OUT */)
+hb_ot_layout_جدول_ڈھونڈو_script (hb_face_t    *face,
+				hb_لیبل_t      جدول_لیبل_2,
+				hb_لیبل_t      script_لیبل,
+				غیرعلامتی صحیح *script_اشاریہ /*برآمد*/)
 {
-  static_assert ((OT::Index::NOT_FOUND_INDEX == HB_OT_LAYOUT_NO_SCRIPT_INDEX), "");
-  const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
+  static_assert ((OT::اشاریہ::NOT_ملا_اشاریہ == HB_OT_LAYOUT_NO_SCRIPT_اشاریہ), "");
+  ثابت OT::GSUBGPOS &g = get_gsubgpos_جدول (face, جدول_لیبل_2);
 
-  if (g.find_script_index (script_tag, script_index))
-    return true;
+  اگر (g.ڈھونڈو_script_اشاریہ (script_لیبل, script_اشاریہ))
+    واپس سچ;
 
   /* try finding 'DFLT' */
-  if (g.find_script_index (HB_OT_TAG_DEFAULT_SCRIPT, script_index))
-    return false;
+  اگر (g.ڈھونڈو_script_اشاریہ (HB_OT_لیبل_DEFAULT_SCRIPT, script_اشاریہ))
+    واپس جھوٹ;
 
   /* try with 'dflt'; MS site has had typos and many fonts use it now :(.
    * including many versions of DejaVu Sans Mono! */
-  if (g.find_script_index (HB_OT_TAG_DEFAULT_LANGUAGE, script_index))
-    return false;
+  اگر (g.ڈھونڈو_script_اشاریہ (HB_OT_لیبل_DEFAULT_LANGUAGE, script_اشاریہ))
+    واپس جھوٹ;
 
   /* try with 'latn'; some old fonts put their features there even though
      they're really trying to support Thai, for example :( */
-  if (g.find_script_index (HB_OT_TAG_LATIN_SCRIPT, script_index))
-    return false;
+  اگر (g.ڈھونڈو_script_اشاریہ (HB_OT_لیبل_LATIN_SCRIPT, script_اشاریہ))
+    واپس جھوٹ;
 
-  if (script_index) *script_index = HB_OT_LAYOUT_NO_SCRIPT_INDEX;
-  return false;
+  اگر (script_اشاریہ) *script_اشاریہ = HB_OT_LAYOUT_NO_SCRIPT_اشاریہ;
+  واپس جھوٹ;
 }
 
-#ifndef HB_DISABLE_DEPRECATED
+#اگر_غیر_تعریف_شدہ HB_DISABLE_DEPRECATED
 /**
  * hb_ot_layout_table_choose_script:
  * @face: #hb_face_t to work upon
@@ -526,17 +526,17 @@ hb_ot_layout_table_find_script (hb_face_t    *face,
  * Deprecated since 2.0.0
  **/
 hb_bool_t
-hb_ot_layout_table_choose_script (hb_face_t      *face,
-				  hb_tag_t        table_tag,
-				  const hb_tag_t *script_tags,
-				  unsigned int   *script_index  /* OUT */,
-				  hb_tag_t       *chosen_script /* OUT */)
+hb_ot_layout_جدول_انتخاب_script (hb_face_t      *face,
+				  hb_لیبل_t        جدول_لیبل_2,
+				  ثابت hb_لیبل_t *script_لیبل_فہرست,
+				  غیرعلامتی صحیح   *script_اشاریہ  /*برآمد*/,
+				  hb_لیبل_t       *chosen_script /*برآمد*/)
 {
-  const hb_tag_t *t;
-  for (t = script_tags; *t; t++);
-  return hb_ot_layout_table_select_script (face, table_tag, t - script_tags, script_tags, script_index, chosen_script);
+  ثابت hb_لیبل_t *t;
+  برائے (t = script_لیبل_فہرست; *t; t++);
+  واپس hb_ot_layout_جدول_select_script (face, جدول_لیبل_2, t - script_لیبل_فہرست, script_لیبل_فہرست, script_اشاریہ, chosen_script);
 }
-#endif
+#اگر_ختم
 
 /**
  * hb_ot_layout_table_select_script:
@@ -561,53 +561,53 @@ hb_ot_layout_table_choose_script (hb_face_t      *face,
  * Since: 2.0.0
  **/
 hb_bool_t
-hb_ot_layout_table_select_script (hb_face_t      *face,
-				  hb_tag_t        table_tag,
-				  unsigned int    script_count,
-				  const hb_tag_t *script_tags,
-				  unsigned int   *script_index  /* OUT */,
-				  hb_tag_t       *chosen_script /* OUT */)
+hb_ot_layout_جدول_select_script (hb_face_t      *face,
+				  hb_لیبل_t        جدول_لیبل_2,
+				  غیرعلامتی صحیح    script_گنتی,
+				  ثابت hb_لیبل_t *script_لیبل_فہرست,
+				  غیرعلامتی صحیح   *script_اشاریہ  /*برآمد*/,
+				  hb_لیبل_t       *chosen_script /*برآمد*/)
 {
-  static_assert ((OT::Index::NOT_FOUND_INDEX == HB_OT_LAYOUT_NO_SCRIPT_INDEX), "");
-  const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
-  unsigned int i;
+  static_assert ((OT::اشاریہ::NOT_ملا_اشاریہ == HB_OT_LAYOUT_NO_SCRIPT_اشاریہ), "");
+  ثابت OT::GSUBGPOS &g = get_gsubgpos_جدول (face, جدول_لیبل_2);
+  غیرعلامتی صحیح i;
 
-  for (i = 0; i < script_count; i++)
+  برائے (i = 0; i < script_گنتی; i++)
   {
-    if (g.find_script_index (script_tags[i], script_index))
+    اگر (g.ڈھونڈو_script_اشاریہ (script_لیبل_فہرست[i], script_اشاریہ))
     {
-      if (chosen_script)
-	*chosen_script = script_tags[i];
-      return true;
+      اگر (chosen_script)
+	*chosen_script = script_لیبل_فہرست[i];
+      واپس سچ;
     }
   }
 
   /* try finding 'DFLT' */
-  if (g.find_script_index (HB_OT_TAG_DEFAULT_SCRIPT, script_index)) {
-    if (chosen_script)
-      *chosen_script = HB_OT_TAG_DEFAULT_SCRIPT;
-    return false;
+  اگر (g.ڈھونڈو_script_اشاریہ (HB_OT_لیبل_DEFAULT_SCRIPT, script_اشاریہ)) {
+    اگر (chosen_script)
+      *chosen_script = HB_OT_لیبل_DEFAULT_SCRIPT;
+    واپس جھوٹ;
   }
 
   /* try with 'dflt'; MS site has had typos and many fonts use it now :( */
-  if (g.find_script_index (HB_OT_TAG_DEFAULT_LANGUAGE, script_index)) {
-    if (chosen_script)
-      *chosen_script = HB_OT_TAG_DEFAULT_LANGUAGE;
-    return false;
+  اگر (g.ڈھونڈو_script_اشاریہ (HB_OT_لیبل_DEFAULT_LANGUAGE, script_اشاریہ)) {
+    اگر (chosen_script)
+      *chosen_script = HB_OT_لیبل_DEFAULT_LANGUAGE;
+    واپس جھوٹ;
   }
 
   /* try with 'latn'; some old fonts put their features there even though
      they're really trying to support Thai, for example :( */
-  if (g.find_script_index (HB_OT_TAG_LATIN_SCRIPT, script_index)) {
-    if (chosen_script)
-      *chosen_script = HB_OT_TAG_LATIN_SCRIPT;
-    return false;
+  اگر (g.ڈھونڈو_script_اشاریہ (HB_OT_لیبل_LATIN_SCRIPT, script_اشاریہ)) {
+    اگر (chosen_script)
+      *chosen_script = HB_OT_لیبل_LATIN_SCRIPT;
+    واپس جھوٹ;
   }
 
-  if (script_index) *script_index = HB_OT_LAYOUT_NO_SCRIPT_INDEX;
-  if (chosen_script)
-    *chosen_script = HB_TAG_NONE;
-  return false;
+  اگر (script_اشاریہ) *script_اشاریہ = HB_OT_LAYOUT_NO_SCRIPT_اشاریہ;
+  اگر (chosen_script)
+    *chosen_script = HB_لیبل_NONE;
+  واپس جھوٹ;
 }
 
 
@@ -629,16 +629,16 @@ hb_ot_layout_table_select_script (hb_face_t      *face,
  * Since: 0.6.0
  *
  **/
-unsigned int
-hb_ot_layout_table_get_feature_tags (hb_face_t    *face,
-				     hb_tag_t      table_tag,
-				     unsigned int  start_offset,
-				     unsigned int *feature_count /* IN/OUT */,
-				     hb_tag_t     *feature_tags  /* OUT */)
+غیرعلامتی صحیح
+hb_ot_layout_جدول_get_feature_لیبل_فہرست (hb_face_t    *face,
+				     hb_لیبل_t      جدول_لیبل_2,
+				     غیرعلامتی صحیح  آغاز_انحراف,
+				     غیرعلامتی صحیح *feature_گنتی_2 /* IN/OUT */,
+				     hb_لیبل_t     *feature_لیبل_فہرست  /*برآمد*/)
 {
-  const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
+  ثابت OT::GSUBGPOS &g = get_gsubgpos_جدول (face, جدول_لیبل_2);
 
-  return g.get_feature_tags (start_offset, feature_count, feature_tags);
+  واپس g.get_feature_لیبل_فہرست (آغاز_انحراف, feature_گنتی_2, feature_لیبل_فہرست);
 }
 
 
@@ -657,26 +657,26 @@ hb_ot_layout_table_get_feature_tags (hb_face_t    *face,
  * Since: 0.6.0
  *
  **/
-bool
-hb_ot_layout_table_find_feature (hb_face_t    *face,
-				 hb_tag_t      table_tag,
-				 hb_tag_t      feature_tag,
-				 unsigned int *feature_index /* OUT */)
+منطقی
+hb_ot_layout_جدول_ڈھونڈو_feature (hb_face_t    *face,
+				 hb_لیبل_t      جدول_لیبل_2,
+				 hb_لیبل_t      feature_لیبل,
+				 غیرعلامتی صحیح *feature_اشاریہ /*برآمد*/)
 {
-  static_assert ((OT::Index::NOT_FOUND_INDEX == HB_OT_LAYOUT_NO_FEATURE_INDEX), "");
-  const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
+  static_assert ((OT::اشاریہ::NOT_ملا_اشاریہ == HB_OT_LAYOUT_NO_FEATURE_اشاریہ), "");
+  ثابت OT::GSUBGPOS &g = get_gsubgpos_جدول (face, جدول_لیبل_2);
 
-  unsigned int num_features = g.get_feature_count ();
-  for (unsigned int i = 0; i < num_features; i++)
+  غیرعلامتی صحیح عدد_features = g.get_feature_گنتی ();
+  برائے (غیرعلامتی صحیح i = 0; i < عدد_features; i++)
   {
-    if (feature_tag == g.get_feature_tag (i)) {
-      if (feature_index) *feature_index = i;
-      return true;
+    اگر (feature_لیبل == g.get_feature_لیبل (i)) {
+      اگر (feature_اشاریہ) *feature_اشاریہ = i;
+      واپس سچ;
     }
   }
 
-  if (feature_index) *feature_index = HB_OT_LAYOUT_NO_FEATURE_INDEX;
-  return false;
+  اگر (feature_اشاریہ) *feature_اشاریہ = HB_OT_LAYOUT_NO_FEATURE_اشاریہ;
+  واپس جھوٹ;
 }
 
 
@@ -698,21 +698,21 @@ hb_ot_layout_table_find_feature (hb_face_t    *face,
  * Since: 0.6.0
  *
  **/
-unsigned int
-hb_ot_layout_script_get_language_tags (hb_face_t    *face,
-				       hb_tag_t      table_tag,
-				       unsigned int  script_index,
-				       unsigned int  start_offset,
-				       unsigned int *language_count /* IN/OUT */,
-				       hb_tag_t     *language_tags  /* OUT */)
+غیرعلامتی صحیح
+hb_ot_layout_script_get_language_لیبل_فہرست (hb_face_t    *face,
+				       hb_لیبل_t      جدول_لیبل_2,
+				       غیرعلامتی صحیح  script_اشاریہ,
+				       غیرعلامتی صحیح  آغاز_انحراف,
+				       غیرعلامتی صحیح *language_گنتی /* IN/OUT */,
+				       hb_لیبل_t     *language_لیبل_فہرست  /*برآمد*/)
 {
-  const OT::Script &s = get_gsubgpos_table (face, table_tag).get_script (script_index);
+  ثابت OT::Script &s = get_gsubgpos_جدول (face, جدول_لیبل_2).get_script (script_اشاریہ);
 
-  return s.get_lang_sys_tags (start_offset, language_count, language_tags);
+  واپس s.get_lang_sys_لیبل_فہرست (آغاز_انحراف, language_گنتی, language_لیبل_فہرست);
 }
 
 
-#ifndef HB_DISABLE_DEPRECATED
+#اگر_غیر_تعریف_شدہ HB_DISABLE_DEPRECATED
 /**
  * hb_ot_layout_script_find_language:
  * @face: #hb_face_t to work upon
@@ -730,20 +730,20 @@ hb_ot_layout_script_get_language_tags (hb_face_t    *face,
  * Deprecated: 2.0.0
  **/
 hb_bool_t
-hb_ot_layout_script_find_language (hb_face_t    *face,
-				   hb_tag_t      table_tag,
-				   unsigned int  script_index,
-				   hb_tag_t      language_tag,
-				   unsigned int *language_index)
+hb_ot_layout_script_ڈھونڈو_language (hb_face_t    *face,
+				   hb_لیبل_t      جدول_لیبل_2,
+				   غیرعلامتی صحیح  script_اشاریہ,
+				   hb_لیبل_t      language_لیبل,
+				   غیرعلامتی صحیح *language_اشاریہ)
 {
-  return hb_ot_layout_script_select_language (face,
-					      table_tag,
-					      script_index,
+  واپس hb_ot_layout_script_select_language (face,
+					      جدول_لیبل_2,
+					      script_اشاریہ,
 					      1,
-					      &language_tag,
-					      language_index);
+					      &language_لیبل,
+					      language_اشاریہ);
 }
-#endif
+#اگر_ختم
 
 
 /**
@@ -770,40 +770,40 @@ hb_ot_layout_script_find_language (hb_face_t    *face,
  **/
 hb_bool_t
 hb_ot_layout_script_select_language2 (hb_face_t      *face,
-				     hb_tag_t        table_tag,
-				     unsigned int    script_index,
-				     unsigned int    language_count,
-				     const hb_tag_t *language_tags,
-				     unsigned int   *language_index /* OUT */,
-				     hb_tag_t       *chosen_language /* OUT */)
+				     hb_لیبل_t        جدول_لیبل_2,
+				     غیرعلامتی صحیح    script_اشاریہ,
+				     غیرعلامتی صحیح    language_گنتی,
+				     ثابت hb_لیبل_t *language_لیبل_فہرست,
+				     غیرعلامتی صحیح   *language_اشاریہ /*برآمد*/,
+				     hb_لیبل_t       *chosen_language /*برآمد*/)
 {
-  static_assert ((OT::Index::NOT_FOUND_INDEX == HB_OT_LAYOUT_DEFAULT_LANGUAGE_INDEX), "");
-  const OT::Script &s = get_gsubgpos_table (face, table_tag).get_script (script_index);
-  unsigned int i;
+  static_assert ((OT::اشاریہ::NOT_ملا_اشاریہ == HB_OT_LAYOUT_DEFAULT_LANGUAGE_اشاریہ), "");
+  ثابت OT::Script &s = get_gsubgpos_جدول (face, جدول_لیبل_2).get_script (script_اشاریہ);
+  غیرعلامتی صحیح i;
 
-  for (i = 0; i < language_count; i++)
+  برائے (i = 0; i < language_گنتی; i++)
   {
-    if (s.find_lang_sys_index (language_tags[i], language_index))
+    اگر (s.ڈھونڈو_lang_sys_اشاریہ (language_لیبل_فہرست[i], language_اشاریہ))
     {
-      if (chosen_language)
-        *chosen_language = language_tags[i];
-      return true;
+      اگر (chosen_language)
+        *chosen_language = language_لیبل_فہرست[i];
+      واپس سچ;
     }
   }
 
   /* try finding 'dflt' */
-  if (s.find_lang_sys_index (HB_OT_TAG_DEFAULT_LANGUAGE, language_index))
+  اگر (s.ڈھونڈو_lang_sys_اشاریہ (HB_OT_لیبل_DEFAULT_LANGUAGE, language_اشاریہ))
   {
-    if (chosen_language)
-      *chosen_language = HB_OT_TAG_DEFAULT_LANGUAGE;
-    return false;
+    اگر (chosen_language)
+      *chosen_language = HB_OT_لیبل_DEFAULT_LANGUAGE;
+    واپس جھوٹ;
   }
 
-  if (language_index)
-    *language_index = HB_OT_LAYOUT_DEFAULT_LANGUAGE_INDEX;
-  if (chosen_language)
-    *chosen_language = HB_TAG_NONE;
-  return false;
+  اگر (language_اشاریہ)
+    *language_اشاریہ = HB_OT_LAYOUT_DEFAULT_LANGUAGE_اشاریہ;
+  اگر (chosen_language)
+    *chosen_language = HB_لیبل_NONE;
+  واپس جھوٹ;
 }
 
 /**
@@ -828,16 +828,16 @@ hb_ot_layout_script_select_language2 (hb_face_t      *face,
  **/
 hb_bool_t
 hb_ot_layout_script_select_language (hb_face_t      *face,
-				     hb_tag_t        table_tag,
-				     unsigned int    script_index,
-				     unsigned int    language_count,
-				     const hb_tag_t *language_tags,
-				     unsigned int   *language_index /* OUT */)
+				     hb_لیبل_t        جدول_لیبل_2,
+				     غیرعلامتی صحیح    script_اشاریہ,
+				     غیرعلامتی صحیح    language_گنتی,
+				     ثابت hb_لیبل_t *language_لیبل_فہرست,
+				     غیرعلامتی صحیح   *language_اشاریہ /*برآمد*/)
 {
-  return hb_ot_layout_script_select_language2 (face, table_tag,
-					       script_index,
-					       language_count, language_tags,
-					       language_index, nullptr);
+  واپس hb_ot_layout_script_select_language2 (face, جدول_لیبل_2,
+					       script_اشاریہ,
+					       language_گنتی, language_لیبل_فہرست,
+					       language_اشاریہ, خالی_اشاریہ);
 }
 
 /**
@@ -857,18 +857,18 @@ hb_ot_layout_script_select_language (hb_face_t      *face,
  *
  **/
 hb_bool_t
-hb_ot_layout_language_get_required_feature_index (hb_face_t    *face,
-						  hb_tag_t      table_tag,
-						  unsigned int  script_index,
-						  unsigned int  language_index,
-						  unsigned int *feature_index /* OUT */)
+hb_ot_layout_language_get_required_feature_اشاریہ (hb_face_t    *face,
+						  hb_لیبل_t      جدول_لیبل_2,
+						  غیرعلامتی صحیح  script_اشاریہ,
+						  غیرعلامتی صحیح  language_اشاریہ,
+						  غیرعلامتی صحیح *feature_اشاریہ /*برآمد*/)
 {
-  return hb_ot_layout_language_get_required_feature (face,
-						     table_tag,
-						     script_index,
-						     language_index,
-						     feature_index,
-						     nullptr);
+  واپس hb_ot_layout_language_get_required_feature (face,
+						     جدول_لیبل_2,
+						     script_اشاریہ,
+						     language_اشاریہ,
+						     feature_اشاریہ,
+						     خالی_اشاریہ);
 }
 
 
@@ -890,20 +890,20 @@ hb_ot_layout_language_get_required_feature_index (hb_face_t    *face,
  **/
 hb_bool_t
 hb_ot_layout_language_get_required_feature (hb_face_t    *face,
-					    hb_tag_t      table_tag,
-					    unsigned int  script_index,
-					    unsigned int  language_index,
-					    unsigned int *feature_index /* OUT */,
-					    hb_tag_t     *feature_tag   /* OUT */)
+					    hb_لیبل_t      جدول_لیبل_2,
+					    غیرعلامتی صحیح  script_اشاریہ,
+					    غیرعلامتی صحیح  language_اشاریہ,
+					    غیرعلامتی صحیح *feature_اشاریہ /*برآمد*/,
+					    hb_لیبل_t     *feature_لیبل   /*برآمد*/)
 {
-  const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
-  const OT::LangSys &l = g.get_script (script_index).get_lang_sys (language_index);
+  ثابت OT::GSUBGPOS &g = get_gsubgpos_جدول (face, جدول_لیبل_2);
+  ثابت OT::LangSys &l = g.get_script (script_اشاریہ).get_lang_sys (language_اشاریہ);
 
-  unsigned int index = l.get_required_feature_index ();
-  if (feature_index) *feature_index = index;
-  if (feature_tag) *feature_tag = g.get_feature_tag (index);
+  غیرعلامتی صحیح اشاریہ_2 = l.get_required_feature_اشاریہ ();
+  اگر (feature_اشاریہ) *feature_اشاریہ = اشاریہ_2;
+  اگر (feature_لیبل) *feature_لیبل = g.get_feature_لیبل (اشاریہ_2);
 
-  return l.has_required_feature ();
+  واپس l.has_required_feature ();
 }
 
 
@@ -927,19 +927,19 @@ hb_ot_layout_language_get_required_feature (hb_face_t    *face,
  * Since: 0.6.0
  *
  **/
-unsigned int
+غیرعلامتی صحیح
 hb_ot_layout_language_get_feature_indexes (hb_face_t    *face,
-					   hb_tag_t      table_tag,
-					   unsigned int  script_index,
-					   unsigned int  language_index,
-					   unsigned int  start_offset,
-					   unsigned int *feature_count   /* IN/OUT */,
-					   unsigned int *feature_indexes /* OUT */)
+					   hb_لیبل_t      جدول_لیبل_2,
+					   غیرعلامتی صحیح  script_اشاریہ,
+					   غیرعلامتی صحیح  language_اشاریہ,
+					   غیرعلامتی صحیح  آغاز_انحراف,
+					   غیرعلامتی صحیح *feature_گنتی_2   /* IN/OUT */,
+					   غیرعلامتی صحیح *feature_indexes /*برآمد*/)
 {
-  const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
-  const OT::LangSys &l = g.get_script (script_index).get_lang_sys (language_index);
+  ثابت OT::GSUBGPOS &g = get_gsubgpos_جدول (face, جدول_لیبل_2);
+  ثابت OT::LangSys &l = g.get_script (script_اشاریہ).get_lang_sys (language_اشاریہ);
 
-  return l.get_feature_indexes (start_offset, feature_count, feature_indexes);
+  واپس l.get_feature_indexes (آغاز_انحراف, feature_گنتی_2, feature_indexes);
 }
 
 
@@ -963,28 +963,28 @@ hb_ot_layout_language_get_feature_indexes (hb_face_t    *face,
  * Since: 0.6.0
  *
  **/
-unsigned int
-hb_ot_layout_language_get_feature_tags (hb_face_t    *face,
-					hb_tag_t      table_tag,
-					unsigned int  script_index,
-					unsigned int  language_index,
-					unsigned int  start_offset,
-					unsigned int *feature_count /* IN/OUT */,
-					hb_tag_t     *feature_tags  /* OUT */)
+غیرعلامتی صحیح
+hb_ot_layout_language_get_feature_لیبل_فہرست (hb_face_t    *face,
+					hb_لیبل_t      جدول_لیبل_2,
+					غیرعلامتی صحیح  script_اشاریہ,
+					غیرعلامتی صحیح  language_اشاریہ,
+					غیرعلامتی صحیح  آغاز_انحراف,
+					غیرعلامتی صحیح *feature_گنتی_2 /* IN/OUT */,
+					hb_لیبل_t     *feature_لیبل_فہرست  /*برآمد*/)
 {
-  const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
-  const OT::LangSys &l = g.get_script (script_index).get_lang_sys (language_index);
+  ثابت OT::GSUBGPOS &g = get_gsubgpos_جدول (face, جدول_لیبل_2);
+  ثابت OT::LangSys &l = g.get_script (script_اشاریہ).get_lang_sys (language_اشاریہ);
 
-  static_assert ((sizeof (unsigned int) == sizeof (hb_tag_t)), "");
-  unsigned int ret = l.get_feature_indexes (start_offset, feature_count, (unsigned int *) feature_tags);
+  static_assert ((حجم (غیرعلامتی صحیح) == حجم (hb_لیبل_t)), "");
+  غیرعلامتی صحیح ret = l.get_feature_indexes (آغاز_انحراف, feature_گنتی_2, (غیرعلامتی صحیح *) feature_لیبل_فہرست);
 
-  if (feature_count && feature_tags) {
-    unsigned int count = *feature_count;
-    for (unsigned int i = 0; i < count; i++)
-      feature_tags[i] = g.get_feature_tag ((unsigned int) feature_tags[i]);
+  اگر (feature_گنتی_2 && feature_لیبل_فہرست) {
+    غیرعلامتی صحیح گنتی = *feature_گنتی_2;
+    برائے (غیرعلامتی صحیح i = 0; i < گنتی; i++)
+      feature_لیبل_فہرست[i] = g.get_feature_لیبل ((غیرعلامتی صحیح) feature_لیبل_فہرست[i]);
   }
 
-  return ret;
+  واپس ret;
 }
 
 
@@ -1006,29 +1006,29 @@ hb_ot_layout_language_get_feature_tags (hb_face_t    *face,
  *
  **/
 hb_bool_t
-hb_ot_layout_language_find_feature (hb_face_t    *face,
-				    hb_tag_t      table_tag,
-				    unsigned int  script_index,
-				    unsigned int  language_index,
-				    hb_tag_t      feature_tag,
-				    unsigned int *feature_index /* OUT */)
+hb_ot_layout_language_ڈھونڈو_feature (hb_face_t    *face,
+				    hb_لیبل_t      جدول_لیبل_2,
+				    غیرعلامتی صحیح  script_اشاریہ,
+				    غیرعلامتی صحیح  language_اشاریہ,
+				    hb_لیبل_t      feature_لیبل,
+				    غیرعلامتی صحیح *feature_اشاریہ /*برآمد*/)
 {
-  static_assert ((OT::Index::NOT_FOUND_INDEX == HB_OT_LAYOUT_NO_FEATURE_INDEX), "");
-  const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
-  const OT::LangSys &l = g.get_script (script_index).get_lang_sys (language_index);
+  static_assert ((OT::اشاریہ::NOT_ملا_اشاریہ == HB_OT_LAYOUT_NO_FEATURE_اشاریہ), "");
+  ثابت OT::GSUBGPOS &g = get_gsubgpos_جدول (face, جدول_لیبل_2);
+  ثابت OT::LangSys &l = g.get_script (script_اشاریہ).get_lang_sys (language_اشاریہ);
 
-  unsigned int num_features = l.get_feature_count ();
-  for (unsigned int i = 0; i < num_features; i++) {
-    unsigned int f_index = l.get_feature_index (i);
+  غیرعلامتی صحیح عدد_features = l.get_feature_گنتی ();
+  برائے (غیرعلامتی صحیح i = 0; i < عدد_features; i++) {
+    غیرعلامتی صحیح f_اشاریہ = l.get_feature_اشاریہ (i);
 
-    if (feature_tag == g.get_feature_tag (f_index)) {
-      if (feature_index) *feature_index = f_index;
-      return true;
+    اگر (feature_لیبل == g.get_feature_لیبل (f_اشاریہ)) {
+      اگر (feature_اشاریہ) *feature_اشاریہ = f_اشاریہ;
+      واپس سچ;
     }
   }
 
-  if (feature_index) *feature_index = HB_OT_LAYOUT_NO_FEATURE_INDEX;
-  return false;
+  اگر (feature_اشاریہ) *feature_اشاریہ = HB_OT_LAYOUT_NO_FEATURE_اشاریہ;
+  واپس جھوٹ;
 }
 
 
@@ -1050,20 +1050,20 @@ hb_ot_layout_language_find_feature (hb_face_t    *face,
  *
  * Since: 0.9.7
  **/
-unsigned int
+غیرعلامتی صحیح
 hb_ot_layout_feature_get_lookups (hb_face_t    *face,
-				  hb_tag_t      table_tag,
-				  unsigned int  feature_index,
-				  unsigned int  start_offset,
-				  unsigned int *lookup_count   /* IN/OUT */,
-				  unsigned int *lookup_indexes /* OUT */)
+				  hb_لیبل_t      جدول_لیبل_2,
+				  غیرعلامتی صحیح  feature_اشاریہ,
+				  غیرعلامتی صحیح  آغاز_انحراف,
+				  غیرعلامتی صحیح *lookup_گنتی   /* IN/OUT */,
+				  غیرعلامتی صحیح *lookup_indexes /*برآمد*/)
 {
-  return hb_ot_layout_feature_with_variations_get_lookups (face,
-							   table_tag,
-							   feature_index,
-							   HB_OT_LAYOUT_NO_VARIATIONS_INDEX,
-							   start_offset,
-							   lookup_count,
+  واپس hb_ot_layout_feature_with_variations_get_lookups (face,
+							   جدول_لیبل_2,
+							   feature_اشاریہ,
+							   HB_OT_LAYOUT_NO_VARIATIONS_اشاریہ,
+							   آغاز_انحراف,
+							   lookup_گنتی,
 							   lookup_indexes);
 }
 
@@ -1080,168 +1080,168 @@ hb_ot_layout_feature_get_lookups (hb_face_t    *face,
  *
  * Since: 0.9.22
  **/
-unsigned int
-hb_ot_layout_table_get_lookup_count (hb_face_t    *face,
-				     hb_tag_t      table_tag)
+غیرعلامتی صحیح
+hb_ot_layout_جدول_get_lookup_گنتی (hb_face_t    *face,
+				     hb_لیبل_t      جدول_لیبل_2)
 {
-  return get_gsubgpos_table (face, table_tag).get_lookup_count ();
+  واپس get_gsubgpos_جدول (face, جدول_لیبل_2).get_lookup_گنتی ();
 }
 
 
-struct hb_collect_features_context_t
+ساخت hb_collect_features_context_t
 {
   hb_collect_features_context_t (hb_face_t *face,
-				 hb_tag_t   table_tag,
-				 hb_set_t  *feature_indices_,
-				 const hb_tag_t *features)
+				 hb_لیبل_t   جدول_لیبل_2,
+				 hb_سیٹ_t  *feature_indices_,
+				 ثابت hb_لیبل_t *features)
 
-    : g (get_gsubgpos_table (face, table_tag)),
+    : g (get_gsubgpos_جدول (face, جدول_لیبل_2)),
       feature_indices (feature_indices_),
-      has_feature_filter (false),
-      script_count (0),langsys_count (0), feature_index_count (0)
+      has_feature_filter (جھوٹ),
+      script_گنتی (0),langsys_گنتی (0), feature_اشاریہ_گنتی (0)
   {
     compute_feature_filter (features);
   }
 
-  void compute_feature_filter (const hb_tag_t *features)
+  خالی compute_feature_filter (ثابت hb_لیبل_t *features)
   {
-    if (features == nullptr)
+    اگر (features == خالی_اشاریہ)
     {
-      has_feature_filter = false;
-      return;
+      has_feature_filter = جھوٹ;
+      واپس;
     }
 
-    has_feature_filter = true;
-    hb_set_t features_set;
-    for (; *features; features++)
-      features_set.add (*features);
+    has_feature_filter = سچ;
+    hb_سیٹ_t features_سیٹ;
+    برائے (; *features; features++)
+      features_سیٹ.جوڑو (*features);
 
-    for (unsigned i = 0; i < g.get_feature_count (); i++)
+    برائے (غیرعلامتی i = 0; i < g.get_feature_گنتی (); i++)
     {
-      hb_tag_t tag = g.get_feature_tag (i);
-      if (features_set.has (tag))
-	feature_indices_filter.add(i);
+      hb_لیبل_t لیبل_2 = g.get_feature_لیبل (i);
+      اگر (features_سیٹ.has (لیبل_2))
+	feature_indices_filter.جوڑو(i);
     }
   }
 
-  bool visited (const OT::Script &s)
+  منطقی دیکھا (ثابت OT::Script &s)
   {
     /* We might have Null() object here.  Don't want to involve
      * that in the memoize.  So, detect empty objects and return. */
-    if (unlikely (!s.has_default_lang_sys () &&
-		  !s.get_lang_sys_count ()))
-      return true;
+    اگر (unlikely (!s.has_default_lang_sys () &&
+		  !s.get_lang_sys_گنتی ()))
+      واپس سچ;
 
-    if (script_count++ > HB_MAX_SCRIPTS)
-      return true;
+    اگر (script_گنتی++ > HB_MAX_SCRIPTS)
+      واپس سچ;
 
-    return visited (s, visited_script);
+    واپس دیکھا (s, دیکھا_script);
   }
-  bool visited (const OT::LangSys &l)
+  منطقی دیکھا (ثابت OT::LangSys &l)
   {
     /* We might have Null() object here.  Don't want to involve
      * that in the memoize.  So, detect empty objects and return. */
-    if (unlikely (!l.has_required_feature () &&
-		  !l.get_feature_count ()))
-      return true;
+    اگر (unlikely (!l.has_required_feature () &&
+		  !l.get_feature_گنتی ()))
+      واپس سچ;
 
-    if (langsys_count++ > HB_MAX_LANGSYS)
-      return true;
+    اگر (langsys_گنتی++ > HB_MAX_LANGSYS)
+      واپس سچ;
 
-    return visited (l, visited_langsys);
+    واپس دیکھا (l, دیکھا_langsys);
   }
 
-  bool visited_feature_indices (unsigned count)
+  منطقی دیکھا_feature_indices (غیرعلامتی گنتی)
   {
-    feature_index_count += count;
-    return feature_index_count > HB_MAX_FEATURE_INDICES;
+    feature_اشاریہ_گنتی += گنتی;
+    واپس feature_اشاریہ_گنتی > HB_MAX_FEATURE_INDICES;
   }
 
-  private:
-  template <typename T>
-  bool visited (const T &p, hb_set_t &visited_set)
+  نجی:
+  سانچہ <قسم_نام T>
+  منطقی دیکھا (ثابت T &p, hb_سیٹ_t &دیکھا_سیٹ)
   {
     hb_codepoint_t delta = (hb_codepoint_t) ((uintptr_t) &p - (uintptr_t) &g);
-     if (visited_set.has (delta))
-      return true;
+     اگر (دیکھا_سیٹ.has (delta))
+      واپس سچ;
 
-    visited_set.add (delta);
-    return false;
+    دیکھا_سیٹ.جوڑو (delta);
+    واپس جھوٹ;
   }
 
-  public:
-  const OT::GSUBGPOS &g;
-  hb_set_t *feature_indices;
-  hb_set_t  feature_indices_filter;
-  bool has_feature_filter;
+  عوامی:
+  ثابت OT::GSUBGPOS &g;
+  hb_سیٹ_t *feature_indices;
+  hb_سیٹ_t  feature_indices_filter;
+  منطقی has_feature_filter;
 
-  private:
-  hb_set_t visited_script;
-  hb_set_t visited_langsys;
-  unsigned int script_count;
-  unsigned int langsys_count;
-  unsigned int feature_index_count;
+  نجی:
+  hb_سیٹ_t دیکھا_script;
+  hb_سیٹ_t دیکھا_langsys;
+  غیرعلامتی صحیح script_گنتی;
+  غیرعلامتی صحیح langsys_گنتی;
+  غیرعلامتی صحیح feature_اشاریہ_گنتی;
 };
 
-static void
+ساکن خالی
 langsys_collect_features (hb_collect_features_context_t *c,
-			  const OT::LangSys  &l)
+			  ثابت OT::LangSys  &l)
 {
-  if (c->visited (l)) return;
+  اگر (c->دیکھا (l)) واپس;
 
-  if (!c->has_feature_filter)
+  اگر (!c->has_feature_filter)
   {
     /* All features. */
-    if (l.has_required_feature () && !c->visited_feature_indices (1))
-      c->feature_indices->add (l.get_required_feature_index ());
+    اگر (l.has_required_feature () && !c->دیکھا_feature_indices (1))
+      c->feature_indices->جوڑو (l.get_required_feature_اشاریہ ());
 
     // TODO(garretrieger): filter out indices >= feature count?
-    if (!c->visited_feature_indices (l.featureIndex.len))
-      l.add_feature_indexes_to (c->feature_indices);
+    اگر (!c->دیکھا_feature_indices (l.feature_اشاریہ_2.len))
+      l.جوڑو_feature_indexes_مقصد (c->feature_indices);
   }
-  else
+  ورنہ
   {
-    if (c->feature_indices_filter.is_empty()) return;
-    unsigned int num_features = l.get_feature_count ();
-    for (unsigned int i = 0; i < num_features; i++)
+    اگر (c->feature_indices_filter.is_empty()) واپس;
+    غیرعلامتی صحیح عدد_features = l.get_feature_گنتی ();
+    برائے (غیرعلامتی صحیح i = 0; i < عدد_features; i++)
     {
-      unsigned int feature_index = l.get_feature_index (i);
-      if (!c->feature_indices_filter.has (feature_index)) continue;
+      غیرعلامتی صحیح feature_اشاریہ = l.get_feature_اشاریہ (i);
+      اگر (!c->feature_indices_filter.has (feature_اشاریہ)) جاری;
 
-      c->feature_indices->add (feature_index);
-      c->feature_indices_filter.del (feature_index);
+      c->feature_indices->جوڑو (feature_اشاریہ);
+      c->feature_indices_filter.del (feature_اشاریہ);
     }
   }
 }
 
-static void
+ساکن خالی
 script_collect_features (hb_collect_features_context_t *c,
-			 const OT::Script   &s,
-			 const hb_tag_t *languages)
+			 ثابت OT::Script   &s,
+			 ثابت hb_لیبل_t *languages)
 {
-  if (c->visited (s)) return;
+  اگر (c->دیکھا (s)) واپس;
 
-  if (!languages)
+  اگر (!languages)
   {
     /* All languages. */
-    if (s.has_default_lang_sys ())
+    اگر (s.has_default_lang_sys ())
       langsys_collect_features (c,
 				s.get_default_lang_sys ());
 
 
-    unsigned int count = s.get_lang_sys_count ();
-    for (unsigned int language_index = 0; language_index < count; language_index++)
+    غیرعلامتی صحیح گنتی = s.get_lang_sys_گنتی ();
+    برائے (غیرعلامتی صحیح language_اشاریہ = 0; language_اشاریہ < گنتی; language_اشاریہ++)
       langsys_collect_features (c,
-				s.get_lang_sys (language_index));
+				s.get_lang_sys (language_اشاریہ));
   }
-  else
+  ورنہ
   {
-    for (; *languages; languages++)
+    برائے (; *languages; languages++)
     {
-      unsigned int language_index;
-      if (s.find_lang_sys_index (*languages, &language_index))
+      غیرعلامتی صحیح language_اشاریہ;
+      اگر (s.ڈھونڈو_lang_sys_اشاریہ (*languages, &language_اشاریہ))
 	langsys_collect_features (c,
-				  s.get_lang_sys (language_index));
+				  s.get_lang_sys (language_اشاریہ));
 
     }
   }
@@ -1268,32 +1268,32 @@ script_collect_features (hb_collect_features_context_t *c,
  *
  * Since: 1.8.5
  **/
-void
+خالی
 hb_ot_layout_collect_features (hb_face_t      *face,
-			       hb_tag_t        table_tag,
-			       const hb_tag_t *scripts,
-			       const hb_tag_t *languages,
-			       const hb_tag_t *features,
-			       hb_set_t       *feature_indexes /* OUT */)
+			       hb_لیبل_t        جدول_لیبل_2,
+			       ثابت hb_لیبل_t *scripts,
+			       ثابت hb_لیبل_t *languages,
+			       ثابت hb_لیبل_t *features,
+			       hb_سیٹ_t       *feature_indexes /*برآمد*/)
 {
-  hb_collect_features_context_t c (face, table_tag, feature_indexes, features);
-  if (!scripts)
+  hb_collect_features_context_t c (face, جدول_لیبل_2, feature_indexes, features);
+  اگر (!scripts)
   {
     /* All scripts. */
-    unsigned int count = c.g.get_script_count ();
-    for (unsigned int script_index = 0; script_index < count; script_index++)
+    غیرعلامتی صحیح گنتی = c.g.get_script_گنتی ();
+    برائے (غیرعلامتی صحیح script_اشاریہ = 0; script_اشاریہ < گنتی; script_اشاریہ++)
       script_collect_features (&c,
-			       c.g.get_script (script_index),
+			       c.g.get_script (script_اشاریہ),
 			       languages);
   }
-  else
+  ورنہ
   {
-    for (; *scripts; scripts++)
+    برائے (; *scripts; scripts++)
     {
-      unsigned int script_index;
-      if (c.g.find_script_index (*scripts, &script_index))
+      غیرعلامتی صحیح script_اشاریہ;
+      اگر (c.g.ڈھونڈو_script_اشاریہ (*scripts, &script_اشاریہ))
 	script_collect_features (&c,
-				 c.g.get_script (script_index),
+				 c.g.get_script (script_اشاریہ),
 				 languages);
     }
   }
@@ -1312,33 +1312,33 @@ hb_ot_layout_collect_features (hb_face_t      *face,
  *
  * Since: 8.1.0
  **/
-void
+خالی
 hb_ot_layout_collect_features_map (hb_face_t      *face,
-				   hb_tag_t        table_tag,
-				   unsigned        script_index,
-				   unsigned        language_index,
-				   hb_map_t       *feature_map /* OUT */)
+				   hb_لیبل_t        جدول_لیبل_2,
+				   غیرعلامتی        script_اشاریہ,
+				   غیرعلامتی        language_اشاریہ,
+				   hb_map_t       *feature_map /*برآمد*/)
 {
-  const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
-  const OT::LangSys &l = g.get_script (script_index).get_lang_sys (language_index);
+  ثابت OT::GSUBGPOS &g = get_gsubgpos_جدول (face, جدول_لیبل_2);
+  ثابت OT::LangSys &l = g.get_script (script_اشاریہ).get_lang_sys (language_اشاریہ);
 
-  unsigned int count = l.get_feature_indexes (0, nullptr, nullptr);
-  feature_map->alloc (count);
+  غیرعلامتی صحیح گنتی = l.get_feature_indexes (0, خالی_اشاریہ, خالی_اشاریہ);
+  feature_map->alloc (گنتی);
 
   /* Loop in reverse, such that earlier entries win. That emulates
    * a linear search, which seems to be what other implementations do.
    * We found that with arialuni_t.ttf, the "ur" language system has
    * duplicate features, and the earlier ones work but not later ones.
    */
-  for (unsigned int i = count; i; i--)
+  برائے (غیرعلامتی صحیح i = گنتی; i; i--)
   {
-    unsigned feature_index = 0;
-    unsigned feature_count = 1;
-    l.get_feature_indexes (i - 1, &feature_count, &feature_index);
-    if (!feature_count)
-      break;
-    hb_tag_t feature_tag = g.get_feature_tag (feature_index);
-    feature_map->set (feature_tag, feature_index);
+    غیرعلامتی feature_اشاریہ = 0;
+    غیرعلامتی feature_گنتی_2 = 1;
+    l.get_feature_indexes (i - 1, &feature_گنتی_2, &feature_اشاریہ);
+    اگر (!feature_گنتی_2)
+      توڑو;
+    hb_لیبل_t feature_لیبل = g.get_feature_لیبل (feature_اشاریہ);
+    feature_map->سیٹ (feature_لیبل, feature_اشاریہ);
   }
 }
 
@@ -1363,27 +1363,27 @@ hb_ot_layout_collect_features_map (hb_face_t      *face,
  *
  * Since: 0.9.8
  **/
-void
+خالی
 hb_ot_layout_collect_lookups (hb_face_t      *face,
-			      hb_tag_t        table_tag,
-			      const hb_tag_t *scripts,
-			      const hb_tag_t *languages,
-			      const hb_tag_t *features,
-			      hb_set_t       *lookup_indexes /* OUT */)
+			      hb_لیبل_t        جدول_لیبل_2,
+			      ثابت hb_لیبل_t *scripts,
+			      ثابت hb_لیبل_t *languages,
+			      ثابت hb_لیبل_t *features,
+			      hb_سیٹ_t       *lookup_indexes /*برآمد*/)
 {
-  const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
+  ثابت OT::GSUBGPOS &g = get_gsubgpos_جدول (face, جدول_لیبل_2);
 
-  hb_set_t feature_indexes;
-  hb_ot_layout_collect_features (face, table_tag, scripts, languages, features, &feature_indexes);
+  hb_سیٹ_t feature_indexes;
+  hb_ot_layout_collect_features (face, جدول_لیبل_2, scripts, languages, features, &feature_indexes);
 
-  for (auto feature_index : feature_indexes)
-    g.get_feature (feature_index).add_lookup_indexes_to (lookup_indexes);
+  برائے (خودکار feature_اشاریہ : feature_indexes)
+    g.get_feature (feature_اشاریہ).جوڑو_lookup_indexes_مقصد (lookup_indexes);
 
-  g.feature_variation_collect_lookups (&feature_indexes, nullptr, lookup_indexes);
+  g.feature_variation_collect_lookups (&feature_indexes, خالی_اشاریہ, lookup_indexes);
 }
 
 
-#ifndef HB_NO_LAYOUT_COLLECT_GLYPHS
+#اگر_غیر_تعریف_شدہ HB_NO_LAYOUT_COLLECT_GLYPHS
 /**
  * hb_ot_layout_lookup_collect_glyphs:
  * @face: #hb_face_t to work upon
@@ -1399,73 +1399,73 @@ hb_ot_layout_collect_lookups (hb_face_t      *face,
  *
  * Since: 0.9.7
  **/
-void
+خالی
 hb_ot_layout_lookup_collect_glyphs (hb_face_t    *face,
-				    hb_tag_t      table_tag,
-				    unsigned int  lookup_index,
-				    hb_set_t     *glyphs_before, /* OUT.  May be NULL */
-				    hb_set_t     *glyphs_input,  /* OUT.  May be NULL */
-				    hb_set_t     *glyphs_after,  /* OUT.  May be NULL */
-				    hb_set_t     *glyphs_output  /* OUT.  May be NULL */)
+				    hb_لیبل_t      جدول_لیبل_2,
+				    غیرعلامتی صحیح  lookup_اشاریہ,
+				    hb_سیٹ_t     *glyphs_before, /* OUT.  May be NULL */
+				    hb_سیٹ_t     *glyphs_داخلہ,  /* OUT.  May be NULL */
+				    hb_سیٹ_t     *glyphs_after,  /* OUT.  May be NULL */
+				    hb_سیٹ_t     *glyphs_output  /* OUT.  May be NULL */)
 {
   OT::hb_collect_glyphs_context_t c (face,
 				     glyphs_before,
-				     glyphs_input,
+				     glyphs_داخلہ,
 				     glyphs_after,
 				     glyphs_output);
 
-  switch (table_tag)
+  انتخاب (جدول_لیبل_2)
   {
-    case HB_OT_TAG_GSUB:
+    حالت HB_OT_لیبل_GSUB:
     {
-      const OT::SubstLookup& l = face->table.GSUB->table->get_lookup (lookup_index);
+      ثابت OT::SubstLookup& l = face->جدول.GSUB->جدول->get_lookup (lookup_اشاریہ);
       l.collect_glyphs (&c);
-      return;
+      واپس;
     }
-    case HB_OT_TAG_GPOS:
+    حالت HB_OT_لیبل_GPOS:
     {
-      const OT::PosLookup& l = face->table.GPOS->table->get_lookup (lookup_index);
+      ثابت OT::PosLookup& l = face->جدول.GPOS->جدول->get_lookup (lookup_اشاریہ);
       l.collect_glyphs (&c);
-      return;
+      واپس;
     }
   }
 }
-#endif
+#اگر_ختم
 
 
 /* Variations support */
 
-bool
-_hb_ot_layout_table_get_feature_variations_state (hb_face_t             *face,
-						   hb_tag_t               table_tag,
-						   const int             *coords,
-						   unsigned int           num_coords,
-						   unsigned int          *variations_index,
-						   hb_vector_t<unsigned> *lookup_conditions)
+منطقی
+hb_ot_layout_جدول_get_feature_variations_state (hb_face_t             *face,
+						   hb_لیبل_t               جدول_لیبل_2,
+						   ثابت صحیح             *coords,
+						   غیرعلامتی صحیح           عدد_coords,
+						   غیرعلامتی صحیح          *variations_اشاریہ,
+						   hb_سمتیہ_t<غیرعلامتی> *lookup_conditions)
 {
-  const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
-  const OT::GDEF &gdef = *face->table.GDEF->table;
+  ثابت OT::GSUBGPOS &g = get_gsubgpos_جدول (face, جدول_لیبل_2);
+  ثابت OT::GDEF &gdef = *face->جدول.GDEF->جدول;
 
-  auto instancer = OT::ItemVarStoreInstancer (&gdef.get_var_store (), nullptr,
-					      hb_array (coords, num_coords));
+  خودکار instancer = OT::شے_Var_Store_Instancer (&gdef.get_var_store (), خالی_اشاریہ,
+					      hb_array (coords, عدد_coords));
 
-  return g.get_feature_variations_state (coords,
-					 num_coords,
-					 variations_index,
+  واپس g.get_feature_variations_state (coords,
+					 عدد_coords,
+					 variations_اشاریہ,
 					 &instancer,
 					 lookup_conditions);
 }
 
-bool
+منطقی
 _hb_ot_layout_feature_get_lookup_variations (hb_face_t *face,
-                                             hb_tag_t table_tag,
-                                             unsigned feature_index,
-                                             unsigned variations_index,
-                                             hb_sorted_array_t<const unsigned> conditions,
-                                             hb_set_t *lookup_indexes)
+                                             hb_لیبل_t جدول_لیبل_2,
+                                             غیرعلامتی feature_اشاریہ,
+                                             غیرعلامتی variations_اشاریہ,
+                                             hb_sorted_array_t<ثابت غیرعلامتی> conditions,
+                                             hb_سیٹ_t *lookup_indexes)
 {
-  return get_gsubgpos_table (face, table_tag).get_lookup_variations (
-      feature_index, variations_index, conditions, lookup_indexes);
+  واپس get_gsubgpos_جدول (face, جدول_لیبل_2).get_lookup_variations (
+      feature_اشاریہ, variations_اشاریہ, conditions, lookup_indexes);
 }
 
 
@@ -1486,19 +1486,19 @@ _hb_ot_layout_feature_get_lookup_variations (hb_face_t *face,
  *
  **/
 hb_bool_t
-hb_ot_layout_table_find_feature_variations (hb_face_t    *face,
-					    hb_tag_t      table_tag,
-					    const int    *coords,
-					    unsigned int  num_coords,
-					    unsigned int *variations_index /* out */)
+hb_ot_layout_جدول_ڈھونڈو_feature_variations (hb_face_t    *face,
+					    hb_لیبل_t      جدول_لیبل_2,
+					    ثابت صحیح    *coords,
+					    غیرعلامتی صحیح  عدد_coords,
+					    غیرعلامتی صحیح *variations_اشاریہ /* out */)
 {
-  const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
-  const OT::GDEF &gdef = *face->table.GDEF->table;
+  ثابت OT::GSUBGPOS &g = get_gsubgpos_جدول (face, جدول_لیبل_2);
+  ثابت OT::GDEF &gdef = *face->جدول.GDEF->جدول;
 
-  auto instancer = OT::ItemVarStoreInstancer(&gdef.get_var_store(), nullptr,
-					     hb_array (coords, num_coords));
+  خودکار instancer = OT::شے_Var_Store_Instancer(&gdef.get_var_store(), خالی_اشاریہ,
+					     hb_array (coords, عدد_coords));
 
-  return g.find_variations_index (coords, num_coords, variations_index, &instancer);
+  واپس g.ڈھونڈو_variations_اشاریہ (coords, عدد_coords, variations_اشاریہ, &instancer);
 }
 
 
@@ -1522,21 +1522,21 @@ hb_ot_layout_table_find_feature_variations (hb_face_t    *face,
  * Since: 1.4.0
  *
  **/
-unsigned int
+غیرعلامتی صحیح
 hb_ot_layout_feature_with_variations_get_lookups (hb_face_t    *face,
-						  hb_tag_t      table_tag,
-						  unsigned int  feature_index,
-						  unsigned int  variations_index,
-						  unsigned int  start_offset,
-						  unsigned int *lookup_count /* IN/OUT */,
-						  unsigned int *lookup_indexes /* OUT */)
+						  hb_لیبل_t      جدول_لیبل_2,
+						  غیرعلامتی صحیح  feature_اشاریہ,
+						  غیرعلامتی صحیح  variations_اشاریہ,
+						  غیرعلامتی صحیح  آغاز_انحراف,
+						  غیرعلامتی صحیح *lookup_گنتی /* IN/OUT */,
+						  غیرعلامتی صحیح *lookup_indexes /*برآمد*/)
 {
-  static_assert ((OT::FeatureVariations::NOT_FOUND_INDEX == HB_OT_LAYOUT_NO_VARIATIONS_INDEX), "");
-  const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
+  static_assert ((OT::FeatureVariations::NOT_ملا_اشاریہ == HB_OT_LAYOUT_NO_VARIATIONS_اشاریہ), "");
+  ثابت OT::GSUBGPOS &g = get_gsubgpos_جدول (face, جدول_لیبل_2);
 
-  const OT::Feature &f = g.get_feature_variation (feature_index, variations_index);
+  ثابت OT::Feature &f = g.get_feature_variation (feature_اشاریہ, variations_اشاریہ);
 
-  return f.get_lookup_indexes (start_offset, lookup_count, lookup_indexes);
+  واپس f.get_lookup_indexes (آغاز_انحراف, lookup_گنتی, lookup_indexes);
 }
 
 
@@ -1559,7 +1559,7 @@ hb_ot_layout_feature_with_variations_get_lookups (hb_face_t    *face,
 hb_bool_t
 hb_ot_layout_has_substitution (hb_face_t *face)
 {
-  return face->table.GSUB->table->has_data ();
+  واپس face->جدول.GSUB->جدول->has_ڈیٹا ();
 }
 
 
@@ -1581,18 +1581,18 @@ hb_ot_layout_has_substitution (hb_face_t *face)
  **/
 hb_bool_t
 hb_ot_layout_lookup_would_substitute (hb_face_t            *face,
-				      unsigned int          lookup_index,
-				      const hb_codepoint_t *glyphs,
-				      unsigned int          glyphs_length,
+				      غیرعلامتی صحیح          lookup_اشاریہ,
+				      ثابت hb_codepoint_t *glyphs,
+				      غیرعلامتی صحیح          glyphs_لمبائی,
 				      hb_bool_t             zero_context)
 {
-  auto &gsub = face->table.GSUB;
-  if (unlikely (lookup_index >= gsub->lookup_count)) return false;
-  OT::hb_would_apply_context_t c (face, glyphs, glyphs_length, (bool) zero_context);
+  خودکار &gsub = face->جدول.GSUB;
+  اگر (unlikely (lookup_اشاریہ >= gsub->lookup_گنتی)) واپس جھوٹ;
+  OT::hb_would_apply_context_t c (face, glyphs, glyphs_لمبائی, (منطقی) zero_context);
 
-  const OT::SubstLookup& l = gsub->table->get_lookup (lookup_index);
-  auto *accel = gsub->get_accel (lookup_index);
-  return accel && l.would_apply (&c, accel);
+  ثابت OT::SubstLookup& l = gsub->جدول->get_lookup (lookup_اشاریہ);
+  خودکار *accel = gsub->get_accel (lookup_اشاریہ);
+  واپس accel && l.would_apply (&c, accel);
 }
 
 
@@ -1605,19 +1605,19 @@ hb_ot_layout_lookup_would_substitute (hb_face_t            *face,
  * class and other properties are set on the glyphs in the buffer.
  *
  **/
-void
-hb_ot_layout_substitute_start (hb_font_t    *font,
-			       hb_buffer_t  *buffer)
+خالی
+hb_ot_layout_substitute_آغاز (hb_font_t    *font,
+			       hb_بفر_t  *بفر)
 {
-  _hb_ot_layout_set_glyph_props<false> (font, buffer);
+  hb_ot_layout_سیٹ_glyph_props<جھوٹ> (font, بفر);
 }
 
-void
-hb_ot_layout_substitute_start_with_digest (hb_font_t    *font,
-					   hb_buffer_t  *buffer)
+خالی
+hb_ot_layout_substitute_آغاز_with_digest (hb_font_t    *font,
+					   hb_بفر_t  *بفر)
 {
-  buffer->digest = hb_set_digest_t ();
-  _hb_ot_layout_set_glyph_props<true> (font, buffer);
+  بفر->digest = hb_سیٹ_digest_t ();
+  hb_ot_layout_سیٹ_glyph_props<سچ> (font, بفر);
 }
 
 /**
@@ -1631,18 +1631,18 @@ hb_ot_layout_substitute_start_with_digest (hb_font_t    *font,
  *
  * Since: 0.9.7
  **/
-void
-hb_ot_layout_lookup_substitute_closure (hb_face_t    *face,
-					unsigned int  lookup_index,
-					hb_set_t     *glyphs /* OUT */)
+خالی
+hb_ot_layout_lookup_substitute_احاطہ (hb_face_t    *face,
+					غیرعلامتی صحیح  lookup_اشاریہ,
+					hb_سیٹ_t     *glyphs /*برآمد*/)
 {
-  hb_map_t done_lookups_glyph_count;
-  hb_hashmap_t<unsigned, hb::unique_ptr<hb_set_t>> done_lookups_glyph_set;
-  OT::hb_closure_context_t c (face, glyphs, &done_lookups_glyph_count, &done_lookups_glyph_set);
+  hb_map_t مکمل_lookups_glyph_گنتی;
+  hb_hashmap_t<غیرعلامتی, hb::unique_ptr<hb_سیٹ_t>> مکمل_lookups_glyph_سیٹ;
+  OT::hb_احاطہ_context_t c (face, glyphs, &مکمل_lookups_glyph_گنتی, &مکمل_lookups_glyph_سیٹ);
 
-  const OT::SubstLookup& l = face->table.GSUB->table->get_lookup (lookup_index);
+  ثابت OT::SubstLookup& l = face->جدول.GSUB->جدول->get_lookup (lookup_اشاریہ);
 
-  l.closure (&c, lookup_index);
+  l.احاطہ (&c, lookup_اشاریہ);
 }
 
 /**
@@ -1656,34 +1656,34 @@ hb_ot_layout_lookup_substitute_closure (hb_face_t    *face,
  *
  * Since: 1.8.1
  **/
-void
-hb_ot_layout_lookups_substitute_closure (hb_face_t      *face,
-					 const hb_set_t *lookups,
-					 hb_set_t       *glyphs /* OUT */)
+خالی
+hb_ot_layout_lookups_substitute_احاطہ (hb_face_t      *face,
+					 ثابت hb_سیٹ_t *lookups,
+					 hb_سیٹ_t       *glyphs /*برآمد*/)
 {
-  hb_map_t done_lookups_glyph_count;
-  hb_hashmap_t<unsigned, hb::unique_ptr<hb_set_t>> done_lookups_glyph_set;
-  OT::hb_closure_context_t c (face, glyphs, &done_lookups_glyph_count, &done_lookups_glyph_set);
-  const GSUB& gsub = *face->table.GSUB->table;
+  hb_map_t مکمل_lookups_glyph_گنتی;
+  hb_hashmap_t<غیرعلامتی, hb::unique_ptr<hb_سیٹ_t>> مکمل_lookups_glyph_سیٹ;
+  OT::hb_احاطہ_context_t c (face, glyphs, &مکمل_lookups_glyph_گنتی, &مکمل_lookups_glyph_سیٹ);
+  ثابت GSUB& gsub = *face->جدول.GSUB->جدول;
 
-  unsigned int iteration_count = 0;
-  unsigned int glyphs_length;
-  do
+  غیرعلامتی صحیح iteration_گنتی = 0;
+  غیرعلامتی صحیح glyphs_لمبائی;
+  کرو
   {
-    c.reset_lookup_visit_count ();
-    glyphs_length = glyphs->get_population ();
-    if (lookups)
+    c.reset_lookup_دورہ_گنتی ();
+    glyphs_لمبائی = glyphs->get_population ();
+    اگر (lookups)
     {
-      for (auto lookup_index : *lookups)
-	gsub.get_lookup (lookup_index).closure (&c, lookup_index);
+      برائے (خودکار lookup_اشاریہ : *lookups)
+	gsub.get_lookup (lookup_اشاریہ).احاطہ (&c, lookup_اشاریہ);
     }
-    else
+    ورنہ
     {
-      for (unsigned int i = 0; i < gsub.get_lookup_count (); i++)
-	gsub.get_lookup (i).closure (&c, i);
+      برائے (غیرعلامتی صحیح i = 0; i < gsub.get_lookup_گنتی (); i++)
+	gsub.get_lookup (i).احاطہ (&c, i);
     }
-  } while (iteration_count++ <= HB_CLOSURE_MAX_STAGES &&
-	   glyphs_length != glyphs->get_population ());
+  } جب (iteration_گنتی++ <= HB_احاطہ_MAX_STAGES &&
+	   glyphs_لمبائی != glyphs->get_population ());
 }
 
 /*
@@ -1703,7 +1703,7 @@ hb_ot_layout_lookups_substitute_closure (hb_face_t      *face,
 hb_bool_t
 hb_ot_layout_has_positioning (hb_face_t *face)
 {
-  return face->table.GPOS->table->has_data ();
+  واپس face->جدول.GPOS->جدول->has_ڈیٹا ();
 }
 
 /**
@@ -1715,10 +1715,10 @@ hb_ot_layout_has_positioning (hb_face_t *face)
  * attachment types and glyph-attachment chains are set for the glyphs in the buffer.
  *
  **/
-void
-hb_ot_layout_position_start (hb_font_t *font, hb_buffer_t *buffer)
+خالی
+hb_ot_layout_position_آغاز (hb_font_t *font, hb_بفر_t *بفر)
 {
-  GPOS::position_start (font, buffer);
+  GPOS::position_آغاز (font, بفر);
 }
 
 
@@ -1730,10 +1730,10 @@ hb_ot_layout_position_start (hb_font_t *font, hb_buffer_t *buffer)
  * Called after positioning lookups are performed, to finish glyph advances.
  *
  **/
-void
-hb_ot_layout_position_finish_advances (hb_font_t *font, hb_buffer_t *buffer)
+خالی
+hb_ot_layout_position_اختتام_advances (hb_font_t *font, hb_بفر_t *بفر)
 {
-  GPOS::position_finish_advances (font, buffer);
+  GPOS::position_اختتام_advances (font, بفر);
 }
 
 /**
@@ -1744,14 +1744,14 @@ hb_ot_layout_position_finish_advances (hb_font_t *font, hb_buffer_t *buffer)
  * Called after positioning lookups are performed, to finish glyph offsets.
  *
  **/
-void
-hb_ot_layout_position_finish_offsets (hb_font_t *font, hb_buffer_t *buffer)
+خالی
+hb_ot_layout_position_اختتام_offsets (hb_font_t *font, hb_بفر_t *بفر)
 {
-  GPOS::position_finish_offsets (font, buffer);
+  GPOS::position_اختتام_offsets (font, بفر);
 }
 
 
-#ifndef HB_NO_LAYOUT_FEATURE_PARAMS
+#اگر_غیر_تعریف_شدہ HB_NO_LAYOUT_FEATURE_PARAMS
 /**
  * hb_ot_layout_get_size_params:
  * @face: #hb_face_t to work upon
@@ -1775,44 +1775,44 @@ hb_ot_layout_position_finish_offsets (hb_font_t *font, hb_buffer_t *buffer)
  * Since: 0.9.10
  **/
 hb_bool_t
-hb_ot_layout_get_size_params (hb_face_t       *face,
-			      unsigned int    *design_size,       /* OUT.  May be NULL */
-			      unsigned int    *subfamily_id,      /* OUT.  May be NULL */
+hb_ot_layout_get_سائز_params (hb_face_t       *face,
+			      غیرعلامتی صحیح    *design_سائز_2,       /* OUT.  May be NULL */
+			      غیرعلامتی صحیح    *subfamily_id,      /* OUT.  May be NULL */
 			      hb_ot_name_id_t *subfamily_name_id, /* OUT.  May be NULL */
-			      unsigned int    *range_start,       /* OUT.  May be NULL */
-			      unsigned int    *range_end          /* OUT.  May be NULL */)
+			      غیرعلامتی صحیح    *range_آغاز_2,       /* OUT.  May be NULL */
+			      غیرعلامتی صحیح    *range_انتہا_2          /* OUT.  May be NULL */)
 {
-  const GPOS &gpos = *face->table.GPOS->table;
-  const hb_tag_t tag = HB_TAG ('s','i','z','e');
+  ثابت GPOS &gpos = *face->جدول.GPOS->جدول;
+  ثابت hb_لیبل_t لیبل_2 = HB_لیبل ('s','i','z','e');
 
-  unsigned int num_features = gpos.get_feature_count ();
-  for (unsigned int i = 0; i < num_features; i++)
+  غیرعلامتی صحیح عدد_features = gpos.get_feature_گنتی ();
+  برائے (غیرعلامتی صحیح i = 0; i < عدد_features; i++)
   {
-    if (tag == gpos.get_feature_tag (i))
+    اگر (لیبل_2 == gpos.get_feature_لیبل (i))
     {
-      const OT::Feature &f = gpos.get_feature (i);
-      const OT::FeatureParamsSize &params = f.get_feature_params ().get_size_params (tag);
+      ثابت OT::Feature &f = gpos.get_feature (i);
+      ثابت OT::Feature_Params_سائز &params = f.get_feature_params ().get_سائز_params (لیبل_2);
 
-      if (params.designSize)
+      اگر (params.design_سائز)
       {
-	if (design_size) *design_size = params.designSize;
-	if (subfamily_id) *subfamily_id = params.subfamilyID;
-	if (subfamily_name_id) *subfamily_name_id = params.subfamilyNameID;
-	if (range_start) *range_start = params.rangeStart;
-	if (range_end) *range_end = params.rangeEnd;
+	اگر (design_سائز_2) *design_سائز_2 = params.design_سائز;
+	اگر (subfamily_id) *subfamily_id = params.subfamilyID;
+	اگر (subfamily_name_id) *subfamily_name_id = params.subfamilyNameID;
+	اگر (range_آغاز_2) *range_آغاز_2 = params.range_آغاز;
+	اگر (range_انتہا_2) *range_انتہا_2 = params.range_انتہا;
 
-	return true;
+	واپس سچ;
       }
     }
   }
 
-  if (design_size) *design_size = 0;
-  if (subfamily_id) *subfamily_id = 0;
-  if (subfamily_name_id) *subfamily_name_id = HB_OT_NAME_ID_INVALID;
-  if (range_start) *range_start = 0;
-  if (range_end) *range_end = 0;
+  اگر (design_سائز_2) *design_سائز_2 = 0;
+  اگر (subfamily_id) *subfamily_id = 0;
+  اگر (subfamily_name_id) *subfamily_name_id = HB_OT_NAME_ID_INVALID;
+  اگر (range_آغاز_2) *range_آغاز_2 = 0;
+  اگر (range_انتہا_2) *range_انتہا_2 = 0;
 
-  return false;
+  واپس جھوٹ;
 }
 
 
@@ -1842,53 +1842,53 @@ hb_ot_layout_get_size_params (hb_face_t       *face,
  **/
 hb_bool_t
 hb_ot_layout_feature_get_name_ids (hb_face_t       *face,
-				   hb_tag_t         table_tag,
-				   unsigned int     feature_index,
+				   hb_لیبل_t         جدول_لیبل_2,
+				   غیرعلامتی صحیح     feature_اشاریہ,
 				   hb_ot_name_id_t *label_id,             /* OUT.  May be NULL */
 				   hb_ot_name_id_t *tooltip_id,           /* OUT.  May be NULL */
 				   hb_ot_name_id_t *sample_id,            /* OUT.  May be NULL */
-				   unsigned int    *num_named_parameters, /* OUT.  May be NULL */
-				   hb_ot_name_id_t *first_param_id        /* OUT.  May be NULL */)
+				   غیرعلامتی صحیح    *عدد_named_parameters, /* OUT.  May be NULL */
+				   hb_ot_name_id_t *پہلا_param_id        /* OUT.  May be NULL */)
 {
-  const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
+  ثابت OT::GSUBGPOS &g = get_gsubgpos_جدول (face, جدول_لیبل_2);
 
-  hb_tag_t feature_tag = g.get_feature_tag (feature_index);
-  const OT::Feature &f = g.get_feature (feature_index);
+  hb_لیبل_t feature_لیبل = g.get_feature_لیبل (feature_اشاریہ);
+  ثابت OT::Feature &f = g.get_feature (feature_اشاریہ);
 
-  const OT::FeatureParams &feature_params = f.get_feature_params ();
-  if (&feature_params != &Null (OT::FeatureParams))
+  ثابت OT::FeatureParams &feature_params = f.get_feature_params ();
+  اگر (&feature_params != &Null (OT::FeatureParams))
   {
-    const OT::FeatureParamsStylisticSet& ss_params =
-      feature_params.get_stylistic_set_params (feature_tag);
-    if (&ss_params != &Null (OT::FeatureParamsStylisticSet)) /* ssXX */
+    ثابت OT::Feature_Params_Stylistic_سیٹ& ss_params =
+      feature_params.get_stylistic_سیٹ_params (feature_لیبل);
+    اگر (&ss_params != &Null (OT::Feature_Params_Stylistic_سیٹ)) /* ssXX */
     {
-      if (label_id) *label_id = ss_params.uiNameID;
+      اگر (label_id) *label_id = ss_params.uiNameID;
       // ssXX features don't have the rest
-      if (tooltip_id) *tooltip_id = HB_OT_NAME_ID_INVALID;
-      if (sample_id) *sample_id = HB_OT_NAME_ID_INVALID;
-      if (num_named_parameters) *num_named_parameters = 0;
-      if (first_param_id) *first_param_id = HB_OT_NAME_ID_INVALID;
-      return true;
+      اگر (tooltip_id) *tooltip_id = HB_OT_NAME_ID_INVALID;
+      اگر (sample_id) *sample_id = HB_OT_NAME_ID_INVALID;
+      اگر (عدد_named_parameters) *عدد_named_parameters = 0;
+      اگر (پہلا_param_id) *پہلا_param_id = HB_OT_NAME_ID_INVALID;
+      واپس سچ;
     }
-    const OT::FeatureParamsCharacterVariants& cv_params =
-      feature_params.get_character_variants_params (feature_tag);
-    if (&cv_params != &Null (OT::FeatureParamsCharacterVariants)) /* cvXX */
+    ثابت OT::FeatureParamsCharacterVariants& cv_params =
+      feature_params.get_character_variants_params (feature_لیبل);
+    اگر (&cv_params != &Null (OT::FeatureParamsCharacterVariants)) /* cvXX */
     {
-      if (label_id) *label_id = cv_params.featUILableNameID;
-      if (tooltip_id) *tooltip_id = cv_params.featUITooltipTextNameID;
-      if (sample_id) *sample_id = cv_params.sampleTextNameID;
-      if (num_named_parameters) *num_named_parameters = cv_params.numNamedParameters;
-      if (first_param_id) *first_param_id = cv_params.firstParamUILabelNameID;
-      return true;
+      اگر (label_id) *label_id = cv_params.featUILableNameID;
+      اگر (tooltip_id) *tooltip_id = cv_params.feat_UITooltip_متن_Name_ID;
+      اگر (sample_id) *sample_id = cv_params.sample_متن_Name_ID;
+      اگر (عدد_named_parameters) *عدد_named_parameters = cv_params.عدد_Named_Parameters;
+      اگر (پہلا_param_id) *پہلا_param_id = cv_params.پہلا_Param_UILabel_Name_ID;
+      واپس سچ;
     }
   }
 
-  if (label_id) *label_id = HB_OT_NAME_ID_INVALID;
-  if (tooltip_id) *tooltip_id = HB_OT_NAME_ID_INVALID;
-  if (sample_id) *sample_id = HB_OT_NAME_ID_INVALID;
-  if (num_named_parameters) *num_named_parameters = 0;
-  if (first_param_id) *first_param_id = HB_OT_NAME_ID_INVALID;
-  return false;
+  اگر (label_id) *label_id = HB_OT_NAME_ID_INVALID;
+  اگر (tooltip_id) *tooltip_id = HB_OT_NAME_ID_INVALID;
+  اگر (sample_id) *sample_id = HB_OT_NAME_ID_INVALID;
+  اگر (عدد_named_parameters) *عدد_named_parameters = 0;
+  اگر (پہلا_param_id) *پہلا_param_id = HB_OT_NAME_ID_INVALID;
+  واپس جھوٹ;
 }
 /**
  * hb_ot_layout_feature_get_characters:
@@ -1909,21 +1909,21 @@ hb_ot_layout_feature_get_name_ids (hb_face_t       *face,
  *
  * Since: 2.0.0
  **/
-unsigned int
+غیرعلامتی صحیح
 hb_ot_layout_feature_get_characters (hb_face_t      *face,
-				     hb_tag_t        table_tag,
-				     unsigned int    feature_index,
-				     unsigned int    start_offset,
-				     unsigned int   *char_count, /* IN/OUT.  May be NULL */
+				     hb_لیبل_t        جدول_لیبل_2,
+				     غیرعلامتی صحیح    feature_اشاریہ,
+				     غیرعلامتی صحیح    آغاز_انحراف,
+				     غیرعلامتی صحیح   *char_گنتی, /* IN/OUT.  May be NULL */
 				     hb_codepoint_t *characters  /* OUT.     May be NULL */)
 {
-  const OT::GSUBGPOS &g = get_gsubgpos_table (face, table_tag);
-  return g.get_feature (feature_index)
+  ثابت OT::GSUBGPOS &g = get_gsubgpos_جدول (face, جدول_لیبل_2);
+  واپس g.get_feature (feature_اشاریہ)
 	  .get_feature_params ()
-	  .get_character_variants_params(g.get_feature_tag (feature_index))
-	  .get_characters (start_offset, char_count, characters);
+	  .get_character_variants_params(g.get_feature_لیبل (feature_اشاریہ))
+	  .get_characters (آغاز_انحراف, char_گنتی, characters);
 }
-#endif
+#اگر_ختم
 
 
 /*
@@ -1932,241 +1932,241 @@ hb_ot_layout_feature_get_characters (hb_face_t      *face,
  */
 
 
-struct GSUBProxy
+ساخت GSUBProxy
 {
-  static constexpr unsigned table_index = 0u;
-  static constexpr bool always_inplace = false;
-  typedef OT::SubstLookup Lookup;
+  ساکن constexpr غیرعلامتی جدول_اشاریہ = 0u;
+  ساکن constexpr منطقی always_inplace = جھوٹ;
+  قسمتعریف OT::SubstLookup Lookup;
 
   GSUBProxy (hb_face_t *face) :
-    accel (*face->table.GSUB) {}
+    accel (*face->جدول.GSUB) {}
 
-  const GSUB::accelerator_t &accel;
+  ثابت GSUB::accelerator_t &accel;
 };
 
-struct GPOSProxy
+ساخت GPOSProxy
 {
-  static constexpr unsigned table_index = 1u;
-  static constexpr bool always_inplace = true;
-  typedef OT::PosLookup Lookup;
+  ساکن constexpr غیرعلامتی جدول_اشاریہ = 1u;
+  ساکن constexpr منطقی always_inplace = سچ;
+  قسمتعریف OT::PosLookup Lookup;
 
   GPOSProxy (hb_face_t *face) :
-    accel (*face->table.GPOS) {}
+    accel (*face->جدول.GPOS) {}
 
-  const GPOS::accelerator_t &accel;
+  ثابت GPOS::accelerator_t &accel;
 };
 
 
-static inline bool
+ساکن اندرونی منطقی
 apply_forward (OT::hb_ot_apply_context_t *c,
-	       const OT::hb_ot_layout_lookup_accelerator_t &accel)
+	       ثابت OT::hb_ot_layout_lookup_accelerator_t &accel)
 {
-  bool use_hot_subtable_cache = accel.cache_enter (c);
+  منطقی use_hot_subtable_cache = accel.cache_enter (c);
 
-  bool ret = false;
-  hb_buffer_t *buffer = c->buffer;
-  while (buffer->successful)
+  منطقی ret = جھوٹ;
+  hb_بفر_t *بفر = c->بفر;
+  جب (بفر->successful)
   {
-    hb_glyph_info_t *info = buffer->info;
-    unsigned j = buffer->idx;
-    while (j < buffer->len &&
+    hb_glyph_info_t *info = بفر->info;
+    غیرعلامتی j = بفر->idx;
+    جب (j < بفر->len &&
 	   !(accel.digest.may_have (info[j].codepoint) &&
-	     (info[j].mask & c->lookup_mask) &&
+	     (info[j].نقاب & c->lookup_نقاب) &&
 	     c->check_glyph_property (&info[j], c->lookup_props)))
       j++;
-    if (unlikely (j > buffer->idx && !buffer->next_glyphs (j - buffer->idx)))
-      break;
-    if (buffer->idx >= buffer->len)
-      break;
+    اگر (unlikely (j > بفر->idx && !بفر->اگلا_glyphs (j - بفر->idx)))
+      توڑو;
+    اگر (بفر->idx >= بفر->len)
+      توڑو;
 
-    if (accel.apply (c, use_hot_subtable_cache))
-      ret = true;
-    else
-      (void) buffer->next_glyph ();
+    اگر (accel.apply (c, use_hot_subtable_cache))
+      ret = سچ;
+    ورنہ
+      (خالی) بفر->اگلا_glyph ();
   }
 
-  if (use_hot_subtable_cache)
+  اگر (use_hot_subtable_cache)
     accel.cache_leave (c);
 
-  return ret;
+  واپس ret;
 }
 
-static inline bool
+ساکن اندرونی منطقی
 apply_backward (OT::hb_ot_apply_context_t *c,
-	       const OT::hb_ot_layout_lookup_accelerator_t &accel)
+	       ثابت OT::hb_ot_layout_lookup_accelerator_t &accel)
 {
-  bool ret = false;
-  hb_buffer_t *buffer = c->buffer;
-  do
+  منطقی ret = جھوٹ;
+  hb_بفر_t *بفر = c->بفر;
+  کرو
   {
-    auto &cur = buffer->cur();
-    if (accel.digest.may_have (cur.codepoint) &&
-	(cur.mask & c->lookup_mask) &&
+    خودکار &cur = بفر->cur();
+    اگر (accel.digest.may_have (cur.codepoint) &&
+	(cur.نقاب & c->lookup_نقاب) &&
 	c->check_glyph_property (&cur, c->lookup_props))
-      ret |= accel.apply (c, false);
+      ret |= accel.apply (c, جھوٹ);
 
     /* The reverse lookup doesn't "advance" cursor (for good reason). */
-    buffer->idx--;
+    بفر->idx--;
   }
-  while ((int) buffer->idx >= 0);
-  return ret;
+  جب ((صحیح) بفر->idx >= 0);
+  واپس ret;
 }
 
-template <typename Proxy>
-static inline bool
+سانچہ <قسم_نام Proxy>
+ساکن اندرونی منطقی
 apply_string (OT::hb_ot_apply_context_t *c,
-	      const typename Proxy::Lookup &lookup,
-	      const OT::hb_ot_layout_lookup_accelerator_t &accel)
+	      ثابت قسم_نام Proxy::Lookup &lookup,
+	      ثابت OT::hb_ot_layout_lookup_accelerator_t &accel)
 {
-  hb_buffer_t *buffer = c->buffer;
+  hb_بفر_t *بفر = c->بفر;
 
-  if (unlikely (!buffer->len || !c->lookup_mask))
-    return false;
+  اگر (unlikely (!بفر->len || !c->lookup_نقاب))
+    واپس جھوٹ;
 
-  bool ret = false;
+  منطقی ret = جھوٹ;
 
-  c->set_lookup_props (lookup.get_props ());
+  c->سیٹ_lookup_props (lookup.get_props ());
 
-  if (likely (!lookup.is_reverse ()))
+  اگر (likely (!lookup.is_الٹ ()))
   {
     /* in/out forward substitution/positioning */
-    if (!Proxy::always_inplace)
-      buffer->clear_output ();
+    اگر (!Proxy::always_inplace)
+      بفر->clear_output ();
 
-    buffer->idx = 0;
+    بفر->idx = 0;
     ret = apply_forward (c, accel);
 
-    if (!Proxy::always_inplace)
-      buffer->sync ();
+    اگر (!Proxy::always_inplace)
+      بفر->ہمآہنگ ();
   }
-  else
+  ورنہ
   {
     /* in-place backward substitution/positioning */
-    assert (!buffer->have_output);
-    buffer->idx = buffer->len - 1;
+    أكد (!بفر->have_output);
+    بفر->idx = بفر->len - 1;
     ret = apply_backward (c, accel);
   }
 
-  return ret;
+  واپس ret;
 }
 
-template <typename Proxy>
-inline void hb_ot_map_t::apply (const Proxy &proxy,
-				const hb_ot_shape_plan_t *plan,
+سانچہ <قسم_نام Proxy>
+اندرونی خالی hb_ot_map_t::apply (ثابت Proxy &proxy,
+				ثابت hb_ot_shape_plan_t *plan,
 				hb_font_t *font,
-				hb_buffer_t *buffer) const
+				hb_بفر_t *بفر) ثابت
 {
-  const unsigned int table_index = proxy.table_index;
-  unsigned int i = 0;
+  ثابت غیرعلامتی صحیح جدول_اشاریہ = proxy.جدول_اشاریہ;
+  غیرعلامتی صحیح i = 0;
 
-  auto *font_data = font->data.ot.get ();
-  auto *var_store_cache = (OT::hb_scalar_cache_t *) font_data;
+  خودکار *font_ڈیٹا = font->ڈیٹا.ot.get ();
+  خودکار *var_store_cache = (OT::hb_scalar_cache_t *) font_ڈیٹا;
 
-  OT::hb_ot_apply_context_t c (table_index, font, buffer, proxy.accel.get_blob (), var_store_cache);
-  c.set_recurse_func (Proxy::Lookup::template dispatch_recurse_func<OT::hb_ot_apply_context_t>);
+  OT::hb_ot_apply_context_t c (جدول_اشاریہ, font, بفر, proxy.accel.get_blob (), var_store_cache);
+  c.سیٹ_recurse_func (Proxy::Lookup::سانچہ dispatch_recurse_func<OT::hb_ot_apply_context_t>);
 
-  for (unsigned int stage_index = 0; stage_index < stages[table_index].length; stage_index++)
+  برائے (غیرعلامتی صحیح stage_اشاریہ = 0; stage_اشاریہ < stages[جدول_اشاریہ].لمبائی; stage_اشاریہ++)
   {
-    const stage_map_t *stage = &stages[table_index][stage_index];
-    for (; i < stage->last_lookup; i++)
+    ثابت stage_map_t *stage = &stages[جدول_اشاریہ][stage_اشاریہ];
+    برائے (; i < stage->آخری_lookup; i++)
     {
-      auto &lookup = lookups[table_index][i];
+      خودکار &lookup = lookups[جدول_اشاریہ][i];
 
-      unsigned int lookup_index = lookup.index;
+      غیرعلامتی صحیح lookup_اشاریہ = lookup.اشاریہ_2;
 
-      auto *accel = proxy.accel.get_accel (lookup_index);
-      if (unlikely (!accel)) continue;
+      خودکار *accel = proxy.accel.get_accel (lookup_اشاریہ);
+      اگر (unlikely (!accel)) جاری;
 
-      if (buffer->messaging () &&
-	  !buffer->message (font, "start lookup %u feature '%c%c%c%c'", lookup_index, HB_UNTAG (lookup.feature_tag))) continue;
+      اگر (بفر->messaging () &&
+	  !بفر->پیغام (font, "start lookup %u feature '%c%c%c%c'", lookup_اشاریہ, HB_UNTAG (lookup.feature_لیبل))) جاری;
 
       /* Only try applying the lookup if there is any overlap. */
-      if (accel->digest.may_intersect (buffer->digest) &&
-	  ((buffer->flags & HB_BUFFER_FLAG_PRODUCE_UNSAFE_TO_CONCAT) ||
-	   accel->digest_second.may_intersect (buffer->digest)))
+      اگر (accel->digest.may_intersect (بفر->digest) &&
+	  ((بفر->flags & HB_بفر_FLAG_PRODUCE_UNSAFE_مقصد_CONCAT) ||
+	   accel->digest_دوسرا.may_intersect (بفر->digest)))
       {
-	c.set_lookup_index (lookup_index);
-	c.set_lookup_mask (lookup.mask, false);
-	c.set_auto_zwj (lookup.auto_zwj, false);
-	c.set_auto_zwnj (lookup.auto_zwnj, false);
-	c.set_random (lookup.random);
-	c.set_per_syllable (lookup.per_syllable, false);
+	c.سیٹ_lookup_اشاریہ (lookup_اشاریہ);
+	c.سیٹ_lookup_نقاب (lookup.نقاب, جھوٹ);
+	c.سیٹ_auto_zwj (lookup.auto_zwj, جھوٹ);
+	c.سیٹ_auto_zwnj (lookup.auto_zwnj, جھوٹ);
+	c.سیٹ_random (lookup.random);
+	c.سیٹ_فی_syllable (lookup.فی_syllable, جھوٹ);
 	/* apply_string's set_lookup_props initializes the iterators. */
 
 	apply_string<Proxy> (&c,
-			     proxy.accel.table->get_lookup (lookup_index),
+			     proxy.accel.جدول->get_lookup (lookup_اشاریہ),
 			     *accel);
       }
-      else if (buffer->messaging ())
-	(void) buffer->message (font, "skipped lookup %u feature '%c%c%c%c' because no glyph matches", lookup_index, HB_UNTAG (lookup.feature_tag));
+      ورنہ اگر (بفر->messaging ())
+	(خالی) بفر->پیغام (font, "skipped lookup %u feature '%c%c%c%c' because no glyph matches", lookup_اشاریہ, HB_UNTAG (lookup.feature_لیبل));
 
-      if (buffer->messaging ())
-	(void) buffer->message (font, "end lookup %u feature '%c%c%c%c'", lookup_index, HB_UNTAG (lookup.feature_tag));
+      اگر (بفر->messaging ())
+	(خالی) بفر->پیغام (font, "end lookup %u feature '%c%c%c%c'", lookup_اشاریہ, HB_UNTAG (lookup.feature_لیبل));
     }
 
-    if (stage->pause_func)
+    اگر (stage->pause_func)
     {
-      if (stage->pause_func (plan, font, buffer))
+      اگر (stage->pause_func (plan, font, بفر))
       {
 	/* Refresh working buffer digest since buffer changed. */
-	buffer->update_digest ();
+	بفر->update_digest ();
       }
     }
   }
 }
 
-void hb_ot_map_t::substitute (const hb_ot_shape_plan_t *plan, hb_font_t *font, hb_buffer_t *buffer) const
+خالی hb_ot_map_t::substitute (ثابت hb_ot_shape_plan_t *plan, hb_font_t *font, hb_بفر_t *بفر) ثابت
 {
   GSUBProxy proxy (font->face);
-  char tag[5] = {0};
-  hb_tag_to_string (chosen_script[0], tag);
-  if (buffer->messaging () &&
-      !buffer->message (font, "start table GSUB script tag '%s'", tag)) return;
-  apply (proxy, plan, font, buffer);
-  if (buffer->messaging ())
-    (void) buffer->message (font, "end table GSUB script tag '%s'", tag);
+  حرف لیبل_2[5] = {0};
+  hb_لیبل_مقصد_string (chosen_script[0], لیبل_2);
+  اگر (بفر->messaging () &&
+      !بفر->پیغام (font, "start table GSUB script tag '%s'", لیبل_2)) واپس;
+  apply (proxy, plan, font, بفر);
+  اگر (بفر->messaging ())
+    (خالی) بفر->پیغام (font, "end table GSUB script tag '%s'", لیبل_2);
 }
 
-void hb_ot_map_t::position (const hb_ot_shape_plan_t *plan, hb_font_t *font, hb_buffer_t *buffer) const
+خالی hb_ot_map_t::position (ثابت hb_ot_shape_plan_t *plan, hb_font_t *font, hb_بفر_t *بفر) ثابت
 {
   GPOSProxy proxy (font->face);
-  char tag[5] = {0};
-  hb_tag_to_string (chosen_script[0], tag);
-  if (buffer->messaging () &&
-      !buffer->message (font, "start table GPOS script tag '%s'", tag)) return;
-  apply (proxy, plan, font, buffer);
-  if (buffer->messaging ())
-    (void) buffer->message (font, "end table GPOS script tag '%s'", tag);
+  حرف لیبل_2[5] = {0};
+  hb_لیبل_مقصد_string (chosen_script[0], لیبل_2);
+  اگر (بفر->messaging () &&
+      !بفر->پیغام (font, "start table GPOS script tag '%s'", لیبل_2)) واپس;
+  apply (proxy, plan, font, بفر);
+  اگر (بفر->messaging ())
+    (خالی) بفر->پیغام (font, "end table GPOS script tag '%s'", لیبل_2);
 }
 
-void
+خالی
 hb_ot_layout_substitute_lookup (OT::hb_ot_apply_context_t *c,
-				const OT::SubstLookup &lookup,
-				const OT::hb_ot_layout_lookup_accelerator_t &accel)
+				ثابت OT::SubstLookup &lookup,
+				ثابت OT::hb_ot_layout_lookup_accelerator_t &accel)
 {
   apply_string<GSUBProxy> (c, lookup, accel);
 }
 
-#ifndef HB_NO_BASE
+#اگر_غیر_تعریف_شدہ HB_NO_بنیاد
 
-static void
-choose_base_tags (hb_script_t    script,
+ساکن خالی
+انتخاب_بنیاد_لیبل_فہرست (hb_script_t    script,
 		  hb_language_t  language,
-		  hb_tag_t      *script_tag,
-		  hb_tag_t      *language_tag)
+		  hb_لیبل_t      *script_لیبل,
+		  hb_لیبل_t      *language_لیبل)
 {
-  hb_tag_t script_tags[HB_OT_MAX_TAGS_PER_SCRIPT];
-  unsigned script_count = ARRAY_LENGTH (script_tags);
+  hb_لیبل_t script_لیبل_فہرست[HB_OT_MAX_لیبل_فہرست_فی_SCRIPT];
+  غیرعلامتی script_گنتی = ARRAY_لمبائی (script_لیبل_فہرست);
 
-  hb_tag_t language_tags[HB_OT_MAX_TAGS_PER_LANGUAGE];
-  unsigned language_count = ARRAY_LENGTH (language_tags);
+  hb_لیبل_t language_لیبل_فہرست[HB_OT_MAX_لیبل_فہرست_فی_LANGUAGE];
+  غیرعلامتی language_گنتی = ARRAY_لمبائی (language_لیبل_فہرست);
 
-  hb_ot_tags_from_script_and_language (script, language,
-				       &script_count, script_tags,
-				       &language_count, language_tags);
+  hb_ot_لیبل_فہرست_from_script_and_language (script, language,
+				       &script_گنتی, script_لیبل_فہرست,
+				       &language_گنتی, language_لیبل_فہرست);
 
-  *script_tag = script_count ? script_tags[script_count - 1] : HB_OT_TAG_DEFAULT_SCRIPT;
-  *language_tag = language_count ? language_tags[language_count - 1] : HB_OT_TAG_DEFAULT_LANGUAGE;
+  *script_لیبل = script_گنتی ? script_لیبل_فہرست[script_گنتی - 1] : HB_OT_لیبل_DEFAULT_SCRIPT;
+  *language_لیبل = language_گنتی ? language_لیبل_فہرست[language_گنتی - 1] : HB_OT_لیبل_DEFAULT_LANGUAGE;
 }
 
 /**
@@ -2193,25 +2193,25 @@ choose_base_tags (hb_script_t    script,
 hb_bool_t
 hb_ot_layout_get_font_extents (hb_font_t         *font,
 			       hb_direction_t     direction,
-			       hb_tag_t           script_tag,
-			       hb_tag_t           language_tag,
+			       hb_لیبل_t           script_لیبل,
+			       hb_لیبل_t           language_لیبل,
 			       hb_font_extents_t *extents)
 {
   hb_position_t min = 0, max = 0;
-  if (font->face->table.BASE->get_min_max (font, direction, script_tag, language_tag, HB_TAG_NONE,
+  اگر (font->face->جدول.بنیاد_4->get_min_max (font, direction, script_لیبل, language_لیبل, HB_لیبل_NONE,
 					   &min, &max))
   {
-    if (extents)
+    اگر (extents)
     {
       extents->ascender  = max;
       extents->descender = min;
-      extents->line_gap  = 0;
+      extents->سطر_gap  = 0;
     }
-    return true;
+    واپس سچ;
   }
 
   hb_font_get_extents_for_direction (font, direction, extents);
-  return false;
+  واپس جھوٹ;
 }
 
 /**
@@ -2245,12 +2245,12 @@ hb_ot_layout_get_font_extents2 (hb_font_t         *font,
 				hb_language_t      language,
 				hb_font_extents_t *extents)
 {
-  hb_tag_t script_tag, language_tag;
-  choose_base_tags (script, language, &script_tag, &language_tag);
-  return hb_ot_layout_get_font_extents (font,
+  hb_لیبل_t script_لیبل, language_لیبل;
+  انتخاب_بنیاد_لیبل_فہرست (script, language, &script_لیبل, &language_لیبل);
+  واپس hb_ot_layout_get_font_extents (font,
 					direction,
-					script_tag,
-					language_tag,
+					script_لیبل,
+					language_لیبل,
 					extents);
 }
 
@@ -2264,67 +2264,67 @@ hb_ot_layout_get_font_extents2 (hb_font_t         *font,
  *
  * Since: 4.0.0
  **/
-hb_ot_layout_baseline_tag_t
-hb_ot_layout_get_horizontal_baseline_tag_for_script (hb_script_t script)
+hb_ot_layout_baseline_لیبل_t
+hb_ot_layout_get_horizontal_baseline_لیبل_for_script (hb_script_t script)
 {
   /* Keep in sync with hb_ot_layout_get_baseline_with_fallback */
-  switch ((int) script)
+  انتخاب ((صحیح) script)
   {
     /* Unicode-1.1 additions */
-    case HB_SCRIPT_BENGALI:
-    case HB_SCRIPT_DEVANAGARI:
-    case HB_SCRIPT_GUJARATI:
-    case HB_SCRIPT_GURMUKHI:
+    حالت HB_SCRIPT_BENGALI:
+    حالت HB_SCRIPT_DEVANAGARI:
+    حالت HB_SCRIPT_GUJARATI:
+    حالت HB_SCRIPT_GURMUKHI:
     /* Unicode-2.0 additions */
-    case HB_SCRIPT_TIBETAN:
+    حالت HB_SCRIPT_TIBETAN:
     /* Unicode-4.0 additions */
-    case HB_SCRIPT_LIMBU:
+    حالت HB_SCRIPT_LIMBU:
     /* Unicode-4.1 additions */
-    case HB_SCRIPT_SYLOTI_NAGRI:
+    حالت HB_SCRIPT_SYLOTI_NAGRI:
     /* Unicode-5.0 additions */
-    case HB_SCRIPT_PHAGS_PA:
+    حالت HB_SCRIPT_PHAGS_PA:
     /* Unicode-5.2 additions */
-    case HB_SCRIPT_MEETEI_MAYEK:
+    حالت HB_SCRIPT_MEETEI_MAYEK:
     /* Unicode-6.1 additions */
-    case HB_SCRIPT_SHARADA:
-    case HB_SCRIPT_TAKRI:
+    حالت HB_SCRIPT_SHARADA:
+    حالت HB_SCRIPT_TAKRI:
     /* Unicode-7.0 additions */
-    case HB_SCRIPT_MODI:
-    case HB_SCRIPT_SIDDHAM:
-    case HB_SCRIPT_TIRHUTA:
+    حالت HB_SCRIPT_MODI:
+    حالت HB_SCRIPT_SIDDHAM:
+    حالت HB_SCRIPT_TIRHUTA:
     /* Unicode-9.0 additions */
-    case HB_SCRIPT_MARCHEN:
-    case HB_SCRIPT_NEWA:
+    حالت HB_SCRIPT_MARCHEN:
+    حالت HB_SCRIPT_NEWA:
     /* Unicode-10.0 additions */
-    case HB_SCRIPT_SOYOMBO:
-    case HB_SCRIPT_ZANABAZAR_SQUARE:
+    حالت HB_SCRIPT_SOYOMBO:
+    حالت HB_SCRIPT_ZANABAZAR_مربع:
     /* Unicode-11.0 additions */
-    case HB_SCRIPT_DOGRA:
-    case HB_SCRIPT_GUNJALA_GONDI:
+    حالت HB_SCRIPT_DOGRA:
+    حالت HB_SCRIPT_GUNJALA_GONDI:
     /* Unicode-12.0 additions */
-    case HB_SCRIPT_NANDINAGARI:
-      return HB_OT_LAYOUT_BASELINE_TAG_HANGING;
+    حالت HB_SCRIPT_NANDINAGARI:
+      واپس HB_OT_LAYOUT_BASELINE_لیبل_HANGING;
 
     /* Unicode-1.1 additions */
-    case HB_SCRIPT_HANGUL:
-    case HB_SCRIPT_HAN:
-    case HB_SCRIPT_HIRAGANA:
-    case HB_SCRIPT_KATAKANA:
+    حالت HB_SCRIPT_HANGUL:
+    حالت HB_SCRIPT_HAN:
+    حالت HB_SCRIPT_HIRAGANA:
+    حالت HB_SCRIPT_KATAKANA:
     /* Unicode-3.0 additions */
-    case HB_SCRIPT_BOPOMOFO:
+    حالت HB_SCRIPT_BOPOMOFO:
     /* Unicode-9.0 additions */
-    case HB_SCRIPT_TANGUT:
+    حالت HB_SCRIPT_TANGUT:
     /* Unicode-10.0 additions */
-    case HB_SCRIPT_NUSHU:
+    حالت HB_SCRIPT_NUSHU:
     /* Unicode-13.0 additions */
-    case HB_SCRIPT_KHITAN_SMALL_SCRIPT:
+    حالت HB_SCRIPT_KHITAN_SMALL_SCRIPT:
     /* Unicode-18.0 additions */
-    case HB_SCRIPT_JURCHEN:
-    case HB_SCRIPT_SEAL:
-      return HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_BOTTOM_OR_LEFT;
+    حالت HB_SCRIPT_JURCHEN:
+    حالت HB_SCRIPT_SEAL:
+      واپس HB_OT_LAYOUT_BASELINE_لیبل_IDEO_FACE_BOTTOM_OR_بایاں;
 
-    default:
-      return HB_OT_LAYOUT_BASELINE_TAG_ROMAN;
+    طےشدہ:
+      واپس HB_OT_LAYOUT_BASELINE_لیبل_ROMAN;
   }
 }
 
@@ -2345,13 +2345,13 @@ hb_ot_layout_get_horizontal_baseline_tag_for_script (hb_script_t script)
  **/
 hb_bool_t
 hb_ot_layout_get_baseline (hb_font_t                   *font,
-			   hb_ot_layout_baseline_tag_t  baseline_tag,
+			   hb_ot_layout_baseline_لیبل_t  baseline_لیبل,
 			   hb_direction_t               direction,
-			   hb_tag_t                     script_tag,
-			   hb_tag_t                     language_tag,
+			   hb_لیبل_t                     script_لیبل,
+			   hb_لیبل_t                     language_لیبل,
 			   hb_position_t               *coord        /* OUT.  May be NULL. */)
 {
-  return font->face->table.BASE->get_baseline (font, baseline_tag, direction, script_tag, language_tag, coord);
+  واپس font->face->جدول.بنیاد_4->get_baseline (font, baseline_لیبل, direction, script_لیبل, language_لیبل, coord);
 }
 
 /**
@@ -2374,19 +2374,19 @@ hb_ot_layout_get_baseline (hb_font_t                   *font,
  **/
 hb_bool_t
 hb_ot_layout_get_baseline2 (hb_font_t                   *font,
-			    hb_ot_layout_baseline_tag_t  baseline_tag,
+			    hb_ot_layout_baseline_لیبل_t  baseline_لیبل,
 			    hb_direction_t               direction,
 			    hb_script_t                  script,
 			    hb_language_t                language,
 			    hb_position_t               *coord        /* OUT.  May be NULL. */)
 {
-  hb_tag_t script_tag, language_tag;
-  choose_base_tags (script, language, &script_tag, &language_tag);
-  return hb_ot_layout_get_baseline (font,
-				    baseline_tag,
+  hb_لیبل_t script_لیبل, language_لیبل;
+  انتخاب_بنیاد_لیبل_فہرست (script, language, &script_لیبل, &language_لیبل);
+  واپس hb_ot_layout_get_baseline (font,
+				    baseline_لیبل,
 				    direction,
-				    script_tag,
-				    language_tag,
+				    script_لیبل,
+				    language_لیبل,
 				    coord);
 }
 
@@ -2404,215 +2404,215 @@ hb_ot_layout_get_baseline2 (hb_font_t                   *font,
  *
  * Since: 4.0.0
  **/
-void
+خالی
 hb_ot_layout_get_baseline_with_fallback (hb_font_t                   *font,
-					 hb_ot_layout_baseline_tag_t  baseline_tag,
+					 hb_ot_layout_baseline_لیبل_t  baseline_لیبل,
 					 hb_direction_t               direction,
-					 hb_tag_t                     script_tag,
-					 hb_tag_t                     language_tag,
-					 hb_position_t               *coord /* OUT */)
+					 hb_لیبل_t                     script_لیبل,
+					 hb_لیبل_t                     language_لیبل,
+					 hb_position_t               *coord /*برآمد*/)
 {
-  if (hb_ot_layout_get_baseline (font,
-				 baseline_tag,
+  اگر (hb_ot_layout_get_baseline (font,
+				 baseline_لیبل,
 				 direction,
-				 script_tag,
-				 language_tag,
+				 script_لیبل,
+				 language_لیبل,
 				 coord))
-    return;
+    واپس;
 
   /* Synthesize missing baselines.
    * See https://www.w3.org/TR/css-inline-3/#baseline-synthesis-fonts
    */
-  switch (baseline_tag)
+  انتخاب (baseline_لیبل)
   {
-  case HB_OT_LAYOUT_BASELINE_TAG_ROMAN:
+  حالت HB_OT_LAYOUT_BASELINE_لیبل_ROMAN:
     *coord = 0; // FIXME origin ?
-    break;
+    توڑو;
 
-  case HB_OT_LAYOUT_BASELINE_TAG_MATH:
+  حالت HB_OT_LAYOUT_BASELINE_لیبل_MATH:
     {
       hb_codepoint_t glyph;
       hb_glyph_extents_t extents;
-      if (HB_DIRECTION_IS_HORIZONTAL (direction) &&
+      اگر (HB_DIRECTION_IS_HORIZONTAL (direction) &&
 	  (hb_font_get_nominal_glyph (font, 0x2212u, &glyph) ||
 	   hb_font_get_nominal_glyph (font, '-', &glyph)) &&
 	  hb_font_get_glyph_extents (font, glyph, &extents))
       {
-	*coord = hb_saturate_add (extents.y_bearing, extents.height / 2);
+	*coord = hb_saturate_جوڑو (extents.y_bearing, extents.اونچائی / 2);
       }
-      else
+      ورنہ
       {
-	hb_position_t x_height = font->y_scale / 2;
-#ifndef HB_NO_METRICS
-	hb_ot_metrics_get_position_with_fallback (font, HB_OT_METRICS_TAG_X_HEIGHT, &x_height);
-#endif
-	*coord = x_height / 2;
+	hb_position_t x_اونچائی = font->y_scale / 2;
+#اگر_غیر_تعریف_شدہ HB_NO_METRICS
+	hb_ot_metrics_get_position_with_fallback (font, HB_OT_METRICS_لیبل_X_اونچائی, &x_اونچائی);
+#اگر_ختم
+	*coord = x_اونچائی / 2;
       }
     }
-    break;
+    توڑو;
 
-  case HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_TOP_OR_RIGHT:
-  case HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_BOTTOM_OR_LEFT:
+  حالت HB_OT_LAYOUT_BASELINE_لیبل_IDEO_FACE_چوٹی_OR_دایاں:
+  حالت HB_OT_LAYOUT_BASELINE_لیبل_IDEO_FACE_BOTTOM_OR_بایاں:
     {
-      hb_position_t embox_top, embox_bottom;
+      hb_position_t embox_چوٹی, embox_bottom;
 
       hb_ot_layout_get_baseline_with_fallback (font,
-					       HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_TOP_OR_RIGHT,
+					       HB_OT_LAYOUT_BASELINE_لیبل_IDEO_EMBOX_چوٹی_OR_دایاں,
 					       direction,
-					       script_tag,
-					       language_tag,
-					       &embox_top);
+					       script_لیبل,
+					       language_لیبل,
+					       &embox_چوٹی);
       hb_ot_layout_get_baseline_with_fallback (font,
-					       HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_BOTTOM_OR_LEFT,
+					       HB_OT_LAYOUT_BASELINE_لیبل_IDEO_EMBOX_BOTTOM_OR_بایاں,
 					       direction,
-					       script_tag,
-					       language_tag,
+					       script_لیبل,
+					       language_لیبل,
 					       &embox_bottom);
 
-      if (baseline_tag == HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_TOP_OR_RIGHT)
-	*coord = hb_saturate_add (embox_top,
-				  hb_clamp_to<hb_position_t> (((int64_t) embox_bottom - embox_top) / 10));
-      else
-	*coord = hb_saturate_add (embox_bottom,
-				  hb_clamp_to<hb_position_t> (((int64_t) embox_top - embox_bottom) / 10));
+      اگر (baseline_لیبل == HB_OT_LAYOUT_BASELINE_لیبل_IDEO_FACE_چوٹی_OR_دایاں)
+	*coord = hb_saturate_جوڑو (embox_چوٹی,
+				  hb_clamp_مقصد<hb_position_t> (((int64_t) embox_bottom - embox_چوٹی) / 10));
+      ورنہ
+	*coord = hb_saturate_جوڑو (embox_bottom,
+				  hb_clamp_مقصد<hb_position_t> (((int64_t) embox_چوٹی - embox_bottom) / 10));
     }
-    break;
+    توڑو;
 
-  case HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_TOP_OR_RIGHT:
-    if (hb_ot_layout_get_baseline (font,
-				   HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_BOTTOM_OR_LEFT,
+  حالت HB_OT_LAYOUT_BASELINE_لیبل_IDEO_EMBOX_چوٹی_OR_دایاں:
+    اگر (hb_ot_layout_get_baseline (font,
+				   HB_OT_LAYOUT_BASELINE_لیبل_IDEO_EMBOX_BOTTOM_OR_بایاں,
 				   direction,
-				   script_tag,
-				   language_tag,
+				   script_لیبل,
+				   language_لیبل,
 				   coord))
-      *coord = hb_saturate_add (*coord,
+      *coord = hb_saturate_جوڑو (*coord,
 				HB_DIRECTION_IS_HORIZONTAL (direction) ? font->y_scale : font->x_scale);
-    else
+    ورنہ
     {
       hb_font_extents_t font_extents;
       hb_font_get_extents_for_direction (font, direction, &font_extents);
       *coord = font_extents.ascender;
     }
-    break;
+    توڑو;
 
-  case HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_BOTTOM_OR_LEFT:
-    if (hb_ot_layout_get_baseline (font,
-				   HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_TOP_OR_RIGHT,
+  حالت HB_OT_LAYOUT_BASELINE_لیبل_IDEO_EMBOX_BOTTOM_OR_بایاں:
+    اگر (hb_ot_layout_get_baseline (font,
+				   HB_OT_LAYOUT_BASELINE_لیبل_IDEO_EMBOX_چوٹی_OR_دایاں,
 				   direction,
-				   script_tag,
-				   language_tag,
+				   script_لیبل,
+				   language_لیبل,
 				   coord))
       *coord = hb_saturate_sub (*coord,
 				HB_DIRECTION_IS_HORIZONTAL (direction) ? font->y_scale : font->x_scale);
-    else
+    ورنہ
     {
       hb_font_extents_t font_extents;
       hb_font_get_extents_for_direction (font, direction, &font_extents);
       *coord = font_extents.descender;
     }
-    break;
+    توڑو;
 
-  case HB_OT_LAYOUT_BASELINE_TAG_HANGING:
-    if (HB_DIRECTION_IS_HORIZONTAL (direction))
+  حالت HB_OT_LAYOUT_BASELINE_لیبل_HANGING:
+    اگر (HB_DIRECTION_IS_HORIZONTAL (direction))
     {
       hb_codepoint_t ch;
       hb_codepoint_t glyph;
       hb_glyph_extents_t extents;
 
       /* Keep in sync with hb_ot_layout_get_horizontal_baseline_for_script */
-      switch ((int) script_tag)
+      انتخاب ((صحیح) script_لیبل)
       {
       /* Unicode-1.1 additions */
-      case HB_SCRIPT_BENGALI:          ch = 0x0995u; break;
-      case HB_SCRIPT_DEVANAGARI:       ch = 0x0915u; break;
-      case HB_SCRIPT_GUJARATI:         ch = 0x0a95u; break;
-      case HB_SCRIPT_GURMUKHI:         ch = 0x0a15u; break;
+      حالت HB_SCRIPT_BENGALI:          ch = 0x0995u; توڑو;
+      حالت HB_SCRIPT_DEVANAGARI:       ch = 0x0915u; توڑو;
+      حالت HB_SCRIPT_GUJARATI:         ch = 0x0a95u; توڑو;
+      حالت HB_SCRIPT_GURMUKHI:         ch = 0x0a15u; توڑو;
       /* Unicode-2.0 additions */
-      case HB_SCRIPT_TIBETAN:          ch = 0x0f40u; break;
+      حالت HB_SCRIPT_TIBETAN:          ch = 0x0f40u; توڑو;
       /* Unicode-4.0 additions */
-      case HB_SCRIPT_LIMBU:            ch = 0x1901u; break;
+      حالت HB_SCRIPT_LIMBU:            ch = 0x1901u; توڑو;
       /* Unicode-4.1 additions */
-      case HB_SCRIPT_SYLOTI_NAGRI:     ch = 0xa807u; break;
+      حالت HB_SCRIPT_SYLOTI_NAGRI:     ch = 0xa807u; توڑو;
       /* Unicode-5.0 additions */
-      case HB_SCRIPT_PHAGS_PA:         ch = 0xa840u; break;
+      حالت HB_SCRIPT_PHAGS_PA:         ch = 0xa840u; توڑو;
       /* Unicode-5.2 additions */
-      case HB_SCRIPT_MEETEI_MAYEK:     ch = 0xabc0u; break;
+      حالت HB_SCRIPT_MEETEI_MAYEK:     ch = 0xabc0u; توڑو;
       /* Unicode-6.1 additions */
-      case HB_SCRIPT_SHARADA:          ch = 0x11191u; break;
-      case HB_SCRIPT_TAKRI:            ch = 0x1168cu; break;
+      حالت HB_SCRIPT_SHARADA:          ch = 0x11191u; توڑو;
+      حالت HB_SCRIPT_TAKRI:            ch = 0x1168cu; توڑو;
       /* Unicode-7.0 additions */
-      case HB_SCRIPT_MODI:             ch = 0x1160eu;break;
-      case HB_SCRIPT_SIDDHAM:          ch = 0x11590u; break;
-      case HB_SCRIPT_TIRHUTA:          ch = 0x1148fu; break;
+      حالت HB_SCRIPT_MODI:             ch = 0x1160eu;توڑو;
+      حالت HB_SCRIPT_SIDDHAM:          ch = 0x11590u; توڑو;
+      حالت HB_SCRIPT_TIRHUTA:          ch = 0x1148fu; توڑو;
       /* Unicode-9.0 additions */
-      case HB_SCRIPT_MARCHEN:          ch = 0x11c72u; break;
-      case HB_SCRIPT_NEWA:             ch = 0x1140eu; break;
+      حالت HB_SCRIPT_MARCHEN:          ch = 0x11c72u; توڑو;
+      حالت HB_SCRIPT_NEWA:             ch = 0x1140eu; توڑو;
       /* Unicode-10.0 additions */
-      case HB_SCRIPT_SOYOMBO:          ch = 0x11a5cu; break;
-      case HB_SCRIPT_ZANABAZAR_SQUARE: ch = 0x11a0bu; break;
+      حالت HB_SCRIPT_SOYOMBO:          ch = 0x11a5cu; توڑو;
+      حالت HB_SCRIPT_ZANABAZAR_مربع: ch = 0x11a0bu; توڑو;
       /* Unicode-11.0 additions */
-      case HB_SCRIPT_DOGRA:            ch = 0x1180au; break;
-      case HB_SCRIPT_GUNJALA_GONDI:    ch = 0x11d6cu; break;
+      حالت HB_SCRIPT_DOGRA:            ch = 0x1180au; توڑو;
+      حالت HB_SCRIPT_GUNJALA_GONDI:    ch = 0x11d6cu; توڑو;
       /* Unicode-12.0 additions */
-      case HB_SCRIPT_NANDINAGARI:      ch = 0x119b0u; break;
-      default:                         ch = 0;        break;
+      حالت HB_SCRIPT_NANDINAGARI:      ch = 0x119b0u; توڑو;
+      طےشدہ:                         ch = 0;        توڑو;
       }
 
-      if (ch &&
+      اگر (ch &&
 	  hb_font_get_nominal_glyph (font, ch, &glyph) &&
 	  hb_font_get_glyph_extents (font, glyph, &extents))
 	*coord = extents.y_bearing;
-      else
-	*coord = hb_clamp_to<hb_position_t> ((int64_t) font->y_scale * 6 / 10); // FIXME makes assumptions about origin
+      ورنہ
+	*coord = hb_clamp_مقصد<hb_position_t> ((int64_t) font->y_scale * 6 / 10); // FIXME makes assumptions about origin
     }
-    else
-      *coord = hb_clamp_to<hb_position_t> ((int64_t) font->x_scale * 6 / 10); // FIXME makes assumptions about origin
-    break;
+    ورنہ
+      *coord = hb_clamp_مقصد<hb_position_t> ((int64_t) font->x_scale * 6 / 10); // FIXME makes assumptions about origin
+    توڑو;
 
-  case HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_CENTRAL:
+  حالت HB_OT_LAYOUT_BASELINE_لیبل_IDEO_EMBOX_CENTRAL:
     {
-      hb_position_t top, bottom;
+      hb_position_t چوٹی_2, bottom;
       hb_ot_layout_get_baseline_with_fallback (font,
-					       HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_TOP_OR_RIGHT,
+					       HB_OT_LAYOUT_BASELINE_لیبل_IDEO_EMBOX_چوٹی_OR_دایاں,
 					       direction,
-					       script_tag,
-					       language_tag,
-					       &top);
+					       script_لیبل,
+					       language_لیبل,
+					       &چوٹی_2);
       hb_ot_layout_get_baseline_with_fallback (font,
-					       HB_OT_LAYOUT_BASELINE_TAG_IDEO_EMBOX_BOTTOM_OR_LEFT,
+					       HB_OT_LAYOUT_BASELINE_لیبل_IDEO_EMBOX_BOTTOM_OR_بایاں,
 					       direction,
-					       script_tag,
-					       language_tag,
+					       script_لیبل,
+					       language_لیبل,
 					       &bottom);
-      *coord = hb_clamp_to<hb_position_t> (((int64_t) top + bottom) / 2);
+      *coord = hb_clamp_مقصد<hb_position_t> (((int64_t) چوٹی_2 + bottom) / 2);
 
     }
-    break;
+    توڑو;
 
-  case HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_CENTRAL:
+  حالت HB_OT_LAYOUT_BASELINE_لیبل_IDEO_FACE_CENTRAL:
     {
-      hb_position_t top, bottom;
+      hb_position_t چوٹی_2, bottom;
       hb_ot_layout_get_baseline_with_fallback (font,
-					       HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_TOP_OR_RIGHT,
+					       HB_OT_LAYOUT_BASELINE_لیبل_IDEO_FACE_چوٹی_OR_دایاں,
 					       direction,
-					       script_tag,
-					       language_tag,
-					       &top);
+					       script_لیبل,
+					       language_لیبل,
+					       &چوٹی_2);
       hb_ot_layout_get_baseline_with_fallback (font,
-					       HB_OT_LAYOUT_BASELINE_TAG_IDEO_FACE_BOTTOM_OR_LEFT,
+					       HB_OT_LAYOUT_BASELINE_لیبل_IDEO_FACE_BOTTOM_OR_بایاں,
 					       direction,
-					       script_tag,
-					       language_tag,
+					       script_لیبل,
+					       language_لیبل,
 					       &bottom);
-      *coord = hb_clamp_to<hb_position_t> (((int64_t) top + bottom) / 2);
+      *coord = hb_clamp_مقصد<hb_position_t> (((int64_t) چوٹی_2 + bottom) / 2);
 
     }
-    break;
+    توڑو;
 
-  case _HB_OT_LAYOUT_BASELINE_TAG_MAX_VALUE:
-  default:
+  حالت HB_OT_LAYOUT_BASELINE_لیبل_MAX_قدر:
+  طےشدہ:
     *coord = 0;
-    break;
+    توڑو;
   }
 }
 
@@ -2633,44 +2633,44 @@ hb_ot_layout_get_baseline_with_fallback (hb_font_t                   *font,
  *
  * Since: 8.0.0
  **/
-void
+خالی
 hb_ot_layout_get_baseline_with_fallback2 (hb_font_t                   *font,
-					  hb_ot_layout_baseline_tag_t  baseline_tag,
+					  hb_ot_layout_baseline_لیبل_t  baseline_لیبل,
 					  hb_direction_t               direction,
 					  hb_script_t                  script,
 					  hb_language_t                language,
-					  hb_position_t               *coord        /* OUT */)
+					  hb_position_t               *coord        /*برآمد*/)
 {
-  hb_tag_t script_tag, language_tag;
-  choose_base_tags (script, language, &script_tag, &language_tag);
+  hb_لیبل_t script_لیبل, language_لیبل;
+  انتخاب_بنیاد_لیبل_فہرست (script, language, &script_لیبل, &language_لیبل);
   hb_ot_layout_get_baseline_with_fallback (font,
-					   baseline_tag,
+					   baseline_لیبل,
 					   direction,
-					   script_tag,
-					   language_tag,
+					   script_لیبل,
+					   language_لیبل,
 					   coord);
 }
 
-#endif
+#اگر_ختم
 
 
-#ifndef HB_NO_LAYOUT_RARELY_USED
-struct hb_get_glyph_alternates_dispatch_t :
-       hb_dispatch_context_t<hb_get_glyph_alternates_dispatch_t, unsigned>
+#اگر_غیر_تعریف_شدہ HB_NO_LAYOUT_RARELY_مستعمل
+ساخت hb_get_glyph_alternates_dispatch_t :
+       hb_dispatch_context_t<hb_get_glyph_alternates_dispatch_t, غیرعلامتی>
 {
-  static return_t default_return_value () { return 0; }
-  bool stop_sublookup_iteration (return_t r) const { return r; }
+  ساکن return_t default_return_قدر () { واپس 0; }
+  منطقی stop_sublookup_iteration (return_t r) ثابت { واپس r; }
 
-  private:
-  template <typename T, typename ...Ts> auto
-  _dispatch (const T &obj, hb_priority<1>, Ts&&... ds) HB_AUTO_RETURN
+  نجی:
+  سانچہ <قسم_نام T, قسم_نام ...Ts> خودکار
+  _dispatch (ثابت T &obj, hb_ترجیح<1>, Ts&&... ds) HB_AUTO_RETURN
   ( obj.get_glyph_alternates (std::forward<Ts> (ds)...) )
-  template <typename T, typename ...Ts> auto
-  _dispatch (const T &obj, hb_priority<0>, Ts&&... ds) HB_AUTO_RETURN
-  ( default_return_value () )
-  public:
-  template <typename T, typename ...Ts> auto
-  dispatch (const T &obj, Ts&&... ds) HB_AUTO_RETURN
+  سانچہ <قسم_نام T, قسم_نام ...Ts> خودکار
+  _dispatch (ثابت T &obj, hb_ترجیح<0>, Ts&&... ds) HB_AUTO_RETURN
+  ( default_return_قدر () )
+  عوامی:
+  سانچہ <قسم_نام T, قسم_نام ...Ts> خودکار
+  dispatch (ثابت T &obj, Ts&&... ds) HB_AUTO_RETURN
   ( _dispatch (obj, hb_prioritize, std::forward<Ts> (ds)...) )
 };
 
@@ -2692,37 +2692,37 @@ struct hb_get_glyph_alternates_dispatch_t :
  *
  * Since: 2.6.8
  **/
-HB_EXTERN unsigned
+HB_EXTERN غیرعلامتی
 hb_ot_layout_lookup_get_glyph_alternates (hb_face_t      *face,
-					  unsigned        lookup_index,
+					  غیرعلامتی        lookup_اشاریہ,
 					  hb_codepoint_t  glyph,
-					  unsigned        start_offset,
-					  unsigned       *alternate_count  /* IN/OUT.  May be NULL. */,
+					  غیرعلامتی        آغاز_انحراف,
+					  غیرعلامتی       *alternate_گنتی  /* IN/OUT.  May be NULL. */,
 					  hb_codepoint_t *alternate_glyphs /* OUT.     May be NULL. */)
 {
   hb_get_glyph_alternates_dispatch_t c;
-  const OT::SubstLookup &lookup = face->table.GSUB->table->get_lookup (lookup_index);
-  auto ret = lookup.dispatch (&c, glyph, start_offset, alternate_count, alternate_glyphs);
-  if (!ret && alternate_count) *alternate_count = 0;
-  return ret;
+  ثابت OT::SubstLookup &lookup = face->جدول.GSUB->جدول->get_lookup (lookup_اشاریہ);
+  خودکار ret = lookup.dispatch (&c, glyph, آغاز_انحراف, alternate_گنتی, alternate_glyphs);
+  اگر (!ret && alternate_گنتی) *alternate_گنتی = 0;
+  واپس ret;
 }
 
-struct hb_collect_glyph_alternates_dispatch_t :
-       hb_dispatch_context_t<hb_collect_glyph_alternates_dispatch_t, bool>
+ساخت hb_collect_glyph_alternates_dispatch_t :
+       hb_dispatch_context_t<hb_collect_glyph_alternates_dispatch_t, منطقی>
 {
-  static return_t default_return_value () { return false; }
-  bool stop_sublookup_iteration (return_t r) const { return false; }
+  ساکن return_t default_return_قدر () { واپس جھوٹ; }
+  منطقی stop_sublookup_iteration (return_t r) ثابت { واپس جھوٹ; }
 
-  private:
-  template <typename T, typename ...Ts> auto
-  _dispatch (const T &obj, hb_priority<1>, Ts&&... ds) HB_AUTO_RETURN
-  ( (obj.collect_glyph_alternates (std::forward<Ts> (ds)...), true) )
-  template <typename T, typename ...Ts> auto
-  _dispatch (const T &obj, hb_priority<0>, Ts&&... ds) HB_AUTO_RETURN
-  ( default_return_value () )
-  public:
-  template <typename T, typename ...Ts> auto
-  dispatch (const T &obj, Ts&&... ds) HB_AUTO_RETURN
+  نجی:
+  سانچہ <قسم_نام T, قسم_نام ...Ts> خودکار
+  _dispatch (ثابت T &obj, hb_ترجیح<1>, Ts&&... ds) HB_AUTO_RETURN
+  ( (obj.collect_glyph_alternates (std::forward<Ts> (ds)...), سچ) )
+  سانچہ <قسم_نام T, قسم_نام ...Ts> خودکار
+  _dispatch (ثابت T &obj, hb_ترجیح<0>, Ts&&... ds) HB_AUTO_RETURN
+  ( default_return_قدر () )
+  عوامی:
+  سانچہ <قسم_نام T, قسم_نام ...Ts> خودکار
+  dispatch (ثابت T &obj, Ts&&... ds) HB_AUTO_RETURN
   ( _dispatch (obj, hb_prioritize, std::forward<Ts> (ds)...) )
 };
 
@@ -2757,31 +2757,31 @@ struct hb_collect_glyph_alternates_dispatch_t :
  */
 HB_EXTERN hb_bool_t
 hb_ot_layout_lookup_collect_glyph_alternates (hb_face_t *face,
-					      unsigned   lookup_index,
-					      hb_map_t  *alternate_count /* IN/OUT */,
+					      غیرعلامتی   lookup_اشاریہ,
+					      hb_map_t  *alternate_گنتی /* IN/OUT */,
 					      hb_map_t  *alternate_glyphs /* IN/OUT */)
 {
   hb_collect_glyph_alternates_dispatch_t c;
-  const OT::SubstLookup &lookup = face->table.GSUB->table->get_lookup (lookup_index);
-  return lookup.dispatch (&c, alternate_count, alternate_glyphs);
+  ثابت OT::SubstLookup &lookup = face->جدول.GSUB->جدول->get_lookup (lookup_اشاریہ);
+  واپس lookup.dispatch (&c, alternate_گنتی, alternate_glyphs);
 }
 
-struct hb_position_single_dispatch_t :
-       hb_dispatch_context_t<hb_position_single_dispatch_t, bool>
+ساخت hb_position_single_dispatch_t :
+       hb_dispatch_context_t<hb_position_single_dispatch_t, منطقی>
 {
-  static return_t default_return_value () { return false; }
-  bool stop_sublookup_iteration (return_t r) const { return r; }
+  ساکن return_t default_return_قدر () { واپس جھوٹ; }
+  منطقی stop_sublookup_iteration (return_t r) ثابت { واپس r; }
 
-  private:
-  template <typename T, typename ...Ts> auto
-  _dispatch (const T &obj, hb_priority<1>, Ts&&... ds) HB_AUTO_RETURN
+  نجی:
+  سانچہ <قسم_نام T, قسم_نام ...Ts> خودکار
+  _dispatch (ثابت T &obj, hb_ترجیح<1>, Ts&&... ds) HB_AUTO_RETURN
   ( obj.position_single (std::forward<Ts> (ds)...) )
-  template <typename T, typename ...Ts> auto
-  _dispatch (const T &obj, hb_priority<0>, Ts&&... ds) HB_AUTO_RETURN
-  ( default_return_value () )
-  public:
-  template <typename T, typename ...Ts> auto
-  dispatch (const T &obj, Ts&&... ds) HB_AUTO_RETURN
+  سانچہ <قسم_نام T, قسم_نام ...Ts> خودکار
+  _dispatch (ثابت T &obj, hb_ترجیح<0>, Ts&&... ds) HB_AUTO_RETURN
+  ( default_return_قدر () )
+  عوامی:
+  سانچہ <قسم_نام T, قسم_نام ...Ts> خودکار
+  dispatch (ثابت T &obj, Ts&&... ds) HB_AUTO_RETURN
   ( _dispatch (obj, hb_prioritize, std::forward<Ts> (ds)...) )
 };
 
@@ -2801,37 +2801,37 @@ struct hb_position_single_dispatch_t :
  **/
 hb_position_t
 hb_ot_layout_lookup_get_optical_bound (hb_font_t      *font,
-				       unsigned        lookup_index,
+				       غیرعلامتی        lookup_اشاریہ,
 				       hb_direction_t  direction,
 				       hb_codepoint_t  glyph)
 {
-  const OT::PosLookup &lookup = font->face->table.GPOS->table->get_lookup (lookup_index);
-  hb_blob_t *blob = font->face->table.GPOS->get_blob ();
+  ثابت OT::PosLookup &lookup = font->face->جدول.GPOS->جدول->get_lookup (lookup_اشاریہ);
+  hb_blob_t *blob = font->face->جدول.GPOS->get_blob ();
   hb_glyph_position_t pos = {0};
   hb_position_single_dispatch_t c;
   lookup.dispatch (&c, font, blob, direction, glyph, pos);
   hb_position_t ret = 0;
-  switch (direction)
+  انتخاب (direction)
   {
-    case HB_DIRECTION_LTR:
-      ret = pos.x_offset;
-      break;
-    case HB_DIRECTION_RTL:
-      ret = hb_saturate_sub (pos.x_advance, pos.x_offset);
-      break;
-    case HB_DIRECTION_TTB:
-      ret = pos.y_offset;
-      break;
-    case HB_DIRECTION_BTT:
-      ret = hb_saturate_sub (pos.y_advance, pos.y_offset);
-      break;
-    case HB_DIRECTION_INVALID:
-    default:
-      break;
+    حالت HB_DIRECTION_LTR:
+      ret = pos.x_انحراف_2;
+      توڑو;
+    حالت HB_DIRECTION_RTL:
+      ret = hb_saturate_sub (pos.x_advance, pos.x_انحراف_2);
+      توڑو;
+    حالت HB_DIRECTION_TTB:
+      ret = pos.y_انحراف_2;
+      توڑو;
+    حالت HB_DIRECTION_BTT:
+      ret = hb_saturate_sub (pos.y_advance, pos.y_انحراف_2);
+      توڑو;
+    حالت HB_DIRECTION_INVALID:
+    طےشدہ:
+      توڑو;
   }
-  return ret;
+  واپس ret;
 }
-#endif
+#اگر_ختم
 
 
-#endif
+#اگر_ختم

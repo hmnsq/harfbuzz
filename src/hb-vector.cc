@@ -24,10 +24,10 @@
  * Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#شامل "hb.hh"
 
-#include "hb-machinery.hh"
-#include "hb-vector-buf.hh"
+#شامل "hb-machinery.hh"
+#شامل "hb-vector-buf.hh"
 
 /**
  * SECTION:hb-vector
@@ -74,62 +74,62 @@
  * painted as a single uniform layer.
  **/
 
-struct hb_vector_decimal_point_t
+ساخت hb_سمتیہ_decimal_نقطہ_t
 {
-  char value[8];
+  حرف value[8];
 };
 
-static hb_vector_decimal_point_t hb_vector_decimal_point_default = {{'.', '\0'}};
+ساکن hb_سمتیہ_decimal_نقطہ_t hb_سمتیہ_decimal_نقطہ_default = {{'.', '\0'}};
 
-static inline void free_static_svg_decimal_point ();
+ساکن اندرونی خالی free_static_svg_decimal_نقطہ ();
 
-static struct hb_vector_decimal_point_lazy_loader_t
-  : hb_lazy_loader_t<hb_vector_decimal_point_t, hb_vector_decimal_point_lazy_loader_t>
+ساکن ساخت hb_سمتیہ_decimal_نقطہ_lazy_loader_t
+  : hb_lazy_loader_t<hb_سمتیہ_decimal_نقطہ_t, hb_سمتیہ_decimal_نقطہ_lazy_loader_t>
 {
-  static hb_vector_decimal_point_t *create ()
+  ساکن hb_سمتیہ_decimal_نقطہ_t *create ()
   {
-    auto *p = (hb_vector_decimal_point_t *) hb_calloc (1, sizeof (hb_vector_decimal_point_t));
-    if (!p)
-      return nullptr;
+    خودکار *p = (hb_سمتیہ_decimal_نقطہ_t *) hb_calloc (1, حجم (hb_سمتیہ_decimal_نقطہ_t));
+    اگر (!p)
+      واپس خالی_اشاریہ;
 
     p->value[0] = '.';
     p->value[1] = '\0';
 
-#ifndef HB_NO_SETLOCALE
-    lconv *lc = nullptr;
-#ifdef HAVE_LOCALECONV_L
+#اگر_غیر_تعریف_شدہ HB_NO_SETLOCALE
+    lconv *lc = خالی_اشاریہ;
+#اگر_تعریف_شدہ HAVE_LOCALECONV_L
     hb_locale_t current_locale = hb_uselocale ((hb_locale_t) 0);
-    if (current_locale)
+    اگر (current_locale)
       lc = localeconv_l (current_locale);
-#endif
-    if (!lc)
+#اگر_ختم
+    اگر (!lc)
       lc = localeconv ();
-    if (lc && lc->decimal_point && lc->decimal_point[0])
+    اگر (lc && lc->decimal_point && lc->decimal_point[0])
     {
-      strncpy (p->value, lc->decimal_point, sizeof (p->value) - 1);
-      p->value[sizeof (p->value) - 1] = '\0';
+      strncpy (p->value, lc->decimal_point, حجم (p->value) - 1);
+      p->value[حجم (p->value) - 1] = '\0';
     }
-#endif
+#اگر_ختم
 
-    hb_atexit (free_static_svg_decimal_point);
-    return p;
+    hb_atexit (free_static_svg_decimal_نقطہ);
+    واپس p;
   }
 
-  static void destroy (hb_vector_decimal_point_t *p)
+  ساکن خالی destroy (hb_سمتیہ_decimal_نقطہ_t *p)
   { hb_free (p); }
 
-  static const hb_vector_decimal_point_t *get_null ()
-  { return &hb_vector_decimal_point_default; }
-} static_svg_decimal_point;
+  ساکن ثابت hb_سمتیہ_decimal_نقطہ_t *get_null ()
+  { واپس &hb_سمتیہ_decimal_نقطہ_default; }
+} static_svg_decimal_نقطہ;
 
-static inline void
-free_static_svg_decimal_point ()
+ساکن اندرونی خالی
+free_static_svg_decimal_نقطہ ()
 {
-  static_svg_decimal_point.free_instance ();
+  static_svg_decimal_نقطہ.free_instance ();
 }
 
-const char *
-hb_vector_decimal_point_get (void)
+ثابت حرف *
+hb_سمتیہ_decimal_نقطہ_get (خالی)
 {
-  return static_svg_decimal_point.get_unconst ()->value;
+  واپس static_svg_decimal_نقطہ.get_unconst ()->value;
 }

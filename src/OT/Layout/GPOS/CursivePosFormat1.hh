@@ -1,162 +1,162 @@
-#ifndef OT_LAYOUT_GPOS_CURSIVEPOSFORMAT1_HH
-#define OT_LAYOUT_GPOS_CURSIVEPOSFORMAT1_HH
+#اگر_غیر_تعریف_شدہ OT_LAYOUT_GPOS_CURSIVEPOSFORMAT1_HH
+#تعریف_کرو OT_LAYOUT_GPOS_CURSIVEPOSFORMAT1_HH
 
-#include "Anchor.hh"
-#include "../../../hb-limits.hh"
+#شامل "Anchor.hh"
+#شامل "../../../hb-limits.hh"
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+نامخلا OT {
+نامخلا Layout {
+نامخلا GPOS_impl {
 
-template <typename Types>
-struct CursivePosFormat1_2;
+سانچہ <قسم_نام Types>
+ساخت CursivePosFormat1_2;
 
-template <typename Types>
-struct EntryExitRecord
+سانچہ <قسم_نام Types>
+ساخت اندراج_Exit_ریکارڈ
 {
-  template <typename Types2> friend struct CursivePosFormat1_2;
+  سانچہ <قسم_نام Types2> دوست ساخت CursivePosFormat1_2;
 
-  bool sanitize (hb_sanitize_context_t *c, const struct CursivePosFormat1_2<Types> *base) const
+  منطقی sanitize (hb_sanitize_context_t *c, ثابت ساخت CursivePosFormat1_2<Types> *بنیاد) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (entryAnchor.sanitize (c, base) && exitAnchor.sanitize (c, base));
+    TRACE_SANITIZE (یہ);
+    return_trace (اندراج_Anchor.sanitize (c, بنیاد) && exitAnchor.sanitize (c, بنیاد));
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c,
-                                  const struct CursivePosFormat1_2<Types> *src_base) const
+  خالی collect_variation_indices (hb_collect_variation_indices_context_t *c,
+                                  ثابت ساخت CursivePosFormat1_2<Types> *src_بنیاد) ثابت
   {
-    (src_base+entryAnchor).collect_variation_indices (c);
-    (src_base+exitAnchor).collect_variation_indices (c);
+    (src_بنیاد+اندراج_Anchor).collect_variation_indices (c);
+    (src_بنیاد+exitAnchor).collect_variation_indices (c);
   }
 
-  bool subset (hb_subset_context_t *c,
-	       const struct CursivePosFormat1_2<Types> *src_base) const
+  منطقی subset (hb_subset_context_t *c,
+	       ثابت ساخت CursivePosFormat1_2<Types> *src_بنیاد) ثابت
   {
-    TRACE_SERIALIZE (this);
-    auto *out = c->serializer->embed (this);
-    if (unlikely (!out)) return_trace (false);
+    TRACE_SERIALIZE (یہ);
+    خودکار *برآمد = c->serializer->embed (یہ);
+    اگر (unlikely (!برآمد)) return_trace (جھوٹ);
 
-    bool ret = false;
-    ret |= out->entryAnchor.serialize_subset (c, entryAnchor, src_base);
-    ret |= out->exitAnchor.serialize_subset (c, exitAnchor, src_base);
+    منطقی ret = جھوٹ;
+    ret |= برآمد->اندراج_Anchor.serialize_subset (c, اندراج_Anchor, src_بنیاد);
+    ret |= برآمد->exitAnchor.serialize_subset (c, exitAnchor, src_بنیاد);
     return_trace (ret);
   }
 
-  protected:
-  typename Types::template OffsetTo<Anchor, struct CursivePosFormat1_2<Types>>
-                entryAnchor;            /* Offset to EntryAnchor table--from
+  محفوظ:
+  قسم_نام Types::سانچہ انحراف_مقصد<Anchor, ساخت CursivePosFormat1_2<Types>>
+                اندراج_Anchor;            /* Offset to EntryAnchor table--from
                                          * beginning of CursivePos
                                          * subtable--may be NULL */
-  typename Types::template OffsetTo<Anchor, struct CursivePosFormat1_2<Types>>
+  قسم_نام Types::سانچہ انحراف_مقصد<Anchor, ساخت CursivePosFormat1_2<Types>>
                 exitAnchor;             /* Offset to ExitAnchor table--from
                                          * beginning of CursivePos
                                          * subtable--may be NULL */
-  public:
-  DEFINE_SIZE_STATIC (2 * Types::size);
+  عوامی:
+  DEFINE_سائز_STATIC (2 * Types::سائز);
 };
 
-static inline void
-reverse_cursive_minor_offset (hb_glyph_position_t *pos,
-                              unsigned int len,
-                              unsigned int i,
+ساکن اندرونی خالی
+الٹ_cursive_minor_انحراف (hb_glyph_position_t *pos,
+                              غیرعلامتی صحیح len,
+                              غیرعلامتی صحیح i,
                               hb_direction_t direction,
-                              unsigned int new_parent,
-                              unsigned nesting_level = 0)
+                              غیرعلامتی صحیح new_والد,
+                              غیرعلامتی nesting_level = 0)
 {
-  if (nesting_level > HB_MAX_NESTING_LEVEL)
-    return;
+  اگر (nesting_level > HB_MAX_NESTING_LEVEL)
+    واپس;
 
-  int chain = pos[i].attach_chain(), type = pos[i].attach_type();
-  if (likely (!chain || 0 == (type & ATTACH_TYPE_CURSIVE)))
-    return;
+  صحیح chain = pos[i].attach_chain(), type = pos[i].attach_type();
+  اگر (likely (!chain || 0 == (type & ATTACH_TYPE_CURSIVE)))
+    واپس;
 
   pos[i].attach_chain() = 0;
 
-  unsigned int j = (int) i + chain;
+  غیرعلامتی صحیح j = (صحیح) i + chain;
 
-  if (unlikely (j >= len))
-    return;
+  اگر (unlikely (j >= len))
+    واپس;
 
   /* Stop if we see new parent in the chain. */
-  if (j == new_parent)
-    return;
+  اگر (j == new_والد)
+    واپس;
 
   int16_t reversed_chain = -chain;
   /* The old edge was cleared above; if the reversed distance truncates,
    * keep it detached instead of storing a poisoned chain.
    */
-  if (unlikely (reversed_chain != -chain))
-    return;
+  اگر (unlikely (reversed_chain != -chain))
+    واپس;
 
-  reverse_cursive_minor_offset (pos, len, j, direction, new_parent, nesting_level + 1);
+  الٹ_cursive_minor_انحراف (pos, len, j, direction, new_والد, nesting_level + 1);
 
-  if (HB_DIRECTION_IS_HORIZONTAL (direction))
-    pos[j].y_offset = hb_saturate_neg (pos[i].y_offset);
-  else
-    pos[j].x_offset = hb_saturate_neg (pos[i].x_offset);
+  اگر (HB_DIRECTION_IS_HORIZONTAL (direction))
+    pos[j].y_انحراف_2 = hb_saturate_neg (pos[i].y_انحراف_2);
+  ورنہ
+    pos[j].x_انحراف_2 = hb_saturate_neg (pos[i].x_انحراف_2);
 
   pos[j].attach_chain() = reversed_chain;
   pos[j].attach_type() = type;
 }
 
 
-static inline bool
+ساکن اندرونی منطقی
 apply_cursive_attachment (hb_ot_apply_context_t *c,
-                          const Anchor &exit_anchor,
-                          const Anchor &entry_anchor,
-                          unsigned i)
+                          ثابت Anchor &exit_anchor,
+                          ثابت Anchor &اندراج_anchor,
+                          غیرعلامتی i)
 {
-  hb_buffer_t *buffer = c->buffer;
-  unsigned int j = buffer->idx;
+  hb_بفر_t *بفر = c->بفر;
+  غیرعلامتی صحیح j = بفر->idx;
 
-  if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+  اگر (HB_بفر_پیغام_مزید && c->بفر->messaging ())
   {
-    c->buffer->message (c->font,
+    c->بفر->پیغام (c->font,
 			  "cursive attaching glyph at %u to glyph at %u",
 			  i, j);
   }
 
-  buffer->unsafe_to_break (i, j + 1);
-  float entry_x, entry_y, exit_x, exit_y;
-  exit_anchor.get_anchor (c, buffer->info[i].codepoint, &exit_x, &exit_y);
-  entry_anchor.get_anchor (c, buffer->info[j].codepoint, &entry_x, &entry_y);
+  بفر->unsafe_مقصد_break (i, j + 1);
+  اعشاری اندراج_x, اندراج_y, exit_x, exit_y;
+  exit_anchor.get_anchor (c, بفر->info[i].codepoint, &exit_x, &exit_y);
+  اندراج_anchor.get_anchor (c, بفر->info[j].codepoint, &اندراج_x, &اندراج_y);
 
-  hb_glyph_position_t *pos = buffer->pos;
+  hb_glyph_position_t *pos = بفر->pos;
 
   hb_position_t d;
   /* Main-direction adjustment */
-  switch (c->direction) {
-    case HB_DIRECTION_LTR:
-      pos[i].x_advance = hb_saturate_add ((hb_position_t) roundf (exit_x), pos[i].x_offset);
+  انتخاب (c->direction) {
+    حالت HB_DIRECTION_LTR:
+      pos[i].x_advance = hb_saturate_جوڑو ((hb_position_t) roundf (exit_x), pos[i].x_انحراف_2);
 
-      d = hb_saturate_add ((hb_position_t) roundf (entry_x), pos[j].x_offset);
+      d = hb_saturate_جوڑو ((hb_position_t) roundf (اندراج_x), pos[j].x_انحراف_2);
       pos[j].x_advance = hb_saturate_sub (pos[j].x_advance, d);
-      pos[j].x_offset = hb_saturate_sub (pos[j].x_offset, d);
-      break;
-    case HB_DIRECTION_RTL:
-      d = hb_saturate_add ((hb_position_t) roundf (exit_x), pos[i].x_offset);
+      pos[j].x_انحراف_2 = hb_saturate_sub (pos[j].x_انحراف_2, d);
+      توڑو;
+    حالت HB_DIRECTION_RTL:
+      d = hb_saturate_جوڑو ((hb_position_t) roundf (exit_x), pos[i].x_انحراف_2);
       pos[i].x_advance = hb_saturate_sub (pos[i].x_advance, d);
-      pos[i].x_offset = hb_saturate_sub (pos[i].x_offset, d);
+      pos[i].x_انحراف_2 = hb_saturate_sub (pos[i].x_انحراف_2, d);
 
-      pos[j].x_advance = hb_saturate_add ((hb_position_t) roundf (entry_x), pos[j].x_offset);
-      break;
-    case HB_DIRECTION_TTB:
-      pos[i].y_advance = hb_saturate_add ((hb_position_t) roundf (exit_y), pos[i].y_offset);
+      pos[j].x_advance = hb_saturate_جوڑو ((hb_position_t) roundf (اندراج_x), pos[j].x_انحراف_2);
+      توڑو;
+    حالت HB_DIRECTION_TTB:
+      pos[i].y_advance = hb_saturate_جوڑو ((hb_position_t) roundf (exit_y), pos[i].y_انحراف_2);
 
-      d = hb_saturate_add ((hb_position_t) roundf (entry_y), pos[j].y_offset);
+      d = hb_saturate_جوڑو ((hb_position_t) roundf (اندراج_y), pos[j].y_انحراف_2);
       pos[j].y_advance = hb_saturate_sub (pos[j].y_advance, d);
-      pos[j].y_offset = hb_saturate_sub (pos[j].y_offset, d);
-      break;
-    case HB_DIRECTION_BTT:
-      d = hb_saturate_add ((hb_position_t) roundf (exit_y), pos[i].y_offset);
+      pos[j].y_انحراف_2 = hb_saturate_sub (pos[j].y_انحراف_2, d);
+      توڑو;
+    حالت HB_DIRECTION_BTT:
+      d = hb_saturate_جوڑو ((hb_position_t) roundf (exit_y), pos[i].y_انحراف_2);
       pos[i].y_advance = hb_saturate_sub (pos[i].y_advance, d);
-      pos[i].y_offset = hb_saturate_sub (pos[i].y_offset, d);
+      pos[i].y_انحراف_2 = hb_saturate_sub (pos[i].y_انحراف_2, d);
 
-      pos[j].y_advance = (hb_position_t) roundf (entry_y);
-      break;
-    case HB_DIRECTION_INVALID:
-    default:
-      break;
+      pos[j].y_advance = (hb_position_t) roundf (اندراج_y);
+      توڑو;
+    حالت HB_DIRECTION_INVALID:
+    طےشدہ:
+      توڑو;
   }
 
   /* Cross-direction adjustment */
@@ -167,17 +167,17 @@ apply_cursive_attachment (hb_ot_apply_context_t *c,
    *
    * Optimize things for the case of RightToLeft, as that's most common in
    * Arabic. */
-  unsigned int child  = i;
-  unsigned int parent = j;
-  hb_position_t x_offset = (hb_position_t) roundf (entry_x - exit_x);
-  hb_position_t y_offset = (hb_position_t) roundf (entry_y - exit_y);
-  if  (!(c->lookup_props & LookupFlag::RightToLeft))
+  غیرعلامتی صحیح بچہ  = i;
+  غیرعلامتی صحیح والد = j;
+  hb_position_t x_انحراف_2 = (hb_position_t) roundf (اندراج_x - exit_x);
+  hb_position_t y_انحراف_2 = (hb_position_t) roundf (اندراج_y - exit_y);
+  اگر  (!(c->lookup_props & LookupFlag::دایاں_مقصد_بایاں))
   {
-    unsigned int k = child;
-    child = parent;
-    parent = k;
-    x_offset = -x_offset;
-    y_offset = -y_offset;
+    غیرعلامتی صحیح k = بچہ;
+    بچہ = والد;
+    والد = k;
+    x_انحراف_2 = -x_انحراف_2;
+    y_انحراف_2 = -y_انحراف_2;
   }
 
   /* If child was already connected to someone else, walk through its old
@@ -185,167 +185,167 @@ apply_cursive_attachment (hb_ot_apply_context_t *c,
    * previous connection now attaches to new parent.  Watch out for case
    * where new parent is on the path from old chain...
    */
-  reverse_cursive_minor_offset (pos, buffer->len, child, c->direction, parent);
+  الٹ_cursive_minor_انحراف (pos, بفر->len, بچہ, c->direction, والد);
 
-  pos[child].attach_chain() = (int) parent - (int) child;
-  if (pos[child].attach_chain() != (int) parent - (int) child)
+  pos[بچہ].attach_chain() = (صحیح) والد - (صحیح) بچہ;
+  اگر (pos[بچہ].attach_chain() != (صحیح) والد - (صحیح) بچہ)
   {
-    pos[child].attach_chain() = 0;
-    goto overflow;
+    pos[بچہ].attach_chain() = 0;
+    جاؤ حد_سے_تجاوز;
   }
-  pos[child].attach_type() = ATTACH_TYPE_CURSIVE;
-  buffer->scratch_flags |= HB_BUFFER_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
-  if (likely (HB_DIRECTION_IS_HORIZONTAL (c->direction)))
-    pos[child].y_offset = y_offset;
-  else
-    pos[child].x_offset = x_offset;
+  pos[بچہ].attach_type() = ATTACH_TYPE_CURSIVE;
+  بفر->scratch_flags |= HB_بفر_SCRATCH_FLAG_HAS_GPOS_ATTACHMENT;
+  اگر (likely (HB_DIRECTION_IS_HORIZONTAL (c->direction)))
+    pos[بچہ].y_انحراف_2 = y_انحراف_2;
+  ورنہ
+    pos[بچہ].x_انحراف_2 = x_انحراف_2;
 
   /* If parent was attached to child, separate them.
    * https://github.com/harfbuzz/harfbuzz/issues/2469
    */
-  if (unlikely (pos[parent].attach_chain() == -pos[child].attach_chain()))
+  اگر (unlikely (pos[والد].attach_chain() == -pos[بچہ].attach_chain()))
   {
-    pos[parent].attach_chain() = 0;
-    if (likely (HB_DIRECTION_IS_HORIZONTAL (c->direction)))
-	pos[parent].y_offset = 0;
-    else
-	pos[parent].x_offset = 0;
+    pos[والد].attach_chain() = 0;
+    اگر (likely (HB_DIRECTION_IS_HORIZONTAL (c->direction)))
+	pos[والد].y_انحراف_2 = 0;
+    ورنہ
+	pos[والد].x_انحراف_2 = 0;
   }
 
-  if (HB_BUFFER_MESSAGE_MORE && c->buffer->messaging ())
+  اگر (HB_بفر_پیغام_مزید && c->بفر->messaging ())
   {
-    c->buffer->message (c->font,
+    c->بفر->پیغام (c->font,
 			  "cursive attached glyph at %u to glyph at %u",
 			  i, j);
   }
 
-overflow:
-  buffer->idx++;
-  return true;
+حد_سے_تجاوز:
+  بفر->idx++;
+  واپس سچ;
 }
 
-template <typename Types>
-struct CursivePosFormat1_2
+سانچہ <قسم_نام Types>
+ساخت CursivePosFormat1_2
 {
 
-  protected:
+  محفوظ:
   HBUINT16      format;                 /* Format identifier--format = 1 */
-  typename Types::template LOffsetTo<Coverage>
+  قسم_نام Types::سانچہ LOffset_مقصد<Coverage>
                 coverage;               /* Offset to Coverage table--from beginning of subtable */
-  typename Types::template ArrayOf<EntryExitRecord<Types>>
-                entryExitRecord;        /* Array of EntryExit records--in
+  قسم_نام Types::سانچہ Array_کا<اندراج_Exit_ریکارڈ<Types>>
+                اندراج_Exit_ریکارڈ_2;        /* Array of EntryExit records--in
                                          * Coverage Index order */
-  public:
-  DEFINE_SIZE_ARRAY (2 + Types::LOffset::static_size + Types::HBUINT::static_size, entryExitRecord);
+  عوامی:
+  DEFINE_سائز_ARRAY (2 + Types::LOffset::static_سائز + Types::HBUINT::static_سائز, اندراج_Exit_ریکارڈ_2);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!coverage.sanitize (c, this)))
-      return_trace (false);
+    TRACE_SANITIZE (یہ);
+    اگر (unlikely (!coverage.sanitize (c, یہ)))
+      return_trace (جھوٹ);
 
-    if (c->lazy_some_gpos)
-      return_trace (entryExitRecord.sanitize_shallow (c));
-    else
-      return_trace (entryExitRecord.sanitize (c, this));
+    اگر (c->lazy_some_gpos)
+      return_trace (اندراج_Exit_ریکارڈ_2.sanitize_shallow (c));
+    ورنہ
+      return_trace (اندراج_Exit_ریکارڈ_2.sanitize (c, یہ));
   }
 
-  bool intersects (const hb_set_t *glyphs) const
-  { return (this+coverage).intersects (glyphs); }
+  منطقی intersects (ثابت hb_سیٹ_t *glyphs) ثابت
+  { واپس (یہ+coverage).intersects (glyphs); }
 
-  void closure_lookups (hb_closure_lookups_context_t *c) const {}
+  خالی احاطہ_lookups (hb_احاطہ_lookups_context_t *c) ثابت {}
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  خالی collect_variation_indices (hb_collect_variation_indices_context_t *c) ثابت
   {
-    + hb_zip (this+coverage, entryExitRecord)
-    | hb_filter (c->glyph_set, hb_first)
-    | hb_map (hb_second)
-    | hb_apply ([&] (const EntryExitRecord<Types>& record) { record.collect_variation_indices (c, this); })
+    + hb_zip (یہ+coverage, اندراج_Exit_ریکارڈ_2)
+    | hb_filter (c->glyph_سیٹ, hb_پہلا)
+    | hb_map (hb_دوسرا)
+    | hb_apply ([&] (ثابت اندراج_Exit_ریکارڈ<Types>& ریکارڈ) { ریکارڈ.collect_variation_indices (c, یہ); })
     ;
   }
 
-  void collect_glyphs (hb_collect_glyphs_context_t *c) const
-  { if (unlikely (!(this+coverage).collect_coverage (c->input))) return; }
+  خالی collect_glyphs (hb_collect_glyphs_context_t *c) ثابت
+  { اگر (unlikely (!(یہ+coverage).collect_coverage (c->داخلہ))) واپس; }
 
-  void collect_second_glyphs (hb_set_digest_t *digest) const
-  { (this+coverage).collect_coverage (digest); }
+  خالی collect_دوسرا_glyphs (hb_سیٹ_digest_t *digest) ثابت
+  { (یہ+coverage).collect_coverage (digest); }
 
-  const Coverage &get_coverage () const { return this+coverage; }
+  ثابت Coverage &get_coverage () ثابت { واپس یہ+coverage; }
 
-  bool apply (hb_ot_apply_context_t *c) const
+  منطقی apply (hb_ot_apply_context_t *c) ثابت
   {
-    TRACE_APPLY (this);
-    hb_buffer_t *buffer = c->buffer;
+    TRACE_APPLY (یہ);
+    hb_بفر_t *بفر = c->بفر;
 
-    const EntryExitRecord<Types> &this_record = entryExitRecord[(this+coverage).get_coverage  (buffer->cur().codepoint)];
-    if (!this_record.entryAnchor ||
-	unlikely (!this_record.entryAnchor.sanitize (&c->sanitizer, this))) return_trace (false);
+    ثابت اندراج_Exit_ریکارڈ<Types> &this_ریکارڈ = اندراج_Exit_ریکارڈ_2[(یہ+coverage).get_coverage  (بفر->cur().codepoint)];
+    اگر (!this_ریکارڈ.اندراج_Anchor ||
+	unlikely (!this_ریکارڈ.اندراج_Anchor.sanitize (&c->sanitizer, یہ))) return_trace (جھوٹ);
     hb_barrier ();
 
-    auto &skippy_iter = c->iter_input;
-    skippy_iter.reset_fast (buffer->idx);
-    unsigned unsafe_from;
-    if (unlikely (!skippy_iter.prev (&unsafe_from)))
+    خودکار &skippy_iter = c->iter_داخلہ;
+    skippy_iter.reset_fast (بفر->idx);
+    غیرعلامتی unsafe_from;
+    اگر (unlikely (!skippy_iter.prev (&unsafe_from)))
     {
-      buffer->unsafe_to_concat_from_outbuffer (unsafe_from, buffer->idx + 1);
-      return_trace (false);
+      بفر->unsafe_مقصد_concat_from_outbuffer (unsafe_from, بفر->idx + 1);
+      return_trace (جھوٹ);
     }
 
-    const EntryExitRecord<Types> &prev_record = entryExitRecord[(this+coverage).get_coverage  (buffer->info[skippy_iter.idx].codepoint)];
-    if (!prev_record.exitAnchor ||
-	unlikely (!prev_record.exitAnchor.sanitize (&c->sanitizer, this)))
+    ثابت اندراج_Exit_ریکارڈ<Types> &پچھلا_ریکارڈ = اندراج_Exit_ریکارڈ_2[(یہ+coverage).get_coverage  (بفر->info[skippy_iter.idx].codepoint)];
+    اگر (!پچھلا_ریکارڈ.exitAnchor ||
+	unlikely (!پچھلا_ریکارڈ.exitAnchor.sanitize (&c->sanitizer, یہ)))
     {
-      buffer->unsafe_to_concat_from_outbuffer (skippy_iter.idx, buffer->idx + 1);
-      return_trace (false);
+      بفر->unsafe_مقصد_concat_from_outbuffer (skippy_iter.idx, بفر->idx + 1);
+      return_trace (جھوٹ);
     }
     hb_barrier ();
 
     return_trace (apply_cursive_attachment (c,
-                                            this+prev_record.exitAnchor,
-                                            this+this_record.entryAnchor,
+                                            یہ+پچھلا_ریکارڈ.exitAnchor,
+                                            یہ+this_ریکارڈ.اندراج_Anchor,
                                             skippy_iter.idx));
   }
 
-  template <typename Iterator,
+  سانچہ <قسم_نام Iterator,
             hb_requires (hb_is_iterator (Iterator))>
-  void serialize (hb_subset_context_t *c,
+  خالی serialize (hb_subset_context_t *c,
                   Iterator it,
-                  const struct CursivePosFormat1_2<Types> *src_base)
+                  ثابت ساخت CursivePosFormat1_2<Types> *src_بنیاد)
   {
-    if (unlikely (!c->serializer->extend_min ((*this)))) return;
-    this->format = src_base->format;
-    this->entryExitRecord.len = it.len ();
+    اگر (unlikely (!c->serializer->extend_min ((*یہ)))) واپس;
+    یہ->format = src_بنیاد->format;
+    یہ->اندراج_Exit_ریکارڈ_2.len = it.len ();
 
-    for (const EntryExitRecord<Types>& entry_record : + it
-                                                      | hb_map (hb_second))
-      entry_record.subset (c, src_base);
+    برائے (ثابت اندراج_Exit_ریکارڈ<Types>& اندراج_ریکارڈ : + it
+                                                      | hb_map (hb_دوسرا))
+      اندراج_ریکارڈ.subset (c, src_بنیاد);
 
-    auto glyphs =
+    خودکار glyphs =
     + it
-    | hb_map_retains_sorting (hb_first)
+    | hb_map_retains_ترتیب_کاری (hb_پہلا)
     ;
 
     coverage.serialize_serialize (c->serializer, glyphs);
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    const hb_set_t &glyphset = *c->plan->glyphset_gsub ();
-    const hb_map_t &glyph_map = *c->plan->glyph_map;
+    TRACE_SUBSET (یہ);
+    ثابت hb_سیٹ_t &glyphset = *c->plan->glyphset_gsub ();
+    ثابت hb_map_t &glyph_map = *c->plan->glyph_map;
 
-    auto *out = c->serializer->start_embed (*this);
+    خودکار *برآمد = c->serializer->آغاز_embed (*یہ);
 
-    auto it =
-    + hb_zip (this+coverage, entryExitRecord)
-    | hb_filter (glyphset, hb_first)
-    | hb_map_retains_sorting ([&] (hb_pair_t<hb_codepoint_t, const EntryExitRecord<Types>&> p)
-                              -> hb_pair_t<hb_codepoint_t, const EntryExitRecord<Types>&>
-                              { return hb_pair (glyph_map[p.first], p.second);})
+    خودکار it =
+    + hb_zip (یہ+coverage, اندراج_Exit_ریکارڈ_2)
+    | hb_filter (glyphset, hb_پہلا)
+    | hb_map_retains_ترتیب_کاری ([&] (hb_pair_t<hb_codepoint_t, ثابت اندراج_Exit_ریکارڈ<Types>&> p)
+                              -> hb_pair_t<hb_codepoint_t, ثابت اندراج_Exit_ریکارڈ<Types>&>
+                              { واپس hb_pair (glyph_map[p.پہلا], p.second);})
     ;
 
-    bool ret = bool (it);
-    out->serialize (c, it, this);
+    منطقی ret = منطقی (it);
+    برآمد->serialize (c, it, یہ);
     return_trace (ret);
   }
 };
@@ -355,4 +355,4 @@ struct CursivePosFormat1_2
 }
 }
 
-#endif /* OT_LAYOUT_GPOS_CURSIVEPOSFORMAT1_HH */
+#اگر_ختم /* OT_LAYOUT_GPOS_CURSIVEPOSFORMAT1_HH */

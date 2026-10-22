@@ -22,91 +22,91 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#شامل "hb.hh"
 
-#ifndef HB_NO_OT_SHAPE
+#اگر_غیر_تعریف_شدہ HB_NO_OT_SHAPE
 
-#include "hb-ot-shaper-syllabic.hh"
+#شامل "hb-ot-shaper-syllabic.hh"
 
 
-bool
-hb_syllabic_insert_dotted_circles (hb_font_t *font,
-				   hb_buffer_t *buffer,
-				   unsigned int broken_syllable_type,
-				   unsigned int dottedcircle_category,
-				   int repha_category,
-				   int dottedcircle_position)
+منطقی
+hb_syllabic_داخل_کرو_dotted_circles (hb_font_t *font,
+				   hb_بفر_t *بفر,
+				   غیرعلامتی صحیح broken_syllable_type,
+				   غیرعلامتی صحیح dottedcircle_category,
+				   صحیح repha_category,
+				   صحیح dottedcircle_position)
 {
-  if (unlikely (buffer->flags & HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE))
-    return false;
-  if (likely (!(buffer->scratch_flags & HB_BUFFER_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE)))
+  اگر (unlikely (بفر->flags & HB_بفر_FLAG_DO_NOT_داخل_کرو_DOTTED_CIRCLE))
+    واپس جھوٹ;
+  اگر (likely (!(بفر->scratch_flags & HB_بفر_SCRATCH_FLAG_HAS_BROKEN_SYLLABLE)))
   {
-    if (buffer->messaging ())
-      (void) buffer->message (font, "skipped inserting dotted-circles because there is no broken syllables");
-    return false;
+    اگر (بفر->messaging ())
+      (خالی) بفر->پیغام (font, "skipped inserting dotted-circles because there is no broken syllables");
+    واپس جھوٹ;
   }
 
-  if (buffer->messaging () &&
-      !buffer->message (font, "start inserting dotted-circles"))
-    return false;
+  اگر (بفر->messaging () &&
+      !بفر->پیغام (font, "start inserting dotted-circles"))
+    واپس جھوٹ;
 
   hb_codepoint_t dottedcircle_glyph;
-  if (!font->get_nominal_glyph (0x25CCu, &dottedcircle_glyph))
-    return false;
+  اگر (!font->get_nominal_glyph (0x25CCu, &dottedcircle_glyph))
+    واپس جھوٹ;
 
   hb_glyph_info_t dottedcircle = {0};
   dottedcircle.codepoint = 0x25CCu;
   dottedcircle.ot_shaper_var_u8_category() = dottedcircle_category;
-  if (dottedcircle_position != -1)
+  اگر (dottedcircle_position != -1)
     dottedcircle.ot_shaper_var_u8_auxiliary() = dottedcircle_position;
   dottedcircle.codepoint = dottedcircle_glyph;
 
-  buffer->clear_output ();
+  بفر->clear_output ();
 
-  buffer->idx = 0;
-  unsigned int last_syllable = 0;
-  while (buffer->idx < buffer->len && buffer->successful)
+  بفر->idx = 0;
+  غیرعلامتی صحیح آخری_syllable = 0;
+  جب (بفر->idx < بفر->len && بفر->successful)
   {
-    unsigned int syllable = buffer->cur().syllable();
-    if (unlikely (last_syllable != syllable && (syllable & 0x0F) == broken_syllable_type))
+    غیرعلامتی صحیح syllable = بفر->cur().syllable();
+    اگر (unlikely (آخری_syllable != syllable && (syllable & 0x0F) == broken_syllable_type))
     {
-      last_syllable = syllable;
+      آخری_syllable = syllable;
 
       hb_glyph_info_t ginfo = dottedcircle;
-      ginfo.cluster = buffer->cur().cluster;
-      ginfo.mask = buffer->cur().mask;
-      ginfo.syllable() = buffer->cur().syllable();
+      ginfo.cluster = بفر->cur().cluster;
+      ginfo.نقاب = بفر->cur().نقاب;
+      ginfo.syllable() = بفر->cur().syllable();
 
       /* Insert dottedcircle after possible Repha. */
-      if (repha_category != -1)
+      اگر (repha_category != -1)
       {
-	while (buffer->idx < buffer->len && buffer->successful &&
-	       last_syllable == buffer->cur().syllable() &&
-	       buffer->cur().ot_shaper_var_u8_category() == (unsigned) repha_category)
-	  (void) buffer->next_glyph ();
+	جب (بفر->idx < بفر->len && بفر->successful &&
+	       آخری_syllable == بفر->cur().syllable() &&
+	       بفر->cur().ot_shaper_var_u8_category() == (غیرعلامتی) repha_category)
+	  (خالی) بفر->اگلا_glyph ();
       }
 
-      (void) buffer->output_info (ginfo);
+      (خالی) بفر->output_info (ginfo);
     }
-    else
-      (void) buffer->next_glyph ();
+    ورنہ
+      (خالی) بفر->اگلا_glyph ();
   }
-  buffer->sync ();
+  بفر->ہمآہنگ ();
 
-  if (buffer->messaging ())
-    (void) buffer->message (font, "end inserting dotted-circles");
+  اگر (بفر->messaging ())
+    (خالی) بفر->پیغام (font, "end inserting dotted-circles");
 
-  return true;
+  واپس سچ;
 }
 
-HB_INTERNAL bool
-hb_syllabic_clear_var (const hb_ot_shape_plan_t *plan,
+HB_اندرونی منطقی
+hb_syllabic_clear_var (ثابت hb_ot_shape_plan_t *plan,
 		       hb_font_t *font,
-		       hb_buffer_t *buffer)
+		       hb_بفر_t *بفر)
 {
-  HB_BUFFER_DEALLOCATE_VAR (buffer, syllable);
-  return false;
+  HB_بفر_DEALLOCATE_VAR (بفر, syllable);
+  واپس جھوٹ;
 }
 
 
-#endif
+#اگر_ختم

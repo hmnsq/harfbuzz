@@ -1,46 +1,46 @@
 #!/usr/bin/env python3
 
-import os
-import sys
+درآمد os
+درآمد sys
 
 srcdir = sys.argv[1]
-base_srcdir = sys.argv[2]
+بنیاد_srcdir = sys.argv[2]
 builddir = sys.argv[3]
 
 os.chdir(srcdir)
 
 
-def removeprefix(s):
-    abs_path = os.path.join(base_srcdir, s)
-    return os.path.relpath(abs_path, srcdir)
+تعریف removeprefix(s):
+    abs_راستہ = os.راستہ.join(بنیاد_srcdir, s)
+    واپس os.راستہ.relpath(abs_راستہ, srcdir)
 
 
-HBHEADERS = [os.path.basename(x) for x in os.getenv("HBHEADERS", "").split()] or [
-    x for x in os.listdir(".") if x.startswith("hb") and x.endswith(".h")
+HBHEADERS = [os.راستہ.basename(x) برائے x میں os.getenv("HBHEADERS", "").بانٹو()] یا [
+    x برائے x میں os.listdir(".") اگر x.startswith("hb") اور x.endswith(".h")
 ]
-HBHEADERS = [x for x in HBHEADERS if x.endswith(".h")]
-HBSOURCES = [removeprefix(x) for x in os.getenv("HBSOURCES", "").split()] or [
-    x for x in os.listdir(".") if x.startswith("hb") and x.endswith((".cc", ".hh"))
+HBHEADERS = [x برائے x میں HBHEADERS اگر x.endswith(".h")]
+HBSOURCES = [removeprefix(x) برائے x میں os.getenv("HBSOURCES", "").بانٹو()] یا [
+    x برائے x میں os.listdir(".") اگر x.startswith("hb") اور x.endswith((".cc", ".hh"))
 ]
 stat = 0
 
-for x in HBHEADERS:
-    print(f"Checking {x}")
-    with open(x, "r", encoding="utf-8") as f:
-        content = f.read()
-    if ("HB_BEGIN_DECLS" not in content) or ("HB_END_DECLS" not in content):
-        print(
+برائے x میں HBHEADERS:
+    چھاپو(f"Checking {x}")
+    ساتھ open(x, "r", encoding="utf-8") بطور f:
+        content = f.اقرأ()
+    اگر ("HB_BEGIN_DECLS" نہیں میں content) یا ("HB_END_DECLS" نہیں میں content):
+        چھاپو(
             "Ouch, file %s does not have HB_BEGIN_DECLS / HB_END_DECLS, but it should"
             % x
         )
         stat = 1
 
-for x in HBSOURCES:
-    print(f"Checking {x}")
-    with open(x, "r", encoding="utf-8") as f:
-        content = f.read()
-    if ("HB_BEGIN_DECLS" in content) or ("HB_END_DECLS" in content):
-        print("Ouch, file %s has HB_BEGIN_DECLS / HB_END_DECLS, but it shouldn't" % x)
+برائے x میں HBSOURCES:
+    چھاپو(f"Checking {x}")
+    ساتھ open(x, "r", encoding="utf-8") بطور f:
+        content = f.اقرأ()
+    اگر ("HB_BEGIN_DECLS" میں content) یا ("HB_END_DECLS" میں content):
+        چھاپو("Ouch, file %s has HB_BEGIN_DECLS / HB_END_DECLS, but it shouldn't" % x)
         stat = 1
 
 sys.exit(stat)

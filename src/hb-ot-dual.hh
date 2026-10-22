@@ -26,120 +26,120 @@
  * Google Author(s): Behdad Esfahbod, Garret Rieger
  */
 
-#ifndef HB_OT_DUAL_HH
-#define HB_OT_DUAL_HH
+#اگر_غیر_تعریف_شدہ HB_OT_DUAL_HH
+#تعریف_کرو HB_OT_DUAL_HH
 
-#include "hb-open-type.hh"
+#شامل "hb-open-type.hh"
 
 
-namespace OT {
-namespace Layout {
+نامخلا OT {
+نامخلا Layout {
 
-struct SmallTypes {
-  static constexpr unsigned size = 2;
-  using large_int = uint32_t;
-  using HBUINT = HBUINT16;
-  using HBLUINT = HBUINT16;
-  using HBGlyphID = HBGlyphID16;
-  using Offset = Offset16;
-  using LOffset = Offset16;
-  template <typename Type, typename BaseType=void, bool has_null=true>
-  using OffsetTo = OT::Offset16To<Type, BaseType, has_null>;
-  template <typename Type, typename BaseType=void, bool has_null=true>
-  using LOffsetTo = OT::Offset16To<Type, BaseType, has_null>;
-  template <typename Type>
-  using ArrayOf = OT::Array16Of<Type>;
-  template <typename Type>
-  using SortedArrayOf = OT::SortedArray16Of<Type>;
+ساخت SmallTypes {
+  ساکن constexpr غیرعلامتی سائز = 2;
+  استعمال large_int = uint32_t;
+  استعمال HBUINT = HBUINT16;
+  استعمال HBLUINT = HBUINT16;
+  استعمال HBGlyphID = HBGlyphID16;
+  استعمال انحراف_2 = Offset16;
+  استعمال LOffset = Offset16;
+  سانچہ <قسم_نام Type, قسم_نام بنیاد_Type=خالی, منطقی has_null=سچ>
+  استعمال انحراف_مقصد = OT::Offset16_مقصد<Type, بنیاد_Type, has_null>;
+  سانچہ <قسم_نام Type, قسم_نام بنیاد_Type=خالی, منطقی has_null=سچ>
+  استعمال LOffset_مقصد = OT::Offset16_مقصد<Type, بنیاد_Type, has_null>;
+  سانچہ <قسم_نام Type>
+  استعمال Array_کا = OT::Array16_کا<Type>;
+  سانچہ <قسم_نام Type>
+  استعمال Sorted_Array_کا = OT::Sorted_Array16_کا<Type>;
 };
 
-struct MediumTypes {
-  static constexpr unsigned size = 3;
-  using large_int = uint64_t;
-  using HBUINT = HBUINT24;
-  using HBLUINT = HBUINT32;
-  using HBGlyphID = HBGlyphID24;
-  using Offset = Offset24;
+ساخت MediumTypes {
+  ساکن constexpr غیرعلامتی سائز = 3;
+  استعمال large_int = uint64_t;
+  استعمال HBUINT = HBUINT24;
+  استعمال HBLUINT = HBUINT32;
+  استعمال HBGlyphID = HBGlyphID24;
+  استعمال انحراف_2 = Offset24;
   /* Long offsets for large tables. */
-  using LOffset = Offset32;
-  template <typename Type, typename BaseType=void, bool has_null=true>
-  using OffsetTo = OT::Offset24To<Type, BaseType, has_null>;
-  template <typename Type, typename BaseType=void, bool has_null=true>
-  using LOffsetTo = OT::Offset32To<Type, BaseType, has_null>;
-  template <typename Type>
-  using ArrayOf = OT::Array24Of<Type>;
-  template <typename Type>
-  using SortedArrayOf = OT::SortedArray24Of<Type>;
+  استعمال LOffset = Offset32;
+  سانچہ <قسم_نام Type, قسم_نام بنیاد_Type=خالی, منطقی has_null=سچ>
+  استعمال انحراف_مقصد = OT::Offset24_مقصد<Type, بنیاد_Type, has_null>;
+  سانچہ <قسم_نام Type, قسم_نام بنیاد_Type=خالی, منطقی has_null=سچ>
+  استعمال LOffset_مقصد = OT::Offset32_مقصد<Type, بنیاد_Type, has_null>;
+  سانچہ <قسم_نام Type>
+  استعمال Array_کا = OT::Array24_کا<Type>;
+  سانچہ <قسم_نام Type>
+  استعمال Sorted_Array_کا = OT::Sorted_Array24_کا<Type>;
 };
 
 }
 }
 
 
-template <typename Lower, typename Upper>
-struct hb_dual_accelerator_t
+سانچہ <قسم_نام زیریں_2, قسم_نام بالائی_2>
+ساخت hb_dual_accelerator_t
 {
   hb_dual_accelerator_t (hb_face_t *face) :
-#ifndef HB_NO_BEYOND_64K
-    upper (face),
-#endif
-    lower (
-#ifndef HB_NO_BEYOND_64K
-	   upper.has_data () ? hb_face_get_empty () :
-#endif
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    بالائی (face),
+#اگر_ختم
+    زیریں (
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+	   بالائی.has_ڈیٹا () ? hb_face_get_خالی_خانے () :
+#اگر_ختم
 	   face)
   {}
 
-  bool has_data () const
+  منطقی has_ڈیٹا () ثابت
   {
-#ifndef HB_NO_BEYOND_64K
-    if (upper.has_data ()) return true;
-#endif
-    return lower.has_data ();
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    اگر (بالائی.has_ڈیٹا ()) واپس سچ;
+#اگر_ختم
+    واپس زیریں.has_ڈیٹا ();
   }
 
-  bool has_upper_data () const
+  منطقی has_بالائی_ڈیٹا () ثابت
   {
-#ifndef HB_NO_BEYOND_64K
-    return upper.has_data ();
-#else
-    return false;
-#endif
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    واپس بالائی.has_ڈیٹا ();
+#ورنہ
+    واپس جھوٹ;
+#اگر_ختم
   }
 
-#ifndef HB_NO_BEYOND_64K
-  Upper upper;
-#endif
-  Lower lower;
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+  بالائی_2 بالائی;
+#اگر_ختم
+  زیریں_2 زیریں;
 };
 
-template <typename Table>
-struct hb_table_accelerator_t
+سانچہ <قسم_نام جدول_3>
+ساخت hb_جدول_accelerator_t
 {
-  hb_table_accelerator_t (hb_face_t *face) :
-    table (hb_sanitize_context_t ().reference_table<Table> (face))
+  hb_جدول_accelerator_t (hb_face_t *face) :
+    جدول (hb_sanitize_context_t ().reference_جدول<جدول_3> (face))
   {}
-  ~hb_table_accelerator_t () { table.destroy (); }
+  ~hb_جدول_accelerator_t () { جدول.destroy (); }
 
-  bool has_data () const { return table->has_data (); }
+  منطقی has_ڈیٹا () ثابت { واپس جدول->has_ڈیٹا (); }
 
-  hb_blob_ptr_t<Table> table;
+  hb_blob_ptr_t<جدول_3> جدول;
 };
 
-template <typename Lower, typename Upper>
-struct hb_dual_table_t : hb_dual_accelerator_t<hb_table_accelerator_t<Lower>,
-					       hb_table_accelerator_t<Upper>>
+سانچہ <قسم_نام زیریں_2, قسم_نام بالائی_2>
+ساخت hb_dual_جدول_t : hb_dual_accelerator_t<hb_جدول_accelerator_t<زیریں_2>,
+					       hb_جدول_accelerator_t<بالائی_2>>
 {
-  hb_dual_table_t (hb_face_t *face) :
-    hb_dual_accelerator_t<hb_table_accelerator_t<Lower>,
-			  hb_table_accelerator_t<Upper>> (face) {}
+  hb_dual_جدول_t (hb_face_t *face) :
+    hb_dual_accelerator_t<hb_جدول_accelerator_t<زیریں_2>,
+			  hb_جدول_accelerator_t<بالائی_2>> (face) {}
 };
 
-#ifndef HB_NO_BEYOND_64K
-#define HB_DUAL_GET(accel, expr) ((accel).upper.has_data () ? (accel).upper.expr : (accel).lower.expr)
-#else
-#define HB_DUAL_GET(accel, expr) ((accel).lower.expr)
-#endif
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+#تعریف_کرو HB_DUAL_GET(accel, اظہاریہ) ((accel).بالائی.has_ڈیٹا () ? (accel).بالائی.اظہاریہ : (accel).زیریں.اظہاریہ)
+#ورنہ
+#تعریف_کرو HB_DUAL_GET(accel, اظہاریہ) ((accel).زیریں.اظہاریہ)
+#اگر_ختم
 
 
-#endif  /* HB_OT_DUAL_HH */
+#اگر_ختم  /* HB_OT_DUAL_HH */

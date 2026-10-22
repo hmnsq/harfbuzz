@@ -22,47 +22,47 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
-#include "hb-ot.h"
+#شامل "hb.hh"
+#شامل "hb-ot.h"
 
-#ifdef HB_NO_OPEN
-#define hb_blob_create_from_file_or_fail(x)  hb_blob_get_empty ()
-#endif
+#اگر_تعریف_شدہ HB_NO_OPEN
+#تعریف_کرو hb_blob_create_from_file_or_fail(x)  hb_blob_get_خالی_خانے ()
+#اگر_ختم
 
-int
-main (int argc, char **argv)
+صحیح
+مین (صحیح argc, حرف **argv)
 {
-  if (argc != 2) {
+  اگر (argc != 2) {
     fprintf (stderr, "usage: %s font-file\n", argv[0]);
-    exit (1);
+    باہر_نکلو (1);
   }
 
   hb_blob_t *blob = hb_blob_create_from_file_or_fail (argv[1]);
   hb_always_assert (blob);
   hb_face_t *face = hb_face_create (blob, 0 /* first face */);
   hb_blob_destroy (blob);
-  blob = nullptr;
+  blob = خالی_اشاریہ;
 
-  unsigned int count = 0;
+  غیرعلامتی صحیح گنتی = 0;
 
-#ifndef HB_NO_META
-  count = hb_ot_meta_get_entry_tags (face, 0, nullptr, nullptr);
+#اگر_غیر_تعریف_شدہ HB_NO_META
+  گنتی = hb_ot_meta_get_اندراج_لیبل_فہرست (face, 0, خالی_اشاریہ, خالی_اشاریہ);
 
-  hb_ot_meta_tag_t *tags = (hb_ot_meta_tag_t *)
-			   malloc (sizeof (hb_ot_meta_tag_t) * count);
-  hb_ot_meta_get_entry_tags (face, 0, &count, tags);
-  for (unsigned i = 0; i < count; ++i)
+  hb_ot_meta_لیبل_t *لیبل_فہرست = (hb_ot_meta_لیبل_t *)
+			   حافظہ_دو (حجم (hb_ot_meta_لیبل_t) * گنتی);
+  hb_ot_meta_get_اندراج_لیبل_فہرست (face, 0, &گنتی, لیبل_فہرست);
+  برائے (غیرعلامتی i = 0; i < گنتی; ++i)
   {
-    hb_blob_t *entry = hb_ot_meta_reference_entry (face, tags[i]);
-    printf ("%c%c%c%c, size: %u: %.*s\n",
-	    HB_UNTAG (tags[i]), hb_blob_get_length (entry),
-	    (int) hb_blob_get_length (entry), hb_blob_get_data (entry, nullptr));
-    hb_blob_destroy (entry);
+    hb_blob_t *اندراج_2 = hb_ot_meta_reference_اندراج (face, لیبل_فہرست[i]);
+    لکھو ("%c%c%c%c, size: %u: %.*s\n",
+	    HB_UNTAG (لیبل_فہرست[i]), hb_blob_get_لمبائی (اندراج_2),
+	    (صحیح) hb_blob_get_لمبائی (اندراج_2), hb_blob_get_ڈیٹا (اندراج_2, خالی_اشاریہ));
+    hb_blob_destroy (اندراج_2);
   }
-  free (tags);
-#endif
+  آزاد (لیبل_فہرست);
+#اگر_ختم
 
   hb_face_destroy (face);
 
-  return !count;
+  واپس !گنتی;
 }

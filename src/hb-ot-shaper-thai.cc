@@ -24,11 +24,11 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#شامل "hb.hh"
 
-#ifndef HB_NO_OT_SHAPE
+#اگر_غیر_تعریف_شدہ HB_NO_OT_SHAPE
 
-#include "hb-ot-shaper.hh"
+#شامل "hb-ot-shaper.hh"
 
 
 /* Thai / Lao shaper */
@@ -37,55 +37,55 @@
 /* PUA shaping */
 
 
-enum thai_consonant_type_t
+شمار thai_consonant_type_t
 {
   NC,
   AC,
   RC,
   DC,
   NOT_CONSONANT,
-  NUM_CONSONANT_TYPES = NOT_CONSONANT
+  عدد_CONSONANT_TYPES = NOT_CONSONANT
 };
 
-static thai_consonant_type_t
+ساکن thai_consonant_type_t
 get_consonant_type (hb_codepoint_t u)
 {
-  if (u == 0x0E1Bu || u == 0x0E1Du || u == 0x0E1Fu/* || u == 0x0E2Cu*/)
-    return AC;
-  if (u == 0x0E0Du || u == 0x0E10u)
-    return RC;
-  if (u == 0x0E0Eu || u == 0x0E0Fu)
-    return DC;
-  if (hb_in_range<hb_codepoint_t> (u, 0x0E01u, 0x0E2Eu))
-    return NC;
-  return NOT_CONSONANT;
+  اگر (u == 0x0E1Bu || u == 0x0E1Du || u == 0x0E1Fu/* || u == 0x0E2Cu*/)
+    واپس AC;
+  اگر (u == 0x0E0Du || u == 0x0E10u)
+    واپس RC;
+  اگر (u == 0x0E0Eu || u == 0x0E0Fu)
+    واپس DC;
+  اگر (hb_اندر_range<hb_codepoint_t> (u, 0x0E01u, 0x0E2Eu))
+    واپس NC;
+  واپس NOT_CONSONANT;
 }
 
 
-enum thai_mark_type_t
+شمار thai_mark_type_t
 {
   AV,
   BV,
   T,
   NOT_MARK,
-  NUM_MARK_TYPES = NOT_MARK
+  عدد_MARK_TYPES = NOT_MARK
 };
 
-static thai_mark_type_t
+ساکن thai_mark_type_t
 get_mark_type (hb_codepoint_t u)
 {
-  if (u == 0x0E31u || hb_in_range<hb_codepoint_t> (u, 0x0E34u, 0x0E37u) ||
-      u == 0x0E47u || hb_in_range<hb_codepoint_t> (u, 0x0E4Du, 0x0E4Eu))
-    return AV;
-  if (hb_in_range<hb_codepoint_t> (u, 0x0E38u, 0x0E3Au))
-    return BV;
-  if (hb_in_range<hb_codepoint_t> (u, 0x0E48u, 0x0E4Cu))
-    return T;
-  return NOT_MARK;
+  اگر (u == 0x0E31u || hb_اندر_range<hb_codepoint_t> (u, 0x0E34u, 0x0E37u) ||
+      u == 0x0E47u || hb_اندر_range<hb_codepoint_t> (u, 0x0E4Du, 0x0E4Eu))
+    واپس AV;
+  اگر (hb_اندر_range<hb_codepoint_t> (u, 0x0E38u, 0x0E3Au))
+    واپس BV;
+  اگر (hb_اندر_range<hb_codepoint_t> (u, 0x0E48u, 0x0E4Cu))
+    واپس T;
+  واپس NOT_MARK;
 }
 
 
-enum thai_action_t
+شمار thai_action_t
 {
   NOP,
   SD,  /* Shift combining-mark down */
@@ -94,15 +94,15 @@ enum thai_action_t
   RD   /* Remove descender from base */
 };
 
-static hb_codepoint_t
+ساکن hb_codepoint_t
 thai_pua_shape (hb_codepoint_t u, thai_action_t action, hb_font_t *font)
 {
-  struct thai_pua_mapping_t {
+  ساخت thai_pua_mapping_t {
     uint16_t u;
     uint16_t win_pua;
     uint16_t mac_pua;
-  } const *pua_mappings = nullptr;
-  static const thai_pua_mapping_t SD_mappings[] = {
+  } ثابت *pua_mappings = خالی_اشاریہ;
+  ساکن ثابت thai_pua_mapping_t SD_mappings[] = {
     {0x0E48u, 0xF70Au, 0xF88Bu}, /* MAI EK */
     {0x0E49u, 0xF70Bu, 0xF88Eu}, /* MAI THO */
     {0x0E4Au, 0xF70Cu, 0xF891u}, /* MAI TRI */
@@ -113,7 +113,7 @@ thai_pua_shape (hb_codepoint_t u, thai_action_t action, hb_font_t *font)
     {0x0E3Au, 0xF71Au, 0xF89Du}, /* PHINTHU */
     {0x0000u, 0x0000u, 0x0000u}
   };
-  static const thai_pua_mapping_t SDL_mappings[] = {
+  ساکن ثابت thai_pua_mapping_t SDL_mappings[] = {
     {0x0E48u, 0xF705u, 0xF88Cu}, /* MAI EK */
     {0x0E49u, 0xF706u, 0xF88Fu}, /* MAI THO */
     {0x0E4Au, 0xF707u, 0xF892u}, /* MAI TRI */
@@ -121,7 +121,7 @@ thai_pua_shape (hb_codepoint_t u, thai_action_t action, hb_font_t *font)
     {0x0E4Cu, 0xF709u, 0xF898u}, /* THANTHAKHAT */
     {0x0000u, 0x0000u, 0x0000u}
   };
-  static const thai_pua_mapping_t SL_mappings[] = {
+  ساکن ثابت thai_pua_mapping_t SL_mappings[] = {
     {0x0E48u, 0xF713u, 0xF88Au}, /* MAI EK */
     {0x0E49u, 0xF714u, 0xF88Du}, /* MAI THO */
     {0x0E4Au, 0xF715u, 0xF890u}, /* MAI TRI */
@@ -136,41 +136,41 @@ thai_pua_shape (hb_codepoint_t u, thai_action_t action, hb_font_t *font)
     {0x0E4Du, 0xF711u, 0xF899u}, /* NIKHAHIT */
     {0x0000u, 0x0000u, 0x0000u}
   };
-  static const thai_pua_mapping_t RD_mappings[] = {
+  ساکن ثابت thai_pua_mapping_t RD_mappings[] = {
     {0x0E0Du, 0xF70Fu, 0xF89Au}, /* YO YING */
     {0x0E10u, 0xF700u, 0xF89Eu}, /* THO THAN */
     {0x0000u, 0x0000u, 0x0000u}
   };
 
-  switch (action) {
-    case NOP: return u;
-    case SD:  pua_mappings = SD_mappings; break;
-    case SDL: pua_mappings = SDL_mappings; break;
-    case SL:  pua_mappings = SL_mappings; break;
-    case RD:  pua_mappings = RD_mappings; break;
+  انتخاب (action) {
+    حالت NOP: واپس u;
+    حالت SD:  pua_mappings = SD_mappings; توڑو;
+    حالت SDL: pua_mappings = SDL_mappings; توڑو;
+    حالت SL:  pua_mappings = SL_mappings; توڑو;
+    حالت RD:  pua_mappings = RD_mappings; توڑو;
   }
-  for (; pua_mappings->u; pua_mappings++)
-    if (pua_mappings->u == u)
+  برائے (; pua_mappings->u; pua_mappings++)
+    اگر (pua_mappings->u == u)
     {
       hb_codepoint_t glyph;
-      if (hb_font_get_glyph (font, pua_mappings->win_pua, 0, &glyph))
-	return pua_mappings->win_pua;
-      if (hb_font_get_glyph (font, pua_mappings->mac_pua, 0, &glyph))
-	return pua_mappings->mac_pua;
-      break;
+      اگر (hb_font_get_glyph (font, pua_mappings->win_pua, 0, &glyph))
+	واپس pua_mappings->win_pua;
+      اگر (hb_font_get_glyph (font, pua_mappings->mac_pua, 0, &glyph))
+	واپس pua_mappings->mac_pua;
+      توڑو;
     }
-  return u;
+  واپس u;
 }
 
 
-static const enum thai_above_state_t
+ساکن ثابت شمار thai_above_state_t
 {     /* Cluster above looks like: */
   T0, /*  ⣤                      */
   T1, /*     ⣼                   */
   T2, /*        ⣾                */
   T3, /*           ⣿             */
-  NUM_ABOVE_STATES
-} thai_above_start_state[NUM_CONSONANT_TYPES + 1/* For NOT_CONSONANT */] =
+  عدد_ABOVE_حالتیں
+} thai_above_آغاز_state[عدد_CONSONANT_TYPES + 1/* For NOT_CONSONANT */] =
 {
   T0, /* NC */
   T1, /* AC */
@@ -179,10 +179,10 @@ static const enum thai_above_state_t
   T3, /* NOT_CONSONANT */
 };
 
-static const struct thai_above_state_machine_edge_t {
+ساکن ثابت ساخت thai_above_state_machine_کنارہ_t {
   thai_action_t action;
-  thai_above_state_t next_state;
-} thai_above_state_machine[NUM_ABOVE_STATES][NUM_MARK_TYPES] =
+  thai_above_state_t اگلا_state;
+} thai_above_state_machine[عدد_ABOVE_حالتیں][عدد_MARK_TYPES] =
 {        /*AV*/    /*BV*/    /*T*/
 /*T0*/ {{NOP,T3}, {NOP,T0}, {SD, T3}},
 /*T1*/ {{SL, T2}, {NOP,T1}, {SDL,T2}},
@@ -191,13 +191,13 @@ static const struct thai_above_state_machine_edge_t {
 };
 
 
-static const enum thai_below_state_t
+ساکن ثابت شمار thai_نیچے_state_t
 {
   B0, /* No descender */
   B1, /* Removable descender */
   B2, /* Strict descender */
-  NUM_BELOW_STATES
-} thai_below_start_state[NUM_CONSONANT_TYPES + 1/* For NOT_CONSONANT */] =
+  عدد_نیچے_حالتیں
+} thai_نیچے_آغاز_state[عدد_CONSONANT_TYPES + 1/* For NOT_CONSONANT */] =
 {
   B0, /* NC */
   B0, /* AC */
@@ -206,10 +206,10 @@ static const enum thai_below_state_t
   B2, /* NOT_CONSONANT */
 };
 
-static const struct thai_below_state_machine_edge_t {
+ساکن ثابت ساخت thai_نیچے_state_machine_کنارہ_t {
   thai_action_t action;
-  thai_below_state_t next_state;
-} thai_below_state_machine[NUM_BELOW_STATES][NUM_MARK_TYPES] =
+  thai_نیچے_state_t اگلا_state;
+} thai_نیچے_state_machine[عدد_نیچے_حالتیں][عدد_MARK_TYPES] =
 {        /*AV*/    /*BV*/    /*T*/
 /*B0*/ {{NOP,B0}, {NOP,B2}, {NOP, B0}},
 /*B1*/ {{NOP,B1}, {RD, B2}, {NOP, B1}},
@@ -217,53 +217,53 @@ static const struct thai_below_state_machine_edge_t {
 };
 
 
-static void
-do_thai_pua_shaping (const hb_ot_shape_plan_t *plan HB_UNUSED,
-		     hb_buffer_t              *buffer,
+ساکن خالی
+do_thai_pua_shaping (ثابت hb_ot_shape_plan_t *plan HB_غیر_مستعمل,
+		     hb_بفر_t              *بفر,
 		     hb_font_t                *font)
 {
-#ifdef HB_NO_OT_SHAPER_THAI_FALLBACK
-  return;
-#endif
+#اگر_تعریف_شدہ HB_NO_OT_SHAPER_THAI_FALLBACK
+  واپس;
+#اگر_ختم
 
-  thai_above_state_t above_state = thai_above_start_state[NOT_CONSONANT];
-  thai_below_state_t below_state = thai_below_start_state[NOT_CONSONANT];
-  unsigned int base = 0;
+  thai_above_state_t above_state = thai_above_آغاز_state[NOT_CONSONANT];
+  thai_نیچے_state_t نیچے_state = thai_نیچے_آغاز_state[NOT_CONSONANT];
+  غیرعلامتی صحیح بنیاد = 0;
 
-  hb_glyph_info_t *info = buffer->info;
-  unsigned int count = buffer->len;
-  for (unsigned int i = 0; i < count; i++)
+  hb_glyph_info_t *info = بفر->info;
+  غیرعلامتی صحیح گنتی = بفر->len;
+  برائے (غیرعلامتی صحیح i = 0; i < گنتی; i++)
   {
     thai_mark_type_t mt = get_mark_type (info[i].codepoint);
 
-    if (mt == NOT_MARK) {
+    اگر (mt == NOT_MARK) {
       thai_consonant_type_t ct = get_consonant_type (info[i].codepoint);
-      above_state = thai_above_start_state[ct];
-      below_state = thai_below_start_state[ct];
-      base = i;
-      continue;
+      above_state = thai_above_آغاز_state[ct];
+      نیچے_state = thai_نیچے_آغاز_state[ct];
+      بنیاد = i;
+      جاری;
     }
 
-    const thai_above_state_machine_edge_t &above_edge = thai_above_state_machine[above_state][mt];
-    const thai_below_state_machine_edge_t &below_edge = thai_below_state_machine[below_state][mt];
-    above_state = above_edge.next_state;
-    below_state = below_edge.next_state;
+    ثابت thai_above_state_machine_کنارہ_t &above_کنارہ = thai_above_state_machine[above_state][mt];
+    ثابت thai_نیچے_state_machine_کنارہ_t &نیچے_کنارہ = thai_نیچے_state_machine[نیچے_state][mt];
+    above_state = above_کنارہ.اگلا_state;
+    نیچے_state = نیچے_کنارہ.اگلا_state;
 
     /* At least one of the above/below actions is NOP. */
-    thai_action_t action = above_edge.action != NOP ? above_edge.action : below_edge.action;
+    thai_action_t action = above_کنارہ.action != NOP ? above_کنارہ.action : نیچے_کنارہ.action;
 
-    buffer->unsafe_to_break (base, i);
-    if (action == RD)
-      info[base].codepoint = thai_pua_shape (info[base].codepoint, action, font);
-    else
+    بفر->unsafe_مقصد_break (بنیاد, i);
+    اگر (action == RD)
+      info[بنیاد].codepoint = thai_pua_shape (info[بنیاد].codepoint, action, font);
+    ورنہ
       info[i].codepoint = thai_pua_shape (info[i].codepoint, action, font);
   }
 }
 
 
-static void
-preprocess_text_thai (const hb_ot_shape_plan_t *plan,
-		      hb_buffer_t              *buffer,
+ساکن خالی
+preprocess_متن_thai (ثابت hb_ot_shape_plan_t *plan,
+		      hb_بفر_t              *بفر,
 		      hb_font_t                *font)
 {
   /* This function implements the shaping logic documented here:
@@ -316,76 +316,76 @@ preprocess_text_thai (const hb_ot_shape_plan_t *plan,
 
   /* We only get one script at a time, so a script-agnostic implementation
    * is adequate here. */
-#define IS_SARA_AM(x) (((x) & ~0x0080u) == 0x0E33u)
-#define NIKHAHIT_FROM_SARA_AM(x) ((x) - 0x0E33u + 0x0E4Du)
-#define SARA_AA_FROM_SARA_AM(x) ((x) - 1)
-#define IS_ABOVE_BASE_MARK(x) (hb_in_ranges<hb_codepoint_t> ((x) & ~0x0080u, 0x0E34u, 0x0E37u, 0x0E47u, 0x0E4Eu, 0x0E31u, 0x0E31u, 0x0E3Bu, 0x0E3Bu))
+#تعریف_کرو IS_SARA_AM(x) (((x) & ~0x0080u) == 0x0E33u)
+#تعریف_کرو NIKHAHIT_FROM_SARA_AM(x) ((x) - 0x0E33u + 0x0E4Du)
+#تعریف_کرو SARA_AA_FROM_SARA_AM(x) ((x) - 1)
+#تعریف_کرو IS_ABOVE_بنیاد_MARK(x) (hb_اندر_ranges<hb_codepoint_t> ((x) & ~0x0080u, 0x0E34u, 0x0E37u, 0x0E47u, 0x0E4Eu, 0x0E31u, 0x0E31u, 0x0E3Bu, 0x0E3Bu))
 
-  buffer->clear_output ();
-  unsigned int count = buffer->len;
-  for (buffer->idx = 0; buffer->idx < count /* No need for: && buffer->successful */;)
+  بفر->clear_output ();
+  غیرعلامتی صحیح گنتی = بفر->len;
+  برائے (بفر->idx = 0; بفر->idx < گنتی /* No need for: && buffer->successful */;)
   {
-    hb_codepoint_t u = buffer->cur().codepoint;
-    if (likely (!IS_SARA_AM (u)))
+    hb_codepoint_t u = بفر->cur().codepoint;
+    اگر (likely (!IS_SARA_AM (u)))
     {
-      if (unlikely (!buffer->next_glyph ())) break;
-      continue;
+      اگر (unlikely (!بفر->اگلا_glyph ())) توڑو;
+      جاری;
     }
 
     /* Is SARA AM. Decompose and reorder. */
-    (void) buffer->output_glyph (NIKHAHIT_FROM_SARA_AM (u));
-    _hb_glyph_info_set_continuation (&buffer->prev(), buffer);
-    if (unlikely (!buffer->replace_glyph (SARA_AA_FROM_SARA_AM (u)))) break;
+    (خالی) بفر->output_glyph (NIKHAHIT_FROM_SARA_AM (u));
+    hb_glyph_info_سیٹ_continuation (&بفر->prev(), بفر);
+    اگر (unlikely (!بفر->replace_glyph (SARA_AA_FROM_SARA_AM (u)))) توڑو;
 
     /* Make Nikhahit be recognized as a ccc=0 mark when zeroing widths. */
-    unsigned int end = buffer->out_len;
-    _hb_glyph_info_set_general_category (&buffer->out_info[end - 2], HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK);
+    غیرعلامتی صحیح انتہا = بفر->برآمد_len;
+    hb_glyph_info_سیٹ_general_category (&بفر->برآمد_info[انتہا - 2], HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK);
 
     /* Ok, let's see... */
-    unsigned int start = end - 2;
-    while (start > 0 && IS_ABOVE_BASE_MARK (buffer->out_info[start - 1].codepoint))
-      start--;
+    غیرعلامتی صحیح آغاز = انتہا - 2;
+    جب (آغاز > 0 && IS_ABOVE_بنیاد_MARK (بفر->برآمد_info[آغاز - 1].codepoint))
+      آغاز--;
 
-    if (start + 2 < end)
+    اگر (آغاز + 2 < انتہا)
     {
       /* Move Nikhahit (end-2) to the beginning */
-      buffer->merge_out_clusters (start, end);
-      hb_glyph_info_t t = buffer->out_info[end - 2];
-      memmove (buffer->out_info + start + 1,
-	       buffer->out_info + start,
-	       sizeof (buffer->out_info[0]) * (end - start - 2));
-      buffer->out_info[start] = t;
+      بفر->ملاؤ_برآمد_clusters (آغاز, انتہا);
+      hb_glyph_info_t t = بفر->برآمد_info[انتہا - 2];
+      memmove (بفر->برآمد_info + آغاز + 1,
+	       بفر->برآمد_info + آغاز,
+	       حجم (بفر->برآمد_info[0]) * (انتہا - آغاز - 2));
+      بفر->برآمد_info[آغاز] = t;
     }
 
     /* Since we decomposed, and NIKHAHIT is combining, merge clusters with the
      * previous cluster. */
-    if (start)
-      buffer->merge_out_grapheme_clusters (start - 1, end);
+    اگر (آغاز)
+      بفر->ملاؤ_برآمد_grapheme_clusters (آغاز - 1, انتہا);
   }
-  buffer->sync ();
+  بفر->ہمآہنگ ();
 
   /* If font has Thai GSUB, we are done. */
-  if (plan->props.script == HB_SCRIPT_THAI && !plan->map.found_script[0])
-    do_thai_pua_shaping (plan, buffer, font);
+  اگر (plan->props.script == HB_SCRIPT_THAI && !plan->map.ملا_script[0])
+    do_thai_pua_shaping (plan, بفر, font);
 }
 
-const hb_ot_shaper_t _hb_ot_shaper_thai =
+ثابت hb_ot_shaper_t _hb_ot_shaper_thai =
 {
-  nullptr, /* collect_features */
-  nullptr, /* override_features */
-  nullptr, /* data_create */
-  nullptr, /* data_destroy */
-  preprocess_text_thai,
-  nullptr, /* postprocess_glyphs */
-  nullptr, /* decompose */
-  nullptr, /* compose */
-  nullptr, /* setup_masks */
-  nullptr, /* reorder_marks */
-  HB_TAG_NONE, /* gpos_tag */
-  HB_OT_SHAPE_NORMALIZATION_MODE_DEFAULT,
-  HB_OT_SHAPE_ZERO_WIDTH_MARKS_BY_GDEF_LATE,
-  false,/* fallback_position */
+  خالی_اشاریہ, /* collect_features */
+  خالی_اشاریہ, /* override_features */
+  خالی_اشاریہ, /* data_create */
+  خالی_اشاریہ, /* data_destroy */
+  preprocess_متن_thai,
+  خالی_اشاریہ, /* postprocess_glyphs */
+  خالی_اشاریہ, /* decompose */
+  خالی_اشاریہ, /* compose */
+  خالی_اشاریہ, /* setup_masks */
+  خالی_اشاریہ, /* reorder_marks */
+  HB_لیبل_NONE, /* gpos_tag */
+  HB_OT_SHAPE_NORMALIZATION_منوال_DEFAULT,
+  HB_OT_SHAPE_ZERO_چوڑائی_MARKS_BY_GDEF_LATE,
+  جھوٹ,/* fallback_position */
 };
 
 
-#endif
+#اگر_ختم

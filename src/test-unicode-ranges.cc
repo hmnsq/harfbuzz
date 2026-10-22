@@ -24,24 +24,24 @@
  * Google Author(s): Garret Rieger
  */
 
-#include "hb.hh"
-#include "hb-ot-os2-unicode-ranges.hh"
+#شامل "hb.hh"
+#شامل "hb-ot-os2-unicode-ranges.hh"
 
-static void
-test (hb_codepoint_t cp, unsigned int bit)
+ساکن خالی
+test (hb_codepoint_t cp, غیرعلامتی صحیح bit)
 {
-  if (OT::_hb_ot_os2_get_unicode_range_bit (cp) != bit)
+  اگر (OT::hb_ot_os2_get_unicode_range_ثنائی_ہندسہ (cp) != bit)
   {
     fprintf (stderr, "got incorrect bit (%u) for cp 0x%X. Should have been %u.",
-	     OT::_hb_ot_os2_get_unicode_range_bit (cp),
+	     OT::hb_ot_os2_get_unicode_range_ثنائی_ہندسہ (cp),
 	     cp,
 	     bit);
     abort();
   }
 }
 
-static void
-test_get_unicode_range_bit ()
+ساکن خالی
+test_get_unicode_range_ثنائی_ہندسہ ()
 {
   test (0x0000, 0);
   test (0x0042, 0);
@@ -58,9 +58,9 @@ test_get_unicode_range_bit ()
   test (0x110000, -1);
 }
 
-int
-main ()
+صحیح
+مین ()
 {
-  test_get_unicode_range_bit ();
-  return 0;
+  test_get_unicode_range_ثنائی_ہندسہ ();
+  واپس 0;
 }

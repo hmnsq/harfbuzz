@@ -29,100 +29,100 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_MUTEX_HH
-#define HB_MUTEX_HH
+#اگر_غیر_تعریف_شدہ HB_MUTEX_HH
+#تعریف_کرو HB_MUTEX_HH
 
-#include "hb.hh"
+#شامل "hb.hh"
 
 
 /* mutex */
 
 /* We need external help for these */
 
-#if defined(hb_mutex_impl_init) \
- && defined(hb_mutex_impl_lock) \
+#اگر defined(hb_mutex_impl_init) \
+ && defined(hb_mutex_impl_تالا) \
  && defined(hb_mutex_impl_unlock) \
- && defined(hb_mutex_impl_finish)
+ && defined(hb_mutex_impl_اختتام)
 
 /* Defined externally, i.e. in config.h; must have typedef'ed hb_mutex_impl_t as well. */
 
 
-#elif !defined(HB_NO_MT) && !defined(HB_MUTEX_IMPL_STD_MUTEX) && (defined(HAVE_PTHREAD) || defined(__APPLE__))
+#وگرنہ_اگر !defined(HB_NO_MT) && !defined(HB_MUTEX_IMPL_STD_MUTEX) && (defined(HAVE_PTHREAD) || defined(__APPLE__))
 
-#include <pthread.h>
-typedef pthread_mutex_t hb_mutex_impl_t;
-#define hb_mutex_impl_init(M)	pthread_mutex_init (M, nullptr)
-#define hb_mutex_impl_lock(M)	pthread_mutex_lock (M)
-#define hb_mutex_impl_unlock(M)	pthread_mutex_unlock (M)
-#define hb_mutex_impl_finish(M)	pthread_mutex_destroy (M)
-
-
-#elif !defined(HB_NO_MT) && !defined(HB_MUTEX_IMPL_STD_MUTEX) && defined(_WIN32)
-
-typedef CRITICAL_SECTION hb_mutex_impl_t;
-#if !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
-#define hb_mutex_impl_init(M)	InitializeCriticalSectionEx (M, 0, 0)
-#else
-#define hb_mutex_impl_init(M)	InitializeCriticalSection (M)
-#endif
-#define hb_mutex_impl_lock(M)	EnterCriticalSection (M)
-#define hb_mutex_impl_unlock(M)	LeaveCriticalSection (M)
-#define hb_mutex_impl_finish(M)	DeleteCriticalSection (M)
+#شامل <pthread.h>
+قسمتعریف pthread_mutex_t hb_mutex_impl_t;
+#تعریف_کرو hb_mutex_impl_init(M)	pthread_mutex_init (M, خالی_اشاریہ)
+#تعریف_کرو hb_mutex_impl_تالا(M)	pthread_mutex_lock (M)
+#تعریف_کرو hb_mutex_impl_unlock(M)	pthread_mutex_unlock (M)
+#تعریف_کرو hb_mutex_impl_اختتام(M)	pthread_mutex_destroy (M)
 
 
-#elif !defined(HB_NO_MT)
+#وگرنہ_اگر !defined(HB_NO_MT) && !defined(HB_MUTEX_IMPL_STD_MUTEX) && defined(_WIN32)
 
-#include <mutex>
-typedef std::mutex              hb_mutex_impl_t;
-#define hb_mutex_impl_init(M)   HB_STMT_START { new (M) hb_mutex_impl_t; } HB_STMT_END
-#define hb_mutex_impl_lock(M)   (M)->lock ()
-#define hb_mutex_impl_unlock(M) (M)->unlock ()
-#define hb_mutex_impl_finish(M) HB_STMT_START { (M)->~hb_mutex_impl_t(); } HB_STMT_END
-
-
-#else /* defined(HB_NO_MT) */
-
-typedef int hb_mutex_impl_t;
-#define hb_mutex_impl_init(M)	HB_STMT_START {} HB_STMT_END
-#define hb_mutex_impl_lock(M)	HB_STMT_START {} HB_STMT_END
-#define hb_mutex_impl_unlock(M)	HB_STMT_START {} HB_STMT_END
-#define hb_mutex_impl_finish(M)	HB_STMT_START {} HB_STMT_END
+قسمتعریف CRITICAL_SECTION hb_mutex_impl_t;
+#اگر !WINAPI_FAMILY_تقسیم(WINAPI_تقسیم_DESKTOP) && WINAPI_FAMILY_تقسیم(WINAPI_تقسیم_APP)
+#تعریف_کرو hb_mutex_impl_init(M)	InitializeCriticalSectionEx (M, 0, 0)
+#ورنہ
+#تعریف_کرو hb_mutex_impl_init(M)	InitializeCriticalSection (M)
+#اگر_ختم
+#تعریف_کرو hb_mutex_impl_تالا(M)	EnterCriticalSection (M)
+#تعریف_کرو hb_mutex_impl_unlock(M)	LeaveCriticalSection (M)
+#تعریف_کرو hb_mutex_impl_اختتام(M)	DeleteCriticalSection (M)
 
 
-#endif
+#وگرنہ_اگر !defined(HB_NO_MT)
+
+#شامل <mutex>
+قسمتعریف std::mutex              hb_mutex_impl_t;
+#تعریف_کرو hb_mutex_impl_init(M)   HB_STMT_آغاز { نیا (M) hb_mutex_impl_t; } HB_STMT_انتہا
+#تعریف_کرو hb_mutex_impl_تالا(M)   (M)->lock ()
+#تعریف_کرو hb_mutex_impl_unlock(M) (M)->unlock ()
+#تعریف_کرو hb_mutex_impl_اختتام(M) HB_STMT_آغاز { (M)->~hb_mutex_impl_t(); } HB_STMT_انتہا
 
 
-struct hb_mutex_t
+#ورنہ /* defined(HB_NO_MT) */
+
+قسمتعریف صحیح hb_mutex_impl_t;
+#تعریف_کرو hb_mutex_impl_init(M)	HB_STMT_آغاز {} HB_STMT_انتہا
+#تعریف_کرو hb_mutex_impl_تالا(M)	HB_STMT_آغاز {} HB_STMT_انتہا
+#تعریف_کرو hb_mutex_impl_unlock(M)	HB_STMT_آغاز {} HB_STMT_انتہا
+#تعریف_کرو hb_mutex_impl_اختتام(M)	HB_STMT_آغاز {} HB_STMT_انتہا
+
+
+#اگر_ختم
+
+
+ساخت hb_mutex_t
 {
   /* Create space for, but do not initialize m. */
-  alignas(hb_mutex_impl_t) char m[sizeof (hb_mutex_impl_t)];
+  alignas(hb_mutex_impl_t) حرف m[حجم (hb_mutex_impl_t)];
 
   hb_mutex_t () { init (); }
   ~hb_mutex_t () { fini (); }
-  hb_mutex_t (const hb_mutex_t &) = delete;
-  hb_mutex_t &operator= (const hb_mutex_t &) = delete;
+  hb_mutex_t (ثابت hb_mutex_t &) = حذف;
+  hb_mutex_t &عامل= (ثابت hb_mutex_t &) = حذف;
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wcast-align"
-  void init   () { hb_mutex_impl_init   ((hb_mutex_impl_t *) m); }
-  void lock   () { hb_mutex_impl_lock   ((hb_mutex_impl_t *) m); }
-  void unlock () { hb_mutex_impl_unlock ((hb_mutex_impl_t *) m); }
-  void fini   () { hb_mutex_impl_finish ((hb_mutex_impl_t *) m); }
-#pragma GCC diagnostic pop
+#ہدایت GCC diagnostic push
+#ہدایت GCC diagnostic ignored "-Wcast-align"
+  خالی init   () { hb_mutex_impl_init   ((hb_mutex_impl_t *) m); }
+  خالی lock   () { hb_mutex_impl_تالا   ((hb_mutex_impl_t *) m); }
+  خالی unlock () { hb_mutex_impl_unlock ((hb_mutex_impl_t *) m); }
+  خالی fini   () { hb_mutex_impl_اختتام ((hb_mutex_impl_t *) m); }
+#ہدایت GCC diagnostic نکالو
 };
 
-struct hb_lock_t
+ساخت hb_تالا_t
 {
-  hb_lock_t (hb_mutex_t &mutex_) : mutex (&mutex_) { mutex->lock (); }
-  hb_lock_t (hb_mutex_t *mutex_) : mutex (mutex_) { if (mutex) mutex->lock (); }
-  ~hb_lock_t () { if (mutex) mutex->unlock (); }
+  hb_تالا_t (hb_mutex_t &mutex_) : mutex (&mutex_) { mutex->lock (); }
+  hb_تالا_t (hb_mutex_t *mutex_) : mutex (mutex_) { اگر (mutex) mutex->lock (); }
+  ~hb_تالا_t () { اگر (mutex) mutex->unlock (); }
 
-  hb_lock_t (const hb_lock_t &) = delete;
-  hb_lock_t &operator= (const hb_lock_t &) = delete;
+  hb_تالا_t (ثابت hb_تالا_t &) = حذف;
+  hb_تالا_t &عامل= (ثابت hb_تالا_t &) = حذف;
 
-  private:
+  نجی:
   hb_mutex_t *mutex;
 };
 
 
-#endif /* HB_MUTEX_HH */
+#اگر_ختم /* HB_MUTEX_HH */

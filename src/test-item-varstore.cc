@@ -22,15 +22,15 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  *
  */
-#include "hb-ot-var-common.hh"
-#include "hb-ot-var-hvar-table.hh"
+#شامل "hb-ot-var-common.hh"
+#شامل "hb-ot-var-hvar-table.hh"
 // HVAR table data from SourceSerif4Variable-Roman_subset.otf
-const char hvar_data[] = "\x0\x1\x0\x0\x0\x0\x0\x14\x0\x0\x0\xc4\x0\x0\x0\x0\x0\x0\x0\x0\x0\x1\x0\x0\x0\x10\x0\x2\x0\x0\x0\x74\x0\x0\x0\x7a\x0\x2\x0\x8\xc0\x0\xc0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x40\x0\x40\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\xc0\x0\xc0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x40\x0\x40\x0\xc0\x0\xc0\x0\x0\x0\xc0\x0\xc0\x0\x0\x0\xc0\x0\xc0\x0\x0\x0\x0\x0\x40\x0\x40\x0\x0\x0\x40\x0\x40\x0\xc0\x0\xc0\x0\x0\x0\x0\x0\x40\x0\x40\x0\x0\x0\x40\x0\x40\x0\x0\x1\x0\x0\x0\x0\x0\x4\x0\x0\x0\x8\x0\x0\x0\x1\x0\x2\x0\x3\x0\x4\x0\x5\x0\x6\x0\x7\xf9\xf\x2f\xbf\xfb\xfb\x35\xf9\x4\x4\xf3\xb4\xf2\xfb\x2e\xf3\x4\x4\xe\xad\xfa\x1\x1a\x1\x15\x22\x59\xd6\xe3\xf6\x6\xf5\x0\x1\x0\x5\x0\x4\x7\x5\x6";
+ثابت حرف hvar_ڈیٹا[] = "\x0\x1\x0\x0\x0\x0\x0\x14\x0\x0\x0\xc4\x0\x0\x0\x0\x0\x0\x0\x0\x0\x1\x0\x0\x0\x10\x0\x2\x0\x0\x0\x74\x0\x0\x0\x7a\x0\x2\x0\x8\xc0\x0\xc0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x40\x0\x40\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\xc0\x0\xc0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x0\x40\x0\x40\x0\xc0\x0\xc0\x0\x0\x0\xc0\x0\xc0\x0\x0\x0\xc0\x0\xc0\x0\x0\x0\x0\x0\x40\x0\x40\x0\x0\x0\x40\x0\x40\x0\xc0\x0\xc0\x0\x0\x0\x0\x0\x40\x0\x40\x0\x0\x0\x40\x0\x40\x0\x0\x1\x0\x0\x0\x0\x0\x4\x0\x0\x0\x8\x0\x0\x0\x1\x0\x2\x0\x3\x0\x4\x0\x5\x0\x6\x0\x7\xf9\xf\x2f\xbf\xfb\xfb\x35\xf9\x4\x4\xf3\xb4\xf2\xfb\x2e\xf3\x4\x4\xe\xad\xfa\x1\x1a\x1\x15\x22\x59\xd6\xe3\xf6\x6\xf5\x0\x1\x0\x5\x0\x4\x7\x5\x6";
 
-static void
+ساکن خالی
 test_scalar_cache_precision ()
 {
-  const float scalars[] = {
+  ثابت اعشاری scalars[] = {
     0.f,
     1.f,
     1.f / 3.f,
@@ -38,87 +38,87 @@ test_scalar_cache_precision ()
      * fixed-point precision. */
     1.f / (16384.f * 16384.f * 16384.f),
   };
-  const unsigned counts[] = {4, 129};
+  ثابت غیرعلامتی counts[] = {4, 129};
   OT::hb_scalar_cache_t scratch_cache;
-  for (unsigned count : counts)
+  برائے (غیرعلامتی گنتی : counts)
   {
-    auto *cache = OT::hb_scalar_cache_t::create (count, &scratch_cache);
-    hb_always_assert (cache->length == count);
-    for (unsigned i = 0; i < count; i++)
+    خودکار *cache = OT::hb_scalar_cache_t::create (گنتی, &scratch_cache);
+    hb_always_assert (cache->لمبائی == گنتی);
+    برائے (غیرعلامتی i = 0; i < گنتی; i++)
     {
-      float value;
-      float scalar = scalars[i % ARRAY_LENGTH (scalars)];
+      اعشاری value;
+      اعشاری scalar = scalars[i % ARRAY_لمبائی (scalars)];
       hb_always_assert (!cache->get (i, &value));
-      cache->set (i, scalar);
+      cache->سیٹ (i, scalar);
       hb_always_assert (cache->get (i, &value));
       hb_always_assert (value == scalar);
     }
     cache->clear ();
-    for (unsigned i = 0; i < count; i++)
+    برائے (غیرعلامتی i = 0; i < گنتی; i++)
     {
-      float value;
+      اعشاری value;
       hb_always_assert (!cache->get (i, &value));
     }
     OT::hb_scalar_cache_t::destroy (cache, &scratch_cache);
   }
 }
 
-static void
-test_item_variations ()
+ساکن خالی
+test_شے_variations ()
 {
-  const OT::HVAR* hvar_table = reinterpret_cast<const OT::HVAR*> (hvar_data);
+  ثابت OT::HVAR* hvar_جدول = reinterpret_cast<ثابت OT::HVAR*> (hvar_ڈیٹا);
 
-  hb_tag_t axis_tag = HB_TAG ('w', 'g', 'h', 't');
-  hb_map_t axis_idx_tag_map;
-  axis_idx_tag_map.set (0, axis_tag);
+  hb_لیبل_t axis_لیبل_2 = HB_لیبل ('w', 'g', 'h', 't');
+  hb_map_t axis_idx_لیبل_map;
+  axis_idx_لیبل_map.سیٹ (0, axis_لیبل_2);
 
-  axis_tag = HB_TAG ('o', 'p', 's', 'z');
-  axis_idx_tag_map.set (1, axis_tag);
+  axis_لیبل_2 = HB_لیبل ('o', 'p', 's', 'z');
+  axis_idx_لیبل_map.سیٹ (1, axis_لیبل_2);
 
-  OT::item_variations_t item_vars;
-  const OT::ItemVariationStore& src_var_store = hvar_table+(hvar_table->varStore);
-  bool result = item_vars.create_from_item_varstore (src_var_store, axis_idx_tag_map);
+  OT::شے_variations_t شے_vars;
+  ثابت OT::شے_Variation_Store& src_var_store = hvar_جدول+(hvar_جدول->varStore);
+  منطقی نتیجہ = شے_vars.create_from_شے_varstore (src_var_store, axis_idx_لیبل_map);
       
-  hb_always_assert (result);
+  hb_always_assert (نتیجہ);
 
   /* partial instancing wght=300:800 */
-  hb_hashmap_t<hb_tag_t, Triple> normalized_axes_location;
-  normalized_axes_location.set (axis_tag, Triple (-0.512817, 0.0, 0.7000120));
+  hb_hashmap_t<hb_لیبل_t, Triple> normalized_axes_location;
+  normalized_axes_location.سیٹ (axis_لیبل_2, Triple (-0.512817, 0.0, 0.7000120));
 
-  hb_hashmap_t<hb_tag_t, TripleDistances> axes_triple_distances;
-  axes_triple_distances.set (axis_tag, TripleDistances (200.0, 500.0));
+  hb_hashmap_t<hb_لیبل_t, TripleDistances> axes_triple_distances;
+  axes_triple_distances.سیٹ (axis_لیبل_2, TripleDistances (200.0, 500.0));
 
-  result = item_vars.instantiate_tuple_vars (normalized_axes_location, axes_triple_distances);
-  hb_always_assert (result);
-  result = item_vars.as_item_varstore (false);
-  hb_always_assert (result);
-  hb_always_assert (item_vars.get_region_list().length == 8);
+  نتیجہ = شے_vars.instantiate_tuple_vars (normalized_axes_location, axes_triple_distances);
+  hb_always_assert (نتیجہ);
+  نتیجہ = شے_vars.as_شے_varstore (جھوٹ);
+  hb_always_assert (نتیجہ);
+  hb_always_assert (شے_vars.get_region_list().لمبائی == 8);
 }
 
-static void
+ساکن خالی
 test_implicit_advance_mapping ()
 {
-  char data[sizeof (hvar_data)];
-  hb_memcpy (data, hvar_data, sizeof (data));
-  auto *hvar = reinterpret_cast<OT::HVAR *> (data);
-  const auto &store = hvar + hvar->varStore;
-  const int locations[] = {-16384, 0, 16384};
-  bool exercised_outer_one = false;
+  حرف ڈیٹا[حجم (hvar_ڈیٹا)];
+  hb_memcpy (ڈیٹا, hvar_ڈیٹا, حجم (ڈیٹا));
+  خودکار *hvar = reinterpret_cast<OT::HVAR *> (ڈیٹا);
+  ثابت خودکار &store = hvar + hvar->varStore;
+  ثابت صحیح locations[] = {-16384, 0, 16384};
+  منطقی exercised_outer_one = جھوٹ;
 
-  for (int weight : locations)
-    for (int size : locations)
+  برائے (صحیح وزن : locations)
+    برائے (صحیح سائز : locations)
     {
-      int coords[] = {weight, size};
-      unsigned mapped = (hvar + hvar->advMap).map (0x10000u);
+      صحیح coords[] = {وزن, سائز};
+      غیرعلامتی mapped = (hvar + hvar->advMap).map (0x10000u);
       hb_always_assert (hvar->get_advance_delta_unscaled (0x10000u, coords, 2) ==
                         store.get_delta (mapped, coords, 2));
     }
 
   hvar->advMap = 0;
-  for (int weight : locations)
-    for (int size : locations)
+  برائے (صحیح وزن : locations)
+    برائے (صحیح سائز : locations)
     {
-      int coords[] = {weight, size};
+      صحیح coords[] = {وزن, سائز};
       exercised_outer_one |= store.get_delta (0x10000u, coords, 2) != 0;
       hb_always_assert (hvar->get_advance_delta_unscaled (0, coords, 2) ==
                         store.get_delta (0, coords, 2));
@@ -129,66 +129,66 @@ test_implicit_advance_mapping ()
   hb_always_assert (exercised_outer_one);
 }
 
-static void
-test_item_variations_overflow ()
+ساکن خالی
+test_شے_variations_حد_سے_تجاوز ()
 {
-  hb_vector_t<hb_vector_t<int>> row_storage;
-  hb_hashmap_t<unsigned, const hb_vector_t<int>*> front_mapping;
-  OT::item_variations_t item_vars;
-  unsigned old_varidx = 0;
-  const unsigned total_count = 0xFFFFu * 2u;
+  hb_سمتیہ_t<hb_سمتیہ_t<صحیح>> صف_storage;
+  hb_hashmap_t<غیرعلامتی, ثابت hb_سمتیہ_t<صحیح>*> front_mapping;
+  OT::شے_variations_t شے_vars;
+  غیرعلامتی old_varidx = 0;
+  ثابت غیرعلامتی کل_گنتی = 0xFFFFu * 2u;
 
-  const unsigned counts[] = {
+  ثابت غیرعلامتی counts[] = {
     128u,                 /* 0..127: 1-byte deltas */
     32768u - 128u,        /* 128..32767: 2-byte deltas */
     0xFFFFu * 2u - 32768u /* 32768..131069: 4-byte deltas */
   };
-  const int starts[] = {
+  ثابت صحیح starts[] = {
     0,
     128,
     32768
   };
 
-  hb_always_assert (row_storage.alloc (total_count));
+  hb_always_assert (صف_storage.alloc (کل_گنتی));
 
-  for (unsigned bucket = 0; bucket < 3; bucket++)
+  برائے (غیرعلامتی بالٹی = 0; بالٹی < 3; بالٹی++)
   {
-    hb_vector_t<const hb_vector_t<int>*> rows;
-    hb_always_assert (rows.alloc (counts[bucket]));
+    hb_سمتیہ_t<ثابت hb_سمتیہ_t<صحیح>*> صفیں;
+    hb_always_assert (صفیں.alloc (counts[بالٹی]));
 
-    for (unsigned i = 0; i < counts[bucket]; i++)
+    برائے (غیرعلامتی i = 0; i < counts[بالٹی]; i++)
     {
-      hb_vector_t<int> row;
-      hb_always_assert (row.resize (1));
-      row[0] = starts[bucket] + i;
-      row_storage.push (std::move (row));
+      hb_سمتیہ_t<صحیح> صف;
+      hb_always_assert (صف.resize (1));
+      صف[0] = starts[بالٹی] + i;
+      صف_storage.push (std::move (صف));
     }
 
-    hb_always_assert (!row_storage.in_error ());
+    hb_always_assert (!صف_storage.اندر_error ());
 
-    unsigned base = row_storage.length - counts[bucket];
-    for (unsigned i = 0; i < counts[bucket]; i++)
+    غیرعلامتی بنیاد = صف_storage.لمبائی - counts[بالٹی];
+    برائے (غیرعلامتی i = 0; i < counts[بالٹی]; i++)
     {
-      const hb_vector_t<int> *row = &row_storage.arrayZ[base + i];
-      rows.push (row);
-      front_mapping.set (old_varidx++, row);
+      ثابت hb_سمتیہ_t<صحیح> *صف = &صف_storage.arrayZ[بنیاد + i];
+      صفیں.push (صف);
+      front_mapping.سیٹ (old_varidx++, صف);
     }
 
-    hb_always_assert (!rows.in_error ());
-    hb_always_assert (item_vars.add_vardata_encoding_for_testing (std::move (rows), 1));
+    hb_always_assert (!صفیں.اندر_error ());
+    hb_always_assert (شے_vars.جوڑو_vardata_encoding_for_testing (std::move (صفیں), 1));
   }
 
-  hb_always_assert (!front_mapping.in_error ());
-  hb_always_assert (item_vars.compile_varidx_map_for_testing (front_mapping));
+  hb_always_assert (!front_mapping.اندر_error ());
+  hb_always_assert (شے_vars.compile_varidx_map_for_testing (front_mapping));
 
-  const auto& encodings = item_vars.get_vardata_encodings ();
-  hb_always_assert (encodings.length == 4);
-  hb_always_assert (encodings[0].items.length == 128u);
-  hb_always_assert (encodings[1].items.length == 32768u - 128u);
-  hb_always_assert (encodings[2].items.length == 0xFFFFu);
-  hb_always_assert (encodings[3].items.length == 32767u);
+  ثابت خودکار& encodings = شے_vars.get_vardata_encodings ();
+  hb_always_assert (encodings.لمبائی == 4);
+  hb_always_assert (encodings[0].اشیاء.لمبائی == 128u);
+  hb_always_assert (encodings[1].اشیاء.لمبائی == 32768u - 128u);
+  hb_always_assert (encodings[2].اشیاء.لمبائی == 0xFFFFu);
+  hb_always_assert (encodings[3].اشیاء.لمبائی == 32767u);
 
-  const hb_map_t& varidx_map = item_vars.get_varidx_map ();
+  ثابت hb_map_t& varidx_map = شے_vars.get_varidx_map ();
   hb_always_assert (varidx_map.get (0) == 0);
   hb_always_assert (varidx_map.get (127) == 127);
   hb_always_assert (varidx_map.get (128) == 0x00010000u);
@@ -199,149 +199,149 @@ test_item_variations_overflow ()
   hb_always_assert (varidx_map.get (131069) == 0x00037FFEu);
 }
 
-static void
+ساکن خالی
 test_signed_delta_widths ()
 {
-  const int deltas[] = {32767, 32768, 65535, 65536,
+  ثابت صحیح deltas[] = {32767, 32768, 65535, 65536,
                        -32768, -32769, -65536, -65537};
-  hb_tag_t axis = HB_TAG ('T', 'E', 'S', 'T');
-  hb_vector_t<hb_tag_t> axes;
+  hb_لیبل_t axis = HB_لیبل ('T', 'E', 'S', 'T');
+  hb_سمتیہ_t<hb_لیبل_t> axes;
   axes.push (axis);
   hb_map_t axis_map;
-  axis_map.set (0, axis);
-  hb_hashmap_t<hb_tag_t, Triple> region;
-  region.set (axis, Triple (0, 1, 1));
-  hb_vector_t<const hb_hashmap_t<hb_tag_t, Triple> *> regions;
+  axis_map.سیٹ (0, axis);
+  hb_hashmap_t<hb_لیبل_t, Triple> region;
+  region.سیٹ (axis, Triple (0, 1, 1));
+  hb_سمتیہ_t<ثابت hb_hashmap_t<hb_لیبل_t, Triple> *> regions;
   regions.push (&region);
 
-  for (int delta : deltas)
+  برائے (صحیح delta : deltas)
   {
-    hb_vector_t<int> row;
-    row.push (delta);
-    hb_vector_t<const hb_vector_t<int> *> rows;
-    rows.push (&row);
-    hb_vector_t<OT::delta_row_encoding_t> encodings;
-    encodings.push (OT::delta_row_encoding_t (std::move (rows), 1));
+    hb_سمتیہ_t<صحیح> صف;
+    صف.push (delta);
+    hb_سمتیہ_t<ثابت hb_سمتیہ_t<صحیح> *> صفیں;
+    صفیں.push (&صف);
+    hb_سمتیہ_t<OT::delta_صف_encoding_t> encodings;
+    encodings.push (OT::delta_صف_encoding_t (std::move (صفیں), 1));
 
-    char buf[128];
-    hb_serialize_context_t s (buf, sizeof (buf));
-    auto *out = s.start_serialize<OT::ItemVariationStore> ();
-    hb_always_assert (out->serialize (&s, true, axes, regions, encodings));
-    s.end_serialize ();
-    hb_bytes_t bytes = s.copy_bytes ();
-    const auto &store = *reinterpret_cast<const OT::ItemVariationStore *> (bytes.arrayZ);
-    const auto &data = store.get_sub_table (0);
-    hb_always_assert (data.get_item_delta (0, 0) == delta);
+    حرف buf[128];
+    hb_serialize_context_t s (buf, حجم (buf));
+    خودکار *برآمد = s.آغاز_serialize<OT::شے_Variation_Store> ();
+    hb_always_assert (برآمد->serialize (&s, سچ, axes, regions, encodings));
+    s.انتہا_serialize ();
+    hb_بائٹیں_t بائٹیں = s.copy_بائٹیں ();
+    ثابت خودکار &store = *reinterpret_cast<ثابت OT::شے_Variation_Store *> (بائٹیں.arrayZ);
+    ثابت خودکار &ڈیٹا = store.get_sub_جدول (0);
+    hb_always_assert (ڈیٹا.get_شے_delta (0, 0) == delta);
 
     hb_inc_bimap_t inner_map, region_map;
-    inner_map.add (0);
-    region_map.add (0);
-    char subset_buf[32];
-    hb_serialize_context_t subset_s (subset_buf, sizeof (subset_buf));
-    auto *subset = subset_s.start_serialize<OT::VarData> ();
-    hb_always_assert (subset->serialize (&subset_s, &data, inner_map, region_map));
-    subset_s.end_serialize ();
-    hb_bytes_t subset_bytes = subset_s.copy_bytes ();
-    const auto &subset_data = *reinterpret_cast<const OT::VarData *> (subset_bytes.arrayZ);
-    hb_always_assert (subset_data.get_item_delta (0, 0) == delta);
+    inner_map.جوڑو (0);
+    region_map.جوڑو (0);
+    حرف subset_buf[32];
+    hb_serialize_context_t subset_s (subset_buf, حجم (subset_buf));
+    خودکار *subset = subset_s.آغاز_serialize<OT::Var_ڈیٹا> ();
+    hb_always_assert (subset->serialize (&subset_s, &ڈیٹا, inner_map, region_map));
+    subset_s.انتہا_serialize ();
+    hb_بائٹیں_t subset_بائٹیں = subset_s.copy_بائٹیں ();
+    ثابت خودکار &subset_ڈیٹا = *reinterpret_cast<ثابت OT::Var_ڈیٹا *> (subset_بائٹیں.arrayZ);
+    hb_always_assert (subset_ڈیٹا.get_شے_delta (0, 0) == delta);
 
-    OT::item_variations_t item_vars;
-    hb_always_assert (item_vars.create_from_item_varstore (store, axis_map));
-    hb_hashmap_t<hb_tag_t, Triple> locations;
-    hb_hashmap_t<hb_tag_t, TripleDistances> distances;
-    hb_always_assert (item_vars.instantiate_tuple_vars (locations, distances));
-    hb_always_assert (item_vars.as_item_varstore ());
-    hb_always_assert (item_vars.has_long_word () ==
+    OT::شے_variations_t شے_vars;
+    hb_always_assert (شے_vars.create_from_شے_varstore (store, axis_map));
+    hb_hashmap_t<hb_لیبل_t, Triple> locations;
+    hb_hashmap_t<hb_لیبل_t, TripleDistances> distances;
+    hb_always_assert (شے_vars.instantiate_tuple_vars (locations, distances));
+    hb_always_assert (شے_vars.as_شے_varstore ());
+    hb_always_assert (شے_vars.has_long_لفظ () ==
                       (delta < -32768 || delta > 32767));
-    subset_bytes.fini ();
-    bytes.fini ();
+    subset_بائٹیں.fini ();
+    بائٹیں.fini ();
   }
 }
 
-static void
+ساکن خالی
 test_accumulated_delta_widths ()
 {
-  const int deltas[] = {20000, -20000, 1073741824};
-  for (int delta : deltas)
+  ثابت صحیح deltas[] = {20000, -20000, 1073741824};
+  برائے (صحیح delta : deltas)
   {
-    OT::item_variations_t item_vars;
-    unsigned outer = item_vars.add_vardata (1);
-    item_vars.add_tuple (outer, hb_hashmap_t<hb_tag_t, Triple> (), 0, delta, 1);
-    item_vars.add_tuple (outer, hb_hashmap_t<hb_tag_t, Triple> (), 0, delta, 1);
-    hb_always_assert (item_vars.build_region_list ());
-    if (delta == 1073741824)
-      hb_always_assert (!item_vars.as_item_varstore ());
-    else
+    OT::شے_variations_t شے_vars;
+    غیرعلامتی outer = شے_vars.جوڑو_vardata (1);
+    شے_vars.جوڑو_tuple (outer, hb_hashmap_t<hb_لیبل_t, Triple> (), 0, delta, 1);
+    شے_vars.جوڑو_tuple (outer, hb_hashmap_t<hb_لیبل_t, Triple> (), 0, delta, 1);
+    hb_always_assert (شے_vars.build_region_list ());
+    اگر (delta == 1073741824)
+      hb_always_assert (!شے_vars.as_شے_varstore ());
+    ورنہ
     {
-      hb_always_assert (item_vars.as_item_varstore ());
-      hb_always_assert (item_vars.has_long_word ());
-      hb_always_assert ((*item_vars.get_vardata_encodings ()[0].items[0])[0] == 2 * delta);
+      hb_always_assert (شے_vars.as_شے_varstore ());
+      hb_always_assert (شے_vars.has_long_لفظ ());
+      hb_always_assert ((*شے_vars.get_vardata_encodings ()[0].اشیاء[0])[0] == 2 * delta);
     }
   }
 }
 
-static void
+ساکن خالی
 test_condition_delta_precision ()
 {
-  hb_vector_t<hb_tag_t> axes;
-  axes.push (HB_TAG ('T','E','S','T'));
-  hb_hashmap_t<hb_tag_t, Triple> neutral, region;
-  region.set (axes[0], Triple (0, 1, 1));
-  hb_vector_t<const hb_hashmap_t<hb_tag_t, Triple> *> regions;
+  hb_سمتیہ_t<hb_لیبل_t> axes;
+  axes.push (HB_لیبل ('T','E','S','T'));
+  hb_hashmap_t<hb_لیبل_t, Triple> neutral, region;
+  region.سیٹ (axes[0], Triple (0, 1, 1));
+  hb_سمتیہ_t<ثابت hb_hashmap_t<hb_لیبل_t, Triple> *> regions;
   regions.push (&neutral);
   regions.push (&region);
-  hb_vector_t<int> row;
-  row.push (16777217);
-  row.push (-16777216);
-  hb_vector_t<const hb_vector_t<int> *> rows;
-  rows.push (&row);
-  hb_vector_t<OT::delta_row_encoding_t> encodings;
-  encodings.push (OT::delta_row_encoding_t (std::move (rows), 2));
-  char buf[128];
-  hb_serialize_context_t s (buf, sizeof (buf));
-  auto *out = s.start_serialize<OT::ItemVariationStore> ();
-  hb_always_assert (out->serialize (&s, true, axes, regions, encodings));
-  s.end_serialize ();
-  hb_bytes_t bytes = s.copy_bytes ();
-  const auto &store = *reinterpret_cast<const OT::ItemVariationStore *> (bytes.arrayZ);
-  int coords[] = {16384};
-  OT::ItemVarStoreInstancer instancer (&store, nullptr, hb_array (coords));
+  hb_سمتیہ_t<صحیح> صف;
+  صف.push (16777217);
+  صف.push (-16777216);
+  hb_سمتیہ_t<ثابت hb_سمتیہ_t<صحیح> *> صفیں;
+  صفیں.push (&صف);
+  hb_سمتیہ_t<OT::delta_صف_encoding_t> encodings;
+  encodings.push (OT::delta_صف_encoding_t (std::move (صفیں), 2));
+  حرف buf[128];
+  hb_serialize_context_t s (buf, حجم (buf));
+  خودکار *برآمد = s.آغاز_serialize<OT::شے_Variation_Store> ();
+  hb_always_assert (برآمد->serialize (&s, سچ, axes, regions, encodings));
+  s.انتہا_serialize ();
+  hb_بائٹیں_t بائٹیں = s.copy_بائٹیں ();
+  ثابت خودکار &store = *reinterpret_cast<ثابت OT::شے_Variation_Store *> (بائٹیں.arrayZ);
+  صحیح coords[] = {16384};
+  OT::شے_Var_Store_Instancer instancer (&store, خالی_اشاریہ, hb_array (coords));
   // Positioning keeps float arithmetic, but conditions must retain the unit
   // left after cancellation of two deltas exceeding float's integer range.
   hb_always_assert (instancer[0] == 0.f);
   hb_always_assert (instancer.get_condition_delta (0) == 1.);
-  const char condition_data[] = "\x00\x02\x00\x00\x00\x00\x00\x00";
-  const auto &condition = *reinterpret_cast<const OT::Condition *> (condition_data);
+  ثابت حرف condition_ڈیٹا[] = "\x00\x02\x00\x00\x00\x00\x00\x00";
+  ثابت خودکار &condition = *reinterpret_cast<ثابت OT::Condition *> (condition_ڈیٹا);
   hb_always_assert (condition.evaluate (coords, 1, &instancer));
-  bytes.fini ();
+  بائٹیں.fini ();
 }
 
-static void
+ساکن خالی
 test_failed_encoding ()
 {
-  hb_vector_t<int> row;
-  row.push (1);
-  hb_vector_t<const hb_vector_t<int> *> rows;
-  rows.push (&row);
-  OT::item_variations_t item_vars;
-  hb_always_assert (item_vars.add_vardata_encoding_for_testing (std::move (rows), 1));
-  auto &encoding = const_cast<OT::delta_row_encoding_t &> (item_vars.get_vardata_encodings ()[0]);
+  hb_سمتیہ_t<صحیح> صف;
+  صف.push (1);
+  hb_سمتیہ_t<ثابت hb_سمتیہ_t<صحیح> *> صفیں;
+  صفیں.push (&صف);
+  OT::شے_variations_t شے_vars;
+  hb_always_assert (شے_vars.جوڑو_vardata_encoding_for_testing (std::move (صفیں), 1));
+  خودکار &encoding = const_cast<OT::delta_صف_encoding_t &> (شے_vars.get_vardata_encodings ()[0]);
   /* Simulate a failed allocation of the encoding's column metadata. */
   encoding.chars.clear ();
-  encoding.chars.set_error ();
-  hb_always_assert (encoding.in_error ());
-  hb_hashmap_t<unsigned, const hb_vector_t<int> *> front_mapping;
-  front_mapping.set (0, &row);
-  hb_always_assert (!item_vars.compile_varidx_map_for_testing (front_mapping));
+  encoding.chars.سیٹ_error ();
+  hb_always_assert (encoding.اندر_error ());
+  hb_hashmap_t<غیرعلامتی, ثابت hb_سمتیہ_t<صحیح> *> front_mapping;
+  front_mapping.سیٹ (0, &صف);
+  hb_always_assert (!شے_vars.compile_varidx_map_for_testing (front_mapping));
 }
 
-int
-main (int argc, char **argv)
+صحیح
+مین (صحیح argc, حرف **argv)
 {
   test_scalar_cache_precision ();
-  test_item_variations ();
+  test_شے_variations ();
   test_implicit_advance_mapping ();
-  test_item_variations_overflow ();
+  test_شے_variations_حد_سے_تجاوز ();
   test_signed_delta_widths ();
   test_failed_encoding ();
   test_accumulated_delta_widths ();

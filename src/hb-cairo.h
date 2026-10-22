@@ -24,12 +24,12 @@
  * Red Hat Author(s): Matthias Clasen
  */
 
-#ifndef HB_CAIRO_H
-#define HB_CAIRO_H
+#اگر_غیر_تعریف_شدہ HB_CAIRO_H
+#تعریف_کرو HB_CAIRO_H
 
-#include "hb.h"
+#شامل "hb.h"
 
-#include <cairo.h>
+#شامل <cairo.h>
 
 HB_BEGIN_DECLS
 
@@ -59,41 +59,41 @@ hb_cairo_font_face_get_face (cairo_font_face_t *font_face);
  *
  * Since: 7.0.0
  */
-typedef hb_font_t * (*hb_cairo_font_init_func_t) (hb_font_t *font,
+قسمتعریف hb_font_t * (*hb_cairo_font_init_func_t) (hb_font_t *font,
 						  cairo_scaled_font_t *scaled_font,
-						  void *user_data);
+						  خالی *user_ڈیٹا);
 
-HB_EXTERN void
-hb_cairo_font_face_set_font_init_func (cairo_font_face_t *font_face,
+HB_EXTERN خالی
+hb_cairo_font_face_سیٹ_font_init_func (cairo_font_face_t *font_face,
 				       hb_cairo_font_init_func_t func,
-				       void *user_data,
+				       خالی *user_ڈیٹا,
 				       hb_destroy_func_t destroy);
 
 HB_EXTERN hb_font_t *
 hb_cairo_scaled_font_get_font (cairo_scaled_font_t *scaled_font);
 
-HB_EXTERN void
-hb_cairo_font_face_set_scale_factor (cairo_font_face_t *font_face,
-				     unsigned int scale_factor);
+HB_EXTERN خالی
+hb_cairo_font_face_سیٹ_scale_ضربی_عدد (cairo_font_face_t *font_face,
+				     غیرعلامتی صحیح scale_ضربی_عدد);
 
-HB_EXTERN unsigned int
-hb_cairo_font_face_get_scale_factor (cairo_font_face_t *font_face);
+HB_EXTERN غیرعلامتی صحیح
+hb_cairo_font_face_get_scale_ضربی_عدد (cairo_font_face_t *font_face);
 
-HB_EXTERN void
-hb_cairo_glyphs_from_buffer (hb_buffer_t *buffer,
+HB_EXTERN خالی
+hb_cairo_glyphs_from_بفر (hb_بفر_t *بفر,
 			     hb_bool_t utf8_clusters,
-			     double x_scale_factor,
-			     double y_scale_factor,
-			     double x,
-			     double y,
-			     const char *utf8,
-			     int utf8_len,
+			     دوہرا x_scale_ضربی_عدد,
+			     دوہرا y_scale_ضربی_عدد,
+			     دوہرا x,
+			     دوہرا y,
+			     ثابت حرف *utf8,
+			     صحیح utf8_len,
 			     cairo_glyph_t **glyphs,
-			     unsigned int *num_glyphs,
-			     cairo_text_cluster_t **clusters,
-			     unsigned int *num_clusters,
-			     cairo_text_cluster_flags_t *cluster_flags);
+			     غیرعلامتی صحیح *عدد_glyphs,
+			     cairo_متن_cluster_t **clusters,
+			     غیرعلامتی صحیح *عدد_clusters,
+			     cairo_متن_cluster_flags_t *cluster_flags);
 
-HB_END_DECLS
+HB_انتہا_DECLS
 
-#endif /* HB_CAIRO_H */
+#اگر_ختم /* HB_CAIRO_H */

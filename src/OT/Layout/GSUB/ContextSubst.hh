@@ -1,18 +1,18 @@
-#ifndef OT_LAYOUT_GSUB_CONTEXTSUBST_HH
-#define OT_LAYOUT_GSUB_CONTEXTSUBST_HH
+#اگر_غیر_تعریف_شدہ OT_LAYOUT_GSUB_CONTEXTSUBST_HH
+#تعریف_کرو OT_LAYOUT_GSUB_CONTEXTSUBST_HH
 
 // TODO(garretrieger): move to new layout.
-#include "../../../hb-ot-layout-gsubgpos.hh"
-#include "Common.hh"
+#شامل "../../../hb-ot-layout-gsubgpos.hh"
+#شامل "Common.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+نامخلا OT {
+نامخلا Layout {
+نامخلا GSUB_impl {
 
-struct ContextSubst : Context {};
+ساخت ContextSubst : Context {};
 
 }
 }
 }
 
-#endif  /* OT_LAYOUT_GSUB_CONTEXTSUBST_HH */
+#اگر_ختم  /* OT_LAYOUT_GSUB_CONTEXTSUBST_HH */

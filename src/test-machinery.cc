@@ -22,25 +22,25 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
-#include "hb-machinery.hh"
+#شامل "hb.hh"
+#شامل "hb-machinery.hh"
 
-struct hb_intp_lazy_loader_t : hb_lazy_loader_t<int, hb_intp_lazy_loader_t>
+ساخت hb_intp_lazy_loader_t : hb_lazy_loader_t<صحیح, hb_intp_lazy_loader_t>
 {
-  static int* create () { return nullptr; }
-  static void destroy (int* l) {}
-  static int* get_null () { return nullptr; }
+  ساکن صحیح* create () { واپس خالی_اشاریہ; }
+  ساکن خالی destroy (صحیح* l) {}
+  ساکن صحیح* get_null () { واپس خالی_اشاریہ; }
 };
 
-struct hb_void_lazy_loader_t : hb_lazy_loader_t<void, hb_void_lazy_loader_t>
+ساخت hb_void_lazy_loader_t : hb_lazy_loader_t<خالی, hb_void_lazy_loader_t>
 {
-  static void* create () { return nullptr; }
-  static void destroy (void* l) {}
-  static void* get_null () { return nullptr; }
+  ساکن خالی* create () { واپس خالی_اشاریہ; }
+  ساکن خالی destroy (خالی* l) {}
+  ساکن خالی* get_null () { واپس خالی_اشاریہ; }
 };
 
-int
-main (int argc, char **argv)
+صحیح
+مین (صحیح argc, حرف **argv)
 {
-  return 0;
+  واپس 0;
 }

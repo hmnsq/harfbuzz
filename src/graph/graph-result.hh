@@ -24,44 +24,44 @@
  * Google Author(s): Garret Rieger
  */
 
-#ifndef GRAPH_GRAPH_RESULT_HH
-#define GRAPH_GRAPH_RESULT_HH
+#اگر_غیر_تعریف_شدہ گراف_گراف_نتیجہ_HH
+#تعریف_کرو گراف_گراف_نتیجہ_HH
 
-#include "../hb-result.hh"
+#شامل "../hb-result.hh"
 
-namespace graph {
+نامخلا گراف {
 
-enum graph_error_t {
-  ALLOCATION_FAILURE,
-  LIMIT_EXCEEDED,
-  INVALID_ARGUMENT,
-  CYCLE_DETECTED,
+شمار گراف_error_t {
+  تخصیص_FAILURE,
+  حد_بندی_EXCEEDED,
+  INVALID_دلیل,
+  چکر_DETECTED,
   SANITIZE_FAILURE,
-  OUT_OF_BOUNDS,
+  برآمد_کا_BOUNDS,
   ORPHANED_NODES,
-  OVERFLOW_RESOLUTION_FAILED,
+  حد_سے_تجاوز_RESOLUTION_FAILED,
   UNKNOWN,
 };
 
-static inline const char* to_string(graph_error_t e) {
-  switch (e) {
-    case ALLOCATION_FAILURE: return "Memory Allocation Failed";
-    case LIMIT_EXCEEDED: return "Limit Exceeded";
-    case INVALID_ARGUMENT: return "Invalid Argument";
-    case CYCLE_DETECTED: return "Cycle in Graph";
-    case SANITIZE_FAILURE: return "Failed Sanitization";
-    case OUT_OF_BOUNDS: return "Out of Bounds";
-    case ORPHANED_NODES: return "Graph is not fully connected";
-    case OVERFLOW_RESOLUTION_FAILED: return "Overflows are not able to be resolved";
-    case UNKNOWN:
-    default:
-      return "Unknown Error";
+ساکن اندرونی ثابت حرف* to_string(گراف_error_t e) {
+  انتخاب (e) {
+    حالت تخصیص_FAILURE: واپس "Memory Allocation Failed";
+    حالت حد_بندی_EXCEEDED: واپس "Limit Exceeded";
+    حالت INVALID_دلیل: واپس "Invalid Argument";
+    حالت چکر_DETECTED: واپس "Cycle in Graph";
+    حالت SANITIZE_FAILURE: واپس "Failed Sanitization";
+    حالت برآمد_کا_BOUNDS: واپس "Out of Bounds";
+    حالت ORPHANED_NODES: واپس "Graph is not fully connected";
+    حالت حد_سے_تجاوز_RESOLUTION_FAILED: واپس "Overflows are not able to be resolved";
+    حالت UNKNOWN:
+    طےشدہ:
+      واپس "Unknown Error";
   }
 }
 
-template<typename T>
-using graph_result_t = hb_result_t<T, graph_error_t>;
+سانچہ<قسم_نام T>
+استعمال گراف_نتیجہ_t = hb_نتیجہ_t<T, گراف_error_t>;
 
 } // namespace graph
 
-#endif /* GRAPH_GRAPH_RESULT_HH */
+#اگر_ختم /* GRAPH_GRAPH_RESULT_HH */

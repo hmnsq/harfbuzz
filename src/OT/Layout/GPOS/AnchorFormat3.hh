@@ -1,117 +1,117 @@
-#ifndef OT_LAYOUT_GPOS_ANCHORFORMAT3_HH
-#define OT_LAYOUT_GPOS_ANCHORFORMAT3_HH
+#اگر_غیر_تعریف_شدہ OT_LAYOUT_GPOS_ANCHORFORMAT3_HH
+#تعریف_کرو OT_LAYOUT_GPOS_ANCHORFORMAT3_HH
 
-namespace OT {
-namespace Layout {
-namespace GPOS_impl {
+نامخلا OT {
+نامخلا Layout {
+نامخلا GPOS_impl {
 
-struct AnchorFormat3
+ساخت AnchorFormat3
 {
-  protected:
+  محفوظ:
   HBUINT16      format;                 /* Format identifier--format = 3 */
   FWORD         xCoordinate;            /* Horizontal value--in design units */
   FWORD         yCoordinate;            /* Vertical value--in design units */
-  Offset16To<Device>
-                xDeviceTable;           /* Offset to Device table for X
+  Offset16_مقصد<Device>
+                x_Device_جدول;           /* Offset to Device table for X
                                          * coordinate-- from beginning of
                                          * Anchor table (may be NULL) */
-  Offset16To<Device>
-                yDeviceTable;           /* Offset to Device table for Y
+  Offset16_مقصد<Device>
+                y_Device_جدول;           /* Offset to Device table for Y
                                          * coordinate-- from beginning of
                                          * Anchor table (may be NULL) */
-  public:
-  DEFINE_SIZE_STATIC (10);
+  عوامی:
+  DEFINE_سائز_STATIC (10);
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this))) return_trace (false);
+    TRACE_SANITIZE (یہ);
+    اگر (unlikely (!c->check_struct (یہ))) return_trace (جھوٹ);
 
-    return_trace (xDeviceTable.sanitize (c, this) && yDeviceTable.sanitize (c, this));
+    return_trace (x_Device_جدول.sanitize (c, یہ) && y_Device_جدول.sanitize (c, یہ));
   }
 
-  void get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id HB_UNUSED,
-                   float *x, float *y) const
+  خالی get_anchor (hb_ot_apply_context_t *c, hb_codepoint_t glyph_id HB_غیر_مستعمل,
+                   اعشاری *x, اعشاری *y) ثابت
   {
     hb_font_t *font = c->font;
     *x = font->em_fscale_x (xCoordinate);
     *y = font->em_fscale_y (yCoordinate);
 
-    if ((font->x_ppem || font->has_nonzero_coords) && xDeviceTable.sanitize (&c->sanitizer, this))
+    اگر ((font->x_ppem || font->has_nonzero_coords) && x_Device_جدول.sanitize (&c->sanitizer, یہ))
     {
       hb_barrier ();
-      *x += (this+xDeviceTable).get_x_delta_f (font, c->var_store, c->var_store_cache);
+      *x += (یہ+x_Device_جدول).get_x_delta_f (font, c->var_store, c->var_store_cache);
     }
-    if ((font->y_ppem || font->has_nonzero_coords) && yDeviceTable.sanitize (&c->sanitizer, this))
+    اگر ((font->y_ppem || font->has_nonzero_coords) && y_Device_جدول.sanitize (&c->sanitizer, یہ))
     {
       hb_barrier ();
-      *y += (this+yDeviceTable).get_y_delta_f (font, c->var_store, c->var_store_cache);
+      *y += (یہ+y_Device_جدول).get_y_delta_f (font, c->var_store, c->var_store_cache);
     }
   }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    TRACE_SUBSET (this);
-    auto *out = c->serializer->start_embed (*this);
-    if (unlikely (!c->serializer->embed (format))) return_trace (false);
-    if (unlikely (!c->serializer->embed (xCoordinate))) return_trace (false);
-    if (unlikely (!c->serializer->embed (yCoordinate))) return_trace (false);
+    TRACE_SUBSET (یہ);
+    خودکار *برآمد = c->serializer->آغاز_embed (*یہ);
+    اگر (unlikely (!c->serializer->embed (format))) return_trace (جھوٹ);
+    اگر (unlikely (!c->serializer->embed (xCoordinate))) return_trace (جھوٹ);
+    اگر (unlikely (!c->serializer->embed (yCoordinate))) return_trace (جھوٹ);
 
-    unsigned x_varidx = xDeviceTable ? (this+xDeviceTable).get_variation_index () : HB_OT_LAYOUT_NO_VARIATIONS_INDEX;
-    if (x_varidx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
+    غیرعلامتی x_varidx = x_Device_جدول ? (یہ+x_Device_جدول).get_variation_اشاریہ () : HB_OT_LAYOUT_NO_VARIATIONS_اشاریہ;
+    اگر (x_varidx != HB_OT_LAYOUT_NO_VARIATIONS_اشاریہ)
     {
-      hb_pair_t<unsigned, int> *new_varidx_delta;
-      if (!c->plan->layout_variation_idx_delta_map.has (x_varidx, &new_varidx_delta))
-        return_trace (false);
+      hb_pair_t<غیرعلامتی, صحیح> *new_varidx_delta;
+      اگر (!c->plan->layout_variation_idx_delta_map.has (x_varidx, &new_varidx_delta))
+        return_trace (جھوٹ);
 
-      x_varidx = hb_first (*new_varidx_delta);
-      int delta = hb_second (*new_varidx_delta);
-      if (delta != 0)
+      x_varidx = hb_پہلا (*new_varidx_delta);
+      صحیح delta = hb_دوسرا (*new_varidx_delta);
+      اگر (delta != 0)
       {
-        if (!c->serializer->check_assign (out->xCoordinate, xCoordinate + delta,
-                                          HB_SERIALIZE_ERROR_INT_OVERFLOW))
-          return_trace (false);
+        اگر (!c->serializer->check_تفویض (برآمد->xCoordinate, xCoordinate + delta,
+                                          HB_SERIALIZE_ERROR_INT_حد_سے_تجاوز))
+          return_trace (جھوٹ);
       }
     }
 
-    unsigned y_varidx = yDeviceTable ? (this+yDeviceTable).get_variation_index () : HB_OT_LAYOUT_NO_VARIATIONS_INDEX;
-    if (y_varidx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX)
+    غیرعلامتی y_varidx = y_Device_جدول ? (یہ+y_Device_جدول).get_variation_اشاریہ () : HB_OT_LAYOUT_NO_VARIATIONS_اشاریہ;
+    اگر (y_varidx != HB_OT_LAYOUT_NO_VARIATIONS_اشاریہ)
     {
-      hb_pair_t<unsigned, int> *new_varidx_delta;
-      if (!c->plan->layout_variation_idx_delta_map.has (y_varidx, &new_varidx_delta))
-        return_trace (false);
+      hb_pair_t<غیرعلامتی, صحیح> *new_varidx_delta;
+      اگر (!c->plan->layout_variation_idx_delta_map.has (y_varidx, &new_varidx_delta))
+        return_trace (جھوٹ);
 
-      y_varidx = hb_first (*new_varidx_delta);
-      int delta = hb_second (*new_varidx_delta);
-      if (delta != 0)
+      y_varidx = hb_پہلا (*new_varidx_delta);
+      صحیح delta = hb_دوسرا (*new_varidx_delta);
+      اگر (delta != 0)
       {
-        if (!c->serializer->check_assign (out->yCoordinate, yCoordinate + delta,
-                                          HB_SERIALIZE_ERROR_INT_OVERFLOW))
-          return_trace (false);
+        اگر (!c->serializer->check_تفویض (برآمد->yCoordinate, yCoordinate + delta,
+                                          HB_SERIALIZE_ERROR_INT_حد_سے_تجاوز))
+          return_trace (جھوٹ);
       }
     }
 
 
-    bool no_downgrade = (!xDeviceTable.is_null () && !(this+xDeviceTable).is_variation_device ()) ||
-                        x_varidx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX ||
-                        y_varidx != HB_OT_LAYOUT_NO_VARIATIONS_INDEX ||
-                        (!yDeviceTable.is_null () && !(this+yDeviceTable).is_variation_device ());
+    منطقی no_downgrade = (!x_Device_جدول.is_null () && !(یہ+x_Device_جدول).is_variation_device ()) ||
+                        x_varidx != HB_OT_LAYOUT_NO_VARIATIONS_اشاریہ ||
+                        y_varidx != HB_OT_LAYOUT_NO_VARIATIONS_اشاریہ ||
+                        (!y_Device_جدول.is_null () && !(یہ+y_Device_جدول).is_variation_device ());
 
-    if (!no_downgrade)
-      return_trace (c->serializer->check_assign (out->format, 1, HB_SERIALIZE_ERROR_INT_OVERFLOW));
+    اگر (!no_downgrade)
+      return_trace (c->serializer->check_تفویض (برآمد->format, 1, HB_SERIALIZE_ERROR_INT_حد_سے_تجاوز));
 
-    if (!c->serializer->embed (xDeviceTable)) return_trace (false);
-    if (!c->serializer->embed (yDeviceTable)) return_trace (false);
+    اگر (!c->serializer->embed (x_Device_جدول)) return_trace (جھوٹ);
+    اگر (!c->serializer->embed (y_Device_جدول)) return_trace (جھوٹ);
 
-    out->xDeviceTable.serialize_copy (c->serializer, xDeviceTable, this, 0, hb_serialize_context_t::Head, &c->plan->layout_variation_idx_delta_map);
-    out->yDeviceTable.serialize_copy (c->serializer, yDeviceTable, this, 0, hb_serialize_context_t::Head, &c->plan->layout_variation_idx_delta_map);
-    return_trace (out);
+    برآمد->x_Device_جدول.serialize_copy (c->serializer, x_Device_جدول, یہ, 0, hb_serialize_context_t::سر, &c->plan->layout_variation_idx_delta_map);
+    برآمد->y_Device_جدول.serialize_copy (c->serializer, y_Device_جدول, یہ, 0, hb_serialize_context_t::سر, &c->plan->layout_variation_idx_delta_map);
+    return_trace (برآمد);
   }
 
-  void collect_variation_indices (hb_collect_variation_indices_context_t *c) const
+  خالی collect_variation_indices (hb_collect_variation_indices_context_t *c) ثابت
   {
-    (this+xDeviceTable).collect_variation_indices (c);
-    (this+yDeviceTable).collect_variation_indices (c);
+    (یہ+x_Device_جدول).collect_variation_indices (c);
+    (یہ+y_Device_جدول).collect_variation_indices (c);
   }
 };
 
@@ -120,4 +120,4 @@ struct AnchorFormat3
 }
 }
 
-#endif  // OT_LAYOUT_GPOS_ANCHORFORMAT3_HH
+#اگر_ختم  // OT_LAYOUT_GPOS_ANCHORFORMAT3_HH

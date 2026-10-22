@@ -2,23 +2,23 @@
 
 "This tool is intended to be used from meson"
 
-import os, sys, shutil, pathlib
+درآمد os, sys, shutil, pathlib
 
-if len (sys.argv) < 3:
+اگر لمبائی (sys.argv) < 3:
 	sys.exit (__doc__)
 
 OUTPUT = sys.argv[1]
-CURRENT_SOURCE_DIR = sys.argv[2]
+CURRENT_ماخذ_DIR = sys.argv[2]
 
 # make sure input files are unique
-sources = sorted(set(sys.argv[3:]))
+sources = sorted(سیٹ(sys.argv[3:]))
 
-with open (OUTPUT, "wb") as f:
-	f.write ("".join ('#include "{}"\n'.format (pathlib.Path( os.path.relpath (os.path.abspath (x), CURRENT_SOURCE_DIR) ).as_posix()) for x in sources if x.endswith (".cc")).encode ())
+ساتھ open (OUTPUT, "wb") بطور f:
+	f.اكتب ("".join ('#include "{}"\n'.format (pathlib.راستہ_2( os.راستہ.relpath (os.راستہ.abspath (x), CURRENT_ماخذ_DIR) ).as_posix()) برائے x میں sources اگر x.endswith (".cc")).encode ())
 
 # copy it also to the source tree, but only if it has changed
-baseline_filename = os.path.join (CURRENT_SOURCE_DIR, os.path.basename (OUTPUT))
-with open(baseline_filename, "rb") as baseline:
-	with open(OUTPUT, "rb") as generated:
-		if baseline.read() != generated.read():
+baseline_filename = os.راستہ.join (CURRENT_ماخذ_DIR, os.راستہ.basename (OUTPUT))
+ساتھ open(baseline_filename, "rb") بطور baseline:
+	ساتھ open(OUTPUT, "rb") بطور generated:
+		اگر baseline.اقرأ() != generated.اقرأ():
 			shutil.copyfile (OUTPUT, baseline_filename)

@@ -22,13 +22,13 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#شامل "hb.hh"
 
-#ifndef HB_NO_PAINT
+#اگر_غیر_تعریف_شدہ HB_NO_PAINT
 
-#include "hb-paint-bounded.hh"
+#شامل "hb-paint-bounded.hh"
 
-#include "hb-machinery.hh"
+#شامل "hb-machinery.hh"
 
 
 /*
@@ -37,162 +37,162 @@
  * https://learn.microsoft.com/en-us/typography/opentype/spec/colr#glyph-metrics-and-boundedness
  */
 
-static void
-hb_paint_bounded_push_clip_glyph (hb_paint_funcs_t *funcs HB_UNUSED,
-				  void *paint_data,
+ساکن خالی
+hb_paint_bounded_ڈالو_clip_glyph (hb_paint_funcs_t *funcs HB_غیر_مستعمل,
+				  خالی *paint_ڈیٹا,
 				  hb_codepoint_t glyph,
 				  hb_font_t *font,
-				  void *user_data HB_UNUSED)
+				  خالی *user_ڈیٹا HB_غیر_مستعمل)
 {
-  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_data;
+  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_ڈیٹا;
 
-  c->push_clip ();
+  c->ڈالو_clip ();
 }
 
-static void
-hb_paint_bounded_push_clip_rectangle (hb_paint_funcs_t *funcs HB_UNUSED,
-				      void *paint_data,
-				      float xmin, float ymin, float xmax, float ymax,
-				      void *user_data)
+ساکن خالی
+hb_paint_bounded_ڈالو_clip_rectangle (hb_paint_funcs_t *funcs HB_غیر_مستعمل,
+				      خالی *paint_ڈیٹا,
+				      اعشاری xmin, اعشاری ymin, اعشاری xmax, اعشاری ymax,
+				      خالی *user_ڈیٹا)
 {
-  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_data;
+  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_ڈیٹا;
 
-  c->push_clip ();
+  c->ڈالو_clip ();
 }
 
-static void
-hb_paint_bounded_pop_clip (hb_paint_funcs_t *funcs HB_UNUSED,
-			   void *paint_data,
-			   void *user_data HB_UNUSED)
+ساکن خالی
+hb_paint_bounded_نکالو_clip (hb_paint_funcs_t *funcs HB_غیر_مستعمل,
+			   خالی *paint_ڈیٹا,
+			   خالی *user_ڈیٹا HB_غیر_مستعمل)
 {
-  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_data;
+  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_ڈیٹا;
 
-  c->pop_clip ();
+  c->نکالو_clip ();
 }
 
-static void
-hb_paint_bounded_push_group (hb_paint_funcs_t *funcs HB_UNUSED,
-			     void *paint_data,
-			     void *user_data HB_UNUSED)
+ساکن خالی
+hb_paint_bounded_ڈالو_گروہ (hb_paint_funcs_t *funcs HB_غیر_مستعمل,
+			     خالی *paint_ڈیٹا,
+			     خالی *user_ڈیٹا HB_غیر_مستعمل)
 {
-  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_data;
+  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_ڈیٹا;
 
-  c->push_group ();
+  c->ڈالو_گروہ ();
 }
 
-static void
-hb_paint_bounded_pop_group (hb_paint_funcs_t *funcs HB_UNUSED,
-			    void *paint_data,
-			    hb_paint_composite_mode_t mode,
-			    void *user_data HB_UNUSED)
+ساکن خالی
+hb_paint_bounded_نکالو_گروہ (hb_paint_funcs_t *funcs HB_غیر_مستعمل,
+			    خالی *paint_ڈیٹا,
+			    hb_paint_مرکب_منوال_t منوال,
+			    خالی *user_ڈیٹا HB_غیر_مستعمل)
 {
-  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_data;
+  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_ڈیٹا;
 
-  c->pop_group (mode);
+  c->نکالو_گروہ (منوال);
 }
 
-static hb_bool_t
-hb_paint_bounded_paint_image (hb_paint_funcs_t *funcs HB_UNUSED,
-			      void *paint_data,
-			      hb_blob_t *blob HB_UNUSED,
-			      unsigned int width HB_UNUSED,
-			      unsigned int height HB_UNUSED,
-			      hb_tag_t format HB_UNUSED,
-			      float slant HB_UNUSED,
+ساکن hb_bool_t
+hb_paint_bounded_paint_image (hb_paint_funcs_t *funcs HB_غیر_مستعمل,
+			      خالی *paint_ڈیٹا,
+			      hb_blob_t *blob HB_غیر_مستعمل,
+			      غیرعلامتی صحیح چوڑائی HB_غیر_مستعمل,
+			      غیرعلامتی صحیح اونچائی HB_غیر_مستعمل,
+			      hb_لیبل_t format HB_غیر_مستعمل,
+			      اعشاری slant HB_غیر_مستعمل,
 			      hb_glyph_extents_t *glyph_extents,
-			      void *user_data HB_UNUSED)
+			      خالی *user_ڈیٹا HB_غیر_مستعمل)
 {
-  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_data;
+  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_ڈیٹا;
 
-  c->push_clip ();
+  c->ڈالو_clip ();
   c->paint ();
-  c->pop_clip ();
+  c->نکالو_clip ();
 
-  return true;
+  واپس سچ;
 }
 
-static void
-hb_paint_bounded_paint_color (hb_paint_funcs_t *funcs HB_UNUSED,
-			      void *paint_data,
-			      hb_bool_t use_foreground HB_UNUSED,
-			      hb_color_t color HB_UNUSED,
-			      void *user_data HB_UNUSED)
+ساکن خالی
+hb_paint_bounded_paint_color (hb_paint_funcs_t *funcs HB_غیر_مستعمل,
+			      خالی *paint_ڈیٹا,
+			      hb_bool_t use_foreground HB_غیر_مستعمل,
+			      hb_color_t color HB_غیر_مستعمل,
+			      خالی *user_ڈیٹا HB_غیر_مستعمل)
 {
-  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_data;
-
-  c->paint ();
-}
-
-static void
-hb_paint_bounded_paint_linear_gradient (hb_paint_funcs_t *funcs HB_UNUSED,
-				        void *paint_data,
-				        hb_color_line_t *color_line HB_UNUSED,
-				        float x0 HB_UNUSED, float y0 HB_UNUSED,
-				        float x1 HB_UNUSED, float y1 HB_UNUSED,
-				        float x2 HB_UNUSED, float y2 HB_UNUSED,
-				        void *user_data HB_UNUSED)
-{
-  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_data;
+  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_ڈیٹا;
 
   c->paint ();
 }
 
-static void
-hb_paint_bounded_paint_radial_gradient (hb_paint_funcs_t *funcs HB_UNUSED,
-				        void *paint_data,
-				        hb_color_line_t *color_line HB_UNUSED,
-				        float x0 HB_UNUSED, float y0 HB_UNUSED, float r0 HB_UNUSED,
-				        float x1 HB_UNUSED, float y1 HB_UNUSED, float r1 HB_UNUSED,
-				        void *user_data HB_UNUSED)
+ساکن خالی
+hb_paint_bounded_paint_خطی_gradient (hb_paint_funcs_t *funcs HB_غیر_مستعمل,
+				        خالی *paint_ڈیٹا,
+				        hb_color_سطر_t *color_سطر HB_غیر_مستعمل,
+				        اعشاری x0 HB_غیر_مستعمل, اعشاری y0 HB_غیر_مستعمل,
+				        اعشاری x1 HB_غیر_مستعمل, اعشاری y1 HB_غیر_مستعمل,
+				        اعشاری x2 HB_غیر_مستعمل, اعشاری y2 HB_غیر_مستعمل,
+				        خالی *user_ڈیٹا HB_غیر_مستعمل)
 {
-  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_data;
+  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_ڈیٹا;
 
   c->paint ();
 }
 
-static void
-hb_paint_bounded_paint_sweep_gradient (hb_paint_funcs_t *funcs HB_UNUSED,
-				       void *paint_data,
-				       hb_color_line_t *color_line HB_UNUSED,
-				       float cx HB_UNUSED, float cy HB_UNUSED,
-				       float start_angle HB_UNUSED,
-				       float end_angle HB_UNUSED,
-				       void *user_data HB_UNUSED)
+ساکن خالی
+hb_paint_bounded_paint_radial_gradient (hb_paint_funcs_t *funcs HB_غیر_مستعمل,
+				        خالی *paint_ڈیٹا,
+				        hb_color_سطر_t *color_سطر HB_غیر_مستعمل,
+				        اعشاری x0 HB_غیر_مستعمل, اعشاری y0 HB_غیر_مستعمل, اعشاری r0 HB_غیر_مستعمل,
+				        اعشاری x1 HB_غیر_مستعمل, اعشاری y1 HB_غیر_مستعمل, اعشاری r1 HB_غیر_مستعمل,
+				        خالی *user_ڈیٹا HB_غیر_مستعمل)
 {
-  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_data;
+  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_ڈیٹا;
 
   c->paint ();
 }
 
-static inline void free_static_paint_bounded_funcs ();
-
-static struct hb_paint_bounded_funcs_lazy_loader_t : hb_paint_funcs_lazy_loader_t<hb_paint_bounded_funcs_lazy_loader_t>
+ساکن خالی
+hb_paint_bounded_paint_sweep_gradient (hb_paint_funcs_t *funcs HB_غیر_مستعمل,
+				       خالی *paint_ڈیٹا,
+				       hb_color_سطر_t *color_سطر HB_غیر_مستعمل,
+				       اعشاری cx HB_غیر_مستعمل, اعشاری cy HB_غیر_مستعمل,
+				       اعشاری آغاز_angle HB_غیر_مستعمل,
+				       اعشاری انتہا_angle HB_غیر_مستعمل,
+				       خالی *user_ڈیٹا HB_غیر_مستعمل)
 {
-  static hb_paint_funcs_t *create ()
+  hb_paint_bounded_context_t *c = (hb_paint_bounded_context_t *) paint_ڈیٹا;
+
+  c->paint ();
+}
+
+ساکن اندرونی خالی free_static_paint_bounded_funcs ();
+
+ساکن ساخت hb_paint_bounded_funcs_lazy_loader_t : hb_paint_funcs_lazy_loader_t<hb_paint_bounded_funcs_lazy_loader_t>
+{
+  ساکن hb_paint_funcs_t *create ()
   {
     hb_paint_funcs_t *funcs = hb_paint_funcs_create ();
 
-    hb_paint_funcs_set_push_clip_glyph_func (funcs, hb_paint_bounded_push_clip_glyph, nullptr, nullptr);
-    hb_paint_funcs_set_push_clip_rectangle_func (funcs, hb_paint_bounded_push_clip_rectangle, nullptr, nullptr);
-    hb_paint_funcs_set_pop_clip_func (funcs, hb_paint_bounded_pop_clip, nullptr, nullptr);
-    hb_paint_funcs_set_push_group_func (funcs, hb_paint_bounded_push_group, nullptr, nullptr);
-    hb_paint_funcs_set_pop_group_func (funcs, hb_paint_bounded_pop_group, nullptr, nullptr);
-    hb_paint_funcs_set_color_func (funcs, hb_paint_bounded_paint_color, nullptr, nullptr);
-    hb_paint_funcs_set_image_func (funcs, hb_paint_bounded_paint_image, nullptr, nullptr);
-    hb_paint_funcs_set_linear_gradient_func (funcs, hb_paint_bounded_paint_linear_gradient, nullptr, nullptr);
-    hb_paint_funcs_set_radial_gradient_func (funcs, hb_paint_bounded_paint_radial_gradient, nullptr, nullptr);
-    hb_paint_funcs_set_sweep_gradient_func (funcs, hb_paint_bounded_paint_sweep_gradient, nullptr, nullptr);
+    hb_paint_funcs_سیٹ_ڈالو_clip_glyph_func (funcs, hb_paint_bounded_ڈالو_clip_glyph, خالی_اشاریہ, خالی_اشاریہ);
+    hb_paint_funcs_سیٹ_ڈالو_clip_rectangle_func (funcs, hb_paint_bounded_ڈالو_clip_rectangle, خالی_اشاریہ, خالی_اشاریہ);
+    hb_paint_funcs_سیٹ_نکالو_clip_func (funcs, hb_paint_bounded_نکالو_clip, خالی_اشاریہ, خالی_اشاریہ);
+    hb_paint_funcs_سیٹ_ڈالو_گروہ_func (funcs, hb_paint_bounded_ڈالو_گروہ, خالی_اشاریہ, خالی_اشاریہ);
+    hb_paint_funcs_سیٹ_نکالو_گروہ_func (funcs, hb_paint_bounded_نکالو_گروہ, خالی_اشاریہ, خالی_اشاریہ);
+    hb_paint_funcs_سیٹ_color_func (funcs, hb_paint_bounded_paint_color, خالی_اشاریہ, خالی_اشاریہ);
+    hb_paint_funcs_سیٹ_image_func (funcs, hb_paint_bounded_paint_image, خالی_اشاریہ, خالی_اشاریہ);
+    hb_paint_funcs_سیٹ_خطی_gradient_func (funcs, hb_paint_bounded_paint_خطی_gradient, خالی_اشاریہ, خالی_اشاریہ);
+    hb_paint_funcs_سیٹ_radial_gradient_func (funcs, hb_paint_bounded_paint_radial_gradient, خالی_اشاریہ, خالی_اشاریہ);
+    hb_paint_funcs_سیٹ_sweep_gradient_func (funcs, hb_paint_bounded_paint_sweep_gradient, خالی_اشاریہ, خالی_اشاریہ);
 
     hb_paint_funcs_make_immutable (funcs);
 
     hb_atexit (free_static_paint_bounded_funcs);
 
-    return funcs;
+    واپس funcs;
   }
 } static_paint_bounded_funcs;
 
-static inline
-void free_static_paint_bounded_funcs ()
+ساکن اندرونی
+خالی free_static_paint_bounded_funcs ()
 {
   static_paint_bounded_funcs.free_instance ();
 }
@@ -200,8 +200,8 @@ void free_static_paint_bounded_funcs ()
 hb_paint_funcs_t *
 hb_paint_bounded_get_funcs ()
 {
-  return static_paint_bounded_funcs.get_unconst ();
+  واپس static_paint_bounded_funcs.get_unconst ();
 }
 
 
-#endif
+#اگر_ختم

@@ -1,22 +1,22 @@
-#include "hb-subset-table.hh"
+#شامل "hb-subset-table.hh"
 
-#include "hb-ot-layout-gdef-table.hh"
-#include "hb-ot-layout-gsub-table.hh"
-#include "hb-ot-layout-gpos-table.hh"
-#include "hb-ot-layout-base-table.hh"
-#include "hb-ot-math-table.hh"
+#شامل "hb-ot-layout-gdef-table.hh"
+#شامل "hb-ot-layout-gsub-table.hh"
+#شامل "hb-ot-layout-gpos-table.hh"
+#شامل "hb-ot-layout-base-table.hh"
+#شامل "hb-ot-math-table.hh"
 
-bool _hb_subset_table_layout		(hb_subset_plan_t *plan, hb_vector_t<char> &buf, hb_tag_t tag, bool *success)
+منطقی hb_subset_جدول_layout		(hb_subset_plan_t *plan, hb_سمتیہ_t<حرف> &buf, hb_لیبل_t لیبل_2, منطقی *success)
 {
-#ifndef HB_NO_SUBSET_LAYOUT
-  switch (tag)
+#اگر_غیر_تعریف_شدہ HB_NO_SUBSET_LAYOUT
+  انتخاب (لیبل_2)
   {
-  case HB_TAG('G','D','E','F'): *success = _hb_subset_table<const OT::GDEF> (plan, buf); return true;
-  case HB_TAG('G','S','U','B'): *success = _hb_subset_table<const OT::Layout::GSUB> (plan, buf); return true;
-  case HB_TAG('G','P','O','S'): *success = _hb_subset_table<const OT::Layout::GPOS> (plan, buf); return true;
-  case HB_TAG('B','A','S','E'): *success = _hb_subset_table<const OT::BASE> (plan, buf); return true;
-  case HB_TAG('M','A','T','H'): *success = _hb_subset_table<const OT::MATH> (plan, buf); return true;
+  حالت HB_لیبل('G','D','E','F'): *success = hb_subset_جدول<ثابت OT::GDEF> (plan, buf); واپس سچ;
+  حالت HB_لیبل('G','S','U','B'): *success = hb_subset_جدول<ثابت OT::Layout::GSUB> (plan, buf); واپس سچ;
+  حالت HB_لیبل('G','P','O','S'): *success = hb_subset_جدول<ثابت OT::Layout::GPOS> (plan, buf); واپس سچ;
+  حالت HB_لیبل('B','A','S','E'): *success = hb_subset_جدول<ثابت OT::بنیاد_4> (plan, buf); واپس سچ;
+  حالت HB_لیبل('M','A','T','H'): *success = hb_subset_جدول<ثابت OT::MATH> (plan, buf); واپس سچ;
   }
-#endif
-  return false;
+#اگر_ختم
+  واپس جھوٹ;
 }

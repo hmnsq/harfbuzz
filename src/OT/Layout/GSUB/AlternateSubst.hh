@@ -1,54 +1,54 @@
-#ifndef OT_LAYOUT_GSUB_ALTERNATESUBST_HH
-#define OT_LAYOUT_GSUB_ALTERNATESUBST_HH
+#اگر_غیر_تعریف_شدہ OT_LAYOUT_GSUB_ALTERNATESUBST_HH
+#تعریف_کرو OT_LAYOUT_GSUB_ALTERNATESUBST_HH
 
-#include "AlternateSubstFormat1.hh"
-#include "Common.hh"
+#شامل "AlternateSubstFormat1.hh"
+#شامل "Common.hh"
 
-namespace OT {
-namespace Layout {
-namespace GSUB_impl {
+نامخلا OT {
+نامخلا Layout {
+نامخلا GSUB_impl {
 
-struct AlternateSubst
+ساخت AlternateSubst
 {
-  protected:
-  union {
-  struct { HBUINT16 v; }		format;         /* Format identifier */
+  محفوظ:
+  اتحاد {
+  ساخت { HBUINT16 v; }		format;         /* Format identifier */
   AlternateSubstFormat1_2<SmallTypes>	format1;
-#ifndef HB_NO_BEYOND_64K
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
   AlternateSubstFormat1_2<MediumTypes>	format2;
-#endif
+#اگر_ختم
   } u;
-  public:
+  عوامی:
 
-  template <typename context_t, typename ...Ts>
-  typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
+  سانچہ <قسم_نام context_t, قسم_نام ...Ts>
+  قسم_نام context_t::return_t dispatch (context_t *c, Ts&&... ds) ثابت
   {
-    if (unlikely (!c->may_dispatch (this, &u.format.v))) return c->no_dispatch_return_value ();
-    TRACE_DISPATCH (this, u.format.v);
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
-#ifndef HB_NO_BEYOND_64K
-    case 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
-#endif
-    default:return_trace (c->default_return_value ());
+    اگر (unlikely (!c->may_dispatch (یہ, &u.format.v))) واپس c->no_dispatch_return_قدر ();
+    TRACE_DISPATCH (یہ, u.format.v);
+    انتخاب (u.format.v) {
+    حالت 1: hb_barrier (); return_trace (c->dispatch (u.format1, std::forward<Ts> (ds)...));
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    حالت 2: hb_barrier (); return_trace (c->dispatch (u.format2, std::forward<Ts> (ds)...));
+#اگر_ختم
+    طےشدہ:return_trace (c->default_return_قدر ());
     }
   }
 
   /* TODO This function is unused and should be done using iterators. While
    * at it perhaps using iterator of arrays of hb_codepoint_t instead. */
-  template <typename GlyphID>
-  bool serialize (hb_serialize_context_t *c,
+  سانچہ <قسم_نام GlyphID>
+  منطقی serialize (hb_serialize_context_t *c,
                   hb_sorted_array_t<GlyphID> glyphs,
-                  hb_array_t<const unsigned int> alternate_len_list,
+                  hb_array_t<ثابت غیرعلامتی صحیح> alternate_len_list,
                   hb_array_t<GlyphID> alternate_glyphs_list)
   {
-    TRACE_SERIALIZE (this);
-    if (unlikely (!c->extend_min (u.format.v))) return_trace (false);
-    unsigned int format = 1;
+    TRACE_SERIALIZE (یہ);
+    اگر (unlikely (!c->extend_min (u.format.v))) return_trace (جھوٹ);
+    غیرعلامتی صحیح format = 1;
     u.format.v = format;
-    switch (u.format.v) {
-    case 1: hb_barrier (); return_trace (u.format1.serialize (c, glyphs, alternate_len_list, alternate_glyphs_list));
-    default:return_trace (false);
+    انتخاب (u.format.v) {
+    حالت 1: hb_barrier (); return_trace (u.format1.serialize (c, glyphs, alternate_len_list, alternate_glyphs_list));
+    طےشدہ:return_trace (جھوٹ);
     }
   }
 
@@ -60,4 +60,4 @@ struct AlternateSubst
 }
 }
 
-#endif  /* OT_LAYOUT_GSUB_ALTERNATESUBST_HH */
+#اگر_ختم  /* OT_LAYOUT_GSUB_ALTERNATESUBST_HH */

@@ -24,103 +24,103 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_ARRAY_HH
-#define HB_ARRAY_HH
+#اگر_غیر_تعریف_شدہ HB_ARRAY_HH
+#تعریف_کرو HB_ARRAY_HH
 
-#include "hb.hh"
-#include "hb-algs.hh"
-#include "hb-iter.hh"
-#include "hb-null.hh"
+#شامل "hb.hh"
+#شامل "hb-algs.hh"
+#شامل "hb-iter.hh"
+#شامل "hb-null.hh"
 
 
-template <typename Type>
-struct hb_sorted_array_t;
+سانچہ <قسم_نام Type>
+ساخت hb_sorted_array_t;
 
-enum hb_not_found_t
+شمار hb_not_ملا_t
 {
-  HB_NOT_FOUND_DONT_STORE,
-  HB_NOT_FOUND_STORE,
-  HB_NOT_FOUND_STORE_CLOSEST,
+  HB_NOT_ملا_DONT_STORE,
+  HB_NOT_ملا_STORE,
+  HB_NOT_ملا_STORE_CLOSEST,
 };
 
 
-template <typename Type>
-struct hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
+سانچہ <قسم_نام Type>
+ساخت hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
 {
-  static constexpr bool realloc_move = true;
+  ساکن constexpr منطقی realloc_move = سچ;
 
   /*
    * Constructors.
    */
-  hb_array_t () = default;
-  hb_array_t (const hb_array_t&) = default;
-  ~hb_array_t () = default;
-  hb_array_t& operator= (const hb_array_t&) = default;
-  hb_array_t& operator= (hb_array_t&&) = default;
+  hb_array_t () = طےشدہ;
+  hb_array_t (ثابت hb_array_t&) = طےشدہ;
+  ~hb_array_t () = طےشدہ;
+  hb_array_t& عامل= (ثابت hb_array_t&) = طےشدہ;
+  hb_array_t& عامل= (hb_array_t&&) = طےشدہ;
 
-  constexpr hb_array_t (Type *array_, unsigned int length_) : arrayZ (array_), length (length_) {}
-  template <unsigned int length_>
-  constexpr hb_array_t (Type (&array_)[length_]) : hb_array_t (array_, length_) {}
+  constexpr hb_array_t (Type *array_, غیرعلامتی صحیح لمبائی_2) : arrayZ (array_), لمبائی (لمبائی_2) {}
+  سانچہ <غیرعلامتی صحیح لمبائی_2>
+  constexpr hb_array_t (Type (&array_)[لمبائی_2]) : hb_array_t (array_, لمبائی_2) {}
 
-  template <typename U,
+  سانچہ <قسم_نام U,
 	    hb_enable_if (hb_is_cr_convertible(U, Type))>
-  constexpr hb_array_t (const hb_array_t<U> &o) :
+  constexpr hb_array_t (ثابت hb_array_t<U> &o) :
     hb_iter_with_fallback_t<hb_array_t, Type&> (),
-    arrayZ (o.arrayZ), length (o.length), backwards_length (o.backwards_length) {}
-  template <typename U,
+    arrayZ (o.arrayZ), لمبائی (o.لمبائی), backwards_لمبائی (o.backwards_لمبائی) {}
+  سانچہ <قسم_نام U,
 	    hb_enable_if (hb_is_cr_convertible(U, Type))>
-  hb_array_t& operator = (const hb_array_t<U> &o)
-  { arrayZ = o.arrayZ; length = o.length; backwards_length = o.backwards_length; return *this; }
+  hb_array_t& عامل = (ثابت hb_array_t<U> &o)
+  { arrayZ = o.arrayZ; لمبائی = o.لمبائی; backwards_لمبائی = o.backwards_لمبائی; واپس *یہ; }
 
   /*
    * Iterator implementation.
    */
-  typedef Type& __item_t__;
-  static constexpr bool is_random_access_iterator = true;
-  static constexpr bool has_fast_len = true;
-  Type& __item__ () const
+  قسمتعریف Type& __item_t__;
+  ساکن constexpr منطقی is_random_access_iterator = سچ;
+  ساکن constexpr منطقی has_fast_len = سچ;
+  Type& __item__ () ثابت
   {
-    if (unlikely (!length)) return CrapOrNull (Type);
-    return *arrayZ;
+    اگر (unlikely (!لمبائی)) واپس CrapOrNull (Type);
+    واپس *arrayZ;
   }
-  Type& __item_at__ (unsigned i) const
+  Type& __item_at__ (غیرعلامتی i) ثابت
   {
-    if (unlikely (i >= length)) return CrapOrNull (Type);
-    return arrayZ[i];
+    اگر (unlikely (i >= لمبائی)) واپس CrapOrNull (Type);
+    واپس arrayZ[i];
   }
-  void __next__ ()
+  خالی __next__ ()
   {
-    if (unlikely (!length))
-      return;
-    length--;
-    backwards_length++;
+    اگر (unlikely (!لمبائی))
+      واپس;
+    لمبائی--;
+    backwards_لمبائی++;
     arrayZ++;
   }
-  void __forward__ (unsigned n)
+  خالی __forward__ (غیرعلامتی n)
   {
-    if (unlikely (n > length))
-      n = length;
-    length -= n;
-    backwards_length += n;
+    اگر (unlikely (n > لمبائی))
+      n = لمبائی;
+    لمبائی -= n;
+    backwards_لمبائی += n;
     arrayZ += n;
   }
-  void __prev__ ()
+  خالی __prev__ ()
   {
-    if (unlikely (!backwards_length))
-      return;
-    length++;
-    backwards_length--;
+    اگر (unlikely (!backwards_لمبائی))
+      واپس;
+    لمبائی++;
+    backwards_لمبائی--;
     arrayZ--;
   }
-  void __rewind__ (unsigned n)
+  خالی __rewind__ (غیرعلامتی n)
   {
-    if (unlikely (n > backwards_length))
-      n = backwards_length;
-    length += n;
-    backwards_length -= n;
+    اگر (unlikely (n > backwards_لمبائی))
+      n = backwards_لمبائی;
+    لمبائی += n;
+    backwards_لمبائی -= n;
     arrayZ -= n;
   }
-  unsigned __len__ () const { return length; }
+  غیرعلامتی __len__ () ثابت { واپس لمبائی; }
   /* Ouch. The operator== compares the contents of the array.  For range-based for loops,
    * it's best if we can just compare arrayZ, though comparing contents is still fast,
    * but also would require that Type has operator==.  As such, we optimize this operator
@@ -128,33 +128,33 @@ struct hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
    *
    * The above comment is outdated now because we implemented separate begin/end to
    * objects that were using hb_array_t for range-based loop before. */
-  bool operator != (const hb_array_t& o) const
-  { return this->arrayZ != o.arrayZ || this->length != o.length; }
+  منطقی عامل != (ثابت hb_array_t& o) ثابت
+  { واپس یہ->arrayZ != o.arrayZ || یہ->لمبائی != o.لمبائی; }
 
   /* Faster range-based for loop without bounds-check. */
-  Type *begin () const { return arrayZ; }
-  Type *end () const { return arrayZ + length; }
+  Type *begin () ثابت { واپس arrayZ; }
+  Type *انتہا () ثابت { واپس arrayZ + لمبائی; }
 
 
   /* Extra operators.
    */
-  Type * operator & () const { return arrayZ; }
-  operator hb_array_t<const Type> () { return hb_array_t<const Type> (arrayZ, length); }
-  template <typename T> operator T * () const { return arrayZ; }
+  Type * عامل & () ثابت { واپس arrayZ; }
+  عامل hb_array_t<ثابت Type> () { واپس hb_array_t<ثابت Type> (arrayZ, لمبائی); }
+  سانچہ <قسم_نام T> عامل T * () ثابت { واپس arrayZ; }
 
-  HB_INTERNAL bool operator == (const hb_array_t &o) const;
+  HB_اندرونی منطقی عامل == (ثابت hb_array_t &o) ثابت;
 
-  uint32_t hash () const
+  uint32_t hash () ثابت
   {
     // FNV-1a hash function
     // https://github.com/harfbuzz/harfbuzz/pull/4228
     uint32_t current = /*cbf29ce4*/0x84222325;
-    for (auto &v : *this)
+    برائے (خودکار &v : *یہ)
     {
       current = current ^ hb_hash (v);
       current = current * 16777619;
     }
-    return current;
+    واپس current;
   }
 
   /*
@@ -162,371 +162,371 @@ struct hb_array_t : hb_iter_with_fallback_t<hb_array_t<Type>, Type&>
    */
 
   /* Note: our compare is NOT lexicographic; it also does NOT call Type::cmp. */
-  int cmp (const hb_array_t &a) const
+  صحیح cmp (ثابت hb_array_t &a) ثابت
   {
-    if (length != a.length)
-      return (int) a.length - (int) length;
-    return hb_memcmp (a.arrayZ, arrayZ, get_size ());
+    اگر (لمبائی != a.لمبائی)
+      واپس (صحیح) a.لمبائی - (صحیح) لمبائی;
+    واپس hb_memcmp (a.arrayZ, arrayZ, get_سائز ());
   }
-  HB_INTERNAL static int cmp (const void *pa, const void *pb)
+  HB_اندرونی ساکن صحیح cmp (ثابت خالی *pa, ثابت خالی *pb)
   {
     hb_array_t *a = (hb_array_t *) pa;
     hb_array_t *b = (hb_array_t *) pb;
-    return b->cmp (*a);
+    واپس b->cmp (*a);
   }
 
-  template <typename T>
-  Type *lsearch (const T &x, Type *not_found = nullptr)
+  سانچہ <قسم_نام T>
+  Type *lsearch (ثابت T &x, Type *not_ملا = خالی_اشاریہ)
   {
-    unsigned i;
-    return lfind (x, &i) ? &this->arrayZ[i] : not_found;
+    غیرعلامتی i;
+    واپس lfind (x, &i) ? &یہ->arrayZ[i] : not_ملا;
   }
-  template <typename T>
-  const Type *lsearch (const T &x, const Type *not_found = nullptr) const
+  سانچہ <قسم_نام T>
+  ثابت Type *lsearch (ثابت T &x, ثابت Type *not_ملا = خالی_اشاریہ) ثابت
   {
-    unsigned i;
-    return lfind (x, &i) ? &this->arrayZ[i] : not_found;
+    غیرعلامتی i;
+    واپس lfind (x, &i) ? &یہ->arrayZ[i] : not_ملا;
   }
-  template <typename T>
-  bool lfind (const T &x, unsigned *pos = nullptr,
-	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
+  سانچہ <قسم_نام T>
+  منطقی lfind (ثابت T &x, غیرعلامتی *pos = خالی_اشاریہ,
+	      hb_not_ملا_t not_ملا = HB_NOT_ملا_DONT_STORE,
+	      غیرعلامتی صحیح مقصد_store = (غیرعلامتی صحیح) -1) ثابت
   {
-    for (unsigned i = 0; i < length; ++i)
-      if (hb_equal (x, this->arrayZ[i]))
+    برائے (غیرعلامتی i = 0; i < لمبائی; ++i)
+      اگر (hb_equal (x, یہ->arrayZ[i]))
       {
-	if (pos)
+	اگر (pos)
 	  *pos = i;
-	return true;
+	واپس سچ;
       }
 
-    if (pos)
+    اگر (pos)
     {
-      switch (not_found)
+      انتخاب (not_ملا)
       {
-	case HB_NOT_FOUND_DONT_STORE:
-	  break;
+	حالت HB_NOT_ملا_DONT_STORE:
+	  توڑو;
 
-	case HB_NOT_FOUND_STORE:
-	  *pos = to_store;
-	  break;
+	حالت HB_NOT_ملا_STORE:
+	  *pos = مقصد_store;
+	  توڑو;
 
-	case HB_NOT_FOUND_STORE_CLOSEST:
-	  *pos = length;
-	  break;
+	حالت HB_NOT_ملا_STORE_CLOSEST:
+	  *pos = لمبائی;
+	  توڑو;
       }
     }
-    return false;
+    واپس جھوٹ;
   }
 
-  hb_sorted_array_t<Type> qsort (int (*cmp)(const void*, const void*))
+  hb_sorted_array_t<Type> qsort (صحیح (*cmp)(ثابت خالی*, ثابت خالی*))
   {
-    if (likely (length))
-      hb_qsort (arrayZ, length, this->get_item_size (), cmp);
-    return hb_sorted_array_t<Type> (*this);
+    اگر (likely (لمبائی))
+      hb_qsort (arrayZ, لمبائی, یہ->get_شے_سائز (), cmp);
+    واپس hb_sorted_array_t<Type> (*یہ);
   }
 
   /* Comparator follows the C qsort convention: returns
    * negative / zero / positive int. */
-  template <typename Compar>
+  سانچہ <قسم_نام Compar>
   hb_sorted_array_t<Type> qsort (Compar compar)
   {
-    if (likely (length))
-      hb_qsort_inline (arrayZ, length, compar);
-    return hb_sorted_array_t<Type> (*this);
+    اگر (likely (لمبائی))
+      hb_qsort_inline (arrayZ, لمبائی, compar);
+    واپس hb_sorted_array_t<Type> (*یہ);
   }
 
-  private:
-  template <typename T = Type,
+  نجی:
+  سانچہ <قسم_نام T = Type,
 	    hb_enable_if (std::is_move_assignable<T>::value)>
-  hb_sorted_array_t<Type> _qsort (hb_priority<1>)
+  hb_sorted_array_t<Type> _qsort (hb_ترجیح<1>)
   {
-    return qsort ([] (const Type &a, const Type &b) { return Type::cmp (&a, &b); });
+    واپس qsort ([] (ثابت Type &a, ثابت Type &b) { واپس Type::cmp (&a, &b); });
   }
-  hb_sorted_array_t<Type> _qsort (hb_priority<0>)
+  hb_sorted_array_t<Type> _qsort (hb_ترجیح<0>)
   {
-    return qsort ((int(*)(const void*, const void*)) Type::cmp);
+    واپس qsort ((صحیح(*)(ثابت خالی*, ثابت خالی*)) Type::cmp);
   }
-  public:
+  عوامی:
 
   hb_sorted_array_t<Type> qsort ()
   {
-    return _qsort (hb_prioritize);
+    واپس _qsort (hb_prioritize);
   }
 
   /*
    * Other methods.
    */
 
-  size_t get_size () const { return length * this->get_item_size (); }
+  size_t get_سائز () ثابت { واپس لمبائی * یہ->get_شے_سائز (); }
 
   /*
    * Reverse the order of items in this array in the range [start, end).
    */
-  void reverse (unsigned start = 0, unsigned end = -1)
+  خالی reverse (غیرعلامتی آغاز = 0, غیرعلامتی انتہا = -1)
   {
-    start = hb_min (start, length);
-    end = hb_min (end, length);
+    آغاز = hb_min (آغاز, لمبائی);
+    انتہا = hb_min (انتہا, لمبائی);
 
-    if (end < start + 2)
-      return;
+    اگر (انتہا < آغاز + 2)
+      واپس;
 
-    unsigned stop = start + (end - start) / 2;
-    for (unsigned lhs = start, rhs = end - 1; lhs < stop; lhs++, rhs--)
-      hb_swap (arrayZ[rhs], arrayZ[lhs]);
+    غیرعلامتی stop = آغاز + (انتہا - آغاز) / 2;
+    برائے (غیرعلامتی lhs = آغاز, rhs = انتہا - 1; lhs < stop; lhs++, rhs--)
+      hb_تبادلہ (arrayZ[rhs], arrayZ[lhs]);
   }
 
-  hb_array_t sub_array (unsigned int start_offset = 0, unsigned int *seg_count = nullptr /* IN/OUT */) const
+  hb_array_t sub_array (غیرعلامتی صحیح آغاز_انحراف = 0, غیرعلامتی صحیح *seg_گنتی = خالی_اشاریہ /* IN/OUT */) ثابت
   {
-    if (!start_offset && !seg_count)
-      return *this;
+    اگر (!آغاز_انحراف && !seg_گنتی)
+      واپس *یہ;
 
-    unsigned int count = length;
-    if (unlikely (start_offset > count))
-      count = 0;
-    else
-      count -= start_offset;
-    if (seg_count)
-      count = *seg_count = hb_min (count, *seg_count);
-    return hb_array_t (arrayZ + start_offset, count);
+    غیرعلامتی صحیح گنتی = لمبائی;
+    اگر (unlikely (آغاز_انحراف > گنتی))
+      گنتی = 0;
+    ورنہ
+      گنتی -= آغاز_انحراف;
+    اگر (seg_گنتی)
+      گنتی = *seg_گنتی = hb_min (گنتی, *seg_گنتی);
+    واپس hb_array_t (arrayZ + آغاز_انحراف, گنتی);
   }
-  hb_array_t sub_array (unsigned int start_offset, unsigned int seg_count) const
-  { return sub_array (start_offset, &seg_count); }
+  hb_array_t sub_array (غیرعلامتی صحیح آغاز_انحراف, غیرعلامتی صحیح seg_گنتی) ثابت
+  { واپس sub_array (آغاز_انحراف, &seg_گنتی); }
 
-  hb_array_t truncate (unsigned length) const { return sub_array (0, length); }
+  hb_array_t truncate (غیرعلامتی لمبائی) ثابت { واپس sub_array (0, لمبائی); }
 
-  template <typename T,
-	    unsigned P = sizeof (Type),
+  سانچہ <قسم_نام T,
+	    غیرعلامتی P = حجم (Type),
 	    hb_enable_if (P == 1)>
-  const T *as () const
-  { return length < hb_min_size (T) ? &Null (T) : reinterpret_cast<const T *> (arrayZ); }
+  ثابت T *as () ثابت
+  { واپس لمبائی < hb_min_سائز (T) ? &Null (T) : reinterpret_cast<ثابت T *> (arrayZ); }
 
-  template <typename T,
-	    unsigned P = sizeof (Type),
+  سانچہ <قسم_نام T,
+	    غیرعلامتی P = حجم (Type),
 	    hb_enable_if (P == 1)>
-  bool check_range (const T *p, unsigned int size = T::static_size) const
+  منطقی check_range (ثابت T *p, غیرعلامتی صحیح سائز = T::static_سائز) ثابت
   {
-    return arrayZ <= ((const char *) p)
-	&& ((const char *) p) <= arrayZ + length
-	&& (unsigned int) (arrayZ + length - (const char *) p) >= size;
+    واپس arrayZ <= ((ثابت حرف *) p)
+	&& ((ثابت حرف *) p) <= arrayZ + لمبائی
+	&& (غیرعلامتی صحیح) (arrayZ + لمبائی - (ثابت حرف *) p) >= سائز;
   }
 
-  template <unsigned P = sizeof (Type),
+  سانچہ <غیرعلامتی P = حجم (Type),
 	    hb_enable_if (P == 1)>
-  bool check_end (const void *p) const
+  منطقی check_انتہا (ثابت خالی *p) ثابت
   {
-    return (uintptr_t) (((const char *) p) - arrayZ) <= length;
+    واپس (uintptr_t) (((ثابت حرف *) p) - arrayZ) <= لمبائی;
   }
 
   /* Only call if you allocated the underlying array using hb_malloc() or similar. */
-  void fini ()
-  { hb_free ((void *) arrayZ); arrayZ = nullptr; length = 0; }
+  خالی fini ()
+  { hb_free ((خالی *) arrayZ); arrayZ = خالی_اشاریہ; لمبائی = 0; }
 
-  template <typename hb_serialize_context_t,
-	    typename U = Type,
-	    hb_enable_if (!(sizeof (U) < sizeof (long long) && hb_is_trivially_copy_assignable(hb_decay<Type>)))>
-  hb_array_t copy (hb_serialize_context_t *c) const
+  سانچہ <قسم_نام hb_serialize_context_t,
+	    قسم_نام U = Type,
+	    hb_enable_if (!(حجم (U) < حجم (طویل طویل) && hb_is_trivially_copy_assignable(hb_decay<Type>)))>
+  hb_array_t copy (hb_serialize_context_t *c) ثابت
   {
-    TRACE_SERIALIZE (this);
-    auto* out = c->start_embed (arrayZ);
-    if (unlikely (!c->extend_size (out, get_size (), false))) return_trace (hb_array_t ());
-    for (unsigned i = 0; i < length; i++)
-      out[i] = arrayZ[i]; /* TODO: add version that calls c->copy() */
-    return_trace (hb_array_t (out, length));
+    TRACE_SERIALIZE (یہ);
+    خودکار* برآمد = c->آغاز_embed (arrayZ);
+    اگر (unlikely (!c->extend_سائز (برآمد, get_سائز (), جھوٹ))) return_trace (hb_array_t ());
+    برائے (غیرعلامتی i = 0; i < لمبائی; i++)
+      برآمد[i] = arrayZ[i]; /* TODO: add version that calls c->copy() */
+    return_trace (hb_array_t (برآمد, لمبائی));
   }
 
-  template <typename hb_serialize_context_t,
-	    typename U = Type,
-	    hb_enable_if (sizeof (U) < sizeof (long long) && hb_is_trivially_copy_assignable(hb_decay<Type>))>
-  hb_array_t copy (hb_serialize_context_t *c) const
+  سانچہ <قسم_نام hb_serialize_context_t,
+	    قسم_نام U = Type,
+	    hb_enable_if (حجم (U) < حجم (طویل طویل) && hb_is_trivially_copy_assignable(hb_decay<Type>))>
+  hb_array_t copy (hb_serialize_context_t *c) ثابت
   {
-    TRACE_SERIALIZE (this);
-    auto* out = c->start_embed (arrayZ);
-    if (unlikely (!c->extend_size (out, get_size (), false))) return_trace (hb_array_t ());
-    hb_memcpy (out, arrayZ, get_size ());
-    return_trace (hb_array_t (out, length));
+    TRACE_SERIALIZE (یہ);
+    خودکار* برآمد = c->آغاز_embed (arrayZ);
+    اگر (unlikely (!c->extend_سائز (برآمد, get_سائز (), جھوٹ))) return_trace (hb_array_t ());
+    hb_memcpy (برآمد, arrayZ, get_سائز ());
+    return_trace (hb_array_t (برآمد, لمبائی));
   }
 
-  template <typename hb_sanitize_context_t>
-  bool sanitize (hb_sanitize_context_t *c) const
-  { return c->check_array (arrayZ, length); }
+  سانچہ <قسم_نام hb_sanitize_context_t>
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
+  { واپس c->check_array (arrayZ, لمبائی); }
 
   /*
    * Members
    */
 
-  public:
-  Type *arrayZ = nullptr;
-  unsigned int length = 0;
-  unsigned int backwards_length = 0;
+  عوامی:
+  Type *arrayZ = خالی_اشاریہ;
+  غیرعلامتی صحیح لمبائی = 0;
+  غیرعلامتی صحیح backwards_لمبائی = 0;
 };
-template <typename T> inline hb_array_t<T>
+سانچہ <قسم_نام T> اندرونی hb_array_t<T>
 hb_array ()
-{ return hb_array_t<T> (); }
-template <typename T> inline hb_array_t<T>
-hb_array (T *array, unsigned int length)
-{ return hb_array_t<T> (array, length); }
-template <typename T, unsigned int length_> inline hb_array_t<T>
-hb_array (T (&array_)[length_])
-{ return hb_array_t<T> (array_); }
+{ واپس hb_array_t<T> (); }
+سانچہ <قسم_نام T> اندرونی hb_array_t<T>
+hb_array (T *array, غیرعلامتی صحیح لمبائی)
+{ واپس hb_array_t<T> (array, لمبائی); }
+سانچہ <قسم_نام T, غیرعلامتی صحیح لمبائی_2> اندرونی hb_array_t<T>
+hb_array (T (&array_)[لمبائی_2])
+{ واپس hb_array_t<T> (array_); }
 
-template <typename Type>
-struct hb_sorted_array_t :
+سانچہ <قسم_نام Type>
+ساخت hb_sorted_array_t :
 	hb_array_t<Type>,
 	hb_iter_t<hb_sorted_array_t<Type>, Type&>
 {
-  typedef hb_iter_t<hb_sorted_array_t, Type&> iter_base_t;
-  HB_ITER_USING (iter_base_t);
-  static constexpr bool is_random_access_iterator = true;
-  static constexpr bool is_sorted_iterator = true;
-  static constexpr bool has_fast_len = true;
+  قسمتعریف hb_iter_t<hb_sorted_array_t, Type&> iter_بنیاد_t;
+  HB_ITER_USING (iter_بنیاد_t);
+  ساکن constexpr منطقی is_random_access_iterator = سچ;
+  ساکن constexpr منطقی is_sorted_iterator = سچ;
+  ساکن constexpr منطقی has_fast_len = سچ;
 
-  hb_sorted_array_t () = default;
-  hb_sorted_array_t (const hb_sorted_array_t&) = default;
-  ~hb_sorted_array_t () = default;
-  hb_sorted_array_t& operator= (const hb_sorted_array_t&) = default;
-  hb_sorted_array_t& operator= (hb_sorted_array_t&&) = default;
+  hb_sorted_array_t () = طےشدہ;
+  hb_sorted_array_t (ثابت hb_sorted_array_t&) = طےشدہ;
+  ~hb_sorted_array_t () = طےشدہ;
+  hb_sorted_array_t& عامل= (ثابت hb_sorted_array_t&) = طےشدہ;
+  hb_sorted_array_t& عامل= (hb_sorted_array_t&&) = طےشدہ;
 
-  constexpr hb_sorted_array_t (Type *array_, unsigned int length_) : hb_array_t<Type> (array_, length_) {}
-  template <unsigned int length_>
-  constexpr hb_sorted_array_t (Type (&array_)[length_]) : hb_array_t<Type> (array_) {}
+  constexpr hb_sorted_array_t (Type *array_, غیرعلامتی صحیح لمبائی_2) : hb_array_t<Type> (array_, لمبائی_2) {}
+  سانچہ <غیرعلامتی صحیح لمبائی_2>
+  constexpr hb_sorted_array_t (Type (&array_)[لمبائی_2]) : hb_array_t<Type> (array_) {}
 
-  template <typename U,
+  سانچہ <قسم_نام U,
 	    hb_enable_if (hb_is_cr_convertible(U, Type))>
-  constexpr hb_sorted_array_t (const hb_array_t<U> &o) :
+  constexpr hb_sorted_array_t (ثابت hb_array_t<U> &o) :
     hb_array_t<Type> (o),
     hb_iter_t<hb_sorted_array_t, Type&> () {}
-  template <typename U,
+  سانچہ <قسم_نام U,
 	    hb_enable_if (hb_is_cr_convertible(U, Type))>
-  hb_sorted_array_t& operator = (const hb_array_t<U> &o)
-  { hb_array_t<Type> (*this) = o; return *this; }
+  hb_sorted_array_t& عامل = (ثابت hb_array_t<U> &o)
+  { hb_array_t<Type> (*یہ) = o; واپس *یہ; }
 
   /* Iterator implementation. */
 
   /* See comment in hb_array_of::operator != */
-  bool operator != (const hb_sorted_array_t& o) const
-  { return this->arrayZ != o.arrayZ || this->length != o.length; }
+  منطقی عامل != (ثابت hb_sorted_array_t& o) ثابت
+  { واپس یہ->arrayZ != o.arrayZ || یہ->لمبائی != o.لمبائی; }
 
   /* Faster range-based for loop without bounds-check. */
-  Type *begin () const { return this->arrayZ; }
-  Type *end () const { return this->arrayZ + this->length; }
+  Type *begin () ثابت { واپس یہ->arrayZ; }
+  Type *انتہا () ثابت { واپس یہ->arrayZ + یہ->لمبائی; }
 
 
-  hb_sorted_array_t sub_array (unsigned int start_offset, unsigned int *seg_count /* IN/OUT */) const
-  { return hb_sorted_array_t (((const hb_array_t<Type> *) (this))->sub_array (start_offset, seg_count)); }
-  hb_sorted_array_t sub_array (unsigned int start_offset, unsigned int seg_count) const
-  { return sub_array (start_offset, &seg_count); }
+  hb_sorted_array_t sub_array (غیرعلامتی صحیح آغاز_انحراف, غیرعلامتی صحیح *seg_گنتی /* IN/OUT */) ثابت
+  { واپس hb_sorted_array_t (((ثابت hb_array_t<Type> *) (یہ))->sub_array (آغاز_انحراف, seg_گنتی)); }
+  hb_sorted_array_t sub_array (غیرعلامتی صحیح آغاز_انحراف, غیرعلامتی صحیح seg_گنتی) ثابت
+  { واپس sub_array (آغاز_انحراف, &seg_گنتی); }
 
-  hb_sorted_array_t truncate (unsigned length) const { return sub_array (0, length); }
+  hb_sorted_array_t truncate (غیرعلامتی لمبائی) ثابت { واپس sub_array (0, لمبائی); }
 
-  template <typename T>
-  Type *bsearch (const T &x, Type *not_found = nullptr)
+  سانچہ <قسم_نام T>
+  Type *bsearch (ثابت T &x, Type *not_ملا = خالی_اشاریہ)
   {
-    unsigned int i;
-    return bfind (x, &i) ? &this->arrayZ[i] : not_found;
+    غیرعلامتی صحیح i;
+    واپس bfind (x, &i) ? &یہ->arrayZ[i] : not_ملا;
   }
-  template <typename T>
-  const Type *bsearch (const T &x, const Type *not_found = nullptr) const
+  سانچہ <قسم_نام T>
+  ثابت Type *bsearch (ثابت T &x, ثابت Type *not_ملا = خالی_اشاریہ) ثابت
   {
-    unsigned int i;
-    return bfind (x, &i) ? &this->arrayZ[i] : not_found;
+    غیرعلامتی صحیح i;
+    واپس bfind (x, &i) ? &یہ->arrayZ[i] : not_ملا;
   }
-  template <typename T>
-  bool bfind (const T &x, unsigned int *i = nullptr,
-	      hb_not_found_t not_found = HB_NOT_FOUND_DONT_STORE,
-	      unsigned int to_store = (unsigned int) -1) const
+  سانچہ <قسم_نام T>
+  منطقی bfind (ثابت T &x, غیرعلامتی صحیح *i = خالی_اشاریہ,
+	      hb_not_ملا_t not_ملا = HB_NOT_ملا_DONT_STORE,
+	      غیرعلامتی صحیح مقصد_store = (غیرعلامتی صحیح) -1) ثابت
   {
-    unsigned pos;
+    غیرعلامتی pos;
 
-    if (bsearch_impl (x, &pos))
+    اگر (bsearch_impl (x, &pos))
     {
-      if (i)
+      اگر (i)
 	*i = pos;
-      return true;
+      واپس سچ;
     }
 
-    if (i)
+    اگر (i)
     {
-      switch (not_found)
+      انتخاب (not_ملا)
       {
-	case HB_NOT_FOUND_DONT_STORE:
-	  break;
+	حالت HB_NOT_ملا_DONT_STORE:
+	  توڑو;
 
-	case HB_NOT_FOUND_STORE:
-	  *i = to_store;
-	  break;
+	حالت HB_NOT_ملا_STORE:
+	  *i = مقصد_store;
+	  توڑو;
 
-	case HB_NOT_FOUND_STORE_CLOSEST:
+	حالت HB_NOT_ملا_STORE_CLOSEST:
 	  *i = pos;
-	  break;
+	  توڑو;
       }
     }
-    return false;
+    واپس جھوٹ;
   }
-  template <typename T, typename ...Ts>
-  bool bsearch_impl (const T &x, unsigned *pos, Ts... ds) const
+  سانچہ <قسم_نام T, قسم_نام ...Ts>
+  منطقی bsearch_impl (ثابت T &x, غیرعلامتی *pos, Ts... ds) ثابت
   {
-    return hb_bsearch_impl (pos,
+    واپس hb_bsearch_impl (pos,
 			    x,
-			    this->arrayZ,
-			    this->length,
-			    sizeof (Type),
-			    _hb_cmp_method<T, Type, Ts...>,
+			    یہ->arrayZ,
+			    یہ->لمبائی,
+			    حجم (Type),
+			    hb_cmp_طریقہ<T, Type, Ts...>,
 			    std::forward<Ts> (ds)...);
   }
 };
-template <typename T> inline hb_sorted_array_t<T>
-hb_sorted_array (T *array, unsigned int length)
-{ return hb_sorted_array_t<T> (array, length); }
-template <typename T, unsigned int length_> inline hb_sorted_array_t<T>
-hb_sorted_array (T (&array_)[length_])
-{ return hb_sorted_array_t<T> (array_); }
+سانچہ <قسم_نام T> اندرونی hb_sorted_array_t<T>
+hb_sorted_array (T *array, غیرعلامتی صحیح لمبائی)
+{ واپس hb_sorted_array_t<T> (array, لمبائی); }
+سانچہ <قسم_نام T, غیرعلامتی صحیح لمبائی_2> اندرونی hb_sorted_array_t<T>
+hb_sorted_array (T (&array_)[لمبائی_2])
+{ واپس hb_sorted_array_t<T> (array_); }
 
-template <typename T>
-inline bool hb_array_t<T>::operator == (const hb_array_t<T> &o) const
+سانچہ <قسم_نام T>
+اندرونی منطقی hb_array_t<T>::عامل == (ثابت hb_array_t<T> &o) ثابت
 {
-  if (o.length != this->length) return false;
-  for (unsigned int i = 0; i < this->length; i++) {
-    if (this->arrayZ[i] != o.arrayZ[i]) return false;
+  اگر (o.لمبائی != یہ->لمبائی) واپس جھوٹ;
+  برائے (غیرعلامتی صحیح i = 0; i < یہ->لمبائی; i++) {
+    اگر (یہ->arrayZ[i] != o.arrayZ[i]) واپس جھوٹ;
   }
-  return true;
+  واپس سچ;
 }
-template <>
-inline bool hb_array_t<const char>::operator == (const hb_array_t<const char> &o) const
+سانچہ <>
+اندرونی منطقی hb_array_t<ثابت حرف>::عامل == (ثابت hb_array_t<ثابت حرف> &o) ثابت
 {
-  if (o.length != this->length) return false;
-  return 0 == hb_memcmp (arrayZ, o.arrayZ, length);
+  اگر (o.لمبائی != یہ->لمبائی) واپس جھوٹ;
+  واپس 0 == hb_memcmp (arrayZ, o.arrayZ, لمبائی);
 }
-template <>
-inline bool hb_array_t<const unsigned char>::operator == (const hb_array_t<const unsigned char> &o) const
+سانچہ <>
+اندرونی منطقی hb_array_t<ثابت غیرعلامتی حرف>::عامل == (ثابت hb_array_t<ثابت غیرعلامتی حرف> &o) ثابت
 {
-  if (o.length != this->length) return false;
-  return 0 == hb_memcmp (arrayZ, o.arrayZ, length);
+  اگر (o.لمبائی != یہ->لمبائی) واپس جھوٹ;
+  واپس 0 == hb_memcmp (arrayZ, o.arrayZ, لمبائی);
 }
 
 
 /* Specialize hash() for byte arrays. */
 
-#ifndef HB_OPTIMIZE_SIZE_MORE
-template <>
-inline uint32_t hb_array_t<const char>::hash () const
+#اگر_غیر_تعریف_شدہ HB_OPTIMIZE_سائز_مزید
+سانچہ <>
+اندرونی uint32_t hb_array_t<ثابت حرف>::hash () ثابت
 {
   // https://github.com/harfbuzz/harfbuzz/pull/4228
-  return fasthash32(arrayZ, length, 0xf437ffe6 /* magic? */);
+  واپس fasthash32(arrayZ, لمبائی, 0xf437ffe6 /* magic? */);
 }
 
-template <>
-inline uint32_t hb_array_t<const unsigned char>::hash () const
+سانچہ <>
+اندرونی uint32_t hb_array_t<ثابت غیرعلامتی حرف>::hash () ثابت
 {
   // https://github.com/harfbuzz/harfbuzz/pull/4228
-  return fasthash32(arrayZ, length, 0xf437ffe6 /* magic? */);
+  واپس fasthash32(arrayZ, لمبائی, 0xf437ffe6 /* magic? */);
 }
-#endif
+#اگر_ختم
 
 
-typedef hb_array_t<const char> hb_bytes_t;
-typedef hb_array_t<const unsigned char> hb_ubytes_t;
+قسمتعریف hb_array_t<ثابت حرف> hb_بائٹیں_t;
+قسمتعریف hb_array_t<ثابت غیرعلامتی حرف> hb_ubytes_t;
 
 
 
-#endif /* HB_ARRAY_HH */
+#اگر_ختم /* HB_ARRAY_HH */

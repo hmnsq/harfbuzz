@@ -22,15 +22,15 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#include "hb.hh"
+#شامل "hb.hh"
 
-#include "hb-ot-var-mvar-table.hh"
-#include "hb-ot-gasp-table.hh" // Just so we compile it; unused otherwise.
-#include "hb-ot-os2-table.hh"
-#include "hb-ot-post-table.hh"
-#include "hb-ot-hhea-table.hh"
-#include "hb-ot-metrics.hh"
-#include "hb-ot-face.hh"
+#شامل "hb-ot-var-mvar-table.hh"
+#شامل "hb-ot-gasp-table.hh" // Just so we compile it; unused otherwise.
+#شامل "hb-ot-os2-table.hh"
+#شامل "hb-ot-post-table.hh"
+#شامل "hb-ot-hhea-table.hh"
+#شامل "hb-ot-metrics.hh"
+#شامل "hb-ot-face.hh"
 
 
 /**
@@ -42,90 +42,90 @@
  * Functions for fetching metrics from fonts.
  **/
 
-static float
-_fix_ascender_descender (float value, hb_ot_metrics_tag_t metrics_tag)
+ساکن اعشاری
+_fix_ascender_descender (اعشاری value, hb_ot_metrics_لیبل_t metrics_لیبل)
 {
-  if (metrics_tag == HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER ||
-      metrics_tag == HB_OT_METRICS_TAG_VERTICAL_ASCENDER)
-    return fabs ((double) value);
-  if (metrics_tag == HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER ||
-      metrics_tag == HB_OT_METRICS_TAG_VERTICAL_DESCENDER)
-    return -fabs ((double) value);
-  return value;
+  اگر (metrics_لیبل == HB_OT_METRICS_لیبل_HORIZONTAL_ASCENDER ||
+      metrics_لیبل == HB_OT_METRICS_لیبل_VERTICAL_ASCENDER)
+    واپس fabs ((دوہرا) value);
+  اگر (metrics_لیبل == HB_OT_METRICS_لیبل_HORIZONTAL_DESCENDER ||
+      metrics_لیبل == HB_OT_METRICS_لیبل_VERTICAL_DESCENDER)
+    واپس -fabs ((دوہرا) value);
+  واپس value;
 }
 
 /* The common part of _get_position logic needed on hb-ot-font and here
    to be able to have slim builds without the not always needed parts */
-bool
+منطقی
 _hb_ot_metrics_get_position_common (hb_font_t           *font,
-				    hb_ot_metrics_tag_t  metrics_tag,
+				    hb_ot_metrics_لیبل_t  metrics_لیبل,
 				    hb_position_t       *position     /* OUT.  May be NULL. */)
 {
   hb_face_t *face = font->face;
-  switch ((unsigned) metrics_tag)
+  انتخاب ((غیرعلامتی) metrics_لیبل)
   {
-#ifndef HB_NO_VAR
-#define GET_VAR face->table.MVAR->get_var (metrics_tag, font->coords, font->num_coords)
-#else
-#define GET_VAR .0f
-#endif
-#define GET_METRIC_Y(TABLE, ATTR) \
-  (face->table.TABLE->has_data () && \
-    ((void) (position && (*position = font->em_scalef_y (_fix_ascender_descender ( \
-      face->table.TABLE->ATTR + GET_VAR, metrics_tag)))), true))
-#define GET_HEA_METRIC_X(TABLE, ATTR) \
-  (face->table.TABLE->has_data () && \
-    ((void) (position && (*position = font->em_scalef_x (_fix_ascender_descender ( \
-      HB_DUAL_GET (*face->table.TABLE, table->ATTR) + GET_VAR, metrics_tag)))), true))
-#define GET_HEA_METRIC_Y(TABLE, ATTR) \
-  (face->table.TABLE->has_data () && \
-    ((void) (position && (*position = font->em_scalef_y (_fix_ascender_descender ( \
-      HB_DUAL_GET (*face->table.TABLE, table->ATTR) + GET_VAR, metrics_tag)))), true))
+#اگر_غیر_تعریف_شدہ HB_NO_VAR
+#تعریف_کرو GET_VAR face->جدول.MVAR->get_var (metrics_لیبل, font->coords, font->عدد_coords)
+#ورنہ
+#تعریف_کرو GET_VAR .0f
+#اگر_ختم
+#تعریف_کرو GET_METRIC_Y(جدول_4, ATTR) \
+  (face->جدول.جدول_4->has_ڈیٹا () && \
+    ((خالی) (position && (*position = font->em_scalef_y (_fix_ascender_descender ( \
+      face->جدول.جدول_4->ATTR + GET_VAR, metrics_لیبل)))), سچ))
+#تعریف_کرو GET_HEA_METRIC_X(جدول_4, ATTR) \
+  (face->جدول.جدول_4->has_ڈیٹا () && \
+    ((خالی) (position && (*position = font->em_scalef_x (_fix_ascender_descender ( \
+      HB_DUAL_GET (*face->جدول.جدول_4, جدول->ATTR) + GET_VAR, metrics_لیبل)))), سچ))
+#تعریف_کرو GET_HEA_METRIC_Y(جدول_4, ATTR) \
+  (face->جدول.جدول_4->has_ڈیٹا () && \
+    ((خالی) (position && (*position = font->em_scalef_y (_fix_ascender_descender ( \
+      HB_DUAL_GET (*face->جدول.جدول_4, جدول->ATTR) + GET_VAR, metrics_لیبل)))), سچ))
 
-  case HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER:
-    return (face->table.OS2->use_typo_metrics () && GET_METRIC_Y (OS2, sTypoAscender)) ||
+  حالت HB_OT_METRICS_لیبل_HORIZONTAL_ASCENDER:
+    واپس (face->جدول.OS2->use_typo_metrics () && GET_METRIC_Y (OS2, sTypoAscender)) ||
 	   GET_HEA_METRIC_Y (hhea, ascender);
-  case HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER:
-    return (face->table.OS2->use_typo_metrics () && GET_METRIC_Y (OS2, sTypoDescender)) ||
+  حالت HB_OT_METRICS_لیبل_HORIZONTAL_DESCENDER:
+    واپس (face->جدول.OS2->use_typo_metrics () && GET_METRIC_Y (OS2, sTypoDescender)) ||
 	   GET_HEA_METRIC_Y (hhea, descender);
-  case HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP:
-    return (face->table.OS2->use_typo_metrics () && GET_METRIC_Y (OS2, sTypoLineGap)) ||
-	   GET_HEA_METRIC_Y (hhea, lineGap);
+  حالت HB_OT_METRICS_لیبل_HORIZONTAL_سطر_GAP:
+    واپس (face->جدول.OS2->use_typo_metrics () && GET_METRIC_Y (OS2, s_Typo_سطر_Gap)) ||
+	   GET_HEA_METRIC_Y (hhea, سطر_Gap);
 
-#ifndef HB_NO_VERTICAL
-  case HB_OT_METRICS_TAG_VERTICAL_ASCENDER:  return GET_HEA_METRIC_X (vhea, ascender);
-  case HB_OT_METRICS_TAG_VERTICAL_DESCENDER: return GET_HEA_METRIC_X (vhea, descender);
-  case HB_OT_METRICS_TAG_VERTICAL_LINE_GAP:  return GET_HEA_METRIC_X (vhea, lineGap);
-#endif
+#اگر_غیر_تعریف_شدہ HB_NO_VERTICAL
+  حالت HB_OT_METRICS_لیبل_VERTICAL_ASCENDER:  واپس GET_HEA_METRIC_X (vhea, ascender);
+  حالت HB_OT_METRICS_لیبل_VERTICAL_DESCENDER: واپس GET_HEA_METRIC_X (vhea, descender);
+  حالت HB_OT_METRICS_لیبل_VERTICAL_سطر_GAP:  واپس GET_HEA_METRIC_X (vhea, سطر_Gap);
+#اگر_ختم
 
-#undef GET_HEA_METRIC_Y
-#undef GET_HEA_METRIC_X
-#undef GET_METRIC_Y
-#undef GET_VAR
-  default:                               assert (0); return false;
+#تعریف_منسوخ GET_HEA_METRIC_Y
+#تعریف_منسوخ GET_HEA_METRIC_X
+#تعریف_منسوخ GET_METRIC_Y
+#تعریف_منسوخ GET_VAR
+  طےشدہ:                               أكد (0); واپس جھوٹ;
   }
 }
 
-#ifndef HB_NO_METRICS
+#اگر_غیر_تعریف_شدہ HB_NO_METRICS
 
-#if 0
-static bool
-_get_gasp (hb_face_t *face, float *result, hb_ot_metrics_tag_t metrics_tag)
+#اگر 0
+ساکن منطقی
+_get_gasp (hb_face_t *face, اعشاری *نتیجہ, hb_ot_metrics_لیبل_t metrics_لیبل)
 {
-  const OT::GaspRange& range = face->table.gasp->get_gasp_range (metrics_tag - HB_TAG ('g','s','p','0'));
-  if (&range == &Null (OT::GaspRange)) return false;
-  if (result) *result = range.rangeMaxPPEM + font->face->table.MVAR->get_var (metrics_tag, font->coords, font->num_coords);
-  return true;
+  ثابت OT::GaspRange& range = face->جدول.gasp->get_gasp_range (metrics_لیبل - HB_لیبل ('g','s','p','0'));
+  اگر (&range == &Null (OT::GaspRange)) واپس جھوٹ;
+  اگر (نتیجہ) *نتیجہ = range.rangeMaxPPEM + font->face->جدول.MVAR->get_var (metrics_لیبل, font->coords, font->عدد_coords);
+  واپس سچ;
 }
-#endif
+#اگر_ختم
 
 /* Private tags for https://github.com/harfbuzz/harfbuzz/issues/1866 */
-#define _HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER_OS2   HB_TAG ('O','a','s','c')
-#define _HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER_HHEA  HB_TAG ('H','a','s','c')
-#define _HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER_OS2  HB_TAG ('O','d','s','c')
-#define _HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER_HHEA HB_TAG ('H','d','s','c')
-#define _HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP_OS2   HB_TAG ('O','l','g','p')
-#define _HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP_HHEA  HB_TAG ('H','l','g','p')
+#تعریف_کرو HB_OT_METRICS_لیبل_HORIZONTAL_ASCENDER_OS2   HB_لیبل ('O','a','s','c')
+#تعریف_کرو HB_OT_METRICS_لیبل_HORIZONTAL_ASCENDER_HHEA  HB_لیبل ('H','a','s','c')
+#تعریف_کرو HB_OT_METRICS_لیبل_HORIZONTAL_DESCENDER_OS2  HB_لیبل ('O','d','s','c')
+#تعریف_کرو HB_OT_METRICS_لیبل_HORIZONTAL_DESCENDER_HHEA HB_لیبل ('H','d','s','c')
+#تعریف_کرو HB_OT_METRICS_لیبل_HORIZONTAL_سطر_GAP_OS2   HB_لیبل ('O','l','g','p')
+#تعریف_کرو HB_OT_METRICS_لیبل_HORIZONTAL_سطر_GAP_HHEA  HB_لیبل ('H','l','g','p')
 
 /**
  * hb_ot_metrics_get_position:
@@ -140,115 +140,115 @@ _get_gasp (hb_face_t *face, float *result, hb_ot_metrics_tag_t metrics_tag)
  **/
 hb_bool_t
 hb_ot_metrics_get_position (hb_font_t           *font,
-			    hb_ot_metrics_tag_t  metrics_tag,
+			    hb_ot_metrics_لیبل_t  metrics_لیبل,
 			    hb_position_t       *position     /* OUT.  May be NULL. */)
 {
   hb_face_t *face = font->face;
-  switch ((unsigned) metrics_tag)
+  انتخاب ((غیرعلامتی) metrics_لیبل)
   {
-  case HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER:
-  case HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER:
-  case HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP:
-  case HB_OT_METRICS_TAG_VERTICAL_ASCENDER:
-  case HB_OT_METRICS_TAG_VERTICAL_DESCENDER:
-  case HB_OT_METRICS_TAG_VERTICAL_LINE_GAP:           return _hb_ot_metrics_get_position_common (font, metrics_tag, position);
-#ifndef HB_NO_VAR
-#define GET_VAR hb_ot_metrics_get_variation (font, metrics_tag)
-#else
-#define GET_VAR 0
-#endif
-#define GET_METRIC_X(TABLE, ATTR) \
-  (face->table.TABLE->has_data () && \
-    ((void) (position && (*position = font->em_scalef_x (face->table.TABLE->ATTR + GET_VAR))), true))
-#define GET_METRIC_Y(TABLE, ATTR) \
-  (face->table.TABLE->has_data () && \
-    ((void) (position && (*position = font->em_scalef_y (face->table.TABLE->ATTR + GET_VAR))), true))
-#define GET_HEA_METRIC_X(TABLE, ATTR) \
-  (face->table.TABLE->has_data () && \
-    ((void) (position && (*position = font->em_scalef_x (HB_DUAL_GET (*face->table.TABLE, table->ATTR) + GET_VAR))), true))
-#define GET_HEA_METRIC_Y(TABLE, ATTR) \
-  (face->table.TABLE->has_data () && \
-    ((void) (position && (*position = font->em_scalef_y (HB_DUAL_GET (*face->table.TABLE, table->ATTR) + GET_VAR))), true))
-  case HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_ASCENT:  return GET_METRIC_Y (OS2, usWinAscent);
-  case HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_DESCENT: return GET_METRIC_Y (OS2, usWinDescent);
+  حالت HB_OT_METRICS_لیبل_HORIZONTAL_ASCENDER:
+  حالت HB_OT_METRICS_لیبل_HORIZONTAL_DESCENDER:
+  حالت HB_OT_METRICS_لیبل_HORIZONTAL_سطر_GAP:
+  حالت HB_OT_METRICS_لیبل_VERTICAL_ASCENDER:
+  حالت HB_OT_METRICS_لیبل_VERTICAL_DESCENDER:
+  حالت HB_OT_METRICS_لیبل_VERTICAL_سطر_GAP:           واپس _hb_ot_metrics_get_position_common (font, metrics_لیبل, position);
+#اگر_غیر_تعریف_شدہ HB_NO_VAR
+#تعریف_کرو GET_VAR hb_ot_metrics_get_variation (font, metrics_لیبل)
+#ورنہ
+#تعریف_کرو GET_VAR 0
+#اگر_ختم
+#تعریف_کرو GET_METRIC_X(جدول_4, ATTR) \
+  (face->جدول.جدول_4->has_ڈیٹا () && \
+    ((خالی) (position && (*position = font->em_scalef_x (face->جدول.جدول_4->ATTR + GET_VAR))), سچ))
+#تعریف_کرو GET_METRIC_Y(جدول_4, ATTR) \
+  (face->جدول.جدول_4->has_ڈیٹا () && \
+    ((خالی) (position && (*position = font->em_scalef_y (face->جدول.جدول_4->ATTR + GET_VAR))), سچ))
+#تعریف_کرو GET_HEA_METRIC_X(جدول_4, ATTR) \
+  (face->جدول.جدول_4->has_ڈیٹا () && \
+    ((خالی) (position && (*position = font->em_scalef_x (HB_DUAL_GET (*face->جدول.جدول_4, جدول->ATTR) + GET_VAR))), سچ))
+#تعریف_کرو GET_HEA_METRIC_Y(جدول_4, ATTR) \
+  (face->جدول.جدول_4->has_ڈیٹا () && \
+    ((خالی) (position && (*position = font->em_scalef_y (HB_DUAL_GET (*face->جدول.جدول_4, جدول->ATTR) + GET_VAR))), سچ))
+  حالت HB_OT_METRICS_لیبل_HORIZONTAL_CLIPPING_ASCENT:  واپس GET_METRIC_Y (OS2, usWinAscent);
+  حالت HB_OT_METRICS_لیبل_HORIZONTAL_CLIPPING_DESCENT: واپس GET_METRIC_Y (OS2, usWinDescent);
 
-  case HB_OT_METRICS_TAG_HORIZONTAL_CARET_RISE:
-  case HB_OT_METRICS_TAG_HORIZONTAL_CARET_RUN:
+  حالت HB_OT_METRICS_لیبل_HORIZONTAL_CARET_RISE:
+  حالت HB_OT_METRICS_لیبل_HORIZONTAL_CARET_تسلسل:
   {
-    unsigned mult = 1u;
+    غیرعلامتی mult = 1u;
 
-    if (font->slant)
+    اگر (font->slant)
     {
-      unsigned rise = HB_DUAL_GET (*face->table.hhea, table->caretSlopeRise);
-      unsigned upem = face->get_upem ();
+      غیرعلامتی rise = HB_DUAL_GET (*face->جدول.hhea, جدول->caret_ڈھلان_Rise);
+      غیرعلامتی upem = face->get_upem ();
       mult = (rise && rise < upem) ? hb_min (upem / rise, 256u) : 1u;
     }
 
-    if (metrics_tag == HB_OT_METRICS_TAG_HORIZONTAL_CARET_RISE)
+    اگر (metrics_لیبل == HB_OT_METRICS_لیبل_HORIZONTAL_CARET_RISE)
     {
-      bool ret = GET_HEA_METRIC_Y (hhea, caretSlopeRise);
+      منطقی ret = GET_HEA_METRIC_Y (hhea, caret_ڈھلان_Rise);
 
-      if (position)
-	*position = hb_clamp_to<hb_position_t> ((int64_t) *position * mult);
+      اگر (position)
+	*position = hb_clamp_مقصد<hb_position_t> ((int64_t) *position * mult);
 
-      return ret;
+      واپس ret;
     }
-    else
+    ورنہ
     {
       hb_position_t rise = 0;
 
-      if (font->slant && position && GET_HEA_METRIC_Y (hhea, caretSlopeRise))
+      اگر (font->slant && position && GET_HEA_METRIC_Y (hhea, caret_ڈھلان_Rise))
 	rise = *position;
 
-      bool ret = GET_HEA_METRIC_X (hhea, caretSlopeRun);
+      منطقی ret = GET_HEA_METRIC_X (hhea, caret_ڈھلان_تسلسل);
 
-      if (position)
+      اگر (position)
       {
-	*position = hb_clamp_to<hb_position_t> ((int64_t) *position * mult);
+	*position = hb_clamp_مقصد<hb_position_t> ((int64_t) *position * mult);
 
-	if (font->slant)
-	  *position = hb_saturate_add (*position,
-				       hb_clamp_to<hb_position_t> (roundf (mult * font->slant_xy * rise)));
+	اگر (font->slant)
+	  *position = hb_saturate_جوڑو (*position,
+				       hb_clamp_مقصد<hb_position_t> (roundf (mult * font->slant_xy * rise)));
       }
 
-      return ret;
+      واپس ret;
     }
   }
-  case HB_OT_METRICS_TAG_HORIZONTAL_CARET_OFFSET:     return GET_HEA_METRIC_X (hhea, caretOffset);
+  حالت HB_OT_METRICS_لیبل_HORIZONTAL_CARET_انحراف:     واپس GET_HEA_METRIC_X (hhea, caret_انحراف);
 
-#ifndef HB_NO_VERTICAL
-  case HB_OT_METRICS_TAG_VERTICAL_CARET_RISE:         return GET_HEA_METRIC_X (vhea, caretSlopeRise);
-  case HB_OT_METRICS_TAG_VERTICAL_CARET_RUN:          return GET_HEA_METRIC_Y (vhea, caretSlopeRun);
-  case HB_OT_METRICS_TAG_VERTICAL_CARET_OFFSET:       return GET_HEA_METRIC_Y (vhea, caretOffset);
-#endif
-  case HB_OT_METRICS_TAG_X_HEIGHT:                    return GET_METRIC_Y (OS2->v2 (), sxHeight);
-  case HB_OT_METRICS_TAG_CAP_HEIGHT:                  return GET_METRIC_Y (OS2->v2 (), sCapHeight);
-  case HB_OT_METRICS_TAG_SUBSCRIPT_EM_X_SIZE:         return GET_METRIC_X (OS2, ySubscriptXSize);
-  case HB_OT_METRICS_TAG_SUBSCRIPT_EM_Y_SIZE:         return GET_METRIC_Y (OS2, ySubscriptYSize);
-  case HB_OT_METRICS_TAG_SUBSCRIPT_EM_X_OFFSET:       return GET_METRIC_X (OS2, ySubscriptXOffset);
-  case HB_OT_METRICS_TAG_SUBSCRIPT_EM_Y_OFFSET:       return GET_METRIC_Y (OS2, ySubscriptYOffset);
-  case HB_OT_METRICS_TAG_SUPERSCRIPT_EM_X_SIZE:       return GET_METRIC_X (OS2, ySuperscriptXSize);
-  case HB_OT_METRICS_TAG_SUPERSCRIPT_EM_Y_SIZE:       return GET_METRIC_Y (OS2, ySuperscriptYSize);
-  case HB_OT_METRICS_TAG_SUPERSCRIPT_EM_X_OFFSET:     return GET_METRIC_X (OS2, ySuperscriptXOffset);
-  case HB_OT_METRICS_TAG_SUPERSCRIPT_EM_Y_OFFSET:     return GET_METRIC_Y (OS2, ySuperscriptYOffset);
-  case HB_OT_METRICS_TAG_STRIKEOUT_SIZE:              return GET_METRIC_Y (OS2, yStrikeoutSize);
-  case HB_OT_METRICS_TAG_STRIKEOUT_OFFSET:            return GET_METRIC_Y (OS2, yStrikeoutPosition);
-  case HB_OT_METRICS_TAG_UNDERLINE_SIZE:              return GET_METRIC_Y (post->table, underlineThickness);
-  case HB_OT_METRICS_TAG_UNDERLINE_OFFSET:            return GET_METRIC_Y (post->table, underlinePosition);
+#اگر_غیر_تعریف_شدہ HB_NO_VERTICAL
+  حالت HB_OT_METRICS_لیبل_VERTICAL_CARET_RISE:         واپس GET_HEA_METRIC_X (vhea, caret_ڈھلان_Rise);
+  حالت HB_OT_METRICS_لیبل_VERTICAL_CARET_تسلسل:          واپس GET_HEA_METRIC_Y (vhea, caret_ڈھلان_تسلسل);
+  حالت HB_OT_METRICS_لیبل_VERTICAL_CARET_انحراف:       واپس GET_HEA_METRIC_Y (vhea, caret_انحراف);
+#اگر_ختم
+  حالت HB_OT_METRICS_لیبل_X_اونچائی:                    واپس GET_METRIC_Y (OS2->v2 (), sx_اونچائی);
+  حالت HB_OT_METRICS_لیبل_CAP_اونچائی:                  واپس GET_METRIC_Y (OS2->v2 (), s_Cap_اونچائی);
+  حالت HB_OT_METRICS_لیبل_SUBSCRIPT_EM_X_سائز:         واپس GET_METRIC_X (OS2, ySubscriptXSize);
+  حالت HB_OT_METRICS_لیبل_SUBSCRIPT_EM_Y_سائز:         واپس GET_METRIC_Y (OS2, ySubscriptYSize);
+  حالت HB_OT_METRICS_لیبل_SUBSCRIPT_EM_X_انحراف:       واپس GET_METRIC_X (OS2, ySubscriptXOffset);
+  حالت HB_OT_METRICS_لیبل_SUBSCRIPT_EM_Y_انحراف:       واپس GET_METRIC_Y (OS2, ySubscriptYOffset);
+  حالت HB_OT_METRICS_لیبل_SUPERSCRIPT_EM_X_سائز:       واپس GET_METRIC_X (OS2, ySuperscriptXSize);
+  حالت HB_OT_METRICS_لیبل_SUPERSCRIPT_EM_Y_سائز:       واپس GET_METRIC_Y (OS2, ySuperscriptYSize);
+  حالت HB_OT_METRICS_لیبل_SUPERSCRIPT_EM_X_انحراف:     واپس GET_METRIC_X (OS2, ySuperscriptXOffset);
+  حالت HB_OT_METRICS_لیبل_SUPERSCRIPT_EM_Y_انحراف:     واپس GET_METRIC_Y (OS2, ySuperscriptYOffset);
+  حالت HB_OT_METRICS_لیبل_STRIKEOUT_سائز:              واپس GET_METRIC_Y (OS2, y_Strikeout_سائز);
+  حالت HB_OT_METRICS_لیبل_STRIKEOUT_انحراف:            واپس GET_METRIC_Y (OS2, yStrikeoutPosition);
+  حالت HB_OT_METRICS_لیبل_UNDERLINE_سائز:              واپس GET_METRIC_Y (post->جدول, underlineThickness);
+  حالت HB_OT_METRICS_لیبل_UNDERLINE_انحراف:            واپس GET_METRIC_Y (post->جدول, underlinePosition);
 
   /* Private tags */
-  case _HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER_OS2:    return GET_METRIC_Y (OS2, sTypoAscender);
-  case _HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER_HHEA:   return GET_HEA_METRIC_Y (hhea, ascender);
-  case _HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER_OS2:   return GET_METRIC_Y (OS2, sTypoDescender);
-  case _HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER_HHEA:  return GET_HEA_METRIC_Y (hhea, descender);
-  case _HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP_OS2:    return GET_METRIC_Y (OS2, sTypoLineGap);
-  case _HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP_HHEA:   return GET_HEA_METRIC_Y (hhea, lineGap);
-#undef GET_HEA_METRIC_Y
-#undef GET_HEA_METRIC_X
-#undef GET_METRIC_Y
-#undef GET_METRIC_X
-#undef GET_VAR
-  default:                                        return false;
+  حالت HB_OT_METRICS_لیبل_HORIZONTAL_ASCENDER_OS2:    واپس GET_METRIC_Y (OS2, sTypoAscender);
+  حالت HB_OT_METRICS_لیبل_HORIZONTAL_ASCENDER_HHEA:   واپس GET_HEA_METRIC_Y (hhea, ascender);
+  حالت HB_OT_METRICS_لیبل_HORIZONTAL_DESCENDER_OS2:   واپس GET_METRIC_Y (OS2, sTypoDescender);
+  حالت HB_OT_METRICS_لیبل_HORIZONTAL_DESCENDER_HHEA:  واپس GET_HEA_METRIC_Y (hhea, descender);
+  حالت HB_OT_METRICS_لیبل_HORIZONTAL_سطر_GAP_OS2:    واپس GET_METRIC_Y (OS2, s_Typo_سطر_Gap);
+  حالت HB_OT_METRICS_لیبل_HORIZONTAL_سطر_GAP_HHEA:   واپس GET_HEA_METRIC_Y (hhea, سطر_Gap);
+#تعریف_منسوخ GET_HEA_METRIC_Y
+#تعریف_منسوخ GET_HEA_METRIC_X
+#تعریف_منسوخ GET_METRIC_Y
+#تعریف_منسوخ GET_METRIC_X
+#تعریف_منسوخ GET_VAR
+  طےشدہ:                                        واپس جھوٹ;
   }
 }
 
@@ -263,136 +263,136 @@ hb_ot_metrics_get_position (hb_font_t           *font,
  *
  * Since: 4.0.0
  **/
-void
+خالی
 hb_ot_metrics_get_position_with_fallback (hb_font_t           *font,
-					  hb_ot_metrics_tag_t  metrics_tag,
-					  hb_position_t       *position     /* OUT */)
+					  hb_ot_metrics_لیبل_t  metrics_لیبل,
+					  hb_position_t       *position     /*برآمد*/)
 {
   hb_font_extents_t font_extents;
   hb_codepoint_t glyph;
   hb_glyph_extents_t extents;
 
-  if (hb_ot_metrics_get_position (font, metrics_tag, position))
+  اگر (hb_ot_metrics_get_position (font, metrics_لیبل, position))
     {
-      if ((metrics_tag != HB_OT_METRICS_TAG_STRIKEOUT_SIZE &&
-           metrics_tag != HB_OT_METRICS_TAG_UNDERLINE_SIZE) ||
+      اگر ((metrics_لیبل != HB_OT_METRICS_لیبل_STRIKEOUT_سائز &&
+           metrics_لیبل != HB_OT_METRICS_لیبل_UNDERLINE_سائز) ||
           *position != 0)
-        return;
+        واپس;
     }
 
-  switch (metrics_tag)
+  انتخاب (metrics_لیبل)
   {
-  case HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER:
-  case HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_ASCENT:
+  حالت HB_OT_METRICS_لیبل_HORIZONTAL_ASCENDER:
+  حالت HB_OT_METRICS_لیبل_HORIZONTAL_CLIPPING_ASCENT:
     hb_font_get_extents_for_direction (font, HB_DIRECTION_LTR, &font_extents);
     *position = font_extents.ascender;
-    break;
+    توڑو;
 
-  case HB_OT_METRICS_TAG_VERTICAL_ASCENDER:
+  حالت HB_OT_METRICS_لیبل_VERTICAL_ASCENDER:
     hb_font_get_extents_for_direction (font, HB_DIRECTION_TTB, &font_extents);
     *position = font_extents.ascender;
-    break;
+    توڑو;
 
-  case HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER:
-  case HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_DESCENT:
+  حالت HB_OT_METRICS_لیبل_HORIZONTAL_DESCENDER:
+  حالت HB_OT_METRICS_لیبل_HORIZONTAL_CLIPPING_DESCENT:
     hb_font_get_extents_for_direction (font, HB_DIRECTION_LTR, &font_extents);
     *position = font_extents.descender;
-    break;
+    توڑو;
 
-  case HB_OT_METRICS_TAG_VERTICAL_DESCENDER:
+  حالت HB_OT_METRICS_لیبل_VERTICAL_DESCENDER:
     hb_font_get_extents_for_direction (font, HB_DIRECTION_TTB, &font_extents);
     *position = font_extents.ascender;
-    break;
+    توڑو;
 
-  case HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP:
+  حالت HB_OT_METRICS_لیبل_HORIZONTAL_سطر_GAP:
     hb_font_get_extents_for_direction (font, HB_DIRECTION_LTR, &font_extents);
-    *position = font_extents.line_gap;
-    break;
+    *position = font_extents.سطر_gap;
+    توڑو;
 
-  case HB_OT_METRICS_TAG_VERTICAL_LINE_GAP:
+  حالت HB_OT_METRICS_لیبل_VERTICAL_سطر_GAP:
     hb_font_get_extents_for_direction (font, HB_DIRECTION_TTB, &font_extents);
-    *position = font_extents.line_gap;
-    break;
+    *position = font_extents.سطر_gap;
+    توڑو;
 
-  case HB_OT_METRICS_TAG_HORIZONTAL_CARET_RISE:
-  case HB_OT_METRICS_TAG_VERTICAL_CARET_RISE:
+  حالت HB_OT_METRICS_لیبل_HORIZONTAL_CARET_RISE:
+  حالت HB_OT_METRICS_لیبل_VERTICAL_CARET_RISE:
     *position = 1;
-    break;
+    توڑو;
 
-  case HB_OT_METRICS_TAG_HORIZONTAL_CARET_RUN:
-  case HB_OT_METRICS_TAG_VERTICAL_CARET_RUN:
+  حالت HB_OT_METRICS_لیبل_HORIZONTAL_CARET_تسلسل:
+  حالت HB_OT_METRICS_لیبل_VERTICAL_CARET_تسلسل:
     *position = 0;
-    break;
+    توڑو;
 
-  case HB_OT_METRICS_TAG_HORIZONTAL_CARET_OFFSET:
-  case HB_OT_METRICS_TAG_VERTICAL_CARET_OFFSET:
+  حالت HB_OT_METRICS_لیبل_HORIZONTAL_CARET_انحراف:
+  حالت HB_OT_METRICS_لیبل_VERTICAL_CARET_انحراف:
     *position = 0;
-    break;
+    توڑو;
 
-  case HB_OT_METRICS_TAG_X_HEIGHT:
-    if (hb_font_get_nominal_glyph (font, 'x', &glyph) &&
+  حالت HB_OT_METRICS_لیبل_X_اونچائی:
+    اگر (hb_font_get_nominal_glyph (font, 'x', &glyph) &&
         hb_font_get_glyph_extents (font, glyph, &extents))
       *position = extents.y_bearing;
-    else
+    ورنہ
       *position = font->y_scale / 2;
-    break;
+    توڑو;
 
-  case HB_OT_METRICS_TAG_CAP_HEIGHT:
-    if (hb_font_get_nominal_glyph (font, 'O', &glyph) &&
+  حالت HB_OT_METRICS_لیبل_CAP_اونچائی:
+    اگر (hb_font_get_nominal_glyph (font, 'O', &glyph) &&
         hb_font_get_glyph_extents (font, glyph, &extents))
-      *position = hb_clamp_to<hb_position_t> ((int64_t) extents.height +
+      *position = hb_clamp_مقصد<hb_position_t> ((int64_t) extents.اونچائی +
 					      2 * (int64_t) extents.y_bearing);
-    else
-      *position = hb_clamp_to<hb_position_t> ((int64_t) font->y_scale * 2 / 3);
-    break;
+    ورنہ
+      *position = hb_clamp_مقصد<hb_position_t> ((int64_t) font->y_scale * 2 / 3);
+    توڑو;
 
-  case HB_OT_METRICS_TAG_STRIKEOUT_SIZE:
-  case HB_OT_METRICS_TAG_UNDERLINE_SIZE:
+  حالت HB_OT_METRICS_لیبل_STRIKEOUT_سائز:
+  حالت HB_OT_METRICS_لیبل_UNDERLINE_سائز:
     *position = font->y_scale / 18;
-    break;
+    توڑو;
 
-  case HB_OT_METRICS_TAG_STRIKEOUT_OFFSET:
+  حالت HB_OT_METRICS_لیبل_STRIKEOUT_انحراف:
     {
       hb_position_t ascender;
       hb_ot_metrics_get_position_with_fallback (font,
-                                                HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER,
+                                                HB_OT_METRICS_لیبل_HORIZONTAL_ASCENDER,
                                                 &ascender);
       *position = ascender / 2;
     }
-    break;
+    توڑو;
 
-  case HB_OT_METRICS_TAG_UNDERLINE_OFFSET:
+  حالت HB_OT_METRICS_لیبل_UNDERLINE_انحراف:
     *position = hb_saturate_neg (font->y_scale) / 18;
-    break;
+    توڑو;
 
-  case HB_OT_METRICS_TAG_SUBSCRIPT_EM_X_SIZE:
-  case HB_OT_METRICS_TAG_SUPERSCRIPT_EM_X_SIZE:
-    *position = hb_clamp_to<hb_position_t> ((int64_t) font->x_scale * 10 / 12);
-    break;
+  حالت HB_OT_METRICS_لیبل_SUBSCRIPT_EM_X_سائز:
+  حالت HB_OT_METRICS_لیبل_SUPERSCRIPT_EM_X_سائز:
+    *position = hb_clamp_مقصد<hb_position_t> ((int64_t) font->x_scale * 10 / 12);
+    توڑو;
 
-  case HB_OT_METRICS_TAG_SUBSCRIPT_EM_Y_SIZE:
-  case HB_OT_METRICS_TAG_SUPERSCRIPT_EM_Y_SIZE:
-    *position = hb_clamp_to<hb_position_t> ((int64_t) font->y_scale * 10 / 12);
-    break;
+  حالت HB_OT_METRICS_لیبل_SUBSCRIPT_EM_Y_سائز:
+  حالت HB_OT_METRICS_لیبل_SUPERSCRIPT_EM_Y_سائز:
+    *position = hb_clamp_مقصد<hb_position_t> ((int64_t) font->y_scale * 10 / 12);
+    توڑو;
 
-  case HB_OT_METRICS_TAG_SUBSCRIPT_EM_X_OFFSET:
-  case HB_OT_METRICS_TAG_SUPERSCRIPT_EM_X_OFFSET:
+  حالت HB_OT_METRICS_لیبل_SUBSCRIPT_EM_X_انحراف:
+  حالت HB_OT_METRICS_لیبل_SUPERSCRIPT_EM_X_انحراف:
     *position = 0;
-    break;
+    توڑو;
 
-  case HB_OT_METRICS_TAG_SUBSCRIPT_EM_Y_OFFSET:
-  case HB_OT_METRICS_TAG_SUPERSCRIPT_EM_Y_OFFSET:
+  حالت HB_OT_METRICS_لیبل_SUBSCRIPT_EM_Y_انحراف:
+  حالت HB_OT_METRICS_لیبل_SUPERSCRIPT_EM_Y_انحراف:
     *position = font->y_scale / 5;
-    break;
+    توڑو;
 
-  case _HB_OT_METRICS_TAG_MAX_VALUE:
-  default:
+  حالت HB_OT_METRICS_لیبل_MAX_قدر:
+  طےشدہ:
     *position = 0;
-    break;
+    توڑو;
   }
 }
 
-#ifndef HB_NO_VAR
+#اگر_غیر_تعریف_شدہ HB_NO_VAR
 /**
  * hb_ot_metrics_get_variation:
  * @font: an #hb_font_t object.
@@ -405,10 +405,10 @@ hb_ot_metrics_get_position_with_fallback (hb_font_t           *font,
  *
  * Since: 2.6.0
  **/
-float
-hb_ot_metrics_get_variation (hb_font_t *font, hb_ot_metrics_tag_t metrics_tag)
+اعشاری
+hb_ot_metrics_get_variation (hb_font_t *font, hb_ot_metrics_لیبل_t metrics_لیبل)
 {
-  return font->face->table.MVAR->get_var (metrics_tag, font->coords, font->num_coords);
+  واپس font->face->جدول.MVAR->get_var (metrics_لیبل, font->coords, font->عدد_coords);
 }
 
 /**
@@ -424,9 +424,9 @@ hb_ot_metrics_get_variation (hb_font_t *font, hb_ot_metrics_tag_t metrics_tag)
  * Since: 2.6.0
  **/
 hb_position_t
-hb_ot_metrics_get_x_variation (hb_font_t *font, hb_ot_metrics_tag_t metrics_tag)
+hb_ot_metrics_get_x_variation (hb_font_t *font, hb_ot_metrics_لیبل_t metrics_لیبل)
 {
-  return font->em_scalef_x (hb_ot_metrics_get_variation (font, metrics_tag));
+  واپس font->em_scalef_x (hb_ot_metrics_get_variation (font, metrics_لیبل));
 }
 
 /**
@@ -442,10 +442,10 @@ hb_ot_metrics_get_x_variation (hb_font_t *font, hb_ot_metrics_tag_t metrics_tag)
  * Since: 2.6.0
  **/
 hb_position_t
-hb_ot_metrics_get_y_variation (hb_font_t *font, hb_ot_metrics_tag_t metrics_tag)
+hb_ot_metrics_get_y_variation (hb_font_t *font, hb_ot_metrics_لیبل_t metrics_لیبل)
 {
-  return font->em_scalef_y (hb_ot_metrics_get_variation (font, metrics_tag));
+  واپس font->em_scalef_y (hb_ot_metrics_get_variation (font, metrics_لیبل));
 }
-#endif
+#اگر_ختم
 
-#endif
+#اگر_ختم

@@ -1,37 +1,37 @@
-#ifndef OT_GLYF_GLYPHHEADER_HH
-#define OT_GLYF_GLYPHHEADER_HH
+#اگر_غیر_تعریف_شدہ OT_GLYF_GLYPHHEADER_HH
+#تعریف_کرو OT_GLYF_GLYPHHEADER_HH
 
 
-#include "../../hb-open-type.hh"
+#شامل "../../hb-open-type.hh"
 
 
-namespace OT {
-namespace glyf_impl {
+نامخلا OT {
+نامخلا glyf_impl {
 
 
-struct GlyphHeader
+ساخت Glyph_سرخی
 {
-  bool has_data () const { return numberOfContours; }
+  منطقی has_ڈیٹا () ثابت { واپس نمبر_کا_Contours; }
 
-  template <typename accelerator_t>
-  bool get_extents_without_var_scaled (hb_font_t *font, const accelerator_t &glyf_accelerator,
-				       hb_codepoint_t gid, hb_glyph_extents_t *extents) const
+  سانچہ <قسم_نام accelerator_t>
+  منطقی get_extents_without_var_scaled (hb_font_t *font, ثابت accelerator_t &glyf_accelerator,
+				       hb_codepoint_t gid, hb_glyph_extents_t *extents) ثابت
   {
     /* Undocumented rasterizer behavior: shift glyph to the left by (lsb - xMin), i.e., xMin = lsb */
     /* extents->x_bearing = hb_min (glyph_header.xMin, glyph_header.xMax); */
-    int lsb = hb_min (xMin, xMax);
-    (void) glyf_accelerator.hmtx->get_leading_bearing_without_var_unscaled (gid, &lsb);
+    صحیح lsb = hb_min (xMin, xMax);
+    (خالی) glyf_accelerator.hmtx->get_leading_bearing_without_var_unscaled (gid, &lsb);
     extents->x_bearing = lsb;
     extents->y_bearing = hb_max (yMin, yMax);
-    extents->width     = hb_max (xMin, xMax) - hb_min (xMin, xMax);
-    extents->height    = hb_min (yMin, yMax) - hb_max (yMin, yMax);
+    extents->چوڑائی     = hb_max (xMin, xMax) - hb_min (xMin, xMax);
+    extents->اونچائی    = hb_min (yMin, yMax) - hb_max (yMin, yMax);
 
     font->scale_glyph_extents (extents);
 
-    return true;
+    واپس سچ;
   }
 
-  HBINT16	numberOfContours;
+  HBINT16	نمبر_کا_Contours;
 		    /* If the number of contours is
 		     * greater than or equal to zero,
 		     * this is a simple glyph; if negative,
@@ -40,8 +40,8 @@ struct GlyphHeader
   FWORD	yMin;	/* Minimum y for coordinate data. */
   FWORD	xMax;	/* Maximum x for coordinate data. */
   FWORD	yMax;	/* Maximum y for coordinate data. */
-  public:
-  DEFINE_SIZE_STATIC (10);
+  عوامی:
+  DEFINE_سائز_STATIC (10);
 };
 
 
@@ -49,4 +49,4 @@ struct GlyphHeader
 } /* namespace OT */
 
 
-#endif /* OT_GLYF_GLYPHHEADER_HH */
+#اگر_ختم /* OT_GLYF_GLYPHHEADER_HH */

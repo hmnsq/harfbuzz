@@ -24,35 +24,35 @@
  * Red Hat Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_OT_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb-ot.h> instead."
-#endif
+#اگر !defined(HB_OT_H_اندر) && !defined(HB_NO_SINGLE_سرخی_ERROR)
+#غلطی "Include <hb-ot.h> instead."
+#اگر_ختم
 
-#ifndef HB_OT_SHAPE_H
-#define HB_OT_SHAPE_H
+#اگر_غیر_تعریف_شدہ HB_OT_SHAPE_H
+#تعریف_کرو HB_OT_SHAPE_H
 
-#include "hb.h"
+#شامل "hb.h"
 
 HB_BEGIN_DECLS
 
 /* TODO port to shape-plan / set. */
-HB_EXTERN void
-hb_ot_shape_glyphs_closure (hb_font_t          *font,
-			    hb_buffer_t        *buffer,
-			    const hb_feature_t *features,
-			    unsigned int        num_features,
-			    hb_set_t           *glyphs);
+HB_EXTERN خالی
+hb_ot_shape_glyphs_احاطہ (hb_font_t          *font,
+			    hb_بفر_t        *بفر,
+			    ثابت hb_feature_t *features,
+			    غیرعلامتی صحیح        عدد_features,
+			    hb_سیٹ_t           *glyphs);
 
-HB_EXTERN void
+HB_EXTERN خالی
 hb_ot_shape_plan_collect_lookups (hb_shape_plan_t *shape_plan,
-				  hb_tag_t         table_tag,
-				  hb_set_t        *lookup_indexes /* OUT */);
+				  hb_لیبل_t         جدول_لیبل_2,
+				  hb_سیٹ_t        *lookup_indexes /*برآمد*/);
 
-HB_EXTERN unsigned int
-hb_ot_shape_plan_get_feature_tags (hb_shape_plan_t *shape_plan,
-				   unsigned int     start_offset,
-				   unsigned int    *tag_count, /* IN/OUT */
-				   hb_tag_t        *tags /* OUT */);
+HB_EXTERN غیرعلامتی صحیح
+hb_ot_shape_plan_get_feature_لیبل_فہرست (hb_shape_plan_t *shape_plan,
+				   غیرعلامتی صحیح     آغاز_انحراف,
+				   غیرعلامتی صحیح    *لیبل_گنتی, /* IN/OUT */
+				   hb_لیبل_t        *لیبل_فہرست /*برآمد*/);
 
 /**
  * HB_OT_SHAPE_BUFFER_FORMAT_SERIAL:
@@ -64,11 +64,11 @@ hb_ot_shape_plan_get_feature_tags (hb_shape_plan_t *shape_plan,
  *
  * Since: 13.2.0
  */
-#define HB_OT_SHAPE_BUFFER_FORMAT_SERIAL 1
+#تعریف_کرو HB_OT_SHAPE_بفر_FORMAT_SERIAL 1
 
-HB_EXTERN unsigned int
-hb_ot_shape_get_buffer_format_serial (void);
+HB_EXTERN غیرعلامتی صحیح
+hb_ot_shape_get_بفر_format_serial (خالی);
 
-HB_END_DECLS
+HB_انتہا_DECLS
 
-#endif /* HB_OT_SHAPE_H */
+#اگر_ختم /* HB_OT_SHAPE_H */

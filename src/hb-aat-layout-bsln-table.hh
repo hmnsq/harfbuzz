@@ -22,66 +22,66 @@
  * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-#ifndef HB_AAT_LAYOUT_BSLN_TABLE_HH
-#define HB_AAT_LAYOUT_BSLN_TABLE_HH
+#اگر_غیر_تعریف_شدہ HB_AAT_LAYOUT_BSLN_جدول_HH
+#تعریف_کرو HB_AAT_LAYOUT_BSLN_جدول_HH
 
-#include "hb-aat-layout-common.hh"
+#شامل "hb-aat-layout-common.hh"
 
 /*
  * bsln -- Baseline
  * https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6bsln.html
  */
-#define HB_AAT_TAG_bsln HB_TAG('b','s','l','n')
+#تعریف_کرو HB_AAT_لیبل_bsln HB_لیبل('b','s','l','n')
 
 
-namespace AAT {
+نامخلا AAT {
 
 
-struct BaselineTableFormat0Part
+ساخت Baseline_جدول_Format0_Part
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ));
   }
 
-  protected:
+  محفوظ:
   // Roman, Ideographic centered, Ideographic low, Hanging and Math
   // are the default defined ones, but any other maybe accessed also.
   HBINT16	deltas[32];	/* These are the FUnit distance deltas from
 				 * the font's natural baseline to the other
 				 * baselines used in the font. */
-  public:
-  DEFINE_SIZE_STATIC (64);
+  عوامی:
+  DEFINE_سائز_STATIC (64);
 };
 
-struct BaselineTableFormat1Part
+ساخت Baseline_جدول_Format1_Part
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) &&
-			  lookupTable.sanitize (c)));
+    TRACE_SANITIZE (یہ);
+    return_trace (likely (c->check_struct (یہ) &&
+			  lookup_جدول.sanitize (c)));
   }
 
-  protected:
+  محفوظ:
   HBINT16	deltas[32];	/* ditto */
   Lookup<HBUINT16>
-		lookupTable;	/* Lookup table that maps glyphs to their
+		lookup_جدول;	/* Lookup table that maps glyphs to their
 				 * baseline values. */
-  public:
-  DEFINE_SIZE_MIN (66);
+  عوامی:
+  DEFINE_سائز_MIN (66);
 };
 
-struct BaselineTableFormat2Part
+ساخت Baseline_جدول_Format2_Part
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ));
   }
 
-  protected:
+  محفوظ:
   HBGlyphID16	stdGlyph;	/* The specific glyph index number in this
 				 * font that is used to set the baseline values.
 				 * This is the standard glyph.
@@ -92,68 +92,68 @@ struct BaselineTableFormat2Part
 				 * associated with the standard glyph.
 				 * A value of 0xFFFF means there is no corresponding
 				 * control point in the standard glyph. */
-  public:
-  DEFINE_SIZE_STATIC (66);
+  عوامی:
+  DEFINE_سائز_STATIC (66);
 };
 
-struct BaselineTableFormat3Part
+ساخت Baseline_جدول_Format3_Part
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (likely (c->check_struct (this) && lookupTable.sanitize (c)));
+    TRACE_SANITIZE (یہ);
+    return_trace (likely (c->check_struct (یہ) && lookup_جدول.sanitize (c)));
   }
 
-  protected:
+  محفوظ:
   HBGlyphID16	stdGlyph;	/* ditto */
   HBUINT16	ctlPoints[32];	/* ditto */
   Lookup<HBUINT16>
-		lookupTable;	/* Lookup table that maps glyphs to their
+		lookup_جدول;	/* Lookup table that maps glyphs to their
 				 * baseline values. */
-  public:
-  DEFINE_SIZE_MIN (68);
+  عوامی:
+  DEFINE_سائز_MIN (68);
 };
 
-struct bsln
+ساخت bsln
 {
-  static constexpr hb_tag_t tableTag = HB_AAT_TAG_bsln;
+  ساکن constexpr hb_لیبل_t جدول_لیبل = HB_AAT_لیبل_bsln;
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!(c->check_struct (this) && defaultBaseline < 32)))
-      return_trace (false);
+    TRACE_SANITIZE (یہ);
+    اگر (unlikely (!(c->check_struct (یہ) && defaultBaseline < 32)))
+      return_trace (جھوٹ);
     hb_barrier ();
 
-    switch (format)
+    انتخاب (format)
     {
-    case 0: hb_barrier (); return_trace (parts.format0.sanitize (c));
-    case 1: hb_barrier (); return_trace (parts.format1.sanitize (c));
-    case 2: hb_barrier (); return_trace (parts.format2.sanitize (c));
-    case 3: hb_barrier (); return_trace (parts.format3.sanitize (c));
-    default:return_trace (true);
+    حالت 0: hb_barrier (); return_trace (parts.format0.sanitize (c));
+    حالت 1: hb_barrier (); return_trace (parts.format1.sanitize (c));
+    حالت 2: hb_barrier (); return_trace (parts.format2.sanitize (c));
+    حالت 3: hb_barrier (); return_trace (parts.format3.sanitize (c));
+    طےشدہ:return_trace (سچ);
     }
   }
 
-  protected:
-  FixedVersion<>version;	/* Version number of the Baseline table. */
+  محفوظ:
+  Fixed_نسخہ<>نسخہ;	/* Version number of the Baseline table. */
   HBUINT16	format;		/* Format of the baseline table. Only one baseline
 				 * format may be selected for the font. */
   HBUINT16	defaultBaseline;/* Default baseline value for all glyphs.
 				 * This value can be from 0 through 31. */
-  union {
+  اتحاد {
   // Distance-Based Formats
-  BaselineTableFormat0Part	format0;
-  BaselineTableFormat1Part	format1;
+  Baseline_جدول_Format0_Part	format0;
+  Baseline_جدول_Format1_Part	format1;
   // Control Point-based Formats
-  BaselineTableFormat2Part	format2;
-  BaselineTableFormat3Part	format3;
+  Baseline_جدول_Format2_Part	format2;
+  Baseline_جدول_Format3_Part	format3;
   } parts;
-  public:
-  DEFINE_SIZE_MIN (8);
+  عوامی:
+  DEFINE_سائز_MIN (8);
 };
 
 } /* namespace AAT */
 
 
-#endif /* HB_AAT_LAYOUT_BSLN_TABLE_HH */
+#اگر_ختم /* HB_AAT_LAYOUT_BSLN_TABLE_HH */

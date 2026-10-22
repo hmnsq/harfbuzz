@@ -26,62 +26,62 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_BLOB_HH
-#define HB_BLOB_HH
+#اگر_غیر_تعریف_شدہ HB_BLOB_HH
+#تعریف_کرو HB_BLOB_HH
 
-#include "hb.hh"
+#شامل "hb.hh"
 
 
 /*
  * hb_blob_t
  */
 
-struct hb_blob_t
+ساخت hb_blob_t
 {
-  ~hb_blob_t () { destroy_user_data (); }
+  ~hb_blob_t () { destroy_user_ڈیٹا (); }
 
-  void destroy_user_data ()
+  خالی destroy_user_ڈیٹا ()
   {
-    if (destroy)
+    اگر (destroy)
     {
-      destroy (user_data);
-      user_data = nullptr;
-      destroy = nullptr;
+      destroy (user_ڈیٹا);
+      user_ڈیٹا = خالی_اشاریہ;
+      destroy = خالی_اشاریہ;
     }
   }
 
-  void replace_buffer (const char       *new_data,
-		       unsigned          new_length,
-		       hb_memory_mode_t  new_mode,
-		       void             *new_user_data,
+  خالی replace_بفر (ثابت حرف       *new_ڈیٹا,
+		       غیرعلامتی          new_لمبائی,
+		       hb_حافظہ_منوال_t  new_منوال,
+		       خالی             *new_user_ڈیٹا,
 		       hb_destroy_func_t new_destroy)
   {
-    if (new_data != data)
-      destroy_user_data ();
-    data = new_data;
-    length = new_length;
-    mode = new_mode;
-    user_data = new_user_data;
+    اگر (new_ڈیٹا != ڈیٹا)
+      destroy_user_ڈیٹا ();
+    ڈیٹا = new_ڈیٹا;
+    لمبائی = new_لمبائی;
+    منوال = new_منوال;
+    user_ڈیٹا = new_user_ڈیٹا;
     destroy = new_destroy;
   }
 
-  HB_INTERNAL bool try_make_writable ();
-  HB_INTERNAL bool try_make_writable_inplace ();
-  HB_INTERNAL bool try_make_writable_inplace_unix ();
+  HB_اندرونی منطقی try_make_writable ();
+  HB_اندرونی منطقی try_make_writable_inplace ();
+  HB_اندرونی منطقی try_make_writable_inplace_unix ();
 
-  hb_bytes_t as_bytes () const { return hb_bytes_t (data, length); }
-  template <typename Type>
-  const Type* as () const { return as_bytes ().as<Type> (); }
+  hb_بائٹیں_t as_بائٹیں () ثابت { واپس hb_بائٹیں_t (ڈیٹا, لمبائی); }
+  سانچہ <قسم_نام Type>
+  ثابت Type* as () ثابت { واپس as_بائٹیں ().as<Type> (); }
 
-  public:
-  hb_object_header_t header;
+  عوامی:
+  hb_object_سرخی_t سرخی;
 
-  const char *data = nullptr;
-  unsigned int length = 0;
-  hb_memory_mode_t mode = (hb_memory_mode_t) 0;
+  ثابت حرف *ڈیٹا = خالی_اشاریہ;
+  غیرعلامتی صحیح لمبائی = 0;
+  hb_حافظہ_منوال_t منوال = (hb_حافظہ_منوال_t) 0;
 
-  void *user_data = nullptr;
-  hb_destroy_func_t destroy = nullptr;
+  خالی *user_ڈیٹا = خالی_اشاریہ;
+  hb_destroy_func_t destroy = خالی_اشاریہ;
 
   /*
    * Blob-recycling helpers.
@@ -97,15 +97,15 @@ struct hb_blob_t
    * of recycle_data_destroy.
    */
 
-  struct recycle_data_t
+  ساخت recycle_ڈیٹا_t
   {
-    char *buf;
-    unsigned capacity;
+    حرف *buf;
+    غیرعلامتی capacity;
   };
 
-  static inline void recycle_data_destroy (void *user_data)
+  ساکن اندرونی خالی recycle_ڈیٹا_destroy (خالی *user_ڈیٹا)
   {
-    auto *bd = (recycle_data_t *) user_data;
+    خودکار *bd = (recycle_ڈیٹا_t *) user_ڈیٹا;
     hb_free (bd->buf);
     hb_free (bd);
   }
@@ -117,97 +117,97 @@ struct hb_blob_t
    * fails and a fresh buffer was allocated instead -- the caller
    * must hb_free() that buf after recycle_finalize() runs.  Returns
    * nullptr on allocation failure. */
-  static inline char *
+  ساکن اندرونی حرف *
   recycle_acquire (hb_blob_t *recycled,
-		   unsigned   needed,
-		   unsigned  *out_capacity,
-		   char     **out_replaced_buf)
+		   غیرعلامتی   needed,
+		   غیرعلامتی  *برآمد_استعداد,
+		   حرف     **برآمد_replaced_buf)
   {
-    *out_replaced_buf = nullptr;
+    *برآمد_replaced_buf = خالی_اشاریہ;
 
-    if (recycled && recycled->destroy == recycle_data_destroy)
+    اگر (recycled && recycled->destroy == recycle_ڈیٹا_destroy)
     {
-      auto *bd = (recycle_data_t *) recycled->user_data;
-      if (bd->capacity >= needed)
+      خودکار *bd = (recycle_ڈیٹا_t *) recycled->user_ڈیٹا;
+      اگر (bd->capacity >= needed)
       {
-	*out_capacity = bd->capacity;
-	return bd->buf;
+	*برآمد_استعداد = bd->capacity;
+	واپس bd->buf;
       }
       /* Grow with a 1.5x ramp to amortize repeated growth. */
-      unsigned alloc_bytes = needed;
-      if (unlikely (hb_unsigned_add_overflows (needed, needed / 2,
-					       &alloc_bytes)))
-	alloc_bytes = needed;
-      char *new_buf = (char *) hb_realloc (bd->buf, alloc_bytes);
-      if (new_buf)
+      غیرعلامتی alloc_بائٹیں = needed;
+      اگر (unlikely (hb_unsigned_جوڑو_overflows (needed, needed / 2,
+					       &alloc_بائٹیں)))
+	alloc_بائٹیں = needed;
+      حرف *new_buf = (حرف *) hb_realloc (bd->buf, alloc_بائٹیں);
+      اگر (new_buf)
       {
 	bd->buf = new_buf;
-	bd->capacity = alloc_bytes;
-	*out_capacity = alloc_bytes;
-	return new_buf;
+	bd->capacity = alloc_بائٹیں;
+	*برآمد_استعداد = alloc_بائٹیں;
+	واپس new_buf;
       }
       /* Realloc failed.  Fall through to a fresh hb_malloc and stash
        * the old buf for the caller to free after recycle_finalize. */
-      *out_replaced_buf = bd->buf;
+      *برآمد_replaced_buf = bd->buf;
     }
 
-    char *buf = (char *) hb_malloc (needed);
-    if (unlikely (!buf))
-      return nullptr;
-    *out_capacity = needed;
-    return buf;
+    حرف *buf = (حرف *) hb_malloc (needed);
+    اگر (unlikely (!buf))
+      واپس خالی_اشاریہ;
+    *برآمد_استعداد = needed;
+    واپس buf;
   }
 
   /* Wrap @buf (of @capacity, with @length used) into an hb_blob_t.
    * If @recycled is one of our blobs, update and return it (cheap);
    * otherwise create a new blob.  Pass @replaced_recycled_buf from
    * recycle_acquire(). */
-  static inline hb_blob_t *
-  recycle_finalize (char      *buf,
-		    unsigned   capacity,
-		    unsigned   length,
+  ساکن اندرونی hb_blob_t *
+  recycle_finalize (حرف      *buf,
+		    غیرعلامتی   capacity,
+		    غیرعلامتی   لمبائی,
 		    hb_blob_t *recycled,
-		    char      *replaced_recycled_buf)
+		    حرف      *replaced_recycled_buf)
   {
-    if (recycled && recycled->destroy == recycle_data_destroy)
+    اگر (recycled && recycled->destroy == recycle_ڈیٹا_destroy)
     {
-      auto *bd = (recycle_data_t *) recycled->user_data;
-      if (replaced_recycled_buf && replaced_recycled_buf != buf)
+      خودکار *bd = (recycle_ڈیٹا_t *) recycled->user_ڈیٹا;
+      اگر (replaced_recycled_buf && replaced_recycled_buf != buf)
 	hb_free (replaced_recycled_buf);
       bd->buf = buf;
       bd->capacity = capacity;
-      recycled->data = (const char *) buf;
-      recycled->length = length;
-      return recycled;
+      recycled->ڈیٹا = (ثابت حرف *) buf;
+      recycled->لمبائی = لمبائی;
+      واپس recycled;
     }
 
     /* No recycled blob to update -- create a fresh one with our
      * destroy closure so the next recycle round can reuse it. */
-    recycle_data_t *bd = (recycle_data_t *) hb_malloc (sizeof (*bd));
-    if (unlikely (!bd))
+    recycle_ڈیٹا_t *bd = (recycle_ڈیٹا_t *) hb_malloc (حجم (*bd));
+    اگر (unlikely (!bd))
     {
       hb_free (buf);
-      return nullptr;
+      واپس خالی_اشاریہ;
     }
     bd->buf = buf;
     bd->capacity = capacity;
 
-    return hb_blob_create ((const char *) buf, length,
-			   HB_MEMORY_MODE_WRITABLE,
-			   bd, recycle_data_destroy);
+    واپس hb_blob_create ((ثابت حرف *) buf, لمبائی,
+			   HB_حافظہ_منوال_WRITABLE,
+			   bd, recycle_ڈیٹا_destroy);
   }
 
   /* Discard @buf returned by recycle_acquire without committing to
    * a blob.  Frees @buf if it was a fresh allocation; leaves any
    * recycled buffer untouched. */
-  static inline void
-  recycle_abort (char *buf, hb_blob_t *recycled)
+  ساکن اندرونی خالی
+  recycle_abort (حرف *buf, hb_blob_t *recycled)
   {
-    if (!buf) return;
-    if (recycled && recycled->destroy == recycle_data_destroy)
+    اگر (!buf) واپس;
+    اگر (recycled && recycled->destroy == recycle_ڈیٹا_destroy)
     {
-      auto *bd = (recycle_data_t *) recycled->user_data;
-      if (buf == bd->buf) return;  /* owned by the recycled blob */
+      خودکار *bd = (recycle_ڈیٹا_t *) recycled->user_ڈیٹا;
+      اگر (buf == bd->buf) واپس;  /* owned by the recycled blob */
     }
     hb_free (buf);
   }
@@ -216,14 +216,14 @@ struct hb_blob_t
    * encode.  Destroys any previously stashed blob.  Safe to call
    * with @blob = nullptr or the empty-singleton blob (treated as
    * "drop"). */
-  static inline void
-  recycle_stash (hb_blob_t **slot, hb_blob_t *blob)
+  ساکن اندرونی خالی
+  recycle_stash (hb_blob_t **خانہ, hb_blob_t *blob)
   {
-    hb_blob_destroy (*slot);
-    *slot = nullptr;
-    if (!blob || blob == hb_blob_get_empty ())
-      return;
-    *slot = blob;
+    hb_blob_destroy (*خانہ);
+    *خانہ = خالی_اشاریہ;
+    اگر (!blob || blob == hb_blob_get_خالی_خانے ())
+      واپس;
+    *خانہ = blob;
   }
 };
 
@@ -232,25 +232,25 @@ struct hb_blob_t
  * hb_blob_ptr_t
  */
 
-template <typename P>
-struct hb_blob_ptr_t
+سانچہ <قسم_نام P>
+ساخت hb_blob_ptr_t
 {
-  typedef hb_remove_pointer<P> T;
+  قسمتعریف hb_remove_اشارہ_گر<P> T;
 
-  hb_blob_ptr_t (hb_blob_t *b_ = nullptr) : b (b_) {}
-  hb_blob_t * operator = (hb_blob_t *b_) { return b = b_; }
-  const T * operator -> () const { return get (); }
-  const T & operator * () const  { return *get (); }
-  template <typename C> operator const C * () const { return get (); }
-  operator const char * () const { return (const char *) get (); }
-  const T * get () const { return b->as<T> (); }
-  hb_blob_t * get_blob () const { return b.get_raw (); }
-  unsigned int get_length () const { return b.get ()->length; }
-  void destroy () { hb_blob_destroy (b.get_raw ()); b = nullptr; }
+  hb_blob_ptr_t (hb_blob_t *b_ = خالی_اشاریہ) : b (b_) {}
+  hb_blob_t * عامل = (hb_blob_t *b_) { واپس b = b_; }
+  ثابت T * عامل -> () ثابت { واپس get (); }
+  ثابت T & عامل * () ثابت  { واپس *get (); }
+  سانچہ <قسم_نام C> عامل ثابت C * () ثابت { واپس get (); }
+  عامل ثابت حرف * () ثابت { واپس (ثابت حرف *) get (); }
+  ثابت T * get () ثابت { واپس b->as<T> (); }
+  hb_blob_t * get_blob () ثابت { واپس b.get_raw (); }
+  غیرعلامتی صحیح get_لمبائی () ثابت { واپس b.get ()->لمبائی; }
+  خالی destroy () { hb_blob_destroy (b.get_raw ()); b = خالی_اشاریہ; }
 
-  private:
+  نجی:
   hb_nonnull_ptr_t<hb_blob_t> b;
 };
 
 
-#endif /* HB_BLOB_HH */
+#اگر_ختم /* HB_BLOB_HH */

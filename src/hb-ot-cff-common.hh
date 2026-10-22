@@ -23,358 +23,358 @@
  *
  * Adobe Author(s): Michiharu Ariza
  */
-#ifndef HB_OT_CFF_COMMON_HH
-#define HB_OT_CFF_COMMON_HH
+#اگر_غیر_تعریف_شدہ HB_OT_CFF_COMMON_HH
+#تعریف_کرو HB_OT_CFF_COMMON_HH
 
-#include "hb-open-type.hh"
-#include "hb-bimap.hh"
-#include "hb-ot-layout-common.hh"
-#include "hb-cff-interp-dict-common.hh"
-#include "hb-subset-plan.hh"
+#شامل "hb-open-type.hh"
+#شامل "hb-bimap.hh"
+#شامل "hb-ot-layout-common.hh"
+#شامل "hb-cff-interp-dict-common.hh"
+#شامل "hb-subset-plan.hh"
 
-namespace CFF {
+نامخلا CFF {
 
-using namespace OT;
+استعمال نامخلا OT;
 
-#define CFF_UNDEF_CODE  0xFFFFFFFF
+#تعریف_کرو CFF_UNDEF_رمز  0xFFFFFFFF
 
-using objidx_t = hb_serialize_context_t::objidx_t;
-using whence_t = hb_serialize_context_t::whence_t;
+استعمال objidx_t = hb_serialize_context_t::objidx_t;
+استعمال whence_t = hb_serialize_context_t::whence_t;
 
 /* CFF offsets can technically be negative */
-template<typename Type, typename ...Ts>
-static inline const Type& StructAtOffsetOrNull (const void *P, int offset, hb_sanitize_context_t &sc, Ts&&... ds)
+سانچہ<قسم_نام Type, قسم_نام ...Ts>
+ساکن اندرونی ثابت Type& Struct_At_انحراف_Or_Null (ثابت خالی *P, صحیح انحراف, hb_sanitize_context_t &sc, Ts&&... ds)
 {
-  if (!offset) return Null (Type);
+  اگر (!انحراف) واپس Null (Type);
 
-  const char *p = (const char *) P + offset;
-  if (!sc.check_point (p)) return Null (Type);
+  ثابت حرف *p = (ثابت حرف *) P + انحراف;
+  اگر (!sc.check_نقطہ (p)) واپس Null (Type);
 
-  const Type &obj = *reinterpret_cast<const Type *> (p);
-  if (!obj.sanitize (&sc, std::forward<Ts> (ds)...)) return Null (Type);
+  ثابت Type &obj = *reinterpret_cast<ثابت Type *> (p);
+  اگر (!obj.sanitize (&sc, std::forward<Ts> (ds)...)) واپس Null (Type);
 
-  return obj;
+  واپس obj;
 }
 
 
-struct code_pair_t
+ساخت رمز_pair_t
 {
-  unsigned code;
+  غیرعلامتی رمز;
   hb_codepoint_t glyph;
 };
 
 
-using str_buff_t = hb_vector_t<unsigned char>;
-using str_buff_vec_t = hb_vector_t<str_buff_t>;
-using glyph_to_sid_map_t = hb_vector_t<code_pair_t>;
+استعمال str_buff_t = hb_سمتیہ_t<غیرعلامتی حرف>;
+استعمال str_buff_vec_t = hb_سمتیہ_t<str_buff_t>;
+استعمال glyph_مقصد_sid_map_t = hb_سمتیہ_t<رمز_pair_t>;
 
 /* Top Dict, Font Dict, Private Dict */
-struct Dict : UnsizedByteStr
+ساخت Dict : UnsizedByteStr
 {
-  template <typename DICTVAL, typename OP_SERIALIZER, typename ...Ts>
-  bool serialize (hb_serialize_context_t *c,
-		  const DICTVAL &dictval,
+  سانچہ <قسم_نام DICTVAL, قسم_نام OP_SERIALIZER, قسم_نام ...Ts>
+  منطقی serialize (hb_serialize_context_t *c,
+		  ثابت DICTVAL &dictval,
 		  OP_SERIALIZER& opszr,
 		  Ts&&... ds)
   {
-    TRACE_SERIALIZE (this);
-    for (unsigned int i = 0; i < dictval.get_count (); i++)
-      if (unlikely (!opszr.serialize (c, dictval[i], ds...)))
-	return_trace (false);
+    TRACE_SERIALIZE (یہ);
+    برائے (غیرعلامتی صحیح i = 0; i < dictval.get_گنتی (); i++)
+      اگر (unlikely (!opszr.serialize (c, dictval[i], ds...)))
+	return_trace (جھوٹ);
 
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  template <typename T, typename V>
-  static bool serialize_int_op (hb_serialize_context_t *c, op_code_t op, V value, op_code_t intOp)
+  سانچہ <قسم_نام T, قسم_نام V>
+  ساکن منطقی serialize_int_op (hb_serialize_context_t *c, op_رمز_t op, V value, op_رمز_t intOp)
   {
-    if (unlikely ((!serialize_int<T, V> (c, intOp, value))))
-      return false;
+    اگر (unlikely ((!serialize_int<T, V> (c, intOp, value))))
+      واپس جھوٹ;
 
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (یہ);
     /* serialize the opcode */
-    HBUINT8 *p = c->allocate_size<HBUINT8> (OpCode_Size (op), false);
-    if (unlikely (!p)) return_trace (false);
-    if (Is_OpCode_ESC (op))
+    HBUINT8 *p = c->allocate_سائز<HBUINT8> (Op_رمز_سائز (op), جھوٹ);
+    اگر (unlikely (!p)) return_trace (جھوٹ);
+    اگر (Is_Op_رمز_ESC (op))
     {
-      *p = OpCode_escape;
-      op = Unmake_OpCode_ESC (op);
+      *p = Op_رمز_escape;
+      op = Unmake_Op_رمز_ESC (op);
       p++;
     }
     *p = op;
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  template <typename V>
-  static bool serialize_int4_op (hb_serialize_context_t *c, op_code_t op, V value)
-  { return serialize_int_op<HBINT32> (c, op, value, OpCode_longintdict); }
+  سانچہ <قسم_نام V>
+  ساکن منطقی serialize_int4_op (hb_serialize_context_t *c, op_رمز_t op, V value)
+  { واپس serialize_int_op<HBINT32> (c, op, value, Op_رمز_longintdict); }
 
-  template <typename V>
-  static bool serialize_int2_op (hb_serialize_context_t *c, op_code_t op, V value)
-  { return serialize_int_op<HBINT16> (c, op, value, OpCode_shortint); }
+  سانچہ <قسم_نام V>
+  ساکن منطقی serialize_int2_op (hb_serialize_context_t *c, op_رمز_t op, V value)
+  { واپس serialize_int_op<HBINT16> (c, op, value, Op_رمز_shortint); }
 
-  template <typename T, int int_op>
-  static bool serialize_link_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence)
+  سانچہ <قسم_نام T, صحیح int_op>
+  ساکن منطقی serialize_link_op (hb_serialize_context_t *c, op_رمز_t op, objidx_t link, whence_t whence)
   {
-    T &ofs = *(T *) (c->head + OpCode_Size (int_op));
-    if (unlikely (!serialize_int_op<T> (c, op, 0, int_op))) return false;
-    c->add_link (ofs, link, whence);
-    return true;
+    T &ofs = *(T *) (c->سر_2 + Op_رمز_سائز (int_op));
+    اگر (unlikely (!serialize_int_op<T> (c, op, 0, int_op))) واپس جھوٹ;
+    c->جوڑو_link (ofs, link, whence);
+    واپس سچ;
   }
 
-  static bool serialize_link4_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence = whence_t::Head)
-  { return serialize_link_op<HBINT32, OpCode_longintdict> (c, op, link, whence); }
+  ساکن منطقی serialize_link4_op (hb_serialize_context_t *c, op_رمز_t op, objidx_t link, whence_t whence = whence_t::سر)
+  { واپس serialize_link_op<HBINT32, Op_رمز_longintdict> (c, op, link, whence); }
 
-  static bool serialize_link2_op (hb_serialize_context_t *c, op_code_t op, objidx_t link, whence_t whence = whence_t::Head)
-  { return serialize_link_op<HBINT16, OpCode_shortint> (c, op, link, whence); }
+  ساکن منطقی serialize_link2_op (hb_serialize_context_t *c, op_رمز_t op, objidx_t link, whence_t whence = whence_t::سر)
+  { واپس serialize_link_op<HBINT16, Op_رمز_shortint> (c, op, link, whence); }
 };
 
-struct TopDict : Dict {};
-struct FontDict : Dict {};
-struct PrivateDict : Dict {};
+ساخت چوٹی_Dict : Dict {};
+ساخت FontDict : Dict {};
+ساخت نجی_Dict : Dict {};
 
-struct table_info_t
+ساخت جدول_info_t
 {
-  void init () { offset = size = 0; link = 0; }
+  خالی init () { انحراف = سائز = 0; link = 0; }
 
-  unsigned int    offset;
-  unsigned int    size;
+  غیرعلامتی صحیح    انحراف;
+  غیرعلامتی صحیح    سائز;
   objidx_t	  link;
 };
 
-template <typename COUNT>
-struct FDArray : CFFIndex<COUNT>
+سانچہ <قسم_نام گنتی_3>
+ساخت FDArray : CFFIndex<گنتی_3>
 {
-  template <typename DICTVAL, typename INFO, typename Iterator, typename OP_SERIALIZER>
-  bool serialize (hb_serialize_context_t *c,
+  سانچہ <قسم_نام DICTVAL, قسم_نام INFO, قسم_نام Iterator, قسم_نام OP_SERIALIZER>
+  منطقی serialize (hb_serialize_context_t *c,
 		  Iterator it,
 		  OP_SERIALIZER& opszr)
   {
-    TRACE_SERIALIZE (this);
+    TRACE_SERIALIZE (یہ);
 
     /* serialize INDEX data */
-    hb_vector_t<unsigned> sizes;
-    if (it.is_random_access_iterator)
+    hb_سمتیہ_t<غیرعلامتی> sizes;
+    اگر (it.is_random_access_iterator)
       sizes.alloc (hb_len (it));
 
     c->push ();
-    char *data_base = c->head;
+    حرف *ڈیٹا_بنیاد = c->سر_2;
     + it
-    | hb_map ([&] (const hb_pair_t<const DICTVAL&, const INFO&> &_)
+    | hb_map ([&] (ثابت hb_pair_t<ثابت DICTVAL&, ثابت INFO&> &_)
     {
-      FontDict *dict = c->start_embed<FontDict> ();
-		dict->serialize (c, _.first, opszr, _.second);
-		return c->head - (const char*)dict;
+      FontDict *dict = c->آغاز_embed<FontDict> ();
+		dict->serialize (c, _.پہلا, opszr, _.second);
+		واپس c->سر_2 - (ثابت حرف*)dict;
 	      })
     | hb_sink (sizes)
     ;
-    unsigned data_size = c->head - data_base;
-    c->pop_pack (false);
+    غیرعلامتی ڈیٹا_سائز = c->سر_2 - ڈیٹا_بنیاد;
+    c->نکالو_pack (جھوٹ);
 
-    if (unlikely (sizes.in_error ())) return_trace (false);
+    اگر (unlikely (sizes.اندر_error ())) return_trace (جھوٹ);
 
     /* It just happens that the above is packed right after the header below.
      * Such a hack. */
 
     /* serialize INDEX header */
-    return_trace (CFFIndex<COUNT>::serialize_header (c, hb_iter (sizes), data_size));
+    return_trace (CFFIndex<گنتی_3>::serialize_سرخی (c, hb_iter (sizes), ڈیٹا_سائز));
   }
 };
 
 /* FDSelect */
-struct FDSelect0 {
-  bool sanitize (hb_sanitize_context_t *c, unsigned int fdcount,
-                 unsigned int glyph_count = HB_CODEPOINT_INVALID) const
+ساخت FDSelect0 {
+  منطقی sanitize (hb_sanitize_context_t *c, غیرعلامتی صحیح fdcount,
+                 غیرعلامتی صحیح glyph_گنتی = HB_CODEPOINT_INVALID) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!(c->check_struct (this))))
-      return_trace (false);
+    TRACE_SANITIZE (یہ);
+    اگر (unlikely (!(c->check_struct (یہ))))
+      return_trace (جھوٹ);
     hb_barrier ();
-    if (unlikely (!c->check_array (fds, glyph_count == HB_CODEPOINT_INVALID ?
-                                     c->get_num_glyphs () : glyph_count)))
-      return_trace (false);
+    اگر (unlikely (!c->check_array (fds, glyph_گنتی == HB_CODEPOINT_INVALID ?
+                                     c->get_عدد_glyphs () : glyph_گنتی)))
+      return_trace (جھوٹ);
 
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  unsigned get_fd (hb_codepoint_t glyph) const
-  { return fds[glyph]; }
+  غیرعلامتی get_fd (hb_codepoint_t glyph) ثابت
+  { واپس fds[glyph]; }
 
-  hb_pair_t<unsigned, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) const
-  { return {fds[glyph], glyph + 1}; }
+  hb_pair_t<غیرعلامتی, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) ثابت
+  { واپس {fds[glyph], glyph + 1}; }
 
-  size_t get_size (unsigned int num_glyphs) const
-  { return hb_unsigned_mul_saturate (HBUINT8::static_size, num_glyphs); }
+  size_t get_سائز (غیرعلامتی صحیح عدد_glyphs) ثابت
+  { واپس hb_unsigned_mul_saturate (HBUINT8::static_سائز, عدد_glyphs); }
 
   HBUINT8     fds[HB_VAR_ARRAY];
 
-  DEFINE_SIZE_MIN (0);
+  DEFINE_سائز_MIN (0);
 };
 
-template <typename GID_TYPE, typename FD_TYPE>
-struct FDSelect3_4_Range
+سانچہ <قسم_نام GID_TYPE, قسم_نام FD_TYPE>
+ساخت FDSelect3_4_Range
 {
-  bool sanitize (hb_sanitize_context_t *c, const void * /*nullptr*/, unsigned int fdcount) const
+  منطقی sanitize (hb_sanitize_context_t *c, ثابت خالی * /*nullptr*/, غیرعلامتی صحیح fdcount) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ) &&
 		  hb_barrier () &&
-		  first < c->get_num_glyphs () && (fd < fdcount));
+		  پہلا < c->get_عدد_glyphs () && (fd < fdcount));
   }
 
-  GID_TYPE    first;
+  GID_TYPE    پہلا;
   FD_TYPE     fd;
-  public:
-  DEFINE_SIZE_STATIC (GID_TYPE::static_size + FD_TYPE::static_size);
+  عوامی:
+  DEFINE_سائز_STATIC (GID_TYPE::static_سائز + FD_TYPE::static_سائز);
 };
 
-template <typename GID_TYPE, typename FD_TYPE>
-struct FDSelect3_4
+سانچہ <قسم_نام GID_TYPE, قسم_نام FD_TYPE>
+ساخت FDSelect3_4
 {
-  size_t get_size () const
-  { return hb_unsigned_add_saturate ((size_t) GID_TYPE::static_size * 2, ranges.get_size ()); }
+  size_t get_سائز () ثابت
+  { واپس hb_unsigned_جوڑو_saturate ((size_t) GID_TYPE::static_سائز * 2, ranges.get_سائز ()); }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int fdcount,
-                 unsigned int min_glyphs = HB_CODEPOINT_INVALID) const
+  منطقی sanitize (hb_sanitize_context_t *c, غیرعلامتی صحیح fdcount,
+                 غیرعلامتی صحیح min_glyphs = HB_CODEPOINT_INVALID) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!(c->check_struct (this) &&
-		    ranges.sanitize (c, nullptr, fdcount) &&
+    TRACE_SANITIZE (یہ);
+    اگر (unlikely (!(c->check_struct (یہ) &&
+		    ranges.sanitize (c, خالی_اشاریہ, fdcount) &&
 		    hb_barrier () &&
 		    (nRanges () != 0) &&
-		    ranges[0].first == 0)))
-      return_trace (false);
+		    ranges[0].پہلا == 0)))
+      return_trace (جھوٹ);
 
-    for (unsigned int i = 1; i < nRanges (); i++)
-      if (unlikely (ranges[i - 1].first >= ranges[i].first))
-	return_trace (false);
+    برائے (غیرعلامتی صحیح i = 1; i < nRanges (); i++)
+      اگر (unlikely (ranges[i - 1].پہلا >= ranges[i].پہلا))
+	return_trace (جھوٹ);
 
-    if (unlikely (!(sentinel().sanitize (c) &&
+    اگر (unlikely (!(sentinel().sanitize (c) &&
 		   hb_barrier () &&
-                   sentinel() > ranges[nRanges () - 1].first &&
-                   sentinel() <= c->get_num_glyphs () &&
+                   sentinel() > ranges[nRanges () - 1].پہلا &&
+                   sentinel() <= c->get_عدد_glyphs () &&
                    sentinel() >= (min_glyphs == HB_CODEPOINT_INVALID ?
-                                  c->get_num_glyphs () : min_glyphs))))
-      return_trace (false);
+                                  c->get_عدد_glyphs () : min_glyphs))))
+      return_trace (جھوٹ);
 
-    return_trace (true);
+    return_trace (سچ);
   }
 
-  static int _cmp_range (const void *_key, const void *_item)
+  ساکن صحیح _cmp_range (ثابت خالی *کلید_3, ثابت خالی *شے_2)
   {
-    hb_codepoint_t glyph = * (hb_codepoint_t *) _key;
-    FDSelect3_4_Range<GID_TYPE, FD_TYPE> *range = (FDSelect3_4_Range<GID_TYPE, FD_TYPE> *) _item;
+    hb_codepoint_t glyph = * (hb_codepoint_t *) کلید_3;
+    FDSelect3_4_Range<GID_TYPE, FD_TYPE> *range = (FDSelect3_4_Range<GID_TYPE, FD_TYPE> *) شے_2;
 
-    if (glyph < range[0].first) return -1;
-    if (glyph < range[1].first) return 0;
-    return +1;
+    اگر (glyph < range[0].پہلا) واپس -1;
+    اگر (glyph < range[1].پہلا) واپس 0;
+    واپس +1;
   }
 
-  unsigned get_fd (hb_codepoint_t glyph) const
+  غیرعلامتی get_fd (hb_codepoint_t glyph) ثابت
   {
-    auto *range = hb_bsearch (glyph, &ranges[0], nRanges () - 1, sizeof (ranges[0]), _cmp_range);
-    return range ? range->fd : ranges[nRanges () - 1].fd;
+    خودکار *range = hb_bsearch (glyph, &ranges[0], nRanges () - 1, حجم (ranges[0]), _cmp_range);
+    واپس range ? range->fd : ranges[nRanges () - 1].fd;
   }
 
-  hb_pair_t<unsigned, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) const
+  hb_pair_t<غیرعلامتی, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) ثابت
   {
-    auto *range = hb_bsearch (glyph, &ranges[0], nRanges () - 1, sizeof (ranges[0]), _cmp_range);
-    unsigned fd = range ? range->fd : ranges[nRanges () - 1].fd;
-    hb_codepoint_t end = range ? range[1].first : ranges[nRanges () - 1].first;
-    return {fd, end};
+    خودکار *range = hb_bsearch (glyph, &ranges[0], nRanges () - 1, حجم (ranges[0]), _cmp_range);
+    غیرعلامتی fd = range ? range->fd : ranges[nRanges () - 1].fd;
+    hb_codepoint_t انتہا = range ? range[1].پہلا : ranges[nRanges () - 1].پہلا;
+    واپس {fd, انتہا};
   }
 
-  GID_TYPE        &nRanges ()       { return ranges.len; }
-  GID_TYPE         nRanges () const { return ranges.len; }
-  GID_TYPE       &sentinel ()       { return StructAfter<GID_TYPE> (ranges[nRanges () - 1]); }
-  const GID_TYPE &sentinel () const { return StructAfter<GID_TYPE> (ranges[nRanges () - 1]); }
+  GID_TYPE        &nRanges ()       { واپس ranges.len; }
+  GID_TYPE         nRanges () ثابت { واپس ranges.len; }
+  GID_TYPE       &sentinel ()       { واپس StructAfter<GID_TYPE> (ranges[nRanges () - 1]); }
+  ثابت GID_TYPE &sentinel () ثابت { واپس StructAfter<GID_TYPE> (ranges[nRanges () - 1]); }
 
-  ArrayOf<FDSelect3_4_Range<GID_TYPE, FD_TYPE>, GID_TYPE> ranges;
+  Array_کا<FDSelect3_4_Range<GID_TYPE, FD_TYPE>, GID_TYPE> ranges;
   /* GID_TYPE sentinel */
 
-  DEFINE_SIZE_ARRAY (GID_TYPE::static_size, ranges);
+  DEFINE_سائز_ARRAY (GID_TYPE::static_سائز, ranges);
 };
 
-typedef FDSelect3_4<HBUINT16, HBUINT8> FDSelect3;
-typedef FDSelect3_4_Range<HBUINT16, HBUINT8> FDSelect3_Range;
+قسمتعریف FDSelect3_4<HBUINT16, HBUINT8> FDSelect3;
+قسمتعریف FDSelect3_4_Range<HBUINT16, HBUINT8> FDSelect3_Range;
 
-struct FDSelect
+ساخت FDSelect
 {
-  bool serialize (hb_serialize_context_t *c, const FDSelect &src, unsigned int num_glyphs)
+  منطقی serialize (hb_serialize_context_t *c, ثابت FDSelect &src, غیرعلامتی صحیح عدد_glyphs)
   {
-    TRACE_SERIALIZE (this);
-    unsigned int size = src.get_size (num_glyphs);
-    FDSelect *dest = c->allocate_size<FDSelect> (size, false);
-    if (unlikely (!dest)) return_trace (false);
-    hb_memcpy (dest, &src, size);
-    return_trace (true);
+    TRACE_SERIALIZE (یہ);
+    غیرعلامتی صحیح سائز = src.get_سائز (عدد_glyphs);
+    FDSelect *dest = c->allocate_سائز<FDSelect> (سائز, جھوٹ);
+    اگر (unlikely (!dest)) return_trace (جھوٹ);
+    hb_memcpy (dest, &src, سائز);
+    return_trace (سچ);
   }
 
-  size_t get_size (unsigned int num_glyphs) const
+  size_t get_سائز (غیرعلامتی صحیح عدد_glyphs) ثابت
   {
-    switch (format)
+    انتخاب (format)
     {
-    case 0: hb_barrier (); return hb_unsigned_add_saturate (format.static_size, u.format0.get_size (num_glyphs));
-    case 3: hb_barrier (); return hb_unsigned_add_saturate (format.static_size, u.format3.get_size ());
-    default:return 0;
+    حالت 0: hb_barrier (); واپس hb_unsigned_جوڑو_saturate (format.static_سائز, u.format0.get_سائز (عدد_glyphs));
+    حالت 3: hb_barrier (); واپس hb_unsigned_جوڑو_saturate (format.static_سائز, u.format3.get_سائز ());
+    طےشدہ:واپس 0;
     }
   }
 
-  unsigned get_fd (hb_codepoint_t glyph) const
+  غیرعلامتی get_fd (hb_codepoint_t glyph) ثابت
   {
-    if (this == &Null (FDSelect)) return 0;
+    اگر (یہ == &Null (FDSelect)) واپس 0;
 
-    switch (format)
+    انتخاب (format)
     {
-    case 0: hb_barrier (); return u.format0.get_fd (glyph);
-    case 3: hb_barrier (); return u.format3.get_fd (glyph);
-    default:return 0;
+    حالت 0: hb_barrier (); واپس u.format0.get_fd (glyph);
+    حالت 3: hb_barrier (); واپس u.format3.get_fd (glyph);
+    طےشدہ:واپس 0;
     }
   }
   /* Returns pair of fd and one after last glyph in range. */
-  hb_pair_t<unsigned, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) const
+  hb_pair_t<غیرعلامتی, hb_codepoint_t> get_fd_range (hb_codepoint_t glyph) ثابت
   {
-    if (this == &Null (FDSelect)) return {0, 1};
+    اگر (یہ == &Null (FDSelect)) واپس {0, 1};
 
-    switch (format)
+    انتخاب (format)
     {
-    case 0: hb_barrier (); return u.format0.get_fd_range (glyph);
-    case 3: hb_barrier (); return u.format3.get_fd_range (glyph);
-    default:return {0, 1};
+    حالت 0: hb_barrier (); واپس u.format0.get_fd_range (glyph);
+    حالت 3: hb_barrier (); واپس u.format3.get_fd_range (glyph);
+    طےشدہ:واپس {0, 1};
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c, unsigned int fdcount) const
+  منطقی sanitize (hb_sanitize_context_t *c, غیرعلامتی صحیح fdcount) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
-      return_trace (false);
+    TRACE_SANITIZE (یہ);
+    اگر (unlikely (!c->check_struct (یہ)))
+      return_trace (جھوٹ);
     hb_barrier ();
 
-    switch (format)
+    انتخاب (format)
     {
-    case 0: hb_barrier (); return_trace (u.format0.sanitize (c, fdcount));
-    case 3: hb_barrier (); return_trace (u.format3.sanitize (c, fdcount));
-    default:return_trace (false);
+    حالت 0: hb_barrier (); return_trace (u.format0.sanitize (c, fdcount));
+    حالت 3: hb_barrier (); return_trace (u.format3.sanitize (c, fdcount));
+    طےشدہ:return_trace (جھوٹ);
     }
   }
 
   HBUINT8	format;
-  union {
+  اتحاد {
   FDSelect0	format0;
   FDSelect3	format3;
   } u;
-  public:
-  DEFINE_SIZE_MIN (1);
+  عوامی:
+  DEFINE_سائز_MIN (1);
 };
 
-template <typename COUNT>
-struct Subrs : CFFIndex<COUNT>
+سانچہ <قسم_نام گنتی_3>
+ساخت Subrs : CFFIndex<گنتی_3>
 {
-  typedef COUNT count_type;
-  typedef CFFIndex<COUNT> SUPER;
+  قسمتعریف گنتی_3 گنتی_type;
+  قسمتعریف CFFIndex<گنتی_3> SUPER;
 };
 
 } /* namespace CFF */
 
-#endif /* HB_OT_CFF_COMMON_HH */
+#اگر_ختم /* HB_OT_CFF_COMMON_HH */

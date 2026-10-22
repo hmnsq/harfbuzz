@@ -24,28 +24,28 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#ifndef HB_OT_CMAP_TABLE_HH
-#define HB_OT_CMAP_TABLE_HH
+#اگر_غیر_تعریف_شدہ HB_OT_CMAP_جدول_HH
+#تعریف_کرو HB_OT_CMAP_جدول_HH
 
-#include "hb-ot-os2-table.hh"
-#include "hb-ot-shaper-arabic-pua.hh"
-#include "hb-open-type.hh"
-#include "hb-ot-dual.hh"
-#include "hb-set.hh"
-#include "hb-cache.hh"
+#شامل "hb-ot-os2-table.hh"
+#شامل "hb-ot-shaper-arabic-pua.hh"
+#شامل "hb-open-type.hh"
+#شامل "hb-ot-dual.hh"
+#شامل "hb-set.hh"
+#شامل "hb-cache.hh"
 
 /*
  * cmap -- Character to Glyph Index Mapping
  * https://docs.microsoft.com/en-us/typography/opentype/spec/cmap
  */
-#define HB_OT_TAG_cmap HB_TAG('c','m','a','p')
-#define HB_OT_TAG_DMAP HB_TAG('D','M','A','P')
+#تعریف_کرو HB_OT_لیبل_cmap HB_لیبل('c','m','a','p')
+#تعریف_کرو HB_OT_لیبل_DMAP HB_لیبل('D','M','A','P')
 
-namespace OT {
+نامخلا OT {
 
-static inline uint8_t unicode_to_macroman (hb_codepoint_t u)
+ساکن اندرونی uint8_t unicode_مقصد_macroman (hb_codepoint_t u)
 {
-  static const struct unicode_to_macroman_t
+  ساکن ثابت ساخت unicode_مقصد_macroman_t
   {
     uint16_t unicode;
     uint8_t macroman;
@@ -181,152 +181,152 @@ static inline uint8_t unicode_to_macroman (hb_codepoint_t u)
     { 0xFB01, 0xDE },
     { 0xFB02, 0xDF },
   };
-  auto *c = hb_bsearch (u, mapping, ARRAY_LENGTH (mapping), sizeof (mapping[0]),
+  خودکار *c = hb_bsearch (u, mapping, ARRAY_لمبائی (mapping), حجم (mapping[0]),
 			_hb_cmp_operator<uint16_t, uint16_t>);
-  return c ? c->macroman : 0;
+  واپس c ? c->macroman : 0;
 }
 
-struct CmapSubtableFormat0
+ساخت CmapSubtableFormat0
 {
-  bool get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph) const
+  منطقی get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph) ثابت
   {
     hb_codepoint_t gid = codepoint < 256 ? glyphIdArray[codepoint] : 0;
-    if (unlikely (!gid))
-      return false;
+    اگر (unlikely (!gid))
+      واپس جھوٹ;
     *glyph = gid;
-    return true;
+    واپس سچ;
   }
 
-  unsigned get_language () const
+  غیرعلامتی get_language () ثابت
   {
-    return language;
+    واپس language;
   }
 
-  void collect_unicodes (hb_set_t *out) const
+  خالی collect_unicodes (hb_سیٹ_t *برآمد) ثابت
   {
-    for (unsigned int i = 0; i < 256; i++)
-      if (glyphIdArray[i])
-	out->add (i);
+    برائے (غیرعلامتی صحیح i = 0; i < 256; i++)
+      اگر (glyphIdArray[i])
+	برآمد->جوڑو (i);
   }
 
-  void collect_mapping (hb_set_t *unicodes, /* OUT */
-			hb_map_t *mapping /* OUT */) const
+  خالی collect_mapping (hb_سیٹ_t *unicodes, /*برآمد*/
+			hb_map_t *mapping /*برآمد*/) ثابت
   {
-    for (unsigned i = 0; i < 256; i++)
-      if (glyphIdArray[i])
+    برائے (غیرعلامتی i = 0; i < 256; i++)
+      اگر (glyphIdArray[i])
       {
 	hb_codepoint_t glyph = glyphIdArray[i];
-	unicodes->add (i);
-	mapping->set (i, glyph);
+	unicodes->جوڑو (i);
+	mapping->سیٹ (i, glyph);
       }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ));
   }
 
-  protected:
+  محفوظ:
   HBUINT16	format;		/* Format number is set to 0. */
-  HBUINT16	length;		/* Byte length of this subtable. */
+  HBUINT16	لمبائی;		/* Byte length of this subtable. */
   HBUINT16	language;	/* Ignore. */
   HBUINT8	glyphIdArray[256];/* An array that maps character
 				 * code to glyph index values. */
-  public:
-  DEFINE_SIZE_STATIC (6 + 256);
+  عوامی:
+  DEFINE_سائز_STATIC (6 + 256);
 };
 
-struct CmapSubtableFormat4
+ساخت CmapSubtableFormat4
 {
-  template<typename Iterator,
-      typename Writer,
+  سانچہ<قسم_نام Iterator,
+      قسم_نام Writer,
 	   hb_requires (hb_is_iterator (Iterator))>
-  void to_ranges (Iterator it, Writer& range_writer)
+  خالی مقصد_ranges (Iterator it, Writer& range_writer)
   {
-    hb_codepoint_t start_cp = 0, prev_run_start_cp = 0, run_start_cp = 0, end_cp = 0, last_gid = 0;
-    int run_length = 0 , delta = 0, prev_delta = 0;
+    hb_codepoint_t آغاز_cp = 0, پچھلا_تسلسل_آغاز_cp = 0, تسلسل_آغاز_cp = 0, انتہا_cp = 0, آخری_gid = 0;
+    صحیح تسلسل_لمبائی = 0 , delta = 0, پچھلا_delta = 0;
 
-    enum {
-      FIRST_SUB_RANGE,
+    شمار {
+      پہلا_SUB_RANGE,
       FOLLOWING_SUB_RANGE,
-    } mode;
+    } منوال;
 
-    while (it) {
+    جب (it) {
       // Start a new range
       {
-        const auto& pair = *it;
-        start_cp = pair.first;
-        prev_run_start_cp = start_cp;
-        run_start_cp = start_cp;
-        end_cp = start_cp;
-        last_gid = pair.second;
-        run_length = 1;
-        prev_delta = 0;
+        ثابت خودکار& pair = *it;
+        آغاز_cp = pair.پہلا;
+        پچھلا_تسلسل_آغاز_cp = آغاز_cp;
+        تسلسل_آغاز_cp = آغاز_cp;
+        انتہا_cp = آغاز_cp;
+        آخری_gid = pair.second;
+        تسلسل_لمبائی = 1;
+        پچھلا_delta = 0;
       }
 
-      delta = last_gid - start_cp;
-      mode = FIRST_SUB_RANGE;
+      delta = آخری_gid - آغاز_cp;
+      منوال = پہلا_SUB_RANGE;
       it++;
 
-      while (it) {
+      جب (it) {
         // Process range
-        const auto& pair = *it;
-        hb_codepoint_t next_cp = pair.first;
-        hb_codepoint_t next_gid = pair.second;
-        if (next_cp != end_cp + 1) {
+        ثابت خودکار& pair = *it;
+        hb_codepoint_t اگلا_cp = pair.پہلا;
+        hb_codepoint_t اگلا_gid = pair.second;
+        اگر (اگلا_cp != انتہا_cp + 1) {
           // Current range is over, stop processing.
-          break;
+          توڑو;
         }
 
-        if (next_gid == last_gid + 1) {
+        اگر (اگلا_gid == آخری_gid + 1) {
           // The current run continues.
-          end_cp = next_cp;
-          run_length++;
-          last_gid = next_gid;
+          انتہا_cp = اگلا_cp;
+          تسلسل_لمبائی++;
+          آخری_gid = اگلا_gid;
           it++;
-          continue;
+          جاری;
         }
 
         // A new run is starting, decide if we want to commit the current run.
-        int split_cost = (mode == FIRST_SUB_RANGE) ? 8 : 16;
-        int run_cost = run_length * 2;
-        if (run_cost >= split_cost) {
-          commit_current_range(start_cp,
-                               prev_run_start_cp,
-                               run_start_cp,
-                               end_cp,
+        صحیح بانٹو_لاگت = (منوال == پہلا_SUB_RANGE) ? 8 : 16;
+        صحیح تسلسل_لاگت = تسلسل_لمبائی * 2;
+        اگر (تسلسل_لاگت >= بانٹو_لاگت) {
+          commit_current_range(آغاز_cp,
+                               پچھلا_تسلسل_آغاز_cp,
+                               تسلسل_آغاز_cp,
+                               انتہا_cp,
                                delta,
-                               prev_delta,
-                               split_cost,
+                               پچھلا_delta,
+                               بانٹو_لاگت,
                                range_writer);
-          start_cp = next_cp;
+          آغاز_cp = اگلا_cp;
         }
 
         // Start the new run
-        mode = FOLLOWING_SUB_RANGE;
-        prev_run_start_cp = run_start_cp;
-        run_start_cp = next_cp;
-        end_cp = next_cp;
-        prev_delta = delta;
-        delta = next_gid - run_start_cp;
-        run_length = 1;
-        last_gid = next_gid;
+        منوال = FOLLOWING_SUB_RANGE;
+        پچھلا_تسلسل_آغاز_cp = تسلسل_آغاز_cp;
+        تسلسل_آغاز_cp = اگلا_cp;
+        انتہا_cp = اگلا_cp;
+        پچھلا_delta = delta;
+        delta = اگلا_gid - تسلسل_آغاز_cp;
+        تسلسل_لمبائی = 1;
+        آخری_gid = اگلا_gid;
         it++;
       }
 
       // Finalize range
-      commit_current_range (start_cp,
-                            prev_run_start_cp,
-                            run_start_cp,
-                            end_cp,
+      commit_current_range (آغاز_cp,
+                            پچھلا_تسلسل_آغاز_cp,
+                            تسلسل_آغاز_cp,
+                            انتہا_cp,
                             delta,
-                            prev_delta,
+                            پچھلا_delta,
                             8,
                             range_writer);
     }
 
-    if (likely (end_cp != 0xFFFF)) {
+    اگر (likely (انتہا_cp != 0xFFFF)) {
       range_writer (0xFFFF, 0xFFFF, 1);
     }
   }
@@ -334,1088 +334,1088 @@ struct CmapSubtableFormat4
   /*
    * Writes the current range as either one or two ranges depending on what is most efficient.
    */
-  template<typename Writer>
-  void commit_current_range (hb_codepoint_t start,
-                             hb_codepoint_t prev_run_start,
-                             hb_codepoint_t run_start,
-                             hb_codepoint_t end,
-                             int run_delta,
-                             int previous_run_delta,
-                             int split_cost,
+  سانچہ<قسم_نام Writer>
+  خالی commit_current_range (hb_codepoint_t آغاز,
+                             hb_codepoint_t پچھلا_تسلسل_آغاز,
+                             hb_codepoint_t تسلسل_آغاز,
+                             hb_codepoint_t انتہا,
+                             صحیح تسلسل_delta,
+                             صحیح پچھلا_تسلسل_delta,
+                             صحیح بانٹو_لاگت,
                              Writer& range_writer) {
-    bool should_split = false;
-    if (start < run_start && run_start < end) {
-      int run_cost = (end - run_start + 1) * 2;
-      if (run_cost >= split_cost) {
-        should_split = true;
+    منطقی should_بانٹو = جھوٹ;
+    اگر (آغاز < تسلسل_آغاز && تسلسل_آغاز < انتہا) {
+      صحیح تسلسل_لاگت = (انتہا - تسلسل_آغاز + 1) * 2;
+      اگر (تسلسل_لاگت >= بانٹو_لاگت) {
+        should_بانٹو = سچ;
       }
     }
 
     // A zero delta is also the marker for ranges that need a
     // glyphIdArray; serialize_rangeoffset_glyid() tells the two cases
     // apart by re-checking the mapping.
-    if (should_split) {
-      if (start == prev_run_start)
-        range_writer (start, run_start - 1, previous_run_delta);
-      else
-        range_writer (start, run_start - 1, 0);
-      range_writer (run_start, end, run_delta);
-      return;
+    اگر (should_بانٹو) {
+      اگر (آغاز == پچھلا_تسلسل_آغاز)
+        range_writer (آغاز, تسلسل_آغاز - 1, پچھلا_تسلسل_delta);
+      ورنہ
+        range_writer (آغاز, تسلسل_آغاز - 1, 0);
+      range_writer (تسلسل_آغاز, انتہا, تسلسل_delta);
+      واپس;
     }
 
 
-    if (start == run_start) {
+    اگر (آغاز == تسلسل_آغاز) {
       // Range is only a run
-      range_writer (start, end, run_delta);
-      return;
+      range_writer (آغاز, انتہا, تسلسل_delta);
+      واپس;
     }
 
     // Write only a single non-run range.
-    range_writer (start, end, 0);
+    range_writer (آغاز, انتہا, 0);
   }
 
-  template<typename Iterator,
+  سانچہ<قسم_نام Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  unsigned serialize_find_segcount (Iterator it) {
-    struct Counter {
-      unsigned segcount = 0;
+  غیرعلامتی serialize_ڈھونڈو_segcount (Iterator it) {
+    ساخت شمار_2 {
+      غیرعلامتی segcount = 0;
 
-      void operator() (hb_codepoint_t start,
-                       hb_codepoint_t end,
-                       int delta) {
+      خالی عامل() (hb_codepoint_t آغاز,
+                       hb_codepoint_t انتہا,
+                       صحیح delta) {
         segcount++;
       }
-    } counter;
+    } شمار_3;
 
-    to_ranges (+it, counter);
-    return counter.segcount;
+    مقصد_ranges (+it, شمار_3);
+    واپس شمار_3.segcount;
   }
 
 
-  template<typename Iterator,
+  سانچہ<قسم_نام Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  bool serialize_start_end_delta_arrays (hb_serialize_context_t *c,
+  منطقی serialize_آغاز_انتہا_delta_arrays (hb_serialize_context_t *c,
                                          Iterator it,
-                                         int segcount)
+                                         صحیح segcount)
   {
-    struct Writer {
+    ساخت Writer {
       hb_serialize_context_t *serializer_;
-      HBUINT16* end_code_;
-      HBUINT16* start_code_;
+      HBUINT16* انتہا_رمز;
+      HBUINT16* آغاز_رمز;
       HBINT16* id_delta_;
-      int index_;
+      صحیح اشاریہ_3;
 
       Writer(hb_serialize_context_t *serializer)
           : serializer_(serializer),
-            end_code_(nullptr),
-            start_code_(nullptr),
-            id_delta_(nullptr),
-            index_ (0) {}
-      void operator() (hb_codepoint_t start,
-                       hb_codepoint_t end,
-                       int delta) {
-        start_code_[index_] = start;
-        end_code_[index_] = end;
-        id_delta_[index_] = delta;
-        index_++;
+            انتہا_رمز(خالی_اشاریہ),
+            آغاز_رمز(خالی_اشاریہ),
+            id_delta_(خالی_اشاریہ),
+            اشاریہ_3 (0) {}
+      خالی عامل() (hb_codepoint_t آغاز,
+                       hb_codepoint_t انتہا,
+                       صحیح delta) {
+        آغاز_رمز[اشاریہ_3] = آغاز;
+        انتہا_رمز[اشاریہ_3] = انتہا;
+        id_delta_[اشاریہ_3] = delta;
+        اشاریہ_3++;
       }
     } writer(c);
 
-    writer.end_code_ = c->allocate_size<HBUINT16> (HBUINT16::static_size * segcount, false);
-    (void) c->allocate_size<HBUINT16> (2); // padding
-    writer.start_code_ = c->allocate_size<HBUINT16> (HBUINT16::static_size * segcount, false);
-    writer.id_delta_ = c->allocate_size<HBINT16> (HBINT16::static_size * segcount, false);
+    writer.انتہا_رمز = c->allocate_سائز<HBUINT16> (HBUINT16::static_سائز * segcount, جھوٹ);
+    (خالی) c->allocate_سائز<HBUINT16> (2); // padding
+    writer.آغاز_رمز = c->allocate_سائز<HBUINT16> (HBUINT16::static_سائز * segcount, جھوٹ);
+    writer.id_delta_ = c->allocate_سائز<HBINT16> (HBINT16::static_سائز * segcount, جھوٹ);
 
-    if (unlikely (!writer.end_code_ || !writer.start_code_ || !writer.id_delta_)) return false;
+    اگر (unlikely (!writer.انتہا_رمز || !writer.آغاز_رمز || !writer.id_delta_)) واپس جھوٹ;
 
-    to_ranges (+it, writer);
-    return true;
+    مقصد_ranges (+it, writer);
+    واپس سچ;
   }
 
-  template<typename Iterator,
+  سانچہ<قسم_نام Iterator,
           hb_requires (hb_is_iterator (Iterator))>
   HBUINT16* serialize_rangeoffset_glyid (hb_serialize_context_t *c,
                                          Iterator it,
-					 HBUINT16 *endCode,
-					 HBUINT16 *startCode,
+					 HBUINT16 *انتہا_رمز_2,
+					 HBUINT16 *آغاز_رمز_2,
 					 HBINT16 *idDelta,
-					 unsigned segcount)
+					 غیرعلامتی segcount)
   {
-    hb_map_t cp_to_gid { it };
+    hb_map_t cp_مقصد_gid { it };
 
-    HBUINT16 *idRangeOffset = c->allocate_size<HBUINT16> (HBUINT16::static_size * segcount);
-    if (unlikely (!c->check_success (idRangeOffset))) return nullptr;
-    if (unlikely ((char *)idRangeOffset - (char *)idDelta != (int) segcount * (int) HBINT16::static_size)) return nullptr;
+    HBUINT16 *id_Range_انحراف = c->allocate_سائز<HBUINT16> (HBUINT16::static_سائز * segcount);
+    اگر (unlikely (!c->check_success (id_Range_انحراف))) واپس خالی_اشاریہ;
+    اگر (unlikely ((حرف *)id_Range_انحراف - (حرف *)idDelta != (صحیح) segcount * (صحیح) HBINT16::static_سائز)) واپس خالی_اشاریہ;
 
-    for (unsigned i : hb_range (segcount))
+    برائے (غیرعلامتی i : hb_range (segcount))
     {
       /* A non-zero delta is always a real run. A zero delta is
        * ambiguous: identity mapping, or the marker for a range that
        * needs a glyphIdArray. Only zero deltas need a check. */
-      int delta = idDelta[i];
-      if (delta)
-	continue;
-      bool use_delta = true;
-      for (hb_codepoint_t cp = startCode[i]; cp <= endCode[i]; cp++)
+      صحیح delta = idDelta[i];
+      اگر (delta)
+	جاری;
+      منطقی use_delta = سچ;
+      برائے (hb_codepoint_t cp = آغاز_رمز_2[i]; cp <= انتہا_رمز_2[i]; cp++)
       {
-	hb_codepoint_t gid = cp_to_gid.get (cp);
-	if (gid == HB_MAP_VALUE_INVALID)
+	hb_codepoint_t gid = cp_مقصد_gid.get (cp);
+	اگر (gid == HB_MAP_قدر_INVALID)
 	  gid = 0;
-	if (gid != cp)
+	اگر (gid != cp)
 	{
-	  use_delta = false;
-	  break;
+	  use_delta = جھوٹ;
+	  توڑو;
 	}
       }
-      if (use_delta)
-	continue;
+      اگر (use_delta)
+	جاری;
 
-      idRangeOffset[i] = 2 * (c->start_embed<HBUINT16> () - idRangeOffset - i);
-      for (hb_codepoint_t cp = startCode[i]; cp <= endCode[i]; cp++)
+      id_Range_انحراف[i] = 2 * (c->آغاز_embed<HBUINT16> () - id_Range_انحراف - i);
+      برائے (hb_codepoint_t cp = آغاز_رمز_2[i]; cp <= انتہا_رمز_2[i]; cp++)
       {
         HBUINT16 gid;
-        gid = cp_to_gid[cp];
+        gid = cp_مقصد_gid[cp];
         c->copy<HBUINT16> (gid);
       }
     }
 
-    return idRangeOffset;
+    واپس id_Range_انحراف;
   }
 
-  template<typename Iterator,
+  سانچہ<قسم_نام Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  void serialize (hb_serialize_context_t *c,
+  خالی serialize (hb_serialize_context_t *c,
 		  Iterator it)
   {
-    auto format4_iter =
+    خودکار format4_iter =
     + it
-    | hb_filter ([&] (const hb_codepoint_pair_t _)
-		 { return _.first <= 0xFFFF; })
+    | hb_filter ([&] (ثابت hb_codepoint_pair_t _)
+		 { واپس _.پہلا <= 0xFFFF; })
     ;
 
-    if (!format4_iter) return;
+    اگر (!format4_iter) واپس;
 
-    unsigned table_initpos = c->length ();
-    if (unlikely (!c->extend_min (this))) return;
-    this->format = 4;
+    غیرعلامتی جدول_initpos = c->لمبائی ();
+    اگر (unlikely (!c->extend_min (یہ))) واپس;
+    یہ->format = 4;
 
-    hb_vector_t<hb_codepoint_pair_t> cp_to_gid {
+    hb_سمتیہ_t<hb_codepoint_pair_t> cp_مقصد_gid {
       format4_iter
     };
 
     //serialize endCode[], startCode[], idDelta[]
-    HBUINT16* endCode = c->start_embed<HBUINT16> ();
-    unsigned segcount = serialize_find_segcount (cp_to_gid.iter());
-    if (unlikely (!serialize_start_end_delta_arrays (c, cp_to_gid.iter(), segcount)))
-      return;
+    HBUINT16* انتہا_رمز_2 = c->آغاز_embed<HBUINT16> ();
+    غیرعلامتی segcount = serialize_ڈھونڈو_segcount (cp_مقصد_gid.iter());
+    اگر (unlikely (!serialize_آغاز_انتہا_delta_arrays (c, cp_مقصد_gid.iter(), segcount)))
+      واپس;
 
-    HBUINT16 *startCode = endCode + segcount + 1;
-    HBINT16 *idDelta = ((HBINT16*)startCode) + segcount;
+    HBUINT16 *آغاز_رمز_2 = انتہا_رمز_2 + segcount + 1;
+    HBINT16 *idDelta = ((HBINT16*)آغاز_رمز_2) + segcount;
 
-    HBUINT16 *idRangeOffset = serialize_rangeoffset_glyid (c,
-                                                           cp_to_gid.iter (),
-                                                           endCode,
-                                                           startCode,
+    HBUINT16 *id_Range_انحراف = serialize_rangeoffset_glyid (c,
+                                                           cp_مقصد_gid.iter (),
+                                                           انتہا_رمز_2,
+                                                           آغاز_رمز_2,
                                                            idDelta,
                                                            segcount);
-    if (unlikely (!c->check_success (idRangeOffset))) return;
+    اگر (unlikely (!c->check_success (id_Range_انحراف))) واپس;
 
-    this->length = c->length () - table_initpos;
-    if ((long long) this->length != (long long) c->length () - table_initpos)
+    یہ->لمبائی = c->لمبائی () - جدول_initpos;
+    اگر ((طویل طویل) یہ->لمبائی != (طویل طویل) c->لمبائی () - جدول_initpos)
     {
-      c->err (HB_SERIALIZE_ERROR_INT_OVERFLOW);
-      return;
+      c->err (HB_SERIALIZE_ERROR_INT_حد_سے_تجاوز);
+      واپس;
     }
 
-    this->segCountX2 = segcount * 2;
-    this->entrySelector = hb_max (1u, hb_bit_storage (segcount)) - 1;
-    this->searchRange = 2 * (1u << this->entrySelector);
-    this->rangeShift = segcount * 2 > this->searchRange
-		       ? 2 * segcount - this->searchRange
+    یہ->seg_گنتی_X2 = segcount * 2;
+    یہ->اندراج_Selector = hb_max (1u, hb_ثنائی_ہندسہ_storage (segcount)) - 1;
+    یہ->تلاش_Range = 2 * (1u << یہ->اندراج_Selector);
+    یہ->range_سرکاؤ = segcount * 2 > یہ->تلاش_Range
+		       ? 2 * segcount - یہ->تلاش_Range
 		       : 0;
   }
 
-  unsigned get_language () const
+  غیرعلامتی get_language () ثابت
   {
-    return language;
+    واپس language;
   }
 
-  struct accelerator_t
+  ساخت accelerator_t
   {
     accelerator_t () {}
-    accelerator_t (const CmapSubtableFormat4 *subtable) = delete;
+    accelerator_t (ثابت CmapSubtableFormat4 *subtable) = حذف;
 
-    void init (const CmapSubtableFormat4 *subtable,
-	       unsigned int              subtable_data_size)
+    خالی init (ثابت CmapSubtableFormat4 *subtable,
+	       غیرعلامتی صحیح              subtable_ڈیٹا_سائز)
     {
-      segCount = subtable->segCountX2 / 2;
-      endCount = subtable->values.arrayZ;
-      startCount = endCount + segCount + 1;
-      idDelta = startCount + segCount;
-      idRangeOffset = idDelta + segCount;
-      glyphIdArray = idRangeOffset + segCount;
+      seg_گنتی_2 = subtable->seg_گنتی_X2 / 2;
+      انتہا_گنتی = subtable->values.arrayZ;
+      آغاز_گنتی = انتہا_گنتی + seg_گنتی_2 + 1;
+      idDelta = آغاز_گنتی + seg_گنتی_2;
+      id_Range_انحراف = idDelta + seg_گنتی_2;
+      glyphIdArray = id_Range_انحراف + seg_گنتی_2;
 
-      unsigned int values_offset = 16 + 8 * segCount;
-      glyphIdArrayLength = subtable_data_size > values_offset
-			   ? (subtable_data_size - values_offset) / 2
+      غیرعلامتی صحیح اقدار_انحراف = 16 + 8 * seg_گنتی_2;
+      glyph_Id_Array_لمبائی = subtable_ڈیٹا_سائز > اقدار_انحراف
+			   ? (subtable_ڈیٹا_سائز - اقدار_انحراف) / 2
 			   : 0;
     }
 
-    bool get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph) const
+    منطقی get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph) ثابت
     {
-      struct CustomRange
+      ساخت CustomRange
       {
-	int cmp (hb_codepoint_t k,
-		 unsigned distance) const
+	صحیح cmp (hb_codepoint_t k,
+		 غیرعلامتی distance) ثابت
 	{
-	  if (k > last) return +1;
-	  if (k < (&last)[distance]/*first*/) return -1;
-	  return 0;
+	  اگر (k > آخری) واپس +1;
+	  اگر (k < (&آخری)[distance]/*پہلا*/) واپس -1;
+	  واپس 0;
 	}
-	HBUINT16 last;
+	HBUINT16 آخری;
       };
 
-      const HBUINT16 *found = hb_bsearch (codepoint,
-					  this->endCount,
-					  this->segCount,
-					  sizeof (CustomRange),
-					  _hb_cmp_method<hb_codepoint_t, CustomRange, unsigned>,
-					  this->segCount + 1);
-      if (unlikely (!found))
-	return false;
-      unsigned int i = found - endCount;
+      ثابت HBUINT16 *ملا = hb_bsearch (codepoint,
+					  یہ->انتہا_گنتی,
+					  یہ->seg_گنتی_2,
+					  حجم (CustomRange),
+					  hb_cmp_طریقہ<hb_codepoint_t, CustomRange, غیرعلامتی>,
+					  یہ->seg_گنتی_2 + 1);
+      اگر (unlikely (!ملا))
+	واپس جھوٹ;
+      غیرعلامتی صحیح i = ملا - انتہا_گنتی;
 
       hb_codepoint_t gid;
-      unsigned int rangeOffset = this->idRangeOffset[i];
-      if (rangeOffset == 0)
-	gid = codepoint + this->idDelta[i];
-      else
+      غیرعلامتی صحیح range_انحراف = یہ->id_Range_انحراف[i];
+      اگر (range_انحراف == 0)
+	gid = codepoint + یہ->idDelta[i];
+      ورنہ
       {
 	/* Somebody has been smoking... */
-	unsigned int index = rangeOffset / 2 + (codepoint - this->startCount[i]) + i - this->segCount;
-	if (unlikely (index >= this->glyphIdArrayLength))
-	  return false;
-	gid = this->glyphIdArray[index];
-	if (unlikely (!gid))
-	  return false;
-	gid += this->idDelta[i];
+	غیرعلامتی صحیح اشاریہ_2 = range_انحراف / 2 + (codepoint - یہ->آغاز_گنتی[i]) + i - یہ->seg_گنتی_2;
+	اگر (unlikely (اشاریہ_2 >= یہ->glyph_Id_Array_لمبائی))
+	  واپس جھوٹ;
+	gid = یہ->glyphIdArray[اشاریہ_2];
+	اگر (unlikely (!gid))
+	  واپس جھوٹ;
+	gid += یہ->idDelta[i];
       }
       gid &= 0xFFFFu;
-      if (unlikely (!gid))
-	return false;
+      اگر (unlikely (!gid))
+	واپس جھوٹ;
       *glyph = gid;
-      return true;
+      واپس سچ;
     }
 
-    HB_INTERNAL static bool get_glyph_func (const void *obj, hb_codepoint_t codepoint, hb_codepoint_t *glyph)
-    { return ((const accelerator_t *) obj)->get_glyph (codepoint, glyph); }
+    HB_اندرونی ساکن منطقی get_glyph_func (ثابت خالی *obj, hb_codepoint_t codepoint, hb_codepoint_t *glyph)
+    { واپس ((ثابت accelerator_t *) obj)->get_glyph (codepoint, glyph); }
 
-    void collect_unicodes (hb_set_t *out) const
+    خالی collect_unicodes (hb_سیٹ_t *برآمد) ثابت
     {
-      unsigned int count = this->segCount;
-      if (count && this->startCount[count - 1] == 0xFFFFu)
-	count--; /* Skip sentinel segment. */
-      for (unsigned int i = 0; i < count; i++)
+      غیرعلامتی صحیح گنتی = یہ->seg_گنتی_2;
+      اگر (گنتی && یہ->آغاز_گنتی[گنتی - 1] == 0xFFFFu)
+	گنتی--; /* Skip sentinel segment. */
+      برائے (غیرعلامتی صحیح i = 0; i < گنتی; i++)
       {
-	hb_codepoint_t start = this->startCount[i];
-	hb_codepoint_t end = this->endCount[i];
-	unsigned int rangeOffset = this->idRangeOffset[i];
-        out->add_range(start, end);
-	if (rangeOffset == 0)
+	hb_codepoint_t آغاز = یہ->آغاز_گنتی[i];
+	hb_codepoint_t انتہا = یہ->انتہا_گنتی[i];
+	غیرعلامتی صحیح range_انحراف = یہ->id_Range_انحراف[i];
+        برآمد->جوڑو_range(آغاز, انتہا);
+	اگر (range_انحراف == 0)
 	{
-	  for (hb_codepoint_t codepoint = start; codepoint <= end; codepoint++)
+	  برائے (hb_codepoint_t codepoint = آغاز; codepoint <= انتہا; codepoint++)
 	  {
-	    hb_codepoint_t gid = (codepoint + this->idDelta[i]) & 0xFFFFu;
-	    if (unlikely (!gid))
-              out->del(codepoint);
+	    hb_codepoint_t gid = (codepoint + یہ->idDelta[i]) & 0xFFFFu;
+	    اگر (unlikely (!gid))
+              برآمد->del(codepoint);
 	  }
 	}
-	else
+	ورنہ
 	{
-	  for (hb_codepoint_t codepoint = start; codepoint <= end; codepoint++)
+	  برائے (hb_codepoint_t codepoint = آغاز; codepoint <= انتہا; codepoint++)
 	  {
-	    unsigned int index = rangeOffset / 2 + (codepoint - this->startCount[i]) + i - this->segCount;
-	    if (unlikely (index >= this->glyphIdArrayLength))
+	    غیرعلامتی صحیح اشاریہ_2 = range_انحراف / 2 + (codepoint - یہ->آغاز_گنتی[i]) + i - یہ->seg_گنتی_2;
+	    اگر (unlikely (اشاریہ_2 >= یہ->glyph_Id_Array_لمبائی))
             {
-              out->del_range (codepoint, end);
-	      break;
+              برآمد->del_range (codepoint, انتہا);
+	      توڑو;
             }
-	    hb_codepoint_t gid = this->glyphIdArray[index];
-	    if (unlikely (!gid))
-              out->del(codepoint);
+	    hb_codepoint_t gid = یہ->glyphIdArray[اشاریہ_2];
+	    اگر (unlikely (!gid))
+              برآمد->del(codepoint);
 	  }
 	}
       }
     }
 
-    void collect_mapping (hb_set_t *unicodes, /* OUT */
-			  hb_map_t *mapping /* OUT */) const
+    خالی collect_mapping (hb_سیٹ_t *unicodes, /*برآمد*/
+			  hb_map_t *mapping /*برآمد*/) ثابت
     {
       // TODO(grieger): optimize similar to collect_unicodes
       // (ie. use add_range())
-      unsigned count = this->segCount;
-      if (count && this->startCount[count - 1] == 0xFFFFu)
-	count--; /* Skip sentinel segment. */
-      for (unsigned i = 0; i < count; i++)
+      غیرعلامتی گنتی = یہ->seg_گنتی_2;
+      اگر (گنتی && یہ->آغاز_گنتی[گنتی - 1] == 0xFFFFu)
+	گنتی--; /* Skip sentinel segment. */
+      برائے (غیرعلامتی i = 0; i < گنتی; i++)
       {
-	hb_codepoint_t start = this->startCount[i];
-	hb_codepoint_t end = this->endCount[i];
-	unsigned rangeOffset = this->idRangeOffset[i];
-	if (rangeOffset == 0)
+	hb_codepoint_t آغاز = یہ->آغاز_گنتی[i];
+	hb_codepoint_t انتہا = یہ->انتہا_گنتی[i];
+	غیرعلامتی range_انحراف = یہ->id_Range_انحراف[i];
+	اگر (range_انحراف == 0)
 	{
-	  for (hb_codepoint_t codepoint = start; codepoint <= end; codepoint++)
+	  برائے (hb_codepoint_t codepoint = آغاز; codepoint <= انتہا; codepoint++)
 	  {
-	    hb_codepoint_t gid = (codepoint + this->idDelta[i]) & 0xFFFFu;
-	    if (unlikely (!gid))
-	      continue;
-	    unicodes->add (codepoint);
-	    mapping->set (codepoint, gid);
+	    hb_codepoint_t gid = (codepoint + یہ->idDelta[i]) & 0xFFFFu;
+	    اگر (unlikely (!gid))
+	      جاری;
+	    unicodes->جوڑو (codepoint);
+	    mapping->سیٹ (codepoint, gid);
 	  }
 	}
-	else
+	ورنہ
 	{
-	  for (hb_codepoint_t codepoint = start; codepoint <= end; codepoint++)
+	  برائے (hb_codepoint_t codepoint = آغاز; codepoint <= انتہا; codepoint++)
 	  {
-	    unsigned index = rangeOffset / 2 + (codepoint - this->startCount[i]) + i - this->segCount;
-	    if (unlikely (index >= this->glyphIdArrayLength))
-	      break;
-	    hb_codepoint_t gid = this->glyphIdArray[index];
-	    if (unlikely (!gid))
-	      continue;
-            gid = (gid + this->idDelta[i]) & 0xFFFFu;
-	    unicodes->add (codepoint);
-	    mapping->set (codepoint, gid);
+	    غیرعلامتی اشاریہ_2 = range_انحراف / 2 + (codepoint - یہ->آغاز_گنتی[i]) + i - یہ->seg_گنتی_2;
+	    اگر (unlikely (اشاریہ_2 >= یہ->glyph_Id_Array_لمبائی))
+	      توڑو;
+	    hb_codepoint_t gid = یہ->glyphIdArray[اشاریہ_2];
+	    اگر (unlikely (!gid))
+	      جاری;
+            gid = (gid + یہ->idDelta[i]) & 0xFFFFu;
+	    unicodes->جوڑو (codepoint);
+	    mapping->سیٹ (codepoint, gid);
 	  }
 	}
       }
     }
 
-    const HBUINT16 *endCount;
-    const HBUINT16 *startCount;
-    const HBUINT16 *idDelta;
-    const HBUINT16 *idRangeOffset;
-    const HBUINT16 *glyphIdArray;
-    unsigned int segCount;
-    unsigned int glyphIdArrayLength;
+    ثابت HBUINT16 *انتہا_گنتی;
+    ثابت HBUINT16 *آغاز_گنتی;
+    ثابت HBUINT16 *idDelta;
+    ثابت HBUINT16 *id_Range_انحراف;
+    ثابت HBUINT16 *glyphIdArray;
+    غیرعلامتی صحیح seg_گنتی_2;
+    غیرعلامتی صحیح glyph_Id_Array_لمبائی;
   };
 
-  bool get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph,
-		  unsigned int subtable_data_size) const
+  منطقی get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph,
+		  غیرعلامتی صحیح subtable_ڈیٹا_سائز) ثابت
   {
     accelerator_t accel;
-    accel.init (this, subtable_data_size);
-    return accel.get_glyph_func (&accel, codepoint, glyph);
+    accel.init (یہ, subtable_ڈیٹا_سائز);
+    واپس accel.get_glyph_func (&accel, codepoint, glyph);
   }
-  bool get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph) const
-  { return false; }
+  منطقی get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph) ثابت
+  { واپس جھوٹ; }
 
-  void collect_unicodes (hb_set_t *out, unsigned int subtable_data_size) const
+  خالی collect_unicodes (hb_سیٹ_t *برآمد, غیرعلامتی صحیح subtable_ڈیٹا_سائز) ثابت
   {
     accelerator_t accel;
-    accel.init (this, subtable_data_size);
-    accel.collect_unicodes (out);
+    accel.init (یہ, subtable_ڈیٹا_سائز);
+    accel.collect_unicodes (برآمد);
   }
-  void collect_unicodes (hb_set_t *out) const
-  { collect_unicodes (out, length); }
+  خالی collect_unicodes (hb_سیٹ_t *برآمد) ثابت
+  { collect_unicodes (برآمد, لمبائی); }
 
-  void collect_mapping (hb_set_t *unicodes, /* OUT */
-			hb_map_t *mapping, /* OUT */
-			unsigned int subtable_data_size) const
+  خالی collect_mapping (hb_سیٹ_t *unicodes, /*برآمد*/
+			hb_map_t *mapping, /*برآمد*/
+			غیرعلامتی صحیح subtable_ڈیٹا_سائز) ثابت
   {
     accelerator_t accel;
-    accel.init (this, subtable_data_size);
+    accel.init (یہ, subtable_ڈیٹا_سائز);
     accel.collect_mapping (unicodes, mapping);
   }
-  void collect_mapping (hb_set_t *unicodes, /* OUT */
-			hb_map_t *mapping /* OUT */) const
-  { collect_mapping (unicodes, mapping, length); }
+  خالی collect_mapping (hb_سیٹ_t *unicodes, /*برآمد*/
+			hb_map_t *mapping /*برآمد*/) ثابت
+  { collect_mapping (unicodes, mapping, لمبائی); }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!c->check_struct (this)))
-      return_trace (false);
+    TRACE_SANITIZE (یہ);
+    اگر (unlikely (!c->check_struct (یہ)))
+      return_trace (جھوٹ);
     hb_barrier ();
 
-    return_trace (c->check_range (values, 2 + 4 * segCountX2));
+    return_trace (c->check_range (values, 2 + 4 * seg_گنتی_X2));
   }
 
-  protected:
+  محفوظ:
   HBUINT16	format;		/* Format number is set to 4. */
-  HBUINT16	length;		/* This is the length in bytes of the
+  HBUINT16	لمبائی;		/* This is the length in bytes of the
 				 * subtable. */
   HBUINT16	language;	/* Ignore. */
-  HBUINT16	segCountX2;	/* 2 x segCount. */
-  HBUINT16	searchRange;	/* 2 * (2**floor(log2(segCount))) */
-  HBUINT16	entrySelector;	/* log2(searchRange/2) */
-  HBUINT16	rangeShift;	/* 2 x segCount - searchRange */
+  HBUINT16	seg_گنتی_X2;	/* 2 x segCount. */
+  HBUINT16	تلاش_Range;	/* 2 * (2**floor(log2(segCount))) */
+  HBUINT16	اندراج_Selector;	/* log2(searchRange/2) */
+  HBUINT16	range_سرکاؤ;	/* 2 x segCount - searchRange */
 
-  UnsizedArrayOf<HBUINT16>
+  Unsized_Array_کا<HBUINT16>
 		values;
-#if 0
-  HBUINT16	endCount[segCount];	/* End characterCode for each segment,
+#اگر 0
+  HBUINT16	انتہا_گنتی[seg_گنتی_2];	/* End characterCode for each segment,
 					 * last=0xFFFFu. */
   HBUINT16	reservedPad;		/* Set to 0. */
-  HBUINT16	startCount[segCount];	/* Start character code for each segment. */
-  HBINT16		idDelta[segCount];	/* Delta for all character codes in segment. */
-  HBUINT16	idRangeOffset[segCount];/* Offsets into glyphIdArray or 0 */
-  UnsizedArrayOf<HBUINT16>
+  HBUINT16	آغاز_گنتی[seg_گنتی_2];	/* Start character code for each segment. */
+  HBINT16		idDelta[seg_گنتی_2];	/* Delta for all character codes in segment. */
+  HBUINT16	id_Range_انحراف[seg_گنتی_2];/* Offsets into glyphIdArray or 0 */
+  Unsized_Array_کا<HBUINT16>
 		glyphIdArray;	/* Glyph index array (arbitrary length) */
-#endif
+#اگر_ختم
 
-  public:
-  DEFINE_SIZE_ARRAY (14, values);
+  عوامی:
+  DEFINE_سائز_ARRAY (14, values);
 };
 
-struct CmapSubtableLongGroup
+ساخت Cmap_Subtable_Long_گروہ
 {
-  friend struct CmapSubtableFormat12;
-  friend struct CmapSubtableFormat13;
-  template<typename U>
-  friend struct CmapSubtableLongSegmented;
-  friend struct cmap;
+  دوست ساخت CmapSubtableFormat12;
+  دوست ساخت CmapSubtableFormat13;
+  سانچہ<قسم_نام U>
+  دوست ساخت CmapSubtableLongSegmented;
+  دوست ساخت cmap;
 
-  int cmp (hb_codepoint_t codepoint) const
+  صحیح cmp (hb_codepoint_t codepoint) ثابت
   {
-    if (codepoint < startCharCode) return -1;
-    if (codepoint > endCharCode)   return +1;
-    return 0;
+    اگر (codepoint < آغاز_Char_رمز) واپس -1;
+    اگر (codepoint > انتہا_Char_رمز)   واپس +1;
+    واپس 0;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ));
   }
 
-  private:
-  HBUINT32		startCharCode;	/* First character code in this group. */
-  HBUINT32		endCharCode;	/* Last character code in this group. */
+  نجی:
+  HBUINT32		آغاز_Char_رمز;	/* First character code in this group. */
+  HBUINT32		انتہا_Char_رمز;	/* Last character code in this group. */
   HBUINT32		glyphID;	/* Glyph index; interpretation depends on
 					 * subtable format. */
-  public:
-  DEFINE_SIZE_STATIC (12);
+  عوامی:
+  DEFINE_سائز_STATIC (12);
 };
-DECLARE_NULL_NAMESPACE_BYTES (OT, CmapSubtableLongGroup);
+DECLARE_NULL_NAMESPACE_بائٹیں (OT, Cmap_Subtable_Long_گروہ);
 
-template <typename UINT>
-struct CmapSubtableTrimmed
+سانچہ <قسم_نام UINT>
+ساخت CmapSubtableTrimmed
 {
-  bool get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph) const
+  منطقی get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph) ثابت
   {
     /* Rely on our implicit array bound-checking. */
-    hb_codepoint_t gid = glyphIdArray[codepoint - startCharCode];
-    if (unlikely (!gid))
-      return false;
+    hb_codepoint_t gid = glyphIdArray[codepoint - آغاز_Char_رمز];
+    اگر (unlikely (!gid))
+      واپس جھوٹ;
     *glyph = gid;
-    return true;
+    واپس سچ;
   }
 
-  unsigned get_language () const
+  غیرعلامتی get_language () ثابت
   {
-    return language;
+    واپس language;
   }
 
-  void collect_unicodes (hb_set_t *out) const
+  خالی collect_unicodes (hb_سیٹ_t *برآمد) ثابت
   {
-    hb_codepoint_t start = startCharCode;
-    unsigned int count = glyphIdArray.len;
-    for (unsigned int i = 0; i < count; i++)
-      if (glyphIdArray[i])
-	out->add (start + i);
+    hb_codepoint_t آغاز = آغاز_Char_رمز;
+    غیرعلامتی صحیح گنتی = glyphIdArray.len;
+    برائے (غیرعلامتی صحیح i = 0; i < گنتی; i++)
+      اگر (glyphIdArray[i])
+	برآمد->جوڑو (آغاز + i);
   }
 
-  void collect_mapping (hb_set_t *unicodes, /* OUT */
-			hb_map_t *mapping /* OUT */) const
+  خالی collect_mapping (hb_سیٹ_t *unicodes, /*برآمد*/
+			hb_map_t *mapping /*برآمد*/) ثابت
   {
-    hb_codepoint_t start_cp = startCharCode;
-    unsigned count = glyphIdArray.len;
-    for (unsigned i = 0; i < count; i++)
-      if (glyphIdArray[i])
+    hb_codepoint_t آغاز_cp = آغاز_Char_رمز;
+    غیرعلامتی گنتی = glyphIdArray.len;
+    برائے (غیرعلامتی i = 0; i < گنتی; i++)
+      اگر (glyphIdArray[i])
       {
-	hb_codepoint_t unicode = start_cp + i;
+	hb_codepoint_t unicode = آغاز_cp + i;
 	hb_codepoint_t glyphid = glyphIdArray[i];
-	unicodes->add (unicode);
-	mapping->set (unicode, glyphid);
+	unicodes->جوڑو (unicode);
+	mapping->سیٹ (unicode, glyphid);
       }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && glyphIdArray.sanitize (c));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ) && glyphIdArray.sanitize (c));
   }
 
-  protected:
+  محفوظ:
   UINT		formatReserved;	/* Subtable format and (maybe) padding. */
-  UINT		length;		/* Byte length of this subtable. */
+  UINT		لمبائی;		/* Byte length of this subtable. */
   UINT		language;	/* Ignore. */
-  UINT		startCharCode;	/* First character code covered. */
-  ArrayOf<HBGlyphID16, UINT>
+  UINT		آغاز_Char_رمز;	/* First character code covered. */
+  Array_کا<HBGlyphID16, UINT>
 		glyphIdArray;	/* Array of glyph index values for character
 				 * codes in the range. */
-  public:
-  DEFINE_SIZE_ARRAY (5 * sizeof (UINT), glyphIdArray);
+  عوامی:
+  DEFINE_سائز_ARRAY (5 * حجم (UINT), glyphIdArray);
 };
 
-struct CmapSubtableFormat6  : CmapSubtableTrimmed<HBUINT16> {};
-struct CmapSubtableFormat10 : CmapSubtableTrimmed<HBUINT32> {};
+ساخت CmapSubtableFormat6  : CmapSubtableTrimmed<HBUINT16> {};
+ساخت CmapSubtableFormat10 : CmapSubtableTrimmed<HBUINT32> {};
 
-template <typename T>
-struct CmapSubtableLongSegmented
+سانچہ <قسم_نام T>
+ساخت CmapSubtableLongSegmented
 {
-  friend struct cmap;
+  دوست ساخت cmap;
 
-  bool get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph) const
+  منطقی get_glyph (hb_codepoint_t codepoint, hb_codepoint_t *glyph) ثابت
   {
-    hb_codepoint_t gid = T::group_get_glyph (groups.bsearch (codepoint), codepoint);
-    if (unlikely (!gid))
-      return false;
+    hb_codepoint_t gid = T::گروہ_get_glyph (groups.bsearch (codepoint), codepoint);
+    اگر (unlikely (!gid))
+      واپس جھوٹ;
     *glyph = gid;
-    return true;
+    واپس سچ;
   }
 
-  unsigned get_language () const
+  غیرعلامتی get_language () ثابت
   {
-    return language;
+    واپس language;
   }
 
-  void collect_unicodes (hb_set_t *out, unsigned int num_glyphs) const
+  خالی collect_unicodes (hb_سیٹ_t *برآمد, غیرعلامتی صحیح عدد_glyphs) ثابت
   {
-    for (unsigned int i = 0; i < this->groups.len; i++)
+    برائے (غیرعلامتی صحیح i = 0; i < یہ->groups.len; i++)
     {
-      hb_codepoint_t start = this->groups[i].startCharCode;
-      hb_codepoint_t end = hb_min ((hb_codepoint_t) this->groups[i].endCharCode,
+      hb_codepoint_t آغاز = یہ->groups[i].آغاز_Char_رمز;
+      hb_codepoint_t انتہا = hb_min ((hb_codepoint_t) یہ->groups[i].انتہا_Char_رمز,
 				   (hb_codepoint_t) HB_UNICODE_MAX);
-      hb_codepoint_t gid = this->groups[i].glyphID;
-      if (!gid)
+      hb_codepoint_t gid = یہ->groups[i].glyphID;
+      اگر (!gid)
       {
 	/* Intention is: if (hb_is_same (T, CmapSubtableFormat13)) continue; */
-	if (! T::group_get_glyph (this->groups[i], end)) continue;
-	start++;
+	اگر (! T::گروہ_get_glyph (یہ->groups[i], انتہا)) جاری;
+	آغاز++;
 	gid++;
       }
-      if (unlikely ((unsigned int) gid >= num_glyphs)) continue;
-      if (unlikely ((unsigned int) (gid + end - start) >= num_glyphs))
-	end = start + (hb_codepoint_t) num_glyphs - gid;
+      اگر (unlikely ((غیرعلامتی صحیح) gid >= عدد_glyphs)) جاری;
+      اگر (unlikely ((غیرعلامتی صحیح) (gid + انتہا - آغاز) >= عدد_glyphs))
+	انتہا = آغاز + (hb_codepoint_t) عدد_glyphs - gid;
 
-      out->add_range (start, hb_min (end, 0x10FFFFu));
+      برآمد->جوڑو_range (آغاز, hb_min (انتہا, 0x10FFFFu));
     }
   }
 
-  void collect_mapping (hb_set_t *unicodes, /* OUT */
-			hb_map_t *mapping, /* OUT */
-			unsigned num_glyphs) const
+  خالی collect_mapping (hb_سیٹ_t *unicodes, /*برآمد*/
+			hb_map_t *mapping, /*برآمد*/
+			غیرعلامتی عدد_glyphs) ثابت
   {
-    hb_codepoint_t last_end = 0;
-    unsigned count = this->groups.len;
-    for (unsigned i = 0; i < count; i++)
+    hb_codepoint_t آخری_انتہا = 0;
+    غیرعلامتی گنتی = یہ->groups.len;
+    برائے (غیرعلامتی i = 0; i < گنتی; i++)
     {
-      hb_codepoint_t start = this->groups.arrayZ[i].startCharCode;
-      hb_codepoint_t end = hb_min ((hb_codepoint_t) this->groups.arrayZ[i].endCharCode,
+      hb_codepoint_t آغاز = یہ->groups.arrayZ[i].آغاز_Char_رمز;
+      hb_codepoint_t انتہا = hb_min ((hb_codepoint_t) یہ->groups.arrayZ[i].انتہا_Char_رمز,
 				   (hb_codepoint_t) HB_UNICODE_MAX);
-      if (unlikely (start > end || start < last_end)) {
+      اگر (unlikely (آغاز > انتہا || آغاز < آخری_انتہا)) {
         // Range is not in order and is invalid, skip it.
-        continue;
+        جاری;
       }
-      last_end = end;
+      آخری_انتہا = انتہا;
 
 
-      hb_codepoint_t gid = this->groups.arrayZ[i].glyphID;
-      if (!gid)
+      hb_codepoint_t gid = یہ->groups.arrayZ[i].glyphID;
+      اگر (!gid)
       {
-        if (T::formatNumber == 13) continue;
-	start++;
+        اگر (T::format_نمبر == 13) جاری;
+	آغاز++;
 	gid++;
       }
-      if (unlikely ((unsigned int) gid >= num_glyphs)) continue;
-      if (unlikely ((unsigned int) (gid + end - start) >= num_glyphs))
-	end = start + (hb_codepoint_t) num_glyphs - gid;
+      اگر (unlikely ((غیرعلامتی صحیح) gid >= عدد_glyphs)) جاری;
+      اگر (unlikely ((غیرعلامتی صحیح) (gid + انتہا - آغاز) >= عدد_glyphs))
+	انتہا = آغاز + (hb_codepoint_t) عدد_glyphs - gid;
 
-      mapping->alloc (mapping->get_population () + end - start + 1);
+      mapping->alloc (mapping->get_population () + انتہا - آغاز + 1);
 
-      unicodes->add_range (start, end);
-      for (unsigned cp = start; cp <= end; cp++)
+      unicodes->جوڑو_range (آغاز, انتہا);
+      برائے (غیرعلامتی cp = آغاز; cp <= انتہا; cp++)
       {
-	mapping->set (cp, gid);
+	mapping->سیٹ (cp, gid);
         gid += T::increment;
       }
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) && groups.sanitize (c));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ) && groups.sanitize (c));
   }
 
-  protected:
+  محفوظ:
   HBUINT16	format;		/* Subtable format; set to 12. */
   HBUINT16	reserved;	/* Reserved; set to 0. */
-  HBUINT32	length;		/* Byte length of this subtable. */
+  HBUINT32	لمبائی;		/* Byte length of this subtable. */
   HBUINT32	language;	/* Ignore. */
-  SortedArray32Of<CmapSubtableLongGroup>
+  Sorted_Array32_کا<Cmap_Subtable_Long_گروہ>
 		groups;		/* Groupings. */
-  public:
-  DEFINE_SIZE_ARRAY (16, groups);
+  عوامی:
+  DEFINE_سائز_ARRAY (16, groups);
 };
 
-struct CmapSubtableFormat12 : CmapSubtableLongSegmented<CmapSubtableFormat12>
+ساخت CmapSubtableFormat12 : CmapSubtableLongSegmented<CmapSubtableFormat12>
 {
-  static constexpr int increment = 1;
-  static constexpr int formatNumber = 12;
+  ساکن constexpr صحیح increment = 1;
+  ساکن constexpr صحیح format_نمبر = 12;
 
-  static hb_codepoint_t group_get_glyph (const CmapSubtableLongGroup &group,
+  ساکن hb_codepoint_t گروہ_get_glyph (ثابت Cmap_Subtable_Long_گروہ &گروہ,
 					 hb_codepoint_t u)
-  { return likely (group.startCharCode <= group.endCharCode) ?
-	   group.glyphID + (u - group.startCharCode) : 0; }
+  { واپس likely (گروہ.آغاز_Char_رمز <= گروہ.انتہا_Char_رمز) ?
+	   گروہ.glyphID + (u - گروہ.آغاز_Char_رمز) : 0; }
 
 
-  template<typename Iterator,
+  سانچہ<قسم_نام Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  void serialize (hb_serialize_context_t *c,
+  خالی serialize (hb_serialize_context_t *c,
 		  Iterator it)
   {
-    if (!it) return;
-    unsigned table_initpos = c->length ();
-    if (unlikely (!c->extend_min (this))) return;
+    اگر (!it) واپس;
+    غیرعلامتی جدول_initpos = c->لمبائی ();
+    اگر (unlikely (!c->extend_min (یہ))) واپس;
 
-    hb_codepoint_t startCharCode = (hb_codepoint_t) -1, endCharCode = (hb_codepoint_t) -1;
+    hb_codepoint_t آغاز_Char_رمز = (hb_codepoint_t) -1, انتہا_Char_رمز = (hb_codepoint_t) -1;
     hb_codepoint_t glyphID = 0;
 
-    for (const auto& _ : +it)
+    برائے (ثابت خودکار& _ : +it)
     {
-      if (startCharCode == (hb_codepoint_t) -1)
+      اگر (آغاز_Char_رمز == (hb_codepoint_t) -1)
       {
-	startCharCode = _.first;
-	endCharCode = _.first;
+	آغاز_Char_رمز = _.پہلا;
+	انتہا_Char_رمز = _.پہلا;
 	glyphID = _.second;
       }
-      else if (!_is_gid_consecutive (endCharCode, startCharCode, glyphID, _.first, _.second))
+      ورنہ اگر (!_is_gid_consecutive (انتہا_Char_رمز, آغاز_Char_رمز, glyphID, _.پہلا, _.second))
       {
-	CmapSubtableLongGroup  grouprecord;
-	grouprecord.startCharCode = startCharCode;
-	grouprecord.endCharCode = endCharCode;
+	Cmap_Subtable_Long_گروہ  grouprecord;
+	grouprecord.آغاز_Char_رمز = آغاز_Char_رمز;
+	grouprecord.انتہا_Char_رمز = انتہا_Char_رمز;
 	grouprecord.glyphID = glyphID;
-	c->copy<CmapSubtableLongGroup> (grouprecord);
+	c->copy<Cmap_Subtable_Long_گروہ> (grouprecord);
 
-	startCharCode = _.first;
-	endCharCode = _.first;
+	آغاز_Char_رمز = _.پہلا;
+	انتہا_Char_رمز = _.پہلا;
 	glyphID = _.second;
       }
-      else
-	endCharCode = _.first;
+      ورنہ
+	انتہا_Char_رمز = _.پہلا;
     }
 
-    CmapSubtableLongGroup record;
-    record.startCharCode = startCharCode;
-    record.endCharCode = endCharCode;
-    record.glyphID = glyphID;
-    c->copy<CmapSubtableLongGroup> (record);
+    Cmap_Subtable_Long_گروہ ریکارڈ;
+    ریکارڈ.آغاز_Char_رمز = آغاز_Char_رمز;
+    ریکارڈ.انتہا_Char_رمز = انتہا_Char_رمز;
+    ریکارڈ.glyphID = glyphID;
+    c->copy<Cmap_Subtable_Long_گروہ> (ریکارڈ);
 
-    this->format = 12;
-    this->reserved = 0;
-    this->length = c->length () - table_initpos;
-    this->groups.len = (this->length - min_size) / CmapSubtableLongGroup::static_size;
+    یہ->format = 12;
+    یہ->reserved = 0;
+    یہ->لمبائی = c->لمبائی () - جدول_initpos;
+    یہ->groups.len = (یہ->لمبائی - min_سائز) / Cmap_Subtable_Long_گروہ::static_سائز;
   }
 
-  static size_t get_sub_table_size (const hb_sorted_vector_t<CmapSubtableLongGroup> &groups_data)
-  { return 16 + 12 * groups_data.length; }
+  ساکن size_t get_sub_جدول_سائز (ثابت hb_sorted_سمتیہ_t<Cmap_Subtable_Long_گروہ> &groups_ڈیٹا)
+  { واپس 16 + 12 * groups_ڈیٹا.لمبائی; }
 
-  private:
-  static bool _is_gid_consecutive (hb_codepoint_t endCharCode,
-				   hb_codepoint_t startCharCode,
+  نجی:
+  ساکن منطقی _is_gid_consecutive (hb_codepoint_t انتہا_Char_رمز,
+				   hb_codepoint_t آغاز_Char_رمز,
 				   hb_codepoint_t glyphID,
 				   hb_codepoint_t cp,
 				   hb_codepoint_t new_gid)
   {
-    return (cp - 1 == endCharCode) &&
-	new_gid == glyphID + (cp - startCharCode);
+    واپس (cp - 1 == انتہا_Char_رمز) &&
+	new_gid == glyphID + (cp - آغاز_Char_رمز);
   }
 
 };
 
-struct CmapSubtableFormat13 : CmapSubtableLongSegmented<CmapSubtableFormat13>
+ساخت CmapSubtableFormat13 : CmapSubtableLongSegmented<CmapSubtableFormat13>
 {
-  static constexpr int increment = 0;
-  static constexpr int formatNumber = 13;
+  ساکن constexpr صحیح increment = 0;
+  ساکن constexpr صحیح format_نمبر = 13;
 
-  static hb_codepoint_t group_get_glyph (const CmapSubtableLongGroup &group,
-					 hb_codepoint_t u HB_UNUSED)
-  { return group.glyphID; }
+  ساکن hb_codepoint_t گروہ_get_glyph (ثابت Cmap_Subtable_Long_گروہ &گروہ,
+					 hb_codepoint_t u HB_غیر_مستعمل)
+  { واپس گروہ.glyphID; }
 };
 
-typedef enum
+قسمتعریف شمار
 {
-  GLYPH_VARIANT_NOT_FOUND = 0,
-  GLYPH_VARIANT_FOUND = 1,
+  GLYPH_VARIANT_NOT_ملا = 0,
+  GLYPH_VARIANT_ملا = 1,
   GLYPH_VARIANT_USE_DEFAULT = 2
 } glyph_variant_t;
 
-struct UnicodeValueRange
+ساخت Unicode_قدر_Range
 {
-  int cmp (const hb_codepoint_t &codepoint) const
+  صحیح cmp (ثابت hb_codepoint_t &codepoint) ثابت
   {
-    if (codepoint < startUnicodeValue) return -1;
-    if (codepoint > startUnicodeValue + additionalCount) return +1;
-    return 0;
+    اگر (codepoint < آغاز_Unicode_قدر) واپس -1;
+    اگر (codepoint > آغاز_Unicode_قدر + additional_گنتی) واپس +1;
+    واپس 0;
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ));
   }
 
-  HBUINT24	startUnicodeValue;	/* First value in this range. */
-  HBUINT8	additionalCount;	/* Number of additional values in this
+  HBUINT24	آغاز_Unicode_قدر;	/* First value in this range. */
+  HBUINT8	additional_گنتی;	/* Number of additional values in this
 					 * range. */
-  public:
-  DEFINE_SIZE_STATIC (4);
+  عوامی:
+  DEFINE_سائز_STATIC (4);
 };
 
-struct DefaultUVS : SortedArray32Of<UnicodeValueRange>
+ساخت DefaultUVS : Sorted_Array32_کا<Unicode_قدر_Range>
 {
-  void collect_unicodes (hb_set_t *out) const
+  خالی collect_unicodes (hb_سیٹ_t *برآمد) ثابت
   {
-    unsigned int count = len;
-    for (unsigned int i = 0; i < count; i++)
+    غیرعلامتی صحیح گنتی = len;
+    برائے (غیرعلامتی صحیح i = 0; i < گنتی; i++)
     {
-      hb_codepoint_t first = arrayZ[i].startUnicodeValue;
-      hb_codepoint_t last = hb_min ((hb_codepoint_t) (first + arrayZ[i].additionalCount),
+      hb_codepoint_t پہلا = arrayZ[i].آغاز_Unicode_قدر;
+      hb_codepoint_t آخری = hb_min ((hb_codepoint_t) (پہلا + arrayZ[i].additional_گنتی),
 				    (hb_codepoint_t) HB_UNICODE_MAX);
-      out->add_range (first, last);
+      برآمد->جوڑو_range (پہلا, آخری);
     }
   }
 
   DefaultUVS* copy (hb_serialize_context_t *c,
-		    const hb_set_t *unicodes) const
+		    ثابت hb_سیٹ_t *unicodes) ثابت
   {
-    auto *out = c->start_embed<DefaultUVS> ();
-    auto snap = c->snapshot ();
+    خودکار *برآمد = c->آغاز_embed<DefaultUVS> ();
+    خودکار snap = c->snapshot ();
 
     HBUINT32 len;
     len = 0;
-    if (unlikely (!c->copy<HBUINT32> (len))) return nullptr;
-    unsigned init_len = c->length ();
+    اگر (unlikely (!c->copy<HBUINT32> (len))) واپس خالی_اشاریہ;
+    غیرعلامتی init_len = c->لمبائی ();
 
-    if (this->len > unicodes->get_population () * hb_bit_storage ((unsigned) this->len))
+    اگر (یہ->len > unicodes->get_population () * hb_ثنائی_ہندسہ_storage ((غیرعلامتی) یہ->len))
     {
-      hb_codepoint_t start = HB_SET_VALUE_INVALID;
-      hb_codepoint_t end = HB_SET_VALUE_INVALID;
+      hb_codepoint_t آغاز = HB_سیٹ_قدر_INVALID;
+      hb_codepoint_t انتہا = HB_سیٹ_قدر_INVALID;
 
-      for (auto u : *unicodes)
+      برائے (خودکار u : *unicodes)
       {
-        if (!as_array ().bsearch (u))
-	  continue;
-	if (start == HB_SET_VALUE_INVALID)
+        اگر (!as_array ().bsearch (u))
+	  جاری;
+	اگر (آغاز == HB_سیٹ_قدر_INVALID)
 	{
-	  start = u;
-	  end = start - 1;
+	  آغاز = u;
+	  انتہا = آغاز - 1;
 	}
-	if (end + 1 != u || end - start == 255)
+	اگر (انتہا + 1 != u || انتہا - آغاز == 255)
         {
-	  UnicodeValueRange rec;
-	  rec.startUnicodeValue = start;
-	  rec.additionalCount = end - start;
-	  c->copy<UnicodeValueRange> (rec);
-	  start = u;
+	  Unicode_قدر_Range rec;
+	  rec.آغاز_Unicode_قدر = آغاز;
+	  rec.additional_گنتی = انتہا - آغاز;
+	  c->copy<Unicode_قدر_Range> (rec);
+	  آغاز = u;
 	}
-	end = u;
+	انتہا = u;
       }
-      if (start != HB_SET_VALUE_INVALID)
+      اگر (آغاز != HB_سیٹ_قدر_INVALID)
       {
-	UnicodeValueRange rec;
-	rec.startUnicodeValue = start;
-	rec.additionalCount = end - start;
-	c->copy<UnicodeValueRange> (rec);
+	Unicode_قدر_Range rec;
+	rec.آغاز_Unicode_قدر = آغاز;
+	rec.additional_گنتی = انتہا - آغاز;
+	c->copy<Unicode_قدر_Range> (rec);
       }
 
     }
-    else
+    ورنہ
     {
-      hb_codepoint_t lastCode = HB_SET_VALUE_INVALID;
-      int count = -1;
+      hb_codepoint_t آخری_رمز = HB_سیٹ_قدر_INVALID;
+      صحیح گنتی = -1;
 
-      for (const UnicodeValueRange& _ : *this)
+      برائے (ثابت Unicode_قدر_Range& _ : *یہ)
       {
-	hb_codepoint_t curEntry = (hb_codepoint_t) (_.startUnicodeValue - 1);
-	hb_codepoint_t end = curEntry + _.additionalCount + 2;
+	hb_codepoint_t cur_اندراج = (hb_codepoint_t) (_.آغاز_Unicode_قدر - 1);
+	hb_codepoint_t انتہا = cur_اندراج + _.additional_گنتی + 2;
 
-	for (; unicodes->next (&curEntry) && curEntry < end;)
+	برائے (; unicodes->next (&cur_اندراج) && cur_اندراج < انتہا;)
 	{
-	  count += 1;
-	  if (lastCode == HB_SET_VALUE_INVALID)
-	    lastCode = curEntry;
-	  else if (lastCode + count != curEntry || count > 255)
+	  گنتی += 1;
+	  اگر (آخری_رمز == HB_سیٹ_قدر_INVALID)
+	    آخری_رمز = cur_اندراج;
+	  ورنہ اگر (آخری_رمز + گنتی != cur_اندراج || گنتی > 255)
 	  {
-	    UnicodeValueRange rec;
-	    rec.startUnicodeValue = lastCode;
-	    rec.additionalCount = count - 1;
-	    c->copy<UnicodeValueRange> (rec);
+	    Unicode_قدر_Range rec;
+	    rec.آغاز_Unicode_قدر = آخری_رمز;
+	    rec.additional_گنتی = گنتی - 1;
+	    c->copy<Unicode_قدر_Range> (rec);
 
-	    lastCode = curEntry;
-	    count = 0;
+	    آخری_رمز = cur_اندراج;
+	    گنتی = 0;
 	  }
 	}
       }
 
-      if (lastCode != HB_MAP_VALUE_INVALID)
+      اگر (آخری_رمز != HB_MAP_قدر_INVALID)
       {
-	UnicodeValueRange rec;
-	rec.startUnicodeValue = lastCode;
-	rec.additionalCount = count;
-	c->copy<UnicodeValueRange> (rec);
+	Unicode_قدر_Range rec;
+	rec.آغاز_Unicode_قدر = آخری_رمز;
+	rec.additional_گنتی = گنتی;
+	c->copy<Unicode_قدر_Range> (rec);
       }
     }
 
-    if (c->length () - init_len == 0)
+    اگر (c->لمبائی () - init_len == 0)
     {
       c->revert (snap);
-      return nullptr;
+      واپس خالی_اشاریہ;
     }
-    else
+    ورنہ
     {
-      if (unlikely (!c->check_assign (out->len,
-                                      (c->length () - init_len) / UnicodeValueRange::static_size,
-                                      HB_SERIALIZE_ERROR_INT_OVERFLOW))) return nullptr;
-      return out;
+      اگر (unlikely (!c->check_تفویض (برآمد->len,
+                                      (c->لمبائی () - init_len) / Unicode_قدر_Range::static_سائز,
+                                      HB_SERIALIZE_ERROR_INT_حد_سے_تجاوز))) واپس خالی_اشاریہ;
+      واپس برآمد;
     }
   }
 
-  public:
-  DEFINE_SIZE_ARRAY (4, *this);
+  عوامی:
+  DEFINE_سائز_ARRAY (4, *یہ);
 };
 
-template <typename Types>
-struct UVSMapping
+سانچہ <قسم_نام Types>
+ساخت UVSMapping
 {
-  using GlyphID = typename Types::HBGlyphID;
+  استعمال GlyphID = قسم_نام Types::HBGlyphID;
 
-  int cmp (const hb_codepoint_t &codepoint) const
-  { return unicodeValue.cmp (codepoint); }
+  صحیح cmp (ثابت hb_codepoint_t &codepoint) ثابت
+  { واپس unicode_قدر.cmp (codepoint); }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ));
   }
 
-  HBUINT24	unicodeValue;	/* Base Unicode value of the UVS */
+  HBUINT24	unicode_قدر;	/* Base Unicode value of the UVS */
   GlyphID
 		glyphID;	/* Glyph ID of the UVS. */
-  public:
-  DEFINE_SIZE_STATIC (3 + GlyphID::static_size);
+  عوامی:
+  DEFINE_سائز_STATIC (3 + GlyphID::static_سائز);
 };
 
-template <typename Types>
-struct NonDefaultUVS : SortedArray32Of<UVSMapping<Types>>
+سانچہ <قسم_نام Types>
+ساخت NonDefaultUVS : Sorted_Array32_کا<UVSMapping<Types>>
 {
-  using Mapping = UVSMapping<Types>;
+  استعمال Mapping = UVSMapping<Types>;
 
-  void collect_unicodes (hb_set_t *out) const
+  خالی collect_unicodes (hb_سیٹ_t *برآمد) ثابت
   {
-    for (const auto& a : this->as_array ())
-      out->add (a.unicodeValue);
+    برائے (ثابت خودکار& a : یہ->as_array ())
+      برآمد->جوڑو (a.unicode_قدر);
   }
 
-  void collect_mapping (hb_set_t *unicodes, /* OUT */
-			hb_map_t *mapping /* OUT */) const
+  خالی collect_mapping (hb_سیٹ_t *unicodes, /*برآمد*/
+			hb_map_t *mapping /*برآمد*/) ثابت
   {
-    for (const auto& a : this->as_array ())
+    برائے (ثابت خودکار& a : یہ->as_array ())
     {
-      hb_codepoint_t unicode = a.unicodeValue;
+      hb_codepoint_t unicode = a.unicode_قدر;
       hb_codepoint_t glyphid = a.glyphID;
-      unicodes->add (unicode);
-      mapping->set (unicode, glyphid);
+      unicodes->جوڑو (unicode);
+      mapping->سیٹ (unicode, glyphid);
     }
   }
 
-  void closure_glyphs (const hb_set_t      *unicodes,
-		       hb_set_t            *glyphset) const
+  خالی احاطہ_glyphs (ثابت hb_سیٹ_t      *unicodes,
+		       hb_سیٹ_t            *glyphset) ثابت
   {
-    + this->as_array ()
-    | hb_filter (unicodes, &Mapping::unicodeValue)
+    + یہ->as_array ()
+    | hb_filter (unicodes, &Mapping::unicode_قدر)
     | hb_map (&Mapping::glyphID)
     | hb_sink (glyphset)
     ;
   }
 
   NonDefaultUVS* copy (hb_serialize_context_t *c,
-		       const hb_set_t *unicodes,
-		       const hb_set_t *glyphs_requested,
-		       const hb_map_t *glyph_map) const
+		       ثابت hb_سیٹ_t *unicodes,
+		       ثابت hb_سیٹ_t *glyphs_requested,
+		       ثابت hb_map_t *glyph_map) ثابت
   {
-    auto *out = c->start_embed<NonDefaultUVS> ();
-    auto it =
-    + this->as_array ()
-    | hb_filter ([&] (const Mapping& _)
+    خودکار *برآمد = c->آغاز_embed<NonDefaultUVS> ();
+    خودکار it =
+    + یہ->as_array ()
+    | hb_filter ([&] (ثابت Mapping& _)
 		 {
-		   return unicodes->has (_.unicodeValue) || glyphs_requested->has (_.glyphID);
+		   واپس unicodes->has (_.unicode_قدر) || glyphs_requested->has (_.glyphID);
 		 })
     ;
 
-    if (!it) return nullptr;
+    اگر (!it) واپس خالی_اشاریہ;
 
     HBUINT32 len;
     len = it.len ();
-    if (unlikely (!c->copy<HBUINT32> (len))) return nullptr;
+    اگر (unlikely (!c->copy<HBUINT32> (len))) واپس خالی_اشاریہ;
 
-    for (const Mapping& _ : it)
+    برائے (ثابت Mapping& _ : it)
     {
       Mapping mapping;
-      mapping.unicodeValue = _.unicodeValue;
+      mapping.unicode_قدر = _.unicode_قدر;
       mapping.glyphID = glyph_map->get (_.glyphID);
       c->copy<Mapping> (mapping);
     }
 
-    return out;
+    واپس برآمد;
   }
 
-  public:
-  DEFINE_SIZE_ARRAY (4, *this);
+  عوامی:
+  DEFINE_سائز_ARRAY (4, *یہ);
 };
 
-template <typename Types>
-struct VariationSelectorRecord
+سانچہ <قسم_نام Types>
+ساخت Variation_Selector_ریکارڈ
 {
   glyph_variant_t get_glyph (hb_codepoint_t codepoint,
 			     hb_codepoint_t *glyph,
-			     const void *base) const
+			     ثابت خالی *بنیاد) ثابت
   {
-    if ((base+defaultUVS).bfind (codepoint))
-      return GLYPH_VARIANT_USE_DEFAULT;
-    const UVSMapping<Types> &nonDefault = (base+nonDefaultUVS).bsearch (codepoint);
-    if (nonDefault.glyphID)
+    اگر ((بنیاد+defaultUVS).bfind (codepoint))
+      واپس GLYPH_VARIANT_USE_DEFAULT;
+    ثابت UVSMapping<Types> &nonDefault = (بنیاد+nonDefaultUVS).bsearch (codepoint);
+    اگر (nonDefault.glyphID)
     {
       *glyph = nonDefault.glyphID;
-       return GLYPH_VARIANT_FOUND;
+       واپس GLYPH_VARIANT_ملا;
     }
-    return GLYPH_VARIANT_NOT_FOUND;
+    واپس GLYPH_VARIANT_NOT_ملا;
   }
 
-  VariationSelectorRecord(const VariationSelectorRecord& other)
+  Variation_Selector_ریکارڈ(ثابت Variation_Selector_ریکارڈ& other)
   {
-    *this = other;
+    *یہ = other;
   }
 
-  void operator= (const VariationSelectorRecord& other)
+  خالی عامل= (ثابت Variation_Selector_ریکارڈ& other)
   {
     varSelector = other.varSelector;
-    HBUINT32 offset = other.defaultUVS;
-    defaultUVS = offset;
-    offset = other.nonDefaultUVS;
-    nonDefaultUVS = offset;
+    HBUINT32 انحراف = other.defaultUVS;
+    defaultUVS = انحراف;
+    انحراف = other.nonDefaultUVS;
+    nonDefaultUVS = انحراف;
   }
 
-  void collect_unicodes (hb_set_t *out, const void *base) const
+  خالی collect_unicodes (hb_سیٹ_t *برآمد, ثابت خالی *بنیاد) ثابت
   {
-    (base+defaultUVS).collect_unicodes (out);
-    (base+nonDefaultUVS).collect_unicodes (out);
+    (بنیاد+defaultUVS).collect_unicodes (برآمد);
+    (بنیاد+nonDefaultUVS).collect_unicodes (برآمد);
   }
 
-  void collect_mapping (const void *base,
-			hb_set_t *unicodes, /* OUT */
-			hb_map_t *mapping /* OUT */) const
+  خالی collect_mapping (ثابت خالی *بنیاد,
+			hb_سیٹ_t *unicodes, /*برآمد*/
+			hb_map_t *mapping /*برآمد*/) ثابت
   {
-    (base+defaultUVS).collect_unicodes (unicodes);
-    (base+nonDefaultUVS).collect_mapping (unicodes, mapping);
+    (بنیاد+defaultUVS).collect_unicodes (unicodes);
+    (بنیاد+nonDefaultUVS).collect_mapping (unicodes, mapping);
   }
 
-  int cmp (const hb_codepoint_t &variation_selector) const
-  { return varSelector.cmp (variation_selector); }
+  صحیح cmp (ثابت hb_codepoint_t &variation_selector) ثابت
+  { واپس varSelector.cmp (variation_selector); }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  منطقی sanitize (hb_sanitize_context_t *c, ثابت خالی *بنیاد) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  defaultUVS.sanitize (c, base) &&
-		  nonDefaultUVS.sanitize (c, base));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ) &&
+		  defaultUVS.sanitize (c, بنیاد) &&
+		  nonDefaultUVS.sanitize (c, بنیاد));
   }
 
-  hb_pair_t<unsigned, unsigned>
+  hb_pair_t<غیرعلامتی, غیرعلامتی>
   copy (hb_serialize_context_t *c,
-	const hb_set_t *unicodes,
-	const hb_set_t *glyphs_requested,
-	const hb_map_t *glyph_map,
-	const void *base) const
+	ثابت hb_سیٹ_t *unicodes,
+	ثابت hb_سیٹ_t *glyphs_requested,
+	ثابت hb_map_t *glyph_map,
+	ثابت خالی *بنیاد) ثابت
   {
-    auto snap = c->snapshot ();
-    auto *out = c->embed<VariationSelectorRecord> (*this);
-    if (unlikely (!out)) return hb_pair (0, 0);
+    خودکار snap = c->snapshot ();
+    خودکار *برآمد = c->embed<Variation_Selector_ریکارڈ> (*یہ);
+    اگر (unlikely (!برآمد)) واپس hb_pair (0, 0);
 
-    out->defaultUVS = 0;
-    out->nonDefaultUVS = 0;
+    برآمد->defaultUVS = 0;
+    برآمد->nonDefaultUVS = 0;
 
-    unsigned non_default_uvs_objidx = 0;
-    if (nonDefaultUVS != 0)
+    غیرعلامتی non_default_uvs_objidx = 0;
+    اگر (nonDefaultUVS != 0)
     {
       c->push ();
-      if (c->copy (base+nonDefaultUVS, unicodes, glyphs_requested, glyph_map))
-	non_default_uvs_objidx = c->pop_pack ();
-      else c->pop_discard ();
+      اگر (c->copy (بنیاد+nonDefaultUVS, unicodes, glyphs_requested, glyph_map))
+	non_default_uvs_objidx = c->نکالو_pack ();
+      ورنہ c->نکالو_discard ();
     }
 
-    unsigned default_uvs_objidx = 0;
-    if (defaultUVS != 0)
+    غیرعلامتی default_uvs_objidx = 0;
+    اگر (defaultUVS != 0)
     {
       c->push ();
-      if (c->copy (base+defaultUVS, unicodes))
-	default_uvs_objidx = c->pop_pack ();
-      else c->pop_discard ();
+      اگر (c->copy (بنیاد+defaultUVS, unicodes))
+	default_uvs_objidx = c->نکالو_pack ();
+      ورنہ c->نکالو_discard ();
     }
 
 
-    if (!default_uvs_objidx && !non_default_uvs_objidx)
+    اگر (!default_uvs_objidx && !non_default_uvs_objidx)
       c->revert (snap);
 
-    return hb_pair (default_uvs_objidx, non_default_uvs_objidx);
+    واپس hb_pair (default_uvs_objidx, non_default_uvs_objidx);
   }
 
   HBUINT24	varSelector;	/* Variation selector. */
-  Offset32To<DefaultUVS>
+  Offset32_مقصد<DefaultUVS>
 		defaultUVS;	/* Offset to Default UVS Table.  May be 0. */
-  Offset32To<NonDefaultUVS<Types>>
+  Offset32_مقصد<NonDefaultUVS<Types>>
 		nonDefaultUVS;	/* Offset to Non-Default UVS Table.  May be 0. */
-  public:
-  DEFINE_SIZE_STATIC (11);
+  عوامی:
+  DEFINE_سائز_STATIC (11);
 };
 
-template <typename Types>
-struct CmapSubtableFormat14_15
+سانچہ <قسم_نام Types>
+ساخت CmapSubtableFormat14_15
 {
-  static constexpr unsigned format_value = Types::size == 2 ? 14 : 15;
-  using Record = VariationSelectorRecord<Types>;
-  using NonDefault = NonDefaultUVS<Types>;
+  ساکن constexpr غیرعلامتی format_قدر = Types::سائز == 2 ? 14 : 15;
+  استعمال ریکارڈ_2 = Variation_Selector_ریکارڈ<Types>;
+  استعمال NonDefault = NonDefaultUVS<Types>;
 
   glyph_variant_t get_glyph_variant (hb_codepoint_t codepoint,
 				     hb_codepoint_t variation_selector,
-				     hb_codepoint_t *glyph) const
-  { return record.bsearch (variation_selector).get_glyph (codepoint, glyph, this); }
+				     hb_codepoint_t *glyph) ثابت
+  { واپس ریکارڈ.bsearch (variation_selector).get_glyph (codepoint, glyph, یہ); }
 
-  void collect_variation_selectors (hb_set_t *out) const
+  خالی collect_variation_selectors (hb_سیٹ_t *برآمد) ثابت
   {
-    for (const auto& a : record.as_array ())
-      out->add (a.varSelector);
+    برائے (ثابت خودکار& a : ریکارڈ.as_array ())
+      برآمد->جوڑو (a.varSelector);
   }
-  void collect_variation_unicodes (hb_codepoint_t variation_selector,
-				   hb_set_t *out) const
-  { record.bsearch (variation_selector).collect_unicodes (out, this); }
+  خالی collect_variation_unicodes (hb_codepoint_t variation_selector,
+				   hb_سیٹ_t *برآمد) ثابت
+  { ریکارڈ.bsearch (variation_selector).collect_unicodes (برآمد, یہ); }
 
-  void serialize (hb_serialize_context_t *c,
-		  const hb_set_t *unicodes,
-		  const hb_set_t *glyphs_requested,
-		  const hb_map_t *glyph_map,
-		  const void *base)
+  خالی serialize (hb_serialize_context_t *c,
+		  ثابت hb_سیٹ_t *unicodes,
+		  ثابت hb_سیٹ_t *glyphs_requested,
+		  ثابت hb_map_t *glyph_map,
+		  ثابت خالی *بنیاد)
   {
-    auto snap = c->snapshot ();
-    unsigned table_initpos = c->length ();
-    const char* init_tail = c->tail;
+    خودکار snap = c->snapshot ();
+    غیرعلامتی جدول_initpos = c->لمبائی ();
+    ثابت حرف* init_دم = c->دم;
 
-    if (unlikely (!c->extend_min (this))) return;
-    this->format = format_value;
+    اگر (unlikely (!c->extend_min (یہ))) واپس;
+    یہ->format = format_قدر;
 
-    auto src_tbl = reinterpret_cast<const CmapSubtableFormat14_15*> (base);
+    خودکار src_tbl = reinterpret_cast<ثابت CmapSubtableFormat14_15*> (بنیاد);
 
     /*
      * Some versions of OTS require that offsets are in order. Due to the use
@@ -1430,283 +1430,283 @@ struct CmapSubtableFormat14_15
      * we then have to reverse the order of the written variation selector
      * records after everything is finalized.
      */
-    hb_vector_t<hb_pair_t<unsigned, unsigned>> obj_indices;
-    for (int i = src_tbl->record.len - 1; i >= 0; i--)
+    hb_سمتیہ_t<hb_pair_t<غیرعلامتی, غیرعلامتی>> obj_indices;
+    برائے (صحیح i = src_tbl->ریکارڈ.len - 1; i >= 0; i--)
     {
-      if (!unicodes->has(src_tbl->record[i].varSelector))
-        continue;
+      اگر (!unicodes->has(src_tbl->ریکارڈ[i].varSelector))
+        جاری;
 
-      hb_pair_t<unsigned, unsigned> result = src_tbl->record[i].copy (c, unicodes, glyphs_requested, glyph_map, base);
-      if (result.first || result.second)
-	obj_indices.push (result);
+      hb_pair_t<غیرعلامتی, غیرعلامتی> نتیجہ = src_tbl->ریکارڈ[i].copy (c, unicodes, glyphs_requested, glyph_map, بنیاد);
+      اگر (نتیجہ.پہلا || نتیجہ.second)
+	obj_indices.push (نتیجہ);
     }
 
-    if (c->length () - table_initpos == CmapSubtableFormat14_15::min_size)
+    اگر (c->لمبائی () - جدول_initpos == CmapSubtableFormat14_15::min_سائز)
     {
       c->revert (snap);
-      return;
+      واپس;
     }
 
-    if (unlikely (!c->check_success (!obj_indices.in_error ())))
-      return;
+    اگر (unlikely (!c->check_success (!obj_indices.اندر_error ())))
+      واپس;
 
-    int tail_len = init_tail - c->tail;
-    c->check_assign (this->length, c->length () - table_initpos + tail_len,
-                     HB_SERIALIZE_ERROR_INT_OVERFLOW);
-    c->check_assign (this->record.len,
-		     (c->length () - table_initpos - CmapSubtableFormat14_15::min_size) /
-		     Record::static_size,
-                     HB_SERIALIZE_ERROR_INT_OVERFLOW);
+    صحیح دم_len = init_دم - c->دم;
+    c->check_تفویض (یہ->لمبائی, c->لمبائی () - جدول_initpos + دم_len,
+                     HB_SERIALIZE_ERROR_INT_حد_سے_تجاوز);
+    c->check_تفویض (یہ->ریکارڈ.len,
+		     (c->لمبائی () - جدول_initpos - CmapSubtableFormat14_15::min_سائز) /
+		     ریکارڈ_2::static_سائز,
+                     HB_SERIALIZE_ERROR_INT_حد_سے_تجاوز);
 
     /* Correct the incorrect write order by reversing the order of the variation
        records array. */
-    _reverse_variation_records ();
+    الٹ_variation_اندراجات ();
 
     /* Now that records are in the right order, we can set up the offsets. */
-    _add_links_to_variation_records (c, obj_indices);
+    جوڑو_links_مقصد_variation_اندراجات (c, obj_indices);
   }
 
-  void _reverse_variation_records ()
+  خالی الٹ_variation_اندراجات ()
   {
-    record.as_array ().reverse ();
+    ریکارڈ.as_array ().reverse ();
   }
 
-  void _add_links_to_variation_records (hb_serialize_context_t *c,
-					const hb_vector_t<hb_pair_t<unsigned, unsigned>>& obj_indices)
+  خالی جوڑو_links_مقصد_variation_اندراجات (hb_serialize_context_t *c,
+					ثابت hb_سمتیہ_t<hb_pair_t<غیرعلامتی, غیرعلامتی>>& obj_indices)
   {
-    for (unsigned i = 0; i < obj_indices.length; i++)
+    برائے (غیرعلامتی i = 0; i < obj_indices.لمبائی; i++)
     {
       /*
        * Since the record array has been reversed (see comments in copy())
        * but obj_indices has not been, the indices at obj_indices[i]
        * are for the variation record at record[j].
        */
-      int j = obj_indices.length - 1 - i;
-      c->add_link (record[j].defaultUVS, obj_indices[i].first);
-      c->add_link (record[j].nonDefaultUVS, obj_indices[i].second);
+      صحیح j = obj_indices.لمبائی - 1 - i;
+      c->جوڑو_link (ریکارڈ[j].defaultUVS, obj_indices[i].پہلا);
+      c->جوڑو_link (ریکارڈ[j].nonDefaultUVS, obj_indices[i].second);
     }
   }
 
-  void closure_glyphs (const hb_set_t      *unicodes,
-		       hb_set_t            *glyphset) const
+  خالی احاطہ_glyphs (ثابت hb_سیٹ_t      *unicodes,
+		       hb_سیٹ_t            *glyphset) ثابت
   {
-    + hb_iter (record)
-    | hb_filter (hb_bool, &Record::nonDefaultUVS)
-    | hb_filter (unicodes, &Record::varSelector)
-    | hb_map (&Record::nonDefaultUVS)
-    | hb_map (hb_add (this))
-    | hb_apply ([=] (const NonDefault& _) { _.closure_glyphs (unicodes, glyphset); })
+    + hb_iter (ریکارڈ)
+    | hb_filter (hb_bool, &ریکارڈ_2::nonDefaultUVS)
+    | hb_filter (unicodes, &ریکارڈ_2::varSelector)
+    | hb_map (&ریکارڈ_2::nonDefaultUVS)
+    | hb_map (hb_جوڑو (یہ))
+    | hb_apply ([=] (ثابت NonDefault& _) { _.احاطہ_glyphs (unicodes, glyphset); })
     ;
   }
 
-  void collect_unicodes (hb_set_t *out) const
+  خالی collect_unicodes (hb_سیٹ_t *برآمد) ثابت
   {
-    for (const Record& _ : record)
-      _.collect_unicodes (out, this);
+    برائے (ثابت ریکارڈ_2& _ : ریکارڈ)
+      _.collect_unicodes (برآمد, یہ);
   }
 
-  void collect_mapping (hb_set_t *unicodes, /* OUT */
-			hb_map_t *mapping /* OUT */) const
+  خالی collect_mapping (hb_سیٹ_t *unicodes, /*برآمد*/
+			hb_map_t *mapping /*برآمد*/) ثابت
   {
-    for (const Record& _ : record)
-      _.collect_mapping (this, unicodes, mapping);
+    برائے (ثابت ریکارڈ_2& _ : ریکارڈ)
+      _.collect_mapping (یہ, unicodes, mapping);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  record.sanitize (c, this));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ) &&
+		  ریکارڈ.sanitize (c, یہ));
   }
 
-  protected:
+  محفوظ:
   HBUINT16	format;		/* Format number is set to 14 or 15. */
-  HBUINT32	length;		/* Byte length of this subtable. */
-  SortedArray32Of<Record>
-		record;		/* Variation selector records; sorted
+  HBUINT32	لمبائی;		/* Byte length of this subtable. */
+  Sorted_Array32_کا<ریکارڈ_2>
+		ریکارڈ;		/* Variation selector records; sorted
 				 * in increasing order of `varSelector'. */
-  public:
-  DEFINE_SIZE_ARRAY (10, record);
+  عوامی:
+  DEFINE_سائز_ARRAY (10, ریکارڈ);
 };
 
-struct CmapSubtable
+ساخت CmapSubtable
 {
   /* Note: We intentionally do NOT implement subtable formats 2 and 8. */
 
-  bool is_variation_selector () const
+  منطقی is_variation_selector () ثابت
   {
-    switch (u.format.v) {
-    case 14:
-#ifndef HB_NO_BEYOND_64K
-    case 15:
-#endif
-      return true;
-    default:
-      return false;
+    انتخاب (u.format.v) {
+    حالت 14:
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    حالت 15:
+#اگر_ختم
+      واپس سچ;
+    طےشدہ:
+      واپس جھوٹ;
     }
   }
 
   glyph_variant_t get_glyph_variant (hb_codepoint_t codepoint,
 				     hb_codepoint_t variation_selector,
-				     hb_codepoint_t *glyph) const
+				     hb_codepoint_t *glyph) ثابت
   {
-    switch (u.format.v) {
-    case 14: hb_barrier (); return u.format14.get_glyph_variant (codepoint, variation_selector, glyph);
-#ifndef HB_NO_BEYOND_64K
-    case 15: hb_barrier (); return u.format15.get_glyph_variant (codepoint, variation_selector, glyph);
-#endif
-    default: return GLYPH_VARIANT_NOT_FOUND;
+    انتخاب (u.format.v) {
+    حالت 14: hb_barrier (); واپس u.format14.get_glyph_variant (codepoint, variation_selector, glyph);
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    حالت 15: hb_barrier (); واپس u.format15.get_glyph_variant (codepoint, variation_selector, glyph);
+#اگر_ختم
+    طےشدہ: واپس GLYPH_VARIANT_NOT_ملا;
     }
   }
 
-  void collect_variation_selectors (hb_set_t *out) const
+  خالی collect_variation_selectors (hb_سیٹ_t *برآمد) ثابت
   {
-    switch (u.format.v) {
-    case 14: hb_barrier (); u.format14.collect_variation_selectors (out); return;
-#ifndef HB_NO_BEYOND_64K
-    case 15: hb_barrier (); u.format15.collect_variation_selectors (out); return;
-#endif
-    default: return;
+    انتخاب (u.format.v) {
+    حالت 14: hb_barrier (); u.format14.collect_variation_selectors (برآمد); واپس;
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    حالت 15: hb_barrier (); u.format15.collect_variation_selectors (برآمد); واپس;
+#اگر_ختم
+    طےشدہ: واپس;
     }
   }
 
-  void collect_variation_unicodes (hb_codepoint_t variation_selector,
-				    hb_set_t *out) const
+  خالی collect_variation_unicodes (hb_codepoint_t variation_selector,
+				    hb_سیٹ_t *برآمد) ثابت
   {
-    switch (u.format.v) {
-    case 14: hb_barrier (); u.format14.collect_variation_unicodes (variation_selector, out); return;
-#ifndef HB_NO_BEYOND_64K
-    case 15: hb_barrier (); u.format15.collect_variation_unicodes (variation_selector, out); return;
-#endif
-    default: return;
+    انتخاب (u.format.v) {
+    حالت 14: hb_barrier (); u.format14.collect_variation_unicodes (variation_selector, برآمد); واپس;
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    حالت 15: hb_barrier (); u.format15.collect_variation_unicodes (variation_selector, برآمد); واپس;
+#اگر_ختم
+    طےشدہ: واپس;
     }
   }
 
-  void closure_glyphs (const hb_set_t *unicodes, hb_set_t *glyphset) const
+  خالی احاطہ_glyphs (ثابت hb_سیٹ_t *unicodes, hb_سیٹ_t *glyphset) ثابت
   {
-    switch (u.format.v) {
-    case 14: hb_barrier (); u.format14.closure_glyphs (unicodes, glyphset); return;
-#ifndef HB_NO_BEYOND_64K
-    case 15: hb_barrier (); u.format15.closure_glyphs (unicodes, glyphset); return;
-#endif
-    default: return;
+    انتخاب (u.format.v) {
+    حالت 14: hb_barrier (); u.format14.احاطہ_glyphs (unicodes, glyphset); واپس;
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    حالت 15: hb_barrier (); u.format15.احاطہ_glyphs (unicodes, glyphset); واپس;
+#اگر_ختم
+    طےشدہ: واپس;
     }
   }
 
-  bool get_glyph (hb_codepoint_t codepoint,
+  منطقی get_glyph (hb_codepoint_t codepoint,
 		  hb_codepoint_t *glyph,
-		  unsigned int subtable_data_size = 0) const
+		  غیرعلامتی صحیح subtable_ڈیٹا_سائز = 0) ثابت
   {
-    switch (u.format.v) {
-    case  0: hb_barrier (); return u.format0 .get_glyph (codepoint, glyph);
-    case  4: hb_barrier (); return subtable_data_size
-				      ? u.format4.get_glyph (codepoint, glyph, subtable_data_size)
-				      : false;
-    case  6: hb_barrier (); return u.format6 .get_glyph (codepoint, glyph);
-    case 10: hb_barrier (); return u.format10.get_glyph (codepoint, glyph);
-    case 12: hb_barrier (); return u.format12.get_glyph (codepoint, glyph);
-    case 13: hb_barrier (); return u.format13.get_glyph (codepoint, glyph);
-    case 14:
-    default: return false;
+    انتخاب (u.format.v) {
+    حالت  0: hb_barrier (); واپس u.format0 .get_glyph (codepoint, glyph);
+    حالت  4: hb_barrier (); واپس subtable_ڈیٹا_سائز
+				      ? u.format4.get_glyph (codepoint, glyph, subtable_ڈیٹا_سائز)
+				      : جھوٹ;
+    حالت  6: hb_barrier (); واپس u.format6 .get_glyph (codepoint, glyph);
+    حالت 10: hb_barrier (); واپس u.format10.get_glyph (codepoint, glyph);
+    حالت 12: hb_barrier (); واپس u.format12.get_glyph (codepoint, glyph);
+    حالت 13: hb_barrier (); واپس u.format13.get_glyph (codepoint, glyph);
+    حالت 14:
+    طےشدہ: واپس جھوٹ;
     }
   }
-  void collect_unicodes (hb_set_t *out,
-			 unsigned int num_glyphs = UINT_MAX,
-			 unsigned int subtable_data_size = 0) const
+  خالی collect_unicodes (hb_سیٹ_t *برآمد,
+			 غیرعلامتی صحیح عدد_glyphs = UINT_MAX,
+			 غیرعلامتی صحیح subtable_ڈیٹا_سائز = 0) ثابت
   {
-    switch (u.format.v) {
-    case  0: hb_barrier (); u.format0 .collect_unicodes (out); return;
-    case  4: hb_barrier (); if (subtable_data_size)
-			      u.format4.collect_unicodes (out, subtable_data_size);
-			    else
-			      u.format4.collect_unicodes (out);
-			    return;
-    case  6: hb_barrier (); u.format6 .collect_unicodes (out); return;
-    case 10: hb_barrier (); u.format10.collect_unicodes (out); return;
-    case 12: hb_barrier (); u.format12.collect_unicodes (out, num_glyphs); return;
-    case 13: hb_barrier (); u.format13.collect_unicodes (out, num_glyphs); return;
-    case 14:
-    default: return;
+    انتخاب (u.format.v) {
+    حالت  0: hb_barrier (); u.format0 .collect_unicodes (برآمد); واپس;
+    حالت  4: hb_barrier (); اگر (subtable_ڈیٹا_سائز)
+			      u.format4.collect_unicodes (برآمد, subtable_ڈیٹا_سائز);
+			    ورنہ
+			      u.format4.collect_unicodes (برآمد);
+			    واپس;
+    حالت  6: hb_barrier (); u.format6 .collect_unicodes (برآمد); واپس;
+    حالت 10: hb_barrier (); u.format10.collect_unicodes (برآمد); واپس;
+    حالت 12: hb_barrier (); u.format12.collect_unicodes (برآمد, عدد_glyphs); واپس;
+    حالت 13: hb_barrier (); u.format13.collect_unicodes (برآمد, عدد_glyphs); واپس;
+    حالت 14:
+    طےشدہ: واپس;
     }
   }
 
-  void collect_mapping (hb_set_t *unicodes, /* OUT */
-			hb_map_t *mapping, /* OUT */
-			unsigned num_glyphs = UINT_MAX,
-			unsigned int subtable_data_size = 0) const
+  خالی collect_mapping (hb_سیٹ_t *unicodes, /*برآمد*/
+			hb_map_t *mapping, /*برآمد*/
+			غیرعلامتی عدد_glyphs = UINT_MAX,
+			غیرعلامتی صحیح subtable_ڈیٹا_سائز = 0) ثابت
   {
-    switch (u.format.v) {
-    case  0: hb_barrier (); u.format0 .collect_mapping (unicodes, mapping); return;
-    case  4: hb_barrier (); if (subtable_data_size)
-			      u.format4.collect_mapping (unicodes, mapping, subtable_data_size);
-			    else
+    انتخاب (u.format.v) {
+    حالت  0: hb_barrier (); u.format0 .collect_mapping (unicodes, mapping); واپس;
+    حالت  4: hb_barrier (); اگر (subtable_ڈیٹا_سائز)
+			      u.format4.collect_mapping (unicodes, mapping, subtable_ڈیٹا_سائز);
+			    ورنہ
 			      u.format4.collect_mapping (unicodes, mapping);
-			    return;
-    case  6: hb_barrier (); u.format6 .collect_mapping (unicodes, mapping); return;
-    case 10: hb_barrier (); u.format10.collect_mapping (unicodes, mapping); return;
-    case 12: hb_barrier (); u.format12.collect_mapping (unicodes, mapping, num_glyphs); return;
-    case 13: hb_barrier (); u.format13.collect_mapping (unicodes, mapping, num_glyphs); return;
-    case 14:
-    default: return;
+			    واپس;
+    حالت  6: hb_barrier (); u.format6 .collect_mapping (unicodes, mapping); واپس;
+    حالت 10: hb_barrier (); u.format10.collect_mapping (unicodes, mapping); واپس;
+    حالت 12: hb_barrier (); u.format12.collect_mapping (unicodes, mapping, عدد_glyphs); واپس;
+    حالت 13: hb_barrier (); u.format13.collect_mapping (unicodes, mapping, عدد_glyphs); واپس;
+    حالت 14:
+    طےشدہ: واپس;
     }
   }
 
-  unsigned get_language () const
+  غیرعلامتی get_language () ثابت
   {
-    switch (u.format.v) {
-    case  0: hb_barrier (); return u.format0 .get_language ();
-    case  4: hb_barrier (); return u.format4 .get_language ();
-    case  6: hb_barrier (); return u.format6 .get_language ();
-    case 10: hb_barrier (); return u.format10.get_language ();
-    case 12: hb_barrier (); return u.format12.get_language ();
-    case 13: hb_barrier (); return u.format13.get_language ();
-    case 14:
-    default: return 0;
+    انتخاب (u.format.v) {
+    حالت  0: hb_barrier (); واپس u.format0 .get_language ();
+    حالت  4: hb_barrier (); واپس u.format4 .get_language ();
+    حالت  6: hb_barrier (); واپس u.format6 .get_language ();
+    حالت 10: hb_barrier (); واپس u.format10.get_language ();
+    حالت 12: hb_barrier (); واپس u.format12.get_language ();
+    حالت 13: hb_barrier (); واپس u.format13.get_language ();
+    حالت 14:
+    طےشدہ: واپس 0;
     }
   }
 
-  template<typename Iterator,
+  سانچہ<قسم_نام Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  void serialize (hb_serialize_context_t *c,
+  خالی serialize (hb_serialize_context_t *c,
 		  Iterator it,
-		  unsigned format,
-		  const hb_subset_plan_t *plan,
-		  const void *base)
+		  غیرعلامتی format,
+		  ثابت hb_subset_plan_t *plan,
+		  ثابت خالی *بنیاد)
   {
-    switch (format) {
-    case  4: hb_barrier (); return u.format4.serialize (c, it);
-    case 12: hb_barrier (); return u.format12.serialize (c, it);
-    case 14: hb_barrier (); return u.format14.serialize (c, &plan->unicodes, &plan->glyphs_requested, plan->glyph_map, base);
-#ifndef HB_NO_BEYOND_64K
-    case 15: hb_barrier (); return u.format15.serialize (c, &plan->unicodes, &plan->glyphs_requested, plan->glyph_map, base);
-#endif
-    default: return;
+    انتخاب (format) {
+    حالت  4: hb_barrier (); واپس u.format4.serialize (c, it);
+    حالت 12: hb_barrier (); واپس u.format12.serialize (c, it);
+    حالت 14: hb_barrier (); واپس u.format14.serialize (c, &plan->unicodes, &plan->glyphs_requested, plan->glyph_map, بنیاد);
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    حالت 15: hb_barrier (); واپس u.format15.serialize (c, &plan->unicodes, &plan->glyphs_requested, plan->glyph_map, بنیاد);
+#اگر_ختم
+    طےشدہ: واپس;
     }
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (!u.format.v.sanitize (c)) return_trace (false);
+    TRACE_SANITIZE (یہ);
+    اگر (!u.format.v.sanitize (c)) return_trace (جھوٹ);
     hb_barrier ();
-    switch (u.format.v) {
-    case  0: hb_barrier (); return_trace (u.format0 .sanitize (c));
-    case  4: hb_barrier (); return_trace (u.format4 .sanitize (c));
-    case  6: hb_barrier (); return_trace (u.format6 .sanitize (c));
-    case 10: hb_barrier (); return_trace (u.format10.sanitize (c));
-    case 12: hb_barrier (); return_trace (u.format12.sanitize (c));
-    case 13: hb_barrier (); return_trace (u.format13.sanitize (c));
-    case 14: hb_barrier (); return_trace (u.format14.sanitize (c));
-#ifndef HB_NO_BEYOND_64K
-    case 15: hb_barrier (); return_trace (u.format15.sanitize (c));
-#endif
-    default:return_trace (true);
+    انتخاب (u.format.v) {
+    حالت  0: hb_barrier (); return_trace (u.format0 .sanitize (c));
+    حالت  4: hb_barrier (); return_trace (u.format4 .sanitize (c));
+    حالت  6: hb_barrier (); return_trace (u.format6 .sanitize (c));
+    حالت 10: hb_barrier (); return_trace (u.format10.sanitize (c));
+    حالت 12: hb_barrier (); return_trace (u.format12.sanitize (c));
+    حالت 13: hb_barrier (); return_trace (u.format13.sanitize (c));
+    حالت 14: hb_barrier (); return_trace (u.format14.sanitize (c));
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    حالت 15: hb_barrier (); return_trace (u.format15.sanitize (c));
+#اگر_ختم
+    طےشدہ:return_trace (سچ);
     }
   }
 
-  public:
-  union {
-  struct { HBUINT16 v; }	format;		/* Format identifier */
+  عوامی:
+  اتحاد {
+  ساخت { HBUINT16 v; }	format;		/* Format identifier */
   CmapSubtableFormat0	format0;
   CmapSubtableFormat4	format4;
   CmapSubtableFormat6	format6;
@@ -1715,794 +1715,794 @@ struct CmapSubtable
   CmapSubtableFormat13	format13;
   CmapSubtableFormat14_15<Layout::SmallTypes>
 			format14;
-#ifndef HB_NO_BEYOND_64K
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
   CmapSubtableFormat14_15<Layout::MediumTypes>
 			format15;
-#endif
+#اگر_ختم
   } u;
-  public:
-  DEFINE_SIZE_UNION (2, format.v);
+  عوامی:
+  DEFINE_سائز_UNION (2, format.v);
 };
 
 
-struct EncodingRecord
+ساخت Encoding_ریکارڈ
 {
-  int cmp (const EncodingRecord &other) const
+  صحیح cmp (ثابت Encoding_ریکارڈ &other) ثابت
   {
-    int ret;
+    صحیح ret;
     ret = platformID.cmp (other.platformID);
-    if (ret) return ret;
-    if (other.encodingID != 0xFFFF)
+    اگر (ret) واپس ret;
+    اگر (other.encodingID != 0xFFFF)
     {
       ret = encodingID.cmp (other.encodingID);
-      if (ret) return ret;
+      اگر (ret) واپس ret;
     }
-    return 0;
+    واپس 0;
   }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  منطقی sanitize (hb_sanitize_context_t *c, ثابت خالی *بنیاد) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  subtable.sanitize (c, base));
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ) &&
+		  subtable.sanitize (c, بنیاد));
   }
 
-  template<typename Iterator,
+  سانچہ<قسم_نام Iterator,
 	   hb_requires (hb_is_iterator (Iterator))>
-  EncodingRecord* copy (hb_serialize_context_t *c,
+  Encoding_ریکارڈ* copy (hb_serialize_context_t *c,
 			Iterator it,
-			unsigned format,
-			const void *base,
-			const hb_subset_plan_t *plan,
-			/* INOUT */ unsigned *objidx) const
+			غیرعلامتی format,
+			ثابت خالی *بنیاد,
+			ثابت hb_subset_plan_t *plan,
+			/* INOUT */ غیرعلامتی *objidx) ثابت
   {
-    TRACE_SERIALIZE (this);
-    auto snap = c->snapshot ();
-    auto *out = c->embed (this);
-    if (unlikely (!out)) return_trace (nullptr);
-    out->subtable = 0;
+    TRACE_SERIALIZE (یہ);
+    خودکار snap = c->snapshot ();
+    خودکار *برآمد = c->embed (یہ);
+    اگر (unlikely (!برآمد)) return_trace (خالی_اشاریہ);
+    برآمد->subtable = 0;
 
-    if (*objidx == 0)
+    اگر (*objidx == 0)
     {
       CmapSubtable *cmapsubtable = c->push<CmapSubtable> ();
-      unsigned origin_length = c->length ();
-      cmapsubtable->serialize (c, it, format, plan, &(base+subtable));
-      if (c->length () > origin_length && !c->in_error()) *objidx = c->pop_pack ();
-      else c->pop_discard ();
+      غیرعلامتی origin_لمبائی = c->لمبائی ();
+      cmapsubtable->serialize (c, it, format, plan, &(بنیاد+subtable));
+      اگر (c->لمبائی () > origin_لمبائی && !c->اندر_error()) *objidx = c->نکالو_pack ();
+      ورنہ c->نکالو_discard ();
     }
 
-    if (*objidx == 0)
+    اگر (*objidx == 0)
     {
       c->revert (snap);
-      return_trace (nullptr);
+      return_trace (خالی_اشاریہ);
     }
 
-    c->add_link (out->subtable, *objidx);
-    return_trace (out);
+    c->جوڑو_link (برآمد->subtable, *objidx);
+    return_trace (برآمد);
   }
 
   HBUINT16	platformID;	/* Platform ID. */
   HBUINT16	encodingID;	/* Platform-specific encoding ID. */
-  Offset32To<CmapSubtable>
+  Offset32_مقصد<CmapSubtable>
 		subtable;	/* Byte offset from beginning of table to the subtable for this encoding. */
-  public:
-  DEFINE_SIZE_STATIC (8);
+  عوامی:
+  DEFINE_سائز_STATIC (8);
 };
 
-struct cmap;
+ساخت cmap;
 
-struct SubtableUnicodesCache {
+ساخت SubtableUnicodesCache {
 
- private:
-  hb_blob_ptr_t<cmap> base_blob;
-  const char* base;
-  unsigned int table_length;
-  hb_hashmap_t<unsigned, hb::unique_ptr<hb_set_t>> cached_unicodes;
+ نجی:
+  hb_blob_ptr_t<cmap> بنیاد_blob;
+  ثابت حرف* بنیاد;
+  غیرعلامتی صحیح جدول_لمبائی;
+  hb_hashmap_t<غیرعلامتی, hb::unique_ptr<hb_سیٹ_t>> cached_unicodes;
 
- public:
+ عوامی:
 
-  static SubtableUnicodesCache* create (hb_blob_ptr_t<cmap> source_table)
+  ساکن SubtableUnicodesCache* create (hb_blob_ptr_t<cmap> ماخذ_جدول)
   {
     SubtableUnicodesCache* cache =
-        (SubtableUnicodesCache*) hb_malloc (sizeof(SubtableUnicodesCache));
+        (SubtableUnicodesCache*) hb_malloc (حجم(SubtableUnicodesCache));
 
-    if (unlikely (!cache))
-      return nullptr;
+    اگر (unlikely (!cache))
+      واپس خالی_اشاریہ;
 
-    new (cache) SubtableUnicodesCache (source_table);
-    return cache;
+    نیا (cache) SubtableUnicodesCache (ماخذ_جدول);
+    واپس cache;
   }
 
-  static void destroy (void* value) {
-    if (!value) return;
+  ساکن خالی destroy (خالی* value) {
+    اگر (!value) واپس;
 
     SubtableUnicodesCache* cache = (SubtableUnicodesCache*) value;
     cache->~SubtableUnicodesCache ();
     hb_free (cache);
   }
 
-  SubtableUnicodesCache(const void* cmap_base,
-			unsigned int table_length_ = 0)
-      : base_blob(),
-        base ((const char*) cmap_base),
-        table_length (table_length_),
+  SubtableUnicodesCache(ثابت خالی* cmap_بنیاد,
+			غیرعلامتی صحیح جدول_لمبائی_2 = 0)
+      : بنیاد_blob(),
+        بنیاد ((ثابت حرف*) cmap_بنیاد),
+        جدول_لمبائی (جدول_لمبائی_2),
         cached_unicodes ()
   {}
 
-  SubtableUnicodesCache(hb_blob_ptr_t<cmap> base_blob_)
-      : base_blob(base_blob_),
-        base ((const char *) base_blob.get()),
-        table_length (base_blob.get_length ()),
+  SubtableUnicodesCache(hb_blob_ptr_t<cmap> بنیاد_blob_2)
+      : بنیاد_blob(بنیاد_blob_2),
+        بنیاد ((ثابت حرف *) بنیاد_blob.get()),
+        جدول_لمبائی (بنیاد_blob.get_لمبائی ()),
         cached_unicodes ()
   {}
 
   ~SubtableUnicodesCache()
   {
-    base_blob.destroy ();
+    بنیاد_blob.destroy ();
   }
 
-  bool same_base(const void* other) const
+  منطقی same_بنیاد(ثابت خالی* other) ثابت
   {
-    return other == (const void*) base;
+    واپس other == (ثابت خالی*) بنیاد;
   }
 
-  const hb_set_t* set_for (const EncodingRecord* record,
-                           SubtableUnicodesCache& mutable_cache) const
+  ثابت hb_سیٹ_t* سیٹ_for (ثابت Encoding_ریکارڈ* ریکارڈ,
+                           SubtableUnicodesCache& mutable_cache) ثابت
   {
-    if (cached_unicodes.has ((unsigned) ((const char *) record - base)))
-      return cached_unicodes.get ((unsigned) ((const char *) record - base));
+    اگر (cached_unicodes.has ((غیرعلامتی) ((ثابت حرف *) ریکارڈ - بنیاد)))
+      واپس cached_unicodes.get ((غیرعلامتی) ((ثابت حرف *) ریکارڈ - بنیاد));
 
-    return mutable_cache.set_for (record);
+    واپس mutable_cache.سیٹ_for (ریکارڈ);
   }
 
-  const hb_set_t* set_for (const EncodingRecord* record)
+  ثابت hb_سیٹ_t* سیٹ_for (ثابت Encoding_ریکارڈ* ریکارڈ)
   {
-    if (!cached_unicodes.has ((unsigned) ((const char *) record - base)))
+    اگر (!cached_unicodes.has ((غیرعلامتی) ((ثابت حرف *) ریکارڈ - بنیاد)))
     {
-      hb_set_t *s = hb_set_create ();
-      if (unlikely (s->in_error ()))
-	return hb_set_get_empty ();
+      hb_سیٹ_t *s = hb_سیٹ_create ();
+      اگر (unlikely (s->اندر_error ()))
+	واپس hb_سیٹ_get_خالی_خانے ();
 
-      unsigned int subtable_data_size = record->subtable < table_length
-					? table_length - (unsigned int) record->subtable
+      غیرعلامتی صحیح subtable_ڈیٹا_سائز = ریکارڈ->subtable < جدول_لمبائی
+					? جدول_لمبائی - (غیرعلامتی صحیح) ریکارڈ->subtable
 					: 0;
-      (base+record->subtable).collect_unicodes (s, UINT_MAX, subtable_data_size);
+      (بنیاد+ریکارڈ->subtable).collect_unicodes (s, UINT_MAX, subtable_ڈیٹا_سائز);
 
-      if (unlikely (!cached_unicodes.set ((unsigned) ((const char *) record - base), hb::unique_ptr<hb_set_t> {s})))
-        return hb_set_get_empty ();
+      اگر (unlikely (!cached_unicodes.سیٹ ((غیرعلامتی) ((ثابت حرف *) ریکارڈ - بنیاد), hb::unique_ptr<hb_سیٹ_t> {s})))
+        واپس hb_سیٹ_get_خالی_خانے ();
 
-      return s;
+      واپس s;
     }
-    return cached_unicodes.get ((unsigned) ((const char *) record - base));
+    واپس cached_unicodes.get ((غیرعلامتی) ((ثابت حرف *) ریکارڈ - بنیاد));
   }
 
 };
 
-static inline uint16_t
-_hb_symbol_pua_map (unsigned codepoint)
+ساکن اندرونی uint16_t
+hb_علامت_pua_map (غیرعلامتی codepoint)
 {
-  if (codepoint <= 0x00FFu)
+  اگر (codepoint <= 0x00FFu)
   {
     /* For symbol-encoded OpenType fonts, we duplicate the
      * U+F000..F0FF range at U+0000..U+00FF.  That's what
      * Windows seems to do, and that's hinted about at:
      * https://docs.microsoft.com/en-us/typography/opentype/spec/recom
      * under "Non-Standard (Symbol) Fonts". */
-    return 0xF000u + codepoint;
+    واپس 0xF000u + codepoint;
   }
-  return 0;
+  واپس 0;
 }
 
-struct cmap
+ساخت cmap
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_cmap;
+  ساکن constexpr hb_لیبل_t جدول_لیبل = HB_OT_لیبل_cmap;
 
 
-  static SubtableUnicodesCache* create_filled_cache(hb_blob_ptr_t<cmap> source_table) {
-    const cmap* cmap = source_table.get();
-    auto it =
-    + hb_iter (cmap->encodingRecord)
-    | hb_filter ([&](const EncodingRecord& _) {
-      return cmap::filter_encoding_records_for_subset (cmap, _);
+  ساکن SubtableUnicodesCache* create_filled_cache(hb_blob_ptr_t<cmap> ماخذ_جدول) {
+    ثابت cmap* cmap = ماخذ_جدول.get();
+    خودکار it =
+    + hb_iter (cmap->encoding_ریکارڈ)
+    | hb_filter ([&](ثابت Encoding_ریکارڈ& _) {
+      واپس cmap::filter_encoding_اندراجات_for_subset (cmap, _);
     })
     ;
 
-    SubtableUnicodesCache* cache = SubtableUnicodesCache::create(source_table);
+    SubtableUnicodesCache* cache = SubtableUnicodesCache::create(ماخذ_جدول);
 
-    if (unlikely (!cache))
-      return nullptr;
+    اگر (unlikely (!cache))
+      واپس خالی_اشاریہ;
 
-    for (const EncodingRecord& _ : it)
-      cache->set_for(&_); // populate the cache for this encoding record.
+    برائے (ثابت Encoding_ریکارڈ& _ : it)
+      cache->سیٹ_for(&_); // populate the cache for this encoding record.
 
-    return cache;
+    واپس cache;
   }
 
-  template<typename Iterator, typename EncodingRecIter,
+  سانچہ<قسم_نام Iterator, قسم_نام EncodingRecIter,
 	   hb_requires (hb_is_iterator (EncodingRecIter))>
-  bool serialize (hb_serialize_context_t *c,
+  منطقی serialize (hb_serialize_context_t *c,
 		  Iterator it,
 		  EncodingRecIter encodingrec_iter,
-		  const void *base,
+		  ثابت خالی *بنیاد,
 		  hb_subset_plan_t *plan,
-	                  bool drop_format_4 = false,
-			  unsigned int source_table_length = 0)
+	                  منطقی drop_format_4 = جھوٹ,
+			  غیرعلامتی صحیح ماخذ_جدول_لمبائی = 0)
   {
-    if (unlikely (!c->extend_min ((*this))))  return false;
-    this->version = 0;
+    اگر (unlikely (!c->extend_min ((*یہ))))  واپس جھوٹ;
+    یہ->نسخہ = 0;
 
-    unsigned format4objidx = 0, format12objidx = 0, format14objidx = 0;
-#ifndef HB_NO_BEYOND_64K
-    unsigned format15objidx = 0;
-#endif
-    auto snap = c->snapshot ();
+    غیرعلامتی format4objidx = 0, format12objidx = 0, format14objidx = 0;
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+    غیرعلامتی format15objidx = 0;
+#اگر_ختم
+    خودکار snap = c->snapshot ();
 
-    SubtableUnicodesCache local_unicodes_cache (base, source_table_length);
-    const SubtableUnicodesCache* unicodes_cache = &local_unicodes_cache;
+    SubtableUnicodesCache local_unicodes_cache (بنیاد, ماخذ_جدول_لمبائی);
+    ثابت SubtableUnicodesCache* unicodes_cache = &local_unicodes_cache;
 
-    if (plan->accelerator &&
+    اگر (plan->accelerator &&
         plan->accelerator->cmap_cache &&
-        plan->accelerator->cmap_cache->same_base (base))
+        plan->accelerator->cmap_cache->same_بنیاد (بنیاد))
       unicodes_cache = plan->accelerator->cmap_cache;
 
-    for (const EncodingRecord& _ : encodingrec_iter)
+    برائے (ثابت Encoding_ریکارڈ& _ : encodingrec_iter)
     {
-      if (c->in_error ())
-        return false;
+      اگر (c->اندر_error ())
+        واپس جھوٹ;
 
-      unsigned format = (base+_.subtable).u.format.v;
-      if (format != 4 && format != 12 && format != 14
-#ifndef HB_NO_BEYOND_64K
+      غیرعلامتی format = (بنیاد+_.subtable).u.format.v;
+      اگر (format != 4 && format != 12 && format != 14
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
 	  && format != 15
-#endif
-	 ) continue;
+#اگر_ختم
+	 ) جاری;
 
-      const hb_set_t* unicodes_set = unicodes_cache->set_for (&_, local_unicodes_cache);
+      ثابت hb_سیٹ_t* unicodes_سیٹ = unicodes_cache->سیٹ_for (&_, local_unicodes_cache);
 
-      if (!drop_format_4 && format == 4)
+      اگر (!drop_format_4 && format == 4)
       {
-        c->copy (_, + it | hb_filter (*unicodes_set, hb_first), 4u, base, plan, &format4objidx);
-        if (c->in_error () && c->only_overflow ())
+        c->copy (_, + it | hb_filter (*unicodes_سیٹ, hb_پہلا), 4u, بنیاد, plan, &format4objidx);
+        اگر (c->اندر_error () && c->only_حد_سے_تجاوز ())
         {
           // cmap4 overflowed, reset and retry serialization without format 4 subtables.
           c->revert (snap);
-          return serialize (c, it,
+          واپس serialize (c, it,
                             encodingrec_iter,
-                            base,
+                            بنیاد,
                             plan,
-                            true,
-			    source_table_length);
+                            سچ,
+			    ماخذ_جدول_لمبائی);
         }
       }
 
-      else if (format == 12)
+      ورنہ اگر (format == 12)
       {
-        if (_can_drop (_,
-                       *unicodes_set,
-                       base,
+        اگر (_can_drop (_,
+                       *unicodes_سیٹ,
+                       بنیاد,
                        *unicodes_cache,
                        local_unicodes_cache,
-                       + it | hb_map (hb_first), encodingrec_iter))
-          continue;
-        c->copy (_, + it | hb_filter (*unicodes_set, hb_first), 12u, base, plan, &format12objidx);
+                       + it | hb_map (hb_پہلا), encodingrec_iter))
+          جاری;
+        c->copy (_, + it | hb_filter (*unicodes_سیٹ, hb_پہلا), 12u, بنیاد, plan, &format12objidx);
       }
-      else if (format == 14) c->copy (_, it, 14u, base, plan, &format14objidx);
-#ifndef HB_NO_BEYOND_64K
-      else if (format == 15) c->copy (_, it, 15u, base, plan, &format15objidx);
-#endif
+      ورنہ اگر (format == 14) c->copy (_, it, 14u, بنیاد, plan, &format14objidx);
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+      ورنہ اگر (format == 15) c->copy (_, it, 15u, بنیاد, plan, &format15objidx);
+#اگر_ختم
     }
-        unsigned length = c->length ();
-        unsigned available = length > cmap::min_size ? length - cmap::min_size : 0;
-        c->check_assign(this->encodingRecord.len,
-                        available / EncodingRecord::static_size,
-                        HB_SERIALIZE_ERROR_INT_OVERFLOW);
+        غیرعلامتی لمبائی = c->لمبائی ();
+        غیرعلامتی دستیاب = لمبائی > cmap::min_سائز ? لمبائی - cmap::min_سائز : 0;
+        c->check_تفویض(یہ->encoding_ریکارڈ.len,
+                        دستیاب / Encoding_ریکارڈ::static_سائز,
+                        HB_SERIALIZE_ERROR_INT_حد_سے_تجاوز);
 
     // Fail if format 4 was dropped and there is no cmap12.
-    return !drop_format_4 || format12objidx;
+    واپس !drop_format_4 || format12objidx;
   }
 
-  template<typename Iterator, typename EncodingRecordIterator,
+  سانچہ<قسم_نام Iterator, قسم_نام Encoding_ریکارڈ_Iterator,
       hb_requires (hb_is_iterator (Iterator)),
-      hb_requires (hb_is_iterator (EncodingRecordIterator))>
-  bool _can_drop (const EncodingRecord& cmap12,
-                  const hb_set_t& cmap12_unicodes,
-                  const void* base,
-                  const SubtableUnicodesCache& unicodes_cache,
+      hb_requires (hb_is_iterator (Encoding_ریکارڈ_Iterator))>
+  منطقی _can_drop (ثابت Encoding_ریکارڈ& cmap12,
+                  ثابت hb_سیٹ_t& cmap12_unicodes,
+                  ثابت خالی* بنیاد,
+                  ثابت SubtableUnicodesCache& unicodes_cache,
                   SubtableUnicodesCache& local_unicodes_cache,
                   Iterator subset_unicodes,
-                  EncodingRecordIterator encoding_records)
+                  Encoding_ریکارڈ_Iterator encoding_اندراجات)
   {
-    for (auto cp : + subset_unicodes | hb_filter (cmap12_unicodes))
+    برائے (خودکار cp : + subset_unicodes | hb_filter (cmap12_unicodes))
     {
-      if (cp >= 0x10000) return false;
+      اگر (cp >= 0x10000) واپس جھوٹ;
     }
 
-    unsigned target_platform;
-    unsigned target_encoding;
-    unsigned target_language = (base+cmap12.subtable).get_language ();
+    غیرعلامتی ہدف_platform;
+    غیرعلامتی ہدف_encoding;
+    غیرعلامتی ہدف_language = (بنیاد+cmap12.subtable).get_language ();
 
-    if (cmap12.platformID == 0 && cmap12.encodingID == 4)
+    اگر (cmap12.platformID == 0 && cmap12.encodingID == 4)
     {
-      target_platform = 0;
-      target_encoding = 3;
-    } else if (cmap12.platformID == 3 && cmap12.encodingID == 10) {
-      target_platform = 3;
-      target_encoding = 1;
-    } else {
-      return false;
+      ہدف_platform = 0;
+      ہدف_encoding = 3;
+    } ورنہ اگر (cmap12.platformID == 3 && cmap12.encodingID == 10) {
+      ہدف_platform = 3;
+      ہدف_encoding = 1;
+    } ورنہ {
+      واپس جھوٹ;
     }
 
-    for (const auto& _ : encoding_records)
+    برائے (ثابت خودکار& _ : encoding_اندراجات)
     {
-      if (_.platformID != target_platform
-          || _.encodingID != target_encoding
-          || (base+_.subtable).get_language() != target_language)
-        continue;
+      اگر (_.platformID != ہدف_platform
+          || _.encodingID != ہدف_encoding
+          || (بنیاد+_.subtable).get_language() != ہدف_language)
+        جاری;
 
-      const hb_set_t* sibling_unicodes = unicodes_cache.set_for (&_, local_unicodes_cache);
+      ثابت hb_سیٹ_t* sibling_unicodes = unicodes_cache.سیٹ_for (&_, local_unicodes_cache);
 
-      auto cmap12 = + subset_unicodes | hb_filter (cmap12_unicodes);
-      auto sibling = + subset_unicodes | hb_filter (*sibling_unicodes);
-      for (; cmap12 && sibling; cmap12++, sibling++)
+      خودکار cmap12 = + subset_unicodes | hb_filter (cmap12_unicodes);
+      خودکار sibling = + subset_unicodes | hb_filter (*sibling_unicodes);
+      برائے (; cmap12 && sibling; cmap12++, sibling++)
       {
-        unsigned a = *cmap12;
-        unsigned b = *sibling;
-        if (a != b) return false;
+        غیرعلامتی a = *cmap12;
+        غیرعلامتی b = *sibling;
+        اگر (a != b) واپس جھوٹ;
       }
 
-      return !cmap12 && !sibling;
+      واپس !cmap12 && !sibling;
     }
 
-    return false;
+    واپس جھوٹ;
   }
 
-  void closure_glyphs (const hb_set_t      *unicodes,
-		       hb_set_t            *glyphset) const
+  خالی احاطہ_glyphs (ثابت hb_سیٹ_t      *unicodes,
+		       hb_سیٹ_t            *glyphset) ثابت
   {
-    + hb_iter (encodingRecord)
-    | hb_map (&EncodingRecord::subtable)
-    | hb_map (hb_add (this))
+    + hb_iter (encoding_ریکارڈ)
+    | hb_map (&Encoding_ریکارڈ::subtable)
+    | hb_map (hb_جوڑو (یہ))
     | hb_filter (&CmapSubtable::is_variation_selector)
-    | hb_apply ([=] (const CmapSubtable& _) { _.closure_glyphs (unicodes, glyphset); })
+    | hb_apply ([=] (ثابت CmapSubtable& _) { _.احاطہ_glyphs (unicodes, glyphset); })
     ;
   }
 
-  bool subset (hb_subset_context_t *c) const
-  { return subset (c, false); }
+  منطقی subset (hb_subset_context_t *c) ثابت
+  { واپس subset (c, جھوٹ); }
 
-  bool subset (hb_subset_context_t *c, bool is_dmap) const
+  منطقی subset (hb_subset_context_t *c, منطقی is_dmap) ثابت
   {
-    TRACE_SUBSET (this);
+    TRACE_SUBSET (یہ);
 
-    cmap *cmap_prime = c->serializer->start_embed<cmap> ();
+    cmap *cmap_مفرد = c->serializer->آغاز_embed<cmap> ();
 
-    auto encodingrec_iter =
-    + hb_iter (encodingRecord)
-    | hb_filter ([&](const EncodingRecord& _) {
-      return cmap::filter_encoding_records_for_subset (this, _);
+    خودکار encodingrec_iter =
+    + hb_iter (encoding_ریکارڈ)
+    | hb_filter ([&](ثابت Encoding_ریکارڈ& _) {
+      واپس cmap::filter_encoding_اندراجات_for_subset (یہ, _);
     })
     ;
 
-    if (unlikely (!encodingrec_iter.len ())) return_trace (false);
+    اگر (unlikely (!encodingrec_iter.len ())) return_trace (جھوٹ);
 
-    const EncodingRecord *unicode_bmp= nullptr, *unicode_ucs4 = nullptr, *ms_bmp = nullptr, *ms_ucs4 = nullptr;
-    bool has_format12 = false;
+    ثابت Encoding_ریکارڈ *unicode_bmp= خالی_اشاریہ, *unicode_ucs4 = خالی_اشاریہ, *ms_bmp = خالی_اشاریہ, *ms_ucs4 = خالی_اشاریہ;
+    منطقی has_format12 = جھوٹ;
 
-    for (const EncodingRecord& _ : encodingrec_iter)
+    برائے (ثابت Encoding_ریکارڈ& _ : encodingrec_iter)
     {
-      unsigned format = (this + _.subtable).u.format.v;
-      if (format == 12) has_format12 = true;
+      غیرعلامتی format = (یہ + _.subtable).u.format.v;
+      اگر (format == 12) has_format12 = سچ;
 
-      const EncodingRecord *table = std::addressof (_);
-      if      (_.platformID == 0 && _.encodingID ==  3) unicode_bmp = table;
-      else if (_.platformID == 0 && _.encodingID ==  4) unicode_ucs4 = table;
-      else if (_.platformID == 3 && _.encodingID ==  1) ms_bmp = table;
-      else if (_.platformID == 3 && _.encodingID == 10) ms_ucs4 = table;
+      ثابت Encoding_ریکارڈ *جدول = std::addressof (_);
+      اگر      (_.platformID == 0 && _.encodingID ==  3) unicode_bmp = جدول;
+      ورنہ اگر (_.platformID == 0 && _.encodingID ==  4) unicode_ucs4 = جدول;
+      ورنہ اگر (_.platformID == 3 && _.encodingID ==  1) ms_bmp = جدول;
+      ورنہ اگر (_.platformID == 3 && _.encodingID == 10) ms_ucs4 = جدول;
     }
 
-    if (unlikely (!is_dmap && !has_format12 && !unicode_bmp && !ms_bmp)) return_trace (false);
-    if (unlikely (!is_dmap && has_format12 && (!unicode_ucs4 && !ms_ucs4))) return_trace (false);
+    اگر (unlikely (!is_dmap && !has_format12 && !unicode_bmp && !ms_bmp)) return_trace (جھوٹ);
+    اگر (unlikely (!is_dmap && has_format12 && (!unicode_ucs4 && !ms_ucs4))) return_trace (جھوٹ);
 
-    auto it =
-    + c->plan->unicode_to_new_gid_list.iter ()
-    | hb_filter ([&] (const hb_codepoint_pair_t _)
-		 { return (_.second != HB_MAP_VALUE_INVALID); })
+    خودکار it =
+    + c->plan->unicode_مقصد_new_gid_list.iter ()
+    | hb_filter ([&] (ثابت hb_codepoint_pair_t _)
+		 { واپس (_.second != HB_MAP_قدر_INVALID); })
     ;
 
-    return_trace (cmap_prime->serialize (c->serializer,
+    return_trace (cmap_مفرد->serialize (c->serializer,
                                          it,
                                          encodingrec_iter,
-                                         this,
+                                         یہ,
                                          c->plan,
-					 false,
-					 c->source_blob->length));
+					 جھوٹ,
+					 c->ماخذ_blob->لمبائی));
   }
 
-  const CmapSubtable *find_best_subtable (bool *symbol = nullptr,
-					  bool *mac = nullptr,
-					  bool *macroman = nullptr) const
+  ثابت CmapSubtable *ڈھونڈو_بہترین_subtable (منطقی *علامت = خالی_اشاریہ,
+					  منطقی *mac = خالی_اشاریہ,
+					  منطقی *macroman = خالی_اشاریہ) ثابت
   {
-    if (symbol) *symbol = false;
-    if (mac) *mac = false;
-    if (macroman) *macroman = false;
+    اگر (علامت) *علامت = جھوٹ;
+    اگر (mac) *mac = جھوٹ;
+    اگر (macroman) *macroman = جھوٹ;
 
-    const CmapSubtable *subtable;
+    ثابت CmapSubtable *subtable;
 
     /* Symbol subtable.
      * Prefer symbol if available.
      * https://github.com/harfbuzz/harfbuzz/issues/1918 */
-    if ((subtable = this->find_subtable (3, 0)))
+    اگر ((subtable = یہ->ڈھونڈو_subtable (3, 0)))
     {
-      if (symbol) *symbol = true;
-      return subtable;
+      اگر (علامت) *علامت = سچ;
+      واپس subtable;
     }
 
     /* 32-bit subtables. */
-    if ((subtable = this->find_subtable (3, 10))) return subtable;
-    if ((subtable = this->find_subtable (0, 6))) return subtable;
-    if ((subtable = this->find_subtable (0, 4))) return subtable;
+    اگر ((subtable = یہ->ڈھونڈو_subtable (3, 10))) واپس subtable;
+    اگر ((subtable = یہ->ڈھونڈو_subtable (0, 6))) واپس subtable;
+    اگر ((subtable = یہ->ڈھونڈو_subtable (0, 4))) واپس subtable;
 
     /* 16-bit subtables. */
-    if ((subtable = this->find_subtable (3, 1))) return subtable;
-    if ((subtable = this->find_subtable (0, 3))) return subtable;
-    if ((subtable = this->find_subtable (0, 2))) return subtable;
-    if ((subtable = this->find_subtable (0, 1))) return subtable;
-    if ((subtable = this->find_subtable (0, 0))) return subtable;
+    اگر ((subtable = یہ->ڈھونڈو_subtable (3, 1))) واپس subtable;
+    اگر ((subtable = یہ->ڈھونڈو_subtable (0, 3))) واپس subtable;
+    اگر ((subtable = یہ->ڈھونڈو_subtable (0, 2))) واپس subtable;
+    اگر ((subtable = یہ->ڈھونڈو_subtable (0, 1))) واپس subtable;
+    اگر ((subtable = یہ->ڈھونڈو_subtable (0, 0))) واپس subtable;
 
     /* MacRoman subtable. */
-    if ((subtable = this->find_subtable (1, 0)))
+    اگر ((subtable = یہ->ڈھونڈو_subtable (1, 0)))
     {
-      if (mac) *mac = true;
-      if (macroman) *macroman = true;
-      return subtable;
+      اگر (mac) *mac = سچ;
+      اگر (macroman) *macroman = سچ;
+      واپس subtable;
     }
     /* Any other Mac subtable; we just map ASCII for these. */
-    if ((subtable = this->find_subtable (1, 0xFFFF)))
+    اگر ((subtable = یہ->ڈھونڈو_subtable (1, 0xFFFF)))
     {
-      if (mac) *mac = true;
-      return subtable;
+      اگر (mac) *mac = سچ;
+      واپس subtable;
     }
 
     /* Meh. */
-    return &Null (CmapSubtable);
+    واپس &Null (CmapSubtable);
   }
 
-  struct accelerator_t
+  ساخت accelerator_t
   {
-    using cache_t = hb_cache_t<21, 19>;
-    static_assert (sizeof (cache_t) == 1024, "");
+    استعمال cache_t = hb_cache_t<21, 19>;
+    static_assert (حجم (cache_t) == 1024, "");
 
-    accelerator_t (hb_face_t *face, hb_tag_t table_tag = cmap::tableTag)
+    accelerator_t (hb_face_t *face, hb_لیبل_t جدول_لیبل_2 = cmap::جدول_لیبل)
     {
-      this->table = hb_sanitize_context_t ().reference_table<cmap> (face, table_tag);
-      if (!this->table.get_length ())
-	return;
+      یہ->جدول = hb_sanitize_context_t ().reference_جدول<cmap> (face, جدول_لیبل_2);
+      اگر (!یہ->جدول.get_لمبائی ())
+	واپس;
 
-      bool symbol, mac, macroman;
-      this->subtable = table->find_best_subtable (&symbol, &mac, &macroman);
-      this->subtable_uvs = &Null (CmapSubtable);
+      منطقی علامت, mac, macroman;
+      یہ->subtable = جدول->ڈھونڈو_بہترین_subtable (&علامت, &mac, &macroman);
+      یہ->subtable_uvs = &Null (CmapSubtable);
       {
-	const CmapSubtable *st = table->find_variation_selector_subtable ();
-	if (st)
+	ثابت CmapSubtable *st = جدول->ڈھونڈو_variation_selector_subtable ();
+	اگر (st)
 	  subtable_uvs = st;
       }
 
-#ifndef HB_NO_OT_FONT_CMAP_CACHE
-      cache = (cache_t *) hb_malloc (sizeof (cache_t));
-      if (cache)
-	new (cache) cache_t ();
-      else
-        return; // Such that get_glyph_funcZ remains null.
-#endif
+#اگر_غیر_تعریف_شدہ HB_NO_OT_FONT_CMAP_CACHE
+      cache = (cache_t *) hb_malloc (حجم (cache_t));
+      اگر (cache)
+	نیا (cache) cache_t ();
+      ورنہ
+        واپس; // Such that get_glyph_funcZ remains null.
+#اگر_ختم
 
-      this->get_glyph_data = subtable;
-#ifndef HB_NO_CMAP_LEGACY_SUBTABLES
-      bool is_format4 = subtable->u.format.v == 4;
-      auto set_format4_getter = [this] (bool (*func) (const void *,
+      یہ->get_glyph_ڈیٹا = subtable;
+#اگر_غیر_تعریف_شدہ HB_NO_CMAP_LEGACY_SUBTABLES
+      منطقی is_format4 = subtable->u.format.v == 4;
+      خودکار سیٹ_format4_getter = [یہ] (منطقی (*func) (ثابت خالی *,
 						      hb_codepoint_t,
 						      hb_codepoint_t *))
       {
-	this->format4_accel.init (&this->subtable->u.format4,
-				  get_subtable_data_size (this->subtable));
-	this->get_glyph_data = &this->format4_accel;
-	this->get_glyph_funcZ = func;
+	یہ->format4_accel.init (&یہ->subtable->u.format4,
+				  get_subtable_ڈیٹا_سائز (یہ->subtable));
+	یہ->get_glyph_ڈیٹا = &یہ->format4_accel;
+	یہ->get_glyph_funcZ = func;
       };
-      if (unlikely (symbol))
+      اگر (unlikely (علامت))
       {
-	switch ((unsigned) face->table.OS2->get_font_page ()) {
-	case OS2::font_page_t::FONT_PAGE_NONE:
-	  if (is_format4)
-	    set_format4_getter (get_glyph_from_symbol<CmapSubtableFormat4::accelerator_t, _hb_symbol_pua_map>);
-	  else
-	    this->get_glyph_funcZ = get_glyph_from_symbol<CmapSubtable, _hb_symbol_pua_map>;
-	  break;
-#ifndef HB_NO_OT_SHAPER_ARABIC_FALLBACK
-	case OS2::font_page_t::FONT_PAGE_SIMP_ARABIC:
-	  if (is_format4)
-	    set_format4_getter (get_glyph_from_symbol<CmapSubtableFormat4::accelerator_t, _hb_arabic_pua_simp_map>);
-	  else
-	    this->get_glyph_funcZ = get_glyph_from_symbol<CmapSubtable, _hb_arabic_pua_simp_map>;
-	  break;
-	case OS2::font_page_t::FONT_PAGE_TRAD_ARABIC:
-	  if (is_format4)
-	    set_format4_getter (get_glyph_from_symbol<CmapSubtableFormat4::accelerator_t, _hb_arabic_pua_trad_map>);
-	  else
-	    this->get_glyph_funcZ = get_glyph_from_symbol<CmapSubtable, _hb_arabic_pua_trad_map>;
-	  break;
-#endif
-	default:
-	  if (is_format4)
-	    set_format4_getter (get_glyph_from<CmapSubtableFormat4::accelerator_t>);
-	  else
-	    this->get_glyph_funcZ = get_glyph_from<CmapSubtable>;
-	  break;
+	انتخاب ((غیرعلامتی) face->جدول.OS2->get_font_صفحہ ()) {
+	حالت OS2::font_صفحہ_t::FONT_صفحہ_NONE:
+	  اگر (is_format4)
+	    سیٹ_format4_getter (get_glyph_from_علامت<CmapSubtableFormat4::accelerator_t, hb_علامت_pua_map>);
+	  ورنہ
+	    یہ->get_glyph_funcZ = get_glyph_from_علامت<CmapSubtable, hb_علامت_pua_map>;
+	  توڑو;
+#اگر_غیر_تعریف_شدہ HB_NO_OT_SHAPER_ARABIC_FALLBACK
+	حالت OS2::font_صفحہ_t::FONT_صفحہ_SIMP_ARABIC:
+	  اگر (is_format4)
+	    سیٹ_format4_getter (get_glyph_from_علامت<CmapSubtableFormat4::accelerator_t, _hb_arabic_pua_simp_map>);
+	  ورنہ
+	    یہ->get_glyph_funcZ = get_glyph_from_علامت<CmapSubtable, _hb_arabic_pua_simp_map>;
+	  توڑو;
+	حالت OS2::font_صفحہ_t::FONT_صفحہ_TRAD_ARABIC:
+	  اگر (is_format4)
+	    سیٹ_format4_getter (get_glyph_from_علامت<CmapSubtableFormat4::accelerator_t, _hb_arabic_pua_trad_map>);
+	  ورنہ
+	    یہ->get_glyph_funcZ = get_glyph_from_علامت<CmapSubtable, _hb_arabic_pua_trad_map>;
+	  توڑو;
+#اگر_ختم
+	طےشدہ:
+	  اگر (is_format4)
+	    سیٹ_format4_getter (get_glyph_from<CmapSubtableFormat4::accelerator_t>);
+	  ورنہ
+	    یہ->get_glyph_funcZ = get_glyph_from<CmapSubtable>;
+	  توڑو;
 	}
       }
-      else if (unlikely (macroman))
+      ورنہ اگر (unlikely (macroman))
       {
-	if (is_format4)
-	  set_format4_getter (get_glyph_from_macroman<CmapSubtableFormat4::accelerator_t>);
-	else
-	  this->get_glyph_funcZ = get_glyph_from_macroman<CmapSubtable>;
+	اگر (is_format4)
+	  سیٹ_format4_getter (get_glyph_from_macroman<CmapSubtableFormat4::accelerator_t>);
+	ورنہ
+	  یہ->get_glyph_funcZ = get_glyph_from_macroman<CmapSubtable>;
       }
-      else if (unlikely (mac))
+      ورنہ اگر (unlikely (mac))
       {
-	if (is_format4)
-	  set_format4_getter (get_glyph_from_ascii<CmapSubtableFormat4::accelerator_t>);
-	else
-	  this->get_glyph_funcZ = get_glyph_from_ascii<CmapSubtable>;
+	اگر (is_format4)
+	  سیٹ_format4_getter (get_glyph_from_ascii<CmapSubtableFormat4::accelerator_t>);
+	ورنہ
+	  یہ->get_glyph_funcZ = get_glyph_from_ascii<CmapSubtable>;
       }
-      else
-#endif
+      ورنہ
+#اگر_ختم
       {
-	switch (subtable->u.format.v) {
+	انتخاب (subtable->u.format.v) {
 	  /* Accelerate format 4 and format 12. */
-	  default:
-	    this->get_glyph_funcZ = get_glyph_from<CmapSubtable>;
-	    break;
-	  case 12:
-	    this->get_glyph_funcZ = get_glyph_from<CmapSubtableFormat12>;
-	    break;
-	  case  4:
+	  طےشدہ:
+	    یہ->get_glyph_funcZ = get_glyph_from<CmapSubtable>;
+	    توڑو;
+	  حالت 12:
+	    یہ->get_glyph_funcZ = get_glyph_from<CmapSubtableFormat12>;
+	    توڑو;
+	  حالت  4:
 	  {
 	    hb_barrier ();
-	    this->format4_accel.init (&subtable->u.format4,
-				      get_subtable_data_size (subtable));
-	    this->get_glyph_data = &this->format4_accel;
-	    this->get_glyph_funcZ = this->format4_accel.get_glyph_func;
-	    break;
+	    یہ->format4_accel.init (&subtable->u.format4,
+				      get_subtable_ڈیٹا_سائز (subtable));
+	    یہ->get_glyph_ڈیٹا = &یہ->format4_accel;
+	    یہ->get_glyph_funcZ = یہ->format4_accel.get_glyph_func;
+	    توڑو;
 	  }
 	}
       }
     }
     ~accelerator_t ()
     {
-#ifndef HB_NO_OT_FONT_CMAP_CACHE
+#اگر_غیر_تعریف_شدہ HB_NO_OT_FONT_CMAP_CACHE
       hb_free (cache);
-#endif
-      table.destroy ();
+#اگر_ختم
+      جدول.destroy ();
     }
 
-    inline bool _cached_get (hb_codepoint_t unicode,
-			     hb_codepoint_t *glyph) const
+    اندرونی منطقی _cached_get (hb_codepoint_t unicode,
+			     hb_codepoint_t *glyph) ثابت
     {
-#ifndef HB_NO_OT_FONT_CMAP_CACHE
+#اگر_غیر_تعریف_شدہ HB_NO_OT_FONT_CMAP_CACHE
       // cache is always non-null if we have a get_glyph_funcZ
-      unsigned v;
-      if (cache->get (unicode, &v))
+      غیرعلامتی v;
+      اگر (cache->get (unicode, &v))
       {
         *glyph = v;
-	return true;
+	واپس سچ;
       }
-#endif
-      bool ret  = this->get_glyph_funcZ (this->get_glyph_data, unicode, glyph);
+#اگر_ختم
+      منطقی ret  = یہ->get_glyph_funcZ (یہ->get_glyph_ڈیٹا, unicode, glyph);
 
-#ifndef HB_NO_OT_FONT_CMAP_CACHE
-      if (ret)
-        cache->set (unicode, *glyph);
-#endif
+#اگر_غیر_تعریف_شدہ HB_NO_OT_FONT_CMAP_CACHE
+      اگر (ret)
+        cache->سیٹ (unicode, *glyph);
+#اگر_ختم
 
-      return ret;
+      واپس ret;
     }
 
-    bool get_nominal_glyph (hb_codepoint_t  unicode,
-			    hb_codepoint_t *glyph) const
+    منطقی get_nominal_glyph (hb_codepoint_t  unicode,
+			    hb_codepoint_t *glyph) ثابت
     {
-      if (unlikely (!this->get_glyph_funcZ)) return false;
-      return _cached_get (unicode, glyph);
+      اگر (unlikely (!یہ->get_glyph_funcZ)) واپس جھوٹ;
+      واپس _cached_get (unicode, glyph);
     }
 
-    unsigned int get_nominal_glyphs (unsigned int count,
-				     const hb_codepoint_t *first_unicode,
-				     unsigned int unicode_stride,
-				     hb_codepoint_t *first_glyph,
-				     unsigned int glyph_stride) const
+    غیرعلامتی صحیح get_nominal_glyphs (غیرعلامتی صحیح گنتی,
+				     ثابت hb_codepoint_t *پہلا_unicode,
+				     غیرعلامتی صحیح unicode_stride,
+				     hb_codepoint_t *پہلا_glyph,
+				     غیرعلامتی صحیح glyph_stride) ثابت
     {
-      if (unlikely (!this->get_glyph_funcZ)) return 0;
+      اگر (unlikely (!یہ->get_glyph_funcZ)) واپس 0;
 
-      unsigned int done;
-      for (done = 0;
-	   done < count && _cached_get (*first_unicode, first_glyph);
-	   done++)
+      غیرعلامتی صحیح مکمل;
+      برائے (مکمل = 0;
+	   مکمل < گنتی && _cached_get (*پہلا_unicode, پہلا_glyph);
+	   مکمل++)
       {
-	first_unicode = &StructAtOffsetUnaligned<hb_codepoint_t> (first_unicode, unicode_stride);
-	first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
+	پہلا_unicode = &Struct_At_انحراف_Unaligned<hb_codepoint_t> (پہلا_unicode, unicode_stride);
+	پہلا_glyph = &Struct_At_انحراف_Unaligned<hb_codepoint_t> (پہلا_glyph, glyph_stride);
       }
-      return done;
+      واپس مکمل;
     }
 
-    bool get_variation_glyph (hb_codepoint_t  unicode,
+    منطقی get_variation_glyph (hb_codepoint_t  unicode,
 			      hb_codepoint_t  variation_selector,
-			      hb_codepoint_t *glyph) const
+			      hb_codepoint_t *glyph) ثابت
     {
-      switch (get_glyph_variant (unicode, variation_selector, glyph))
+      انتخاب (get_glyph_variant (unicode, variation_selector, glyph))
       {
-	case GLYPH_VARIANT_NOT_FOUND:	return false;
-	case GLYPH_VARIANT_FOUND:	return true;
-	case GLYPH_VARIANT_USE_DEFAULT:	break;
+	حالت GLYPH_VARIANT_NOT_ملا:	واپس جھوٹ;
+	حالت GLYPH_VARIANT_ملا:	واپس سچ;
+	حالت GLYPH_VARIANT_USE_DEFAULT:	توڑو;
       }
 
-      return get_nominal_glyph (unicode, glyph);
+      واپس get_nominal_glyph (unicode, glyph);
     }
 
     glyph_variant_t get_glyph_variant (hb_codepoint_t  unicode,
 				       hb_codepoint_t  variation_selector,
-				       hb_codepoint_t *glyph) const
+				       hb_codepoint_t *glyph) ثابت
     {
-      return this->subtable_uvs->get_glyph_variant (unicode,
+      واپس یہ->subtable_uvs->get_glyph_variant (unicode,
 						    variation_selector,
 						    glyph);
     }
 
-    bool has_data () const { return table.get_length (); }
+    منطقی has_ڈیٹا () ثابت { واپس جدول.get_لمبائی (); }
 
-    void collect_unicodes (hb_set_t *out, unsigned int num_glyphs) const
-    { subtable->collect_unicodes (out, num_glyphs, get_subtable_data_size (subtable)); }
-    void collect_mapping (hb_set_t *unicodes, hb_map_t *mapping,
-			  unsigned num_glyphs = UINT_MAX) const
-    { subtable->collect_mapping (unicodes, mapping, num_glyphs, get_subtable_data_size (subtable)); }
-    void collect_variation_selectors (hb_set_t *out) const
-    { subtable_uvs->collect_variation_selectors (out); }
-    void collect_variation_unicodes (hb_codepoint_t variation_selector,
-				     hb_set_t *out) const
-    { subtable_uvs->collect_variation_unicodes (variation_selector, out); }
+    خالی collect_unicodes (hb_سیٹ_t *برآمد, غیرعلامتی صحیح عدد_glyphs) ثابت
+    { subtable->collect_unicodes (برآمد, عدد_glyphs, get_subtable_ڈیٹا_سائز (subtable)); }
+    خالی collect_mapping (hb_سیٹ_t *unicodes, hb_map_t *mapping,
+			  غیرعلامتی عدد_glyphs = UINT_MAX) ثابت
+    { subtable->collect_mapping (unicodes, mapping, عدد_glyphs, get_subtable_ڈیٹا_سائز (subtable)); }
+    خالی collect_variation_selectors (hb_سیٹ_t *برآمد) ثابت
+    { subtable_uvs->collect_variation_selectors (برآمد); }
+    خالی collect_variation_unicodes (hb_codepoint_t variation_selector,
+				     hb_سیٹ_t *برآمد) ثابت
+    { subtable_uvs->collect_variation_unicodes (variation_selector, برآمد); }
 
-    protected:
-    typedef bool (*hb_cmap_get_glyph_func_t) (const void *obj,
+    محفوظ:
+    قسمتعریف منطقی (*hb_cmap_get_glyph_func_t) (ثابت خالی *obj,
 					      hb_codepoint_t codepoint,
 					      hb_codepoint_t *glyph);
-    typedef uint16_t (*hb_pua_remap_func_t) (unsigned);
+    قسمتعریف uint16_t (*hb_pua_remap_func_t) (غیرعلامتی);
 
-    template <typename Type>
-    HB_INTERNAL static bool get_glyph_from (const void *obj,
+    سانچہ <قسم_نام Type>
+    HB_اندرونی ساکن منطقی get_glyph_from (ثابت خالی *obj,
 					    hb_codepoint_t codepoint,
 					    hb_codepoint_t *glyph)
     {
-      const Type *typed_obj = (const Type *) obj;
-      return typed_obj->get_glyph (codepoint, glyph);
+      ثابت Type *typed_obj = (ثابت Type *) obj;
+      واپس typed_obj->get_glyph (codepoint, glyph);
     }
 
-    template <typename Type, hb_pua_remap_func_t remap>
-    HB_INTERNAL static bool get_glyph_from_symbol (const void *obj,
+    سانچہ <قسم_نام Type, hb_pua_remap_func_t remap>
+    HB_اندرونی ساکن منطقی get_glyph_from_علامت (ثابت خالی *obj,
 						   hb_codepoint_t codepoint,
 						   hb_codepoint_t *glyph)
     {
-      const Type *typed_obj = (const Type *) obj;
-      if (likely (typed_obj->get_glyph (codepoint, glyph)))
-	return true;
+      ثابت Type *typed_obj = (ثابت Type *) obj;
+      اگر (likely (typed_obj->get_glyph (codepoint, glyph)))
+	واپس سچ;
 
-      if (hb_codepoint_t c = remap (codepoint))
-	return typed_obj->get_glyph (c, glyph);
+      اگر (hb_codepoint_t c = remap (codepoint))
+	واپس typed_obj->get_glyph (c, glyph);
 
-      return false;
+      واپس جھوٹ;
     }
 
-    template <typename Type>
-    HB_INTERNAL static bool get_glyph_from_ascii (const void *obj,
+    سانچہ <قسم_نام Type>
+    HB_اندرونی ساکن منطقی get_glyph_from_ascii (ثابت خالی *obj,
 						  hb_codepoint_t codepoint,
 						  hb_codepoint_t *glyph)
     {
-      const Type *typed_obj = (const Type *) obj;
-      return codepoint < 0x80 && typed_obj->get_glyph (codepoint, glyph);
+      ثابت Type *typed_obj = (ثابت Type *) obj;
+      واپس codepoint < 0x80 && typed_obj->get_glyph (codepoint, glyph);
     }
 
-    template <typename Type>
-    HB_INTERNAL static bool get_glyph_from_macroman (const void *obj,
+    سانچہ <قسم_نام Type>
+    HB_اندرونی ساکن منطقی get_glyph_from_macroman (ثابت خالی *obj,
 						     hb_codepoint_t codepoint,
 						     hb_codepoint_t *glyph)
     {
-      if (get_glyph_from_ascii<Type> (obj, codepoint, glyph))
-	return true;
+      اگر (get_glyph_from_ascii<Type> (obj, codepoint, glyph))
+	واپس سچ;
 
-      const Type *typed_obj = (const Type *) obj;
-      unsigned c = unicode_to_macroman (codepoint);
-      return c && typed_obj->get_glyph (c, glyph);
+      ثابت Type *typed_obj = (ثابت Type *) obj;
+      غیرعلامتی c = unicode_مقصد_macroman (codepoint);
+      واپس c && typed_obj->get_glyph (c, glyph);
     }
 
-    unsigned int get_subtable_data_size (const CmapSubtable *subtable) const
+    غیرعلامتی صحیح get_subtable_ڈیٹا_سائز (ثابت CmapSubtable *subtable) ثابت
     {
-      unsigned int table_length = this->table.get_length ();
-      uintptr_t table_start = (uintptr_t) (const void *) this->table.get ();
-      uintptr_t subtable_addr = (uintptr_t) (const void *) subtable;
-      if (unlikely (subtable_addr < table_start))
-	return 0;
+      غیرعلامتی صحیح جدول_لمبائی = یہ->جدول.get_لمبائی ();
+      uintptr_t جدول_آغاز = (uintptr_t) (ثابت خالی *) یہ->جدول.get ();
+      uintptr_t subtable_addr = (uintptr_t) (ثابت خالی *) subtable;
+      اگر (unlikely (subtable_addr < جدول_آغاز))
+	واپس 0;
 
-      uintptr_t subtable_offset = subtable_addr - table_start;
-      if (unlikely (subtable_offset >= table_length))
-	return 0;
+      uintptr_t subtable_انحراف = subtable_addr - جدول_آغاز;
+      اگر (unlikely (subtable_انحراف >= جدول_لمبائی))
+	واپس 0;
 
-      return table_length - (unsigned int) subtable_offset;
+      واپس جدول_لمبائی - (غیرعلامتی صحیح) subtable_انحراف;
     }
 
-    private:
-    hb_nonnull_ptr_t<const CmapSubtable> subtable;
-    hb_nonnull_ptr_t<const CmapSubtable> subtable_uvs;
+    نجی:
+    hb_nonnull_ptr_t<ثابت CmapSubtable> subtable;
+    hb_nonnull_ptr_t<ثابت CmapSubtable> subtable_uvs;
 
-    hb_cmap_get_glyph_func_t get_glyph_funcZ = nullptr;
-    const void *get_glyph_data = nullptr;
+    hb_cmap_get_glyph_func_t get_glyph_funcZ = خالی_اشاریہ;
+    ثابت خالی *get_glyph_ڈیٹا = خالی_اشاریہ;
 
     CmapSubtableFormat4::accelerator_t format4_accel;
 
-#ifndef HB_NO_OT_FONT_CMAP_CACHE
-    cache_t *cache = nullptr;
-#endif
+#اگر_غیر_تعریف_شدہ HB_NO_OT_FONT_CMAP_CACHE
+    cache_t *cache = خالی_اشاریہ;
+#اگر_ختم
 
-    public:
-    hb_blob_ptr_t<cmap> table;
+    عوامی:
+    hb_blob_ptr_t<cmap> جدول;
   };
 
-  protected:
+  محفوظ:
 
-  const CmapSubtable *find_subtable (unsigned int platform_id,
-				     unsigned int encoding_id) const
+  ثابت CmapSubtable *ڈھونڈو_subtable (غیرعلامتی صحیح platform_id,
+				     غیرعلامتی صحیح encoding_id) ثابت
   {
-    EncodingRecord key;
+    Encoding_ریکارڈ key;
     key.platformID = platform_id;
     key.encodingID = encoding_id;
 
-    const EncodingRecord &result = encodingRecord.bsearch (key);
-    if (!result.subtable)
-      return nullptr;
+    ثابت Encoding_ریکارڈ &نتیجہ = encoding_ریکارڈ.bsearch (key);
+    اگر (!نتیجہ.subtable)
+      واپس خالی_اشاریہ;
 
-    return &(this+result.subtable);
+    واپس &(یہ+نتیجہ.subtable);
   }
 
-  const CmapSubtable *find_variation_selector_subtable () const
+  ثابت CmapSubtable *ڈھونڈو_variation_selector_subtable () ثابت
   {
-    const CmapSubtable *format14 = nullptr;
-    for (const EncodingRecord& record : encodingRecord)
+    ثابت CmapSubtable *format14 = خالی_اشاریہ;
+    برائے (ثابت Encoding_ریکارڈ& ریکارڈ : encoding_ریکارڈ)
     {
-      if (record.platformID != 0 || record.encodingID != 5)
-	continue;
+      اگر (ریکارڈ.platformID != 0 || ریکارڈ.encodingID != 5)
+	جاری;
 
-      const CmapSubtable *subtable = &(this+record.subtable);
-#ifndef HB_NO_BEYOND_64K
-      if (subtable->u.format.v == 15)
-	return subtable;
-#endif
-      if (subtable->u.format.v == 14)
+      ثابت CmapSubtable *subtable = &(یہ+ریکارڈ.subtable);
+#اگر_غیر_تعریف_شدہ HB_NO_BEYOND_64K
+      اگر (subtable->u.format.v == 15)
+	واپس subtable;
+#اگر_ختم
+      اگر (subtable->u.format.v == 14)
 	format14 = subtable;
     }
-    return format14;
+    واپس format14;
   }
 
-  public:
+  عوامی:
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (یہ);
+    return_trace (c->check_struct (یہ) &&
 		  hb_barrier () &&
-		  likely (version == 0) &&
-		  encodingRecord.sanitize (c, this));
+		  likely (نسخہ == 0) &&
+		  encoding_ریکارڈ.sanitize (c, یہ));
   }
 
- private:
+ نجی:
 
-  static bool filter_encoding_records_for_subset(const cmap* cmap,
-                                                 const EncodingRecord& _)
+  ساکن منطقی filter_encoding_اندراجات_for_subset(ثابت cmap* cmap,
+                                                 ثابت Encoding_ریکارڈ& _)
   {
-    return
+    واپس
         (_.platformID == 0 && _.encodingID == 3) ||
         (_.platformID == 0 && _.encodingID == 4) ||
         (_.platformID == 3 && _.encodingID == 1) ||
@@ -2510,139 +2510,139 @@ struct cmap
         (cmap + _.subtable).is_variation_selector ();
   }
 
-  protected:
-  HBUINT16	version;	/* Table version number (0). */
-  SortedArray16Of<EncodingRecord>
-		encodingRecord;	/* Encoding tables. */
-  public:
-  DEFINE_SIZE_ARRAY (4, encodingRecord);
+  محفوظ:
+  HBUINT16	نسخہ;	/* Table version number (0). */
+  Sorted_Array16_کا<Encoding_ریکارڈ>
+		encoding_ریکارڈ;	/* Encoding tables. */
+  عوامی:
+  DEFINE_سائز_ARRAY (4, encoding_ریکارڈ);
 };
 
-struct DMAP : cmap
+ساخت DMAP : cmap
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_DMAP;
+  ساکن constexpr hb_لیبل_t جدول_لیبل = HB_OT_لیبل_DMAP;
 
-  bool subset (hb_subset_context_t *c) const
-  { return cmap::subset (c, true); }
+  منطقی subset (hb_subset_context_t *c) ثابت
+  { واپس cmap::subset (c, سچ); }
 };
 
-struct cmap_accelerator_t
+ساخت cmap_accelerator_t
 {
   cmap_accelerator_t (hb_face_t *face) :
-    dmap (face, HB_OT_TAG_DMAP),
-    base (face)
+    dmap (face, HB_OT_لیبل_DMAP),
+    بنیاد (face)
   {}
 
-  bool get_nominal_glyph (hb_codepoint_t  unicode,
-			  hb_codepoint_t *glyph) const
+  منطقی get_nominal_glyph (hb_codepoint_t  unicode,
+			  hb_codepoint_t *glyph) ثابت
   {
-    return dmap.get_nominal_glyph (unicode, glyph) ||
-	   base.get_nominal_glyph (unicode, glyph);
+    واپس dmap.get_nominal_glyph (unicode, glyph) ||
+	   بنیاد.get_nominal_glyph (unicode, glyph);
   }
 
-  unsigned int get_nominal_glyphs (unsigned int count,
-				   const hb_codepoint_t *first_unicode,
-				   unsigned int unicode_stride,
-				   hb_codepoint_t *first_glyph,
-				   unsigned int glyph_stride) const
+  غیرعلامتی صحیح get_nominal_glyphs (غیرعلامتی صحیح گنتی,
+				   ثابت hb_codepoint_t *پہلا_unicode,
+				   غیرعلامتی صحیح unicode_stride,
+				   hb_codepoint_t *پہلا_glyph,
+				   غیرعلامتی صحیح glyph_stride) ثابت
   {
-    if (likely (!dmap.has_data ()))
-      return base.get_nominal_glyphs (count,
-				      first_unicode, unicode_stride,
-				      first_glyph, glyph_stride);
+    اگر (likely (!dmap.has_ڈیٹا ()))
+      واپس بنیاد.get_nominal_glyphs (گنتی,
+				      پہلا_unicode, unicode_stride,
+				      پہلا_glyph, glyph_stride);
 
-    unsigned int done;
-    for (done = 0;
-	 done < count && get_nominal_glyph (*first_unicode, first_glyph);
-	 done++)
+    غیرعلامتی صحیح مکمل;
+    برائے (مکمل = 0;
+	 مکمل < گنتی && get_nominal_glyph (*پہلا_unicode, پہلا_glyph);
+	 مکمل++)
     {
-      first_unicode = &StructAtOffsetUnaligned<hb_codepoint_t> (first_unicode, unicode_stride);
-      first_glyph = &StructAtOffsetUnaligned<hb_codepoint_t> (first_glyph, glyph_stride);
+      پہلا_unicode = &Struct_At_انحراف_Unaligned<hb_codepoint_t> (پہلا_unicode, unicode_stride);
+      پہلا_glyph = &Struct_At_انحراف_Unaligned<hb_codepoint_t> (پہلا_glyph, glyph_stride);
     }
-    return done;
+    واپس مکمل;
   }
 
-  bool get_variation_glyph (hb_codepoint_t  unicode,
+  منطقی get_variation_glyph (hb_codepoint_t  unicode,
 			    hb_codepoint_t  variation_selector,
-			    hb_codepoint_t *glyph) const
+			    hb_codepoint_t *glyph) ثابت
   {
-    glyph_variant_t result = dmap.get_glyph_variant (unicode,
+    glyph_variant_t نتیجہ = dmap.get_glyph_variant (unicode,
 						     variation_selector,
 						     glyph);
-    if (result == GLYPH_VARIANT_NOT_FOUND)
-      result = base.get_glyph_variant (unicode, variation_selector, glyph);
+    اگر (نتیجہ == GLYPH_VARIANT_NOT_ملا)
+      نتیجہ = بنیاد.get_glyph_variant (unicode, variation_selector, glyph);
 
-    switch (result)
+    انتخاب (نتیجہ)
     {
-      case GLYPH_VARIANT_NOT_FOUND: return false;
-      case GLYPH_VARIANT_FOUND: return true;
-      case GLYPH_VARIANT_USE_DEFAULT: break;
+      حالت GLYPH_VARIANT_NOT_ملا: واپس جھوٹ;
+      حالت GLYPH_VARIANT_ملا: واپس سچ;
+      حالت GLYPH_VARIANT_USE_DEFAULT: توڑو;
     }
 
-    return get_nominal_glyph (unicode, glyph);
+    واپس get_nominal_glyph (unicode, glyph);
   }
 
-  void collect_unicodes (hb_set_t *out, unsigned int num_glyphs) const
+  خالی collect_unicodes (hb_سیٹ_t *برآمد, غیرعلامتی صحیح عدد_glyphs) ثابت
   {
-    base.collect_unicodes (out, num_glyphs);
-    dmap.collect_unicodes (out, num_glyphs);
+    بنیاد.collect_unicodes (برآمد, عدد_glyphs);
+    dmap.collect_unicodes (برآمد, عدد_glyphs);
   }
 
-  void collect_mapping (hb_set_t *unicodes, hb_map_t *mapping,
-			unsigned num_glyphs = UINT_MAX) const
+  خالی collect_mapping (hb_سیٹ_t *unicodes, hb_map_t *mapping,
+			غیرعلامتی عدد_glyphs = UINT_MAX) ثابت
   {
-    base.collect_mapping (unicodes, mapping, num_glyphs);
-    dmap.collect_mapping (unicodes, mapping, num_glyphs);
+    بنیاد.collect_mapping (unicodes, mapping, عدد_glyphs);
+    dmap.collect_mapping (unicodes, mapping, عدد_glyphs);
   }
 
-  void collect_variation_selectors (hb_set_t *out) const
+  خالی collect_variation_selectors (hb_سیٹ_t *برآمد) ثابت
   {
-    base.collect_variation_selectors (out);
-    dmap.collect_variation_selectors (out);
+    بنیاد.collect_variation_selectors (برآمد);
+    dmap.collect_variation_selectors (برآمد);
   }
 
-  void collect_variation_unicodes (hb_codepoint_t variation_selector,
-				   hb_set_t *out) const
+  خالی collect_variation_unicodes (hb_codepoint_t variation_selector,
+				   hb_سیٹ_t *برآمد) ثابت
   {
-    base.collect_variation_unicodes (variation_selector, out);
-    dmap.collect_variation_unicodes (variation_selector, out);
+    بنیاد.collect_variation_unicodes (variation_selector, برآمد);
+    dmap.collect_variation_unicodes (variation_selector, برآمد);
   }
 
-  void closure_glyphs (const hb_set_t *unicodes,
-		       hb_set_t       *glyphset) const
+  خالی احاطہ_glyphs (ثابت hb_سیٹ_t *unicodes,
+		       hb_سیٹ_t       *glyphset) ثابت
   {
-    if (likely (!dmap.has_data ()))
+    اگر (likely (!dmap.has_ڈیٹا ()))
     {
-      base.table->closure_glyphs (unicodes, glyphset);
-      return;
+      بنیاد.جدول->احاطہ_glyphs (unicodes, glyphset);
+      واپس;
     }
 
-    hb_set_t variation_selectors;
+    hb_سیٹ_t variation_selectors;
     collect_variation_selectors (&variation_selectors);
-    for (hb_codepoint_t variation_selector : variation_selectors)
+    برائے (hb_codepoint_t variation_selector : variation_selectors)
     {
-      if (!unicodes->has (variation_selector))
-	continue;
+      اگر (!unicodes->has (variation_selector))
+	جاری;
 
-      hb_set_t variation_unicodes;
+      hb_سیٹ_t variation_unicodes;
       collect_variation_unicodes (variation_selector, &variation_unicodes);
-      for (hb_codepoint_t unicode : variation_unicodes)
+      برائے (hb_codepoint_t unicode : variation_unicodes)
       {
-	if (!unicodes->has (unicode))
-	  continue;
+	اگر (!unicodes->has (unicode))
+	  جاری;
 
 	hb_codepoint_t glyph;
-	if (get_variation_glyph (unicode, variation_selector, &glyph))
-	  glyphset->add (glyph);
+	اگر (get_variation_glyph (unicode, variation_selector, &glyph))
+	  glyphset->جوڑو (glyph);
       }
     }
   }
 
   cmap::accelerator_t dmap;
-  cmap::accelerator_t base;
+  cmap::accelerator_t بنیاد;
 };
 
 } /* namespace OT */
 
 
-#endif /* HB_OT_CMAP_TABLE_HH */
+#اگر_ختم /* HB_OT_CMAP_TABLE_HH */

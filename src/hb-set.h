@@ -24,14 +24,14 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#if !defined(HB_H_IN) && !defined(HB_NO_SINGLE_HEADER_ERROR)
-#error "Include <hb.h> instead."
-#endif
+#اگر !defined(HB_H_اندر) && !defined(HB_NO_SINGLE_سرخی_ERROR)
+#غلطی "Include <hb.h> instead."
+#اگر_ختم
 
-#ifndef HB_SET_H
-#define HB_SET_H
+#اگر_غیر_تعریف_شدہ HB_سیٹ_H
+#تعریف_کرو HB_سیٹ_H
 
-#include "hb-common.h"
+#شامل "hb-common.h"
 
 HB_BEGIN_DECLS
 
@@ -43,7 +43,7 @@ HB_BEGIN_DECLS
  *
  * Since: 0.9.21
  */
-#define HB_SET_VALUE_INVALID HB_CODEPOINT_INVALID
+#تعریف_کرو HB_سیٹ_قدر_INVALID HB_CODEPOINT_INVALID
 
 /**
  * hb_set_t:
@@ -54,154 +54,154 @@ HB_BEGIN_DECLS
  * values.
  *
  **/
-typedef struct hb_set_t hb_set_t;
+قسمتعریف ساخت hb_سیٹ_t hb_سیٹ_t;
 
 
-HB_EXTERN hb_set_t *
-hb_set_create (void);
+HB_EXTERN hb_سیٹ_t *
+hb_سیٹ_create (خالی);
 
-HB_EXTERN hb_set_t *
-hb_set_get_empty (void);
+HB_EXTERN hb_سیٹ_t *
+hb_سیٹ_get_خالی_خانے (خالی);
 
-HB_EXTERN hb_set_t *
-hb_set_reference (hb_set_t *set);
+HB_EXTERN hb_سیٹ_t *
+hb_سیٹ_reference (hb_سیٹ_t *سیٹ);
 
-HB_EXTERN void
-hb_set_destroy (hb_set_t *set);
+HB_EXTERN خالی
+hb_سیٹ_destroy (hb_سیٹ_t *سیٹ);
 
 HB_EXTERN hb_bool_t
-hb_set_set_user_data (hb_set_t           *set,
-		      hb_user_data_key_t *key,
-		      void *              data,
+hb_سیٹ_سیٹ_user_ڈیٹا (hb_سیٹ_t           *سیٹ,
+		      hb_user_ڈیٹا_کلید_t *کلید_2,
+		      خالی *              ڈیٹا,
 		      hb_destroy_func_t   destroy,
 		      hb_bool_t           replace);
 
-HB_EXTERN void *
-hb_set_get_user_data (const hb_set_t     *set,
-		      hb_user_data_key_t *key);
+HB_EXTERN خالی *
+hb_سیٹ_get_user_ڈیٹا (ثابت hb_سیٹ_t     *سیٹ,
+		      hb_user_ڈیٹا_کلید_t *کلید_2);
 
 
 /* Returns false if allocation has failed before */
 HB_EXTERN hb_bool_t
-hb_set_allocation_successful (const hb_set_t *set);
+hb_سیٹ_تخصیص_successful (ثابت hb_سیٹ_t *سیٹ);
 
-HB_EXTERN hb_set_t *
-hb_set_copy (const hb_set_t *set);
+HB_EXTERN hb_سیٹ_t *
+hb_سیٹ_copy (ثابت hb_سیٹ_t *سیٹ);
 
-HB_EXTERN void
-hb_set_clear (hb_set_t *set);
-
-HB_EXTERN hb_bool_t
-hb_set_is_empty (const hb_set_t *set);
-
-HB_EXTERN void
-hb_set_invert (hb_set_t *set);
+HB_EXTERN خالی
+hb_سیٹ_clear (hb_سیٹ_t *سیٹ);
 
 HB_EXTERN hb_bool_t
-hb_set_is_inverted (const hb_set_t *set);
+hb_سیٹ_is_خالی_خانے (ثابت hb_سیٹ_t *سیٹ);
+
+HB_EXTERN خالی
+hb_سیٹ_invert (hb_سیٹ_t *سیٹ);
 
 HB_EXTERN hb_bool_t
-hb_set_has (const hb_set_t *set,
+hb_سیٹ_is_inverted (ثابت hb_سیٹ_t *سیٹ);
+
+HB_EXTERN hb_bool_t
+hb_سیٹ_has (ثابت hb_سیٹ_t *سیٹ,
 	    hb_codepoint_t  codepoint);
 
-HB_EXTERN void
-hb_set_add (hb_set_t       *set,
+HB_EXTERN خالی
+hb_سیٹ_جوڑو (hb_سیٹ_t       *سیٹ,
 	    hb_codepoint_t  codepoint);
 
-HB_EXTERN void
-hb_set_add_range (hb_set_t       *set,
-		  hb_codepoint_t  first,
-		  hb_codepoint_t  last);
+HB_EXTERN خالی
+hb_سیٹ_جوڑو_range (hb_سیٹ_t       *سیٹ,
+		  hb_codepoint_t  پہلا,
+		  hb_codepoint_t  آخری);
 
-HB_EXTERN void
-hb_set_add_sorted_array (hb_set_t             *set,
-		         const hb_codepoint_t *sorted_codepoints,
-		         unsigned int          num_codepoints);
+HB_EXTERN خالی
+hb_سیٹ_جوڑو_sorted_array (hb_سیٹ_t             *سیٹ,
+		         ثابت hb_codepoint_t *sorted_codepoints,
+		         غیرعلامتی صحیح          عدد_codepoints);
 
-HB_EXTERN void
-hb_set_del (hb_set_t       *set,
+HB_EXTERN خالی
+hb_سیٹ_del (hb_سیٹ_t       *سیٹ,
 	    hb_codepoint_t  codepoint);
 
-HB_EXTERN void
-hb_set_del_range (hb_set_t       *set,
-		  hb_codepoint_t  first,
-		  hb_codepoint_t  last);
+HB_EXTERN خالی
+hb_سیٹ_del_range (hb_سیٹ_t       *سیٹ,
+		  hb_codepoint_t  پہلا,
+		  hb_codepoint_t  آخری);
 
 HB_EXTERN hb_bool_t
-hb_set_is_equal (const hb_set_t *set,
-		 const hb_set_t *other);
+hb_سیٹ_is_equal (ثابت hb_سیٹ_t *سیٹ,
+		 ثابت hb_سیٹ_t *other);
 
 HB_EXTERN hb_bool_t
-hb_set_intersects (const hb_set_t *set,
-		   const hb_set_t *other);
+hb_سیٹ_intersects (ثابت hb_سیٹ_t *سیٹ,
+		   ثابت hb_سیٹ_t *other);
 
-HB_EXTERN unsigned int
-hb_set_hash (const hb_set_t *set);
+HB_EXTERN غیرعلامتی صحیح
+hb_سیٹ_hash (ثابت hb_سیٹ_t *سیٹ);
 
 HB_EXTERN hb_bool_t
-hb_set_is_subset (const hb_set_t *set,
-		  const hb_set_t *larger_set);
+hb_سیٹ_is_subset (ثابت hb_سیٹ_t *سیٹ,
+		  ثابت hb_سیٹ_t *larger_سیٹ);
 
-HB_EXTERN void
-hb_set_set (hb_set_t       *set,
-	    const hb_set_t *other);
+HB_EXTERN خالی
+hb_سیٹ_سیٹ (hb_سیٹ_t       *سیٹ,
+	    ثابت hb_سیٹ_t *other);
 
-HB_EXTERN void
-hb_set_union (hb_set_t       *set,
-	      const hb_set_t *other);
+HB_EXTERN خالی
+hb_سیٹ_union (hb_سیٹ_t       *سیٹ,
+	      ثابت hb_سیٹ_t *other);
 
-HB_EXTERN void
-hb_set_intersect (hb_set_t       *set,
-		  const hb_set_t *other);
+HB_EXTERN خالی
+hb_سیٹ_intersect (hb_سیٹ_t       *سیٹ,
+		  ثابت hb_سیٹ_t *other);
 
-HB_EXTERN void
-hb_set_subtract (hb_set_t       *set,
-		 const hb_set_t *other);
+HB_EXTERN خالی
+hb_سیٹ_تفریق (hb_سیٹ_t       *سیٹ,
+		 ثابت hb_سیٹ_t *other);
 
-HB_EXTERN void
-hb_set_symmetric_difference (hb_set_t       *set,
-			     const hb_set_t *other);
+HB_EXTERN خالی
+hb_سیٹ_متشاکل_difference (hb_سیٹ_t       *سیٹ,
+			     ثابت hb_سیٹ_t *other);
 
-HB_EXTERN unsigned int
-hb_set_get_population (const hb_set_t *set);
+HB_EXTERN غیرعلامتی صحیح
+hb_سیٹ_get_population (ثابت hb_سیٹ_t *سیٹ);
 
 /* Returns HB_SET_VALUE_INVALID if set empty. */
 HB_EXTERN hb_codepoint_t
-hb_set_get_min (const hb_set_t *set);
+hb_سیٹ_get_min (ثابت hb_سیٹ_t *سیٹ);
 
 /* Returns HB_SET_VALUE_INVALID if set empty. */
 HB_EXTERN hb_codepoint_t
-hb_set_get_max (const hb_set_t *set);
+hb_سیٹ_get_max (ثابت hb_سیٹ_t *سیٹ);
 
 /* Pass HB_SET_VALUE_INVALID in to get started. */
 HB_EXTERN hb_bool_t
-hb_set_next (const hb_set_t *set,
+hb_سیٹ_اگلا (ثابت hb_سیٹ_t *سیٹ,
 	     hb_codepoint_t *codepoint);
 
 /* Pass HB_SET_VALUE_INVALID in to get started. */
 HB_EXTERN hb_bool_t
-hb_set_previous (const hb_set_t *set,
+hb_سیٹ_پچھلا (ثابت hb_سیٹ_t *سیٹ,
 		 hb_codepoint_t *codepoint);
 
 /* Pass HB_SET_VALUE_INVALID for first and last to get started. */
 HB_EXTERN hb_bool_t
-hb_set_next_range (const hb_set_t *set,
-		   hb_codepoint_t *first,
-		   hb_codepoint_t *last);
+hb_سیٹ_اگلا_range (ثابت hb_سیٹ_t *سیٹ,
+		   hb_codepoint_t *پہلا,
+		   hb_codepoint_t *آخری);
 
 /* Pass HB_SET_VALUE_INVALID for first and last to get started. */
 HB_EXTERN hb_bool_t
-hb_set_previous_range (const hb_set_t *set,
-		       hb_codepoint_t *first,
-		       hb_codepoint_t *last);
+hb_سیٹ_پچھلا_range (ثابت hb_سیٹ_t *سیٹ,
+		       hb_codepoint_t *پہلا,
+		       hb_codepoint_t *آخری);
 
 /* Pass HB_SET_VALUE_INVALID in to get started. */
-HB_EXTERN unsigned int
-hb_set_next_many (const hb_set_t *set,
+HB_EXTERN غیرعلامتی صحیح
+hb_سیٹ_اگلا_many (ثابت hb_سیٹ_t *سیٹ,
 		  hb_codepoint_t  codepoint,
-		  hb_codepoint_t *out,
-		  unsigned int    size);
+		  hb_codepoint_t *برآمد,
+		  غیرعلامتی صحیح    سائز);
 
-HB_END_DECLS
+HB_انتہا_DECLS
 
-#endif /* HB_SET_H */
+#اگر_ختم /* HB_SET_H */

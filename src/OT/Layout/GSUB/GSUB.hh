@@ -1,62 +1,62 @@
-#ifndef OT_LAYOUT_GSUB_GSUB_HH
-#define OT_LAYOUT_GSUB_GSUB_HH
+#اگر_غیر_تعریف_شدہ OT_LAYOUT_GSUB_GSUB_HH
+#تعریف_کرو OT_LAYOUT_GSUB_GSUB_HH
 
-#include "../../../hb-ot-layout-gsubgpos.hh"
-#include "Common.hh"
-#include "SubstLookup.hh"
+#شامل "../../../hb-ot-layout-gsubgpos.hh"
+#شامل "Common.hh"
+#شامل "SubstLookup.hh"
 
-namespace OT {
+نامخلا OT {
 
-using Layout::GSUB_impl::SubstLookup;
+استعمال Layout::GSUB_impl::SubstLookup;
 
-namespace Layout {
+نامخلا Layout {
 
 /*
  * GSUB -- Glyph Substitution
  * https://docs.microsoft.com/en-us/typography/opentype/spec/gsub
  */
 
-struct GSUB : GSUBGPOS
+ساخت GSUB : GSUBGPOS
 {
-  using Lookup = SubstLookup;
+  استعمال Lookup = SubstLookup;
 
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_GSUB;
+  ساکن constexpr hb_لیبل_t جدول_لیبل = HB_OT_لیبل_GSUB;
 
-  const SubstLookup& get_lookup (unsigned int i) const
-  { return static_cast<const SubstLookup &> (GSUBGPOS::get_lookup (i)); }
+  ثابت SubstLookup& get_lookup (غیرعلامتی صحیح i) ثابت
+  { واپس static_cast<ثابت SubstLookup &> (GSUBGPOS::get_lookup (i)); }
 
-  bool subset (hb_subset_context_t *c) const
+  منطقی subset (hb_subset_context_t *c) ثابت
   {
-    hb_subset_layout_context_t l (c, tableTag);
-    return GSUBGPOS::subset<SubstLookup> (&l);
+    hb_subset_layout_context_t l (c, جدول_لیبل);
+    واپس GSUBGPOS::subset<SubstLookup> (&l);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقی sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (یہ);
     return_trace (GSUBGPOS::sanitize<SubstLookup> (c));
   }
 
-  HB_INTERNAL bool is_blocklisted (hb_blob_t *blob,
-                                   hb_face_t *face) const;
+  HB_اندرونی منطقی is_blocklisted (hb_blob_t *blob,
+                                   hb_face_t *face) ثابت;
 
-  void closure_lookups (hb_face_t      *face,
-                        const hb_set_t *glyphs,
-                        hb_set_t       *lookup_indexes /* IN/OUT */) const
-  { GSUBGPOS::closure_lookups<SubstLookup> (face, glyphs, lookup_indexes); }
+  خالی احاطہ_lookups (hb_face_t      *face,
+                        ثابت hb_سیٹ_t *glyphs,
+                        hb_سیٹ_t       *lookup_indexes /* IN/OUT */) ثابت
+  { GSUBGPOS::احاطہ_lookups<SubstLookup> (face, glyphs, lookup_indexes); }
 
-  typedef GSUBGPOS::accelerator_t<GSUB> accelerator_t;
+  قسمتعریف GSUBGPOS::accelerator_t<GSUB> accelerator_t;
 };
 
 
 }
 
-struct GSUB_accelerator_t : Layout::GSUB::accelerator_t {
+ساخت GSUB_accelerator_t : Layout::GSUB::accelerator_t {
   GSUB_accelerator_t (hb_face_t *face) : Layout::GSUB::accelerator_t (face) {}
-  HB_INTERNAL void depend (hb_depend_data_builder_t *builder, hb_face_t *face) const;
+  HB_اندرونی خالی depend (hb_depend_ڈیٹا_builder_t *builder, hb_face_t *face) ثابت;
 };
 
 
 }
 
-#endif  /* OT_LAYOUT_GSUB_GSUB_HH */
+#اگر_ختم  /* OT_LAYOUT_GSUB_GSUB_HH */
