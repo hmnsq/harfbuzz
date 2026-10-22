@@ -27,50 +27,50 @@
 #ifndef HB_OT_LAYOUT_JSTF_TABLE_HH
 #define HB_OT_LAYOUT_JSTF_TABLE_HH
 
-#include "hb-open-type.hh"
-#include "hb-ot-layout-gpos-table.hh"
+#ضمن "hb-open-type.hh"
+#ضمن "hb-ot-layout-gpos-table.hh"
 
 
-namespace OT {
+نطاق OT {
 
 
 /*
  * JstfModList -- Justification Modification List Tables
  */
 
-typedef IndexArray JstfModList;
+تعريفنوع IndexArray JstfModList;
 
 
 /*
  * JstfMax -- Justification Maximum Table
  */
 
-typedef List16OfOffset16To<PosLookup> JstfMax;
+تعريفنوع List16OfOffset16To<PosLookup> JstfMax;
 
 
 /*
  * JstfPriority -- Justification Priority Table
  */
 
-struct JstfPriority
+بنية JstfPriority
 {
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (c->check_struct (this) &&
-		  shrinkageEnableGSUB.sanitize (c, this) &&
-		  shrinkageDisableGSUB.sanitize (c, this) &&
-		  shrinkageEnableGPOS.sanitize (c, this) &&
-		  shrinkageDisableGPOS.sanitize (c, this) &&
-		  shrinkageJstfMax.sanitize (c, this) &&
-		  extensionEnableGSUB.sanitize (c, this) &&
-		  extensionDisableGSUB.sanitize (c, this) &&
-		  extensionEnableGPOS.sanitize (c, this) &&
-		  extensionDisableGPOS.sanitize (c, this) &&
-		  extensionJstfMax.sanitize (c, this));
+    TRACE_SANITIZE (هذا);
+    return_trace (c->check_struct (هذا) &&
+		  shrinkageEnableGSUB.sanitize (c, هذا) &&
+		  shrinkageDisableGSUB.sanitize (c, هذا) &&
+		  shrinkageEnableGPOS.sanitize (c, هذا) &&
+		  shrinkageDisableGPOS.sanitize (c, هذا) &&
+		  shrinkageJstfMax.sanitize (c, هذا) &&
+		  extensionEnableGSUB.sanitize (c, هذا) &&
+		  extensionDisableGSUB.sanitize (c, هذا) &&
+		  extensionEnableGPOS.sanitize (c, هذا) &&
+		  extensionDisableGPOS.sanitize (c, هذا) &&
+		  extensionJstfMax.sanitize (c, هذا));
   }
 
-  protected:
+  محمي:
   Offset16To<JstfModList>
 		shrinkageEnableGSUB;	/* Offset to Shrinkage Enable GSUB
 					 * JstfModList table--from beginning of
@@ -112,7 +112,7 @@ struct JstfPriority
 					 * from beginning of JstfPriority table
 					 * --may be NULL */
 
-  public:
+  عام:
   DEFINE_SIZE_STATIC (20);
 };
 
@@ -121,12 +121,12 @@ struct JstfPriority
  * JstfLangSys -- Justification Language System Table
  */
 
-struct JstfLangSys : List16OfOffset16To<JstfPriority>
+بنية JstfLangSys : List16OfOffset16To<JstfPriority>
 {
-  bool sanitize (hb_sanitize_context_t *c,
-		 const Record_sanitize_closure_t * = nullptr) const
+  منطقي sanitize (hb_sanitize_context_t *c,
+		 ثابت Record_sanitize_closure_t * = nullptr) ثابت
   {
-    TRACE_SANITIZE (this);
+    TRACE_SANITIZE (هذا);
     return_trace (List16OfOffset16To<JstfPriority>::sanitize (c));
   }
 };
@@ -145,37 +145,37 @@ using ExtenderGlyphs = SortedArray16Of<typename Types::HBGlyphID>;
  */
 
 template <typename Types>
-struct JstfScript
+بنية JstfScript
 {
-  unsigned int get_lang_sys_count () const
-  { return langSys.len; }
-  const Tag& get_lang_sys_tag (unsigned int i) const
-  { return langSys.get_tag (i); }
-  unsigned int get_lang_sys_tags (unsigned int start_offset,
-				  unsigned int *lang_sys_count /* IN/OUT */,
-				  hb_tag_t     *lang_sys_tags /* OUT */) const
-  { return langSys.get_tags (start_offset, lang_sys_count, lang_sys_tags); }
-  const JstfLangSys& get_lang_sys (unsigned int i) const
+  unsigned صحيح get_lang_sys_عدد () ثابت
+  { أرجع langSys.len; }
+  ثابت Tag& get_lang_sys_tag (unsigned صحيح i) ثابت
+  { أرجع langSys.get_tag (i); }
+  unsigned صحيح get_lang_sys_tags (unsigned صحيح start_offset,
+				  unsigned صحيح *lang_sys_عدد /* IN/OUT */,
+				  hb_tag_t     *lang_sys_tags /* OUT */) ثابت
+  { أرجع langSys.get_tags (start_offset, lang_sys_عدد, lang_sys_tags); }
+  ثابت JstfLangSys& get_lang_sys (unsigned صحيح i) ثابت
   {
-    if (i == Index::NOT_FOUND_INDEX) return get_default_lang_sys ();
-    return this+langSys[i].offset;
+    إذا (i == Index::NOT_FOUND_INDEX) أرجع get_default_lang_sys ();
+    أرجع هذا+langSys[i].offset;
   }
-  bool find_lang_sys_index (hb_tag_t tag, unsigned int *index) const
-  { return langSys.find_index (tag, index); }
+  منطقي find_lang_sys_index (hb_tag_t tag, unsigned صحيح *index) ثابت
+  { أرجع langSys.find_index (tag, index); }
 
-  bool has_default_lang_sys () const               { return defaultLangSys != 0; }
-  const JstfLangSys& get_default_lang_sys () const { return this+defaultLangSys; }
+  منطقي has_default_lang_sys () ثابت               { أرجع defaultLangSys != 0; }
+  ثابت JstfLangSys& get_default_lang_sys () ثابت { أرجع هذا+defaultLangSys; }
 
-  bool sanitize (hb_sanitize_context_t *c,
-		 const Record_sanitize_closure_t * = nullptr) const
+  منطقي sanitize (hb_sanitize_context_t *c,
+		 ثابت Record_sanitize_closure_t * = nullptr) ثابت
   {
-    TRACE_SANITIZE (this);
-    return_trace (extenderGlyphs.sanitize (c, this) &&
-		  defaultLangSys.sanitize (c, this) &&
-		  langSys.sanitize (c, this));
+    TRACE_SANITIZE (هذا);
+    return_trace (extenderGlyphs.sanitize (c, هذا) &&
+		  defaultLangSys.sanitize (c, هذا) &&
+		  langSys.sanitize (c, هذا));
   }
 
-  protected:
+  محمي:
   typename Types::template LOffsetTo<ExtenderGlyphs<Types>>
 		extenderGlyphs;	/* Offset to ExtenderGlyph table--from beginning
 				 * of JstfScript table-may be NULL */
@@ -185,53 +185,53 @@ struct JstfScript
   RecordArrayOf<JstfLangSys>
 		langSys;	/* Array of JstfLangSysRecords--listed
 				 * alphabetically by LangSysTag */
-  public:
+  عام:
   DEFINE_SIZE_ARRAY (2 * Types::LOffset::static_size + 2, langSys);
 };
 
 template <typename Types>
-struct JstfScriptRecord
+بنية JstfScriptRecord
 {
-  int cmp (hb_tag_t a) const { return tag.cmp (a); }
+  صحيح cmp (hb_tag_t a) ثابت { أرجع tag.cmp (a); }
 
-  bool sanitize (hb_sanitize_context_t *c, const void *base) const
+  منطقي sanitize (hb_sanitize_context_t *c, ثابت فراغ *base) ثابت
   {
-    TRACE_SANITIZE (this);
-    const Record_sanitize_closure_t closure = {tag, base};
-    return_trace (c->check_struct (this) &&
+    TRACE_SANITIZE (هذا);
+    ثابت Record_sanitize_closure_t closure = {tag, base};
+    return_trace (c->check_struct (هذا) &&
 		  offset.sanitize (c, base, &closure));
   }
 
   Tag		tag;		/* 4-byte JstfScript identification tag */
   typename Types::template LOffsetTo<JstfScript<Types>>
 		offset;		/* Offset from beginning of JSTF header */
-  public:
+  عام:
   DEFINE_SIZE_STATIC (4 + Types::LOffset::static_size);
 };
 
 template <typename Types>
-struct JstfScriptList : SortedArray16Of<JstfScriptRecord<Types>>
+بنية JstfScriptList : SortedArray16Of<JstfScriptRecord<Types>>
 {
-  const Tag& get_tag (unsigned int i) const
-  { return (*this)[i].tag; }
-  unsigned int get_tags (unsigned int start_offset,
-			 unsigned int *script_count /* IN/OUT */,
-			 hb_tag_t     *script_tags /* OUT */) const
+  ثابت Tag& get_tag (unsigned صحيح i) ثابت
+  { أرجع (*هذا)[i].tag; }
+  unsigned صحيح get_tags (unsigned صحيح start_offset,
+			 unsigned صحيح *script_عدد /* IN/OUT */,
+			 hb_tag_t     *script_tags /* OUT */) ثابت
   {
-    if (script_count)
+    إذا (script_عدد)
     {
-      + this->as_array ().sub_array (start_offset, script_count)
+      + هذا->as_array ().sub_array (start_offset, script_عدد)
       | hb_map (&JstfScriptRecord<Types>::tag)
-      | hb_sink (hb_array (script_tags, *script_count))
+      | hb_sink (hb_array (script_tags, *script_عدد))
       ;
     }
-    return this->len;
+    أرجع هذا->len;
   }
-  const JstfScript<Types>& get_script (const void *base, unsigned int i) const
-  { return base+(*this)[i].offset; }
-  bool find_index (hb_tag_t tag, unsigned int *index) const
+  ثابت JstfScript<Types>& get_script (ثابت فراغ *base, unsigned صحيح i) ثابت
+  { أرجع base+(*هذا)[i].offset; }
+  منطقي find_index (hb_tag_t tag, unsigned صحيح *index) ثابت
   {
-    return this->bfind (tag, index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
+    أرجع هذا->bfind (tag, index, HB_NOT_FOUND_STORE, Index::NOT_FOUND_INDEX);
   }
 };
 
@@ -241,68 +241,68 @@ struct JstfScriptList : SortedArray16Of<JstfScriptRecord<Types>>
  * https://docs.microsoft.com/en-us/typography/opentype/spec/jstf
  */
 
-struct JSTF
+بنية JSTF
 {
-  static constexpr hb_tag_t tableTag = HB_OT_TAG_JSTF;
+  ساكن constexpr hb_tag_t tableTag = HB_OT_TAG_JSTF;
 
-  unsigned int get_script_count () const
+  unsigned صحيح get_script_عدد () ثابت
   {
 #ifndef HB_NO_BEYOND_64K
-    if (has_script_list2 ()) return get_script_list2 ().len;
+    إذا (has_script_list2 ()) أرجع get_script_list2 ().len;
 #endif
-    return scriptList.len;
+    أرجع scriptList.len;
   }
-  const Tag& get_script_tag (unsigned int i) const
+  ثابت Tag& get_script_tag (unsigned صحيح i) ثابت
   {
 #ifndef HB_NO_BEYOND_64K
-    if (has_script_list2 ()) return get_script_list2 ().get_tag (i);
+    إذا (has_script_list2 ()) أرجع get_script_list2 ().get_tag (i);
 #endif
-    return scriptList.get_tag (i);
+    أرجع scriptList.get_tag (i);
   }
-  unsigned int get_script_tags (unsigned int start_offset,
-				unsigned int *script_count /* IN/OUT */,
-				hb_tag_t     *script_tags /* OUT */) const
+  unsigned صحيح get_script_tags (unsigned صحيح start_offset,
+				unsigned صحيح *script_عدد /* IN/OUT */,
+				hb_tag_t     *script_tags /* OUT */) ثابت
   {
 #ifndef HB_NO_BEYOND_64K
-    if (has_script_list2 ())
-      return get_script_list2 ().get_tags (start_offset, script_count, script_tags);
+    إذا (has_script_list2 ())
+      أرجع get_script_list2 ().get_tags (start_offset, script_عدد, script_tags);
 #endif
-    return scriptList.get_tags (start_offset, script_count, script_tags);
+    أرجع scriptList.get_tags (start_offset, script_عدد, script_tags);
   }
   template <typename Types>
-  const JstfScript<Types>& get_script (unsigned int i) const;
-  bool find_script_index (hb_tag_t tag, unsigned int *index) const
+  ثابت JstfScript<Types>& get_script (unsigned صحيح i) ثابت;
+  منطقي find_script_index (hb_tag_t tag, unsigned صحيح *index) ثابت
   {
 #ifndef HB_NO_BEYOND_64K
-    if (has_script_list2 ()) return get_script_list2 ().find_index (tag, index);
+    إذا (has_script_list2 ()) أرجع get_script_list2 ().find_index (tag, index);
 #endif
-    return scriptList.find_index (tag, index);
+    أرجع scriptList.find_index (tag, index);
   }
 
-  bool sanitize (hb_sanitize_context_t *c) const
+  منطقي sanitize (hb_sanitize_context_t *c) ثابت
   {
-    TRACE_SANITIZE (this);
-    if (unlikely (!version.sanitize (c) ||
+    TRACE_SANITIZE (هذا);
+    إذا (unlikely (!version.sanitize (c) ||
 		  !hb_barrier () ||
 		  version.major != 1 ||
-		  !scriptList.sanitize (c, this)))
-      return_trace (false);
+		  !scriptList.sanitize (c, هذا)))
+      return_trace (خطأ);
 #ifndef HB_NO_BEYOND_64K
-    if (unlikely (version.minor >= 1 && !get_script_list2 ().sanitize (c, this)))
-      return_trace (false);
+    إذا (unlikely (version.minor >= 1 && !get_script_list2 ().sanitize (c, هذا)))
+      return_trace (خطأ);
 #endif
     return_trace (true);
   }
 
-  private:
+  خاص:
 #ifndef HB_NO_BEYOND_64K
-  bool has_script_list2 () const
-  { return version.minor >= 1 && get_script_list2 ().len; }
-  const JstfScriptList<Layout::MediumTypes>& get_script_list2 () const
-  { return StructAfter<JstfScriptList<Layout::MediumTypes>> (scriptList); }
+  منطقي has_script_list2 () ثابت
+  { أرجع version.minor >= 1 && get_script_list2 ().len; }
+  ثابت JstfScriptList<Layout::MediumTypes>& get_script_list2 () ثابت
+  { أرجع StructAfter<JstfScriptList<Layout::MediumTypes>> (scriptList); }
 #endif
 
-  protected:
+  محمي:
   FixedVersion<>version;	/* Version of the JSTF table--initially set
 				 * to 0x00010000u */
   JstfScriptList<Layout::SmallTypes>
@@ -314,20 +314,20 @@ struct JSTF
 				 * alphabetically by ScriptTag.
 				 * Present only if minorVersion is 1 or greater. */
 #endif
-  public:
+  عام:
   DEFINE_SIZE_ARRAY (6, scriptList);
 };
 
 template <>
-inline const JstfScript<Layout::SmallTypes>&
-JSTF::get_script<Layout::SmallTypes> (unsigned int i) const
-{ return scriptList.get_script (this, i); }
+مضمن ثابت JstfScript<Layout::SmallTypes>&
+JSTF::get_script<Layout::SmallTypes> (unsigned صحيح i) ثابت
+{ أرجع scriptList.get_script (هذا, i); }
 
 #ifndef HB_NO_BEYOND_64K
 template <>
-inline const JstfScript<Layout::MediumTypes>&
-JSTF::get_script<Layout::MediumTypes> (unsigned int i) const
-{ return get_script_list2 ().get_script (this, i); }
+مضمن ثابت JstfScript<Layout::MediumTypes>&
+JSTF::get_script<Layout::MediumTypes> (unsigned صحيح i) ثابت
+{ أرجع get_script_list2 ().get_script (هذا, i); }
 #endif
 
 

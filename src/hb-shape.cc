@@ -26,13 +26,13 @@
  * Google Author(s): Behdad Esfahbod
  */
 
-#include "hb.hh"
+#ضمن "hb.hh"
 
-#include "hb-shaper.hh"
-#include "hb-shape-plan.hh"
-#include "hb-buffer.hh"
-#include "hb-font.hh"
-#include "hb-machinery.hh"
+#ضمن "hb-shaper.hh"
+#ضمن "hb-shape-plan.hh"
+#ضمن "hb-buffer.hh"
+#ضمن "hb-font.hh"
+#ضمن "hb-machinery.hh"
 
 
 #ifndef HB_NO_SHAPER
@@ -50,37 +50,37 @@
  **/
 
 
-static inline void free_static_shaper_list ();
+ساكن مضمن فراغ free_static_shaper_list ();
 
-static const char * const nil_shaper_list[] = {nullptr};
+ساكن ثابت حرف * ثابت nil_shaper_list[] = {nullptr};
 
-static struct hb_shaper_list_lazy_loader_t : hb_lazy_loader_t<const char *,
+ساكن بنية hb_shaper_list_lazy_loader_t : hb_lazy_loader_t<ثابت حرف *,
 							      hb_shaper_list_lazy_loader_t>
 {
-  static const char ** create ()
+  ساكن ثابت حرف ** create ()
   {
-    const char **shaper_list = (const char **) hb_calloc (1 + HB_SHAPERS_COUNT, sizeof (const char *));
-    if (unlikely (!shaper_list))
-      return nullptr;
+    ثابت حرف **shaper_list = (ثابت حرف **) hb_calloc (1 + HB_SHAPERS_عدد, حجم (ثابت حرف *));
+    إذا (unlikely (!shaper_list))
+      أرجع nullptr;
 
-    const hb_shaper_entry_t *shapers = _hb_shapers_get ();
-    unsigned int i;
-    for (i = 0; i < HB_SHAPERS_COUNT; i++)
+    ثابت hb_shaper_entry_t *shapers = _hb_shapers_get ();
+    unsigned صحيح i;
+    لكل (i = 0; i < HB_SHAPERS_عدد; i++)
       shaper_list[i] = shapers[i].name;
     shaper_list[i] = nullptr;
 
     hb_atexit (free_static_shaper_list);
 
-    return shaper_list;
+    أرجع shaper_list;
   }
-  static void destroy (const char **l)
+  ساكن فراغ destroy (ثابت حرف **l)
   { hb_free (l); }
-  static const char * const * get_null ()
-  { return nil_shaper_list; }
+  ساكن ثابت حرف * ثابت * get_null ()
+  { أرجع nil_shaper_list; }
 } static_shaper_list;
 
-static inline
-void free_static_shaper_list ()
+ساكن مضمن
+فراغ free_static_shaper_list ()
 {
   static_shaper_list.free_instance ();
 }
@@ -98,10 +98,10 @@ void free_static_shaper_list ()
  *
  * Since: 0.9.2
  **/
-const char **
+ثابت حرف **
 hb_shape_list_shapers ()
 {
-  return static_shaper_list.get_unconst ();
+  أرجع static_shaper_list.get_unconst ();
 }
 
 
@@ -126,47 +126,47 @@ hb_shape_list_shapers ()
 hb_bool_t
 hb_shape_full (hb_font_t          *font,
 	       hb_buffer_t        *buffer,
-	       const hb_feature_t *features,
-	       unsigned int        num_features,
-	       const char * const *shaper_list)
+	       ثابت hb_feature_t *features,
+	       unsigned صحيح        رقم_features,
+	       ثابت حرف * ثابت *shaper_list)
 {
-  if (unlikely (!buffer->len))
-    return true;
+  إذا (unlikely (!buffer->len))
+    أرجع true;
 
   buffer->enter ();
 
   hb_buffer_t *text_buffer = nullptr;
-  if (buffer->flags & HB_BUFFER_FLAG_VERIFY)
+  إذا (buffer->flags & HB_BUFFER_FLAG_VERIFY)
   {
     text_buffer = hb_buffer_create ();
     hb_buffer_append (text_buffer, buffer, 0, -1);
   }
 
   hb_shape_plan_t *shape_plan = hb_shape_plan_create_cached2 (font->face, &buffer->props,
-							      features, num_features,
-							      font->coords, font->has_nonzero_coords ? font->num_coords : 0,
+							      features, رقم_features,
+							      font->coords, font->has_nonzero_coords ? font->رقم_coords : 0,
 							      shaper_list);
 
-  hb_bool_t res = hb_shape_plan_execute (shape_plan, font, buffer, features, num_features);
+  hb_bool_t res = hb_shape_plan_execute (shape_plan, font, buffer, features, رقم_features);
 
   hb_shape_plan_destroy (shape_plan);
 
-  if (text_buffer)
+  إذا (text_buffer)
   {
-    if (res && buffer->successful
+    إذا (res && buffer->successful
 	    && text_buffer->successful
 	    && !buffer->verify (text_buffer,
 				font,
 				features,
-				num_features,
+				رقم_features,
 				shaper_list))
-      res = false;
+      res = خطأ;
     hb_buffer_destroy (text_buffer);
   }
 
   buffer->leave ();
 
-  return res;
+  أرجع res;
 }
 
 /**
@@ -185,42 +185,42 @@ hb_shape_full (hb_font_t          *font,
  *
  * Since: 0.9.2
  **/
-void
+فراغ
 hb_shape (hb_font_t           *font,
 	  hb_buffer_t         *buffer,
-	  const hb_feature_t  *features,
-	  unsigned int         num_features)
+	  ثابت hb_feature_t  *features,
+	  unsigned صحيح         رقم_features)
 {
-  hb_shape_full (font, buffer, features, num_features, nullptr);
+  hb_shape_full (font, buffer, features, رقم_features, nullptr);
 }
 
 
 #ifdef HB_EXPERIMENTAL_API
 #ifndef HB_NO_VAR
 
-static float
+ساكن عائم
 buffer_advance (hb_buffer_t *buffer)
 {
-  float a = 0;
+  عائم a = 0;
   auto *pos = buffer->pos;
-  unsigned count = buffer->len;
-  if (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
-    for (unsigned i = 0; i < count; i++)
+  unsigned عدد = buffer->len;
+  إذا (HB_DIRECTION_IS_HORIZONTAL (buffer->props.direction))
+    لكل (unsigned i = 0; i < عدد; i++)
       a += pos[i].x_advance;
-  else
-    for (unsigned i = 0; i < count; i++)
+  وإلا
+    لكل (unsigned i = 0; i < عدد; i++)
       a += pos[i].y_advance;
-  return a;
+  أرجع a;
 }
 
-static void
+ساكن فراغ
 reset_buffer (hb_buffer_t *buffer,
-	      hb_array_t<const hb_glyph_info_t> text)
+	      hb_array_t<ثابت hb_glyph_info_t> text)
 {
-  assert (buffer->ensure (text.length));
-  buffer->have_positions = false;
+  أكد (buffer->ensure (text.length));
+  buffer->have_positions = خطأ;
   buffer->len = text.length;
-  hb_memcpy (buffer->info, text.arrayZ, text.length * sizeof (buffer->info[0]));
+  hb_memcpy (buffer->info, text.arrayZ, text.length * حجم (buffer->info[0]));
   hb_buffer_set_content_type (buffer, HB_BUFFER_CONTENT_TYPE_UNICODE);
 }
 
@@ -258,24 +258,24 @@ reset_buffer (hb_buffer_t *buffer,
 hb_bool_t
 hb_shape_justify (hb_font_t          *font,
 		  hb_buffer_t        *buffer,
-		  const hb_feature_t *features,
-		  unsigned int        num_features,
-		  const char * const *shaper_list,
-		  float               min_target_advance,
-		  float               max_target_advance,
-		  float              *advance, /* IN/OUT */
+		  ثابت hb_feature_t *features,
+		  unsigned صحيح        رقم_features,
+		  ثابت حرف * ثابت *shaper_list,
+		  عائم               min_target_advance,
+		  عائم               max_target_advance,
+		  عائم              *advance, /* IN/OUT */
 		  hb_tag_t           *var_tag, /* OUT */
-		  float              *var_value /* OUT */)
+		  عائم              *var_قيمة /* OUT */)
 {
   // TODO Negative font scales?
 
   /* If default advance already matches target, nothing to do. Shape and return. */
-  if (min_target_advance <= *advance && *advance <= max_target_advance)
+  إذا (min_target_advance <= *advance && *advance <= max_target_advance)
   {
     *var_tag = HB_TAG_NONE;
-    *var_value = 0.0f;
-    return hb_shape_full (font, buffer,
-			  features, num_features,
+    *var_قيمة = 0.0f;
+    أرجع hb_shape_full (font, buffer,
+			  features, رقم_features,
 			  shaper_list);
   }
 
@@ -291,151 +291,151 @@ hb_shape_justify (hb_font_t          *font,
     HB_TAG ('j','s','t','f'),
     HB_TAG ('w','d','t','h'),
   };
-  for (unsigned i = 0; i < ARRAY_LENGTH (tags); i++)
-    if (hb_ot_var_find_axis_info (face, tags[i], &axis_info))
+  لكل (unsigned i = 0; i < ARRAY_LENGTH (tags); i++)
+    إذا (hb_ot_var_find_axis_info (face, tags[i], &axis_info))
     {
       tag = *var_tag = tags[i];
-      break;
+      اكسر;
     }
 
   /* If no suitable variation axis found, can't justify.  Just shape and return. */
-  if (!tag)
+  إذا (!tag)
   {
     *var_tag = HB_TAG_NONE;
-    *var_value = 0.0f;
-    if (hb_shape_full (font, buffer,
-		       features, num_features,
+    *var_قيمة = 0.0f;
+    إذا (hb_shape_full (font, buffer,
+		       features, رقم_features,
 		       shaper_list))
     {
       *advance = buffer_advance (buffer);
-      return true;
+      أرجع true;
     }
-    else
-      return false;
+    وإلا
+      أرجع خطأ;
   }
 
   /* Copy buffer text as we need it so we can shape multiple times. */
   unsigned text_len = buffer->len;
-  auto *text_info = (hb_glyph_info_t *) hb_malloc2 (text_len, sizeof (buffer->info[0]));
-  if (unlikely (text_len && !text_info))
-    return false;
+  auto *text_info = (hb_glyph_info_t *) hb_malloc2 (text_len, حجم (buffer->info[0]));
+  إذا (unlikely (text_len && !text_info))
+    أرجع خطأ;
   HB_SCOPE_GUARD (hb_free (text_info));
-  hb_memcpy (text_info, buffer->info, text_len * sizeof (buffer->info[0]));
-  auto text = hb_array<const hb_glyph_info_t> (text_info, text_len);
+  hb_memcpy (text_info, buffer->info, text_len * حجم (buffer->info[0]));
+  auto text = hb_array<ثابت hb_glyph_info_t> (text_info, text_len);
 
   /* If default advance was not provided to us, calculate it. */
-  if (!*advance)
+  إذا (!*advance)
   {
-    hb_font_set_variation (font, tag, axis_info.default_value);
-    if (!hb_shape_full (font, buffer,
-			features, num_features,
+    hb_font_set_variation (font, tag, axis_info.default_قيمة);
+    إذا (!hb_shape_full (font, buffer,
+			features, رقم_features,
 			shaper_list))
-      return false;
+      أرجع خطأ;
     *advance = buffer_advance (buffer);
   }
 
   /* If default advance already matches target, nothing to do. Shape and return.
    * Do this again, in case advance was just calculated.
    */
-  if (min_target_advance <= *advance && *advance <= max_target_advance)
+  إذا (min_target_advance <= *advance && *advance <= max_target_advance)
   {
     *var_tag = HB_TAG_NONE;
-    *var_value = 0.0f;
-    return true;
+    *var_قيمة = 0.0f;
+    أرجع true;
   }
 
   /* Prepare for running the solver. */
-  double a, b, ya, yb;
-  if (*advance < min_target_advance)
+  مزدوج a, b, ya, yb;
+  إذا (*advance < min_target_advance)
   {
     /* Need to expand. */
-    ya = (double) *advance;
-    a = (double) axis_info.default_value;
-    b = (double) axis_info.max_value;
+    ya = (مزدوج) *advance;
+    a = (مزدوج) axis_info.default_قيمة;
+    b = (مزدوج) axis_info.max_قيمة;
 
     /* Shape buffer for maximum expansion to use as other
      * starting point for the solver. */
-    hb_font_set_variation (font, tag, (float) b);
+    hb_font_set_variation (font, tag, (عائم) b);
     reset_buffer (buffer, text);
-    if (!hb_shape_full (font, buffer,
-			features, num_features,
+    إذا (!hb_shape_full (font, buffer,
+			features, رقم_features,
 			shaper_list))
-      return false;
-    yb = (double) buffer_advance (buffer);
+      أرجع خطأ;
+    yb = (مزدوج) buffer_advance (buffer);
     /* If the maximum expansion is less than max target,
      * there's nothing to solve for. Just return it. */
-    if (yb <= (double) max_target_advance)
+    إذا (yb <= (مزدوج) max_target_advance)
     {
-      *var_value = (float) b;
-      *advance = (float) yb;
-      return true;
+      *var_قيمة = (عائم) b;
+      *advance = (عائم) yb;
+      أرجع true;
     }
   }
-  else
+  وإلا
   {
     /* Need to shrink. */
-    yb = (double) *advance;
-    a = (double) axis_info.min_value;
-    b = (double) axis_info.default_value;
+    yb = (مزدوج) *advance;
+    a = (مزدوج) axis_info.min_قيمة;
+    b = (مزدوج) axis_info.default_قيمة;
 
     /* Shape buffer for maximum shrinkate to use as other
      * starting point for the solver. */
-    hb_font_set_variation (font, tag, (float) a);
+    hb_font_set_variation (font, tag, (عائم) a);
     reset_buffer (buffer, text);
-    if (!hb_shape_full (font, buffer,
-			features, num_features,
+    إذا (!hb_shape_full (font, buffer,
+			features, رقم_features,
 			shaper_list))
-      return false;
-    ya = (double) buffer_advance (buffer);
+      أرجع خطأ;
+    ya = (مزدوج) buffer_advance (buffer);
     /* If the maximum shrinkate is more than min target,
      * there's nothing to solve for. Just return it. */
-    if (ya >= (double) min_target_advance)
+    إذا (ya >= (مزدوج) min_target_advance)
     {
-      *var_value = (float) a;
-      *advance = (float) ya;
-      return true;
+      *var_قيمة = (عائم) a;
+      *advance = (عائم) ya;
+      أرجع true;
     }
   }
 
   /* Run the solver to find a var axis value that hits
    * the desired width. */
 
-  double epsilon = (b - a) / (1<<14);
-  bool failed = false;
+  مزدوج epsilon = (b - a) / (1<<14);
+  منطقي failed = خطأ;
 
-  auto f = [&] (double x)
+  auto f = [&] (مزدوج x)
   {
-    hb_font_set_variation (font, tag, (float) x);
+    hb_font_set_variation (font, tag, (عائم) x);
     reset_buffer (buffer, text);
-    if (unlikely (!hb_shape_full (font, buffer,
-				  features, num_features,
+    إذا (unlikely (!hb_shape_full (font, buffer,
+				  features, رقم_features,
 				  shaper_list)))
     {
       failed = true;
-      return (double) min_target_advance;
+      أرجع (مزدوج) min_target_advance;
     }
 
-    double w = (double) buffer_advance (buffer);
-    DEBUG_MSG (JUSTIFY, nullptr, "Trying '%c%c%c%c' axis parameter %f. Advance %g. Target: min %g max %g",
+    مزدوج w = (مزدوج) buffer_advance (buffer);
+    DEBUG_رسالة (JUSTIFY, nullptr, "Trying '%c%c%c%c' axis parameter %f. Advance %g. Target: min %g max %g",
 	       HB_UNTAG (tag), x, w,
-	       (double) min_target_advance, (double) max_target_advance);
-    return w;
+	       (مزدوج) min_target_advance, (مزدوج) max_target_advance);
+    أرجع w;
   };
 
-  double y = 0;
-  double itp = solve_itp (f,
+  مزدوج y = 0;
+  مزدوج itp = solve_itp (f,
 			  a, b,
 			  epsilon,
-			  (double) min_target_advance, (double) max_target_advance,
+			  (مزدوج) min_target_advance, (مزدوج) max_target_advance,
 			  ya, yb, y);
 
-  if (failed)
-    return false;
+  إذا (failed)
+    أرجع خطأ;
 
-  *var_value = (float) itp;
-  *advance = (float) y;
+  *var_قيمة = (عائم) itp;
+  *advance = (عائم) y;
 
-  return true;
+  أرجع true;
 }
 #endif
 #endif
